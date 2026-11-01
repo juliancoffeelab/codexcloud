@@ -238,7 +238,7 @@ pub struct LastCombat {
 /// A surviving unit carried between campaign chapters with its earned experience.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "bake", derive(databake::Bake))]
 #[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]

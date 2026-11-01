@@ -30,6 +30,11 @@ Independent checks continue after failures and report their statuses together.
 The test duration target warns without terminating a successful run. Browser
 automation is separate from the default checks.
 
+Production WASM uses pinned Binaryen passes to merge duplicate functions,
+optimize instructions and group similar function bodies before removing debug
+names. Development bindings retain their diagnostic names. Compare the compressed
+module and its JavaScript loader together when measuring download size.
+
 ## Content and artwork
 
 A lineup is a faction. A faction can have sprites before its gameplay roster is

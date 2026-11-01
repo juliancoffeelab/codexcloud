@@ -3,7 +3,6 @@
 use super::battle::Game;
 use super::exchange::{self, ExchangeForecast, Strikes};
 use crate::data::*;
-use std::rc::Rc;
 struct ResolvedStrike {
     raw: i32,
     damage: i32,
@@ -34,13 +33,57 @@ impl<'catalog> Game<'catalog> {
         let attack = &self.rules.units[unit.kind].attacks[weapon];
         self.in_attack_range(from, target_tile, attack.category, attack.range)
     }
-    pub(crate) fn attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
+    pub(crate) fn attack_options(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        from: usize,
+    ) -> smallvec::SmallVec<[usize; 4]> {
         (0..self.rules.units[unit.kind].attacks.len())
             .filter(|&weapon| self.can_attack(unit, from, target, weapon))
             .collect()
     }
     pub(crate) fn damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> i32 {
         self.damage_at(attacker, target, weapon, target.tile)
+    }
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub(crate) fn maximum_damage(
+        &self,
+        attacker: usize,
+        target: &Unit,
+        weapon: usize,
+        terrain: usize,
+    ) -> i32 {
+        let attack = &self.rules.units[attacker].attacks[weapon];
+        let rule = &self.rules.units[target.kind];
+        let modifier = rule.damage_modifiers.get(attack.damage_type)
+            + rule.environment[terrain][attack.category.index()][attack.damage_type.index()];
+        (attack.damage + attack.spread + modifier).max(0) * i32::from(attack.count)
+    }
+    pub(crate) fn expected_damage_on(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        terrain: usize,
+    ) -> i32 {
+        self.expected_damage_kind(attacker.kind, target, weapon, terrain)
+    }
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub(crate) fn expected_damage_kind(
+        &self,
+        attacker: usize,
+        target: &Unit,
+        weapon: usize,
+        terrain: usize,
+    ) -> i32 {
+        let attack = &self.rules.units[attacker].attacks[weapon];
+        let rule = &self.rules.units[target.kind];
+        super::damage::rounded(
+            attack,
+            rule.damage_modifiers.get(attack.damage_type)
+                + rule.environment[terrain][attack.category.index()][attack.damage_type.index()],
+        )
     }
     pub(crate) fn damage_distribution(
         &self,
@@ -59,9 +102,18 @@ impl<'catalog> Game<'catalog> {
         )
     }
     fn damage_at(&self, attacker: &Unit, target: &Unit, weapon: usize, tile: usize) -> i32 {
-        self.damage_distribution(attacker, target, weapon, tile)
-            .mean
-            .round() as i32
+        self.expected_damage_on(attacker, target, weapon, self.terrain[tile])
+    }
+    pub(crate) fn damage_bounds(&self, attacker: &Unit, target: &Unit, weapon: usize) -> [i32; 2] {
+        let attack = &self.rules.units[attacker.kind].attacks[weapon];
+        let rule = &self.rules.units[target.kind];
+        let modifier = rule.damage_modifiers.get(attack.damage_type)
+            + rule.environment[self.terrain[target.tile]][attack.category.index()]
+                [attack.damage_type.index()];
+        [
+            (attack.damage - attack.spread + modifier).max(0) * i32::from(attack.count),
+            (attack.damage + attack.spread + modifier).max(0) * i32::from(attack.count),
+        ]
     }
     fn strike_rules(
         &self,
@@ -74,6 +126,7 @@ impl<'catalog> Game<'catalog> {
         let attack = &self.rules.units[attacker.kind].attacks[weapon];
         let defender = &self.rules.units[target.kind];
         Strikes {
+            profile: self.attack_classes.get(attacker.kind, weapon),
             damage: attack.damage,
             spread: attack.spread,
             count: attack.count,
@@ -91,7 +144,7 @@ impl<'catalog> Game<'catalog> {
         target: &Unit,
         weapon: usize,
         from: usize,
-    ) -> Rc<ExchangeForecast> {
+    ) -> ExchangeForecast {
         let count = self.rules.units[unit.kind].attacks[weapon].count;
         self.exchange_with_thorns(
             unit,
@@ -108,7 +161,7 @@ impl<'catalog> Game<'catalog> {
         weapon: usize,
         from: usize,
         reflection: i32,
-    ) -> Rc<ExchangeForecast> {
+    ) -> ExchangeForecast {
         let attack = self.strike_rules(unit, target, weapon, target.tile, reflection);
         let reply = self.response(unit, target, weapon, from).map_or(
             Strikes {
@@ -143,24 +196,6 @@ impl<'catalog> Game<'catalog> {
                     .then(b.cmp(a))
             })
             .map(|(w, _)| w)
-    }
-    pub(crate) fn maximum_retaliation(
-        &self,
-        unit: &Unit,
-        target: &Unit,
-        weapon: usize,
-        from: usize,
-    ) -> i32 {
-        self.exchange(unit, target, weapon, from).maximum[1]
-    }
-    pub(crate) fn death_chance(
-        &self,
-        unit: &Unit,
-        target: &Unit,
-        weapon: usize,
-        from: usize,
-    ) -> f64 {
-        self.exchange(unit, target, weapon, from).death[0]
     }
     fn roll_strike(
         &mut self,
@@ -246,6 +281,7 @@ impl<'catalog> Game<'catalog> {
             .unwrap_or(0);
         (self.rules.units[target.kind].thorns + aura) * i32::from(attack.count)
     }
+    #[cfg(test)]
     pub(crate) fn preview(
         &self,
         unit: &Unit,
@@ -301,7 +337,8 @@ impl<'catalog> Game<'catalog> {
                 && self.winner.is_none()
                 && self.can_attack(&attacker, attacker.tile, &target, weapon)
         );
-        let attack = self.rules.units[attacker.kind].attacks[weapon].clone();
+        let rules = self.rules.clone();
+        let attack = &rules.units[attacker.kind].attacks[weapon];
         let response = self.response(&attacker, &target, weapon, attacker.tile);
         let per_thorn =
             self.thorn_damage(&attacker, &target, weapon, attacker.tile) / i32::from(attack.count);
@@ -317,7 +354,7 @@ impl<'catalog> Game<'catalog> {
         ];
         let mut hp = [attacker.hp, target.hp];
         #[cfg(feature = "wasm")]
-        let mut playback = Vec::new();
+        self.combat_animation.clear();
         #[cfg(not(target_arch = "wasm32"))]
         let mut draws: [Vec<i32>; 2] = Default::default();
         #[cfg(not(target_arch = "wasm32"))]
@@ -349,8 +386,10 @@ impl<'catalog> Game<'catalog> {
                 counts[side] += 1;
                 #[cfg(not(target_arch = "wasm32"))]
                 {
-                    draws[side].push(raw);
-                    hits[side].push(damage);
+                    if self.recordings.is_some() {
+                        draws[side].push(raw);
+                        hits[side].push(damage);
+                    }
                 }
                 let effect = strikes[side].apply(&mut hp, side, damage);
                 #[cfg(not(target_arch = "wasm32"))]
@@ -361,9 +400,10 @@ impl<'catalog> Game<'catalog> {
                 if self.presentation {
                     let attack = &self.rules.units[actor.kind].attacks[selected];
                     let rule = &self.rules.units[defender.kind];
-                    playback.push(crate::protocol::CombatStrike {
+                    self.combat_animation.strikes.push(super::playback::Strike {
+                        kind: actor.kind,
+                        weapon: selected,
                         side: actor.side,
-                        weapon: attack.name.to_string(),
                         roll_min: attack.damage - attack.spread,
                         roll_max: attack.damage + attack.spread,
                         raw,
@@ -449,30 +489,34 @@ impl<'catalog> Game<'catalog> {
                 aura_sources,
             }
         });
-        let need_snapshot = false;
-        #[cfg(feature = "wasm")]
-        let need_snapshot = need_snapshot || self.presentation;
         #[cfg(not(target_arch = "wasm32"))]
-        let need_snapshot = need_snapshot || self.recordings.is_some();
+        let need_snapshot = self.recordings.is_some();
+        #[cfg(not(target_arch = "wasm32"))]
         let before =
             need_snapshot.then(|| [self.public_unit(&attacker), self.public_unit(&target)]);
         #[cfg(feature = "wasm")]
         if self.presentation {
-            #[cfg(target_arch = "wasm32")]
-            let animation_units = before.expect("animation snapshot");
-            #[cfg(not(target_arch = "wasm32"))]
-            let animation_units = before.as_ref().expect("animation snapshot").clone();
-            self.combat_animation = Some(crate::protocol::CombatAnimation {
-                units: animation_units,
-                strikes: playback,
-            });
+            self.combat_animation.units = Some([attacker.clone(), target.clone()]);
+            self.combat_animation.present = true;
         }
         if self.presentation {
-            self.last_combat = Some(LastCombat {
-                attacker_id: format!("u{id}"),
-                attack_id: attack.id.to_string(),
-                sound: attack.sound.to_string(),
-            });
+            use std::fmt::Write as _;
+            let mut cue = self
+                .last_combat
+                .take()
+                .or_else(|| self.last_combat_spare.take())
+                .unwrap_or_else(|| LastCombat {
+                    attacker_id: String::new(),
+                    attack_id: String::new(),
+                    sound: String::new(),
+                });
+            cue.attacker_id.clear();
+            write!(&mut cue.attacker_id, "u{id}").expect("unit id");
+            cue.attack_id.clear();
+            cue.attack_id.push_str(&attack.id);
+            cue.sound.clear();
+            cue.sound.push_str(&attack.sound);
+            self.last_combat = Some(cue);
             self.combat_present = true;
         }
         self.units[a].moved = true;
@@ -500,57 +544,76 @@ impl<'catalog> Game<'catalog> {
             }
         }
         if self.presentation {
-            let message = if retaliation > 0 {
-                format!(" and took {retaliation} in retaliation")
+            if retaliation > 0 {
+                game_log!(
+                    self,
+                    format!(
+                        "{} {} used {} for {damage} damage and took {retaliation} in retaliation.",
+                        if attacker.side == Side::Player {
+                            "Your"
+                        } else {
+                            "Enemy"
+                        },
+                        self.rules.unit_log_names[attacker.kind],
+                        self.rules.weapon_log_names[attacker.kind][weapon]
+                    )
+                );
             } else {
-                String::new()
-            };
-            game_log!(
-                self,
-                format!(
-                    "{} {} used {} for {damage} damage{message}.",
-                    if attacker.side == Side::Player {
-                        "Your"
-                    } else {
-                        "Enemy"
-                    },
-                    self.rules.unit_log_names[attacker.kind],
-                    self.rules.weapon_log_names[attacker.kind][weapon]
-                )
-            );
+                game_log!(
+                    self,
+                    format!(
+                        "{} {} used {} for {damage} damage.",
+                        if attacker.side == Side::Player {
+                            "Your"
+                        } else {
+                            "Enemy"
+                        },
+                        self.rules.unit_log_names[attacker.kind],
+                        self.rules.weapon_log_names[attacker.kind][weapon]
+                    )
+                );
+            }
         }
-        let defeated: Vec<Unit> = self
+        let defeated: smallvec::SmallVec<[Unit; 2]> = self
             .units
             .iter()
             .filter(|unit| unit.hp <= 0)
             .cloned()
             .collect();
         for unit in &defeated {
+            let fallen = unit
+                .name
+                .as_deref()
+                .filter(|name| {
+                    unit.side == Side::Player
+                        && self.campaign.as_ref().is_some_and(|campaign| {
+                            !campaign.marked_prefixed("fallen:", name)
+                                && self.rules.campaigns[&campaign.id].missions.iter().any(
+                                    |chapter| {
+                                        chapter.map.units.iter().any(|incoming| {
+                                            incoming.side == Side::Player
+                                                && incoming.name.as_deref() == Some(*name)
+                                        })
+                                    },
+                                )
+                        })
+                })
+                .map(|name| self.marker("fallen:", name));
+            let dain = self
+                .campaign
+                .as_ref()
+                .is_some_and(|campaign| {
+                    campaign.id == "green-accord"
+                        && unit.name.as_deref() == Some("Captain Dain")
+                        && !campaign.marked("dain-fell")
+                })
+                .then(|| self.marker("", "dain-fell"));
             if let Some(campaign) = &mut self.campaign {
-                if unit.side == Side::Player {
-                    if let Some(name) = &unit.name {
-                        if self.rules.campaigns[&campaign.id]
-                            .missions
-                            .iter()
-                            .any(|chapter| {
-                                chapter.map.units.iter().any(|incoming| {
-                                    incoming.side == Side::Player
-                                        && incoming.name.as_deref() == Some(name.as_ref())
-                                })
-                            })
-                        {
-                            let mark = format!("fallen:{name}");
-                            if !campaign.marked(&mark) {
-                                campaign.marks.push(mark);
-                            }
-                        }
-                    }
+                if let Some(marker) = fallen {
+                    campaign.marks.push(marker);
                 }
-                if campaign.id == "green-accord"
-                    && unit.name.as_deref() == Some("Captain Dain")
-                    && !campaign.marked("dain-fell")
-                {
-                    campaign.marks.push("dain-fell".into());
+                if let Some(marker) = dain {
+                    campaign.marks.push(marker);
                 }
             }
             if self.mediation_at_risk(unit) {
@@ -577,11 +640,14 @@ impl<'catalog> Game<'catalog> {
         self.refresh_mission();
         self.evaluate_campaign(false, None);
         #[cfg(not(target_arch = "wasm32"))]
-        self.action(ActionRecord::Attack {
-            unit: format!("u{id}"),
-            target: format!("u{target_id}"),
-            weapon: attack.id.to_string(),
-        });
+        game_action!(
+            self,
+            ActionRecord::Attack {
+                unit: format!("u{id}"),
+                target: format!("u{target_id}"),
+                weapon: attack.id.to_string(),
+            }
+        );
         #[cfg(not(target_arch = "wasm32"))]
         if let Some(records) = &mut self.recordings {
             records.losses.extend(

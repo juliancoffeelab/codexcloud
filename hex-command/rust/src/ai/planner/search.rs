@@ -3,6 +3,10 @@ use crate::ai::objectives::actor_matches;
 use crate::ai::orders::target as objective;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
 use crate::ai::roles::role;
+#[cfg(test)]
+use crate::logic::Action as Command;
+use crate::reuse::Map as HashMap;
+use crate::reuse::{Vec, vec};
 use crate::sort::Order;
 use crate::{
     ai::context::BattleView,
@@ -10,7 +14,6 @@ use crate::{
     ai::planner::safety::Threats,
     data::*,
 };
-use rustc_hash::FxHashMap as HashMap;
 use std::borrow::Cow;
 pub struct Random(pub u32);
 impl Random {
@@ -21,12 +24,24 @@ impl Random {
         (v ^ (v >> 14)) as f64 / 4294967296.0
     }
 }
+#[cfg(test)]
 pub(in crate::ai) fn jitter(seed: u32, key: &str) -> f64 {
-    let mut h = seed;
-    for c in key.encode_utf16() {
-        h = (h ^ c as u32).wrapping_mul(16777619);
+    jitter_args(seed, format_args!("{key}"))
+}
+pub(in crate::ai) fn jitter_args(seed: u32, key: std::fmt::Arguments<'_>) -> f64 {
+    use std::fmt::Write;
+    struct Hash(u32);
+    impl Write for Hash {
+        fn write_str(&mut self, value: &str) -> std::fmt::Result {
+            for c in value.encode_utf16() {
+                self.0 = (self.0 ^ u32::from(c)).wrapping_mul(16777619);
+            }
+            Ok(())
+        }
     }
-    h as f64 / 4294967296.0 * 0.05
+    let mut hash = Hash(seed);
+    hash.write_fmt(key).expect("formatting a deterministic key");
+    f64::from(hash.0) / 4294967296.0 * 0.05
 }
 fn hash_number(mut hash: u32, mut number: u32) -> u32 {
     let mut digits = [0; 10];
@@ -115,8 +130,7 @@ impl BattleView<'_, '_> {
         escort: &crate::ai::escort::Workspace,
         seed: u32,
         prepared_goals: Option<&[Objective]>,
-        routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
-        commitments: &mut HashMap<u32, String>,
+        commitments: &mut HashMap<u32, crate::ai::orders::GoalKey>,
         intents: &mut Vec<(u32, Option<bool>)>,
         threat_workspace: &mut crate::ai::threats::ArenaThreatWorkspace,
         scratch: &mut Scratch,
@@ -131,21 +145,21 @@ impl BattleView<'_, '_> {
             other_healing,
         } = scratch;
         let side = self.turn();
-        let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
+        let owned;
+        let objectives: &[Objective] = if let Some(prepared) = prepared_goals {
             let rebuilding = orders.rebuild_objectives(self);
             if rebuilding.is_empty() {
-                Cow::Borrowed(prepared)
+                prepared
             } else {
-                Cow::Owned(
-                    prepared
-                        .iter()
-                        .cloned()
-                        .chain(individual(rebuilding))
-                        .collect(),
-                )
+                owned = prepared
+                    .iter()
+                    .cloned()
+                    .chain(individual(rebuilding))
+                    .collect::<Vec<_>>();
+                &owned
             }
         } else {
-            Cow::Owned(orders.targets.clone())
+            &orders.targets
         };
         let escort_lanes = orders.clearing(self);
         let rebuilds: HashMap<_, _> = self
@@ -168,14 +182,15 @@ impl BattleView<'_, '_> {
         // Commit bookkeeping in roster order, as policy_objectives and the
         // original planning loop visited leaders and units in that order.
         intents.order_by_key(|(id, _)| self.index(*id).unwrap());
-        let allies: Vec<_> = self.units().iter().filter(|u| u.side == side).collect();
+        let allies: crate::reuse::Local<_> =
+            self.units().iter().filter(|u| u.side == side).collect();
         if allies.iter().all(|u| u.attacked) {
             return None;
         }
-        let foes: Vec<_> = self.units().iter().filter(|u| u.side != side).collect();
+        let foes: crate::reuse::Local<_> = self.units().iter().filter(|u| u.side != side).collect();
         let lanes = orders.lanes(self);
         let mut threats = Threats::with_workspace(self, side, threat_workspace).with_orders(orders);
-        let screens: Vec<_> = allies
+        let screens: crate::reuse::Local<_> = allies
             .iter()
             .filter(|u| {
                 role(self, u.kind) == TacticalRole::Frontline && !self.rules().units[u.kind].leader
@@ -217,7 +232,7 @@ impl BattleView<'_, '_> {
             }
         }
         nearby_offsets.push(nearby_foes.len());
-        let protected: Vec<_> = {
+        let protected: crate::reuse::Local<_> = {
             allies
                 .iter()
                 .filter(|u| {
@@ -231,7 +246,7 @@ impl BattleView<'_, '_> {
         // Score units with the strongest immediate opportunities first. This
         // only changes evaluation order: roster/tile/weapon ordinals still
         // decide all equal scores and bookkeeping remains unit-local.
-        let mut roster: Vec<_> = allies
+        let mut roster: crate::reuse::Local<_> = allies
             .iter()
             .enumerate()
             .filter(|(_, u)| !u.attacked && focus.is_none_or(|id| id == u.id))
@@ -376,13 +391,10 @@ impl BattleView<'_, '_> {
                 let mut g = objective(
                     "rebuild",
                     ObjectiveKind::Capture,
-                    rebuilding
-                        .iter()
-                        .map(|&t| self.board().ids[t].clone())
-                        .collect(),
+                    rebuilding.iter().map(|&t| self.board().ids[t].as_str()),
                     80.0,
                 );
-                g.actor = Some(format!("u{}", unit.id));
+                g.actor = Some(crate::ai::orders::text(format_args!("u{}", unit.id)));
                 rebuild_goals.push(g);
             }
             let goals: &[Objective] = if rebuilding.is_empty() {
@@ -392,12 +404,12 @@ impl BattleView<'_, '_> {
             };
             struct Duty<'a> {
                 goal: Cow<'a, Objective>,
-                route: std::rc::Rc<Vec<u16>>,
+                route: std::rc::Rc<std::vec::Vec<u16>>,
                 before: u16,
                 assigned: bool,
                 priority: f64,
             }
-            let mut duties = Vec::with_capacity(goals.len());
+            let mut duties: crate::reuse::Local<Duty<'_>> = crate::reuse::Local::new();
             for original in goals {
                 if orders.assigned_elsewhere(unit.id, original) {
                     continue;
@@ -438,13 +450,10 @@ impl BattleView<'_, '_> {
                     if occupied[unit.tile] == u16::MAX {
                         self.routes(unit.kind, &tiles)
                     } else {
-                        std::rc::Rc::new(occupied)
+                        occupied
                     }
                 } else {
-                    routes
-                        .entry((unit.kind, tiles.clone()))
-                        .or_insert_with(|| self.routes(unit.kind, &tiles))
-                        .clone()
+                    self.routes(unit.kind, &tiles)
                 };
                 let before = route[unit.tile];
                 if before == u16::MAX || goal.tiles.is_empty() {
@@ -523,7 +532,11 @@ impl BattleView<'_, '_> {
                     // route distance, including occupancy-aware escort routes.
                     if !unit.moved
                         && d.before as usize <= movement
-                        && !d.goal.tiles.contains(&self.board().ids[unit.tile])
+                        && !d
+                            .goal
+                            .tiles
+                            .iter()
+                            .any(|t| t.as_str() == self.board().ids[unit.tile].as_str())
                     {
                         ceiling = add(ceiling, (d.goal.weight * 0.6).upper());
                     }
@@ -656,9 +669,17 @@ impl BattleView<'_, '_> {
                         continue;
                     }
                     positioning += (d.before as f64 - after as f64) * d.goal.weight / 4.0
-                        + ((d.goal.tiles.contains(&self.board().ids[tile]) as i32
-                            - d.goal.tiles.contains(&self.board().ids[unit.tile]) as i32)
-                            as f64)
+                        + ((d
+                            .goal
+                            .tiles
+                            .iter()
+                            .any(|t| t.as_str() == self.board().ids[tile].as_str())
+                            as i32
+                            - d.goal
+                                .tiles
+                                .iter()
+                                .any(|t| t.as_str() == self.board().ids[unit.tile].as_str())
+                                as i32) as f64)
                             * d.goal.weight
                             * 0.6;
                 }
@@ -672,7 +693,9 @@ impl BattleView<'_, '_> {
                     && objectives.iter().any(|g| {
                         g.hold == Some(true)
                             && actor_matches(&g.actor, unit.id)
-                            && g.tiles.contains(&self.board().ids[unit.tile])
+                            && g.tiles
+                                .iter()
+                                .any(|t| t.as_str() == self.board().ids[unit.tile].as_str())
                     })
                 {
                     positioning -= 24.0;
@@ -784,13 +807,11 @@ impl BattleView<'_, '_> {
                         let damage = forecast.damage[0].round() as i32;
                         let response = forecast.damage[1].round() as i32;
                         retaliation = if important {
-                            self.maximum_retaliation(unit, target, weapon, tile)
+                            forecast.maximum[1]
                         } else {
                             response
                         };
-                        if orders.protects(unit.id)
-                            && self.maximum_retaliation(unit, target, weapon, tile) > 0
-                        {
+                        if orders.protects(unit.id) && forecast.maximum[1] > 0 {
                             continue;
                         }
                         let kill_chance = forecast.death[1];
@@ -960,20 +981,16 @@ impl BattleView<'_, '_> {
 mod tests {
     use super::*;
     use crate::logic::Game;
+    use crate::reuse::vec;
     #[test]
     fn whole_unit_bounds_preserve_plans_and_commitments_through_live_actions() {
         fn is_command_endturn(value: &Command) -> bool {
             match value {
-                crate::logic::Command::EndTurn => true,
+                Command::EndTurn => true,
                 Command::Move { .. }
                 | Command::Attack { .. }
                 | Command::Recruit { .. }
                 | Command::Advance { .. }
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
                 | Command::SetUnitIntent { .. } => false,
             }
         }
@@ -985,11 +1002,11 @@ mod tests {
                 &rules,
                 "borrowed-tide",
                 0,
-                vec![],
+                std::vec![],
                 0,
-                vec![],
-                vec![],
-                vec![],
+                std::vec![],
+                std::vec![],
+                std::vec![],
             ),
         ] {
             let workspace = || {
@@ -1000,8 +1017,6 @@ mod tests {
                     })
             };
             let mut actual = workspace();
-            let mut left_routes = HashMap::default();
-            let mut right_routes = HashMap::default();
             let mut left_commitments = HashMap::default();
             let mut right_commitments = HashMap::default();
             let mut left_threats = crate::ai::threats::ArenaThreatWorkspace::default();
@@ -1025,7 +1040,6 @@ mod tests {
                         &crate::ai::escort::Workspace::default(),
                         7,
                         None,
-                        &mut left_routes,
                         &mut left_commitments,
                         &mut left_intents,
                         &mut left_threats,
@@ -1047,7 +1061,6 @@ mod tests {
                         &crate::ai::escort::Workspace::default(),
                         7,
                         None,
-                        &mut right_routes,
                         &mut right_commitments,
                         &mut right_intents,
                         &mut right_threats,

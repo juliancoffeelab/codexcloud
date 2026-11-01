@@ -7,7 +7,7 @@ use std::collections::BTreeMap;
 /// One scripted dialogue line with its speaker, portrait and display text.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "bake", derive(databake::Bake))]
 #[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 pub struct Dialogue {
@@ -18,7 +18,7 @@ pub struct Dialogue {
 /// Consecutive defended turns and the last round counted for an objective.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "bake", derive(databake::Bake))]
 #[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
@@ -29,7 +29,7 @@ pub struct Counter {
 /// Defended refuge turns and whether mediation has escalated into battle.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "bake", derive(databake::Bake))]
 #[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]
@@ -41,7 +41,7 @@ pub struct RefugeCounter {
 /// Persistent chapter progress, recalled companions, story choices and dialogue.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "bake", derive(databake::Bake))]
 #[cfg_attr(feature = "bake", databake(path = hex_command_catalog::data))]
 #[serde(rename_all = "camelCase")]

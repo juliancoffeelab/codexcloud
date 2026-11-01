@@ -3,12 +3,43 @@ use super::Game;
 use crate::data::{Category, Terrain};
 use rustc_hash::FxHashMap as HashMap;
 use std::{cell::RefCell, rc::Rc};
+#[cfg(target_arch = "wasm32")]
+type LargeBits = smallvec::SmallVec<[u64; 4]>;
+#[cfg(not(target_arch = "wasm32"))]
+type LargeBits = Box<[u64]>;
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub(crate) enum TileSet {
     Small(u128),
-    Large(Box<[u64]>),
+    Large(LargeBits),
 }
 impl TileSet {
+    /// With positive entry costs, no path within the movement budget can
+    /// visit a tile outside this hex radius. Such blockers cannot affect it.
+    pub(crate) fn restrict_radius(&mut self, distances: &[u16], limit: usize) {
+        fn keep(mut bits: u64, offset: usize, distances: &[u16], limit: usize) -> u64 {
+            let mut retained = 0;
+            while bits != 0 {
+                let bit = bits.trailing_zeros() as usize;
+                if usize::from(distances[offset + bit]) <= limit {
+                    retained |= 1u64 << bit;
+                }
+                bits &= bits - 1;
+            }
+            retained
+        }
+        match self {
+            Self::Small(bits) => {
+                *bits = u128::from(keep(*bits as u64, 0, distances, limit))
+                    | (u128::from(keep((*bits >> 64) as u64, 64, distances, limit)) << 64)
+            }
+            Self::Large(words) => {
+                for (index, word) in words.iter_mut().enumerate() {
+                    *word = keep(*word, index * 64, distances, limit);
+                }
+            }
+        }
+    }
+
     pub(crate) fn first_intersection(&self, other: &Self) -> Option<usize> {
         match (self, other) {
             (Self::Small(a), Self::Small(b)) => {
@@ -31,7 +62,7 @@ impl TileSet {
         if tiles <= 128 {
             Self::Small(0)
         } else {
-            Self::Large(vec![0; tiles.div_ceil(64)].into_boxed_slice())
+            Self::Large(std::iter::repeat_n(0, tiles.div_ceil(64)).collect())
         }
     }
     pub(crate) fn insert(&mut self, tile: usize) {
@@ -117,6 +148,7 @@ impl Game<'_> {
         self.attack_masks.borrow_mut().insert(key, masks.clone());
         masks
     }
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub(crate) fn in_attack_range(
         &self,
         from: usize,

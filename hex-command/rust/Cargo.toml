@@ -16,11 +16,16 @@ name = "hex-command-sim"
 path = "src/main.rs"
 
 [features]
+allocation-profile = []
 default = []
 runtime-catalog = ["hex-command-catalog/runtime-catalog"]
-wasm = ["dep:tsify", "dep:wasm-bindgen", "hex-command-catalog/wasm"]
+wasm = ["dep:js-sys", "dep:serde-wasm-bindgen", "dep:tsify", "dep:wasm-bindgen", "hex-command-catalog/wasm"]
 
 [dependencies]
+smallstr = { version = "0.3", features = ["serde"] }
+smallvec = { version = "1.15", features = ["const_generics", "serde"] }
+js-sys = { version = "0.3", optional = true }
+serde-wasm-bindgen = { version = "0.6.5", optional = true }
 hex-command-catalog = { path = "catalog" }
 rustc-hash = "2"
 serde = { version = "1", features = ["derive", "rc"] }
@@ -28,6 +33,7 @@ tsify = { version = "0.5.8", default-features = false, features = ["js"], option
 wasm-bindgen = { version = "0.2", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+hashbrown = { version = "0.16.1", default-features = false, features = ["inline-more"] }
 serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }
 sha2 = "0.10"
 arrow-array = "57"

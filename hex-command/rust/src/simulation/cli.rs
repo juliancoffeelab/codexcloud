@@ -412,7 +412,7 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
     }
     let mut game = crate::logic::Game::from_state(rules, request.state);
     if let Some(arena) = arena {
-        game.pools = arena.pools;
+        game.pools = arena.pools.clone();
         game.arena_first = arena.arena_first;
     }
     if request.advance_turn && request.begin_turn {

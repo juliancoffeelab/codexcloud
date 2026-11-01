@@ -7,15 +7,18 @@ use crate::ai::{
     roles::role,
     tactics::{Plan, action_jitter},
 };
+#[cfg(test)]
+use crate::logic::Action as Command;
+use crate::reuse::{Map as FxHashMap, Set as FxHashSet};
+use crate::reuse::{Vec, vec};
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
-use rustc_hash::{FxHashMap, FxHashSet};
 use std::rc::Rc;
 
 struct Field {
     goal: Objective,
     tiles: Vec<usize>,
-    route: Option<Rc<Vec<u16>>>,
+    route: Option<Rc<std::vec::Vec<u16>>>,
 }
 type GoalUnit = (
     u32,
@@ -24,7 +27,7 @@ type GoalUnit = (
     Option<usize>,
     Option<Role>,
     Option<bool>,
-    Option<String>,
+    Option<Rc<str>>,
 );
 #[derive(Default)]
 pub(in crate::ai) struct Workspace {
@@ -48,7 +51,7 @@ pub(in crate::ai) struct Workspace {
     lanes: FxHashSet<usize>,
     order: Option<TileOrderContext>,
     reserved: FxHashMap<u32, FxHashSet<usize>>,
-    fields: FxHashMap<(usize, usize, bool), Rc<Field>>,
+    fields: Vec<((usize, usize, bool), Field)>,
 }
 pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut PlanningWorkspace) {
     let orders = &workspace.orders.as_ref().unwrap().tactics;
@@ -279,21 +282,30 @@ pub(in crate::ai) fn plan(
         let dynamic = pursuing
             && (original.actor.is_some() || original.family.is_some())
             && crate::ai::objectives::actor_route(original);
-        let field = workspace
+        let key = (unit.kind, goal_index, pursuing);
+        let field_index = if let Some(index) = workspace
             .cheap
             .fields
-            .entry((unit.kind, goal_index, pursuing))
-            .or_insert_with(|| {
-                let goal = if pursuing {
-                    original.clone()
-                } else {
-                    game.support_objective(&unit, original)
-                };
-                let tiles: Vec<_> = goal.tiles.iter().map(|t| game.site(t)).collect();
-                let route = (!dynamic && !tiles.is_empty()).then(|| game.routes(unit.kind, &tiles));
-                Rc::new(Field { goal, tiles, route })
-            })
-            .clone();
+            .iter()
+            .position(|(stored, _)| *stored == key)
+        {
+            index
+        } else {
+            let goal = if pursuing {
+                original.clone()
+            } else {
+                game.support_objective(&unit, original)
+            };
+            let tiles: Vec<_> = goal.tiles.iter().map(|tile| game.site(tile)).collect();
+            let route = (!dynamic && !tiles.is_empty()).then(|| game.routes(unit.kind, &tiles));
+            let index = workspace.cheap.fields.len();
+            workspace
+                .cheap
+                .fields
+                .push((key, Field { goal, tiles, route }));
+            index
+        };
+        let field = &workspace.cheap.fields[field_index].1;
         if field.tiles.is_empty() {
             continue;
         }
@@ -302,7 +314,7 @@ pub(in crate::ai) fn plan(
             if occupied[unit.tile] == u16::MAX {
                 game.routes(unit.kind, &field.tiles)
             } else {
-                Rc::new(occupied)
+                occupied
             }
         } else {
             field.route.as_ref().unwrap().clone()
@@ -312,14 +324,14 @@ pub(in crate::ai) fn plan(
         }
         let assigned = game.assigned_duty(&unit, original);
         let priority = (route[unit.tile] as f64 + 3.0) / field.goal.weight;
-        duties.push((field, route, assigned, priority));
+        duties.push((field_index, route, assigned, priority));
     }
     if duties.iter().any(|d| d.2) {
         duties.retain(|d| d.2);
     }
-    let committed = duties
-        .iter()
-        .position(|d| workspace.commitments.get(&id) == Some(&d.0.goal.id));
+    let committed = duties.iter().position(|d| {
+        workspace.commitments.get(&id) == Some(&workspace.cheap.fields[d.0].1.goal.id)
+    });
     let duty = if let Some(index) = committed {
         Some(duties.swap_remove(index))
     } else {
@@ -327,19 +339,22 @@ pub(in crate::ai) fn plan(
             a.3.total_cmp(&b.3).then_with(|| {
                 order.compare(
                     game,
-                    game.site(&a.0.goal.tiles[0]),
-                    game.site(&b.0.goal.tiles[0]),
+                    game.site(&workspace.cheap.fields[a.0].1.goal.tiles[0]),
+                    game.site(&workspace.cheap.fields[b.0].1.goal.tiles[0]),
                 )
             })
         });
         duties.into_iter().next()
     };
+    let duty = duty.map(|(index, route, assigned, priority)| {
+        (&workspace.cheap.fields[index].1, route, assigned, priority)
+    });
     if let Some(d) = &duty {
         workspace.commitments.insert(id, d.0.goal.id.clone());
     } else {
         workspace.commitments.remove(&id);
     }
-    let allies: Vec<_> = game
+    let allies: crate::reuse::Local<_> = game
         .units()
         .iter()
         .filter(|u| u.side == unit.side)
@@ -359,7 +374,7 @@ pub(in crate::ai) fn plan(
         .costs
         .iter()
         .any(|c| *c == Some(0));
-    let foes: Vec<_> = game
+    let foes: crate::reuse::Local<_> = game
         .units()
         .iter()
         .filter(|u| {
@@ -375,7 +390,9 @@ pub(in crate::ai) fn plan(
     let holding = objectives.iter().any(|g| {
         g.hold == Some(true)
             && actor_matches(&g.actor, id)
-            && g.tiles.contains(&game.board().ids[unit.tile])
+            && g.tiles
+                .iter()
+                .any(|t| t.as_str() == game.board().ids[unit.tile].as_str())
     });
     let mut support = if category == TacticalRole::Frontline {
         workspace.cheap.frontline_support.clone()
@@ -584,13 +601,12 @@ pub(in crate::ai) fn plan(
             let forecast = game.exchange(&unit, target, weapon, tile);
             let damage = forecast.damage[0].round() as i32;
             let retaliation = forecast.damage[1].round() as i32;
-            if orders.protects(unit.id) && game.maximum_retaliation(&unit, target, weapon, tile) > 0
-            {
+            if orders.protects(unit.id) && forecast.maximum[1] > 0 {
                 return;
             }
             let drained = forecast.healing[0].round() as i32;
             response = if important {
-                game.maximum_retaliation(&unit, target, weapon, tile)
+                forecast.maximum[1]
             } else {
                 retaliation - drained
             };
@@ -910,6 +926,7 @@ mod tests {
     use super::*;
     use crate::ai::campaigner::mission::restrained;
     use crate::logic::Game;
+    use crate::reuse::vec;
     #[test]
     fn shared_frames_follow_actions_and_turn_boundaries() {
         fn is_command_endturn(value: &Command) -> bool {
@@ -919,19 +936,23 @@ mod tests {
                 | Command::Attack { .. }
                 | Command::Recruit { .. }
                 | Command::Advance { .. }
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
                 | Command::SetUnitIntent { .. } => false,
             }
         }
 
         let rules = Rules::load().unwrap();
-        let mut games = vec![
+        let mut games = std::vec![
             Game::new(&rules, "mirror"),
-            Game::start_campaign(&rules, "lantern-road", 0, vec![], 0, vec![], vec![], vec![]),
+            Game::start_campaign(
+                &rules,
+                "lantern-road",
+                0,
+                std::vec![],
+                0,
+                std::vec![],
+                std::vec![],
+                std::vec![]
+            ),
         ];
         for game in &mut games {
             let mut workspace = PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
@@ -1053,4 +1074,12 @@ impl BestOrigins {
             .take(self.len)
             .map(|(index, _)| index)
     }
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(in crate::ai) fn prepare_storage(tiles: usize) {
+    crate::reuse::prepare::<Candidate>(2, tiles * 4 + 1);
+    crate::reuse::prepare::<((usize, usize, bool), Field)>(2, tiles + 1);
+    crate::reuse::prepare::<(usize, Rc<std::vec::Vec<u16>>, bool, f64)>(12, tiles + 1);
+    crate::reuse::prepare::<Rc<std::vec::Vec<crate::logic::geometry::TileSet>>>(32, tiles + 1);
 }

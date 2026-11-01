@@ -7,6 +7,7 @@ pub mod ai;
 pub mod data;
 pub mod logic;
 pub mod protocol;
+mod reuse;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod simulation;
 mod sort;

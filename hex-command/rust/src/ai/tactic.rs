@@ -27,7 +27,7 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
         game: &Game<'_>,
         workspace: &mut PlanningWorkspace,
     ) -> Result<TurnPlan, CommandError> {
-        let mut orders = workspace.orders.clone().unwrap_or_else(|| {
+        let mut orders = workspace.orders.take().unwrap_or_else(|| {
             self.campaigner
                 .objectives(CampaignView::new(game, workspace))
         });
@@ -41,14 +41,15 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
             .recruiter
             .promotions(recruitment_context.battle(), workspace.seed);
         workspace.recruitment_remaining = Some(0);
-        workspace.orders = Some(orders.clone());
+        let tactics = std::mem::take(&mut orders.tactics);
+        workspace.orders = Some(orders);
         workspace
             .report
             .mandatory_recruits
             .extend(recruitment.mandatory.iter().copied());
         let planning = self
             .planner
-            .plan(&mut draft.tactical_context(workspace), &orders.tactics)?;
+            .plan(&mut draft.tactical_context(workspace), tactics)?;
         Ok(draft.finish(recruitment, planning))
     }
 }
@@ -76,6 +77,7 @@ impl PresetTactic {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ai::ids::UnitTypeId;
     use crate::{
         ai::{Diplomacy, Recruiter, context::TacticalContext, orders::*},
         data::*,
@@ -91,7 +93,7 @@ mod tests {
             self.calls.set(self.calls.get() + 1);
             CampaignOrders {
                 recruitment: RecruitmentOrders {
-                    requirements: self.requirements.clone(),
+                    requirements: self.requirements.clone().into(),
                     ..Default::default()
                 },
                 ..Default::default()
@@ -107,7 +109,7 @@ mod tests {
         fn plan(
             &mut self,
             context: &mut TacticalContext<'_, '_>,
-            _orders: &TacticalOrders,
+            _orders: TacticalOrders,
         ) -> Result<PlanningReport, CommandError> {
             let view = context.battle();
             let recruits: Vec<_> = view
@@ -136,7 +138,7 @@ mod tests {
             Orders {
                 requirements: vec![
                     RecruitRequirement::EnsureUnits {
-                        selector: UnitSelector::Type(UnitTypeId(rules.units[kind].id.to_string())),
+                        selector: UnitSelector::Type(UnitTypeId(&rules.units[kind].id)),
                         count: 1,
                     },
                     RecruitRequirement::EnsureUnits {

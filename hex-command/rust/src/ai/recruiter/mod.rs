@@ -3,8 +3,10 @@ use super::{
     TacticalRole,
     objectives::TileOrder,
     roles::{recruit_role, role},
-    tactics::jitter,
 };
+use crate::ai::ids::UnitTypeId;
+use crate::logic::Action as Command;
+use crate::reuse::{Vec, vec};
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
@@ -178,7 +180,7 @@ impl BattleView<'_, '_> {
             .into_iter()
             .filter(|&kind| required.is_none_or(|requirement| requirement.accepts(self, kind)))
             .collect();
-        let reserved: rustc_hash::FxHashSet<_> = orders
+        let reserved: crate::reuse::Set<_> = orders
             .reserved
             .iter()
             .map(|tile| self.site(&tile.0))
@@ -207,7 +209,7 @@ impl BattleView<'_, '_> {
                         UnitRole::Ranger,
                         UnitRole::Healer,
                     ];
-                    let allies: Vec<_> = self
+                    let allies: crate::reuse::Local<_> = self
                         .units()
                         .iter()
                         .filter(|u| u.side == side && !self.rules().units[u.kind].leader)
@@ -255,12 +257,13 @@ impl BattleView<'_, '_> {
             }
             return None;
         }
-        let allies: Vec<_> = self
+        let allies: crate::reuse::Local<_> = self
             .units()
             .iter()
             .filter(|u| u.side == side && !self.rules().units[u.kind].leader)
             .collect();
-        let opponents: Vec<_> = self.units().iter().filter(|u| u.side != side).collect();
+        let opponents: crate::reuse::Local<_> =
+            self.units().iter().filter(|u| u.side != side).collect();
         let mut counts = [0; 4];
         for ally in &allies {
             counts[recruit_role(self, ally.kind).index()] += 1;
@@ -293,7 +296,7 @@ impl BattleView<'_, '_> {
                     if deficiency > 0.0 { 1.0 } else { 0.0 },
                     random(
                         seed,
-                        &format!("balanced:{:?}:{}:{}", side, represented, r.id),
+                        format_args!("balanced:{:?}:{}:{}", side, represented, r.id),
                     ),
                 ));
                 continue;
@@ -357,7 +360,11 @@ impl BattleView<'_, '_> {
             choices.push((
                 kind,
                 0.0,
-                score + jitter(seed, &format!("recruit:{}:{}", self.round(), r.id)),
+                score
+                    + crate::ai::planner::search::jitter_args(
+                        seed,
+                        format_args!("recruit:{}:{}", self.round(), r.id),
+                    ),
             ));
         }
         choices.order_by(|a, b| {
@@ -369,7 +376,7 @@ impl BattleView<'_, '_> {
                         let draw = |kind| {
                             random(
                                 seed,
-                                &format!(
+                                format_args!(
                                     "balanced-role:{:?}:{}:{}",
                                     side,
                                     represented,
@@ -457,7 +464,7 @@ pub(crate) fn diagnostics(
             let tiles = if recruit {
                 view.placement_tiles(unit, kind, false)
             } else {
-                vec![unit.tile]
+                smallvec::smallvec![unit.tile]
             };
             let Some(&tile) = tiles.first() else {
                 continue;
@@ -524,8 +531,8 @@ pub(crate) fn diagnostics(
 
 /// Seeded, well-mixed draw; the small deterministic planner jitter alone is
 /// unsuitable for choosing uniformly between adjacent content identifiers.
-fn random(seed: u32, key: &str) -> f64 {
-    let hash = (jitter(seed, key) / 0.05 * u32::MAX as f64) as u32;
+fn random(seed: u32, key: std::fmt::Arguments<'_>) -> f64 {
+    let hash = (crate::ai::planner::search::jitter_args(seed, key) / 0.05 * u32::MAX as f64) as u32;
     crate::ai::planner::search::Random(hash).next()
 }
 
@@ -547,6 +554,7 @@ fn mixed_shares(roles: impl Iterator<Item = UnitRole>) -> [f64; 4] {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::reuse::vec;
 
     #[test]
     fn balanced_draws_both_kinds_but_only_within_the_needed_role() {
@@ -558,7 +566,7 @@ mod tests {
         let mut game = crate::logic::Game::new(&rules, "mirror");
         game.units.retain(|u| rules.units[u.kind].leader);
         game.roster_changed();
-        game.pools = Some([vec![a, b], vec![a, b]]);
+        game.pools = Some(std::rc::Rc::new([std::vec![a, b], std::vec![a, b]]));
         game.gold[0] = 100;
         let orders = crate::ai::orders::RecruitmentOrders::default();
         let draw = |game: &crate::logic::Game<'_>, seed| {
@@ -571,7 +579,7 @@ mod tests {
             let Command::Recruit { kind, .. } = result.unwrap() else {
                 panic!("expected recruit");
             };
-            kind.0
+            kind
         };
         let outcomes: std::collections::BTreeSet<_> =
             (0..64).map(|seed| draw(&game, seed)).collect();
@@ -581,7 +589,7 @@ mod tests {
         let mut game = crate::logic::Game::new(&rules, "mirror");
         game.units.retain(|u| rules.units[u.kind].leader);
         game.roster_changed();
-        game.pools = Some([vec![a, b], vec![a, b]]);
+        game.pools = Some(std::rc::Rc::new([std::vec![a, b], std::vec![a, b]]));
         game.gold[0] = 100;
         let leader = game
             .units
@@ -599,7 +607,7 @@ mod tests {
         game.add(a, Side::Player, tile);
         // Infantry is now over target, so every draw must be a flanker.
         for seed in 0..16 {
-            assert_eq!(draw(&game, seed), rules.units[b].id);
+            assert_eq!(draw(&game, seed), b);
         }
     }
 
@@ -616,13 +624,13 @@ mod tests {
         for (&kind, role) in kinds.iter().zip(roles) {
             rules.units.to_mut()[kind].role = role;
         }
-        for available in [kinds.to_vec(), vec![kinds[1], kinds[2]]] {
+        for available in [kinds.to_vec(), std::vec![kinds[1], kinds[2]]] {
             let mut game = crate::logic::Game::new(&rules, "mirror");
             game.units.retain(|u| rules.units[u.kind].leader);
             game.roster_changed();
             let mut reversed = available.clone();
             reversed.reverse();
-            game.pools = Some([reversed.clone(), reversed]);
+            game.pools = Some(std::rc::Rc::new([reversed.clone(), reversed]));
             game.gold[0] = 1000;
             for &expected in available.iter().cycle().take(available.len() * 2) {
                 let command = RecruiterKind::Rotation
@@ -635,7 +643,7 @@ mod tests {
                 let Command::Recruit { ref kind, .. } = command else {
                     panic!("expected recruit")
                 };
-                assert_eq!(kind.0, rules.units[expected].id);
+                assert_eq!(*kind, expected);
                 game.execute(command).unwrap();
                 // Clear the keep so the next choice measures composition,
                 // rather than running out of deployment tiles.
@@ -668,7 +676,10 @@ mod tests {
             rules.types["archer"],
             rules.types["rider"],
         ];
-        game.pools = Some([pool.clone(), pool]);
+        game.pools = Some(std::rc::Rc::new([
+            std::vec::Vec::from(pool.clone()),
+            std::vec::Vec::from(pool),
+        ]));
         let leader = game
             .units
             .iter()
@@ -697,22 +708,17 @@ mod tests {
         let selected = RecruiterKind::Rotation
             .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
             .unwrap();
-        fn recruited(command: Command) -> Option<String> {
+        fn recruited(command: Command) -> Option<usize> {
             match command {
-                Command::Recruit { kind, .. } => Some(kind.0),
+                Command::Recruit { kind, .. } => Some(kind),
                 Command::Move { .. }
                 | Command::Attack { .. }
                 | Command::Advance { .. }
                 | Command::SetUnitIntent { .. }
-                | Command::EndTurn
-                | Command::DismissDialogue
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission => None,
+                | Command::EndTurn => None,
             }
         }
-        assert_eq!(recruited(selected).as_deref(), Some("rider"));
+        assert_eq!(recruited(selected), Some(rules.types["rider"]));
     }
 
     #[test]
@@ -743,3 +749,8 @@ mod situational;
 
 mod evaluation;
 mod promotion;
+
+#[cfg(target_arch = "wasm32")]
+pub(in crate::ai) fn prepare_storage(tiles: usize, weapons: usize) {
+    evaluation::prepare_storage(tiles, weapons);
+}

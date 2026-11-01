@@ -36,6 +36,25 @@ fn apply<T>(values: &mut [T], mut compare: impl FnMut(&T, &T) -> Ordering) {
         return;
     }
     let mut sources = permutation(values.len(), &mut |a, b| compare(&values[a], &values[b]));
+    apply_permutation(&mut sources, &mut Records(values));
+    recycle(sources);
+}
+
+#[cfg(target_arch = "wasm32")]
+trait SwapRecords {
+    fn swap(&mut self, left: usize, right: usize);
+}
+#[cfg(target_arch = "wasm32")]
+struct Records<'a, T>(&'a mut [T]);
+#[cfg(target_arch = "wasm32")]
+impl<T> SwapRecords for Records<'_, T> {
+    fn swap(&mut self, left: usize, right: usize) {
+        self.0.swap(left, right);
+    }
+}
+#[cfg(target_arch = "wasm32")]
+#[inline(never)]
+fn apply_permutation(sources: &mut [usize], values: &mut dyn SwapRecords) {
     // Follow each destination-to-source cycle directly. Mark completed slots with
     // their own index, avoiding an inverse permutation and a second allocation.
     for start in 0..sources.len() {
@@ -48,7 +67,6 @@ fn apply<T>(values: &mut [T], mut compare: impl FnMut(&T, &T) -> Ordering) {
         }
         sources[slot] = slot;
     }
-    recycle(sources);
 }
 
 pub(crate) trait Order<T> {
@@ -78,4 +96,16 @@ impl<T> Order<T> for [T] {
         #[cfg(not(target_arch = "wasm32"))]
         self.sort_unstable_by(compare);
     }
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn prepare(tiles: usize) {
+    INDICES.with_borrow_mut(|indices| {
+        indices.reserve_exact(
+            tiles
+                .saturating_mul(tiles)
+                .saturating_add(1)
+                .saturating_sub(indices.len()),
+        )
+    });
 }

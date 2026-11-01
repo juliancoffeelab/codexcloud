@@ -1,10 +1,14 @@
 //! Compact battle sessions borrowing catalog rules and indexing the live roster.
 
+#[cfg(not(target_arch = "wasm32"))]
+use super::indices::UnitIndices;
 use crate::data::*;
 use rustc_hash::FxHashMap as HashMap;
 use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::rc::Rc;
+#[cfg(target_arch = "wasm32")]
+type UnitIndices = HashMap<u32, usize>;
 
 #[derive(Debug)]
 pub(crate) struct Board {
@@ -74,8 +78,12 @@ type TerrainKey = (String, Vec<(String, i32, i32, String)>);
 #[derive(Clone)]
 struct SharedTerrain {
     board: Rc<Board>,
-    routes: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
-    route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64)>>>,
+    route_buffers: super::storage::Buffers<u16>,
+    reach_buffers: super::storage::Buffers<(usize, u16)>,
+    routes: Rc<RefCell<HashMap<(usize, super::geometry::TileSet, u64), Rc<Vec<u16>>>>>,
+    route_order: Rc<RefCell<VecDeque<(usize, super::geometry::TileSet, u64)>>>,
+    occupied_routes: super::movement::OccupiedRouteCache,
+    atlas: Rc<RefCell<super::movement::RouteAtlas>>,
     attacks: super::geometry::AttackGeometry,
     masks: super::geometry::AttackMasks,
     reach: super::movement::ReachCache,
@@ -85,6 +93,15 @@ struct SharedTerrain {
 thread_local! {
     static TERRAIN_POOL: RefCell<(HashMap<TerrainKey, SharedTerrain>, VecDeque<TerrainKey>)> = RefCell::new((HashMap::default(), VecDeque::new()));
 }
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct MissionKey {
+    campaign: usize,
+    stage: usize,
+    without_dain: bool,
+    escalated: bool,
+    losses: smallvec::SmallVec<[usize; 4]>,
+}
+type MissionCache = Rc<RefCell<Vec<(MissionKey, Rc<Mission>)>>>;
 /// Borrow native catalogs without ownership overhead; browser battles retain their
 /// catalog safely without borrowing the factory that owns their handle table.
 #[derive(Clone, Debug)]
@@ -111,7 +128,10 @@ impl std::ops::Deref for RuleSource<'_> {
 }
 #[derive(Debug)]
 pub(crate) struct Game<'catalog> {
+    forked: bool,
+    fork_pool: Rc<RefCell<Vec<super::forks::Storage>>>,
     pub(crate) rules: RuleSource<'catalog>,
+    pub(super) attack_classes: Rc<super::exchange::AttackClasses>,
     pub(crate) board: Rc<Board>,
     pub(crate) terrain: Rc<[usize]>,
     pub(crate) owners: Vec<Option<Side>>,
@@ -130,30 +150,39 @@ pub(crate) struct Game<'catalog> {
     pub(crate) next_id: u32,
     pub(crate) combat_rng: u32,
     pub(crate) log: Vec<String>,
+    pub(super) log_spare: RefCell<Vec<String>>,
     pub(crate) presentation: bool,
+    pub(super) marker_spare: Vec<String>,
     pub(crate) campaign: Option<CampaignState>,
     pub(crate) last_combat: Option<LastCombat>,
+    pub(super) last_combat_spare: Option<LastCombat>,
     #[cfg(feature = "wasm")]
-    pub(crate) combat_animation: Option<crate::protocol::CombatAnimation>,
+    pub(crate) combat_animation: super::playback::Playback,
     pub(crate) combat_present: bool,
     pub(crate) armies: Option<[String; 2]>,
-    pub(crate) pools: Option<[Vec<usize>; 2]>,
+    pub(crate) pools: Option<Rc<[Vec<usize>; 2]>>,
     pub(crate) arena_first: Option<Side>,
     pub(crate) mission: Option<Rc<Mission>>,
-    mission_key: Option<(String, usize, bool, Vec<String>, bool)>,
+    mission_revision: Option<[usize; 6]>,
+    mission_cache: MissionCache,
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) recordings: Option<Records>,
-    pub(super) route_cache: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
+    pub(super) route_buffers: super::storage::Buffers<u16>,
+    pub(super) reach_buffers: super::storage::Buffers<(usize, u16)>,
+    pub(super) route_atlas: Rc<RefCell<super::movement::RouteAtlas>>,
+    pub(super) occupied_route_cache: super::movement::OccupiedRouteCache,
+    pub(super) route_cache:
+        Rc<RefCell<HashMap<(usize, super::geometry::TileSet, u64), Rc<Vec<u16>>>>>,
     pub(super) terrain_revision: u64,
     pub(super) attack_geometry: super::geometry::AttackGeometry,
     pub(super) attack_masks: super::geometry::AttackMasks,
     pub(super) reach_cache: super::movement::ReachCache,
     pub(super) threat_reach_cache: super::movement::ThreatReachCache,
     pub(super) movement_masks: super::movement::MovementMasks,
-    pub(super) route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64)>>>,
+    pub(super) route_order: Rc<RefCell<VecDeque<(usize, super::geometry::TileSet, u64)>>>,
     pub(super) occupancy: Vec<Option<usize>>,
     pub(crate) occupied_tiles: super::geometry::TileSet,
-    pub(super) unit_indices: HashMap<u32, usize>,
+    pub(super) unit_indices: UnitIndices,
 }
 impl<'catalog> Game<'catalog> {
     #[cfg(any(not(target_arch = "wasm32"), test))]
@@ -161,6 +190,21 @@ impl<'catalog> Game<'catalog> {
         Self::from_source(RuleSource::Borrowed(rules), state)
     }
     pub(crate) fn from_source(rules: RuleSource<'catalog>, state: State) -> Self {
+        super::exchange::prepare(rules.units.iter().map(|u| u.hp).max().unwrap_or(0));
+        #[cfg(target_arch = "wasm32")]
+        {
+            super::damage::prepare();
+            crate::sort::prepare(state.tiles.len());
+        }
+        crate::ai::prepare_storage(
+            state.tiles.len(),
+            rules
+                .units
+                .iter()
+                .map(|u| u.attacks.len())
+                .max()
+                .unwrap_or(0),
+        );
         let key = (
             rules.content_fingerprint.to_string(),
             state
@@ -174,8 +218,28 @@ impl<'catalog> Game<'catalog> {
             .as_ref()
             .map_or_else(|| Board::new(&state.tiles), |c| c.board.clone());
         let mut game = Self::from_source_with_board(rules, state, board);
+        #[cfg(target_arch = "wasm32")]
+        game.units
+            .reserve(game.terrain.len().saturating_sub(game.units.len()));
+        #[cfg(target_arch = "wasm32")]
+        game.unit_indices
+            .reserve(game.terrain.len().saturating_sub(game.unit_indices.len()));
         if let Some(cached) = cached {
+            super::movement::prepare(
+                game.terrain.len(),
+                game.rules.units.iter().map(|u| u.r#move).max().unwrap_or(0),
+                game.rules
+                    .units
+                    .iter()
+                    .flat_map(|u| u.costs.iter().copied().flatten())
+                    .max()
+                    .unwrap_or(0) as usize,
+            );
+            game.route_buffers = cached.route_buffers;
+            game.reach_buffers = cached.reach_buffers;
             game.route_cache = cached.routes;
+            game.occupied_route_cache = cached.occupied_routes;
+            game.route_atlas = cached.atlas;
             game.route_order = cached.route_order;
             game.attack_geometry = cached.attacks;
             game.attack_masks = cached.masks;
@@ -183,8 +247,9 @@ impl<'catalog> Game<'catalog> {
             game.threat_reach_cache = cached.threat_reach;
             game.movement_masks = cached.movement;
         } else {
+            game.prepare_buffers();
             TERRAIN_POOL.with_borrow_mut(|(pool, order)| {
-                if pool.len() >= 64 {
+                if pool.len() >= if cfg!(target_arch = "wasm32") { 4 } else { 64 } {
                     if let Some(oldest) = order.pop_front() {
                         pool.remove(&oldest);
                     }
@@ -194,7 +259,11 @@ impl<'catalog> Game<'catalog> {
                     key,
                     SharedTerrain {
                         board: game.board.clone(),
+                        route_buffers: game.route_buffers.clone(),
+                        reach_buffers: game.reach_buffers.clone(),
                         routes: game.route_cache.clone(),
+                        occupied_routes: game.occupied_route_cache.clone(),
+                        atlas: game.route_atlas.clone(),
                         route_order: game.route_order.clone(),
                         attacks: game.attack_geometry.clone(),
                         masks: game.attack_masks.clone(),
@@ -205,7 +274,162 @@ impl<'catalog> Game<'catalog> {
                 );
             });
         }
+        #[cfg(target_arch = "wasm32")]
+        {
+            let tiles = game.terrain.len();
+            if tiles <= 256 {
+                let weapons = game
+                    .rules
+                    .units
+                    .iter()
+                    .map(|u| u.attacks.len())
+                    .max()
+                    .unwrap_or(0);
+                let future = game
+                    .rules
+                    .rosters
+                    .iter()
+                    .map(|r| r.pool.len())
+                    .max()
+                    .unwrap_or(0);
+                game.route_buffers
+                    .borrow_mut()
+                    .prepare(128 + 2 * (tiles + future) * weapons + tiles * 3, tiles);
+                game.reach_buffers
+                    .borrow_mut()
+                    .prepare(256 + tiles * 2, tiles);
+            }
+        }
+        game.prepare_campaign_storage();
+        game.prepare_forks();
         game
+    }
+    #[cfg(target_arch = "wasm32")]
+    pub(super) fn prepare_campaign_storage(&mut self) {
+        let (count, bytes) = self.marker_capacity();
+        if let Some(state) = &mut self.campaign {
+            state.marks.reserve(count.saturating_sub(state.marks.len()));
+            let mission = self.mission.as_ref().expect("campaign mission");
+            let dialogue = mission.intro.len()
+                + mission.victory.len()
+                + mission
+                    .events
+                    .iter()
+                    .map(|e| {
+                        e.dialogue
+                            .len()
+                            .max(e.war_dialogue.as_ref().map_or(0, |d| d.len()))
+                    })
+                    .sum::<usize>()
+                + mission
+                    .refuge
+                    .as_ref()
+                    .map_or(0, |r| r.escalation.len() + r.war_victory.len())
+                + self.rules.campaigns[&state.id].ending.len()
+                + 1;
+            state
+                .dialogue
+                .reserve(dialogue.saturating_sub(state.dialogue.len()));
+        }
+        while self.marker_spare.len() < count {
+            self.marker_spare.push(String::with_capacity(bytes));
+        }
+    }
+    #[cfg(target_arch = "wasm32")]
+    pub(super) fn marker_capacity(&self) -> (usize, usize) {
+        let Some(mission) = &self.mission else {
+            return (0, 0);
+        };
+        let count = self.terrain.len() + mission.events.len() + mission.waves.len() + 16;
+        let bytes = mission
+            .events
+            .iter()
+            .map(|e| e.id.len() + 6)
+            .chain(mission.waves.iter().map(|w| w.id.len() + 5))
+            .chain(self.board.ids.iter().map(|id| id.len() + 7))
+            .chain(
+                self.units
+                    .iter()
+                    .filter_map(|u| u.name.as_ref())
+                    .map(|n| n.len() + 7),
+            )
+            .chain(
+                self.campaign
+                    .iter()
+                    .flat_map(|c| c.marks.iter().map(String::len)),
+            )
+            .max()
+            .unwrap_or(32)
+            .max(32);
+        (count, bytes)
+    }
+    pub(super) fn marker(&mut self, prefix: &str, value: &str) -> String {
+        let mut buffer = self
+            .marker_spare
+            .pop()
+            .unwrap_or_else(|| String::with_capacity(prefix.len() + value.len()));
+        buffer.clear();
+        buffer.push_str(prefix);
+        buffer.push_str(value);
+        buffer
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub(super) fn prepare_campaign_storage(&mut self) {}
+    #[cfg(not(target_arch = "wasm32"))]
+    pub(super) fn prepare_forks(&self) {}
+    #[cfg(target_arch = "wasm32")]
+    pub(super) fn prepare_forks(&self) {
+        let mut pool = self.fork_pool.borrow_mut();
+        // At most 32 rescue candidates coexist, plus active planning/forecast drafts.
+        let count = 40;
+        pool.resize_with(count, super::forks::Storage::default);
+        for storage in pool.iter_mut() {
+            storage.copy(self, false);
+        }
+    }
+    fn prepare_buffers(&mut self) {
+        self.route_atlas = Rc::new(RefCell::new(super::movement::RouteAtlas::new(
+            &self.rules,
+            &self.terrain,
+            &self.board,
+        )));
+        let tiles = self.terrain.len();
+        #[cfg(target_arch = "wasm32")]
+        self.units.reserve(tiles.saturating_sub(self.units.len()));
+        #[cfg(target_arch = "wasm32")]
+        self.unit_indices
+            .reserve(tiles.saturating_sub(self.unit_indices.len()));
+        self.route_buffers = super::storage::SharedBuffers::shared(0, tiles);
+        self.reach_buffers = super::storage::SharedBuffers::shared(0, tiles);
+        self.route_cache.borrow_mut().reserve(128);
+        self.occupied_route_cache.borrow_mut().reserve(256);
+        self.route_order.borrow_mut().reserve(128);
+        self.reach_cache
+            .borrow_mut()
+            .reserve(if cfg!(target_arch = "wasm32") {
+                256
+            } else {
+                1024
+            });
+        self.threat_reach_cache
+            .borrow_mut()
+            .reserve(if cfg!(target_arch = "wasm32") {
+                512
+            } else {
+                4096
+            });
+        #[cfg(target_arch = "wasm32")]
+        self.prepare_masks();
+        super::movement::prepare(
+            tiles,
+            self.rules.units.iter().map(|u| u.r#move).max().unwrap_or(0),
+            self.rules
+                .units
+                .iter()
+                .flat_map(|u| u.costs.iter().copied().flatten())
+                .max()
+                .unwrap_or(0) as usize,
+        );
     }
     fn from_source_with_board(rules: RuleSource<'catalog>, state: State, board: Rc<Board>) -> Self {
         let units: Vec<Unit> = state
@@ -220,7 +444,7 @@ impl<'catalog> Game<'catalog> {
                 moved: unit.moved,
                 attacked: unit.attacked,
                 experience: unit.experience,
-                name: unit.name.clone(),
+                name: unit.name.as_deref().map(Into::into),
                 role: unit.role.clone(),
                 retreating: unit.retreating,
                 rebuilding: unit.rebuilding,
@@ -249,8 +473,13 @@ impl<'catalog> Game<'catalog> {
         );
         let last_combat = state.last_combat.flatten();
         let floors = Rc::new(state.tiles.iter().map(|tile| tile.floor.clone()).collect());
+        let route_atlas = Rc::new(RefCell::new(super::movement::RouteAtlas::default()));
+        let attack_classes = super::exchange::attack_classes(&rules);
         let mut game = Self {
+            forked: false,
+            fork_pool: Rc::new(RefCell::new(Vec::new())),
             rules,
+            attack_classes,
             board,
             terrain,
             owners,
@@ -268,21 +497,40 @@ impl<'catalog> Game<'catalog> {
             winner: state.winner,
             next_id: state.next_id,
             combat_rng: state.combat_rng.unwrap_or(0x6d2b79f5),
-            log: state.log,
+            log: {
+                let mut log = state.log;
+                log.reserve(8usize.saturating_sub(log.len()));
+                for line in &mut log {
+                    line.reserve(1024usize.saturating_sub(line.len()));
+                }
+                log
+            },
+            log_spare: RefCell::new((0..11).map(|_| String::with_capacity(1024)).collect()),
             presentation: true,
+            marker_spare: Vec::new(),
             campaign: state.campaign,
             last_combat,
+            last_combat_spare: Some(LastCombat {
+                attacker_id: String::with_capacity(11),
+                attack_id: String::with_capacity(128),
+                sound: String::with_capacity(128),
+            }),
             #[cfg(feature = "wasm")]
-            combat_animation: None,
+            combat_animation: super::playback::Playback::new(0),
             combat_present,
             armies: state.armies,
             pools: None,
             arena_first: None,
             mission: None,
-            mission_key: None,
+            mission_revision: None,
+            mission_cache: Rc::new(RefCell::new(Vec::with_capacity(16))),
             #[cfg(not(target_arch = "wasm32"))]
             recordings: None,
+            route_buffers: super::storage::SharedBuffers::shared(0, 0),
+            reach_buffers: super::storage::SharedBuffers::shared(0, 0),
             route_cache: Rc::new(RefCell::new(HashMap::default())),
+            occupied_route_cache: Rc::new(RefCell::new(HashMap::default())),
+            route_atlas,
             terrain_revision: 0,
             attack_geometry: Rc::new(RefCell::new(HashMap::default())),
             attack_masks: super::geometry::AttackMasks::default(),
@@ -292,8 +540,21 @@ impl<'catalog> Game<'catalog> {
             route_order: Rc::new(RefCell::new(VecDeque::new())),
             occupancy: vec![],
             occupied_tiles: super::geometry::TileSet::new(0),
-            unit_indices: HashMap::default(),
+            unit_indices: UnitIndices::default(),
         };
+        #[cfg(feature = "wasm")]
+        {
+            game.combat_animation = super::playback::Playback::new(
+                game.rules
+                    .units
+                    .iter()
+                    .flat_map(|u| u.attacks.iter())
+                    .map(|a| usize::from(a.count))
+                    .max()
+                    .unwrap_or(0)
+                    * 2,
+            );
+        }
         game.roster_changed();
         game.refresh_mission();
         game
@@ -364,7 +625,7 @@ impl<'catalog> Game<'catalog> {
             moved: unit.moved,
             attacked: unit.attacked,
             experience: unit.experience,
-            name: unit.name.clone(),
+            name: unit.name.as_deref().map(str::to_owned),
             role: unit.role.clone(),
             retreating: unit.retreating,
             rebuilding: unit.rebuilding,
@@ -376,9 +637,11 @@ impl<'catalog> Game<'catalog> {
             .map(|unit| self.public_unit(unit))
             .collect()
     }
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub(crate) fn unit(&self, id: u32) -> Option<&Unit> {
         self.index(id).map(|index| &self.units[index])
     }
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub(crate) fn at(&self, tile: usize) -> Option<&Unit> {
         self.occupancy
             .get(tile)
@@ -387,6 +650,7 @@ impl<'catalog> Game<'catalog> {
             .and_then(|index| self.units.get(index))
             .filter(|unit| unit.tile == tile)
     }
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub(crate) fn index(&self, id: u32) -> Option<usize> {
         self.unit_indices
             .get(&id)
@@ -402,12 +666,19 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn terrain_is(&self, tile: usize, terrain: Terrain) -> bool {
         self.rules.terrain_types[self.terrain[tile]] == terrain
     }
+    pub(super) fn take_log_buffer(&self) -> String {
+        let mut buffer = self.log_spare.borrow_mut().pop().unwrap_or_default();
+        buffer.clear();
+        buffer
+    }
     pub(crate) fn record(&mut self, message: String) {
         if !self.presentation {
             return;
         }
+        if self.log.len() == 8 {
+            self.log_spare.borrow_mut().push(self.log.pop().unwrap());
+        }
         self.log.insert(0, message);
-        self.log.truncate(8);
     }
     pub(crate) fn add(&mut self, kind: usize, side: Side, tile: usize) -> u32 {
         let id = self.next_id;
@@ -433,7 +704,8 @@ impl<'catalog> Game<'catalog> {
     }
     /// Refresh dense lookup tables after an internal roster transformation.
     pub(crate) fn roster_changed(&mut self) {
-        self.occupancy = vec![None; self.terrain.len()];
+        self.occupancy.resize(self.terrain.len(), None);
+        self.occupancy.fill(None);
         self.occupied_tiles = super::geometry::TileSet::new(self.terrain.len());
         self.unit_indices.clear();
         for (index, unit) in self.units.iter().enumerate() {
@@ -456,77 +728,106 @@ impl<'catalog> Game<'catalog> {
             self.movement_masks = super::movement::MovementMasks::default();
             self.terrain_revision = self.terrain_revision.wrapping_add(1);
             self.route_cache = Rc::new(RefCell::new(HashMap::default()));
+            self.occupied_route_cache = Rc::new(RefCell::new(HashMap::default()));
+            self.route_atlas = Rc::new(RefCell::new(super::movement::RouteAtlas::new(
+                &self.rules,
+                &self.terrain,
+                &self.board,
+            )));
             self.route_order = Rc::new(RefCell::new(VecDeque::new()));
         }
     }
 
+    pub(crate) fn fallen(&self, name: &str) -> bool {
+        self.campaign.as_ref().is_some_and(|state| {
+            state
+                .fallen_companions
+                .as_ref()
+                .is_some_and(|names| names.iter().any(|n| n == name))
+                || state.marked_prefixed("fallen:", name)
+        })
+    }
     pub(crate) fn refresh_mission(&mut self) {
         let Some(state) = &self.campaign else {
             self.mission = None;
-            self.mission_key = None;
+            self.mission_revision = None;
             return;
         };
+        let definition = &self.rules.campaigns[&state.id];
+        // Engine progress lists are append-only within a chapter. Restore and
+        // chapter transitions construct a new Game, so these lengths identify
+        // every change that can affect the resolved mission.
+        let revision = [
+            definition as *const Campaign as usize,
+            state.mission,
+            state.marks.len(),
+            state.choices.as_ref().map_or(0, Vec::len),
+            state.fallen_companions.as_ref().map_or(0, Vec::len),
+            state.escalated() as usize,
+        ];
+        if self.mission_revision == Some(revision) {
+            return;
+        }
+        self.mission_revision = Some(revision);
         let without_dain = state.chosen("refuge-war")
             || state.chosen("green-dain-dead")
             || state.marked("dain-fell");
-        let mut fallen = state.fallen_companions.clone().unwrap_or_default();
-        for mark in &state.marks {
-            if let Some(name) = mark.strip_prefix("fallen:") {
-                if !fallen.iter().any(|n| n == name) {
-                    fallen.push(name.to_owned());
+        let base = &definition.missions[state.mission];
+        let mut losses = smallvec::SmallVec::new();
+        if let Some(patches) = &base.companion_losses {
+            let original = state.fallen_companions.as_deref().unwrap_or_default();
+            for name in original.iter().map(String::as_str).chain(
+                state.marks.iter().enumerate().filter_map(|(index, mark)| {
+                    let name = mark.strip_prefix("fallen:")?;
+                    (!original.iter().any(|n| n == name)
+                        && !state.marks[..index].iter().any(|m| m == mark))
+                    .then_some(name)
+                }),
+            ) {
+                if let Some(index) = patches.keys().position(|key| key.as_ref() == name) {
+                    losses.push(index);
                 }
             }
         }
-        let key = (
-            state.id.clone(),
-            state.mission,
+        let key = MissionKey {
+            campaign: revision[0],
+            stage: state.mission,
             without_dain,
-            fallen.clone(),
-            state.escalated(),
-        );
-        if self.mission_key.as_ref() == Some(&key) {
+            escalated: state.escalated(),
+            losses,
+        };
+        if let Some((_, mission)) = self
+            .mission_cache
+            .borrow()
+            .iter()
+            .find(|(cached, _)| cached == &key)
+        {
+            self.mission = Some(mission.clone());
             return;
         }
-        self.mission_key = Some(key);
-        let mut mission = Rc::new(self.rules.campaigns[&state.id].missions[state.mission].clone());
+        let mut resolved = base.clone();
         if without_dain {
-            if let Some(patch) = mission.without_dain.clone() {
-                Rc::make_mut(&mut mission).apply(&patch);
+            if let Some(patch) = &base.without_dain {
+                resolved.apply(patch);
             }
         }
-        for name in &fallen {
-            if let Some(patch) = mission
-                .companion_losses
-                .as_ref()
-                .and_then(|patches| patches.get(name))
-                .cloned()
-            {
-                Rc::make_mut(&mut mission).apply(&patch);
+        if let Some(patches) = &base.companion_losses {
+            for &index in &key.losses {
+                resolved.apply(patches.values().nth(index).expect("mission loss patch"));
             }
         }
-        if mission
-            .intro
-            .iter()
-            .chain(mission.victory.iter())
-            .any(|line| fallen.iter().any(|name| name == &line.speaker))
-        {
-            let changed = Rc::make_mut(&mut mission);
-            changed
-                .intro
-                .to_mut()
-                .retain(|line| !fallen.iter().any(|name| name == &line.speaker));
-            changed
-                .victory
-                .to_mut()
-                .retain(|line| !fallen.iter().any(|name| name == &line.speaker));
-        }
-        if state.escalated() {
-            if let Some(refuge) = mission.refuge.clone() {
-                let changed = Rc::make_mut(&mut mission);
-                changed.briefing = refuge.war_briefing;
-                changed.hints = refuge.war_hints;
+        if key.escalated {
+            if let Some(refuge) = resolved.refuge.clone() {
+                resolved.briefing = refuge.war_briefing;
+                resolved.hints = refuge.war_hints;
             }
         }
+        let mission = Rc::new(resolved);
+        let mut cache = self.mission_cache.borrow_mut();
+        if cache.len() == 16 {
+            cache.remove(0);
+        }
+        cache.push((key, mission.clone()));
         self.mission = Some(mission);
     }
 }
@@ -545,16 +846,21 @@ impl<'catalog> Game<'catalog> {
         self.fork_mode(false)
     }
     fn fork_mode(&self, presentation: bool) -> Self {
+        let mut storage = self.fork_pool.borrow_mut().pop().unwrap_or_default();
+        storage.copy(self, presentation);
         Self {
+            forked: true,
+            fork_pool: self.fork_pool.clone(),
             rules: self.rules.clone(),
+            attack_classes: self.attack_classes.clone(),
             board: self.board.clone(),
             terrain: self.terrain.clone(),
-            owners: self.owners.clone(),
+            owners: storage.owners,
             connections: self.connections.clone(),
             dead_ends: self.dead_ends.clone(),
             floors: self.floors.clone(),
-            units: self.units.clone(),
-            map_id: self.map_id.clone(),
+            units: storage.units,
+            map_id: storage.map_id,
             map_revision: self.map_revision,
             cols: self.cols,
             rows: self.rows,
@@ -564,29 +870,33 @@ impl<'catalog> Game<'catalog> {
             winner: self.winner,
             next_id: self.next_id,
             combat_rng: self.combat_rng,
-            log: if presentation {
-                self.log.clone()
-            } else {
-                Vec::new()
-            },
+            log: storage.log,
+            log_spare: RefCell::new(Vec::new()),
             presentation,
-            campaign: self.campaign.clone(),
+            marker_spare: storage.marker_spare,
+            campaign: storage.campaign,
             last_combat: if presentation {
                 self.last_combat.clone()
             } else {
                 None
             },
+            last_combat_spare: None,
             #[cfg(feature = "wasm")]
-            combat_animation: None,
+            combat_animation: super::playback::Playback::new(0),
             combat_present: presentation && self.combat_present,
-            armies: self.armies.clone(),
+            armies: storage.armies,
             pools: self.pools.clone(),
             arena_first: self.arena_first,
             mission: self.mission.clone(),
-            mission_key: self.mission_key.clone(),
+            mission_revision: self.mission_revision,
+            mission_cache: self.mission_cache.clone(),
             #[cfg(not(target_arch = "wasm32"))]
             recordings: None,
+            route_buffers: self.route_buffers.clone(),
+            reach_buffers: self.reach_buffers.clone(),
             route_cache: self.route_cache.clone(),
+            occupied_route_cache: self.occupied_route_cache.clone(),
+            route_atlas: self.route_atlas.clone(),
             terrain_revision: self.terrain_revision,
             attack_geometry: self.attack_geometry.clone(),
             attack_masks: self.attack_masks.clone(),
@@ -594,9 +904,9 @@ impl<'catalog> Game<'catalog> {
             threat_reach_cache: self.threat_reach_cache.clone(),
             movement_masks: self.movement_masks.clone(),
             route_order: self.route_order.clone(),
-            occupancy: self.occupancy.clone(),
+            occupancy: storage.occupancy,
             occupied_tiles: self.occupied_tiles.clone(),
-            unit_indices: self.unit_indices.clone(),
+            unit_indices: storage.indices,
         }
     }
     #[cfg(not(target_arch = "wasm32"))]
@@ -605,16 +915,16 @@ impl<'catalog> Game<'catalog> {
             records.actions.push(value);
         }
     }
-    pub(crate) fn promotion_options(&self, unit: &Unit) -> Vec<usize> {
+    pub(crate) fn promotion_options(&self, unit: &Unit) -> smallvec::SmallVec<[usize; 4]> {
         if self.winner.is_some() || unit.side != self.turn || unit.moved || unit.attacked {
-            return vec![];
+            return smallvec::SmallVec::new();
         }
         let rule = &self.rules.units[unit.kind];
         if rule
             .experience_needed
             .is_none_or(|needed| unit.experience.unwrap_or(0) < needed)
         {
-            return vec![];
+            return smallvec::SmallVec::new();
         }
         rule.advances_to
             .iter()
@@ -630,7 +940,7 @@ impl<'catalog> Game<'catalog> {
             self.units[index]
                 .name
                 .clone()
-                .unwrap_or_else(|| previous.name.to_string())
+                .unwrap_or_else(|| previous.name.as_ref().into())
         });
         let wounds = previous.hp - self.units[index].hp;
         let experience = self.units[index]
@@ -652,15 +962,18 @@ impl<'catalog> Game<'catalog> {
             )
         );
         #[cfg(not(target_arch = "wasm32"))]
-        self.action(ActionRecord::Advance {
-            unit: format!("u{id}"),
-            unit_type: self.rules.units[kind].id.to_string(),
-        });
+        game_action!(
+            self,
+            ActionRecord::Advance {
+                unit: format!("u{id}"),
+                unit_type: self.rules.units[kind].id.to_string(),
+            }
+        );
     }
 
-    pub(crate) fn recruitment_options(&self, side: Side) -> Vec<usize> {
+    pub(crate) fn recruitment_options(&self, side: Side) -> smallvec::SmallVec<[usize; 32]> {
         if let Some(pools) = &self.pools {
-            return pools[side.index()].clone();
+            return pools[side.index()].iter().copied().collect();
         }
         if let Some(armies) = &self.armies {
             return self
@@ -697,7 +1010,12 @@ impl<'catalog> Game<'catalog> {
         .map(|name| self.kind(name))
         .collect()
     }
-    pub(crate) fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
+    pub(crate) fn placement_tiles(
+        &self,
+        leader: &Unit,
+        kind: usize,
+        price: bool,
+    ) -> smallvec::SmallVec<[usize; 8]> {
         if !self.rules.units[leader.kind].leader
             || self.rules.units[kind].leader
             || !self.recruitment_options(leader.side).contains(&kind)
@@ -707,7 +1025,7 @@ impl<'catalog> Game<'catalog> {
             || self.owners[leader.tile] != Some(leader.side)
             || (price && self.gold[leader.side.index()] < self.rules.units[kind].cost)
         {
-            return vec![];
+            return smallvec::SmallVec::new();
         }
         self.board.adjacent[leader.tile]
             .iter()
@@ -736,10 +1054,22 @@ impl<'catalog> Game<'catalog> {
             )
         );
         #[cfg(not(target_arch = "wasm32"))]
-        self.action(ActionRecord::Recruit {
-            unit: format!("u{id}"),
-            unit_type: self.rules.units[kind].id.to_string(),
-            tile: self.board.ids[tile].clone(),
-        });
+        game_action!(
+            self,
+            ActionRecord::Recruit {
+                unit: format!("u{id}"),
+                unit_type: self.rules.units[kind].id.to_string(),
+                tile: self.board.ids[tile].clone(),
+            }
+        );
+    }
+}
+
+impl Drop for Game<'_> {
+    fn drop(&mut self) {
+        if self.forked {
+            let pool = self.fork_pool.clone();
+            pool.borrow_mut().push(super::forks::Storage::take(self));
+        }
     }
 }

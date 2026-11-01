@@ -3,10 +3,12 @@
 use crate::{
     ai::{self, PlanningWorkspace},
     data::*,
-    logic::{Game, battle::RuleSource},
+    logic::{Action, Game, action::Operation, battle::RuleSource},
     protocol::*,
 };
-use serde::{Serialize, de::DeserializeOwned};
+use serde::Serialize;
+#[cfg(not(target_arch = "wasm32"))]
+use serde::de::DeserializeOwned;
 use std::collections::HashMap;
 #[cfg(any(not(target_arch = "wasm32"), feature = "runtime-catalog"))]
 use std::rc::Rc;
@@ -29,12 +31,43 @@ mod catalog_declarations {
     const ENVIRONMENT: &str = <EnvironmentalModifiers as Tsify>::DECL;
 }
 
+mod input;
+#[cfg(target_arch = "wasm32")]
+mod read;
+mod views;
+#[cfg(target_arch = "wasm32")]
+mod wire;
+fn project<T: Serialize, Response: Tsify>(
+    result: Result<T, EngineError>,
+) -> Result<Ts<Response>, JsError> {
+    #[cfg(target_arch = "wasm32")]
+    let value = wire::value(&EngineResult::from(result))?;
+    #[cfg(not(target_arch = "wasm32"))]
+    let value = {
+        let serializer = serde_wasm_bindgen::Serializer::new()
+            .serialize_missing_as_null(true)
+            .serialize_maps_as_objects(true);
+        let value = EngineResult::from(result)
+            .serialize(&serializer)
+            .map_err(|e| JsError::new(&e.to_string()))?;
+        value
+    };
+    Ok(Ts::new_unchecked(value))
+}
 fn encode<T, Response>(result: Result<T, EngineError>) -> Result<Ts<Response>, JsError>
 where
     Response: Tsify + Serialize + From<Result<T, EngineError>>,
 {
-    Ok(Response::from(result).into_ts()?)
+    #[cfg(target_arch = "wasm32")]
+    {
+        Ok(Ts::new_unchecked(wire::value(&Response::from(result))?))
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        Ok(Response::from(result).into_ts()?)
+    }
 }
+#[cfg(not(target_arch = "wasm32"))]
 fn decode<T: Tsify + DeserializeOwned>(value: Ts<T>) -> Result<T, EngineError>
 where
     T::JsType: Clone,
@@ -45,15 +78,23 @@ where
             message: error.to_string(),
         })
 }
+#[cfg(target_arch = "wasm32")]
+fn decode<T: read::Decode>(value: Ts<T>) -> Result<T, EngineError> {
+    T::decode(value)
+}
+
 struct Battle {
+    #[cfg(target_arch = "wasm32")]
+    tile_inputs: js_sys::Map,
     game: Game<'static>,
     seed: u32,
     revision: u32,
     workspace: Option<PlanningWorkspace>,
     options: Option<AiOptions>,
-    pending: Option<Command>,
+    pending: Option<Action>,
 }
 impl Battle {
+    #[cfg(test)]
     fn view(&self) -> EngineView {
         EngineView {
             revision: self.revision,
@@ -75,6 +116,8 @@ impl Battle {
 /// Owns one validated catalog and independent battles for a browser host.
 #[wasm_bindgen]
 pub struct NativeEngineFactory {
+    #[cfg(target_arch = "wasm32")]
+    catalog_inputs: input::Catalog,
     rules: RuleSource<'static>,
     battles: HashMap<u32, Battle>,
     next_id: u32,
@@ -125,7 +168,14 @@ impl NativeEngineFactory {
             Ok(response) => response.js_value(),
             Err(error) => error.into(),
         })?;
+        #[cfg(target_arch = "wasm32")]
+        let catalog_inputs = {
+            wire::prepare(0);
+            input::Catalog::new(&rules)
+        };
         Ok(Self {
+            #[cfg(target_arch = "wasm32")]
+            catalog_inputs,
             rules,
             battles: HashMap::new(),
             next_id: 1,
@@ -134,19 +184,7 @@ impl NativeEngineFactory {
 
     /// Return owned catalog metadata as an encoded [`EngineResult<CatalogView>`].
     pub fn catalog(&self) -> Result<Ts<CatalogResponse>, JsError> {
-        let campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
-        encode(Ok(CatalogView {
-            units: self.rules.units.to_vec(),
-            terrain: self.rules.terrain_definitions.to_vec(),
-            races: self.rules.race_definitions.to_vec(),
-            maps: self
-                .rules
-                .map_definitions
-                .iter()
-                .map(Seed::instantiate)
-                .collect(),
-            campaigns,
-        }))
+        project(Ok(views::Catalog(&self.rules)))
     }
 
     /// Decode [`Start`] and return a new [`BattleHandle`] at revision zero.
@@ -154,20 +192,24 @@ impl NativeEngineFactory {
     pub fn create(&mut self, start: Ts<Start>, seed: u32) -> Result<Ts<BattleResponse>, JsError> {
         let result = decode::<Start>(start)
             .and_then(|start| self.start(start))
-            .map(|mut state| {
-                state.combat_rng = Some(seed);
-                self.insert(state, seed)
+            .map(|mut game| {
+                game.combat_rng = seed;
+                self.insert_game(game, seed)
             });
-        encode(result)
+        self.created(result)
     }
     /// Validate [`SavedGame`] and restore resolved state under a new handle.
     /// The restored handle starts at revision zero; invalid saves leave the factory unchanged.
     pub fn restore(&mut self, saved: Ts<SavedGame>) -> Result<Ts<BattleResponse>, JsError> {
-        encode(decode::<SavedGame>(saved).and_then(|saved| self.restore_saved(saved)))
+        let result = decode::<SavedGame>(saved).and_then(|saved| self.restore_saved(saved));
+        self.created(result)
     }
     /// Return a detached [`EngineView`] when the handle and expected revision are current.
     pub fn view(&self, id: u32, revision: u32) -> Result<Ts<ViewResponse>, JsError> {
-        encode(self.battle(id, revision).map(Battle::view))
+        project(self.battle(id, revision).map(|b| views::View {
+            game: &b.game,
+            revision: b.revision,
+        }))
     }
     /// Publish legal actions and display forecasts without exposing mutable state.
     pub fn inspect(&self, id: u32, revision: u32) -> Result<Ts<InspectionResponse>, JsError> {
@@ -184,7 +226,30 @@ impl NativeEngineFactory {
         revision: u32,
         command: Ts<Command>,
     ) -> Result<Ts<DispatchResponse>, JsError> {
-        encode(decode::<Command>(command).and_then(|command| self.apply(id, revision, command)))
+        #[cfg(target_arch = "wasm32")]
+        let parsed = self.battles.get(&id).and_then(|b| {
+            input::operation(
+                &command.js_value(),
+                &self.catalog_inputs,
+                &b.tile_inputs,
+                &b.game,
+            )
+        });
+        #[cfg(not(target_arch = "wasm32"))]
+        let parsed: Option<Operation> = None;
+        let result = parsed
+            .map(Ok)
+            .unwrap_or_else(|| decode::<Command>(command).map(Operation::Wire))
+            .and_then(|command| self.apply_known(id, revision, command));
+        project(result.map(|()| {
+            let b = &self.battles[&id];
+            views::Dispatch {
+                view: views::View {
+                    game: &b.game,
+                    revision: b.revision,
+                },
+            }
+        }))
     }
     /// Return an [`AiDecision`] without applying it or advancing the battle revision.
     /// Repeated requests reuse the pending command until dispatch; changed options start a new phase.
@@ -195,13 +260,23 @@ impl NativeEngineFactory {
         revision: u32,
         options: Ts<AiOptions>,
     ) -> Result<Ts<AiResponse>, JsError> {
-        encode(
-            decode::<AiOptions>(options).and_then(|options| self.decision(id, revision, options)),
-        )
+        let result = input::options(&options.js_value())
+            .and_then(|options| self.decision(id, revision, options));
+        project(result.map(|()| {
+            let b = &self.battles[&id];
+            views::Decision {
+                game: &b.game,
+                revision: b.revision,
+                command: b.pending.as_ref().expect("chosen command"),
+            }
+        }))
     }
     /// Return a [`SavedGame`] checkpoint of resolved game state.
     pub fn save(&self, id: u32, revision: u32) -> Result<Ts<SaveResponse>, JsError> {
-        encode(self.checkpoint(id, revision))
+        project(self.battle(id, revision).map(|b| views::Saved {
+            game: &b.game,
+            seed: b.seed,
+        }))
     }
     /// Release a battle and its planner; later requests return [`EngineError::UnknownBattle`].
     /// All results use the encoded [`EngineResult`] envelope.
@@ -217,20 +292,31 @@ impl NativeEngineFactory {
 }
 
 impl NativeEngineFactory {
-    fn apply(
+    fn apply_known(
         &mut self,
         id: u32,
         revision: u32,
-        command: Command,
-    ) -> Result<DispatchResult, EngineError> {
+        command: Operation,
+    ) -> Result<(), EngineError> {
         let battle = self
             .battles
             .get_mut(&id)
             .ok_or(EngineError::UnknownBattle)?;
         battle.check(revision)?;
-        let ends_turn = matches!(command, Command::EndTurn);
-        let planned = battle.pending.as_ref() == Some(&command);
+        let ends_turn = matches!(
+            command,
+            Operation::Wire(Command::EndTurn) | Operation::Planned(Action::EndTurn)
+        );
+        let planned =
+            matches!(&command,Operation::Planned(action) if battle.pending == Some(*action));
+        battle.game.combat_animation.clear();
+        #[cfg(target_arch = "wasm32")]
+        let board = battle.game.board.clone();
         battle.game.execute(command)?;
+        #[cfg(target_arch = "wasm32")]
+        if !std::rc::Rc::ptr_eq(&board, &battle.game.board) {
+            battle.tile_inputs = input::tiles(&battle.game);
+        }
         battle.revision = battle
             .revision
             .checked_add(1)
@@ -240,17 +326,9 @@ impl NativeEngineFactory {
             battle.workspace = None;
             battle.options = None;
         }
-        Ok(DispatchResult {
-            view: battle.view(),
-            combat: battle.game.combat_animation.take(),
-        })
+        Ok(())
     }
-    fn decision(
-        &mut self,
-        id: u32,
-        revision: u32,
-        options: AiOptions,
-    ) -> Result<AiDecision, EngineError> {
+    fn decision(&mut self, id: u32, revision: u32, options: AiOptions) -> Result<(), EngineError> {
         let battle = self
             .battles
             .get_mut(&id)
@@ -279,23 +357,18 @@ impl NativeEngineFactory {
             battle.options = Some(options.clone());
             battle.pending = None;
         }
-        if let Some(command) = &battle.pending {
-            return Ok(AiDecision {
-                revision: battle.revision,
-                command: command.clone(),
-            });
+        if battle.pending.is_some() {
+            return Ok(());
         }
         let command = ai::choose_game_command(
             &battle.game,
             options.policy,
             battle.workspace.as_mut().expect("workspace initialized"),
         )?;
-        battle.pending = Some(command.clone());
-        Ok(AiDecision {
-            revision: battle.revision,
-            command,
-        })
+        battle.pending = Some(command);
+        Ok(())
     }
+    #[cfg(test)]
     fn checkpoint(&self, id: u32, revision: u32) -> Result<SavedGame, EngineError> {
         let battle = self.battle(id, revision)?;
         Ok(SavedGame {
@@ -303,7 +376,7 @@ impl NativeEngineFactory {
             state: battle.game.state(),
         })
     }
-    fn restore_saved(&mut self, saved: SavedGame) -> Result<BattleHandle, EngineError> {
+    fn restore_saved(&mut self, saved: SavedGame) -> Result<u32, EngineError> {
         let game = Game::try_from_source(self.rules.clone(), saved.state).map_err(|error| {
             EngineError::InvalidSave {
                 message: error.to_string(),
@@ -316,16 +389,39 @@ impl NativeEngineFactory {
         battle.check(revision)?;
         Ok(battle)
     }
+    #[cfg(test)]
     fn insert(&mut self, state: State, seed: u32) -> BattleHandle {
-        self.insert_game(Game::from_source(self.rules.clone(), state), seed)
+        let id = self.insert_game(Game::from_source(self.rules.clone(), state), seed);
+        BattleHandle {
+            id,
+            view: self.battles[&id].view(),
+        }
     }
-    fn insert_game(&mut self, game: Game<'static>, seed: u32) -> BattleHandle {
+    fn created(&self, result: Result<u32, EngineError>) -> Result<Ts<BattleResponse>, JsError> {
+        project(result.map(|id| {
+            let battle = &self.battles[&id];
+            views::Handle {
+                id,
+                view: views::View {
+                    game: &battle.game,
+                    revision: battle.revision,
+                },
+            }
+        }))
+    }
+    fn insert_game(&mut self, game: Game<'static>, seed: u32) -> u32 {
+        #[cfg(target_arch = "wasm32")]
+        wire::prepare(game.terrain.len());
         let id = self.next_id;
         self.next_id = self
             .next_id
             .checked_add(1)
             .expect("battle handle exhausted");
+        #[cfg(target_arch = "wasm32")]
+        let tile_inputs = input::tiles(&game);
         let battle = Battle {
+            #[cfg(target_arch = "wasm32")]
+            tile_inputs,
             game,
             seed,
             revision: 0,
@@ -333,11 +429,10 @@ impl NativeEngineFactory {
             options: None,
             pending: None,
         };
-        let view = battle.view();
         self.battles.insert(id, battle);
-        BattleHandle { id, view }
+        id
     }
-    fn start(&self, start: Start) -> Result<State, EngineError> {
+    fn start(&self, start: Start) -> Result<Game<'static>, EngineError> {
         match start {
             Start::Scenario {
                 map,
@@ -401,16 +496,22 @@ impl NativeEngineFactory {
                     state.armies = Some(armies);
                 }
                 state.turn = first.unwrap_or(Side::Player);
-                Ok(state)
+                Ok(Game::from_source(self.rules.clone(), state))
             }
             Start::Campaign { id } => {
                 if !self.rules.campaigns.contains_key(&id) {
                     return Err(EngineError::UnknownCampaign { id });
                 }
-                Ok(
-                    Game::start_campaign(&self.rules, &id, 0, vec![], 0, vec![], vec![], vec![])
-                        .state(),
-                )
+                Ok(Game::start_campaign_source(
+                    self.rules.clone(),
+                    &id,
+                    0,
+                    vec![],
+                    0,
+                    vec![],
+                    vec![],
+                    vec![],
+                ))
             }
         }
     }
@@ -440,7 +541,7 @@ mod tests {
         assert_eq!(json.as_object().unwrap().len(), 2);
         assert_eq!(json["state"], serde_json::to_value(&state).unwrap());
         let restored = factory.restore_saved(saved).unwrap();
-        let battle = &factory.battles[&restored.id];
+        let battle = &factory.battles[&restored];
         assert!(battle.workspace.is_none() && battle.pending.is_none() && battle.options.is_none());
         assert_eq!(
             serde_json::to_value(battle.game.state()).unwrap(),

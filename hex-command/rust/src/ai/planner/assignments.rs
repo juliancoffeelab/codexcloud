@@ -1,14 +1,21 @@
 //! Small local rescues and defensive fallback, shared by fixed planners.
+use crate::ai::ids::TileId;
 use crate::ai::orders::TargetKind as ObjectiveKind;
 use crate::ai::orders::target as objective;
 use crate::ai::{
     PlanningWorkspace, attack_command, move_command, orders::*, planner::safety::Threats,
 };
+use crate::logic::Action as Command;
+use crate::reuse::{Vec, vec};
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 
 const PER_ACTOR: usize = 32;
+#[cfg(target_arch = "wasm32")]
+type RescueQueue<T> = crate::reuse::Queue<T, { PER_ACTOR + 1 }>;
+#[cfg(not(target_arch = "wasm32"))]
+type RescueQueue<T> = std::collections::VecDeque<T>;
 const PER_TURN: usize = 128;
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -24,6 +31,7 @@ pub struct Workspace {
     pub exhausted: Vec<UnitId>,
 }
 
+macro_rules! format { ($($arg:tt)*) => { crate::ai::orders::key(format_args!($($arg)*)) }; }
 pub(in crate::ai) fn assign(game: &BattleView<'_, '_>, workspace: &mut PlanningWorkspace) {
     if workspace.cooperation.assigned {
         return;
@@ -72,11 +80,11 @@ pub(in crate::ai) fn assign(game: &BattleView<'_, '_>, workspace: &mut PlanningW
                         objective(
                             &order.id,
                             ObjectiveKind::Visit,
-                            vec![destination.0.clone()],
+                            std::iter::once(destination.0.as_str()),
                             24.0,
                         )
                     });
-                target.actor = Some(format!("u{}", actor.0));
+                target.actor = Some(crate::ai::orders::text(format_args!("u{}", actor.0)));
                 target.family = None;
                 target.kind = if occupy {
                     ObjectiveKind::Capture
@@ -84,7 +92,7 @@ pub(in crate::ai) fn assign(game: &BattleView<'_, '_>, workspace: &mut PlanningW
                     ObjectiveKind::Visit
                 };
                 target.hold = Some(occupy);
-                target.tiles = vec![destination.0.clone()];
+                target.tiles = std::iter::once(destination.0.as_str().into()).collect();
                 targets.push(target);
             }
             TacticalObjective::Escort {
@@ -95,7 +103,7 @@ pub(in crate::ai) fn assign(game: &BattleView<'_, '_>, workspace: &mut PlanningW
                 let Some(unit) = game.unit(actor.0) else {
                     continue;
                 };
-                let mut eligible: Vec<_> = game
+                let mut eligible: crate::reuse::Local<_> = game
                     .units()
                     .iter()
                     .filter(|u| {
@@ -108,7 +116,7 @@ pub(in crate::ai) fn assign(game: &BattleView<'_, '_>, workspace: &mut PlanningW
                     })
                     .collect();
                 eligible.order_by_key(|u| (game.board().distance(u.tile, unit.tile), u.id));
-                let selected: Vec<_> = eligible.into_iter().take(*guards).collect();
+                let selected: crate::reuse::Local<_> = eligible.into_iter().take(*guards).collect();
                 for guard in &selected {
                     allocated.push(guard.id);
                 }
@@ -131,7 +139,7 @@ pub(in crate::ai) fn assign(game: &BattleView<'_, '_>, workspace: &mut PlanningW
     }
     orders
         .targets
-        .retain(|g| !orders.objectives.iter().any(|order| order.id == g.id));
+        .retain(|g| !orders.objectives.iter().any(|order| g.id == order.id));
     orders
         .objectives
         .retain(|order| !deferred.contains(&order.id));
@@ -161,7 +169,7 @@ pub(in crate::ai) fn refresh_assignments(
         .filter_map(|r| {
             r.actor.and_then(|actor| {
                 game.unit(actor.0)
-                    .map(|u| (actor, TileId(game.board().ids[u.tile].clone())))
+                    .map(|u| (actor, TileId(&game.board().ids[u.tile])))
             })
         })
         .collect();
@@ -239,7 +247,7 @@ pub(in crate::ai) fn rescue(
         if workspace.cooperation.candidates >= PER_TURN {
             break;
         }
-        let mut helpers: Vec<_> = game
+        let mut helpers: crate::reuse::Local<_> = game
             .units()
             .iter()
             .filter(|u| {
@@ -253,12 +261,9 @@ pub(in crate::ai) fn rescue(
             })
             .collect();
         helpers.order_by_key(|u| (game.board().distance(u.tile, unit.tile), u.id));
-        let helpers: Vec<_> = helpers.into_iter().take(2).map(|u| u.id).collect();
-        let mut pending = std::collections::VecDeque::from([(
-            game.fork(),
-            Vec::<Command>::new(),
-            Vec::<u32>::new(),
-        )]);
+        let helpers: crate::reuse::Local<_> = helpers.into_iter().take(2).map(|u| u.id).collect();
+        let mut pending =
+            RescueQueue::from([(game.fork(), Vec::<Command>::new(), Vec::<u32>::new())]);
         let mut actor_candidates = 0;
         while let Some((board, commands, used)) = pending.pop_front() {
             if !commands.is_empty() {
@@ -305,9 +310,9 @@ pub(in crate::ai) fn rescue(
                 for tile in positions {
                     for enemy in board.units().iter().filter(|u| u.side != game.turn()) {
                         for weapon in board.attack_options(ally, enemy, tile) {
-                            let response = board.maximum_retaliation(ally, enemy, weapon, tile);
-                            if board.exchange(ally, enemy, weapon, tile).death[1] == 1.0
-                                && response < ally.hp
+                            let forecast = board.exchange(ally, enemy, weapon, tile);
+                            if forecast.death[1] == 1.0
+                                && forecast.maximum[1] < ally.hp
                                 && orders.attack_allowed(&board, ally, enemy, weapon, tile)
                             {
                                 actions.push((tile, enemy.id, weapon));
@@ -459,7 +464,7 @@ pub(in crate::ai) fn report(game: &BattleView<'_, '_>, workspace: &mut PlanningW
                 game.at(game.site(&location.0))
                     .is_none_or(|o| o.id == actor.0)
             } else {
-                game.board().ids[u.tile] == location.0
+                location.0 == game.board().ids[u.tile]
             }
         });
         workspace.report.duties.push(DutyReport {
@@ -511,6 +516,7 @@ mod tests {
         Blocks, CampaignBlock, Diplomacy, Planner, Policy, Recruiter, choose_game_command,
     };
     use crate::logic::Game;
+    use crate::reuse::vec;
 
     fn small_battle(rules: &Rules) -> Game<'_> {
         let mut game = Game::new(rules, "mirror");
@@ -646,11 +652,7 @@ mod tests {
                     } => {
                         if unit.0 == protected {
                             let actor = game.unit(unit.0).unwrap();
-                            let weapon = rules.units[actor.kind]
-                                .attacks
-                                .iter()
-                                .position(|w| w.id == weapon.0)
-                                .unwrap();
+                            let weapon = *weapon;
                             assert_eq!(
                                 game.preview(
                                     actor,
@@ -668,12 +670,7 @@ mod tests {
                     Command::Move { .. }
                     | Command::Recruit { .. }
                     | Command::Advance { .. }
-                    | Command::SetUnitIntent { .. }
-                    | Command::DismissDialogue
-                    | Command::RecallMission { .. }
-                    | Command::RetryMission
-                    | Command::PreviousDialogue
-                    | Command::SkipDialogue => false,
+                    | Command::SetUnitIntent { .. } => false,
                 };
                 if end {
                     break;

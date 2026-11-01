@@ -15,25 +15,44 @@ use std::sync::Arc;
 /// Keys contain every unit field; ownership keys retain the entire ordered map.
 #[derive(Default)]
 struct RecordingCache {
-    units: FxHashMap<Unit, Arc<PublicUnit>>,
-    ownership: FxHashMap<Vec<Option<Side>>, Arc<OwnershipSnapshot>>,
+    units: FxHashMap<Unit, Arc<Snapshot<PublicUnit>>>,
+    ownership: FxHashMap<Vec<Option<Side>>, Arc<Snapshot<OwnershipSnapshot>>>,
     tiles: Option<Arc<Vec<String>>>,
+    campaign: Option<Arc<Snapshot<CampaignState>>>,
 }
 impl RecordingCache {
-    fn units(&mut self, game: &Game<'_>) -> Result<Vec<Arc<PublicUnit>>, SimulationError> {
+    fn campaign(&mut self, game: &Game<'_>) -> Option<Arc<Snapshot<CampaignState>>> {
+        let state = game.campaign.as_ref()?;
+        if self
+            .campaign
+            .as_ref()
+            .is_none_or(|snapshot| &***snapshot != state)
+        {
+            self.campaign = Some(Arc::new(Snapshot::from(state.clone())));
+        }
+        self.campaign.clone()
+    }
+
+    fn units(
+        &mut self,
+        game: &Game<'_>,
+    ) -> Result<Vec<Arc<Snapshot<PublicUnit>>>, SimulationError> {
         game.units
             .iter()
             .map(|unit| {
                 if let Some(encoded) = self.units.get(unit) {
                     return Ok(encoded.clone());
                 }
-                let encoded = Arc::new(game.public_unit(unit));
+                let encoded = Arc::new(Snapshot::from(game.public_unit(unit)));
                 self.units.insert(unit.clone(), encoded.clone());
                 Ok(encoded)
             })
             .collect()
     }
-    fn ownership(&mut self, game: &Game<'_>) -> Result<Arc<OwnershipSnapshot>, SimulationError> {
+    fn ownership(
+        &mut self,
+        game: &Game<'_>,
+    ) -> Result<Arc<Snapshot<OwnershipSnapshot>>, SimulationError> {
         if let Some(encoded) = self.ownership.get(&game.owners) {
             return Ok(encoded.clone());
         }
@@ -41,10 +60,10 @@ impl RecordingCache {
             .tiles
             .get_or_insert_with(|| Arc::new(game.board.ids.clone()))
             .clone();
-        let encoded = Arc::new(OwnershipSnapshot {
+        let encoded = Arc::new(Snapshot::from(OwnershipSnapshot {
             tiles,
             owners: game.owners.clone(),
-        });
+        }));
         self.ownership.insert(game.owners.clone(), encoded.clone());
         Ok(encoded)
     }
@@ -132,7 +151,7 @@ pub(crate) fn create_arena<'catalog>(
     state.last_combat = None;
     let mut game = Game::from_state(rules, state);
     game.combat_rng = config.seed;
-    game.pools = Some([
+    game.pools = Some(std::rc::Rc::new([
         roster(rules, &config.armies.player)?
             .pool
             .iter()
@@ -143,7 +162,7 @@ pub(crate) fn create_arena<'catalog>(
             .iter()
             .map(|k| game.kind(k))
             .collect(),
-    ]);
+    ]));
     game.arena_first = Some(config.first);
     Ok(game)
 }
@@ -422,7 +441,7 @@ fn phase(
                 .collect()
         }),
         objectives: goals.unwrap_or(&[]).to_vec(),
-        campaign: game.campaign.clone(),
+        campaign: recording.campaign(game),
     };
     if let Some(timing) = timing {
         timing.finish();
@@ -470,7 +489,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             (territory.clone())
                 .iter()
                 .map(ToString::to_string)
-                .collect(),
+                .collect::<std::vec::Vec<_>>(),
             24.0,
         )];
         for tile in 0..game.terrain.len() {

@@ -1,13 +1,61 @@
 //! Shared mechanical valuation for recruits and free, earned promotions.
+use crate::reuse::Vec;
+#[cfg(test)]
+use crate::reuse::vec;
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 use std::rc::Rc;
 
+/// Origins with the same terrain and legal attack distance have identical
+/// combat mechanics. Keep each origin's arithmetic order while reusing its
+/// forecast, including response selection, armour, drain and reflection.
+#[derive(Default)]
+struct OriginForecasts(
+    smallvec::SmallVec<[((usize, u16), crate::logic::exchange::ExchangeForecast); 16]>,
+);
+impl OriginForecasts {
+    fn get<'a>(
+        &'a mut self,
+        game: &BattleView<'_, '_>,
+        unit: &Unit,
+        target: &Unit,
+        weapon: usize,
+        origin: usize,
+        aura: Option<i32>,
+    ) -> &'a crate::logic::exchange::ExchangeForecast {
+        let key = (
+            game.terrain()[origin],
+            game.board().distance(origin, target.tile),
+        );
+        let index = if let Some(index) = self.0.iter().position(|(k, _)| *k == key) {
+            index
+        } else {
+            let mut attacker = unit.clone();
+            attacker.tile = origin;
+            let forecast = if let Some(aura) = aura {
+                let reflection =
+                    if game.rules().units[unit.kind].attacks[weapon].category == Category::Melee {
+                        game.rules().units[target.kind].thorns + aura
+                    } else {
+                        0
+                    };
+                game.exchange_with_thorns(&attacker, target, weapon, origin, reflection)
+            } else {
+                game.exchange(&attacker, target, weapon, origin)
+            };
+            let index = self.0.len();
+            self.0.push((key, forecast));
+            index
+        };
+        &self.0[index].1
+    }
+}
 struct Approach {
     enemy: usize,
     weapon: usize,
     origins: Vec<usize>,
-    routes: Rc<Vec<u16>>,
+    routes: Rc<std::vec::Vec<u16>>,
+    offense: std::cell::Cell<Option<(usize, f64, f64)>>,
 }
 // Before four troops are visible, blend the known legal enemy roster into the
 // matchup estimate. This prior prevents opening purchases from countering only
@@ -16,7 +64,7 @@ struct Approach {
 struct Support {
     healing: f64,
     thorns: f64,
-    routes: Rc<Vec<u16>>,
+    routes: Rc<std::vec::Vec<u16>>,
 }
 #[derive(serde::Serialize)]
 pub(super) struct Score {
@@ -41,7 +89,7 @@ pub(super) struct Assessment {
     forecast_weight: f64,
     approaches: Vec<Approach>,
     support: Vec<Support>,
-    captures: Vec<(Rc<Vec<u16>>, f64)>,
+    captures: Vec<(Rc<std::vec::Vec<u16>>, f64)>,
     friendly_count: usize,
 }
 impl Assessment {
@@ -59,12 +107,12 @@ impl Assessment {
         weights: RecruitmentWeights,
     ) -> Self {
         let rule = &game.rules().units[unit.kind];
-        let enemies: Vec<_> = game
+        let enemies: crate::reuse::Local<_> = game
             .units()
             .iter()
             .filter(|u| u.side != unit.side)
             .collect();
-        let allies: Vec<_> = game
+        let allies: crate::reuse::Local<_> = game
             .units()
             .iter()
             .filter(|u| u.side == unit.side && u.id != unit.id)
@@ -104,6 +152,7 @@ impl Assessment {
                 approaches.push(Approach {
                     enemy: index,
                     weapon,
+                    offense: std::cell::Cell::new(None),
                     routes: game.routes(unit.kind, &origins),
                     origins,
                 });
@@ -125,8 +174,8 @@ impl Assessment {
                 let ally_rule = &game.rules().units[ally.kind];
                 let mut covered = 0;
                 let mut aura = 0;
-                let mut remote_healing = Vec::new();
-                let mut remote_auras = Vec::new();
+                let mut remote_healing = crate::reuse::Local::<i32>::new();
+                let mut remote_auras = crate::reuse::Local::<i32>::new();
                 for other in &allies {
                     if other.id == ally.id {
                         continue;
@@ -193,7 +242,7 @@ impl Assessment {
                 } else {
                     0.0
                 };
-                let goals: Vec<_> = game.board().adjacent[ally.tile]
+                let goals: smallvec::SmallVec<[_; 8]> = game.board().adjacent[ally.tile]
                     .iter()
                     .copied()
                     .filter(|&t| game.cost(unit.kind, t) != u16::MAX)
@@ -252,7 +301,7 @@ impl Assessment {
         // Recruitment can reward village capture and configured mobility; earned
         // promotions retain village value. Enemy relevance never depends on distance.
         let rule = &game.rules().units[unit.kind];
-        let enemies: Vec<_> = game
+        let enemies: crate::reuse::Local<_> = game
             .units()
             .iter()
             .filter(|u| u.side != unit.side)
@@ -265,6 +314,7 @@ impl Assessment {
         let mut incoming = 0.0;
         let mut access = 0.0;
         let mut weights = 0.0;
+        let mut thorn_pressure = (0.0, 0.0);
         for (index, enemy) in enemies
             .iter()
             .copied()
@@ -285,35 +335,21 @@ impl Assessment {
                     continue;
                 }
                 let access = 1.0;
-                let origins = representative_origins(game, unit.kind, unit.tile, &approach.origins);
-                if origins.is_empty() {
+                let region = game.route_region(unit.kind, unit.tile);
+                let sample = match approach.offense.get() {
+                    Some((cached, value, damage)) if cached == region => Some((value, damage)),
+                    _ => offense_sample(game, unit, enemy, approach, coefficients).inspect(
+                        |&(value, damage)| {
+                            approach.offense.set(Some((region, value, damage)));
+                        },
+                    ),
+                };
+                let Some((value, leader_damage)) = sample else {
                     continue;
-                }
-                let mut value = 0.0;
-                let mut leader_damage = 0.0;
-                for &origin in &origins {
-                    let mut attacker = unit.clone();
-                    attacker.tile = origin;
-                    let forecast = game.exchange(&attacker, enemy, approach.weapon, origin);
-                    let damage = forecast.damage[0].round() as i32;
-                    let response = forecast.damage[1].round() as i32;
-                    let attack = &rule.attacks[approach.weapon];
-                    let drain = damage.min(enemy.hp) as f64 * f64::from(attack.drain) / 100.0;
-                    let exchange = forecast.effective[0] + drain * coefficients.drain
-                        - response.min(unit.hp) as f64 * coefficients.exchange_retaliation
-                        + forecast.death[1] * coefficients.kill
-                        - if response as f64 >= unit.hp as f64 + drain {
-                            unit.hp as f64
-                        } else {
-                            0.0
-                        };
-                    value += exchange;
-                    leader_damage += damage.min(enemy.hp).max(0) as f64;
-                }
-                value /= origins.len() as f64;
+                };
                 if recruitment && coefficients.leader_pressure > 0.0 && enemy_rule.leader {
                     let turns = f64::from(route) / rule.r#move.max(1) as f64;
-                    let fraction = leader_damage / origins.len() as f64 / enemy.hp.max(1) as f64;
+                    let fraction = leader_damage / enemy.hp.max(1) as f64;
                     leader_pressure = leader_pressure.max(fraction.min(1.0) / (1.0 + turns));
                 }
                 best_offense = best_offense.max(value * access);
@@ -333,6 +369,14 @@ impl Assessment {
             raw += f64::from(reference.max(1)) * weight;
             if let Some(preferred) = preferred_attack(game, enemy, unit, None) {
                 let attack = &enemy_rule.attacks[preferred.weapon];
+                if rule.thorns > 0
+                    && attack.category == Category::Melee
+                    && preferred.strikes > 0.0
+                    && weight > 0.0
+                {
+                    thorn_pressure.0 += weight;
+                    thorn_pressure.1 += preferred.strikes * weight;
+                }
                 incoming += preferred.damage * weight;
                 // Own reflection is valued separately by army pressure.
                 // Preserve ordinary retaliation and existing friendly aura.
@@ -387,27 +431,10 @@ impl Assessment {
                     .max(0.0)
             })
             .sum::<f64>();
-        let thorns = if rule.thorns > 0 {
-            let pressure = expected_weighted_thorn_triggers(
-                enemies
-                    .iter()
-                    .copied()
-                    .chain(self.forecasts.iter())
-                    .enumerate()
-                    .filter_map(|(index, enemy)| {
-                        dominant_melee_strikes(game, enemy, unit, None).map(|count| {
-                            (
-                                count,
-                                if index < enemies.len() {
-                                    1.0
-                                } else {
-                                    self.forecast_weight
-                                },
-                            )
-                        })
-                    }),
-                self.friendly_count,
-            );
+        let thorns = if thorn_pressure.0 > 0.0 {
+            let pressure = (thorn_pressure.0 / self.friendly_count.max(1) as f64).min(6.0)
+                * thorn_pressure.1
+                / thorn_pressure.0;
             f64::from(rule.thorns) * pressure
         } else {
             0.0
@@ -463,11 +490,13 @@ impl Assessment {
 
 // Intrinsic speed uses typical traversable terrain cost, not distance to troops.
 fn terrain_speed(game: &BattleView<'_, '_>, unit: &Unit) -> f64 {
-    let costs: Vec<_> = (0..game.board().ids.len())
+    let (sum, count) = (0..game.board().ids.len())
         .map(|t| game.cost(unit.kind, t))
         .filter(|&c| c != u16::MAX)
-        .collect();
-    let mean = costs.iter().map(|&x| f64::from(x)).sum::<f64>() / costs.len().max(1) as f64;
+        .fold((0.0, 0usize), |(sum, count), cost| {
+            (sum + f64::from(cost), count + 1)
+        });
+    let mean = sum / count.max(1) as f64;
     ((game.rules().units[unit.kind].r#move as f64 / mean.max(1.0) - 3.0) / 3.0).clamp(0.0, 1.0)
 }
 
@@ -520,17 +549,57 @@ fn dominant_melee_strikes(
 
 // Equally sample terrain-reachable legal exchange positions. Travel distance
 // never chooses a representative or changes the matchup's weight.
-fn representative_origins(
-    game: &BattleView<'_, '_>,
+fn representative_origins<'a>(
+    game: &'a BattleView<'_, '_>,
     kind: usize,
     from: usize,
-    origins: &[usize],
-) -> Vec<usize> {
+    origins: &'a [usize],
+) -> impl Iterator<Item = usize> + 'a {
     origins
         .iter()
         .copied()
-        .filter(|&tile| game.routes(kind, &[tile])[from] != u16::MAX)
-        .collect()
+        .filter(move |&tile| game.route_connected(kind, from, tile))
+}
+
+// Placement changes travel time, but the equally weighted legal origins and
+// their exchanges stay identical throughout a static movement component.
+fn offense_sample(
+    game: &BattleView<'_, '_>,
+    unit: &Unit,
+    enemy: &Unit,
+    approach: &Approach,
+    coefficients: RecruitmentWeights,
+) -> Option<(f64, f64)> {
+    let rule = &game.rules().units[unit.kind];
+    let origins = representative_origins(game, unit.kind, unit.tile, &approach.origins);
+    let mut origin_count = 0usize;
+    let mut value = 0.0;
+    let mut leader_damage = 0.0;
+    let mut forecasts = OriginForecasts::default();
+    for origin in origins {
+        origin_count += 1;
+        let forecast = forecasts.get(game, unit, enemy, approach.weapon, origin, None);
+        let damage = forecast.damage[0].round() as i32;
+        let response = forecast.damage[1].round() as i32;
+        let attack = &rule.attacks[approach.weapon];
+        let drain = damage.min(enemy.hp) as f64 * f64::from(attack.drain) / 100.0;
+        let exchange = forecast.effective[0] + drain * coefficients.drain
+            - response.min(unit.hp) as f64 * coefficients.exchange_retaliation
+            + forecast.death[1] * coefficients.kill
+            - if response as f64 >= unit.hp as f64 + drain {
+                unit.hp as f64
+            } else {
+                0.0
+            };
+        value += exchange;
+        leader_damage += damage.min(enemy.hp).max(0) as f64;
+    }
+    (origin_count > 0).then(|| {
+        (
+            value / origin_count as f64,
+            leader_damage / origin_count as f64,
+        )
+    })
 }
 
 struct PreferredAttack {
@@ -550,33 +619,20 @@ fn preferred_attack(
     let mut best = None;
     for (weapon, attack) in rule.attacks.iter().enumerate() {
         let origins = game.attack_origins(attack.category, attack.range);
-        let mut legal = Vec::new();
-        origins[target.tile].for_each(|tile| {
-            if game.cost(enemy.kind, tile) != u16::MAX {
-                legal.push(tile);
-            }
-        });
-        let origins = representative_origins(game, enemy.kind, enemy.tile, &legal);
-        if origins.is_empty() {
-            continue;
-        }
+        let mut origin_count = 0usize;
         let mut value = 0.0;
         let mut damage_sum = 0.0;
         let mut response_sum = 0.0;
         let mut strikes_sum = 0.0;
-        for &origin in &origins {
-            let mut attacker = enemy.clone();
-            attacker.tile = origin;
-            let forecast = if let Some(aura) = aura {
-                let reflection = if attack.category == Category::Melee {
-                    game.rules().units[target.kind].thorns + aura
-                } else {
-                    0
-                };
-                game.exchange_with_thorns(&attacker, target, weapon, origin, reflection)
-            } else {
-                game.exchange(&attacker, target, weapon, origin)
-            };
+        let mut forecasts = OriginForecasts::default();
+        origins[target.tile].for_each(|origin| {
+            if game.cost(enemy.kind, origin) == u16::MAX
+                || !game.route_connected(enemy.kind, enemy.tile, origin)
+            {
+                return;
+            }
+            origin_count += 1;
+            let forecast = forecasts.get(game, enemy, target, weapon, origin, aura);
             let damage = forecast.damage[0];
             let response = forecast.damage[1];
             let exchange = forecast.effective[0] + forecast.healing[0] + forecast.death[1] * 18.0
@@ -586,11 +642,14 @@ fn preferred_attack(
             damage_sum += damage;
             response_sum += response;
             strikes_sum += forecast.strikes[0];
+        });
+        if origin_count == 0 {
+            continue;
         }
-        value /= origins.len() as f64;
-        let damage = damage_sum / origins.len() as f64;
-        let response = response_sum / origins.len() as f64;
-        let strikes = strikes_sum / origins.len() as f64;
+        value /= origin_count as f64;
+        let damage = damage_sum / origin_count as f64;
+        let response = response_sum / origin_count as f64;
+        let strikes = strikes_sum / origin_count as f64;
         if best.as_ref().is_none_or(|(score, _)| value > *score) {
             best = Some((
                 value,
@@ -648,6 +707,7 @@ fn marginal_healing(demand: f64, covered: i32, candidate: i32) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::reuse::vec;
     #[test]
     fn movement_controls_are_optional_separate_and_share_a_cap() {
         let (mut rules, target, enemy) = thorn_fixture();
@@ -849,9 +909,9 @@ mod tests {
                     .total,
             )
         };
-        game.pools = Some([vec![], vec![]]);
+        game.pools = Some(std::rc::Rc::new([std::vec![], std::vec![]]));
         let neutral = assess(&game);
-        game.pools = Some([vec![], vec![resistant]]);
+        game.pools = Some(std::rc::Rc::new([std::vec![], std::vec![resistant]]));
         let anticipated = assess(&game);
         assert!(anticipated.0 < neutral.0);
         // Free promotions continue to consider the actual battlefield only.
@@ -863,7 +923,7 @@ mod tests {
             game.add(observed, Side::Enemy, tile);
         }
         let observed_with_prior = assess(&game);
-        game.pools = Some([vec![], vec![]]);
+        game.pools = Some(std::rc::Rc::new([std::vec![], std::vec![]]));
         assert_eq!(observed_with_prior, assess(&game));
     }
 
@@ -886,7 +946,7 @@ mod tests {
                 let tile = game.site("3,4");
                 game.add(target, Side::Player, tile);
             }
-            game.pools = Some([vec![], vec![melee]]);
+            game.pools = Some(std::rc::Rc::new([std::vec![], std::vec![melee]]));
             let view = BattleView::new(&game);
             let unit = game.unit(target_id).unwrap();
             let situational = Assessment::new(&view, unit).recruitment_breakdown(&view, unit);
@@ -1217,4 +1277,12 @@ mod tests {
         assert_eq!(marginal_healing(4.0, 3, 5), 1.0);
         assert_eq!(marginal_healing(4.0, 5, 3), 0.0);
     }
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(in crate::ai) fn prepare_storage(tiles: usize, weapons: usize) {
+    crate::reuse::prepare::<Approach>(2, (tiles + 32) * weapons.max(1));
+    crate::reuse::prepare::<Support>(4, tiles + 1);
+    crate::reuse::prepare::<(Rc<std::vec::Vec<u16>>, f64)>(4, tiles + 1);
+    crate::reuse::prepare::<Unit>(4, tiles + 1);
 }

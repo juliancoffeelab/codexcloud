@@ -1,4 +1,8 @@
 //! Earned promotions use distance-independent mechanical matchups and support demand.
+use crate::ai::ids::UnitTypeId;
+use crate::reuse::Vec;
+#[cfg(test)]
+use crate::reuse::vec;
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 
@@ -7,10 +11,11 @@ pub(super) fn choices(
     policy: super::RecruiterKind,
     seed: u32,
 ) -> Vec<(UnitId, UnitTypeId)> {
-    let mut cycles = std::collections::BTreeMap::<Vec<usize>, usize>::new();
+    let mut cycles: crate::reuse::Local<(smallvec::SmallVec<[usize; 4]>, usize)> =
+        crate::reuse::Local::new();
     // The round advances each tree's cycle even when promoted siblings die.
     // Eligible units alternate within the round, independently per tree.
-    let mut units: Vec<_> = game
+    let mut units: crate::reuse::Local<_> = game
         .units()
         .iter()
         .filter(|u| u.side == game.turn())
@@ -33,23 +38,26 @@ pub(super) fn choices(
                 super::RecruiterKind::Balanced | super::RecruiterKind::Frontline => {
                     let draw = super::random(
                         seed,
-                        &format!("promotion:{}:{}", unit.id, game.rules().units[unit.kind].id),
+                        format_args!("promotion:{}:{}", unit.id, game.rules().units[unit.kind].id),
                     );
                     options[(draw * options.len() as f64) as usize]
                 }
                 super::RecruiterKind::Rotation => {
-                    let index = cycles
-                        .entry(options.clone())
-                        .or_insert(game.round().saturating_sub(1) as usize);
+                    let slot = cycles
+                        .iter()
+                        .position(|(tree, _)| tree == &options)
+                        .unwrap_or_else(|| {
+                            let slot = cycles.len();
+                            cycles.push((options.clone(), game.round().saturating_sub(1) as usize));
+                            slot
+                        });
+                    let index = &mut cycles[slot].1;
                     let result = options[*index % options.len()];
                     *index += 1;
                     result
                 }
             };
-            Some((
-                UnitId(unit.id),
-                UnitTypeId(game.rules().units[kind].id.to_string()),
-            ))
+            Some((UnitId(unit.id), UnitTypeId(&game.rules().units[kind].id)))
         })
         .collect()
 }
@@ -72,13 +80,14 @@ fn choose(game: &BattleView<'_, '_>, unit: &Unit, predict: bool) -> Option<usize
 mod tests {
     use super::*;
     use crate::logic::Game;
+    use crate::reuse::vec;
 
     fn fixture() -> (Rules, usize, usize, usize) {
         let mut rules = Rules::load().unwrap();
         let base = rules.types["swordsman"];
         let a = rules.types["soldier"];
         let b = rules.types["hammerman"];
-        rules.units.to_mut()[base].advances_to = vec![
+        rules.units.to_mut()[base].advances_to = std::vec![
             rules.units.to_mut()[a].id.clone(),
             rules.units.to_mut()[b].id.clone(),
         ]
@@ -129,7 +138,7 @@ mod tests {
                 .map(|seed| {
                     let result = choices(&view, policy, seed);
                     assert_eq!(result, choices(&view, policy, seed));
-                    result[0].1.0.clone()
+                    result[0].1.0.to_string()
                 })
                 .collect();
             assert_eq!(
@@ -160,14 +169,8 @@ mod tests {
             super::super::RecruiterKind::Rotation,
             7,
         );
-        assert_eq!(
-            result[0],
-            (UnitId(id), UnitTypeId(rules.units[a].id.to_string()))
-        );
-        assert_eq!(
-            result[1],
-            (UnitId(second), UnitTypeId(rules.units[b].id.to_string()))
-        );
+        assert_eq!(result[0], (UnitId(id), UnitTypeId(&rules.units[a].id)));
+        assert_eq!(result[1], (UnitId(second), UnitTypeId(&rules.units[b].id)));
         let index = game.index(id).unwrap();
         game.units[index].kind = a;
         game.units[index].experience = Some(0);
@@ -253,10 +256,10 @@ mod tests {
         rules.units.to_mut()[future] = foe;
         rules.route_classes.to_mut()[future] = future;
         let (mut game, actor) = battle(&rules, base);
-        game.pools = Some([vec![], vec![]]);
+        game.pools = Some(std::rc::Rc::new([std::vec![], std::vec![]]));
         for anticipate in [false, true] {
             if anticipate {
-                game.pools.as_mut().unwrap()[1] = vec![future];
+                std::rc::Rc::make_mut(game.pools.as_mut().unwrap())[1] = std::vec![future];
             }
             for policy in [RecruiterKind::Situational, RecruiterKind::Predictor] {
                 let expected = if anticipate && policy == RecruiterKind::Predictor {
@@ -281,7 +284,7 @@ mod tests {
                             .total_cmp(&b["score"].as_f64().unwrap())
                     })
                     .unwrap();
-                assert_eq!(best["unit"], selected.0);
+                assert_eq!(best["unit"].as_str(), Some(selected.0.as_str()));
             }
         }
     }
@@ -355,12 +358,7 @@ mod tests {
                 game.units()
                     .iter()
                     .filter(|u| game.promotion_options(u).contains(&self.0))
-                    .map(|u| {
-                        (
-                            UnitId(u.id),
-                            UnitTypeId(game.rules().units[self.0].id.to_string()),
-                        )
-                    })
+                    .map(|u| (UnitId(u.id), UnitTypeId(&game.rules().units[self.0].id)))
                     .collect()
             }
         }
@@ -372,9 +370,9 @@ mod tests {
                 let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
                 let plan = tactic.run_turn(&game, &mut workspace).unwrap();
                 assert!(
-                    plan.commands.contains(&crate::logic::Command::Advance {
+                    plan.commands.contains(&crate::logic::Action::Advance {
                         unit: UnitId(id),
-                        kind: UnitTypeId(rules.units[branch].id.to_string()),
+                        kind: branch,
                     }),
                     "{planner:?} did not execute selected branch"
                 );

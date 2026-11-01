@@ -36,7 +36,7 @@ struct PhaseHeader<'a> {
     goals: &'a [Progress],
     objectives: &'a [Objective],
     #[serde(skip_serializing_if = "Option::is_none")]
-    campaign: Option<&'a CampaignState>,
+    campaign: Option<&'a Snapshot<CampaignState>>,
 }
 struct Dictionary<'a, T> {
     identities: FxHashMap<usize, u32>,
@@ -79,7 +79,7 @@ fn dictionary_column(values: ArrayRef, rows: usize) -> Result<ArrayRef, Simulati
     )?))
 }
 fn unit_column(
-    dictionary: Dictionary<'_, PublicUnit>,
+    dictionary: Dictionary<'_, Snapshot<PublicUnit>>,
     rows: usize,
 ) -> Result<ArrayRef, SimulationError> {
     let values = dictionary.values;
@@ -143,7 +143,7 @@ fn unit_column(
     )
 }
 fn ownership_column(
-    dictionary: Dictionary<'_, OwnershipSnapshot>,
+    dictionary: Dictionary<'_, Snapshot<OwnershipSnapshot>>,
     rows: usize,
 ) -> Result<ArrayRef, SimulationError> {
     let mut builder = ListBuilder::new(Int8Builder::new());
@@ -196,7 +196,7 @@ pub(crate) fn encode(
                 gold: &phase.gold,
                 goals: &phase.goals,
                 objectives: &phase.objectives,
-                campaign: phase.campaign.as_ref(),
+                campaign: phase.campaign.as_deref(),
             })?);
             for unit in &phase.before {
                 before.values().append_value(unit_dictionary.insert(unit)?);

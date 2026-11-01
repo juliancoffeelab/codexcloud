@@ -1,7 +1,74 @@
 //! Explicit, turn-local contracts between the three fixed AI blocks.
+use crate::ai::ids::{TileId, UnitTypeId};
+use crate::logic::Action as Command;
+use crate::reuse::Vec;
+#[cfg(test)]
+use crate::reuse::vec;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 
+pub(crate) fn text<A: smallvec::Array<Item = u8>>(
+    args: std::fmt::Arguments<'_>,
+) -> smallstr::SmallString<A> {
+    use std::fmt::Write;
+    let mut value = smallstr::SmallString::new();
+    value.write_fmt(args).expect("formatting a planner key");
+    value
+}
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) type GoalKey = smallstr::SmallString<[u8; 32]>;
+#[cfg(target_arch = "wasm32")]
+pub(crate) use super::keys::GoalKey;
+pub(crate) type SiteKey = smallstr::SmallString<[u8; 16]>;
+#[derive(Clone, Debug)]
+pub(crate) struct AuthorGoal {
+    pub id: GoalKey,
+    pub kind: ObjectiveKind,
+    pub tiles: super::sites::Sites,
+    pub weight: f64,
+    pub actor: Option<SiteKey>,
+    pub family: Option<Family>,
+    pub hold: Option<bool>,
+}
+impl From<&crate::data::Objective> for AuthorGoal {
+    fn from(value: &crate::data::Objective) -> Self {
+        Self {
+            id: value.id.as_str().into(),
+            kind: value.kind,
+            tiles: value.tiles.iter().map(|s| s.as_str().into()).collect(),
+            weight: value.weight,
+            actor: value.actor.as_deref().map(Into::into),
+            family: value.family,
+            hold: value.hold,
+        }
+    }
+}
+pub(crate) fn authored(
+    id: &str,
+    kind: ObjectiveKind,
+    tiles: impl IntoIterator<Item = impl AsRef<str>>,
+    weight: f64,
+) -> AuthorGoal {
+    AuthorGoal {
+        id: id.into(),
+        kind,
+        tiles: tiles.into_iter().map(|s| s.as_ref().into()).collect(),
+        weight,
+        actor: None,
+        family: None,
+        hold: None,
+    }
+}
+pub(crate) fn key(args: std::fmt::Arguments<'_>) -> GoalKey {
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        text(args)
+    }
+    #[cfg(target_arch = "wasm32")]
+    {
+        GoalKey::formatted(args)
+    }
+}
 /// Generic heuristic hints supplement typed duties without exposing mission kinds.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -14,16 +81,19 @@ pub enum TargetKind {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Target {
-    pub id: String,
+    #[cfg_attr(feature = "wasm", tsify(type = "string"))]
+    pub id: GoalKey,
     pub kind: TargetKind,
-    pub tiles: Vec<String>,
+    #[cfg_attr(feature = "wasm", tsify(type = "string[]"))]
+    pub tiles: super::sites::Sites,
     pub weight: f64,
-    pub actor: Option<String>,
+    #[cfg_attr(feature = "wasm", tsify(type = "string | null"))]
+    pub actor: Option<smallstr::SmallString<[u8; 16]>>,
     pub family: Option<Family>,
     pub hold: Option<bool>,
 }
-impl From<crate::data::Objective> for Target {
-    fn from(value: crate::data::Objective) -> Self {
+impl From<AuthorGoal> for Target {
+    fn from(value: AuthorGoal) -> Self {
         let kind = match value.kind {
             ObjectiveKind::Capture => TargetKind::Capture,
             ObjectiveKind::Defeat => TargetKind::Defeat,
@@ -44,11 +114,21 @@ impl From<crate::data::Objective> for Target {
         }
     }
 }
-pub(in crate::ai) fn target(id: &str, kind: TargetKind, tiles: Vec<String>, weight: f64) -> Target {
+impl From<crate::data::Objective> for Target {
+    fn from(value: crate::data::Objective) -> Self {
+        AuthorGoal::from(&value).into()
+    }
+}
+pub(in crate::ai) fn target(
+    id: &str,
+    kind: TargetKind,
+    tiles: impl IntoIterator<Item = impl AsRef<str>>,
+    weight: f64,
+) -> Target {
     Target {
         id: id.into(),
         kind,
-        tiles,
+        tiles: tiles.into_iter().map(|t| t.as_ref().into()).collect(),
         weight,
         actor: None,
         family: None,
@@ -68,7 +148,7 @@ impl UnitSelector {
     pub(crate) fn accepts(&self, game: &BattleView<'_, '_>, kind: usize) -> bool {
         let rule = &game.rules().units[kind];
         match self {
-            Self::Type(id) => rule.id == id.0,
+            Self::Type(id) => rule.id.as_ref() == id.0.as_str(),
             Self::Family(family) => rule.family == *family,
             Self::Role(role) => rule.role == *role,
         }
@@ -153,7 +233,8 @@ pub enum TacticalObjective {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ObjectiveOrder {
-    pub id: String,
+    #[cfg_attr(feature = "wasm", tsify(type = "string"))]
+    pub id: GoalKey,
     pub priority: ObjectivePriority,
     pub objective: TacticalObjective,
 }
@@ -190,7 +271,7 @@ impl TacticalOrders {
         let (_, kind) = self.promotions.iter().find(|(id, _)| id.0 == unit.id)?;
         game.promotion_options(unit)
             .into_iter()
-            .find(|&option| game.rules().units[option].id == kind.0)
+            .find(|&option| game.rules().units[option].id.as_ref() == kind.0.as_str())
     }
 
     pub(crate) fn assigned_elsewhere(&self, id: u32, goal: &Target) -> bool {
@@ -206,12 +287,12 @@ impl TacticalOrders {
         }
         self.objectives
             .iter()
-            .any(|order| order.id == goal.id && other(order, id))
+            .any(|order| goal.id == order.id && other(order, id))
     }
     pub(crate) fn clearing(
         &self,
         game: &BattleView<'_, '_>,
-    ) -> rustc_hash::FxHashMap<u32, rustc_hash::FxHashSet<usize>> {
+    ) -> crate::reuse::Map<u32, crate::reuse::Set<usize>> {
         fn passage(order: &ObjectiveOrder) -> Option<(UnitId, &TileId)> {
             match &order.objective {
                 TacticalObjective::ClearPassage { actor, destination } => {
@@ -222,14 +303,14 @@ impl TacticalOrders {
                 | TacticalObjective::Escort { .. } => None,
             }
         }
-        let missing: Vec<_> = self
+        let missing: crate::reuse::Local<_> = self
             .objectives
             .iter()
             .filter_map(passage)
             .filter(|(actor, destination)| {
                 !self.targets.iter().any(|goal| {
                     super::objectives::actor_matches(&goal.actor, actor.0)
-                        && goal.tiles.contains(&destination.0)
+                        && goal.tiles.iter().any(|t| t == &destination.0)
                 })
             })
             .collect();
@@ -238,13 +319,13 @@ impl TacticalOrders {
         }
         let mut goals = self.targets.clone();
         for (actor, destination) in missing {
-            let mut goal = super::objectives::objective(
+            let mut goal = authored(
                 "passage",
                 ObjectiveKind::Visit,
-                vec![destination.0.clone()],
+                std::iter::once(destination.0.as_str()),
                 24.0,
             );
-            goal.actor = Some(format!("u{}", actor.0));
+            goal.actor = Some(text(format_args!("u{}", actor.0)));
             goals.push(goal.into());
         }
         game.actor_lanes(&goals)
@@ -324,13 +405,19 @@ impl TacticalOrders {
         weapon: usize,
         from: usize,
     ) -> bool {
-        let preview = || game.preview(unit, target, weapon, from);
-        (!self.protects(unit.id) || preview().1 == 0)
-            && (!self.protect_withdrawal
-                || target.retreating != Some(true)
-                    && (!self.mediated.contains(&UnitId(target.id)) || preview().0 < target.hp))
+        if self.protect_withdrawal && target.retreating == Some(true) {
+            return false;
+        }
+        let protected = self.protects(unit.id);
+        let mediated = self.protect_withdrawal && self.mediated.contains(&UnitId(target.id));
+        if !protected && !mediated {
+            return true;
+        }
+        let forecast = game.exchange(unit, target, weapon, from);
+        (!protected || forecast.damage[1].round() as i32 == 0)
+            && (!mediated || (forecast.damage[0].round() as i32) < target.hp)
     }
-    pub(crate) fn lanes(&self, game: &BattleView<'_, '_>) -> rustc_hash::FxHashSet<usize> {
+    pub(crate) fn lanes(&self, game: &BattleView<'_, '_>) -> crate::reuse::Set<usize> {
         self.withdrawal_tiles
             .iter()
             .map(|tile| game.site(&tile.0))
@@ -394,7 +481,8 @@ pub enum PlanningReason {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct DutyReport {
-    pub id: String,
+    #[cfg_attr(feature = "wasm", tsify(type = "string"))]
+    pub id: GoalKey,
     pub actor: Option<UnitId>,
     pub status: PlanningStatus,
     pub reason: Option<PlanningReason>,
@@ -432,7 +520,7 @@ pub struct RecruitmentShortfall {
     pub missing: usize,
     pub reason: PlanningReason,
 }
-pub struct TurnPlan {
+pub(crate) struct TurnPlan {
     pub commands: Vec<Command>,
     pub recruitment: RecruitmentReport,
     pub planning: PlanningReport,

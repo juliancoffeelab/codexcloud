@@ -64,6 +64,7 @@ impl Policy {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::logic::Action as Command;
     use crate::{
         ai::{Diplomacy, PlanningWorkspace, choose_game_command},
         data::*,
@@ -78,12 +79,7 @@ mod tests {
                 | Command::Attack { .. }
                 | Command::Recruit { .. }
                 | Command::Advance { .. }
-                | Command::SetUnitIntent { .. }
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue => false,
+                | Command::SetUnitIntent { .. } => false,
             }
         }
         boundary(command)
@@ -235,25 +231,17 @@ mod tests {
             .id;
         assert_eq!(game.leader_rebuild_plan(leader, false).1, Some(true));
         let command = Recruiter::Frontline.choose(&game, 7, None, false).unwrap();
-        fn kind(command: &Command) -> &UnitTypeId {
+        fn kind(command: &Command) -> usize {
             match command {
-                Command::Recruit { kind, .. } => kind,
+                Command::Recruit { kind, .. } => *kind,
                 Command::Move { .. }
                 | Command::Attack { .. }
                 | Command::Advance { .. }
                 | Command::SetUnitIntent { .. }
-                | Command::EndTurn
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue => panic!("expected specialist recruitment"),
+                | Command::EndTurn => panic!("expected specialist recruitment"),
             }
         }
-        assert_eq!(
-            rules.units[game.kind(&kind(&command).0)].family,
-            Family::Adept
-        );
+        assert_eq!(rules.units[kind(&command)].family, Family::Adept);
         game.execute(command).unwrap();
         assert_eq!(game.required_recruit(Side::Player), None);
     }
@@ -269,7 +257,7 @@ mod tests {
             .into_iter()
             .find(|g| g.id == "required:0")
             .unwrap();
-        assert!(!required.tiles.contains(&"6,4".to_owned()));
+        assert!(!required.tiles.iter().any(|t| t.as_str() == "6,4"));
         assert!(
             required
                 .tiles

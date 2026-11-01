@@ -15,7 +15,9 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn begin_turn(&mut self, side: Side) {
         self.turn = side;
-        self.last_combat = None;
+        if let Some(combat) = self.last_combat.take() {
+            self.last_combat_spare = Some(combat);
+        }
         self.combat_present = true;
         self.gold[side.index()] += self.income(side);
         for unit in &mut self.units {

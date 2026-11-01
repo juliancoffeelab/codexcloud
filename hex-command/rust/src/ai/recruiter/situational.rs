@@ -2,6 +2,9 @@
 use super::{Recruiter, RecruiterKind};
 use crate::ai::{context::BattleView, orders::RecruitmentOrders};
 use crate::data::*;
+use crate::logic::Action as Command;
+#[cfg(test)]
+use crate::reuse::vec;
 
 pub(super) struct Situational;
 impl Recruiter for Situational {
@@ -50,22 +53,26 @@ pub(super) fn choose_with_weights(
         .iter()
         .find(|u| u.side == side && game.rules().units[u.kind].leader)?;
     let required = orders.requirements.iter().find(|r| r.deficit(game) > 0);
-    let reserved: rustc_hash::FxHashSet<_> =
-        orders.reserved.iter().map(|t| game.site(&t.0)).collect();
-    let mut choices = Vec::new();
+    let reserved = &orders.reserved;
+    let gold = game.gold()[side.index()];
+    let income = game.income(side);
+    let mut best: Option<(f64, usize, usize)> = None;
     for kind in game.recruitment_options(side) {
         if required.is_some_and(|r| !r.accepts(game, kind)) {
             continue;
         }
-        let tiles: Vec<_> = game
+        let rule = &game.rules().units[kind];
+        if rule.cost > gold && income == 0 {
+            continue;
+        }
+        let tiles: smallvec::SmallVec<[_; 8]> = game
             .placement_tiles(leader, kind, false)
             .into_iter()
-            .filter(|t| !reserved.contains(t))
+            .filter(|t| !reserved.iter().any(|r| game.site(&r.0) == *t))
             .collect();
         let Some(&tile) = tiles.first() else {
             continue;
         };
-        let rule = &game.rules().units[kind];
         let mut recruit = Unit {
             id: 0,
             kind,
@@ -91,13 +98,9 @@ pub(super) fn choose_with_weights(
                     && game.rules().units[u.kind].family == rule.family
             })
             .count();
-        if rule.cost > game.gold()[side.index()] && game.income(side) == 0 {
-            continue;
-        }
         // An unaffordable unit must justify the income spent waiting rather
         // than fielding an available alternative now.
-        let wait = f64::from((rule.cost - game.gold()[side.index()]).max(0))
-            / f64::from(game.income(side).max(1));
+        let wait = f64::from((rule.cost - gold).max(0)) / f64::from(income.max(1));
         for tile in tiles {
             recruit.tile = tile;
             let score = assessment.recruitment_breakdown(game, &recruit).total
@@ -106,12 +109,17 @@ pub(super) fn choose_with_weights(
                 / (1.0 + wait * weights.wait_penalty)
                 + super::random(
                     seed,
-                    &format!("situational:{}:{}:{tile}", game.round(), rule.id),
+                    format_args!("situational:{}:{}:{tile}", game.round(), rule.id),
                 ) * 0.0005;
-            choices.push((score, kind, tile));
+            if best
+                .as_ref()
+                .is_none_or(|current| score.total_cmp(&current.0).is_ge())
+            {
+                best = Some((score, kind, tile));
+            }
         }
     }
-    let (_, kind, tile) = choices.into_iter().max_by(|a, b| a.0.total_cmp(&b.0))?;
+    let (_, kind, tile) = best?;
     if game.rules().units[kind].cost > game.gold()[side.index()] {
         return None;
     }
@@ -122,6 +130,7 @@ pub(super) fn choose_with_weights(
 mod tests {
     use super::*;
     use crate::logic::Game;
+    use crate::reuse::vec;
 
     // Controlled alternatives test the decision, independent of authored balance.
     fn fixture() -> (Rules, usize, usize) {
@@ -158,7 +167,7 @@ mod tests {
         let mut game = Game::new(rules, "mirror");
         game.units.retain(|u| rules.units[u.kind].leader);
         game.roster_changed();
-        game.pools = Some([vec![a, b], vec![a, b]]);
+        game.pools = Some(std::rc::Rc::new([std::vec![a, b], std::vec![a, b]]));
         game.gold[0] = 10;
         game
     }
@@ -168,7 +177,7 @@ mod tests {
             let Command::Recruit { kind, .. } = command else {
                 panic!("recruiter emitted a non-recruit command");
             };
-            game.kind(&kind.0)
+            kind
         })
     }
 

@@ -2,7 +2,7 @@
 use super::*;
 use std::borrow::Cow;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, serde::Serialize)]
 #[cfg_attr(feature = "bake", derive(databake::Bake))]
 #[cfg_attr(feature="bake", databake(path=hex_command_catalog::data))]
 pub struct TileTemplate {
@@ -11,8 +11,11 @@ pub struct TileTemplate {
     pub row: i32,
     pub terrain: Cow<'static, str>,
     pub owner: Option<Side>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub connections: Option<Cow<'static, [HexDirection]>>,
+    #[serde(rename = "deadEnds", skip_serializing_if = "Option::is_none")]
     pub dead_ends: Option<Cow<'static, [HexDirection]>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub floor: Option<Cow<'static, str>>,
 }
 impl From<&Tile> for TileTemplate {
@@ -176,7 +179,7 @@ impl crate::storage::Snapshot for State {
         value.into()
     }
 }
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, serde::Serialize)]
 #[cfg_attr(feature = "bake", derive(databake::Bake))]
 #[cfg_attr(feature="bake", databake(path=hex_command_catalog::data))]
 pub struct MapTemplate {

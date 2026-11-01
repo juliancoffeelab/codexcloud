@@ -1,8 +1,9 @@
 //! Escort scoring rewards actual threat removal and reduced enemy access.
 use crate::ai::{orders::PlanningReport, threats::Threats};
+use crate::reuse::Map as FxHashMap;
+use crate::reuse::{Vec, vec};
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*, logic::geometry::TileSet};
-use rustc_hash::FxHashMap;
 use std::rc::Rc;
 
 #[derive(Default)]
@@ -77,7 +78,7 @@ impl Workspace {
             let Some(actor) = forecast.unit(actor.0) else {
                 continue;
             };
-            let enemies: Vec<_> = forecast
+            let enemies: crate::reuse::Local<_> = forecast
                 .units()
                 .iter()
                 .filter(|u| u.side != actor.side)
@@ -195,6 +196,7 @@ mod tests {
     use super::*;
     use crate::ai::orders::{DutyReport, PlanningStatus};
     use crate::logic::Game;
+    use crate::reuse::vec;
 
     #[test]
     fn escorts_reward_threat_removal_and_real_screens_without_adjacency_goals() {

@@ -4,7 +4,52 @@ use crate::{
     data::*,
 };
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
+use std::sync::{Arc, OnceLock};
+
+/// Boundary values share their JSON encoding until explicitly mutated.
+#[derive(Clone, Debug)]
+pub struct Snapshot<T> {
+    value: T,
+    json: OnceLock<Box<serde_json::value::RawValue>>,
+}
+impl<T> From<T> for Snapshot<T> {
+    fn from(value: T) -> Self {
+        Self {
+            value,
+            json: OnceLock::new(),
+        }
+    }
+}
+impl<T> std::ops::Deref for Snapshot<T> {
+    type Target = T;
+    fn deref(&self) -> &T {
+        &self.value
+    }
+}
+impl<T> std::ops::DerefMut for Snapshot<T> {
+    fn deref_mut(&mut self) -> &mut T {
+        self.json.take();
+        &mut self.value
+    }
+}
+impl<T: Serialize> Serialize for Snapshot<T> {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        if self.json.get().is_none() {
+            let encoded =
+                serde_json::value::to_raw_value(&self.value).map_err(serde::ser::Error::custom)?;
+            let _ = self.json.set(encoded);
+        }
+        self.json
+            .get()
+            .expect("encoded snapshot")
+            .serialize(serializer)
+    }
+}
+impl<'de, T: Deserialize<'de>> Deserialize<'de> for Snapshot<T> {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        T::deserialize(deserializer).map(Self::from)
+    }
+}
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -109,13 +154,13 @@ pub struct Phase {
     pub living: Sides<usize>,
     pub health: Sides<i32>,
     pub gold: Gold,
-    pub before: Vec<Arc<PublicUnit>>,
-    pub units: Vec<Arc<PublicUnit>>,
-    pub ownership: Arc<OwnershipSnapshot>,
+    pub before: Vec<Arc<Snapshot<PublicUnit>>>,
+    pub units: Vec<Arc<Snapshot<PublicUnit>>>,
+    pub ownership: Arc<Snapshot<OwnershipSnapshot>>,
     pub goals: Vec<Progress>,
     pub objectives: Vec<Objective>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub campaign: Option<CampaignState>,
+    pub campaign: Option<Arc<Snapshot<CampaignState>>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]

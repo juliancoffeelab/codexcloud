@@ -125,7 +125,7 @@ impl<'catalog> Game<'catalog> {
                 total = tiles.len() as u32;
                 current = tiles
                     .iter()
-                    .filter(|t| state.marked(&format!("sealed:{t}")))
+                    .filter(|t| state.marked_prefixed("sealed:", t))
                     .count() as u32;
             }
             Goal::Event { event, .. } => current = state.marked(&format!("event:{}", event)) as u32,
@@ -139,7 +139,7 @@ impl<'catalog> Game<'catalog> {
                 total = *turns;
                 if start_event
                     .as_ref()
-                    .is_some_and(|e| !state.marked(&format!("event:{e}")))
+                    .is_some_and(|e| !state.marked_prefixed("event:", e))
                 {
                     label = if self.owners[self.site(tile)] != Some(Side::Player) {
                         "Reach the wreck to start the rescue".into()
@@ -197,32 +197,22 @@ impl<'catalog> Game<'catalog> {
             tiles,
         }
     }
-    pub(crate) fn active_goal_tiles(&self, goal: &Goal) -> Vec<String> {
-        if self.winner.is_some() {
-            return vec![];
-        }
-        if goal.kind() == GoalKind::Seal {
-            return goal
-                .tiles()
-                .iter()
-                .filter(|t| {
-                    !self
-                        .campaign
-                        .as_ref()
-                        .unwrap()
-                        .marked(&format!("sealed:{t}"))
-                })
-                .map(ToString::to_string)
-                .collect();
-        }
-        if goal.kind() == GoalKind::Event && self.goal_done(goal) {
-            return vec![];
-        }
-        if goal.kind() == GoalKind::Defeat {
-            vec![]
-        } else {
-            goal.sites()
-        }
+    pub(crate) fn active_goal_tiles<'a>(&'a self, goal: &'a Goal) -> impl Iterator<Item = &'a str> {
+        let active = self.winner.is_none()
+            && goal.kind() != GoalKind::Defeat
+            && !(goal.kind() == GoalKind::Event && self.goal_done(goal));
+        goal.tile()
+            .into_iter()
+            .chain(goal.tiles().iter().map(|t| t.as_ref()))
+            .filter(move |tile| {
+                active
+                    && (goal.kind() != GoalKind::Seal
+                        || !self
+                            .campaign
+                            .as_ref()
+                            .unwrap()
+                            .marked_prefixed("sealed:", tile))
+            })
     }
     pub(crate) fn escalate_refuge(&mut self) {
         let Some(refuge) = self.mission.as_ref().and_then(|m| m.refuge.clone()) else {
@@ -240,10 +230,12 @@ impl<'catalog> Game<'catalog> {
             return;
         }
         counter.escalated = true;
-        state.say(refuge.escalation.iter().cloned());
+        if self.presentation {
+            state.say(refuge.escalation.iter().cloned());
+        }
         game_log!(
             self,
-            "The chance of mediation is lost. Defeat the remaining patrol.".into()
+            "The chance of mediation is lost. Defeat the remaining patrol."
         );
         self.refresh_mission();
     }
@@ -253,22 +245,33 @@ impl<'catalog> Game<'catalog> {
         }
         let mission = self.mission.clone().unwrap();
         for wave in mission.waves.iter() {
-            let marker = format!("wave:{}", wave.id);
-            if self.round < wave.round || self.campaign.as_ref().unwrap().marked(&marker) {
+            if self.round < wave.round
+                || self
+                    .campaign
+                    .as_ref()
+                    .unwrap()
+                    .marked_prefixed("wave:", &wave.id)
+            {
                 continue;
             }
+            let marker = self.marker("wave:", &wave.id);
             self.campaign.as_mut().unwrap().marks.push(marker);
             if wave.requires_unsealed.as_ref().is_some_and(|t| {
                 self.campaign
                     .as_ref()
                     .unwrap()
-                    .marked(&format!("sealed:{t}"))
+                    .marked_prefixed("sealed:", t)
             }) {
                 continue;
             }
             let mut arrived = 0;
             for incoming in wave.units.iter() {
-                let origin = self.site(&format!("{},{}", incoming.col, incoming.row));
+                let origin = self
+                    .board
+                    .positions
+                    .iter()
+                    .position(|&p| p == (incoming.col, incoming.row))
+                    .expect("wave origin");
                 let kind = self.kind(&incoming.r#type);
                 let tile = (0..self.terrain.len())
                     .filter(|&t| {
@@ -283,7 +286,7 @@ impl<'catalog> Game<'catalog> {
                 }
             }
             if arrived > 0 {
-                game_log!(self, wave.label.to_string());
+                game_log!(self, wave.label.as_ref());
             }
         }
     }
@@ -310,22 +313,35 @@ impl<'catalog> Game<'catalog> {
             || missing.is_some()
             || (mission.goals.iter().any(|g| g.kind() == GoalKind::Escort) && !courier)
         {
-            let text = if !leader {
-                "Your leader fell. The company cannot continue without them.".into()
-            } else if let Some(name) = missing {
-                format!("{name} fell. The company cannot continue without them.")
-            } else {
-                "The courier fell before reaching safety.".into()
-            };
             self.winner = Some(Side::Enemy);
+            if !self.presentation {
+                return;
+            }
+            use std::fmt::Write;
+            let mut text = self.log_spare.borrow_mut().pop().unwrap_or_default();
+            text.clear();
+            if !leader {
+                text.push_str("Your leader fell. The company cannot continue without them.");
+            } else if let Some(name) = missing {
+                write!(
+                    &mut text,
+                    "{name} fell. The company cannot continue without them."
+                )
+                .expect("campaign outcome");
+            } else {
+                text.push_str("The courier fell before reaching safety.");
+            }
+            let mut spoken = self.log_spare.borrow_mut().pop().unwrap_or_default();
+            spoken.clear();
+            spoken.push_str(&text);
+            game_log!(self, &text);
             let state = self.campaign.as_mut().unwrap();
-            state.outcome = Some(text.clone());
+            state.outcome = Some(text);
             state.say([Dialogue {
                 speaker: "The company".into(),
                 portrait: self.rules.campaigns[&state.id].leader.clone(),
-                text: text.clone().into(),
+                text: spoken.into(),
             }]);
-            game_log!(self, text);
             return;
         }
         if let Some(goal) = mission.goals.iter().find(|g| g.kind() == GoalKind::Vigil) {
@@ -390,15 +406,19 @@ impl<'catalog> Game<'catalog> {
                 let started = goal
                     .start_event()
                     .as_ref()
-                    .is_none_or(|e| state.marked(&format!("event:{e}")));
-                let counter = state
-                    .holds
-                    .get_or_insert_with(BTreeMap::new)
-                    .entry(goal.tile().unwrap().to_string())
-                    .or_insert(Counter {
-                        held_turns: 0,
-                        last_counted_round: self.round,
-                    });
+                    .is_none_or(|e| state.marked_prefixed("event:", e));
+                let holds = state.holds.get_or_insert_with(BTreeMap::new);
+                let key: &str = goal.tile().unwrap().as_ref();
+                if !holds.contains_key(key) {
+                    holds.insert(
+                        key.to_owned(),
+                        Counter {
+                            held_turns: 0,
+                            last_counted_round: self.round,
+                        },
+                    );
+                }
+                let counter = holds.get_mut(key).expect("hold counter");
                 if !started || !actor_present || self.owners[tile] != Some(Side::Player) {
                     counter.held_turns = 0;
                     counter.last_counted_round = self.round;
@@ -411,8 +431,12 @@ impl<'catalog> Game<'catalog> {
                 continue;
             }
             for id in goal.tiles() {
-                let mark = format!("sealed:{id}");
-                if self.campaign.as_ref().unwrap().marked(&mark) {
+                if self
+                    .campaign
+                    .as_ref()
+                    .unwrap()
+                    .marked_prefixed("sealed:", id)
+                {
                     continue;
                 }
                 let eligible = self.at(self.site(id)).is_some_and(|u| {
@@ -424,17 +448,17 @@ impl<'catalog> Game<'catalog> {
                         })
                 });
                 if eligible {
-                    self.campaign.as_mut().unwrap().marks.push(mark);
+                    let marker = self.marker("sealed:", id);
+                    self.campaign.as_mut().unwrap().marks.push(marker);
                     game_log!(
                         self,
-                        "A binding stone was sealed. It will no longer raise the dead.".into(),
+                        "A binding stone was sealed. It will no longer raise the dead.",
                     );
                 }
             }
         }
         if self.turn == Side::Player {
             for event in mission.events.iter() {
-                let marker = format!("event:{}", event.id);
                 let state = self.campaign.as_ref().unwrap();
                 let triggered = match &event.trigger {
                     Trigger::Visit { tile } => {
@@ -447,19 +471,20 @@ impl<'catalog> Game<'catalog> {
                     }
                 };
                 if !triggered
-                    || state.marked(&marker)
+                    || state.marked_prefixed("event:", &event.id)
                     || event
                         .requires_event
                         .as_ref()
-                        .is_some_and(|e| !state.marked(&format!("event:{e}")))
+                        .is_some_and(|e| !state.marked_prefixed("event:", e))
                     || event
                         .unless_event
                         .as_ref()
-                        .is_some_and(|e| state.marked(&format!("event:{e}")))
+                        .is_some_and(|e| state.marked_prefixed("event:", e))
                     || event.before_round.is_some_and(|r| self.round >= r)
                 {
                     continue;
                 }
+                let marker = self.marker("event:", &event.id);
                 let state = self.campaign.as_mut().unwrap();
                 state.marks.push(marker);
                 self.gold[0] += event.gold.unwrap_or(0);
@@ -468,14 +493,15 @@ impl<'catalog> Game<'catalog> {
                 } else {
                     &event.dialogue
                 };
-                state.say(lines.iter().cloned());
+                if self.presentation {
+                    state.say(lines.iter().cloned());
+                }
                 game_log!(
                     self,
-                    (event
+                    event
                         .label
-                        .clone()
-                        .unwrap_or("The company found a new story.".into()))
-                    .to_string(),
+                        .as_deref()
+                        .unwrap_or("The company found a new story.")
                 );
             }
         }
@@ -485,23 +511,45 @@ impl<'catalog> Game<'catalog> {
                 .units
                 .iter()
                 .any(|u| u.side == Side::Player && u.name.as_deref() == Some("Captain Dain"));
+            // A terminal mechanical draft is consumed as commands; the live
+            // battle records its narrative when those commands are applied.
+            if !self.presentation {
+                return;
+            }
+            let mut outcome = self.log_spare.borrow_mut().pop().unwrap_or_default();
+            outcome.clear();
+            outcome.push_str("Mission complete. The company can rest and regroup.");
+            let war = self.campaign.as_ref().unwrap().escalated();
+            let choice = mission
+                .refuge
+                .is_some()
+                .then(|| self.marker("", if war { "refuge-war" } else { "refuge-peace" }));
             let state = self.campaign.as_mut().unwrap();
-            state.outcome = Some("Mission complete. The company can rest and regroup.".into());
-            let war = state.escalated();
-            if mission.refuge.is_some() {
+            state.outcome = Some(outcome);
+            if let Some(choice) = choice {
                 state
                     .choices
-                    .get_or_insert_with(Vec::new)
-                    .push(if war { "refuge-war" } else { "refuge-peace" }.into());
+                    .get_or_insert_with(|| crate::reuse::Vec::<String>::with_capacity(8).into())
+                    .push(choice);
             }
-            state.say(
-                if mission.refuge.is_some() && war {
-                    mission.refuge.as_ref().unwrap().war_victory.clone()
-                } else {
-                    mission.victory.clone()
-                }
-                .iter()
-                .cloned(),
+            let fallen = state.fallen_companions.as_deref().unwrap_or_default();
+            let marks = &state.marks;
+            let lines = if mission.refuge.is_some() && war {
+                &mission.refuge.as_ref().unwrap().war_victory
+            } else {
+                &mission.victory
+            };
+            state.dialogue.extend(
+                lines
+                    .iter()
+                    .filter(|line| {
+                        war && mission.refuge.is_some()
+                            || !(fallen.iter().any(|name| name == line.speaker.as_ref())
+                                || marks.iter().any(|mark| {
+                                    mark.strip_prefix("fallen:") == Some(line.speaker.as_ref())
+                                }))
+                    })
+                    .cloned(),
             );
             let definition = &self.rules.campaigns[&state.id];
             state.completed = state.mission == definition.missions.len() - 1;
@@ -520,12 +568,11 @@ impl<'catalog> Game<'catalog> {
                         .cloned(),
                 );
             }
-            let text = if state.completed {
-                format!("{} is complete.", definition.name)
+            if state.completed {
+                game_log!(self, format!("{} is complete.", definition.name));
             } else {
-                "Mission complete.".into()
-            };
-            game_log!(self, text);
+                game_log!(self, "Mission complete.");
+            }
         }
     }
     pub(crate) fn start_campaign(
@@ -609,11 +656,21 @@ impl<'catalog> Game<'catalog> {
         game.units.retain(|u| {
             u.side != Side::Player
                 || u.role == Some(Role::Leader)
-                || u.name.as_ref().is_none_or(|n| !fallen.contains(n))
+                || u.name
+                    .as_ref()
+                    .is_none_or(|n| !fallen.iter().any(|f| f.as_str() == n.as_ref()))
         });
         game.roster_changed();
-        game.campaign.as_mut().unwrap().dialogue =
-            (game.mission.as_ref().unwrap().intro.clone()).to_vec();
+        let intro = game
+            .mission
+            .as_ref()
+            .unwrap()
+            .intro
+            .iter()
+            .filter(|line| !game.fallen(&line.speaker))
+            .cloned()
+            .collect();
+        game.campaign.as_mut().unwrap().dialogue = intro;
         if (choices
             .iter()
             .any(|c| c == "refuge-war" || c == "green-dain-dead"))
@@ -634,7 +691,7 @@ impl<'catalog> Game<'catalog> {
                 let tile = game.site(&format!("{},{}", incoming.col, incoming.row));
                 game.add(kind, incoming.side, tile);
                 let added = game.units.last_mut().unwrap();
-                added.name = incoming.name.as_ref().map(ToString::to_string);
+                added.name = incoming.name.as_deref().map(Into::into);
                 added.role = incoming.role.clone();
             }
         }
@@ -646,7 +703,7 @@ impl<'catalog> Game<'catalog> {
                     && if veteran.role == Some(Role::Leader) {
                         u.role == Some(Role::Leader)
                     } else {
-                        veteran.name.is_some() && u.name == veteran.name
+                        veteran.name.is_some() && u.name.as_deref() == veteran.name.as_deref()
                     }
             }) {
                 if game.rules.units[unit.kind].family == game.rules.units[kind].family {
@@ -681,7 +738,7 @@ impl<'catalog> Game<'catalog> {
             game.add(kind, Side::Player, tile);
             let unit = game.units.last_mut().unwrap();
             unit.experience = Some(veteran.experience);
-            unit.name = veteran.name;
+            unit.name = veteran.name.map(Into::into);
         }
         for unit in &game.units {
             if [
@@ -698,6 +755,8 @@ impl<'catalog> Game<'catalog> {
         }
         game.log.clear();
         game_log!(game, game.mission.as_ref().unwrap().briefing.to_string());
+        game.prepare_campaign_storage();
+        game.prepare_forks();
         game
     }
     pub(crate) fn returns_with_story(&self, u: &Unit) -> bool {
@@ -733,9 +792,12 @@ impl<'catalog> Game<'catalog> {
                 u.side == Side::Player
                     && !self.rules.units[u.kind].leader
                     && u.role != Some(Role::Courier)
-                    && u.name
-                        .as_ref()
-                        .is_none_or(|n| !mission.required_companions.iter().any(|id| id == n))
+                    && u.name.as_ref().is_none_or(|n| {
+                        !mission
+                            .required_companions
+                            .iter()
+                            .any(|id| id.as_ref() == n.as_ref())
+                    })
                     && !self.returns_with_story(u)
             })
             .collect();
@@ -769,7 +831,7 @@ impl<'catalog> Game<'catalog> {
         let veteran = |u: &Unit, role: bool| Veteran {
             r#type: self.rules.units[u.kind].id.to_string(),
             experience: u.experience.unwrap_or(0),
-            name: u.name.clone(),
+            name: u.name.as_deref().map(str::to_owned),
             role: if role { u.role.clone() } else { None },
         };
         let veterans = eligible

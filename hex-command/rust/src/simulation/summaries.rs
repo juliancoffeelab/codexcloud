@@ -63,9 +63,9 @@ fn events<'a>(
                 let unit = phase
                     .units
                     .iter()
-                    .map(|u| u.as_ref())
+                    .map(|u| &***u)
                     .chain(phase.records.losses.iter())
-                    .chain(phase.before.iter().map(|u| u.as_ref()))
+                    .chain(phase.before.iter().map(|u| &***u))
                     .find(|u| &u.id == id)
                     .ok_or("Combat usage references an unknown unit")?;
                 let row = usage
@@ -343,10 +343,10 @@ mod tests {
             };
             let phase = &mut arena.phases[0];
             phase.before = vec![
-                std::sync::Arc::new(unit("u1", "novice", "player")),
-                std::sync::Arc::new(unit("u2", "guard", "enemy")),
+                std::sync::Arc::new(unit("u1", "novice", "player").into()),
+                std::sync::Arc::new(unit("u2", "guard", "enemy").into()),
             ];
-            phase.units = vec![std::sync::Arc::new(unit("u1", "veteran", "player"))];
+            phase.units = vec![std::sync::Arc::new(unit("u1", "veteran", "player").into())];
             phase.records.losses = vec![unit("u2", "guard", "enemy")];
             phase.records.combats = vec![
             serde_json::from_value(json!({
@@ -440,10 +440,10 @@ mod tests {
                 gold: state.gold.clone(),
                 before: vec![],
                 units: vec![],
-                ownership: std::sync::Arc::new(OwnershipSnapshot {
+                ownership: std::sync::Arc::new(Snapshot::from(OwnershipSnapshot {
                     tiles: std::sync::Arc::new(vec![]),
                     owners: vec![],
-                }),
+                })),
                 goals: vec![],
                 objectives: vec![],
                 campaign: None,

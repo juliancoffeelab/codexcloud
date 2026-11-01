@@ -4,6 +4,9 @@ use super::{
     objectives::{self},
     priority,
 };
+use crate::reuse::Vec;
+#[cfg(test)]
+use crate::reuse::vec;
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
@@ -25,14 +28,14 @@ pub(crate) trait Planner {
     fn plan(
         &mut self,
         context: &mut crate::ai::context::TacticalContext<'_, '_>,
-        orders: &crate::ai::orders::TacticalOrders,
+        orders: crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, CommandError>;
 }
 impl Planner for PlannerKind {
     fn plan(
         &mut self,
         context: &mut crate::ai::context::TacticalContext<'_, '_>,
-        orders: &crate::ai::orders::TacticalOrders,
+        orders: crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, CommandError> {
         match self {
             Self::Classic => classic::Classic.plan(context, orders),
@@ -44,14 +47,14 @@ impl Planner for PlannerKind {
 fn drive(
     kind: PlannerKind,
     context: &mut crate::ai::context::TacticalContext<'_, '_>,
-    orders: &crate::ai::orders::TacticalOrders,
+    orders: crate::ai::orders::TacticalOrders,
 ) -> Result<crate::ai::orders::PlanningReport, CommandError> {
     context
         .workspace
         .orders
         .as_mut()
         .expect("turn orders")
-        .tactics = orders.clone();
+        .tactics = orders;
     context
         .workspace
         .orders
@@ -239,8 +242,7 @@ impl PlannerKind {
                     orders,
                     &workspace.escort,
                     workspace.seed,
-                    workspace.prepared_goals.as_deref(),
-                    &mut workspace.routes,
+                    workspace.prepared_goals.as_ref().map(|v| v.as_slice()),
                     &mut workspace.commitments,
                     &mut intents,
                     &mut workspace.threats,
@@ -283,11 +285,8 @@ impl PlannerKind {
                         }
                     }
                     if let (Some(target), Some(weapon)) = (plan.target, plan.weapon) {
-                        workspace.attack_continuation = Some((
-                            UnitId(plan.unit),
-                            UnitId(target),
-                            WeaponId(rules.units[actor.kind].attacks[weapon].id.to_string()),
-                        ));
+                        workspace.attack_continuation =
+                            Some((UnitId(plan.unit), UnitId(target), weapon));
                     }
                 }
             } else {

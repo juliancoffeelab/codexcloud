@@ -1,6 +1,8 @@
 use crate::ai::Recorder;
 use crate::ai::objectives::actor_matches;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::reuse::Set as HashSet;
+use crate::reuse::{Vec, vec};
 use crate::sort::Order;
 use crate::{
     ai::context::{BattleDraft, BattleView},
@@ -8,7 +10,6 @@ use crate::{
     ai::planner::safety::Threats,
     data::*,
 };
-use rustc_hash::FxHashSet as HashSet;
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Retreat {
     Idle,
@@ -61,11 +62,13 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             && goals.iter().any(|o| {
                 o.hold == Some(true)
                     && actor_matches(&o.actor, u.id)
-                    && o.tiles.contains(&g.board().ids[u.tile])
+                    && o.tiles
+                        .iter()
+                        .any(|t| t.as_str() == g.board().ids[u.tile].as_str())
             });
         Self {
             unit: u.clone(),
-            goals: goals.to_vec(),
+            goals: goals.iter().cloned().collect(),
             reserved: g.reserved(u, goals),
             yielding,
             lanes: orders.lanes(g),
@@ -134,8 +137,22 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         if !self.important {
             return true;
         }
-        let retaliation = g.maximum_retaliation(&self.unit, target, weapon, from);
-        let killed = g.exchange(&self.unit, target, weapon, from).death[1] == 1.0;
+        let forecast = g.exchange(&self.unit, target, weapon, from);
+        self.safe_attack(g, u, target, from, &forecast)
+    }
+    fn safe_attack(
+        &mut self,
+        g: &BattleView,
+        u: &Unit,
+        target: &Unit,
+        from: usize,
+        forecast: &crate::logic::exchange::ExchangeForecast,
+    ) -> bool {
+        if !self.important {
+            return true;
+        }
+        let retaliation = forecast.maximum[1];
+        let killed = forecast.death[1] == 1.0;
         if self.orders.protects(self.unit.id) && retaliation > 0 {
             return false;
         }
@@ -173,12 +190,11 @@ impl BattleView<'_, '_> {
         }
         first + second
     }
-    fn attack_score(&self, u: &Unit, target: &Unit, from: usize, weapon: Option<usize>) -> f64 {
-        let Some(w) = weapon.or_else(|| self.best_attack(u, target, from)) else {
-            return -100.0;
-        };
-        let forecast = self.exchange(u, target, w, from);
-        let retaliation = forecast.damage[1];
+    fn attack_value(
+        &self,
+        target: &Unit,
+        forecast: &crate::logic::exchange::ExchangeForecast,
+    ) -> f64 {
         (if self.rules().units[target.kind].leader {
             20.0
         } else if target.role == Some(Role::Courier) {
@@ -188,8 +204,8 @@ impl BattleView<'_, '_> {
         }) + forecast.death[1] * 12.0
             + (self.rules().units[target.kind].hp - target.hp) as f64 * 0.3
             + forecast.effective[0]
-            - retaliation * 0.7
-            - self.death_chance(u, target, w, from) * 30.0
+            - forecast.damage[1] * 0.7
+            - forecast.death[0] * 30.0
     }
 
     fn movement_goals(&self, u: &Unit, orders: &crate::ai::orders::TacticalOrders) -> Vec<usize> {
@@ -304,17 +320,24 @@ impl BattleDraft<'_, '_> {
         let mut best: Option<(&Unit, usize, f64)> = None;
         for target in self.units().iter().filter(|t| t.side != u.side) {
             for weapon in self.attack_options(&u, target, u.tile) {
-                if !rules.attack(self, &u, target, weapon, u.tile)
-                    || (!desperate && self.preview(&u, target, weapon, u.tile).1 >= u.hp)
+                if !rules
+                    .orders
+                    .attack_allowed(self, &rules.unit, target, weapon, u.tile)
                 {
                     continue;
                 }
-                let score = self.attack_score(&u, target, u.tile, Some(weapon))
+                let forecast = self.exchange(&u, target, weapon, u.tile);
+                if !rules.safe_attack(self, &u, target, u.tile, &forecast)
+                    || (!desperate && forecast.damage[1].round() as i32 >= u.hp)
+                {
+                    continue;
+                }
+                let score = self.attack_value(target, &forecast)
                     + rules.escort.attack(
                         id,
                         target,
-                        self.preview(&u, target, weapon, u.tile).0,
-                        self.exchange(&u, target, weapon, u.tile).death[1],
+                        forecast.damage[0].round() as i32,
+                        forecast.death[1],
                     );
                 if best.as_ref().is_none_or(|(b, _, s)| {
                     score > *s || (score == *s && order.compare(self, target.tile, b.tile).is_lt())
@@ -337,16 +360,24 @@ impl BattleDraft<'_, '_> {
         recorder: &mut Recorder,
     ) -> Retreat {
         let u = self.unit(id).unwrap().clone();
-        let enemies: Vec<_> = self.units().iter().filter(|o| o.side != u.side).collect();
-        let retaliations: Vec<_> = enemies
+        let enemies: crate::reuse::Local<_> = self
+            .units()
             .iter()
+            .filter(|o| o.side != u.side)
+            .map(|o| o.tile)
+            .collect();
+        let retaliations: Vec<_> = self
+            .units()
+            .iter()
+            .filter(|o| o.side != u.side)
             .flat_map(|target| {
                 self.attack_options(&u, target, u.tile)
                     .into_iter()
-                    .map(|w| self.preview(&u, target, w, u.tile).1)
+                    .map(|w| self.exchange(&u, target, w, u.tile).damage[1].round() as i32)
             })
             .collect();
-        if enemies.is_empty() || retaliations.iter().any(|&d| d < u.hp) {
+        let has_enemies = !enemies.is_empty();
+        if !has_enemies || retaliations.iter().any(|&d| d < u.hp) {
             self.units_mut()
                 .iter_mut()
                 .find(|unit| unit.id == id)
@@ -393,7 +424,7 @@ impl BattleDraft<'_, '_> {
         for &t in &destinations {
             let separation = enemies
                 .iter()
-                .map(|e| self.board().distance(t, e.tile))
+                .map(|&tile| self.board().distance(t, tile))
                 .min()
                 .unwrap()
                 .min(8);
@@ -481,7 +512,7 @@ impl BattleDraft<'_, '_> {
                 && crate::ai::objectives::actor_route(g)
         });
         let routes = if assigned {
-            Some(std::rc::Rc::new(self.occupied_routes(&u, &goals, false)))
+            Some(self.occupied_routes(&u, &goals, false))
         } else {
             (self.map_id() == "river" || rules.orders.campaign || !rebuild.is_empty())
                 .then(|| self.routes(u.kind, &goals))
@@ -502,10 +533,10 @@ impl BattleDraft<'_, '_> {
                         && self.units().iter().any(|target| {
                             target.side != u.side
                                 && self.rules().units[target.kind].leader
-                                && self
-                                    .attack_options(&u, target, t)
-                                    .iter()
-                                    .any(|&w| self.preview(&u, target, w, t).0 >= target.hp)
+                                && self.attack_options(&u, target, t).iter().any(|&w| {
+                                    self.exchange(&u, target, w, t).damage[0].round() as i32
+                                        >= target.hp
+                                })
                         }))
             })
             .collect();
@@ -535,16 +566,21 @@ impl BattleDraft<'_, '_> {
                     .into_iter()
                     .any(|w| rules.attack(self, &u, target, w, t))
                 {
-                    let escort_bonus = self.best_attack(&u, target, t).map_or(0.0, |weapon| {
-                        rules.escort.attack(
-                            id,
-                            target,
-                            self.preview(&u, target, weapon, t).0,
-                            self.exchange(&u, target, weapon, t).death[1],
-                        )
-                    });
-                    opportunity = opportunity
-                        .max(5.0 + (self.attack_score(&u, target, t, None) + escort_bonus) / 5.0);
+                    let (attack, escort_bonus) =
+                        self.best_attack(&u, target, t)
+                            .map_or((-100.0, 0.0), |weapon| {
+                                let forecast = self.exchange(&u, target, weapon, t);
+                                (
+                                    self.attack_value(target, &forecast),
+                                    rules.escort.attack(
+                                        id,
+                                        target,
+                                        forecast.damage[0].round() as i32,
+                                        forecast.death[1],
+                                    ),
+                                )
+                            });
+                    opportunity = opportunity.max(5.0 + (attack + escort_bonus) / 5.0);
                 }
             }
             let capture =
@@ -610,7 +646,7 @@ impl BattleDraft<'_, '_> {
         let Some(u) = self.unit(id).cloned() else {
             return;
         };
-        let individual = individual(objectives.to_vec());
+        let individual = individual(objectives.iter().cloned().collect());
         let tile_order = TileOrder::new(self, &u, true);
         let nearest = |g: &Objective| {
             g.tiles
@@ -624,7 +660,7 @@ impl BattleDraft<'_, '_> {
                 })
                 .unwrap()
         };
-        let mut eligible: Vec<_> = individual
+        let mut eligible: crate::reuse::Local<_> = individual
             .iter()
             .filter(|g| {
                 self.can_pursue(&u, g)
@@ -686,7 +722,7 @@ impl super::Planner for Classic {
     fn plan(
         &mut self,
         context: &mut crate::ai::context::TacticalContext<'_, '_>,
-        orders: &crate::ai::orders::TacticalOrders,
+        orders: crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, crate::data::CommandError> {
         super::drive(super::PlannerKind::Classic, context, orders)
     }

@@ -39,9 +39,12 @@ impl Game<'_> {
                     let recommended = self.best_attack(unit, target, unit.tile);
                     for weapon in self.attack_options(unit, target, unit.tile) {
                         let attack = self.rules.units[unit.kind].attacks[weapon].clone();
-                        let (damage, retaliation, response) =
-                            self.preview(unit, target, weapon, unit.tile);
                         let forecast = self.exchange(unit, target, weapon, unit.tile);
+                        let damage = forecast.damage[0].round() as i32;
+                        let retaliation = forecast.damage[1].round() as i32;
+                        let response = (forecast.strikes[1] > 0.0)
+                            .then(|| self.response(unit, target, weapon, unit.tile))
+                            .flatten();
                         let health = |side| HpForecast {
                             minimum: forecast.hp_minimum[side],
                             maximum: forecast.hp_maximum[side],

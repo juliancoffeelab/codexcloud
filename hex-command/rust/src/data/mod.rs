@@ -16,7 +16,7 @@ pub(crate) struct Unit {
     pub moved: bool,
     pub attacked: bool,
     pub experience: Option<u32>,
-    pub name: Option<String>,
+    pub name: Option<std::rc::Rc<str>>,
     pub role: Option<Role>,
     pub retreating: Option<bool>,
     pub rebuilding: Option<bool>,

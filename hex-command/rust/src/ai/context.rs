@@ -1,6 +1,10 @@
 //! Capability boundary between authored campaigns and mechanical battle queries.
 use super::{PlanningWorkspace, orders::*};
+use crate::logic::Action as Command;
 use crate::logic::{battle::Board, geometry::TileSet};
+use crate::reuse::Vec;
+#[cfg(test)]
+use crate::reuse::vec;
 use crate::{data::*, logic::Game};
 use std::rc::Rc;
 
@@ -51,7 +55,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn board(&self) -> &Board {
         &self.engine().board
     }
-    pub(super) fn units(&self) -> &Vec<Unit> {
+    pub(super) fn units(&self) -> &std::vec::Vec<Unit> {
         &self.engine().units
     }
 
@@ -61,7 +65,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn terrain_storage(&self) -> &Rc<[usize]> {
         &self.engine().terrain
     }
-    pub(super) fn owners(&self) -> &Vec<Option<Side>> {
+    pub(super) fn owners(&self) -> &std::vec::Vec<Option<Side>> {
         &self.engine().owners
     }
     pub(super) fn map_id(&self) -> &str {
@@ -86,7 +90,11 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         &self.engine().occupied_tiles
     }
 
-    pub(super) fn attack_origins(&self, category: Category, range: u8) -> Rc<Vec<TileSet>> {
+    pub(super) fn attack_origins(
+        &self,
+        category: Category,
+        range: u8,
+    ) -> Rc<std::vec::Vec<TileSet>> {
         self.engine().attack_origins(category, range)
     }
     pub(super) fn can_attack(
@@ -98,7 +106,12 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     ) -> bool {
         self.engine().can_attack(unit, from, target, weapon)
     }
-    pub(super) fn attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
+    pub(super) fn attack_options(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        from: usize,
+    ) -> smallvec::SmallVec<[usize; 4]> {
         self.engine().attack_options(unit, target, from)
     }
     pub(super) fn damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> i32 {
@@ -110,7 +123,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         target: &Unit,
         weapon: usize,
         from: usize,
-    ) -> Rc<crate::logic::exchange::ExchangeForecast> {
+    ) -> crate::logic::exchange::ExchangeForecast {
         self.engine().exchange(attacker, target, weapon, from)
     }
     pub(super) fn exchange_with_thorns(
@@ -120,7 +133,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         weapon: usize,
         from: usize,
         reflection: i32,
-    ) -> Rc<crate::logic::exchange::ExchangeForecast> {
+    ) -> crate::logic::exchange::ExchangeForecast {
         self.engine()
             .exchange_with_thorns(attacker, target, weapon, from, reflection)
     }
@@ -146,29 +159,18 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         target: &Unit,
         weapon: usize,
     ) -> f64 {
-        self.engine()
-            .damage_distribution(attacker, target, weapon, target.tile)
-            .chance(target.hp)
+        let [low, high] = self.engine().damage_bounds(attacker, target, weapon);
+        if target.hp <= low {
+            1.0
+        } else if target.hp > high {
+            0.0
+        } else {
+            self.engine()
+                .damage_distribution(attacker, target, weapon, target.tile)
+                .chance(target.hp)
+        }
     }
-    pub(super) fn maximum_retaliation(
-        &self,
-        attacker: &Unit,
-        target: &Unit,
-        weapon: usize,
-        from: usize,
-    ) -> i32 {
-        self.engine()
-            .maximum_retaliation(attacker, target, weapon, from)
-    }
-    pub(super) fn death_chance(
-        &self,
-        attacker: &Unit,
-        target: &Unit,
-        weapon: usize,
-        from: usize,
-    ) -> f64 {
-        self.engine().death_chance(attacker, target, weapon, from)
-    }
+    #[cfg(test)]
     pub(super) fn preview(
         &self,
         unit: &Unit,
@@ -199,13 +201,18 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn terrain_is(&self, tile: usize, terrain: Terrain) -> bool {
         self.engine().terrain_is(tile, terrain)
     }
-    pub(super) fn promotion_options(&self, unit: &Unit) -> Vec<usize> {
+    pub(super) fn promotion_options(&self, unit: &Unit) -> smallvec::SmallVec<[usize; 4]> {
         self.engine().promotion_options(unit)
     }
-    pub(super) fn recruitment_options(&self, side: Side) -> Vec<usize> {
+    pub(super) fn recruitment_options(&self, side: Side) -> smallvec::SmallVec<[usize; 32]> {
         self.engine().recruitment_options(side)
     }
-    pub(super) fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
+    pub(super) fn placement_tiles(
+        &self,
+        leader: &Unit,
+        kind: usize,
+        price: bool,
+    ) -> smallvec::SmallVec<[usize; 8]> {
         self.engine().placement_tiles(leader, kind, price)
     }
     pub(super) fn threat_reach_blocked(&self, unit: &Unit, occupied: TileSet) -> TileSet {
@@ -214,13 +221,24 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn cost(&self, kind: usize, tile: usize) -> u16 {
         self.engine().cost(kind, tile)
     }
-    pub(super) fn reachable(&self, unit: &Unit) -> Rc<Vec<(usize, u16)>> {
+    pub(super) fn reachable(&self, unit: &Unit) -> Rc<std::vec::Vec<(usize, u16)>> {
         self.engine().reachable(unit)
     }
-    pub(super) fn routes(&self, kind: usize, goals: &[usize]) -> Rc<Vec<u16>> {
+    pub(super) fn route_region(&self, kind: usize, tile: usize) -> usize {
+        self.engine().route_region(kind, tile)
+    }
+    pub(super) fn route_connected(&self, kind: usize, from: usize, to: usize) -> bool {
+        self.engine().route_connected(kind, from, to)
+    }
+    pub(super) fn routes(&self, kind: usize, goals: &[usize]) -> Rc<std::vec::Vec<u16>> {
         self.engine().routes(kind, goals)
     }
-    pub(super) fn occupied_routes(&self, unit: &Unit, goals: &[usize], yielding: bool) -> Vec<u16> {
+    pub(super) fn occupied_routes(
+        &self,
+        unit: &Unit,
+        goals: &[usize],
+        yielding: bool,
+    ) -> Rc<std::vec::Vec<u16>> {
         self.engine().occupied_routes(unit, goals, yielding)
     }
     pub(super) fn occupied_routes_with_penalty(
@@ -228,7 +246,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         unit: &Unit,
         goals: &[usize],
         friendly_penalty: Option<u16>,
-    ) -> Vec<u16> {
+    ) -> Rc<std::vec::Vec<u16>> {
         self.engine()
             .occupied_routes_with_penalty(unit, goals, friendly_penalty)
     }
@@ -245,7 +263,7 @@ impl<'a, 'catalog> std::ops::Deref for BattleDraft<'a, 'catalog> {
     }
 }
 impl<'a, 'catalog> BattleDraft<'a, 'catalog> {
-    pub(super) fn units_mut(&mut self) -> &mut Vec<Unit> {
+    pub(super) fn units_mut(&mut self) -> &mut std::vec::Vec<Unit> {
         &mut self.0.engine_mut().units
     }
     /// Mechanical phase forecast includes engine-resolved healing and arrivals.

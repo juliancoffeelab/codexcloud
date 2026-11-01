@@ -1,11 +1,12 @@
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::reuse::{Map as HashMap, Set as HashSet};
+use crate::reuse::{Vec, vec};
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
-use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 use std::cmp::Ordering;
 /// Compare canonical actor identities without formatting in candidate loops.
-pub(super) fn actor_matches(actor: &Option<String>, id: u32) -> bool {
-    actor.as_deref().is_some_and(|actor| {
+pub(super) fn actor_matches<T: AsRef<str>>(actor: &Option<T>, id: u32) -> bool {
+    actor.as_ref().map(AsRef::as_ref).is_some_and(|actor| {
         actor.strip_prefix('u').is_some_and(|number| {
             !number.is_empty()
                 && (number.len() == 1 || !number.starts_with('0'))
@@ -17,6 +18,7 @@ pub(super) fn actor_matches(actor: &Option<String>, id: u32) -> bool {
 #[cfg(test)]
 mod actor_tests {
     use super::actor_matches;
+    use crate::reuse::vec;
     #[test]
     fn only_canonical_unit_keys_match() {
         for id in [0, 12, u32::MAX] {
@@ -24,21 +26,21 @@ mod actor_tests {
             assert!(!actor_matches(&Some(format!("u0{id}")), id));
         }
         for key in ["", "u", "u+12", "u１２", "u4294967296", "12"] {
-            assert!(!actor_matches(&Some(key.into()), 12));
+            assert!(!actor_matches::<String>(&Some(key.into()), 12));
         }
-        assert!(!actor_matches(&None, 0));
+        assert!(!actor_matches::<String>(&None, 0));
     }
 }
 pub fn objective(
     id: &str,
     kind: crate::data::ObjectiveKind,
-    tiles: Vec<String>,
+    tiles: std::vec::Vec<String>,
     weight: f64,
 ) -> crate::data::Objective {
     crate::data::Objective {
         id: id.into(),
         kind,
-        tiles,
+        tiles: tiles.into(),
         weight,
         actor: None,
         family: None,
@@ -54,8 +56,8 @@ pub fn individual(goals: Vec<Objective>) -> Vec<Objective> {
                     .iter()
                     .map(|t| {
                         let mut o = g.clone();
-                        o.id = format!("{}:{t}", g.id);
-                        o.tiles = vec![t.clone()];
+                        o.id = crate::ai::orders::key(format_args!("{}:{t}", g.id));
+                        o.tiles = std::iter::once(t.clone()).collect();
                         o
                     })
                     .collect()
@@ -208,7 +210,7 @@ impl BattleView<'_, '_> {
             .filter(|&t| {
                 seen.insert(t) && !reserved.contains(&t) && self.cost(u.kind, t) != u16::MAX
             })
-            .map(|t| self.board().ids[t].clone())
+            .map(|t| self.board().ids[t].as_str().into())
             .collect();
         result.weight *= 0.35;
         result
@@ -266,14 +268,18 @@ impl BattleView<'_, '_> {
             // edges with visited parents, rather than requiring strict descent.
             let mut parents = vec![usize::MAX; self.terrain().len()];
             parents[actor.tile] = actor.tile;
-            let mut pending = std::collections::VecDeque::from([actor.tile]);
+            let mut pending = Vec::with_capacity(self.terrain().len());
+            pending.push(actor.tile);
+            let mut cursor = 0;
             let mut endpoint = None;
-            while let Some(current) = pending.pop_front() {
+            while cursor < pending.len() {
+                let current = pending[cursor];
+                cursor += 1;
                 if targets.contains(&current) {
                     endpoint = Some(current);
                     break;
                 }
-                let mut next: Vec<_> =
+                let mut next: smallvec::SmallVec<[_; 6]> =
                     self.board().adjacent[current]
                         .iter()
                         .copied()
@@ -293,7 +299,7 @@ impl BattleView<'_, '_> {
                 next.order_by_key(|&tile| route[tile].saturating_add(self.cost(actor.kind, tile)));
                 for tile in next {
                     parents[tile] = current;
-                    pending.push_back(tile);
+                    pending.push(tile);
                 }
             }
             let Some(mut current) = endpoint else {
@@ -380,6 +386,7 @@ pub(super) fn actor_route(goal: &Objective) -> bool {
 #[cfg(test)]
 mod target_tests {
     use super::*;
+    use crate::reuse::vec;
     #[test]
     fn horizontal_spawn_reflections_preserve_tile_preferences() {
         let rules = crate::data::Rules::load().unwrap();
@@ -426,17 +433,18 @@ mod target_tests {
 
     #[test]
     fn repeated_target_normalization_preserves_stable_duty_ids() {
-        let target = crate::ai::orders::target(
-            "territory",
-            ObjectiveKind::Capture,
-            vec!["a".into(), "b".into()],
-            24.0,
-        );
+        let target =
+            crate::ai::orders::target("territory", ObjectiveKind::Capture, ["a", "b"], 24.0);
         let once = individual(vec![target]);
         let twice = individual(once.clone());
         assert_eq!(
-            once.iter().map(|target| &target.id).collect::<Vec<_>>(),
-            twice.iter().map(|target| &target.id).collect::<Vec<_>>()
+            once.iter()
+                .map(|target| &target.id)
+                .collect::<std::vec::Vec<_>>(),
+            twice
+                .iter()
+                .map(|target| &target.id)
+                .collect::<std::vec::Vec<_>>()
         );
         assert_eq!(once.len(), 2);
     }

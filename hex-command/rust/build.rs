@@ -63,5 +63,25 @@ fn main() {
             .unwrap_or_else(|error| panic!("invalid catalog: {error}"));
         let output = PathBuf::from(std::env::var_os("OUT_DIR").expect("build output"));
         fs::write(output.join("catalog_baked.rs"), generated).expect("baked catalog");
+        let rules = hex_command_catalog::data::Rules::load_from(&root.join("data"))
+            .expect("combat profiles");
+        let mut profiles = std::collections::BTreeSet::new();
+        for unit in rules.units.iter() {
+            for attack in unit.attacks.iter() {
+                for target in rules.units.iter() {
+                    for environment in target.environment.iter() {
+                        let modifier = target.damage_modifiers.get(attack.damage_type)
+                            + environment[attack.category.index()][attack.damage_type.index()];
+                        profiles.insert((attack.damage, attack.spread, attack.count, modifier));
+                        profiles.insert((attack.damage, attack.spread, 1, modifier));
+                    }
+                }
+            }
+        }
+        let source = format!(
+            "pub(super) static DAMAGE_PROFILES: &[(i32,i32,u8,i32)]=&{:?};",
+            profiles.into_iter().collect::<Vec<_>>()
+        );
+        fs::write(output.join("damage_profiles.rs"), source).expect("baked combat profile keys");
     }
 }

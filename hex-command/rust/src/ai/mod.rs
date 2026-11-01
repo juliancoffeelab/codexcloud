@@ -1,6 +1,9 @@
 //! Policies choose typed commands from a read-only battle. A workspace retains
 //! turn-local commitments and the continuation of a classic unit's action.
 #![deny(clippy::wildcard_enum_match_arm)]
+use crate::reuse::Vec;
+#[cfg(test)]
+use crate::reuse::vec;
 pub mod campaigner;
 pub mod context;
 mod presets;
@@ -8,6 +11,15 @@ pub(crate) mod tactic;
 use planner::{
     assignments as cooperation, candidates as cheap, escort, queued as priority, search as tactics,
 };
+mod ids;
+#[cfg(target_arch = "wasm32")]
+mod keys;
+#[cfg(target_arch = "wasm32")]
+mod sites;
+#[cfg(not(target_arch = "wasm32"))]
+mod sites {
+    pub type Sites = smallvec::SmallVec<[super::orders::SiteKey; 8]>;
+}
 pub mod objectives;
 pub mod orders;
 pub mod planner;
@@ -15,9 +27,10 @@ pub mod planner;
 pub mod profiling;
 pub mod recruiter;
 mod roles;
+use crate::reuse::Map as HashMap;
 use crate::{
     data::*,
-    logic::{Command, CommandError, Game},
+    logic::{Action as Command, CommandError, Game},
 };
 pub use campaigner::CampaignerKind as CampaignBlock;
 use context::forecast as threats;
@@ -25,13 +38,57 @@ pub use planner::PlannerKind as Planner;
 pub use presets::Blocks;
 use priority::UnitQueue;
 pub use recruiter::RecruiterKind as Recruiter;
-use rustc_hash::FxHashMap as HashMap;
 use serde::{Deserialize, Serialize};
-use std::{
-    collections::{HashSet, VecDeque},
-    rc::Rc,
-};
+use std::collections::VecDeque;
 pub use tactics::Random;
+
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn prepare_storage(tiles: usize, weapons: usize) {
+    let _registration = crate::reuse::registration();
+    sites::prepare(tiles);
+    keys::prepare(tiles);
+    crate::reuse::prepare::<orders::SiteKey>(4, tiles + 1);
+    crate::reuse::prepare::<orders::TacticalConstraint>(4, tiles + 1);
+    crate::reuse::prepare::<(UnitId, ids::TileKey)>(4, tiles + 1);
+    crate::reuse::prepare::<(UnitId, Vec<ids::TileKey>)>(4, tiles + 1);
+    crate::reuse::prepare::<(UnitId, Option<bool>)>(4, tiles + 1);
+    crate::reuse::prepare::<(usize, u32, usize)>(2, tiles + 1);
+    crate::reuse::prepare::<usize>(72, tiles + 1);
+    crate::reuse::prepare_large::<usize>(tiles * tiles);
+    crate::reuse::prepare::<String>(4, 8);
+    crate::reuse::prepare::<ids::TileKey>(32, 16);
+    crate::reuse::prepare_large::<ids::TileKey>(tiles + 1);
+    crate::reuse::prepare::<orders::Target>(8, tiles + 1);
+    crate::reuse::prepare::<orders::ObjectiveOrder>(4, tiles + 1);
+    crate::reuse::prepare::<f64>(6, tiles + 1);
+    crate::reuse::prepare::<(UnitId, Vec<UnitId>)>(2, tiles + 1);
+    crate::reuse::prepare_maps::<u32, i32>(tiles, 4);
+    drop(PlanningWorkspace::new(0, None, None, Diplomacy::Restrained));
+    drop(orders::TacticalOrders::default());
+    drop(orders::RecruitmentReport::default());
+    crate::reuse::prepare::<(u32, (Option<bool>, Option<bool>, bool))>(4, tiles + 1);
+    crate::reuse::prepare_maps::<u32, (Vec<usize>, Option<bool>)>(tiles, 8);
+    crate::reuse::prepare::<Command>(96, 8);
+    crate::reuse::prepare_large::<Command>(tiles * 4 + 8);
+    crate::reuse::prepare::<u32>(64, tiles + 1);
+    crate::reuse::prepare::<UnitId>(16, tiles + 1);
+    crate::reuse::prepare_maps::<u32, orders::GoalKey>(tiles, 4);
+    crate::reuse::prepare::<orders::DutyReport>(4, tiles * 3 + 8);
+    crate::reuse::prepare::<orders::RecruitmentShortfall>(4, tiles + 1);
+    crate::reuse::prepare::<orders::RecruitRequirement>(4, tiles + 1);
+    crate::reuse::prepare::<(u32, ids::UnitTypeId)>(4, tiles + 1);
+    crate::reuse::prepare::<(usize, u32, f64)>(2, tiles + 1);
+    crate::reuse::prepare::<(f64, bool, bool)>(2, tiles + 1);
+    crate::reuse::prepare::<(usize, f64, f64)>(2, tiles * 4 + 1);
+    crate::reuse::prepare::<orders::AuthorGoal>(4, tiles + 1);
+    threats::prepare_storage(tiles, weapons);
+    recruiter::prepare_storage(tiles, weapons);
+    cheap::prepare_storage(tiles);
+    crate::reuse::prepare_registered(tiles);
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn prepare_storage(_tiles: usize, _weapons: usize) {}
 
 /// Native diagnostics reuse the planner's conservative, independent-enemy
 /// forecast without executing a plan or changing the battle.
@@ -40,7 +97,7 @@ pub(crate) fn audit_leader_exposure(
     game: &Game<'_>,
     leader: &Unit,
     tiles: impl IntoIterator<Item = usize>,
-) -> Vec<(usize, i32)> {
+) -> std::vec::Vec<(usize, i32)> {
     let view = context::BattleView::new(game);
     let mut forecast = threats::Threats::new(&view, leader.side);
     tiles
@@ -118,7 +175,7 @@ pub enum TacticalRole {
 pub struct PlanningWorkspace {
     seed: u32,
     recruitment_remaining: Option<usize>,
-    goals: Option<Vec<Objective>>,
+    goals: Option<std::vec::Vec<Objective>>,
     prepared_goals: Option<Vec<orders::Target>>,
     diplomacy: Diplomacy,
     #[cfg(any(feature = "wasm", test))]
@@ -129,9 +186,8 @@ pub struct PlanningWorkspace {
     classic_revision: u32,
     tactical_remaining: Option<usize>,
     commands: VecDeque<Command>,
-    attack_continuation: Option<(UnitId, UnitId, WeaponId)>,
-    routes: HashMap<(usize, Vec<usize>), Rc<Vec<u16>>>,
-    commitments: HashMap<u32, String>,
+    attack_continuation: Option<(UnitId, UnitId, usize)>,
+    commitments: HashMap<u32, orders::GoalKey>,
     threats: threats::ArenaThreatWorkspace,
     priority: Option<UnitQueue>,
     cheap: cheap::Workspace,
@@ -150,7 +206,7 @@ impl PlanningWorkspace {
     pub fn new(
         seed: u32,
         recruitment_limit: impl Into<Option<usize>>,
-        goals: Option<Vec<Objective>>,
+        goals: Option<std::vec::Vec<Objective>>,
         diplomacy: Diplomacy,
     ) -> Self {
         Self {
@@ -174,9 +230,8 @@ impl PlanningWorkspace {
             classic_ids: VecDeque::new(),
             classic_revision: 0,
             tactical_remaining: None,
-            commands: VecDeque::new(),
+            commands: Vec::<Command>::with_capacity(8).into(),
             attack_continuation: None,
-            routes: HashMap::default(),
             commitments: HashMap::default(),
             threats: threats::ArenaThreatWorkspace::default(),
             priority: None,
@@ -235,9 +290,13 @@ pub(crate) fn choose_game_command(
         return Ok(Command::EndTurn);
     }
     if !workspace.turn_plan_ready {
+        debug_assert!(workspace.commands.is_empty());
+        crate::reuse::recycle_owned(std::vec::Vec::from(std::mem::take(&mut workspace.commands)));
+        workspace.commands = Vec::<Command>::with_capacity(8).into();
         let mut tactic = tactic::Tactic::new(blocks.recruiter, blocks.campaign, blocks.planner);
         let plan = tactic.run_turn(game, workspace)?;
         workspace.report = plan.planning;
+        crate::reuse::recycle_owned(std::vec::Vec::from(std::mem::take(&mut workspace.commands)));
         workspace.commands = plan.commands.into();
         workspace.turn_plan_ready = true;
     }
@@ -290,17 +349,17 @@ impl Game<'_> {
 /// This lets classic evaluate its attack after the selected move without ever
 /// mutating the caller's battle. Intent changes commit through engine commands.
 struct Recorder {
-    commands: VecDeque<Command>,
-    intents: HashMap<u32, (Option<bool>, Option<bool>, bool)>,
+    commands: Vec<Command>,
+    intents: Vec<(u32, (Option<bool>, Option<bool>, bool))>,
     error: Option<CommandError>,
-    retreat_logs: HashSet<u32>,
+    retreat_log: Option<u32>,
 }
 impl Recorder {
     fn new(game: &context::BattleView<'_, '_>) -> Self {
         Self {
-            commands: VecDeque::new(),
+            commands: Vec::<Command>::new(),
             error: None,
-            retreat_logs: HashSet::new(),
+            retreat_log: None,
             intents: game
                 .units()
                 .iter()
@@ -309,11 +368,19 @@ impl Recorder {
         }
     }
     fn flush_intents(&mut self, game: &context::BattleView<'_, '_>) {
-        for u in game.units() {
+        for (index, u) in game.units().iter().enumerate() {
             let intent = (u.retreating, u.rebuilding, u.attacked);
-            let record_retreat = self.retreat_logs.remove(&u.id);
-            if record_retreat || self.intents.get(&u.id).is_some_and(|old| *old != intent) {
-                self.commands.push_back(Command::SetUnitIntent {
+            let record_retreat = self.retreat_log == Some(u.id);
+            if record_retreat {
+                self.retreat_log = None;
+            }
+            let old = self
+                .intents
+                .get(index)
+                .filter(|entry| entry.0 == u.id)
+                .or_else(|| self.intents.iter().find(|entry| entry.0 == u.id));
+            if record_retreat || old.is_some_and(|entry| entry.1 != intent) {
+                self.commands.push(Command::SetUnitIntent {
                     unit: UnitId(u.id),
                     retreating: u.retreating,
                     rebuilding: u.rebuilding,
@@ -321,11 +388,20 @@ impl Recorder {
                     record_retreat,
                 });
             }
-            self.intents.insert(u.id, intent);
         }
+        self.snapshot(game);
+    }
+    fn snapshot(&mut self, game: &context::BattleView<'_, '_>) {
+        self.intents.clear();
+        self.intents.extend(
+            game.units()
+                .iter()
+                .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked))),
+        );
     }
     fn mark_retreat(&mut self, unit: u32) {
-        self.retreat_logs.insert(unit);
+        debug_assert!(self.retreat_log.is_none_or(|id| id == unit));
+        self.retreat_log = Some(unit);
     }
     fn emit(&mut self, game: &mut context::BattleDraft<'_, '_>, command: Command) {
         self.flush_intents(game);
@@ -333,12 +409,8 @@ impl Recorder {
             self.error = Some(error);
             return;
         }
-        self.commands.push_back(command);
-        self.intents = game
-            .units()
-            .iter()
-            .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
-            .collect();
+        self.commands.push(command);
+        self.snapshot(game);
     }
     fn move_unit(&mut self, game: &mut context::BattleDraft<'_, '_>, unit: u32, tile: usize) {
         self.emit(game, move_command(game, unit, tile));
@@ -371,47 +443,47 @@ fn intent_command(
         record_retreat: false,
     }
 }
-fn move_command(game: &context::BattleView<'_, '_>, unit: u32, tile: usize) -> Command {
+fn move_command(_game: &context::BattleView<'_, '_>, unit: u32, tile: usize) -> Command {
     Command::Move {
         unit: UnitId(unit),
-        tile: TileId(game.board().ids[tile].clone()),
+        tile,
     }
 }
 fn attack_command(
-    game: &context::BattleView<'_, '_>,
+    _game: &context::BattleView<'_, '_>,
     unit: u32,
     target: u32,
     weapon: usize,
 ) -> Command {
-    let kind = game.unit(unit).unwrap().kind;
     Command::Attack {
         unit: UnitId(unit),
         target: UnitId(target),
-        weapon: WeaponId(game.rules().units[kind].attacks[weapon].id.to_string()),
+        weapon,
     }
 }
 fn recruit_command(
-    game: &context::BattleView<'_, '_>,
+    _game: &context::BattleView<'_, '_>,
     unit: u32,
     kind: usize,
     tile: usize,
 ) -> Command {
     Command::Recruit {
         unit: UnitId(unit),
-        kind: UnitTypeId(game.rules().units[kind].id.to_string()),
-        tile: TileId(game.board().ids[tile].clone()),
+        kind,
+        tile,
     }
 }
-fn advance_command(game: &context::BattleView<'_, '_>, unit: u32, kind: usize) -> Command {
+fn advance_command(_game: &context::BattleView<'_, '_>, unit: u32, kind: usize) -> Command {
     Command::Advance {
         unit: UnitId(unit),
-        kind: UnitTypeId(game.rules().units[kind].id.to_string()),
+        kind,
     }
 }
 
 #[cfg(test)]
 mod courier_tests {
     use super::*;
+    use crate::reuse::vec;
 
     #[test]
     fn required_courier_can_detour_around_stationary_allies() {
@@ -422,12 +494,7 @@ mod courier_tests {
                 | Command::Attack { .. }
                 | Command::Recruit { .. }
                 | Command::Advance { .. }
-                | Command::EndTurn
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue => false,
+                | Command::EndTurn => false,
             }
         }
         fn is_command_move(value: &Command) -> bool {
@@ -440,11 +507,6 @@ mod courier_tests {
                 | Command::Recruit { .. }
                 | Command::Advance { .. }
                 | Command::EndTurn
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
                 | Command::SetUnitIntent { .. } => false,
             }
         }
@@ -454,11 +516,11 @@ mod courier_tests {
             &rules,
             "borrowed-tide",
             0,
-            vec![],
+            std::vec![],
             0,
-            vec![],
-            vec![],
-            vec![],
+            std::vec![],
+            std::vec![],
+            std::vec![],
         );
         game.units.retain(|u| [1, 2, 4, 5].contains(&u.id));
         for (id, tile) in [(1, "8,5"), (2, "7,3"), (4, "8,3"), (5, "8,4")] {
@@ -518,11 +580,6 @@ mod courier_tests {
                 | Command::Attack { .. }
                 | Command::Recruit { .. }
                 | Command::Advance { .. }
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
                 | Command::SetUnitIntent { .. } => false,
             }
         }
@@ -533,11 +590,11 @@ mod courier_tests {
                 &rules,
                 "borrowed-tide",
                 0,
-                vec![],
+                std::vec![],
                 0,
-                vec![],
-                vec![],
-                vec![],
+                std::vec![],
+                std::vec![],
+                std::vec![],
             );
             game.units.retain(|u| u.side == Side::Player);
             for (id, tile) in [(1, "8,5"), (2, "7,3"), (3, "9,4"), (4, "8,3"), (5, "8,4")] {
@@ -568,5 +625,12 @@ mod courier_tests {
             );
             assert_eq!(game.board.ids[game.unit(5).unwrap().tile], "9,3");
         }
+    }
+}
+
+impl Drop for PlanningWorkspace {
+    fn drop(&mut self) {
+        crate::reuse::recycle_owned(std::vec::Vec::from(std::mem::take(&mut self.commands)));
+        crate::reuse::recycle_owned(std::vec::Vec::from(std::mem::take(&mut self.classic_ids)));
     }
 }

@@ -1,10 +1,29 @@
+use crate::reuse::Map as HashMap;
+use crate::reuse::{Vec, vec};
 use crate::{data::*, logic::Game};
-use rustc_hash::FxHashMap as HashMap;
 use std::rc::Rc;
 // Dense reachability sets intersect attack origins a machine word at a time.
 use crate::logic::geometry::TileSet;
 type RiskKey = (Option<u32>, usize, usize, Option<u32>);
-type ArenaEnemies = HashMap<Option<u32>, Vec<(Unit, Vec<TileSet>)>>;
+type Coverage = smallvec::SmallVec<[TileSet; 3]>;
+#[derive(Clone, Copy)]
+struct Enemy {
+    id: u32,
+    kind: usize,
+}
+impl From<&Unit> for Enemy {
+    fn from(unit: &Unit) -> Self {
+        Self {
+            id: unit.id,
+            kind: unit.kind,
+        }
+    }
+}
+struct Forecast {
+    terrain: Rc<[usize]>,
+    enemies: Vec<(Enemy, Coverage)>,
+}
+type ArenaEnemies = HashMap<Option<u32>, Vec<(Enemy, Coverage)>>;
 /// A nonlethal attack changes HP/action flags, but arena movement forecasts and
 /// incoming damage depend only on the roster's identities, kinds and positions.
 /// Retain those calculations for the next decision in the same planning phase.
@@ -15,14 +34,26 @@ pub(in crate::ai) struct ArenaThreatWorkspace {
     side: Option<Side>,
     arena: ArenaEnemies,
     risks: HashMap<RiskKey, i32>,
+    #[cfg(not(target_arch = "wasm32"))]
+    campaign: Option<[usize; 10]>,
+    #[cfg(not(target_arch = "wasm32"))]
+    round: u32,
+    #[cfg(not(target_arch = "wasm32"))]
+    holds: std::vec::Vec<(String, u32, u32)>,
+    #[cfg(not(target_arch = "wasm32"))]
+    owners: std::vec::Vec<Option<Side>>,
+    #[cfg(not(target_arch = "wasm32"))]
+    normal: Option<Forecast>,
+    #[cfg(not(target_arch = "wasm32"))]
+    forecasts: crate::reuse::ScopedMap<(u32, Option<u32>), Forecast, 32>,
 }
 pub(in crate::ai) struct Threats<'game, 'catalog> {
     orders: Option<&'game crate::ai::orders::TacticalOrders>,
     source: &'game Game<'catalog>,
     side: Side,
-    normal: Option<(Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
+    normal: Option<Forecast>,
     cache: HashMap<RiskKey, i32>,
-    forecasts: HashMap<(u32, Option<u32>), (Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
+    forecasts: crate::reuse::ScopedMap<(u32, Option<u32>), Forecast, 32>,
     arena: ArenaEnemies,
     workspace: Option<&'game mut ArenaThreatWorkspace>,
 }
@@ -48,10 +79,13 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 let mut blocked = TileSet::new(board.terrain.len());
                 blocked.insert(enemy.tile);
                 let reach = board.threat_reach_blocked(enemy, blocked);
-                (enemy.clone(), Self::coverage_engine(&board, enemy, &reach))
+                (
+                    Enemy::from(enemy),
+                    Self::coverage_engine(&board, enemy, &reach),
+                )
             })
             .collect();
-        Self::pressure(&board, target, &enemies, None, true)
+        Self::pressure(&board, &board.terrain, target, &enemies, None, true)
     }
     pub fn new(g: &'game super::BattleView<'_, 'catalog>, side: Side) -> Self {
         let g = g.engine();
@@ -61,7 +95,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             side,
             normal: None,
             cache: HashMap::default(),
-            forecasts: HashMap::default(),
+            forecasts: crate::reuse::ScopedMap::default(),
             arena: HashMap::default(),
             workspace: None,
         }
@@ -89,12 +123,60 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     ) -> Self {
         let mut threats = Self::new(g, side);
         let g = g.engine();
-        if g.campaign.is_none() {
-            let same = workspace.side == Some(side)
+        #[cfg(not(target_arch = "wasm32"))]
+        let campaign = g.campaign.as_ref().map(|c| {
+            [
+                g.mission.as_ref().map_or(0, |m| Rc::as_ptr(m) as usize),
+                c.mission,
+                c.marks.len(),
+                c.choices.as_ref().map_or(0, |v| v.len()),
+                c.fallen_companions.as_ref().map_or(0, |v| v.len()),
+                c.refuge
+                    .as_ref()
+                    .map_or(usize::MAX, |v| v.held_turns as usize),
+                c.refuge
+                    .as_ref()
+                    .map_or(usize::MAX, |v| v.last_counted_round as usize),
+                c.refuge.as_ref().map_or(0, |v| v.escalated as usize),
+                c.vigil
+                    .as_ref()
+                    .map_or(usize::MAX, |v| v.held_turns as usize),
+                c.vigil
+                    .as_ref()
+                    .map_or(usize::MAX, |v| v.last_counted_round as usize),
+            ]
+        });
+        #[cfg(not(target_arch = "wasm32"))]
+        let reusable = true;
+        #[cfg(target_arch = "wasm32")]
+        let reusable = g.campaign.is_none();
+        if reusable {
+            #[cfg(not(target_arch = "wasm32"))]
+            let campaign_same = workspace.campaign == campaign
+                && (campaign.is_none()
+                    || (workspace.round == g.round
+                        && workspace.owners == g.owners
+                        && workspace
+                            .holds
+                            .iter()
+                            .map(|(key, held, last)| (key.as_str(), *held, *last))
+                            .eq(g
+                                .campaign
+                                .iter()
+                                .filter_map(|c| c.holds.as_ref())
+                                .flat_map(|holds| holds.iter())
+                                .map(|(key, v)| {
+                                    (key.as_str(), v.held_turns, v.last_counted_round)
+                                }))));
+            #[cfg(target_arch = "wasm32")]
+            let campaign_same = true;
+            let same_scene = campaign_same
+                && workspace.side == Some(side)
                 && workspace
                     .terrain
                     .as_ref()
-                    .is_some_and(|terrain| Rc::ptr_eq(terrain, &g.terrain))
+                    .is_some_and(|terrain| Rc::ptr_eq(terrain, &g.terrain));
+            let same = same_scene
                 && workspace.roster.len() == g.units.len()
                 && workspace
                     .roster
@@ -103,23 +185,86 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     .all(|(&(id, kind, tile, side), u)| {
                         (id, kind, tile, side) == (u.id, u.kind, u.tile, u.side)
                     });
+            #[cfg(not(target_arch = "wasm32"))]
+            let moved_actor = if !same && same_scene && workspace.roster.len() == g.units.len() {
+                let mut moved = None;
+                let mut valid = true;
+                for (&(id, kind, tile, owner), unit) in workspace.roster.iter().zip(&g.units) {
+                    if (id, kind, owner) != (unit.id, unit.kind, unit.side) {
+                        valid = false;
+                        break;
+                    }
+                    if tile != unit.tile {
+                        if moved.is_some() || owner != side {
+                            valid = false;
+                            break;
+                        }
+                        moved = Some(id);
+                    }
+                }
+                valid.then_some(moved).flatten()
+            } else {
+                None
+            };
             if !same {
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    workspace.campaign = campaign;
+                    workspace.round = g.round;
+                    workspace.owners.clone_from(&g.owners);
+                    workspace.holds.clear();
+                    workspace.holds.extend(
+                        g.campaign
+                            .iter()
+                            .filter_map(|c| c.holds.as_ref())
+                            .flat_map(|holds| holds.iter())
+                            .map(|(key, v)| (key.clone(), v.held_turns, v.last_counted_round)),
+                    );
+                    workspace.normal = None;
+                    // Independent forecasts exclude their actor from blockers.
+                    // Moving that actor preserves its forecasts; every other
+                    // positional forecast must be rebuilt.
+                    if let Some(actor) = moved_actor {
+                        workspace.forecasts.retain(|key| key.0 == actor);
+                    } else {
+                        workspace.forecasts = Default::default();
+                    }
+                }
                 workspace.side = Some(side);
                 workspace.terrain = Some(g.terrain.clone());
                 workspace.roster.clear();
                 workspace
                     .roster
                     .extend(g.units.iter().map(|u| (u.id, u.kind, u.tile, u.side)));
-                workspace.arena.clear();
-                workspace.risks.clear();
+                #[cfg(not(target_arch = "wasm32"))]
+                if let Some(actor) = moved_actor {
+                    workspace.arena.retain(|key, _| *key == Some(actor));
+                    workspace.risks.retain(|key, _| key.0 == Some(actor));
+                } else {
+                    workspace.arena.clear();
+                    workspace.risks.clear();
+                }
+                #[cfg(target_arch = "wasm32")]
+                {
+                    workspace.arena.clear();
+                    workspace.risks.clear();
+                }
             }
             threats.arena = std::mem::take(&mut workspace.arena);
             threats.cache = std::mem::take(&mut workspace.risks);
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                threats.normal = workspace.normal.take();
+                threats.forecasts = std::mem::take(&mut workspace.forecasts);
+                if campaign.is_some() {
+                    threats.cache.clear();
+                }
+            }
             threats.workspace = Some(workspace);
         }
         threats
     }
-    fn arena_enemies(source: &Game, side: Side, actor: Option<u32>) -> Vec<(Unit, Vec<TileSet>)> {
+    fn arena_enemies(source: &Game, side: Side, actor: Option<u32>) -> Vec<(Enemy, Coverage)> {
         let mut occupied = if actor.is_some() {
             TileSet::new(source.terrain.len())
         } else {
@@ -148,7 +293,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 }
                 let positions = source.threat_reach_blocked(&enemy, blockers);
                 let covered = Self::coverage_engine(source, &enemy, &positions);
-                (enemy, covered)
+                (Enemy::from(&enemy), covered)
             })
             .collect()
     }
@@ -159,7 +304,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         board: &Game<'catalog>,
         side: Side,
         excluded: Option<u32>,
-    ) -> Vec<(Unit, Vec<TileSet>)> {
+    ) -> Vec<(Enemy, Coverage)> {
         let mut occupied = TileSet::new(board.terrain.len());
         for ally in board
             .units
@@ -177,7 +322,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 blockers.insert(enemy.tile);
                 let positions = board.threat_reach_blocked(enemy, blockers);
                 (
-                    enemy.clone(),
+                    Enemy::from(enemy),
                     Self::coverage_engine(board, enemy, &positions),
                 )
             })
@@ -187,14 +332,14 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         board: &super::BattleView<'_, '_>,
         unit: &Unit,
         positions: &TileSet,
-    ) -> Vec<TileSet> {
+    ) -> Coverage {
         Self::coverage_engine(board.engine(), unit, positions)
     }
     pub(in crate::ai) fn coverage_engine(
         board: &Game,
         unit: &Unit,
         positions: &TileSet,
-    ) -> Vec<TileSet> {
+    ) -> Coverage {
         board.rules.units[unit.kind]
             .attacks
             .iter()
@@ -220,8 +365,9 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     }
     fn pressure(
         board: &Game,
+        terrain: &[usize],
         target: &Unit,
-        enemies: &[(Unit, Vec<TileSet>)],
+        enemies: &[(Enemy, Coverage)],
         eliminated: Option<u32>,
         sum: bool,
     ) -> i32 {
@@ -236,11 +382,9 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             for weapon in 0..board.rules.units[enemy.kind].attacks.len() {
                 if positions[weapon].contains(target.tile) {
                     best = best.max(if sum {
-                        board
-                            .damage_distribution(enemy, target, weapon, target.tile)
-                            .max
+                        board.maximum_damage(enemy.kind, target, weapon, terrain[target.tile])
                     } else {
-                        board.damage(enemy, target, weapon)
+                        board.expected_damage_kind(enemy.kind, target, weapon, terrain[target.tile])
                     });
                 }
             }
@@ -290,9 +434,16 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 .or_insert_with(|| {
                     Self::arena_enemies(self.source, self.side, important.then_some(u.id))
                 });
-            Self::pressure(self.source, &target, enemies, eliminated, important)
+            Self::pressure(
+                self.source,
+                &self.source.terrain,
+                &target,
+                enemies,
+                eliminated,
+                important,
+            )
         } else if !important {
-            let (shadow, enemies) = self.normal.get_or_insert_with(|| {
+            let forecast = self.normal.get_or_insert_with(|| {
                 let mut shadow = self.source.forecast_fork();
                 shadow.arena_first = None;
                 shadow.end_turn();
@@ -302,12 +453,25 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     .filter(|u| u.side != self.side)
                     .map(|u| {
                         let positions = shadow.threat_reach(u, None);
-                        (u.clone(), Self::coverage_engine(&shadow, u, &positions))
+                        (
+                            Enemy::from(u),
+                            Self::coverage_engine(&shadow, u, &positions),
+                        )
                     })
                     .collect();
-                (shadow, enemies)
+                Forecast {
+                    terrain: shadow.terrain.clone(),
+                    enemies,
+                }
             });
-            Self::pressure(shadow, &target, enemies, eliminated, false)
+            Self::pressure(
+                self.source,
+                &forecast.terrain,
+                &target,
+                &forecast.enemies,
+                eliminated,
+                false,
+            )
         } else {
             let sensitive = self.orders.is_some_and(|orders| {
                 orders.pending_arrivals
@@ -333,11 +497,11 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 } else {
                     let target = board.unit(u.id).unwrap().clone();
                     let enemies = Self::independent_enemies(&board, u.side, None);
-                    Self::pressure(&board, &target, &enemies, None, true)
+                    Self::pressure(&board, &board.terrain, &target, &enemies, None, true)
                 }
             } else {
                 let fkey = (u.id, eliminated);
-                let (board, enemies) = self.forecasts.entry(fkey).or_insert_with(|| {
+                let forecast = self.forecasts.entry(fkey).or_insert_with(|| {
                     let mut board = self.source.forecast_fork();
                     board.arena_first = None;
                     board.units.retain(|o| Some(o.id) != eliminated);
@@ -348,9 +512,19 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     } else {
                         Self::independent_enemies(&board, u.side, Some(u.id))
                     };
-                    (board, enemies)
+                    Forecast {
+                        terrain: board.terrain.clone(),
+                        enemies,
+                    }
                 });
-                Self::pressure(board, &target, enemies, None, true)
+                Self::pressure(
+                    self.source,
+                    &forecast.terrain,
+                    &target,
+                    &forecast.enemies,
+                    None,
+                    true,
+                )
             }
         };
         self.cache.insert(key, risk);
@@ -362,6 +536,11 @@ impl Drop for Threats<'_, '_> {
         if let Some(workspace) = &mut self.workspace {
             workspace.arena = std::mem::take(&mut self.arena);
             workspace.risks = std::mem::take(&mut self.cache);
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                workspace.normal = self.normal.take();
+                workspace.forecasts = std::mem::take(&mut self.forecasts);
+            }
         }
     }
 }
@@ -369,6 +548,7 @@ impl Drop for Threats<'_, '_> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::reuse::vec;
     use std::cell::Cell;
     #[test]
     fn arena_workspace_reuses_hp_only_changes_and_invalidates_roster_changes() {
@@ -441,7 +621,7 @@ mod tests {
                             .map(|u| {
                                 let positions = shadow.threat_reach(u, None);
                                 (
-                                    u.clone(),
+                                    Enemy::from(u),
                                     Threats::coverage(
                                         &crate::ai::context::BattleView::new(&shadow),
                                         u,
@@ -456,6 +636,7 @@ mod tests {
                         target.tile = tile;
                         let expected = Threats::pressure(
                             &shadow,
+                            &shadow.terrain,
                             &target,
                             &enemies,
                             if important { None } else { eliminated },
@@ -484,4 +665,11 @@ mod tests {
         assert_eq!(visits.get(), 1);
         assert_eq!(threats.minimum(&actor, []), i32::MAX);
     }
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(in crate::ai) fn prepare_storage(tiles: usize, weapons: usize) {
+    crate::reuse::prepare_maps::<RiskKey, i32>(tiles * 4, 2);
+    let _ = weapons;
+    crate::reuse::prepare::<(Enemy, Coverage)>(12, tiles + 1);
 }

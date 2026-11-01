@@ -1,5 +1,6 @@
 //! A bounded duty queue replaces the global unit search after every command.
 use crate::ai::{PlanningWorkspace, TacticalRole, planner::QueueMode, roles::role, tactics::Plan};
+use crate::reuse::{Vec, vec};
 use crate::sort::Order;
 use crate::{ai::context::BattleView, data::*};
 
@@ -23,7 +24,7 @@ impl BattleView<'_, '_> {
     ) -> Vec<UnitId> {
         let goals = &cache.goals;
         let clearing = &cache.clearing;
-        let foes: Vec<_> = self
+        let foes: crate::reuse::Local<_> = self
             .units()
             .iter()
             .filter(|u| u.side != self.turn())
@@ -278,8 +279,7 @@ fn next_plan_inner(
                 &workspace.orders.as_ref().unwrap().tactics,
                 &workspace.escort,
                 workspace.seed,
-                workspace.prepared_goals.as_deref(),
-                &mut workspace.routes,
+                workspace.prepared_goals.as_ref().map(|v| v.as_slice()),
                 &mut workspace.commitments,
                 &mut ignored,
                 &mut workspace.threats,
@@ -313,6 +313,7 @@ mod tests {
     use super::*;
     use crate::ai::Policy;
     use crate::logic::Game;
+    use crate::reuse::vec;
     #[test]
     fn campaign_rejects_arena_campaigner() {
         let rules = Rules::load().unwrap();
@@ -320,11 +321,11 @@ mod tests {
             &rules,
             "borrowed-tide",
             0,
-            vec![],
+            std::vec![],
             0,
-            vec![],
-            vec![],
-            vec![],
+            std::vec![],
+            std::vec![],
+            std::vec![],
         );
         let mut blocks = Policy::Balanced.blocks();
         blocks.campaign = crate::ai::CampaignBlock::Arena;
@@ -342,7 +343,7 @@ impl super::Planner for Queued {
     fn plan(
         &mut self,
         context: &mut crate::ai::context::TacticalContext<'_, '_>,
-        orders: &crate::ai::orders::TacticalOrders,
+        orders: crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, crate::data::CommandError> {
         super::drive(super::PlannerKind::Queued, context, orders)
     }
