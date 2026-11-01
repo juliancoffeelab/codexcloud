@@ -4,10 +4,14 @@ use crate::sort::SharedSort;
 use crate::{
     ai::{self, PlanningWorkspace},
     data::*,
-    logic::{Game, battle::Board},
+    logic::{
+        Game,
+        battle::{Board, MissionCache},
+    },
     protocol::*,
 };
 use serde::{Serialize, de::DeserializeOwned};
+use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
 use tsify::{Ts, Tsify};
@@ -40,6 +44,7 @@ where
         })
 }
 struct Battle {
+    mission_cache: RefCell<MissionCache>,
     state: State,
     board: Rc<Board>,
     seed: u32,
@@ -50,7 +55,10 @@ struct Battle {
 }
 impl Battle {
     fn game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
-        Game::from_state_with_board(rules, self.state.clone(), self.board.clone())
+        let cached = self.mission_cache.borrow().clone();
+        let game = Game::from_cached_state(rules, self.state.clone(), self.board.clone(), cached);
+        *self.mission_cache.borrow_mut() = game.mission_cache();
+        game
     }
     fn view(&self, rules: &Rules) -> EngineView {
         EngineView {
@@ -200,7 +208,10 @@ impl NativeEngineFactory {
         revision: u32,
         command: Ts<Command>,
     ) -> Result<Ts<DispatchResponse>, JsError> {
-        encode(decode::<Command>(command).and_then(|command| self.apply(id, revision, command)))
+        encode(
+            decode::<Command>(command)
+                .and_then(|command| self.apply(id, revision, command).map(|(result, _)| result)),
+        )
     }
     /// Return an [`AiDecision`] without applying it or advancing the battle revision.
     /// Repeated requests reuse the pending command until dispatch; changed options start a new phase.
@@ -248,23 +259,13 @@ impl NativeEngineFactory {
         revision: u32,
         command: Command,
     ) -> Result<DispatchUpdate, EngineError> {
-        let before = self.battle(id, revision)?;
-        let old_tiles = before.state.tiles.clone();
-        let old_map = (
-            before.state.map_id.clone(),
-            before.state.map_revision,
-            before.state.cols,
-            before.state.rows,
-        );
-        let result = self.apply(id, revision, command)?;
+        let (result, old) = self.apply(id, revision, command)?;
         let (state, tiles) = StateFrame::split(result.view.state);
-        let replaced = old_map
-            != (
-                state.map_id.clone(),
-                state.map_revision,
-                state.cols,
-                state.rows,
-            )
+        let old_tiles = old.tiles;
+        let replaced = old.map_id != state.map_id
+            || old.map_revision != state.map_revision
+            || old.cols != state.cols
+            || old.rows != state.rows
             || old_tiles.len() != tiles.len()
             || old_tiles.iter().zip(&tiles).any(|(a, b)| a.id != b.id);
         let terrain = if replaced {
@@ -295,7 +296,7 @@ impl NativeEngineFactory {
         id: u32,
         revision: u32,
         command: Command,
-    ) -> Result<DispatchResult, EngineError> {
+    ) -> Result<(DispatchResult, State), EngineError> {
         let battle = self
             .battles
             .get_mut(&id)
@@ -306,7 +307,8 @@ impl NativeEngineFactory {
         let planned = battle.pending.as_ref() == Some(&command);
         game.execute(command)?;
         let state = game.state();
-        battle.state = state;
+        let old = std::mem::replace(&mut battle.state, state);
+        *battle.mission_cache.borrow_mut() = game.mission_cache();
         battle.board = game.board.clone();
         battle.revision = battle
             .revision
@@ -317,14 +319,17 @@ impl NativeEngineFactory {
             battle.workspace = None;
             battle.options = None;
         }
-        Ok(DispatchResult {
-            view: EngineView {
-                presentation: game.presentation(),
-                revision: battle.revision,
-                state: battle.state.clone(),
+        Ok((
+            DispatchResult {
+                view: EngineView {
+                    presentation: game.presentation(),
+                    revision: battle.revision,
+                    state: battle.state.clone(),
+                },
+                combat: game.combat_animation.take(),
             },
-            combat: game.combat_animation.take(),
-        })
+            old,
+        ))
     }
     fn decision(
         &mut self,
@@ -405,6 +410,7 @@ impl NativeEngineFactory {
             .checked_add(1)
             .expect("battle handle exhausted");
         let battle = Battle {
+            mission_cache: RefCell::new(MissionCache::default()),
             state,
             board,
             seed,
@@ -533,5 +539,13 @@ pub fn preview_presentation(
     input: Ts<crate::logic::conditions::PresentationInput>,
 ) -> Result<Ts<BattlefieldPresentation>, JsError> {
     let input = input.to_rust().map_err(|e| JsError::new(&e.to_string()))?;
-    Ok(crate::logic::conditions::resolve(&input).0.into_ts()?)
+    let presentation = crate::logic::conditions::resolve(&input).0;
+    #[cfg(target_arch = "wasm32")]
+    {
+        Ok(Ts::new_unchecked(wire::value(&presentation)?))
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        Ok(presentation.into_ts()?)
+    }
 }

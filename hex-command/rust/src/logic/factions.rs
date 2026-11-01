@@ -104,7 +104,7 @@ impl Game<'_> {
         {
             return;
         }
-        let input = self.presentation_input();
+        let input = self.condition_context();
         let changes: Vec<_> = self
             .units
             .iter()

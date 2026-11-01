@@ -30,6 +30,11 @@ AI tactics compose a recruiter, campaigner and planner. Each receives a restrict
 view and contributes to a shared turn draft. Native matches execute that draft;
 the browser consumes its command queue through revision-checked battle handles.
 
+Condition evaluation borrows current battlefield facts through the catalog's shared
+query interface. Remembered fog has a derived tile index; saved games retain the
+original durable condition keys. Traversal updates remember new facts without
+constructing discarded presentation snapshots.
+
 ## Browser contract
 
 The optional `wasm` feature exposes `NativeEngineFactory`: catalog, create and
@@ -44,7 +49,10 @@ arguments validate inside the facade, where conversion failures return ordinary
 engine errors. Concrete transparent response types retain the shared
 `EngineResult<T>` envelope without losing generic arguments at the WASM boundary.
 Responses use a private buffered codec to create JavaScript objects, with maps as
-objects and explicit nulls; omitted optional save fields remain omitted. Tsify
+objects and explicit nulls; omitted optional save fields remain omitted. The live
+adapter accepts these fresh object graphs by ownership transfer and freezes them
+without a second clone. Injected bridges default to borrowed responses, which
+the adapter detaches before publishing. Tsify
 continues to own the generated public types and request decoding.
 
 The Svelte UI, map picker, artwork, sound, pacing and browser tools remain in

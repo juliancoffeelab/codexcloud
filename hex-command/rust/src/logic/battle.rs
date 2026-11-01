@@ -85,6 +85,13 @@ struct SharedTerrain {
 thread_local! {
     static TERRAIN_POOL: RefCell<(HashMap<TerrainKey, SharedTerrain>, VecDeque<TerrainKey>)> = RefCell::new((HashMap::default(), VecDeque::new()));
 }
+type MissionKey = (String, usize, bool, Vec<String>, bool);
+/// Immutable effective mission data, scoped to one catalog owner.
+#[derive(Clone, Default)]
+pub(crate) struct MissionCache {
+    key: Option<MissionKey>,
+    mission: Option<Rc<Mission>>,
+}
 #[derive(Debug)]
 pub(crate) struct Game<'catalog> {
     pub(crate) factions: Rc<Vec<Faction>>,
@@ -98,7 +105,9 @@ pub(crate) struct Game<'catalog> {
     pub(crate) walls: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) fog: Rc<Vec<Option<ConditionRule>>>,
-    pub(crate) condition_memory: Vec<String>,
+    pub(crate) condition_memory: Rc<Vec<String>>,
+    /// Derived tile-indexed remembered fog; never serialized.
+    pub(crate) fog_memory: Vec<u64>,
     pub(super) traversal: Option<(u32, Vec<usize>)>,
     pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
@@ -123,7 +132,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) pools: Option<[Vec<usize>; 2]>,
     pub(crate) arena_first: Option<Side>,
     pub(crate) mission: Option<Rc<Mission>>,
-    mission_key: Option<(String, usize, bool, Vec<String>, bool)>,
+    mission_key: Option<MissionKey>,
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) recordings: Option<Records>,
     pub(super) route_cache: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
@@ -191,13 +200,40 @@ impl<'catalog> Game<'catalog> {
         state: State,
         board: Rc<Board>,
     ) -> Self {
+        Self::from_cached_state(rules, state, board, MissionCache::default())
+    }
+    pub(crate) fn from_cached_state(
+        rules: &'catalog Rules,
+        state: State,
+        board: Rc<Board>,
+        cache: MissionCache,
+    ) -> Self {
+        let mut fog_memory = if state
+            .tiles
+            .iter()
+            .any(|t| t.fog.as_ref().is_some_and(|r| r.remember))
+        {
+            vec![0; state.tiles.len().div_ceil(64)]
+        } else {
+            Vec::new()
+        };
+        if !fog_memory.is_empty() {
+            for key in &state.condition_memory {
+                if let Some(&i) = key
+                    .strip_prefix("fog:")
+                    .and_then(|id| board.indices.get(id))
+                {
+                    fog_memory[i / 64] |= 1u64 << (i % 64);
+                }
+            }
+        }
         let units: Vec<Unit> = state
             .units
-            .iter()
+            .into_iter()
             .map(|unit| Unit {
-                faction: unit.faction.clone(),
-                items: unit.items.clone(),
-                ai_group: unit.ai_group.clone(),
+                faction: unit.faction,
+                items: unit.items,
+                ai_group: unit.ai_group,
                 id: unit.id.strip_prefix('u').unwrap().parse().unwrap(),
                 kind: rules.types[&unit.r#type],
                 side: unit.side,
@@ -206,42 +242,42 @@ impl<'catalog> Game<'catalog> {
                 moved: unit.moved,
                 attacked: unit.attacked,
                 experience: unit.experience,
-                name: unit.name.clone(),
-                role: unit.role.clone(),
+                name: unit.name,
+                role: unit.role,
                 retreating: unit.retreating,
                 rebuilding: unit.rebuilding,
             })
             .collect();
-        let terrain = state
-            .tiles
-            .iter()
-            .map(|tile| rules.terrains[&tile.terrain])
-            .collect();
-        let owners = state.tiles.iter().map(|tile| tile.owner).collect();
-        let connections = Rc::new(
-            state
-                .tiles
-                .iter()
-                .map(|tile| tile.connections.clone())
-                .collect(),
-        );
+        let n = state.tiles.len();
+        let mut terrain = Vec::with_capacity(n);
+        let mut owners = Vec::with_capacity(n);
+        let mut connections = Vec::with_capacity(n);
+        let mut walls = Vec::with_capacity(n);
+        let mut dead_ends = Vec::with_capacity(n);
+        let mut floors = Vec::with_capacity(n);
+        let mut fog = Vec::with_capacity(n);
+        for tile in state.tiles {
+            terrain.push(rules.terrains[&tile.terrain]);
+            owners.push(tile.owner);
+            connections.push(tile.connections);
+            walls.push(tile.walls);
+            dead_ends.push(tile.dead_ends);
+            floors.push(tile.floor);
+            fog.push(tile.fog);
+        }
+        let connections = Rc::new(connections);
+        let walls = Rc::new(walls);
+        let dead_ends = Rc::new(dead_ends);
+        let floors = Rc::new(floors);
         let combat_present = state.last_combat.is_some();
-        let walls = Rc::new(state.tiles.iter().map(|tile| tile.walls.clone()).collect());
-        let dead_ends = Rc::new(
-            state
-                .tiles
-                .iter()
-                .map(|tile| tile.dead_ends.clone())
-                .collect(),
-        );
         let last_combat = state.last_combat.flatten();
-        let floors = Rc::new(state.tiles.iter().map(|tile| tile.floor.clone()).collect());
         let mut game = Self {
             factions: Rc::new(state.factions),
             ground_items: state.ground_items,
             active_faction: None,
-            fog: Rc::new(state.tiles.iter().map(|t| t.fog.clone()).collect()),
-            condition_memory: state.condition_memory,
+            fog: Rc::new(fog),
+            condition_memory: Rc::new(state.condition_memory),
+            fog_memory,
             traversal: None,
             rules,
             board,
@@ -271,8 +307,8 @@ impl<'catalog> Game<'catalog> {
             armies: state.armies,
             pools: None,
             arena_first: None,
-            mission: None,
-            mission_key: None,
+            mission: cache.mission,
+            mission_key: cache.key,
             #[cfg(not(target_arch = "wasm32"))]
             recordings: None,
             route_cache: Rc::new(RefCell::new(HashMap::default())),
@@ -308,7 +344,7 @@ impl<'catalog> Game<'catalog> {
         State {
             factions: self.factions.as_ref().clone(),
             ground_items: self.ground_items.clone(),
-            condition_memory: self.condition_memory.clone(),
+            condition_memory: self.condition_memory.as_ref().clone(),
             armies: self.armies.clone(),
             map_id: self.map_id.clone(),
             map_revision: self.map_revision,
@@ -465,6 +501,13 @@ impl<'catalog> Game<'catalog> {
         }
     }
 
+    #[cfg(feature = "wasm")]
+    pub(crate) fn mission_cache(&self) -> MissionCache {
+        MissionCache {
+            key: self.mission_key.clone(),
+            mission: self.mission.clone(),
+        }
+    }
     pub(crate) fn refresh_mission(&mut self) {
         let Some(state) = &self.campaign else {
             self.mission = None;
@@ -544,6 +587,7 @@ impl<'catalog> Game<'catalog> {
             ground_items: self.ground_items.clone(),
             active_faction: self.active_faction.clone(),
             condition_memory: self.condition_memory.clone(),
+            fog_memory: self.fog_memory.clone(),
             traversal: None,
             fog: self.fog.clone(),
             rules: self.rules,
