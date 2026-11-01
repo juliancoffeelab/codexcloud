@@ -252,6 +252,7 @@ impl TacticalOrders {
     pub(crate) fn clearing(
         &self,
         game: &BattleView<'_, '_>,
+        include_unassigned: bool,
     ) -> rustc_hash::FxHashMap<u32, rustc_hash::FxHashSet<usize>> {
         fn passage(order: &ObjectiveOrder) -> Option<(UnitId, &TileId)> {
             match &order.objective {
@@ -275,7 +276,7 @@ impl TacticalOrders {
             })
             .collect();
         if missing.is_empty() {
-            return game.actor_lanes(&self.targets);
+            return game.actor_lanes(&self.targets, include_unassigned);
         }
         let mut goals = self.targets.clone();
         for (actor, destination) in missing {
@@ -288,7 +289,7 @@ impl TacticalOrders {
             goal.actor = Some(format!("u{}", actor.0));
             goals.push(goal.into());
         }
-        game.actor_lanes(&goals)
+        game.actor_lanes(&goals, include_unassigned)
     }
     pub(crate) fn rebuild_plan(
         &self,

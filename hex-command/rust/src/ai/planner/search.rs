@@ -126,7 +126,7 @@ impl BattleView<'_, '_> {
         } else {
             Cow::Owned(orders.targets.clone())
         };
-        let escort_lanes = orders.clearing(self);
+        let escort_lanes = orders.clearing(self, false);
         let rebuilds: HashMap<_, _> = self
             .units()
             .iter()

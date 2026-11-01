@@ -212,16 +212,36 @@ impl BattleView<'_, '_> {
         result.weight *= 0.35;
         result
     }
-    /// Identify friendly blockers on a required actor's next movement corridor.
-    /// Escorts clear the path rather than camping beside its destination forever.
-    pub(super) fn actor_lanes(&self, goals: &[Objective]) -> HashMap<u32, HashSet<usize>> {
+    /// Identify friendly blockers on the next corridor to a required objective.
+    /// Unassigned visits and captures use an ordinary unit, so a cautious leader
+    /// yields the entrance instead of waiting there for escorts who cannot pass.
+    pub(super) fn actor_lanes(
+        &self,
+        goals: &[Objective],
+        include_unassigned: bool,
+    ) -> HashMap<u32, HashSet<usize>> {
         let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::default();
-        for goal in goals.iter().filter(|g| actor_route(g)) {
+        fn required_corridor(goal: &Objective) -> bool {
+            match goal.kind {
+                ObjectiveKind::Visit | ObjectiveKind::Capture => {
+                    goal.id.starts_with("required:") && goal.hold != Some(true)
+                }
+                ObjectiveKind::Defeat => false,
+            }
+        }
+        let assigned = goals.iter().any(actor_route);
+        for goal in goals
+            .iter()
+            .filter(|g| actor_route(g) || include_unassigned && !assigned && required_corridor(g))
+        {
             let Some(actor) = self
                 .units()
                 .iter()
                 .filter(|u| {
                     self.belongs_to_phase(u, self.turn())
+                        && (goal.actor.is_some()
+                            || goal.family.is_some()
+                            || !u.is_leader() && u.role != Some(Role::Courier))
                         && if goal.actor.is_some() {
                             actor_matches(&goal.actor, u.id)
                         } else {

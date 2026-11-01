@@ -175,7 +175,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
             .iter()
             .map(|u| (u.id, u.tile, u.retreating))
             .collect();
-        cache.clearing = orders.clearing(game);
+        cache.clearing = orders.clearing(game, false);
         cache.lanes = orders.lanes(game);
     }
 }
@@ -965,7 +965,8 @@ mod tests {
                 );
                 assert_eq!(
                     workspace.cheap.clearing,
-                    crate::ai::context::BattleView::new(&game).actor_lanes(&workspace.cheap.goals)
+                    crate::ai::context::BattleView::new(&game)
+                        .actor_lanes(&workspace.cheap.goals, false)
                 );
                 assert_eq!(
                     workspace.cheap.lanes,

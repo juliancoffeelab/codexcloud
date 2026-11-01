@@ -55,7 +55,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         } else {
             0
         };
-        let yielding = orders.clearing(g).remove(&u.id).unwrap_or_default();
+        let yielding = orders.clearing(g, true).remove(&u.id).unwrap_or_default();
         let holding = !yielding.contains(&u.tile)
             && goals.iter().any(|o| {
                 o.hold == Some(true)
@@ -237,7 +237,7 @@ impl BattleView<'_, '_> {
             .filter(|u| self.belongs_to_phase(&u, self.turn()) && self.can_act(u.id))
             .map(|u| u.id)
             .collect();
-        let clearing = self.actor_lanes(objectives);
+        let clearing = self.actor_lanes(objectives, true);
         let order = |u: &Unit| {
             if u.is_leader() {
                 return ClassicOrder::Leader;
@@ -674,17 +674,24 @@ impl BattleDraft<'_, '_> {
         });
         let best = eligible.first().copied();
         let reserved = self.reserved(&u, objectives);
-        let clearing = orders.clearing(self).remove(&u.id);
+        let clearing = orders.clearing(self, true).remove(&u.id);
         let yielding = clearing.is_some();
         let movement = if let Some(lane) = clearing {
-            Some(
-                self.reachable(&u)
-                    .iter()
-                    .copied()
-                    .map(|(tile, _)| tile)
-                    .filter(|tile| !lane.contains(tile) && !reserved.contains(tile))
-                    .collect(),
-            )
+            let available: Vec<_> = self
+                .reachable(&u)
+                .iter()
+                .copied()
+                .map(|(tile, _)| tile)
+                .filter(|tile| !reserved.contains(tile))
+                .collect();
+            let aside: Vec<_> = available
+                .iter()
+                .copied()
+                .filter(|tile| !lane.contains(tile))
+                .collect();
+            // A packed corridor may have no side pocket. Keep the yielding
+            // penalty, but allow moving along the corridor to free this tile.
+            Some(if aside.is_empty() { available } else { aside })
         } else if reserved.contains(&u.tile) {
             Some(
                 self.board().adjacent[u.tile]
