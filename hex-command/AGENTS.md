@@ -52,6 +52,9 @@
   `palette.json`; this artwork-only flag covers hovering and swimming poses.
   Missing or false means grounded.
 - Keep changes quick to make and review. Tests must be small, fast, and lightweight.
+- Targeted fixes are almost always wrong. Diagnose the underlying cause and fix
+  the general rule or mechanism, rather than patching the observed symptom or
+  special-casing the current scenario.
 - Data-only changes do not justify new behavioral tests or extra named-content
   cases in existing test matrices.
 - Validate content through generic schema and consistency checks. Measure
