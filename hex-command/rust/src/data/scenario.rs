@@ -8,14 +8,64 @@ use std::collections::BTreeMap;
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct StartingUnit {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub items: Vec<Item>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub faction: Option<String>,
     pub col: i32,
     pub row: i32,
     pub r#type: String,
     pub side: Side,
+    #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub ai_group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
+}
+/// Select recipients by unit-instance metadata, independent of their current type.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct UnitFilter {
+    pub side: Side,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub role: Option<Role>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub name: Option<String>,
+}
+impl UnitFilter {
+    pub(crate) fn accepts(&self, unit: &Unit) -> bool {
+        unit.side == self.side
+            && self
+                .role
+                .as_ref()
+                .is_none_or(|role| unit.role.as_ref() == Some(role))
+            && self
+                .name
+                .as_ref()
+                .is_none_or(|name| unit.name.as_ref() == Some(name))
+    }
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemReward {
+    pub recipient: UnitFilter,
+    pub item: Item,
+}
+/// Remove matching units at a safe destination without killing them.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Evacuation {
+    pub tile: String,
+    pub units: UnitFilter,
 }
 /// An authored objective. Each variant requires the fields its rule consumes.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -25,36 +75,90 @@ pub struct StartingUnit {
 pub enum Goal {
     Defeat {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
     },
     Escort {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
     },
     Escape {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
     },
     Control {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tiles: Vec<String>,
     },
     Seal {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tiles: Vec<String>,
         #[serde(rename = "unitType")]
         unit_type: Option<String>,
     },
     Event {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: Option<String>,
         event: String,
     },
     Hold {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
         turns: u32,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         companion: Option<String>,
+        #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        unit_types: Vec<String>,
+        #[serde(default)]
+        once: bool,
         #[serde(rename = "earliestRound")]
         earliest_round: u32,
         #[serde(rename = "startEvent")]
@@ -62,17 +166,44 @@ pub enum Goal {
     },
     Vigil {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
         turns: u32,
         companion: String,
     },
     Refuge {
         label: String,
+        #[serde(
+            default,
+            rename = "visibleWhen",
+            skip_serializing_if = "Option::is_none"
+        )]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        visible_when: Option<Condition>,
         tile: String,
         turns: u32,
     },
 }
 impl Goal {
+    pub fn visible_when(&self) -> Option<&Condition> {
+        match self {
+            Self::Defeat { visible_when, .. }
+            | Self::Escort { visible_when, .. }
+            | Self::Escape { visible_when, .. }
+            | Self::Control { visible_when, .. }
+            | Self::Seal { visible_when, .. }
+            | Self::Event { visible_when, .. }
+            | Self::Hold { visible_when, .. }
+            | Self::Vigil { visible_when, .. }
+            | Self::Refuge { visible_when, .. } => visible_when.as_ref(),
+        }
+    }
     /// Return the structural category without interpreting a string tag.
     pub fn kind(&self) -> GoalKind {
         match self {
@@ -90,7 +221,7 @@ impl Goal {
     /// Borrow the authored objective label.
     pub fn label(&self) -> &str {
         match self {
-            Self::Defeat { label }
+            Self::Defeat { label, .. }
             | Self::Escort { label, .. }
             | Self::Escape { label, .. }
             | Self::Control { label, .. }
@@ -179,8 +310,39 @@ impl Goal {
 #[serde(tag = "kind", rename_all = "lowercase")]
 pub enum Trigger {
     Visit { tile: String },
+    Condition { condition: Condition },
     Round { round: u32 },
+    Held { tile: String, turns: u32 },
     Control { tile: String, round: Option<u32> },
+}
+/// A stable member identity prevents repeated or skipped spawns after restoration.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpawnUnit {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub faction: Option<String>,
+    pub id: String,
+    pub r#type: String,
+    pub side: Side,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub role: Option<Role>,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpawnGroup {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub faction: Option<String>,
+    #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub ai_group: Option<String>,
+    pub area: Vec<String>,
+    pub units: Vec<SpawnUnit>,
 }
 /// A once-per-mission scripted event gated by a typed trigger and prior markers.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -188,6 +350,19 @@ pub enum Trigger {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Event {
+    /// Recruitment unlocked by this event, derived from its durable marker.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub recruits: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub evacuate: Option<Evacuation>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub items: Vec<ItemReward>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub ground_items: Vec<super::GroundItem>,
     pub id: String,
     pub trigger: Trigger,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -196,6 +371,9 @@ pub struct Event {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub unless_event: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub unless_choice: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub before_round: Option<u32>,
@@ -203,9 +381,17 @@ pub struct Event {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub label: Option<String>,
     pub dialogue: Vec<Dialogue>,
+    /// Once activated, unplaced members remain pending until an area tile fits.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub spawn: Option<SpawnGroup>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub gold: Option<i32>,
+    /// Durable story outcome carried across chapters.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub choice: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub war_dialogue: Option<Vec<Dialogue>>,
@@ -224,6 +410,51 @@ pub struct Wave {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub requires_unsealed: Option<String>,
 }
+/// A named survivor enters the next mission automatically, outside recall slots.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CompanionArrival {
+    pub name: String,
+    pub col: i32,
+    pub row: i32,
+}
+
+/// Periodic consumption of occupied source terrain and lights left by matching deaths.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct Ritual {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub notice_when: Option<Condition>,
+    pub when: Condition,
+    pub id: String,
+    pub source_terrain: String,
+    pub spent_terrain: String,
+    pub unit_types: Vec<String>,
+    pub first_round: u32,
+    pub interval: u32,
+    pub spawn: RitualSpawn,
+    pub death_light: super::BattlefieldLight,
+    pub label: String,
+}
+
+/// Each consumed ritual source supplies its own origin; placement never uses a fixed map area.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct RitualSpawn {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub faction: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub ai_group: Option<String>,
+    pub radius: u16,
+    pub units: Vec<SpawnUnit>,
+}
+
 /// The peaceful and escalated outcomes of a refuge-defense mission.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -273,6 +504,33 @@ pub struct Layout {
     pub id: String,
     pub units: Vec<StartingUnit>,
 }
+/// Local orders constrain only members of the authored group.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "camelCase", deny_unknown_fields)]
+pub enum GroupOrder {
+    Hold {
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        when: Option<Condition>,
+        area: Vec<String>,
+        #[serde(rename = "attackRadius")]
+        attack_radius: u16,
+    },
+}
+/// Independent mission-controlled enemies; activation and goals do not require leaders.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct EnemyGroup {
+    pub id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub order: Option<GroupOrder>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub when: Option<ConditionRule>,
+}
 /// An authored chapter defining objectives, recruits, events and story feedback.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -289,7 +547,17 @@ pub struct Mission {
     pub hints: Vec<String>,
     #[serde(default)]
     pub required_companions: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub arrivals: Vec<CompanionArrival>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub rituals: Vec<Ritual>,
     pub goals: Vec<Goal>,
+    /// Authored side objectives, displayed separately and never required for victory.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub optional_goals: Vec<Goal>,
     pub recruits: Vec<String>,
     pub enemy_recruits: Vec<String>,
     pub gold: i32,
@@ -302,6 +570,8 @@ pub struct Mission {
     pub intro: Vec<Dialogue>,
     pub victory: Vec<Dialogue>,
     pub events: Vec<Event>,
+    #[serde(default)]
+    pub enemy_groups: Vec<EnemyGroup>,
     pub waves: Vec<Wave>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -314,6 +584,26 @@ pub struct Mission {
     pub without_dain: Option<MissionPatch>,
 }
 impl Mission {
+    /// Named companions may arrive through encounters as well as the opening roster.
+    pub fn companion_names(&self) -> impl Iterator<Item = &str> {
+        self.map
+            .units
+            .iter()
+            .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
+            .filter_map(|u| u.name.as_deref())
+            .chain(
+                self.events
+                    .iter()
+                    .filter_map(|e| e.spawn.as_ref())
+                    .flat_map(|group| &group.units)
+                    .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
+                    .filter_map(|u| u.name.as_deref()),
+            )
+    }
+    /// Shared progress rules apply to required and optional goals alike.
+    pub fn all_goals(&self) -> impl Iterator<Item = &Goal> {
+        self.goals.iter().chain(&self.optional_goals)
+    }
     /// Apply the authored fields of a story-dependent mission override.
     pub fn apply(&mut self, patch: &MissionPatch) {
         if let Some(value) = &patch.briefing {
@@ -359,14 +649,18 @@ impl Trigger {
     pub fn kind(&self) -> TriggerKind {
         match self {
             Self::Visit { .. } => TriggerKind::Visit,
+            Self::Condition { .. } => TriggerKind::Condition,
             Self::Round { .. } => TriggerKind::Round,
             Self::Control { .. } => TriggerKind::Control,
+            Self::Held { .. } => TriggerKind::Held,
         }
     }
     /// Borrow the single site required by this objective or trigger, when present.
     pub fn tile(&self) -> Option<&String> {
         match self {
-            Self::Visit { tile } | Self::Control { tile, .. } => Some(tile),
+            Self::Visit { tile } | Self::Held { tile, .. } | Self::Control { tile, .. } => {
+                Some(tile)
+            }
             _ => None,
         }
     }
@@ -387,4 +681,6 @@ pub struct MapDefinition {
     pub rows: i32,
     pub terrain: Vec<Tile>,
     pub units: Vec<StartingUnit>,
+    pub lighting: BattlefieldLighting,
+    pub presentation: BattlefieldPresentation,
 }

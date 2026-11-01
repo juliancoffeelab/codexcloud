@@ -4,53 +4,40 @@ import { TERRAIN, TYPES } from "../game/catalog";
 import type { TerrainType } from "../game/types";
 import { campaignMission } from "../game/campaign-progress";
 
-const descriptions: Record<TerrainType, string> = {
-  marsh: "Mud and reeds expose land troops; merfolk find protection here.",
-  ruins: "Broken walls shelter against ranged attacks.",
-  fort: "Earthworks protect against every damage kind. Capture them to hold a crossing.",
-  grove: "A sacred woodland refuge. Its owner’s occupants heal 4 HP each turn.",
-  plains: "Open grassland with easy footing.",
-  road: "A winding dirt road through grassland. Normal movement and no protection.",
-  forest: "Trees shelter land troops and obstruct ranged shots. Merfolk are exposed here.",
-  hill: "High ground shelters land troops and obstructs ranged shots. Merfolk are exposed here.",
-  water: "Deep water is impassable to land units. Merfolk can swim through it.",
-  bridge: "A sturdy crossing over water with easy footing, but no protection.",
-  ford: "Shallow water can be crossed on foot. The open water leaves units exposed.",
-  village: "Capture this settlement by moving a unit onto it.",
-  keep: "A fortified home for its army’s commander.",
-};
-
 function protectionFact(terrain: TerrainType): string {
-  if (terrain === "ford") return "Land troops: +1 damage received. Merfolk: no exposure.";
-  if (terrain === "marsh") return "Land troops: +1 damage received. Merfolk: −1 damage received.";
-  if (terrain === "hill") return "Land troops: −1 damage received. Merfolk: +1 damage received.";
-  if (terrain === "fort") return "Protection: −1 damage from all attacks";
-  if (terrain === "forest" || terrain === "grove")
+  const { role, damageModifiers: modifiers } = TERRAIN[terrain];
+  if (role === "ford") return "Land troops: +1 damage received. Merfolk: no exposure.";
+  if (role === "marsh") return "Land troops: +1 damage received. Merfolk: −1 damage received.";
+  if (role === "hill") return "Land troops: −1 damage received. Merfolk: +1 damage received.";
+  if (role === "forest" || role === "grove")
     return "Land troops: −1 ranged damage. Merfolk: +1 damage from all attacks.";
-  if (["forest", "grove", "ruins"].includes(terrain))
-    return "Protection: −1 damage from ranged attacks";
-  return "Protection: none";
+  if (modifiers?.melee === -1 && modifiers?.ranged === -1)
+    return "Protection: −1 damage from all attacks";
+  const effects = Object.entries(modifiers ?? {})
+    .filter(([, value]) => value !== 0)
+    .map(([kind, value]) => `${value! > 0 ? "+" : ""}${value} ${kind} damage`);
+  return effects.length ? `Protection: ${effects.join(", ")}` : "Protection: none";
 }
 
 function terrainFacts(terrain: TerrainType): string[] {
+  const role = TERRAIN[terrain].role;
   const facts: string[] = [];
-  if (terrain !== "water") facts.push(protectionFact(terrain));
-  if (["forest", "hill", "grove"].includes(terrain)) {
+  if (role !== "water") facts.push(protectionFact(terrain));
+  if (["forest", "hill", "grove", "mountain", "cave", "keep"].includes(role)) {
     facts.push("Blocks ranged shots through this hex");
   }
-  if (terrain === "village") {
+  if (role === "village") {
     facts.push(
       "+2 gold at the start of its owner’s turn",
       "Heals a friendly occupant by 4 HP at the start of its turn",
     );
   }
-  if (terrain === "grove")
-    facts.push("Heals its owner’s occupant by 4 HP at the start of its turn");
-  if (terrain === "keep") {
+  if (role === "grove") facts.push("Heals its owner’s occupant by 4 HP at the start of its turn");
+  if (role === "keep") {
     facts.push(
       "Its owner’s leader can recruit into adjacent empty terrain passable to the recruit",
       "Select an empty adjacent hex to recruit",
-      "Keeps cannot be captured",
+      "Move onto a keep to claim it",
     );
   }
   return facts;
@@ -92,17 +79,20 @@ function recruitmentView(view: BattleView, tile: TileView, context: RecruitmentC
 
 export function terrainPanelView(view: BattleView) {
   const tile = view.game.tile(view.inspectedTile);
-  if (!tile) return null;
+  if (!tile || view.game.presentation?.fog.includes(tile.id)) return null;
 
-  const hasOwnership = ["village", "keep", "grove", "ruins", "fort"].includes(tile.terrain);
+  const hasOwnership =
+    TERRAIN[tile.terrain].role === "keep" ||
+    ["village", "grove", "ruins", "fort", "monastery"].includes(TERRAIN[tile.terrain].role);
   let ownerLabel = "Unclaimed";
   if (tile.owner === "player") ownerLabel = "Your";
   if (tile.owner === "enemy") ownerLabel = "Enemy";
   const facts = terrainFacts(tile.terrain);
   const campaign = view.game.campaign;
+  const mission = campaign && campaignMission(campaign);
   const seal =
-    campaign &&
-    campaignMission(campaign).goals.find(
+    mission &&
+    [...mission.goals, ...(mission.optionalGoals ?? [])].find(
       (goal) => goal.kind === "seal" && goal.tiles.includes(tile.id),
     );
   if (seal?.kind === "seal") {
@@ -116,7 +106,7 @@ export function terrainPanelView(view: BattleView) {
   return {
     tile,
     name: TERRAIN[tile.terrain].name,
-    description: descriptions[tile.terrain],
+    description: TERRAIN[tile.terrain].description,
     ownership: hasOwnership
       ? { label: `${ownerLabel} ${tile.terrain}`, className: tile.owner || "neutral" }
       : null,

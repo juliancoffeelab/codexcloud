@@ -1,17 +1,10 @@
 import type { TileView } from "../game/view";
-import type { TerrainType } from "../game/types";
 import { pixelTerrainLayouts } from "./pixel-art";
 import { terrainArtNames } from "./terrain-connections";
 
-/** A complete prebuilt default for inspection, independent of the selected map tile. */
-export function canonicalTerrainName(terrain: TerrainType): string {
-  const name = terrainArtNames({ terrain })[0]!;
-  return pixelTerrainLayouts[name]?.length ? `${name}_layout_0` : name;
-}
-
 /** Stable per-map arrangements, independent of redraws, rules and floor colors. */
 export function terrainLayout(
-  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds">,
+  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds" | "walls">,
   mapId: string,
 ) {
   const name = terrainArtNames(tile)[0]!;

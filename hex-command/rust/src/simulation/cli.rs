@@ -823,7 +823,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
                 (
                     u.id.clone(),
                     json!({
-                        "name":u.name,"family":u.family,"race":u.race,"leader":u.leader,"hp":u.hp,
+                        "name":u.name,"family":u.family,"race":u.race,"hp":u.hp,
                         "level":u.level,"cost":u.cost,"move":u.r#move,"role":u.role,
                         "healing":u.healing,"thornAura":u.thorn_aura,"thorns":u.thorns
                     }),

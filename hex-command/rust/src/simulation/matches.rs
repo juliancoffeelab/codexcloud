@@ -94,13 +94,19 @@ pub(crate) fn create_arena<'catalog>(
         let start = state
             .tiles
             .iter()
-            .find(|tile| tile.terrain == "keep" && tile.owner == Some(side))
+            .find(|tile| {
+                rules.terrain_roles[rules.terrains[&tile.terrain]] == TerrainRole::Keep
+                    && tile.owner == Some(side)
+            })
             .ok_or("Arena requires an owned keep for each side")?
             .id
             .clone();
         let rule = &rules.units[rules.types[leader]];
         starting_cost[side.index()] += rule.cost;
         state.units.push(PublicUnit {
+            faction: None,
+            items: vec![],
+            ai_group: None,
             id: format!("u{}", state.next_id),
             r#type: leader.into(),
             side,
@@ -110,7 +116,7 @@ pub(crate) fn create_arena<'catalog>(
             attacked: false,
             experience: Some(0),
             name: None,
-            role: rule.leader.then_some(Role::Leader),
+            role: Some(Role::Leader),
             retreating: None,
             rebuilding: None,
         });
@@ -163,12 +169,14 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
             }
             let col = q + r.div_euclid(2) + 4;
             state.tiles.push(Tile {
+                fog: None,
                 id: axial_id(q, r),
                 col,
                 row: r + 4,
                 terrain: "plains".into(),
                 owner: None,
                 connections: None,
+                walls: None,
                 dead_ends: None,
                 floor: None,
             });
@@ -250,6 +258,10 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
         };
         state.tiles[index].terrain = terrain.into();
         state.tiles[partner].terrain = terrain.into();
+        if terrain == "ford" {
+            state.tiles[index].connections = Some(vec![HexDirection::E, HexDirection::W]);
+            state.tiles[partner].connections = Some(vec![HexDirection::E, HexDirection::W]);
+        }
     }
     let mut terrain = |q, r, kind: &str, owner| {
         let tile = state
@@ -258,6 +270,11 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
             .find(|t| t.id == axial_id(q, r))
             .unwrap();
         tile.terrain = kind.into();
+        tile.connections = match kind {
+            "village" => Some(vec![]),
+            "bridge" | "ford" => Some(vec![HexDirection::E, HexDirection::W]),
+            _ => None,
+        };
         tile.owner = owner;
     };
     for (q, r, kind, owner) in [
@@ -357,30 +374,60 @@ fn phase(
     let round = game.round;
     let leader_audit = super::leader_audit::begin(game);
     game.recordings.get_or_insert_with(Records::default);
-    let mut workspace = PlanningWorkspace::new(
-        seed,
-        limit.or_else(|| policy.default_recruitment_limit()),
-        goals.map(<[Objective]>::to_vec),
-        diplomacy,
-    );
-    let composition = tactic.composition();
-    if !composition.campaign.supports_campaign() && game.campaign.is_some() {
-        return Err(CommandError::BattleOnlyPolicy.into());
-    }
-    let mut recruitment = None;
-    let planning = loop {
-        let plan = {
-            let _decision = crate::ai::profiling::Decision::start(policy, game.turn);
-            tactic.run_turn(game, &mut workspace)?
-        };
-        recruitment.get_or_insert(plan.recruitment);
-        for command in plan.commands {
-            game.execute(command)?;
-        }
-        if workspace.finished() || game.winner.is_some() {
-            break plan.planning;
-        }
+    let scoped = !game.factions.is_empty();
+    let controllers = if scoped {
+        game.automatic_factions()
+            .into_iter()
+            .map(|(id, policy)| (Some(id), policy))
+            .collect()
+    } else {
+        vec![(None, None)]
     };
+    let mut diagnostics = None;
+    for (index, (faction, authored_policy)) in controllers.into_iter().enumerate() {
+        if game.winner.is_some() {
+            break;
+        }
+        let selected = authored_policy.unwrap_or(policy);
+        let mut authored_tactic = PresetTactic::from_blocks(selected.blocks());
+        let selected_tactic = if authored_policy.is_some() {
+            &mut authored_tactic
+        } else {
+            &mut *tactic
+        };
+        let mut workspace = PlanningWorkspace::new(
+            seed.wrapping_add(index as u32),
+            limit.or_else(|| selected.default_recruitment_limit()),
+            goals.map(<[Objective]>::to_vec),
+            diplomacy,
+        );
+        let composition = selected_tactic.composition();
+        if !composition.campaign.supports_campaign() && game.campaign.is_some() {
+            return Err(CommandError::BattleOnlyPolicy.into());
+        }
+        game.active_faction = faction;
+        let mut recruitment = None;
+        let planning = loop {
+            let plan = {
+                let _decision = crate::ai::profiling::Decision::start(selected, game.turn);
+                selected_tactic.run_turn(game, &mut workspace)?
+            };
+            recruitment.get_or_insert(plan.recruitment);
+            for command in plan.commands {
+                if scoped && command == Command::EndTurn {
+                    continue;
+                }
+                game.execute(command)?;
+            }
+            if workspace.finished() || game.winner.is_some() {
+                break plan.planning;
+            }
+        };
+        game.active_faction = None;
+        if diagnostics.is_none() {
+            diagnostics = workspace.diagnostics(planning, recruitment.unwrap_or_default());
+        }
+    }
     if let Some(state) = &mut game.campaign {
         state.dialogue_index = state.dialogue.len();
     }
@@ -395,7 +442,7 @@ fn phase(
     };
     let phase = Phase {
         leader_audit: super::leader_audit::finish(game, leader_audit),
-        planning: workspace.diagnostics(planning, recruitment.unwrap_or_default()),
+        planning: diagnostics,
         side,
         round,
         records,
@@ -471,7 +518,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             24.0,
         )];
         for tile in 0..game.terrain.len() {
-            if game.terrain_is(tile, Terrain::Village) && game.owners[tile] != Some(side) {
+            if game.role_is(tile, TerrainRole::Village) && game.owners[tile] != Some(side) {
                 goals.push(objective(
                     &format!("village:{}", game.board.ids[tile]),
                     ObjectiveKind::Capture,
@@ -485,13 +532,13 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             ObjectiveKind::Defeat,
             game.units
                 .iter()
-                .filter(|u| u.side != side && game.rules.units[u.kind].leader)
+                .filter(|u| u.side != side && u.is_leader())
                 .map(|u| game.board.ids[u.tile].clone())
                 .collect(),
             12.0,
         ));
         for tile in 0..game.terrain.len() {
-            if game.terrain_is(tile, Terrain::Ruins)
+            if game.role_is(tile, TerrainRole::Ruins)
                 && !visits[side.index()].contains(&game.board.ids[tile])
             {
                 goals.push(objective(
@@ -518,7 +565,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
         )?;
         for command in &record.records.actions {
             if let ActionRecord::Move { tile, .. } = command {
-                if game.terrain_is(game.site(tile), Terrain::Ruins) {
+                if game.role_is(game.site(tile), TerrainRole::Ruins) {
                     visits[side.index()].insert(tile.clone());
                 }
             }
@@ -696,7 +743,7 @@ mod tests {
             (Policy::Balanced, Some(0)),
         ] {
             let mut game = base.fork();
-            game.units.retain(|unit| rules.units[unit.kind].leader);
+            game.units.retain(|unit| unit.is_leader());
             game.roster_changed();
             game.gold[game.turn.index()] = 1000;
             let record = phase(
@@ -772,7 +819,7 @@ mod tests {
         let woods = create_arena(&rules, &config).unwrap();
         let trees = (0..woods.terrain.len())
             .filter(|&tile| {
-                woods.terrain_is(tile, Terrain::Forest) || woods.terrain_is(tile, Terrain::Grove)
+                woods.role_is(tile, TerrainRole::Forest) || woods.role_is(tile, TerrainRole::Grove)
             })
             .count();
         assert!(trees * 3 >= woods.terrain.len() * 2);
@@ -780,16 +827,16 @@ mod tests {
         config.landscape = "crossings".into();
         let river = create_arena(&rules, &config).unwrap();
         let keeps: Vec<_> = (0..river.terrain.len())
-            .filter(|&tile| river.terrain_is(tile, Terrain::Keep))
+            .filter(|&tile| river.role_is(tile, TerrainRole::Keep))
             .collect();
         let reachable = |start, bridges: bool, fords: bool| {
             let mut visited = HashSet::from([start]);
             let mut pending = vec![start];
             while let Some(tile) = pending.pop() {
                 for &next in &river.board.adjacent[tile] {
-                    if !river.terrain_is(next, Terrain::Water)
-                        && (bridges || !river.terrain_is(next, Terrain::Bridge))
-                        && (fords || !river.terrain_is(next, Terrain::Ford))
+                    if !river.role_is(next, TerrainRole::Water)
+                        && (bridges || !river.role_is(next, TerrainRole::Bridge))
+                        && (fords || !river.role_is(next, TerrainRole::Ford))
                         && visited.insert(next)
                     {
                         pending.push(next);
@@ -806,7 +853,7 @@ mod tests {
             assert_eq!(
                 bank.iter()
                     .filter(|&&tile| {
-                        river.terrain_is(tile, Terrain::Village)
+                        river.role_is(tile, TerrainRole::Village)
                             && rules.arena.territory.contains(&river.board.ids[tile])
                     })
                     .count(),
@@ -814,10 +861,10 @@ mod tests {
             );
         }
         let fort = (0..river.terrain.len())
-            .find(|&tile| river.terrain_is(tile, Terrain::Fort))
+            .find(|&tile| river.role_is(tile, TerrainRole::Fort))
             .unwrap();
         assert!(river.board.adjacent[fort].iter().all(|&tile| {
-            river.terrain_is(tile, Terrain::Water) || river.terrain_is(tile, Terrain::Bridge)
+            river.role_is(tile, TerrainRole::Water) || river.role_is(tile, TerrainRole::Bridge)
         }));
     }
 
@@ -848,7 +895,7 @@ mod tests {
                             let troops: Vec<_> =
                                 game.units.iter().filter(|u| u.side == side).collect();
                             assert_eq!(troops.len(), 1);
-                            assert!(rules.units[troops[0].kind].leader);
+                            assert!(troops[0].is_leader());
                             game.gold[side.index()]
                                 + troops.iter().map(|u| rules.units[u.kind].cost).sum::<i32>()
                         };

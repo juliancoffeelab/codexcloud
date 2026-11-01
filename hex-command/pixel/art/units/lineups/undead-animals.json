@@ -6,7 +6,8 @@
         "id": "skeletal-hound",
         "name": "Skeletal hound",
         "level": 1,
-        "source": "skeletal-hound"
+        "source": "skeletal-hound",
+        "gameplayId": "skeletal-hound"
       },
       "branches": [
         {

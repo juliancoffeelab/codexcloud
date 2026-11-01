@@ -2,7 +2,7 @@
 
 use super::*;
 use serde::{Deserialize, Serialize};
-/// The two battle allegiances, with a stable index into side-specific arrays.
+/// The human and automatic turn phases. Factions define diplomatic allegiance.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -28,7 +28,7 @@ impl Side {
 /// Weapon category used to select compatible retaliation attacks.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Category {
     Melee,
@@ -43,7 +43,7 @@ impl Category {
 /// Physical damage category indexing resistance and terrain modifiers.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum DamageType {
     Blade,
@@ -63,7 +63,7 @@ impl DamageType {
 /// An authored attack option with independent uniform strike rolls.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Weapon {
     pub id: String,
@@ -83,6 +83,107 @@ pub struct Weapon {
     #[serde(default)]
     pub drain: u8,
 }
+
+/// Equipment owned by an individual unit, including its granted attacks.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Item {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub armor: Option<ItemArmor>,
+    pub id: String,
+    pub name: String,
+    pub description: String,
+    pub attacks: Vec<Weapon>,
+    /// A carried aura, applied at the start of the carrier's allied turn.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub healing: Option<ItemHealing>,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemHealing {
+    pub amount: i32,
+    pub radius: u16,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemArmor {
+    pub blade: i32,
+    pub pierce: i32,
+    pub impact: i32,
+}
+impl ItemArmor {
+    pub fn get(&self, kind: DamageType) -> i32 {
+        match kind {
+            DamageType::Blade => self.blade,
+            DamageType::Pierce => self.pierce,
+            DamageType::Impact => self.impact,
+        }
+    }
+}
+impl Weapon {
+    pub(crate) fn validate(&self, path: &str) -> Result<(), ContentError> {
+        super::catalog::identifier(&self.id, path)?;
+        if self.name.is_empty()
+            || self.sound.is_empty()
+            || self.range == 0
+            || self.damage < 0
+            || self.damage > 1000
+            || self.spread < 0
+            || self.spread > self.damage
+            || !(1..=16).contains(&self.count)
+            || self.drain > 100
+        {
+            return Err(ContentError::new(
+                path,
+                format!("invalid weapon {}", self.id),
+            ));
+        }
+        Ok(())
+    }
+}
+impl Item {
+    pub(crate) fn validate(&self, path: &str) -> Result<(), ContentError> {
+        super::catalog::identifier(&self.id, path)?;
+        if self.name.is_empty()
+            || self.description.is_empty()
+            || (self.attacks.is_empty() && self.healing.is_none() && self.armor.is_none())
+        {
+            return Err(ContentError::new(
+                path,
+                "item name, description and at least one effect are required",
+            ));
+        }
+        if self.armor.as_ref().is_some_and(|a| {
+            [a.blade, a.pierce, a.impact]
+                .iter()
+                .any(|v| !(-3..=0).contains(v))
+                || [a.blade, a.pierce, a.impact] == [0, 0, 0]
+        }) {
+            return Err(ContentError::new(
+                path,
+                "armor needs a reduction between one and three",
+            ));
+        }
+        if self
+            .healing
+            .as_ref()
+            .is_some_and(|h| h.amount <= 0 || h.amount > 100 || h.radius > 10)
+        {
+            return Err(ContentError::new(path, "invalid item healing aura"));
+        }
+        super::catalog::unique(self.attacks.iter().map(|a| a.id.as_str()), path)?;
+        for attack in &self.attacks {
+            attack.validate(path)?;
+        }
+        Ok(())
+    }
+}
+
 /// Per-damage-type adjustments contributed by a defending unit.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -106,7 +207,7 @@ impl DamageModifiers {
 /// Authored battlefield role used for mixed composition and tactical placement.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum UnitRole {
     Warrior,
@@ -159,8 +260,6 @@ pub struct UnitRule {
     pub race: Race,
     pub role: UnitRole,
     #[serde(default)]
-    pub leader: bool,
-    #[serde(default)]
     pub healing: i32,
     /// Damage reflected per incoming melee strike, including killing hits.
     #[serde(default)]
@@ -183,6 +282,15 @@ pub struct UnitRule {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PublicUnit {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub faction: Option<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub items: Vec<Item>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub ai_group: Option<String>,
     pub id: String,
     pub r#type: String,
     pub side: Side,
@@ -208,6 +316,9 @@ pub struct PublicUnit {
 }
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub(crate) struct Unit {
+    pub faction: Option<String>,
+    pub items: Vec<Item>,
+    pub ai_group: Option<String>,
     pub id: u32,
     pub kind: usize,
     pub side: Side,
@@ -220,6 +331,11 @@ pub(crate) struct Unit {
     pub role: Option<Role>,
     pub retreating: Option<bool>,
     pub rebuilding: Option<bool>,
+}
+impl Unit {
+    pub(crate) fn is_leader(&self) -> bool {
+        self.role == Some(Role::Leader)
+    }
 }
 /// Feedback identifying the latest attack until the next turn clears it.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -237,6 +353,9 @@ pub struct LastCombat {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Veteran {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub items: Vec<Item>,
     pub r#type: String,
     pub experience: u32,
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -249,4 +368,23 @@ pub struct Veteran {
 
 fn one_attack() -> u8 {
     1
+}
+
+/// Inventory validation also protects stable weapon IDs used by commands.
+pub(crate) fn validate_equipment(
+    items: &[Item],
+    base: &[Weapon],
+    path: &str,
+) -> Result<(), ContentError> {
+    super::catalog::unique(items.iter().map(|i| i.id.as_str()), path)?;
+    super::catalog::unique(
+        base.iter()
+            .chain(items.iter().flat_map(|i| &i.attacks))
+            .map(|a| a.id.as_str()),
+        path,
+    )?;
+    for item in items {
+        item.validate(path)?;
+    }
+    Ok(())
 }

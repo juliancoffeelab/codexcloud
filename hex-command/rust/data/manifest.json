@@ -6,7 +6,8 @@
     "game/races/human.json",
     "game/races/skeletons.json",
     "game/races/beast.json",
-    "game/races/spirit.json"
+    "game/races/spirit.json",
+    "game/races/zombies.json"
   ],
   "units": [
     "game/units/warden.json",
@@ -108,7 +109,14 @@
     "game/units/merfolk-tide-sovereign.json",
     "game/units/ghost.json",
     "game/units/wraith.json",
-    "game/units/spectre.json"
+    "game/units/spectre.json",
+    "game/units/bear.json",
+    "game/units/giant-bat.json",
+    "game/units/giant-spider.json",
+    "game/units/captives.json",
+    "game/units/zombie-walker.json",
+    "game/units/zombie-decay-caster.json",
+    "game/units/skeletal-hound.json"
   ],
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",

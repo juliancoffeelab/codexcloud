@@ -8,7 +8,8 @@
       "type": "commander",
       "side": "player",
       "col": 0,
-      "row": 3
+      "row": 3,
+      "role": "leader"
     },
     {
       "type": "soldier",
@@ -26,7 +27,8 @@
       "type": "commander",
       "side": "enemy",
       "col": 10,
-      "row": 3
+      "row": 3,
+      "role": "leader"
     },
     {
       "type": "soldier",

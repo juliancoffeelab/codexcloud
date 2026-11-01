@@ -130,7 +130,7 @@ impl BattleView<'_, '_> {
         let rebuilds: HashMap<_, _> = self
             .units()
             .iter()
-            .filter(|u| u.side == side && self.rules().units[u.kind].leader)
+            .filter(|u| self.belongs_to_phase(u, side) && u.is_leader())
             .map(|u| (u.id, orders.moving_actor(u.id)))
             .map(|(id, required)| {
                 (
@@ -147,18 +147,24 @@ impl BattleView<'_, '_> {
         // Commit bookkeeping in roster order, as policy_objectives and the
         // original planning loop visited leaders and units in that order.
         intents.sort_by_key(|(id, _)| self.index(*id).unwrap());
-        let allies: Vec<_> = self.units().iter().filter(|u| u.side == side).collect();
+        let allies: Vec<_> = self
+            .units()
+            .iter()
+            .filter(|u| self.belongs_to_phase(u, side) && self.can_act(u.id))
+            .collect();
         if allies.iter().all(|u| u.attacked) {
             return None;
         }
-        let foes: Vec<_> = self.units().iter().filter(|u| u.side != side).collect();
+        let foes: Vec<_> = self
+            .units()
+            .iter()
+            .filter(|u| self.hostile_to_phase(u, side))
+            .collect();
         let lanes = orders.lanes(self);
         let mut threats = Threats::with_workspace(self, side, threat_workspace).with_orders(orders);
         let screens: Vec<_> = allies
             .iter()
-            .filter(|u| {
-                role(self, u.kind) == TacticalRole::Frontline && !self.rules().units[u.kind].leader
-            })
+            .filter(|u| role(self, u.kind) == TacticalRole::Frontline && !u.is_leader())
             .collect();
         let movable_screens = screens.iter().any(|u| !u.moved && !u.attacked);
         let board = &self.board();
@@ -175,7 +181,7 @@ impl BattleView<'_, '_> {
         let range_to_foe = |tile: usize| foe_ranges[tile];
         let maximum_range = allies
             .iter()
-            .flat_map(|u| &self.rules().units[u.kind].attacks)
+            .flat_map(|u| self.weapons(u))
             .map(|a| a.range as u16)
             .max()
             .unwrap_or(0);
@@ -240,8 +246,7 @@ impl BattleView<'_, '_> {
                 let mut offense = 0.0f64;
                 let mut maximum_combat = 0.0f64;
                 for &target in &foes {
-                    for (weapon, attack) in self.rules().units[unit.kind].attacks.iter().enumerate()
-                    {
+                    for (weapon, attack) in self.weapons(unit).enumerate() {
                         let distant = board.distance(unit.tile, target.tile) as usize
                             > movement + attack.range as usize;
                         if distant && !zero_cost {
@@ -344,7 +349,7 @@ impl BattleView<'_, '_> {
             let unit = &planned_unit;
             // Only a lethal essential-actor candidate needs the full minimum.
             let mut minimum_risk = None;
-            let recruiting = self.rules().units[unit.kind].leader
+            let recruiting = unit.is_leader()
                 && self
                     .recruitment_options(side)
                     .iter()
@@ -386,9 +391,9 @@ impl BattleView<'_, '_> {
                         let tile = self.site(t);
                         self.owners()[tile] == Some(side)
                             && (original.hold != Some(true)
-                                || self
-                                    .at(tile)
-                                    .is_some_and(|o| o.side == side && o.id != unit.id))
+                                || self.at(tile).is_some_and(|o| {
+                                    self.belongs_to_phase(o, side) && o.id != unit.id
+                                }))
                     })
                 {
                     continue;
@@ -657,13 +662,13 @@ impl BattleView<'_, '_> {
                 {
                     positioning -= 24.0;
                 }
-                let healing_tile = (self.terrain_is(tile, Terrain::Village)
-                    || self.terrain_is(tile, Terrain::Grove))
+                let healing_tile = (self.role_is(tile, TerrainRole::Village)
+                    || self.role_is(tile, TerrainRole::Grove))
                     && (self.owners()[tile] == Some(side) || self.at(tile).is_none());
                 if healing_tile {
                     positioning += (self.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
                 }
-                if self.terrain_is(tile, Terrain::Village) && self.owners()[tile] != Some(side) {
+                if self.role_is(tile, TerrainRole::Village) && self.owners()[tile] != Some(side) {
                     positioning += 3.0;
                 }
                 {
@@ -738,7 +743,7 @@ impl BattleView<'_, '_> {
                     nearby_foes[nearby_offsets[tile]..nearby_offsets[tile + 1]]
                         .iter()
                         .flat_map(|&target| {
-                            (0..self.rules().units[unit.kind].attacks.len())
+                            (0..self.weapons(unit).count())
                                 .filter_map(move |weapon| Some((Some(target), Some(weapon))))
                         }),
                 );
@@ -836,7 +841,7 @@ impl BattleView<'_, '_> {
                     if ceiling <= best.as_ref().map_or(0.1, |b| b.score.max(0.1)) {
                         continue;
                     }
-                    if self.rules().units[unit.kind].leader
+                    if unit.is_leader()
                         && !finishing
                         && !finishes_battle
                         && rebuilding.is_empty()
@@ -953,6 +958,7 @@ mod tests {
                 | Command::RetryMission
                 | Command::PreviousDialogue
                 | Command::SkipDialogue
+                | Command::DropItem { .. }
                 | Command::SetUnitIntent { .. } => false,
             }
         }

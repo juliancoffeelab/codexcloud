@@ -5,7 +5,8 @@ use crate::{data::*, protocol::*};
 impl Game<'_> {
     fn damage_detail(&self, attack: &Weapon, defender: &Unit, tile: usize) -> DamageDetail {
         let rule = &self.rules.units[defender.kind];
-        let modifier = rule.damage_modifiers.get(attack.damage_type);
+        let modifier = rule.damage_modifiers.get(attack.damage_type)
+            + self.equipment_modifier(defender, attack.damage_type);
         let environment = rule.environment[self.terrain[tile]][attack.category.index()]
             [attack.damage_type.index()];
         let distribution = super::damage::distribution(attack, modifier + environment);
@@ -29,6 +30,132 @@ impl Game<'_> {
         }
     }
 
+    fn event_unavailable(&self, id: &str, remaining: usize) -> bool {
+        let state = self.campaign.as_ref().unwrap();
+        if state.marked(&format!("event:{id}")) || remaining == 0 {
+            return false;
+        }
+        let Some(event) = self
+            .mission
+            .as_ref()
+            .unwrap()
+            .events
+            .iter()
+            .find(|e| e.id == id)
+        else {
+            return false;
+        };
+        event.before_round.is_some_and(|round| self.round >= round)
+            || event
+                .unless_event
+                .as_ref()
+                .is_some_and(|other| state.marked(&format!("event:{other}")))
+            || event
+                .requires_event
+                .as_ref()
+                .is_some_and(|other| self.event_unavailable(other, remaining - 1))
+    }
+    fn objective_status(&self, goal: &Goal) -> ObjectiveStatus {
+        let progress = self.goal_progress(goal);
+        let failed = !progress.done
+            && (self.winner.is_some()
+                || match goal {
+                    Goal::Event { event, .. } => {
+                        self.event_unavailable(event, self.mission.as_ref().unwrap().events.len())
+                    }
+                    _ => false,
+                });
+        ObjectiveStatus {
+            visible: self.goal_visible(goal),
+            progress,
+            failed,
+        }
+    }
+    fn campaign_objectives(&self) -> Option<CampaignObjectives> {
+        let state = self.campaign.as_ref()?;
+        let mission = self.mission.as_ref()?;
+        let leader_alive = self
+            .units
+            .iter()
+            .any(|u| u.side == Side::Player && u.role == Some(Role::Leader))
+            || state.evacuated.iter().any(|record| {
+                record.unit.side == Side::Player && record.unit.role == Some(Role::Leader)
+            });
+        let survival = |label: String, alive: bool| ObjectiveStatus {
+            visible: true,
+            progress: Progress {
+                label,
+                current: u32::from(self.winner.is_some() && alive),
+                total: 1,
+                done: self.winner.is_some() && alive,
+                tiles: vec![],
+            },
+            failed: !alive,
+        };
+        let mut protected = vec![survival("Keep your leader alive.".into(), leader_alive)];
+        for name in &mission.required_companions {
+            let alive = self
+                .units
+                .iter()
+                .any(|u| u.side == Side::Player && u.name.as_ref() == Some(name))
+                || state
+                    .evacuated
+                    .iter()
+                    .any(|record| record.unit.name.as_ref() == Some(name));
+            protected.push(survival(format!("Keep {name} alive."), alive));
+        }
+        Some(CampaignObjectives {
+            notices: self.ritual_notices(),
+            goals: mission
+                .goals
+                .iter()
+                .map(|g| self.objective_status(g))
+                .collect(),
+            optional: mission
+                .optional_goals
+                .iter()
+                .map(|g| self.objective_status(g))
+                .collect(),
+            survival: protected,
+        })
+    }
+
+    pub(crate) fn inspect_board(&self) -> BoardInspection {
+        BoardInspection {
+            costs: self
+                .rules
+                .units
+                .iter()
+                .map(|rule| {
+                    (
+                        rule.id.clone(),
+                        self.rules
+                            .terrain_names
+                            .iter()
+                            .cloned()
+                            .zip(rule.costs.iter().copied())
+                            .collect(),
+                    )
+                })
+                .collect(),
+            neighbors: self
+                .board
+                .ids
+                .iter()
+                .enumerate()
+                .map(|(index, id)| {
+                    (
+                        id.clone(),
+                        self.board.adjacent[index]
+                            .iter()
+                            .map(|&next| self.board.ids[next].clone())
+                            .collect(),
+                    )
+                })
+                .collect(),
+        }
+    }
+
     pub(crate) fn inspect(&self, revision: u32) -> BattleInspection {
         let units = self
             .units
@@ -38,7 +165,7 @@ impl Game<'_> {
                 for target in &self.units {
                     let recommended = self.best_attack(unit, target, unit.tile);
                     for weapon in self.attack_options(unit, target, unit.tile) {
-                        let attack = self.rules.units[unit.kind].attacks[weapon].clone();
+                        let attack = self.weapon(unit, weapon).clone();
                         let (damage, retaliation, response) =
                             self.preview(unit, target, weapon, unit.tile);
                         let forecast = self.exchange(unit, target, weapon, unit.tile);
@@ -47,8 +174,7 @@ impl Game<'_> {
                             maximum: forecast.hp_maximum[side],
                             expected: forecast.hp_expected[side],
                         };
-                        let response = response
-                            .map(|index| self.rules.units[target.kind].attacks[index].clone());
+                        let response = response.map(|index| self.weapon(target, index).clone());
                         let retaliation_detail = response
                             .as_ref()
                             .map(|r| self.damage_detail(r, unit, unit.tile));
@@ -74,6 +200,7 @@ impl Game<'_> {
                     }
                 }
                 UnitActions {
+                    faction: self.unit_faction_view(unit),
                     unit: format!("u{}", unit.id),
                     reachable: self
                         .reachable(unit)
@@ -107,6 +234,7 @@ impl Game<'_> {
             })
             .collect();
         BattleInspection {
+            objectives: self.campaign_objectives(),
             revision,
             units,
             recruitment: [Side::Player, Side::Enemy]
@@ -121,37 +249,6 @@ impl Game<'_> {
                         self.recruitment_options(side)
                             .into_iter()
                             .map(|kind| self.rules.units[kind].id.clone())
-                            .collect(),
-                    )
-                })
-                .collect(),
-            costs: self
-                .rules
-                .units
-                .iter()
-                .map(|rule| {
-                    (
-                        rule.id.clone(),
-                        self.rules
-                            .terrain_names
-                            .iter()
-                            .cloned()
-                            .zip(rule.costs.iter().copied())
-                            .collect(),
-                    )
-                })
-                .collect(),
-            neighbors: self
-                .board
-                .ids
-                .iter()
-                .enumerate()
-                .map(|(index, id)| {
-                    (
-                        id.clone(),
-                        self.board.adjacent[index]
-                            .iter()
-                            .map(|&next| self.board.ids[next].clone())
                             .collect(),
                     )
                 })

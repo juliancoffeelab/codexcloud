@@ -141,6 +141,7 @@ test("Command facade forwards calls without exposing reads", async () => {
     attackSelected: () => {},
     recruitHere: () => {},
     advanceUnit: () => {},
+    dropItem: () => {},
     endTurn: async () => undefined,
     undoMove: () => live.snapshot(),
     reset: () => live.snapshot(),

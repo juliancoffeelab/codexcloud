@@ -26,7 +26,7 @@ impl Game<'_> {
                     .indices
                     .get(&tile.0)
                     .ok_or_else(|| CommandError::UnknownTile(tile.clone()))?;
-                if actor.side != self.turn {
+                if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
                 if actor.tile == site || !self.reachable(actor).iter().any(|&(t, _)| t == site) {
@@ -43,12 +43,11 @@ impl Game<'_> {
                 let victim = self
                     .unit(target.0)
                     .ok_or(CommandError::UnknownUnit(target))?;
-                let attack = self.rules.units[actor.kind]
-                    .attacks
-                    .iter()
+                let attack = self
+                    .weapons(actor)
                     .position(|a| a.id == weapon.0)
                     .ok_or_else(|| CommandError::UnknownWeapon(weapon.clone()))?;
-                if actor.side != self.turn {
+                if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
                 if actor.attacked || !self.can_attack(actor, actor.tile, victim, attack) {
@@ -68,7 +67,7 @@ impl Game<'_> {
                     .indices
                     .get(&tile.0)
                     .ok_or_else(|| CommandError::UnknownTile(tile.clone()))?;
-                if actor.side != self.turn {
+                if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
                 if !self.placement_tiles(actor, recruit, true).contains(&site) {
@@ -83,13 +82,41 @@ impl Game<'_> {
                     .types
                     .get(&kind.0)
                     .ok_or_else(|| CommandError::UnknownType(kind.clone()))?;
-                if actor.side != self.turn {
+                if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
                 if !self.promotion_options(actor).contains(&advance) {
                     return Err(CommandError::IllegalAdvance);
                 }
                 self.advance(unit.0, advance);
+            }
+            Command::DropItem { unit, item } => {
+                let index = self.index(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
+                if !self.may_act(&self.units[index]) {
+                    return Err(CommandError::WrongTurn);
+                }
+                let slot = self.units[index]
+                    .items
+                    .iter()
+                    .position(|i| i.id == item)
+                    .ok_or(CommandError::IllegalItem)?;
+                let item = self.units[index].items.remove(slot);
+                self.record(format!(
+                    "{} dropped {}.",
+                    self.units[index]
+                        .name
+                        .as_deref()
+                        .unwrap_or(&self.rules.units[self.units[index].kind].name),
+                    item.name
+                ));
+                self.ground_items.push(GroundItem {
+                    tile: self.board.ids[self.units[index].tile].clone(),
+                    item,
+                });
+                self.action(ActionRecord::Drop {
+                    unit: format!("u{}", unit.0),
+                    item: self.ground_items.last().unwrap().item.id.clone(),
+                });
             }
             Command::EndTurn => self.end_turn(),
             Command::DismissDialogue => {
@@ -176,6 +203,8 @@ impl Game<'_> {
                 }
             }
         }
+        self.apply_faction_transfers();
+        self.remember_conditions();
         Ok(())
     }
 }
@@ -193,7 +222,7 @@ mod browser_controls_tests {
         let leader = game
             .units
             .iter()
-            .find(|u| rules.units[u.kind].leader && u.side == Side::Player)
+            .find(|u| u.role == Some(Role::Leader) && u.side == Side::Player)
             .unwrap();
         let kind = rules.types["archer"];
         let site = game.board.adjacent[leader.tile]

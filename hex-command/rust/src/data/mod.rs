@@ -6,6 +6,8 @@ pub use ids::*;
 pub use recruitment::{RecruitmentProfiles, RecruitmentWeights};
 mod commands;
 pub use commands::*;
+mod factions;
+pub use factions::*;
 mod units;
 pub use units::*;
 mod campaign;
@@ -14,6 +16,8 @@ mod state;
 pub use state::*;
 mod scenario;
 pub use scenario::*;
+mod lighting;
+pub use lighting::*;
 mod objectives;
 pub use objectives::*;
 mod records;
@@ -42,6 +46,8 @@ pub struct Rules {
     pub terrain_names: Vec<String>,
     /// Closed terrain variants in the same runtime order.
     pub terrain_types: Vec<Terrain>,
+    /// Dense gameplay roles from explicit authored terrain definitions.
+    pub terrain_roles: Vec<TerrainRole>,
     /// Display labels corresponding to terrain identifiers.
     pub terrain_labels: Vec<String>,
     /// Display metadata from the same validated definitions used by the engine.
@@ -68,3 +74,6 @@ pub struct Rules {
 
 /// Immutable authored content shared by battles and scoped simulation workers.
 pub type Catalog = Rules;
+
+mod conditions;
+pub use conditions::*;

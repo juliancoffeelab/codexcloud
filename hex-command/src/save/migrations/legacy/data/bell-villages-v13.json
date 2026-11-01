@@ -1,0 +1,29 @@
+[
+  {
+    "id": "9,11",
+    "col": 9,
+    "row": 11,
+    "terrain": "village",
+    "owner": "enemy",
+    "floor": "green-plain",
+    "connections": []
+  },
+  {
+    "id": "13,12",
+    "col": 13,
+    "row": 12,
+    "terrain": "village",
+    "owner": "enemy",
+    "floor": "green-plain",
+    "connections": []
+  },
+  {
+    "id": "11,15",
+    "col": 11,
+    "row": 15,
+    "terrain": "village",
+    "owner": "enemy",
+    "floor": "green-plain",
+    "connections": []
+  }
+]

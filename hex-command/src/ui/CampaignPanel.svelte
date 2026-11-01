@@ -1,14 +1,10 @@
 <script lang="ts">
   import type { BattleView, BattleCommands } from "../controller/view";
   import { CAMPAIGNS } from "../game/campaign-data";
-  import {
-    campaignMission,
-    goalProgress,
-    dialoguePending,
-    returnsWithStory,
-  } from "../game/campaign-progress";
-  import { TYPES } from "../game/catalog";
+  import { campaignMission, dialoguePending, returnsWithStory } from "../game/campaign-progress";
+  import { TYPES, isLeader } from "../game/catalog";
   import { artSprite } from "../presentation/art";
+  import { pixelSprites } from "../presentation/pixel-art";
   let {
     view,
     actions,
@@ -24,12 +20,24 @@
   const campaign = $derived(view.game.campaign);
   const definition = $derived(campaign ? CAMPAIGNS[campaign.id] : null);
   const mission = $derived(campaign ? campaignMission(campaign) : null);
-  const goals = $derived(mission?.goals.map((goal) => goalProgress(view.game, goal)) ?? []);
+  const goals = $derived(
+    [...(view.game.objectives?.goals ?? []), ...(view.game.objectives?.survival ?? [])]
+      .filter((status) => status.visible)
+      .map((status) => ({ ...status.progress, failed: status.failed })),
+  );
+  const optionalGoals = $derived(
+    (view.game.objectives?.optional ?? [])
+      .filter((status) => status.visible)
+      .map((status) => ({
+        ...status.progress,
+        failed: status.failed,
+      })),
+  );
   const survivors = $derived(
     view.game.units.filter(
       (unit) =>
         unit.side === "player" &&
-        !TYPES[unit.type].leader &&
+        !isLeader(unit) &&
         unit.role !== "courier" &&
         !mission?.requiredCompanions?.includes(unit.name ?? "") &&
         !(campaign && returnsWithStory(campaign, unit)),
@@ -64,6 +72,12 @@
 </script>
 
 {#if campaign && definition && mission}
+  {#if !view.game.winner}{#each view.game.objectives?.notices ?? [] as notice}<p
+        class="recruit-hint"
+        role="status"
+      >
+        {notice}
+      </p>{/each}{/if}
   <section
     id="mission-overview"
     class="campaign-panel mission-overview"
@@ -77,42 +91,52 @@
     </p>
     <h3>Briefing</h3>
     <p>{mission.briefing}</p>
-    <h3>Hints</h3>
-    <ul class="mission-items">
-      {#each mission.hints as hint}<li><span>{hint}</span></li>{/each}
-    </ul>
+    {#if mission.hints.length}
+      <h3>Hints</h3>
+      <ul class="mission-items">
+        {#each mission.hints as hint}<li><span>{hint}</span></li>{/each}
+      </ul>
+    {/if}
     <h3>Objectives</h3>
     <ul class="mission-items mission-goals">
       {#each goals as goal}
-        <li class:completed-goal={goal.done}>
+        <li
+          class:completed-goal={goal.done}
+          class:failed-goal={goal.failed}
+          aria-label={goal.failed
+            ? `${goal.label}: failed`
+            : goal.done
+              ? `${goal.label}: completed`
+              : undefined}
+        >
           <span>{goal.label}</span>
-          <strong>{goal.current}/{goal.total}</strong>
-        </li>
-      {/each}
-      <li class:completed-goal={view.game.winner === "player"}>
-        <span>
-          Keep your leader alive{mission.goals.some((goal) => goal.kind === "escort") &&
-          !mission.requiredCompanions?.length
-            ? " and protect the courier"
-            : ""}.
-        </span>
-        {#if view.game.winner === "player"}<strong>✓</strong>{/if}
-      </li>
-      {#each mission.requiredCompanions ?? [] as companion}
-        <li class:completed-goal={view.game.winner === "player"}>
-          <span>Keep {companion} alive.</span>
-          {#if view.game.winner === "player"}<strong>✓</strong>{/if}
-        </li>
-      {/each}
-      {#each mission.events.filter((event) => event.label && !mission.goals.some((goal) => goal.kind === "event" && goal.event === event.id)) as event}
-        <li class:completed-goal={campaign.marks.includes(`event:${event.id}`)}>
-          <span>
-            {event.label}{event.gold ? ` (+${event.gold} gold)` : ""}
-            <span class="optional-label">[optional]</span>
-          </span>
+          {#if goal.total > 1}
+            <strong>{goal.current}/{goal.total}</strong>
+          {/if}
         </li>
       {/each}
     </ul>
+    {#if optionalGoals.length}
+      <h3>Optional objectives</h3>
+      <ul class="mission-items mission-goals">
+        {#each optionalGoals as goal}
+          <li
+            class:completed-goal={goal.done}
+            class:failed-goal={goal.failed}
+            aria-label={goal.failed
+              ? `${goal.label}: failed`
+              : goal.done
+                ? `${goal.label}: completed`
+                : undefined}
+          >
+            <span>{goal.label}</span>
+            {#if goal.total > 1}
+              <strong>{goal.current}/{goal.total}</strong>
+            {/if}
+          </li>
+        {/each}
+      </ul>
+    {/if}
   </section>
   {#if view.game.winner && !dialoguePending(campaign)}
     <section id="mission-result" class="campaign-panel" aria-label="Mission result" tabindex="-1">
@@ -134,7 +158,7 @@
             Choose up to four survivors for the next mission. They return at full health. Carrying {Math.min(
               8,
               view.game.gold.player,
-            )} gold.
+            )} gold. Equipment from survivors left behind goes to your leader.
           </p>
           <div class="recall-list">
             {#each survivors as unit}
@@ -146,8 +170,24 @@
                   onchange={() => toggle(unit.id)}
                 />
                 {@html artSprite(view.artwork, "units", unit.type, 0, 0, 36, 44)}
-                <span>
-                  <strong>{unit.name ?? TYPES[unit.type].name}</strong>
+                <span class="recall-copy">
+                  <strong class="recall-name">
+                    {unit.name ?? TYPES[unit.type].name}
+                    {#each unit.items ?? [] as item, index (`${item.id}-${index}`)}
+                      {#if pixelSprites[`terrain_prop_items_${item.id}`]}
+                        <img
+                          class="recall-item pixel-art"
+                          src={pixelSprites[`terrain_prop_items_${item.id}`]}
+                          alt={item.name}
+                          title={item.name}
+                          width="32"
+                          height="32"
+                        />
+                      {:else}
+                        <small>{item.name}</small>
+                      {/if}
+                    {/each}
+                  </strong>
                   <span>{unit.hp} / {TYPES[unit.type].hp} HP</span>
                   <span>
                     Level {TYPES[unit.type].level}
@@ -173,3 +213,20 @@
     </section>
   {/if}
 {/if}
+
+<style>
+  .recall-copy {
+    min-width: 0;
+  }
+  .recall-name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 32px;
+  }
+  .recall-item {
+    flex: 0 0 32px;
+    object-fit: contain;
+  }
+</style>

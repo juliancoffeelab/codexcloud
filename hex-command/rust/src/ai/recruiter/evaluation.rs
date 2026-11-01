@@ -61,27 +61,25 @@ impl Assessment {
         let enemies: Vec<_> = game
             .units()
             .iter()
-            .filter(|u| u.side != unit.side)
+            .filter(|u| game.hostile(unit, u))
             .collect();
         let allies: Vec<_> = game
             .units()
             .iter()
-            .filter(|u| u.side == unit.side && u.id != unit.id)
+            .filter(|u| game.allied(unit, u) && u.id != unit.id)
             .collect();
         let mut forecasts = Vec::new();
         let mut forecast_weight = 0.0;
         if predict {
-            let actual = enemies
-                .iter()
-                .filter(|e| !game.rules().units[e.kind].leader)
-                .count();
-            if let Some(leader) = enemies.iter().find(|e| game.rules().units[e.kind].leader) {
+            let actual = enemies.iter().filter(|e| !e.is_leader()).count();
+            if let Some(leader) = enemies.iter().find(|e| e.is_leader()) {
                 let options = game.recruitment_options(leader.side);
                 forecast_weight =
                     (weights.future_enemies - actual as f64).max(0.0) / options.len().max(1) as f64;
                 if forecast_weight > 0.0 {
                     for kind in options {
                         let mut forecast = (*leader).clone();
+                        forecast.items.clear();
                         forecast.kind = kind;
                         forecast.hp = game.rules().units[kind].hp;
                         forecast.id = 0;
@@ -92,7 +90,7 @@ impl Assessment {
         }
         let mut approaches = Vec::new();
         for (index, enemy) in enemies.iter().copied().chain(forecasts.iter()).enumerate() {
-            for (weapon, attack) in rule.attacks.iter().enumerate() {
+            for (weapon, attack) in game.weapons(unit).enumerate() {
                 let all = game.attack_origins(attack.category, attack.range);
                 let mut origins = Vec::new();
                 all[enemy.tile].for_each(|tile| {
@@ -209,7 +207,7 @@ impl Assessment {
             .iter()
             .enumerate()
             .filter(|(tile, owner)| {
-                **owner != Some(unit.side) && game.terrain_is(*tile, Terrain::Village)
+                **owner != Some(unit.side) && game.role_is(*tile, TerrainRole::Village)
             })
             .map(|(tile, _)| {
                 let covered = allies
@@ -254,7 +252,7 @@ impl Assessment {
         let enemies: Vec<_> = game
             .units()
             .iter()
-            .filter(|u| u.side != unit.side)
+            .filter(|u| game.hostile(unit, u))
             .collect();
         let coefficients = self.weights;
         let mut leader_pressure: f64 = 0.0;
@@ -270,7 +268,6 @@ impl Assessment {
             .chain(self.forecasts.iter())
             .enumerate()
         {
-            let enemy_rule = &game.rules().units[enemy.kind];
             let weight = if index >= enemies.len() {
                 self.forecast_weight
             } else {
@@ -296,7 +293,7 @@ impl Assessment {
                     let forecast = game.exchange(&attacker, enemy, approach.weapon, origin);
                     let damage = forecast.damage[0].round() as i32;
                     let response = forecast.damage[1].round() as i32;
-                    let attack = &rule.attacks[approach.weapon];
+                    let attack = game.weapon(unit, approach.weapon);
                     let drain = damage.min(enemy.hp) as f64 * f64::from(attack.drain) / 100.0;
                     let exchange = forecast.effective[0] + drain * coefficients.drain
                         - response.min(unit.hp) as f64 * coefficients.exchange_retaliation
@@ -310,7 +307,7 @@ impl Assessment {
                     leader_damage += damage.min(enemy.hp).max(0) as f64;
                 }
                 value /= origins.len() as f64;
-                if recruitment && coefficients.leader_pressure > 0.0 && enemy_rule.leader {
+                if recruitment && coefficients.leader_pressure > 0.0 && enemy.is_leader() {
                     let turns = f64::from(route) / rule.r#move.max(1) as f64;
                     let fraction = leader_damage / origins.len() as f64 / enemy.hp.max(1) as f64;
                     leader_pressure = leader_pressure.max(fraction.min(1.0) / (1.0 + turns));
@@ -323,15 +320,14 @@ impl Assessment {
             // A common unarmoured, terrain-neutral target takes the enemy's
             // strongest raw attack. This reference cannot change when armour,
             // retaliation or thorns makes that enemy switch weapons.
-            let reference = enemy_rule
-                .attacks
-                .iter()
+            let reference = game
+                .weapons(enemy)
                 .map(|a| a.damage * i32::from(a.count))
                 .max()
                 .unwrap_or(0);
             raw += f64::from(reference.max(1)) * weight;
             if let Some(preferred) = preferred_attack(game, enemy, unit, None) {
-                let attack = &enemy_rule.attacks[preferred.weapon];
+                let attack = game.weapon(enemy, preferred.weapon);
                 incoming += preferred.damage * weight;
                 // Own reflection is valued separately by army pressure.
                 // Preserve ordinary retaliation and existing friendly aura.
@@ -352,9 +348,8 @@ impl Assessment {
             raw /= weights;
             incoming /= weights;
         } else {
-            offense = rule
-                .attacks
-                .iter()
+            offense = game
+                .weapons(unit)
                 .map(|a| (a.damage * i32::from(a.count)) as f64)
                 .fold(0.0, f64::max);
             access = 1.0;
@@ -508,7 +503,7 @@ fn dominant_melee_strikes(
     aura: Option<i32>,
 ) -> Option<f64> {
     preferred_attack(game, enemy, target, aura).map(|preferred| {
-        let attack = &game.rules().units[enemy.kind].attacks[preferred.weapon];
+        let attack = game.weapon(enemy, preferred.weapon);
         if attack.category == Category::Melee {
             preferred.strikes
         } else {
@@ -545,9 +540,8 @@ fn preferred_attack(
     target: &Unit,
     aura: Option<i32>,
 ) -> Option<PreferredAttack> {
-    let rule = &game.rules().units[enemy.kind];
     let mut best = None;
-    for (weapon, attack) in rule.attacks.iter().enumerate() {
+    for (weapon, attack) in game.weapons(enemy).enumerate() {
         let origins = game.attack_origins(attack.category, attack.range);
         let mut legal = Vec::new();
         origins[target.tile].for_each(|tile| {
@@ -650,9 +644,14 @@ mod tests {
     #[test]
     fn movement_controls_are_optional_separate_and_share_a_cap() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[enemy].leader = true;
+
         rules.units[target].r#move = 6;
         let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
+        game.units
+            .iter_mut()
+            .find(|unit| unit.side == Side::Enemy)
+            .unwrap()
+            .role = Some(Role::Leader);
         let a = game.site("1,4");
         let b = game.site("8,4");
         game.units
@@ -819,7 +818,7 @@ mod tests {
     #[test]
     fn recruitment_anticipates_legal_enemy_rosters_until_observed_troops_replace_them() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[enemy].leader = true;
+
         rules.units[target].attacks[0].category = Category::Ranged;
         rules.units[target].attacks[0].range = 2;
         rules.units[target].attacks[0].damage = 12;
@@ -829,12 +828,16 @@ mod tests {
         for kind in [resistant, observed] {
             let mut rule = rules.units[enemy].clone();
             rule.id = rules.units[kind].id.clone();
-            rule.leader = false;
             rules.units[kind] = rule;
             rules.route_classes[kind] = kind;
         }
         rules.units[resistant].damage_modifiers.blade = -8;
         let (mut game, target, _) = thorn_battle(&rules, target, enemy);
+        game.units
+            .iter_mut()
+            .find(|unit| unit.side == Side::Enemy)
+            .unwrap()
+            .role = Some(Role::Leader);
         game.owners.fill(Some(Side::Player));
         let assess = |game: &crate::logic::Game<'_>| {
             let view = BattleView::new(game);
@@ -872,7 +875,7 @@ mod tests {
             let (mut rules, target, enemy) = thorn_fixture();
             let melee = rules.types["scout"];
             rules.units[melee] = rules.units[enemy].clone();
-            rules.units[enemy].leader = true;
+
             rules.units[enemy].attacks[0].category = Category::Ranged;
             rules.units[enemy].attacks[0].range = 2;
             if aura {
@@ -881,6 +884,11 @@ mod tests {
                 rules.units[target].thorns = 4;
             }
             let (mut game, target_id, _) = thorn_battle(&rules, target, enemy);
+            game.units
+                .iter_mut()
+                .find(|unit| unit.side == Side::Enemy)
+                .unwrap()
+                .role = Some(Role::Leader);
             if aura {
                 let tile = game.site("3,4");
                 game.add(target, Side::Player, tile);
@@ -1137,7 +1145,7 @@ mod tests {
                 assert_eq!(recruit.captures, 0.0);
                 let village = (0..game.terrain.len())
                     .find(|&tile| {
-                        game.terrain_is(tile, Terrain::Village)
+                        game.role_is(tile, TerrainRole::Village)
                             && game.board.distance(start, tile) > 2
                     })
                     .unwrap();

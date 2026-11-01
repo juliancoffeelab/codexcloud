@@ -4,7 +4,7 @@ import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
+import { TYPES, TERRAIN, isLeader, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle } from "../save/load";
 import { saveBattle } from "../save/write";
@@ -120,7 +120,7 @@ export class BattleController {
     if (!this.active()) {
       throw new Error("Wait for your turn.");
     }
-    if (this.#game.unit(unitId)?.side !== "player") {
+    if (!this.#game.unit(unitId) || !this.#game.faction(unitId).controllable) {
       throw new Error("This unit cannot act now.");
     }
   }
@@ -211,9 +211,10 @@ export class BattleController {
 
   private playSelectionFeedback(tileId: string) {
     this.animateTileAfterRender(tileId, "select");
+    const tile = this.#game.tile(tileId);
     playInteraction({
       unitType: this.#game.at(tileId)?.type,
-      terrain: this.#game.tile(tileId)?.terrain,
+      terrain: tile && TERRAIN[tile.terrain].role,
     });
   }
 
@@ -245,12 +246,14 @@ export class BattleController {
     } else if (changes.recruited || changes.advanced) {
       playSound("recruit");
     } else if (changes.movedUnit) {
+      const tile = this.#game.tile(changes.movedUnit.tile);
       playInteraction({
         unitType: changes.movedUnit.type,
-        terrain: this.#game.tile(changes.movedUnit.tile)?.terrain,
+        terrain: tile && TERRAIN[tile.terrain].role,
       });
     } else if (changes.capturedTiles.length > 0) {
-      playInteraction({ terrain: "village" });
+      const tile = this.#game.tile(changes.capturedTiles[0]!);
+      playInteraction({ terrain: tile && TERRAIN[tile.terrain].role });
     }
   }
 
@@ -291,7 +294,8 @@ export class BattleController {
     const canMove =
       this.active() &&
       !occupant &&
-      unit?.side === "player" &&
+      unit &&
+      this.#game.faction(unit.id).controllable &&
       this.#game.reachable(unit.id).has(tileId);
     if (
       this.state.inspectedTile &&
@@ -310,8 +314,9 @@ export class BattleController {
     }
     try {
       if (
-        occupant?.side === "enemy" &&
-        unit?.side === "player" &&
+        occupant &&
+        unit &&
+        this.#game.faction(unit.id).controllable &&
         this.#game.targets(unit.id).includes(occupant)
       ) {
         this.selectTarget(occupant);
@@ -346,8 +351,12 @@ export class BattleController {
     this.publish({ gameChanged: false });
     this.playSelectionFeedback(unit.tile);
 
-    if (unit.side === "enemy") {
-      this.message("Enemy unit selected. Select one of your units to act.");
+    if (!this.#game.faction(unit.id).controllable) {
+      this.message(
+        this.#game.faction(unit.id).relation === "neutral"
+          ? "Neutral unit selected."
+          : "Enemy unit selected. Select one of your units to act.",
+      );
     } else if (unit.attacked) {
       this.message("This unit has finished its turn.");
     } else {
@@ -362,6 +371,10 @@ export class BattleController {
     this.state.target = null;
     this.publish({ gameChanged: false });
     this.playSelectionFeedback(tile.id);
+    if (this.#game.presentation.fog.includes(tile.id)) {
+      this.message("Unexplored terrain.");
+      return;
+    }
     const terrain = TERRAIN[tile.terrain];
     this.message(`${terrain.name}: ${terrain.description}`);
   }
@@ -423,9 +436,7 @@ export class BattleController {
 
   recruitHere(type: RecruitType, tileId: string) {
     try {
-      const commander = this.#game.units.find(
-        (unit) => unit.side === "player" && TYPES[unit.type].leader,
-      );
+      const commander = this.#game.units.find((unit) => unit.side === "player" && isLeader(unit));
       if (!commander) {
         throw new Error("This unit cannot act now.");
       }
@@ -451,6 +462,18 @@ export class BattleController {
     this.history.clear();
     this.commitAction();
     return this.snapshot();
+  }
+
+  dropItem(unitId: string, itemId: string): void {
+    try {
+      this.requirePlayerActor(unitId);
+      this.#game.dropItem(unitId, itemId);
+      this.history.clear();
+      this.commitAction();
+      this.message("Item dropped. Move away so another unit can collect it.");
+    } catch (error) {
+      this.error(error);
+    }
   }
 
   async endTurn() {

@@ -67,7 +67,7 @@ Browser persistence has one versioned envelope owned by `src/save/`. The generat
 `SavedGame` checkpoint contains only seed and resolved game state;
 it has no separate format version. Historical conversion runs before native
 restore. Rust validates current battle invariants and never migrates browser saves.
-See [save migrations](../docs/save-migrations.md).
+See [save migrations](../.agents/skills/save-migrations/SKILL.md).
 
 ## Tests and simulations
 

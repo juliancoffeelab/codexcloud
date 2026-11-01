@@ -1,6 +1,6 @@
 //! Terrain-dependent attack geometry shared by forecasts of the same battle.
 use super::Game;
-use crate::data::{Category, Terrain};
+use crate::data::Category;
 use rustc_hash::FxHashMap as HashMap;
 use std::{cell::RefCell, rc::Rc};
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -132,9 +132,7 @@ impl Game<'_> {
             || gap != 2
             || self.board.adjacent[from].iter().any(|&between| {
                 self.board.distance(between, target) == 1
-                    && !self.terrain_is(between, Terrain::Forest)
-                    && !self.terrain_is(between, Terrain::Hill)
-                    && !self.terrain_is(between, Terrain::Grove)
+                    && !self.terrain_role(between).blocks_shots()
             })
     }
     pub(crate) fn attack_origins(&self, category: Category, range: u8) -> Rc<Vec<TileSet>> {

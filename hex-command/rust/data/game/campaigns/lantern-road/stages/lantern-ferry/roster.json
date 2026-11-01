@@ -1,112 +1,100 @@
 {
   "initial": {
     "gold": {
-      "player": 12,
-      "enemy": 12
+      "player": 0,
+      "enemy": 0
     },
     "units": [
       {
-        "type": "commander",
+        "type": "swordsman",
         "side": "player",
-        "col": 1,
-        "row": 3,
+        "col": 3,
+        "row": 8,
         "name": "Captain Nera",
         "role": "leader"
       },
       {
-        "type": "swordsman",
-        "side": "player",
-        "col": 2,
-        "row": 3
-      },
-      {
-        "type": "swordsman",
-        "side": "player",
-        "col": 2,
-        "row": 4
-      },
-      {
         "type": "scout",
         "side": "player",
-        "col": 2,
-        "row": 2,
-        "name": "Ivo",
-        "role": "courier"
+        "col": 3,
+        "row": 9,
+        "name": "Ivo"
       },
       {
-        "type": "necromancer",
-        "side": "enemy",
-        "col": 11,
-        "row": 4,
-        "name": "The Tollkeeper",
-        "role": "leader"
+        "type": "archer",
+        "side": "player",
+        "col": 4,
+        "row": 8
+      },
+      {
+        "type": "adept",
+        "side": "player",
+        "col": 4,
+        "row": 9,
+        "name": "Oren"
       },
       {
         "type": "skeleton",
         "side": "enemy",
-        "col": 10,
-        "row": 5
+        "col": 18,
+        "row": 9,
+        "aiGroup": "skeletons"
       },
       {
-        "type": "bonearcher",
+        "type": "skeleton",
         "side": "enemy",
-        "col": 12,
-        "row": 5
+        "col": 19,
+        "row": 10,
+        "aiGroup": "skeletons"
       }
     ]
   },
   "units": [
     {
-      "type": "commander",
+      "type": "swordsman",
       "side": "player",
-      "col": 1,
-      "row": 3,
+      "col": 3,
+      "row": 8,
       "name": "Captain Nera",
       "role": "leader"
     },
     {
-      "type": "swordsman",
-      "side": "player",
-      "col": 2,
-      "row": 3
-    },
-    {
-      "type": "swordsman",
-      "side": "player",
-      "col": 2,
-      "row": 4
-    },
-    {
       "type": "scout",
       "side": "player",
-      "col": 2,
-      "row": 2,
-      "name": "Ivo",
-      "role": "courier"
+      "col": 3,
+      "row": 9,
+      "name": "Ivo"
     },
     {
-      "type": "necromancer",
-      "side": "enemy",
-      "col": 11,
-      "row": 4,
-      "name": "The Tollkeeper",
-      "role": "leader"
+      "type": "archer",
+      "side": "player",
+      "col": 4,
+      "row": 8
+    },
+    {
+      "type": "adept",
+      "side": "player",
+      "col": 4,
+      "row": 9,
+      "name": "Oren"
     },
     {
       "type": "skeleton",
       "side": "enemy",
-      "col": 10,
-      "row": 5
+      "col": 18,
+      "row": 9,
+      "aiGroup": "skeletons"
     },
     {
-      "type": "bonearcher",
+      "type": "skeleton",
       "side": "enemy",
-      "col": 12,
-      "row": 5
+      "col": 19,
+      "row": 10,
+      "aiGroup": "skeletons"
     }
   ],
-  "recruits": ["swordsman", "archer", "scout"],
-  "enemyRecruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
-  "gold": 16,
+  "recruits": [],
+  "enemyRecruits": [],
+  "gold": 0,
   "enemyGold": 0
 }

@@ -44,7 +44,9 @@ export class Game implements GameState {
   declare log: string[];
   declare tiles: Tile[];
   declare units: Unit[];
+  declare groundItems: GameState["groundItems"];
   declare campaign?: GameState["campaign"];
+  declare conditionMemory?: string[];
   declare lastCombat?: GameState["lastCombat"];
   #native: LiveGame;
   #signature = "";
@@ -89,6 +91,7 @@ export class Game implements GameState {
         for (const key of Object.keys(previous)) Reflect.deleteProperty(previous, key);
         return Object.assign(previous, unit);
       });
+    delete this.conditionMemory;
     delete this.campaign;
     delete this.lastCombat;
     Object.assign(this, state);
@@ -101,6 +104,9 @@ export class Game implements GameState {
   }
   captureState(): GameState {
     return structuredClone({ ...this });
+  }
+  captureUndoState() {
+    return this.native().captureUndoState();
   }
   restoreState(state: GameState): void {
     this.#native.restoreState(state);

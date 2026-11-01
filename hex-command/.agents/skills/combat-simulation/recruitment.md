@@ -1,7 +1,7 @@
 # Adaptive recruitment coefficients
 
 `rust/data/game/recruitment.json` contains `standard` and
-`aggressivePredictor` profiles. Each accepts the camelCase fields below;
+`aggressivePredictor` profiles. Read effective values from that file and report metadata. Each accepts the camelCase fields below;
 omitted fields use the defaults in `rust/src/data/recruitment.rs`. Unknown
 fields, negative coefficients and nonpositive endurance normalization fail
 catalog validation. Catalog fingerprints include this document. Reports also record the effective
@@ -14,28 +14,28 @@ forecast and tactical planner. Classic and Balanced do not use these weights.
 Earned promotions retain the standard mechanical evaluation; the aggressive
 movement terms apply only when buying recruits.
 
-| Field                | Standard default | Meaning                                                                                       |
-| -------------------- | ---------------: | --------------------------------------------------------------------------------------------- |
-| offense              |                1 | Sustained outgoing exchange value                                                             |
-| enduranceReferenceHp |               20 | Endurance normalization: effective HP / sqrt(reference HP)                                    |
-| retaliation          |              0.5 | Value of damage returned when attacked                                                        |
-| exchangeRetaliation  |              0.5 | Cost of the enemy's response during our attack                                                |
-| drain                |              0.5 | Value of healing from our attack                                                              |
-| kill                 |                3 | Bonus for lethal attack probability                                                           |
-| healing              |                2 | Marginal healing support value                                                                |
-| auraThorns           |                2 | Marginal aura reflection value                                                                |
-| intrinsicThorns      |                2 | Intrinsic reflection value under expected melee pressure                                      |
-| futureWounds         |              0.2 | Fraction of ally maximum HP anticipated as future healing demand                              |
-| supportRecipients    |                1 | Expected simultaneous recipients per provider                                                 |
-| healingOverlap       |                1 | Multiplier on remote healing providers' estimated overlap probability                         |
-| auraOverlap          |                1 | Equivalent multiplier for remote thorn aura providers                                         |
-| futureEnemies        |                4 | Forecast troop mass, reduced by visible nonleader count                                       |
-| villageCapture       |              0.1 | Marginal village reach, reduced by existing allies' coverage                                  |
-| speed                |                0 | Intrinsic speed on the map's average traversable terrain cost                                 |
-| leaderPressure       |                0 | Expected fraction of an actual leader's HP delivered, discounted by attack-route travel turns |
-| movementCap          |             null | Maximum combined village/speed/leader multiplier bonus; null is uncapped                      |
-| duplicatePenalty     |              0.2 | Denominator increment for each living copy of the same family                                 |
-| waitPenalty          |             0.25 | Denominator increment per income turn needed to afford a recruit                              |
+| Field                | Meaning                                                                                       |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| offense              | Sustained outgoing exchange value                                                             |
+| enduranceReferenceHp | Endurance normalization: effective HP / sqrt(reference HP)                                    |
+| retaliation          | Value of damage returned when attacked                                                        |
+| exchangeRetaliation  | Cost of the enemy's response during our attack                                                |
+| drain                | Value of healing from our attack                                                              |
+| kill                 | Bonus for lethal attack probability                                                           |
+| healing              | Marginal healing support value                                                                |
+| auraThorns           | Marginal aura reflection value                                                                |
+| intrinsicThorns      | Intrinsic reflection value under expected melee pressure                                      |
+| futureWounds         | Fraction of ally maximum HP anticipated as future healing demand                              |
+| supportRecipients    | Expected simultaneous recipients per provider                                                 |
+| healingOverlap       | Multiplier on remote healing providers' estimated overlap probability                         |
+| auraOverlap          | Equivalent multiplier for remote thorn aura providers                                         |
+| futureEnemies        | Forecast troop mass, reduced by visible nonleader count                                       |
+| villageCapture       | Marginal village reach, reduced by existing allies' coverage                                  |
+| speed                | Intrinsic speed on the map's average traversable terrain cost                                 |
+| leaderPressure       | Expected fraction of an actual leader's HP delivered, discounted by attack-route travel turns |
+| movementCap          | Maximum combined village/speed/leader multiplier bonus; null is uncapped                      |
+| duplicatePenalty     | Denominator increment for each living copy of the same family                                 |
+| waitPenalty          | Denominator increment per income turn needed to afford a recruit                              |
 
 For recruitment:
 
@@ -53,8 +53,7 @@ score = [combat * (1 + min(movementCap, movementBonus))
                 * (1 + waitPenalty * incomeTurns)]
 ```
 
-The implementation preserves the previous floating-point arithmetic for equal
-support weights. A null movement cap omits the `min` operation. Terrain speed
+A null movement cap omits the `min` operation. Terrain speed
 is `clamp((move / meanTraversableTileCost - 3) / 3, 0, 1)`.
 Leader delivery uses terrain-weighted routes to legal attack origins and is
 zero for unreachable leaders. Speed and leader delivery use **max**, so they

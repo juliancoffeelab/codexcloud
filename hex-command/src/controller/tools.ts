@@ -2,7 +2,7 @@ import { BATTLE_MAPS } from "../game/maps";
 import { TYPES } from "../game/catalog";
 import type { RecruitType, CampaignId, UnitType } from "../game/types";
 import { CAMPAIGNS } from "../game/campaign-data";
-const recruitable = Object.keys(TYPES).filter((type) => !TYPES[type as keyof typeof TYPES].leader);
+const recruitable = Object.keys(TYPES);
 import type { BattleController } from "./battle";
 
 interface InputProperty {

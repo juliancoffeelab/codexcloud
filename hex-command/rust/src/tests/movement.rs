@@ -9,12 +9,14 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
         let mut state = flat().state();
         state.tiles = (0..size)
             .map(|tile| Tile {
+                fog: None,
                 id: format!("{},{}", tile % 9, tile / 9),
                 col: (tile % 9) as i32,
                 row: (tile / 9) as i32,
                 terrain: "plains".into(),
                 owner: None,
                 connections: None,
+                walls: None,
                 dead_ends: None,
                 floor: None,
             })

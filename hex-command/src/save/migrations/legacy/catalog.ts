@@ -1,5 +1,5 @@
 /** Historical save metadata stays private to migration; live definitions come from WASM. */
-import { CAMPAIGNS as CURRENT_CAMPAIGNS } from "../../../game/campaign-data";
+import { FROZEN_CAMPAIGNS } from "./frozen";
 import type { CampaignId, DialogueLine, MissionDefinition } from "../../../game/types";
 import stages from "./data/stages.json";
 import type { Immutable } from "../../../game/immutable";
@@ -20,7 +20,7 @@ type MigrationMission = Omit<Immutable<MissionDefinition>, "waves"> & {
 const history = stages as unknown as Record<string, StageHistory>;
 /** Add the old marker and dialogue vocabulary only at the importer boundary. */
 export const CAMPAIGNS = Object.fromEntries(
-  Object.entries(CURRENT_CAMPAIGNS).map(([id, campaign]) => [
+  Object.entries(FROZEN_CAMPAIGNS).map(([id, campaign]) => [
     id,
     {
       ...campaign,
@@ -36,7 +36,7 @@ export const CAMPAIGNS = Object.fromEntries(
   ]),
 ) as Record<
   CampaignId,
-  Omit<(typeof CURRENT_CAMPAIGNS)[CampaignId], "missions"> & {
+  Omit<(typeof FROZEN_CAMPAIGNS)[CampaignId], "missions"> & {
     missions: MigrationMission[];
   }
 >;

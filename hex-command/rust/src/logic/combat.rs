@@ -5,6 +5,18 @@ use super::exchange::{self, ExchangeForecast, Strikes};
 use crate::data::*;
 use std::rc::Rc;
 impl<'catalog> Game<'catalog> {
+    pub(crate) fn weapons<'a>(&'a self, unit: &'a Unit) -> impl Iterator<Item = &'a Weapon> {
+        self.rules.units[unit.kind]
+            .attacks
+            .iter()
+            .chain(unit.items.iter().flat_map(|item| item.attacks.iter()))
+    }
+    pub(crate) fn weapon<'a>(&'a self, unit: &'a Unit, index: usize) -> &'a Weapon {
+        self.weapons(unit)
+            .nth(index)
+            .expect("validated weapon index")
+    }
+
     pub(crate) fn can_attack(
         &self,
         unit: &Unit,
@@ -12,7 +24,22 @@ impl<'catalog> Game<'catalog> {
         target: &Unit,
         weapon: usize,
     ) -> bool {
-        self.can_attack_at(unit, from, target, target.tile, weapon)
+        // Reject mechanically impossible attacks before resolving visibility.
+        // Inspection asks about every unit pair; resolving the entire map's fog
+        // for friendly or out-of-range targets turns a move into a UI stall.
+        if !self.can_attack_at(unit, from, target, target.tile, weapon) {
+            return false;
+        }
+        if unit.side == Side::Player
+            && self.fog[target.tile].is_some()
+            && self
+                .presentation()
+                .fog
+                .contains(&self.board.ids[target.tile])
+        {
+            return false;
+        }
+        true
     }
     fn can_attack_at(
         &self,
@@ -22,14 +49,14 @@ impl<'catalog> Game<'catalog> {
         target_tile: usize,
         weapon: usize,
     ) -> bool {
-        if unit.side == target.side {
+        if !self.hostile(unit, target) {
             return false;
         }
-        let attack = &self.rules.units[unit.kind].attacks[weapon];
+        let attack = self.weapon(unit, weapon);
         self.in_attack_range(from, target_tile, attack.category, attack.range)
     }
     pub(crate) fn attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
-        (0..self.rules.units[unit.kind].attacks.len())
+        (0..self.weapons(unit).count())
             .filter(|&weapon| self.can_attack(unit, from, target, weapon))
             .collect()
     }
@@ -43,11 +70,12 @@ impl<'catalog> Game<'catalog> {
         weapon: usize,
         tile: usize,
     ) -> std::rc::Rc<super::damage::DamageDistribution> {
-        let attack = &self.rules.units[attacker.kind].attacks[weapon];
+        let attack = self.weapon(attacker, weapon);
         let rule = &self.rules.units[target.kind];
         super::damage::distribution(
             attack,
             rule.damage_modifiers.get(attack.damage_type)
+                + self.equipment_modifier(target, attack.damage_type)
                 + rule.environment[self.terrain[tile]][attack.category.index()]
                     [attack.damage_type.index()],
         )
@@ -65,13 +93,14 @@ impl<'catalog> Game<'catalog> {
         tile: usize,
         reflection: i32,
     ) -> Strikes {
-        let attack = &self.rules.units[attacker.kind].attacks[weapon];
+        let attack = self.weapon(attacker, weapon);
         let defender = &self.rules.units[target.kind];
         Strikes {
             damage: attack.damage,
             spread: attack.spread,
             count: attack.count,
             modifier: defender.damage_modifiers.get(attack.damage_type)
+                + self.equipment_modifier(target, attack.damage_type)
                 + defender.environment[self.terrain[tile]][attack.category.index()]
                     [attack.damage_type.index()],
             drain: attack.drain,
@@ -86,7 +115,7 @@ impl<'catalog> Game<'catalog> {
         weapon: usize,
         from: usize,
     ) -> Rc<ExchangeForecast> {
-        let count = self.rules.units[unit.kind].attacks[weapon].count;
+        let count = self.weapon(unit, weapon).count;
         self.exchange_with_thorns(
             unit,
             target,
@@ -121,10 +150,8 @@ impl<'catalog> Game<'catalog> {
         weapon: usize,
         from: usize,
     ) -> Option<usize> {
-        let category = self.rules.units[unit.kind].attacks[weapon].category;
-        self.rules.units[target.kind]
-            .attacks
-            .iter()
+        let category = self.weapon(unit, weapon).category;
+        self.weapons(target)
             .enumerate()
             .filter(|(w, attack)| {
                 attack.category == category
@@ -163,10 +190,11 @@ impl<'catalog> Game<'catalog> {
         weapon: usize,
         tile: usize,
     ) -> (i32, i32, DamageMitigationRecord) {
-        let attack = &self.rules.units[attacker.kind].attacks[weapon];
+        let attack = self.weapon(attacker, weapon).clone();
         let armour = self.rules.units[target.kind]
             .damage_modifiers
-            .get(attack.damage_type);
+            .get(attack.damage_type)
+            + self.equipment_modifier(target, attack.damage_type);
         let environment = self.rules.units[target.kind].environment[self.terrain[tile]]
             [attack.category.index()][attack.damage_type.index()];
         // Full-period state, bijective output mixing and rejection sampling.
@@ -212,7 +240,7 @@ impl<'catalog> Game<'catalog> {
         weapon: usize,
         from: usize,
     ) -> i32 {
-        let attack = &self.rules.units[attacker.kind].attacks[weapon];
+        let attack = self.weapon(attacker, weapon);
         if attack.category != Category::Melee {
             return 0;
         }
@@ -221,7 +249,7 @@ impl<'catalog> Game<'catalog> {
             .iter()
             .filter(|ally| {
                 ally.id != target.id
-                    && ally.side == target.side
+                    && self.allied(ally, &target)
                     && self.board.distance(
                         if ally.id == attacker.id {
                             from
@@ -291,7 +319,7 @@ impl<'catalog> Game<'catalog> {
                 && self.winner.is_none()
                 && self.can_attack(&attacker, attacker.tile, &target, weapon)
         );
-        let attack = self.rules.units[attacker.kind].attacks[weapon].clone();
+        let attack = self.weapon(&attacker, weapon).clone();
         let response = self.response(&attacker, &target, weapon, attacker.tile);
         let per_thorn =
             self.thorn_damage(&attacker, &target, weapon, attacker.tile) / i32::from(attack.count);
@@ -335,7 +363,7 @@ impl<'catalog> Game<'catalog> {
                 effective_thorns += effect.reflected;
                 #[cfg(feature = "wasm")]
                 {
-                    let attack = &self.rules.units[actor.kind].attacks[selected];
+                    let attack = self.weapon(&actor, selected);
                     let rule = &self.rules.units[defender.kind];
                     playback.push(crate::protocol::CombatStrike {
                         side: actor.side,
@@ -343,7 +371,8 @@ impl<'catalog> Game<'catalog> {
                         roll_min: attack.damage - attack.spread,
                         roll_max: attack.damage + attack.spread,
                         raw,
-                        modifier: rule.damage_modifiers.get(attack.damage_type),
+                        modifier: rule.damage_modifiers.get(attack.damage_type)
+                            + self.equipment_modifier(&defender, attack.damage_type),
                         terrain: rule.environment[self.terrain[defender.tile]]
                             [attack.category.index()][attack.damage_type.index()],
                         damage,
@@ -398,7 +427,7 @@ impl<'catalog> Game<'catalog> {
                     .iter()
                     .filter(|ally| {
                         ally.id != target.id
-                            && ally.side == target.side
+                            && self.allied(ally, &target)
                             && self.board.distance(ally.tile, target.tile) == 1
                             && self.rules.units[ally.kind].thorn_aura == strength
                     })
@@ -473,7 +502,14 @@ impl<'catalog> Game<'catalog> {
             .filter(|unit| unit.hp <= 0)
             .cloned()
             .collect();
+        self.charge_deaths(&defeated);
         for unit in &defeated {
+            for item in &unit.items {
+                self.ground_items.push(GroundItem {
+                    tile: self.board.ids[unit.tile].clone(),
+                    item: item.clone(),
+                });
+            }
             if let Some(campaign) = &mut self.campaign {
                 if unit.side == Side::Player {
                     if let Some(name) = &unit.name {
@@ -481,10 +517,7 @@ impl<'catalog> Game<'catalog> {
                             .missions
                             .iter()
                             .any(|chapter| {
-                                chapter.map.units.iter().any(|incoming| {
-                                    incoming.side == Side::Player
-                                        && incoming.name.as_ref() == Some(name)
-                                })
+                                chapter.companion_names().any(|incoming| incoming == name)
                             })
                         {
                             let mark = format!("fallen:{name}");
@@ -504,8 +537,20 @@ impl<'catalog> Game<'catalog> {
             if self.mediation_at_risk(unit) {
                 self.escalate_refuge();
             }
-            if self.rules.units[unit.kind].leader && self.campaign.is_none() {
-                self.winner = Some(unit.side.other());
+            if unit.is_leader() && self.campaign.is_none() {
+                let relation = self.faction_relation("player", self.unit_faction(unit));
+                let remaining = self.units.iter().any(|other| {
+                    other.hp > 0
+                        && other.is_leader()
+                        && self.faction_relation("player", self.unit_faction(other)) == relation
+                });
+                if !remaining {
+                    self.winner = match relation {
+                        Relation::Hostile => Some(Side::Player),
+                        Relation::Allied => Some(Side::Enemy),
+                        Relation::Neutral => None,
+                    };
+                }
             }
             self.record(format!(
                 "{} {} fell.",

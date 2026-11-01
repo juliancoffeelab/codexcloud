@@ -113,27 +113,6 @@ impl RecruiterKind {
     ) -> Option<Command> {
         game.recruit_from_orders(self, seed, orders)
     }
-    #[cfg(test)]
-    pub(in crate::ai) fn choose(
-        self,
-        game: &crate::logic::Game<'_>,
-        seed: u32,
-        goals: Option<&[Objective]>,
-        restrained: bool,
-    ) -> Option<Command> {
-        let workspace = crate::ai::PlanningWorkspace::new(
-            seed,
-            1,
-            goals.map(<[Objective]>::to_vec),
-            if restrained {
-                crate::ai::Diplomacy::Restrained
-            } else {
-                crate::ai::Diplomacy::Pragmatic
-            },
-        );
-        let orders = crate::ai::CampaignBlock::Mission.campaign_orders(game, &workspace);
-        BattleView::new(game).recruit_from_orders(self, seed, &orders.recruitment)
-    }
 }
 impl BattleView<'_, '_> {
     fn recruit_from_orders(
@@ -164,7 +143,7 @@ impl BattleView<'_, '_> {
         let Some(leader) = self
             .units()
             .iter()
-            .find(|u| u.side == side && self.rules().units[u.kind].leader)
+            .find(|u| self.belongs_to_phase(u, side) && u.is_leader())
         else {
             return None;
         };
@@ -209,7 +188,7 @@ impl BattleView<'_, '_> {
                     let allies: Vec<_> = self
                         .units()
                         .iter()
-                        .filter(|u| u.side == side && !self.rules().units[u.kind].leader)
+                        .filter(|u| self.belongs_to_phase(u, side) && !u.is_leader())
                         .collect();
                     pool.iter()
                         .enumerate()
@@ -233,11 +212,10 @@ impl BattleView<'_, '_> {
                         .map(|(index, _)| index)
                         .unwrap_or(0)
                 }]
-            } else if self
-                .units()
-                .iter()
-                .any(|u| u.side == side && self.rules().units[u.kind].family == Family::Archer)
-            {
+            } else if self.units().iter().any(|u| {
+                self.belongs_to_phase(u, side)
+                    && self.rules().units[u.kind].family == Family::Archer
+            }) {
                 swordsman
             } else {
                 archer
@@ -257,9 +235,13 @@ impl BattleView<'_, '_> {
         let allies: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| u.side == side && !self.rules().units[u.kind].leader)
+            .filter(|u| self.belongs_to_phase(u, side) && !u.is_leader())
             .collect();
-        let opponents: Vec<_> = self.units().iter().filter(|u| u.side != side).collect();
+        let opponents: Vec<_> = self
+            .units()
+            .iter()
+            .filter(|u| self.hostile_to_phase(u, side))
+            .collect();
         let mut counts = [0; 4];
         for ally in &allies {
             counts[recruit_role(self, ally.kind).index()] += 1;
@@ -298,6 +280,9 @@ impl BattleView<'_, '_> {
                 continue;
             }
             let recruit = Unit {
+                faction: leader.faction.clone(),
+                items: vec![],
+                ai_group: None,
                 id: 0,
                 kind,
                 side,
@@ -430,8 +415,12 @@ pub(crate) fn diagnostics(
 ) -> Vec<serde_json::Value> {
     let view = BattleView::new(game);
     let mut rows = Vec::new();
-    for unit in view.units().iter().filter(|u| u.side == view.turn()) {
-        let recruit = view.rules().units[unit.kind].leader;
+    for unit in view
+        .units()
+        .iter()
+        .filter(|u| view.belongs_to_phase(u, view.turn()))
+    {
+        let recruit = unit.is_leader();
         let options = if recruit {
             view.recruitment_options(unit.side)
         } else {
@@ -481,8 +470,8 @@ pub(crate) fn diagnostics(
                 .units()
                 .iter()
                 .filter(|u| {
-                    u.side == unit.side
-                        && !view.rules().units[u.kind].leader
+                    view.allied(u, unit)
+                        && !u.is_leader()
                         && view.rules().units[u.kind].family == rule.family
                 })
                 .count();
@@ -555,7 +544,7 @@ mod tests {
         rules.units[a].role = UnitRole::Warrior;
         rules.units[b].role = UnitRole::Warrior;
         let mut game = crate::logic::Game::new(&rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
+        game.units.retain(|u| u.is_leader());
         game.roster_changed();
         game.pools = Some([vec![a, b], vec![a, b]]);
         game.gold[0] = 100;
@@ -578,7 +567,7 @@ mod tests {
         drop(game);
         rules.units[b].role = UnitRole::Flank;
         let mut game = crate::logic::Game::new(&rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
+        game.units.retain(|u| u.is_leader());
         game.roster_changed();
         game.pools = Some([vec![a, b], vec![a, b]]);
         game.gold[0] = 100;
@@ -617,7 +606,7 @@ mod tests {
         }
         for available in [kinds.to_vec(), vec![kinds[1], kinds[2]]] {
             let mut game = crate::logic::Game::new(&rules, "mirror");
-            game.units.retain(|u| rules.units[u.kind].leader);
+            game.units.retain(|u| u.is_leader());
             game.roster_changed();
             let mut reversed = available.clone();
             reversed.reverse();
@@ -641,7 +630,7 @@ mod tests {
                 let leader = game
                     .units
                     .iter()
-                    .find(|u| u.side == Side::Player && rules.units[u.kind].leader)
+                    .find(|u| u.side == Side::Player && u.is_leader())
                     .unwrap()
                     .clone();
                 let deployment = game.placement_tiles(&leader, expected, false);
@@ -660,7 +649,7 @@ mod tests {
     fn explicit_arena_pool_rotates_through_expensive_units_instead_of_legacy_two_unit_mix() {
         let rules = Rules::load().unwrap();
         let mut game = crate::logic::Game::new(&rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
+        game.units.retain(|u| u.is_leader());
         game.roster_changed();
         let pool = vec![
             rules.types["swordsman"],
@@ -708,6 +697,7 @@ mod tests {
                 | Command::PreviousDialogue
                 | Command::SkipDialogue
                 | Command::RecallMission { .. }
+                | Command::DropItem { .. }
                 | Command::RetryMission => None,
             }
         }

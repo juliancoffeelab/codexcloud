@@ -64,7 +64,10 @@ fn drive(
         .units()
         .iter()
         .filter(|unit| {
-            unit.side == context.battle().turn()
+            context
+                .battle()
+                .belongs_to_phase(unit, context.battle().turn())
+                && context.battle().can_act(unit.id)
                 && unit.retreating == Some(true)
                 && unit.hp == context.battle().rules().units[unit.kind].hp
         })
@@ -109,7 +112,6 @@ impl PlannerKind {
         game: &BattleView<'_, '_>,
         workspace: &mut PlanningWorkspace,
     ) -> Result<(), CommandError> {
-        let rules = game.rules();
         let planner = self;
         super::cooperation::assign(game, workspace);
         super::cooperation::refresh_assignments(game, workspace);
@@ -154,7 +156,7 @@ impl PlannerKind {
                 if workspace.goals.is_none() && (!orders.campaign || game.turn() == Side::Enemy) {
                     workspace
                         .classic_objectives
-                        .retain(|g| g.id.starts_with("rebuild:"));
+                        .retain(|g| g.id.starts_with("rebuild:") || g.id.starts_with("group:"));
                 }
                 workspace.classic_ids = game.classic_order(&workspace.classic_objectives).into();
                 workspace
@@ -162,11 +164,9 @@ impl PlannerKind {
                     .make_contiguous()
                     .sort_by_key(|id| workspace.escort.bound(*id) == 0.0);
                 workspace.tactical_remaining = Some(workspace.classic_ids.len());
-                for unit in game
-                    .units()
-                    .iter()
-                    .filter(|u| u.side == game.turn() && rules.units[u.kind].leader)
-                {
+                for unit in game.units().iter().filter(|u| {
+                    game.belongs_to_phase(u, game.turn()) && game.can_act(u.id) && u.is_leader()
+                }) {
                     let required = orders.moving_actor(unit.id);
                     let (_, intent) = orders.rebuild_plan(game, unit.id, required);
                     if unit.rebuilding != intent {
@@ -206,7 +206,7 @@ impl PlannerKind {
             let remaining = workspace.tactical_remaining.get_or_insert_with(|| {
                 game.units()
                     .iter()
-                    .filter(|u| u.side == game.turn())
+                    .filter(|u| game.belongs_to_phase(u, game.turn()) && game.can_act(u.id))
                     .count()
                     * 3
             });
@@ -284,7 +284,7 @@ impl PlannerKind {
                         workspace.attack_continuation = Some((
                             UnitId(plan.unit),
                             UnitId(target),
-                            WeaponId(rules.units[actor.kind].attacks[weapon].id.clone()),
+                            WeaponId(game.weapon(actor, weapon).id.clone()),
                         ));
                     }
                 }

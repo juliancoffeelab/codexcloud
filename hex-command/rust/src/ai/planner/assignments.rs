@@ -98,11 +98,12 @@ pub(in crate::ai) fn assign(game: &BattleView<'_, '_>, workspace: &mut PlanningW
                     .units()
                     .iter()
                     .filter(|u| {
-                        u.side == game.turn()
+                        game.belongs_to_phase(u, game.turn())
+                            && game.can_act(u.id)
                             && u.id != actor.0
                             && !allocated.contains(&u.id)
                             && !orders.moving_actor(u.id)
-                            && !game.rules().units[u.kind].leader
+                            && !u.is_leader()
                             && selector.accepts(game, u.kind)
                     })
                     .collect();
@@ -225,7 +226,10 @@ pub(in crate::ai) fn rescue(
         if workspace.cooperation.attempted.contains(actor) {
             continue;
         }
-        let Some(unit) = game.unit(actor.0).filter(|u| !u.attacked) else {
+        let Some(unit) = game
+            .unit(actor.0)
+            .filter(|u| !u.attacked && game.can_act(u.id))
+        else {
             continue;
         };
         workspace.cooperation.attempted.push(*actor);
@@ -242,10 +246,11 @@ pub(in crate::ai) fn rescue(
             .units()
             .iter()
             .filter(|u| {
-                u.side == game.turn()
+                game.belongs_to_phase(u, game.turn())
+                    && game.can_act(u.id)
                     && !u.attacked
                     && u.id != actor.0
-                    && !game.rules().units[u.kind].leader
+                    && !u.is_leader()
                     && !orders.protects(u.id)
                     && !orders.moving_actor(u.id)
                     && game.board().distance(u.tile, unit.tile) <= 5
@@ -302,7 +307,11 @@ pub(in crate::ai) fn rescue(
                 positions.sort_by_key(|&tile| (board.board().distance(tile, unit.tile), tile));
                 let mut actions = Vec::new();
                 for tile in positions {
-                    for enemy in board.units().iter().filter(|u| u.side != game.turn()) {
+                    for enemy in board
+                        .units()
+                        .iter()
+                        .filter(|u| board.hostile_to_phase(u, game.turn()))
+                    {
                         for weapon in board.attack_options(ally, enemy, tile) {
                             let response = board.maximum_retaliation(ally, enemy, weapon, tile);
                             if board.exchange(ally, enemy, weapon, tile).death[1] == 1.0
@@ -513,7 +522,7 @@ mod tests {
 
     fn small_battle(rules: &Rules) -> Game<'_> {
         let mut game = Game::new(rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
+        game.units.retain(|u| u.is_leader());
         let player = game
             .units
             .iter()
@@ -561,7 +570,7 @@ mod tests {
         let actor = game
             .units
             .iter()
-            .find(|u| u.side == Side::Player && game.rules.units[u.kind].leader)
+            .find(|u| u.side == Side::Player && u.is_leader())
             .unwrap()
             .id;
         workspace.orders = Some(CampaignOrders {
@@ -583,7 +592,7 @@ mod tests {
         let actor = game
             .units
             .iter()
-            .find(|u| u.side == Side::Player && rules.units[u.kind].leader)
+            .find(|u| u.side == Side::Player && u.is_leader())
             .unwrap()
             .id;
         let orders = &workspace.orders.as_ref().unwrap().tactics;
@@ -614,11 +623,11 @@ mod tests {
         for planner in [Planner::Classic, Planner::Full, Planner::Queued] {
             let mut game = small_battle(&rules);
             game.units
-                .retain(|u| rules.units[u.kind].leader || u.side == Side::Enemy);
+                .retain(|u| u.is_leader() || u.side == Side::Enemy);
             let enemy = game
                 .units
                 .iter_mut()
-                .find(|u| u.side == Side::Enemy && !rules.units[u.kind].leader)
+                .find(|u| u.side == Side::Enemy && !u.is_leader())
                 .unwrap();
             enemy.hp = rules.units[enemy.kind].hp;
             let actor = game
@@ -645,11 +654,8 @@ mod tests {
                     } => {
                         if unit.0 == protected {
                             let actor = game.unit(unit.0).unwrap();
-                            let weapon = rules.units[actor.kind]
-                                .attacks
-                                .iter()
-                                .position(|w| w.id == weapon.0)
-                                .unwrap();
+                            let weapon =
+                                game.weapons(actor).position(|w| w.id == weapon.0).unwrap();
                             assert_eq!(
                                 game.preview(
                                     actor,
@@ -672,6 +678,7 @@ mod tests {
                     | Command::RecallMission { .. }
                     | Command::RetryMission
                     | Command::PreviousDialogue
+                    | Command::DropItem { .. }
                     | Command::SkipDialogue => false,
                 };
                 if end {

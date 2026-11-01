@@ -1,13 +1,14 @@
 import type { LiveGame } from "./live-game";
 import type { GameState, Unit } from "./types";
+import type { Immutable } from "./immutable";
 type UndoGame = Pick<
   LiveGame,
-  "round" | "turn" | "winner" | "captureState" | "restoreState" | "move" | "unit"
+  "round" | "turn" | "winner" | "captureUndoState" | "restoreState" | "move" | "unit"
 >;
 interface UndoEntry {
   game: UndoGame;
   round: number;
-  state: GameState;
+  state: Immutable<GameState>;
   unitId: string;
 }
 export interface UndoResult {
@@ -46,7 +47,7 @@ export function createMoveUndo(): MoveUndo {
   function move(game: UndoGame, unitId: string, tileId: string): Unit {
     // Check any existing entries before adding a move from another battle/turn.
     canUndo(game);
-    const state = game.captureState();
+    const state = game.captureUndoState();
     const unit = game.move(unitId, tileId);
     if (game.turn === "player" && !game.winner) {
       history.push({ game, round: game.round, state, unitId });

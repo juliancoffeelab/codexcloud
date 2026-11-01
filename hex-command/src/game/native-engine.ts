@@ -10,6 +10,7 @@ import type {
   EngineResult,
   EngineView,
   BattleInspection,
+  BoardInspection,
   NativeEngineFactory as WasmEngineFactory,
   SavedGame,
   Start,
@@ -21,9 +22,11 @@ export type NativeResponse<T> = EngineResult<Immutable<T>>;
 export interface GameEngine {
   view(): NativeResponse<EngineView>;
   inspect(): NativeResponse<BattleInspection>;
+  geometry(): NativeResponse<BoardInspection>;
   dispatch(command: Immutable<Command>, expectedRevision?: number): NativeResponse<DispatchResult>;
   chooseAiCommand(options: AiOptions): NativeResponse<AiDecision>;
   save(): NativeResponse<SavedGame>;
+  saveJson(): NativeResponse<string>;
   dispose(): EngineResult<null>;
 }
 
@@ -42,9 +45,11 @@ export type NativeBridge = Pick<
   | "restore"
   | "view"
   | "inspect"
-  | "dispatch"
+  | "geometry"
+  | "dispatchUpdate"
   | "chooseAiCommand"
   | "save"
+  | "saveJson"
   | "disposeBattle"
   | "free"
 >;
@@ -95,21 +100,71 @@ export function createNativeEngineFactory(bridge: NativeBridge): GameEngineFacto
   function engine(handle: BattleHandle): GameEngine {
     let released = false;
     let revision = handle.view.revision;
+    let current: Immutable<EngineView> = immutable(structuredClone(handle.view));
+    let tileIndices = new Map(current.state.tiles.map((tile, index) => [tile.id, index]));
     const active = <T>(operation: () => EngineResult<T>): EngineResult<T> =>
       released || disposed ? failure({ code: "disposed" }) : call(operation);
     const result: GameEngine = Object.freeze({
-      view: () => owned(active(() => bridge.view(handle.id, revision))),
+      view: () => {
+        const result = owned(active(() => bridge.view(handle.id, revision)));
+        if (result.ok) {
+          current = result.value;
+          tileIndices = new Map(current.state.tiles.map((tile, index) => [tile.id, index]));
+        }
+        return result;
+      },
       inspect: () => owned(active(() => bridge.inspect(handle.id, revision))),
-      dispatch: (command: Immutable<Command>, expectedRevision = revision) => {
-        const dispatched = active(() =>
-          bridge.dispatch(handle.id, expectedRevision, structuredClone(command) as Command),
+      geometry: () => owned(active(() => bridge.geometry(handle.id, revision))),
+      dispatch: (
+        command: Immutable<Command>,
+        expectedRevision = revision,
+      ): NativeResponse<DispatchResult> => {
+        const dispatched = owned(
+          active(() =>
+            bridge.dispatchUpdate(handle.id, expectedRevision, structuredClone(command) as Command),
+          ),
         );
-        if (dispatched.ok) revision = dispatched.value.view.revision;
-        return owned(dispatched);
+        if (!dispatched.ok) return dispatched;
+        const update = dispatched.value;
+        if (update.baseRevision !== current.revision)
+          throw new Error("Incremental publication does not match its base revision");
+        let tiles: Immutable<EngineView>["state"]["tiles"];
+        switch (update.terrain.kind) {
+          case "keep":
+            tiles = current.state.tiles;
+            break;
+          case "replace":
+            tiles = update.terrain.tiles;
+            tileIndices = new Map(tiles.map((tile, index) => [tile.id, index]));
+            break;
+          case "patch": {
+            const changed = [...current.state.tiles];
+            for (const tile of update.terrain.tiles) {
+              const index = tileIndices.get(tile.id);
+              if (index === undefined)
+                throw new Error(`Terrain update references unknown tile ${tile.id}`);
+              changed[index] = tile;
+            }
+            tiles = changed;
+            break;
+          }
+          default: {
+            const impossible: never = update.terrain;
+            throw new Error(`Unknown terrain publication ${impossible}`);
+          }
+        }
+        current = immutable({
+          revision: update.revision,
+          state: { ...update.state, tiles },
+          presentation: update.presentation,
+        });
+        revision = current.revision;
+        return { ok: true, value: immutable({ view: current, combat: update.combat }) };
       },
       chooseAiCommand: (options: AiOptions) =>
         owned(active(() => bridge.chooseAiCommand(handle.id, revision, structuredClone(options)))),
       save: () => owned(active(() => bridge.save(handle.id, revision))),
+      saveJson: () => owned(active(() => bridge.saveJson(handle.id, revision))),
       dispose: (): EngineResult<null> => {
         if (released || disposed) return { ok: true, value: null };
         const closed = call(() => bridge.disposeBattle(handle.id));

@@ -369,6 +369,9 @@ mod tests {
 
     fn fixture() -> MatchResult {
         let state = State {
+            factions: vec![],
+            ground_items: vec![],
+            condition_memory: vec![],
             armies: None,
             map_id: "fixture".into(),
             map_revision: 1,

@@ -41,8 +41,9 @@ impl Battle {
     fn game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
         Game::from_state_with_board(rules, self.state.clone(), self.board.clone())
     }
-    fn view(&self) -> EngineView {
+    fn view(&self, rules: &Rules) -> EngineView {
         EngineView {
+            presentation: self.game(rules).presentation(),
             revision: self.revision,
             state: self.state.clone(),
         }
@@ -119,7 +120,8 @@ impl NativeEngineFactory {
             .map(|mut state| {
                 state.combat_rng = Some(seed);
                 let board = Board::new(&state.tiles);
-                self.insert(state, seed, board)
+                let game = Game::from_state_with_board(&self.rules, state, board.clone());
+                self.insert(game.state(), seed, board)
             });
         encode(result)
     }
@@ -130,13 +132,36 @@ impl NativeEngineFactory {
     }
     /// Return a detached [`EngineView`] when the handle and expected revision are current.
     pub fn view(&self, id: u32, revision: u32) -> Result<Ts<ViewResponse>, JsError> {
-        encode(self.battle(id, revision).map(Battle::view))
+        encode(
+            self.battle(id, revision)
+                .map(|battle| battle.view(&self.rules)),
+        )
     }
     /// Publish legal actions and display forecasts without exposing mutable state.
     pub fn inspect(&self, id: u32, revision: u32) -> Result<Ts<InspectionResponse>, JsError> {
         encode(
             self.battle(id, revision)
                 .map(|battle| battle.game(&self.rules).inspect(revision)),
+        )
+    }
+    /// Board topology and rule costs do not belong to each unit-action refresh.
+    pub fn geometry(&self, id: u32, revision: u32) -> Result<Ts<BoardResponse>, JsError> {
+        encode(
+            self.battle(id, revision)
+                .map(|battle| battle.game(&self.rules).inspect_board()),
+        )
+    }
+    /// Incremental browser publication. The complete snapshot API remains
+    /// available for explicit inspection and persistence tools.
+    #[wasm_bindgen(js_name = dispatchUpdate)]
+    pub fn dispatch_update(
+        &mut self,
+        id: u32,
+        revision: u32,
+        command: Ts<Command>,
+    ) -> Result<Ts<UpdateResponse>, JsError> {
+        encode(
+            decode::<Command>(command).and_then(|command| self.apply_update(id, revision, command)),
         )
     }
     /// Apply one decoded [`Command`] against the expected revision.
@@ -166,6 +191,15 @@ impl NativeEngineFactory {
     pub fn save(&self, id: u32, revision: u32) -> Result<Ts<SaveResponse>, JsError> {
         encode(self.checkpoint(id, revision))
     }
+    /// Serialize the unchanged save format in Rust, avoiding a large temporary
+    /// JS object graph solely to JSON.stringify it again for localStorage.
+    #[wasm_bindgen(js_name = saveJson)]
+    pub fn save_json(&self, id: u32, revision: u32) -> Result<Ts<SerializedSaveResponse>, JsError> {
+        encode(
+            self.checkpoint(id, revision)
+                .map(|saved| serde_json::to_string(&saved).expect("serializable checkpoint")),
+        )
+    }
     /// Release a battle and its planner; later requests return [`EngineError::UnknownBattle`].
     /// All results use the encoded [`EngineResult`] envelope.
     #[wasm_bindgen(js_name = disposeBattle)]
@@ -180,6 +214,54 @@ impl NativeEngineFactory {
 }
 
 impl NativeEngineFactory {
+    fn apply_update(
+        &mut self,
+        id: u32,
+        revision: u32,
+        command: Command,
+    ) -> Result<DispatchUpdate, EngineError> {
+        let before = self.battle(id, revision)?;
+        let old_tiles = before.state.tiles.clone();
+        let old_map = (
+            before.state.map_id.clone(),
+            before.state.map_revision,
+            before.state.cols,
+            before.state.rows,
+        );
+        let result = self.apply(id, revision, command)?;
+        let (state, tiles) = StateFrame::split(result.view.state);
+        let replaced = old_map
+            != (
+                state.map_id.clone(),
+                state.map_revision,
+                state.cols,
+                state.rows,
+            )
+            || old_tiles.len() != tiles.len()
+            || old_tiles.iter().zip(&tiles).any(|(a, b)| a.id != b.id);
+        let terrain = if replaced {
+            TerrainUpdate::Replace { tiles }
+        } else {
+            let changed: Vec<_> = tiles
+                .into_iter()
+                .zip(&old_tiles)
+                .filter_map(|(tile, old)| (tile != *old).then_some(tile))
+                .collect();
+            if changed.is_empty() {
+                TerrainUpdate::Keep
+            } else {
+                TerrainUpdate::Patch { tiles: changed }
+            }
+        };
+        Ok(DispatchUpdate {
+            base_revision: revision,
+            revision: result.view.revision,
+            state,
+            terrain,
+            presentation: result.view.presentation,
+            combat: result.combat,
+        })
+    }
     fn apply(
         &mut self,
         id: u32,
@@ -208,7 +290,11 @@ impl NativeEngineFactory {
             battle.options = None;
         }
         Ok(DispatchResult {
-            view: battle.view(),
+            view: EngineView {
+                presentation: game.presentation(),
+                revision: battle.revision,
+                state: battle.state.clone(),
+            },
             combat: game.combat_animation.take(),
         })
     }
@@ -299,7 +385,7 @@ impl NativeEngineFactory {
             options: None,
             pending: None,
         };
-        let view = battle.view();
+        let view = battle.view(&self.rules);
         self.battles.insert(id, battle);
         BattleHandle { id, view }
     }
@@ -338,7 +424,7 @@ impl NativeEngineFactory {
                             })?;
                         for unit in state.units.iter_mut().filter(|u| u.side == side) {
                             let original = &self.rules.units[self.rules.types[&unit.r#type]];
-                            let kind = if original.leader {
+                            let kind = if unit.role == Some(Role::Leader) {
                                 roster.leader.as_str()
                             } else if roster.id == "human" || roster.pool.contains(&unit.r#type) {
                                 unit.r#type.as_str()
@@ -411,4 +497,13 @@ mod tests {
         old["planner"] = serde_json::json!({});
         assert!(serde_json::from_value::<SavedGame>(old).is_err());
     }
+}
+
+/// Offline authoring uses the live Rust condition evaluator, without a second JS implementation.
+#[wasm_bindgen(js_name = previewPresentation)]
+pub fn preview_presentation(
+    input: Ts<crate::logic::conditions::PresentationInput>,
+) -> Result<Ts<BattlefieldPresentation>, JsError> {
+    let input = input.to_rust().map_err(|e| JsError::new(&e.to_string()))?;
+    Ok(crate::logic::conditions::resolve(&input).0.into_ts()?)
 }

@@ -1,12 +1,15 @@
 import assert from "node:assert/strict";
 import { test } from "vitest";
 import { MAPS } from "../src/game/maps";
-import { pixelSprites, pixelFloorColors, pixelDefaultFloors } from "../src/presentation/pixel-art";
+import { pixelSprites, pixelFloorColors } from "../src/presentation/pixel-art";
 import {
   TERRAIN_DIRECTIONS,
+  CONNECTED_TERRAINS,
   terrainArtNames,
   validTerrainConnections,
 } from "../src/presentation/terrain-connections";
+import castleBells from "../pixel/art/terrain/castle-bell/variants.json";
+import castleWalls from "../pixel/art/terrain/castle-wall/variants.json";
 import roadDeadEnds from "../pixel/art/terrain/road/dead-ends.json";
 import { createTestFactory } from "./native-fixture";
 import { nativeValue } from "../src/game/live-game";
@@ -18,19 +21,29 @@ function requireFrames(tile: Parameters<typeof terrainArtNames>[0] & { floor?: s
   const frame = `terrain_${name === "grove" ? "sacred_grove" : name}`;
   assert(Object.hasOwn(pixelSprites, frame), `Missing ${frame}`);
   for (const floor of Object.keys(pixelFloorColors)) {
-    // The default palette owns the unsuffixed frame; all other floors have variants.
-    const key = floor === pixelDefaultFloors[tile.terrain] ? frame : `${frame}__${floor}`;
+    const key = `${frame}__${floor}`;
     assert(Object.hasOwn(pixelSprites, key), `Missing ${key}`);
   }
 }
 
 test("Every supported terrain connection and floor has a native frame", () => {
-  for (const terrain of ["road", "village", "bridge", "ford"] as const) {
-    requireFrames({ terrain });
-    for (let mask = 1; mask < 64; mask++) {
+  for (const terrain of CONNECTED_TERRAINS) {
+    assert(!validTerrainConnections({ terrain }));
+    assert.throws(() => terrainArtNames({ terrain }), /missing terrain connections/);
+    for (let mask = 0; mask < 64; mask++) {
       const tile = { terrain, connections: directions(mask) };
       if (validTerrainConnections(tile)) requireFrames(tile);
     }
+  }
+  for (const [terrain, variants] of [
+    ["castle-wall", castleWalls],
+    ["castle-bell", castleBells],
+  ] as const) {
+    for (const variant of variants)
+      requireFrames({
+        terrain,
+        walls: variant.walls as import("../src/game/types").HexDirection[],
+      });
   }
   for (const [exits, ends] of roadDeadEnds) {
     const tile = {

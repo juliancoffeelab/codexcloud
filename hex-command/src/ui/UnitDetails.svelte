@@ -11,13 +11,14 @@
     details: UnitDetailsView;
     artwork: Artwork;
     onAdvance: (type: UnitType) => void;
+    onDrop?: (item: string) => void;
   }
 
-  let { details, artwork, onAdvance }: Props = $props();
+  let { details, artwork, onAdvance, onDrop }: Props = $props();
 </script>
 
 <div class="unit-detail">
-  <UnitCard unit={details.unit} {artwork} showName showProgress />
+  <UnitCard unit={details.unit} faction={details.faction} {artwork} showName showProgress />
   <div class="unit-info">
     <div class="unit-stats">
       <span class="unit-stat">
@@ -42,7 +43,7 @@
       </button>
       <p>{promotion.description}</p>
     {/each}
-    <Arsenal unit={details.unit} />
+    <Arsenal unit={details.unit} {onDrop} />
     <div class="movement-costs">
       <h3>Terrain effects</h3>
       <table class="weapon-table terrain-effects-table" aria-label="Unit terrain effects">

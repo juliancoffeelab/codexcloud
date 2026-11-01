@@ -7,7 +7,7 @@ import type {
   UnitType,
   RecruitType as GameRecruitType,
 } from "../game/types";
-import { TYPES } from "../game/catalog";
+import { TYPES, TERRAIN, isLeader } from "../game/catalog";
 import type { Artwork } from "../presentation/art";
 
 export type RecruitType = GameRecruitType;
@@ -47,6 +47,7 @@ export interface BattleCommands {
   attackSelected(attackId: string): void;
   recruitHere(type: RecruitType, tileId: string): void;
   advanceUnit(unitId: string, type: UnitType): void;
+  dropItem(unitId: string, itemId: string): void;
   endTurn(): Promise<GameSnapshot | undefined>;
   undoMove(): GameSnapshot;
   reset(mapId?: string, options?: { armies?: [string, string]; setup: SessionSetup }): GameSnapshot;
@@ -67,6 +68,7 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
     attackSelected: controller.attackSelected.bind(controller),
     recruitHere: controller.recruitHere.bind(controller),
     advanceUnit: controller.advanceUnit.bind(controller),
+    dropItem: controller.dropItem.bind(controller),
     endTurn: controller.endTurn.bind(controller),
     undoMove: controller.undoMove.bind(controller),
     reset: controller.reset.bind(controller),
@@ -87,8 +89,8 @@ export function recruitmentContext(
   }
   const keep = game
     .neighbors(tile.id)
-    .find((neighbor) => neighbor.terrain === "keep" && neighbor.owner === "player");
+    .find((neighbor) => TERRAIN[neighbor.terrain].role === "keep" && neighbor.owner === "player");
   if (!keep) return null;
-  const commander = game.units.find((unit) => unit.side === "player" && TYPES[unit.type].leader);
+  const commander = game.units.find((unit) => unit.side === "player" && isLeader(unit));
   return Object.freeze({ commander, stationed: commander?.tile === keep.id });
 }

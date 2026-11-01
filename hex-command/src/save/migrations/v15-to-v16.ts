@@ -1,0 +1,26 @@
+import { isRecord } from "../schema";
+
+/** Correct the published village floors without resetting captures or battle progress. */
+export function migrateV15ToV16(value: Record<string, unknown>): Record<string, unknown> {
+  if (value.version !== 15 || !isRecord(value.checkpoint) || !isRecord(value.checkpoint.state))
+    throw new Error("Invalid version-fifteen save");
+  const old = value.checkpoint.state;
+  if (old.mapId !== "lantern-bell" || old.mapRevision !== 3) return { ...value, version: 16 };
+  if (!Array.isArray(old.tiles) || !old.tiles.every(isRecord))
+    throw new Error("Invalid historical valley map");
+  // Frozen coordinates and prior floor from the v13 village installation.
+  const sites = new Set(["9,11", "13,12", "11,15"]);
+  const tiles = old.tiles.map((tile) =>
+    typeof tile.id === "string" &&
+    sites.has(tile.id) &&
+    tile.terrain === "village" &&
+    tile.floor === "green-plain"
+      ? { ...tile, floor: "mountain-rock" }
+      : tile,
+  );
+  return {
+    ...value,
+    version: 16,
+    checkpoint: { ...value.checkpoint, state: { ...old, tiles } },
+  };
+}

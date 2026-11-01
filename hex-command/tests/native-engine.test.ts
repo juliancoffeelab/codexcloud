@@ -14,6 +14,8 @@ function value<T>(result: EngineResult<T>): T {
 
 function fixture() {
   const state: State = {
+    factions: [],
+    groundItems: [],
     mapId: "mirror",
     mapRevision: 1,
     cols: 1,
@@ -38,7 +40,11 @@ function fixture() {
     ],
   };
   let nextId = 1;
-  let nextView: EngineView = { revision: 0, state };
+  let nextView: EngineView = {
+    revision: 0,
+    state,
+    presentation: { lighting: { time: "day", lights: [] }, fog: [] },
+  };
   const requests: { id: number; revision: number }[] = [];
   const releases: number[] = [];
   let frees = 0;
@@ -52,7 +58,13 @@ function fixture() {
     create: () => ({ ok: true, value: { id: nextId++, view: nextView } }),
     restore: (input) => {
       saved = input;
-      return { ok: true, value: { id: nextId++, view: { revision: 0, state: input.state } } };
+      return {
+        ok: true,
+        value: {
+          id: nextId++,
+          view: { revision: 0, state: input.state, presentation: nextView.presentation },
+        },
+      };
     },
     view: (id, revision) => {
       requests.push({ id, revision });
@@ -63,13 +75,13 @@ function fixture() {
       value: {
         revision: nextView.revision,
         units: [],
+        objectives: null,
         recruitment: {},
-        costs: {},
-        neighbors: {},
         income: { player: 0, enemy: 0 },
       },
     }),
-    dispatch: (id, revision) => {
+    geometry: () => ({ ok: true, value: { costs: {}, neighbors: {} } }),
+    dispatchUpdate: (id, revision) => {
       requests.push({ id, revision });
       if (stale) {
         return {
@@ -77,11 +89,19 @@ function fixture() {
           error: { code: "staleRevision", expected: revision, actual: revision + 1 },
         };
       }
-      nextView = { revision: revision + 1, state: { ...state, round: state.round + 1 } };
+      nextView = {
+        presentation: nextView.presentation,
+        revision: revision + 1,
+        state: { ...state, round: state.round + 1 },
+      };
       return {
         ok: true,
         value: {
-          view: nextView,
+          baseRevision: revision,
+          revision: nextView.revision,
+          state: (({ tiles: _tiles, ...frame }) => frame)(nextView.state),
+          terrain: { kind: "replace", tiles: nextView.state.tiles },
+          presentation: nextView.presentation,
           combat: null,
         },
       };
@@ -91,6 +111,7 @@ function fixture() {
       value: { revision, command: { kind: "endTurn" } },
     }),
     save: () => ({ ok: true, value: { seed: 42, state } }),
+    saveJson: () => ({ ok: true, value: JSON.stringify({ seed: 42, state }) }),
     disposeBattle: (id) => {
       releases.push(id);
       return { ok: true, value: null };

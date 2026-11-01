@@ -15,7 +15,7 @@ const unit: Unit = {
 };
 
 test("Leader ability information explains the loss condition", () => {
-  assert.deepEqual(abilityInfo({ ...unit, type: "commander" }), {
+  assert.deepEqual(abilityInfo({ ...unit, type: "commander", role: "leader" }), {
     name: "Command",
     description: TYPES.commander.description,
     facts: ["Losing this unit ends the battle."],

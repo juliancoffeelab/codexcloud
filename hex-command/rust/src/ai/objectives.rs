@@ -103,7 +103,7 @@ impl TileOrder {
             (sum.0 / count as f64, sum.1 / count as f64)
         }
         let mut home_keeps = (0..g.terrain().len())
-            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners()[t] == Some(side))
+            .filter(|&t| g.is_keep(t) && g.owners()[t] == Some(side))
             .peekable();
         let home = if home_keeps.peek().is_some() {
             Some(center(g, home_keeps))
@@ -111,12 +111,12 @@ impl TileOrder {
             None
         };
         let mut opposing = (0..g.terrain().len())
-            .filter(|&t| g.terrain_is(t, Terrain::Keep) && g.owners()[t].is_some_and(|s| s != side))
+            .filter(|&t| g.is_keep(t) && g.owners()[t].is_some_and(|s| s != side))
             .peekable();
         let mut enemies = g
             .units()
             .iter()
-            .filter(|o| o.side != side)
+            .filter(|o| g.hostile_to_phase(o, side))
             .map(|o| o.tile)
             .peekable();
         let target = if opposing.peek().is_some() {
@@ -142,8 +142,8 @@ impl TileOrder {
         };
         let a = axial(first);
         let b = axial(second);
-        let av = self.villages && g.terrain_is(first, Terrain::Village);
-        let bv = self.villages && g.terrain_is(second, Terrain::Village);
+        let av = self.villages && g.role_is(first, TerrainRole::Village);
+        let bv = self.villages && g.role_is(second, TerrainRole::Village);
         let home_distance = |p: (f64, f64)| {
             ((p.0 - self.home.0).abs()
                 + (p.1 - self.home.1).abs()
@@ -221,7 +221,7 @@ impl BattleView<'_, '_> {
                 .units()
                 .iter()
                 .filter(|u| {
-                    u.side == self.turn()
+                    self.belongs_to_phase(u, self.turn())
                         && if goal.actor.is_some() {
                             actor_matches(&goal.actor, u.id)
                         } else {
@@ -282,7 +282,7 @@ impl BattleView<'_, '_> {
                             }
                             let occupied = self
                                 .at(tile)
-                                .is_some_and(|u| u.id != actor.id && u.side == actor.side);
+                                .is_some_and(|u| u.id != actor.id && self.allied(actor, u));
                             let entering = self
                                 .cost(actor.kind, tile)
                                 .saturating_add(if occupied { penalty } else { 0 });
@@ -312,7 +312,7 @@ impl BattleView<'_, '_> {
                 }
                 if let Some(blocker) = self
                     .at(tile)
-                    .filter(|u| u.side == actor.side && u.id != actor.id)
+                    .filter(|u| self.allied(actor, u) && u.id != actor.id)
                 {
                     lanes
                         .entry(blocker.id)
@@ -324,10 +324,9 @@ impl BattleView<'_, '_> {
         lanes
     }
     pub(super) fn ordinary(&self, u: &Unit) -> impl Iterator<Item = &Unit> {
-        let side = u.side;
         self.units().iter().filter(move |o| {
-            o.side == side
-                && !self.rules().units[o.kind].leader
+            self.allied(u, o)
+                && !o.is_leader()
                 && o.role != Some(Role::Courier)
                 && self.rules().units[o.kind].healing == 0
         })
@@ -335,7 +334,7 @@ impl BattleView<'_, '_> {
     pub fn proximity(&self, side: Side, tile: usize) -> u16 {
         self.units()
             .iter()
-            .filter(|o| o.side != side)
+            .filter(|o| self.hostile_to_phase(o, side))
             .map(|o| self.board().distance(tile, o.tile))
             .min()
             .unwrap_or(20)
@@ -347,7 +346,7 @@ impl BattleView<'_, '_> {
         recruiting: bool,
         required: bool,
     ) -> bool {
-        if tile == u.tile || required || !self.units().iter().any(|o| o.side != u.side) {
+        if tile == u.tile || required || !self.units().iter().any(|o| self.hostile(u, o)) {
             return true;
         }
         let before = self.proximity(u.side, u.tile);
@@ -387,7 +386,7 @@ mod target_tests {
         let leader = |side| {
             view.units()
                 .iter()
-                .find(|unit| unit.side == side && view.rules().units[unit.kind].leader)
+                .find(|unit| unit.side == side && unit.is_leader())
                 .unwrap()
         };
         let left = leader(Side::Player);

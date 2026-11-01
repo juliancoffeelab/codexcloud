@@ -266,7 +266,7 @@ impl<'catalog> Game<'catalog> {
             }
             match self.at(tile) {
                 Some(other) if other.id != unit.id => {
-                    if let Some(penalty) = friendly_penalty.filter(|_| other.side == unit.side) {
+                    if let Some(penalty) = friendly_penalty.filter(|_| self.allied(other, unit)) {
                         terrain.saturating_add(penalty)
                     } else {
                         u16::MAX
@@ -309,25 +309,48 @@ impl<'catalog> Game<'catalog> {
                 && actor.tile != tile
                 && self.reachable(&actor).iter().any(|&(site, _)| site == tile)
         );
+        // Conditions observe the legal route traversed by this atomic move.
+        let observes_path = self.fog.iter().any(Option::is_some)
+            || self.mission.as_ref().is_some_and(|mission| {
+                mission.events.iter().any(|event| match &event.trigger {
+                    Trigger::Condition { condition } => condition.uses_proximity(),
+                    _ => false,
+                })
+            });
+        if observes_path {
+            let mut costs = vec![u16::MAX; self.terrain.len()];
+            costs[actor.tile] = 0;
+            for &(site, cost) in self.reachable(&actor).iter() {
+                costs[site] = cost;
+            }
+            let mut path = vec![tile];
+            let mut cursor = tile;
+            while cursor != actor.tile {
+                let previous = self.board.adjacent[cursor]
+                    .iter()
+                    .copied()
+                    .find(|&previous| {
+                        costs[previous] != u16::MAX
+                            && costs[previous].checked_add(self.cost(actor.kind, cursor))
+                                == Some(costs[cursor])
+                    })
+                    .expect("reachable tile has a movement predecessor");
+                path.push(previous);
+                cursor = previous;
+            }
+            path.reverse();
+            self.traversal = Some((id, path));
+        }
         self.occupancy[actor.tile] = None;
         self.occupancy[tile] = Some(index);
         self.occupied_tiles.remove(actor.tile);
         self.occupied_tiles.insert(tile);
         self.units[index].tile = tile;
         self.units[index].moved = true;
-        if [
-            Terrain::Village,
-            Terrain::Grove,
-            Terrain::Fort,
-            Terrain::Ruins,
-        ]
-        .iter()
-        .any(|name| self.terrain_is(tile, *name))
-            && self.owners[tile] != Some(actor.side)
-        {
+        if self.terrain_role(tile).capturable() && self.owners[tile] != Some(actor.side) {
             self.owners[tile] = Some(actor.side);
             let unit_name = self.rules.units[actor.kind].name.to_lowercase();
-            let capture = if self.terrain_is(tile, Terrain::Village) {
+            let capture = if self.role_is(tile, TerrainRole::Village) {
                 "captured a village".to_owned()
             } else {
                 format!(
@@ -344,6 +367,8 @@ impl<'catalog> Game<'catalog> {
                 }
             ));
         }
+        self.collect_items(id);
+        self.apply_faction_transfers();
         self.evaluate_campaign(
             false,
             if actor.side == Side::Player {
@@ -352,6 +377,8 @@ impl<'catalog> Game<'catalog> {
                 None
             },
         );
+        self.remember_conditions();
+        self.traversal = None;
         self.action(ActionRecord::Move {
             unit: format!("u{id}"),
             tile: self.board.ids[tile].clone(),

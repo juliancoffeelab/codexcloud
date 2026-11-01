@@ -63,7 +63,7 @@ impl Board {
         self.distances[first * self.ids.len() + second]
     }
 }
-fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
+pub(crate) fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
     let q = first.0 - first.1.div_euclid(2) - second.0 + second.1.div_euclid(2);
     let r = first.1 - second.1;
     ((q.abs() + r.abs() + (q + r).abs()) / 2) as u16
@@ -87,14 +87,22 @@ thread_local! {
 }
 #[derive(Debug)]
 pub(crate) struct Game<'catalog> {
+    pub(crate) factions: Rc<Vec<Faction>>,
+    /// Turn-local controller scope, never persisted.
+    pub(crate) active_faction: Option<String>,
     pub(crate) rules: &'catalog Rules,
     pub(crate) board: Rc<Board>,
     pub(crate) terrain: Vec<usize>,
     pub(crate) owners: Vec<Option<Side>>,
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
+    pub(crate) walls: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
+    pub(crate) fog: Rc<Vec<Option<ConditionRule>>>,
+    pub(crate) condition_memory: Vec<String>,
+    pub(super) traversal: Option<(u32, Vec<usize>)>,
     pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
+    pub(crate) ground_items: Vec<GroundItem>,
     pub(crate) map_id: String,
     pub(crate) map_revision: u32,
     pub(crate) cols: i32,
@@ -186,6 +194,9 @@ impl<'catalog> Game<'catalog> {
             .units
             .iter()
             .map(|unit| Unit {
+                faction: unit.faction.clone(),
+                items: unit.items.clone(),
+                ai_group: unit.ai_group.clone(),
                 id: unit.id.strip_prefix('u').unwrap().parse().unwrap(),
                 kind: rules.types[&unit.r#type],
                 side: unit.side,
@@ -214,6 +225,7 @@ impl<'catalog> Game<'catalog> {
                 .collect(),
         );
         let combat_present = state.last_combat.is_some();
+        let walls = Rc::new(state.tiles.iter().map(|tile| tile.walls.clone()).collect());
         let dead_ends = Rc::new(
             state
                 .tiles
@@ -224,11 +236,18 @@ impl<'catalog> Game<'catalog> {
         let last_combat = state.last_combat.flatten();
         let floors = Rc::new(state.tiles.iter().map(|tile| tile.floor.clone()).collect());
         let mut game = Self {
+            factions: Rc::new(state.factions),
+            ground_items: state.ground_items,
+            active_faction: None,
+            fog: Rc::new(state.tiles.iter().map(|t| t.fog.clone()).collect()),
+            condition_memory: state.condition_memory,
+            traversal: None,
             rules,
             board,
             terrain,
             owners,
             connections,
+            walls,
             dead_ends,
             floors,
             units,
@@ -268,6 +287,7 @@ impl<'catalog> Game<'catalog> {
         };
         game.roster_changed();
         game.refresh_mission();
+        game.remember_conditions();
         game
     }
     pub(crate) fn new(rules: &'catalog Rules, map: &str) -> Self {
@@ -284,6 +304,9 @@ impl<'catalog> Game<'catalog> {
     /// Materialize the protocol snapshot without changing battle state.
     pub(crate) fn state(&self) -> State {
         State {
+            factions: self.factions.as_ref().clone(),
+            ground_items: self.ground_items.clone(),
+            condition_memory: self.condition_memory.clone(),
             armies: self.armies.clone(),
             map_id: self.map_id.clone(),
             map_revision: self.map_revision,
@@ -317,13 +340,18 @@ impl<'catalog> Game<'catalog> {
                 terrain: self.rules.terrain_names[self.terrain[index]].clone(),
                 owner: self.owners[index],
                 connections: self.connections[index].clone(),
+                walls: self.walls[index].clone(),
                 dead_ends: self.dead_ends[index].clone(),
                 floor: self.floors[index].clone(),
+                fog: self.fog[index].clone(),
             })
             .collect()
     }
     pub(crate) fn public_unit(&self, unit: &Unit) -> PublicUnit {
         PublicUnit {
+            faction: unit.faction.clone(),
+            items: unit.items.clone(),
+            ai_group: unit.ai_group.clone(),
             id: format!("u{}", unit.id),
             r#type: self.rules.units[unit.kind].id.clone(),
             side: unit.side,
@@ -367,8 +395,15 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn kind(&self, name: &str) -> usize {
         self.rules.types[name]
     }
-    pub(crate) fn terrain_is(&self, tile: usize, terrain: Terrain) -> bool {
-        self.rules.terrain_types[self.terrain[tile]] == terrain
+    pub(crate) fn terrain_role(&self, tile: usize) -> TerrainRole {
+        self.rules.terrain_roles[self.terrain[tile]]
+    }
+    pub(crate) fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
+        self.terrain_role(tile) == role
+    }
+    /// Capability is authored once and exported through the catalog for UI discovery too.
+    pub(crate) fn is_keep(&self, tile: usize) -> bool {
+        self.role_is(tile, TerrainRole::Keep)
     }
     pub(crate) fn record(&mut self, message: String) {
         self.log.insert(0, message);
@@ -378,6 +413,9 @@ impl<'catalog> Game<'catalog> {
         let id = self.next_id;
         self.next_id += 1;
         self.units.push(Unit {
+            faction: None,
+            items: vec![],
+            ai_group: None,
             id,
             kind,
             side,
@@ -408,11 +446,11 @@ impl<'catalog> Game<'catalog> {
         }
     }
     /// Change terrain and invalidate only terrain-dependent route results.
-    #[cfg(test)]
     pub(crate) fn set_terrain(&mut self, tile: usize, terrain: usize) {
         if self.terrain[tile] != terrain {
             self.terrain[tile] = terrain;
             Rc::make_mut(&mut self.connections)[tile] = None;
+            Rc::make_mut(&mut self.walls)[tile] = None;
             Rc::make_mut(&mut self.dead_ends)[tile] = None;
             self.attack_geometry = Rc::new(RefCell::new(HashMap::default()));
             self.attack_masks = super::geometry::AttackMasks::default();
@@ -500,11 +538,18 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn fork(&self) -> Self {
         Self {
+            factions: self.factions.clone(),
+            ground_items: self.ground_items.clone(),
+            active_faction: self.active_faction.clone(),
+            condition_memory: self.condition_memory.clone(),
+            traversal: None,
+            fog: self.fog.clone(),
             rules: self.rules,
             board: self.board.clone(),
             terrain: self.terrain.clone(),
             owners: self.owners.clone(),
             connections: self.connections.clone(),
+            walls: self.walls.clone(),
             dead_ends: self.dead_ends.clone(),
             floors: self.floors.clone(),
             units: self.units.clone(),
@@ -611,7 +656,7 @@ impl<'catalog> Game<'catalog> {
                 .collect();
         }
         if let Some(mission) = &self.mission {
-            return if side == Side::Player {
+            let mut options: Vec<_> = if side == Side::Player {
                 &mission.recruits
             } else {
                 &mission.enemy_recruits
@@ -619,6 +664,22 @@ impl<'catalog> Game<'catalog> {
             .iter()
             .map(|name| self.kind(name))
             .collect();
+            if side == Side::Player {
+                for event in &mission.events {
+                    if self
+                        .campaign
+                        .as_ref()
+                        .is_some_and(|state| state.marked_prefixed("event:", &event.id))
+                    {
+                        for kind in event.recruits.iter().map(|name| self.kind(name)) {
+                            if !options.contains(&kind) {
+                                options.push(kind);
+                            }
+                        }
+                    }
+                }
+            }
+            return options;
         }
         [
             "swordsman",
@@ -634,12 +695,11 @@ impl<'catalog> Game<'catalog> {
         .collect()
     }
     pub(crate) fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
-        if !self.rules.units[leader.kind].leader
-            || self.rules.units[kind].leader
+        if !leader.is_leader()
             || !self.recruitment_options(leader.side).contains(&kind)
             || self.winner.is_some()
-            || leader.side != self.turn
-            || !self.terrain_is(leader.tile, Terrain::Keep)
+            || !self.may_act(leader)
+            || !self.is_keep(leader.tile)
             || self.owners[leader.tile] != Some(leader.side)
             || (price && self.gold[leader.side.index()] < self.rules.units[kind].cost)
         {
@@ -657,6 +717,7 @@ impl<'catalog> Game<'catalog> {
         self.gold[leader.side.index()] -= self.rules.units[kind].cost;
         self.add(kind, leader.side, tile);
         let unit = self.units.last_mut().unwrap();
+        unit.faction = leader.faction.clone();
         unit.moved = true;
         unit.attacked = true;
         self.record(format!(

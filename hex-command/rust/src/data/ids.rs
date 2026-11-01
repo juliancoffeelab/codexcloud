@@ -51,6 +51,7 @@ pub enum Race {
     Skeletons,
     Spirit,
     Beast,
+    Zombies,
 }
 impl Race {
     /// Return the stable authored identifier used at serialization boundaries.
@@ -61,6 +62,7 @@ impl Race {
             Self::Skeletons => "skeletons",
             Self::Spirit => "spirit",
             Self::Beast => "beast",
+            Self::Zombies => "zombies",
         }
     }
 }
@@ -76,6 +78,16 @@ impl std::fmt::Display for Race {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Family {
+    #[serde(rename = "zombie-walker")]
+    ZombieWalker,
+    #[serde(rename = "zombie-decay-caster")]
+    ZombieDecayCaster,
+    Captives,
+    Bear,
+    #[serde(rename = "giant-bat")]
+    GiantBat,
+    #[serde(rename = "giant-spider")]
+    GiantSpider,
     Adept,
     Archer,
     Boar,
@@ -113,6 +125,12 @@ impl Family {
     /// Return the stable authored identifier used at serialization boundaries.
     pub fn as_str(self) -> &'static str {
         match self {
+            Self::Captives => "captives",
+            Self::ZombieWalker => "zombie-walker",
+            Self::ZombieDecayCaster => "zombie-decay-caster",
+            Self::Bear => "bear",
+            Self::GiantBat => "giant-bat",
+            Self::GiantSpider => "giant-spider",
             Self::Adept => "adept",
             Self::Archer => "archer",
             Self::Boar => "boar",
@@ -148,12 +166,175 @@ impl std::fmt::Display for Family {
     }
 }
 
+/// Gameplay meaning of terrain, independent of its authored/artwork identifier.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum TerrainRole {
+    Bridge,
+    BurnedVillage,
+    Cave,
+    Church,
+    Ferry,
+    Ford,
+    Forest,
+    Fort,
+    Fortification,
+    Graveyard,
+    Grove,
+    Hill,
+    House,
+    Keep,
+    Landing,
+    Marsh,
+    Monastery,
+    Mountain,
+    Plains,
+    RitualSpent,
+    RitualStar,
+    Road,
+    Ruins,
+    Signpost,
+    Village,
+    Water,
+}
+
+impl TerrainRole {
+    pub(crate) fn capturable(self) -> bool {
+        match self {
+            Self::Fort
+            | Self::Grove
+            | Self::Keep
+            | Self::Monastery
+            | Self::Ruins
+            | Self::Village => true,
+            Self::Bridge
+            | Self::BurnedVillage
+            | Self::Cave
+            | Self::Church
+            | Self::Ferry
+            | Self::Ford
+            | Self::Forest
+            | Self::Fortification
+            | Self::Graveyard
+            | Self::Hill
+            | Self::House
+            | Self::Landing
+            | Self::Marsh
+            | Self::Mountain
+            | Self::Plains
+            | Self::RitualSpent
+            | Self::RitualStar
+            | Self::Road
+            | Self::Signpost
+            | Self::Water => false,
+        }
+    }
+    pub(crate) fn blocks_shots(self) -> bool {
+        match self {
+            Self::Cave | Self::Forest | Self::Grove | Self::Hill | Self::Keep | Self::Mountain => {
+                true
+            }
+            Self::Bridge
+            | Self::BurnedVillage
+            | Self::Church
+            | Self::Ferry
+            | Self::Ford
+            | Self::Fort
+            | Self::Fortification
+            | Self::Graveyard
+            | Self::House
+            | Self::Landing
+            | Self::Marsh
+            | Self::Monastery
+            | Self::Plains
+            | Self::RitualSpent
+            | Self::RitualStar
+            | Self::Road
+            | Self::Ruins
+            | Self::Signpost
+            | Self::Village
+            | Self::Water => false,
+        }
+    }
+    pub(crate) fn income(self) -> i32 {
+        match self {
+            Self::Village => 2,
+            Self::Bridge
+            | Self::BurnedVillage
+            | Self::Cave
+            | Self::Church
+            | Self::Ferry
+            | Self::Ford
+            | Self::Forest
+            | Self::Fort
+            | Self::Fortification
+            | Self::Graveyard
+            | Self::Grove
+            | Self::Hill
+            | Self::House
+            | Self::Keep
+            | Self::Landing
+            | Self::Marsh
+            | Self::Monastery
+            | Self::Mountain
+            | Self::Plains
+            | Self::RitualSpent
+            | Self::RitualStar
+            | Self::Road
+            | Self::Ruins
+            | Self::Signpost
+            | Self::Water => 0,
+        }
+    }
+    pub(crate) fn healing(self) -> i32 {
+        match self {
+            Self::Grove | Self::Village => 4,
+            Self::Bridge
+            | Self::BurnedVillage
+            | Self::Cave
+            | Self::Church
+            | Self::Ferry
+            | Self::Ford
+            | Self::Forest
+            | Self::Fort
+            | Self::Fortification
+            | Self::Graveyard
+            | Self::Hill
+            | Self::House
+            | Self::Keep
+            | Self::Landing
+            | Self::Marsh
+            | Self::Monastery
+            | Self::Mountain
+            | Self::Plains
+            | Self::RitualSpent
+            | Self::RitualStar
+            | Self::Road
+            | Self::Ruins
+            | Self::Signpost
+            | Self::Water => 0,
+        }
+    }
+}
+
 /// Closed authored terrain vocabulary.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Terrain {
+    Monastery,
+    Church,
+    Graveyard,
+    #[serde(rename = "ritual-star")]
+    RitualStar,
+    #[serde(rename = "ritual-spent")]
+    RitualSpent,
+    #[serde(rename = "castle-bell")]
+    CastleBell,
+    #[serde(rename = "castle-wall")]
+    CastleWall,
     Plains,
     Road,
     Forest,
@@ -167,11 +348,26 @@ pub enum Terrain {
     Marsh,
     Bridge,
     Ford,
+    Landing,
+    Ferry,
+    House,
+    Mountain,
+    Cave,
+    #[serde(rename = "burned-village")]
+    BurnedVillage,
+    Signpost,
 }
 impl Terrain {
     /// Return the stable authored identifier used at serialization boundaries.
     pub fn as_str(self) -> &'static str {
         match self {
+            Self::Monastery => "monastery",
+            Self::Church => "church",
+            Self::Graveyard => "graveyard",
+            Self::RitualStar => "ritual-star",
+            Self::RitualSpent => "ritual-spent",
+            Self::CastleBell => "castle-bell",
+            Self::CastleWall => "castle-wall",
             Self::Plains => "plains",
             Self::Road => "road",
             Self::Forest => "forest",
@@ -185,6 +381,13 @@ impl Terrain {
             Self::Marsh => "marsh",
             Self::Bridge => "bridge",
             Self::Ford => "ford",
+            Self::Landing => "landing",
+            Self::Ferry => "ferry",
+            Self::House => "house",
+            Self::Mountain => "mountain",
+            Self::Cave => "cave",
+            Self::BurnedVillage => "burned-village",
+            Self::Signpost => "signpost",
         }
     }
 }
@@ -285,6 +488,8 @@ impl GoalKind {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum TriggerKind {
+    Held,
+    Condition,
     Visit,
     Round,
     Control,
@@ -293,6 +498,8 @@ impl TriggerKind {
     /// Return the stable authored identifier used at serialization boundaries.
     pub fn as_str(self) -> &'static str {
         match self {
+            Self::Held => "held",
+            Self::Condition => "condition",
             Self::Visit => "visit",
             Self::Round => "round",
             Self::Control => "control",

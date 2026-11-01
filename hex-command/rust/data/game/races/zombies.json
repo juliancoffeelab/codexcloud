@@ -1,0 +1,14 @@
+{
+  "id": "zombies",
+  "name": "Restless dead",
+  "terrainModifiers": {
+    "marsh": {
+      "cost": -1
+    }
+  },
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  }
+}

@@ -23,7 +23,6 @@
     "prebuild": "npm run wasm:build:release && npm run art:build",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "publish": "python3 scripts/publish-site.py",
     "test": "node --import tsx scripts/test-budget.ts",
     "test:watch": "vitest --watch",
     "ai:rust:build": "node --import tsx scripts/build-simulation.ts",
@@ -34,7 +33,8 @@
     "prewasm:build:release": "npm run content:check",
     "wasm:build:release": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --release --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm",
     "check:wasm": "npm run wasm:build && tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler rust/pkg/hex_command.d.ts",
-    "toolchain:setup": "node --import tsx .agents/skills/rust-toolchain/scripts/setup-toolchain-shell.ts"
+    "toolchain:setup": "node --import tsx .agents/skills/rust-toolchain/scripts/setup-toolchain-shell.ts",
+    "release:prepare": "python3 scripts/prepare-site.py"
   },
   "dependencies": {
     "svelte": "^5.0.0"

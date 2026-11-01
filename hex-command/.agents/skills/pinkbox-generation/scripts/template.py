@@ -24,9 +24,13 @@ def matrix_path(value):
     return path
 
 
-def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=None, staff_guide=None, flying=None):
+def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=None, staff_guide=None, flying=None, kind='unit', bounding_box=None):
+    if kind not in ('unit', 'terrain', 'prop'):
+        raise ValueError('Output kind must be unit, terrain or prop')
     if size != 64:
-        raise ValueError('Character outputs must be exactly 64×64')
+        raise ValueError('Pixel art outputs must be exactly 64×64')
+    if kind != 'unit' and (body_guide is not None or staff_guide is not None or flying is not None):
+        raise ValueError('Body/staff guides and flying metadata apply only to units')
     output = Path(output).resolve()
     if not output.is_relative_to(ROOT / 'tmp'):
         raise ValueError('Templates belong in the project tmp/ directory')
@@ -40,7 +44,7 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
     flying = flight_metadata if flying is None else flying
     if type(flying) is not bool or type(flight_metadata) is not bool:
         raise ValueError("'flying' must be a boolean")
-    for guide in (body_guide, staff_guide):
+    for guide in (body_guide, staff_guide, bounding_box):
         if guide is not None:
             gx, gy, gw, gh = guide
             if min(gx, gy) < 0 or min(gw, gh) <= 0 or gx + gw > 64 or gy + gh > 64:
@@ -57,7 +61,7 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
     sheet = Image.new('RGBA', (width, height), (255, 0, 255, 255))
     draw = ImageDraw.Draw(sheet)
     font = ImageFont.truetype('DejaVuSans.ttf', 17)
-    faction = render.faction_palette('player')
+    faction = render.faction_palette('player') if kind == 'unit' else {}
     palette = {'.': [0, 0, 0, 0], **faction}
     candidates = iter(string.ascii_letters + string.digits + '!#$%&()+,-/:;<=>?@[]{}_~')
     records = []
@@ -65,8 +69,6 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
         path = matrix_path(anchor)
         rows = render.read_matrix(path)
         materials = render.read_palette(path)
-        if path.stem != 'sprite':
-            raise ValueError('Anchors must be shared sprite.txt matrices')
         if len(rows) != 64 or any(len(row) != 64 for row in rows):
             raise ValueError('Anchors must be exactly 64×64')
         for symbol in sorted(set(''.join(rows)) - {'.', '^', '*'}):
@@ -83,6 +85,12 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
             target = symbol if symbol not in palette else next(c for c in candidates if c not in palette)
             palette[target] = color
         w, h, rgba = render.rgba_pixels(path, 'player')
+        # A terrain/prop output may use a unit as a style reference, but its
+        # colors become ordinary materials rather than faction-owned symbols.
+        if kind != 'unit' and set(''.join(rows)) & {'^', '*'}:
+            for color in render.faction_palette('player').values():
+                if color not in palette.values():
+                    palette[next(c for c in candidates if c not in palette)] = color
         tile = Image.frombytes('RGBA', (w, h), bytes(rgba)).resize((w * 8, h * 8), Image.Resampling.NEAREST)
         x, y = cell_origin(i)
         sheet.alpha_composite(tile, (x + (cell - w * 8) // 2, y + header + (cell - h * 8) // 2))
@@ -93,18 +101,21 @@ def prepare(output, anchors, labels, size=64, output_palette=None, body_guide=No
         x, y = cell_origin(len(anchors))
         draw.text((x + 8, y + 6), f'FILL: {label}', font=font, fill='white')
         outputs.append({'label': label, 'rect': [x, y + header, cell, cell],
-                        'native': 64, 'origin': [0, 0], 'flying': flying})
+                        'native': 64, 'origin': [0, 0], 'kind': kind})
+        if kind == 'unit':
+            outputs[-1]['flying'] = flying
         guides = []
-        for kind, guide, color in [('body', body_guide, (255, 144, 255, 255)),
-                                   ('staff', staff_guide, (255, 96, 255, 255))]:
+        for guide_kind, guide, color in [('body', body_guide, (255, 144, 255, 255)),
+                                   ('staff', staff_guide, (255, 96, 255, 255)),
+                                   ('bounding-box', bounding_box, (255, 144, 255, 255))]:
             if guide is None:
                 continue
             gx, gy, gw, gh = guide
             left, top = x + gx * 8, y + header + gy * 8
             draw.rectangle((left - 2, top - 2, left + gw * 8, top + gh * 8),
                            outline=color, width=2)
-            draw.text((left, top - 22), f'{kind}: {gh}px', font=font, fill=color)
-            guides.append({'kind': kind, 'rect': list(guide), 'color': list(color)})
+            draw.text((left, top - 22), f'{guide_kind}: {gh}px', font=font, fill=color)
+            guides.append({'kind': guide_kind, 'rect': list(guide), 'color': list(color)})
         if guides:
             # Both guide shades satisfy extract.py's removable-magenta predicate.
             # Guides constrain generation, never crop or resize the extracted art.
@@ -146,9 +157,11 @@ if __name__ == '__main__':
     parser.add_argument('--anchors', nargs=3, required=True)
     parser.add_argument('--label', '--labels', dest='labels', nargs=1, required=True)
     parser.add_argument('--size', type=int, choices=[64], default=64)
+    parser.add_argument('--kind', choices=['unit', 'terrain', 'prop'], default='unit', help='Output rules; units require ground contact, terrain uses a pointy-top hex, props are transparent pieces')
     parser.add_argument('--output-palette', type=Path, help='Restrict output swatches and extraction to these original material colors')
     parser.add_argument('--body-guide', type=int, nargs=4, metavar=('X', 'Y', 'W', 'H'), help='Visible native-pixel body box; does not crop extraction')
     parser.add_argument('--staff-guide', type=int, nargs=4, metavar=('X', 'Y', 'W', 'H'), help='Separate native-pixel allowance for a raised staff')
+    parser.add_argument('--bounding-box', type=int, nargs=4, metavar=('X', 'Y', 'W', 'H'), help='Hard native-pixel bounding box for a prop or terrain object; extraction rejects overflow')
     parser.add_argument('--flying', action=argparse.BooleanOptionalAction, default=None, help='Intentionally suspended pose; saved as flying metadata in the extracted palette')
     args = parser.parse_args()
-    prepare(args.output, args.anchors, args.labels, args.size, args.output_palette, args.body_guide, args.staff_guide, args.flying)
+    prepare(args.output, args.anchors, args.labels, args.size, args.output_palette, args.body_guide, args.staff_guide, args.flying, args.kind, args.bounding_box)

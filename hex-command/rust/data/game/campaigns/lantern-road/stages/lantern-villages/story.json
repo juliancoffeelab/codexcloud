@@ -1,38 +1,33 @@
 {
-  "subtitle": "Three crossings. Three homes to reclaim.",
-  "briefing": "The ferryman has brought news of three settlements occupied by the dead. Nera’s company is staying to reopen the road and light their windows again. Sella’s wardens will help, but the Tollkeeper is still collecting from the other bank.",
+  "subtitle": "The Toll Road",
+  "briefing": "The road climbs between wooded ridges. Beyond the trees lie the settlements taken by the dead. The patrol needs a foothold before it can follow the trail farther east. Scout the woods and find somewhere to gather your people.",
   "hints": [
-    "One bridge need not carry the whole army.",
-    "A welcoming village can keep a march alive. Stone sparks punish bones; shield their fragile adepts with infantry.",
-    "The southern bone bow arrives on turn 7. Capture and defend all three villages together, rotating wounded troops into friendly shelter."
+    "Keep the patrol together while you scout.",
+    "Claim the camp so there’s somewhere to muster."
   ],
   "intro": [
     {
-      "speaker": "Warden Sella",
-      "portrait": "warden",
-      "text": "Their bowmen are watching the bridge. My spears can hold the banks, but the skeletons will barely feel their points."
+      "speaker": "Ivo",
+      "portrait": "scout",
+      "text": "Firm ground, trees to break the wind, and a view of the approaches. We could make a camp here."
     },
     {
       "speaker": "Nera",
-      "portrait": "commander",
-      "text": "Keep the hammer close. Ivo, find a ford. We need those villages earning for us, not for the tollkeeper."
+      "portrait": "swordsman",
+      "text": "A place to fall back to. Good. Check the woods before we settle in."
     }
   ],
   "victory": [
     {
-      "speaker": "Warden Sella",
-      "portrait": "warden",
-      "text": "All three windows are lit. One family even lent us their kettle."
+      "speaker": "Nera",
+      "portrait": "swordsman",
+      "text": "The message is on its way to the ferry. Now we find where that column went."
     },
     {
       "speaker": "Ivo",
       "portrait": "scout",
-      "text": "There is still a bell sounding in the marsh. Every time it rings, another grave opens."
-    },
-    {
-      "speaker": "Nera",
-      "portrait": "commander",
-      "text": "Then we go to the bell."
+      "text": "East, then. I’ll watch the road."
     }
-  ]
+  ],
+  "debrief": "The rescued villagers remain in the hidden village. A runner carries word back to the crossing while the patrol follows the prisoner road east."
 }

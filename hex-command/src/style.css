@@ -1662,8 +1662,15 @@ select {
   content: "✓";
   color: inherit;
 }
-.optional-label {
-  color: var(--muted);
+.failed-goal {
+  color: var(--red);
+}
+.mission-items .failed-goal::before {
+  content: "✗";
+  color: inherit;
+}
+.mission-goals .failed-goal strong {
+  color: inherit;
 }
 #mission-briefing-button[aria-expanded="true"] {
   color: var(--gold);

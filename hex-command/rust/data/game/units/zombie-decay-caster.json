@@ -1,0 +1,33 @@
+{
+  "id": "zombie-decay-caster",
+  "name": "Mire caster",
+  "role": "ranger",
+  "race": "zombies",
+  "hp": 23,
+  "move": 2,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "mire-bolt",
+      "name": "Mire bolt",
+      "damage": 5,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow",
+      "spread": 1
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Mire sorcery",
+  "description": "A drowned sorcerer whose curse has outlived its mind.",
+  "level": 2,
+  "family": "zombie-decay-caster",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

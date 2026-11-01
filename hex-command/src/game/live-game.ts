@@ -1,7 +1,11 @@
+import { TERRAIN } from "./catalog";
 import type {
   BattleInspection,
+  BoardInspection,
+  BattlefieldPresentation,
   Command,
   EngineResult,
+  EngineView,
   SavedGame,
   Start,
 } from "../../rust/pkg/hex_command";
@@ -38,7 +42,12 @@ export function nativeValue<T>(result: EngineResult<T>): T {
 /** Browser orchestration only. State mutations and rule queries are owned by Rust. */
 export class LiveGame {
   private state!: GameState;
+  private resolvedPresentation!: Immutable<BattlefieldPresentation>;
+  get presentation() {
+    return this.resolvedPresentation;
+  }
   private inspection!: BattleInspection;
+  private geometry!: Immutable<BoardInspection>;
   private combatEvent: Immutable<CombatAnimation> | null = null;
   get combat() {
     return this.combatEvent;
@@ -49,7 +58,7 @@ export class LiveGame {
     readonly setup: SessionSetup = DEFAULT_SETUP,
   ) {
     try {
-      this.refresh();
+      this.refresh(nativeValue(this.engine.view()));
     } catch (error) {
       engine.dispose();
       throw error;
@@ -69,10 +78,18 @@ export class LiveGame {
   ): LiveGame {
     return new LiveGame(factory, nativeValue(factory.restore(saved)), structuredClone(setup));
   }
-  private refresh(): void {
-    const view = nativeValue(this.engine.view());
+  private refresh(view: Immutable<EngineView>): void {
+    if (
+      !this.state ||
+      this.state.mapId !== view.state.mapId ||
+      this.state.mapRevision !== view.state.mapRevision ||
+      this.state.cols !== view.state.cols ||
+      this.state.rows !== view.state.rows
+    )
+      this.geometry = nativeValue(this.engine.geometry());
     // Authored string IDs cross into the existing presentation vocabulary here.
     this.state = view.state as unknown as GameState;
+    this.resolvedPresentation = view.presentation;
     this.inspection = nativeValue(this.engine.inspect()) as BattleInspection;
     if (view.revision !== this.inspection.revision)
       throw new Error("Incoherent native publication");
@@ -80,7 +97,9 @@ export class LiveGame {
   private dispatch(command: Immutable<Command>, expectedRevision?: number): void {
     const result = nativeValue(this.engine.dispatch(command, expectedRevision));
     this.combatEvent = immutable(result.combat as unknown as CombatAnimation | null);
-    this.refresh();
+    // Dispatch already owns the matching view. Reading it again resolves fog,
+    // serializes and clones the complete battlefield a second time per action.
+    this.refresh(result.view);
   }
   private id(id: string): number {
     if (!/^u[1-9]\d*$/.test(id)) throw new Error("Unknown unit.");
@@ -97,6 +116,9 @@ export class LiveGame {
   }
   get rows() {
     return this.state.rows;
+  }
+  get objectives() {
+    return this.inspection.objectives;
   }
   get round() {
     return this.state.round;
@@ -116,8 +138,14 @@ export class LiveGame {
   get tiles() {
     return this.state.tiles;
   }
+  get groundItems() {
+    return this.state.groundItems.filter((ground) => !this.presentation.fog.includes(ground.tile));
+  }
   get units() {
-    return this.state.units;
+    return this.state.units.filter(
+      (unit) =>
+        this.choices(unit.id)?.faction.controllable || !this.presentation.fog.includes(unit.tile),
+    );
   }
   get campaign() {
     return this.state.campaign;
@@ -135,10 +163,10 @@ export class LiveGame {
     return this.units.find((unit) => unit.tile === id);
   }
   neighbors(id: string): Tile[] {
-    return (this.inspection.neighbors[id] ?? []).map((tile) => this.tile(tile)!);
+    return (this.geometry.neighbors[id] ?? []).map((tile) => this.tile(tile)!);
   }
   cost(unit: Pick<Unit, "type">, tile: Pick<Tile, "terrain">): number {
-    return this.inspection.costs[unit.type]?.[tile.terrain] ?? Infinity;
+    return this.geometry.costs[unit.type]?.[tile.terrain] ?? Infinity;
   }
   private choices(id: string | null | undefined) {
     return this.inspection.units.find((unit) => unit.unit === id);
@@ -174,6 +202,11 @@ export class LiveGame {
     if (!details) throw new Error("That attack cannot reach this enemy.");
     return details as CombatPreviewDetails;
   }
+  faction(id: string) {
+    const profile = this.choices(id)?.faction;
+    if (!profile) throw new Error("Unknown unit.");
+    return profile;
+  }
   promotionOptions(id: string): UnitType[] {
     return (this.choices(id)?.promotions ?? []) as UnitType[];
   }
@@ -201,6 +234,9 @@ export class LiveGame {
   advanceUnit(id: string, type: UnitType): void {
     this.dispatch({ kind: "advance", unit: this.id(id), type });
   }
+  dropItem(id: string, item: string): void {
+    this.dispatch({ kind: "dropItem", unit: this.id(id), item });
+  }
   endTurn(): void {
     this.dispatch({ kind: "endTurn" });
   }
@@ -226,7 +262,11 @@ export class LiveGame {
   captureState(): GameState {
     return structuredClone(this.state);
   }
-  restoreState(state: GameState): void {
+  /** Undo retains an already-owned immutable revision, not another world clone. */
+  captureUndoState(): Immutable<GameState> {
+    return this.state;
+  }
+  restoreState(state: Immutable<GameState>): void {
     const checkpoint = nativeValue(this.engine.save());
     const replacement = nativeValue(
       this.factory.restore({
@@ -236,12 +276,12 @@ export class LiveGame {
     );
     nativeValue(this.engine.dispose());
     this.engine = replacement;
-    this.refresh();
+    this.refresh(nativeValue(this.engine.view()));
   }
   snapshot(): GameSnapshot {
     const { mapId, mapRevision, round, turn, gold, winner, units, campaign, tiles } = this.state;
     const sites = tiles
-      .filter((tile) => ["grove", "fort", "ruins"].includes(tile.terrain))
+      .filter((tile) => ["grove", "fort", "ruins"].includes(TERRAIN[tile.terrain].role))
       .map(({ id, owner }) => ({ id, owner }));
     return structuredClone({
       mapId,
@@ -250,10 +290,10 @@ export class LiveGame {
       turn,
       gold,
       winner,
-      units,
+      units: this.units,
       ...(campaign ? { campaign } : {}),
       villages: tiles
-        .filter((tile) => tile.terrain === "village")
+        .filter((tile) => TERRAIN[tile.terrain].role === "village")
         .map(({ id, owner }) => ({ id, owner })),
       ...(campaign || sites.length ? { sites } : {}),
     });
@@ -261,6 +301,9 @@ export class LiveGame {
   /** Current native checkpoint of resolved game state. */
   checkpoint(): ReturnType<GameEngine["save"]> {
     return this.engine.save();
+  }
+  serializedCheckpoint(): ReturnType<GameEngine["saveJson"]> {
+    return this.engine.saveJson();
   }
   dispose(): void {
     nativeValue(this.engine.dispose());
@@ -272,7 +315,11 @@ export class LiveGame {
     const detached = Object.create(LiveGame.prototype) as LiveGame;
     detached.state = state;
     detached.inspection = inspection;
+    detached.geometry = this.geometry;
+    detached.resolvedPresentation = this.resolvedPresentation;
     return immutable({
+      presentation: this.resolvedPresentation,
+      objectives: this.objectives,
       campaign: state.campaign,
       mapId: state.mapId,
       mapRevision: state.mapRevision,
@@ -284,9 +331,11 @@ export class LiveGame {
       winner: state.winner,
       log: state.log,
       tiles: state.tiles,
-      units: state.units,
+      units: detached.units,
+      groundItems: detached.groundItems,
       tile: detached.tile.bind(detached),
       unit: detached.unit.bind(detached),
+      faction: detached.faction.bind(detached),
       at: detached.at.bind(detached),
       neighbors: (id: string) => immutable(detached.neighbors(id)),
       cost: detached.cost.bind(detached),

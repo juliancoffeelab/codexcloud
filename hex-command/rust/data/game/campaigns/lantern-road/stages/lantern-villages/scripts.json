@@ -1,54 +1,785 @@
 {
   "events": [
     {
-      "id": "road-cache",
+      "id": "village-contact",
       "trigger": {
-        "kind": "visit",
-        "tile": "4,8"
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "2,1",
+          "radius": 0,
+          "side": "player"
+        }
       },
-      "label": "Recover the southern road cache",
-      "gold": 6,
       "dialogue": [
         {
-          "speaker": "Ivo",
-          "portrait": "scout",
-          "text": "Dry blankets, clean bandages, and six coins. Someone expected the road to open again. I would hate to disappoint them."
-        }
-      ]
-    }
-  ],
-  "waves": [
-    {
-      "round": 5,
-      "label": "Two skeletons enter from the eastern road on turn 5",
-      "id": "eastern-skeletons",
-      "units": [
-        {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 1
+          "speaker": "Warden Sella",
+          "portrait": "warden",
+          "text": "Easy. Living faces—I’d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by."
         },
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 7
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "We came from the crossing. What happened here?"
+        },
+        {
+          "speaker": "Warden Sella",
+          "portrait": "warden",
+          "text": "They emptied the roadside villages. There are prisoners at the old pass fort, waiting to be marched east. We haven’t the strength to fetch them."
+        },
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "Then we’ll bring them here. Can you keep them safe?"
+        },
+        {
+          "speaker": "Warden Sella",
+          "portrait": "warden",
+          "text": "We can. I’ll go with you. There are a few here who can take up arms; give us somewhere to muster."
+        }
+      ],
+      "recruits": ["swordsman", "spearman", "archer", "scout"],
+      "choice": "hidden-village-found",
+      "spawn": {
+        "area": ["2,1", "2,0", "1,1", "2,2", "3,1", "1,0", "3,2"],
+        "units": [
+          {
+            "id": "sella",
+            "type": "warden",
+            "side": "player",
+            "name": "Warden Sella"
+          }
+        ]
+      }
+    },
+    {
+      "id": "foothold-established",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "owner",
+              "tile": "1,2",
+              "side": "player"
+            },
+            {
+              "kind": "event",
+              "event": "village-contact"
+            }
+          ]
+        }
+      },
+      "dialogue": []
+    },
+    {
+      "id": "oren-lessons",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "event",
+              "event": "village-contact"
+            },
+            {
+              "kind": "hasUnits",
+              "side": "player",
+              "name": "Oren"
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "That child by the hearth—those marks on the slate aren’t letters. Who taught you to draw them?"
+        },
+        {
+          "speaker": "Villager",
+          "portrait": "captives",
+          "text": "Nobody. They appear when I’m trying to remember things."
+        },
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "A little training, then. We haven’t an academy to hand, but this is better than leaving a gift untended. Stay with me; I’ll show you how to keep it from burning your fingers."
+        }
+      ],
+      "recruits": ["adept"]
+    },
+    {
+      "id": "ferry-supplies",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "choice",
+          "choice": "ferryman-alive"
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "The ferryman’s purse will buy a few more hands. Let’s make his coins count."
+        }
+      ],
+      "gold": 6
+    },
+    {
+      "id": "ferry-letter",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "choice",
+          "choice": "ferryman-dead"
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "He asked us to follow the people taken from the bank. This is their road."
         }
       ]
     },
     {
-      "round": 7,
-      "label": "A bone bow reaches the southern crossing on turn 7",
-      "id": "southern-bow",
-      "units": [
+      "id": "prisoners-found",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "8,6",
+          "radius": 2,
+          "side": "player"
+        }
+      },
+      "dialogue": [
         {
-          "type": "bonearcher",
-          "side": "enemy",
-          "col": 8,
-          "row": 7
+          "speaker": "Villager",
+          "portrait": "captives",
+          "text": "Over here! Don’t leave us!"
+        },
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "Stay down. How many guards?"
+        },
+        {
+          "speaker": "Villager",
+          "portrait": "captives",
+          "text": "One at the fort. The others went east. They said another column would collect us."
+        },
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "We’re getting you out."
+        }
+      ],
+      "requiresEvent": "village-contact"
+    },
+    {
+      "id": "prisoners-freed",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 0,
+          "tile": "8,6",
+          "unitType": "captives"
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "There’s a village hidden in the western woods. Stay together. We’ll take you there."
+        },
+        {
+          "speaker": "Villager",
+          "portrait": "captives",
+          "text": "They took the others down the road. My brother, the children—everyone who could still walk."
+        },
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "First we get you somewhere safe."
+        }
+      ],
+      "choice": "road-prisoners-freed",
+      "requiresEvent": "village-contact"
+    },
+    {
+      "id": "tollkeeper-provoked",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "hasUnits",
+              "side": "enemy",
+              "name": "The Tollkeeper"
+            },
+            {
+              "kind": "any",
+              "conditions": [
+                {
+                  "kind": "event",
+                  "event": "prisoners-freed"
+                },
+                {
+                  "kind": "proximity",
+                  "tile": "16,4",
+                  "radius": 3,
+                  "side": "player"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "The Tollkeeper",
+          "portrait": "necromancer",
+          "text": "Living soldiers on my road? You’ll pay for every step. Come closer—I’ll take the toll in bones."
         }
       ]
+    },
+    {
+      "id": "swamp-sighting",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "any",
+          "conditions": [
+            {
+              "kind": "proximity",
+              "tile": "16,6",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "15,7",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "13,8",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "14,8",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "15,8",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "7,9",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "8,9",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "9,9",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "10,9",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "11,9",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "13,9",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "15,9",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "16,9",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "17,9",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "5,10",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "6,10",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "7,10",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "8,10",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "9,10",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "11,10",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "12,10",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "14,10",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "17,10",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "6,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "7,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "8,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "10,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "11,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "12,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "14,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "15,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "17,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "18,11",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "6,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "7,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "8,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "9,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "10,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "11,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "12,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "13,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "14,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "15,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "16,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "17,12",
+              "radius": 0,
+              "side": "player"
+            },
+            {
+              "kind": "proximity",
+              "tile": "18,12",
+              "radius": 0,
+              "side": "player"
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Ivo",
+          "portrait": "scout",
+          "text": "Something in the reeds. It heard us."
+        },
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "Back onto firm ground. Let it come out where we can see it."
+        }
+      ]
+    },
+    {
+      "id": "oren-swamp",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "event",
+              "event": "swamp-sighting"
+            },
+            {
+              "kind": "hasUnits",
+              "side": "player",
+              "name": "Oren"
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "That smell. Something’s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire."
+        },
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "A friend of yours?"
+        },
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "An old healer. A better one than most of my tutors. He had a house along this bank. I hope he had the sense to leave."
+        }
+      ]
+    },
+    {
+      "id": "village-safe",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "2,1",
+          "radius": 0,
+          "side": "player"
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Villager",
+          "portrait": "captives",
+          "text": "Inside. There’s broth, and room enough if we move the tables."
+        },
+        {
+          "speaker": "Villager",
+          "portrait": "captives",
+          "text": "Thank you. The others are still out there. We heard a bell somewhere ahead of the column. It kept ringing long after midnight."
+        },
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "Send a runner back to the ferry. Tell them the dead are taking people east. We need reinforcements, and a watch along this road."
+        },
+        {
+          "speaker": "Villager",
+          "portrait": "captives",
+          "text": "They’ll have your message. I’ll keep these people safe."
+        },
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "We can follow the column now, or clear the rest of the dead from this stretch of road first. Either way, the people here are safe."
+        }
+      ],
+      "requiresEvent": "prisoners-freed",
+      "evacuate": {
+        "tile": "2,1",
+        "units": {
+          "side": "player",
+          "role": "courier"
+        }
+      },
+      "choice": "road-villagers-safe"
+    },
+    {
+      "id": "tollkeeper-fallen",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "noUnits",
+          "side": "enemy",
+          "name": "The Tollkeeper"
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "No more soldiers from this keep. Gather what we can carry; the prisoners ahead still need us."
+        }
+      ],
+      "choice": "tollkeeper-defeated",
+      "gold": 8,
+      "requiresEvent": "village-contact"
+    },
+    {
+      "id": "eastern-departure",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "18,5",
+          "radius": 0,
+          "side": "player",
+          "name": "Captain Nera"
+        }
+      },
+      "dialogue": [],
+      "requiresEvent": "village-safe",
+      "choice": "road-continued-east"
+    },
+    {
+      "id": "oren-healer-fallen",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "noUnits",
+              "side": "enemy",
+              "name": "Edrin"
+            },
+            {
+              "kind": "hasUnits",
+              "side": "player",
+              "name": "Oren"
+            }
+          ]
+        }
+      },
+      "requiresEvent": "oren-swamp",
+      "dialogue": [
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "Edrin. Oh, my friend. So this is what they made of you."
+        },
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "Oren…"
+        },
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "He spent his life keeping people out of graves. Let’s leave him in peace, and see that those villagers get home."
+        }
+      ]
+    },
+    {
+      "id": "mire-balm-found",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "noUnits",
+          "side": "enemy",
+          "name": "Edrin"
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Nera",
+          "portrait": "swordsman",
+          "text": "There’s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done."
+        }
+      ],
+      "requiresEvent": "swamp-sighting"
+    },
+    {
+      "id": "road-cleared",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "noUnits",
+          "side": "enemy"
+        }
+      },
+      "label": "The road is clear of enemies",
+      "dialogue": []
+    }
+  ],
+  "waves": [],
+  "enemyGroups": [
+    {
+      "id": "captive-guard",
+      "order": {
+        "kind": "hold",
+        "area": ["7,6"],
+        "attackRadius": 1,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "name": "The villagers"
+        }
+      }
+    },
+    {
+      "id": "swamp-dead",
+      "when": {
+        "condition": {
+          "kind": "event",
+          "event": "swamp-sighting"
+        },
+        "remember": true
+      }
+    },
+    {
+      "id": "tollkeeper",
+      "order": {
+        "kind": "hold",
+        "area": ["16,4"],
+        "attackRadius": 1,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "name": "The villagers"
+        }
+      }
     }
   ]
 }

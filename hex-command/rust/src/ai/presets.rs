@@ -83,6 +83,7 @@ mod tests {
                 | Command::RecallMission { .. }
                 | Command::RetryMission
                 | Command::PreviousDialogue
+                | Command::DropItem { .. }
                 | Command::SkipDialogue => false,
             }
         }
@@ -93,7 +94,7 @@ mod tests {
     fn player_and_enemy_rebuilding_emit_explicit_hold_targets() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
+        game.units.retain(|u| u.is_leader());
         game.roster_changed();
         for side in [Side::Player, Side::Enemy] {
             game.begin_turn(side);
@@ -119,64 +120,6 @@ mod tests {
     }
 
     #[test]
-    fn unnamed_seal_specialist_gets_arrival_and_escort_without_survival_or_occupation() {
-        let rules = Rules::load().unwrap();
-        let mut game =
-            Game::start_campaign(&rules, "lantern-road", 2, vec![], 0, vec![], vec![], vec![]);
-        let adept = game
-            .units
-            .iter()
-            .find(|u| rules.units[u.kind].family == Family::Adept)
-            .unwrap()
-            .clone();
-        assert!(adept.name.is_none());
-        let tile = game.board.adjacent[adept.tile]
-            .iter()
-            .copied()
-            .find(|&t| game.at(t).is_none())
-            .unwrap();
-        let enemy = game
-            .units
-            .iter_mut()
-            .find(|u| u.side == Side::Enemy && !rules.units[u.kind].leader)
-            .unwrap();
-        enemy.tile = tile;
-        game.roster_changed();
-        let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
-        workspace.orders = Some(CampaignBlock::Mission.campaign_orders(&game, &workspace));
-        crate::ai::cooperation::assign(&crate::ai::context::BattleView::new(&game), &mut workspace);
-        let orders = &workspace.orders.as_ref().unwrap().tactics;
-        assert!(!orders.protects(adept.id));
-        assert!(orders.constraints.iter().all(|constraint| {
-            let crate::ai::orders::TacticalConstraint::Survive { actor } = constraint;
-            game.unit(actor.0).unwrap().name.is_some()
-        }));
-        let mut reach = false;
-        let mut escort = false;
-        for order in &orders.objectives {
-            match &order.objective {
-                crate::ai::orders::TacticalObjective::GoTo { actor, .. } => {
-                    reach |= actor.0 == adept.id
-                }
-                crate::ai::orders::TacticalObjective::Escort { actor, .. } => {
-                    escort |= actor.0 == adept.id
-                }
-                crate::ai::orders::TacticalObjective::Occupy { actor, .. } => {
-                    assert_ne!(actor.0, adept.id)
-                }
-                crate::ai::orders::TacticalObjective::ClearPassage { .. } => {}
-            }
-        }
-        assert!(reach && escort);
-        let target = orders
-            .targets
-            .iter()
-            .find(|g| crate::ai::objectives::actor_matches(&g.actor, adept.id))
-            .unwrap();
-        assert_eq!(target.hold, Some(false));
-    }
-
-    #[test]
     fn independent_blocks_keep_the_selected_planner_under_another_preset() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
@@ -197,65 +140,6 @@ mod tests {
             game.execute(command).unwrap();
         }
         panic!("queued phase failed to finish");
-    }
-
-    #[test]
-    fn campaign_requests_a_missing_seal_specialist_from_a_frontline_recruiter() {
-        let rules = Rules::load().unwrap();
-        let mut game =
-            Game::start_campaign(&rules, "lantern-road", 2, vec![], 0, vec![], vec![], vec![]);
-        game.units
-            .retain(|u| u.side == Side::Player && rules.units[u.kind].family != Family::Adept);
-        let mut screen = game
-            .units
-            .iter()
-            .find(|u| !rules.units[u.kind].leader)
-            .unwrap()
-            .clone();
-        for (id, tile) in [
-            (20, "2,0"),
-            (21, "3,0"),
-            (22, "4,0"),
-            (23, "5,0"),
-            (24, "6,0"),
-        ] {
-            screen.id = id;
-            screen.tile = game.site(tile);
-            game.units.push(screen.clone());
-        }
-        game.next_id = 25;
-        game.gold[Side::Player.index()] = 100;
-        game.roster_changed();
-        assert_eq!(game.required_recruit(Side::Player), Some(Family::Adept));
-        let leader = game
-            .units
-            .iter()
-            .find(|u| rules.units[u.kind].leader)
-            .unwrap()
-            .id;
-        assert_eq!(game.leader_rebuild_plan(leader, false).1, Some(true));
-        let command = Recruiter::Frontline.choose(&game, 7, None, false).unwrap();
-        fn kind(command: &Command) -> &UnitTypeId {
-            match command {
-                Command::Recruit { kind, .. } => kind,
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Advance { .. }
-                | Command::SetUnitIntent { .. }
-                | Command::EndTurn
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue => panic!("expected specialist recruitment"),
-            }
-        }
-        assert_eq!(
-            rules.units[game.kind(&kind(&command).0)].family,
-            Family::Adept
-        );
-        game.execute(command).unwrap();
-        assert_eq!(game.required_recruit(Side::Player), None);
     }
 
     #[test]
@@ -285,7 +169,7 @@ mod tests {
         let target = game
             .units
             .iter()
-            .find(|u| u.side == Side::Enemy && rules.units[u.kind].leader)
+            .find(|u| u.side == Side::Enemy && u.is_leader())
             .unwrap()
             .clone();
         assert!(!crate::ai::campaigner::mission::terminal_attack(

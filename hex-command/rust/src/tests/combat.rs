@@ -260,14 +260,10 @@ fn kills_suppress_retaliation_and_leader_death_finishes_battle() {
     for leader in [false, true] {
         let mut game = flat();
         let attacker = add(&mut game, "soldier", Side::Player, "2,3");
-        let target = add(
-            &mut game,
-            if leader { "commander" } else { "scout" },
-            Side::Enemy,
-            "3,3",
-        );
+        let target = add(&mut game, "swordsman", Side::Enemy, "3,3");
         let index = game.index(target).unwrap();
         game.units[index].hp = 1;
+        game.units[index].role = leader.then_some(Role::Leader);
         let hp = game.unit(attacker).unwrap().hp;
         hit(&mut game, attacker, target, "sword");
         assert!(game.unit(target).is_none());

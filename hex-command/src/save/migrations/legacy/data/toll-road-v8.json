@@ -1,0 +1,15 @@
+{
+  "sourceCommit": "8700b85397e9565d6db81867d4cb978dd3b1ff72",
+  "mapId": "lantern-villages",
+  "fromRevision": 3,
+  "toRevision": 4,
+  "sellaName": "Warden Sella",
+  "oldSellaFaction": "village-watch",
+  "sellaSpawn": "spawn:village-contact:sella",
+  "casterId": "u12",
+  "casterFaction": "swamp-dead",
+  "casterName": "Edrin",
+  "camp": "1,2",
+  "oldLightMemory": "light:0:2,1",
+  "swampMemory": "group:swamp-dead"
+}

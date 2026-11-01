@@ -1,19 +1,6 @@
 import type { CombatStrike, HpForecast, UnitRole } from "../../rust/pkg/hex_command";
 
 export type Side = "player" | "enemy";
-export type LeaderType =
-  | "commander"
-  | "grovewarden"
-  | "lich"
-  | "marshal"
-  | "necromancer"
-  | "tidekeeper"
-  | "tideseer"
-  | "wildkeeper"
-  | "grand-marshal"
-  | "lich-commander-l3"
-  | "woodland-grove-oracle"
-  | "merfolk-tide-sovereign";
 export type AdvancedTroop =
   | "briarweaver"
   | "deatharcher"
@@ -82,7 +69,25 @@ export type AdvancedTroop =
   | "merfolk-tidecrusher-l3"
   | "merfolk-maceguard-l3";
 export type UnitType =
-  | LeaderType
+  | "skeletal-hound"
+  | "captives"
+  | "zombie-walker"
+  | "zombie-decay-caster"
+  | "bear"
+  | "giant-bat"
+  | "giant-spider"
+  | "commander"
+  | "grovewarden"
+  | "lich"
+  | "marshal"
+  | "necromancer"
+  | "tidekeeper"
+  | "tideseer"
+  | "wildkeeper"
+  | "grand-marshal"
+  | "lich-commander-l3"
+  | "woodland-grove-oracle"
+  | "merfolk-tide-sovereign"
   | AdvancedTroop
   | "adept"
   | "archer"
@@ -106,9 +111,16 @@ export type UnitType =
   | "skeleton-axeman"
   | "fox-spearguard"
   | "treant";
-export type RecruitType = Exclude<UnitType, LeaderType>;
-export type Race = "human" | "skeletons" | "beast" | "merfolk" | "spirit";
+export type RecruitType = UnitType;
+export type Race = "human" | "skeletons" | "beast" | "merfolk" | "spirit" | "zombies";
 export type TerrainType =
+  | "monastery"
+  | "church"
+  | "graveyard"
+  | "ritual-star"
+  | "ritual-spent"
+  | "castle-wall"
+  | "castle-bell"
   | "plains"
   | "road"
   | "forest"
@@ -116,6 +128,13 @@ export type TerrainType =
   | "water"
   | "bridge"
   | "ford"
+  | "landing"
+  | "ferry"
+  | "house"
+  | "mountain"
+  | "cave"
+  | "signpost"
+  | "burned-village"
   | "village"
   | "keep"
   | "marsh"
@@ -150,10 +169,18 @@ export interface Tile extends Coordinates {
   /** Artwork only: road/village exits or opposite bridge/ford edges. */
   connections?: HexDirection[];
   deadEnds?: HexDirection[];
+  /** Explicit wall edges; selects a complete native tile. */
+  walls?: HexDirection[];
   /** Artwork only: reusable floor palette, independent of terrain rules. */
   floor?: string;
+  fog?: import("../../rust/pkg/hex_command").ConditionRule;
 }
 export interface Unit {
+  faction?: string;
+  items?: import("./immutable").Immutable<
+    (Omit<import("../../rust/pkg/hex_command").Item, "attacks"> & { attacks: Weapon[] })[]
+  >;
+  aiGroup?: string;
   /** Missing on pre-progression saves, which load as zero. */
   experience?: number;
   id: string;
@@ -208,7 +235,6 @@ export interface UnitDefinition {
   ability: string;
   description: string;
   race: Race;
-  leader?: boolean;
 }
 export interface TerrainModifier {
   cost?: number;
@@ -217,11 +243,14 @@ export interface TerrainModifier {
 }
 export interface RaceDefinition {
   name: string;
-  terrainModifiers: Partial<Record<TerrainType, TerrainModifier>>;
+  terrainModifiers: Partial<
+    Record<import("../../rust/pkg/hex_command").TerrainRole, TerrainModifier>
+  >;
   /** Signed damage received, inherited by each unit specification. */
   damageModifiers: Record<DamageType, number>;
 }
 export interface TerrainDefinition {
+  role: import("../../rust/pkg/hex_command").TerrainRole;
   name: string;
   cost: number;
   passable: boolean;
@@ -233,9 +262,13 @@ export interface TerrainOverride extends Coordinates {
   owner?: Side | null;
   connections?: HexDirection[];
   deadEnds?: HexDirection[];
+  /** Explicit wall edges; selects a complete native tile. */
+  walls?: HexDirection[];
   floor?: string;
+  fog?: import("../../rust/pkg/hex_command").ConditionRule;
 }
 export interface StartingUnit extends Coordinates {
+  aiGroup?: string;
   type: UnitType;
   side: Side;
   name?: string;
@@ -251,6 +284,8 @@ export interface MapDefinition {
   rows: number;
   terrain: TerrainOverride[];
   units: StartingUnit[];
+  lighting?: import("../../rust/pkg/hex_command").BattlefieldLighting;
+  presentation: import("../../rust/pkg/hex_command").BattlefieldPresentation;
 }
 export interface DamageBreakdown {
   probabilities?: readonly number[];
@@ -317,6 +352,9 @@ export interface GameSnapshot {
 }
 /** Full session state, including mutable terrain, for exact move undo. */
 export interface GameState {
+  groundItems: import("../../rust/pkg/hex_command").GroundItem[];
+  factions?: import("../../rust/pkg/hex_command").Faction[];
+  conditionMemory?: string[];
   armies?: [string, string];
   combatRng?: number;
   mapId: MapId;
@@ -341,7 +379,7 @@ export interface DialogueLine {
   portrait: DialoguePortrait;
   text: string;
 }
-export type MissionGoal =
+export type MissionGoal = (
   | { kind: "escort"; label: string; tile: string }
   | { kind: "escape"; label: string; tile: string }
   | { kind: "control"; label: string; tiles: string[] }
@@ -352,17 +390,24 @@ export type MissionGoal =
       turns: number;
       earliestRound: number;
       startEvent?: string;
+      companion?: string;
+      unitTypes?: string[];
+      once?: boolean;
     }
   | { kind: "vigil"; label: string; tile: string; turns: number; companion: string }
   | { kind: "refuge"; label: string; tile: string; turns: number }
   | { kind: "seal"; label: string; tiles: string[]; unitType?: UnitType }
-  | { kind: "event"; label: string; tile: string; event: string }
-  | { kind: "defeat"; label: string };
+  | { kind: "event"; label: string; tile?: string; event: string }
+  | { kind: "defeat"; label: string }
+) & { visibleWhen?: import("../../rust/pkg/hex_command").Condition };
 export interface MissionEvent {
   id: string;
+  spawn?: import("../../rust/pkg/hex_command").SpawnGroup;
   trigger:
+    | { kind: "condition"; condition: import("../../rust/pkg/hex_command").Condition }
     | { kind: "visit"; tile: string }
     | { kind: "round"; round: number }
+    | { kind: "held"; tile: string; turns: number }
     | { kind: "control"; tile: string; round?: number };
   requiresEvent?: string;
   unlessEvent?: string;
@@ -386,8 +431,10 @@ export interface MissionDefinition {
   briefing: string;
   debrief?: string;
   requiredCompanions?: string[];
+  arrivals?: { name: string; col: number; row: number }[];
   hints: string[];
   goals: MissionGoal[];
+  optionalGoals?: MissionGoal[];
   recruits: RecruitType[];
   enemyRecruits: RecruitType[];
   gold: number;
@@ -431,11 +478,12 @@ export interface CampaignDefinition {
   description: string;
   shortDescription: string;
   race: Race;
-  leader: LeaderType;
+  leader: UnitType;
   missions: MissionDefinition[];
   ending: DialogueLine[];
 }
 export interface CampaignState {
+  evacuated?: { event: string; unit: Unit }[];
   id: CampaignId;
   mission: number;
   recall: RecruitType[];

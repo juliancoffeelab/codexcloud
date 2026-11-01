@@ -55,7 +55,7 @@ def tree_groups(lineup, units):
                        "nodes": [node(u, i, 0) for i, u in enumerate(lineup["commander"]["units"])],
                        "edges": [(0, 1), (1, 2)]})
     for tree in lineup["trees"]:
-        count = len(tree["branches"])
+        count = max(1, len(tree["branches"]))
         nodes = [node(tree["base"], 0, (count - 1) / 2)]
         edges = []
         for row, branch in enumerate(tree["branches"]):

@@ -27,11 +27,14 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
         game: &Game<'_>,
         workspace: &mut PlanningWorkspace,
     ) -> Result<TurnPlan, CommandError> {
+        workspace.refresh_control(game);
         let mut orders = workspace.orders.clone().unwrap_or_else(|| {
             self.campaigner
                 .objectives(CampaignView::new(game, workspace))
         });
         let mut draft = PlanningContext::fork(game);
+        draft.restrict_actors(&orders.tactics.inactive);
+        draft.restrict_positions(&orders.tactics.scoped);
         let mut recruitment_context =
             draft.recruitment_context(workspace.seed, workspace.recruitment_remaining);
         let recruitment = self
@@ -126,7 +129,7 @@ mod tests {
     fn recruitment_and_planning_share_a_validated_draft_with_fixed_components() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
-        game.units.retain(|unit| rules.units[unit.kind].leader);
+        game.units.retain(|unit| unit.is_leader());
         game.roster_changed();
         game.gold[game.turn.index()] = 1000;
         let kind = game.recruitment_options(game.turn)[0];

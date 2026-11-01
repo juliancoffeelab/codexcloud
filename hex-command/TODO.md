@@ -9,6 +9,9 @@
 
 ## Balance and simulations
 
+- [ ] Investigate recruiting leaders stalling beside an empty owned keep. Trace
+      how post/rebuild orders, recruitment's keep requirement and leader-safety
+      checks interact before changing policy; the stall may predate this scenario.
 - [ ] Investigate retaliation stalls where armies repeatedly refuse attacks and
       fail to resolve a fight.
 - [ ] Investigate concentrated promotion choices and test branch usefulness over

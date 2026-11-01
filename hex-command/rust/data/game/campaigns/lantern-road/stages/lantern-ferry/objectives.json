@@ -1,9 +1,23 @@
 {
   "goals": [
     {
-      "kind": "escort",
-      "label": "Bring Ivo to the northeastern landing",
-      "tile": "11,1"
+      "kind": "event",
+      "label": "Reach the ferryman’s house",
+      "tile": "18,10",
+      "event": "house-visit"
+    },
+    {
+      "kind": "event",
+      "label": "Light and secure the eastern villages",
+      "event": "villages-secured"
+    }
+  ],
+  "optionalGoals": [
+    {
+      "kind": "event",
+      "label": "Reach the ferryman by turn 15",
+      "event": "ford-shout",
+      "tile": "17,8"
     }
   ]
 }

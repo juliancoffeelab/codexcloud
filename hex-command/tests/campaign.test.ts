@@ -12,42 +12,6 @@ import { required, TestStorage } from "./helpers";
 
 const storage = new TestStorage();
 
-// The gatherers are reachable on the northern bridge approach; old armies keep progress.
-test("Gatherer reward moves without losing saved progress", async () => {
-  const game = Game.startCampaign("lantern-road", 2);
-  const adept = required(game.at("4,3"));
-  const reward = required(
-    campaignMission(game.campaign!).events.find((event) => event.id === "reeds"),
-  );
-  assert.equal(reward.trigger.kind, "visit");
-  assert.equal("tile" in reward.trigger && reward.trigger.tile, "5,1");
-  assert.equal(game.tile("5,1")?.terrain, "grove");
-  assert(!game.at("5,1"));
-  game.advanceDialogue(true);
-  game.move(adept.id, "5,1");
-  assert(game.campaign!.marks.includes("event:reeds"));
-  assert.equal(game.gold.player, 26);
-  for (const rewarded of [false, true]) {
-    const old = Game.startCampaign("lantern-road", 2);
-    old.mapRevision = 1;
-    required(old.tile("4,3")).terrain = "grove";
-    required(old.tile("4,3")).owner = "player";
-    required(old.tile("5,1")).terrain = "plains";
-    if (rewarded) old.campaign!.marks.push("event:reeds");
-    old.gold.player = rewarded ? 26 : 20;
-    saveBattle(old);
-    const restored = loadBattle().game;
-    assert.equal(restored.mapId, "lantern-bell");
-    assert.equal(restored.mapRevision, 2);
-    assert.deepEqual(restored.units, old.units);
-    assert.equal(restored.gold.player, old.gold.player);
-    assert.equal(restored.campaign!.marks.includes("event:reeds"), rewarded);
-    assert.equal(restored.tile("4,3")?.terrain, "plains");
-    assert.equal(restored.tile("5,1")?.terrain, "grove");
-    assert.equal(restored.tile("5,1")?.owner, "player");
-  }
-});
-
 // The previously published refuge save keeps its units, gold and village ownership.
 test("Legacy refuge retains company and ownership", async () => {
   const current = Game.startCampaign("ashen-oath", 1);
@@ -89,7 +53,7 @@ test("Legacy refuge retains company and ownership", async () => {
 });
 // Interrupted enemy checkpoints replay waves and campaign ownership deterministically.
 test("Interrupted wave checkpoint replays once", async () => {
-  const game = Game.startCampaign("lantern-road", 2);
+  const game = Game.startCampaign("ashen-oath", 0);
   game.advanceDialogue(true);
   game.round = campaignMission(game.campaign!).waves[0]!.round;
   saveBattle(game, true);
@@ -101,7 +65,7 @@ test("Interrupted wave checkpoint replays once", async () => {
   assert.deepEqual(replay.snapshot(), first.snapshot());
   assert.equal(
     replay.snapshot().campaign?.marks.filter((mark) => mark.startsWith("wave:")).length,
-    3,
+    campaignMission(game.campaign!).waves.length,
   );
   first.dispose();
   replay.dispose();

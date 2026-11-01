@@ -4,6 +4,20 @@ use crate::{data::*, logic::battle::Game};
 use std::collections::BTreeMap;
 impl<'catalog> Game<'catalog> {
     fn hold_actor_present(&self, goal: &Goal) -> bool {
+        if let Goal::Hold {
+            unit_types, tile, ..
+        } = goal
+        {
+            if !unit_types.is_empty()
+                && !self.units.iter().any(|u| {
+                    u.side == Side::Player
+                        && self.board.ids[u.tile] == *tile
+                        && unit_types.contains(&self.rules.units[u.kind].id)
+                })
+            {
+                return false;
+            }
+        }
         goal.companion().is_none_or(|name| {
             self.units.iter().any(|u| {
                 u.side == Side::Player
@@ -12,6 +26,10 @@ impl<'catalog> Game<'catalog> {
             })
         })
     }
+    pub(crate) fn goal_visible(&self, goal: &Goal) -> bool {
+        goal.visible_when()
+            .is_none_or(|condition| self.event_condition_met(condition))
+    }
     /// Internal completion queries do not need labels or serialized tile lists.
     pub(crate) fn goal_done(&self, goal: &Goal) -> bool {
         let state = self.campaign.as_ref().unwrap();
@@ -19,17 +37,28 @@ impl<'catalog> Game<'catalog> {
             Goal::Defeat { .. } => !self
                 .units
                 .iter()
-                .any(|u| u.side == Side::Enemy && u.role == Some(Role::Leader)),
-            Goal::Escort { tile, .. } | Goal::Escape { tile, .. } => self.units.iter().any(|u| {
-                u.side == Side::Player
-                    && u.role
-                        == Some(if matches!(goal, Goal::Escort { .. }) {
-                            Role::Courier
-                        } else {
-                            Role::Leader
-                        })
-                    && &self.board.ids[u.tile] == tile
-            }),
+                .any(|u| self.hostile_to_phase(u, Side::Player) && u.role == Some(Role::Leader)),
+            Goal::Escort { tile, .. } | Goal::Escape { tile, .. } => {
+                self.units.iter().any(|u| {
+                    u.side == Side::Player
+                        && u.role
+                            == Some(if matches!(goal, Goal::Escort { .. }) {
+                                Role::Courier
+                            } else {
+                                Role::Leader
+                            })
+                        && &self.board.ids[u.tile] == tile
+                }) || state.evacuated.iter().any(|record| {
+                    record.unit.side == Side::Player
+                        && record.unit.role
+                            == Some(if matches!(goal, Goal::Escort { .. }) {
+                                Role::Courier
+                            } else {
+                                Role::Leader
+                            })
+                        && &record.unit.tile == tile
+                })
+            }
             Goal::Control { .. } => goal
                 .tiles()
                 .iter()
@@ -40,6 +69,7 @@ impl<'catalog> Game<'catalog> {
                 .all(|tile| state.marked_prefixed("sealed:", tile)),
             Goal::Event { event, .. } => state.marked_prefixed("event:", event),
             Goal::Hold {
+                once,
                 tile,
                 turns,
                 earliest_round,
@@ -59,17 +89,21 @@ impl<'catalog> Game<'catalog> {
                     0
                 };
                 held >= *turns
-                    && self.turn == Side::Player
+                    && (*once || self.turn == Side::Player)
                     && self.round >= *earliest_round
-                    && self.owners[self.site(tile)] == Some(Side::Player)
-                    && self.hold_actor_present(goal)
+                    && (*once
+                        || (self.owners[self.site(tile)] == Some(Side::Player)
+                            && self.hold_actor_present(goal)))
             }
             Goal::Vigil { turns, .. } => {
                 state.vigil.as_ref().map_or(0, |counter| counter.held_turns) >= *turns
             }
             Goal::Refuge { turns, .. } => {
                 if state.escalated() {
-                    return !self.units.iter().any(|u| u.side == Side::Enemy);
+                    return !self
+                        .units
+                        .iter()
+                        .any(|u| self.hostile_to_phase(u, Side::Player));
                 }
                 let refuge = self.mission.as_ref().unwrap().refuge.as_ref().unwrap();
                 let total = if state.marked_prefixed("event:", &refuge.medicine_event) {
@@ -85,7 +119,6 @@ impl<'catalog> Game<'catalog> {
             }
         }
     }
-    #[cfg(any(not(target_arch = "wasm32"), test))]
     pub(crate) fn goal_progress(&self, goal: &Goal) -> Progress {
         let mut current = 0;
         let mut total = 1;
@@ -95,23 +128,12 @@ impl<'catalog> Game<'catalog> {
         match goal {
             Goal::Defeat { .. } => {
                 tiles.clear();
-                current = (!self
-                    .units
-                    .iter()
-                    .any(|u| u.side == Side::Enemy && u.role == Some(Role::Leader)))
-                    as u32;
+                current = (!self.units.iter().any(|u| {
+                    self.hostile_to_phase(u, Side::Player) && u.role == Some(Role::Leader)
+                })) as u32;
             }
-            Goal::Escort { tile, .. } | Goal::Escape { tile, .. } => {
-                current = self.units.iter().any(|u| {
-                    u.side == Side::Player
-                        && u.role
-                            == Some(if matches!(goal, Goal::Escort { .. }) {
-                                Role::Courier
-                            } else {
-                                Role::Leader
-                            })
-                        && &self.board.ids[u.tile] == tile
-                }) as u32
+            Goal::Escort { .. } | Goal::Escape { .. } => {
+                current = self.goal_done(goal) as u32;
             }
             Goal::Control { .. } => {
                 total = tiles.len() as u32;
@@ -131,21 +153,14 @@ impl<'catalog> Game<'catalog> {
             Goal::Hold {
                 tile,
                 turns,
-                earliest_round,
                 start_event,
                 ..
             } => {
                 total = *turns;
-                if start_event
+                if !start_event
                     .as_ref()
                     .is_some_and(|e| !state.marked(&format!("event:{e}")))
                 {
-                    label = if self.owners[self.site(tile)] != Some(Side::Player) {
-                        "Reach the wreck to start the rescue".into()
-                    } else {
-                        format!("Wait for high tide on turn {}", *earliest_round)
-                    };
-                } else {
                     current = state
                         .holds
                         .as_ref()
@@ -161,7 +176,11 @@ impl<'catalog> Game<'catalog> {
             Goal::Refuge { turns, .. } => {
                 if state.escalated() {
                     label = "Defeat the remaining patrol".into();
-                    current = (!self.units.iter().any(|u| u.side == Side::Enemy)) as u32;
+                    current = (!self
+                        .units
+                        .iter()
+                        .any(|u| self.hostile_to_phase(u, Side::Player)))
+                        as u32;
                     tiles.clear();
                 } else {
                     let refuge = self.mission.as_ref().unwrap().refuge.as_ref().unwrap();
@@ -177,14 +196,16 @@ impl<'catalog> Game<'catalog> {
         let done = current == total
             && match goal {
                 Goal::Hold {
+                    once,
                     tile,
                     earliest_round,
                     ..
                 } => {
-                    self.turn == Side::Player
+                    (*once || self.turn == Side::Player)
                         && self.round >= *earliest_round
-                        && self.owners[self.site(tile)] == Some(Side::Player)
-                        && self.hold_actor_present(goal)
+                        && (*once
+                            || (self.owners[self.site(tile)] == Some(Side::Player)
+                                && self.hold_actor_present(goal)))
                 }
                 _ => true,
             };
@@ -197,7 +218,7 @@ impl<'catalog> Game<'catalog> {
         }
     }
     pub(crate) fn active_goal_tiles(&self, goal: &Goal) -> Vec<String> {
-        if self.winner.is_some() {
+        if self.winner.is_some() || !self.goal_visible(goal) {
             return vec![];
         }
         if goal.kind() == GoalKind::Seal {
@@ -274,7 +295,11 @@ impl<'catalog> Game<'catalog> {
                     })
                     .min_by_key(|&t| self.board.distance(t, origin));
                 if let Some(tile) = tile {
-                    self.add(kind, incoming.side, tile);
+                    let id = self.add(kind, incoming.side, tile);
+                    let unit = self.units.iter_mut().find(|unit| unit.id == id).unwrap();
+                    unit.ai_group = incoming.ai_group.clone();
+                    unit.items = incoming.items.clone();
+                    unit.faction = incoming.faction.clone();
                     arrived += 1;
                 }
             }
@@ -283,25 +308,86 @@ impl<'catalog> Game<'catalog> {
             }
         }
     }
+    /// Activation is remembered independently from placement and each member is released once.
+    pub(crate) fn spawn_events(&mut self) {
+        let Some(mission) = self.mission.clone() else {
+            return;
+        };
+        for event in &mission.events {
+            let Some(group) = &event.spawn else {
+                continue;
+            };
+            if !self
+                .campaign
+                .as_ref()
+                .is_some_and(|state| state.marked(&format!("event:{}", event.id)))
+            {
+                continue;
+            }
+            for incoming in &group.units {
+                let marker = format!("spawn:{}:{}", event.id, incoming.id);
+                if self.campaign.as_ref().unwrap().marked(&marker) {
+                    continue;
+                }
+                let kind = self.kind(&incoming.r#type);
+                let tile = group
+                    .area
+                    .iter()
+                    .map(|id| self.site(id))
+                    .find(|&tile| self.at(tile).is_none() && self.cost(kind, tile) != u16::MAX);
+                if let Some(tile) = tile {
+                    let id = self.add(kind, incoming.side, tile);
+                    let unit = self.units.iter_mut().find(|unit| unit.id == id).unwrap();
+                    unit.ai_group = group.ai_group.clone();
+                    unit.faction = incoming.faction.clone().or_else(|| group.faction.clone());
+                    unit.name = incoming.name.clone();
+                    unit.role = incoming.role.clone();
+                    self.campaign.as_mut().unwrap().marks.push(marker);
+                }
+            }
+        }
+    }
     pub(crate) fn evaluate_campaign(&mut self, at_turn_start: bool, entered: Option<usize>) {
         if self.campaign.is_none() || self.winner.is_some() {
             return;
         }
+        self.apply_faction_transfers();
         let mission = self.mission.clone().unwrap();
         let leader = self
             .units
             .iter()
-            .any(|u| u.side == Side::Player && u.role == Some(Role::Leader));
+            .any(|u| u.side == Side::Player && u.role == Some(Role::Leader))
+            || self
+                .campaign
+                .as_ref()
+                .unwrap()
+                .evacuated
+                .iter()
+                .any(|record| {
+                    record.unit.side == Side::Player && record.unit.role == Some(Role::Leader)
+                });
         let missing = mission.required_companions.iter().find(|name| {
             !self
                 .units
                 .iter()
                 .any(|u| u.side == Side::Player && u.name.as_ref() == Some(name))
+                && !self
+                    .campaign
+                    .as_ref()
+                    .unwrap()
+                    .evacuated
+                    .iter()
+                    .any(|record| record.unit.name.as_ref() == Some(name))
         });
         let courier = self
             .units
             .iter()
-            .any(|u| u.side == Side::Player && u.role == Some(Role::Courier));
+            .any(|u| !self.hostile_to_phase(u, Side::Player) && u.role == Some(Role::Courier))
+            || mission
+                .goals
+                .iter()
+                .filter(|goal| matches!(goal, Goal::Escort { .. }))
+                .all(|goal| self.goal_done(goal));
         if !leader
             || missing.is_some()
             || (mission.goals.iter().any(|g| g.kind() == GoalKind::Escort) && !courier)
@@ -311,7 +397,7 @@ impl<'catalog> Game<'catalog> {
             } else if let Some(name) = missing {
                 format!("{name} fell. The company cannot continue without them.")
             } else {
-                "The courier fell before reaching safety.".into()
+                "The people you were escorting were killed before reaching safety.".into()
             };
             self.winner = Some(Side::Enemy);
             let state = self.campaign.as_mut().unwrap();
@@ -324,7 +410,7 @@ impl<'catalog> Game<'catalog> {
             self.record(text);
             return;
         }
-        if let Some(goal) = mission.goals.iter().find(|g| g.kind() == GoalKind::Vigil) {
+        if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Vigil) {
             let tile = self.site(goal.tile().unwrap());
             let present = self.units.iter().any(|u| {
                 u.side == Side::Player && u.name.as_ref() == goal.companion() && u.tile == tile
@@ -359,11 +445,11 @@ impl<'catalog> Game<'catalog> {
             if !self
                 .units
                 .iter()
-                .any(|u| u.side == Side::Enemy && u.role == Some(Role::Leader))
+                .any(|u| self.hostile_to_phase(u, Side::Player) && u.role == Some(Role::Leader))
             {
                 self.escalate_refuge();
             }
-            if let Some(goal) = mission.goals.iter().find(|g| g.kind() == GoalKind::Refuge) {
+            if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Refuge) {
                 let tile = self.site(goal.tile().unwrap());
                 let counter = self.campaign.as_mut().unwrap().refuge.as_mut().unwrap();
                 if !counter.escalated {
@@ -378,7 +464,7 @@ impl<'catalog> Game<'catalog> {
                 }
             }
         }
-        for goal in &mission.goals {
+        for goal in mission.all_goals() {
             if goal.kind() == GoalKind::Hold {
                 let tile = self.site(goal.tile().unwrap());
                 let actor_present = self.hold_actor_present(goal);
@@ -395,6 +481,11 @@ impl<'catalog> Game<'catalog> {
                         held_turns: 0,
                         last_counted_round: self.round,
                     });
+                if matches!(goal, Goal::Hold { once: true, .. })
+                    && counter.held_turns >= goal.turns().unwrap()
+                {
+                    continue;
+                }
                 if !started || !actor_present || self.owners[tile] != Some(Side::Player) {
                     counter.held_turns = 0;
                     counter.last_counted_round = self.round;
@@ -432,14 +523,30 @@ impl<'catalog> Game<'catalog> {
                 let marker = format!("event:{}", event.id);
                 let state = self.campaign.as_ref().unwrap();
                 let triggered = match &event.trigger {
+                    Trigger::Condition { condition } => self.event_condition_met(condition),
                     Trigger::Visit { tile } => entered.is_some_and(|t| &self.board.ids[t] == tile),
                     Trigger::Round { round } => self.round >= *round,
+                    Trigger::Held { tile, turns } => self
+                        .campaign
+                        .as_ref()
+                        .and_then(|c| c.holds.as_ref())
+                        .and_then(|h| h.get(tile))
+                        .is_some_and(|h| h.held_turns >= *turns),
                     Trigger::Control { tile, round } => {
                         self.owners[self.site(tile)] == Some(Side::Player)
                             && self.round >= round.unwrap_or(1)
                     }
                 };
                 if !triggered
+                    || event.evacuate.as_ref().is_some_and(|effect| {
+                        !self.units.iter().any(|unit| {
+                            effect.units.accepts(unit) && self.board.ids[unit.tile] == effect.tile
+                        })
+                    })
+                    || event
+                        .items
+                        .iter()
+                        .any(|reward| !self.units.iter().any(|unit| reward.recipient.accepts(unit)))
                     || state.marked(&marker)
                     || event
                         .requires_event
@@ -449,19 +556,103 @@ impl<'catalog> Game<'catalog> {
                         .unless_event
                         .as_ref()
                         .is_some_and(|e| state.marked(&format!("event:{e}")))
+                    || event
+                        .unless_choice
+                        .as_ref()
+                        .is_some_and(|choice| state.chosen(choice))
                     || event.before_round.is_some_and(|r| self.round >= r)
                 {
                     continue;
                 }
-                let state = self.campaign.as_mut().unwrap();
-                state.marks.push(marker);
-                self.gold[0] += event.gold.unwrap_or(0);
                 let lines = if state.escalated() {
                     event.war_dialogue.as_ref().unwrap_or(&event.dialogue)
                 } else {
                     &event.dialogue
                 };
-                state.say(lines.clone());
+                // Named party members speak only while present, including after promotion.
+                // Unbound speakers such as local witnesses and narration remain available.
+                let lines: Vec<_> = lines
+                    .iter()
+                    .filter(|line| !state.marked(&format!("fallen:{}", line.speaker)))
+                    .filter(|line| {
+                        !(mission
+                            .arrivals
+                            .iter()
+                            .any(|arrival| arrival.name == line.speaker)
+                            || mission.map.units.iter().any(|unit| {
+                                unit.side == Side::Player
+                                    && unit.name.as_deref() == Some(line.speaker.as_str())
+                            }))
+                            || self.units.iter().any(|unit| {
+                                unit.side == Side::Player
+                                    && unit.name.as_deref() == Some(line.speaker.as_str())
+                            })
+                    })
+                    .cloned()
+                    .collect();
+                let evacuated: Vec<_> = event
+                    .evacuate
+                    .as_ref()
+                    .map(|effect| {
+                        self.units
+                            .iter()
+                            .filter(|unit| {
+                                effect.units.accepts(unit)
+                                    && self.board.ids[unit.tile] == effect.tile
+                            })
+                            .map(|unit| EvacuatedUnit {
+                                event: event.id.clone(),
+                                unit: self.public_unit(unit),
+                            })
+                            .collect()
+                    })
+                    .unwrap_or_default();
+                if !evacuated.is_empty() {
+                    self.units.retain(|unit| {
+                        !evacuated
+                            .iter()
+                            .any(|record| record.unit.id == format!("u{}", unit.id))
+                    });
+                    self.roster_changed();
+                }
+                let state = self.campaign.as_mut().unwrap();
+                state.evacuated.extend(evacuated);
+                state.marks.push(marker);
+                if let Some(choice) = &event.choice {
+                    let choices = state.choices.get_or_insert_with(Vec::new);
+                    if !choices.contains(choice) {
+                        choices.push(choice.clone());
+                    }
+                }
+                self.gold[0] += event.gold.unwrap_or(0);
+                self.ground_items.extend(event.ground_items.iter().cloned());
+                let collectors: Vec<_> = self
+                    .units
+                    .iter()
+                    .filter(|u| {
+                        u.side == Side::Player
+                            && event
+                                .ground_items
+                                .iter()
+                                .any(|item| item.tile == self.board.ids[u.tile])
+                    })
+                    .map(|u| u.id)
+                    .collect();
+                state.say(lines);
+                for id in collectors {
+                    self.collect_items(id);
+                }
+                for reward in &event.items {
+                    for unit in self
+                        .units
+                        .iter_mut()
+                        .filter(|unit| reward.recipient.accepts(unit))
+                    {
+                        if !unit.items.iter().any(|item| item.id == reward.item.id) {
+                            unit.items.push(reward.item.clone());
+                        }
+                    }
+                }
                 self.record(
                     event
                         .label
@@ -470,6 +661,9 @@ impl<'catalog> Game<'catalog> {
                 );
             }
         }
+        self.spawn_events();
+        self.apply_faction_transfers();
+        self.evaluate_rituals(at_turn_start);
         if mission.goals.iter().all(|g| self.goal_done(g)) {
             self.winner = Some(Side::Player);
             let dain_survived = self
@@ -528,8 +722,7 @@ impl<'catalog> Game<'catalog> {
         let original = rules.campaigns[id].missions[index].clone();
         let mut game = Game::new(rules, &original.map.id);
         let holds = original
-            .goals
-            .iter()
+            .all_goals()
             .filter(|g| g.kind() == GoalKind::Hold)
             .map(|g| {
                 (
@@ -542,6 +735,7 @@ impl<'catalog> Game<'catalog> {
             })
             .collect();
         game.campaign = Some(CampaignState {
+            evacuated: vec![],
             id: id.into(),
             mission: index,
             recall: veterans.iter().map(|v| v.r#type.clone()).collect(),
@@ -560,8 +754,7 @@ impl<'catalog> Game<'catalog> {
                 escalated: false,
             }),
             vigil: original
-                .goals
-                .iter()
+                .all_goals()
                 .any(|g| g.kind() == GoalKind::Vigil)
                 .then_some(Counter {
                     held_turns: 0,
@@ -597,12 +790,35 @@ impl<'catalog> Game<'catalog> {
                 let tile = game.site(&format!("{},{}", incoming.col, incoming.row));
                 game.add(kind, incoming.side, tile);
                 let added = game.units.last_mut().unwrap();
+                added.ai_group = incoming.ai_group.clone();
+                added.items = incoming.items.clone();
+                added.faction = incoming.faction.clone();
                 added.name = incoming.name.clone();
                 added.role = incoming.role.clone();
             }
         }
         game.gold = [original.gold + carry.clamp(0, 8), original.enemy_gold];
         for veteran in story {
+            if let Some(arrival) = original
+                .arrivals
+                .iter()
+                .find(|arrival| Some(&arrival.name) == veteran.name.as_ref())
+            {
+                let tile = game.site(&format!("{},{}", arrival.col, arrival.row));
+                let kind = game.kind(&veteran.r#type);
+                let destination = (0..game.terrain.len())
+                    .filter(|&t| game.at(t).is_none() && game.cost(kind, t) != u16::MAX)
+                    .min_by_key(|&t| game.board.distance(tile, t));
+                if let Some(destination) = destination {
+                    let id = game.add(kind, Side::Player, destination);
+                    let unit = game.units.iter_mut().find(|u| u.id == id).unwrap();
+                    unit.items = veteran.items.clone();
+                    unit.name = veteran.name.clone();
+                    unit.experience = Some(veteran.experience);
+                    unit.role = veteran.role;
+                }
+                continue;
+            }
             let kind = game.kind(&veteran.r#type);
             if let Some(unit) = game.units.iter_mut().find(|u| {
                 u.side == Side::Player
@@ -613,6 +829,7 @@ impl<'catalog> Game<'catalog> {
                     }
             }) {
                 if game.rules.units[unit.kind].family == game.rules.units[kind].family {
+                    unit.items = veteran.items.clone();
                     unit.kind = kind;
                     unit.experience = Some(veteran.experience);
                     unit.hp = game.rules.units[kind].hp;
@@ -645,36 +862,40 @@ impl<'catalog> Game<'catalog> {
             let unit = game.units.last_mut().unwrap();
             unit.experience = Some(veteran.experience);
             unit.name = veteran.name;
+            unit.items = veteran.items;
         }
         for unit in &game.units {
-            if [
-                Terrain::Village,
-                Terrain::Grove,
-                Terrain::Ruins,
-                Terrain::Fort,
-            ]
-            .iter()
-            .any(|t| game.terrain_is(unit.tile, *t))
-            {
+            if game.terrain_role(unit.tile).capturable() {
                 game.owners[unit.tile] = Some(unit.side);
             }
         }
         game.log.clear();
         game.record(game.mission.as_ref().unwrap().briefing.clone());
+        game.evaluate_campaign(false, None);
+        game.remember_conditions();
         game
     }
     pub(crate) fn returns_with_story(&self, u: &Unit) -> bool {
         let state = self.campaign.as_ref().unwrap();
-        u.name.as_ref().is_some_and(|name| {
-            self.rules.campaigns[&state.id]
-                .missions
-                .get(state.mission + 1)
-                .is_some_and(|m| {
-                    m.map.units.iter().any(|incoming| {
-                        incoming.side == Side::Player && incoming.name.as_ref() == Some(name)
+        self.rules.campaigns[&state.id]
+            .missions
+            .get(state.mission + 1)
+            .is_some_and(|mission| {
+                mission
+                    .arrivals
+                    .iter()
+                    .any(|arrival| u.name.as_ref() == Some(&arrival.name))
+                    || mission.map.units.iter().any(|incoming| {
+                        incoming.side == Side::Player
+                            && self.rules.units[self.kind(&incoming.r#type)].family
+                                == self.rules.units[u.kind].family
+                            && if u.role == Some(Role::Leader) {
+                                incoming.role == Some(Role::Leader)
+                            } else {
+                                u.name.is_some() && incoming.name == u.name
+                            }
                     })
-                })
-        })
+            })
     }
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn next_campaign(&self) -> Self {
@@ -693,7 +914,7 @@ impl<'catalog> Game<'catalog> {
             .iter()
             .filter(|u| {
                 u.side == Side::Player
-                    && !self.rules.units[u.kind].leader
+                    && !u.is_leader()
                     && u.role != Some(Role::Courier)
                     && u.name
                         .as_ref()
@@ -729,25 +950,58 @@ impl<'catalog> Game<'catalog> {
             eligible = recalled;
         }
         let veteran = |u: &Unit, role: bool| Veteran {
+            items: u.items.clone(),
             r#type: self.rules.units[u.kind].id.clone(),
             experience: u.experience.unwrap_or(0),
             name: u.name.clone(),
             role: if role { u.role.clone() } else { None },
         };
-        let veterans = eligible
-            .into_iter()
-            .take(4)
-            .map(|u| veteran(u, false))
-            .collect();
-        let story = self
+        eligible.truncate(4);
+        let overflow: Vec<_> = self
             .units
             .iter()
-            .filter(|u| {
-                u.side == Side::Player
-                    && (u.role == Some(Role::Leader) || self.returns_with_story(u))
+            .filter(|unit| {
+                unit.side == Side::Player
+                    && !self.returns_with_story(unit)
+                    && !eligible.iter().any(|selected| selected.id == unit.id)
             })
+            .flat_map(|unit| unit.items.iter().cloned())
+            .collect();
+        let veterans = eligible.into_iter().map(|u| veteran(u, false)).collect();
+        let mut story: Vec<Veteran> = self
+            .units
+            .iter()
+            .filter(|u| u.side == Side::Player && self.returns_with_story(u))
             .map(|u| veteran(u, true))
             .collect();
+        if let Some(next) = self.rules.campaigns[&state.id]
+            .missions
+            .get(state.mission + 1)
+        {
+            for record in &state.evacuated {
+                let unit = &record.unit;
+                if unit.side == Side::Player
+                    && next.map.units.iter().any(|incoming| {
+                        incoming.side == Side::Player
+                            && self.rules.units[self.kind(&incoming.r#type)].family
+                                == self.rules.units[self.kind(&unit.r#type)].family
+                            && if unit.role == Some(Role::Leader) {
+                                incoming.role == Some(Role::Leader)
+                            } else {
+                                unit.name.is_some() && incoming.name == unit.name
+                            }
+                    })
+                {
+                    story.push(Veteran {
+                        r#type: unit.r#type.clone(),
+                        items: unit.items.clone(),
+                        experience: unit.experience.unwrap_or(0),
+                        name: unit.name.clone(),
+                        role: unit.role,
+                    });
+                }
+            }
+        }
         let mut choices = state.choices.clone().unwrap_or_default();
         if state.marked("dain-fell") && !choices.iter().any(|c| c == "green-dain-dead") {
             choices.push("green-dain-dead".into());
@@ -770,6 +1024,10 @@ impl<'catalog> Game<'catalog> {
                                 .units
                                 .iter()
                                 .any(|alive| alive.side == Side::Player && alive.name == u.name)
+                            && !state
+                                .evacuated
+                                .iter()
+                                .any(|record| record.unit.name == u.name)
                     })
                     .map(|u| u.name.clone().unwrap()),
             )
@@ -788,6 +1046,30 @@ impl<'catalog> Game<'catalog> {
             story,
             fallen,
         );
+        if !overflow.is_empty() {
+            let leader = next
+                .units
+                .iter_mut()
+                .find(|unit| unit.side == Side::Player && unit.is_leader())
+                .unwrap();
+            leader.items.extend(overflow);
+            // Retry must restore the same equipment as the chapter's first entry.
+            let leader = veteran(leader, true);
+            let story = next
+                .campaign
+                .as_mut()
+                .unwrap()
+                .story_veterans
+                .get_or_insert_default();
+            if let Some(saved) = story
+                .iter_mut()
+                .find(|unit| unit.role == Some(Role::Leader))
+            {
+                *saved = leader;
+            } else {
+                story.push(leader);
+            }
+        }
         next.combat_rng = self.combat_rng;
         Ok(next)
     }

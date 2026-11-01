@@ -77,11 +77,11 @@ test("Ordinary skirmish labels have no objective", async () => {
 
 // Sealed stones leave the map individually; territory that can be lost stays visible.
 test("Completed seal markers disappear while territory remains visible", async () => {
-  const game = Game.startCampaign("lantern-road", 2);
-  game.campaign!.marks.push("sealed:9,1");
+  const game = Game.startCampaign("ashen-oath", 2);
+  game.campaign!.marks.push("sealed:7,2");
   const tiles = battlefieldTiles(game.publishedView(), null, currentArtwork(), null);
-  assert(!required(tiles.find((tile) => tile.id === "9,1")).classes.includes("objective"));
-  assert(required(tiles.find((tile) => tile.id === "11,4")).classes.includes("objective"));
+  assert(!required(tiles.find((tile) => tile.id === "7,2")).classes.includes("objective"));
+  assert(required(tiles.find((tile) => tile.id === "7,6")).classes.includes("objective"));
   const escort = Game.startCampaign("green-accord", 2);
   required(escort.tile("7,4")).owner = "player";
   assert(

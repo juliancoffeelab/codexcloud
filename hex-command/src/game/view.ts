@@ -10,6 +10,9 @@ export type TileView = Immutable<Tile>;
 
 type ReadableGame = Pick<
   LiveGame,
+  | "presentation"
+  | "objectives"
+  | "faction"
   | "campaign"
   | "recruitmentOptions"
   | "promotionOptions"
@@ -24,6 +27,7 @@ type ReadableGame = Pick<
   | "log"
   | "tiles"
   | "units"
+  | "groundItems"
   | "tile"
   | "unit"
   | "at"

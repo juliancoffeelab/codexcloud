@@ -8,13 +8,15 @@
       "type": "commander",
       "side": "player",
       "col": 1,
-      "row": 4
+      "row": 4,
+      "role": "leader"
     },
     {
       "type": "commander",
       "side": "enemy",
       "col": 7,
-      "row": 4
+      "row": 4,
+      "role": "leader"
     }
   ]
 }

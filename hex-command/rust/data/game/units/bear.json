@@ -1,0 +1,34 @@
+{
+  "id": "bear",
+  "name": "Bear",
+  "role": "warrior",
+  "race": "beast",
+  "hp": 30,
+  "move": 3,
+  "cost": 14,
+  "attacks": [
+    {
+      "id": "claws",
+      "name": "Claws",
+      "damage": 7,
+      "count": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 1
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Heavy claws",
+  "description": "A slow, tough animal with heavy impact attacks.",
+  "level": 1,
+  "family": "bear",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "terrainModifiers": {}
+}
