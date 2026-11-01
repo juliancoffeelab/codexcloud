@@ -1,16 +1,21 @@
 ---
 name: deploy
-description: Use after completed game implementation by default, or immediately when the user asks to deploy, publish or update the live game.
+description: Use for an intended live human playtest, or immediately when the user asks to deploy, publish or update the live game.
 ---
 
 # Deploy
 
-Completed game implementation goes live by default unless the user requests
-local-only work, an unpublished release, or a deployment hold. Complete the
-implementation's relevant validation and commit/push required changes before entering this
-workflow. Reviews, documentation/instruction-only changes, drafts, renders and
-simulations do not trigger it. Do not ask for another deployment instruction or
-substitute an unpublished release for a completed live update.
+Commit and push completed requested repository changes by default. Deployment
+is only for an explicit request to deploy/update the live game, or a task that
+explicitly intends a live build for a human to playtest. Merely editing playable
+content, running simulations, or pushing changes does not establish that intent.
+Without it, finish with the pushed changes; do not enter this workflow. Honor
+local-only requests, unpublished releases, and deployment holds.
+
+For an intended human playtest, complete relevant implementation validation and
+commit/push required changes before entering this workflow. Reviews,
+documentation, tooling-only work, drafts, renders, and simulations do not trigger
+deployment on their own.
 
 An explicit deploy request enters this workflow immediately. Do not add
 implementation validation or repeat previous checks before invoking it.

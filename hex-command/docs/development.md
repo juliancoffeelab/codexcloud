@@ -62,14 +62,18 @@ variants. Native layer composition uses source-over blending without resizing.
 
 ## Publication
 
-Completed game implementation deploys by default through the
-[deploy skill](../.agents/skills/deploy/SKILL.md), unless the user requests
-local-only work, an unpublished release, or a deployment hold. Complete the
-implementation's appropriate validation and commit/push required changes first, then invoke
-`node scripts/site-operation.mjs deploy` through its documented transport and
-return the production URL. Do not stop at a saved version awaiting another
-instruction. Reviews, documentation/instruction-only changes, drafts, renders,
-simulations and standalone Git pushes do not trigger publication.
+Commit and push completed requested repository changes by default through the
+feature branch and pull request, regardless of duration, unless the user requests
+local-only work or a push hold.
+
+Deploy only for an explicit request to update the live game or a task explicitly
+intended to provide a live build for a human to playtest. Editing playable content,
+running simulations, and pushing changes alone do not establish that intent.
+Otherwise, finish with the pushed changes. Honor unpublished-release requests and
+deployment holds. For an intended human playtest, finish appropriate validation
+and commit/push first, then use the [deploy skill](../.agents/skills/deploy/SKILL.md)
+and return the production URL. Reviews, documentation, tooling-only work, drafts,
+renders, and simulations do not trigger deployment on their own.
 
 An explicit deploy request invokes that operation immediately. Do not run
 separate tests, formatting, inspections, Git commands, builds or previews. The

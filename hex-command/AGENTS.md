@@ -6,13 +6,18 @@
   prototype, render, simulate or evaluate a map or balance change do not authorize
   adding it to the playable catalog. Use an ignored copy of the data and
   `--data-dir`; promote experimental content only when the user requests it.
-- Completed game implementation batches deploy by default unless the user asks
-  to keep them local, save an unpublished release, or hold deployment. Finish
-  appropriate implementation validation and commit/push required changes, then use
-  the [deploy skill](.agents/skills/deploy/SKILL.md) and return the live URL.
-  Do not stop at an unpublished release or ask for deployment permission again.
-  Reviews, documentation/instruction-only changes, drafts, renders and simulations
-  do not trigger deployment; neither does a Git push by itself.
+- Commit and push completed requested repository changes by default, regardless
+  of task duration, through the current feature branch and pull request. Honor
+  explicit requests to keep changes local or hold a push.
+- Deploy only when the user asks to deploy/update the live game, or the task
+  explicitly intends a live build for a human to playtest. Editing playable game
+  content, running simulations, or pushing changes alone does not establish that
+  intent. If human playtesting is not established, finish with the pushed changes.
+  For an intended human playtest, complete appropriate implementation validation
+  and commit/push first, then use the [deploy skill](.agents/skills/deploy/SKILL.md)
+  and return the live URL. Honor local-only, unpublished-release, and deployment
+  holds. Reviews, documentation, tooling-only work, drafts, renders, and simulations
+  do not trigger deployment on their own.
 - An explicit deploy request is an immediate execution request, not a request
   for more development or validation. Invoke the deploy operation directly;
   run no separate tests, inspections, Git commands, builds or previews. The
@@ -87,12 +92,11 @@
   to change branches. New branches must start from the freshly fetched upstream
   default branch (`main` here), never a stale local copy. Never push directly to
   `main` or bypass the repository's PR workflow.
-- Finish completed game implementation batches by committing and pushing required
-  changes before their default deployment, regardless of duration. For other tasks, commit and
-  push before returning only if the task took more than 10 minutes, even if
-  unfinished or checks fail; otherwise keep changes local. Report check status
-  and remaining work. An explicit deploy request follows the operation-only
-  rule above, including for source synchronization.
+- Before returning completed repository work, commit and push as described above;
+  report check status and remaining work. For unfinished work, commit and push
+  after more than 10 minutes unless the user requests otherwise. An explicit
+  deploy request follows the operation-only rule above, including for source
+  synchronization.
 
 ## Interruptions
 
@@ -142,9 +146,8 @@ Read the linked `SKILL.md` before starting work that matches its trigger.
   auditing save loading, save formats, migrations, or their data and dependencies.
 - [publish](.agents/skills/publish/SKILL.md): Use when the user requests an
   unpublished release.
-- [deploy](.agents/skills/deploy/SKILL.md): Use to finish completed game
-  implementation batches by default, or when the user asks to deploy, publish
-  or update the live game.
+- [deploy](.agents/skills/deploy/SKILL.md): Use for an intended live human playtest, or when
+  the user asks to deploy, publish or update the live game.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
   simulations; or assess balance, campaign competence or simulation performance.
