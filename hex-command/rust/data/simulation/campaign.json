@@ -44,8 +44,8 @@
               },
               {
                 "kind": "event",
-                "label": "Lead Nera to the eastern road sign",
-                "tile": "18,5",
+                "label": "Lead Nera through the northern pass",
+                "tile": "17,0",
                 "event": "eastern-departure",
                 "visibleWhen": {
                   "kind": "all",
@@ -81,7 +81,7 @@
                 "conditions": [
                   {
                     "kind": "proximity",
-                    "tile": "18,5",
+                    "tile": "17,0",
                     "radius": 0,
                     "side": "player",
                     "name": "Captain Nera"

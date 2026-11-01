@@ -188,3 +188,12 @@ revision-four Villages saves, using a frozen tile delta. It advances that map to
 revision five and preserves unit positions, health, equipment, gold, turns,
 completed events and outcomes. Keep ownership transfers from the former keep,
 unless a unit already occupies the new keep. Other maps pass through unchanged.
+
+## Version-nineteen migration
+
+The v19-to-v20 step bends the eastern Villages road northeast and moves its
+departure from the sign at (18,5) to the northern pass at (17,0), advancing map
+revision five to six. Frozen tile deltas widen and ease the approach to the pass
+while preserving ownership, units, positions, health, gold, fog, completed events
+and outcomes. Other maps pass through unchanged. Departure objectives and script
+conditions use the northern pass through the current scenario definitions.

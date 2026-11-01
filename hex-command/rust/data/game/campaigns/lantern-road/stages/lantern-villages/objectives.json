@@ -17,8 +17,8 @@
     },
     {
       "kind": "event",
-      "label": "Lead Nera to the eastern road sign",
-      "tile": "18,5",
+      "label": "Lead Nera through the northern pass",
+      "tile": "17,0",
       "event": "eastern-departure",
       "visibleWhen": {
         "kind": "event",

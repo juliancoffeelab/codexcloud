@@ -263,9 +263,9 @@
       "id": "16,0",
       "col": 16,
       "row": 0,
-      "terrain": "mountain",
+      "terrain": "hill",
       "owner": null,
-      "floor": "mountain-rock",
+      "floor": "green-plain",
       "fog": {
         "condition": {
           "kind": "proximity",
@@ -279,9 +279,9 @@
       "id": "17,0",
       "col": 17,
       "row": 0,
-      "terrain": "mountain",
+      "terrain": "road",
       "owner": null,
-      "floor": "mountain-rock",
+      "floor": "green-plain",
       "fog": {
         "condition": {
           "kind": "proximity",
@@ -289,13 +289,14 @@
           "radius": 3
         },
         "remember": true
-      }
+      },
+      "connections": ["sw", "ne"]
     },
     {
       "id": "18,0",
       "col": 18,
       "row": 0,
-      "terrain": "hill",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -568,7 +569,7 @@
       "id": "16,1",
       "col": 16,
       "row": 1,
-      "terrain": "hill",
+      "terrain": "road",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -578,13 +579,14 @@
           "radius": 3
         },
         "remember": true
-      }
+      },
+      "connections": ["sw", "ne"]
     },
     {
       "id": "17,1",
       "col": 17,
       "row": 1,
-      "terrain": "hill",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -600,7 +602,7 @@
       "id": "18,1",
       "col": 18,
       "row": 1,
-      "terrain": "hill",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -856,7 +858,7 @@
       "id": "15,2",
       "col": 15,
       "row": 2,
-      "terrain": "hill",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -872,7 +874,7 @@
       "id": "16,2",
       "col": 16,
       "row": 2,
-      "terrain": "hill",
+      "terrain": "road",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -882,13 +884,14 @@
           "radius": 3
         },
         "remember": true
-      }
+      },
+      "connections": ["se", "ne"]
     },
     {
       "id": "17,2",
       "col": 17,
       "row": 2,
-      "terrain": "hill",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -1160,7 +1163,7 @@
       "id": "15,3",
       "col": 15,
       "row": 3,
-      "terrain": "hill",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -1176,7 +1179,7 @@
       "id": "16,3",
       "col": 16,
       "row": 3,
-      "terrain": "hill",
+      "terrain": "road",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -1186,13 +1189,14 @@
           "radius": 3
         },
         "remember": true
-      }
+      },
+      "connections": ["sw", "nw"]
     },
     {
       "id": "17,3",
       "col": 17,
       "row": 3,
-      "terrain": "hill",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "fog": {
@@ -1493,16 +1497,15 @@
         },
         "remember": true
       },
-      "connections": ["e", "w"]
+      "connections": ["w", "ne"]
     },
     {
       "id": "17,4",
       "col": 17,
       "row": 4,
-      "terrain": "road",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["se", "w"],
       "fog": {
         "condition": {
           "kind": "proximity",
@@ -1811,7 +1814,7 @@
       "terrain": "village",
       "owner": "enemy",
       "floor": "green-plain",
-      "connections": ["e", "nw"],
+      "connections": [],
       "fog": {
         "condition": {
           "kind": "proximity",
@@ -1825,10 +1828,9 @@
       "id": "18,5",
       "col": 18,
       "row": 5,
-      "terrain": "signpost",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["w", "e"],
       "fog": {
         "condition": {
           "kind": "proximity",
@@ -4003,7 +4005,7 @@
       }
     ]
   },
-  "mapRevision": 5,
+  "mapRevision": 6,
   "factions": [
     {
       "id": "prisoners",
