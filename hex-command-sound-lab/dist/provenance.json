@@ -1,0 +1,34 @@
+{
+  "bundled": {
+    "impact-sounds": {
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "mirror": "https://github.com/GeorgeQLe/assets-sfx-combat"
+    },
+    "rpg-audio": {
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "mirror": "https://github.com/GeorgeQLe/assets-sfx-combat"
+    },
+    "current": {
+      "source": "Hexcommand scripts/generate-sfx.py",
+      "license": "Existing project asset; not represented as CC0"
+    }
+  },
+  "browser_imports": {
+    "creator": "Ben Jaszczak & Brian Nelson",
+    "license": "CC0-1.0",
+    "sources": [
+      "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+      "https://opengameart.org/node/146863"
+    ]
+  },
+  "archive_reader": {
+    "name": "libarchive.js",
+    "version": "2.0.2",
+    "license": "MIT",
+    "source": "https://github.com/nika-begiashvili/libarchivejs"
+  }
+}
