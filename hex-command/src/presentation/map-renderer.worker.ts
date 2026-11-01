@@ -1,10 +1,14 @@
 import { paintTerrainTiles, terrainMapDimensions } from "./terrain-painter";
-import { paintLights, shadePixels } from "./battlefield-lighting";
+import { daylight, lightingKey, paintLights } from "./battlefield-lighting";
+import { MapLightingGpu } from "./map-lighting-gpu";
 import { paintFog } from "./battlefield-fog";
 import type { MapFrameRequest, MapRenderRequest, MapRenderResponse } from "./map-renderer";
 
 let base: OffscreenCanvas | undefined;
 let baseKey: string | undefined;
+let gpu: MapLightingGpu | undefined;
+let lit: OffscreenCanvas | undefined;
+let litKey: string | undefined;
 type RenderJob = MapFrameRequest & { revision: number };
 let scene: Omit<MapFrameRequest, "fog"> | undefined;
 let pending: RenderJob | undefined;
@@ -50,23 +54,38 @@ async function render(request: RenderJob) {
         if (failed?.status === "rejected") throw failed.reason;
         context.scale(plan.pixelScale, plan.pixelScale);
         paintTerrainTiles(context, plan.tiles, images);
-        if (plan.lighting?.time === "night") {
-          const pixels = context.getImageData(0, 0, next.width, next.height);
-          shadePixels(pixels.data, next.width, 0, next.height, plan.pixelScale, plan.lighting);
-          context.putImageData(pixels, 0, 0);
-          paintLights(context, plan.lighting);
-        }
       } finally {
         for (const image of images.values()) image.close();
       }
     }
     base = next;
     baseKey = terrainKey;
+    gpu?.setTerrain(base);
+    litKey = undefined;
+  }
+  const lighting = plan.lighting ?? daylight;
+  const nextLitKey = lightingKey(lighting);
+  if (!lit || litKey !== nextLitKey) {
+    lit = new OffscreenCanvas(dimensions.width, dimensions.height);
+    const context = lit.getContext("2d");
+    if (!context) throw new Error("Map worker requires an OffscreenCanvas 2D context");
+    if (lighting.time === "night") {
+      if (!gpu) {
+        gpu = new MapLightingGpu();
+        gpu.setTerrain(base);
+      }
+      context.drawImage(gpu.render(lighting, plan.pixelScale), 0, 0);
+    } else {
+      context.drawImage(base, 0, 0);
+    }
+    context.scale(plan.pixelScale, plan.pixelScale);
+    paintLights(context, lighting);
+    litKey = nextLitKey;
   }
   const output = new OffscreenCanvas(dimensions.width, dimensions.height);
   const context = output.getContext("2d");
   if (!context) throw new Error("Map worker requires an OffscreenCanvas 2D context");
-  context.drawImage(base, 0, 0);
+  context.drawImage(lit, 0, 0);
   context.scale(plan.pixelScale, plan.pixelScale);
   paintFog(
     context,
@@ -87,7 +106,12 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
     } satisfies MapRenderResponse);
     return;
   }
-  pending = { ...scene, revision: event.data.revision, fog: event.data.fog };
+  pending = {
+    ...scene,
+    plan: { ...scene.plan, lighting: event.data.lighting },
+    revision: event.data.revision,
+    fog: event.data.fog,
+  };
   if (!running) void drain();
 };
 async function drain() {

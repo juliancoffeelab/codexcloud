@@ -8,7 +8,7 @@
   import { BattlefieldViewCache } from "./battlefield-view";
   import { battlefieldSpriteSize, mapDimensions } from "./geometry";
   import { TerrainViewCache, terrainAssetKey } from "../presentation/terrain-map";
-  import { lightingKey, lightingMatrix } from "../presentation/battlefield-lighting";
+  import { lightingMatrix } from "../presentation/battlefield-lighting";
   import { MapRenderer, type MapFrameRequest } from "../presentation/map-renderer";
   import terrainSprites from "virtual:terrain-prebuilt";
 
@@ -43,9 +43,7 @@
   const lighting = $derived(game.presentation.lighting);
   const fogTiles = $derived(game.presentation.fog);
   const fogSet = $derived(new Set(fogTiles));
-  const terrainKey = $derived(
-    JSON.stringify([...JSON.parse(terrainScene.key).slice(0, 4), lightingKey(lighting)]),
-  );
+  const terrainKey = $derived(terrainScene.key);
   // Artwork metadata is part of scene identity, including anchors and drawing depth.
   const renderTerrainKey = $derived(
     JSON.stringify([terrainKey, [...terrainScene.tiles.values()].map((tile) => tile.terrainFrame)]),

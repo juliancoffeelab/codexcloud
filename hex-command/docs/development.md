@@ -190,14 +190,17 @@ ImageBitmapRenderingContext.transferFromImageBitmap. Units, items, health,
 selection and interaction remain independent overlays; live sprite tinting does
 not repaint the map.
 
-Production prebuilds terrain PNGs with authored lighting and lantern fixtures.
-The worker can load an exact matching PNG as its terrain input. Changed/custom
-maps use the same worker to draw tile frames and apply lighting. Both paths then
-compose fog into the finished background. The worker retains only the latest
-terrain base, reusing it when only fog changes. Selection and ordinary moves
-with unchanged terrain, lighting and fog request no new background.
+Production prebuilds unlit terrain PNGs, independent of light state. Changed/custom
+maps draw complete tile frames into the same unlit base. A persistent WebGL 2
+texture holds that base; a fragment shader applies the shared night color
+transform using a small floating-point light table. Lighting changes do not
+reload images, repaint terrain, or read pixels back to the CPU. Lantern fixtures
+and fog are composed in the worker before transferring the finished background.
+Only the latest terrain base and lit result are retained; fog-only changes reuse
+the lit result. Selection and ordinary moves with unchanged terrain, lighting
+and fog request no new background.
 
-Workers, OffscreenCanvas, createImageBitmap and bitmaprenderer are required
+Workers, OffscreenCanvas, WebGL 2, createImageBitmap and bitmaprenderer are required
 browser capabilities. There is no main-thread map painting, separate fog canvas,
 SVG terrain substitute or compatibility renderer. Worker/script/image failures
 show a diagnostic with a retry button. The previous completed background stays

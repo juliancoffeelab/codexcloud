@@ -1,3 +1,4 @@
+import { lightingKey, daylight } from "./battlefield-lighting";
 import type { TerrainMapPlan, TerrainMapSprite } from "./terrain-map";
 
 export interface MapFrameRequest {
@@ -9,6 +10,7 @@ export interface MapFrameRequest {
 export interface MapRenderRequest {
   revision: number;
   fog: readonly string[];
+  lighting: TerrainMapPlan["lighting"];
   scene?: Omit<MapFrameRequest, "fog">;
 }
 export type MapRenderResponse =
@@ -68,7 +70,11 @@ export class MapRenderer {
   }
 
   update(frame: MapFrameRequest) {
-    const key = JSON.stringify([frame.terrainKey, frame.fog]);
+    const key = JSON.stringify([
+      frame.terrainKey,
+      lightingKey(frame.plan.lighting ?? daylight),
+      frame.fog,
+    ]);
     if (key === this.key) return;
     this.key = key;
     const absolute = (url: string) => new URL(url, document.baseURI).href;
@@ -92,6 +98,7 @@ export class MapRenderer {
     this.worker.postMessage({
       revision: ++this.revision,
       fog: frame.fog,
+      lighting: frame.plan.lighting,
       scene,
     } satisfies MapRenderRequest);
     this.terrainKey = frame.terrainKey;

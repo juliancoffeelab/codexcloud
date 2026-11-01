@@ -12,12 +12,9 @@ export function preloadTerrainMap(mapId: string): void {
   const map = MAPS[mapId as keyof typeof MAPS];
   if (!map) return;
   const tiles = map.terrain as readonly TileView[];
-  const lighting = map.presentation.lighting;
   const sprite =
     terrainSprites[
-      terrainAssetKey(
-        terrainMapKey({ mapId: map.id, cols: map.cols, rows: map.rows, tiles }, lighting),
-      )
+      terrainAssetKey(terrainMapKey({ mapId: map.id, cols: map.cols, rows: map.rows, tiles }))
     ];
   if (!sprite || pending?.url === sprite.url) return;
   const image = new Image();
