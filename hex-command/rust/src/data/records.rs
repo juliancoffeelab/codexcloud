@@ -16,6 +16,8 @@ pub enum ActionRecord {
     Move {
         unit: String,
         tile: String,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        path: Vec<String>,
     },
     Attack {
         unit: String,

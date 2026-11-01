@@ -94,3 +94,11 @@ Provider turns include zero-benefit opportunities. Distinguish actual healing
 from adjacency, and effective thorn damage from overkill. Damage shares credit
 aura reflection to the defender; support and battlefield-value exports credit
 the aura provider. Use the same definition when comparing units or reports.
+
+## Recorded movement paths
+
+Move actions may include `path`: the actual traversed hex IDs, including origin
+and destination, resolved by the engine for fog/proximity-sensitive movement.
+An omitted path means it was not recorded; it does not mean the unit stayed put.
+Use recorded paths for movement overlays rather than drawing straight lines
+between move endpoints through terrain the unit did not traverse.

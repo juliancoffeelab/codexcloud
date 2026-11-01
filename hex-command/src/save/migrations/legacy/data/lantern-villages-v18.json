@@ -1,0 +1,143 @@
+[
+  {
+    "id": "7,1",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "11,1",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "15,1",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "18,1",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "5,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "6,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "8,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "9,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "10,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "11,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "12,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "13,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "15,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "16,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "17,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "18,2",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "5,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "6,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "8,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "9,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "13,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "14,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "15,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "16,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "17,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "18,3",
+    "terrain": "hill",
+    "floor": "green-plain"
+  },
+  {
+    "id": "16,4",
+    "terrain": "road",
+    "floor": "green-plain",
+    "connections": ["e", "w"]
+  },
+  {
+    "id": "15,7",
+    "terrain": "keep",
+    "floor": "green-plain"
+  }
+]

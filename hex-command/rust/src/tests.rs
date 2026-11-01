@@ -99,6 +99,7 @@ fn invalid_commands_are_atomic_and_records_remain_owned() {
     assert_eq!(err, CommandError::UnknownUnit(UnitId(u32::MAX)));
     assert_eq!(serde_json::to_value(game.state()).unwrap(), before);
     game.action(ActionRecord::Move {
+        path: vec![],
         unit: "u1".into(),
         tile: "4,4".into(),
     });

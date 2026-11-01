@@ -46,8 +46,8 @@
       {
         "type": "necromancer",
         "side": "enemy",
-        "col": 16,
-        "row": 4,
+        "col": 15,
+        "row": 7,
         "name": "The Tollkeeper",
         "role": "leader",
         "aiGroup": "tollkeeper"

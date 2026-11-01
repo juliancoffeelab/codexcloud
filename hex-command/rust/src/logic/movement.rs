@@ -378,8 +378,17 @@ impl<'catalog> Game<'catalog> {
             },
         );
         self.remember_conditions();
-        self.traversal = None;
+        let path = self
+            .traversal
+            .take()
+            .map(|(_, path)| {
+                path.into_iter()
+                    .map(|site| self.board.ids[site].clone())
+                    .collect()
+            })
+            .unwrap_or_default();
         self.action(ActionRecord::Move {
+            path,
             unit: format!("u{id}"),
             tile: self.board.ids[tile].clone(),
         });

@@ -180,3 +180,11 @@ Gate cells become ordinary castle courtyards with their existing wall directions
 the former gate edge stays open. All castle cells lose the obsolete gates array.
 Ownership, fog, units, equipment, turns, victory and other battle progress remain
 unchanged. The conversion uses only frozen version-seventeen field contracts.
+
+## Version-eighteen migration
+
+The v18-to-v19 step installs the northern hills and relocated Tollkeeper keep in
+revision-four Villages saves, using a frozen tile delta. It advances that map to
+revision five and preserves unit positions, health, equipment, gold, turns,
+completed events and outcomes. Keep ownership transfers from the former keep,
+unless a unit already occupies the new keep. Other maps pass through unchanged.
