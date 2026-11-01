@@ -34,7 +34,8 @@
     "wasm:build:release": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --profile wasm-release --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm && node --import tsx scripts/optimize-wasm.ts rust/pkg/hex_command_bg.wasm",
     "check:wasm": "npm run wasm:build && tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler rust/pkg/hex_command.d.ts",
     "toolchain:setup": "node --import tsx .agents/skills/rust-toolchain/scripts/setup-toolchain-shell.ts",
-    "release:prepare": "python3 scripts/prepare-site.py"
+    "release:prepare": "python3 scripts/prepare-site.py",
+    "map:benchmark": "node --import tsx scripts/benchmark-map-renderer.ts"
   },
   "dependencies": {
     "svelte": "^5.0.0"
