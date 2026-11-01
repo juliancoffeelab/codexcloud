@@ -1,8 +1,10 @@
+pub(in crate::ai) mod escort;
 use crate::ai::TacticalRole;
 use crate::ai::objectives::actor_matches;
 use crate::ai::orders::target as objective;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
 use crate::ai::roles::role;
+use crate::ai::{advance_command, intent_command, move_command};
 use crate::{
     ai::context::BattleView,
     ai::objectives::{TileOrder, individual},
@@ -100,7 +102,7 @@ impl BattleView<'_, '_> {
     pub(in crate::ai) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
         orders: &crate::ai::orders::TacticalOrders,
-        escort: &crate::ai::escort::Workspace,
+        escort: &crate::ai::search_escort::Workspace,
         seed: u32,
         prepared_goals: Option<&[Objective]>,
         routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
@@ -126,7 +128,7 @@ impl BattleView<'_, '_> {
         } else {
             Cow::Owned(orders.targets.clone())
         };
-        let escort_lanes = orders.clearing(self, false);
+        let escort_lanes = orders.clearing(self);
         let rebuilds: HashMap<_, _> = self
             .units()
             .iter()
@@ -1007,7 +1009,7 @@ mod tests {
                                 ),
                             )
                             .tactics,
-                        &crate::ai::escort::Workspace::default(),
+                        &crate::ai::search_escort::Workspace::default(),
                         7,
                         None,
                         &mut left_routes,
@@ -1029,7 +1031,7 @@ mod tests {
                                     ),
                                 )
                                 .tactics,
-                            &crate::ai::escort::Workspace::default(),
+                            &crate::ai::search_escort::Workspace::default(),
                             7,
                             None,
                             &mut right_routes,
@@ -1089,4 +1091,109 @@ mod tests {
             }
         }
     }
+}
+
+pub(super) fn prepare(game: &BattleView<'_, '_>, workspace: &mut crate::ai::PlanningWorkspace) {
+    workspace.search_escort.prepare(
+        game,
+        &workspace.report,
+        &workspace.orders.as_ref().unwrap().tactics,
+    );
+}
+
+pub(super) fn choose(
+    game: &BattleView<'_, '_>,
+    workspace: &mut crate::ai::PlanningWorkspace,
+    queued: bool,
+) -> Result<(), CommandError> {
+    let orders = &workspace.orders.as_ref().expect("campaign orders").tactics;
+    let remaining = workspace.tactical_remaining.get_or_insert_with(|| {
+        game.units()
+            .iter()
+            .filter(|u| game.belongs_to_phase(u, game.turn()) && game.can_act(u.id))
+            .count()
+            * 3
+    });
+    if !queued {
+        if *remaining == 0 {
+            workspace.finished = true;
+            return Ok(());
+        }
+        *remaining -= 1;
+    }
+    let mut intents = Vec::new();
+    if workspace.prepared_goals.is_none() {
+        workspace.prepared_goals = workspace.orders.as_ref().map(|orders| {
+            individual(
+                orders
+                    .tactics
+                    .targets
+                    .iter()
+                    .filter(|target| !target.id.starts_with("rebuild:"))
+                    .cloned()
+                    .collect(),
+            )
+        });
+    }
+    let plan = if queued {
+        crate::ai::priority::next_plan(game, workspace, &mut intents)
+    } else {
+        game.best_plan::<true, false>(
+            orders,
+            &workspace.search_escort,
+            workspace.seed,
+            workspace.prepared_goals.as_deref(),
+            &mut workspace.routes,
+            &mut workspace.commitments,
+            &mut intents,
+            &mut workspace.threats,
+            None,
+        )
+    };
+    for (id, intent) in &intents {
+        let actor = game.unit(*id).unwrap();
+        workspace.commands.push_back(intent_command(
+            actor,
+            actor.retreating,
+            *intent,
+            actor.attacked,
+        ));
+    }
+    if let Some(plan) = plan {
+        let actor = game.unit(plan.unit).unwrap();
+        let rebuilding = intents
+            .iter()
+            .find(|(id, _)| *id == plan.unit)
+            .map_or(actor.rebuilding, |(_, intent)| *intent);
+        if let Some(kind) = plan.advance {
+            workspace
+                .commands
+                .push_back(advance_command(game, plan.unit, kind));
+        } else {
+            if actor.tile != plan.tile {
+                workspace
+                    .commands
+                    .push_back(move_command(game, plan.unit, plan.tile));
+                let retreating = plan.withdrawing.then_some(true);
+                if actor.retreating != retreating {
+                    workspace.commands.push_back(intent_command(
+                        actor,
+                        retreating,
+                        rebuilding,
+                        actor.attacked,
+                    ));
+                }
+            }
+            if let (Some(target), Some(weapon)) = (plan.target, plan.weapon) {
+                workspace.attack_continuation = Some((
+                    UnitId(plan.unit),
+                    UnitId(target),
+                    WeaponId(game.weapon(actor, weapon).id.clone()),
+                ));
+            }
+        }
+    } else {
+        workspace.finished = true;
+    }
+    Ok(())
 }

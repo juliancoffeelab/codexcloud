@@ -1,4 +1,6 @@
+pub(in crate::ai) mod escort;
 use crate::ai::Recorder;
+use crate::ai::intent_command;
 use crate::ai::objectives::actor_matches;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
 use crate::{
@@ -7,7 +9,7 @@ use crate::{
     ai::planner::safety::Threats,
     data::*,
 };
-use rustc_hash::FxHashSet as HashSet;
+use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Retreat {
     Idle,
@@ -32,7 +34,7 @@ pub(in crate::ai) struct ClassicRules<'game, 'catalog> {
     minimum: i32,
     holding: bool,
     orders: &'game crate::ai::orders::TacticalOrders,
-    escort: &'game crate::ai::escort::Workspace,
+    escort: &'game escort::Workspace,
 }
 impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
     pub fn new(
@@ -41,7 +43,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         goals: &[Objective],
         _restrained: bool,
         orders: &'game crate::ai::orders::TacticalOrders,
-        escort: &'game crate::ai::escort::Workspace,
+        escort: &'game escort::Workspace,
     ) -> Self {
         let important = orders.important(g, u);
         let mut threats = important.then(|| Threats::protected(g, u.side, orders));
@@ -55,7 +57,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         } else {
             0
         };
-        let yielding = orders.clearing(g, true).remove(&u.id).unwrap_or_default();
+        let yielding = orders.classic_clearing(g).remove(&u.id).unwrap_or_default();
         let holding = !yielding.contains(&u.tile)
             && goals.iter().any(|o| {
                 o.hold == Some(true)
@@ -237,7 +239,7 @@ impl BattleView<'_, '_> {
             .filter(|u| self.belongs_to_phase(&u, self.turn()) && self.can_act(u.id))
             .map(|u| u.id)
             .collect();
-        let clearing = self.actor_lanes(objectives, true);
+        let clearing = self.classic_lanes(objectives);
         let order = |u: &Unit| {
             if u.is_leader() {
                 return ClassicOrder::Leader;
@@ -618,7 +620,7 @@ impl BattleDraft<'_, '_> {
         id: u32,
         objectives: &[Objective],
         orders: &crate::ai::orders::TacticalOrders,
-        escort: &crate::ai::escort::Workspace,
+        escort: &escort::Workspace,
         restrained: bool,
         recorder: &mut Recorder,
     ) {
@@ -674,7 +676,7 @@ impl BattleDraft<'_, '_> {
         });
         let best = eligible.first().copied();
         let reserved = self.reserved(&u, objectives);
-        let clearing = orders.clearing(self, true).remove(&u.id);
+        let clearing = orders.classic_clearing(self).remove(&u.id);
         let yielding = clearing.is_some();
         let movement = if let Some(lane) = clearing {
             let available: Vec<_> = self
@@ -717,5 +719,225 @@ impl super::Planner for Classic {
         orders: &crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, crate::data::CommandError> {
         super::drive(super::PlannerKind::Classic, context, orders)
+    }
+}
+
+pub(super) fn prepare(game: &BattleView<'_, '_>, workspace: &mut crate::ai::PlanningWorkspace) {
+    workspace.classic_escort.prepare(game, &workspace.report);
+}
+
+pub(super) fn choose(
+    game: &BattleView<'_, '_>,
+    workspace: &mut crate::ai::PlanningWorkspace,
+) -> Result<(), CommandError> {
+    let orders = &workspace.orders.as_ref().expect("campaign orders").tactics;
+    let restrained = orders.restrained;
+    if workspace.classic_revision != workspace.cooperation.revision
+        && workspace.tactical_remaining.is_some()
+    {
+        workspace.classic_objectives = orders
+            .targets
+            .iter()
+            .filter(|g| !g.id.starts_with("rebuild:"))
+            .cloned()
+            .collect();
+        workspace
+            .classic_objectives
+            .extend(orders.rebuild_objectives(game));
+        workspace.classic_revision = workspace.cooperation.revision;
+    }
+    if workspace.tactical_remaining.is_none() {
+        workspace.classic_objectives = orders
+            .targets
+            .iter()
+            .filter(|g| !g.id.starts_with("rebuild:"))
+            .cloned()
+            .collect();
+        workspace
+            .classic_objectives
+            .extend(orders.rebuild_objectives(game));
+        workspace.classic_revision = workspace.cooperation.revision;
+        if workspace.goals.is_none() && (!orders.campaign || game.turn() == Side::Enemy) {
+            workspace
+                .classic_objectives
+                .retain(|g| g.id.starts_with("rebuild:") || g.id.starts_with("group:"));
+        }
+        workspace.classic_ids = game.classic_order(&workspace.classic_objectives).into();
+        workspace
+            .classic_ids
+            .make_contiguous()
+            .sort_by_key(|id| workspace.classic_escort.bound(*id) == 0.0);
+        workspace.tactical_remaining = Some(workspace.classic_ids.len());
+        for unit in game.units().iter().filter(|u| {
+            game.belongs_to_phase(u, game.turn()) && game.can_act(u.id) && u.is_leader()
+        }) {
+            let required = orders.moving_actor(unit.id);
+            let (_, intent) = orders.rebuild_plan(game, unit.id, required);
+            if unit.rebuilding != intent {
+                workspace.commands.push_back(intent_command(
+                    unit,
+                    unit.retreating,
+                    intent,
+                    unit.attacked,
+                ));
+            }
+        }
+        if !workspace.commands.is_empty() {
+            return Ok(());
+        }
+    }
+    if let Some(id) = workspace.classic_ids.pop_front() {
+        let mut virtual_game = game.fork();
+        let mut recorder = Recorder::new(game);
+        virtual_game.classic_choose(
+            game,
+            id,
+            &workspace.classic_objectives,
+            orders,
+            &workspace.classic_escort,
+            restrained,
+            &mut recorder,
+        );
+        recorder.flush_intents(&virtual_game);
+        if let Some(error) = recorder.error {
+            return Err(error);
+        }
+        workspace.commands.extend(recorder.commands);
+    } else {
+        workspace.finished = true;
+    }
+    Ok(())
+}
+
+impl BattleView<'_, '_> {
+    fn classic_lanes(&self, goals: &[Objective]) -> HashMap<u32, HashSet<usize>> {
+        let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::default();
+        fn required_corridor(goal: &Objective) -> bool {
+            match goal.kind {
+                ObjectiveKind::Visit | ObjectiveKind::Capture => {
+                    goal.id.starts_with("required:") && goal.hold != Some(true)
+                }
+                ObjectiveKind::Defeat => false,
+            }
+        }
+        let assigned = goals.iter().any(crate::ai::objectives::actor_route);
+        for goal in goals
+            .iter()
+            .filter(|g| crate::ai::objectives::actor_route(g) || !assigned && required_corridor(g))
+        {
+            let Some(actor) = self
+                .units()
+                .iter()
+                .filter(|u| {
+                    self.belongs_to_phase(u, self.turn())
+                        && (goal.actor.is_some()
+                            || goal.family.is_some()
+                            || !u.is_leader() && u.role != Some(Role::Courier))
+                        && if goal.actor.is_some() {
+                            actor_matches(&goal.actor, u.id)
+                        } else {
+                            self.can_pursue(u, goal)
+                        }
+                })
+                .min_by_key(|u| {
+                    let targets: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
+                    self.routes(u.kind, &targets)[u.tile]
+                })
+            else {
+                continue;
+            };
+            let targets: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
+            if targets.contains(&actor.tile) {
+                continue;
+            }
+            let mut penalty = 2;
+            let mut route = self.occupied_routes(actor, &targets, true);
+            let available = if actor.moved {
+                0
+            } else {
+                self.rules().units[actor.kind].r#move as u16
+            };
+            if route[actor.tile] > available {
+                let short = self.occupied_routes_with_penalty(actor, &targets, Some(0));
+                let arrival_cost = targets
+                    .iter()
+                    .map(|&tile| self.cost(actor.kind, tile))
+                    .min()
+                    .unwrap_or(0);
+                if short[actor.tile] <= available.saturating_add(arrival_cost) {
+                    route = short;
+                    penalty = 0;
+                }
+            }
+            if route[actor.tile] == u16::MAX {
+                continue;
+            }
+            // Equal route values are valid on zero-cost terrain. Search admissible
+            // edges with visited parents, rather than requiring strict descent.
+            let mut parents = vec![usize::MAX; self.terrain().len()];
+            parents[actor.tile] = actor.tile;
+            let mut pending = std::collections::VecDeque::from([actor.tile]);
+            let mut endpoint = None;
+            while let Some(current) = pending.pop_front() {
+                if targets.contains(&current) {
+                    endpoint = Some(current);
+                    break;
+                }
+                let mut next: Vec<_> =
+                    self.board().adjacent[current]
+                        .iter()
+                        .copied()
+                        .filter(|&tile| {
+                            if parents[tile] != usize::MAX || route[tile] == u16::MAX {
+                                return false;
+                            }
+                            let occupied = self
+                                .at(tile)
+                                .is_some_and(|u| u.id != actor.id && self.allied(actor, u));
+                            let entering = self
+                                .cost(actor.kind, tile)
+                                .saturating_add(if occupied { penalty } else { 0 });
+                            route[tile].saturating_add(entering) <= route[current]
+                        })
+                        .collect();
+                next.sort_by_key(|&tile| route[tile].saturating_add(self.cost(actor.kind, tile)));
+                for tile in next {
+                    parents[tile] = current;
+                    pending.push_back(tile);
+                }
+            }
+            let Some(mut current) = endpoint else {
+                continue;
+            };
+            let mut path = vec![current];
+            while current != actor.tile {
+                current = parents[current];
+                path.push(current);
+            }
+            path.reverse();
+            let mut spent = 0;
+            for &tile in path.iter().skip(1) {
+                spent += self.cost(actor.kind, tile) as usize;
+                if spent > self.rules().units[actor.kind].r#move {
+                    break;
+                }
+                if let Some(blocker) = self
+                    .at(tile)
+                    .filter(|u| self.allied(actor, u) && u.id != actor.id)
+                {
+                    lanes
+                        .entry(blocker.id)
+                        .or_default()
+                        .extend(path.iter().copied());
+                }
+            }
+        }
+        lanes
+    }
+}
+
+impl crate::ai::orders::TacticalOrders {
+    fn classic_clearing(&self, game: &BattleView<'_, '_>) -> HashMap<u32, HashSet<usize>> {
+        game.classic_lanes(&self.passage_targets())
     }
 }

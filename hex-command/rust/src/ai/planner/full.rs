@@ -10,3 +10,17 @@ impl super::Planner for Full {
         super::drive(super::PlannerKind::Full, context, orders)
     }
 }
+
+pub(super) fn prepare(
+    game: &crate::ai::context::BattleView<'_, '_>,
+    workspace: &mut crate::ai::PlanningWorkspace,
+) {
+    super::search::prepare(game, workspace);
+}
+
+pub(super) fn choose(
+    game: &crate::ai::context::BattleView<'_, '_>,
+    workspace: &mut crate::ai::PlanningWorkspace,
+) -> Result<(), crate::data::CommandError> {
+    super::search::choose(game, workspace, false)
+}

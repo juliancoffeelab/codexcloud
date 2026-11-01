@@ -6,11 +6,12 @@ pub mod context;
 mod presets;
 pub(crate) mod tactic;
 use planner::{
-    assignments as cooperation, candidates as cheap, escort, queued as priority, search as tactics,
+    assignments as cooperation, candidates as cheap, queued as priority, search as tactics,
 };
 pub mod objectives;
 pub mod orders;
 pub mod planner;
+use planner::search::escort as search_escort;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod profiling;
 pub mod recruiter;
@@ -149,7 +150,8 @@ pub struct PlanningWorkspace {
     #[cfg(any(feature = "wasm", test))]
     turn_plan_ready: bool,
     cooperation: cooperation::Workspace,
-    escort: escort::Workspace,
+    classic_escort: planner::classic::escort::Workspace,
+    search_escort: search_escort::Workspace,
 }
 impl PlanningWorkspace {
     /// Start a policy phase with its seed, recruitment budget and objectives.
@@ -174,7 +176,8 @@ impl PlanningWorkspace {
             #[cfg(any(feature = "wasm", test))]
             turn_plan_ready: false,
             cooperation: cooperation::Workspace::default(),
-            escort: escort::Workspace::default(),
+            classic_escort: planner::classic::escort::Workspace::default(),
+            search_escort: search_escort::Workspace::default(),
             seed,
             recruitment_remaining: recruitment_limit.into(),
             goals,
@@ -223,7 +226,8 @@ impl PlanningWorkspace {
         self.tactical_remaining = None;
         self.commitments.clear();
         self.cooperation = cooperation::Workspace::default();
-        self.escort = escort::Workspace::default();
+        self.classic_escort = planner::classic::escort::Workspace::default();
+        self.search_escort = search_escort::Workspace::default();
         self.cheap = cheap::Workspace::default();
         self.threats = threats::ArenaThreatWorkspace::default();
         self.finished = false;

@@ -252,8 +252,11 @@ impl TacticalOrders {
     pub(crate) fn clearing(
         &self,
         game: &BattleView<'_, '_>,
-        include_unassigned: bool,
     ) -> rustc_hash::FxHashMap<u32, rustc_hash::FxHashSet<usize>> {
+        game.actor_lanes(&self.passage_targets())
+    }
+    /// Complete the explicit passage contract without choosing planner heuristics.
+    pub(crate) fn passage_targets(&self) -> std::borrow::Cow<'_, [Target]> {
         fn passage(order: &ObjectiveOrder) -> Option<(UnitId, &TileId)> {
             match &order.objective {
                 TacticalObjective::ClearPassage { actor, destination } => {
@@ -276,7 +279,7 @@ impl TacticalOrders {
             })
             .collect();
         if missing.is_empty() {
-            return game.actor_lanes(&self.targets, include_unassigned);
+            return std::borrow::Cow::Borrowed(&self.targets);
         }
         let mut goals = self.targets.clone();
         for (actor, destination) in missing {
@@ -289,7 +292,7 @@ impl TacticalOrders {
             goal.actor = Some(format!("u{}", actor.0));
             goals.push(goal.into());
         }
-        game.actor_lanes(&goals, include_unassigned)
+        std::borrow::Cow::Owned(goals)
     }
     pub(crate) fn rebuild_plan(
         &self,

@@ -1,9 +1,5 @@
 //! Tactical dispatch and search styles, independent of recruitment choices.
-use super::{
-    PlanningWorkspace, Recorder, advance_command, intent_command, move_command,
-    objectives::{self},
-    priority,
-};
+use super::PlanningWorkspace;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -112,189 +108,20 @@ impl PlannerKind {
         game: &BattleView<'_, '_>,
         workspace: &mut PlanningWorkspace,
     ) -> Result<(), CommandError> {
-        let planner = self;
         super::cooperation::assign(game, workspace);
         super::cooperation::refresh_assignments(game, workspace);
-        workspace.escort.prepare(
-            game,
-            &workspace.report,
-            &workspace.orders.as_ref().unwrap().tactics,
-        );
+        match self {
+            Self::Classic => classic::prepare(game, workspace),
+            Self::Full => full::prepare(game, workspace),
+            Self::Queued => queued::prepare(game, workspace),
+        }
         if super::cooperation::rescue(game, workspace)? {
             return Ok(());
         }
-        let orders = &workspace.orders.as_ref().expect("campaign orders").tactics;
-        let restrained = orders.restrained;
-        fn classic(planner: PlannerKind) -> bool {
-            match planner {
-                PlannerKind::Classic => true,
-                PlannerKind::Full | PlannerKind::Queued => false,
-            }
-        }
-        if classic(planner) {
-            if workspace.classic_revision != workspace.cooperation.revision
-                && workspace.tactical_remaining.is_some()
-            {
-                workspace.classic_objectives = orders
-                    .targets
-                    .iter()
-                    .filter(|g| !g.id.starts_with("rebuild:"))
-                    .cloned()
-                    .collect();
-                workspace
-                    .classic_objectives
-                    .extend(orders.rebuild_objectives(game));
-                workspace.classic_revision = workspace.cooperation.revision;
-            }
-            if workspace.tactical_remaining.is_none() {
-                workspace.classic_objectives = orders
-                    .targets
-                    .iter()
-                    .filter(|g| !g.id.starts_with("rebuild:"))
-                    .cloned()
-                    .collect();
-                workspace
-                    .classic_objectives
-                    .extend(orders.rebuild_objectives(game));
-                workspace.classic_revision = workspace.cooperation.revision;
-                if workspace.goals.is_none() && (!orders.campaign || game.turn() == Side::Enemy) {
-                    workspace
-                        .classic_objectives
-                        .retain(|g| g.id.starts_with("rebuild:") || g.id.starts_with("group:"));
-                }
-                workspace.classic_ids = game.classic_order(&workspace.classic_objectives).into();
-                workspace
-                    .classic_ids
-                    .make_contiguous()
-                    .sort_by_key(|id| workspace.escort.bound(*id) == 0.0);
-                workspace.tactical_remaining = Some(workspace.classic_ids.len());
-                for unit in game.units().iter().filter(|u| {
-                    game.belongs_to_phase(u, game.turn()) && game.can_act(u.id) && u.is_leader()
-                }) {
-                    let required = orders.moving_actor(unit.id);
-                    let (_, intent) = orders.rebuild_plan(game, unit.id, required);
-                    if unit.rebuilding != intent {
-                        workspace.commands.push_back(intent_command(
-                            unit,
-                            unit.retreating,
-                            intent,
-                            unit.attacked,
-                        ));
-                    }
-                }
-                if !workspace.commands.is_empty() {
-                    return Ok(());
-                }
-            }
-            if let Some(id) = workspace.classic_ids.pop_front() {
-                let mut virtual_game = game.fork();
-                let mut recorder = Recorder::new(game);
-                virtual_game.classic_choose(
-                    game,
-                    id,
-                    &workspace.classic_objectives,
-                    orders,
-                    &workspace.escort,
-                    restrained,
-                    &mut recorder,
-                );
-                recorder.flush_intents(&virtual_game);
-                if let Some(error) = recorder.error {
-                    return Err(error);
-                }
-                workspace.commands.extend(recorder.commands);
-            } else {
-                workspace.finished = true;
-            }
-        } else {
-            let remaining = workspace.tactical_remaining.get_or_insert_with(|| {
-                game.units()
-                    .iter()
-                    .filter(|u| game.belongs_to_phase(u, game.turn()) && game.can_act(u.id))
-                    .count()
-                    * 3
-            });
-            if !planner.queued() {
-                if *remaining == 0 {
-                    workspace.finished = true;
-                    return Ok(());
-                }
-                *remaining -= 1;
-            }
-            let mut intents = Vec::new();
-            if workspace.prepared_goals.is_none() {
-                workspace.prepared_goals = workspace.orders.as_ref().map(|orders| {
-                    objectives::individual(
-                        orders
-                            .tactics
-                            .targets
-                            .iter()
-                            .filter(|target| !target.id.starts_with("rebuild:"))
-                            .cloned()
-                            .collect(),
-                    )
-                });
-            }
-            let plan = if planner.queued() {
-                priority::next_plan(game, workspace, &mut intents)
-            } else {
-                game.best_plan::<true, false>(
-                    orders,
-                    &workspace.escort,
-                    workspace.seed,
-                    workspace.prepared_goals.as_deref(),
-                    &mut workspace.routes,
-                    &mut workspace.commitments,
-                    &mut intents,
-                    &mut workspace.threats,
-                    None,
-                )
-            };
-            for (id, intent) in &intents {
-                let actor = game.unit(*id).unwrap();
-                workspace.commands.push_back(intent_command(
-                    actor,
-                    actor.retreating,
-                    *intent,
-                    actor.attacked,
-                ));
-            }
-            if let Some(plan) = plan {
-                let actor = game.unit(plan.unit).unwrap();
-                let rebuilding = intents
-                    .iter()
-                    .find(|(id, _)| *id == plan.unit)
-                    .map_or(actor.rebuilding, |(_, intent)| *intent);
-                if let Some(kind) = plan.advance {
-                    workspace
-                        .commands
-                        .push_back(advance_command(game, plan.unit, kind));
-                } else {
-                    if actor.tile != plan.tile {
-                        workspace
-                            .commands
-                            .push_back(move_command(game, plan.unit, plan.tile));
-                        let retreating = plan.withdrawing.then_some(true);
-                        if actor.retreating != retreating {
-                            workspace.commands.push_back(intent_command(
-                                actor,
-                                retreating,
-                                rebuilding,
-                                actor.attacked,
-                            ));
-                        }
-                    }
-                    if let (Some(target), Some(weapon)) = (plan.target, plan.weapon) {
-                        workspace.attack_continuation = Some((
-                            UnitId(plan.unit),
-                            UnitId(target),
-                            WeaponId(game.weapon(actor, weapon).id.clone()),
-                        ));
-                    }
-                }
-            } else {
-                workspace.finished = true;
-            }
+        match self {
+            Self::Classic => classic::choose(game, workspace)?,
+            Self::Full => full::choose(game, workspace)?,
+            Self::Queued => queued::choose(game, workspace)?,
         }
         if workspace.finished {
             super::cooperation::fallback(game, workspace)?;
@@ -307,7 +134,6 @@ impl PlannerKind {
 pub(in crate::ai) mod assignments;
 pub(in crate::ai) mod candidates;
 pub(in crate::ai) mod classic;
-pub(in crate::ai) mod escort;
 mod full;
 pub(in crate::ai) mod queued;
 pub(in crate::ai) mod safety;

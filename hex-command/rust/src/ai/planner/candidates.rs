@@ -175,7 +175,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
             .iter()
             .map(|u| (u.id, u.tile, u.retreating))
             .collect();
-        cache.clearing = orders.clearing(game, false);
+        cache.clearing = orders.clearing(game);
         cache.lanes = orders.lanes(game);
     }
 }
@@ -507,7 +507,7 @@ pub(in crate::ai) fn plan(
         if category != TacticalRole::Frontline && has_screens && proximity <= 4 {
             value += if proximity > front { 2.0 } else { -3.0 };
         }
-        value += support[tile] + workspace.escort.position(id, tile);
+        value += support[tile] + workspace.search_escort.position(id, tile);
         value
     };
     let mut destinations = vec![unit.tile];
@@ -596,7 +596,9 @@ pub(in crate::ai) fn plan(
                 + kill_chance * (12.0 + game.rules().units[target.kind].cost as f64 * 0.3)
                 - retaliation as f64 * 1.8
                 + drained as f64 * 2.0
-                + workspace.escort.attack(id, target, damage, kill_chance);
+                + workspace
+                    .search_escort
+                    .attack(id, target, damage, kill_chance);
             if orders.important(game, target) {
                 combat += 4.0 + 14.0 * kill_chance;
             }
@@ -965,8 +967,7 @@ mod tests {
                 );
                 assert_eq!(
                     workspace.cheap.clearing,
-                    crate::ai::context::BattleView::new(&game)
-                        .actor_lanes(&workspace.cheap.goals, false)
+                    crate::ai::context::BattleView::new(&game).actor_lanes(&workspace.cheap.goals)
                 );
                 assert_eq!(
                     workspace.cheap.lanes,

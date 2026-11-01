@@ -18,7 +18,7 @@ impl BattleView<'_, '_> {
         &self,
         policy: QueueMode,
         cache: &crate::ai::cheap::Workspace,
-        escort: &crate::ai::escort::Workspace,
+        escort: &crate::ai::search_escort::Workspace,
     ) -> Vec<UnitId> {
         let goals = &cache.goals;
         let clearing = &cache.clearing;
@@ -174,7 +174,7 @@ pub(in crate::ai) fn next_plan(
     };
     if workspace.priority.is_none() {
         workspace.priority = Some(UnitQueue {
-            pending: game.priority_order(policy, &workspace.cheap, &workspace.escort),
+            pending: game.priority_order(policy, &workspace.cheap, &workspace.search_escort),
             cursor: 0,
             retry: vec![],
             second_pass: false,
@@ -198,7 +198,7 @@ fn next_plan_inner(
 ) -> Option<Plan> {
     if queue.known_next_id != game.next_id() {
         let born: Vec<_> = game
-            .priority_order(policy, &workspace.cheap, &workspace.escort)
+            .priority_order(policy, &workspace.cheap, &workspace.search_escort)
             .into_iter()
             .filter(|id| id.0 >= queue.known_next_id)
             .collect();
@@ -208,7 +208,7 @@ fn next_plan_inner(
     }
     if queue.dirty {
         queue.pending = game
-            .priority_order(policy, &workspace.cheap, &workspace.escort)
+            .priority_order(policy, &workspace.cheap, &workspace.search_escort)
             .into_iter()
             .filter(|id| queue.attempts.iter().filter(|tried| *tried == id).count() < 3)
             .collect();
@@ -273,7 +273,7 @@ fn next_plan_inner(
             let mut ignored = vec![];
             plan = game.best_plan::<true, true>(
                 &workspace.orders.as_ref().unwrap().tactics,
-                &workspace.escort,
+                &workspace.search_escort,
                 workspace.seed,
                 workspace.prepared_goals.as_deref(),
                 &mut workspace.routes,
@@ -342,4 +342,18 @@ impl super::Planner for Queued {
     ) -> Result<crate::ai::orders::PlanningReport, crate::data::CommandError> {
         super::drive(super::PlannerKind::Queued, context, orders)
     }
+}
+
+pub(super) fn prepare(
+    game: &crate::ai::context::BattleView<'_, '_>,
+    workspace: &mut crate::ai::PlanningWorkspace,
+) {
+    super::search::prepare(game, workspace);
+}
+
+pub(super) fn choose(
+    game: &crate::ai::context::BattleView<'_, '_>,
+    workspace: &mut crate::ai::PlanningWorkspace,
+) -> Result<(), crate::data::CommandError> {
+    super::search::choose(game, workspace, true)
 }

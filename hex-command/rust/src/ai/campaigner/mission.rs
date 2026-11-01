@@ -429,7 +429,7 @@ impl CampaignBlock {
             .reserved
             .extend(tactics.withdrawal_tiles.iter().cloned());
         let mut lanes: Vec<_> = BattleView::new(game)
-            .actor_lanes(&tactics.targets, false)
+            .actor_lanes(&tactics.targets)
             .into_values()
             .flatten()
             .map(|tile| TileId(game.board.ids[tile].clone()))

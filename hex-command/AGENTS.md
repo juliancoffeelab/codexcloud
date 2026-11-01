@@ -52,6 +52,10 @@
   `palette.json`; this artwork-only flag covers hovering and swimming poses.
   Missing or false means grounded.
 - Keep changes quick to make and review. Tests must be small, fast, and lightweight.
+- Keep Classic's decision flow, escort evaluation, and route-selection heuristics
+  owned by Classic. Queued/Full search heuristics must not be applied to Classic
+  through shared preparation or mode flags. Share mechanical facts and explicit
+  order/command handling rather than implicit heuristic weights.
 - Targeted fixes are almost always wrong. Diagnose the underlying cause and fix
   the general rule or mechanism, rather than patching the observed symptom or
   special-casing the current scenario.
