@@ -163,5 +163,76 @@
     "cost": 1,
     "passable": true,
     "description": "A wooden waymarker beside the road. Normal movement; no protection."
+  },
+  {
+    "id": "castle-wall",
+    "name": "Castle courtyard",
+    "cost": 1,
+    "passable": true,
+    "damageModifiers": {
+      "melee": -1,
+      "ranged": -1
+    },
+    "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment."
+  },
+  {
+    "id": "castle-gate",
+    "name": "Castle gate",
+    "cost": 1,
+    "passable": true,
+    "damageModifiers": {
+      "melee": -1,
+      "ranged": -1
+    },
+    "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment."
+  },
+  {
+    "id": "castle-bell",
+    "name": "Bell keep",
+    "cost": 1,
+    "passable": true,
+    "damageModifiers": {
+      "melee": -1,
+      "ranged": -1
+    },
+    "description": "An enclosed bell-tower courtyard. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment."
+  },
+  {
+    "id": "monastery",
+    "name": "Hill monastery",
+    "cost": 1,
+    "passable": true,
+    "description": "A hilltop sanctuary. Costs 1 movement and shelters against ranged attacks. Scenario rituals use this site.",
+    "damageModifiers": {
+      "ranged": -1
+    }
+  },
+  {
+    "id": "church",
+    "name": "Church",
+    "cost": 1,
+    "passable": true,
+    "description": "A quiet church. Normal movement; no protection. Scenario discoveries may leave equipment here."
+  },
+  {
+    "id": "graveyard",
+    "name": "Burial ground",
+    "cost": 1,
+    "passable": true,
+    "description": "Old burial stones. Normal movement; no protection."
+  },
+  {
+    "id": "ritual-star",
+    "name": "Ritual mark",
+    "cost": 1,
+    "passable": true,
+    "description": "A charged ritual mark. Captives still standing here can be consumed by the bell."
+  },
+  {
+    "id": "ritual-spent",
+    "name": "Spent ritual mark",
+    "cost": 1,
+    "passable": true,
+    "description": "The ritual has burned out. It cannot feed the bell again."
   }
 ]

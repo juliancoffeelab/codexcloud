@@ -1277,6 +1277,18 @@
       "side": "enemy",
       "col": 14,
       "row": 31
+    },
+    {
+      "type": "skeletal-hound",
+      "side": "player",
+      "col": 0,
+      "row": 0
+    },
+    {
+      "type": "skeletal-hound",
+      "side": "enemy",
+      "col": 6,
+      "row": 0
     }
   ]
 }

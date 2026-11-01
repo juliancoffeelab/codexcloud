@@ -69,6 +69,7 @@ impl<'catalog> Game<'catalog> {
         super::damage::distribution(
             attack,
             rule.damage_modifiers.get(attack.damage_type)
+                + self.equipment_modifier(target, attack.damage_type)
                 + rule.environment[self.terrain[tile]][attack.category.index()]
                     [attack.damage_type.index()],
         )
@@ -93,6 +94,7 @@ impl<'catalog> Game<'catalog> {
             spread: attack.spread,
             count: attack.count,
             modifier: defender.damage_modifiers.get(attack.damage_type)
+                + self.equipment_modifier(target, attack.damage_type)
                 + defender.environment[self.terrain[tile]][attack.category.index()]
                     [attack.damage_type.index()],
             drain: attack.drain,
@@ -185,7 +187,8 @@ impl<'catalog> Game<'catalog> {
         let attack = self.weapon(attacker, weapon).clone();
         let armour = self.rules.units[target.kind]
             .damage_modifiers
-            .get(attack.damage_type);
+            .get(attack.damage_type)
+            + self.equipment_modifier(target, attack.damage_type);
         let environment = self.rules.units[target.kind].environment[self.terrain[tile]]
             [attack.category.index()][attack.damage_type.index()];
         // Full-period state, bijective output mixing and rejection sampling.
@@ -362,7 +365,8 @@ impl<'catalog> Game<'catalog> {
                         roll_min: attack.damage - attack.spread,
                         roll_max: attack.damage + attack.spread,
                         raw,
-                        modifier: rule.damage_modifiers.get(attack.damage_type),
+                        modifier: rule.damage_modifiers.get(attack.damage_type)
+                            + self.equipment_modifier(&defender, attack.damage_type),
                         terrain: rule.environment[self.terrain[defender.tile]]
                             [attack.category.index()][attack.damage_type.index()],
                         damage,
@@ -492,6 +496,7 @@ impl<'catalog> Game<'catalog> {
             .filter(|unit| unit.hp <= 0)
             .cloned()
             .collect();
+        self.charge_deaths(&defeated);
         for unit in &defeated {
             for item in &unit.items {
                 self.ground_items.push(GroundItem {

@@ -154,7 +154,8 @@
       "row": 1,
       "terrain": "village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "4,1",
@@ -234,7 +235,8 @@
       "row": 1,
       "terrain": "village",
       "owner": "enemy",
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "14,1",
@@ -874,7 +876,8 @@
       "row": 7,
       "terrain": "village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "4,7",

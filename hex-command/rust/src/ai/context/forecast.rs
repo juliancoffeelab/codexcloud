@@ -2,15 +2,27 @@ use crate::{data::*, logic::Game};
 use rustc_hash::FxHashMap as HashMap;
 // Dense reachability sets intersect attack origins a machine word at a time.
 use crate::logic::geometry::TileSet;
-type RiskKey = (Option<u32>, usize, usize, Option<u32>);
+// A kind is not a combat identity: two units of that kind can carry different
+// armor/weapons. Use the actual actor, and invalidate retained results whenever
+// any roster member's equipment changes (including the attacking enemies).
+type RiskKey = (u32, bool, usize, Option<u32>);
 type ArenaEnemies = HashMap<Option<u32>, Vec<(Unit, Vec<TileSet>)>>;
+type ArenaUnit = (
+    u32,
+    usize,
+    usize,
+    Side,
+    Option<String>,
+    Option<Role>,
+    Vec<Item>,
+);
 /// A nonlethal attack changes HP/action flags, but arena movement forecasts and
-/// incoming damage depend only on the roster's identities, kinds and positions.
+/// incoming damage also depend on equipment, allegiance and actor roles.
 /// Retain those calculations for the next decision in the same planning phase.
 #[derive(Default)]
 pub(in crate::ai) struct ArenaThreatWorkspace {
     terrain: Vec<usize>,
-    roster: Vec<(u32, usize, usize, Side)>,
+    roster: Vec<ArenaUnit>,
     side: Option<Side>,
     arena: ArenaEnemies,
     risks: HashMap<RiskKey, i32>,
@@ -92,20 +104,29 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             let same = workspace.side == Some(side)
                 && workspace.terrain == g.terrain
                 && workspace.roster.len() == g.units.len()
-                && workspace
-                    .roster
-                    .iter()
-                    .zip(&g.units)
-                    .all(|(&(id, kind, tile, side), u)| {
-                        (id, kind, tile, side) == (u.id, u.kind, u.tile, u.side)
-                    });
+                && workspace.roster.iter().zip(&g.units).all(
+                    |((id, kind, tile, side, faction, role, items), u)| {
+                        (*id, *kind, *tile, *side) == (u.id, u.kind, u.tile, u.side)
+                            && *faction == u.faction
+                            && *role == u.role
+                            && *items == u.items
+                    },
+                );
             if !same {
                 workspace.side = Some(side);
                 workspace.terrain.clone_from(&g.terrain);
                 workspace.roster.clear();
-                workspace
-                    .roster
-                    .extend(g.units.iter().map(|u| (u.id, u.kind, u.tile, u.side)));
+                workspace.roster.extend(g.units.iter().map(|u| {
+                    (
+                        u.id,
+                        u.kind,
+                        u.tile,
+                        u.side,
+                        u.faction.clone(),
+                        u.role,
+                        u.items.clone(),
+                    )
+                }));
                 workspace.arena.clear();
                 workspace.risks.clear();
             }
@@ -268,7 +289,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             || u.is_leader(),
             |orders| orders.important(&super::BattleView::new(self.source), u),
         );
-        let key = (important.then_some(u.id), u.kind, tile, eliminated);
+        let key = (u.id, important, tile, eliminated);
         if let Some(&risk) = self.cache.get(&key) {
             return risk;
         }

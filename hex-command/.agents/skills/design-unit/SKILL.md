@@ -1,6 +1,6 @@
 ---
 name: design-unit
-description: Use to make pixel art for new unit line
+description: Use when designing or integrating a unit artwork line, promotion branches or shared sprite scale.
 ---
 
 # Design a unit line
@@ -26,15 +26,11 @@ through equipment, pose and silhouette at the shared battlefield scale.
    inspect each unit on the battlefield. Show clean previews in the requested
    faction, otherwise the last used faction or enemy.
 
-Every character/portrait is exactly 64×64 native pixels. Most bodies are under
-40 painted pixels tall; compare cavalry and giants with approved peers. Raised
-weapons do not establish body height. Never enlarge commanders or resize art to
-emphasize tiers.
-
-Grounded bodies contact native row 63 with no transparent rows below. A staff
-touching the edge is not body contact. Preserve every pixel during alignment:
-translate without cropping/resizing. Hovering/swimming poses require
-`"flying": true`; preserve it through upgrades. Faction symbols belong to intended
+Apply the project’s native canvas and grounding rules in
+[AGENTS.md](../../../AGENTS.md). Compare bodies with approved peers at battlefield
+scale; raised equipment does not establish body height. Judge body contact
+anatomically—a staff touching the ground line does not establish standing feet.
+Preserve declared hovering/swimming poses through upgrades. Faction symbols belong to intended
 cloth and retain matching alpha across factions. Use the approved human scout
 as a finish benchmark without copying its pose.
 

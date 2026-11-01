@@ -4,9 +4,13 @@ import { MAPS } from "../src/game/maps";
 import { pixelSprites, pixelFloorColors } from "../src/presentation/pixel-art";
 import {
   TERRAIN_DIRECTIONS,
+  CONNECTED_TERRAINS,
   terrainArtNames,
   validTerrainConnections,
 } from "../src/presentation/terrain-connections";
+import castleBells from "../pixel/art/terrain/castle-bell/variants.json";
+import castleWalls from "../pixel/art/terrain/castle-wall/variants.json";
+import castleGates from "../pixel/art/terrain/castle-gate/variants.json";
 import roadDeadEnds from "../pixel/art/terrain/road/dead-ends.json";
 import { createTestFactory } from "./native-fixture";
 import { nativeValue } from "../src/game/live-game";
@@ -24,12 +28,25 @@ function requireFrames(tile: Parameters<typeof terrainArtNames>[0] & { floor?: s
 }
 
 test("Every supported terrain connection and floor has a native frame", () => {
-  for (const terrain of ["road", "village", "bridge", "ford"] as const) {
-    requireFrames({ terrain });
-    for (let mask = 1; mask < 64; mask++) {
+  for (const terrain of CONNECTED_TERRAINS) {
+    assert(!validTerrainConnections({ terrain }));
+    assert.throws(() => terrainArtNames({ terrain }), /missing terrain connections/);
+    for (let mask = 0; mask < 64; mask++) {
       const tile = { terrain, connections: directions(mask) };
       if (validTerrainConnections(tile)) requireFrames(tile);
     }
+  }
+  for (const [terrain, variants] of [
+    ["castle-wall", castleWalls],
+    ["castle-gate", castleGates],
+    ["castle-bell", castleBells],
+  ] as const) {
+    for (const variant of variants)
+      requireFrames({
+        terrain,
+        connections: directions(variant.mask),
+        wallCorners: variant.wallCorners,
+      });
   }
   for (const [exits, ends] of roadDeadEnds) {
     const tile = {

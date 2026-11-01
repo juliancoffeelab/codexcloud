@@ -74,7 +74,8 @@
       "row": 0,
       "terrain": "village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "9,0",
@@ -146,7 +147,8 @@
       "row": 1,
       "terrain": "ford",
       "owner": null,
-      "floor": "shallow-water"
+      "floor": "shallow-water",
+      "connections": ["e", "w"]
     },
     {
       "id": "5,1",
@@ -162,7 +164,8 @@
       "row": 1,
       "terrain": "village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "7,1",
@@ -458,7 +461,8 @@
       "row": 4,
       "terrain": "bridge",
       "owner": null,
-      "floor": "dark-water"
+      "floor": "dark-water",
+      "connections": ["e", "w"]
     },
     {
       "id": "5,4",
@@ -546,7 +550,8 @@
       "row": 5,
       "terrain": "village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "3,5",
@@ -610,7 +615,8 @@
       "row": 5,
       "terrain": "village",
       "owner": "enemy",
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "11,5",

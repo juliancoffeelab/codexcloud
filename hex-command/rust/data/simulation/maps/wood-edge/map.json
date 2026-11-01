@@ -124,7 +124,8 @@
       "row": 2,
       "terrain": "village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "5,2",
@@ -380,7 +381,8 @@
       "row": 6,
       "terrain": "village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "5,6",

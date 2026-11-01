@@ -27,7 +27,7 @@ class RaceTrees(unittest.TestCase):
 
     def test_variant_coverage_rejects_missing_and_unregistered_connections(self):
         caps = {(34, 1), (34, 8)}
-        roads = {'tile'} | {str(mask) for mask in range(1, 64) if mask != 9}
+        roads = {str(mask) for mask in range(1, 64)}
         roads |= {f'{exits}-end-{ends}' for exits, ends in caps}
         art.require_terrain_variants('road', roads, caps)
         with self.assertRaisesRegex(ValueError, 'missing supported variants.*63'):
@@ -42,9 +42,9 @@ class RaceTrees(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'unsupported variants.*63'):
             art.require_terrain_variants('village', villages | {'63'}, caps)
         for kind in ['bridge', 'ford']:
-            art.require_terrain_variants(kind, {'tile', 'ne-sw', 'nw-se'}, caps)
-            with self.assertRaisesRegex(ValueError, 'missing supported variants.*ne-sw'):
-                art.require_terrain_variants(kind, {'tile', 'nw-se'}, caps)
+            art.require_terrain_variants(kind, {'9', '18', '36'}, caps)
+            with self.assertRaisesRegex(ValueError, 'missing supported variants.*36'):
+                art.require_terrain_variants(kind, {'9', '18'}, caps)
 
     def test_road_exits_allow_different_interiors(self):
         rows = ["R" * 64 if 28 <= y < 36 else "G" * 64 for y in range(64)]

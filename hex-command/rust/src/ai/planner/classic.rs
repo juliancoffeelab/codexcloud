@@ -158,7 +158,7 @@ impl BattleView<'_, '_> {
         let mut second = 0;
         for foe in self.units().iter().filter(|o| self.hostile(&u, o)) {
             let damage = self
-                .attack_options(foe, &target, foe.tile)
+                .forecast_attack_options(foe, &target, foe.tile)
                 .iter()
                 .map(|&w| self.damage(foe, &target, w))
                 .max()

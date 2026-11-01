@@ -12,6 +12,22 @@ import zlib
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "pixel" / "art"
 FRAME_NAMES = {"bonearcher": "bone_archer", "grove": "sacred_grove"}
+# Finite native canvas policy, not an artwork-controlled size override. New
+# families stay 64x64 unless this reviewed contract explicitly admits them.
+PADDED_TERRAIN_FAMILIES = frozenset({'castle-wall', 'castle-gate', 'castle-bell'})
+CASTLE_CANVAS = {'width': 80, 'height': 96, 'anchorX': 40, 'anchorY': 48}
+
+
+def terrain_canvas(path):
+    geometry = json.loads(path.read_text())
+    if (path.parent.name not in PADDED_TERRAIN_FAMILIES or
+            not isinstance(geometry, dict) or
+            set(geometry) != {*CASTLE_CANVAS, 'z'} or
+            any(type(v) is not int for v in geometry.values()) or
+            any(geometry[key] != value for key, value in CASTLE_CANVAS.items())):
+        raise ValueError(f'{path}: only approved castle terrain may use the '
+                         '80×96 canvas anchored at (40,48); all other artwork is 64×64')
+    return geometry
 
 
 def require_canvas(rows, label="Artwork"):
@@ -54,15 +70,26 @@ def load_road_dead_ends():
 def require_terrain_variants(kind, stems, road_caps):
     """Every supported connection must have finished artwork, without frozen pixels."""
     if kind == 'road':
-        expected = {'tile'} | {str(mask) for mask in range(1, 64) if mask != 9}
+        expected = {str(mask) for mask in range(1, 64)}
         expected |= {f'{exits}-end-{ends}' for exits, ends in road_caps}
+    elif kind == 'signpost':
+        expected = {'9'}
     elif kind == 'village':
         expected = {'0'} | {str(mask) for mask in range(1, 64)
                             if mask.bit_count() <= 3}
+    elif kind in ('castle-wall', 'castle-gate', 'castle-bell'):
+        catalog = json.loads((ART / 'terrain/castle-library.json').read_text())
+        if catalog.get('version') != 1:
+            raise ValueError('Unsupported castle library definition version')
+        definitions = catalog['families'][kind]
+        registered = json.loads((ART / 'terrain' / kind / 'variants.json').read_text())
+        if sorted(definitions, key=lambda v: v['id']) != sorted(registered, key=lambda v: v['id']):
+            raise ValueError(f'{kind}: finished registry differs from the reusable tile definitions')
+        expected = {v['id'] for v in definitions}
     elif kind in ('bridge', 'ford'):
-        expected = {'tile', 'ne-sw', 'nw-se'}
+        expected = {'9', '18', '36'}
     elif kind in ('landing', 'ferry'):
-        expected = {'tile', 'east'}
+        expected = {'1', '8'}
     else:
         return
     missing, unsupported = expected - set(stems), set(stems) - expected
@@ -218,7 +245,13 @@ def read_matrix(matrix):
     rows = matrix.read_text().splitlines()
     if not rows or not rows[0] or any(len(row) != len(rows[0]) for row in rows):
         raise ValueError(f"{matrix}: matrix must be a nonempty rectangle")
-    require_canvas(rows, matrix)
+    canvas = matrix.parent / 'canvas.json'
+    if canvas.is_file() and matrix.parent.parent == ART / 'terrain':
+        geometry = terrain_canvas(canvas)
+        if (len(rows) != geometry['height'] or len(rows[0]) != geometry['width']):
+            raise ValueError(f'{matrix}: invalid padded terrain canvas')
+    else:
+        require_canvas(rows, matrix)
     return rows
 
 
@@ -410,33 +443,18 @@ def pixel_sprites():
 
     for palette in sorted((ART / "terrain").glob("*/palette.json")):
         kind = palette.parent.name
-        matrix = palette.parent / ('0.txt' if kind == 'village' else 'tile.txt')
+        matrices = sorted(palette.parent.glob("*.txt"))
+        require_terrain_variants(kind, [path.stem for path in matrices], road_caps)
+        connected = kind in ('signpost', 'road', 'village', 'bridge', 'ford', 'landing', 'ferry', 'castle-wall', 'castle-gate', 'castle-bell')
+        if not connected and [p.stem for p in matrices] != ['tile']:
+            raise ValueError(f'{kind}: unconnected terrain requires only tile.txt')
         key = f"terrain_{FRAME_NAMES.get(kind, kind)}"
-        add_terrain(f'{key}_0' if kind == 'village' else key, matrix)
-        require_terrain_variants(kind, [path.stem for path in matrix.parent.glob('*.txt')], road_caps)
-        default_mask = {"road": 9, "village": 0}.get(kind)
-        surface = frozenset("RrC" if kind == "road" else "RrH")
-        if default_mask is not None:
-            require_road_exits(read_matrix(matrix), default_mask, surface, label=kind)
-        for variant in sorted(matrix.parent.glob("*.txt")):
-            if variant == matrix:
-                continue
-            crossing = matrix.parent.name in ("bridge", "ford") and variant.stem in ("ne-sw", "nw-se")
-            landing = kind in ('landing', 'ferry') and variant.stem == 'east'
-            path = (default_mask is not None and variant.stem.isdigit() and
-                    (0 if kind == "village" else 1) <= int(variant.stem) <= 63 and int(variant.stem) != default_mask and
-                    (kind == "road" or (kind == "village" and int(variant.stem).bit_count() <= 3)))
-            capped = re.fullmatch(r"(\d+)-end-(\d+)", variant.stem) if kind == "road" else None
-            if capped:
-                exits, ends = map(int, capped.groups())
-                capped = (exits, ends) in road_caps
-            if not (crossing or path or capped or landing):
-                raise ValueError(f"{variant}: unknown terrain orientation")
-            if path:
-                require_road_exits(read_matrix(variant), int(variant.stem), surface, label=kind)
-            if capped:
-                require_road_exits(read_matrix(variant), exits, surface, label=kind)
-            add_terrain(f"{key}_{variant.stem}", variant)
+        for matrix in matrices:
+            if kind in ('road', 'village'):
+                mask = int(matrix.stem.split('-')[0])
+                require_road_exits(read_matrix(matrix), mask,
+                                   frozenset("RrC" if kind == "road" else "RrH"), label=kind)
+            add_terrain(f"{key}_{matrix.stem}" if connected else key, matrix)
     layouts = load_terrain_layouts()
     for matrix in sorted((ART / 'terrain/props').glob('*/*/tile.txt')):
         add_terrain(f'terrain_prop_{matrix.parent.parent.name}_{matrix.parent.name}', matrix)
@@ -489,6 +507,8 @@ def pixel_sprites():
         f"  {property_name(key)}: {json.dumps(model)},\n"
         for key, model in sorted(gameplay_models(lineups).items())
     )
+    geometry = {path.parent.name: terrain_canvas(path)
+                for path in sorted((ART / 'terrain').glob('*/canvas.json'))}
     metadata = (
         "// Generated by scripts/build-pixel-art.py; edit pixel/art matrices and palettes.\n"
         + "export const pixelSprites: Readonly<Record<string, string>> = {\n" + sprite_fields + "};\n"
@@ -496,6 +516,7 @@ def pixel_sprites():
         + "\nexport const pixelTerrainLayouts: Readonly<\n"
         + "  Record<string, readonly (readonly { name: string; x: number; y: number }[])[]>\n"
         + "> = {\n" + layout_fields + "};\n"
+        + "\nexport const pixelTerrainGeometry: Readonly<Record<string, { width: number; height: number; anchorX: number; anchorY: number; z: number }>> = " + json.dumps(geometry) + ";\n"
         + "\nexport const pixelUnitModels: Readonly<Record<string, string>> = {\n"
         + model_fields + "};\n"
     )

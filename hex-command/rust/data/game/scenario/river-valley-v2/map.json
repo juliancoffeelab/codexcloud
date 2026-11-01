@@ -864,7 +864,8 @@
       "row": 7,
       "terrain": "ford",
       "owner": null,
-      "floor": "shallow-water"
+      "floor": "shallow-water",
+      "connections": ["e", "w"]
     },
     {
       "id": "7,7",
@@ -872,7 +873,8 @@
       "row": 7,
       "terrain": "ford",
       "owner": null,
-      "floor": "shallow-water"
+      "floor": "shallow-water",
+      "connections": ["e", "w"]
     },
     {
       "id": "8,7",
@@ -978,7 +980,8 @@
       "row": 8,
       "terrain": "ford",
       "owner": null,
-      "floor": "shallow-water"
+      "floor": "shallow-water",
+      "connections": ["e", "w"]
     },
     {
       "id": "7,8",
@@ -986,7 +989,8 @@
       "row": 8,
       "terrain": "ford",
       "owner": null,
-      "floor": "shallow-water"
+      "floor": "shallow-water",
+      "connections": ["e", "w"]
     },
     {
       "id": "8,8",

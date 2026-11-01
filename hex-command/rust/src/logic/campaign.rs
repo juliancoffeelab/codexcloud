@@ -4,6 +4,20 @@ use crate::{data::*, logic::battle::Game};
 use std::collections::BTreeMap;
 impl<'catalog> Game<'catalog> {
     fn hold_actor_present(&self, goal: &Goal) -> bool {
+        if let Goal::Hold {
+            unit_types, tile, ..
+        } = goal
+        {
+            if !unit_types.is_empty()
+                && !self.units.iter().any(|u| {
+                    u.side == Side::Player
+                        && self.board.ids[u.tile] == *tile
+                        && unit_types.contains(&self.rules.units[u.kind].id)
+                })
+            {
+                return false;
+            }
+        }
         goal.companion().is_none_or(|name| {
             self.units.iter().any(|u| {
                 u.side == Side::Player
@@ -55,6 +69,7 @@ impl<'catalog> Game<'catalog> {
                 .all(|tile| state.marked_prefixed("sealed:", tile)),
             Goal::Event { event, .. } => state.marked_prefixed("event:", event),
             Goal::Hold {
+                once,
                 tile,
                 turns,
                 earliest_round,
@@ -74,10 +89,11 @@ impl<'catalog> Game<'catalog> {
                     0
                 };
                 held >= *turns
-                    && self.turn == Side::Player
+                    && (*once || self.turn == Side::Player)
                     && self.round >= *earliest_round
-                    && self.owners[self.site(tile)] == Some(Side::Player)
-                    && self.hold_actor_present(goal)
+                    && (*once
+                        || (self.owners[self.site(tile)] == Some(Side::Player)
+                            && self.hold_actor_present(goal)))
             }
             Goal::Vigil { turns, .. } => {
                 state.vigil.as_ref().map_or(0, |counter| counter.held_turns) >= *turns
@@ -137,21 +153,14 @@ impl<'catalog> Game<'catalog> {
             Goal::Hold {
                 tile,
                 turns,
-                earliest_round,
                 start_event,
                 ..
             } => {
                 total = *turns;
-                if start_event
+                if !start_event
                     .as_ref()
                     .is_some_and(|e| !state.marked(&format!("event:{e}")))
                 {
-                    label = if self.owners[self.site(tile)] != Some(Side::Player) {
-                        "Reach the wreck to start the rescue".into()
-                    } else {
-                        format!("Wait for high tide on turn {}", *earliest_round)
-                    };
-                } else {
                     current = state
                         .holds
                         .as_ref()
@@ -187,14 +196,16 @@ impl<'catalog> Game<'catalog> {
         let done = current == total
             && match goal {
                 Goal::Hold {
+                    once,
                     tile,
                     earliest_round,
                     ..
                 } => {
-                    self.turn == Side::Player
+                    (*once || self.turn == Side::Player)
                         && self.round >= *earliest_round
-                        && self.owners[self.site(tile)] == Some(Side::Player)
-                        && self.hold_actor_present(goal)
+                        && (*once
+                            || (self.owners[self.site(tile)] == Some(Side::Player)
+                                && self.hold_actor_present(goal)))
                 }
                 _ => true,
             };
@@ -470,6 +481,11 @@ impl<'catalog> Game<'catalog> {
                         held_turns: 0,
                         last_counted_round: self.round,
                     });
+                if matches!(goal, Goal::Hold { once: true, .. })
+                    && counter.held_turns >= goal.turns().unwrap()
+                {
+                    continue;
+                }
                 if !started || !actor_present || self.owners[tile] != Some(Side::Player) {
                     counter.held_turns = 0;
                     counter.last_counted_round = self.round;
@@ -510,6 +526,12 @@ impl<'catalog> Game<'catalog> {
                     Trigger::Condition { condition } => self.event_condition_met(condition),
                     Trigger::Visit { tile } => entered.is_some_and(|t| &self.board.ids[t] == tile),
                     Trigger::Round { round } => self.round >= *round,
+                    Trigger::Held { tile, turns } => self
+                        .campaign
+                        .as_ref()
+                        .and_then(|c| c.holds.as_ref())
+                        .and_then(|h| h.get(tile))
+                        .is_some_and(|h| h.held_turns >= *turns),
                     Trigger::Control { tile, round } => {
                         self.owners[self.site(tile)] == Some(Side::Player)
                             && self.round >= round.unwrap_or(1)
@@ -534,6 +556,10 @@ impl<'catalog> Game<'catalog> {
                         .unless_event
                         .as_ref()
                         .is_some_and(|e| state.marked(&format!("event:{e}")))
+                    || event
+                        .unless_choice
+                        .as_ref()
+                        .is_some_and(|choice| state.chosen(choice))
                     || event.before_round.is_some_and(|r| self.round >= r)
                 {
                     continue;
@@ -549,13 +575,18 @@ impl<'catalog> Game<'catalog> {
                     .iter()
                     .filter(|line| !state.marked(&format!("fallen:{}", line.speaker)))
                     .filter(|line| {
-                        !mission.map.units.iter().any(|unit| {
-                            unit.side == Side::Player
-                                && unit.name.as_deref() == Some(line.speaker.as_str())
-                        }) || self.units.iter().any(|unit| {
-                            unit.side == Side::Player
-                                && unit.name.as_deref() == Some(line.speaker.as_str())
-                        })
+                        !(mission
+                            .arrivals
+                            .iter()
+                            .any(|arrival| arrival.name == line.speaker)
+                            || mission.map.units.iter().any(|unit| {
+                                unit.side == Side::Player
+                                    && unit.name.as_deref() == Some(line.speaker.as_str())
+                            }))
+                            || self.units.iter().any(|unit| {
+                                unit.side == Side::Player
+                                    && unit.name.as_deref() == Some(line.speaker.as_str())
+                            })
                     })
                     .cloned()
                     .collect();
@@ -594,7 +625,23 @@ impl<'catalog> Game<'catalog> {
                     }
                 }
                 self.gold[0] += event.gold.unwrap_or(0);
+                self.ground_items.extend(event.ground_items.iter().cloned());
+                let collectors: Vec<_> = self
+                    .units
+                    .iter()
+                    .filter(|u| {
+                        u.side == Side::Player
+                            && event
+                                .ground_items
+                                .iter()
+                                .any(|item| item.tile == self.board.ids[u.tile])
+                    })
+                    .map(|u| u.id)
+                    .collect();
                 state.say(lines);
+                for id in collectors {
+                    self.collect_items(id);
+                }
                 for reward in &event.items {
                     for unit in self
                         .units
@@ -616,6 +663,7 @@ impl<'catalog> Game<'catalog> {
         }
         self.spawn_events();
         self.apply_faction_transfers();
+        self.evaluate_rituals(at_turn_start);
         if mission.goals.iter().all(|g| self.goal_done(g)) {
             self.winner = Some(Side::Player);
             let dain_survived = self
@@ -751,6 +799,26 @@ impl<'catalog> Game<'catalog> {
         }
         game.gold = [original.gold + carry.clamp(0, 8), original.enemy_gold];
         for veteran in story {
+            if let Some(arrival) = original
+                .arrivals
+                .iter()
+                .find(|arrival| Some(&arrival.name) == veteran.name.as_ref())
+            {
+                let tile = game.site(&format!("{},{}", arrival.col, arrival.row));
+                let kind = game.kind(&veteran.r#type);
+                let destination = (0..game.terrain.len())
+                    .filter(|&t| game.at(t).is_none() && game.cost(kind, t) != u16::MAX)
+                    .min_by_key(|&t| game.board.distance(tile, t));
+                if let Some(destination) = destination {
+                    let id = game.add(kind, Side::Player, destination);
+                    let unit = game.units.iter_mut().find(|u| u.id == id).unwrap();
+                    unit.items = veteran.items.clone();
+                    unit.name = veteran.name.clone();
+                    unit.experience = Some(veteran.experience);
+                    unit.role = veteran.role;
+                }
+                continue;
+            }
             let kind = game.kind(&veteran.r#type);
             if let Some(unit) = game.units.iter_mut().find(|u| {
                 u.side == Side::Player
@@ -821,16 +889,20 @@ impl<'catalog> Game<'catalog> {
             .missions
             .get(state.mission + 1)
             .is_some_and(|mission| {
-                mission.map.units.iter().any(|incoming| {
-                    incoming.side == Side::Player
-                        && self.rules.units[self.kind(&incoming.r#type)].family
-                            == self.rules.units[u.kind].family
-                        && if u.role == Some(Role::Leader) {
-                            incoming.role == Some(Role::Leader)
-                        } else {
-                            u.name.is_some() && incoming.name == u.name
-                        }
-                })
+                mission
+                    .arrivals
+                    .iter()
+                    .any(|arrival| u.name.as_ref() == Some(&arrival.name))
+                    || mission.map.units.iter().any(|incoming| {
+                        incoming.side == Side::Player
+                            && self.rules.units[self.kind(&incoming.r#type)].family
+                                == self.rules.units[u.kind].family
+                            && if u.role == Some(Role::Leader) {
+                                incoming.role == Some(Role::Leader)
+                            } else {
+                                u.name.is_some() && incoming.name == u.name
+                            }
+                    })
             })
     }
     #[cfg(not(target_arch = "wasm32"))]

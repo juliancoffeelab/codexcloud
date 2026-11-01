@@ -4,7 +4,7 @@ import type { Artwork } from "../presentation/art";
 import type { FrameImage } from "../presentation/art";
 import { TERRAIN, TYPES } from "../game/catalog";
 import { artFrame } from "../presentation/art";
-import { terrainTileView, type TerrainTileView } from "../presentation/terrain-map";
+import { terrainMapTiles, type TerrainTileView } from "../presentation/terrain-map";
 import { battlefieldSpriteSize } from "./geometry";
 import { terrainLayout } from "../presentation/terrain-layout";
 export { terrainArtNames } from "../presentation/terrain-connections";
@@ -28,12 +28,16 @@ export interface BattlefieldTileView extends TileView {
   label: string;
   terrainFrame: Readonly<FrameImage> | undefined;
   spriteSize: number;
+  spriteX: number;
+  spriteY: number;
+  spriteWidth: number;
+  spriteHeight: number;
   occupant: TileUnitView | null;
   ownerColor: string;
 }
 
 export function terrainProps(
-  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds">,
+  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds" | "wallCorners">,
   mapId: string,
 ) {
   return terrainLayout(tile, mapId).props;
@@ -100,6 +104,9 @@ export function battlefieldTiles(
     }
   }
   const occupants = new Map(game.units.map((unit) => [unit.tile, unit]));
+  const terrainViews =
+    terrain ??
+    new Map(terrainMapTiles(game.tiles, game.mapId, artwork).map((tile) => [tile.id, tile]));
   return game.tiles.map((tile) => {
     const unit = occupants.get(tile.id);
     const reachable = reachableTiles.has(tile.id);
@@ -137,7 +144,7 @@ export function battlefieldTiles(
 
     return {
       ...tile,
-      ...(terrain?.get(tile.id) ?? terrainTileView(tile, game.mapId, artwork)),
+      ...terrainViews.get(tile.id)!,
       classes,
       label: tileLabel(
         tile,

@@ -13,7 +13,9 @@ or extraction bugs, read [implementation.md](implementation.md).
 
 1. Choose three approved matrix references for style, scale and materials. Unit
    IDs and explicit matrix paths are accepted. Select `--kind unit`, `terrain`
-   or `prop`; every output is native 64×64. Existing callers default to `unit`.
+   or `prop`. This extraction helper produces native 64×64 components. Author
+   complete padded terrain frames offline through the terrain design branch;
+   preserve their declared canvas rather than passing them through this extractor.
 2. Prepare and inspect the 2×2 template: three occupied anchors and one empty
    bottom-right output, enlarged eight times. Pass its local path to imagegen.
    Fill only the output, preserving references, captions and aspect ratio.

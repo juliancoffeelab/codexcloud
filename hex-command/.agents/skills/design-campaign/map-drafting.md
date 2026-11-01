@@ -9,6 +9,10 @@ node --import tsx .agents/skills/design-campaign/scripts/render-map.ts \
   --output tmp/draft/preview.png
 ```
 
+Add `--grid` for a red hex-grid overlay above the terrain and units. The grid
+uses the same hex geometry as the map. Use `--grid-color "#ff4040"` to choose
+another grid color; omit `--grid` for the normal preview.
+
 `--overlay` is optional. Keep scenario-specific map builders, input files and
 outputs in ignored `tmp/`. The renderer reads source data as a devtool, never
 registers content in the playable catalog, and does not execute encounters.

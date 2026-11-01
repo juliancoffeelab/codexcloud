@@ -104,18 +104,9 @@ export async function prepareSite(tools, options, progress = () => {}) {
 
 /** Deployment does no shell commands, Git, builds, checks, uploads or source preparation. */
 export default async function publishSite(tools, options) {
-  const { project_id } = options;
-  if (!project_id) throw new Error("A prepared Site project_id is required");
-  let version_id = options.version_id;
-  if (!version_id) {
-    const versions = decode(
-      await tools.mcp__codex_apps__sites_list_site_versions({ project_id, limit: 1 }),
-    );
-    const latest = versions.items[0];
-    if (!latest?.archive_storage)
-      throw new Error("No prepared archive-backed release; preparation was missed");
-    version_id = latest.id;
-  }
+  const { project_id, version_id } = options ?? {};
+  if (!project_id || !version_id)
+    throw new Error("An exact preparation receipt with project_id and version_id is required");
   const privateSite =
     options.owner_private ??
     ownerPrivate(decode(await tools.mcp__codex_apps__sites_get_site({ project_id })));

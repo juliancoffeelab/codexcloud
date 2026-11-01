@@ -1,5 +1,5 @@
 //! Faction allegiance is independent of the two input/turn phases and AI policy.
-use super::{ConditionRule, Side};
+use super::{ConditionRule, ConditionSide, Side};
 use crate::ai::Policy;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -168,18 +168,20 @@ pub(crate) fn faction_relation(factions: &[Faction], first: &str, second: &str) 
         Relation::Neutral
     }
 }
-/// Authored player/enemy selectors refer to human control and hostile factions,
-/// not merely the phase in which a unit happens to act.
+/// Match an explicit unit selector, not the phase in which it happens to act.
+/// Keep this exhaustive: new allegiance selectors must define their semantics.
 pub(crate) fn faction_matches_side(
     factions: &[Faction],
     id: Option<&str>,
     phase: Side,
-    side: Side,
+    side: ConditionSide,
 ) -> bool {
     let id = id.unwrap_or(phase.faction_id());
     match side {
-        Side::Enemy => faction_relation(factions, "player", id) == Relation::Hostile,
-        Side::Player => factions
+        ConditionSide::Enemy => faction_relation(factions, "player", id) == Relation::Hostile,
+        ConditionSide::Neutral => faction_relation(factions, "player", id) == Relation::Neutral,
+        ConditionSide::Any => true,
+        ConditionSide::Player => factions
             .iter()
             .find(|f| f.id == id)
             .map_or(phase == Side::Player, |f| f.controller == Controller::Human),

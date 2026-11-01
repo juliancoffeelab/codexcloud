@@ -10,6 +10,7 @@ mod inspection;
 mod items;
 mod movement;
 mod restore;
+mod rituals;
 mod turns;
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) use restore::validate_state_geometry;

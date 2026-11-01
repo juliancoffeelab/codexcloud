@@ -16,6 +16,7 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
                 terrain: "plains".into(),
                 owner: None,
                 connections: None,
+                wall_corners: None,
                 dead_ends: None,
                 floor: None,
             })

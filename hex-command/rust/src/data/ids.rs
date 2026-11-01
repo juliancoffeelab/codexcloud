@@ -172,6 +172,19 @@ impl std::fmt::Display for Family {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Terrain {
+    Monastery,
+    Church,
+    Graveyard,
+    #[serde(rename = "ritual-star")]
+    RitualStar,
+    #[serde(rename = "ritual-spent")]
+    RitualSpent,
+    #[serde(rename = "castle-bell")]
+    CastleBell,
+    #[serde(rename = "castle-wall")]
+    CastleWall,
+    #[serde(rename = "castle-gate")]
+    CastleGate,
     Plains,
     Road,
     Forest,
@@ -198,6 +211,14 @@ impl Terrain {
     /// Return the stable authored identifier used at serialization boundaries.
     pub fn as_str(self) -> &'static str {
         match self {
+            Self::Monastery => "monastery",
+            Self::Church => "church",
+            Self::Graveyard => "graveyard",
+            Self::RitualStar => "ritual-star",
+            Self::RitualSpent => "ritual-spent",
+            Self::CastleBell => "castle-bell",
+            Self::CastleWall => "castle-wall",
+            Self::CastleGate => "castle-gate",
             Self::Plains => "plains",
             Self::Road => "road",
             Self::Forest => "forest",
@@ -318,6 +339,7 @@ impl GoalKind {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum TriggerKind {
+    Held,
     Condition,
     Visit,
     Round,
@@ -327,6 +349,7 @@ impl TriggerKind {
     /// Return the stable authored identifier used at serialization boundaries.
     pub fn as_str(self) -> &'static str {
         match self {
+            Self::Held => "held",
             Self::Condition => "condition",
             Self::Visit => "visit",
             Self::Round => "round",

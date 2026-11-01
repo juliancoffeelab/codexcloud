@@ -15,11 +15,11 @@ and available roles should follow their identity and lore.
 ## Terrain and overall strength
 
 Specialization should give an advantage at home while leaving a viable army
-elsewhere. Woodland should dominate forests, Merfolk should dominate water,
-and Woodland should be stronger than Merfolk on dry plains.
+elsewhere. Aim for roughly 70% Woodland wins in forests and 80% Merfolk wins on
+water. Woodland should be stronger than Merfolk on dry plains.
 
 Humans and Skeletons should be roughly equally capable across opponents and
-maps. A fair direct matchup is desirable, but overall equality does not require
+maps, particularly under Balanced and Situational. A fair direct matchup is desirable, but overall equality does not require
 every matchup to be equal. Some stalemates between them are expected.
 
 ## Damage and usefulness
@@ -44,6 +44,7 @@ expensive; their cost can buy speed, durability or hitter-level damage. A mount
 alone does not justify a stronger bow than an equivalent foot archer's.
 Melee riders use the flank role at every promotion tier. Ranged riders retain
 their separately authored roles.
+Preserve meaningful cavalry use when tuning roster balance.
 
 Woodland's Treants fill an expensive heavy-unit role in place of cavalry. They
 combine strong protection with a meaningful blow, paying through price and slow
@@ -59,6 +60,8 @@ and be vulnerable to chopping blades.
 Movement advantages need a reason in the lore, such as horses, wolves or scouts
 trained for speed. Terrain familiarity can provide mobility without making
 every unit fast everywhere.
+Audit movement above three against the lore, counting terrain access and movement
+costs toward mobility as well as the base move stat.
 
 ## Campaigns and validation
 
@@ -66,10 +69,7 @@ Campaign armies belong to their stories. Expand recruitment only when the lore
 supports it; a faction's full roster does not automatically belong in every
 campaign.
 
-Judge balance through actual battles: what remains on the field and what units
-accomplish, then interpret purchases alongside that presence and casualties.
-Purchases are recruitment flow, including replacements; purchase share alone
-does not establish field composition, survival or strength. Assess damage alongside protection, support,
-mobility and objectives. Low reflected damage alone does not establish weak
-thorns: deterrence can prevent attacks or redirect them toward vulnerable allies.
-Attractive stat sheets and faction averages alone cannot establish balance.
+Assess damage alongside protection, support, mobility and objectives. Use
+[recorded metrics](references/metrics.md) for evidence definitions, measurement
+scopes and interpretation; use [replays](references/replays.md) when measuring
+thorn deterrence. Attractive stat sheets alone cannot establish balance.

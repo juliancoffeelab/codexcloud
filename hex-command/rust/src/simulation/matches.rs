@@ -173,6 +173,7 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
                 terrain: "plains".into(),
                 owner: None,
                 connections: None,
+                wall_corners: None,
                 dead_ends: None,
                 floor: None,
             });
@@ -254,6 +255,10 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
         };
         state.tiles[index].terrain = terrain.into();
         state.tiles[partner].terrain = terrain.into();
+        if terrain == "ford" {
+            state.tiles[index].connections = Some(vec![HexDirection::E, HexDirection::W]);
+            state.tiles[partner].connections = Some(vec![HexDirection::E, HexDirection::W]);
+        }
     }
     let mut terrain = |q, r, kind: &str, owner| {
         let tile = state
@@ -262,6 +267,11 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
             .find(|t| t.id == axial_id(q, r))
             .unwrap();
         tile.terrain = kind.into();
+        tile.connections = match kind {
+            "village" => Some(vec![]),
+            "bridge" | "ford" => Some(vec![HexDirection::E, HexDirection::W]),
+            _ => None,
+        };
         tile.owner = owner;
     };
     for (q, r, kind, owner) in [

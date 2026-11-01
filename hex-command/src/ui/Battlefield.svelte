@@ -7,6 +7,7 @@
   import { battlefieldTiles, type BattlefieldTileView } from "./battlefield-view";
   import { battlefieldSpriteSize, mapDimensions } from "./geometry";
   import {
+    terrainDrawingOrder,
     TerrainMapCache,
     TerrainViewCache,
     terrainMapKey,
@@ -46,9 +47,9 @@
   const terrainScene = $derived(terrainViewCache.prepare(game, artwork));
   const terrainResources: Artwork = $derived({
     frames: Object.fromEntries(
-      [...terrainScene.tiles.values()].flatMap((tile) =>
-        tile.terrainFrame ? [[tile.frameKey, tile.terrainFrame]] : [],
-      ),
+      [...terrainScene.tiles.values()].flatMap((tile) => [
+        ...(tile.terrainFrame ? [[tile.frameKey, tile.terrainFrame]] : []),
+      ]),
     ),
   });
   const tiles = $derived(
@@ -254,10 +255,10 @@
   {#if tile.terrainFrame}
     <svg
       class="art-sprite pixel-art terrain-art"
-      x={tile.x - tile.spriteSize / 2}
-      y={tile.y - tile.spriteSize / 2}
-      width={tile.spriteSize}
-      height={tile.spriteSize}
+      x={tile.spriteX}
+      y={tile.spriteY}
+      width={tile.spriteWidth}
+      height={tile.spriteHeight}
       viewBox={`0 0 ${tile.terrainFrame.width} ${tile.terrainFrame.height}`}
       aria-hidden="true"
       focusable="false"
@@ -352,7 +353,7 @@
             </g>
           {/if}
         {/if}
-        {#each tiles as tile (tile.id)}
+        {#each terrainDrawingOrder(tiles) as tile (tile.id)}
           <g
             class={tile.classes}
             role="button"
@@ -377,9 +378,7 @@
                   : undefined}
               >
                 <polygon class="tile-ground" points={tile.points} fill={tile.fill} />
-                <g clip-path={`url(#${tile.clipId})`}>
-                  {@render terrainSprite(tile)}
-                </g>
+                {@render terrainSprite(tile)}
               </g>
             {/if}
             {#if tile.classes.includes("objective") || tile.classes.includes("recruitable")}

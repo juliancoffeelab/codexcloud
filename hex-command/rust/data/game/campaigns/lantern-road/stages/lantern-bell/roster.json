@@ -1,81 +1,106 @@
 {
   "initial": {
     "gold": {
-      "player": 12,
-      "enemy": 12
+      "player": 20,
+      "enemy": 0
     },
     "units": [
       {
         "type": "swordsman",
         "side": "player",
-        "col": 3,
-        "row": 4,
+        "col": 2,
+        "row": 13,
         "name": "Captain Nera",
         "role": "leader"
       },
       {
-        "type": "adept",
-        "side": "player",
-        "col": 4,
-        "row": 3,
-        "name": "Meri"
-      },
-      {
-        "type": "swordsman",
-        "side": "player",
-        "col": 4,
-        "row": 4
-      },
-      {
         "type": "scout",
         "side": "player",
-        "col": 4,
-        "row": 5,
+        "col": 1,
+        "row": 13,
         "name": "Ivo"
       },
       {
-        "type": "necromancer",
+        "type": "lich",
+        "side": "enemy",
+        "col": 11,
+        "row": 11,
+        "name": "The Bellwarden",
+        "role": "leader",
+        "aiGroup": "garrison"
+      },
+      {
+        "type": "skeleton",
+        "side": "enemy",
+        "col": 10,
+        "row": 12,
+        "aiGroup": "garrison"
+      },
+      {
+        "type": "bonearcher",
+        "side": "enemy",
+        "col": 12,
+        "row": 12,
+        "aiGroup": "garrison"
+      },
+      {
+        "type": "skeleton",
+        "side": "enemy",
+        "col": 10,
+        "row": 13,
+        "aiGroup": "garrison"
+      },
+      {
+        "type": "bonearcher",
+        "side": "enemy",
+        "col": 11,
+        "row": 13,
+        "aiGroup": "garrison"
+      },
+      {
+        "type": "skeleton",
+        "side": "enemy",
+        "col": 10,
+        "row": 5,
+        "aiGroup": "north-watch"
+      },
+      {
+        "type": "bonearcher",
+        "side": "enemy",
+        "col": 19,
+        "row": 9,
+        "aiGroup": "east-watch"
+      },
+      {
+        "type": "skeleton",
         "side": "enemy",
         "col": 13,
-        "row": 4,
-        "name": "The Bellwarden",
-        "role": "leader"
+        "row": 20,
+        "aiGroup": "south-watch"
       },
       {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 8,
-        "row": 1
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 8,
-        "row": 7
-      },
-      {
-        "type": "skeleton",
+        "type": "captives",
         "side": "enemy",
         "col": 11,
-        "row": 3
+        "row": 5,
+        "name": "Northern captives",
+        "faction": "prisoners"
       },
       {
-        "type": "skeleton",
+        "type": "captives",
         "side": "enemy",
-        "col": 11,
-        "row": 5
+        "col": 19,
+        "row": 10,
+        "name": "Eastern captives",
+        "faction": "prisoners"
       },
       {
-        "type": "bonearcher",
+        "type": "captives",
         "side": "enemy",
-        "col": 10,
-        "row": 2
-      },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 10,
-        "row": 6
+        "col": 12,
+        "row": 20,
+        "name": "Southern captives",
+        "faction": "prisoners"
       }
     ]
   },
@@ -83,78 +108,115 @@
     {
       "type": "swordsman",
       "side": "player",
-      "col": 3,
-      "row": 4,
+      "col": 2,
+      "row": 13,
       "name": "Captain Nera",
       "role": "leader"
     },
     {
-      "type": "adept",
-      "side": "player",
-      "col": 4,
-      "row": 3,
-      "name": "Meri"
-    },
-    {
-      "type": "swordsman",
-      "side": "player",
-      "col": 4,
-      "row": 4
-    },
-    {
       "type": "scout",
       "side": "player",
-      "col": 4,
-      "row": 5,
+      "col": 1,
+      "row": 13,
       "name": "Ivo"
     },
     {
-      "type": "necromancer",
+      "type": "lich",
+      "side": "enemy",
+      "col": 11,
+      "row": 11,
+      "name": "The Bellwarden",
+      "role": "leader",
+      "aiGroup": "garrison"
+    },
+    {
+      "type": "skeleton",
+      "side": "enemy",
+      "col": 10,
+      "row": 12,
+      "aiGroup": "garrison"
+    },
+    {
+      "type": "bonearcher",
+      "side": "enemy",
+      "col": 12,
+      "row": 12,
+      "aiGroup": "garrison"
+    },
+    {
+      "type": "skeleton",
+      "side": "enemy",
+      "col": 10,
+      "row": 13,
+      "aiGroup": "garrison"
+    },
+    {
+      "type": "bonearcher",
+      "side": "enemy",
+      "col": 11,
+      "row": 13,
+      "aiGroup": "garrison"
+    },
+    {
+      "type": "skeleton",
+      "side": "enemy",
+      "col": 10,
+      "row": 5,
+      "aiGroup": "north-watch"
+    },
+    {
+      "type": "bonearcher",
+      "side": "enemy",
+      "col": 19,
+      "row": 9,
+      "aiGroup": "east-watch"
+    },
+    {
+      "type": "skeleton",
       "side": "enemy",
       "col": 13,
-      "row": 4,
-      "name": "The Bellwarden",
-      "role": "leader"
+      "row": 20,
+      "aiGroup": "south-watch"
     },
     {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 8,
-      "row": 1
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 8,
-      "row": 7
-    },
-    {
-      "type": "skeleton",
+      "type": "captives",
       "side": "enemy",
       "col": 11,
-      "row": 3
+      "row": 5,
+      "name": "Northern captives",
+      "faction": "prisoners"
     },
     {
-      "type": "skeleton",
+      "type": "captives",
       "side": "enemy",
-      "col": 11,
-      "row": 5
+      "col": 19,
+      "row": 10,
+      "name": "Eastern captives",
+      "faction": "prisoners"
     },
     {
-      "type": "bonearcher",
+      "type": "captives",
       "side": "enemy",
-      "col": 10,
-      "row": 2
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 10,
-      "row": 6
+      "col": 12,
+      "row": 20,
+      "name": "Southern captives",
+      "faction": "prisoners"
     }
   ],
-  "recruits": ["swordsman", "archer", "scout", "spearman", "adept"],
-  "enemyRecruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
+  "arrivals": [
+    {
+      "name": "Warden Sella",
+      "col": 3,
+      "row": 14
+    },
+    {
+      "name": "Oren",
+      "col": 3,
+      "row": 13
+    }
+  ],
+  "recruits": ["swordsman", "spearman", "archer", "scout", "adept"],
+  "enemyRecruits": [],
   "gold": 20,
   "enemyGold": 0
 }

@@ -14,8 +14,13 @@ Work from the game root with Python 3 and Pillow. Read
 ## Inspect
 
 Detection requests are read-only. Before edits, preserve the exact baseline
-matrix, palette and rendered image in a fresh ignored `tmp/` directory. Matrices
-remain native 64×64. Inspect at native scale and enlarged with nearest neighbor.
+matrix, palette and rendered image in a fresh ignored `tmp/` directory. Keep source matrix dimensions unchanged. Apply the project’s native canvas and
+grounding rules from [AGENTS.md](../../../AGENTS.md). The current cleanup helpers accept ordinary 64×64 matrices. For complete padded
+terrain frames, retain the declared canvas, anchor and depth and inspect the full
+frame through the artwork builder/map renderer. Report that guarded cleanup helpers
+do not yet support this branch; extend those shared helpers within an authorized
+implementation task before using them on padded frames.
+Inspect at native scale and enlarged with nearest neighbor.
 
 Start by isolating material colors. Highlight every occurrence of each selected
 RGB color, including misplaced pixels. Do not filter matches by location,
@@ -39,10 +44,10 @@ detectors remain available:
 
 ```sh
 python3 .agents/skills/pixel-cleaning/scripts/check_isolated_pixels.py \
-  pixel/art/terrain/road/tile.txt --output tmp/road-review/strays.json \
+  pixel/art/terrain/road/9.txt --output tmp/road-review/strays.json \
   --images-dir tmp/road-review
 python3 .agents/skills/pixel-cleaning/scripts/check_broken_outlines.py \
-  pixel/art/terrain/road/tile.txt --output tmp/road-review/outlines.json \
+  pixel/art/terrain/road/9.txt --output tmp/road-review/outlines.json \
   --images-dir tmp/road-review
 ```
 

@@ -1,10 +1,13 @@
-import { pixelSprites, pixelUnitModels, pixelFloorColors } from "./pixel-art";
+import { pixelSprites, pixelUnitModels, pixelFloorColors, pixelTerrainGeometry } from "./pixel-art";
 import type { DialoguePortrait } from "../game/types";
 
 export interface FrameImage {
   readonly url: string;
   readonly width: number;
   readonly height: number;
+  readonly anchorX?: number;
+  readonly anchorY?: number;
+  readonly z?: number;
 }
 export type ArtworkFaction = string;
 export type SpriteKind = "units" | "terrain";
@@ -22,6 +25,9 @@ const artwork: Artwork = Object.freeze({
           url: `${import.meta.env?.BASE_URL ?? "/"}${path}`,
           width: 64,
           height: 64,
+          ...Object.entries(pixelTerrainGeometry).find(([kind]) =>
+            name.startsWith(`terrain_${kind}_`),
+          )?.[1],
         }),
       ]),
     ),

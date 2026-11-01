@@ -5,7 +5,8 @@ use crate::{data::*, protocol::*};
 impl Game<'_> {
     fn damage_detail(&self, attack: &Weapon, defender: &Unit, tile: usize) -> DamageDetail {
         let rule = &self.rules.units[defender.kind];
-        let modifier = rule.damage_modifiers.get(attack.damage_type);
+        let modifier = rule.damage_modifiers.get(attack.damage_type)
+            + self.equipment_modifier(defender, attack.damage_type);
         let environment = rule.environment[self.terrain[tile]][attack.category.index()]
             [attack.damage_type.index()];
         let distribution = super::damage::distribution(attack, modifier + environment);
@@ -104,6 +105,7 @@ impl Game<'_> {
             protected.push(survival(format!("Keep {name} alive."), alive));
         }
         Some(CampaignObjectives {
+            notices: self.ritual_notices(),
             goals: mission
                 .goals
                 .iter()

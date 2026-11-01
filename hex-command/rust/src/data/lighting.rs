@@ -15,6 +15,12 @@ pub enum TimeOfDay {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct BattlefieldLight {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub color: Option<[u8; 3]>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub fixture: Option<bool>,
     pub col: i32,
     pub row: i32,
     #[cfg_attr(feature = "wasm", tsify(optional))]

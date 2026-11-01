@@ -37,12 +37,8 @@ grips, and materials outside the requested change. Recolor base and shadow toget
 in coherent clusters following overlaps and curves. Identify materials by their
 surfaces and anatomy, rather than color alone.
 
-The fill JSON requires `matrix_sha256`, `palette_sha256` and `regions`. Each region
-has `seed: [x,y]`, `mapping: {old: new}`, `expected_pixels`, `material` and `reason`.
-Optional `palette_additions` maps new material symbols to RGBA colors. Use a fresh
-output directory under `tmp/`. The helper produces the candidate matrix/palette,
-an exact `before/` copy, a change record and comparison image. Outline, transparency
-and faction-cloth changes use individually reviewed [pixel edits](../pixel-cleaning/SKILL.md#repair).
+For a guarded material fill, read the [fill request contract](implementation.md#fill-request-contract).
+Use a fresh candidate directory under ignored tmp/.
 
 ```sh
 python3 .agents/skills/pinkbox-enhancement/scripts/fill.py \

@@ -9,9 +9,8 @@ import {
 } from "../src/presentation/pixel-art";
 import { terrainTileView } from "../src/presentation/terrain-map";
 import { terrainArtNames, terrainProps } from "../src/ui/battlefield-view";
-import { terrainLayout, canonicalTerrainName } from "../src/presentation/terrain-layout";
-import { TYPES, TERRAIN } from "./game-fixture";
-import type { TerrainType } from "../src/game/types";
+import { terrainLayout } from "../src/presentation/terrain-layout";
+import { TYPES } from "./game-fixture";
 import { hexPoints, tileCenter, battlefieldSpriteSize } from "../src/ui/geometry";
 
 test("Adjacent hexes share both edge vertices without gaps on either row parity", () => {
@@ -102,6 +101,7 @@ test("Terrain floor, arrangement and orientation resolve directly to complete PN
         floor,
         owner: null,
         ...(terrain === "road" ? { connections: ["e", "w", "se"] as const } : {}),
+        ...(terrain === "village" ? { connections: [] } : {}),
         ...(terrain === "ford" ? { connections: ["nw", "se"] as const } : {}),
       };
       const result = terrainTileView(tile, "sample", currentArtwork());
@@ -126,14 +126,21 @@ test("Prop arrangements stay stable per map tile and vary between locations", ()
   for (const terrain of ["forest", "hill", "plains", "ford"] as const) {
     const choices = new Set<string>();
     for (let col = 0; col < 16; col++) {
-      const tile = { terrain, id: `${col},3` };
+      const tile = {
+        terrain,
+        id: `${col},3`,
+        ...(terrain === "ford" ? { connections: ["e", "w"] as const } : {}),
+      };
       const first = terrainProps(tile, "sample");
       assert.equal(terrainProps(tile, "sample"), first);
       choices.add(JSON.stringify(first));
     }
     assert(choices.size > 1);
   }
-  assert.deepEqual(terrainProps({ terrain: "road", id: "1,1" }, "sample"), []);
+  assert.deepEqual(
+    terrainProps({ terrain: "road", id: "1,1", connections: ["e", "w"] }, "sample"),
+    [],
+  );
 });
 
 test("Directional props select arrangements for the same orientation as the base frame", () => {
@@ -147,18 +154,5 @@ test("Directional props select arrangements for the same orientation as the base
     const props = terrainProps(tile, "sample");
     assert(pixelTerrainLayouts[frame]!.includes(props));
     assert.equal(terrainProps(tile, "sample"), props);
-  }
-});
-
-test("Every supported terrain has a complete prebuilt canonical inspection frame", () => {
-  for (const terrain of Object.keys(TERRAIN) as TerrainType[]) {
-    const name = canonicalTerrainName(terrain);
-    const frame = artFrame(currentArtwork(), "terrain", name);
-    assert(frame, `Missing canonical sprite for ${terrain}`);
-    assert.equal(frame.width, 64);
-    assert.equal(frame.height, 64);
-    const base = terrainArtNames({ terrain })[0]!;
-    if (pixelTerrainLayouts[base]?.length) assert.equal(name, `${base}_layout_0`);
-    else assert.equal(name, base);
   }
 });

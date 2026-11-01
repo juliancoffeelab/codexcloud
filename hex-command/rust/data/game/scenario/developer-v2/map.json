@@ -42,7 +42,8 @@
       "row": 0,
       "terrain": "bridge",
       "owner": null,
-      "floor": "dark-water"
+      "floor": "dark-water",
+      "connections": ["e", "w"]
     },
     {
       "id": "5,0",
@@ -50,7 +51,8 @@
       "row": 0,
       "terrain": "ford",
       "owner": null,
-      "floor": "shallow-water"
+      "floor": "shallow-water",
+      "connections": ["e", "w"]
     },
     {
       "id": "6,0",
@@ -206,31 +208,38 @@
       "row": 0,
       "terrain": "signpost",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": ["e", "w"]
     },
     {
       "id": "25,0",
       "col": 25,
       "row": 0,
-      "terrain": "plains",
+      "terrain": "castle-wall",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": [],
+      "wallCorners": [441, 207, 70, 140, 280, 304]
     },
     {
       "id": "26,0",
       "col": 26,
       "row": 0,
-      "terrain": "plains",
+      "terrain": "castle-gate",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": ["e", "se", "ne"],
+      "wallCorners": [408, 204, 0, 207, 441, 0]
     },
     {
       "id": "27,0",
       "col": 27,
       "row": 0,
-      "terrain": "plains",
+      "terrain": "castle-bell",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": [],
+      "wallCorners": [161, 67, 70, 204, 408, 304]
     },
     {
       "id": "28,0",
@@ -270,7 +279,8 @@
       "row": 1,
       "terrain": "village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": []
     },
     {
       "id": "1,1",
@@ -460,7 +470,7 @@
       "id": "24,1",
       "col": 24,
       "row": 1,
-      "terrain": "plains",
+      "terrain": "monastery",
       "owner": null,
       "floor": "green-plain"
     },
@@ -468,7 +478,7 @@
       "id": "25,1",
       "col": 25,
       "row": 1,
-      "terrain": "plains",
+      "terrain": "church",
       "owner": null,
       "floor": "green-plain"
     },
@@ -476,7 +486,7 @@
       "id": "26,1",
       "col": 26,
       "row": 1,
-      "terrain": "plains",
+      "terrain": "graveyard",
       "owner": null,
       "floor": "green-plain"
     },
@@ -484,7 +494,7 @@
       "id": "27,1",
       "col": 27,
       "row": 1,
-      "terrain": "plains",
+      "terrain": "ritual-star",
       "owner": null,
       "floor": "green-plain"
     },
@@ -492,7 +502,7 @@
       "id": "28,1",
       "col": 28,
       "row": 1,
-      "terrain": "plains",
+      "terrain": "ritual-spent",
       "owner": null,
       "floor": "green-plain"
     },

@@ -127,7 +127,15 @@ def prepare(credential, message):
     if not dependencies.exists():
         dependencies.symlink_to(ROOT / "node_modules", target_is_directory=True)
     step("Build committed Site source")
-    command(["npm", "run", "build"], cwd=checkout)
+    # Build explicitly: npm lifecycle hooks also run content checks. Preparation
+    # must not smuggle validation into a user-authorized build-only workflow.
+    command(["node", "--import", "tsx",
+             ".agents/skills/rust-toolchain/scripts/with-toolchain.ts",
+             "wasm-pack", "build", "rust", "--target", "web", "--release",
+             "--out-dir", "pkg", "--out-name", "hex_command", "--no-pack",
+             "--no-opt", "--locked", "--features", "wasm"], cwd=checkout)
+    command(["python3", "scripts/build-pixel-art.py"], cwd=checkout)
+    command(["node", "node_modules/vite/bin/vite.js", "build"], cwd=checkout)
     command(["git", "diff", "--quiet", "HEAD", "--", "."], cwd=checkout)
     command(["git", "push", "origin", credential["branch"]], cwd=checkout, env=environment)
     step("Package complete build")

@@ -9,13 +9,12 @@
 - Publication requires a user instruction to publish, deploy or update the live
   game. Building, testing, showing an image, committing and pushing do not imply
   publication. Visual changes and time spent working are not publication triggers.
-  Follow the [publish skill](.agents/skills/publish/SKILL.md) when publication is
-  authorized; do not invoke the hosted-site workflow for simulation-only work.
+  Follow the [deploy skill](.agents/skills/deploy/SKILL.md) for an authorized live
+  update; do not invoke the hosted-site workflow for simulation-only work.
 - Finish checked, pushed game implementation batches by preparing and saving an
-  unpublished Site release through the publish skill. A deployment request only
-  publishes that saved version: no Git, checks, formatting or rebuilding. A hold
-  on deployment does not prohibit preparation; drafts and simulations do not
-  trigger release preparation.
+  unpublished Site release through the [publish skill](.agents/skills/publish/SKILL.md).
+  A hold on deployment does not prohibit preparation; drafts and simulations do
+  not trigger release preparation. Deployment sequencing belongs to the deploy skill.
 
 - **Permanent character canvas rule: every character/unit sprite and portrait is
   exactly 64×64 native pixels. This rule must never be changed; do not reintroduce
@@ -23,8 +22,9 @@
   cleaning and generated frames must use 64×64. Most characters should be below
   40 painted pixels tall; cavalry and giants may go slightly above this. Compare
   mounted artwork with existing mounted units before setting scale. Distinguish
-  body/mount height from raised weapons or staffs. Terrain tiles also use exactly
-  64×64 native pixels, with a pointy-top regular hex centered in the square frame.
+  body/mount height from raised weapons or staffs. Terrain uses a 64×64 logical hex at the same native pixel scale. Explicit
+  terrain overflow may add transparent canvas padding with an authored anchor
+  and drawing depth; it must never resize the hex or artwork.
   Terrain, troops and commanders share one battlefield pixel scale; do not add
   per-unit scaling to emphasize leaders.
 - **Native row 63 is the ground line. Grounded units must stand on it with no
@@ -85,6 +85,21 @@ only the interruption and any explicitly requested follow-up. Do not resume the
 earlier implementation, checks, commits or deployment until the user asks you to
 continue.
 
+## Permanent prohibition on map post-processing
+
+Map post-processing is absolutely forbidden except for weather and atmospheric effects such as fog and lighting. Under no circumstances may this rule be changed, weakened, bypassed or given an exception. Runtime must select complete, prebuilt terrain frames from each tile’s explicit data. It must never assemble structures across the map, inspect neighboring geometry to inject artwork, distribute fragments, or paint terrain features onto other tiles. All terrain geometry and composition must be finished offline and baked into the selected tile frames.
+
+## Connected terrain
+
+Connected terrain must declare explicit `connections` and use numbered
+`<mask>.txt` sources for every supported combination. Implicit orientation
+defaults, special filename aliases such as `tile.txt` for one connected mask,
+and unsuffixed connected frames are explicitly forbidden. Missing or invalid
+connections must fail; do not silently substitute, infer or backfill them in
+runtime rendering or validation. This applies to all connected terrain,
+including roads, crossings, settlements and castles. Unconnected terrain and
+individual prop sources may use `tile.txt`.
+
 ## Runtime data ownership
 
 Runtime code must obtain current authored game data, including scenarios and their
@@ -108,17 +123,20 @@ Read the linked `SKILL.md` before starting work that matches its trigger.
 
 - [save-migrations](.agents/skills/save-migrations/SKILL.md): Use when changing or
   auditing save loading, save formats, migrations, or their data and dependencies.
-- [publish](.agents/skills/publish/SKILL.md): Use when the user authorizes
-  preparing a completed game implementation batch, publication, deployment or an
-  update to the live game. Drafts and simulation-only work do not trigger it.
+- [publish](.agents/skills/publish/SKILL.md): Use after checked, pushed game
+  implementation batches or for an explicit request to save an unpublished release.
+- [deploy](.agents/skills/deploy/SKILL.md): Use when the user asks to deploy,
+  publish or update the live game.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
   simulations; or assess balance, campaign competence or simulation performance.
 - [design-campaign](.agents/skills/design-campaign/SKILL.md): Use to design or
   revise campaigns and scenarios, including writing, objectives, maps, encounters,
   progression, and supporting mechanics.
-- [design-unit](.agents/skills/design-unit/SKILL.md): Use to make pixel art for new unit line.
-- [design-terrain](.agents/skills/design-terrain/SKILL.md): Use to make pixel art for new terrain.
+- [design-unit](.agents/skills/design-unit/SKILL.md): Use when designing or
+  integrating unit artwork, promotion branches or shared sprite scale.
+- [design-terrain](.agents/skills/design-terrain/SKILL.md): Use when authoring,
+  revising or integrating terrain artwork, connected variants or shared tile geometry.
 - [pinkbox-generation](.agents/skills/pinkbox-generation/SKILL.md): Use when
   generating or regenerating native pixel artwork from reference matrices,
   including units, terrain and foreground props.

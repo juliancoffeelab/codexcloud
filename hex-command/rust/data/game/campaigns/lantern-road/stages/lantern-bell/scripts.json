@@ -1,106 +1,553 @@
 {
   "events": [
     {
-      "id": "reeds",
+      "id": "monastery-lead",
       "trigger": {
-        "kind": "visit",
-        "tile": "5,1"
+        "kind": "condition",
+        "condition": {
+          "kind": "hasUnits",
+          "side": "player",
+          "name": "Oren"
+        }
       },
-      "label": "Meet the reed gatherers by the northern bridge",
-      "gold": 6,
       "dialogue": [
         {
-          "speaker": "Reed gatherer",
-          "portrait": "worker",
-          "text": "We saved what we could. Please make sure the road is still open when our children come home."
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "The monastery is on the hill to the north. Get me there, and I can use its wards to clear this fog."
         }
-      ]
+      ],
+      "label": "Oren can clear the fog from the northern hill monastery.",
+      "unlessEvent": "monastery-start"
+    },
+    {
+      "id": "monastery-start",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "5,5",
+          "side": "player",
+          "radius": 0,
+          "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "The company",
+          "portrait": "adept",
+          "text": "The stones answer the mage’s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
+        },
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "Keep them back. I need three turns here to break the veil."
+        }
+      ],
+      "label": "The hill ritual begins; skeletal wolves emerge.",
+      "spawn": {
+        "aiGroup": "monastery-wolves",
+        "area": ["7,5", "6,6", "6,5", "5,6", "7,6"],
+        "units": [
+          {
+            "id": "wolf-1",
+            "type": "skeletal-hound",
+            "side": "enemy"
+          },
+          {
+            "id": "wolf-2",
+            "type": "skeletal-hound",
+            "side": "enemy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fog-cleared",
+      "trigger": {
+        "kind": "held",
+        "tile": "5,5",
+        "turns": 3
+      },
+      "requiresEvent": "monastery-start",
+      "dialogue": [
+        {
+          "speaker": "The company",
+          "portrait": "adept",
+          "text": "The fog thins and lifts. The keep and the burial grounds lie exposed below."
+        }
+      ],
+      "label": "The hill ritual clears the valley’s fog."
+    },
+    {
+      "id": "bell-sighted",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "11,12",
+          "side": "player",
+          "radius": 4
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "The Bellwarden",
+          "portrait": "lich",
+          "text": "They have brought me more names."
+        },
+        {
+          "speaker": "Captain Nera",
+          "portrait": "swordsman",
+          "text": "You’ll have no more of them."
+        }
+      ],
+      "label": "The company locates the bell keep."
+    },
+    {
+      "id": "toll-warning",
+      "trigger": {
+        "kind": "round",
+        "round": 10
+      },
+      "dialogue": [
+        {
+          "speaker": "The company",
+          "portrait": "captives",
+          "text": "A low note builds beneath the mist. The marked stones begin to glow."
+        },
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "The bell is gathering strength. Get the prisoners off those marks—cutting their bonds won’t be enough."
+        }
+      ],
+      "label": "The next toll is close."
+    },
+    {
+      "id": "church-sighted",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "18,14",
+          "side": "player",
+          "radius": 2
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Ivo",
+          "portrait": "scout",
+          "text": "A church beyond the trees. The door is open."
+        }
+      ],
+      "label": "The eastern church comes into view."
+    },
+    {
+      "id": "church-armor",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "proximity",
+          "tile": "18,14",
+          "side": "player",
+          "radius": 0
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "The company",
+          "portrait": "spearman",
+          "text": "The vestry has been stripped of food, but two pieces of armor remain beneath a bench."
+        },
+        {
+          "speaker": "Captain Nera",
+          "portrait": "swordsman",
+          "text": "Take what we can use. Leave the door unbarred for anyone coming after us."
+        }
+      ],
+      "groundItems": [
+        {
+          "tile": "18,14",
+          "item": {
+            "id": "church-mail",
+            "name": "Sanctuary mail",
+            "description": "A well-kept mail shirt from the church stores. Incoming blade and piercing damage reduced by 1 per strike. Drops when its carrier dies.",
+            "attacks": [],
+            "armor": {
+              "blade": -1,
+              "pierce": -1,
+              "impact": 0
+            }
+          }
+        },
+        {
+          "tile": "18,13",
+          "item": {
+            "id": "church-helm",
+            "name": "Iron chapel helm",
+            "description": "An old watchman’s helmet. Incoming impact damage reduced by 1 per strike. Drops when its carrier dies.",
+            "attacks": [],
+            "armor": {
+              "blade": 0,
+              "pierce": 0,
+              "impact": -1
+            }
+          }
+        }
+      ],
+      "label": "Armor is found in the eastern church."
+    },
+    {
+      "id": "northern-sighted",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "proximity",
+              "tile": "11,5",
+              "side": "player",
+              "radius": 3
+            },
+            {
+              "kind": "hasUnits",
+              "side": "any",
+              "name": "Northern captives"
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Captive",
+          "portrait": "captives",
+          "text": "Here! Please—before it rings again!"
+        }
+      ],
+      "label": "The northern prisoners have been found."
+    },
+    {
+      "id": "northern-freed",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "hasUnits",
+          "side": "player",
+          "name": "Northern captives"
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Captive",
+          "portrait": "captives",
+          "text": "Our hands are free. Where do we go?"
+        },
+        {
+          "speaker": "Captain Nera",
+          "portrait": "swordsman",
+          "text": "Off the marked stones. Stay clear of the fighting."
+        }
+      ],
+      "requiresEvent": "northern-sighted",
+      "label": "The northern captives are freed."
+    },
+    {
+      "id": "eastern-sighted",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "proximity",
+              "tile": "19,10",
+              "side": "player",
+              "radius": 3
+            },
+            {
+              "kind": "hasUnits",
+              "side": "any",
+              "name": "Eastern captives"
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Captive",
+          "portrait": "captives",
+          "text": "Here! Please—before it rings again!"
+        }
+      ],
+      "label": "The eastern prisoners have been found."
+    },
+    {
+      "id": "eastern-freed",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "hasUnits",
+          "side": "player",
+          "name": "Eastern captives"
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Captive",
+          "portrait": "captives",
+          "text": "Our hands are free. Where do we go?"
+        },
+        {
+          "speaker": "Captain Nera",
+          "portrait": "swordsman",
+          "text": "Off the marked stones. Stay clear of the fighting."
+        }
+      ],
+      "requiresEvent": "eastern-sighted",
+      "label": "The eastern captives are freed."
+    },
+    {
+      "id": "southern-sighted",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "proximity",
+              "tile": "12,20",
+              "side": "player",
+              "radius": 3
+            },
+            {
+              "kind": "hasUnits",
+              "side": "any",
+              "name": "Southern captives"
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Captive",
+          "portrait": "captives",
+          "text": "Here! Please—before it rings again!"
+        }
+      ],
+      "label": "The southern prisoners have been found."
+    },
+    {
+      "id": "southern-freed",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "hasUnits",
+          "side": "player",
+          "name": "Southern captives"
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Captive",
+          "portrait": "captives",
+          "text": "Our hands are free. Where do we go?"
+        },
+        {
+          "speaker": "Captain Nera",
+          "portrait": "swordsman",
+          "text": "Off the marked stones. Stay clear of the fighting."
+        }
+      ],
+      "requiresEvent": "southern-sighted",
+      "label": "The southern captives are freed."
+    },
+    {
+      "id": "tollkeeper-pursuit",
+      "trigger": {
+        "kind": "round",
+        "round": 14
+      },
+      "unlessChoice": "tollkeeper-defeated",
+      "dialogue": [
+        {
+          "speaker": "Ivo",
+          "portrait": "scout",
+          "text": "The dead from the pass—they’ve followed us!"
+        },
+        {
+          "speaker": "Captain Nera",
+          "portrait": "swordsman",
+          "text": "Hold them at the tree line. The rest of you, keep moving."
+        }
+      ],
+      "label": "The Tollkeeper’s surviving force enters from the west.",
+      "spawn": {
+        "area": ["0,13", "0,14", "1,14", "0,15", "1,12"],
+        "units": [
+          {
+            "id": "tollkeeper",
+            "type": "necromancer",
+            "side": "enemy",
+            "name": "The Tollkeeper"
+          },
+          {
+            "id": "walker-1",
+            "type": "zombie-walker",
+            "side": "enemy"
+          },
+          {
+            "id": "walker-2",
+            "type": "zombie-walker",
+            "side": "enemy"
+          }
+        ]
+      }
+    }
+  ],
+  "enemyGroups": [
+    {
+      "id": "garrison",
+      "order": {
+        "kind": "hold",
+        "area": ["10,11", "11,11", "10,12", "11,12", "12,12", "10,13", "11,13"],
+        "attackRadius": 2
+      }
+    },
+    {
+      "id": "north-watch",
+      "order": {
+        "kind": "hold",
+        "area": ["11,5", "10,5", "10,6"],
+        "attackRadius": 2
+      }
+    },
+    {
+      "id": "east-watch",
+      "order": {
+        "kind": "hold",
+        "area": ["19,10", "19,9", "18,10"],
+        "attackRadius": 2
+      }
+    },
+    {
+      "id": "south-watch",
+      "order": {
+        "kind": "hold",
+        "area": ["12,20", "13,20", "12,19"],
+        "attackRadius": 2
+      }
+    },
+    {
+      "id": "monastery-wolves"
+    },
+    {
+      "id": "bell-raised"
     }
   ],
   "waves": [
     {
-      "id": "first-rise-9-1",
-      "round": 8,
-      "label": "An unsealed grave raises a skeleton on turn 8",
-      "requiresUnsealed": "9,1",
+      "id": "western-reinforcements",
+      "round": 10,
+      "label": "The western watch reaches the valley.",
       "units": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 9,
-          "row": 1
+          "type": "swordsman",
+          "side": "player",
+          "col": 0,
+          "row": 13
+        },
+        {
+          "type": "archer",
+          "side": "player",
+          "col": 0,
+          "row": 14
+        },
+        {
+          "type": "spearman",
+          "side": "player",
+          "col": 0,
+          "row": 15
         }
       ]
-    },
+    }
+  ],
+  "rituals": [
     {
-      "id": "first-rise-11-4",
-      "round": 8,
-      "label": "An unsealed grave raises a skeleton on turn 8",
-      "requiresUnsealed": "11,4",
-      "units": [
-        {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 4
-        }
-      ]
-    },
-    {
-      "id": "first-rise-9-7",
-      "round": 8,
-      "label": "An unsealed grave raises a skeleton on turn 8",
-      "requiresUnsealed": "9,7",
-      "units": [
-        {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 9,
-          "row": 7
-        }
-      ]
-    },
-    {
-      "id": "second-rise-9-1",
-      "round": 12,
-      "label": "An unsealed grave raises a skeleton on turn 12",
-      "requiresUnsealed": "9,1",
-      "units": [
-        {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 9,
-          "row": 1
-        }
-      ]
-    },
-    {
-      "id": "second-rise-11-4",
-      "round": 12,
-      "label": "An unsealed grave raises a skeleton on turn 12",
-      "requiresUnsealed": "11,4",
-      "units": [
-        {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 4
-        }
-      ]
-    },
-    {
-      "id": "second-rise-9-7",
-      "round": 12,
-      "label": "An unsealed grave raises a skeleton on turn 12",
-      "requiresUnsealed": "9,7",
-      "units": [
-        {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 9,
-          "row": 7
-        }
-      ]
+      "id": "bell",
+      "when": {
+        "kind": "hasUnits",
+        "side": "enemy",
+        "name": "The Bellwarden"
+      },
+      "sourceTerrain": "ritual-star",
+      "spentTerrain": "ritual-spent",
+      "unitTypes": ["captives"],
+      "firstRound": 12,
+      "interval": 6,
+      "spawn": {
+        "aiGroup": "bell-raised",
+        "area": [
+          "10,11",
+          "11,11",
+          "10,12",
+          "11,12",
+          "12,12",
+          "10,13",
+          "11,13",
+          "10,14",
+          "11,14",
+          "12,14"
+        ],
+        "units": [
+          {
+            "id": "spear",
+            "type": "skeleton",
+            "side": "enemy"
+          },
+          {
+            "id": "bow",
+            "type": "bonearcher",
+            "side": "enemy"
+          }
+        ]
+      },
+      "deathLight": {
+        "col": 11,
+        "row": 12,
+        "radius": 62,
+        "power": 0.75,
+        "color": [255, 32, 32],
+        "fixture": false
+      },
+      "label": "The bell tolls across the valley.",
+      "noticeWhen": {
+        "kind": "any",
+        "conditions": [
+          {
+            "kind": "event",
+            "event": "toll-warning"
+          },
+          {
+            "kind": "event",
+            "event": "northern-sighted"
+          },
+          {
+            "kind": "event",
+            "event": "eastern-sighted"
+          },
+          {
+            "kind": "event",
+            "event": "southern-sighted"
+          },
+          {
+            "kind": "event",
+            "event": "monastery-start"
+          }
+        ]
+      }
     }
   ]
 }

@@ -95,6 +95,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) terrain: Vec<usize>,
     pub(crate) owners: Vec<Option<Side>>,
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
+    pub(crate) wall_corners: Rc<Vec<Option<Vec<u16>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) fog: Rc<Vec<Option<ConditionRule>>>,
     pub(crate) condition_memory: Vec<String>,
@@ -224,6 +225,13 @@ impl<'catalog> Game<'catalog> {
                 .collect(),
         );
         let combat_present = state.last_combat.is_some();
+        let wall_corners = Rc::new(
+            state
+                .tiles
+                .iter()
+                .map(|tile| tile.wall_corners.clone())
+                .collect(),
+        );
         let dead_ends = Rc::new(
             state
                 .tiles
@@ -245,6 +253,7 @@ impl<'catalog> Game<'catalog> {
             terrain,
             owners,
             connections,
+            wall_corners,
             dead_ends,
             floors,
             units,
@@ -337,6 +346,7 @@ impl<'catalog> Game<'catalog> {
                 terrain: self.rules.terrain_names[self.terrain[index]].clone(),
                 owner: self.owners[index],
                 connections: self.connections[index].clone(),
+                wall_corners: self.wall_corners[index].clone(),
                 dead_ends: self.dead_ends[index].clone(),
                 floor: self.floors[index].clone(),
                 fog: self.fog[index].clone(),
@@ -435,11 +445,11 @@ impl<'catalog> Game<'catalog> {
         }
     }
     /// Change terrain and invalidate only terrain-dependent route results.
-    #[cfg(test)]
     pub(crate) fn set_terrain(&mut self, tile: usize, terrain: usize) {
         if self.terrain[tile] != terrain {
             self.terrain[tile] = terrain;
             Rc::make_mut(&mut self.connections)[tile] = None;
+            Rc::make_mut(&mut self.wall_corners)[tile] = None;
             Rc::make_mut(&mut self.dead_ends)[tile] = None;
             self.attack_geometry = Rc::new(RefCell::new(HashMap::default()));
             self.attack_masks = super::geometry::AttackMasks::default();
@@ -538,6 +548,7 @@ impl<'catalog> Game<'catalog> {
             terrain: self.terrain.clone(),
             owners: self.owners.clone(),
             connections: self.connections.clone(),
+            wall_corners: self.wall_corners.clone(),
             dead_ends: self.dead_ends.clone(),
             floors: self.floors.clone(),
             units: self.units.clone(),

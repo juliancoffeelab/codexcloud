@@ -1,0 +1,47 @@
+# Terrain integration
+
+Read when adding a gameplay terrain ID or integrating approved artwork.
+Work from the game root.
+
+Follow existing terrain implementations before adding a new representation.
+Bridge and ford demonstrate directional frames; plains, forest, hill and ford
+demonstrate foreground layouts. A new terrain uses the existing tile `terrain`
+identifier. Do not add a parallel artwork selector to tiles or extend the save
+format just to select its sprite.
+
+1. Register its stable ID, name, movement cost, passability, description and any
+   protection in `rust/data/game/terrain.json`. Add the ID to `Terrain` and
+   `as_str()` in `rust/src/data/ids.rs` and `TerrainType` in `src/game/types.ts`.
+   Check race/unit `terrainModifiers` if the terrain needs special treatment;
+   do not inherit another terrain's behavior merely because its artwork is similar.
+2. Add native `<mask>.txt` sources for connected terrain, or `tile.txt` only
+   for terrain without connection variants, and material `palette.json` under
+   `pixel/art/terrain/<id>/`. Shared `G`/`g` ground colors come from the map tile's
+   explicit `floor`; without one they render transparent. Keep foreground pieces
+   in `pixel/art/terrain/props/<id>/<piece>/` and compose them in `layouts.json`.
+   Ordinary props fit inside their hex. Explicitly padded complete terrain frames
+   must use the finite canvas policy in `scripts/build-pixel-art.py`: only the
+   three castle families may declare 80×96 with anchor (40,48). `canvas.json`
+   cannot opt another family into overflow or enlarge the approved profile.
+   Drawing depth is an authored integer. The build bakes complete frames;
+   runtime does not draw props outside those frames.
+3. If directional frames are needed, follow bridge/ford: add source matrices,
+   register their allowed stems in `scripts/build-pixel-art.py`, and select them
+   in `src/presentation/terrain-connections.ts`. Match connection validation in
+   `rust/src/data/state.rs`. Connection edges must have a stated meaning: for
+   landing/ferry, the single `e` or `w` connection identifies the landward bank;
+   `1.txt` faces east and `8.txt` faces west. Key directional layouts by the
+   same source stems. Extend the existing generic directional checks as needed.
+4. Add the terrain's inspection description in `src/ui/terrain-view.ts` and
+   preview color in `src/ui/geometry.ts`. Existing movement, ownership, healing
+   and recruitment behavior must be checked explicitly; a new ID does not
+   automatically acquire the special behavior of villages or keeps.
+5. Add it to the developer terrain showcase. Keep campaign/map experiments in
+   ignored draft data until promotion is requested. Maps select the terrain with
+   `terrain`, its ground with `floor`, and supported orientation with `connections`.
+6. Run `npm run art:build`, `npm run art:check`, `npm run content:check`,
+   `npm run check` and the shared `npm test` as appropriate to the changed code.
+   Use the Rust toolchain skill for Rust/WASM checks. Inspect standalone hexes,
+   all supported orientations and neighboring tiles through the normal terrain
+   renderer. Preserve original evidence; do not substitute map-canvas overlays
+   for an implementation or add save/reload checks for artwork-only changes.

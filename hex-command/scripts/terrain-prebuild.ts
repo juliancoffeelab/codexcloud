@@ -14,7 +14,7 @@ import {
   terrainMapKey,
   terrainAssetKey,
   terrainMapDimensions,
-  terrainTileView,
+  terrainMapTiles,
   paintTerrainTiles,
 } from "../src/presentation/terrain-map";
 import { battlefieldSpriteSize, mapDimensions } from "../src/ui/geometry";
@@ -107,10 +107,7 @@ export function terrainPrebuild(): Plugin {
           const plan = {
             ...mapDimensions(map),
             pixelScale: 64 / battlefieldSpriteSize,
-            tiles: map.tiles.map((tile) => ({
-              ...tile,
-              ...terrainTileView(tile, map.mapId, artwork),
-            })),
+            tiles: terrainMapTiles(map.tiles, map.mapId, artwork),
           };
           for (const tile of plan.tiles) {
             const name = tile.terrainFrame?.url;
@@ -119,7 +116,7 @@ export function terrainPrebuild(): Plugin {
             const path = resolve(root, "public", pixelSprites[tile.frameKey]!);
             this.addWatchFile(path);
             // Keep build-time raster clipping identical to the canvas fallback.
-            const frame = createCanvas(64, 64);
+            const frame = createCanvas(tile.terrainFrame!.width, tile.terrainFrame!.height);
             frame.getContext("2d").drawImage(await loadImage(path), 0, 0);
             frames.set(name, frame);
           }

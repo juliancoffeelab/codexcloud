@@ -5,9 +5,18 @@ import type { TerrainType } from "../game/types";
 import { campaignMission } from "../game/campaign-progress";
 
 const descriptions: Record<TerrainType, string> = {
+  monastery: "A hilltop ritual site, sheltering against ranged attacks.",
+  church: "A quiet church. Search it for what remains.",
+  graveyard: "Old burial stones. No protection.",
+  "ritual-star": "A charged mark. Captives must move off it before the bell tolls.",
+  "ritual-spent": "A consumed mark. It cannot raise another group.",
+  "castle-bell":
+    "A bell tower inside an enclosed fortified courtyard. Reduces all incoming damage by 1.",
   "burned-village": "Burned homes. No income, healing or protection.",
   marsh: "Mud and reeds expose land troops; merfolk find protection here.",
   ruins: "Broken walls shelter against ranged attacks.",
+  "castle-wall": "A paved fortified courtyard. Reduces all incoming damage by 1.",
+  "castle-gate": "A fortified courtyard entrance. Reduces all incoming damage by 1.",
   fort: "Earthworks protect against every damage kind. Capture them to hold a crossing.",
   grove: "A sacred woodland refuge. Its owner’s occupants heal 4 HP each turn.",
   plains: "Open grassland with easy footing.",
@@ -32,10 +41,11 @@ function protectionFact(terrain: TerrainType): string {
   if (terrain === "ford") return "Land troops: +1 damage received. Merfolk: no exposure.";
   if (terrain === "marsh") return "Land troops: +1 damage received. Merfolk: −1 damage received.";
   if (terrain === "hill") return "Land troops: −1 damage received. Merfolk: +1 damage received.";
-  if (terrain === "fort") return "Protection: −1 damage from all attacks";
+  if (["fort", "castle-wall", "castle-gate", "castle-bell"].includes(terrain))
+    return "Protection: −1 damage from all attacks";
   if (terrain === "forest" || terrain === "grove")
     return "Land troops: −1 ranged damage. Merfolk: +1 damage from all attacks.";
-  if (["forest", "grove", "ruins"].includes(terrain))
+  if (["forest", "grove", "ruins", "monastery"].includes(terrain))
     return "Protection: −1 damage from ranged attacks";
   return "Protection: none";
 }

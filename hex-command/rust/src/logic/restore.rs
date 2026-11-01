@@ -326,15 +326,20 @@ pub(crate) fn validate_state_geometry(
             if story.len() > 8
                 || story.iter().any(|veteran| {
                     let family = &rules.units[rules.types[&veteran.r#type]].family;
-                    !mission.map.units.iter().any(|unit| {
-                        unit.side == Side::Player
-                            && (if veteran.role == Some(Role::Leader) {
-                                unit.role == Some(Role::Leader)
-                            } else {
-                                veteran.name.is_some() && veteran.name == unit.name
-                            })
-                            && rules.units[rules.types[&unit.r#type]].family == *family
-                    })
+                    !(veteran.role.is_none()
+                        && mission
+                            .arrivals
+                            .iter()
+                            .any(|arrival| veteran.name.as_ref() == Some(&arrival.name)))
+                        && !mission.map.units.iter().any(|unit| {
+                            unit.side == Side::Player
+                                && (if veteran.role == Some(Role::Leader) {
+                                    unit.role == Some(Role::Leader)
+                                } else {
+                                    veteran.name.is_some() && veteran.name == unit.name
+                                })
+                                && rules.units[rules.types[&unit.r#type]].family == *family
+                        })
                 })
             {
                 return Err(fail("invalid story veterans"));

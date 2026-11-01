@@ -115,7 +115,8 @@
     "game/units/giant-spider.json",
     "game/units/captives.json",
     "game/units/zombie-walker.json",
-    "game/units/zombie-decay-caster.json"
+    "game/units/zombie-decay-caster.json",
+    "game/units/skeletal-hound.json"
   ],
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",

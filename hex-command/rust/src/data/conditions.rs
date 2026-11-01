@@ -2,6 +2,26 @@
 use super::{Event, Side, Tile};
 use serde::{Deserialize, Serialize};
 
+/// Unit allegiance selectors are distinct from the two turn/ownership phases.
+/// `Any` tests existence without excluding passive or rescued actors.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum ConditionSide {
+    Player,
+    Enemy,
+    Neutral,
+    Any,
+}
+impl From<Side> for ConditionSide {
+    fn from(side: Side) -> Self {
+        match side {
+            Side::Player => Self::Player,
+            Side::Enemy => Self::Enemy,
+        }
+    }
+}
+
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "camelCase", deny_unknown_fields)]
@@ -12,24 +32,27 @@ pub enum Condition {
         side: Side,
     },
     Proximity {
+        #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        unit_types: Vec<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         tile: Option<String>,
         radius: u16,
-        side: Side,
+        side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         name: Option<String>,
     },
     HasUnits {
-        side: Side,
+        side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         name: Option<String>,
     },
     NoUnits {
-        side: Side,
+        side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -100,6 +123,11 @@ impl Condition {
         types: &std::collections::HashMap<String, usize>,
     ) -> Result<(), String> {
         match self {
+            Self::Proximity { unit_types, .. }
+                if unit_types.iter().any(|kind| !types.contains_key(kind)) =>
+            {
+                Err("condition references unknown unit types".into())
+            }
             Self::Proximity {
                 unit_type: Some(kind),
                 ..

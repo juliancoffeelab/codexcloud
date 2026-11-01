@@ -90,12 +90,8 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
       break;
     case "hold":
       total = goal.turns;
-      if (goal.startEvent && !board.campaign?.marks.includes(`event:${goal.startEvent}`)) {
-        label =
-          board.tile(goal.tile)?.owner !== "player"
-            ? "Reach the wreck to start the rescue"
-            : `Wait for high tide on turn ${goal.earliestRound}`;
-      } else current = Math.min(board.campaign?.holds?.[goal.tile]?.heldTurns ?? 0, total);
+      if (!goal.startEvent || board.campaign?.marks.includes(`event:${goal.startEvent}`))
+        current = Math.min(board.campaign?.holds?.[goal.tile]?.heldTurns ?? 0, total);
       break;
     case "vigil":
       total = goal.turns;
@@ -120,9 +116,9 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
   const done =
     current === total &&
     (goal.kind !== "hold" ||
-      (board.turn === "player" &&
+      ((goal.once || board.turn === "player") &&
         board.round >= goal.earliestRound &&
-        board.tile(goal.tile)?.owner === "player"));
+        (goal.once || board.tile(goal.tile)?.owner === "player")));
   return { label, current, total, done, tiles };
 }
 
@@ -141,10 +137,12 @@ export function dialoguePending(state: Immutable<CampaignState> | undefined): bo
 
 /** Story companions already placed in the next chapter must not become duplicate recruits. */
 export function returnsWithStory(state: Immutable<CampaignState>, unit: Readonly<Unit>): boolean {
+  const next = CAMPAIGNS[state.id].missions[state.mission + 1];
   return Boolean(
     unit.name &&
-    CAMPAIGNS[state.id].missions[state.mission + 1]?.map.units.some(
-      (incoming) => incoming.side === "player" && incoming.name === unit.name,
-    ),
+    (next?.arrivals?.some((arrival) => arrival.name === unit.name) ||
+      next?.map.units.some(
+        (incoming) => incoming.side === "player" && incoming.name === unit.name,
+      )),
   );
 }

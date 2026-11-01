@@ -1,7 +1,6 @@
 # Pinkbox enhancement implementation
 
-Read this when changing or debugging `prepare.py` or `fill.py`. Input contracts
-and operating branches are in [SKILL.md](SKILL.md).
+Read this when changing or debugging `prepare.py` or `fill.py`. The operating branches are in [SKILL.md](SKILL.md).
 
 `prepare.py` delegates template construction to the generation helper with the
 approved artwork as anchor 1. It infers unit/terrain/prop kind from canonical
@@ -21,3 +20,12 @@ Terrain and prop fill candidates retain the original matrix filename and resolve
 floor colors for scratch rendering; exact source files remain under `before/`.
 Comparison rendering uses the canonical source and the candidate. Canonical
 integration keeps shared floor shades out of local material palettes.
+
+## Fill request contract
+
+The fill JSON requires `matrix_sha256`, `palette_sha256` and `regions`. Each region
+has `seed: [x,y]`, `mapping: {old: new}`, `expected_pixels`, `material` and `reason`.
+Optional `palette_additions` maps new material symbols to RGBA colors. Use a fresh
+output directory under `tmp/`. The helper produces the candidate matrix/palette,
+an exact `before/` copy, a change record and comparison image. Outline, transparency
+and faction-cloth changes use individually reviewed [pixel edits](../pixel-cleaning/SKILL.md#repair).

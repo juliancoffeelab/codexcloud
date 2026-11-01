@@ -655,7 +655,14 @@ impl Rules {
                         "duplicate or mismatched stage/map identifier",
                     ));
                 }
-                validate_mission(&stage.mission, &state, &types, &units, &stage_path)?;
+                validate_mission(
+                    &stage.mission,
+                    &state,
+                    &types,
+                    &units,
+                    &terrains,
+                    &stage_path,
+                )?;
                 map_definitions.push(documents::map_metadata(
                     bundle,
                     &stage_path,
@@ -859,6 +866,7 @@ fn validate_mission(
     state: &State,
     types: &HashMap<String, usize>,
     units: &[UnitRule],
+    terrains: &HashMap<String, usize>,
     path: &str,
 ) -> Result<(), ContentError> {
     let tiles: HashSet<&str> = state.tiles.iter().map(|t| t.id.as_str()).collect();
@@ -1067,7 +1075,9 @@ fn validate_mission(
             Trigger::Condition { condition } => condition
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|message| ContentError::new(path, message))?,
-            Trigger::Visit { tile } | Trigger::Control { tile, .. } => tile_ref(tile)?,
+            Trigger::Visit { tile }
+            | Trigger::Held { tile, .. }
+            | Trigger::Control { tile, .. } => tile_ref(tile)?,
             Trigger::Round { round } => {
                 if *round == 0 {
                     return Err(ContentError::new(path, "event round must be positive"));
@@ -1076,6 +1086,90 @@ fn validate_mission(
         }
         for id in event.requires_event.iter().chain(&event.unless_event) {
             event_ref(id)?;
+        }
+    }
+    unique(
+        mission.arrivals.iter().map(|arrival| arrival.name.as_str()),
+        path,
+    )?;
+    for arrival in &mission.arrivals {
+        if arrival.name.is_empty() {
+            return Err(ContentError::new(path, "empty automatic companion name"));
+        }
+        tile_ref(&format!("{},{}", arrival.col, arrival.row))?;
+    }
+    unique(
+        mission.rituals.iter().map(|ritual| ritual.id.as_str()),
+        path,
+    )?;
+    for ritual in &mission.rituals {
+        identifier(&ritual.id, path)?;
+        if ritual.interval == 0
+            || ritual.first_round == 0
+            || ritual.unit_types.is_empty()
+            || ritual.spawn.units.is_empty()
+            || ritual.spawn.area.is_empty()
+        {
+            return Err(ContentError::new(path, "invalid periodic ritual"));
+        }
+        for kind in &ritual.unit_types {
+            reference(kind, types, path)?;
+        }
+        if !terrains.contains_key(&ritual.source_terrain)
+            || !terrains.contains_key(&ritual.spent_terrain)
+        {
+            return Err(ContentError::new(path, "unknown ritual terrain"));
+        }
+        ritual
+            .when
+            .validate(&state.tiles, &mission.events, false)
+            .map_err(|message| ContentError::new(path, message))?;
+        ritual
+            .when
+            .validate_units(types)
+            .map_err(|message| ContentError::new(path, message))?;
+        if let Some(condition) = &ritual.notice_when {
+            condition
+                .validate(&state.tiles, &mission.events, false)
+                .map_err(|message| ContentError::new(path, message))?;
+            condition
+                .validate_units(types)
+                .map_err(|message| ContentError::new(path, message))?;
+        }
+        for site in &ritual.spawn.area {
+            tile_ref(site)?;
+        }
+        for unit in &ritual.spawn.units {
+            reference(&unit.r#type, types, path)?;
+            identifier(&unit.id, path)?;
+        }
+        unique(ritual.spawn.units.iter().map(|unit| unit.id.as_str()), path)?;
+        if let Some(group) = &ritual.spawn.ai_group {
+            group_ref(group, Side::Enemy)?;
+        }
+        BattlefieldLighting {
+            time: TimeOfDay::Night,
+            lights: vec![ritual.death_light.clone()],
+        }
+        .validate(&state.tiles, &mission.events)
+        .map_err(|message| ContentError::new(path, message))?;
+    }
+    for goal in mission.all_goals() {
+        if let Goal::Hold { unit_types, .. } = goal {
+            for kind in unit_types {
+                reference(kind, types, path)?;
+            }
+        }
+    }
+    for event in &mission.events {
+        for item in &event.ground_items {
+            tile_ref(&item.tile)?;
+            item.item.validate(path)?;
+        }
+        if let Trigger::Held { turns, .. } = event.trigger {
+            if turns == 0 {
+                return Err(ContentError::new(path, "held trigger needs positive turns"));
+            }
         }
     }
     for wave in &mission.waves {

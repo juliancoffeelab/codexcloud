@@ -1,0 +1,34 @@
+{
+  "id": "skeletal-hound",
+  "role": "flank",
+  "name": "Skeletal hound",
+  "race": "skeletons",
+  "hp": 17,
+  "move": 5,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "fangs",
+      "name": "Fangs",
+      "damage": 4,
+      "count": 2,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 1
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": -1,
+    "impact": 1
+  },
+  "ability": "Restless hunter",
+  "description": "An undead wolf that rushes exposed intruders. Its bones are vulnerable to impact.",
+  "level": 1,
+  "family": "wolf",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "terrainModifiers": {}
+}

@@ -9,6 +9,7 @@ const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = 
   const game = new Game();
   for (const tile of game.tiles) {
     tile.terrain = "plains";
+    delete tile.connections;
     tile.owner = null;
   }
   game.units = [];

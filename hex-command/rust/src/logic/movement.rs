@@ -353,6 +353,7 @@ impl<'catalog> Game<'catalog> {
             Terrain::Grove,
             Terrain::Fort,
             Terrain::Ruins,
+            Terrain::Monastery,
         ]
         .iter()
         .any(|name| self.terrain_is(tile, *name))

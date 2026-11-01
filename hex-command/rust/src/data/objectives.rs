@@ -53,6 +53,9 @@ pub struct ObjectiveStatus {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct CampaignObjectives {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub notices: Vec<String>,
     pub goals: Vec<ObjectiveStatus>,
     pub optional: Vec<ObjectiveStatus>,
     pub survival: Vec<ObjectiveStatus>,

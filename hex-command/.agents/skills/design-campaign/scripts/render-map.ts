@@ -6,7 +6,7 @@ import { parseArgs } from "node:util";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { artFrameKey, currentArtwork } from "../../../../src/presentation/art";
 import { pixelSprites } from "../../../../src/presentation/pixel-art";
-import { paintTerrainTiles, terrainTileView } from "../../../../src/presentation/terrain-map";
+import { paintTerrainTiles, terrainMapTiles } from "../../../../src/presentation/terrain-map";
 import {
   daylight,
   lightingMatrix,
@@ -65,11 +65,13 @@ const { values } = parseArgs({
     map: { type: "string" },
     overlay: { type: "string" },
     output: { type: "string" },
+    grid: { type: "boolean", default: false },
+    "grid-color": { type: "string" },
   },
 });
 if (!values.map || !values.output)
   throw new Error(
-    "Usage: render-map.ts --map map.json [--overlay overlay.json] --output preview.png",
+    "Usage: render-map.ts --map map.json [--overlay overlay.json] [--grid] [--grid-color red] --output preview.png",
   );
 const map: DraftMap = JSON.parse(await readFile(resolve(values.map), "utf8"));
 const overlay: Overlay = values.overlay
@@ -126,7 +128,7 @@ const resolved = previewPresentation({
 const lighting = resolved.lighting;
 const fog = new Set(resolved.fog);
 const artwork = currentArtwork();
-const tiles = map.tiles.map((tile) => ({ ...tile, ...terrainTileView(tile, map.mapId, artwork) }));
+const tiles = terrainMapTiles(map.tiles, map.mapId, artwork);
 const frames = new Map<string, Awaited<ReturnType<typeof loadImage>>>();
 for (const tile of tiles) {
   if (!tile.terrainFrame) throw new Error(`Missing terrain frame: ${tile.id}`);
@@ -229,6 +231,34 @@ for (const unit of visibleUnits) {
   ctx.fillStyle = "#a9d0a5";
   ctx.fill();
 }
+if (values.grid) {
+  ctx.save();
+  ctx.strokeStyle = values["grid-color"] ?? "#ff4040";
+  ctx.globalAlpha = 0.9;
+  ctx.lineWidth = 1 / scale;
+  ctx.beginPath();
+  const edges = new Set<string>();
+  for (const tile of tiles) {
+    const points = tile.points
+      .split(" ")
+      .map((point) => point.split(",").map(Number) as [number, number]);
+    for (let index = 0; index < points.length; index++) {
+      const a = points[index]!,
+        b = points[(index + 1) % points.length]!;
+      const key = [a, b]
+        .map(([x, y]) => `${x.toFixed(6)},${y.toFixed(6)}`)
+        .sort()
+        .join("|");
+      if (edges.has(key)) continue;
+      edges.add(key);
+      ctx.moveTo(...a);
+      ctx.lineTo(...b);
+    }
+  }
+  ctx.stroke();
+  ctx.restore();
+}
+
 for (const arrow of overlay.arrows ?? []) {
   const from = position(arrow.from),
     to = position(arrow.to),

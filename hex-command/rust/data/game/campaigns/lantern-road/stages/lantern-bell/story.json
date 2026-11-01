@@ -1,37 +1,24 @@
 {
-  "subtitle": "Silence the graves before silencing the bell.",
-  "briefing": "The villages are lit again, but the bell keeps calling their dead back to war. Nera and the adepts have traced that call to the grave ruins. Breaking those bindings will let the company silence the Bellwarden and leave the valley a road home.",
-  "hints": [
-    "The broken walls still cast a useful shadow.",
-    "Listen for where the bell’s answer comes from."
-  ],
-  "intro": [
-    {
-      "speaker": "Adept Meri",
-      "portrait": "adept",
-      "text": "The bell does not make the dead. It calls them from these graves. Stand on a grave and I can close the binding."
-    },
-    {
-      "speaker": "Nera",
-      "portrait": "swordsman",
-      "text": "We can hit the walls all day and still lose the road. Seal the flanks, protect Meri, then take the bell."
-    },
-    {
-      "speaker": "Meri",
-      "portrait": "adept",
-      "text": "My stone sparks hurt bones. Do keep their swords away from me."
-    }
-  ],
+  "subtitle": "Enter the bell valley.",
+  "briefing": "The valley’s houses stand dark and empty. A bell sounds somewhere beyond the fog.",
+  "hints": ["Keep sight of one another in the fog."],
+  "intro": [],
   "victory": [
+    {
+      "speaker": "The company",
+      "portrait": "lich",
+      "text": "The Bellwarden falls. The sound above the courtyard breaks into a thin, wavering note, then dies."
+    },
     {
       "speaker": "Ivo",
       "portrait": "scout",
-      "text": "It stopped. Listen. Just frogs."
+      "text": "Listen. Just the reeds."
     },
     {
-      "speaker": "Nera",
+      "speaker": "Captain Nera",
       "portrait": "swordsman",
-      "text": "That is a better bell than any I have heard."
+      "text": "Gather anyone still alive. We’re leaving."
     }
-  ]
+  ],
+  "debrief": "The bell is silent. The company withdraws from the valley with the survivors."
 }

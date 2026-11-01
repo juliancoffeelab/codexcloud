@@ -69,6 +69,7 @@ export type AdvancedTroop =
   | "merfolk-tidecrusher-l3"
   | "merfolk-maceguard-l3";
 export type UnitType =
+  | "skeletal-hound"
   | "captives"
   | "zombie-walker"
   | "zombie-decay-caster"
@@ -113,6 +114,14 @@ export type UnitType =
 export type RecruitType = UnitType;
 export type Race = "human" | "skeletons" | "beast" | "merfolk" | "spirit" | "zombies";
 export type TerrainType =
+  | "monastery"
+  | "church"
+  | "graveyard"
+  | "ritual-star"
+  | "ritual-spent"
+  | "castle-wall"
+  | "castle-gate"
+  | "castle-bell"
   | "plains"
   | "road"
   | "forest"
@@ -161,6 +170,8 @@ export interface Tile extends Coordinates {
   /** Artwork only: road/village exits or opposite bridge/ford edges. */
   connections?: HexDirection[];
   deadEnds?: HexDirection[];
+  /** Explicit junction connectivity authored offline; selects a complete tile. */
+  wallCorners?: number[];
   /** Artwork only: reusable floor palette, independent of terrain rules. */
   floor?: string;
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
@@ -249,6 +260,8 @@ export interface TerrainOverride extends Coordinates {
   owner?: Side | null;
   connections?: HexDirection[];
   deadEnds?: HexDirection[];
+  /** Explicit junction connectivity authored offline; selects a complete tile. */
+  wallCorners?: number[];
   floor?: string;
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
 }
@@ -375,6 +388,9 @@ export type MissionGoal = (
       turns: number;
       earliestRound: number;
       startEvent?: string;
+      companion?: string;
+      unitTypes?: string[];
+      once?: boolean;
     }
   | { kind: "vigil"; label: string; tile: string; turns: number; companion: string }
   | { kind: "refuge"; label: string; tile: string; turns: number }
@@ -389,6 +405,7 @@ export interface MissionEvent {
     | { kind: "condition"; condition: import("../../rust/pkg/hex_command").Condition }
     | { kind: "visit"; tile: string }
     | { kind: "round"; round: number }
+    | { kind: "held"; tile: string; turns: number }
     | { kind: "control"; tile: string; round?: number };
   requiresEvent?: string;
   unlessEvent?: string;
@@ -412,6 +429,7 @@ export interface MissionDefinition {
   briefing: string;
   debrief?: string;
   requiredCompanions?: string[];
+  arrivals?: { name: string; col: number; row: number }[];
   hints: string[];
   goals: MissionGoal[];
   optionalGoals?: MissionGoal[];

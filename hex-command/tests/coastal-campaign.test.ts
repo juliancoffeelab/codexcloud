@@ -8,12 +8,12 @@ import { required } from "./helpers";
 const campaign = CAMPAIGNS["borrowed-tide"];
 
 const hold = required(campaign.missions[1]!.goals.find((goal) => goal.kind === "hold"));
-test("Rescue objective distinguishes reaching, waiting and defending", () => {
+test("Rescue objective requires activation, defended turns and ownership", () => {
   const game = Game.startCampaign("borrowed-tide", 1);
   game.round = 6;
-  assert.equal(goalProgress(game, hold).label, "Reach the wreck to start the rescue");
+  assert.equal(goalProgress(game, hold).current, 0);
   required(game.tile(hold.tile)).owner = "player";
-  assert.equal(goalProgress(game, hold).label, "Wait for high tide on turn 6");
+  assert.equal(goalProgress(game, hold).done, false);
   game.campaign!.marks.push("event:rescue");
   game.campaign!.holds = { [hold.tile]: { heldTurns: hold.turns - 1, lastCountedRound: 6 } };
   assert.equal(goalProgress(game, hold).done, false);

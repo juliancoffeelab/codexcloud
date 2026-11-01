@@ -113,27 +113,6 @@ impl RecruiterKind {
     ) -> Option<Command> {
         game.recruit_from_orders(self, seed, orders)
     }
-    #[cfg(test)]
-    pub(in crate::ai) fn choose(
-        self,
-        game: &crate::logic::Game<'_>,
-        seed: u32,
-        goals: Option<&[Objective]>,
-        restrained: bool,
-    ) -> Option<Command> {
-        let workspace = crate::ai::PlanningWorkspace::new(
-            seed,
-            1,
-            goals.map(<[Objective]>::to_vec),
-            if restrained {
-                crate::ai::Diplomacy::Restrained
-            } else {
-                crate::ai::Diplomacy::Pragmatic
-            },
-        );
-        let orders = crate::ai::CampaignBlock::Mission.campaign_orders(game, &workspace);
-        BattleView::new(game).recruit_from_orders(self, seed, &orders.recruitment)
-    }
 }
 impl BattleView<'_, '_> {
     fn recruit_from_orders(

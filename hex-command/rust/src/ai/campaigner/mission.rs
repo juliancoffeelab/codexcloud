@@ -529,7 +529,7 @@ impl Game<'_> {
                 vec![tile.clone()],
                 weight,
             )],
-            Trigger::Round { .. } => vec![],
+            Trigger::Round { .. } | Trigger::Held { .. } => vec![],
         };
         visiting.remove(id);
         result
@@ -585,7 +585,8 @@ impl Game<'_> {
                 side,
                 unit_type,
                 name,
-            } if *side == self.turn => {
+                unit_types,
+            } if *side == ConditionSide::from(self.turn) => {
                 let center = self.site(tile);
                 let tiles = self
                     .board
@@ -597,14 +598,27 @@ impl Game<'_> {
                     .collect();
                 let mut target = objective(prefix, ObjectiveKind::Visit, tiles, weight);
                 if let Some(name) = name {
-                    let Some(unit) = self
-                        .units
-                        .iter()
-                        .find(|u| u.side == *side && u.name.as_ref() == Some(name))
-                    else {
+                    let Some(unit) = self.units.iter().find(|u| {
+                        self.belongs_to_phase(u, self.turn) && u.name.as_ref() == Some(name)
+                    }) else {
                         return vec![];
                     };
                     target.actor = Some(format!("u{}", unit.id));
+                }
+                if !unit_types.is_empty() && target.actor.is_none() {
+                    if let Some(unit) = self
+                        .units
+                        .iter()
+                        .filter(|u| {
+                            self.belongs_to_phase(u, self.turn)
+                                && unit_types.contains(&self.rules.units[u.kind].id)
+                        })
+                        .min_by_key(|u| self.board.distance(u.tile, center))
+                    {
+                        target.actor = Some(format!("u{}", unit.id));
+                    } else {
+                        return vec![];
+                    }
                 }
                 if let Some(kind) = unit_type {
                     target.family = Some(self.rules.units[self.kind(kind)].family);
@@ -624,7 +638,7 @@ impl Game<'_> {
                 side,
                 unit_type,
                 name,
-            } if *side != self.turn => {
+            } if *side == ConditionSide::from(self.turn.other()) => {
                 let tiles: Vec<_> = self
                     .units
                     .iter()
@@ -662,15 +676,19 @@ impl Game<'_> {
         fn is_condition(value: &Trigger) -> bool {
             match value {
                 Trigger::Condition { .. } => true,
-                Trigger::Visit { .. } | Trigger::Round { .. } | Trigger::Control { .. } => false,
+                Trigger::Visit { .. }
+                | Trigger::Round { .. }
+                | Trigger::Held { .. }
+                | Trigger::Control { .. } => false,
             }
         }
         fn is_trigger_visit(value: &Trigger) -> bool {
             match value {
                 Trigger::Visit { .. } => true,
-                Trigger::Condition { .. } | Trigger::Round { .. } | Trigger::Control { .. } => {
-                    false
-                }
+                Trigger::Condition { .. }
+                | Trigger::Round { .. }
+                | Trigger::Held { .. }
+                | Trigger::Control { .. } => false,
             }
         }
         fn is_goal_event(value: &Goal) -> bool {
@@ -748,14 +766,29 @@ impl Game<'_> {
                 Goal::Event { .. } => (ObjectiveKind::Visit, None, None, false, false),
                 Goal::Defeat { .. } => (ObjectiveKind::Defeat, None, None, false, false),
                 Goal::Control { .. } => (ObjectiveKind::Capture, None, None, false, false),
-                Goal::Hold { companion, .. } => (
+                Goal::Hold {
+                    companion,
+                    unit_types,
+                    ..
+                } => (
                     ObjectiveKind::Capture,
-                    companion.as_ref().and_then(|name| {
-                        game.units
-                            .iter()
-                            .find(|u| u.side == side && u.name.as_ref() == Some(name))
-                            .map(|u| format!("u{}", u.id))
-                    }),
+                    game.units
+                        .iter()
+                        .filter(|unit| {
+                            unit.side == side
+                                && companion
+                                    .as_ref()
+                                    .is_none_or(|name| unit.name.as_ref() == Some(name))
+                                && (unit_types.is_empty()
+                                    || unit_types.contains(&game.rules.units[unit.kind].id))
+                        })
+                        .filter(|_| companion.is_some() || !unit_types.is_empty())
+                        .min_by_key(|unit| {
+                            goal.tile()
+                                .map(|tile| game.board.distance(unit.tile, game.site(tile)))
+                                .unwrap_or(0)
+                        })
+                        .map(|unit| format!("u{}", unit.id)),
                     None,
                     true,
                     false,
@@ -925,6 +958,7 @@ impl Game<'_> {
                             vec![match &e.trigger {
                                 Trigger::Visit { tile } => tile.clone(),
                                 Trigger::Condition { .. }
+                                | Trigger::Held { .. }
                                 | Trigger::Round { .. }
                                 | Trigger::Control { .. } => {
                                     unreachable!("visit event classification")

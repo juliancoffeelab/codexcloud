@@ -12,6 +12,10 @@ export interface TerrainMapTile {
   readonly x: number;
   readonly y: number;
   readonly spriteSize: number;
+  readonly spriteX?: number;
+  readonly spriteY?: number;
+  readonly spriteWidth?: number;
+  readonly spriteHeight?: number;
   readonly fill: string;
   readonly terrain: string;
   readonly terrainFrame: Readonly<FrameImage> | undefined;
@@ -34,7 +38,13 @@ export interface TerrainMapSprite extends FrameImage {
 export function terrainTileView(tile: TileView, mapId: string, artwork: Artwork) {
   const { x, y } = tileCenter(tile);
   const frameName = terrainLayout(tile, mapId).name;
+  const frame = artFrame(artwork, "terrain", frameName, "player", tile.floor);
+  const scale = battlefieldSpriteSize / 64;
   return {
+    spriteX: x - (frame?.anchorX ?? 32) * scale,
+    spriteY: y - (frame?.anchorY ?? 32) * scale,
+    spriteWidth: (frame?.width ?? 64) * scale,
+    spriteHeight: (frame?.height ?? 64) * scale,
     frameKey: artFrameKey("terrain", frameName, "player", tile.floor),
     x,
     y,
@@ -42,8 +52,16 @@ export function terrainTileView(tile: TileView, mapId: string, artwork: Artwork)
     clipId: `hex-clip-${tile.col}-${tile.row}`,
     spriteSize: battlefieldSpriteSize,
     fill: (tile.floor && pixelFloorColors[tile.floor]) || "transparent",
-    terrainFrame: artFrame(artwork, "terrain", frameName, "player", tile.floor),
+    terrainFrame: frame,
   };
+}
+
+/** Select each tile independently; no map-wide terrain assembly is permitted. */
+export function terrainMapTiles(tiles: readonly TileView[], mapId: string, artwork: Artwork) {
+  return tiles.map((tile) => ({
+    ...tile,
+    ...terrainTileView(tile, mapId, artwork),
+  }));
 }
 
 export function terrainMapDimensions(plan: Omit<TerrainMapPlan, "tiles">) {
@@ -84,6 +102,7 @@ export function terrainMapKey(
         tile.floor,
         tile.connections,
         tile.deadEnds,
+        tile.wallCorners,
       ]),
     lightingKey(lighting),
   ]);
@@ -143,6 +162,7 @@ function sameTile(a: TileView, b: TileView) {
     a.terrain === b.terrain &&
     a.floor === b.floor &&
     edges(a.connections, b.connections) &&
+    edges(a.wallCorners?.map(String), b.wallCorners?.map(String)) &&
     edges(a.deadEnds, b.deadEnds)
   );
 }
@@ -166,7 +186,7 @@ export class TerrainViewCache {
       this.scene = {
         key: terrainMapKey(game),
         tiles: new Map(
-          game.tiles.map((tile) => [tile.id, terrainTileView(tile, game.mapId, artwork)]),
+          terrainMapTiles(game.tiles, game.mapId, artwork).map((tile) => [tile.id, tile]),
         ),
       };
     } else if (
@@ -180,7 +200,10 @@ export class TerrainViewCache {
         tiles: new Map(
           [...this.scene!.tiles].map(([id, tile]) => [
             id,
-            { ...tile, terrainFrame: artwork.frames[tile.frameKey] },
+            {
+              ...tile,
+              terrainFrame: artwork.frames[tile.frameKey],
+            },
           ]),
         ),
       };
@@ -200,12 +223,18 @@ type TerrainContext<Image> = Pick<
   | "lineTo"
   | "closePath"
   | "fill"
-  | "clip"
   | "fillStyle"
   | "filter"
 > & {
   drawImage(image: Image, x: number, y: number, width: number, height: number): void;
 };
+
+/** Ordinary sprite draw ordering from explicit artwork metadata, without geometry inference. */
+export function terrainDrawingOrder<T extends TerrainMapTile>(tiles: readonly T[]): T[] {
+  return [...tiles].sort(
+    (a, b) => (a.terrainFrame?.z ?? 0) - (b.terrainFrame?.z ?? 0) || a.y - b.y || a.x - b.x,
+  );
+}
 
 /** Identical pixel scale, floors and clipping in build assets and runtime fallback. */
 export function paintTerrainTiles<Image>(
@@ -213,7 +242,7 @@ export function paintTerrainTiles<Image>(
   tiles: readonly TerrainMapTile[],
   images: ReadonlyMap<string, Image>,
 ) {
-  for (const tile of tiles) {
+  for (const tile of terrainDrawingOrder(tiles)) {
     context.save();
     context.beginPath();
     tile.points.split(" ").forEach((point, index) => {
@@ -224,17 +253,19 @@ export function paintTerrainTiles<Image>(
     context.closePath();
     context.fillStyle = tile.fill;
     context.fill();
-    context.clip();
+    // Source frames already carry the native hex mask. A second vector clip
+    // partially erases shared edge pixels and leaves seams between matching rails.
     if (tile.terrainFrame) {
       context.filter = tile.terrain === "forest" ? "brightness(0.93)" : "none";
       context.drawImage(
         images.get(tile.terrainFrame.url)!,
-        tile.x - tile.spriteSize / 2,
-        tile.y - tile.spriteSize / 2,
-        tile.spriteSize,
-        tile.spriteSize,
+        tile.spriteX ?? tile.x - tile.spriteSize / 2,
+        tile.spriteY ?? tile.y - tile.spriteSize / 2,
+        tile.spriteWidth ?? tile.spriteSize,
+        tile.spriteHeight ?? tile.spriteSize,
       );
     }
+    context.filter = "none";
     context.restore();
   }
 }
@@ -251,7 +282,9 @@ async function bake(
   const context = canvas.getContext("2d");
   if (!context) return undefined;
   const sources = [
-    ...new Set(plan.tiles.flatMap((tile) => (tile.terrainFrame ? [tile.terrainFrame.url] : []))),
+    ...new Set(
+      plan.tiles.flatMap((tile) => [...(tile.terrainFrame ? [tile.terrainFrame.url] : [])]),
+    ),
   ];
   const decoded = await Promise.all(
     sources.map(
@@ -269,12 +302,12 @@ async function bake(
   const images = new Map(sources.map((source, index) => [source, decoded[index]!]));
   context.imageSmoothingEnabled = false;
   context.scale(plan.pixelScale, plan.pixelScale);
-  for (let offset = 0; offset < plan.tiles.length; offset += 64) {
+  const ordered = terrainDrawingOrder(plan.tiles);
+  for (let offset = 0; offset < ordered.length; offset += 64) {
     if (plan.lighting?.time === "night" && signal?.aborted) return undefined;
-    paintTerrainTiles(context, plan.tiles.slice(offset, offset + 64), images);
+    paintTerrainTiles(context, ordered.slice(offset, offset + 64), images);
     // Yield between batches so changed/custom maps do not monopolize the UI thread.
-    if (offset + 64 < plan.tiles.length)
-      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    if (offset + 64 < ordered.length) await new Promise<void>((resolve) => setTimeout(resolve, 0));
   }
   if (
     plan.lighting?.time === "night" &&

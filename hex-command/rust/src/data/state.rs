@@ -11,6 +11,32 @@ static ROAD_DEAD_ENDS: LazyLock<Vec<(u8, u8)>> = LazyLock::new(|| {
     .expect("registered native road caps")
 });
 
+#[derive(Deserialize)]
+struct CastleVariant {
+    mask: u8,
+    #[serde(rename = "wallCorners")]
+    corners: Vec<u16>,
+}
+static CASTLE_WALL_VARIANTS: LazyLock<Vec<CastleVariant>> = LazyLock::new(|| {
+    serde_json::from_str(include_str!(
+        "../../../pixel/art/terrain/castle-wall/variants.json"
+    ))
+    .expect("registered complete castle tiles")
+});
+static CASTLE_GATE_VARIANTS: LazyLock<Vec<CastleVariant>> = LazyLock::new(|| {
+    serde_json::from_str(include_str!(
+        "../../../pixel/art/terrain/castle-gate/variants.json"
+    ))
+    .expect("registered complete castle gates")
+});
+
+static CASTLE_BELL_VARIANTS: LazyLock<Vec<CastleVariant>> = LazyLock::new(|| {
+    serde_json::from_str(include_str!(
+        "../../../pixel/art/terrain/castle-bell/variants.json"
+    ))
+    .expect("registered complete bell keeps")
+});
+
 /// Clockwise edge names for a pointy-top hex. These describe artwork only.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -47,6 +73,14 @@ pub struct Tile {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, rename = "deadEnds", skip_serializing_if = "Option::is_none")]
     pub dead_ends: Option<Vec<HexDirection>>,
+    /// Explicit junction connectivity authored offline, never inferred at runtime.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(
+        default,
+        rename = "wallCorners",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub wall_corners: Option<Vec<u16>>,
     /// Reusable ground palette; independent of terrain and its gameplay rules.
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -58,11 +92,37 @@ pub struct Tile {
 }
 impl Tile {
     pub fn valid_connections(&self) -> bool {
+        if self.wall_corners.is_some()
+            && !matches!(
+                self.terrain.as_str(),
+                "castle-wall" | "castle-gate" | "castle-bell"
+            )
+        {
+            return false;
+        }
         let Some(exits) = &self.connections else {
-            return self.dead_ends.is_none();
+            return !matches!(
+                self.terrain.as_str(),
+                "signpost"
+                    | "road"
+                    | "village"
+                    | "bridge"
+                    | "ford"
+                    | "landing"
+                    | "ferry"
+                    | "castle-wall"
+                    | "castle-gate"
+                    | "castle-bell"
+            ) && self.dead_ends.is_none();
         };
         let mask = exits.iter().fold(0u8, |mask, exit| mask | exit.bit());
-        if mask == 0 || mask.count_ones() as usize != exits.len() {
+        if (mask == 0
+            && !matches!(
+                self.terrain.as_str(),
+                "village" | "castle-wall" | "castle-bell"
+            ))
+            || mask.count_ones() as usize != exits.len()
+        {
             return false;
         }
         if let Some(ends) = &self.dead_ends {
@@ -77,7 +137,23 @@ impl Tile {
             }
         }
         match self.terrain.as_str() {
-            "road" | "signpost" => true,
+            "castle-wall" | "castle-gate" | "castle-bell" => {
+                self.wall_corners.as_ref().is_some_and(|corners| {
+                    let variants = if self.terrain == "castle-wall" {
+                        &*CASTLE_WALL_VARIANTS
+                    } else if self.terrain == "castle-gate" {
+                        &*CASTLE_GATE_VARIANTS
+                    } else {
+                        &*CASTLE_BELL_VARIANTS
+                    };
+                    corners.len() == 6
+                        && variants
+                            .iter()
+                            .any(|v| v.mask == mask && &v.corners == corners)
+                })
+            }
+            "road" => true,
+            "signpost" => mask == 9,
             "village" => mask.count_ones() <= 3,
             "bridge" | "ford" => matches!(mask, 9 | 18 | 36),
             "landing" | "ferry" => matches!(mask, 1 | 8),

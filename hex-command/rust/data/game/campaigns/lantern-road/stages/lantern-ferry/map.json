@@ -2198,7 +2198,8 @@
           "radius": 2
         },
         "remember": true
-      }
+      },
+      "connections": []
     },
     {
       "id": "22,5",
@@ -4121,7 +4122,8 @@
           "radius": 2
         },
         "remember": true
-      }
+      },
+      "connections": []
     },
     {
       "id": "4,11",
@@ -4777,7 +4779,8 @@
           "radius": 2
         },
         "remember": true
-      }
+      },
+      "connections": []
     },
     {
       "id": "22,12",

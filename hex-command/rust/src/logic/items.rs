@@ -2,6 +2,13 @@
 use super::battle::Game;
 use crate::data::*;
 impl Game<'_> {
+    pub(crate) fn equipment_modifier(&self, unit: &Unit, damage: DamageType) -> i32 {
+        unit.items
+            .iter()
+            .filter_map(|item| item.armor.as_ref())
+            .map(|armor| armor.get(damage))
+            .sum()
+    }
     pub(crate) fn collect_items(&mut self, id: u32) {
         let index = self.index(id).unwrap();
         let tile = self.board.ids[self.units[index].tile].clone();

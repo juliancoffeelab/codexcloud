@@ -1,5 +1,5 @@
 {
-  "tile": [
+  "8": [
     [
       {
         "prop": "jetty-west",
@@ -13,7 +13,7 @@
       }
     ]
   ],
-  "east": [
+  "1": [
     [
       {
         "prop": "jetty-east",

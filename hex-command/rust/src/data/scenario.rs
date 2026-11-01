@@ -154,6 +154,11 @@ pub enum Goal {
         turns: u32,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         companion: Option<String>,
+        #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        unit_types: Vec<String>,
+        #[serde(default)]
+        once: bool,
         #[serde(rename = "earliestRound")]
         earliest_round: u32,
         #[serde(rename = "startEvent")]
@@ -307,6 +312,7 @@ pub enum Trigger {
     Visit { tile: String },
     Condition { condition: Condition },
     Round { round: u32 },
+    Held { tile: String, turns: u32 },
     Control { tile: String, round: Option<u32> },
 }
 /// A stable member identity prevents repeated or skipped spawns after restoration.
@@ -354,6 +360,9 @@ pub struct Event {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub items: Vec<ItemReward>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub ground_items: Vec<super::GroundItem>,
     pub id: String,
     pub trigger: Trigger,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -362,6 +371,9 @@ pub struct Event {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub unless_event: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub unless_choice: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub before_round: Option<u32>,
@@ -398,6 +410,36 @@ pub struct Wave {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub requires_unsealed: Option<String>,
 }
+/// A named survivor enters the next mission automatically, outside recall slots.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CompanionArrival {
+    pub name: String,
+    pub col: i32,
+    pub row: i32,
+}
+
+/// Periodic consumption of occupied source terrain and lights left by matching deaths.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct Ritual {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub notice_when: Option<Condition>,
+    pub when: Condition,
+    pub id: String,
+    pub source_terrain: String,
+    pub spent_terrain: String,
+    pub unit_types: Vec<String>,
+    pub first_round: u32,
+    pub interval: u32,
+    pub spawn: SpawnGroup,
+    pub death_light: super::BattlefieldLight,
+    pub label: String,
+}
+
 /// The peaceful and escalated outcomes of a refuge-defense mission.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -487,6 +529,12 @@ pub struct Mission {
     pub hints: Vec<String>,
     #[serde(default)]
     pub required_companions: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub arrivals: Vec<CompanionArrival>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub rituals: Vec<Ritual>,
     pub goals: Vec<Goal>,
     /// Authored side objectives, displayed separately and never required for victory.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -586,12 +634,15 @@ impl Trigger {
             Self::Condition { .. } => TriggerKind::Condition,
             Self::Round { .. } => TriggerKind::Round,
             Self::Control { .. } => TriggerKind::Control,
+            Self::Held { .. } => TriggerKind::Held,
         }
     }
     /// Borrow the single site required by this objective or trigger, when present.
     pub fn tile(&self) -> Option<&String> {
         match self {
-            Self::Visit { tile } | Self::Control { tile, .. } => Some(tile),
+            Self::Visit { tile } | Self::Held { tile, .. } | Self::Control { tile, .. } => {
+                Some(tile)
+            }
             _ => None,
         }
     }

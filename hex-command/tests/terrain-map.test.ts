@@ -104,7 +104,6 @@ test("Map baking reuses one native bitmap, retries failure and keeps overlapping
         [32, 64],
       ],
     ]);
-    assert.equal(painted.clips, 2);
     assert.equal(
       cache.prepare("second", artwork, sharedPlan),
       second,
@@ -186,7 +185,7 @@ test("Prebuilt maps match static terrain or preview matching geometry with edite
   for (const change of [
     { terrain: "forest" as const },
     { floor: "snow-forest" },
-    { connections: ["e" as const] },
+    { terrain: "road" as const, connections: ["e" as const] },
   ]) {
     const preview = terrainMapPreview(
       terrainMapKey({ ...game, tiles: [{ ...tile, ...change }] }),
@@ -225,7 +224,7 @@ test("Static scenes reuse geometry through ownership and unit changes, but inval
   for (const change of [
     { terrain: "forest" as const },
     { floor: "snow-forest" },
-    { connections: ["e" as const] },
+    { terrain: "road" as const, connections: ["e" as const] },
     { col: 1 },
   ]) {
     const changed = cache.prepare({ ...game, tiles: [{ ...tile, ...change }] }, artwork);

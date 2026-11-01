@@ -176,6 +176,16 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         }
         self.engine().attack_options(unit, target, from)
     }
+    /// Hypothetical capability, independent of whose turn it is or which actors
+    /// the planner controls. Command authorization stays in permits/can_act.
+    pub(super) fn forecast_attack_options(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        from: usize,
+    ) -> Vec<usize> {
+        self.engine().attack_options(unit, target, from)
+    }
     pub(super) fn damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> i32 {
         self.engine().damage(attacker, target, weapon)
     }

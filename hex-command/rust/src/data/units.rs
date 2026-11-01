@@ -89,6 +89,9 @@ pub struct Weapon {
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Item {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub armor: Option<ItemArmor>,
     pub id: String,
     pub name: String,
     pub description: String,
@@ -104,6 +107,23 @@ pub struct Item {
 pub struct ItemHealing {
     pub amount: i32,
     pub radius: u16,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemArmor {
+    pub blade: i32,
+    pub pierce: i32,
+    pub impact: i32,
+}
+impl ItemArmor {
+    pub fn get(&self, kind: DamageType) -> i32 {
+        match kind {
+            DamageType::Blade => self.blade,
+            DamageType::Pierce => self.pierce,
+            DamageType::Impact => self.impact,
+        }
+    }
 }
 impl Weapon {
     pub(crate) fn validate(&self, path: &str) -> Result<(), ContentError> {
@@ -131,11 +151,22 @@ impl Item {
         super::catalog::identifier(&self.id, path)?;
         if self.name.is_empty()
             || self.description.is_empty()
-            || (self.attacks.is_empty() && self.healing.is_none())
+            || (self.attacks.is_empty() && self.healing.is_none() && self.armor.is_none())
         {
             return Err(ContentError::new(
                 path,
                 "item name, description and at least one effect are required",
+            ));
+        }
+        if self.armor.as_ref().is_some_and(|a| {
+            [a.blade, a.pierce, a.impact]
+                .iter()
+                .any(|v| !(-3..=0).contains(v))
+                || [a.blade, a.pierce, a.impact] == [0, 0, 0]
+        }) {
+            return Err(ContentError::new(
+                path,
+                "armor needs a reduction between one and three",
             ));
         }
         if self

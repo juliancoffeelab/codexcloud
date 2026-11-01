@@ -1,6 +1,8 @@
 import type { Coordinates, TerrainType } from "../game/types";
 export const battlefieldSpriteSize = 70;
-export const hexColumnSpacing = (battlefieldSpriteSize * Math.sqrt(3)) / 2;
+// Native hexes tessellate on a 56×48 pixel lattice (half-column: 28).
+// Fractional native offsets shift connected artwork by a pixel at tile seams.
+export const hexColumnSpacing = (battlefieldSpriteSize * 56) / 64;
 export const hexRowSpacing = (battlefieldSpriteSize * 3) / 4;
 
 export function mapDimensions(map: { cols: number; rows: number }) {
@@ -13,7 +15,7 @@ export function mapDimensions(map: { cols: number; rows: number }) {
 export function hexPoints(x: number, y: number) {
   return Array.from({ length: 6 }, (_, i) => {
     const angle = ((60 * i - 30) * Math.PI) / 180;
-    return `${x + (battlefieldSpriteSize / 2) * Math.cos(angle)},${y + (battlefieldSpriteSize / 2) * Math.sin(angle)}`;
+    return `${x + (hexColumnSpacing / Math.sqrt(3)) * Math.cos(angle)},${y + (battlefieldSpriteSize / 2) * Math.sin(angle)}`;
   }).join(" ");
 }
 export function tileCenter(tile: Coordinates) {
@@ -23,9 +25,17 @@ export function tileCenter(tile: Coordinates) {
   };
 }
 export const previewColors: Record<TerrainType, string> = {
+  monastery: "#b9b597",
+  church: "#b9b597",
+  graveyard: "#8d9f4f",
+  "ritual-star": "#8d9f4f",
+  "ritual-spent": "#8d9f4f",
   marsh: "#809678",
   ruins: "#a2a18c",
   fort: "#b4a277",
+  "castle-wall": "#b9b597",
+  "castle-gate": "#b9b597",
+  "castle-bell": "#b9b597",
   grove: "#4d884e",
   plains: "#8d9f4f",
   road: "#8fb337",

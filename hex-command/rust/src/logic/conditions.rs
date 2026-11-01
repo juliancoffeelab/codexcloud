@@ -38,6 +38,7 @@ pub(crate) fn matches(
             radius,
             side,
             unit_type,
+            unit_types,
             name,
         } => {
             let Some(tile) = input
@@ -50,6 +51,7 @@ pub(crate) fn matches(
             input.units.iter().any(|unit| {
                 faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
                     && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
+                    && (unit_types.is_empty() || unit_types.contains(&unit.r#type))
                     && name
                         .as_ref()
                         .is_none_or(|name| unit.name.as_ref() == Some(name))
@@ -252,7 +254,9 @@ impl Game<'_> {
         })
     }
     pub(crate) fn presentation(&self) -> BattlefieldPresentation {
-        resolve(&self.presentation_input()).0
+        let mut presentation = resolve(&self.presentation_input()).0;
+        presentation.lighting.lights.extend(self.ritual_lights());
+        presentation
     }
     pub(crate) fn remember_conditions(&mut self) {
         let group_memory = self.mission.as_ref().is_some_and(|m| {

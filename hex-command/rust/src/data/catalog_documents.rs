@@ -62,6 +62,8 @@ struct InitialRoster {
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageRoster {
     initial: InitialRoster,
+    #[serde(default)]
+    arrivals: Vec<CompanionArrival>,
     units: Vec<StartingUnit>,
     recruits: Vec<String>,
     enemy_recruits: Vec<String>,
@@ -94,6 +96,8 @@ struct StageStory {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageScripts {
+    #[serde(default)]
+    rituals: Vec<Ritual>,
     #[serde(default)]
     enemy_groups: Vec<EnemyGroup>,
     events: Vec<Event>,
@@ -242,6 +246,8 @@ pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, Conten
             intro: story.intro,
             victory: story.victory,
             required_companions: objectives.required_companions,
+            arrivals: roster.arrivals,
+            rituals: scripts.rituals,
             goals: objectives.goals,
             optional_goals: objectives.optional_goals,
             defend_objectives: objectives.defend_objectives,
