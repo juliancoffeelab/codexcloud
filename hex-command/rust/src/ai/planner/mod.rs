@@ -115,7 +115,11 @@ impl PlannerKind {
         let planner = self;
         super::cooperation::assign(game, workspace);
         super::cooperation::refresh_assignments(game, workspace);
-        workspace.escort.prepare(game, &workspace.report);
+        workspace.escort.prepare(
+            game,
+            &workspace.report,
+            &workspace.orders.as_ref().unwrap().tactics,
+        );
         if super::cooperation::rescue(game, workspace)? {
             return Ok(());
         }

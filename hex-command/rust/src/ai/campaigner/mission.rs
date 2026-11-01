@@ -373,7 +373,38 @@ impl CampaignBlock {
                 },
             });
             recruitment.reserved.push(TileId(destination.clone()));
-            if game.turn == Side::Player
+            let travelling = game.turn == Side::Player
+                && actor.is_leader()
+                && !occupy
+                && !authored_targets.iter().any(|goal| {
+                    goal.id.starts_with("required:") && goal.kind == ObjectiveKind::Defeat
+                });
+            if travelling {
+                // Travel is a company duty, even before the leader is threatened.
+                for role in UnitRole::ALL {
+                    let guards = game
+                        .units
+                        .iter()
+                        .filter(|unit| {
+                            game.belongs_to_phase(unit, game.turn)
+                                && !unit.is_leader()
+                                && unit.role != Some(Role::Courier)
+                                && game.rules.units[unit.kind].role == role
+                        })
+                        .count();
+                    if guards > 0 {
+                        tactics.objectives.push(ObjectiveOrder {
+                            id: format!("{}:{role:?}:escort", target.id),
+                            priority: ObjectivePriority::Important,
+                            objective: TacticalObjective::Escort {
+                                actor: actor_id,
+                                guards,
+                                selector: UnitSelector::Role(role),
+                            },
+                        });
+                    }
+                }
+            } else if game.turn == Side::Player
                 && crate::ai::threats::Threats::unshielded(&BattleView::new(game), actor) > 0
             {
                 tactics.objectives.push(ObjectiveOrder {

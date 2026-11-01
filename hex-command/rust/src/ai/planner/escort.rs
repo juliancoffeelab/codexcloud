@@ -1,5 +1,8 @@
 //! Escort scoring rewards actual threat removal and reduced enemy access.
-use crate::ai::{orders::PlanningReport, threats::Threats};
+use crate::ai::{
+    orders::{PlanningReport, TacticalObjective, TacticalOrders},
+    threats::Threats,
+};
 use crate::{ai::context::BattleView, data::*, logic::geometry::TileSet};
 use rustc_hash::FxHashMap;
 
@@ -9,6 +12,7 @@ pub(in crate::ai) struct Workspace {
     terrain: Vec<usize>,
     owners: Vec<Option<Side>>,
     fields: FxHashMap<u32, Field>,
+    assignments: Vec<(UnitId, Vec<UnitId>, Option<usize>)>,
 }
 struct Field {
     positions: Vec<f64>,
@@ -26,18 +30,59 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
         .unwrap_or(0)
 }
 impl Workspace {
-    pub(in crate::ai) fn prepare(&mut self, game: &BattleView<'_, '_>, report: &PlanningReport) {
+    pub(in crate::ai) fn prepare(
+        &mut self,
+        game: &BattleView<'_, '_>,
+        report: &PlanningReport,
+        orders: &TacticalOrders,
+    ) {
         let assignments: Vec<_> = report
             .duties
             .iter()
             .filter(|d| d.id.ends_with(":escort"))
-            .filter_map(|d| d.actor.map(|actor| (actor, d.guards.clone())))
+            .filter_map(|d| {
+                d.actor.map(|actor| {
+                    let next = game.unit(actor.0).and_then(|unit| {
+                        let destination =
+                            orders
+                                .objectives
+                                .iter()
+                                .find_map(|order| match &order.objective {
+                                    TacticalObjective::GoTo {
+                                        actor: traveller,
+                                        destination,
+                                    } if *traveller == actor => Some(game.site(&destination.0)),
+                                    TacticalObjective::GoTo { .. }
+                                    | TacticalObjective::Occupy { .. }
+                                    | TacticalObjective::Escort { .. }
+                                    | TacticalObjective::ClearPassage { .. } => None,
+                                })?;
+                        let route = game.routes(unit.kind, &[destination]);
+                        let home = game.routes(unit.kind, &[unit.tile]);
+                        let budget = game.rules().units[unit.kind].r#move as u16
+                            + game.cost(unit.kind, unit.tile);
+                        // Reverse entry costs differ only at the endpoints.
+                        // Allow allies to yield when predicting the next step.
+                        (0..game.terrain().len())
+                            .filter(|&tile| {
+                                home[tile] != u16::MAX
+                                    && home[tile].saturating_add(game.cost(unit.kind, tile))
+                                        <= budget
+                                    && game.at(tile).is_none_or(|other| game.allied(unit, other))
+                            })
+                            .min_by_key(|&tile| (route[tile], home[tile], tile))
+                    });
+                    (actor, d.guards.clone(), next)
+                })
+            })
             .collect();
         if assignments.is_empty() {
+            self.assignments.clear();
             self.fields.clear();
             return;
         }
-        let same = self.signature.len() == game.units().len()
+        let same = self.assignments == assignments
+            && self.signature.len() == game.units().len()
             && self.terrain == *game.terrain()
             && self.owners == *game.owners()
             && self.signature.iter().zip(game.units()).all(|(key, unit)| {
@@ -53,6 +98,7 @@ impl Workspace {
         if same {
             return;
         }
+        self.assignments = assignments.clone();
         self.signature = game
             .units()
             .iter()
@@ -67,7 +113,7 @@ impl Workspace {
             return;
         }
         let mut evaluations = 0;
-        for (actor, guards) in assignments {
+        for (actor, guards, next) in assignments {
             let Some(actor) = forecast.unit(actor.0) else {
                 continue;
             };
@@ -101,6 +147,17 @@ impl Workspace {
                 let Some(unit) = game.unit(guard.0) else {
                     continue;
                 };
+                let following = next.and_then(|site| {
+                    let tiles: Vec<_> = (0..game.terrain().len())
+                        .filter(|&tile| {
+                            game.board().distance(site, tile) <= 2
+                                && tile != site
+                                && tile != actor.tile
+                                && game.cost(unit.kind, tile) != u16::MAX
+                        })
+                        .collect();
+                    (!tiles.is_empty()).then(|| game.routes(unit.kind, &tiles))
+                });
                 let mut positions: Vec<_> = std::iter::once(unit.tile)
                     .chain(game.reachable(unit).iter().map(|&(tile, _)| tile))
                     .collect();
@@ -117,13 +174,26 @@ impl Workspace {
                         .unwrap_or(0);
                     (
                         tile != unit.tile,
-                        slack,
+                        following.as_ref().map_or(slack, |route| route[tile]),
                         game.board().distance(tile, actor.tile),
                         tile,
                     )
                 });
                 positions.truncate(32);
-                let mut scores = vec![0.0; game.terrain().len()];
+                // Following is a cheap route-field lookup for every guard. Only
+                // the more expensive screening forecast shares the bounded budget.
+                let mut scores: Vec<_> = (0..game.terrain().len())
+                    .map(|tile| {
+                        following.as_ref().map_or(0.0, |route| {
+                            if route[unit.tile] == u16::MAX || route[tile] == u16::MAX {
+                                0.0
+                            } else {
+                                ((route[unit.tile] as f64 - route[tile] as f64) * 6.0)
+                                    .clamp(-32.0, 32.0)
+                            }
+                        })
+                    })
+                    .collect();
                 for tile in positions {
                     if evaluations >= 128 {
                         break;
@@ -138,7 +208,7 @@ impl Workspace {
                         blockers.insert(enemy.tile);
                         after += pressure(&forecast, actor, enemy, blockers);
                     }
-                    scores[tile] = ((baseline - after) as f64 * 2.0).clamp(-64.0, 32.0);
+                    scores[tile] += ((baseline - after) as f64 * 2.0).clamp(-64.0, 32.0);
                 }
                 self.fields.insert(
                     unit.id,
@@ -243,7 +313,11 @@ mod tests {
             ..PlanningReport::default()
         };
         let mut escort = Workspace::default();
-        escort.prepare(&crate::ai::context::BattleView::new(&game), &report);
+        escort.prepare(
+            &crate::ai::context::BattleView::new(&game),
+            &report,
+            &TacticalOrders::default(),
+        );
         let screen = game.site("4,3");
         assert!(game.board.distance(screen, actor_tile) > 1);
         assert!(escort.position(guard_id, screen) > escort.position(guard_id, branch));
