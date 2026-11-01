@@ -1,0 +1,27 @@
+[package]
+name="hex-command-catalog"
+version="0.1.0"
+edition="2024"
+publish=false
+[features]
+runtime-catalog=["dep:serde_json","dep:sha2"]
+default=[]
+wasm=["dep:tsify","dep:wasm-bindgen"]
+bake=["dep:databake","dep:syn","dep:prettyplease"]
+[dependencies]
+hex-catalog-freeze-derive={path="../freeze-derive"}
+syn={version="2",features=["full"],optional=true}
+prettyplease={version="0.2",optional=true}
+serde={version="1",features=["derive","rc"]}
+tsify={version="0.5.8",default-features=false,features=["js"],optional=true}
+wasm-bindgen={version="0.2",optional=true}
+databake={version="0.1.8",features=["derive"],optional=true}
+[build-dependencies]
+serde_json="1"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }
+sha2 = "0.10"
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+serde_json = { version = "1", features = ["raw_value", "float_roundtrip"], optional = true }
+sha2 = { version = "0.10", optional = true }

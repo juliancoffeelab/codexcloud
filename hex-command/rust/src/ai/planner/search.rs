@@ -3,6 +3,7 @@ use crate::ai::objectives::actor_matches;
 use crate::ai::orders::target as objective;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
 use crate::ai::roles::role;
+use crate::sort::SharedSort;
 use crate::{
     ai::context::BattleView,
     ai::objectives::{TileOrder, individual},
@@ -97,6 +98,7 @@ pub(in crate::ai) struct Plan {
     pub(in crate::ai) withdrawing: bool,
 }
 impl BattleView<'_, '_> {
+    #[inline(always)]
     pub(in crate::ai) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
         orders: &crate::ai::orders::TacticalOrders,
@@ -109,6 +111,55 @@ impl BattleView<'_, '_> {
         threat_workspace: &mut crate::ai::threats::ArenaThreatWorkspace,
         focus: Option<u32>,
     ) -> Option<Plan> {
+        #[cfg(target_arch = "wasm32")]
+        {
+            self.best_plan_impl::<BOUNDED, false>(
+                orders,
+                escort,
+                seed,
+                prepared_goals,
+                routes,
+                commitments,
+                intents,
+                threat_workspace,
+                focus,
+                FOCUSED,
+            )
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            self.best_plan_impl::<BOUNDED, FOCUSED>(
+                orders,
+                escort,
+                seed,
+                prepared_goals,
+                routes,
+                commitments,
+                intents,
+                threat_workspace,
+                focus,
+                false,
+            )
+        }
+    }
+    #[cfg_attr(target_arch = "wasm32", inline(never))]
+    fn best_plan_impl<const BOUNDED: bool, const FOCUSED: bool>(
+        &self,
+        orders: &crate::ai::orders::TacticalOrders,
+        escort: &crate::ai::escort::Workspace,
+        seed: u32,
+        prepared_goals: Option<&[Objective]>,
+        routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
+        commitments: &mut HashMap<u32, String>,
+        intents: &mut Vec<(u32, Option<bool>)>,
+        threat_workspace: &mut crate::ai::threats::ArenaThreatWorkspace,
+        focus: Option<u32>,
+        _focused: bool,
+    ) -> Option<Plan> {
+        #[cfg(target_arch = "wasm32")]
+        let focused = _focused;
+        #[cfg(not(target_arch = "wasm32"))]
+        let focused = FOCUSED;
         let side = self.turn();
         let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
             let rebuilding = orders.rebuild_objectives(self);
@@ -146,7 +197,7 @@ impl BattleView<'_, '_> {
         }
         // Commit bookkeeping in roster order, as policy_objectives and the
         // original planning loop visited leaders and units in that order.
-        intents.sort_by_key(|(id, _)| self.index(*id).unwrap());
+        intents.order_by_key(|(id, _)| self.index(*id).unwrap());
         let allies: Vec<_> = self
             .units()
             .iter()
@@ -218,7 +269,7 @@ impl BattleView<'_, '_> {
         let mut roster: Vec<_> = allies
             .iter()
             .enumerate()
-            .filter(|(_, u)| !u.attacked && (!FOCUSED || Some(u.id) == focus))
+            .filter(|(_, u)| !u.attacked && (!focused || Some(u.id) == focus))
             .map(|(index, &unit)| {
                 let before_risk = threats.at(unit, unit.tile, None);
                 let important = orders.important(self, unit);
@@ -314,7 +365,7 @@ impl BattleView<'_, '_> {
                 )
             })
             .collect();
-        roster.sort_unstable_by(|a, b| b.3.total_cmp(&a.3).then(a.0.cmp(&b.0)));
+        roster.order_unstable_by(|a, b| b.3.total_cmp(&a.3).then(a.0.cmp(&b.0)));
         for (unit_order, original_unit, before_risk, _, maximum_combat, terminal_objective) in
             roster
         {
@@ -463,7 +514,7 @@ impl BattleView<'_, '_> {
             let duty = if let Some(index) = committed {
                 Some(duties.swap_remove(index))
             } else {
-                duties.sort_by(|a, b| {
+                duties.order_by(|a, b| {
                     a.priority
                         .total_cmp(&b.priority)
                         .then_with(|| order.compare(self, nearest(&a.goal), nearest(&b.goal)))

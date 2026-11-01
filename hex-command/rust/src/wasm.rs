@@ -1,5 +1,6 @@
 //! Browser ownership boundary. The catalog is owned once by the factory; battles
 //! hold snapshots and exclusive planner workspaces, borrowing rules only per call.
+use crate::sort::SharedSort;
 use crate::{
     ai::{self, PlanningWorkspace},
     data::*,
@@ -12,11 +13,21 @@ use std::rc::Rc;
 use tsify::{Ts, Tsify};
 use wasm_bindgen::prelude::*;
 
+#[cfg(target_arch = "wasm32")]
+mod wire;
+
 fn encode<T, Response>(result: Result<T, EngineError>) -> Result<Ts<Response>, JsError>
 where
     Response: Tsify + Serialize + From<Result<T, EngineError>>,
 {
-    Ok(Response::from(result).into_ts()?)
+    #[cfg(target_arch = "wasm32")]
+    {
+        Ok(Ts::new_unchecked(wire::value(&Response::from(result))?))
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        Ok(Response::from(result).into_ts()?)
+    }
 }
 fn decode<T: Tsify + DeserializeOwned>(value: Ts<T>) -> Result<T, EngineError>
 where
@@ -76,17 +87,34 @@ impl NativeEngineFactory {
     #[wasm_bindgen(constructor)]
     pub fn new(bundle: Option<Ts<CatalogDocuments>>) -> Result<NativeEngineFactory, JsValue> {
         let loaded = if let Some(bundle) = bundle {
-            decode(bundle).and_then(|bundle| {
-                Rules::from_json_bundle(&bundle.0).map_err(|error| EngineError::Content {
+            #[cfg(any(not(target_arch = "wasm32"), feature = "runtime-catalog"))]
+            {
+                decode(bundle).and_then(|bundle| {
+                    Rules::from_json_bundle(&bundle.0).map_err(|error| EngineError::Content {
+                        path: error.path,
+                        message: error.message,
+                    })
+                })
+            }
+            #[cfg(all(target_arch = "wasm32", not(feature = "runtime-catalog")))]
+            {
+                let _ = bundle;
+                Err(EngineError::InvalidRequest {
+                    message: "Custom catalogs require a runtime-catalog build".into(),
+                })
+            }
+        } else {
+            #[cfg(target_arch = "wasm32")]
+            {
+                Ok(crate::data::baked_rules())
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                Rules::load().map_err(|error| EngineError::Content {
                     path: error.path,
                     message: error.message,
                 })
-            })
-        } else {
-            Rules::load().map_err(|error| EngineError::Content {
-                path: error.path,
-                message: error.message,
-            })
+            }
         };
         let rules = loaded.map_err(|error| match encode::<(), UnitResponse>(Err(error)) {
             Ok(response) => response.js_value(),
@@ -102,7 +130,7 @@ impl NativeEngineFactory {
     /// Return owned catalog metadata as an encoded [`EngineResult<CatalogView>`].
     pub fn catalog(&self) -> Result<Ts<CatalogResponse>, JsError> {
         let mut campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
-        campaigns.sort_by(|a, b| a.id.cmp(&b.id));
+        campaigns.order_by(|a, b| a.id.cmp(&b.id));
         encode(Ok(CatalogView {
             units: self.rules.units.clone(),
             terrain: self.rules.terrain_definitions.clone(),

@@ -7,6 +7,10 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Progress {
     pub label: String,
     pub current: u32,
@@ -19,6 +23,10 @@ pub struct Progress {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Objective {
     pub id: String,
     pub tiles: Vec<String>,
@@ -37,6 +45,7 @@ pub struct Objective {
 
 impl Objective {
     /// Return the stable serialized planning-objective tag.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn kind(&self) -> &str {
         self.kind.as_str()
     }
@@ -45,6 +54,10 @@ impl Objective {
 /// A resolved objective state for browser presentation.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct ObjectiveStatus {
     pub visible: bool,
     pub progress: Progress,
@@ -52,6 +65,10 @@ pub struct ObjectiveStatus {
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct CampaignObjectives {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
