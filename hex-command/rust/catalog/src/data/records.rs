@@ -8,6 +8,10 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum ActionRecord {
     Drop {
         unit: String,
@@ -39,6 +43,10 @@ pub enum ActionRecord {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct HealingRecord {
     pub target: String,
     pub providers: Vec<String>,
@@ -50,6 +58,10 @@ pub struct HealingRecord {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct ThornRecord {
     pub damage: i32,
     pub aura_damage: i32,
@@ -64,6 +76,10 @@ pub struct ThornRecord {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct DamageMitigationRecord {
     pub available_hp: i32,
     /// Summed per-strike HP damage, accounting for drain between strikes.
@@ -80,6 +96,10 @@ pub struct DamageMitigationRecord {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct CombatMitigationRecord {
     pub attack: DamageMitigationRecord,
     pub retaliation: Option<DamageMitigationRecord>,
@@ -89,6 +109,10 @@ pub struct CombatMitigationRecord {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct CombatRecord {
     pub unit: String,
     pub target: String,
@@ -164,6 +188,10 @@ impl Serialize for CombatRecord {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Records {
     pub actions: Vec<ActionRecord>,
     pub losses: Vec<PublicUnit>,

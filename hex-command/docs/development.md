@@ -30,6 +30,21 @@ Independent checks continue after failures and report their statuses together.
 The test duration target warns without terminating a successful run. Browser
 automation is separate from the default checks.
 
+## Browser engine builds
+
+The Rust workspace separates the current catalog models and host-side authoring
+loader from the battle engine. The build validates authored JSON and derives
+static catalog tables from those same models. Browser factories materialize their
+owned runtime catalog from the tables; they do not parse the authoring documents.
+Native catalogs continue to read the selected data directory. Custom browser
+catalog imports require the opt-in `runtime-catalog` feature.
+
+`wasm:build:release` uses the dedicated `wasm-release` size profile, then a pinned
+Binaryen pass deduplicates code and groups similar function bodies before removing
+diagnostic names. Development builds retain names. Compare the WASM module and
+its referenced JavaScript loader/helpers together when measuring download size.
+The native simulation profile is independent of these browser build settings.
+
 ## Content and artwork
 
 A lineup is a faction. A faction can have sprites before its gameplay roster is

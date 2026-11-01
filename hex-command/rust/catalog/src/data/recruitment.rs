@@ -3,6 +3,10 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct RecruitmentWeights {
     pub offense: f64,
     pub endurance_reference_hp: f64,
@@ -54,12 +58,17 @@ impl Default for RecruitmentWeights {
 }
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct RecruitmentProfiles {
     pub standard: RecruitmentWeights,
     pub aggressive_predictor: RecruitmentWeights,
 }
 impl RecruitmentProfiles {
-    pub(super) fn validate(&self) -> Result<(), String> {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn validate(&self) -> Result<(), String> {
         for (name, profile) in [
             ("standard", self.standard),
             ("aggressivePredictor", self.aggressive_predictor),

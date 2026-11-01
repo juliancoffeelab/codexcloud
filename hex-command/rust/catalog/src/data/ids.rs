@@ -6,12 +6,20 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(transparent)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct UnitId(pub u32);
 /// Authored tile identifier.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(transparent)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct TileId(pub String);
 impl From<&str> for TileId {
     fn from(value: &str) -> Self {
@@ -23,6 +31,10 @@ impl From<&str> for TileId {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(transparent)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct UnitTypeId(pub String);
 impl From<&str> for UnitTypeId {
     fn from(value: &str) -> Self {
@@ -34,6 +46,10 @@ impl From<&str> for UnitTypeId {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(transparent)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct WeaponId(pub String);
 impl From<&str> for WeaponId {
     fn from(value: &str) -> Self {
@@ -45,6 +61,10 @@ impl From<&str> for WeaponId {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Race {
     Human,
     Merfolk,
@@ -55,6 +75,7 @@ pub enum Race {
 }
 impl Race {
     /// Return the stable authored identifier used at serialization boundaries.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Human => "human",
@@ -77,6 +98,10 @@ impl std::fmt::Display for Race {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Family {
     #[serde(rename = "zombie-walker")]
     ZombieWalker,
@@ -123,6 +148,7 @@ pub enum Family {
 }
 impl Family {
     /// Return the stable authored identifier used at serialization boundaries.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Captives => "captives",
@@ -170,6 +196,10 @@ impl std::fmt::Display for Family {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum TerrainRole {
     Bridge,
     BurnedVillage,
@@ -200,7 +230,8 @@ pub enum TerrainRole {
 }
 
 impl TerrainRole {
-    pub(crate) fn capturable(self) -> bool {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn capturable(self) -> bool {
         match self {
             Self::Fort
             | Self::Grove
@@ -230,7 +261,8 @@ impl TerrainRole {
             | Self::Water => false,
         }
     }
-    pub(crate) fn blocks_shots(self) -> bool {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn blocks_shots(self) -> bool {
         match self {
             Self::Cave | Self::Forest | Self::Grove | Self::Hill | Self::Keep | Self::Mountain => {
                 true
@@ -257,7 +289,8 @@ impl TerrainRole {
             | Self::Water => false,
         }
     }
-    pub(crate) fn income(self) -> i32 {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn income(self) -> i32 {
         match self {
             Self::Village => 2,
             Self::Bridge
@@ -287,7 +320,8 @@ impl TerrainRole {
             | Self::Water => 0,
         }
     }
-    pub(crate) fn healing(self) -> i32 {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn healing(self) -> i32 {
         match self {
             Self::Grove | Self::Village => 4,
             Self::Bridge
@@ -323,6 +357,10 @@ impl TerrainRole {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Terrain {
     Monastery,
     Church,
@@ -359,6 +397,7 @@ pub enum Terrain {
 }
 impl Terrain {
     /// Return the stable authored identifier used at serialization boundaries.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Monastery => "monastery",
@@ -402,12 +441,17 @@ impl std::fmt::Display for Terrain {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Role {
     Leader,
     Courier,
 }
 impl Role {
     /// Return the stable authored identifier used at serialization boundaries.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Leader => "leader",
@@ -426,6 +470,10 @@ impl std::fmt::Display for Role {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum ObjectiveKind {
     Capture,
     Defeat,
@@ -437,6 +485,7 @@ pub enum ObjectiveKind {
 }
 impl ObjectiveKind {
     /// Return the stable authored identifier used at serialization boundaries.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Capture => "capture",
@@ -455,6 +504,10 @@ impl ObjectiveKind {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum GoalKind {
     Defeat,
     Escort,
@@ -468,6 +521,7 @@ pub enum GoalKind {
 }
 impl GoalKind {
     /// Return the stable authored identifier used at serialization boundaries.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Defeat => "defeat",
@@ -487,6 +541,10 @@ impl GoalKind {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum TriggerKind {
     Held,
     Condition,
@@ -496,6 +554,7 @@ pub enum TriggerKind {
 }
 impl TriggerKind {
     /// Return the stable authored identifier used at serialization boundaries.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Held => "held",

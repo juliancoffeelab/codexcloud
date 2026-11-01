@@ -87,7 +87,9 @@ impl Game<'_> {
         }
         for faction in self.factions.iter().filter(|f| f.phase == self.turn) {
             match faction.controller {
-                Controller::Ai { policy } => controllers.push((faction.id.clone(), Some(policy))),
+                Controller::Ai { policy } => {
+                    controllers.push((faction.id.clone(), Some(policy.into())))
+                }
                 Controller::Human => controllers.push((faction.id.clone(), None)),
                 Controller::Passive => {}
             }

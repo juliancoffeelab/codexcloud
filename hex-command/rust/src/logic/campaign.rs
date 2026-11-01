@@ -1,5 +1,6 @@
 //! Campaign objectives, scripted events, reinforcement waves and chapter transitions.
 
+use crate::sort::SharedSort;
 use crate::{data::*, logic::battle::Game};
 use std::collections::BTreeMap;
 impl<'catalog> Game<'catalog> {
@@ -846,7 +847,7 @@ impl<'catalog> Game<'catalog> {
         let mut slots: Vec<_> = (0..game.terrain.len())
             .filter(|&t| game.at(t).is_none() && game.board.distance(t, leader) <= 3)
             .collect();
-        slots.sort_by_key(|&t| game.board.distance(t, leader));
+        slots.order_by_key(|&t| game.board.distance(t, leader));
         for veteran in veterans {
             let kind = game.kind(&veteran.r#type);
             let Some(slot) = slots.iter().position(|&t| game.cost(kind, t) != u16::MAX) else {
@@ -930,7 +931,7 @@ impl<'catalog> Game<'catalog> {
                 + r.level as f64 * 3.0
                 + u.experience.unwrap_or(0) as f64 / 3.0
         };
-        eligible.sort_by(|a, b| value(b).total_cmp(&value(a)));
+        eligible.order_by(|a, b| value(b).total_cmp(&value(a)));
         if let Some(selected) = selected {
             let mut recalled = Vec::new();
             if selected.len() > 4 {

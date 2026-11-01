@@ -1,4 +1,5 @@
 //! Shared mechanical valuation for recruits and free, earned promotions.
+use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
 use std::rc::Rc;
 
@@ -609,7 +610,7 @@ fn expected_marginal_support(
     others: &mut [i32],
     overlap_probability: f64,
 ) -> f64 {
-    others.sort_unstable_by(|a, b| b.cmp(a));
+    others.order_unstable_by(|a, b| b.cmp(a));
     let mut uncovered_probability = 1.0;
     let mut value = 0.0;
     for &strength in others.iter() {

@@ -2,36 +2,16 @@
 
 use super::*;
 use serde::{Deserialize, Serialize};
-use std::sync::LazyLock;
-
-static ROAD_DEAD_ENDS: LazyLock<Vec<(u8, u8)>> = LazyLock::new(|| {
-    serde_json::from_str(include_str!(
-        "../../../pixel/art/terrain/road/dead-ends.json"
-    ))
-    .expect("registered native road caps")
-});
-
-#[derive(Deserialize)]
-struct CastleVariant {
-    walls: Vec<HexDirection>,
-}
-static CASTLE_WALL_VARIANTS: LazyLock<Vec<CastleVariant>> = LazyLock::new(|| {
-    serde_json::from_str(include_str!(
-        "../../../pixel/art/terrain/castle-wall/variants.json"
-    ))
-    .expect("registered complete castle tiles")
-});
-static CASTLE_BELL_VARIANTS: LazyLock<Vec<CastleVariant>> = LazyLock::new(|| {
-    serde_json::from_str(include_str!(
-        "../../../pixel/art/terrain/castle-bell/variants.json"
-    ))
-    .expect("registered complete bell keeps")
-});
+include!(concat!(env!("OUT_DIR"), "/terrain_geometry.rs"));
 
 /// Clockwise edge names for a pointy-top hex. These describe artwork only.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum HexDirection {
     E,
     Se,
@@ -41,6 +21,7 @@ pub enum HexDirection {
     Ne,
 }
 impl HexDirection {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn bit(self) -> u8 {
         1 << self as u8
     }
@@ -51,6 +32,10 @@ impl HexDirection {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Tile {
     pub id: String,
     pub col: i32,
@@ -79,6 +64,7 @@ pub struct Tile {
     pub fog: Option<ConditionRule>,
 }
 impl Tile {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn valid_connections(&self) -> bool {
         if matches!(self.terrain.as_str(), "castle-wall" | "castle-bell") {
             if self.connections.is_some() || self.dead_ends.is_some() {
@@ -92,13 +78,11 @@ impl Tile {
                 return false;
             }
             let variants = match self.terrain.as_str() {
-                "castle-wall" => &*CASTLE_WALL_VARIANTS,
-                "castle-bell" => &*CASTLE_BELL_VARIANTS,
+                "castle-wall" => CASTLE_WALL_VARIANTS,
+                "castle-bell" => CASTLE_BELL_VARIANTS,
                 _ => unreachable!(),
             };
-            return variants
-                .iter()
-                .any(|v| v.walls.iter().fold(0u8, |mask, edge| mask | edge.bit()) == mask);
+            return variants.contains(&mask);
         }
         if self.walls.is_some() {
             return false;
@@ -152,6 +136,10 @@ impl Tile {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct GroundItem {
     pub tile: String,
     pub item: Item,
@@ -161,6 +149,10 @@ pub struct GroundItem {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Gold {
     pub player: i32,
     pub enemy: i32,
@@ -170,6 +162,10 @@ pub struct Gold {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct State {
     pub factions: Vec<Faction>,
     pub ground_items: Vec<GroundItem>,
@@ -208,7 +204,8 @@ pub struct State {
     #[cfg_attr(feature = "wasm", tsify(optional, type = "LastCombat | null"))]
     pub last_combat: Option<Option<LastCombat>>,
 }
-pub(crate) fn present_value<'de, D: serde::Deserializer<'de>>(
+#[cfg_attr(not(target_arch = "wasm32"), inline)]
+pub fn present_value<'de, D: serde::Deserializer<'de>>(
     deserializer: D,
 ) -> Result<Option<Option<LastCombat>>, D::Error> {
     Option::<LastCombat>::deserialize(deserializer).map(Some)

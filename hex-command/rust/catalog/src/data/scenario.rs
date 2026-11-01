@@ -7,6 +7,10 @@ use std::collections::BTreeMap;
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct StartingUnit {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -30,6 +34,10 @@ pub struct StartingUnit {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct UnitFilter {
     pub side: Side,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -40,7 +48,8 @@ pub struct UnitFilter {
     pub name: Option<String>,
 }
 impl UnitFilter {
-    pub(crate) fn accepts(&self, unit: &Unit) -> bool {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn accepts(&self, unit: &Unit) -> bool {
         unit.side == self.side
             && self
                 .role
@@ -55,6 +64,10 @@ impl UnitFilter {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct ItemReward {
     pub recipient: UnitFilter,
     pub item: Item,
@@ -63,6 +76,10 @@ pub struct ItemReward {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Evacuation {
     pub tile: String,
     pub units: UnitFilter,
@@ -72,6 +89,10 @@ pub struct Evacuation {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Goal {
     Defeat {
         label: String,
@@ -191,6 +212,7 @@ pub enum Goal {
     },
 }
 impl Goal {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn visible_when(&self) -> Option<&Condition> {
         match self {
             Self::Defeat { visible_when, .. }
@@ -205,6 +227,7 @@ impl Goal {
         }
     }
     /// Return the structural category without interpreting a string tag.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn kind(&self) -> GoalKind {
         match self {
             Self::Defeat { .. } => GoalKind::Defeat,
@@ -219,6 +242,7 @@ impl Goal {
         }
     }
     /// Borrow the authored objective label.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn label(&self) -> &str {
         match self {
             Self::Defeat { label, .. }
@@ -233,6 +257,7 @@ impl Goal {
         }
     }
     /// Borrow the single site required by this objective or trigger, when present.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn tile(&self) -> Option<&String> {
         match self {
             Self::Escort { tile, .. }
@@ -245,6 +270,7 @@ impl Goal {
         }
     }
     /// Borrow the ordered sites of a multiple-site objective.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn tiles(&self) -> &[String] {
         match self {
             Self::Control { tiles, .. } | Self::Seal { tiles, .. } => tiles,
@@ -252,12 +278,14 @@ impl Goal {
         }
     }
     /// Materialize the applicable tile IDs in their authored order.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn sites(&self) -> Vec<String> {
         self.tile()
             .map(|t| vec![t.clone()])
             .unwrap_or_else(|| self.tiles().to_vec())
     }
     /// Return the defended-turn requirement for timed objectives.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn turns(&self) -> Option<u32> {
         match self {
             Self::Hold { turns, .. } | Self::Vigil { turns, .. } | Self::Refuge { turns, .. } => {
@@ -267,6 +295,7 @@ impl Goal {
         }
     }
     /// Return the earliest round on which a hold objective can complete.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn earliest_round(&self) -> Option<u32> {
         match self {
             Self::Hold { earliest_round, .. } => Some(*earliest_round),
@@ -274,6 +303,7 @@ impl Goal {
         }
     }
     /// Borrow the event that enables counting for a hold objective.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn start_event(&self) -> Option<&String> {
         match self {
             Self::Hold { start_event, .. } => start_event.as_ref(),
@@ -281,6 +311,7 @@ impl Goal {
         }
     }
     /// Borrow the named companion required at a vigil or named hold site.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn companion(&self) -> Option<&String> {
         match self {
             Self::Vigil { companion, .. } => Some(companion),
@@ -289,6 +320,7 @@ impl Goal {
         }
     }
     /// Borrow the optional unit-family requirement for sealing sites.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn unit_type(&self) -> Option<&String> {
         match self {
             Self::Seal { unit_type, .. } => unit_type.as_ref(),
@@ -296,6 +328,7 @@ impl Goal {
         }
     }
     /// Borrow the event marker required by an event objective.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn event(&self) -> Option<&String> {
         match self {
             Self::Event { event, .. } => Some(event),
@@ -308,6 +341,10 @@ impl Goal {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Trigger {
     Visit { tile: String },
     Condition { condition: Condition },
@@ -319,6 +356,10 @@ pub enum Trigger {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct SpawnUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -334,6 +375,10 @@ pub struct SpawnUnit {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct SpawnGroup {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -349,6 +394,10 @@ pub struct SpawnGroup {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Event {
     /// Recruitment unlocked by this event, derived from its durable marker.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -401,6 +450,10 @@ pub struct Event {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Wave {
     pub id: String,
     pub round: u32,
@@ -414,6 +467,10 @@ pub struct Wave {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct CompanionArrival {
     pub name: String,
     pub col: i32,
@@ -424,6 +481,10 @@ pub struct CompanionArrival {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Ritual {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -444,6 +505,10 @@ pub struct Ritual {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct RitualSpawn {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -460,6 +525,10 @@ pub struct RitualSpawn {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Refuge {
     pub medicine_event: String,
     pub medicine_turns: u32,
@@ -473,6 +542,10 @@ pub struct Refuge {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct MissionPatch {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -500,6 +573,10 @@ pub struct MissionPatch {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Layout {
     pub id: String,
     pub units: Vec<StartingUnit>,
@@ -508,6 +585,10 @@ pub struct Layout {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum GroupOrder {
     Hold {
         #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -522,6 +603,10 @@ pub enum GroupOrder {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct EnemyGroup {
     pub id: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -536,6 +621,10 @@ pub struct EnemyGroup {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Mission {
     pub map: Layout,
     #[serde(default)]
@@ -585,6 +674,7 @@ pub struct Mission {
 }
 impl Mission {
     /// Named companions may arrive through encounters as well as the opening roster.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn companion_names(&self) -> impl Iterator<Item = &str> {
         self.map
             .units
@@ -601,10 +691,12 @@ impl Mission {
             )
     }
     /// Shared progress rules apply to required and optional goals alike.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn all_goals(&self) -> impl Iterator<Item = &Goal> {
         self.goals.iter().chain(&self.optional_goals)
     }
     /// Apply the authored fields of a story-dependent mission override.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn apply(&mut self, patch: &MissionPatch) {
         if let Some(value) = &patch.briefing {
             self.briefing = value.clone();
@@ -630,6 +722,10 @@ impl Mission {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Campaign {
     #[serde(rename = "playerDiplomacy")]
     pub player_diplomacy: Vec<String>,
@@ -646,6 +742,7 @@ pub struct Campaign {
 }
 impl Trigger {
     /// Return the structural category without interpreting a string tag.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn kind(&self) -> TriggerKind {
         match self {
             Self::Visit { .. } => TriggerKind::Visit,
@@ -656,6 +753,7 @@ impl Trigger {
         }
     }
     /// Borrow the single site required by this objective or trigger, when present.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn tile(&self) -> Option<&String> {
         match self {
             Self::Visit { tile } | Self::Held { tile, .. } | Self::Control { tile, .. } => {
@@ -670,6 +768,10 @@ impl Trigger {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct MapDefinition {
     pub id: String,
     pub revision: u32,

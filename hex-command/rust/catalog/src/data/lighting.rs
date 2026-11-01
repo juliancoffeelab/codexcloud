@@ -5,6 +5,10 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum TimeOfDay {
     #[default]
     Day,
@@ -14,6 +18,10 @@ pub enum TimeOfDay {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct BattlefieldLight {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -39,6 +47,10 @@ pub struct BattlefieldLight {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct BattlefieldLighting {
     pub time: TimeOfDay,
     #[serde(default)]
@@ -46,7 +58,8 @@ pub struct BattlefieldLighting {
 }
 
 impl BattlefieldLighting {
-    pub(super) fn validate(&self, tiles: &[Tile], events: &[Event]) -> Result<(), String> {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn validate(&self, tiles: &[Tile], events: &[Event]) -> Result<(), String> {
         for light in &self.lights {
             if !tiles
                 .iter()
@@ -79,6 +92,10 @@ impl BattlefieldLighting {
 /// Resolved current presentation; sent with views, never persisted as a cache.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct BattlefieldPresentation {
     pub lighting: BattlefieldLighting,
     pub fog: Vec<String>,

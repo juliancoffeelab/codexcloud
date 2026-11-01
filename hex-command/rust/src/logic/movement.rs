@@ -379,6 +379,7 @@ impl<'catalog> Game<'catalog> {
         );
         self.remember_conditions();
         self.traversal = None;
+        #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Move {
             unit: format!("u{id}"),
             tile: self.board.ids[tile].clone(),

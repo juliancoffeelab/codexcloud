@@ -1,7 +1,8 @@
 # Rust game core
 
 [Authored JSON](data/README.md) supplies rules and scenario content directly.
-`data` owns definitions and snapshots, `logic` owns battle commands and campaign
+The internal `catalog` crate owns definitions, snapshots and authoring validation;
+`data` re-exports the model vocabulary, `logic` owns battle commands and campaign
 execution, and `ai` owns recruitment, campaign orders and planning. `simulation` owns scheduling,
 workers and records; `protocol` defines the browser transfer contract.
 
@@ -10,9 +11,17 @@ catalog through scoped threads, while each match owns state and planning workspa
 Immutable geometry, effective missions and distance fields use local `Rc` inside
 one match; the core needs no shared mutable catalog or synchronization locks.
 
+The internal `freeze-derive` crate derives static mirrors of the current model
+fields and exhaustive conversions back to owned values. The catalog compiler
+validates the authoring documents and emits these mirrors as borrowed constants.
+The browser factory constructs its owned catalog from them once, retaining the
+existing gameplay types. Simulation-only tables are omitted from browser builds;
+the authoring loader is available there only with `runtime-catalog`. Static mirror
+types are not part of the saved-game or browser transfer format.
+
 ## Core execution
 
-`Catalog::load_from` and `Catalog::from_json_bundle` validate content and resolve
+Native `Catalog::load_from` and `Catalog::from_json_bundle` validate content and resolve
 terrain/race/unit inheritance once. `Game` executes typed commands and owns battle
 state. Occupancy and unit indexes avoid roster scans; terrain revisions invalidate
 cached route fields.
@@ -34,8 +43,9 @@ The live TypeScript adapter is `src/game/native-engine.ts`. Engine handles use
 arguments validate inside the facade, where conversion failures return ordinary
 engine errors. Concrete transparent response types retain the shared
 `EngineResult<T>` envelope without losing generic arguments at the WASM boundary.
-Serialization uses JavaScript objects through Tsify's `js` feature, with maps as
-objects and explicit nulls; omitted optional save fields remain omitted.
+Responses use a private buffered codec to create JavaScript objects, with maps as
+objects and explicit nulls; omitted optional save fields remain omitted. Tsify
+continues to own the generated public types and request decoding.
 
 The Svelte UI, map picker, artwork, sound, pacing and browser tools remain in
 JavaScript. `src/game/live-game.ts` adapts native state/actions to the existing
@@ -59,7 +69,7 @@ npm run check:wasm
 
 `wasm-pack` is pinned as an npm development dependency and installs the matching
 `wasm-bindgen` tool. Development and type-check commands build the bindings before
-using them; the production build uses the release profile. When npm runs
+using them; the production build uses the separate `wasm-release` profile. When npm runs
 behind an environment proxy, use `NODE_USE_ENV_PROXY=1 npm ci` with Node 24.5 or
 newer so its binary installer uses that proxy.
 
