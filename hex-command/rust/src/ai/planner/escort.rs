@@ -12,7 +12,7 @@ pub(in crate::ai) struct Workspace {
     terrain: Vec<usize>,
     owners: Vec<Option<Side>>,
     fields: FxHashMap<u32, Field>,
-    assignments: Vec<(UnitId, Vec<UnitId>, Option<usize>)>,
+    assignments: Vec<(UnitId, Vec<UnitId>, Option<(usize, usize)>)>,
 }
 struct Field {
     positions: Vec<f64>,
@@ -71,6 +71,7 @@ impl Workspace {
                                     && game.at(tile).is_none_or(|other| game.allied(unit, other))
                             })
                             .min_by_key(|&tile| (route[tile], home[tile], tile))
+                            .map(|tile| (tile, destination))
                     });
                     (actor, d.guards.clone(), next)
                 })
@@ -147,7 +148,7 @@ impl Workspace {
                 let Some(unit) = game.unit(guard.0) else {
                     continue;
                 };
-                let following = next.and_then(|site| {
+                let following = next.and_then(|(site, destination)| {
                     let tiles: Vec<_> = (0..game.terrain().len())
                         .filter(|&tile| {
                             game.board().distance(site, tile) <= 2
@@ -156,7 +157,24 @@ impl Workspace {
                                 && game.cost(unit.kind, tile) != u16::MAX
                         })
                         .collect();
-                    (!tiles.is_empty()).then(|| game.routes(unit.kind, &tiles))
+                    // Supporting positions should leave the traveller's shortest
+                    // approaches open. Narrow passages retain the same fallback.
+                    let home = game.routes(actor.kind, &[actor.tile]);
+                    let onward = game.routes(actor.kind, &[destination]);
+                    let direct =
+                        onward[actor.tile].saturating_add(game.cost(actor.kind, actor.tile));
+                    let aside: Vec<_> = tiles
+                        .iter()
+                        .copied()
+                        .filter(|&tile| {
+                            home[tile]
+                                .saturating_add(onward[tile])
+                                .saturating_add(game.cost(actor.kind, tile))
+                                > direct
+                        })
+                        .collect();
+                    let targets = if aside.is_empty() { &tiles } else { &aside };
+                    (!targets.is_empty()).then(|| game.routes(unit.kind, targets))
                 });
                 let mut positions: Vec<_> = std::iter::once(unit.tile)
                     .chain(game.reachable(unit).iter().map(|&(tile, _)| tile))
