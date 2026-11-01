@@ -176,7 +176,7 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
                 terrain: "plains".into(),
                 owner: None,
                 connections: None,
-                wall_corners: None,
+                walls: None,
                 dead_ends: None,
                 floor: None,
             });

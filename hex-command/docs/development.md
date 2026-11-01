@@ -143,7 +143,7 @@ Stable member markers prevent duplicate spawns after deaths or restoration.
 has been cleared. Legacy visit/round/control triggers remain supported.
 
 Every terrain definition explicitly declares a typed `role`, independent of its
-artwork ID. Bell and ordinary keeps both use `keep`; castle paving and gates use
+artwork ID. Bell and ordinary keeps both use `keep`; castle courtyards use
 `fortification`. Native income, healing, capture, sight blocking, recruitment and
 AI objectives query roles. Race/unit terrain modifiers are keyed by role; resolved
 movement and protection values remain per authored terrain variant. The UI reads
@@ -198,6 +198,17 @@ portrait choices never supply defaults for map rendering. On application entry,
 image nodes. This UI cache is separate from the worker's map textures and must
 remain when map rendering changes. Pending or failed image loads show a loading
 or retry state rather than an empty portrait.
+
+Castle map cells declare a readable `walls` array. The offline library
+bakes their paving and complete endpoint towers into each frame; the enclosed
+bell owns all six towers and draws at higher z. No tile relies on neighboring
+frames to supply missing tower pieces. Terrain painting draws complete images
+without a polygon underfill; source artwork owns ground coverage.
+
+Authored JSON can reject unknown fields through Serde. WASM object decoding uses
+serde-wasm-bindgen's known-field iteration, so that annotation does not guarantee
+rejection of extra JavaScript object keys. Geometry invariants and migration
+conversion must not depend on such rejection.
 
 The native dispatch transport publishes per-command state plus an explicit
 terrain `keep`, `patch` or `replace`, tied to the prior revision. The browser

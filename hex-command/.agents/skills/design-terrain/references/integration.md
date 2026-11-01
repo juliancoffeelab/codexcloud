@@ -25,7 +25,7 @@ format just to select its sprite.
    in `pixel/art/terrain/props/<id>/<piece>/` and compose them in `layouts.json`.
    Ordinary props fit inside their hex. Explicitly padded complete terrain frames
    must use the finite canvas policy in `scripts/build-pixel-art.py`: only the
-   three castle families may declare 80×96 with anchor (40,48). `canvas.json`
+   two castle families may declare 80×96 with anchor (40,48). `canvas.json`
    cannot opt another family into overflow or enlarge the approved profile.
    Drawing depth is an authored integer. The build bakes complete frames;
    runtime does not draw props outside those frames.
@@ -36,6 +36,9 @@ format just to select its sprite.
    landing/ferry, the single `e` or `w` connection identifies the landward bank;
    `1.txt` faces east and `8.txt` faces west. Key directional layouts by the
    same source stems. Extend the existing generic directional checks as needed.
+   Castle geometry uses explicit `walls`, not road-style
+   `connections`. Register a shared inspection portrait in
+   `src/presentation/terrain-preview.ts`; it must not vary with map geometry.
 4. Add the terrain's inspection description in `src/ui/terrain-view.ts` and
    preview color in `src/ui/geometry.ts`. Existing movement, ownership, healing
    and recruitment behavior must be checked explicitly; a new ID does not

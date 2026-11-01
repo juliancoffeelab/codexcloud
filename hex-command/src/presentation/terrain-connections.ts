@@ -1,6 +1,5 @@
 import castleBells from "../../pixel/art/terrain/castle-bell/variants.json";
 import castleWalls from "../../pixel/art/terrain/castle-wall/variants.json";
-import castleGates from "../../pixel/art/terrain/castle-gate/variants.json";
 import roadDeadEnds from "../../pixel/art/terrain/road/dead-ends.json";
 import type { HexDirection, TerrainType } from "../game/types";
 
@@ -9,7 +8,7 @@ type ConnectedTile = {
   terrain: TerrainType;
   connections?: readonly HexDirection[];
   deadEnds?: readonly HexDirection[];
-  wallCorners?: readonly number[];
+  walls?: readonly HexDirection[];
 };
 export const CONNECTED_TERRAINS: readonly TerrainType[] = [
   "signpost",
@@ -20,47 +19,43 @@ export const CONNECTED_TERRAINS: readonly TerrainType[] = [
   "landing",
   "ferry",
   "castle-wall",
-  "castle-gate",
   "castle-bell",
 ];
 const directionMask = (directions: readonly HexDirection[]) =>
   directions.reduce((mask, direction) => mask | (1 << TERRAIN_DIRECTIONS.indexOf(direction)), 0);
 
-/** A pure key encoding of explicit authored geometry; no neighbor inspection. */
-export function castleVariantId(mask: number, corners: readonly number[]): string {
-  return corners
-    .reduce((id, code, i) => id | (BigInt(code) << BigInt(6 + 9 * i)), BigInt(mask))
-    .toString();
+/** Compact source filename for explicit wall directions. */
+export function castleVariantId(walls: readonly HexDirection[]): string {
+  return String(directionMask(walls));
 }
 const castleVariants = {
   "castle-wall": castleWalls,
-  "castle-gate": castleGates,
   "castle-bell": castleBells,
 };
 
 /** Finished capped roads are explicitly registered alongside their source matrices. */
 export function validTerrainConnections(tile: ConnectedTile): boolean {
-  const castle =
-    tile.terrain === "castle-wall" ||
-    tile.terrain === "castle-gate" ||
-    tile.terrain === "castle-bell";
-  if (tile.wallCorners !== undefined && !castle) return false;
-  if (
-    castle &&
-    (!tile.wallCorners ||
-      tile.wallCorners.length !== 6 ||
-      !tile.wallCorners.every((code) => Number.isInteger(code) && code >= 0 && code < 512))
-  )
-    return false;
+  if (Object.hasOwn(tile, "wallCorners") || Object.hasOwn(tile, "gates")) return false;
+  const castle = tile.terrain === "castle-wall" || tile.terrain === "castle-bell";
+  const validEdges = (edges: readonly HexDirection[] | undefined) =>
+    edges !== undefined &&
+    edges.every((edge) => TERRAIN_DIRECTIONS.includes(edge)) &&
+    new Set(edges).size === edges.length;
+  if (castle) {
+    if (tile.connections !== undefined || tile.deadEnds !== undefined || !validEdges(tile.walls))
+      return false;
+    const key = castleVariantId(tile.walls!);
+    return castleVariants[tile.terrain as keyof typeof castleVariants].some(
+      (variant) => variant.id === key,
+    );
+  }
+  if (tile.walls !== undefined) return false;
   if (tile.connections === undefined)
     return !CONNECTED_TERRAINS.includes(tile.terrain) && tile.deadEnds === undefined;
   if (!tile.connections.every((direction) => TERRAIN_DIRECTIONS.includes(direction))) return false;
   const mask = directionMask(tile.connections);
   if (
-    (!mask &&
-      tile.terrain !== "castle-wall" &&
-      tile.terrain !== "castle-bell" &&
-      tile.terrain !== "village") ||
+    (!mask && tile.terrain !== "village") ||
     new Set(tile.connections).size !== tile.connections.length
   )
     return false;
@@ -77,14 +72,6 @@ export function validTerrainConnections(tile: ConnectedTile): boolean {
     );
   }
   switch (tile.terrain) {
-    case "castle-wall":
-    case "castle-gate":
-    case "castle-bell":
-      return castleVariants[tile.terrain].some(
-        (variant) =>
-          variant.mask === mask &&
-          variant.wallCorners.every((code, i) => code === tile.wallCorners![i]),
-      );
     case "road":
       return true;
     case "signpost":
@@ -106,14 +93,10 @@ export function validTerrainConnections(tile: ConnectedTile): boolean {
 export function terrainArtNames(tile: ConnectedTile): string[] {
   if (!validTerrainConnections(tile))
     throw new Error(`Invalid or missing terrain connections: ${tile.terrain}`);
+  if (tile.terrain === "castle-wall" || tile.terrain === "castle-bell")
+    return [`${tile.terrain}_${castleVariantId(tile.walls!)}`];
   if (!CONNECTED_TERRAINS.includes(tile.terrain)) return [tile.terrain];
   const mask = directionMask(tile.connections!);
-  if (
-    tile.terrain === "castle-wall" ||
-    tile.terrain === "castle-gate" ||
-    tile.terrain === "castle-bell"
-  )
-    return [`${tile.terrain}_${castleVariantId(mask, tile.wallCorners!)}`];
   if (tile.terrain === "road" && tile.deadEnds?.length)
     return [`road_${mask}-end-${directionMask(tile.deadEnds)}`];
   return [`${tile.terrain}_${mask}`];

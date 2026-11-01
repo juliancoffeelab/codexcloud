@@ -4,7 +4,7 @@ import { terrainArtNames } from "./terrain-connections";
 
 /** Stable per-map arrangements, independent of redraws, rules and floor colors. */
 export function terrainLayout(
-  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds" | "wallCorners">,
+  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds" | "walls">,
   mapId: string,
 ) {
   const name = terrainArtNames(tile)[0]!;

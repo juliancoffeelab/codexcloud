@@ -13,6 +13,19 @@ Add `--grid` for a red hex-grid overlay above the terrain and units. The grid
 uses the same hex geometry as the map. Use `--grid-color "#ff4040"` to choose
 another grid color; omit `--grid` for the normal preview.
 
+For an offline artwork experiment, `--artwork candidate-frames.json` replaces
+existing frame keys with complete local images. The JSON maps frame keys to
+`url`, `width`, `height`, `anchorX`, `anchorY` and integer `z`; image paths are
+relative to that JSON. Dimensions and anchors must match the registered frames.
+This does not register artwork in the playable game. The shared painter draws complete images only; it never adds a ground polygon.
+
+Use `--draw-order reverse-within-z` or `shuffle-within-z --order-seed 17` to
+diagnose order dependence while preserving authored depth. Restrict the test with
+`--order-terrain castle-wall,castle-bell` to keep scenery order fixed.
+The diagnostic changes the actual paint sequence, rather than just permuting
+inputs before the normal sort. `reverse-all` and `shuffle-all` deliberately ignore
+depth and are controls, not correctness requirements for a design with explicit z.
+
 `--overlay` is optional. Keep scenario-specific map builders, input files and
 outputs in ignored `tmp/`. The renderer reads source data as a devtool, never
 registers content in the playable catalog, and does not execute encounters.

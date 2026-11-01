@@ -1,4 +1,4 @@
-"""Author native, combinable fort frames offline. Runtime only selects images."""
+"""Generate complete fort tiles from explicit walls, without map input."""
 import argparse
 import json
 import math
@@ -10,6 +10,12 @@ SPACING = 2 * APOTHEM
 CENTER = 31.5
 # Every wall is a complete inward-facing strip along its owning hex edge.
 WALL_DEPTH = 9
+# Complete tower footprint; body height and the approved canvas remain unchanged.
+TOWER_RADIUS_X, TOWER_RADIUS_Y = 8, 4
+# A low footing covers the wall toe without moving the crown or junction anchor.
+# Its front reach is 4+7=11 pixels: ceil(9 / sin(60 degrees)) for the wall profile.
+TOWER_FOOTING_RADIUS_X, TOWER_FOOTING_RADIUS_Y = 10, 7
+TOWER_FOOTING_FORWARD, TOWER_FOOTING_HEIGHT = 4, 3
 
 
 def model_x(x):
@@ -38,10 +44,6 @@ def edge_segment(direction):
              CENTER + 32 * math.sin(angle + math.pi / 6)))
 
 
-def wall_segments(mask):
-    return [(i, *edge_segment(i)) for i in range(6) if not mask & (1 << i)]
-
-
 def wall_sample(x, y, edge):
     direction, p, q = edge
     angle = direction * math.pi / 3
@@ -66,11 +68,8 @@ def wall_material(depth, along):
     return 'k' if int(depth) % 3 == 0 else 'c'
 
 
-def masonry(mask, gate, base):
-    edges = wall_segments(mask)
-    exposed = {i for i, _, _ in edges}
-    gate_edge = next((i for i in exposed if (i - 1) % 6 in exposed
-                      and (i + 1) % 6 in exposed), None) if gate else None
+def masonry(walls, base):
+    edges = [(i, *edge_segment(i)) for i in sorted(walls)]
     rows = [['.'] * 64 for _ in range(64)]
     for y in range(64):
         for x in range(64):
@@ -79,8 +78,6 @@ def masonry(mask, gate, base):
             hits = []
             for edge in edges:
                 depth, along = wall_sample(model_x(x), y, edge)
-                if edge[0] == gate_edge and .25 < along < .75:
-                    continue
                 if 0 <= depth < WALL_DEPTH:
                     hits.append((depth, edge[0], along))
             if hits:
@@ -98,52 +95,17 @@ def validate_paving():
             raise ValueError('Paving changes phase across a hex neighbor offset')
 
 
-def validate_joined_masonry(rows, mask, gate):
-    # A three-sided boundary is one connected piece; a gate splits it in two.
-    # This catches detached towers, regardless of their symbol or color.
-    if mask not in GATES:
-        return
-    from collections import deque
-    points = {(x, y) for y, row in enumerate(rows) for x, value in enumerate(row) if value != '.'}
-    count = 0
-    while points:
-        count += 1
-        queue = deque([points.pop()])
-        while queue:
-            x, y = queue.popleft()
-            for dx in (-1, 0, 1):
-                for dy in (-1, 0, 1):
-                    neighbor = x + dx, y + dy
-                    if neighbor in points:
-                        points.remove(neighbor)
-                        queue.append(neighbor)
-    expected = 2 if gate else 1
-    if count != expected:
-        raise ValueError(f'Masonry mask {mask}: expected {expected} joined pieces, found {count}')
-
-
-# A 64-pixel logical hex, padded without rescaling for explicitly allowed overflow.
+# Fixed native canvas and lattice. All towers stand on these exact hex corners.
 WIDTH, HEIGHT, PAD_X, PAD_Y = 80, 96, 8, 16
-
-GATES = {7, 14, 28, 35, 49, 56}
 CORNERS = [(28, -16), (28, 16), (0, 32), (-28, 16), (-28, -16), (0, -32)]
-CASTLES = ('castle-wall', 'castle-gate', 'castle-bell')
+CASTLES = ('castle-wall', 'castle-bell')
 DIRECTIONS = ['e', 'se', 'sw', 'w', 'nw', 'ne']
 
 
-def variant_id(mask, corners):
-    return str(mask | sum(code << (6 + 9 * i) for i, code in enumerate(corners)))
-
-
-def incident_centers(corner):
-    vx, vy = CORNERS[corner]
-    centers = [(-vx, -vy)]
-    for edge in (corner, (corner - 1) % 6):
-        angle = edge * math.pi / 3
-        centers.append((round(56 * math.cos(angle)) - vx,
-                        round(56 * math.sin(angle) * 48 / (28 * math.sqrt(3))) - vy))
-    return sorted(centers, key=lambda p: (p[1], p[0]))
-
+def direction_mask(edges):
+    if not isinstance(edges, list) or any(edge not in DIRECTIONS for edge in edges) or len(set(edges)) != len(edges):
+        raise ValueError('Walls require unique explicit hex directions')
+    return sum(1 << DIRECTIONS.index(edge) for edge in edges)
 
 
 def validate_variants(kind, variants):
@@ -151,113 +113,106 @@ def validate_variants(kind, variants):
         raise ValueError(f'Invalid castle family {kind}')
     accepted = {}
     for variant in variants:
-        if not isinstance(variant, dict) or set(variant) != {'id', 'mask', 'wallCorners'}:
-            raise ValueError(f'{kind}: explicit id, mask and wallCorners are required')
-        mask, codes = variant['mask'], variant['wallCorners']
-        if type(mask) is not int or not 0 <= mask < 64:
-            raise ValueError(f'{kind}: invalid wall mask')
-        if kind == 'castle-gate' and mask not in GATES:
-            raise ValueError('Unsupported gate wall mask')
-        if kind == 'castle-bell' and mask != 0:
-            raise ValueError('Bell tiles use an enclosed wall mask')
-        if not isinstance(codes, list) or len(codes) != 6 or any(type(v) is not int or not 0 <= v < 512 for v in codes):
-            raise ValueError(f'{kind}: six explicit corner codes are required')
-        for corner, code in enumerate(codes):
-            if code:
-                faces, members = code & 63, code >> 6
-                own = (-CORNERS[corner][0], -CORNERS[corner][1])
-                own_bit = 1 << incident_centers(corner).index(own)
-                if faces.bit_count() < 2 or not members & own_bit:
-                    raise ValueError(f'{kind}: invalid shared tower at corner {corner}')
-        key = variant_id(mask, codes)
+        if not isinstance(variant, dict) or set(variant) != {'id', 'walls'}:
+            raise ValueError(f'{kind}: explicit id and walls are required')
+        walls = direction_mask(variant['walls'])
+        if kind == 'castle-bell' and walls != 63:
+            raise ValueError('Bell tiles have six enclosing walls')
+        key = str(walls)
         if variant['id'] != key or key in accepted:
-            raise ValueError(f'{kind}: invalid or duplicate tile id {variant["id"]}')
-        accepted[key] = dict(id=key, mask=mask, wallCorners=list(codes))
+            raise ValueError(f'{kind}: invalid or duplicate id {variant["id"]}')
+        accepted[key] = variant
     return accepted
 
 
 def read_catalog(path):
     document = json.loads(Path(path).read_text())
-    if set(document) != {'version', 'families'} or document['version'] != 1 or set(document['families']) != set(CASTLES):
-        raise ValueError('Expected the explicit version-one castle tile catalog')
+    if set(document) != {'version', 'families'} or document['version'] != 3 or set(document['families']) != set(CASTLES):
+        raise ValueError('Expected the explicit version-three castle tile catalog')
     return {kind: validate_variants(kind, document['families'][kind]) for kind in CASTLES}
 
 
-
-def anchor_offset(faces):
-    normals = [(math.cos(i * math.pi / 3) * APOTHEM / 28, math.sin(i * math.pi / 3))
-               for i in range(6) if faces & (1 << i)]
-    intersections = []
-    for i, (ax, ay) in enumerate(normals):
-        for bx, by in normals[i + 1:]:
-            det = ax * by - ay * bx
-            if abs(det) > 1e-8:
-                intersections.append((2 * (ay - by) / det, 2 * (bx - ax) / det))
-    if not intersections:
-        raise ValueError('Corner needs intersecting walls')
-    vertical = [-4.5 / nx for nx, ny in normals if abs(ny) < 1e-8]
-    x = sum(vertical) / len(vertical) if vertical else sum(x for x, _ in intersections) / len(intersections)
-    return math.floor(x + .5), math.floor(sum(y for _, y in intersections) / len(intersections) + .5)
-
-
-def tower_pixel(dx, dy):
+def tower_body_pixel(dx, dy):
     value, height = '.', 0
     for z in range(10, -1, -1):
-        radius = (dx / 6) ** 2 + ((dy + z) / 3) ** 2
+        radius = (dx / TOWER_RADIUS_X) ** 2 + ((dy + z) / TOWER_RADIUS_Y) ** 2
         if radius > 1:
             continue
         height = z
-        value = ('C' if radius > .5 else 'c') if z == 10 else ('C' if dx < -3 else 'k' if dx > 3 else 'c')
-        if z in (3, 7) and dx >= -3:
+        value = ('C' if radius > .5 else 'c') if z == 10 else ('C' if dx < -TOWER_RADIUS_X / 2 else 'k' if dx > TOWER_RADIUS_X / 2 else 'c')
+        if z in (3, 7) and dx >= -TOWER_RADIUS_X / 2:
             value = 'k'
         break
     for i in range(6):
         angle = i * math.pi / 3
-        cx, cy = round(4 * math.cos(angle)), round(-10 + 2 * math.sin(angle))
+        cx, cy = round((TOWER_RADIUS_X - 2) * math.cos(angle)), round(-10 + (TOWER_RADIUS_Y - 1) * math.sin(angle))
         if cx - 1 <= dx < cx + 1 and cy - 2 <= dy < cy + 1:
             value, height = 'C', 10
     return value, height
 
 
-def complete_tile(mask, codes, gate=False):
-    """One complete matrix: paving, wall masonry and complementary tower volumes."""
+def tower_pixel(dx, dy):
+    value, height = tower_body_pixel(dx, dy)
+    if value != '.':
+        return value, height
+    for height in range(TOWER_FOOTING_HEIGHT, -1, -1):
+        radius = (dx / TOWER_FOOTING_RADIUS_X) ** 2 + ((dy - TOWER_FOOTING_FORWARD + height) / TOWER_FOOTING_RADIUS_Y) ** 2
+        if radius > 1:
+            continue
+        if height == TOWER_FOOTING_HEIGHT:
+            value = 'C' if radius > .55 else 'c'
+        elif height == 0:
+            value = 'k' if dx > -TOWER_FOOTING_RADIUS_X / 2 else 'c'
+        else:
+            value = 'C' if dx < -TOWER_FOOTING_RADIUS_X * .65 else 'k' if dx > TOWER_FOOTING_RADIUS_X * .65 else 'c'
+        return value, height
+    return '.', 0
+
+
+def stamp_structure(rows, structure, start, stop):
+    glyphs, offset_x, offset_y, _ = structure
+    for y in range(start, stop):
+        for x, symbol in enumerate(glyphs[y]):
+            if symbol != '.':
+                rows[y + PAD_Y + offset_y][x + PAD_X + offset_x] = symbol
+
+
+def complete_tile(walls, structure):
+    """Bake paving, lower structure, boundary stonework, then upper structure."""
     base = [''.join('G' if abs(x - CENTER) <= 28 and abs(y - CENTER) <= 32 - abs(x - CENTER) * 4 / 7 else '.'
                     for x in range(64)) for y in range(64)]
-    wall = masonry(mask, gate, base)
+    masonry_rows = masonry(walls, base)
     rows = [['.'] * WIDTH for _ in range(HEIGHT)]
     for y in range(64):
         for x in range(64):
             if base[y][x] != '.':
-                rows[y + PAD_Y][x + PAD_X] = wall[y][x] if wall[y][x] != '.' else ('P' if paving_symbol(model_x(x), y) == 'G' else 'p')
-    for corner, code in enumerate(codes):
-        if not code:
-            continue
-        faces, members = code & 63, code >> 6
+                rows[y + PAD_Y][x + PAD_X] = 'P' if paving_symbol(model_x(x), y) == 'G' else 'p'
+    if structure is not None:
+        glyphs, _, _, split_row = structure
+        stamp_structure(rows, structure, split_row, len(glyphs))
+    # Boundary stonework owns its overlap with structures baked into the courtyard.
+    for y, row in enumerate(masonry_rows):
+        for x, symbol in enumerate(row):
+            if symbol != '.':
+                rows[y + PAD_Y][x + PAD_X] = symbol
+    # Edge i has endpoints i and i+1. No neighboring geometry moves or splits a tower.
+    corners = {corner for edge in walls for corner in (edge, (edge + 1) % 6)}
+    for corner in sorted(corners):
         vx, vy = CORNERS[corner]
-        ox, oy = anchor_offset(faces)
-        centers = [c for i, c in enumerate(incident_centers(corner)) if members & (1 << i)]
-        own = (-vx, -vy)
-        if own not in centers:
-            raise ValueError('A tile cannot carry another tile’s corner')
-        for y in range(max(0, int(vy + oy + CENTER + PAD_Y - 10)), min(HEIGHT, int(vy + oy + CENTER + PAD_Y + 10))):
-            for x in range(max(0, int(vx + ox + CENTER + PAD_X - 8)), min(WIDTH, int(vx + ox + CENTER + PAD_X + 9))):
-                px, py = x - PAD_X - CENTER, y - PAD_Y - CENTER
-                dx, dy = px - vx - ox, py - vy - oy - 5
-                symbol, height = tower_pixel(dx, dy)
-                if symbol == '.':
-                    continue
-                # Partition the solid volume in ground coordinates BEFORE projection.
-                gx, gy = px - vx, py + height - vy
-                owner = min(centers, key=lambda c: ((gx - c[0]) ** 2 + (gy - c[1]) ** 2, c[1], c[0]))
-                if owner == own:
+        for y in range(HEIGHT):
+            for x in range(WIDTH):
+                symbol, _ = tower_pixel(x - PAD_X - CENTER - vx, y - PAD_Y - CENTER - vy)
+                if symbol != '.':
                     rows[y][x] = symbol
+    if structure is not None:
+        stamp_structure(rows, structure, 0, split_row)
     return [''.join(row) for row in rows]
 
 
 def generate(output, materials, paving_colors, catalog):
     validate_paving()
     families = read_catalog(catalog)
-    variants = {(kind, key): (variant['mask'], variant['wallCorners'])
+    variants = {(kind, key): variant
                 for kind, definitions in families.items() for key, variant in definitions.items()}
     palette = {'.': [0, 0, 0, 0], 'P': paving_colors['G'], 'p': paving_colors['g'],
                **{key: materials[key] for key in ('O', 'C', 'c', 'k')}}
@@ -265,24 +220,19 @@ def generate(output, materials, paving_colors, catalog):
         folder = output / kind
         folder.mkdir(parents=True)
         registry = []
-        for (terrain, id), (mask, codes) in sorted(variants.items()):
+        for (terrain, id), variant in sorted(variants.items()):
             if terrain != kind:
                 continue
-            rows = complete_tile(mask, codes, kind == 'castle-gate')
+            structure = None
             if kind == 'castle-bell':
-                # The bell is the final (higher-z) authoring layer, baked into this tile.
-                rows = [list(row) for row in rows]
                 bell = (REPO / 'pixel/art/terrain/props/bell/structure/tile.txt').read_text().splitlines()
-                for y, row in enumerate(bell):
-                    for x, symbol in enumerate(row):
-                        if symbol != '.':
-                            rows[y + PAD_Y][x + PAD_X + 6] = symbol
-                rows = [''.join(row) for row in rows]
+                structure = (bell, 6, 0, 32)
+            rows = complete_tile([DIRECTIONS.index(d) for d in variant['walls']], structure)
             (folder / f'{id}.txt').write_text('\n'.join(rows) + '\n')
-            registry.append(dict(id=id, mask=mask, wallCorners=codes))
+            registry.append(variant)
         kind_palette = {**palette, **json.loads((REPO / 'pixel/art/terrain/props/bell/structure/palette.json').read_text())} if kind == 'castle-bell' else palette
         (folder / 'palette.json').write_text(json.dumps(kind_palette, indent=2) + '\n')
-        (folder / 'canvas.json').write_text(json.dumps(dict(width=WIDTH, height=HEIGHT, anchorX=40, anchorY=48, z=1), indent=2) + '\n')
+        (folder / 'canvas.json').write_text(json.dumps(dict(width=WIDTH, height=HEIGHT, anchorX=40, anchorY=48, z=2 if kind == 'castle-bell' else 1), indent=2) + '\n')
         (folder / 'variants.json').write_text(json.dumps(registry, indent=2) + '\n')
 
 

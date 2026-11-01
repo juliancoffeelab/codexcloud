@@ -197,18 +197,6 @@
     "role": "fortification"
   },
   {
-    "id": "castle-gate",
-    "name": "Castle gate",
-    "cost": 1,
-    "passable": true,
-    "damageModifiers": {
-      "melee": -1,
-      "ranged": -1
-    },
-    "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment.",
-    "role": "fortification"
-  },
-  {
     "id": "castle-bell",
     "name": "Bell keep",
     "cost": 1,

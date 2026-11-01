@@ -1,3 +1,5 @@
+import { migrateV17ToV18 } from "./v17-to-v18";
+import { migrateV16ToV17 } from "./v16-to-v17";
 import { migrateV15ToV16 } from "./v15-to-v16";
 import { migrateV14ToV15 } from "./v14-to-v15";
 import { currentSave, isRecord, SAVE_VERSION, type BattleSave } from "../schema";
@@ -69,6 +71,12 @@ export function migrateSave(input: unknown): MigrationResult {
         break;
       case 12:
         value = migrateV12ToV13(value);
+        break;
+      case 17:
+        value = migrateV17ToV18(value);
+        break;
+      case 16:
+        value = migrateV16ToV17(value);
         break;
       case 15:
         value = migrateV15ToV16(value);

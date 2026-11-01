@@ -107,11 +107,12 @@ Map post-processing is absolutely forbidden except for weather and atmospheric e
 
 ## Connected terrain
 
-Connected terrain must declare explicit `connections` and use numbered
+Connected terrain must declare explicit geometry: castles use `walls`;
+other connected terrain uses `connections`. Use numbered
 `<mask>.txt` sources for every supported combination. Implicit orientation
 defaults, special filename aliases such as `tile.txt` for one connected mask,
 and unsuffixed connected frames are explicitly forbidden. Missing or invalid
-connections must fail; do not silently substitute, infer or backfill them in
+geometry must fail; do not silently substitute, infer or backfill it in
 runtime rendering or validation. This applies to all connected terrain,
 including roads, crossings, settlements and castles. Unconnected terrain and
 individual prop sources may use `tile.txt`.

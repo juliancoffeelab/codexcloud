@@ -4,9 +4,13 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import { artFrameKey, currentArtwork } from "../../../../src/presentation/art";
+import { artFrameKey, currentArtwork, type FrameImage } from "../../../../src/presentation/art";
 import { pixelSprites } from "../../../../src/presentation/pixel-art";
-import { paintTerrainTiles, terrainMapTiles } from "../../../../src/presentation/terrain-map";
+import {
+  paintTerrainTiles,
+  terrainDrawingOrder,
+  terrainMapTiles,
+} from "../../../../src/presentation/terrain-map";
 import {
   daylight,
   lightingMatrix,
@@ -67,6 +71,10 @@ const { values } = parseArgs({
     output: { type: "string" },
     grid: { type: "boolean", default: false },
     "grid-color": { type: "string" },
+    artwork: { type: "string" },
+    "draw-order": { type: "string", default: "native" },
+    "order-seed": { type: "string", default: "1" },
+    "order-terrain": { type: "string" },
   },
 });
 if (!values.map || !values.output)
@@ -108,7 +116,27 @@ function position(point: Position) {
   return tileCenter(point);
 }
 const root = fileURLToPath(new URL("../../../../", import.meta.url));
+// Candidate files replace existing complete frames, never paint onto the map.
+const baseArtwork = currentArtwork();
+const candidates: Record<string, FrameImage> = values.artwork
+  ? JSON.parse(await readFile(resolve(values.artwork), "utf8"))
+  : {};
+for (const [key, frame] of Object.entries(candidates)) {
+  const original = baseArtwork.frames[key];
+  if (
+    !original ||
+    original.width !== frame.width ||
+    original.height !== frame.height ||
+    original.anchorX !== frame.anchorX ||
+    original.anchorY !== frame.anchorY ||
+    !Number.isInteger(frame.z) ||
+    typeof frame.url !== "string"
+  )
+    throw new Error(`Candidate must preserve the existing frame geometry: ${key}`);
+  candidates[key] = { ...frame, url: resolve(dirname(resolve(values.artwork!)), frame.url) };
+}
 async function sprite(key: string) {
+  if (candidates[key]) return loadImage(candidates[key].url);
   const path = pixelSprites[key];
   if (!path)
     throw new Error(`Missing artwork: ${key}. Run npm run art:build after adding artwork.`);
@@ -127,7 +155,7 @@ const resolved = previewPresentation({
 } as PresentationInput);
 const lighting = resolved.lighting;
 const fog = new Set(resolved.fog);
-const artwork = currentArtwork();
+const artwork = { frames: { ...baseArtwork.frames, ...candidates } };
 const terrainDefinitions = JSON.parse(
   await readFile(resolve(root, "rust/data/game/terrain.json"), "utf8"),
 ) as { id: string; role: import("../../../../rust/pkg/hex_command").TerrainRole }[];
@@ -152,7 +180,51 @@ const terrain = createCanvas(width, height),
   tc = terrain.getContext("2d");
 tc.scale(scale, scale);
 tc.imageSmoothingEnabled = false;
-paintTerrainTiles(tc, tiles, frames);
+const order = values["draw-order"];
+if (order === "native") paintTerrainTiles(tc, tiles, frames);
+else {
+  if (!["reverse-within-z", "shuffle-within-z", "reverse-all", "shuffle-all"].includes(order))
+    throw new Error(`Unsupported diagnostic draw order: ${order}`);
+  let seed = Number(values["order-seed"]);
+  if (!Number.isInteger(seed) || seed <= 0 || seed > 0xffffffff)
+    throw new Error("order-seed must be a positive 32-bit integer");
+  const ordered = terrainDrawingOrder(tiles);
+  const requested = values["order-terrain"]?.split(",");
+  if (requested?.some((kind) => !map.tiles.some((tile) => tile.terrain === kind)))
+    throw new Error("Every order-terrain entry must name terrain present in the draft");
+  const selected = values["order-terrain"]
+    ? new Set(
+        map.tiles
+          .filter((tile) => values["order-terrain"]!.split(",").includes(tile.terrain))
+          .map((tile) => tile.id),
+      )
+    : new Set(ordered.map((tile) => tile.id));
+  const targets = ordered.filter((tile) => selected.has(tile.id));
+  const levels = new Map<number, typeof ordered>();
+  for (const tile of targets) {
+    const z = tile.terrainFrame!.z ?? 0;
+    if (!levels.has(z)) levels.set(z, []);
+    levels.get(z)!.push(tile);
+  }
+  const groups = order.endsWith("all") ? [targets] : [...levels.values()];
+  for (const group of groups) {
+    if (order.startsWith("reverse")) group.reverse();
+    else
+      for (let i = group.length - 1; i > 0; i--) {
+        seed ^= seed << 13;
+        seed ^= seed >>> 17;
+        seed ^= seed << 5;
+        const j = (seed >>> 0) % (i + 1);
+        [group[i], group[j]] = [group[j]!, group[i]!];
+      }
+  }
+  const reordered = groups.flat();
+  let cursor = 0;
+  // Exercise the actual sequence without changing unselected scenery. Calling
+  // the shared painter one frame at a time prevents its normal sort restoring it.
+  for (const tile of ordered)
+    paintTerrainTiles(tc, [selected.has(tile.id) ? reordered[cursor++]! : tile], frames);
+}
 const pixels = tc.getImageData(0, 0, width, height);
 shadePixels(pixels.data, width, 0, height, scale, lighting);
 tc.putImageData(pixels, 0, 0);

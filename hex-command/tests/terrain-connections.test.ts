@@ -10,7 +10,6 @@ import {
 } from "../src/presentation/terrain-connections";
 import castleBells from "../pixel/art/terrain/castle-bell/variants.json";
 import castleWalls from "../pixel/art/terrain/castle-wall/variants.json";
-import castleGates from "../pixel/art/terrain/castle-gate/variants.json";
 import roadDeadEnds from "../pixel/art/terrain/road/dead-ends.json";
 import { createTestFactory } from "./native-fixture";
 import { nativeValue } from "../src/game/live-game";
@@ -38,14 +37,12 @@ test("Every supported terrain connection and floor has a native frame", () => {
   }
   for (const [terrain, variants] of [
     ["castle-wall", castleWalls],
-    ["castle-gate", castleGates],
     ["castle-bell", castleBells],
   ] as const) {
     for (const variant of variants)
       requireFrames({
         terrain,
-        connections: directions(variant.mask),
-        wallCorners: variant.wallCorners,
+        walls: variant.walls as import("../src/game/types").HexDirection[],
       });
   }
   for (const [exits, ends] of roadDeadEnds) {

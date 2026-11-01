@@ -34,7 +34,6 @@ export const previewColors: Record<TerrainType, string> = {
   ruins: "#a2a18c",
   fort: "#b4a277",
   "castle-wall": "#b9b597",
-  "castle-gate": "#b9b597",
   "castle-bell": "#b9b597",
   grove: "#4d884e",
   plains: "#8d9f4f",

@@ -13,9 +13,7 @@ static ROAD_DEAD_ENDS: LazyLock<Vec<(u8, u8)>> = LazyLock::new(|| {
 
 #[derive(Deserialize)]
 struct CastleVariant {
-    mask: u8,
-    #[serde(rename = "wallCorners")]
-    corners: Vec<u16>,
+    walls: Vec<HexDirection>,
 }
 static CASTLE_WALL_VARIANTS: LazyLock<Vec<CastleVariant>> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
@@ -23,13 +21,6 @@ static CASTLE_WALL_VARIANTS: LazyLock<Vec<CastleVariant>> = LazyLock::new(|| {
     ))
     .expect("registered complete castle tiles")
 });
-static CASTLE_GATE_VARIANTS: LazyLock<Vec<CastleVariant>> = LazyLock::new(|| {
-    serde_json::from_str(include_str!(
-        "../../../pixel/art/terrain/castle-gate/variants.json"
-    ))
-    .expect("registered complete castle gates")
-});
-
 static CASTLE_BELL_VARIANTS: LazyLock<Vec<CastleVariant>> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
         "../../../pixel/art/terrain/castle-bell/variants.json"
@@ -59,6 +50,7 @@ impl HexDirection {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Tile {
     pub id: String,
     pub col: i32,
@@ -73,14 +65,10 @@ pub struct Tile {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, rename = "deadEnds", skip_serializing_if = "Option::is_none")]
     pub dead_ends: Option<Vec<HexDirection>>,
-    /// Explicit junction connectivity authored offline, never inferred at runtime.
+    /// Explicit complete wall edges; never inferred from neighbors.
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    #[serde(
-        default,
-        rename = "wallCorners",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub wall_corners: Option<Vec<u16>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub walls: Option<Vec<HexDirection>>,
     /// Reusable ground palette; independent of terrain and its gameplay rules.
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -92,12 +80,27 @@ pub struct Tile {
 }
 impl Tile {
     pub fn valid_connections(&self) -> bool {
-        if self.wall_corners.is_some()
-            && !matches!(
-                self.terrain.as_str(),
-                "castle-wall" | "castle-gate" | "castle-bell"
-            )
-        {
+        if matches!(self.terrain.as_str(), "castle-wall" | "castle-bell") {
+            if self.connections.is_some() || self.dead_ends.is_some() {
+                return false;
+            }
+            let Some(walls) = &self.walls else {
+                return false;
+            };
+            let mask = walls.iter().fold(0u8, |mask, edge| mask | edge.bit());
+            if mask.count_ones() as usize != walls.len() {
+                return false;
+            }
+            let variants = match self.terrain.as_str() {
+                "castle-wall" => &*CASTLE_WALL_VARIANTS,
+                "castle-bell" => &*CASTLE_BELL_VARIANTS,
+                _ => unreachable!(),
+            };
+            return variants
+                .iter()
+                .any(|v| v.walls.iter().fold(0u8, |mask, edge| mask | edge.bit()) == mask);
+        }
+        if self.walls.is_some() {
             return false;
         }
         let Some(exits) = &self.connections else {
@@ -111,7 +114,6 @@ impl Tile {
                     | "landing"
                     | "ferry"
                     | "castle-wall"
-                    | "castle-gate"
                     | "castle-bell"
             ) && self.dead_ends.is_none();
         };
@@ -137,21 +139,6 @@ impl Tile {
             }
         }
         match self.terrain.as_str() {
-            "castle-wall" | "castle-gate" | "castle-bell" => {
-                self.wall_corners.as_ref().is_some_and(|corners| {
-                    let variants = if self.terrain == "castle-wall" {
-                        &*CASTLE_WALL_VARIANTS
-                    } else if self.terrain == "castle-gate" {
-                        &*CASTLE_GATE_VARIANTS
-                    } else {
-                        &*CASTLE_BELL_VARIANTS
-                    };
-                    corners.len() == 6
-                        && variants
-                            .iter()
-                            .any(|v| v.mask == mask && &v.corners == corners)
-                })
-            }
             "road" => true,
             "signpost" => mask == 9,
             "village" => mask.count_ones() <= 3,

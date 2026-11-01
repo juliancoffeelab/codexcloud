@@ -120,7 +120,6 @@ export type TerrainType =
   | "ritual-star"
   | "ritual-spent"
   | "castle-wall"
-  | "castle-gate"
   | "castle-bell"
   | "plains"
   | "road"
@@ -170,8 +169,8 @@ export interface Tile extends Coordinates {
   /** Artwork only: road/village exits or opposite bridge/ford edges. */
   connections?: HexDirection[];
   deadEnds?: HexDirection[];
-  /** Explicit junction connectivity authored offline; selects a complete tile. */
-  wallCorners?: number[];
+  /** Explicit wall edges; selects a complete native tile. */
+  walls?: HexDirection[];
   /** Artwork only: reusable floor palette, independent of terrain rules. */
   floor?: string;
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
@@ -263,8 +262,8 @@ export interface TerrainOverride extends Coordinates {
   owner?: Side | null;
   connections?: HexDirection[];
   deadEnds?: HexDirection[];
-  /** Explicit junction connectivity authored offline; selects a complete tile. */
-  wallCorners?: number[];
+  /** Explicit wall edges; selects a complete native tile. */
+  walls?: HexDirection[];
   floor?: string;
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
 }

@@ -335,8 +335,6 @@ pub enum Terrain {
     CastleBell,
     #[serde(rename = "castle-wall")]
     CastleWall,
-    #[serde(rename = "castle-gate")]
-    CastleGate,
     Plains,
     Road,
     Forest,
@@ -370,7 +368,6 @@ impl Terrain {
             Self::RitualSpent => "ritual-spent",
             Self::CastleBell => "castle-bell",
             Self::CastleWall => "castle-wall",
-            Self::CastleGate => "castle-gate",
             Self::Plains => "plains",
             Self::Road => "road",
             Self::Forest => "forest",

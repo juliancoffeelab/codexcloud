@@ -23,7 +23,6 @@ export interface BattlefieldTileView extends TileView {
   y: number;
   points: string;
   clipId: string;
-  fill: string;
   classes: string;
   label: string;
   terrainFrame: Readonly<FrameImage> | undefined;
@@ -80,7 +79,7 @@ export class BattlefieldViewCache {
 }
 
 export function terrainProps(
-  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds" | "wallCorners">,
+  tile: Pick<TileView, "terrain" | "id" | "connections" | "deadEnds" | "walls">,
   mapId: string,
 ) {
   return terrainLayout(tile, mapId).props;

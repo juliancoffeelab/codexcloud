@@ -165,3 +165,18 @@ The v15-to-v16 step corrects the three published keep-side villages in the Bell
 valley from green-plain to mountain-rock. Only their floor changes; ownership,
 fog, lights, units, turn, victory and all other progress are preserved. Coordinates
 and prior values are frozen in the conversion. Other maps pass through unchanged.
+
+## Version-sixteen migration
+
+The v16-to-v17 step replaces castle connection/corner codes with explicit walls
+and gates. It uses the frozen clockwise direction order and published gate rule,
+removes the obsolete fields, and preserves ownership, fog, units and all battle
+progress. It does not import current content or execute gameplay.
+
+## Version-seventeen migration
+
+The v17-to-v18 step retires dedicated castle gate terrain and its aperture fields.
+Gate cells become ordinary castle courtyards with their existing wall directions;
+the former gate edge stays open. All castle cells lose the obsolete gates array.
+Ownership, fog, units, equipment, turns, victory and other battle progress remain
+unchanged. The conversion uses only frozen version-seventeen field contracts.

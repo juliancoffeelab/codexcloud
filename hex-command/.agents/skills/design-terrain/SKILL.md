@@ -23,7 +23,7 @@ runtime terrain assembly. Offline draft renderers remain independent tools.
 
 Native canvas dimensions are a finite, enforced contract, not a convenience
 setting in artwork metadata. Ordinary terrain is exactly 64×64. Only
-`castle-wall`, `castle-gate` and `castle-bell` use the approved 80×96 canvas,
+`castle-wall` and `castle-bell` use the approved 80×96 canvas,
 anchored at (40,48), without resizing the 64×64 logical hex or its pixels.
 Do not enlarge canvases, move anchors, or add another size/family to make artwork
 fit. A different profile requires an explicit user request and a coordinated
@@ -35,7 +35,7 @@ may be any authored integer; it does not authorize larger artwork.
 2. Read the reference for the work being done:
    - [Surfaces](references/surfaces.md) for ground, foreground, foliage or source formats.
    - [Connections](references/connections.md) for directional tiles and crossings.
-   - [Castles](references/castles.md) for shared paving, walls, gates and towers.
+   - [Castles](references/castles.md) for shared paving, walls, openings and towers.
    - [Composition](references/composition.md) for layouts, density or shorelines.
    - [Integration](references/integration.md) when adding an ID or installing artwork.
 3. Author candidate matrices offline. Use

@@ -218,18 +218,16 @@
       "terrain": "castle-wall",
       "owner": null,
       "floor": "green-plain",
-      "connections": [],
-      "wallCorners": [441, 207, 70, 140, 280, 304]
+      "walls": ["e", "se", "sw", "w", "nw", "ne"]
     },
     {
       "id": "26,0",
       "col": 26,
       "row": 0,
-      "terrain": "castle-gate",
+      "terrain": "castle-wall",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "se", "ne"],
-      "wallCorners": [408, 204, 0, 207, 441, 0]
+      "walls": ["sw", "nw"]
     },
     {
       "id": "27,0",
@@ -238,8 +236,7 @@
       "terrain": "castle-bell",
       "owner": null,
       "floor": "green-plain",
-      "connections": [],
-      "wallCorners": [161, 67, 70, 204, 408, 304]
+      "walls": ["e", "se", "sw", "w", "nw", "ne"]
     },
     {
       "id": "28,0",

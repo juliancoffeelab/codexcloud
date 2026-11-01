@@ -10,7 +10,6 @@ export interface TerrainMapTile {
   readonly spriteY?: number;
   readonly spriteWidth?: number;
   readonly spriteHeight?: number;
-  readonly fill: string;
   readonly role: import("../../rust/pkg/hex_command").TerrainRole;
   readonly terrainFrame: Readonly<FrameImage> | undefined;
 }
@@ -34,18 +33,7 @@ export function terrainMapDimensions(plan: Omit<TerrainMapPlan, "tiles">) {
   };
 }
 
-type TerrainContext<Image> = Pick<
-  CanvasRenderingContext2D,
-  | "save"
-  | "restore"
-  | "beginPath"
-  | "moveTo"
-  | "lineTo"
-  | "closePath"
-  | "fill"
-  | "fillStyle"
-  | "filter"
-> & {
+type TerrainContext<Image> = Pick<CanvasRenderingContext2D, "save" | "restore" | "filter"> & {
   drawImage(image: Image, x: number, y: number, width: number, height: number): void;
 };
 
@@ -64,27 +52,19 @@ export function paintTerrainTiles<Image>(
 ) {
   for (const tile of terrainDrawingOrder(tiles)) {
     context.save();
-    context.beginPath();
-    tile.points.split(" ").forEach((point, index) => {
-      const [x, y] = point.split(",").map(Number);
-      if (index === 0) context.moveTo(x!, y!);
-      else context.lineTo(x!, y!);
-    });
-    context.closePath();
-    context.fillStyle = tile.fill;
-    context.fill();
     // Source frames already carry the native hex mask. A second vector clip
     // partially erases shared edge pixels and leaves seams between matching rails.
-    if (tile.terrainFrame) {
-      context.filter = tile.role === "forest" ? "brightness(0.93)" : "none";
-      context.drawImage(
-        images.get(tile.terrainFrame.url)!,
-        tile.spriteX ?? tile.x - tile.spriteSize / 2,
-        tile.spriteY ?? tile.y - tile.spriteSize / 2,
-        tile.spriteWidth ?? tile.spriteSize,
-        tile.spriteHeight ?? tile.spriteSize,
-      );
-    }
+    if (!tile.terrainFrame) throw new Error("Missing complete terrain frame");
+    const image = images.get(tile.terrainFrame.url);
+    if (!image) throw new Error(`Terrain image is not loaded: ${tile.terrainFrame.url}`);
+    context.filter = tile.role === "forest" ? "brightness(0.93)" : "none";
+    context.drawImage(
+      image,
+      tile.spriteX ?? tile.x - tile.spriteSize / 2,
+      tile.spriteY ?? tile.y - tile.spriteSize / 2,
+      tile.spriteWidth ?? tile.spriteSize,
+      tile.spriteHeight ?? tile.spriteSize,
+    );
     context.filter = "none";
     context.restore();
   }

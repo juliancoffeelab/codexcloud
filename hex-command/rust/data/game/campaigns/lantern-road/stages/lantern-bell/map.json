@@ -6588,8 +6588,6 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "owner": "enemy",
-      "connections": ["e", "se", "sw"],
-      "wallCorners": [432, 496, 472, 408, 280, 304],
       "fog": {
         "condition": {
           "kind": "any",
@@ -6606,7 +6604,8 @@
           ]
         },
         "remember": true
-      }
+      },
+      "walls": ["w", "nw", "ne"]
     },
     {
       "id": "11,11",
@@ -6615,8 +6614,6 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "owner": "enemy",
-      "connections": ["se", "sw", "w"],
-      "wallCorners": [161, 353, 481, 496, 432, 304],
       "fog": {
         "condition": {
           "kind": "any",
@@ -6633,7 +6630,8 @@
           ]
         },
         "remember": true
-      }
+      },
+      "walls": ["e", "nw", "ne"]
     },
     {
       "id": "12,11",
@@ -7165,11 +7163,9 @@
       "id": "10,12",
       "col": 10,
       "row": 12,
-      "terrain": "castle-gate",
+      "terrain": "castle-wall",
       "floor": "castle-paving",
       "owner": "enemy",
-      "connections": ["e", "se", "ne"],
-      "wallCorners": [472, 460, 332, 140, 280, 408],
       "fog": {
         "condition": {
           "kind": "any",
@@ -7186,7 +7182,8 @@
           ]
         },
         "remember": true
-      }
+      },
+      "walls": ["sw", "nw"]
     },
     {
       "id": "11,12",
@@ -7195,8 +7192,6 @@
       "terrain": "castle-bell",
       "floor": "castle-paving",
       "owner": "enemy",
-      "connections": [],
-      "wallCorners": [481, 451, 454, 460, 472, 496],
       "fog": {
         "condition": {
           "kind": "any",
@@ -7213,17 +7208,16 @@
           ]
         },
         "remember": true
-      }
+      },
+      "walls": ["e", "se", "sw", "w", "nw", "ne"]
     },
     {
       "id": "12,12",
       "col": 12,
       "row": 12,
-      "terrain": "castle-gate",
+      "terrain": "castle-wall",
       "floor": "castle-paving",
       "owner": "enemy",
-      "connections": ["sw", "w", "nw"],
-      "wallCorners": [161, 67, 195, 451, 481, 353],
       "fog": {
         "condition": {
           "kind": "any",
@@ -7240,7 +7234,8 @@
           ]
         },
         "remember": true
-      }
+      },
+      "walls": ["se", "ne"]
     },
     {
       "id": "13,12",
@@ -7750,8 +7745,6 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "owner": "enemy",
-      "connections": ["e", "nw", "ne"],
-      "wallCorners": [454, 198, 70, 140, 332, 460],
       "fog": {
         "condition": {
           "kind": "any",
@@ -7768,17 +7761,16 @@
           ]
         },
         "remember": true
-      }
+      },
+      "walls": ["se", "sw", "w"]
     },
     {
       "id": "11,13",
       "col": 11,
       "row": 13,
-      "terrain": "castle-gate",
+      "terrain": "castle-wall",
       "floor": "castle-paving",
       "owner": "enemy",
-      "connections": ["w", "nw", "ne"],
-      "wallCorners": [195, 67, 70, 198, 454, 451],
       "fog": {
         "condition": {
           "kind": "any",
@@ -7795,7 +7787,8 @@
           ]
         },
         "remember": true
-      }
+      },
+      "walls": ["e", "sw"]
     },
     {
       "id": "12,13",

@@ -113,7 +113,6 @@ test("Terrain floor, arrangement and orientation resolve directly to complete PN
         floor,
       )!;
       assert.equal(result.terrainFrame, frame);
-      assert.equal(result.fill, pixelFloorColors[floor]);
       assert(frame.url.endsWith(pixelSprites[result.frameKey]!));
       assert.equal(frame.width, 64);
       assert.equal(frame.height, 64);

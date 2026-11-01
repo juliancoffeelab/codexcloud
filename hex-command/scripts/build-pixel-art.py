@@ -14,7 +14,7 @@ ART = ROOT / "pixel" / "art"
 FRAME_NAMES = {"bonearcher": "bone_archer", "grove": "sacred_grove"}
 # Finite native canvas policy, not an artwork-controlled size override. New
 # families stay 64x64 unless this reviewed contract explicitly admits them.
-PADDED_TERRAIN_FAMILIES = frozenset({'castle-wall', 'castle-gate', 'castle-bell'})
+PADDED_TERRAIN_FAMILIES = frozenset({'castle-wall', 'castle-bell'})
 CASTLE_CANVAS = {'width': 80, 'height': 96, 'anchorX': 40, 'anchorY': 48}
 
 
@@ -77,9 +77,9 @@ def require_terrain_variants(kind, stems, road_caps):
     elif kind == 'village':
         expected = {'0'} | {str(mask) for mask in range(1, 64)
                             if mask.bit_count() <= 3}
-    elif kind in ('castle-wall', 'castle-gate', 'castle-bell'):
+    elif kind in ('castle-wall', 'castle-bell'):
         catalog = json.loads((ART / 'terrain/castle-library.json').read_text())
-        if catalog.get('version') != 1:
+        if catalog.get('version') != 3:
             raise ValueError('Unsupported castle library definition version')
         definitions = catalog['families'][kind]
         registered = json.loads((ART / 'terrain' / kind / 'variants.json').read_text())
@@ -445,7 +445,7 @@ def pixel_sprites():
         kind = palette.parent.name
         matrices = sorted(palette.parent.glob("*.txt"))
         require_terrain_variants(kind, [path.stem for path in matrices], road_caps)
-        connected = kind in ('signpost', 'road', 'village', 'bridge', 'ford', 'landing', 'ferry', 'castle-wall', 'castle-gate', 'castle-bell')
+        connected = kind in ('signpost', 'road', 'village', 'bridge', 'ford', 'landing', 'ferry', 'castle-wall', 'castle-bell')
         if not connected and [p.stem for p in matrices] != ['tile']:
             raise ValueError(f'{kind}: unconnected terrain requires only tile.txt')
         key = f"terrain_{FRAME_NAMES.get(kind, kind)}"

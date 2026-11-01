@@ -1,6 +1,5 @@
 import { daylight, lightingKey, type BattlefieldLighting } from "./battlefield-lighting";
 import { artFrame, artFrameKey, type Artwork } from "./art";
-import { pixelFloorColors } from "./pixel-art";
 import { terrainLayout } from "./terrain-layout";
 import { battlefieldSpriteSize, hexPoints, tileCenter } from "../ui/geometry";
 import type { GameView, TileView } from "../game/view";
@@ -33,7 +32,6 @@ export function terrainTileView(tile: TileView, mapId: string, artwork: Artwork)
     points: hexPoints(x, y),
     clipId: `hex-clip-${tile.col}-${tile.row}`,
     spriteSize: battlefieldSpriteSize,
-    fill: (tile.floor && pixelFloorColors[tile.floor]) || "transparent",
     terrainFrame: frame,
   };
 }
@@ -75,7 +73,7 @@ export function terrainMapKey(
         tile.floor,
         tile.connections,
         tile.deadEnds,
-        tile.wallCorners,
+        tile.walls,
       ]),
     lightingKey(lighting),
   ]);
@@ -106,7 +104,7 @@ function sameTile(a: TileView, b: TileView) {
     a.terrain === b.terrain &&
     a.floor === b.floor &&
     edges(a.connections, b.connections) &&
-    edges(a.wallCorners?.map(String), b.wallCorners?.map(String)) &&
+    edges(a.walls, b.walls) &&
     edges(a.deadEnds, b.deadEnds)
   );
 }
