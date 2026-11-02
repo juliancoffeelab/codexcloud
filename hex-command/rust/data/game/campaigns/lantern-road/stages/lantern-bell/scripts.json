@@ -478,7 +478,7 @@
     {
       "id": "western-reinforcements",
       "round": 10,
-      "label": "A lancer, a storm mage and a healer arrive from the western watch.",
+      "label": "Reinforcements from the ferry arrive from the west.",
       "units": [
         {
           "type": "lancer",
@@ -497,6 +497,18 @@
           "side": "player",
           "col": 0,
           "row": 9
+        }
+      ],
+      "dialogue": [
+        {
+          "speaker": "Reinforcements",
+          "portrait": "lancer",
+          "text": "Captain! Your runner reached the ferry. We followed your trail."
+        },
+        {
+          "speaker": "Captain Nera",
+          "portrait": "swordsman",
+          "text": "Good timing. Join the company\u2014we need to silence that bell."
         }
       ]
     }

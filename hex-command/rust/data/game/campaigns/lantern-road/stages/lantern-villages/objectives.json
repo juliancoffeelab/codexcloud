@@ -17,7 +17,7 @@
     },
     {
       "kind": "event",
-      "label": "Lead Nera through the northern pass",
+      "label": "Lead Nera through the northern pass by the end of turn 30",
       "tile": "17,0",
       "event": "eastern-departure",
       "visibleWhen": {
@@ -40,7 +40,7 @@
   "defendObjectives": false,
   "loseConditions": [
     {
-      "label": "Leave before the Bellwarden's final toll: by the end of round 30.",
+      "label": "Leave the toll road by the end of turn 30.",
       "condition": {
         "kind": "round",
         "round": 31

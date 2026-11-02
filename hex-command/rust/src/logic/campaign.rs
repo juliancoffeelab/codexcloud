@@ -305,6 +305,10 @@ impl<'catalog> Game<'catalog> {
             }
             if arrived > 0 {
                 self.record(wave.label.clone());
+                self.campaign
+                    .as_mut()
+                    .unwrap()
+                    .say(wave.dialogue.iter().cloned());
             }
         }
     }

@@ -104,14 +104,23 @@ impl Game<'_> {
                     .any(|record| record.unit.name.as_ref() == Some(name));
             protected.push(survival(format!("Keep {name} alive."), alive));
         }
+        let mut notices = self.ritual_notices();
         for loss in &mission.lose_conditions {
+            if let Condition::Round { round: deadline } = &loss.condition {
+                notices.push(format!(
+                    "Turn {}/{} — {}",
+                    self.round,
+                    deadline.saturating_sub(1),
+                    loss.label
+                ));
+            }
             protected.push(survival(
                 loss.label.clone(),
                 !self.event_condition_met(&loss.condition),
             ));
         }
         Some(CampaignObjectives {
-            notices: self.ritual_notices(),
+            notices,
             goals: mission
                 .goals
                 .iter()

@@ -402,6 +402,10 @@ pub struct Event {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Wave {
+    /// Shown only when at least one reinforcement actually arrives.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub dialogue: Vec<Dialogue>,
     pub id: String,
     pub round: u32,
     pub label: String,

@@ -135,8 +135,11 @@ defeated to complete that optional objective. The rescued people remain with the
 The Bellwarden's approaching ritual limits the whole chapter to thirty rounds.
 Both rescue and departure must finish by the end of round 30; an unfinished
 chapter is lost when round 31 begins. Clearing every hostile remains optional
-and consumes time from this same limit. The deadline is shown in the briefing
-and survival objectives. It does not change the AI's planning priorities.
+and consumes time from this same limit. The deadline is shown in the briefing, survival objectives and a persistent
+turn counter above the battlefield. The rescue testimony prompts Oren to warn
+about a binding ritual; if he is dead, Nera urges the company to reach the remaining
+prisoners while they are alive. The round-26 bell prompts another urgent warning
+from the surviving speaker. It does not change the AI's planning priorities.
 
 The opening objective is to investigate. It completes when the patrol has claimed
 the camp and met Sella. Rescuing and escorting the prisoners is revealed only by
@@ -199,7 +202,8 @@ If the Tollkeeper survived, he and one skeleton and one bone archer enter around
 (2,17) on round 5. This is a finite authored patrol, with no keep, villages or
 recruitment; it does not copy the preceding chapter's enemy units. The pursuing
 Tollkeeper is not an additional required boss. The western lancer, mage and healer
-reinforce the northern player foothold on round 10.
+reinforce the northern player foothold on round 10. Their arrival conversation
+connects them to the runner sent back to the ferry.
 
 Victory stops this local operation and opens the road. It does not settle the
 entire lich threat or guarantee that every captive was rescued.

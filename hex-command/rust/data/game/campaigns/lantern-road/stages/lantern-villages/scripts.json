@@ -205,6 +205,11 @@
           "text": "They took the others down the road. My brother, the children\u2014everyone who could still walk."
         },
         {
+          "speaker": "Villager",
+          "portrait": "captives",
+          "text": "We heard a bell somewhere ahead of the column. It kept ringing long after midnight."
+        },
+        {
           "speaker": "Nera",
           "portrait": "swordsman",
           "text": "First we get you somewhere safe."
@@ -212,6 +217,62 @@
       ],
       "choice": "road-prisoners-freed",
       "requiresEvent": "village-contact"
+    },
+    {
+      "id": "road-urgency-oren",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "choice",
+              "choice": "road-prisoners-freed"
+            },
+            {
+              "kind": "hasUnits",
+              "side": "player",
+              "name": "Oren"
+            }
+          ]
+        }
+      },
+      "unlessEvent": "road-urgency-nera",
+      "dialogue": [
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it\u2019s too late."
+        }
+      ]
+    },
+    {
+      "id": "road-urgency-nera",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "choice",
+              "choice": "road-prisoners-freed"
+            },
+            {
+              "kind": "noUnits",
+              "side": "player",
+              "name": "Oren"
+            }
+          ]
+        }
+      },
+      "unlessEvent": "road-urgency-oren",
+      "dialogue": [
+        {
+          "speaker": "Captain Nera",
+          "portrait": "swordsman",
+          "text": "They\u2019re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays\u2014we have to reach them while they\u2019re still alive."
+        }
+      ]
     },
     {
       "id": "tollkeeper-provoked",
@@ -607,7 +668,7 @@
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "Thank you. The others are still out there. We heard a bell somewhere ahead of the column. It kept ringing long after midnight."
+          "text": "Thank you. The others are still out there. Please don\u2019t leave them to the dead."
         },
         {
           "speaker": "Nera",
@@ -622,7 +683,7 @@
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "We can follow the column now, or clear the rest of the dead from this stretch of road first. Either way, the people here are safe."
+          "text": "We can move on now, or finish the dead here so they can\u2019t follow us. But every fight costs us time."
         }
       ],
       "requiresEvent": "prisoners-freed",
@@ -749,20 +810,55 @@
         "round": 26
       },
       "choice": "bell-tolled-before-arrival",
-      "label": "The first bell tolls across the valley.",
+      "label": "The bell sounds in the valley. Leave the toll road by the end of turn 30.",
       "dialogue": [
         {
           "speaker": "The company",
           "portrait": "captives",
           "text": "A deep bell rolls out of the valley. For a moment, the sound seems to come from beneath the ground.",
           "sound": "bell"
-        },
+        }
+      ]
+    },
+    {
+      "id": "road-bell-warning-oren",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "hasUnits",
+          "side": "player",
+          "name": "Oren"
+        }
+      },
+      "unlessEvent": "road-bell-warning-nera",
+      "dialogue": [
+        {
+          "speaker": "Oren",
+          "portrait": "adept",
+          "text": "The ritual has started. Hurry! We have to reach the valley before the final toll."
+        }
+      ],
+      "requiresEvent": "first-bell-toll"
+    },
+    {
+      "id": "road-bell-warning-nera",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "noUnits",
+          "side": "player",
+          "name": "Oren"
+        }
+      },
+      "unlessEvent": "road-bell-warning-oren",
+      "dialogue": [
         {
           "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "Something has started. We have to move."
+          "text": "They\u2019ve started. We cannot lose another moment. Hurry!"
         }
-      ]
+      ],
+      "requiresEvent": "first-bell-toll"
     }
   ],
   "waves": [],
