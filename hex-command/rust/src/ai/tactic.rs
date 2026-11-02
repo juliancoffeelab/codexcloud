@@ -43,7 +43,25 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
         orders.tactics.promotions = self
             .recruiter
             .promotions(recruitment_context.battle(), workspace.seed);
-        workspace.recruitment_remaining = Some(0);
+        workspace.recruitment_remaining = if self.planner.recruits_after_move() {
+            workspace
+                .recruitment_remaining
+                .map(|left| left.saturating_sub(recruitment.recruited.len()))
+        } else {
+            Some(0)
+        };
+        workspace.recruitment_opportunity = if self.planner.recruits_after_move() {
+            self.recruiter
+                .kind()
+                .map(|kind| super::recruiter::RecruitmentOpportunity {
+                    kind,
+                    seed: workspace.seed,
+                    budget: workspace.recruitment_remaining,
+                    orders: orders.recruitment.clone(),
+                })
+        } else {
+            None
+        };
         workspace.orders = Some(orders.clone());
         workspace
             .report

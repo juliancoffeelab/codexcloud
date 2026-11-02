@@ -281,6 +281,7 @@ fn next_plan_inner(
                 &mut ignored,
                 &mut workspace.threats,
                 Some(id.0),
+                workspace.recruitment_opportunity.as_ref(),
             );
         }
         if plan.is_some() {
@@ -335,6 +336,9 @@ mod tests {
 
 pub(super) struct Queued;
 impl super::Planner for Queued {
+    fn recruits_after_move(&self) -> bool {
+        true
+    }
     fn plan(
         &mut self,
         context: &mut crate::ai::context::TacticalContext<'_, '_>,

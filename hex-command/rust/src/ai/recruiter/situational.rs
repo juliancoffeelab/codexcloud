@@ -5,6 +5,9 @@ use crate::data::*;
 
 pub(super) struct Situational;
 impl Recruiter for Situational {
+    fn kind(&self) -> Option<super::RecruiterKind> {
+        Some(super::RecruiterKind::Situational)
+    }
     fn recruit(
         &mut self,
         context: &mut crate::ai::context::RecruitmentContext<'_, '_>,

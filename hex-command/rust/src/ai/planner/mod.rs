@@ -17,6 +17,9 @@ pub(super) enum QueueMode {
     CampaignBlock,
 }
 pub(crate) trait Planner {
+    fn recruits_after_move(&self) -> bool {
+        false
+    }
     fn plan(
         &mut self,
         context: &mut crate::ai::context::TacticalContext<'_, '_>,
@@ -24,6 +27,9 @@ pub(crate) trait Planner {
     ) -> Result<crate::ai::orders::PlanningReport, CommandError>;
 }
 impl Planner for PlannerKind {
+    fn recruits_after_move(&self) -> bool {
+        *self != Self::Classic
+    }
     fn plan(
         &mut self,
         context: &mut crate::ai::context::TacticalContext<'_, '_>,
@@ -138,3 +144,5 @@ mod full;
 pub(in crate::ai) mod queued;
 pub(in crate::ai) mod safety;
 pub(in crate::ai) mod search;
+
+mod recruitment;

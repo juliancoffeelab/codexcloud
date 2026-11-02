@@ -757,7 +757,7 @@ pub(in crate::ai) fn plan(
     }
     let mut threats =
         Threats::with_workspace(game, unit.side, &mut workspace.threats).with_orders(orders);
-    let before = threats.at(&unit, unit.tile, None);
+    let before = super::recruitment::exposure(&unit, threats.at(&unit, unit.tile, None), important);
     let danger = if orders.protects(unit.id) {
         // A finite cost for the fraction of remaining life at risk.
         40.0 / unit.hp.max(1) as f64
@@ -786,7 +786,6 @@ pub(in crate::ai) fn plan(
             advance: Some(kind),
             withdrawing: false,
         });
-    let mut minimum = None;
     for c in candidates {
         let upper = c.score
             + wait_risk
@@ -806,14 +805,8 @@ pub(in crate::ai) fn plan(
         } else {
             threats.at(&unit, c.tile, c.eliminated)
         };
+        let incoming = super::recruitment::exposure(&unit, incoming, important);
         let lethal = incoming >= unit.hp - c.response;
-        if important && !orders.protects(unit.id) && lethal && incoming > 0 && !c.terminal {
-            let least = *minimum
-                .get_or_insert_with(|| threats.minimum(&unit, destinations.iter().copied()));
-            if least < unit.hp || incoming + c.response > least || incoming >= before {
-                continue;
-            }
-        }
         let score = c.score + wait_risk
             - incoming as f64 * danger
             - if lethal && !c.terminal {
@@ -856,20 +849,14 @@ pub(in crate::ai) fn plan(
             if tile == unit.tile || !positioning.is_finite() {
                 continue;
             }
-            let incoming = threats.at(&unit, tile, None);
+            let incoming =
+                super::recruitment::exposure(&unit, threats.at(&unit, tile, None), important);
             if !may_advance[index]
                 && incoming >= before
                 && !healing
                 && unit.retreating != Some(true)
             {
                 continue;
-            }
-            if incoming >= unit.hp && incoming > 0 {
-                let least = *minimum
-                    .get_or_insert_with(|| threats.minimum(&unit, destinations.iter().copied()));
-                if least < unit.hp || incoming > least || incoming >= before {
-                    continue;
-                }
             }
             let score = positioning - wait_position
                 + action_jitter(
@@ -900,6 +887,17 @@ pub(in crate::ai) fn plan(
             });
         }
     }
+    if let Some(recruiting) = super::recruitment::plan(
+        game,
+        &unit,
+        orders,
+        workspace.recruitment_opportunity.as_ref(),
+    ) {
+        if best.as_ref().is_none_or(|p| recruiting.score > p.score) {
+            best = Some(recruiting);
+        }
+    }
+
     best
 }
 

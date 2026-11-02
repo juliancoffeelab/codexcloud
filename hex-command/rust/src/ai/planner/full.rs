@@ -2,6 +2,9 @@
 
 pub(super) struct Full;
 impl super::Planner for Full {
+    fn recruits_after_move(&self) -> bool {
+        true
+    }
     fn plan(
         &mut self,
         context: &mut crate::ai::context::TacticalContext<'_, '_>,

@@ -41,7 +41,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             EngineAccess::Borrowed(_) => panic!("read-only battle view"),
         }
     }
-    pub(super) fn fork(&self) -> BattleDraft<'a, 'catalog> {
+    pub(super) fn fork(&self) -> BattleDraft<'catalog, 'catalog> {
         BattleDraft(BattleView {
             engine: EngineAccess::Draft(self.engine().planning_fork()),
             inactive: self.inactive.clone(),
@@ -386,6 +386,26 @@ impl<'a, 'catalog> BattleDraft<'a, 'catalog> {
         self.0.engine_mut().record(message);
     }
 }
+impl<'catalog> BattleDraft<'catalog, 'catalog> {
+    pub(super) fn recruit(
+        &mut self,
+        opportunity: &super::recruiter::RecruitmentOpportunity,
+    ) -> Result<(Vec<Command>, RecruitmentReport), CommandError> {
+        use super::recruiter::Recruiter;
+        let mut commands = Vec::new();
+        let mut kind = opportunity.kind;
+        let report = kind.recruit(
+            &mut RecruitmentContext {
+                draft: self,
+                commands: &mut commands,
+                seed: opportunity.seed,
+                budget: opportunity.budget,
+            },
+            &opportunity.orders,
+        )?;
+        Ok((commands, report))
+    }
+}
 #[path = "context/forecast.rs"]
 pub(super) mod forecast;
 pub(crate) struct CampaignView<'a, 'catalog> {
@@ -405,6 +425,7 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
 pub(super) struct PlanningContext<'catalog> {
     draft: BattleDraft<'catalog, 'catalog>,
     commands: Vec<Command>,
+    recruitment: RecruitmentReport,
 }
 impl<'catalog> PlanningContext<'catalog> {
     pub(super) fn fork(game: &Game<'catalog>) -> Self {
@@ -415,6 +436,7 @@ impl<'catalog> PlanningContext<'catalog> {
                 scoped: Rc::default(),
             }),
             commands: Vec::new(),
+            recruitment: RecruitmentReport::default(),
         }
     }
     pub(super) fn restrict_positions(&mut self, scoped: &[ScopedOrder]) {
@@ -443,14 +465,20 @@ impl<'catalog> PlanningContext<'catalog> {
             draft: &mut self.draft,
             commands: &mut self.commands,
             workspace,
+            recruitment: &mut self.recruitment,
             combat_boundary: false,
         }
     }
     pub(super) fn finish(
         self,
-        recruitment: RecruitmentReport,
+        mut recruitment: RecruitmentReport,
         planning: PlanningReport,
     ) -> TurnPlan {
+        if !self.recruitment.recruited.is_empty() {
+            recruitment.requirements = self.recruitment.requirements;
+        }
+        recruitment.recruited.extend(self.recruitment.recruited);
+        recruitment.mandatory.extend(self.recruitment.mandatory);
         TurnPlan {
             commands: self.commands,
             recruitment,
@@ -479,6 +507,7 @@ impl RecruitmentContext<'_, '_> {
 }
 pub(crate) struct TacticalContext<'a, 'catalog> {
     pub(super) combat_boundary: bool,
+    recruitment: &'a mut RecruitmentReport,
     pub(super) draft: &'a mut BattleDraft<'catalog, 'catalog>,
     commands: &'a mut Vec<Command>,
     pub(super) workspace: &'a mut PlanningWorkspace,
@@ -498,7 +527,36 @@ impl TacticalContext<'_, '_> {
         if control_changed {
             self.workspace.finished = false;
         }
+        let moved = if let Command::Move { unit, .. } = &command {
+            self.draft
+                .unit(unit.0)
+                .is_some_and(|u| u.is_leader() && self.draft.is_keep(u.tile))
+        } else {
+            false
+        };
         self.commands.push(command);
+        if moved {
+            if let Some(opportunity) = &self.workspace.recruitment_opportunity {
+                let (commands, report) = self.draft.recruit(opportunity)?;
+                self.workspace.recruitment_remaining = self
+                    .workspace
+                    .recruitment_remaining
+                    .map(|left| left.saturating_sub(report.recruited.len()));
+                self.workspace
+                    .recruitment_opportunity
+                    .as_mut()
+                    .unwrap()
+                    .budget = self.workspace.recruitment_remaining;
+                self.workspace
+                    .report
+                    .mandatory_recruits
+                    .extend(report.mandatory.iter().copied());
+                self.recruitment.recruited.extend(report.recruited);
+                self.recruitment.mandatory.extend(report.mandatory);
+                self.recruitment.requirements = report.requirements;
+                self.commands.extend(commands);
+            }
+        }
         Ok(())
     }
     pub(super) fn flush(&mut self) -> Result<(), CommandError> {

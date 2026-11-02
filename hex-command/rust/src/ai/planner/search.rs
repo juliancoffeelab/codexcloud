@@ -110,6 +110,7 @@ impl BattleView<'_, '_> {
         intents: &mut Vec<(u32, Option<bool>)>,
         threat_workspace: &mut crate::ai::threats::ArenaThreatWorkspace,
         focus: Option<u32>,
+        recruitment: Option<&crate::ai::recruiter::RecruitmentOpportunity>,
     ) -> Option<Plan> {
         let side = self.turn();
         let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
@@ -222,7 +223,11 @@ impl BattleView<'_, '_> {
             .enumerate()
             .filter(|(_, u)| !u.attacked && (!FOCUSED || Some(u.id) == focus))
             .map(|(index, &unit)| {
-                let before_risk = threats.at(unit, unit.tile, None);
+                let before_risk = super::recruitment::exposure(
+                    unit,
+                    threats.at(unit, unit.tile, None),
+                    orders.important(self, unit),
+                );
                 let important = orders.important(self, unit);
                 let category = role(self, unit.kind);
                 let danger = if important {
@@ -349,8 +354,6 @@ impl BattleView<'_, '_> {
             let mut planned_unit = (*original_unit).clone();
             planned_unit.rebuilding = *intent;
             let unit = &planned_unit;
-            // Only a lethal essential-actor candidate needs the full minimum.
-            let mut minimum_risk = None;
             let recruiting = unit.is_leader()
                 && self
                     .recruitment_options(side)
@@ -854,24 +857,8 @@ impl BattleView<'_, '_> {
                     } else {
                         threats.at(&unit, tile, eliminated)
                     };
+                    let incoming = super::recruitment::exposure(&unit, incoming, important);
                     let lethal = incoming >= unit.hp - retaliation;
-                    if important
-                        && !orders.protects(unit.id)
-                        && lethal
-                        && incoming > 0
-                        && !finishing
-                        && !finishes_battle
-                        && {
-                            let minimum_risk = *minimum_risk.get_or_insert_with(|| {
-                                threats.minimum(&unit, destinations.iter().copied())
-                            });
-                            minimum_risk < unit.hp
-                                || incoming + retaliation > minimum_risk
-                                || incoming >= before_risk
-                        }
-                    {
-                        continue;
-                    }
                     if important && !finishing && !finishes_battle {
                         combat *= if unit.role == Some(Role::Courier) {
                             0.1
@@ -940,6 +927,18 @@ impl BattleView<'_, '_> {
                 }
             }
         }
+        for unit in self
+            .units()
+            .iter()
+            .filter(|u| self.belongs_to_phase(u, side) && focus.is_none_or(|id| id == u.id))
+        {
+            if let Some(recruiting) = super::recruitment::plan(self, unit, orders, recruitment) {
+                if best.as_ref().is_none_or(|p| recruiting.score > p.score) {
+                    best = Some(recruiting);
+                }
+            }
+        }
+
         best
     }
 }
@@ -1019,6 +1018,7 @@ mod tests {
                         &mut left_intents,
                         &mut left_threats,
                         None,
+                        None,
                     );
                     let right = crate::ai::context::BattleView::new(&game)
                         .best_plan::<false, false>(
@@ -1040,6 +1040,7 @@ mod tests {
                             &mut right_commitments,
                             &mut right_intents,
                             &mut right_threats,
+                            None,
                             None,
                         );
                     assert_eq!(left, right);
@@ -1150,6 +1151,7 @@ pub(super) fn choose(
             &mut intents,
             &mut workspace.threats,
             None,
+            workspace.recruitment_opportunity.as_ref(),
         )
     };
     for (id, intent) in &intents {

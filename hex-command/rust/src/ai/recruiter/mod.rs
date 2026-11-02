@@ -23,6 +23,9 @@ pub enum RecruiterKind {
     AggressivePredictor,
 }
 pub(crate) trait Recruiter {
+    fn kind(&self) -> Option<RecruiterKind> {
+        None
+    }
     fn promotions(&mut self, game: &BattleView<'_, '_>, seed: u32) -> Vec<(UnitId, UnitTypeId)> {
         promotion::choices(game, RecruiterKind::Classic, seed)
     }
@@ -34,6 +37,9 @@ pub(crate) trait Recruiter {
     ) -> Result<crate::ai::orders::RecruitmentReport, CommandError>;
 }
 impl Recruiter for RecruiterKind {
+    fn kind(&self) -> Option<RecruiterKind> {
+        Some(*self)
+    }
     fn promotions(&mut self, game: &BattleView<'_, '_>, seed: u32) -> Vec<(UnitId, UnitTypeId)> {
         promotion::choices(game, *self, seed)
     }
@@ -54,6 +60,16 @@ impl Recruiter for RecruiterKind {
         }
     }
 }
+
+/// The same recruiter, orders and remaining phase budget used by execution and lookahead.
+#[derive(Clone)]
+pub(super) struct RecruitmentOpportunity {
+    pub kind: RecruiterKind,
+    pub seed: u32,
+    pub budget: Option<usize>,
+    pub orders: super::orders::RecruitmentOrders,
+}
+
 fn drive(
     kind: RecruiterKind,
     context: &mut crate::ai::context::RecruitmentContext<'_, '_>,
