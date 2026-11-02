@@ -30,6 +30,7 @@
 
   const game = $derived(view.game);
   const selected = $derived(view.selected);
+  const focusedTile = $derived(view.focusedTile);
   const artwork = $derived(view.artwork);
   const recruitment = $derived(view.recruitment);
   // Track the published turn even when the enemy turn hides the destination.
@@ -253,7 +254,7 @@
           <g
             class={tile.classes}
             role="button"
-            tabindex={tile.id === view.focusedTile ? 0 : -1}
+            tabindex={tile.id === focusedTile ? 0 : -1}
             aria-label={fogSet.has(tile.id) ? "Fog-covered terrain" : tile.label}
             data-tile={tile.id}
             onclick={() => actions.choose(tile.id)}
