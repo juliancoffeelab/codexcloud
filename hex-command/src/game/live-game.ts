@@ -250,9 +250,10 @@ export class LiveGame {
     this.dispatch({ kind: "endTurn" });
   }
   /** One staged enemy action; the controller owns pacing and cancellation. */
-  enemyStep(): void {
+  enemyStep(): Immutable<Command> {
     const decision = nativeValue(this.engine.chooseAiCommand(this.setup.enemy));
     this.dispatch(decision.command, decision.revision);
+    return decision.command;
   }
   advanceDialogue(skip = false): void {
     this.dispatch({ kind: skip ? "skipDialogue" : "dismissDialogue" });

@@ -53,6 +53,7 @@ export interface BattleCommands {
   undoMove(): GameSnapshot;
   reset(mapId?: string, options?: { armies?: [string, string]; setup: SessionSetup }): GameSnapshot;
   setSound(enabled: boolean): Promise<void>;
+  downloadDebugReport(): void;
   error(error: unknown): void;
 }
 
@@ -74,6 +75,7 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
     undoMove: controller.undoMove.bind(controller),
     reset: controller.reset.bind(controller),
     setSound: controller.setSound.bind(controller),
+    downloadDebugReport: controller.downloadDebugReport.bind(controller),
     error: controller.error.bind(controller),
   });
 }
