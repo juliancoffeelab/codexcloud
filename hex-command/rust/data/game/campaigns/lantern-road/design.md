@@ -110,12 +110,12 @@ home remains at the intact buildings' scale.
 One skeleton holds the pass fort. Its local order does not draw the keep's army
 into defending it. The level-one Tollkeeper starts alone at the eastern keep and
 recruits skeletons with its own gold and income. Edrin commands the southern marsh
-from a keep at (12,12), supported by three walkers and another mire caster. His
-faction is active from the opening turn and recruits walkers and casters from its
-own treasury. Two marsh-floor villages fund the dead; two separate villages fund
-the Tollkeeper. Each army earns four gold per turn from its villages. Edrin holds
-his keep while his troops and recruits operate normally. Their neutrality toward
-the skeletons does not merge territory, money or recruitment pools.
+from a keep at (12,12), supported by two walkers. His faction is active from the
+opening turn and recruits walkers and casters from its own treasury, starting
+without reserve gold. One marsh-floor village funds the dead; one roadside
+village funds the Tollkeeper. Each earns two gold per turn. Edrin holds his keep
+while his troops and recruits operate normally. Their neutrality toward the
+skeletons does not merge territory, money or recruitment pools.
 
 The captive group uses one simple genderless villager sprite repeated three
 times in a native 64×64 frame. White cloth and a white base identify neutral,

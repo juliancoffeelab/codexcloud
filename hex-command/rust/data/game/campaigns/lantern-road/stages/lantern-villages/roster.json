@@ -4,7 +4,7 @@
       "player": 14,
       "enemy": 6,
       "prisoners": 0,
-      "swamp-dead": 12
+      "swamp-dead": 0
     },
     "units": [
       {
@@ -66,22 +66,6 @@
         "type": "zombie-walker",
         "side": "enemy",
         "col": 13,
-        "row": 11,
-        "faction": "swamp-dead",
-        "aiGroup": "swamp-dead"
-      },
-      {
-        "type": "zombie-walker",
-        "side": "enemy",
-        "col": 14,
-        "row": 12,
-        "faction": "swamp-dead",
-        "aiGroup": "swamp-dead"
-      },
-      {
-        "type": "zombie-decay-caster",
-        "side": "enemy",
-        "col": 14,
         "row": 11,
         "faction": "swamp-dead",
         "aiGroup": "swamp-dead"
@@ -170,22 +154,6 @@
       "type": "zombie-walker",
       "side": "enemy",
       "col": 13,
-      "row": 11,
-      "faction": "swamp-dead",
-      "aiGroup": "swamp-dead"
-    },
-    {
-      "type": "zombie-walker",
-      "side": "enemy",
-      "col": 14,
-      "row": 12,
-      "faction": "swamp-dead",
-      "aiGroup": "swamp-dead"
-    },
-    {
-      "type": "zombie-decay-caster",
-      "side": "enemy",
-      "col": 14,
       "row": 11,
       "faction": "swamp-dead",
       "aiGroup": "swamp-dead"

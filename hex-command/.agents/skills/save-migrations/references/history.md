@@ -208,3 +208,11 @@ Existing owners take precedence, followed by occupants on newly owned tiles.
 A living Edrin gains the leader role and keep order; his faction receives its
 explicit recruitment quotes. No units are spawned, revived or relocated, and no
 gold is invented. Health, items, progress, turns and outcomes remain intact.
+
+## Version-twenty-one migration
+
+The v21-to-v22 step removes two added Villages settlements, restoring forest at
+(13,7) and marsh at (16,10), and advances revision seven to eight. The conversion
+uses frozen coordinates and terrain values. It preserves ownership, units, gold,
+turns, equipment and campaign progress; existing armies are not disbanded and
+treasuries are not reset to the new opening budgets. Other maps pass through.

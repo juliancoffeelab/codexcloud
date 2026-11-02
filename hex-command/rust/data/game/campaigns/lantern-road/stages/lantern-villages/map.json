@@ -2362,8 +2362,8 @@
       "id": "13,7",
       "col": 13,
       "row": 7,
-      "terrain": "village",
-      "owner": "enemy",
+      "terrain": "forest",
+      "owner": null,
       "floor": "green-forest",
       "fog": {
         "condition": {
@@ -2372,8 +2372,7 @@
           "radius": 3
         },
         "remember": true
-      },
-      "connections": []
+      }
     },
     {
       "id": "14,7",
@@ -3329,8 +3328,8 @@
       "id": "16,10",
       "col": 16,
       "row": 10,
-      "terrain": "village",
-      "owner": "swamp-dead",
+      "terrain": "marsh",
+      "owner": null,
       "floor": "marsh",
       "fog": {
         "condition": {
@@ -3339,8 +3338,7 @@
           "radius": 3
         },
         "remember": true
-      },
-      "connections": []
+      }
     },
     {
       "id": "17,10",
@@ -4008,7 +4006,7 @@
       }
     ]
   },
-  "mapRevision": 7,
+  "mapRevision": 8,
   "factions": [
     {
       "id": "prisoners",
