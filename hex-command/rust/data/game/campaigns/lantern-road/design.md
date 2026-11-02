@@ -108,6 +108,12 @@ ways through the terrain. Settlements use village tiles; standalone houses are
 reserved for the ferryman's home in the crossing. Burned villages use charred
 home remains at the intact buildings' scale.
 
+The first captive encounter is a shouted plea interrupted by the prison guard.
+He orders the prisoners quiet and threatens to make more skeletons of them; the exchange
+makes no claim about how many other enemies are on the map. The guard's existing
+group identifies the speaker even if he has moved from the fort. If he has already
+been killed, Nera answers the plea instead.
+
 One skeleton holds the pass fort. Its local order does not draw the keep's army
 into defending it. The level-one Tollkeeper starts alone at the eastern keep and
 recruits skeletons with its own gold and income. Edrin commands the southern marsh

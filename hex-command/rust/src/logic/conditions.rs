@@ -86,11 +86,15 @@ fn evaluate(
                 })
         }
         Condition::HasUnits {
+            ai_group,
             side,
             unit_type,
             name,
         } => input.units.iter().any(|unit| {
             faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
+                && ai_group
+                    .as_ref()
+                    .is_none_or(|group| unit.ai_group.as_ref() == Some(group))
                 && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
                 && name
                     .as_ref()

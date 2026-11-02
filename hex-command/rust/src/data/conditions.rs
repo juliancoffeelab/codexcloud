@@ -53,6 +53,9 @@ pub enum Condition {
         unit_types: Vec<String>,
     },
     HasUnits {
+        #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        ai_group: Option<String>,
         side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,

@@ -151,18 +151,84 @@
       "trigger": {
         "kind": "condition",
         "condition": {
-          "kind": "proximity",
-          "tile": "8,6",
-          "radius": 2,
-          "side": "player"
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "proximity",
+              "tile": "8,6",
+              "radius": 2,
+              "side": "player"
+            },
+            {
+              "kind": "hasUnits",
+              "side": "any",
+              "name": "The villagers"
+            }
+          ]
         }
       },
       "dialogue": [
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "Over here! Don\u2019t leave us!"
+          "text": "Help! Help us!"
+        }
+      ],
+      "requiresEvent": "village-contact"
+    },
+    {
+      "id": "prisoners-found-guarded",
+      "requiresEvent": "prisoners-found",
+      "unlessEvent": "prisoners-found-unguarded",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "hasUnits",
+              "side": "any",
+              "name": "The villagers"
+            },
+            {
+              "kind": "hasUnits",
+              "side": "enemy",
+              "aiGroup": "captive-guard"
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "Skeleton guard",
+          "portrait": "skeleton",
+          "text": "Quiet."
         },
+        {
+          "speaker": "Villager",
+          "portrait": "captives",
+          "text": "Please\u2014before it\u2019s too late!"
+        },
+        {
+          "speaker": "Skeleton guard",
+          "portrait": "skeleton",
+          "text": "Squeak again and there\u2019ll be more of us."
+        }
+      ]
+    },
+    {
+      "id": "prisoners-found-unguarded",
+      "requiresEvent": "prisoners-found",
+      "unlessEvent": "prisoners-found-guarded",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "hasUnits",
+          "side": "any",
+          "name": "The villagers"
+        }
+      },
+      "dialogue": [
         {
           "speaker": "Nera",
           "portrait": "swordsman",
@@ -178,8 +244,7 @@
           "portrait": "swordsman",
           "text": "Stay together. We\u2019ll get you somewhere safe."
         }
-      ],
-      "requiresEvent": "village-contact"
+      ]
     },
     {
       "id": "prisoners-freed",
