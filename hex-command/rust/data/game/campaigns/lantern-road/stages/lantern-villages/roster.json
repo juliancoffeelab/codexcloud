@@ -55,22 +55,6 @@
         "aiGroup": "tollkeeper"
       },
       {
-        "type": "zombie-walker",
-        "side": "enemy",
-        "col": 11,
-        "row": 11,
-        "faction": "swamp-dead",
-        "aiGroup": "swamp-dead"
-      },
-      {
-        "type": "zombie-walker",
-        "side": "enemy",
-        "col": 13,
-        "row": 11,
-        "faction": "swamp-dead",
-        "aiGroup": "swamp-dead"
-      },
-      {
         "type": "zombie-decay-caster",
         "side": "enemy",
         "col": 12,
@@ -141,22 +125,6 @@
       "name": "The Tollkeeper",
       "role": "leader",
       "aiGroup": "tollkeeper"
-    },
-    {
-      "type": "zombie-walker",
-      "side": "enemy",
-      "col": 11,
-      "row": 11,
-      "faction": "swamp-dead",
-      "aiGroup": "swamp-dead"
-    },
-    {
-      "type": "zombie-walker",
-      "side": "enemy",
-      "col": 13,
-      "row": 11,
-      "faction": "swamp-dead",
-      "aiGroup": "swamp-dead"
     },
     {
       "type": "zombie-decay-caster",

@@ -37,5 +37,15 @@
       }
     }
   ],
-  "defendObjectives": false
+  "defendObjectives": false,
+  "loseConditions": [
+    {
+      "label": "Leave before the Bellwarden's ritual: by the end of round 30.",
+      "condition": {
+        "kind": "round",
+        "round": 31
+      },
+      "message": "The Bellwarden's ritual has begun. The road is lost; the company has run out of time."
+    }
+  ]
 }

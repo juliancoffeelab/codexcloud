@@ -531,12 +531,25 @@ pub struct EnemyGroup {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub when: Option<ConditionRule>,
 }
+/// A scenario-authored defeat rule evaluated through the shared condition vocabulary.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct LossCondition {
+    pub label: String,
+    pub condition: Condition,
+    pub message: String,
+}
+
 /// An authored chapter defining objectives, recruits, events and story feedback.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Mission {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub lose_conditions: Vec<LossCondition>,
     pub map: Layout,
     #[serde(default)]
     pub subtitle: String,

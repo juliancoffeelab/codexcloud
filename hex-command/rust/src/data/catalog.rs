@@ -976,6 +976,17 @@ fn validate_mission(
         }
         Ok(())
     };
+    for loss in &mission.lose_conditions {
+        if loss.label.trim().is_empty() || loss.message.trim().is_empty() {
+            return Err(ContentError::new(path, "empty defeat condition text"));
+        }
+        loss.condition
+            .validate(&state.tiles, &mission.events, false)
+            .map_err(|message| ContentError::new(path, message))?;
+        loss.condition
+            .validate_references(types, &state.factions)
+            .map_err(|message| ContentError::new(path, message))?;
+    }
     validate_faction_conditions(&state.factions, &state.tiles, &mission.events, types)
         .map_err(|message| ContentError::new(path, message))?;
     unique(mission.events.iter().map(|e| e.id.as_str()), path)?;

@@ -110,8 +110,8 @@ home remains at the intact buildings' scale.
 One skeleton holds the pass fort. Its local order does not draw the keep's army
 into defending it. The level-one Tollkeeper starts alone at the eastern keep and
 recruits skeletons with its own gold and income. Edrin commands the southern marsh
-from a keep at (12,12), supported by two walkers. His faction is active from the
-opening turn and recruits walkers and casters from its own treasury, starting
+from a keep at (12,12). He starts alone and recruits walkers and casters from his
+faction's own treasury from the opening turn, starting
 without reserve gold. One marsh-floor village funds the dead; one roadside
 village funds the Tollkeeper. Each earns two gold per turn. Edrin holds his keep
 while his troops and recruits operate normally. Their neutrality toward the
@@ -130,6 +130,12 @@ reinforcements. Only then does Nera depart at the sign at the northern pass. The
 player may first clear every hostile force from the map. Defeating the Tollkeeper
 stops recruitment, but the remaining skeletons and swamp dead must also be
 defeated to complete that optional objective. The rescued people remain with the village.
+
+The Bellwarden's approaching ritual limits the whole chapter to thirty rounds.
+Both rescue and departure must finish by the end of round 30; an unfinished
+chapter is lost when round 31 begins. Clearing every hostile remains optional
+and consumes time from this same limit. The deadline is shown in the briefing
+and survival objectives. It does not change the AI's planning priorities.
 
 The opening objective is to investigate. It completes when the patrol has claimed
 the camp and met Sella. Rescuing and escorting the prisoners is revealed only by

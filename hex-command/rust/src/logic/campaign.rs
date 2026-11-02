@@ -388,11 +388,18 @@ impl<'catalog> Game<'catalog> {
                 .iter()
                 .filter(|goal| matches!(goal, Goal::Escort { .. }))
                 .all(|goal| self.goal_done(goal));
-        if !leader
+        let loss = mission
+            .lose_conditions
+            .iter()
+            .find(|loss| self.event_condition_met(&loss.condition));
+        if loss.is_some()
+            || !leader
             || missing.is_some()
             || (mission.goals.iter().any(|g| g.kind() == GoalKind::Escort) && !courier)
         {
-            let text = if !leader {
+            let text = if let Some(loss) = loss {
+                loss.message.clone()
+            } else if !leader {
                 "Your leader fell. The company cannot continue without them.".into()
             } else if let Some(name) = missing {
                 format!("{name} fell. The company cannot continue without them.")

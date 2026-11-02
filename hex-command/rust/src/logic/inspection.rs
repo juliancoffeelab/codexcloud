@@ -104,6 +104,12 @@ impl Game<'_> {
                     .any(|record| record.unit.name.as_ref() == Some(name));
             protected.push(survival(format!("Keep {name} alive."), alive));
         }
+        for loss in &mission.lose_conditions {
+            protected.push(survival(
+                loss.label.clone(),
+                !self.event_condition_met(&loss.condition),
+            ));
+        }
         Some(CampaignObjectives {
             notices: self.ritual_notices(),
             goals: mission

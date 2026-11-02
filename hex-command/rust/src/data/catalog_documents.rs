@@ -73,6 +73,8 @@ struct StageRoster {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageObjectives {
+    #[serde(default)]
+    lose_conditions: Vec<LossCondition>,
     goals: Vec<Goal>,
     #[serde(default)]
     optional_goals: Vec<Goal>,
@@ -238,6 +240,7 @@ pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, Conten
         id: documents.id,
         state: map.initial(roster.initial),
         mission: Mission {
+            lose_conditions: objectives.lose_conditions,
             map: layout,
             subtitle: story.subtitle.unwrap_or_default(),
             briefing: story.briefing,

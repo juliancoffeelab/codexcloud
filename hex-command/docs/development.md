@@ -267,6 +267,14 @@ objectives with a dash, completed objectives with a green check, and failed
 objectives with a red cross and an accessible failure label. These are derived
 query results, not additional save fields.
 
+Mission objective documents may also declare `loseConditions`, each with a
+`label`, shared `condition` and defeat `message`. These conditions are evaluated
+after actions and at turn boundaries and appear in the survival objectives.
+For a chapter playable through round 30, use `{"kind":"round","round":31}`:
+the loss occurs when round 31 begins, while an already completed victory remains
+final. These rules are independent of the simulator's unresolved-round cap and
+do not supply deadline hints or urgency scoring to AI planners.
+
 Objectives may use `visibleWhen` with the shared Rust condition format. Hidden
 objectives remain victory requirements, but are omitted from the briefing and map
 markers until revealed; campaign planning also respects that discovery gate.
