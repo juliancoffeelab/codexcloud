@@ -270,17 +270,6 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         }
         if sum { total } else { first + second }
     }
-    /// Risk is nonnegative, so the first zero is the exact global minimum.
-    pub fn minimum(&mut self, unit: &Unit, tiles: impl IntoIterator<Item = usize>) -> i32 {
-        let mut minimum = i32::MAX;
-        for tile in tiles {
-            minimum = minimum.min(self.at(unit, tile, None));
-            if minimum == 0 {
-                break;
-            }
-        }
-        minimum
-    }
     pub fn at(&mut self, u: &Unit, tile: usize, eliminated: Option<u32>) -> i32 {
         if self.source.winner.is_some() {
             return 0;
@@ -385,7 +374,6 @@ impl Drop for Threats<'_, '_> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::cell::Cell;
     #[test]
     fn arena_workspace_reuses_hp_only_changes_and_invalidates_roster_changes() {
         let rules = Catalog::load().unwrap();
@@ -482,22 +470,5 @@ mod tests {
                 }
             }
         }
-    }
-    #[test]
-    fn zero_danger_stops_the_minimum_search_without_visiting_later_tiles() {
-        let rules = Catalog::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
-        game.units.retain(|u| u.side == Side::Player);
-        game.roster_changed();
-        let actor = game.units[0].clone();
-        let view = crate::ai::context::BattleView::new(&game);
-        let mut threats = Threats::new(&view, actor.side);
-        let visits = Cell::new(0);
-        let tiles = [actor.tile, actor.tile]
-            .into_iter()
-            .inspect(|_| visits.set(visits.get() + 1));
-        assert_eq!(threats.minimum(&actor, tiles), 0);
-        assert_eq!(visits.get(), 1);
-        assert_eq!(threats.minimum(&actor, []), i32::MAX);
     }
 }

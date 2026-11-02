@@ -28,7 +28,7 @@ pub(crate) trait Planner {
 }
 impl Planner for PlannerKind {
     fn recruits_after_move(&self) -> bool {
-        *self != Self::Classic
+        true
     }
     fn plan(
         &mut self,

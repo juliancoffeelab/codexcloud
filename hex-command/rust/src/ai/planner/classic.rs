@@ -31,7 +31,7 @@ pub(in crate::ai) struct ClassicRules<'game, 'catalog> {
     lanes: HashSet<usize>,
     important: bool,
     threats: Option<Threats<'game, 'catalog>>,
-    minimum: i32,
+    recruitment: HashMap<usize, (i32, i32)>,
     holding: bool,
     orders: &'game crate::ai::orders::TacticalOrders,
     escort: &'game escort::Workspace,
@@ -44,19 +44,49 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         _restrained: bool,
         orders: &'game crate::ai::orders::TacticalOrders,
         escort: &'game escort::Workspace,
+        opportunity: Option<&crate::ai::recruiter::RecruitmentOpportunity>,
     ) -> Self {
         let important = orders.important(g, u);
-        let mut threats = important.then(|| Threats::protected(g, u.side, orders));
-        let minimum = if let Some(t) = &mut threats {
-            let current = t.at(u, u.tile, None);
-            if current == 0 {
-                0
-            } else {
-                current.min(t.minimum(u, g.reachable(u).iter().copied().map(|(tile, _)| tile)))
+        let threats = important.then(|| Threats::protected(g, u.side, orders));
+        // Classic owns its movement penalties; only legal command execution is shared.
+        let mut recruitment = HashMap::default();
+        if let Some(opportunity) = opportunity.filter(|r| r.budget != Some(0)) {
+            if u.is_leader() && !u.moved && !u.attacked {
+                let destinations = orders.authored_destinations(
+                    g,
+                    u,
+                    g.reachable(u).iter().map(|&(tile, _)| tile).collect(),
+                );
+                for tile in destinations
+                    .into_iter()
+                    .filter(|&tile| tile != u.tile && g.is_keep(tile) && g.owns(tile, u.side))
+                {
+                    let mut draft = g.fork();
+                    if draft
+                        .execute(crate::ai::move_command(g, u.id, tile))
+                        .is_err()
+                    {
+                        continue;
+                    }
+                    let Ok((_, report)) = draft.recruit(opportunity) else {
+                        continue;
+                    };
+                    if report.recruited.is_empty() {
+                        continue;
+                    }
+                    let value: i32 = report
+                        .recruited
+                        .iter()
+                        .filter_map(|id| draft.unit(id.0))
+                        .map(|unit| draft.recruit_cost(unit, unit.kind))
+                        .sum();
+                    if let Some(actor) = draft.unit(u.id) {
+                        let mut forecast = Threats::protected(&draft, u.side, orders);
+                        recruitment.insert(tile, (forecast.at(actor, tile, None), value));
+                    }
+                }
             }
-        } else {
-            0
-        };
+        }
         let yielding = orders.classic_clearing(g).remove(&u.id).unwrap_or_default();
         let holding = !yielding.contains(&u.tile)
             && goals.iter().any(|o| {
@@ -72,20 +102,32 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
             lanes: orders.lanes(g),
             important,
             threats,
-            minimum,
+            recruitment,
             holding,
             orders,
             escort,
         }
     }
     fn risk(&mut self, tile: usize, eliminated: Option<u32>) -> i32 {
-        self.threats
-            .as_mut()
-            .map_or(0, |t| t.at(&self.unit, tile, eliminated))
+        let risk = if eliminated.is_none() {
+            self.recruitment.get(&tile).map(|&(risk, _)| risk)
+        } else {
+            None
+        }
+        .unwrap_or_else(|| {
+            self.threats
+                .as_mut()
+                .map_or(0, |t| t.at(&self.unit, tile, eliminated))
+        });
+        risk.min(self.unit.hp.max(1))
     }
     fn penalty(&mut self, g: &BattleView, tile: usize) -> f64 {
         let finishing = self.orders.arrives(g, &self.unit, tile);
-        -self.escort.position(self.unit.id, tile)
+        -self
+            .recruitment
+            .get(&tile)
+            .map_or(0.0, |&(_, value)| value as f64)
+            - self.escort.position(self.unit.id, tile)
             + (if self.reserved.contains(&tile) {
                 160.0
             } else {
@@ -114,17 +156,8 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
                     risk as f64 * 40.0 / self.unit.hp.max(1) as f64
                         + if risk >= self.unit.hp { 40.0 } else { 0.0 }
                 } else {
-                    risk as f64 * 12.0
+                    risk as f64 * 12.0 + if risk >= self.unit.hp { 40.0 } else { 0.0 }
                 }
-            }
-    }
-    fn movement(&mut self, g: &BattleView, tile: usize) -> bool {
-        self.orders.protects(self.unit.id)
-            || !self.important
-            || self.orders.arrives(g, &self.unit, tile)
-            || {
-                let risk = self.risk(tile, None);
-                risk < self.unit.hp || risk <= self.minimum
             }
     }
     fn attack(
@@ -433,7 +466,6 @@ impl BattleDraft<'_, '_> {
         }
         let mut destinations: Vec<_> = std::iter::once(u.tile)
             .chain(self.reachable(&u).iter().copied().map(|(t, _)| t))
-            .filter(|&t| rules.movement(self, t))
             .collect();
         let mut scores = vec![f64::NEG_INFINITY; self.terrain().len()];
         for &t in &destinations {
@@ -544,7 +576,6 @@ impl BattleDraft<'_, '_> {
         let campaign = rules.orders.campaign;
         let mut dest: Vec<_> = std::iter::once(u.tile)
             .chain(self.reachable(&u).iter().copied().map(|(t, _)| t))
-            .filter(|&t| rules.movement(self, t))
             .filter(|&t| {
                 !u.is_leader()
                     || !rebuild.is_empty()
@@ -644,6 +675,7 @@ impl BattleDraft<'_, '_> {
         orders: &crate::ai::orders::TacticalOrders,
         escort: &escort::Workspace,
         restrained: bool,
+        opportunity: Option<&crate::ai::recruiter::RecruitmentOpportunity>,
         recorder: &mut Recorder,
     ) {
         if self.winner().is_some() {
@@ -726,13 +758,24 @@ impl BattleDraft<'_, '_> {
             best.map(|g| g.tiles.iter().map(|t| self.site(t)).collect())
         };
         let required = orders.moving_actor(id) || yielding;
-        let rules = ClassicRules::new(source, &u, objectives, restrained, orders, escort);
+        let rules = ClassicRules::new(
+            source,
+            &u,
+            objectives,
+            restrained,
+            orders,
+            escort,
+            opportunity,
+        );
         self.classic_act(id, movement, required, rules, recorder);
     }
 }
 
 pub(super) struct Classic;
 impl super::Planner for Classic {
+    fn recruits_after_move(&self) -> bool {
+        true
+    }
     fn plan(
         &mut self,
         context: &mut crate::ai::context::TacticalContext<'_, '_>,
@@ -816,6 +859,7 @@ pub(super) fn choose(
             orders,
             &workspace.classic_escort,
             restrained,
+            workspace.recruitment_opportunity.as_ref(),
             &mut recorder,
         );
         recorder.flush_intents(&virtual_game);
