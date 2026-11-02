@@ -393,41 +393,6 @@
       }
     },
     {
-      "id": "late-toll-pursuit",
-      "trigger": {
-        "kind": "condition",
-        "condition": {
-          "kind": "all",
-          "conditions": [
-            {
-              "kind": "round",
-              "round": 5
-            },
-            {
-              "kind": "choice",
-              "choice": "bell-tolled-before-arrival"
-            },
-            {
-              "kind": "event",
-              "event": "tollkeeper-pursuit"
-            }
-          ]
-        }
-      },
-      "label": "Veteran skeletons follow the late pursuit.",
-      "spawn": {
-        "area": ["0,13", "0,14", "1,14", "0,15", "1,12"],
-        "units": [
-          {
-            "id": "caster",
-            "type": "skeleton-impact-caster-l2",
-            "side": "enemy"
-          }
-        ]
-      },
-      "dialogue": []
-    },
-    {
       "id": "opened-graveyard-sighted",
       "trigger": {
         "kind": "condition",

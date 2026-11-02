@@ -187,8 +187,8 @@ present. Discovering that site reveals the loss. The chapter's round-30 deadline
 remains the final toll.
 
 If the Tollkeeper survived, his authored skeleton patrol pursues on round 5.
-A late departure adds a veteran impact caster to that force. These are authored
-reinforcements, not literal copies of the preceding chapter's enemy units. The
+These are authored reinforcements, not literal copies of the preceding chapter's
+enemy units. The
 pursuing Tollkeeper is not an additional required boss. The western lancer, mage
 and healer still reinforce the player on round 10.
 
