@@ -101,3 +101,12 @@ ordinary rescued civilians remain off the battlefield.
 Events can also unlock a `recruits` list. Recruitment availability is derived
 from completed event markers, so it persists without a parallel saved unlock
 flag and can depend on meeting or retaining a particular character.
+
+## Field-army availability
+
+AI field-army counts exclude passive or unarmed units and units committed to
+active local hold orders. A released guard rejoins the available force. A named
+group with no active local order remains an ordinary part of its army. This is a
+mechanical availability fact shared by planners; their recruitment thresholds and
+movement scoring remain independently owned. Leader diagnostics use actual
+relations and the same availability facts rather than counting a whole phase.

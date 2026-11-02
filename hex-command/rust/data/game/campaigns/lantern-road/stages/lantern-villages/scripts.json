@@ -741,6 +741,28 @@
       },
       "label": "The road is clear of enemies",
       "dialogue": []
+    },
+    {
+      "id": "first-bell-toll",
+      "trigger": {
+        "kind": "round",
+        "round": 26
+      },
+      "choice": "bell-tolled-before-arrival",
+      "label": "The first bell tolls across the valley.",
+      "dialogue": [
+        {
+          "speaker": "The company",
+          "portrait": "captives",
+          "text": "A deep bell rolls out of the valley. For a moment, the sound seems to come from beneath the ground.",
+          "sound": "bell"
+        },
+        {
+          "speaker": "Captain Nera",
+          "portrait": "swordsman",
+          "text": "Something has started. We have to move."
+        }
+      ]
     }
   ],
   "waves": [],

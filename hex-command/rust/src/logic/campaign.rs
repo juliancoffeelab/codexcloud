@@ -410,6 +410,7 @@ impl<'catalog> Game<'catalog> {
             let state = self.campaign.as_mut().unwrap();
             state.outcome = Some(text.clone());
             state.say([Dialogue {
+                sound: None,
                 speaker: "The company".into(),
                 portrait: self.rules.campaigns[&state.id].leader.clone(),
                 text: text.clone(),
@@ -879,6 +880,7 @@ impl<'catalog> Game<'catalog> {
         }
         game.log.clear();
         game.record(game.mission.as_ref().unwrap().briefing.clone());
+        game.evaluate_rituals(true);
         game.evaluate_campaign(false, None);
         game.remember_conditions();
         game

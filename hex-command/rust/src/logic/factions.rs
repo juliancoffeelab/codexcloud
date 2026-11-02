@@ -93,6 +93,30 @@ impl Game<'_> {
                 .faction(self.unit_faction(unit))
                 .is_some_and(|f| matches!(f.controller, Controller::Passive))
     }
+    /// Fighting units available to the field army, excluding detached local duties.
+    pub(crate) fn available_combatant(&self, unit: &Unit) -> bool {
+        if self
+            .faction(self.unit_faction(unit))
+            .is_some_and(|f| matches!(f.controller, Controller::Passive))
+            || self.weapons(unit).next().is_none()
+        {
+            return false;
+        }
+        let group = self.mission.as_ref().and_then(|mission| {
+            unit.ai_group
+                .as_ref()
+                .and_then(|id| mission.enemy_groups.iter().find(|group| &group.id == id))
+        });
+        group.is_none_or(|group| {
+            self.group_active(group)
+                && match &group.order {
+                    Some(GroupOrder::Hold { when, .. }) => when
+                        .as_ref()
+                        .is_some_and(|condition| !self.event_condition_met(condition)),
+                    None => true,
+                }
+        })
+    }
     pub(crate) fn automatic_factions(&self) -> Vec<(String, Option<crate::ai::Policy>)> {
         let mut controllers = Vec::new();
         // The implicit legacy army remains an independent controller when authored

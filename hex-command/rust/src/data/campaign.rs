@@ -8,6 +8,9 @@ use std::collections::BTreeMap;
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Dialogue {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub sound: Option<String>,
     pub speaker: String,
     pub portrait: String,
     pub text: String,

@@ -1231,6 +1231,33 @@ fn validate_mission(
         {
             return Err(ContentError::new(path, "invalid periodic ritual"));
         }
+        if let Some(opening) = &ritual.opening {
+            if opening.sites.is_empty() {
+                return Err(ContentError::new(path, "empty ritual opening sites"));
+            }
+            unique(opening.sites.iter().map(String::as_str), path)?;
+            for site in &opening.sites {
+                tile_ref(site)?;
+                if !state
+                    .tiles
+                    .iter()
+                    .any(|tile| &tile.id == site && tile.terrain == ritual.source_terrain)
+                {
+                    return Err(ContentError::new(
+                        path,
+                        "ritual opening must target its source terrain",
+                    ));
+                }
+            }
+            opening
+                .when
+                .validate(&state.tiles, &mission.events, false)
+                .map_err(|message| ContentError::new(path, message))?;
+            opening
+                .when
+                .validate_references(types, &state.factions)
+                .map_err(|message| ContentError::new(path, message))?;
+        }
         for kind in &ritual.unit_types {
             reference(kind, types, path)?;
         }

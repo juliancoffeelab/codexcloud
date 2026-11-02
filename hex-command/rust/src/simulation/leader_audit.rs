@@ -65,13 +65,17 @@ pub(crate) struct Pending {
     audit: LeaderAudit,
     alternatives: Vec<(usize, i32)>,
 }
-fn strength(game: &Game<'_>, side: Side) -> ArmyStrength {
+fn strength(game: &Game<'_>, leader: &Unit, opponent: bool) -> ArmyStrength {
     let mut total = ArmyStrength::default();
-    for unit in game
-        .units
-        .iter()
-        .filter(|u| u.side == side && !u.is_leader())
-    {
+    for unit in game.units.iter().filter(|u| {
+        !u.is_leader()
+            && game.available_combatant(u)
+            && if opponent {
+                game.hostile(leader, u)
+            } else {
+                game.allied(leader, u)
+            }
+    }) {
         let rule = &game.rules.units[unit.kind];
         total.units += 1;
         let price = game.recruit_cost(unit, unit.kind);
@@ -104,7 +108,7 @@ pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
             } else {
                 vec![]
             };
-            let options = game.recruitment_options(leader.side);
+            let options = game.recruitment_options_for(leader);
             let legal_options = options
                 .iter()
                 .filter(|&&kind| !game.placement_tiles(leader, kind, false).is_empty())
@@ -121,9 +125,9 @@ pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
                     side: leader.side,
                     before: state(game, leader),
                     after: None,
-                    army_before: strength(game, leader.side),
+                    army_before: strength(game, leader, false),
                     army_after: ArmyStrength::default(),
-                    opponent_before: strength(game, leader.side.other()),
+                    opponent_before: strength(game, leader, true),
                     opponent_after: ArmyStrength::default(),
                     recruitment_before: RecruitmentAvailability {
                         gold: game.gold_for_unit(leader),
@@ -145,8 +149,8 @@ pub(crate) fn finish(game: &Game<'_>, pending: Vec<Pending>) -> Vec<LeaderAudit>
         .map(|mut p| {
             let after = game.unit(p.leader.id);
             p.audit.after = after.map(|leader| state(game, leader));
-            p.audit.army_after = strength(game, p.leader.side);
-            p.audit.opponent_after = strength(game, p.leader.side.other());
+            p.audit.army_after = strength(game, &p.leader, false);
+            p.audit.opponent_after = strength(game, &p.leader, true);
             if let Some(&(min_tile, min_damage)) = p
                 .alternatives
                 .iter()

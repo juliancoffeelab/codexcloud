@@ -2,7 +2,7 @@
   "initial": {
     "gold": {
       "player": 20,
-      "enemy": 12,
+      "enemy": 24,
       "prisoners": 0
     },
     "units": [
@@ -22,7 +22,7 @@
         "name": "Ivo"
       },
       {
-        "type": "lich",
+        "type": "lich-commander-l3",
         "side": "enemy",
         "col": 11,
         "row": 12,
@@ -30,19 +30,19 @@
         "role": "leader"
       },
       {
-        "type": "skeleton",
+        "type": "revenant",
         "side": "enemy",
         "col": 10,
         "row": 12
       },
       {
-        "type": "bonearcher",
+        "type": "deatharcher",
         "side": "enemy",
         "col": 12,
         "row": 12
       },
       {
-        "type": "skeleton",
+        "type": "skeleton-impact-caster",
         "side": "enemy",
         "col": 10,
         "row": 13
@@ -117,7 +117,7 @@
       "name": "Ivo"
     },
     {
-      "type": "lich",
+      "type": "lich-commander-l3",
       "side": "enemy",
       "col": 11,
       "row": 12,
@@ -125,19 +125,19 @@
       "role": "leader"
     },
     {
-      "type": "skeleton",
+      "type": "revenant",
       "side": "enemy",
       "col": 10,
       "row": 12
     },
     {
-      "type": "bonearcher",
+      "type": "deatharcher",
       "side": "enemy",
       "col": 12,
       "row": 12
     },
     {
-      "type": "skeleton",
+      "type": "skeleton-impact-caster",
       "side": "enemy",
       "col": 10,
       "row": 13
@@ -207,7 +207,13 @@
     }
   ],
   "recruits": ["swordsman", "spearman", "archer", "scout", "adept"],
-  "enemyRecruits": ["skeleton", "bonearcher"],
+  "enemyRecruits": [
+    "skeleton",
+    "bonearcher",
+    "skeleton-impact-caster",
+    "skeleton-axeman",
+    "skeleton-rider"
+  ],
   "gold": 20,
-  "enemyGold": 12
+  "enemyGold": 24
 }

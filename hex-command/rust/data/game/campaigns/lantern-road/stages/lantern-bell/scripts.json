@@ -108,7 +108,7 @@
       "id": "toll-warning",
       "trigger": {
         "kind": "round",
-        "round": 10
+        "round": 4
       },
       "dialogue": [
         {
@@ -354,7 +354,7 @@
       "id": "tollkeeper-pursuit",
       "trigger": {
         "kind": "round",
-        "round": 14
+        "round": 5
       },
       "unlessChoice": "tollkeeper-defeated",
       "dialogue": [
@@ -369,7 +369,7 @@
           "text": "Hold them at the tree line. The rest of you, keep moving."
         }
       ],
-      "label": "The Tollkeeper\u2019s surviving force enters from the west.",
+      "label": "The Tollkeeper's skeleton patrol enters from the west.",
       "spawn": {
         "area": ["0,13", "0,14", "1,14", "0,15", "1,12"],
         "units": [
@@ -380,17 +380,86 @@
             "name": "The Tollkeeper"
           },
           {
-            "id": "walker-1",
-            "type": "zombie-walker",
+            "id": "spear",
+            "type": "skeleton",
             "side": "enemy"
           },
           {
-            "id": "walker-2",
-            "type": "zombie-walker",
+            "id": "bow",
+            "type": "bonearcher",
             "side": "enemy"
           }
         ]
       }
+    },
+    {
+      "id": "late-toll-pursuit",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "round",
+              "round": 5
+            },
+            {
+              "kind": "choice",
+              "choice": "bell-tolled-before-arrival"
+            },
+            {
+              "kind": "event",
+              "event": "tollkeeper-pursuit"
+            }
+          ]
+        }
+      },
+      "label": "Veteran skeletons follow the late pursuit.",
+      "spawn": {
+        "area": ["0,13", "0,14", "1,14", "0,15", "1,12"],
+        "units": [
+          {
+            "id": "caster",
+            "type": "skeleton-impact-caster-l2",
+            "side": "enemy"
+          }
+        ]
+      },
+      "dialogue": []
+    },
+    {
+      "id": "opened-graveyard-sighted",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "choice",
+              "choice": "bell-tolled-before-arrival"
+            },
+            {
+              "kind": "proximity",
+              "tile": "11,5",
+              "radius": 3,
+              "side": "player"
+            },
+            {
+              "kind": "noUnits",
+              "side": "any",
+              "name": "Northern captives"
+            }
+          ]
+        }
+      },
+      "label": "The northern graves have already opened.",
+      "dialogue": [
+        {
+          "speaker": "The company",
+          "portrait": "captives",
+          "text": "The graves stand open. The first toll reached these prisoners before we did."
+        }
+      ]
     }
   ],
   "enemyGroups": [
@@ -478,7 +547,7 @@
       "sourceTerrain": "ritual-star",
       "spentTerrain": "ritual-spent",
       "unitTypes": ["captives"],
-      "firstRound": 12,
+      "firstRound": 6,
       "interval": 6,
       "spawn": {
         "aiGroup": "bell-raised",
@@ -529,6 +598,13 @@
             "event": "monastery-start"
           }
         ]
+      },
+      "opening": {
+        "when": {
+          "kind": "choice",
+          "choice": "bell-tolled-before-arrival"
+        },
+        "sites": ["11,5"]
       }
     }
   ]

@@ -375,6 +375,7 @@ export interface GameState {
 
 export type DialoguePortrait = UnitType | "worker";
 export interface DialogueLine {
+  sound?: string;
   speaker: string;
   portrait: DialoguePortrait;
   text: string;

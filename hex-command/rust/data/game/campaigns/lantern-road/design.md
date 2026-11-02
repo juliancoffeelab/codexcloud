@@ -158,8 +158,6 @@ come from the player’s chosen recalls; named companions retain their progressi
 The mire caster carries a healing bottle. Defeating it leaves the bottle on its
 tile; the unit that collects it restores 2 HP to itself and adjacent allies at
 the start of its turn. It can be passed on by dropping it and moving away.
-The prisoner departure deadline remains a tentative idea. Recruitment pressure
-and the exposed return journey supply urgency without an undisclosed countdown.
 
 Nera remains an infantry captain and retains progression. Ivo travels with the
 company if alive. A fallen scout must not reappear in a later roster or dialogue.
@@ -170,11 +168,32 @@ receiving more dead, rather than introducing an unrelated final battle.
 
 ## The bell and the graves
 
-Local adept Meri helps close the grave bindings. She is a new ally, not an
-unrecorded resurrection of the opening patrol's mage. Seal the bindings and defeat
-the Bellwarden to stop this operation and hold the road open. The ending must not
-claim the entire lich threat or the fate of every captive has been resolved by
-winning a battle against a lieutenant.
+The Bellwarden commands a veteran skeleton core: a level-three commander,
+a revenant, a death archer, an impact caster and a bone archer. Three separate
+prison watches stay with their captives until the prisoners are freed. They do
+not count as available field troops while those orders remain active. The keep
+has 24 starting gold, three funding villages and a broader skeleton recruit pool.
+
+Defeating the Bellwarden wins the battle. Rescuing captives and holding the
+northern monastery with a mage remain optional. Three turns at the monastery
+clear the fog. The bell's normal ritual begins on round 6 and repeats every six
+rounds; captives still on its active marks are consumed and raise skeletal troops.
+Freeing captives is not enough: move them off the marks.
+
+The first toll sounds in Villages on round 26 and is remembered across chapters.
+A late arrival begins Bell with the northern graveyard's first ritual already
+complete: its captives are gone, its mark is spent, and its raised troops are
+present. Discovering that site reveals the loss. The chapter's round-30 deadline
+remains the final toll.
+
+If the Tollkeeper survived, his authored skeleton patrol pursues on round 5.
+A late departure adds a veteran impact caster to that force. These are authored
+reinforcements, not literal copies of the preceding chapter's enemy units. The
+pursuing Tollkeeper is not an additional required boss. The western lancer, mage
+and healer still reinforce the player on round 10.
+
+Victory stops this local operation and opens the road. It does not settle the
+entire lich threat or guarantee that every captive was rescued.
 
 ## Mechanical contract
 

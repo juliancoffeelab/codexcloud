@@ -128,11 +128,18 @@ impl Game<'_> {
                 continue;
             }
             let tick = format!("toll:{}:{}", ritual.id, self.round);
+            let opening = at_turn_start
+                && self.round == 1
+                && !self.campaign.as_ref().unwrap().marked(&tick)
+                && ritual
+                    .opening
+                    .as_ref()
+                    .is_some_and(|opening| self.event_condition_met(&opening.when));
             let due = at_turn_start
                 && self.round >= ritual.first_round
                 && (self.round - ritual.first_round) % ritual.interval == 0
                 && !self.campaign.as_ref().unwrap().marked(&tick);
-            if due {
+            if due || opening {
                 self.campaign.as_mut().unwrap().marks.push(tick);
                 self.record(ritual.label.clone());
                 let source = self.rules.terrains[&ritual.source_terrain];
@@ -141,7 +148,16 @@ impl Game<'_> {
                     .terrain
                     .iter()
                     .enumerate()
-                    .filter(|(_, terrain)| **terrain == source)
+                    .filter(|(tile, terrain)| {
+                        **terrain == source
+                            && (!opening
+                                || ritual
+                                    .opening
+                                    .as_ref()
+                                    .unwrap()
+                                    .sites
+                                    .contains(&self.board.ids[*tile]))
+                    })
                     .map(|(tile, _)| tile)
                     .collect();
                 for tile in sites {

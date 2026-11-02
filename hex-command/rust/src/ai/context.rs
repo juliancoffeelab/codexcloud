@@ -99,6 +99,9 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             _ => true,
         }
     }
+    pub(super) fn available_combatant(&self, unit: &Unit) -> bool {
+        self.engine().available_combatant(unit)
+    }
     pub(super) fn hostile(&self, first: &Unit, second: &Unit) -> bool {
         self.engine().hostile(first, second)
     }

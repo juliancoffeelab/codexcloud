@@ -325,6 +325,7 @@ impl BattleView<'_, '_> {
     pub(super) fn ordinary(&self, u: &Unit) -> impl Iterator<Item = &Unit> {
         self.units().iter().filter(move |o| {
             self.allied(u, o)
+                && self.available_combatant(o)
                 && !o.is_leader()
                 && o.role != Some(Role::Courier)
                 && self.rules().units[o.kind].healing == 0

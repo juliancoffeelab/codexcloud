@@ -420,11 +420,23 @@ pub struct CompanionArrival {
     pub row: i32,
 }
 
+/// A conditional opening toll applies the normal ritual to selected initial sources.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RitualOpening {
+    pub when: Condition,
+    pub sites: Vec<String>,
+}
+
 /// Periodic consumption of occupied source terrain and lights left by matching deaths.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Ritual {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub opening: Option<RitualOpening>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub notice_when: Option<Condition>,

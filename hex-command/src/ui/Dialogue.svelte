@@ -1,5 +1,6 @@
 <script lang="ts">
   import { tick } from "svelte";
+  import { playSound } from "../presentation/sound";
   import type { BattleView, BattleCommands } from "../controller/view";
   import { campaignMission, dialoguePending } from "../game/campaign-progress";
   import { dialoguePortrait } from "../presentation/art";
@@ -17,6 +18,16 @@
         : "Return to battle"
       : "Next line",
   );
+  let lastSoundKey = "";
+  $effect(() => {
+    if (!pending || !campaign || !line?.sound) return;
+    const key = `${campaign.id}:${campaign.mission}:${campaign.dialogueIndex}:${line.sound}`;
+    if (key !== lastSoundKey) {
+      lastSoundKey = key;
+      playSound(line.sound);
+    }
+  });
+
   $effect(() => {
     if (pending && !dialog.open) {
       dialog.showModal();

@@ -37,6 +37,7 @@ const families = new Set([
   "turn",
   "victory",
   "defeat",
+  "bell",
 ]);
 export function createSound() {
   let enabled = true;

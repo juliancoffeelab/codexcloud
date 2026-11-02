@@ -282,3 +282,13 @@ markers until revealed; campaign planning also respects that discovery gate.
 requiring a separate proximity visit. Encounter events can share their durable
 marker across dialogue, pending spawns, lights, group activation and objective
 visibility. Keep terrain can be claimed by moving onto it.
+
+Rituals can declare a conditional `opening: {when, sites}`. At chapter entry, the
+normal ritual effects consume only those source tiles, preserving their spent
+terrain, losses and raised-unit identities in the generated state. Later regular
+tolls act on the remaining sources. Opening conditions use persistent campaign
+choices; no historical gameplay is reconstructed during save loading.
+
+Dialogue lines may declare an optional `sound` family. The dialogue view plays
+that cue when the line is first presented through the gesture-unlocked sound
+player; ordinary sound preferences still apply.
