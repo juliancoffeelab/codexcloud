@@ -63,6 +63,7 @@
     error = "";
     mapId = BATTLE_MAPS.some((m) => m.id === view.game.mapId) ? view.game.mapId : "mirror";
     dialog.showModal();
+    preloadTerrainMap(mode === "campaign" ? campaign.missions[0]!.map.id : mapId);
   }
   function requestStart() {
     if (view.game.mapId !== "developer" && !view.game.winner && view.completedTurns > 1) {
@@ -125,6 +126,7 @@
       onclick={() => {
         mode = "skirmish";
         error = "";
+        preloadTerrainMap(mapId);
       }}
     >
       Skirmish
@@ -135,6 +137,7 @@
         mode = "campaign";
         error = "";
         if (difficulty === "custom") setDifficulty("situational");
+        preloadTerrainMap(campaign.missions[0]!.map.id);
       }}
     >
       Campaign
@@ -191,7 +194,12 @@
       <div class="setup-story-heading">
         {@html artSprite(view.artwork, "units", campaign.leader, 0, 0, 64, 64)}
         <div>
-          <ChoicePicker label="Campaign" choices={campaigns} bind:value={campaignId} />
+          <ChoicePicker
+            label="Campaign"
+            choices={campaigns}
+            bind:value={campaignId}
+            onchange={() => preloadTerrainMap(campaign.missions[0]!.map.id)}
+          />
           <em>{campaign.tagline}</em>
         </div>
       </div>
