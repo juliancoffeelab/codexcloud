@@ -102,3 +102,15 @@ impl<K: Freeze + Ord, V: Freeze> Freeze for BTreeMap<K, V> {
             .collect()
     }
 }
+
+// Immutable authored subtrees keep their wire shape while snapshots share ownership.
+impl<T: Freeze> Freeze for std::sync::Arc<T> {
+    type Frozen = T::Frozen;
+    #[cfg(feature = "bake")]
+    fn freeze(&self) -> Self::Frozen {
+        T::freeze(self)
+    }
+    fn thaw(value: &Self::Frozen) -> Self {
+        std::sync::Arc::new(T::thaw(value))
+    }
+}

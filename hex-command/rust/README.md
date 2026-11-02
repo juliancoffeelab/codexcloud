@@ -33,7 +33,9 @@ the browser consumes its command queue through revision-checked battle handles.
 Condition evaluation borrows current battlefield facts through the catalog's shared
 query interface. Remembered fog has a derived tile index; saved games retain the
 original durable condition keys. Traversal updates remember new facts without
-constructing discarded presentation snapshots.
+constructing discarded presentation snapshots. Immutable tile fog conditions use
+`Arc` so snapshots share their trees while the catalog remains safe to share
+across native simulation threads. Their serialized shape is unchanged.
 
 ## Browser contract
 
@@ -53,7 +55,16 @@ objects and explicit nulls; omitted optional save fields remain omitted. The liv
 adapter accepts these fresh object graphs by ownership transfer and freezes them
 without a second clone. Injected bridges default to borrowed responses, which
 the adapter detaches before publishing. Tsify
-continues to own the generated public types and request decoding.
+continues to own the generated public types and request decoding. Incremental
+responses borrow state fields during encoding, using a derived projection of
+`StateFrame` that checks field names, types and serde attributes against the
+owned model. The live adapter
+borrows current snapshots when constructing runtime worlds and retains the current
+geometry as shared data, refreshing it after successful commands. The adapter
+reuses the complete view carried by creation, restore and dispatch responses. It requests
+inspection alongside dispatch so both use the same runtime world; raw
+callers can omit it. Enemy decisions are prepared during the existing pacing
+windows and applied only after their deadlines.
 
 The Svelte UI, map picker, artwork, sound, pacing and browser tools remain in
 JavaScript. `src/game/live-game.ts` adapts native state/actions to the existing

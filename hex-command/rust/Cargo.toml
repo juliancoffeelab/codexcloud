@@ -22,6 +22,7 @@ wasm = ["dep:tsify", "dep:wasm-bindgen", "hex-command-catalog/wasm"]
 
 [dependencies]
 hex-command-catalog={path="catalog"}
+hex-catalog-freeze-derive={path="freeze-derive"}
 rustc-hash = "2"
 serde = { version = "1", features = ["derive", "rc"] }
 serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }

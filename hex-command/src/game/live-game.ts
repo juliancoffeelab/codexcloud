@@ -39,6 +39,20 @@ export function nativeValue<T>(result: EngineResult<T>): T {
   );
 }
 
+/** Compare immutable Rust records before preserving display identities across revisions. */
+function sameData(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (!a || !b || typeof a !== "object" || typeof b !== "object") return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  const left = a as Record<string, unknown>,
+    right = b as Record<string, unknown>;
+  const keys = Object.keys(left);
+  return (
+    keys.length === Object.keys(right).length &&
+    keys.every((key) => Object.hasOwn(right, key) && sameData(left[key], right[key]))
+  );
+}
+
 /** Browser orchestration only. State mutations and rule queries are owned by Rust. */
 export class LiveGame {
   private state!: GameState;
@@ -48,6 +62,12 @@ export class LiveGame {
   }
   private inspection!: BattleInspection;
   private geometry!: Immutable<BoardInspection>;
+  private tilesById!: Map<string, Tile>;
+  private visibleUnits!: Unit[];
+  private visibleGroundItems!: GameState["groundItems"];
+  private unitsById!: Map<string, Unit>;
+  private unitsByTile!: Map<string, Unit>;
+  private inspectedUnits!: Map<string, BattleInspection["units"][number]>;
   private combatEvent: Immutable<CombatAnimation> | null = null;
   get combat() {
     return this.combatEvent;
@@ -87,12 +107,42 @@ export class LiveGame {
       this.state.rows !== view.state.rows
     )
       this.geometry = nativeValue(this.engine.geometry());
+    // Keep indexes with this immutable revision; published views retain these maps.
+    if (this.state?.tiles !== view.state.tiles)
+      this.tilesById = new Map(
+        (view.state.tiles as unknown as Tile[]).map((tile) => [tile.id, tile]),
+      );
     // Authored string IDs cross into the existing presentation vocabulary here.
     this.state = view.state as unknown as GameState;
     this.resolvedPresentation = view.presentation;
     this.inspection = nativeValue(this.engine.inspect()) as BattleInspection;
     if (view.revision !== this.inspection.revision)
       throw new Error("Incoherent native publication");
+    const previousInspections = this.inspectedUnits;
+    this.inspectedUnits = new Map(
+      this.inspection.units.map((unit) => {
+        const previous = previousInspections?.get(unit.unit);
+        return [
+          unit.unit,
+          previous && sameData(previous.faction, unit.faction)
+            ? { ...unit, faction: previous.faction }
+            : unit,
+        ];
+      }),
+    );
+    const fog = new Set(this.presentation.fog);
+    const previousUnits = this.unitsById;
+    this.visibleUnits = this.state.units
+      .filter((unit) => this.choices(unit.id)?.faction.controllable || !fog.has(unit.tile))
+      .map((unit) => {
+        const previous = previousUnits?.get(unit.id);
+        return previous && sameData(previous, unit) ? previous : unit;
+      });
+    this.visibleGroundItems = this.state.groundItems.filter((item) => !fog.has(item.tile));
+    this.unitsById = new Map(this.visibleUnits.map((unit) => [unit.id, unit]));
+    this.unitsByTile = new Map();
+    for (const unit of this.visibleUnits)
+      if (!this.unitsByTile.has(unit.tile)) this.unitsByTile.set(unit.tile, unit);
   }
   private dispatch(command: Immutable<Command>, expectedRevision?: number): void {
     const result = nativeValue(this.engine.dispatch(command, expectedRevision));
@@ -139,13 +189,10 @@ export class LiveGame {
     return this.state.tiles;
   }
   get groundItems() {
-    return this.state.groundItems.filter((ground) => !this.presentation.fog.includes(ground.tile));
+    return [...this.visibleGroundItems];
   }
   get units() {
-    return this.state.units.filter(
-      (unit) =>
-        this.choices(unit.id)?.faction.controllable || !this.presentation.fog.includes(unit.tile),
-    );
+    return [...this.visibleUnits];
   }
   get campaign() {
     return this.state.campaign;
@@ -154,13 +201,13 @@ export class LiveGame {
     return this.state.lastCombat;
   }
   tile(id: string | null | undefined): Tile | undefined {
-    return this.tiles.find((tile) => tile.id === id);
+    return id == null ? undefined : this.tilesById.get(id);
   }
   unit(id: string | null | undefined): Unit | undefined {
-    return this.units.find((unit) => unit.id === id);
+    return id == null ? undefined : this.unitsById.get(id);
   }
   at(id: string | null | undefined): Unit | undefined {
-    return this.units.find((unit) => unit.tile === id);
+    return id == null ? undefined : this.unitsByTile.get(id);
   }
   neighbors(id: string): Tile[] {
     return (this.geometry.neighbors[id] ?? []).map((tile) => this.tile(tile)!);
@@ -169,7 +216,7 @@ export class LiveGame {
     return this.geometry.costs[unit.type]?.[tile.terrain] ?? Infinity;
   }
   private choices(id: string | null | undefined) {
-    return this.inspection.units.find((unit) => unit.unit === id);
+    return id == null ? undefined : this.inspectedUnits.get(id);
   }
   reachable(id: string | null | undefined): Map<string, number> {
     return new Map(this.choices(id)?.reachable.map(({ tile, cost }) => [tile, cost]) ?? []);
@@ -239,6 +286,10 @@ export class LiveGame {
   }
   endTurn(): void {
     this.dispatch({ kind: "endTurn" });
+  }
+  /** Plan against the current revision without advancing any durable game state. */
+  prepareEnemyStep(): void {
+    nativeValue(this.engine.chooseAiCommand(this.setup.enemy));
   }
   /** One staged enemy action; the controller owns pacing and cancellation. */
   enemyStep(): void {
@@ -317,6 +368,12 @@ export class LiveGame {
     detached.inspection = inspection;
     detached.geometry = this.geometry;
     detached.resolvedPresentation = this.resolvedPresentation;
+    detached.tilesById = this.tilesById;
+    detached.visibleUnits = this.visibleUnits;
+    detached.visibleGroundItems = this.visibleGroundItems;
+    detached.unitsById = this.unitsById;
+    detached.unitsByTile = this.unitsByTile;
+    detached.inspectedUnits = this.inspectedUnits;
     return immutable({
       presentation: this.resolvedPresentation,
       objectives: this.objectives,

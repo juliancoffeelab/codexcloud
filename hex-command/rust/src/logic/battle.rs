@@ -1,6 +1,6 @@
 //! Compact battle sessions borrowing catalog rules and indexing the live roster.
 
-use crate::data::*;
+use crate::{data::*, protocol::StateFrame};
 use rustc_hash::FxHashMap as HashMap;
 use std::cell::RefCell;
 use std::collections::VecDeque;
@@ -86,9 +86,31 @@ thread_local! {
     static TERRAIN_POOL: RefCell<(HashMap<TerrainKey, SharedTerrain>, VecDeque<TerrainKey>)> = RefCell::new((HashMap::default(), VecDeque::new()));
 }
 type MissionKey = (String, usize, bool, Vec<String>, bool);
-/// Immutable effective mission data, scoped to one catalog owner.
+/// Derived data for the current battle revision; refreshed after successful commands.
+#[derive(Clone, Debug)]
+struct TileGeometry {
+    connections: Rc<Vec<Option<Vec<HexDirection>>>>,
+    walls: Rc<Vec<Option<Vec<HexDirection>>>>,
+    dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
+    floors: Rc<Vec<Option<String>>>,
+    fog: Rc<Vec<Option<std::sync::Arc<ConditionRule>>>>,
+}
+#[cfg(feature = "wasm")]
+impl TileGeometry {
+    fn from_tiles(tiles: &[Tile]) -> Self {
+        Self {
+            connections: Rc::new(tiles.iter().map(|t| t.connections.clone()).collect()),
+            walls: Rc::new(tiles.iter().map(|t| t.walls.clone()).collect()),
+            dead_ends: Rc::new(tiles.iter().map(|t| t.dead_ends.clone()).collect()),
+            floors: Rc::new(tiles.iter().map(|t| t.floor.clone()).collect()),
+            fog: Rc::new(tiles.iter().map(|t| t.fog.clone()).collect()),
+        }
+    }
+}
 #[derive(Clone, Default)]
-pub(crate) struct MissionCache {
+pub(crate) struct RuntimeCache {
+    #[cfg(feature = "wasm")]
+    geometry: Option<TileGeometry>,
     key: Option<MissionKey>,
     mission: Option<Rc<Mission>>,
 }
@@ -104,7 +126,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) walls: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
-    pub(crate) fog: Rc<Vec<Option<ConditionRule>>>,
+    pub(crate) fog: Rc<Vec<Option<std::sync::Arc<ConditionRule>>>>,
     pub(crate) condition_memory: Rc<Vec<String>>,
     /// Derived tile-indexed remembered fog; never serialized.
     pub(crate) fog_memory: Vec<u64>,
@@ -200,20 +222,87 @@ impl<'catalog> Game<'catalog> {
         state: State,
         board: Rc<Board>,
     ) -> Self {
-        Self::from_cached_state(rules, state, board, MissionCache::default())
+        let (state, tiles) = StateFrame::split(state);
+        let n = tiles.len();
+        let mut terrain = Vec::with_capacity(n);
+        let mut owners = Vec::with_capacity(n);
+        let mut connections = Vec::with_capacity(n);
+        let mut walls = Vec::with_capacity(n);
+        let mut dead_ends = Vec::with_capacity(n);
+        let mut floors = Vec::with_capacity(n);
+        let mut fog = Vec::with_capacity(n);
+        for tile in tiles {
+            terrain.push(rules.terrains[&tile.terrain]);
+            owners.push(tile.owner);
+            connections.push(tile.connections);
+            walls.push(tile.walls);
+            dead_ends.push(tile.dead_ends);
+            floors.push(tile.floor);
+            fog.push(tile.fog);
+        }
+        let connections = Rc::new(connections);
+        let walls = Rc::new(walls);
+        let dead_ends = Rc::new(dead_ends);
+        let floors = Rc::new(floors);
+        let geometry = TileGeometry {
+            connections,
+            walls,
+            dead_ends,
+            floors,
+            fog: Rc::new(fog),
+        };
+        Self::from_parts(
+            rules,
+            state,
+            board,
+            RuntimeCache::default(),
+            terrain,
+            owners,
+            geometry,
+        )
     }
-    pub(crate) fn from_cached_state(
+    #[cfg(feature = "wasm")]
+    pub(crate) fn from_borrowed_state(
         rules: &'catalog Rules,
-        state: State,
+        state: &State,
         board: Rc<Board>,
-        cache: MissionCache,
+        mut cache: RuntimeCache,
     ) -> Self {
-        let mut fog_memory = if state
+        let geometry = cache
+            .geometry
+            .take()
+            .unwrap_or_else(|| TileGeometry::from_tiles(&state.tiles));
+        let terrain = state
             .tiles
             .iter()
-            .any(|t| t.fog.as_ref().is_some_and(|r| r.remember))
+            .map(|t| rules.terrains[&t.terrain])
+            .collect();
+        let owners = state.tiles.iter().map(|t| t.owner).collect();
+        Self::from_parts(
+            rules,
+            StateFrame::from(state),
+            board,
+            cache,
+            terrain,
+            owners,
+            geometry,
+        )
+    }
+    fn from_parts(
+        rules: &'catalog Rules,
+        state: StateFrame,
+        board: Rc<Board>,
+        cache: RuntimeCache,
+        terrain: Vec<usize>,
+        owners: Vec<Option<Side>>,
+        geometry: TileGeometry,
+    ) -> Self {
+        let mut fog_memory = if geometry
+            .fog
+            .iter()
+            .any(|rule| rule.as_ref().is_some_and(|r| r.remember))
         {
-            vec![0; state.tiles.len().div_ceil(64)]
+            vec![0; terrain.len().div_ceil(64)]
         } else {
             Vec::new()
         };
@@ -248,34 +337,13 @@ impl<'catalog> Game<'catalog> {
                 rebuilding: unit.rebuilding,
             })
             .collect();
-        let n = state.tiles.len();
-        let mut terrain = Vec::with_capacity(n);
-        let mut owners = Vec::with_capacity(n);
-        let mut connections = Vec::with_capacity(n);
-        let mut walls = Vec::with_capacity(n);
-        let mut dead_ends = Vec::with_capacity(n);
-        let mut floors = Vec::with_capacity(n);
-        let mut fog = Vec::with_capacity(n);
-        for tile in state.tiles {
-            terrain.push(rules.terrains[&tile.terrain]);
-            owners.push(tile.owner);
-            connections.push(tile.connections);
-            walls.push(tile.walls);
-            dead_ends.push(tile.dead_ends);
-            floors.push(tile.floor);
-            fog.push(tile.fog);
-        }
-        let connections = Rc::new(connections);
-        let walls = Rc::new(walls);
-        let dead_ends = Rc::new(dead_ends);
-        let floors = Rc::new(floors);
         let combat_present = state.last_combat.is_some();
         let last_combat = state.last_combat.flatten();
         let mut game = Self {
             factions: Rc::new(state.factions),
             ground_items: state.ground_items,
             active_faction: None,
-            fog: Rc::new(fog),
+            fog: geometry.fog,
             condition_memory: Rc::new(state.condition_memory),
             fog_memory,
             traversal: None,
@@ -283,10 +351,10 @@ impl<'catalog> Game<'catalog> {
             board,
             terrain,
             owners,
-            connections,
-            walls,
-            dead_ends,
-            floors,
+            connections: geometry.connections,
+            walls: geometry.walls,
+            dead_ends: geometry.dead_ends,
+            floors: geometry.floors,
             units,
             map_id: state.map_id,
             map_revision: state.map_revision,
@@ -365,6 +433,99 @@ impl<'catalog> Game<'catalog> {
             campaign: self.campaign.clone(),
             last_combat: self.combat_present.then(|| self.last_combat.clone()),
         }
+    }
+    /// Consume a transient runtime after its inspection and effects are resolved.
+    #[cfg(feature = "wasm")]
+    pub(crate) fn into_state(mut self, tiles: Vec<Tile>) -> State {
+        debug_assert_eq!(tiles.len(), self.board.ids.len());
+        let units = std::mem::take(&mut self.units)
+            .into_iter()
+            .map(|unit| PublicUnit {
+                faction: unit.faction,
+                items: unit.items,
+                ai_group: unit.ai_group,
+                id: format!("u{}", unit.id),
+                r#type: self.rules.units[unit.kind].id.clone(),
+                side: unit.side,
+                tile: self.board.ids[unit.tile].clone(),
+                hp: unit.hp,
+                moved: unit.moved,
+                attacked: unit.attacked,
+                experience: unit.experience,
+                name: unit.name,
+                role: unit.role,
+                retreating: unit.retreating,
+                rebuilding: unit.rebuilding,
+            })
+            .collect();
+        State {
+            factions: Rc::unwrap_or_clone(self.factions),
+            ground_items: self.ground_items,
+            condition_memory: Rc::unwrap_or_clone(self.condition_memory),
+            armies: self.armies,
+            map_id: self.map_id,
+            map_revision: self.map_revision,
+            cols: self.cols,
+            rows: self.rows,
+            round: self.round,
+            turn: self.turn,
+            gold: Gold {
+                player: self.gold[0],
+                enemy: self.gold[1],
+            },
+            winner: self.winner,
+            next_id: self.next_id,
+            combat_rng: Some(self.combat_rng),
+            log: self.log,
+            tiles,
+            units,
+            campaign: self.campaign,
+            last_combat: self.combat_present.then_some(self.last_combat),
+        }
+    }
+    /// Patch the authoritative terrain only where current runtime values differ.
+    #[cfg(feature = "wasm")]
+    pub(crate) fn patch_tiles(&self, tiles: &mut [Tile]) -> Vec<usize> {
+        debug_assert_eq!(tiles.len(), self.board.ids.len());
+        let mut changed = Vec::new();
+        for (i, tile) in tiles.iter_mut().enumerate() {
+            let Tile {
+                id: _,
+                col,
+                row,
+                terrain,
+                owner,
+                connections,
+                dead_ends,
+                walls,
+                floor,
+                fog,
+            } = tile;
+            let position = self.board.positions[i];
+            let kind = &self.rules.terrain_names[self.terrain[i]];
+            if *col != position.0
+                || *row != position.1
+                || terrain != kind
+                || *owner != self.owners[i]
+                || *connections != self.connections[i]
+                || *dead_ends != self.dead_ends[i]
+                || *walls != self.walls[i]
+                || *floor != self.floors[i]
+                || *fog != self.fog[i]
+            {
+                *col = position.0;
+                *row = position.1;
+                terrain.clone_from(kind);
+                *owner = self.owners[i];
+                connections.clone_from(&self.connections[i]);
+                dead_ends.clone_from(&self.dead_ends[i]);
+                walls.clone_from(&self.walls[i]);
+                floor.clone_from(&self.floors[i]);
+                fog.clone_from(&self.fog[i]);
+                changed.push(i);
+            }
+        }
+        changed
     }
     pub(crate) fn tiles(&self) -> Vec<Tile> {
         self.board
@@ -502,8 +663,15 @@ impl<'catalog> Game<'catalog> {
     }
 
     #[cfg(feature = "wasm")]
-    pub(crate) fn mission_cache(&self) -> MissionCache {
-        MissionCache {
+    pub(crate) fn runtime_cache(&self) -> RuntimeCache {
+        RuntimeCache {
+            geometry: Some(TileGeometry {
+                connections: self.connections.clone(),
+                walls: self.walls.clone(),
+                dead_ends: self.dead_ends.clone(),
+                floors: self.floors.clone(),
+                fog: self.fog.clone(),
+            }),
             key: self.mission_key.clone(),
             mission: self.mission.clone(),
         }

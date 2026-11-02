@@ -108,12 +108,15 @@ export function createNativeEngineFactory(
     const id = handle.id;
     let released = false;
     let revision = handle.view.revision;
+    let currentInspection: Immutable<BattleInspection> | undefined;
     let current: Immutable<EngineView> = immutable(detach(handle.view));
     let tileIndices = new Map(current.state.tiles.map((tile, index) => [tile.id, index]));
     const active = <T>(operation: () => EngineResult<T>): EngineResult<T> =>
       released || disposed ? failure({ code: "disposed" }) : call(operation);
     const result: GameEngine = Object.freeze({
       view: () => {
+        if (responseOwnership === "transferred" && !released && !disposed)
+          return immutable({ ok: true as const, value: current });
         const result = owned(active(() => bridge.view(id, revision)));
         if (result.ok) {
           current = result.value;
@@ -121,7 +124,10 @@ export function createNativeEngineFactory(
         }
         return result;
       },
-      inspect: () => owned(active(() => bridge.inspect(id, revision))),
+      inspect: () =>
+        currentInspection && !released && !disposed
+          ? immutable({ ok: true as const, value: currentInspection })
+          : owned(active(() => bridge.inspect(id, revision))),
       geometry: () => owned(active(() => bridge.geometry(id, revision))),
       dispatch: (
         command: Immutable<Command>,
@@ -129,7 +135,12 @@ export function createNativeEngineFactory(
       ): NativeResponse<DispatchResult> => {
         const dispatched = owned(
           active(() =>
-            bridge.dispatchUpdate(id, expectedRevision, structuredClone(command) as Command),
+            bridge.dispatchUpdate(
+              id,
+              expectedRevision,
+              structuredClone(command) as Command,
+              responseOwnership === "transferred" ? true : undefined,
+            ),
           ),
         );
         if (!dispatched.ok) return dispatched;
@@ -167,6 +178,7 @@ export function createNativeEngineFactory(
           presentation: update.presentation,
         });
         revision = current.revision;
+        currentInspection = update.inspection;
         return { ok: true, value: immutable({ view: current, combat: update.combat }) };
       },
       chooseAiCommand: (options: AiOptions) =>
