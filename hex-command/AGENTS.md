@@ -1,5 +1,11 @@
 # Hex Command development rules
 
+- **Cornerstone rule: never resolve merge or rebase conflicts autonomously.**
+  Resolve conflicts only when the user explicitly asks for conflict resolution.
+  Do not initiate a merge, rebase, cherry-pick or branch synchronization to address
+  known conflicts without that authorization. Requests to implement, integrate,
+  push, publish or prepare a PR do not imply permission to resolve conflicts.
+  If conflicts block requested work, report them and stop the affected operation.
 - Use [docs/development.md](docs/development.md) for setup and technical references.
   The README is user-owned; modify it only when explicitly asked.
 - Keep simulation experiments separate from the playable game. Requests to
