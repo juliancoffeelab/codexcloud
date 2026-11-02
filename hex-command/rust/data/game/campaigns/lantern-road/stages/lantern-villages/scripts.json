@@ -166,17 +166,17 @@
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Stay down. How many guards?"
+          "text": "Keep your heads down. We\u2019re getting you out."
         },
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "One at the fort. The others went east. They said another column would collect us."
+          "text": "They said another column was coming for us. Please\u2014don\u2019t let them take us."
         },
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "We\u2019re getting you out."
+          "text": "Stay together. We\u2019ll get you somewhere safe."
         }
       ],
       "requiresEvent": "village-contact"
