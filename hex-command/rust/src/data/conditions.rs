@@ -45,6 +45,13 @@ pub enum Condition {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         name: Option<String>,
     },
+    /// A matching unit stands on a tile currently visible through authored fog.
+    VisibleUnits {
+        side: ConditionSide,
+        #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        unit_types: Vec<String>,
+    },
     HasUnits {
         side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
@@ -100,7 +107,8 @@ impl Condition {
                     .map(|condition| condition.contextualized(target))
                     .collect();
             }
-            Self::HasUnits { .. }
+            Self::VisibleUnits { .. }
+            | Self::HasUnits { .. }
             | Self::NoUnits { .. }
             | Self::Choice { .. }
             | Self::Event { .. }
@@ -111,7 +119,7 @@ impl Condition {
 
     pub(crate) fn uses_proximity(&self) -> bool {
         match self {
-            Self::Proximity { .. } => true,
+            Self::Proximity { .. } | Self::VisibleUnits { .. } => true,
             Self::All { conditions } | Self::Any { conditions } => {
                 conditions.iter().any(Self::uses_proximity)
             }
@@ -131,7 +139,7 @@ impl Condition {
             {
                 Err("condition references unknown owner faction".into())
             }
-            Self::Proximity { unit_types, .. }
+            Self::Proximity { unit_types, .. } | Self::VisibleUnits { unit_types, .. }
                 if unit_types.iter().any(|kind| !types.contains_key(kind)) =>
             {
                 Err("condition references unknown unit types".into())
@@ -166,6 +174,9 @@ impl Condition {
         contextual: bool,
     ) -> Result<(), String> {
         match self {
+            Self::VisibleUnits { .. } if contextual => {
+                return Err("visibility queries cannot define fog or lighting conditions".into());
+            }
             Self::Owner { tile, .. } | Self::Proximity { tile, .. } => match tile {
                 Some(id) if !tiles.iter().any(|tile| tile.id == *id) => {
                     return Err(format!("condition references unknown tile: {id}"));

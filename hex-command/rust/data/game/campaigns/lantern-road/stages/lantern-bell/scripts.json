@@ -84,17 +84,32 @@
       "trigger": {
         "kind": "condition",
         "condition": {
-          "kind": "proximity",
-          "tile": "11,12",
-          "side": "player",
-          "radius": 4
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "hasUnits",
+              "side": "enemy",
+              "name": "The Bellwarden"
+            },
+            {
+              "kind": "visibleUnits",
+              "side": "enemy",
+              "unitTypes": [
+                "skeleton",
+                "bonearcher",
+                "skeleton-impact-caster",
+                "skeleton-axeman",
+                "skeleton-rider"
+              ]
+            }
+          ]
         }
       },
       "dialogue": [
         {
           "speaker": "The Bellwarden",
           "portrait": "lich",
-          "text": "They have brought me more names."
+          "text": "More names for the bell."
         },
         {
           "speaker": "Captain Nera",
@@ -102,7 +117,7 @@
           "text": "You\u2019ll have no more of them."
         }
       ],
-      "label": "The company locates the bell keep."
+      "label": "A voice carries across the valley."
     },
     {
       "id": "toll-warning",
@@ -349,6 +364,49 @@
       ],
       "requiresEvent": "southern-sighted",
       "label": "The southern captives are freed."
+    },
+    {
+      "id": "bellwarden-demands-captives",
+      "trigger": {
+        "kind": "condition",
+        "condition": {
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "hasUnits",
+              "side": "enemy",
+              "name": "The Bellwarden"
+            },
+            {
+              "kind": "any",
+              "conditions": [
+                {
+                  "kind": "hasUnits",
+                  "side": "player",
+                  "name": "Northern captives"
+                },
+                {
+                  "kind": "hasUnits",
+                  "side": "player",
+                  "name": "Eastern captives"
+                },
+                {
+                  "kind": "hasUnits",
+                  "side": "player",
+                  "name": "Southern captives"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "dialogue": [
+        {
+          "speaker": "The Bellwarden",
+          "portrait": "lich",
+          "text": "Bring them back. Alive or dead\u2014their blood will serve the ritual just the same."
+        }
+      ]
     },
     {
       "id": "tollkeeper-pursuit",

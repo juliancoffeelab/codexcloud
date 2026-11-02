@@ -28,6 +28,14 @@ pub(crate) fn matches(
     input: &PresentationInput,
     target: Option<&str>,
 ) -> bool {
+    evaluate(condition, input, target, true)
+}
+fn evaluate(
+    condition: &Condition,
+    input: &PresentationInput,
+    target: Option<&str>,
+    allow_visibility: bool,
+) -> bool {
     match condition {
         Condition::Owner { tile, side } => input.tiles.iter().any(|t| {
             Some(t.id.as_str()) == tile.as_deref().or(target)
@@ -58,6 +66,24 @@ pub(crate) fn matches(
                     && super::battle::hex_distance((tile.col, tile.row), (unit.col, unit.row))
                         <= *radius
             })
+        }
+        Condition::VisibleUnits { side, unit_types } => {
+            allow_visibility
+                && input.units.iter().any(|unit| {
+                    faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
+                        && (unit_types.is_empty() || unit_types.contains(&unit.r#type))
+                        && input
+                            .tiles
+                            .iter()
+                            .find(|tile| tile.col == unit.col && tile.row == unit.row)
+                            .is_some_and(|tile| {
+                                tile.fog.as_ref().is_none_or(|rule| {
+                                    (rule.remember
+                                        && input.memory.contains(&format!("fog:{}", tile.id)))
+                                        || evaluate(&rule.condition, input, Some(&tile.id), false)
+                                })
+                            })
+                })
         }
         Condition::HasUnits {
             side,
@@ -95,8 +121,12 @@ pub(crate) fn matches(
             .iter()
             .any(|mark| mark == &format!("event:{event}")),
         Condition::Round { round } => input.round >= *round,
-        Condition::All { conditions } => conditions.iter().all(|c| matches(c, input, target)),
-        Condition::Any { conditions } => conditions.iter().any(|c| matches(c, input, target)),
+        Condition::All { conditions } => conditions
+            .iter()
+            .all(|c| evaluate(c, input, target, allow_visibility)),
+        Condition::Any { conditions } => conditions
+            .iter()
+            .any(|c| evaluate(c, input, target, allow_visibility)),
     }
 }
 /// Returns resolved visuals plus durable facts; callers decide whether to persist facts.

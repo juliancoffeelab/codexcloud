@@ -205,6 +205,13 @@ Tollkeeper is not an additional required boss. The western lancer, mage and heal
 reinforce the northern player foothold on round 10. Their arrival conversation
 connects them to the runner sent back to the ferry.
 
+The first visible skeleton soldier introduces the Bellwarden's voice across the
+valley: “More names for the bell.” This encounter follows actual fog visibility,
+including revealed ground and moving patrols, rather than distance to his keep.
+Freeing the first captive group prompts him to demand their return, alive or dead;
+that reaction occurs once regardless of which group is rescued first, and only
+while he is alive.
+
 Victory stops this local operation and opens the road. It does not settle the
 entire lich threat or guarantee that every captive was rescued.
 
