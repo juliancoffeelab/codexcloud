@@ -109,7 +109,7 @@ reserved for the ferryman's home in the crossing. Burned villages use charred
 home remains at the intact buildings' scale.
 
 The first captive encounter is a shouted plea interrupted by the prison guard.
-He orders the prisoners quiet and threatens to make more skeletons of them; the exchange
+He orders the prisoners quiet and dismisses their tongues as useless to the Bell; the exchange
 makes no claim about how many other enemies are on the map. The guard's existing
 group identifies the speaker even if he has moved from the fort. If he has already
 been killed, Nera answers the plea instead.
