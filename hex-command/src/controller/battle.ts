@@ -61,7 +61,7 @@ export class BattleController {
   private readonly history = createMoveUndo();
   private sessionVersion = 0;
   private disposed = false;
-  private previousFeedbackState: ReturnType<LiveGame["snapshot"]> | null = null;
+  private previousFeedbackState: ReturnType<LiveGame["publishedSnapshot"]> | null = null;
   private state: SessionState;
   private store: Writable<BattleView>;
   private gameView: GameView;
@@ -90,7 +90,7 @@ export class BattleController {
     this.gameView = game.publishedView();
     this.store = writable(this.currentView());
     this.view = { subscribe: this.store.subscribe };
-    this.previousFeedbackState = game.snapshot();
+    this.previousFeedbackState = game.publishedSnapshot();
     this.commands = createBattleCommands(this);
   }
 
@@ -219,7 +219,7 @@ export class BattleController {
   }
 
   private playBattleFeedback() {
-    const current = this.#game.snapshot();
+    const current = this.#game.publishedSnapshot();
     const previous = this.previousFeedbackState;
     this.previousFeedbackState = current;
     if (!previous) {

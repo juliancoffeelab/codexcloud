@@ -56,6 +56,7 @@ function sameData(a: unknown, b: unknown): boolean {
 /** Browser orchestration only. State mutations and rule queries are owned by Rust. */
 export class LiveGame {
   private state!: GameState;
+  private snapshotView?: Immutable<GameSnapshot>;
   private resolvedPresentation!: Immutable<BattlefieldPresentation>;
   get presentation() {
     return this.resolvedPresentation;
@@ -99,6 +100,7 @@ export class LiveGame {
     return new LiveGame(factory, nativeValue(factory.restore(saved)), structuredClone(setup));
   }
   private refresh(view: Immutable<EngineView>): void {
+    this.snapshotView = undefined;
     if (
       !this.state ||
       this.state.mapId !== view.state.mapId ||
@@ -114,7 +116,18 @@ export class LiveGame {
       );
     // Authored string IDs cross into the existing presentation vocabulary here.
     this.state = view.state as unknown as GameState;
-    this.resolvedPresentation = view.presentation;
+    const previousPresentation = this.resolvedPresentation;
+    this.resolvedPresentation = immutable({
+      ...view.presentation,
+      fog:
+        previousPresentation && sameData(previousPresentation.fog, view.presentation.fog)
+          ? previousPresentation.fog
+          : view.presentation.fog,
+      lighting:
+        previousPresentation && sameData(previousPresentation.lighting, view.presentation.lighting)
+          ? previousPresentation.lighting
+          : view.presentation.lighting,
+    });
     this.inspection = nativeValue(this.engine.inspect()) as BattleInspection;
     if (view.revision !== this.inspection.revision)
       throw new Error("Incoherent native publication");
@@ -330,24 +343,29 @@ export class LiveGame {
     this.refresh(nativeValue(this.engine.view()));
   }
   snapshot(): GameSnapshot {
-    const { mapId, mapRevision, round, turn, gold, winner, units, campaign, tiles } = this.state;
+    return structuredClone(this.publishedSnapshot()) as GameSnapshot;
+  }
+  /** A detached read-only revision for presentation and feedback. */
+  publishedSnapshot(): Immutable<GameSnapshot> {
+    if (this.snapshotView) return this.snapshotView;
+    const { mapId, mapRevision, round, turn, gold, winner, campaign, tiles } = this.state;
     const sites = tiles
       .filter((tile) => ["grove", "fort", "ruins"].includes(TERRAIN[tile.terrain].role))
       .map(({ id, owner }) => ({ id, owner }));
-    return structuredClone({
+    return (this.snapshotView = immutable({
       mapId,
       mapRevision,
       round,
       turn,
       gold,
       winner,
-      units: this.units,
+      units: this.visibleUnits,
       ...(campaign ? { campaign } : {}),
       villages: tiles
         .filter((tile) => TERRAIN[tile.terrain].role === "village")
         .map(({ id, owner }) => ({ id, owner })),
       ...(campaign || sites.length ? { sites } : {}),
-    });
+    }));
   }
   /** Current native checkpoint of resolved game state. */
   checkpoint(): ReturnType<GameEngine["save"]> {
@@ -366,6 +384,7 @@ export class LiveGame {
     const detached = Object.create(LiveGame.prototype) as LiveGame;
     detached.state = state;
     detached.inspection = inspection;
+    detached.snapshotView = this.snapshotView;
     detached.geometry = this.geometry;
     detached.resolvedPresentation = this.resolvedPresentation;
     detached.tilesById = this.tilesById;
@@ -404,7 +423,7 @@ export class LiveGame {
       recruitmentOptions: detached.recruitmentOptions.bind(detached),
       promotionOptions: (id: string) => immutable(detached.promotionOptions(id)),
       income: detached.income.bind(detached),
-      snapshot: () => immutable(detached.snapshot()),
+      snapshot: () => detached.publishedSnapshot(),
     }) as GameView;
   }
 }

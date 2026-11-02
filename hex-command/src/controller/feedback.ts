@@ -1,14 +1,15 @@
 import type { GameSnapshot, Unit } from "../game/types";
+import type { Immutable } from "../game/immutable";
 import type { MotionKind } from "../presentation/motion";
 
 /** Describe visible changes without playing sound or touching the document. */
-export function describeChanges(before: GameSnapshot, after: GameSnapshot) {
+export function describeChanges(before: Immutable<GameSnapshot>, after: Immutable<GameSnapshot>) {
   const previousUnits = new Map(before.units.map((unit) => [unit.id, unit]));
   const tileEffects = new Map<string, MotionKind>();
   let recruited = false;
   let advanced = false;
   let attacked = false;
-  let movedUnit: Unit | null = null;
+  let movedUnit: Immutable<Unit> | null = null;
 
   for (const unit of after.units) {
     const previous = previousUnits.get(unit.id);
