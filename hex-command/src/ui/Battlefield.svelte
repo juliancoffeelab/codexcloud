@@ -8,8 +8,12 @@
   import { BattlefieldViewCache } from "./battlefield-view";
   import { battlefieldSpriteSize, mapDimensions } from "./geometry";
   import { TerrainViewCache, terrainAssetKey } from "../presentation/terrain-map";
-  import { lightingKey, lightingMatrix } from "../presentation/battlefield-lighting";
-  import { MapRenderer, type MapFrameRequest } from "../presentation/map-renderer";
+  import { lightingMatrix } from "../presentation/battlefield-lighting";
+  import {
+    MapRenderer,
+    acquireMapRenderer,
+    type MapFrameRequest,
+  } from "../presentation/map-renderer";
   import terrainSprites from "virtual:terrain-prebuilt";
 
   interface Props {
@@ -43,9 +47,7 @@
   const lighting = $derived(game.presentation.lighting);
   const fogTiles = $derived(game.presentation.fog);
   const fogSet = $derived(new Set(fogTiles));
-  const terrainKey = $derived(
-    JSON.stringify([...JSON.parse(terrainScene.key).slice(0, 4), lightingKey(lighting)]),
-  );
+  const terrainKey = $derived(terrainScene.key);
   // Artwork metadata is part of scene identity, including anchors and drawing depth.
   const renderTerrainKey = $derived(
     JSON.stringify([terrainKey, [...terrainScene.tiles.values()].map((tile) => tile.terrainFrame)]),
@@ -126,17 +128,29 @@
     };
   });
 
-  function mountMap(node: HTMLCanvasElement, request: { frame: MapFrameRequest; attempt: number }) {
+  function mountMap(node: HTMLDivElement, request: { frame: MapFrameRequest; attempt: number }) {
     let renderer: MapRenderer | undefined;
+    let retired: MapRenderer[] = [];
     let attempt = -1;
     const update = (next: typeof request) => {
       try {
         if (attempt !== next.attempt) {
-          renderer?.destroy();
-          renderer = new MapRenderer(node, (message) => {
-            renderError = message;
-          });
+          if (renderer?.hasFrame) retired.push(renderer);
+          else renderer?.destroy();
+          renderer = undefined;
           attempt = next.attempt;
+          const currentAttempt = attempt;
+          renderer = acquireMapRenderer(
+            node,
+            (message) => {
+              if (attempt === currentAttempt) renderError = message;
+            },
+            () => {
+              if (attempt !== currentAttempt) return;
+              for (const previous of retired) previous.destroy();
+              retired = [];
+            },
+          );
         }
         renderer!.update(next.frame);
       } catch (error) {
@@ -148,6 +162,7 @@
       update,
       destroy() {
         renderer?.destroy();
+        for (const previous of retired) previous.destroy();
       },
     };
   }
@@ -228,10 +243,10 @@
           aria-hidden="true"
         >
           <div class="terrain-bitmap">
-            <canvas
+            <div
               class="map-terrain"
               use:mountMap={{ frame: mapFrame, attempt: renderAttempt }}
-            ></canvas>
+            ></div>
           </div>
         </foreignObject>
         {#each tiles as tile (tile.id)}
@@ -366,7 +381,12 @@
     width: 100%;
     height: 100%;
   }
-  .terrain-bitmap canvas {
+  .map-terrain {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .terrain-bitmap :global(canvas) {
     display: block;
     width: 100%;
     height: 100%;
