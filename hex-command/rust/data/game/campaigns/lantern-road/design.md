@@ -73,8 +73,9 @@ house. Visiting the house remains required for the conversation or letter and
 mission progress. The mission continues on either path, and the time limit must
 be communicated before the player commits to long detours.
 
-A living ferryman describes the abduction. If the mage approaches him, the
-conversation identifies a lich behind the skeletons. The letter supplies a route
+A living ferryman describes the abduction. Any player unit can trigger the
+testimony; if Oren is alive anywhere in the company, he identifies a lich behind
+the skeletons without needing to approach personally. The letter supplies a route
 and evidence of the attack without giving the dead man a living conversation.
 The rescue outcome persists into the next chapter. A living ferryman contributes
 six coins to the next patrol; the dead route receives no such contribution.

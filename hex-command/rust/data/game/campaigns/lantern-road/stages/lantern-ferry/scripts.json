@@ -327,14 +327,23 @@
       "trigger": {
         "kind": "condition",
         "condition": {
-          "kind": "proximity",
-          "tile": "18,10",
-          "radius": 1,
-          "side": "player",
-          "name": "Oren"
+          "kind": "all",
+          "conditions": [
+            {
+              "kind": "proximity",
+              "tile": "18,10",
+              "radius": 1,
+              "side": "player"
+            },
+            {
+              "kind": "hasUnits",
+              "side": "player",
+              "name": "Oren"
+            }
+          ]
         }
       },
-      "label": "The mage questions the ferryman",
+      "label": "The company questions the ferryman",
       "dialogue": [
         {
           "speaker": "Oren",
