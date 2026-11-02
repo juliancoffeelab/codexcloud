@@ -124,12 +124,12 @@ fn sibling(descriptor: &str, component: &str) -> Result<String, ContentError> {
     checked_path(&path)?;
     Ok(path)
 }
-pub(super) fn stage_path(campaign: &str, stage: &str) -> Result<String, ContentError> {
+pub fn stage_path(campaign: &str, stage: &str) -> Result<String, ContentError> {
     sibling(campaign, stage)
 }
 /// Load precisely the documents referenced by the manifest; unrelated files
 /// never affect native-versus-embedded catalog fingerprints.
-pub(super) fn collect_bundle(
+pub fn collect_bundle(
     mut source: impl FnMut(&str) -> Result<String, ContentError>,
 ) -> Result<JsonBundle, ContentError> {
     fn read(
@@ -193,10 +193,7 @@ pub(super) fn collect_bundle(
     }
     Ok(bundle)
 }
-pub(super) fn scenario(
-    bundle: &JsonBundle,
-    path: &str,
-) -> Result<(InitialState, String), ContentError> {
+pub fn scenario(bundle: &JsonBundle, path: &str) -> Result<(InitialState, String), ContentError> {
     let documents: ScenarioDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
@@ -214,7 +211,7 @@ pub(super) fn scenario(
     let roster: InitialRoster = parse(bundle, &roster_path)?;
     Ok((map.initial(roster), roster_path))
 }
-pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError> {
+pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError> {
     let documents: StageDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
@@ -270,7 +267,7 @@ pub(super) fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, Conten
 }
 
 /// Preserve authored display text and placements while the catalog still owns the documents.
-pub(super) fn map_metadata(
+pub fn map_metadata(
     bundle: &JsonBundle,
     descriptor: &str,
     state: &State,
@@ -310,7 +307,7 @@ pub(super) fn map_metadata(
             .collect::<Result<Vec<_>, ContentError>>()?,
     };
     let presentation =
-        crate::logic::conditions::resolve(&crate::logic::conditions::PresentationInput {
+        crate::data::presentation::resolve(&crate::data::presentation::PresentationInput {
             factions: state.factions.clone(),
             pending: vec![],
             tiles: state.tiles.clone(),

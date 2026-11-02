@@ -283,12 +283,12 @@ impl Game<'_> {
                     )
                 })
                 .collect(),
-            income: Gold(
+            income: Gold(std::sync::Arc::new(
                 self.gold
                     .keys()
                     .map(|id| (id.clone(), self.faction_income(id)))
                     .collect(),
-            ),
+            )),
         }
     }
 }

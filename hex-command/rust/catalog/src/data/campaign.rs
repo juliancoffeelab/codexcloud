@@ -7,6 +7,10 @@ use std::collections::BTreeMap;
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Dialogue {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -20,6 +24,10 @@ pub struct Dialogue {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Counter {
     pub held_turns: u32,
     pub last_counted_round: u32,
@@ -29,6 +37,10 @@ pub struct Counter {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct RefugeCounter {
     pub held_turns: u32,
     pub last_counted_round: u32,
@@ -37,6 +49,10 @@ pub struct RefugeCounter {
 /// A unit safely removed from the board, retaining identity and belongings.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct EvacuatedUnit {
     pub event: String,
     pub unit: PublicUnit,
@@ -46,6 +62,10 @@ pub struct EvacuatedUnit {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct CampaignState {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -83,25 +103,30 @@ pub struct CampaignState {
 }
 impl CampaignState {
     /// Check whether a once-only event or campaign marker has already been recorded.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn marked(&self, mark: &str) -> bool {
         self.marks.iter().any(|m| m == mark)
     }
-    pub(crate) fn marked_prefixed(&self, prefix: &str, value: &str) -> bool {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn marked_prefixed(&self, prefix: &str, value: &str) -> bool {
         self.marks
             .iter()
             .any(|mark| mark.strip_prefix(prefix) == Some(value))
     }
     /// Check whether the persistent story choices contain this identifier.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn chosen(&self, choice: &str) -> bool {
         self.choices
             .as_ref()
             .is_some_and(|list| list.iter().any(|c| c == choice))
     }
     /// Report whether refuge mediation has escalated into battle.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn escalated(&self) -> bool {
         self.refuge.as_ref().is_some_and(|c| c.escalated)
     }
     /// Append scripted dialogue while preserving the current reading position.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn say(&mut self, lines: impl IntoIterator<Item = Dialogue>) {
         self.dialogue.extend(lines);
     }

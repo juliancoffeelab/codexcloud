@@ -131,7 +131,9 @@ impl Game<'_> {
         }
         for faction in self.factions.iter().filter(|f| f.phase == self.turn) {
             match faction.controller {
-                Controller::Ai { policy } => controllers.push((faction.id.clone(), policy)),
+                Controller::Ai { policy } => {
+                    controllers.push((faction.id.clone(), policy.map(Into::into)))
+                }
                 Controller::Human => controllers.push((faction.id.clone(), None)),
                 Controller::Passive => {}
             }
@@ -146,7 +148,7 @@ impl Game<'_> {
         {
             return;
         }
-        let input = self.presentation_input();
+        let input = self.condition_context();
         let changes: Vec<_> = self
             .units
             .iter()

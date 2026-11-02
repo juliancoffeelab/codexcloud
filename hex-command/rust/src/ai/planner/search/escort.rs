@@ -3,6 +3,7 @@ use crate::ai::{
     orders::{PlanningReport, TacticalObjective, TacticalOrders},
     threats::Threats,
 };
+use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*, logic::geometry::TileSet};
 use rustc_hash::FxHashMap;
 
@@ -195,7 +196,7 @@ impl Workspace {
                 let mut positions: Vec<_> = std::iter::once(unit.tile)
                     .chain(game.reachable(unit).iter().map(|&(tile, _)| tile))
                     .collect();
-                positions.sort_by_key(|&tile| {
+                positions.order_by_key(|&tile| {
                     let slack = enemies
                         .iter()
                         .map(|enemy| {

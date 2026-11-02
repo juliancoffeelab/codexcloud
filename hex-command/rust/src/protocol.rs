@@ -141,6 +141,8 @@ pub struct DispatchResult {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(feature = "wasm", derive(hex_catalog_freeze_derive::BorrowFields))]
+#[cfg_attr(feature = "wasm", borrow_from(crate::data::State))]
 pub struct StateFrame {
     pub factions: Vec<Faction>,
     pub ground_items: Vec<GroundItem>,
@@ -249,6 +251,10 @@ pub struct DispatchUpdate {
     pub terrain: TerrainUpdate,
     pub presentation: crate::data::BattlefieldPresentation,
     pub combat: Option<CombatAnimation>,
+    /// Optional current-revision inspection requested by the live adapter.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub inspection: Option<BattleInspection>,
 }
 /// Immutable rule costs and board topology, loaded on entering a battlefield.
 #[derive(Clone, Debug, Serialize, Deserialize)]

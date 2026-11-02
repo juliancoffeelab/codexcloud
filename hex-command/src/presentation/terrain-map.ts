@@ -95,6 +95,7 @@ export type TerrainTileView = ReturnType<typeof terrainTileView>;
 type TerrainGame = Pick<GameView, "mapId" | "cols" | "rows" | "tiles">;
 
 function sameTile(a: TileView, b: TileView) {
+  if (a === b) return true;
   const edges = (x: readonly string[] | undefined, y: readonly string[] | undefined) =>
     x === y || (!!x && !!y && x.length === y.length && x.every((edge, index) => edge === y[index]));
   return (
@@ -123,7 +124,8 @@ export class TerrainViewCache {
       previous.cols === game.cols &&
       previous.rows === game.rows &&
       previous.tiles.length === game.tiles.length &&
-      previous.tiles.every((tile, index) => sameTile(tile, game.tiles[index]!));
+      (previous.tiles === game.tiles ||
+        previous.tiles.every((tile, index) => sameTile(tile, game.tiles[index]!)));
     if (!unchanged) {
       this.scene = {
         key: terrainMapKey(game),

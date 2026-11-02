@@ -7,6 +7,10 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Command {
     Move {
         unit: UnitId,
@@ -55,6 +59,10 @@ pub enum Command {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum CommandError {
     BattleOnlyPolicy,
     BattleFinished,
@@ -80,7 +88,8 @@ impl std::fmt::Display for CommandError {
 impl std::error::Error for CommandError {}
 
 impl Command {
-    pub(crate) fn is_attack(&self) -> bool {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn is_attack(&self) -> bool {
         matches!(self, Self::Attack { .. })
     }
 }

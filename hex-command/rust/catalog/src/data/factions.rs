@@ -1,12 +1,16 @@
 //! Faction allegiance is independent of the two input/turn phases and AI policy.
+use super::FactionPolicy;
 use super::{ConditionRule, ConditionSide, Side};
-use crate::ai::Policy;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Relation {
     Allied,
     Neutral,
@@ -15,6 +19,10 @@ pub enum Relation {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "lowercase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Controller {
     Human,
     Passive,
@@ -22,7 +30,7 @@ pub enum Controller {
         /// Omitted policies inherit the selected enemy/session policy.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         #[cfg_attr(feature = "wasm", tsify(optional))]
-        policy: Option<Policy>,
+        policy: Option<FactionPolicy>,
     },
 }
 /// Transfer the same unit when a shared authored condition is satisfied.
@@ -30,6 +38,10 @@ pub enum Controller {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct FactionTransfer {
     pub to: String,
     pub when: ConditionRule,
@@ -37,6 +49,10 @@ pub struct FactionTransfer {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct FactionRecruit {
     pub unit: String,
     pub cost: i32,
@@ -45,6 +61,10 @@ pub struct FactionRecruit {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Faction {
     pub id: String,
     /// Phase in which this controller acts; this is not its diplomatic relation.
@@ -67,6 +87,7 @@ pub struct Faction {
     pub transfer: Option<FactionTransfer>,
 }
 impl Side {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn faction_id(self) -> &'static str {
         match self {
             Self::Player => "player",
@@ -75,7 +96,7 @@ impl Side {
     }
 }
 
-pub(crate) fn validate_economy(
+pub fn validate_economy(
     factions: &[Faction],
     gold: &super::Gold,
     tiles: &[super::Tile],
@@ -107,10 +128,7 @@ pub(crate) fn validate_economy(
     Ok(())
 }
 
-pub(crate) fn validate_factions(
-    factions: &[Faction],
-    units: &[super::PublicUnit],
-) -> Result<(), String> {
+pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> Result<(), String> {
     let known = |id: &str| matches!(id, "player" | "enemy") || factions.iter().any(|f| f.id == id);
     let mut ids = std::collections::HashSet::new();
     for faction in factions {
@@ -173,6 +191,10 @@ pub(crate) fn validate_factions(
 /// Resolved presentation/control facts; derived in Rust rather than save data.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct UnitFaction {
     pub id: String,
     pub palette: String,
@@ -180,7 +202,9 @@ pub struct UnitFaction {
     pub controllable: bool,
 }
 
-pub(crate) fn validate_faction_reference(
+#[cfg_attr(not(target_arch = "wasm32"), inline)]
+
+pub fn validate_faction_reference(
     factions: &[Faction],
     id: Option<&str>,
     phase: Side,
@@ -203,7 +227,9 @@ pub(crate) fn validate_faction_reference(
     Ok(())
 }
 
-pub(crate) fn faction_relation(factions: &[Faction], first: &str, second: &str) -> Relation {
+#[cfg_attr(not(target_arch = "wasm32"), inline)]
+
+pub fn faction_relation(factions: &[Faction], first: &str, second: &str) -> Relation {
     if first == second {
         return Relation::Allied;
     }
@@ -228,7 +254,8 @@ pub(crate) fn faction_relation(factions: &[Faction], first: &str, second: &str) 
 }
 /// Match an explicit unit selector, not the phase in which it happens to act.
 /// Keep this exhaustive: new allegiance selectors must define their semantics.
-pub(crate) fn faction_matches_side(
+#[cfg_attr(not(target_arch = "wasm32"), inline)]
+pub fn faction_matches_side(
     factions: &[Faction],
     id: Option<&str>,
     phase: Side,
@@ -246,7 +273,9 @@ pub(crate) fn faction_matches_side(
     }
 }
 
-pub(crate) fn validate_faction_conditions(
+#[cfg_attr(not(target_arch = "wasm32"), inline)]
+
+pub fn validate_faction_conditions(
     factions: &[Faction],
     tiles: &[super::Tile],
     events: &[super::Event],

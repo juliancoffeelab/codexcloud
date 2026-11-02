@@ -26,15 +26,16 @@
     "test": "node --import tsx scripts/test-budget.ts",
     "test:watch": "vitest --watch",
     "ai:rust:build": "node --import tsx scripts/build-simulation.ts",
-    "check:rust": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts cargo test --locked --manifest-path rust/Cargo.toml --features wasm",
+    "check:rust": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts cargo test --locked --manifest-path rust/Cargo.toml --workspace --features wasm",
     "preai:benchmark": "npm run ai:rust:build",
     "wasm:build": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --dev --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm",
     "prewasm:build": "npm run content:check",
     "prewasm:build:release": "npm run content:check",
-    "wasm:build:release": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --release --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm",
+    "wasm:build:release": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts wasm-pack build rust --target web --profile wasm-release --out-dir pkg --out-name hex_command --no-pack --no-opt --locked --features wasm && node --import tsx scripts/optimize-wasm.ts rust/pkg/hex_command_bg.wasm",
     "check:wasm": "npm run wasm:build && tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler rust/pkg/hex_command.d.ts",
     "toolchain:setup": "node --import tsx .agents/skills/rust-toolchain/scripts/setup-toolchain-shell.ts",
-    "release:prepare": "python3 scripts/prepare-site.py"
+    "release:prepare": "python3 scripts/prepare-site.py",
+    "map:benchmark": "node --import tsx scripts/benchmark-map-renderer.ts"
   },
   "dependencies": {
     "svelte": "^5.0.0"
@@ -53,6 +54,7 @@
     "typescript": "^5.9.0",
     "vite": "^7.0.0",
     "vitest": "^5.0.3",
-    "wasm-pack": "0.15.0"
+    "wasm-pack": "0.15.0",
+    "binaryen": "120.0.0"
   }
 }

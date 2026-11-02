@@ -1,5 +1,6 @@
 //! A bounded duty queue replaces the global unit search after every command.
 use crate::ai::{PlanningWorkspace, TacticalRole, planner::QueueMode, roles::role, tactics::Plan};
+use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
 
 /// Turn-local queue cursor and deferred units.
@@ -157,7 +158,7 @@ impl BattleView<'_, '_> {
                 (index, unit.id, score)
             })
             .collect();
-        ranked.sort_unstable_by(|a, b| b.2.total_cmp(&a.2).then(a.0.cmp(&b.0)));
+        ranked.order_unstable_by(|a, b| b.2.total_cmp(&a.2).then(a.0.cmp(&b.0)));
         ranked.into_iter().map(|(_, id, _)| UnitId(id)).collect()
     }
 }

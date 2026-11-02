@@ -3,6 +3,7 @@ use crate::ai::Recorder;
 use crate::ai::intent_command;
 use crate::ai::objectives::actor_matches;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::sort::SharedSort;
 use crate::{
     ai::context::{BattleDraft, BattleView},
     ai::objectives::{TileOrder, individual},
@@ -353,8 +354,8 @@ impl BattleView<'_, '_> {
                 },
             }
         };
-        ids.sort_by_key(|&id| order(self.unit(id).unwrap()));
-        ids.sort_by_key(|&id| {
+        ids.order_by_key(|&id| order(self.unit(id).unwrap()));
+        ids.order_by_key(|&id| {
             let u = self.unit(id).unwrap();
             !self.reserved(u, &objectives).contains(&u.tile) && !clearing.contains_key(&id)
         });
@@ -485,7 +486,7 @@ impl BattleDraft<'_, '_> {
         }
         drop(routes);
         let order = TileOrder::new(self, &u, true);
-        destinations.sort_by(|&a, &b| {
+        destinations.order_by(|&a, &b| {
             scores[b]
                 .total_cmp(&scores[a])
                 .then_with(|| order.compare(self, a, b))
@@ -653,7 +654,7 @@ impl BattleDraft<'_, '_> {
         }
         drop(routes);
         let order = TileOrder::new(self, &u, true);
-        dest.sort_by(|&a, &b| {
+        dest.order_by(|&a, &b| {
             scores[b]
                 .total_cmp(&scores[a])
                 .then_with(|| order.compare(self, a, b))
@@ -713,7 +714,7 @@ impl BattleDraft<'_, '_> {
         if eligible.iter().any(|g| self.assigned_duty(&u, g)) {
             eligible.retain(|g| self.assigned_duty(&u, g));
         }
-        eligible.sort_by(|a, b| {
+        eligible.order_by(|a, b| {
             let score = |g: &Objective| {
                 g.tiles
                     .iter()
@@ -829,7 +830,7 @@ pub(super) fn choose(
         workspace
             .classic_ids
             .make_contiguous()
-            .sort_by_key(|id| workspace.classic_escort.bound(*id) == 0.0);
+            .order_by_key(|id| workspace.classic_escort.bound(*id) == 0.0);
         workspace.tactical_remaining = Some(workspace.classic_ids.len());
         for unit in game.units().iter().filter(|u| {
             game.belongs_to_phase(u, game.turn()) && game.can_act(u.id) && u.is_leader()
@@ -964,7 +965,7 @@ impl BattleView<'_, '_> {
                             route[tile].saturating_add(entering) <= route[current]
                         })
                         .collect();
-                next.sort_by_key(|&tile| route[tile].saturating_add(self.cost(actor.kind, tile)));
+                next.order_by_key(|&tile| route[tile].saturating_add(self.cost(actor.kind, tile)));
                 for tile in next {
                     parents[tile] = current;
                     pending.push_back(tile);

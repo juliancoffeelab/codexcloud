@@ -13,15 +13,16 @@ function reducedMotion() {
 
 function pulse(element: Element | null, kind: MotionKind | "turn") {
   if (!element || reducedMotion()) return;
+  const className = `motion-${kind}`;
   const previous = active.get(element);
+  const restarting = previous?.className === className;
   if (previous) {
     if (previous.timer !== null) clearTimeout(previous.timer);
     element.classList.remove(previous.className);
   }
-  const className = `motion-${kind}`;
-  // A repeated action on the same node should restart its brief feedback.
-  element.classList.remove(className);
-  element.getBoundingClientRect();
+  // Only an identical active animation needs a layout flush to restart.
+  // A new animation starts when its class is added.
+  if (restarting) element.getBoundingClientRect();
   element.classList.add(className);
   const record: PulseRecord = { className, timer: null };
   record.timer = setTimeout(() => {

@@ -34,7 +34,7 @@ impl RecordingCache {
             .collect()
     }
     fn ownership(&mut self, game: &Game<'_>) -> Result<Arc<OwnershipSnapshot>, SimulationError> {
-        if let Some(encoded) = self.ownership.get(&game.owners) {
+        if let Some(encoded) = self.ownership.get(game.owners.as_ref()) {
             return Ok(encoded.clone());
         }
         let tiles = self
@@ -43,9 +43,10 @@ impl RecordingCache {
             .clone();
         let encoded = Arc::new(OwnershipSnapshot {
             tiles,
-            owners: game.owners.clone(),
+            owners: game.owners.as_ref().clone(),
         });
-        self.ownership.insert(game.owners.clone(), encoded.clone());
+        self.ownership
+            .insert(game.owners.as_ref().clone(), encoded.clone());
         Ok(encoded)
     }
 }

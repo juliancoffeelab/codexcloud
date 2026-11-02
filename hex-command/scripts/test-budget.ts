@@ -17,7 +17,15 @@ const suites = [
   {
     name: "Rust",
     command: "cargo",
-    args: ["test", "--locked", "--manifest-path", "rust/Cargo.toml", "--features", "wasm"],
+    args: [
+      "test",
+      "--locked",
+      "--manifest-path",
+      "rust/Cargo.toml",
+      "--workspace",
+      "--features",
+      "wasm",
+    ],
   },
   ...pythonSuites.map(([name, path, pattern]) => ({
     name,

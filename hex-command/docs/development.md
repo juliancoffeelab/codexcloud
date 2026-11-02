@@ -30,6 +30,21 @@ Independent checks continue after failures and report their statuses together.
 The test duration target warns without terminating a successful run. Browser
 automation is separate from the default checks.
 
+## Browser engine builds
+
+The Rust workspace separates the current catalog models and host-side authoring
+loader from the battle engine. The build validates authored JSON and derives
+static catalog tables from those same models. Browser factories materialize their
+owned runtime catalog from the tables; they do not parse the authoring documents.
+Native catalogs continue to read the selected data directory. Custom browser
+catalog imports require the opt-in `runtime-catalog` feature.
+
+`wasm:build:release` uses the dedicated `wasm-release` size profile, then a pinned
+Binaryen pass deduplicates code and groups similar function bodies before removing
+diagnostic names. Development builds retain names. Compare the WASM module and
+its referenced JavaScript loader/helpers together when measuring download size.
+The native simulation profile is independent of these browser build settings.
+
 ## Content and artwork
 
 A lineup is a faction. A faction can have sprites before its gameplay roster is
@@ -171,29 +186,76 @@ traversable tile within that radius. Blocked members stay pending at the same
 source through save/restore; completed members never respawn. Empty marks produce
 no group. Saved charge and group source references are validated on restoration.
 
-All runtime map painting happens in one persistent module Worker using
-OffscreenCanvas and createImageBitmap. It selects complete authored tile frames,
-paints terrain in authored drawing order, applies lighting and fog, and transfers
-one finished ImageBitmap. The main thread only swaps that bitmap using
-ImageBitmapRenderingContext.transferFromImageBitmap. Units, items, health,
-selection and interaction remain independent overlays; live sprite tinting does
-not repaint the map.
+All runtime map painting happens in one persistent module Worker using WebGL 2.
+The main thread creates a visible canvas, transfers it once with
+`transferControlToOffscreen`, and sends scene/lighting/fog updates. The worker
+selects complete authored tile frames and renders terrain, lighting and fog into
+that canvas. The browser composites the worker-owned canvas directly; runtime
+never exports, transports or swaps an
+ImageBitmap per update. Main-thread replies are small revision acknowledgements.
+Units, items, health, selection and interaction remain independent overlays.
 
-Production prebuilds terrain PNGs with authored lighting and lantern fixtures.
-The worker can load an exact matching PNG as its terrain input. Changed/custom
-maps use the same worker to draw tile frames and apply lighting. Both paths then
-compose fog into the finished background. The worker retains only the latest
-terrain base, reusing it when only fog changes. Selection and ordinary moves
-with unchanged terrain, lighting and fog request no new background.
+Production prebuilds unlit terrain PNGs, independent of light state. The worker
+uploads a prebuilt image directly to WebGL 2. Changed/custom maps draw complete
+frames into a GPU target in authored order, retaining offline anchors, native
+scale and forest brightness. Terrain textures are decoded with createImageBitmap;
+no runtime Canvas 2D context or CPU pixel readback participates in map painting.
 
-Workers, OffscreenCanvas, createImageBitmap and bitmaprenderer are required
-browser capabilities. There is no main-thread map painting, separate fog canvas,
-SVG terrain substitute or compatibility renderer. Worker/script/image failures
-show a diagnostic with a retry button. The previous completed background stays
-visible during rendering and after failures. Replaced requests cannot publish
-stale frames; obsolete bitmaps are closed and workers terminate on disposal.
-Offline asset builders and draft renderers may paint through their own canvas
-implementation; they are not browser runtime fallbacks.
+Separate GPU targets retain unlit terrain, the lit background and blurred fog.
+Changed regions are composed directly into the visible, retained drawing buffer
+(`preserveDrawingBuffer: true`). This on-demand canvas keeps its pixels between
+updates, idle tasks and scrolling; there is no final full-map framebuffer copy.
+Changed lights update their old/new influence bounds and intersecting fixtures.
+Fog edits update the affected mask region, expanding each
+Gaussian pass by its kernel reach. Geometry is cached, and reordered identical fog
+sets skip painting. Terrain and day/night changes still require full updates.
+Selection and ordinary moves with unchanged terrain, lighting and fog request no
+new frame. Replaced terrain loads are aborted; pending requests for identical
+terrain reuse the existing load. Superseded jobs cannot draw after a replacement
+request is known to the worker.
+
+Workers, transferable OffscreenCanvas, worker WebGL 2 and createImageBitmap are
+required browser capabilities. There is no main-thread map painter, separate fog
+canvas, SVG terrain substitute, bitmap export path or compatibility renderer.
+Image/script/worker/GPU failures show diagnostics and retry. Retry transfers a
+fresh canvas because a canvas cannot be transferred twice. The previous display
+and its worker remain until replacement is ready; unrecoverable GPU/context loss
+can invalidate that display. Disposal terminates active and retired workers and
+removes their canvases. Offline builders may use their own canvas implementation.
+
+Startup queues required shader compilations together and overlaps them with image
+fetch/decode. Shared vertex shaders are compiled once per context. Daylight uses a
+small copy program; fog programs and render targets are lazy. Night fixture
+programs are prepared before play so first activation does not link new shaders.
+Prebuilt PNGs upload directly into the terrain texture, with straight alpha
+normalized by the lighting/copy shader rather than a separate sprite pass. Those
+shaders also convert top-first image rows to framebuffer coordinates.
+
+The worker retains up to two decoded prebuilt images within a 4,194,304-pixel
+budget. Larger images are used without retention. Eviction closes image bitmaps;
+GPU textures and buffers remain scoped to the worker. Tile-frame decoding still
+closes its temporary images after upload.
+
+Before entry, map preparation can render into one detached, worker-owned canvas.
+Acquisition moves that same canvas into the battlefield and rebinds callbacks;
+it does not create another worker, context or texture upload. This spare renderer
+expires after two minutes and is discarded on page hide. Existing live renderers
+only prepare future shader programs, preserving the current display. Initial
+application setup prepares the actual Rust-published view; map pickers prepare
+catalog views. Preparation failures are speculative: actual entry retries using
+the normal diagnostic/retry path. Preparation time remains real work, even when
+performed before the user enters a map.
+
+Use `npm run map:benchmark -- --headed` on a GPU-enabled machine to measure the
+Stage 3 renderer; `--software` explicitly selects SwiftShader for diagnostics.
+Normal diagnostic mode acknowledges drawing without a forced completion fence.
+Completed mode waits for a GPU fence, including polling overhead. Per-pass GPU
+timer queries are asynchronous and optional. API wall times can include driver
+synchronization, are nested, and are not GPU execution times. Normal readiness,
+completed GPU work, a main-thread animation-frame opportunity and physical display
+scanout are distinct events. Browser benchmarks stay outside the default tests.
+Game logic, unit overlays and physical display scanout are outside renderer timing;
+no timed run reads CPU pixels. Software timings do not establish a hardware budget.
 
 Terrain inspection portraits use one explicitly registered image per terrain
 type, shared across all floors, orientations, junctions, maps and cells. These

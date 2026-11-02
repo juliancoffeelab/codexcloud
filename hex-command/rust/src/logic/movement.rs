@@ -382,6 +382,7 @@ impl<'catalog> Game<'catalog> {
             },
         );
         self.remember_conditions();
+        #[cfg(not(target_arch = "wasm32"))]
         let path = self
             .traversal
             .take()
@@ -391,6 +392,11 @@ impl<'catalog> Game<'catalog> {
                     .collect()
             })
             .unwrap_or_default();
+        #[cfg(target_arch = "wasm32")]
+        {
+            self.traversal = None;
+        }
+        #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Move {
             path,
             unit: format!("u{id}"),

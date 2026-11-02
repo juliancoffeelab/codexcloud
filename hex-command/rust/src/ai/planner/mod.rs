@@ -1,5 +1,6 @@
 //! Tactical dispatch and search styles, independent of recruitment choices.
 use super::PlanningWorkspace;
+use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -60,7 +61,7 @@ fn drive(
         .unwrap()
         .tactics
         .objectives
-        .sort_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
+        .order_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
     let recovered: Vec<_> = context
         .battle()
         .units()

@@ -82,46 +82,65 @@ function call<T>(operation: () => EngineResult<T>): EngineResult<T> {
   }
 }
 
-/** Detach before freezing, including errors; injected bridges never retain our snapshot. */
-function owned<T>(result: EngineResult<T>): NativeResponse<T> {
-  return immutable(structuredClone(result)) as NativeResponse<T>;
+/** Generated Rust responses own their JS object graphs; injected bridges may borrow them. */
+export interface NativeBridgeOptions {
+  responseOwnership?: "borrowed" | "transferred";
 }
 
 function validSeed(seed: number): boolean {
   return Number.isInteger(seed) && seed >= 0 && seed <= 0xffffffff;
 }
 
-export function createNativeEngineFactory(bridge: NativeBridge): GameEngineFactory {
+export function createNativeEngineFactory(
+  bridge: NativeBridge,
+  { responseOwnership = "borrowed" }: NativeBridgeOptions = {},
+): GameEngineFactory {
+  const detach = <T>(value: T): T =>
+    responseOwnership === "transferred" ? value : structuredClone(value);
+  const owned = <T>(result: EngineResult<T>): NativeResponse<T> =>
+    immutable(detach(result)) as NativeResponse<T>;
   let disposed = false;
   const engines = new Set<GameEngine>();
   const alive = <T>(operation: () => EngineResult<T>): EngineResult<T> =>
     disposed ? failure({ code: "disposed" }) : call(operation);
 
   function engine(handle: BattleHandle): GameEngine {
+    const id = handle.id;
     let released = false;
     let revision = handle.view.revision;
-    let current: Immutable<EngineView> = immutable(structuredClone(handle.view));
+    let currentInspection: Immutable<BattleInspection> | undefined;
+    let current: Immutable<EngineView> = immutable(detach(handle.view));
     let tileIndices = new Map(current.state.tiles.map((tile, index) => [tile.id, index]));
     const active = <T>(operation: () => EngineResult<T>): EngineResult<T> =>
       released || disposed ? failure({ code: "disposed" }) : call(operation);
     const result: GameEngine = Object.freeze({
       view: () => {
-        const result = owned(active(() => bridge.view(handle.id, revision)));
+        if (responseOwnership === "transferred" && !released && !disposed)
+          return immutable({ ok: true as const, value: current });
+        const result = owned(active(() => bridge.view(id, revision)));
         if (result.ok) {
           current = result.value;
           tileIndices = new Map(current.state.tiles.map((tile, index) => [tile.id, index]));
         }
         return result;
       },
-      inspect: () => owned(active(() => bridge.inspect(handle.id, revision))),
-      geometry: () => owned(active(() => bridge.geometry(handle.id, revision))),
+      inspect: () =>
+        currentInspection && !released && !disposed
+          ? immutable({ ok: true as const, value: currentInspection })
+          : owned(active(() => bridge.inspect(id, revision))),
+      geometry: () => owned(active(() => bridge.geometry(id, revision))),
       dispatch: (
         command: Immutable<Command>,
         expectedRevision = revision,
       ): NativeResponse<DispatchResult> => {
         const dispatched = owned(
           active(() =>
-            bridge.dispatchUpdate(handle.id, expectedRevision, structuredClone(command) as Command),
+            bridge.dispatchUpdate(
+              id,
+              expectedRevision,
+              structuredClone(command) as Command,
+              responseOwnership === "transferred" ? true : undefined,
+            ),
           ),
         );
         if (!dispatched.ok) return dispatched;
@@ -159,15 +178,16 @@ export function createNativeEngineFactory(bridge: NativeBridge): GameEngineFacto
           presentation: update.presentation,
         });
         revision = current.revision;
+        currentInspection = update.inspection;
         return { ok: true, value: immutable({ view: current, combat: update.combat }) };
       },
       chooseAiCommand: (options: AiOptions) =>
-        owned(active(() => bridge.chooseAiCommand(handle.id, revision, structuredClone(options)))),
-      save: () => owned(active(() => bridge.save(handle.id, revision))),
-      saveJson: () => owned(active(() => bridge.saveJson(handle.id, revision))),
+        owned(active(() => bridge.chooseAiCommand(id, revision, structuredClone(options)))),
+      save: () => owned(active(() => bridge.save(id, revision))),
+      saveJson: () => owned(active(() => bridge.saveJson(id, revision))),
       dispose: (): EngineResult<null> => {
         if (released || disposed) return { ok: true, value: null };
-        const closed = call(() => bridge.disposeBattle(handle.id));
+        const closed = call(() => bridge.disposeBattle(id));
         released = true;
         engines.delete(result);
         return closed;
@@ -217,13 +237,14 @@ export function createNativeEngineFactory(bridge: NativeBridge): GameEngineFacto
 export async function loadNativeEngineFactory(
   loader: () => Promise<NativeWasmModule>,
   bundle?: Record<string, string>,
+  options: NativeBridgeOptions = {},
 ): Promise<EngineResult<GameEngineFactory>> {
   try {
     const module = await loader();
     await module.default();
     return {
       ok: true,
-      value: createNativeEngineFactory(new module.NativeEngineFactory(bundle)),
+      value: createNativeEngineFactory(new module.NativeEngineFactory(bundle), options),
     };
   } catch (error) {
     return thrown(error);

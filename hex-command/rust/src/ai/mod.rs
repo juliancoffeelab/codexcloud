@@ -87,6 +87,20 @@ impl Policy {
         }
     }
 }
+impl From<crate::data::FactionPolicy> for Policy {
+    fn from(policy: crate::data::FactionPolicy) -> Self {
+        use crate::data::FactionPolicy as F;
+        match policy {
+            F::Classic => Self::Classic,
+            F::Rush => Self::Rush,
+            F::Balanced => Self::Balanced,
+            F::Rotated => Self::Rotated,
+            F::Situational => Self::Situational,
+            F::Predictor => Self::Predictor,
+        }
+    }
+}
+
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]

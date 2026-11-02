@@ -7,16 +7,22 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Side {
     Player,
     Enemy,
 }
 impl Side {
     /// Return the stable dense-array index for this enum value.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn index(self) -> usize {
         if self == Self::Player { 0 } else { 1 }
     }
     /// Return the opposing allegiance.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn other(self) -> Self {
         if self == Self::Player {
             Self::Enemy
@@ -30,12 +36,17 @@ impl Side {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Category {
     Melee,
     Ranged,
 }
 impl Category {
     /// Return the stable dense-array index for this enum value.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn index(self) -> usize {
         if self == Self::Melee { 0 } else { 1 }
     }
@@ -45,6 +56,10 @@ impl Category {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum DamageType {
     Blade,
     Pierce,
@@ -52,6 +67,7 @@ pub enum DamageType {
 }
 impl DamageType {
     /// Return the stable dense-array index for this enum value.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn index(self) -> usize {
         match self {
             Self::Blade => 0,
@@ -65,6 +81,10 @@ impl DamageType {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Weapon {
     pub id: String,
     pub name: String,
@@ -88,6 +108,10 @@ pub struct Weapon {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Item {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -104,6 +128,10 @@ pub struct Item {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct ItemHealing {
     pub amount: i32,
     pub radius: u16,
@@ -111,12 +139,17 @@ pub struct ItemHealing {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct ItemArmor {
     pub blade: i32,
     pub pierce: i32,
     pub impact: i32,
 }
 impl ItemArmor {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn get(&self, kind: DamageType) -> i32 {
         match kind {
             DamageType::Blade => self.blade,
@@ -126,7 +159,8 @@ impl ItemArmor {
     }
 }
 impl Weapon {
-    pub(crate) fn validate(&self, path: &str) -> Result<(), ContentError> {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn validate(&self, path: &str) -> Result<(), ContentError> {
         super::catalog::identifier(&self.id, path)?;
         if self.name.is_empty()
             || self.sound.is_empty()
@@ -147,7 +181,8 @@ impl Weapon {
     }
 }
 impl Item {
-    pub(crate) fn validate(&self, path: &str) -> Result<(), ContentError> {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn validate(&self, path: &str) -> Result<(), ContentError> {
         super::catalog::identifier(&self.id, path)?;
         if self.name.is_empty()
             || self.description.is_empty()
@@ -189,6 +224,10 @@ impl Item {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct DamageModifiers {
     pub blade: i32,
     pub pierce: i32,
@@ -196,6 +235,7 @@ pub struct DamageModifiers {
 }
 impl DamageModifiers {
     /// Return the defending modifier for the selected damage type.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn get(&self, damage: DamageType) -> i32 {
         match damage {
             DamageType::Blade => self.blade,
@@ -209,6 +249,10 @@ impl DamageModifiers {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum UnitRole {
     Warrior,
     Flank,
@@ -219,6 +263,7 @@ impl UnitRole {
     /// All composition roles in stable dense-array order.
     pub const ALL: [Self; 4] = [Self::Warrior, Self::Flank, Self::Ranger, Self::Healer];
     /// Index into per-role counts and target weights.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub const fn index(self) -> usize {
         match self {
             Self::Warrior => 0,
@@ -228,6 +273,7 @@ impl UnitRole {
         }
     }
     /// Relative mixed-army target; normalize across roles present in the roster.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub const fn weight(self) -> f64 {
         if matches!(self, Self::Warrior) {
             0.3
@@ -236,6 +282,7 @@ impl UnitRole {
         }
     }
     /// Whether recruitment evaluates the unit's ranged attack options.
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub const fn is_ranged(self) -> bool {
         matches!(self, Self::Ranger | Self::Healer)
     }
@@ -245,6 +292,10 @@ impl UnitRole {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct UnitRule {
     pub ability: String,
     pub description: String,
@@ -281,6 +332,10 @@ pub struct UnitRule {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct PublicUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -315,7 +370,11 @@ pub struct PublicUnit {
     pub rebuilding: Option<bool>,
 }
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-pub(crate) struct Unit {
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct Unit {
     pub faction: Option<String>,
     pub items: Vec<Item>,
     pub ai_group: Option<String>,
@@ -333,7 +392,8 @@ pub(crate) struct Unit {
     pub rebuilding: Option<bool>,
 }
 impl Unit {
-    pub(crate) fn is_leader(&self) -> bool {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn is_leader(&self) -> bool {
         self.role == Some(Role::Leader)
     }
 }
@@ -342,6 +402,10 @@ impl Unit {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct LastCombat {
     pub attacker_id: String,
     pub attack_id: String,
@@ -352,6 +416,10 @@ pub struct LastCombat {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Veteran {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -371,11 +439,8 @@ fn one_attack() -> u8 {
 }
 
 /// Inventory validation also protects stable weapon IDs used by commands.
-pub(crate) fn validate_equipment(
-    items: &[Item],
-    base: &[Weapon],
-    path: &str,
-) -> Result<(), ContentError> {
+#[cfg_attr(not(target_arch = "wasm32"), inline)]
+pub fn validate_equipment(items: &[Item], base: &[Weapon], path: &str) -> Result<(), ContentError> {
     super::catalog::unique(items.iter().map(|i| i.id.as_str()), path)?;
     super::catalog::unique(
         base.iter()

@@ -7,6 +7,10 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum ConditionSide {
     Player,
     Enemy,
@@ -25,6 +29,10 @@ impl From<Side> for ConditionSide {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub enum Condition {
     Owner {
         #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -89,6 +97,10 @@ pub enum Condition {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct ConditionRule {
     pub condition: Condition,
     #[serde(default)]
@@ -96,7 +108,8 @@ pub struct ConditionRule {
 }
 impl Condition {
     /// Bind contextual tile predicates for tooling that needs explicit destinations.
-    pub(crate) fn contextualized(&self, target: &str) -> Self {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn contextualized(&self, target: &str) -> Self {
         let mut condition = self.clone();
         match &mut condition {
             Self::Owner { tile, .. } | Self::Proximity { tile, .. } => {
@@ -120,7 +133,9 @@ impl Condition {
         condition
     }
 
-    pub(crate) fn uses_proximity(&self) -> bool {
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+
+    pub fn uses_proximity(&self) -> bool {
         match self {
             Self::Proximity { .. } | Self::VisibleUnits { .. } => true,
             Self::All { conditions } | Self::Any { conditions } => {
@@ -130,7 +145,7 @@ impl Condition {
         }
     }
 
-    pub(super) fn validate_references(
+    pub fn validate_references(
         &self,
         types: &std::collections::HashMap<String, usize>,
         factions: &[super::Faction],
@@ -170,7 +185,8 @@ impl Condition {
             _ => Ok(()),
         }
     }
-    pub(super) fn validate(
+    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn validate(
         &self,
         tiles: &[Tile],
         events: &[Event],

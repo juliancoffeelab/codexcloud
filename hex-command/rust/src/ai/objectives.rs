@@ -1,4 +1,5 @@
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
 use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 use std::cmp::Ordering;
@@ -288,7 +289,7 @@ impl BattleView<'_, '_> {
                             route[tile].saturating_add(entering) <= route[current]
                         })
                         .collect();
-                next.sort_by_key(|&tile| route[tile].saturating_add(self.cost(actor.kind, tile)));
+                next.order_by_key(|&tile| route[tile].saturating_add(self.cost(actor.kind, tile)));
                 for tile in next {
                     parents[tile] = current;
                     pending.push_back(tile);

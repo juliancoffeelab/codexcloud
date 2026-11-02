@@ -1,279 +1,172 @@
-//! One evaluator shared by gameplay triggers and presentation resolution.
+//! Live condition queries borrow battlefield facts; owned inputs are for devtools.
 use super::Game;
-use crate::data::*;
-use serde::{Deserialize, Serialize};
+pub use crate::data::presentation::{PresentationInput, matches, resolve};
+use crate::data::{
+    presentation::{self, ConditionContext, ConditionUnit, PresentationContext},
+    *,
+};
 
-/// Devtool input for the same resolver used by live Rust battles.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct PresentationInput {
-    #[serde(default)]
-    pub factions: Vec<Faction>,
-    pub tiles: Vec<Tile>,
-    pub units: Vec<StartingUnit>,
-    #[serde(default)]
-    pub pending: Vec<SpawnUnit>,
-    pub lighting: BattlefieldLighting,
-    #[serde(default)]
-    pub marks: Vec<String>,
-    #[serde(default)]
-    pub choices: Vec<String>,
-    #[serde(default)]
-    pub memory: Vec<String>,
-    pub round: u32,
+pub(crate) struct LiveContext<'a, 'catalog> {
+    game: &'a Game<'catalog>,
+    position: Option<(u32, usize)>,
 }
-pub(crate) fn matches(
-    condition: &Condition,
-    input: &PresentationInput,
-    target: Option<&str>,
-) -> bool {
-    evaluate(condition, input, target, true)
-}
-fn evaluate(
-    condition: &Condition,
-    input: &PresentationInput,
-    target: Option<&str>,
-    allow_visibility: bool,
-) -> bool {
-    match condition {
-        Condition::Owner { tile, side } => input.tiles.iter().any(|t| {
-            Some(t.id.as_str()) == tile.as_deref().or(target)
-                && t.owner.as_deref() == Some(side.as_str())
-        }),
-        Condition::Proximity {
-            tile,
-            radius,
-            side,
-            unit_type,
-            unit_types,
-            name,
-        } => {
-            let Some(tile) = input
-                .tiles
-                .iter()
-                .find(|t| Some(t.id.as_str()) == tile.as_deref().or(target))
-            else {
-                return false;
-            };
-            input.units.iter().any(|unit| {
-                faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
-                    && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
-                    && (unit_types.is_empty() || unit_types.contains(&unit.r#type))
-                    && name
-                        .as_ref()
-                        .is_none_or(|name| unit.name.as_ref() == Some(name))
-                    && super::battle::hex_distance((tile.col, tile.row), (unit.col, unit.row))
-                        <= *radius
-            })
-        }
-        Condition::VisibleUnits { side, unit_types } => {
-            allow_visibility
-                && input.units.iter().any(|unit| {
-                    faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
-                        && (unit_types.is_empty() || unit_types.contains(&unit.r#type))
-                        && input
-                            .tiles
-                            .iter()
-                            .find(|tile| tile.col == unit.col && tile.row == unit.row)
-                            .is_some_and(|tile| {
-                                tile.fog.as_ref().is_none_or(|rule| {
-                                    (rule.remember
-                                        && input.memory.contains(&format!("fog:{}", tile.id)))
-                                        || evaluate(&rule.condition, input, Some(&tile.id), false)
-                                })
-                            })
+impl ConditionContext for LiveContext<'_, '_> {
+    fn factions(&self) -> &[Faction] {
+        &self.game.factions
+    }
+    fn owns(&self, id: &str, side: &str) -> bool {
+        self.game
+            .board
+            .indices
+            .get(id)
+            .is_some_and(|&i| self.game.owners[i].as_deref() == Some(side))
+    }
+    fn position(&self, id: &str) -> Option<(i32, i32)> {
+        self.game
+            .board
+            .indices
+            .get(id)
+            .map(|&i| self.game.board.positions[i])
+    }
+    fn visible_at(&self, position: (i32, i32)) -> bool {
+        self.game
+            .board
+            .positions
+            .iter()
+            .position(|&p| p == position)
+            .is_some_and(|tile| {
+                self.game.fog[tile].as_ref().is_none_or(|rule| {
+                    (rule.remember && self.fog_remembered(&self.game.board.ids[tile]))
+                        || crate::data::presentation::matches_fog(
+                            &rule.condition,
+                            self,
+                            Some(&self.game.board.ids[tile]),
+                        )
                 })
-        }
-        Condition::HasUnits {
-            ai_group,
-            side,
-            unit_type,
-            name,
-        } => input.units.iter().any(|unit| {
-            faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
-                && ai_group
-                    .as_ref()
-                    .is_none_or(|group| unit.ai_group.as_ref() == Some(group))
-                && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
-                && name
-                    .as_ref()
-                    .is_none_or(|name| unit.name.as_ref() == Some(name))
-        }),
-        Condition::NoUnits {
-            side,
-            unit_type,
-            name,
-        } => {
-            !input.units.iter().any(|unit| {
-                faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
-                    && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
-                    && name
-                        .as_ref()
-                        .is_none_or(|name| unit.name.as_ref() == Some(name))
-            }) && !input.pending.iter().any(|unit| {
-                faction_matches_side(&input.factions, unit.faction.as_deref(), unit.side, *side)
-                    && unit_type.as_ref().is_none_or(|kind| unit.r#type == *kind)
-                    && name
-                        .as_ref()
-                        .is_none_or(|name| unit.name.as_ref() == Some(name))
             })
-        }
-        Condition::Choice { choice } => input.choices.contains(choice),
-        Condition::Event { event } => input
-            .marks
+    }
+    #[inline(always)]
+    fn any_unit(&self, mut predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool {
+        self.game.units.iter().any(|unit| {
+            let tile = self
+                .position
+                .filter(|(actor, _)| *actor == unit.id)
+                .map(|(_, tile)| tile)
+                .unwrap_or(unit.tile);
+            predicate(ConditionUnit {
+                faction: unit.faction.as_deref(),
+                side: unit.side,
+                kind: &self.game.rules.units[unit.kind].id,
+                name: unit.name.as_deref(),
+                ai_group: unit.ai_group.as_deref(),
+                position: Some(self.game.board.positions[tile]),
+            })
+        })
+    }
+    #[inline(always)]
+    fn any_pending(&self, mut predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool {
+        let (Some(mission), Some(state)) = (&self.game.mission, &self.game.campaign) else {
+            return false;
+        };
+        mission
+            .events
             .iter()
-            .any(|mark| mark == &format!("event:{event}")),
-        Condition::Round { round } => input.round >= *round,
-        Condition::All { conditions } => conditions
-            .iter()
-            .all(|c| evaluate(c, input, target, allow_visibility)),
-        Condition::Any { conditions } => conditions
-            .iter()
-            .any(|c| evaluate(c, input, target, allow_visibility)),
+            .filter(|event| state.marked_prefixed("event:", &event.id))
+            .any(|event| {
+                event.spawn.iter().any(|group| {
+                    group.units.iter().any(|unit| {
+                        let spawned = state.marks.iter().any(|m| {
+                            m.strip_prefix("spawn:")
+                                .and_then(|s| s.strip_prefix(event.id.as_str()))
+                                .and_then(|s| s.strip_prefix(':'))
+                                == Some(unit.id.as_str())
+                        });
+                        !spawned
+                            && predicate(ConditionUnit {
+                                faction: unit.faction.as_deref().or(group.faction.as_deref()),
+                                side: unit.side,
+                                kind: &unit.r#type,
+                                name: unit.name.as_deref(),
+                                ai_group: group.ai_group.as_deref(),
+                                position: None,
+                            })
+                    })
+                })
+            })
+    }
+    fn choices(&self) -> &[String] {
+        self.game
+            .campaign
+            .as_ref()
+            .and_then(|s| s.choices.as_deref())
+            .unwrap_or_default()
+    }
+    fn marks(&self) -> &[String] {
+        self.game
+            .campaign
+            .as_ref()
+            .map(|s| s.marks.as_slice())
+            .unwrap_or_default()
+    }
+    fn round(&self) -> u32 {
+        self.game.round
     }
 }
-/// Returns resolved visuals plus durable facts; callers decide whether to persist facts.
-pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<String>) {
-    let mut memory = input.memory.clone();
-    let mut rule_met = |rule: &ConditionRule, key: String, target: &str| {
-        let satisfied = matches(&rule.condition, input, Some(target));
-        if rule.remember {
-            if memory.contains(&key) {
-                return true;
-            }
-            if satisfied {
-                memory.push(key);
+impl PresentationContext for LiveContext<'_, '_> {
+    fn fog_index(&self, id: &str) -> usize {
+        self.game.board.indices[id]
+    }
+    fn fog_remembered(&self, id: &str) -> bool {
+        let i = self.fog_index(id);
+        self.game
+            .fog_memory
+            .get(i / 64)
+            .is_some_and(|word| word & (1u64 << (i % 64)) != 0)
+    }
+    fn lighting(&self) -> &BattlefieldLighting {
+        static DEFAULT: BattlefieldLighting = BattlefieldLighting {
+            time: TimeOfDay::Day,
+            lights: Vec::new(),
+        };
+        self.game
+            .rules
+            .map_definitions
+            .iter()
+            .find(|map| map.id == self.game.map_id)
+            .map(|m| &m.lighting)
+            .unwrap_or(&DEFAULT)
+    }
+    fn visit_fog(&self, mut visitor: impl FnMut(&str, &ConditionRule)) {
+        for (i, rule) in self.game.fog.iter().enumerate() {
+            if let Some(rule) = rule {
+                visitor(&self.game.board.ids[i], rule);
             }
         }
-        satisfied
-    };
-    let lighting = BattlefieldLighting {
-        time: input.lighting.time,
-        lights: input
-            .lighting
-            .lights
-            .iter()
-            .enumerate()
-            .filter(|(i, light)| {
-                light.when.as_ref().is_none_or(|rule| {
-                    rule_met(
-                        rule,
-                        format!("light:{i}:{},{}", light.col, light.row),
-                        &format!("{},{}", light.col, light.row),
-                    )
-                })
-            })
-            .map(|(_, light)| {
-                let mut light = light.clone();
-                light.when = None;
-                light
-            })
-            .collect(),
-    };
-    let fog = input
-        .tiles
-        .iter()
-        .filter(|tile| {
-            tile.fog
-                .as_ref()
-                .is_some_and(|rule| !rule_met(rule, format!("fog:{}", tile.id), &tile.id))
-        })
-        .map(|tile| tile.id.clone())
-        .collect();
-    (BattlefieldPresentation { lighting, fog }, memory)
+    }
 }
 impl Game<'_> {
-    pub(crate) fn presentation_input(&self) -> PresentationInput {
-        PresentationInput {
-            factions: self.factions.as_ref().clone(),
-            tiles: self.tiles(),
-            units: self
-                .units
-                .iter()
-                .map(|u| StartingUnit {
-                    items: vec![],
-                    faction: u.faction.clone(),
-                    ai_group: u.ai_group.clone(),
-                    col: self.board.positions[u.tile].0,
-                    row: self.board.positions[u.tile].1,
-                    r#type: self.rules.units[u.kind].id.clone(),
-                    side: u.side,
-                    name: u.name.clone(),
-                    role: u.role.clone(),
-                })
-                .collect(),
-            pending: self
-                .mission
-                .as_ref()
-                .map(|mission| {
-                    mission
-                        .events
-                        .iter()
-                        .filter(|event| {
-                            self.campaign
-                                .as_ref()
-                                .is_some_and(|state| state.marked(&format!("event:{}", event.id)))
-                        })
-                        .flat_map(|event| {
-                            event.spawn.iter().flat_map(move |group| {
-                                group
-                                    .units
-                                    .iter()
-                                    .filter(move |unit| {
-                                        !self
-                                            .campaign
-                                            .as_ref()
-                                            .unwrap()
-                                            .marked(&format!("spawn:{}:{}", event.id, unit.id))
-                                    })
-                                    .map(move |unit| {
-                                        let mut unit = unit.clone();
-                                        unit.faction =
-                                            unit.faction.or_else(|| group.faction.clone());
-                                        unit
-                                    })
-                            })
-                        })
-                        .collect()
-                })
-                .unwrap_or_default(),
-            lighting: self
-                .rules
-                .map_definitions
-                .iter()
-                .find(|map| map.id == self.map_id)
-                .map(|map| map.lighting.clone())
-                .unwrap_or_default(),
-            choices: self
-                .campaign
-                .as_ref()
-                .and_then(|state| state.choices.clone())
-                .unwrap_or_default(),
-            marks: self
-                .campaign
-                .as_ref()
-                .map(|c| c.marks.clone())
-                .unwrap_or_default(),
-            memory: self.condition_memory.clone(),
-            round: self.round,
+    pub(crate) fn condition_context(&self) -> LiveContext<'_, '_> {
+        LiveContext {
+            game: self,
+            position: None,
         }
     }
     pub(crate) fn event_condition_met(&self, condition: &Condition) -> bool {
-        let mut input = self.presentation_input();
-        if matches(condition, &input, None) {
+        if matches(condition, &self.condition_context(), None) {
             return true;
         }
         if let Some((actor, path)) = &self.traversal {
-            let Some(index) = self.units.iter().position(|u| u.id == *actor) else {
-                return false;
-            };
-            for &tile in path {
-                input.units[index].col = self.board.positions[tile].0;
-                input.units[index].row = self.board.positions[tile].1;
-                if matches(condition, &input, None) {
-                    return true;
-                }
+            if self.units.iter().any(|u| u.id == *actor) {
+                return path.iter().any(|&tile| {
+                    matches(
+                        condition,
+                        &LiveContext {
+                            game: self,
+                            position: Some((*actor, tile)),
+                        },
+                        None,
+                    )
+                });
             }
         }
         false
@@ -283,63 +176,72 @@ impl Game<'_> {
             (rule.remember
                 && self
                     .condition_memory
-                    .contains(&format!("group:{}", group.id)))
-                || matches(&rule.condition, &self.presentation_input(), None)
+                    .iter()
+                    .any(|m| m.strip_prefix("group:") == Some(group.id.as_str())))
+                || matches(&rule.condition, &self.condition_context(), None)
         })
     }
     pub(crate) fn presentation(&self) -> BattlefieldPresentation {
-        let mut presentation = resolve(&self.presentation_input()).0;
-        presentation.lighting.lights.extend(self.ritual_lights());
-        presentation
+        let mut result = presentation::render(&self.condition_context(), &self.condition_memory);
+        result.lighting.lights.extend(self.ritual_lights());
+        result
     }
     pub(crate) fn remember_conditions(&mut self) {
-        let group_memory = self.mission.as_ref().is_some_and(|m| {
+        let groups = self.mission.as_ref().is_some_and(|m| {
             m.enemy_groups
                 .iter()
                 .any(|g| g.when.as_ref().is_some_and(|r| r.remember))
         });
-        let light_memory = self.rules.map_definitions.iter().any(|map| {
-            map.id == self.map_id
-                && map
-                    .lighting
-                    .lights
-                    .iter()
-                    .any(|light| light.when.as_ref().is_some_and(|rule| rule.remember))
-        });
-        if !group_memory && !light_memory && !self.fog.iter().any(Option::is_some) {
+        let lights = self
+            .condition_context()
+            .lighting()
+            .lights
+            .iter()
+            .any(|l| l.when.as_ref().is_some_and(|r| r.remember));
+        if !groups
+            && !lights
+            && !self
+                .fog
+                .iter()
+                .any(|f| f.as_ref().is_some_and(|r| r.remember))
+        {
             return;
         }
-        let mut input = self.presentation_input();
-        let mut positions = vec![None];
-        if let Some((actor, path)) = &self.traversal {
-            if let Some(index) = self.units.iter().position(|u| u.id == *actor) {
-                positions.extend(
-                    path.iter()
-                        .map(|&tile| Some((index, self.board.positions[tile]))),
-                );
+        let mut memory = std::mem::take(&mut self.condition_memory);
+        let mut known = std::mem::take(&mut self.fog_memory);
+        let mut visit = |position| {
+            let input = LiveContext {
+                game: self,
+                position,
+            };
+            let added = presentation::discover(&input, &memory, &mut known);
+            if !added.is_empty() {
+                std::rc::Rc::make_mut(&mut memory).extend(added);
             }
-        }
-        for position in positions {
-            if let Some((index, (col, row))) = position {
-                input.units[index].col = col;
-                input.units[index].row = row;
-            }
-            input.memory = self.condition_memory.clone();
-            self.condition_memory = resolve(&input).1;
             if let Some(mission) = &self.mission {
                 for group in &mission.enemy_groups {
                     if group
                         .when
                         .as_ref()
-                        .is_some_and(|rule| rule.remember && matches(&rule.condition, &input, None))
+                        .is_some_and(|r| r.remember && matches(&r.condition, &input, None))
+                        && !memory
+                            .iter()
+                            .any(|m| m.strip_prefix("group:") == Some(group.id.as_str()))
                     {
-                        let key = format!("group:{}", group.id);
-                        if !self.condition_memory.contains(&key) {
-                            self.condition_memory.push(key);
-                        }
+                        std::rc::Rc::make_mut(&mut memory).push(format!("group:{}", group.id));
                     }
                 }
             }
+        };
+        visit(None);
+        if let Some((actor, path)) = &self.traversal {
+            if self.units.iter().any(|u| u.id == *actor) {
+                for &tile in path {
+                    visit(Some((*actor, tile)));
+                }
+            }
         }
+        self.condition_memory = memory;
+        self.fog_memory = known;
     }
 }

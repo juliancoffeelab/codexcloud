@@ -113,6 +113,7 @@ impl Game<'_> {
                     tile: self.board.ids[self.units[index].tile].clone(),
                     item,
                 });
+                #[cfg(not(target_arch = "wasm32"))]
                 self.action(ActionRecord::Drop {
                     unit: format!("u{}", unit.0),
                     item: self.ground_items.last().unwrap().item.id.clone(),
@@ -138,6 +139,7 @@ impl Game<'_> {
             Command::RetryMission => {
                 let campaign = self.campaign.as_ref().ok_or(CommandError::NoCampaign)?;
                 let combat_rng = self.combat_rng;
+                #[cfg(not(target_arch = "wasm32"))]
                 let records = self.recordings.take();
                 let choices = if self.mission.as_ref().is_some_and(|m| m.refuge.is_some()) {
                     vec![]
@@ -155,7 +157,10 @@ impl Game<'_> {
                     campaign.fallen_companions.clone().unwrap_or_default(),
                 );
                 self.combat_rng = combat_rng;
-                self.recordings = records;
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    self.recordings = records;
+                }
             }
             Command::RecallMission { units } => {
                 let campaign = self.campaign.as_ref().ok_or(CommandError::NoCampaign)?;
@@ -166,9 +171,13 @@ impl Game<'_> {
                     return Err(CommandError::NoNextMission);
                 }
                 let replacement = self.continue_campaign(Some(&units))?;
+                #[cfg(not(target_arch = "wasm32"))]
                 let records = self.recordings.take();
                 *self = replacement;
-                self.recordings = records;
+                #[cfg(not(target_arch = "wasm32"))]
+                {
+                    self.recordings = records;
+                }
             }
             Command::SetUnitIntent {
                 unit,

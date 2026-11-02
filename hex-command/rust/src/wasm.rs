@@ -1,22 +1,37 @@
 //! Browser ownership boundary. The catalog is owned once by the factory; battles
 //! hold snapshots and exclusive planner workspaces, borrowing rules only per call.
+use crate::sort::SharedSort;
 use crate::{
     ai::{self, PlanningWorkspace},
     data::*,
-    logic::{Game, battle::Board},
+    logic::{
+        Game,
+        battle::{Board, RuntimeCache},
+    },
     protocol::*,
 };
 use serde::{Serialize, de::DeserializeOwned};
+use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
 use tsify::{Ts, Tsify};
 use wasm_bindgen::prelude::*;
 
+#[cfg(target_arch = "wasm32")]
+mod wire;
+
 fn encode<T, Response>(result: Result<T, EngineError>) -> Result<Ts<Response>, JsError>
 where
     Response: Tsify + Serialize + From<Result<T, EngineError>>,
 {
-    Ok(Response::from(result).into_ts()?)
+    #[cfg(target_arch = "wasm32")]
+    {
+        Ok(Ts::new_unchecked(wire::value(&Response::from(result))?))
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        Ok(Response::from(result).into_ts()?)
+    }
 }
 fn decode<T: Tsify + DeserializeOwned>(value: Ts<T>) -> Result<T, EngineError>
 where
@@ -28,7 +43,40 @@ where
             message: error.to_string(),
         })
 }
+enum TerrainDelta {
+    Keep,
+    Patch(Vec<usize>),
+    Replace,
+}
+struct Applied {
+    terrain: TerrainDelta,
+    presentation: BattlefieldPresentation,
+    combat: Option<CombatAnimation>,
+    inspection: Option<BattleInspection>,
+}
+#[cfg(target_arch = "wasm32")]
+#[derive(Serialize)]
+#[serde(tag = "kind", rename_all = "camelCase")]
+enum BorrowedTerrainUpdate<'a> {
+    Keep,
+    Patch { tiles: Vec<&'a Tile> },
+    Replace { tiles: &'a [Tile] },
+}
+#[cfg(target_arch = "wasm32")]
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct BorrowedDispatchUpdate<'a> {
+    base_revision: u32,
+    revision: u32,
+    state: BorrowedStateFrame<'a>,
+    terrain: BorrowedTerrainUpdate<'a>,
+    presentation: BattlefieldPresentation,
+    combat: Option<CombatAnimation>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    inspection: Option<BattleInspection>,
+}
 struct Battle {
+    runtime_cache: RefCell<RuntimeCache>,
     state: State,
     board: Rc<Board>,
     seed: u32,
@@ -39,7 +87,17 @@ struct Battle {
 }
 impl Battle {
     fn game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
-        Game::from_state_with_board(rules, self.state.clone(), self.board.clone())
+        let game = self.take_game(rules);
+        *self.runtime_cache.borrow_mut() = game.runtime_cache();
+        game
+    }
+    fn take_game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
+        Game::from_borrowed_state(
+            rules,
+            &self.state,
+            self.board.clone(),
+            self.runtime_cache.take(),
+        )
     }
     fn view(&self, rules: &Rules) -> EngineView {
         EngineView {
@@ -76,17 +134,34 @@ impl NativeEngineFactory {
     #[wasm_bindgen(constructor)]
     pub fn new(bundle: Option<Ts<CatalogDocuments>>) -> Result<NativeEngineFactory, JsValue> {
         let loaded = if let Some(bundle) = bundle {
-            decode(bundle).and_then(|bundle| {
-                Rules::from_json_bundle(&bundle.0).map_err(|error| EngineError::Content {
+            #[cfg(any(not(target_arch = "wasm32"), feature = "runtime-catalog"))]
+            {
+                decode(bundle).and_then(|bundle| {
+                    Rules::from_json_bundle(&bundle.0).map_err(|error| EngineError::Content {
+                        path: error.path,
+                        message: error.message,
+                    })
+                })
+            }
+            #[cfg(all(target_arch = "wasm32", not(feature = "runtime-catalog")))]
+            {
+                let _ = bundle;
+                Err(EngineError::InvalidRequest {
+                    message: "Custom catalogs require a runtime-catalog build".into(),
+                })
+            }
+        } else {
+            #[cfg(target_arch = "wasm32")]
+            {
+                Ok(crate::data::baked_rules())
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                Rules::load().map_err(|error| EngineError::Content {
                     path: error.path,
                     message: error.message,
                 })
-            })
-        } else {
-            Rules::load().map_err(|error| EngineError::Content {
-                path: error.path,
-                message: error.message,
-            })
+            }
         };
         let rules = loaded.map_err(|error| match encode::<(), UnitResponse>(Err(error)) {
             Ok(response) => response.js_value(),
@@ -102,7 +177,7 @@ impl NativeEngineFactory {
     /// Return owned catalog metadata as an encoded [`EngineResult<CatalogView>`].
     pub fn catalog(&self) -> Result<Ts<CatalogResponse>, JsError> {
         let mut campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
-        campaigns.sort_by(|a, b| a.id.cmp(&b.id));
+        campaigns.order_by(|a, b| a.id.cmp(&b.id));
         encode(Ok(CatalogView {
             units: self.rules.units.clone(),
             terrain: self.rules.terrain_definitions.clone(),
@@ -121,7 +196,9 @@ impl NativeEngineFactory {
                 state.combat_rng = Some(seed);
                 let board = Board::new(&state.tiles);
                 let game = Game::from_state_with_board(&self.rules, state, board.clone());
-                self.insert(game.state(), seed, board)
+                let cache = game.runtime_cache();
+                let tiles = game.tiles();
+                self.insert(game.into_state(tiles), seed, board, cache)
             });
         encode(result)
     }
@@ -159,10 +236,47 @@ impl NativeEngineFactory {
         id: u32,
         revision: u32,
         command: Ts<Command>,
+        include_inspection: Option<bool>,
     ) -> Result<Ts<UpdateResponse>, JsError> {
-        encode(
-            decode::<Command>(command).and_then(|command| self.apply_update(id, revision, command)),
-        )
+        let applied = decode::<Command>(command).and_then(|command| {
+            self.apply(id, revision, command, include_inspection.unwrap_or(false))
+        });
+        #[cfg(target_arch = "wasm32")]
+        {
+            let value = match applied {
+                Ok(applied) => {
+                    let battle = &self.battles[&id];
+                    let state = &battle.state;
+                    let terrain = match applied.terrain {
+                        TerrainDelta::Keep => BorrowedTerrainUpdate::Keep,
+                        TerrainDelta::Replace => BorrowedTerrainUpdate::Replace {
+                            tiles: &state.tiles,
+                        },
+                        TerrainDelta::Patch(indices) => BorrowedTerrainUpdate::Patch {
+                            tiles: indices.into_iter().map(|i| &state.tiles[i]).collect(),
+                        },
+                    };
+                    wire::value(&EngineResult::Success {
+                        ok: true,
+                        value: BorrowedDispatchUpdate {
+                            base_revision: revision,
+                            revision: battle.revision,
+                            state: BorrowedStateFrame::from(state),
+                            terrain,
+                            presentation: applied.presentation,
+                            combat: applied.combat,
+                            inspection: applied.inspection,
+                        },
+                    })
+                }
+                Err(error) => wire::value(&EngineResult::<()>::Failure { ok: false, error }),
+            }?;
+            Ok(Ts::new_unchecked(value))
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            encode(applied.map(|applied| self.owned_update(id, revision, applied)))
+        }
     }
     /// Apply one decoded [`Command`] against the expected revision.
     /// Success returns [`DispatchResult`]; rejected commands leave state unchanged.
@@ -172,7 +286,19 @@ impl NativeEngineFactory {
         revision: u32,
         command: Ts<Command>,
     ) -> Result<Ts<DispatchResponse>, JsError> {
-        encode(decode::<Command>(command).and_then(|command| self.apply(id, revision, command)))
+        let result =
+            decode::<Command>(command).and_then(|command| self.apply(id, revision, command, false));
+        encode(result.map(|applied| {
+            let battle = &self.battles[&id];
+            DispatchResult {
+                view: EngineView {
+                    presentation: applied.presentation,
+                    revision: battle.revision,
+                    state: battle.state.clone(),
+                },
+                combat: applied.combat,
+            }
+        }))
     }
     /// Return an [`AiDecision`] without applying it or advancing the battle revision.
     /// Repeated requests reuse the pending command until dispatch; changed options start a new phase.
@@ -214,71 +340,60 @@ impl NativeEngineFactory {
 }
 
 impl NativeEngineFactory {
-    fn apply_update(
-        &mut self,
-        id: u32,
-        revision: u32,
-        command: Command,
-    ) -> Result<DispatchUpdate, EngineError> {
-        let before = self.battle(id, revision)?;
-        let old_tiles = before.state.tiles.clone();
-        let old_map = (
-            before.state.map_id.clone(),
-            before.state.map_revision,
-            before.state.cols,
-            before.state.rows,
-        );
-        let result = self.apply(id, revision, command)?;
-        let (state, tiles) = StateFrame::split(result.view.state);
-        let replaced = old_map
-            != (
-                state.map_id.clone(),
-                state.map_revision,
-                state.cols,
-                state.rows,
-            )
-            || old_tiles.len() != tiles.len()
-            || old_tiles.iter().zip(&tiles).any(|(a, b)| a.id != b.id);
-        let terrain = if replaced {
-            TerrainUpdate::Replace { tiles }
-        } else {
-            let changed: Vec<_> = tiles
-                .into_iter()
-                .zip(&old_tiles)
-                .filter_map(|(tile, old)| (tile != *old).then_some(tile))
-                .collect();
-            if changed.is_empty() {
-                TerrainUpdate::Keep
-            } else {
-                TerrainUpdate::Patch { tiles: changed }
-            }
+    #[cfg(not(target_arch = "wasm32"))]
+    fn owned_update(&self, id: u32, revision: u32, applied: Applied) -> DispatchUpdate {
+        let battle = &self.battles[&id];
+        let state = StateFrame::from(&battle.state);
+        let terrain = match applied.terrain {
+            TerrainDelta::Keep => TerrainUpdate::Keep,
+            TerrainDelta::Replace => TerrainUpdate::Replace {
+                tiles: battle.state.tiles.clone(),
+            },
+            TerrainDelta::Patch(indices) => TerrainUpdate::Patch {
+                tiles: indices
+                    .into_iter()
+                    .map(|i| battle.state.tiles[i].clone())
+                    .collect(),
+            },
         };
-        Ok(DispatchUpdate {
+        DispatchUpdate {
             base_revision: revision,
-            revision: result.view.revision,
+            revision: battle.revision,
             state,
             terrain,
-            presentation: result.view.presentation,
-            combat: result.combat,
-        })
+            presentation: applied.presentation,
+            combat: applied.combat,
+            inspection: applied.inspection,
+        }
     }
     fn apply(
         &mut self,
         id: u32,
         revision: u32,
         command: Command,
-    ) -> Result<DispatchResult, EngineError> {
+        include_inspection: bool,
+    ) -> Result<Applied, EngineError> {
         let battle = self
             .battles
             .get_mut(&id)
             .ok_or(EngineError::UnknownBattle)?;
         battle.check(revision)?;
-        let mut game = battle.game(&self.rules);
+        let mut game = battle.take_game(&self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
         game.execute(command)?;
-        let state = game.state();
-        battle.state = state;
+        let replaced = terrain_replaced(&battle.state, &battle.board, &game);
+        let (tiles, terrain) = if replaced {
+            (game.tiles(), TerrainDelta::Replace)
+        } else {
+            let changed = game.patch_tiles(&mut battle.state.tiles);
+            let terrain = if changed.is_empty() {
+                TerrainDelta::Keep
+            } else {
+                TerrainDelta::Patch(changed)
+            };
+            (std::mem::take(&mut battle.state.tiles), terrain)
+        };
         battle.board = game.board.clone();
         battle.revision = battle
             .revision
@@ -289,15 +404,24 @@ impl NativeEngineFactory {
             battle.workspace = None;
             battle.options = None;
         }
-        Ok(DispatchResult {
-            view: EngineView {
-                presentation: game.presentation(),
-                revision: battle.revision,
-                state: battle.state.clone(),
-            },
-            combat: game.combat_animation.take(),
+        let presentation = game.presentation();
+        let inspection = if include_inspection {
+            game.refresh_mission();
+            Some(game.inspect(battle.revision))
+        } else {
+            None
+        };
+        *battle.runtime_cache.borrow_mut() = game.runtime_cache();
+        let combat = game.combat_animation.take();
+        battle.state = game.into_state(tiles);
+        Ok(Applied {
+            terrain,
+            presentation,
+            combat,
+            inspection,
         })
     }
+
     fn decision(
         &mut self,
         id: u32,
@@ -363,20 +487,31 @@ impl NativeEngineFactory {
                 message: error.to_string(),
             }
         })?;
-        Ok(self.insert(game.state(), saved.seed, game.board.clone()))
+        let cache = game.runtime_cache();
+        let board = game.board.clone();
+        let tiles = game.tiles();
+        Ok(self.insert(game.into_state(tiles), saved.seed, board, cache))
     }
+
     fn battle(&self, id: u32, revision: u32) -> Result<&Battle, EngineError> {
         let battle = self.battles.get(&id).ok_or(EngineError::UnknownBattle)?;
         battle.check(revision)?;
         Ok(battle)
     }
-    fn insert(&mut self, state: State, seed: u32, board: Rc<Board>) -> BattleHandle {
+    fn insert(
+        &mut self,
+        state: State,
+        seed: u32,
+        board: Rc<Board>,
+        cache: RuntimeCache,
+    ) -> BattleHandle {
         let id = self.next_id;
         self.next_id = self
             .next_id
             .checked_add(1)
             .expect("battle handle exhausted");
         let battle = Battle {
+            runtime_cache: RefCell::new(cache),
             state,
             board,
             seed,
@@ -477,7 +612,12 @@ mod tests {
             next_id: 1,
         };
         let state = Game::new(&factory.rules, "mirror").state();
-        let original = factory.insert(state.clone(), 17, Board::new(&state.tiles));
+        let original = factory.insert(
+            state.clone(),
+            17,
+            Board::new(&state.tiles),
+            RuntimeCache::default(),
+        );
         let options = AiOptions {
             blocks: None,
             policy: AiPolicy::Balanced,
@@ -505,5 +645,27 @@ pub fn preview_presentation(
     input: Ts<crate::logic::conditions::PresentationInput>,
 ) -> Result<Ts<BattlefieldPresentation>, JsError> {
     let input = input.to_rust().map_err(|e| JsError::new(&e.to_string()))?;
-    Ok(crate::logic::conditions::resolve(&input).0.into_ts()?)
+    let presentation = crate::logic::conditions::resolve(&input).0;
+    #[cfg(target_arch = "wasm32")]
+    {
+        Ok(Ts::new_unchecked(wire::value(&presentation)?))
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        Ok(presentation.into_ts()?)
+    }
+}
+
+fn terrain_replaced(old: &State, board: &Rc<Board>, game: &Game<'_>) -> bool {
+    old.map_id != game.map_id
+        || old.map_revision != game.map_revision
+        || old.cols != game.cols
+        || old.rows != game.rows
+        || old.tiles.len() != game.board.ids.len()
+        || (!Rc::ptr_eq(board, &game.board)
+            && old
+                .tiles
+                .iter()
+                .zip(&game.board.ids)
+                .any(|(a, b)| a.id != *b))
 }

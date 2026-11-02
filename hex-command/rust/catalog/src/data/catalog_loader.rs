@@ -1,41 +1,15 @@
-//! Typed authored JSON catalog. Native loading is rooted at the crate's data directory;
-//! browser callers can supply the same named JSON documents without filesystem access.
+//! Authoring, validation and inheritance resolution, excluded from the default browser build.
 use super::*;
-use serde::{Deserialize, Serialize, de::DeserializeOwned};
+use serde::{Deserialize, de::DeserializeOwned};
 use sha2::{Digest, Sha256};
 use std::{
-    collections::{BTreeMap, HashSet},
-    fmt,
+    collections::{HashMap, HashSet},
     path::{Component, Path},
 };
 #[path = "catalog_documents.rs"]
 mod documents;
 #[cfg(feature = "wasm")]
 include!(concat!(env!("OUT_DIR"), "/catalog_documents.rs"));
-
-/// Relative document paths mapped to their complete UTF-8 JSON source.
-pub type JsonBundle = BTreeMap<String, String>;
-#[derive(Debug)]
-/// A catalog error carrying the authoring document and a concrete diagnostic.
-pub struct ContentError {
-    pub path: String,
-    pub message: String,
-}
-impl ContentError {
-    pub(crate) fn new(path: impl Into<String>, message: impl Into<String>) -> Self {
-        Self {
-            path: path.into(),
-            message: message.into(),
-        }
-    }
-}
-impl fmt::Display for ContentError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}: {}", self.path, self.message)
-    }
-}
-impl std::error::Error for ContentError {}
-
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct Manifest {
@@ -58,124 +32,10 @@ struct SimulationPaths {
     arena: String,
     campaign: String,
 }
-#[derive(Clone, Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
-/// An arena roster, authored independently of story campaign recruitment.
-pub struct ArmyRoster {
-    pub id: String,
-    pub leader: String,
-    pub pool: Vec<String>,
-}
-#[derive(Clone, Debug, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-/// A generated arena landscape and its required territory hold duration.
-pub struct LandscapeConfig {
-    pub id: String,
-    pub hold_turns: u32,
-    /// Optional authored scenario layout, shared with the playable map.
-    pub map: Option<String>,
-    /// Capture targets for this layout; omitted uses the generated-arena defaults.
-    pub territory: Option<Vec<String>>,
-}
-#[derive(Clone, Debug, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-/// Authored arena dimensions and default per-match execution limits.
-pub struct ArenaDefaults {
-    pub landscapes: Vec<LandscapeConfig>,
-    pub territory: Vec<String>,
-    /// Minimum total gold value per side, including its leader.
-    pub starting_budget: i32,
-    pub default_max_rounds: u32,
-    pub policies: Vec<String>,
-}
-#[derive(Clone, Debug, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-/// Campaign schedule dimensions and default attempt execution limits.
-pub struct CampaignDefaults {
-    pub default_max_rounds: u32,
-    pub diplomacy: Vec<String>,
-    #[serde(default)]
-    pub objectives:
-        std::collections::BTreeMap<String, std::collections::BTreeMap<String, SimulationObjective>>,
-    pub policies: Vec<String>,
-    pub campaigns: Vec<String>,
-}
-/// Named simulator-only routes. Keys are authored stage map identifiers.
-#[derive(Clone, Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct SimulationObjective {
-    pub stages: std::collections::BTreeMap<String, SimulationStageObjective>,
-}
-#[derive(Clone, Debug, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub struct SimulationStageObjective {
-    #[serde(default)]
-    pub goals: Option<Vec<Goal>>,
-    #[serde(default)]
-    pub optional_goals: Option<Vec<Goal>>,
-    #[serde(default)]
-    pub events: Vec<Event>,
-    #[serde(default)]
-    pub event_conditions: std::collections::BTreeMap<String, Condition>,
-    #[serde(default)]
-    pub ignore_optional_when: Option<Condition>,
-}
-
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
-#[serde(default, deny_unknown_fields)]
-/// Category and damage-type contributions; both apply to an incoming hit.
-pub struct EnvironmentalModifiers {
-    pub melee: i32,
-    pub ranged: i32,
-    pub blade: i32,
-    pub pierce: i32,
-    pub impact: i32,
-}
 impl EnvironmentalModifiers {
     fn value(&self, category: usize, damage: usize) -> i32 {
         [self.melee, self.ranged][category] + [self.blade, self.pierce, self.impact][damage]
     }
-}
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-/// A race or unit deviation from base terrain movement and damage rules.
-pub struct TerrainModifier {
-    #[serde(default)]
-    pub cost: i32,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub passable: Option<bool>,
-    #[serde(default)]
-    pub damage_modifiers: EnvironmentalModifiers,
-}
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-/// Authored terrain defaults, also exposed to the browser for display.
-pub struct TerrainDefinition {
-    pub role: TerrainRole,
-    pub id: Terrain,
-    pub name: String,
-    pub cost: u16,
-    pub passable: bool,
-    pub description: String,
-    #[serde(default)]
-    pub damage_modifiers: EnvironmentalModifiers,
-}
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-/// Authored racial defaults inherited by every unit of that race.
-pub struct RaceDefinition {
-    pub id: Race,
-    pub name: String,
-    pub terrain_modifiers: HashMap<TerrainRole, TerrainModifier>,
-    pub damage_modifiers: DamageModifiers,
 }
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -363,34 +223,6 @@ fn checked_path(path: &str) -> Result<(), ContentError> {
     }
     Ok(())
 }
-pub(crate) fn identifier(id: &str, path: &str) -> Result<(), ContentError> {
-    if id.is_empty()
-        || !id
-            .bytes()
-            .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == b'-')
-    {
-        return Err(ContentError::new(
-            path,
-            format!("invalid identifier {id:?}"),
-        ));
-    }
-    Ok(())
-}
-pub(crate) fn unique<'a>(
-    ids: impl IntoIterator<Item = &'a str>,
-    path: &str,
-) -> Result<(), ContentError> {
-    let mut seen = HashSet::new();
-    for id in ids {
-        if !seen.insert(id) {
-            return Err(ContentError::new(
-                path,
-                format!("duplicate identifier {id}"),
-            ));
-        }
-    }
-    Ok(())
-}
 fn reference(id: &str, types: &HashMap<String, usize>, path: &str) -> Result<(), ContentError> {
     if !types.contains_key(id) {
         return Err(ContentError::new(path, format!("unknown unit {id}")));
@@ -404,7 +236,7 @@ impl Rules {
     pub fn load() -> Result<Self, ContentError> {
         let root = std::env::var_os("HEX_COMMAND_DATA_ROOT")
             .map(std::path::PathBuf::from)
-            .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("data"));
+            .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("../data"));
         Self::load_from(root)
     }
     /// Load the compiled WASM catalog, or report that an explicit bundle is needed.
@@ -848,7 +680,7 @@ impl Rules {
             for rule in map
                 .terrain
                 .iter()
-                .filter_map(|tile| tile.fog.as_ref())
+                .filter_map(|tile| tile.fog.as_deref())
                 .chain(
                     map.lighting
                         .lights
@@ -877,10 +709,13 @@ impl Rules {
             types,
             terrains,
             maps,
+            #[cfg(not(target_arch = "wasm32"))]
             arena_maps,
             campaigns,
             rosters,
+            #[cfg(not(target_arch = "wasm32"))]
             arena,
+            #[cfg(not(target_arch = "wasm32"))]
             campaign_defaults,
         })
     }
@@ -1498,7 +1333,7 @@ mod tests {
         documents::collect_bundle(|path| {
             std::fs::read_to_string(
                 Path::new(env!("CARGO_MANIFEST_DIR"))
-                    .join("data")
+                    .join("../data")
                     .join(path),
             )
             .map_err(|error| ContentError::new(path, error.to_string()))
@@ -1645,8 +1480,6 @@ mod tests {
         let initial = reloaded.maps[&("mirror".to_owned(), 1)].clone();
         assert_eq!(initial.units[0].r#type, "commander");
         assert_eq!(initial.units[0].hp, revised_hp);
-        let battle = crate::logic::Game::try_from_state(&reloaded, initial).unwrap();
-        assert_eq!(battle.units[0].hp, revised_hp);
         assert_eq!(
             original.maps[&("mirror".to_owned(), 1)].units[0].hp,
             original_hp
@@ -1744,7 +1577,8 @@ mod tests {
     #[cfg(all(feature = "wasm", not(target_arch = "wasm32")))]
     #[test]
     fn native_and_embedded_load_only_manifest_referenced_documents() {
-        let native = Rules::load_from(Path::new(env!("CARGO_MANIFEST_DIR")).join("data")).unwrap();
+        let native =
+            Rules::load_from(Path::new(env!("CARGO_MANIFEST_DIR")).join("../data")).unwrap();
         assert_eq!(
             native.content_fingerprint,
             Rules::embedded().unwrap().content_fingerprint

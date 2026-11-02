@@ -39,13 +39,17 @@ export interface BattlefieldTileView extends TileView {
  * unchanged. Incremental engine publications retain the underlying tile values,
  * so moving a unit does not invalidate every empty cell's SVG subtree.
  */
+interface CachedTile {
+  source: TileView;
+  objectives: readonly string[] | undefined;
+  view: BattlefieldTileView;
+}
+
 export class BattlefieldViewCache {
-  private scene?: {
-    game: GameView;
-    artwork: Artwork;
-    terrain: ReadonlyMap<string, TerrainTileView> | undefined;
-    tiles: BattlefieldTileView[];
-  };
+  private artwork?: Artwork;
+  private terrain?: ReadonlyMap<string, TerrainTileView>;
+  private mapId?: string;
+  private cells?: CachedTile[];
 
   prepare(
     game: GameView,
@@ -54,26 +58,19 @@ export class BattlefieldViewCache {
     recruitTileId: string | null,
     terrain?: ReadonlyMap<string, TerrainTileView>,
   ) {
-    const previous = this.scene;
-    let tiles = battlefieldTiles(game, selected, artwork, recruitTileId, terrain);
-    if (
-      previous &&
-      previous.artwork === artwork &&
-      previous.terrain === terrain &&
-      previous.game.tiles.length === game.tiles.length
-    ) {
-      tiles = tiles.map((tile, index) => {
-        const old = previous.tiles[index]!;
-        return previous.game.tiles[index] === game.tiles[index] &&
-          old.occupant?.unit === tile.occupant?.unit &&
-          old.occupant?.faction === tile.occupant?.faction &&
-          old.classes === tile.classes &&
-          old.label === tile.label
-          ? old
-          : tile;
-      });
-    }
-    this.scene = { game, artwork, terrain, tiles };
+    const next: CachedTile[] = [];
+    const previous =
+      this.artwork === artwork && this.terrain === terrain && this.mapId === game.mapId
+        ? this.cells
+        : undefined;
+    const tiles = battlefieldTiles(game, selected, artwork, recruitTileId, terrain, {
+      previous,
+      next,
+    });
+    this.artwork = artwork;
+    this.terrain = terrain;
+    this.mapId = game.mapId;
+    this.cells = next;
     return tiles;
   }
 }
@@ -126,6 +123,7 @@ export function battlefieldTiles(
   artwork: Artwork,
   recruitTileId: string | null,
   terrain?: ReadonlyMap<string, TerrainTileView>,
+  reuse?: { previous?: readonly CachedTile[]; next: CachedTile[] },
 ): BattlefieldTileView[] {
   const selectedUnit = game.unit(selected);
   const canAct =
@@ -152,7 +150,7 @@ export function battlefieldTiles(
   const terrainViews =
     terrain ??
     new Map(game.tiles.map((tile) => [tile.id, terrainTileView(tile, game.mapId, artwork)]));
-  return game.tiles.map((tile) => {
+  return game.tiles.map((tile, index) => {
     const unit = occupants.get(tile.id);
     const reachable = reachableTiles.has(tile.id);
     const target = targetTiles.has(tile.id);
@@ -168,9 +166,23 @@ export function battlefieldTiles(
       .filter(Boolean)
       .join(" ");
 
+    const faction = unit ? game.faction(unit.id) : undefined;
+    const objectives = objectiveTiles.get(tile.id);
+    const old = reuse?.previous?.[index];
+    if (
+      old?.source === tile &&
+      old.view.occupant?.unit === unit &&
+      old.view.occupant?.faction === faction &&
+      old.view.classes === classes &&
+      (old.objectives === objectives ||
+        (old.objectives?.length === objectives?.length &&
+          old.objectives?.every((label, i) => label === objectives?.[i])))
+    ) {
+      reuse!.next.push(old);
+      return old.view;
+    }
     let occupant: TileUnitView | null = null;
-    if (unit) {
-      const faction = game.faction(unit.id);
+    if (unit && faction) {
       occupant = {
         unit,
         faction,
@@ -187,18 +199,11 @@ export function battlefieldTiles(
       };
     }
 
-    return {
+    const view = {
       ...tile,
       ...terrainViews.get(tile.id)!,
       classes,
-      label: tileLabel(
-        tile,
-        unit,
-        reachable,
-        target,
-        objectiveTiles.get(tile.id) ?? [],
-        occupant?.faction,
-      ),
+      label: tileLabel(tile, unit, reachable, target, objectives ?? [], occupant?.faction),
       occupant,
       ownerColor:
         tile.owner === "player"
@@ -207,5 +212,7 @@ export function battlefieldTiles(
               game.factions.find((f) => f.id === tile.owner)?.palette ?? "enemy"
             ] ?? "#ff9590"),
     };
+    reuse?.next.push({ source: tile, objectives, view });
+    return view;
   });
 }
