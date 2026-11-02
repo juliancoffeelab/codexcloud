@@ -176,7 +176,7 @@ The Bellwarden starts with a level-three commander, a level-one impact caster
 and a level-one bone archer. Three separate
 prison watches stay with their captives until the prisoners are freed. They do
 not count as available field troops while those orders remain active. The keep
-has 24 starting gold, three funding villages and a broader skeleton recruit pool.
+has 24 starting gold, two funding villages and a broader skeleton recruit pool.
 
 Defeating the Bellwarden wins the battle. Rescuing captives and holding the
 northern monastery with a mage remain optional. Three turns at the monastery
