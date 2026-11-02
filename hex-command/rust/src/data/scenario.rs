@@ -434,6 +434,10 @@ pub struct RitualOpening {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Ritual {
+    /// Maximum source activations per toll; omitted preserves simultaneous rituals.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub sources_per_toll: Option<usize>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub opening: Option<RitualOpening>,

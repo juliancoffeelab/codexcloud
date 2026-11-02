@@ -144,6 +144,11 @@ impl Game<'_> {
                 self.record(ritual.label.clone());
                 let source = self.rules.terrains[&ritual.source_terrain];
                 let spent = self.rules.terrains[&ritual.spent_terrain];
+                let budget = if opening {
+                    usize::MAX
+                } else {
+                    ritual.sources_per_toll.unwrap_or(usize::MAX)
+                };
                 let sites: Vec<_> = self
                     .terrain
                     .iter()
@@ -159,7 +164,9 @@ impl Game<'_> {
                                     .contains(&self.board.ids[*tile]))
                     })
                     .map(|(tile, _)| tile)
+                    .take(budget)
                     .collect();
+                let remaining = budget.saturating_sub(sites.len());
                 for tile in sites {
                     let victims: Vec<Unit> = self
                         .units
@@ -198,6 +205,7 @@ impl Game<'_> {
                     .marks
                     .iter()
                     .filter(|m| m.starts_with(&prefix))
+                    .take(remaining)
                     .cloned()
                     .collect();
                 for charge in &charges {

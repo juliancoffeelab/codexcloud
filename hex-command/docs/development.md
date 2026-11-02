@@ -289,6 +289,14 @@ terrain, losses and raised-unit identities in the generated state. Later regular
 tolls act on the remaining sources. Opening conditions use persistent campaign
 choices; no historical gameplay is reconstructed during save loading.
 
+An optional positive `sourcesPerToll` limits source activations on a regular toll.
+Active source tiles resolve in native map order, followed by queued death charges
+within the remaining budget. Empty sites still spend their scheduled activation;
+rescued captives do not cause the next site to fire early. Unprocessed charges
+remain queued. Conditional openings use their explicit site list. Spent terrain
+and existing activation/spawn marks preserve progress across saves; omitting the
+limit retains simultaneous resolution.
+
 Dialogue lines may declare an optional `sound` family. The dialogue view plays
 that cue when the line is first presented through the gesture-unlocked sound
 player; ordinary sound preferences still apply.

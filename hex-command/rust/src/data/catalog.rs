@@ -1224,6 +1224,7 @@ fn validate_mission(
     for ritual in &mission.rituals {
         identifier(&ritual.id, path)?;
         if ritual.interval == 0
+            || ritual.sources_per_toll == Some(0)
             || ritual.first_round == 0
             || ritual.unit_types.is_empty()
             || ritual.spawn.units.is_empty()

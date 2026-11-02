@@ -177,7 +177,10 @@ has 24 starting gold, three funding villages and a broader skeleton recruit pool
 Defeating the Bellwarden wins the battle. Rescuing captives and holding the
 northern monastery with a mage remain optional. Three turns at the monastery
 clear the fog. The bell's normal ritual begins on round 6 and repeats every six
-rounds; captives still on its active marks are consumed and raise skeletal troops.
+rounds, resolving one graveyard per toll in north, east, south order; captives still
+on that site's active mark are consumed and raise skeletal troops. Empty sites
+still use their scheduled toll. A late arrival starts with north already spent,
+so its subsequent tolls resolve east and then south.
 Freeing captives is not enough: move them off the marks.
 
 The first toll sounds in Villages on round 26 and is remembered across chapters.

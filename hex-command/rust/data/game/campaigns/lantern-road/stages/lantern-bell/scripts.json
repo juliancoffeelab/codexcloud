@@ -570,7 +570,8 @@
           "choice": "bell-tolled-before-arrival"
         },
         "sites": ["11,5"]
-      }
+      },
+      "sourcesPerToll": 1
     }
   ]
 }
