@@ -121,4 +121,16 @@
       {#each view.game.log as text}<li>{text}</li>{/each}
     </ol>
   </details>
+  <details class="panel" id="opponent-difficulty">
+    <summary>Opponent difficulty · {view.opponent.difficulty}</summary>
+    <p>
+      {#if view.opponent.planner && view.opponent.recruiter}
+        Planner: {view.opponent.planner}
+        <br />
+        Recruiter: {view.opponent.recruiter}
+      {:else}
+        Policy: {view.opponent.policy}
+      {/if}
+    </p>
+  </details>
 </dialog>

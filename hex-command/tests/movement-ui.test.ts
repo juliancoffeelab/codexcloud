@@ -6,6 +6,7 @@ import type { BattleView } from "../src/controller/view";
 import { unitPanelView } from "../src/ui/unit-panel-view";
 import { terrainPanelView } from "../src/ui/terrain-view";
 import { required } from "./helpers";
+import { DEFAULT_SETUP, opponentSummary } from "../src/game/setup";
 
 function published(game: Game, selected: string): BattleView {
   return {
@@ -18,6 +19,7 @@ function published(game: Game, selected: string): BattleView {
     status: "",
     artwork: currentArtwork(),
     sound: false,
+    opponent: opponentSummary(DEFAULT_SETUP.enemy),
     canUndo: false,
     completedTurns: 0,
     recruitment: null,

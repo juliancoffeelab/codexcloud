@@ -1,4 +1,4 @@
-import type { SessionSetup } from "../game/setup";
+import type { SessionSetup, OpponentSummary } from "../game/setup";
 import type { GameView, UnitView, Immutable } from "../game/view";
 import type {
   GameSnapshot,
@@ -28,6 +28,7 @@ export interface BattleView {
   readonly status: string;
   readonly artwork: Artwork;
   readonly sound: boolean;
+  readonly opponent: OpponentSummary;
   readonly canUndo: boolean;
   readonly completedTurns: number;
   readonly recruitment: RecruitmentContext | null;

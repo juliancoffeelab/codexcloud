@@ -1,4 +1,4 @@
-import { DEFAULT_SETUP, type SessionSetup } from "../game/setup";
+import { DEFAULT_SETUP, opponentSummary, type SessionSetup } from "../game/setup";
 import { BATTLE_MAPS } from "../game/maps";
 import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
@@ -129,6 +129,7 @@ export class BattleController {
     return Object.freeze({
       ...this.state,
       game: this.gameView,
+      opponent: opponentSummary(this.#game.setup.enemy),
       combat: this.#game.combat,
       artwork: currentArtwork(),
       completedTurns: Math.max(
