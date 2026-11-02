@@ -425,10 +425,6 @@ test("Unmounted sessions cannot overwrite replacements", async () => {
   replacement.dispose();
 });
 
-async function settleCallbacks() {
-  for (let turn = 0; turn < 6; turn++) await Promise.resolve();
-}
-
 // A replay is consumed once, and replacement before initialization discards it.
 test("Replay is consumed once and replacement discards pending initialization", async () => {
   storage.clear();
@@ -455,8 +451,17 @@ test("Replay is consumed once and replacement discards pending initialization", 
   replay.commands.previousDialogue();
   assert.equal(storage.getItem(SAVE_KEY), checkpoint);
   assert(loadBattle().pendingEnemy);
+  let unsubscribe = () => {};
+  const finished = new Promise<void>((resolve) => {
+    unsubscribe = replay.view.subscribe((view) => {
+      if (view.game.turn === "player") {
+        unsubscribe();
+        resolve();
+      }
+    });
+  });
   paused.release();
-  await settleCallbacks();
+  await finished;
   assert.equal(replay.snapshot().turn, "player");
   assert.equal(replay.snapshot().round, 2);
   const saved = JSON.parse(required(storage.getItem(SAVE_KEY))) as { pendingEnemy: boolean };

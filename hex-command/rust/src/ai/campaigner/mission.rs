@@ -547,7 +547,7 @@ impl Game<'_> {
         weight: f64,
         visiting: &mut HashSet<String>,
     ) -> Vec<Objective> {
-        if crate::logic::conditions::matches(condition, &self.presentation_input(), None) {
+        if crate::logic::conditions::matches(condition, &self.condition_context(), None) {
             return vec![];
         }
         match condition {

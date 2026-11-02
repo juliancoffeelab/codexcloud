@@ -499,6 +499,7 @@ dependencies = [
  "arrow-schema",
  "clap",
  "flate2",
+ "hex-catalog-freeze-derive",
  "hex-command-catalog",
  "mimalloc",
  "rustc-hash",

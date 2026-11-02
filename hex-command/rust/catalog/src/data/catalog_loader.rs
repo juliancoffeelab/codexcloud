@@ -610,7 +610,7 @@ impl Rules {
             for rule in map
                 .terrain
                 .iter()
-                .filter_map(|tile| tile.fog.as_ref())
+                .filter_map(|tile| tile.fog.as_deref())
                 .chain(
                     map.lighting
                         .lights

@@ -12,7 +12,11 @@ import type {
   UnitType,
 } from "./types";
 
-const loaded = await loadNativeEngineFactory(() => import("../../rust/pkg/hex_command"));
+const loaded = await loadNativeEngineFactory(
+  () => import("../../rust/pkg/hex_command"),
+  undefined,
+  { responseOwnership: "transferred" },
+);
 if (!loaded.ok) throw new Error(`Cannot load game catalog: ${JSON.stringify(loaded.error)}`);
 /** The browser shares this catalog owner with its battle controller. */
 export const GAME_ENGINE_FACTORY = loaded.value;

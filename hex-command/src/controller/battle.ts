@@ -61,7 +61,7 @@ export class BattleController {
   private readonly history = createMoveUndo();
   private sessionVersion = 0;
   private disposed = false;
-  private previousFeedbackState: ReturnType<LiveGame["snapshot"]> | null = null;
+  private previousFeedbackState: ReturnType<LiveGame["publishedSnapshot"]> | null = null;
   private state: SessionState;
   private store: Writable<BattleView>;
   private gameView: GameView;
@@ -90,7 +90,7 @@ export class BattleController {
     this.gameView = game.publishedView();
     this.store = writable(this.currentView());
     this.view = { subscribe: this.store.subscribe };
-    this.previousFeedbackState = game.snapshot();
+    this.previousFeedbackState = game.publishedSnapshot();
     this.commands = createBattleCommands(this);
   }
 
@@ -219,7 +219,7 @@ export class BattleController {
   }
 
   private playBattleFeedback() {
-    const current = this.#game.snapshot();
+    const current = this.#game.publishedSnapshot();
     const previous = this.previousFeedbackState;
     this.previousFeedbackState = current;
     if (!previous) {
@@ -493,18 +493,38 @@ export class BattleController {
     return this.runEnemyTurn(turnSessionVersion);
   }
 
+  /** Use the pacing window for the next read-only decision; actions keep their deadlines. */
+  private async prepareDuringPause(ms: number, turnSessionVersion: number, publish = false) {
+    const waiting = this.pause(ms);
+    try {
+      if (publish) this.publish();
+      await tick();
+      if (
+        !this.disposed &&
+        turnSessionVersion === this.sessionVersion &&
+        this.#game.turn === "enemy" &&
+        !this.#game.winner
+      )
+        this.#game.prepareEnemyStep();
+    } finally {
+      await waiting;
+    }
+  }
+
   /** Resolve the enemy turn before publishing its persistent checkpoint. */
   private async runEnemyTurn(turnSessionVersion: number) {
     if (!this.#game.winner) this.message("The enemy is planning its moves…");
-    await this.pause(enemyThinkingDelay);
+    await this.prepareDuringPause(enemyThinkingDelay, turnSessionVersion);
     if (turnSessionVersion !== this.sessionVersion) {
       return;
     }
     while (this.#game.turn === "enemy" && !this.#game.winner) {
       this.#game.enemyStep();
-      this.publish();
-      if (this.#game.turn !== "enemy" || this.#game.winner) break;
-      await this.pause(enemyActionDelay);
+      if (this.#game.turn !== "enemy" || this.#game.winner) {
+        this.publish();
+        break;
+      }
+      await this.prepareDuringPause(enemyActionDelay, turnSessionVersion, true);
       if (turnSessionVersion !== this.sessionVersion) return;
     }
     if (!this.#game.winner)

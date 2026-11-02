@@ -58,10 +58,10 @@ pub struct Tile {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub floor: Option<String>,
-    /// Condition that clears this tile's authored fog.
+    /// Immutable condition shared by snapshots; Arc keeps native catalogs thread-safe.
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub fog: Option<ConditionRule>,
+    pub fog: Option<std::sync::Arc<ConditionRule>>,
 }
 impl Tile {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
