@@ -2308,8 +2308,8 @@
       "id": "0,4",
       "col": 0,
       "row": 4,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -2333,8 +2333,8 @@
       "id": "1,4",
       "col": 1,
       "row": 4,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -2883,8 +2883,8 @@
       "id": "0,5",
       "col": 0,
       "row": 5,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -2908,8 +2908,8 @@
       "id": "1,5",
       "col": 1,
       "row": 5,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -3458,8 +3458,8 @@
       "id": "0,6",
       "col": 0,
       "row": 6,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -3483,8 +3483,8 @@
       "id": "1,6",
       "col": 1,
       "row": 6,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -4034,8 +4034,8 @@
       "id": "0,7",
       "col": 0,
       "row": 7,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -4059,8 +4059,8 @@
       "id": "1,7",
       "col": 1,
       "row": 7,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -4634,8 +4634,8 @@
       "id": "1,8",
       "col": 1,
       "row": 8,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -4659,9 +4659,9 @@
       "id": "2,8",
       "col": 2,
       "row": 8,
-      "terrain": "plains",
+      "terrain": "keep",
       "floor": "green-plain",
-      "owner": null,
+      "owner": "player",
       "fog": {
         "condition": {
           "kind": "any",
@@ -4709,7 +4709,7 @@
       "id": "4,8",
       "col": 4,
       "row": 8,
-      "terrain": "plains",
+      "terrain": "village",
       "floor": "green-plain",
       "owner": null,
       "fog": {
@@ -4728,7 +4728,8 @@
           ]
         },
         "remember": true
-      }
+      },
+      "connections": []
     },
     {
       "id": "5,8",
@@ -5184,8 +5185,8 @@
       "id": "0,9",
       "col": 0,
       "row": 9,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -5209,8 +5210,8 @@
       "id": "1,9",
       "col": 1,
       "row": 9,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -5759,8 +5760,8 @@
       "id": "0,10",
       "col": 0,
       "row": 10,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -5784,8 +5785,8 @@
       "id": "1,10",
       "col": 1,
       "row": 10,
-      "terrain": "marsh",
-      "floor": "marsh",
+      "terrain": "plains",
+      "floor": "green-plain",
       "owner": null,
       "fog": {
         "condition": {
@@ -7012,10 +7013,9 @@
       "id": "4,12",
       "col": 4,
       "row": 12,
-      "terrain": "village",
+      "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "connections": [],
       "fog": {
         "condition": {
           "kind": "any",
@@ -8694,9 +8694,9 @@
       "id": "2,15",
       "col": 2,
       "row": 15,
-      "terrain": "keep",
+      "terrain": "plains",
       "floor": "green-plain",
-      "owner": "player",
+      "owner": null,
       "fog": {
         "condition": {
           "kind": "any",

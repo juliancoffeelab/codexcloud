@@ -168,8 +168,12 @@ receiving more dead, rather than introducing an unrelated final battle.
 
 ## The bell and the graves
 
-The Bellwarden commands a veteran skeleton core: a level-three commander,
-a revenant, a death archer, an impact caster and a bone archer. Three separate
+The company arrives below the western hills, with a keep at (2,8) and a nearby
+village at (4,8). The western marsh approach is cleared. Ordinary recalls and
+surviving companions form the army; no extra opening troops are granted.
+
+The Bellwarden starts with a level-three commander, a level-one impact caster
+and a level-one bone archer. Three separate
 prison watches stay with their captives until the prisoners are freed. They do
 not count as available field troops while those orders remain active. The keep
 has 24 starting gold, three funding villages and a broader skeleton recruit pool.
@@ -178,7 +182,8 @@ Defeating the Bellwarden wins the battle. Rescuing captives and holding the
 northern monastery with a mage remain optional. Three turns at the monastery
 clear the fog. The bell's normal ritual begins on round 6 and repeats every six
 rounds, resolving one graveyard per toll in north, east, south order; captives still
-on that site's active mark are consumed and raise skeletal troops. Empty sites
+on that site's active mark are consumed and raise two skeletons and one bone
+archer. Each site fires once, for at most nine raised troops. Empty sites
 still use their scheduled toll. A late arrival starts with north already spent,
 so its subsequent tolls resolve east and then south.
 Freeing captives is not enough: move them off the marks.
@@ -189,11 +194,11 @@ complete: its captives are gone, its mark is spent, and its raised troops are
 present. Discovering that site reveals the loss. The chapter's round-30 deadline
 remains the final toll.
 
-If the Tollkeeper survived, his authored skeleton patrol pursues on round 5.
-These are authored reinforcements, not literal copies of the preceding chapter's
-enemy units. The
-pursuing Tollkeeper is not an additional required boss. The western lancer, mage
-and healer still reinforce the player on round 10.
+If the Tollkeeper survived, he and one skeleton and one bone archer enter around
+(2,17) on round 5. This is a finite authored patrol, with no keep, villages or
+recruitment; it does not copy the preceding chapter's enemy units. The pursuing
+Tollkeeper is not an additional required boss. The western lancer, mage and healer
+reinforce the northern player foothold on round 10.
 
 Victory stops this local operation and opens the road. It does not settle the
 entire lich threat or guarantee that every captive was rescued.
