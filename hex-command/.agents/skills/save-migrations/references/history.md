@@ -207,7 +207,9 @@ adds the marsh keep and funding villages and advances the map to revision seven.
 Existing owners take precedence, followed by occupants on newly owned tiles.
 A living Edrin gains the leader role and keep order; his faction receives its
 explicit recruitment quotes. No units are spawned, revived or relocated, and no
-gold is invented. Health, items, progress, turns and outcomes remain intact.
+gold is invented. The obsolete `group:swamp-dead` activation marker is retired
+because that encounter is now unconditional. Health, items, progress, turns and
+outcomes remain intact.
 
 ## Version-twenty-one migration
 
