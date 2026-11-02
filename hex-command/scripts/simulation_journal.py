@@ -30,6 +30,13 @@ def decode_detail(data, name):
     if format_name in (ARROW_TYPED_FORMAT.encode(), ARROW_FACTION_FORMAT.encode()):
         units = [{key: value for key, value in item.items() if value is not None}
                  for item in columns["unit_snapshots"][0].as_py()]
+        for unit in units:
+            if "items_json" in unit:
+                items = json.loads(unit.pop("items_json"))
+                if not isinstance(items, list):
+                    raise ValueError("Invalid Arrow unit items")
+                if items:
+                    unit["items"] = items
         ownership = columns["ownership_snapshots"][0].as_py()
     else:
         units = [json.loads(item) for item in columns["unit_snapshots"][0].as_py()]

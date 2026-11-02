@@ -116,6 +116,15 @@ fn unit_column(
         )),
         Arc::new(BooleanArray::from_iter(values.iter().map(|u| u.retreating))),
         Arc::new(BooleanArray::from_iter(values.iter().map(|u| u.rebuilding))),
+        Arc::new(StringArray::from_iter(
+            values.iter().map(|u| u.faction.as_deref()),
+        )),
+        Arc::new(StringArray::from_iter(
+            values.iter().map(|u| u.ai_group.as_deref()),
+        )),
+        Arc::new(StringArray::from_iter_values(values.iter().map(|u| {
+            serde_json::to_string(&u.items).expect("serializable unit items")
+        }))),
     ];
     let names = [
         "id",
@@ -130,6 +139,9 @@ fn unit_column(
         "role",
         "retreating",
         "rebuilding",
+        "faction",
+        "aiGroup",
+        "items_json",
     ];
     let fields = names
         .into_iter()
@@ -284,7 +296,18 @@ fn unit_dictionary(array: &dyn Array) -> Result<Vec<Value>, SimulationError> {
                     }
                     _ => return Err("Unexpected unit field type".into()),
                 };
-                object.insert(field.name().clone(), value);
+                if field.name() == "items_json" {
+                    let items: Value =
+                        serde_json::from_str(value.as_str().ok_or("Invalid unit items")?)?;
+                    if !items.is_array() {
+                        return Err("Invalid unit items".into());
+                    }
+                    if items.as_array().is_some_and(|items| !items.is_empty()) {
+                        object.insert("items".into(), items);
+                    }
+                } else {
+                    object.insert(field.name().clone(), value);
+                }
             }
             Ok(Value::Object(object))
         })
@@ -467,6 +490,12 @@ mod tests {
         unit.rebuilding = Some(true);
         unit.role = Some(Role::Courier);
         unit.name = Some("河😀".into());
+        unit.faction = Some("independent".into());
+        unit.ai_group = Some("guard".into());
+        unit.items = serde_json::from_value(serde_json::json!([{
+            "id":"keepsake", "name":"Keepsake", "description":"Carried equipment", "attacks":[]
+        }]))
+        .unwrap();
         arena.phases[0].before.reverse();
         let arena = MatchResult::Arena(arena);
         let mut campaign = super::super::matches::run_campaign(
