@@ -29,6 +29,9 @@ pub enum ActionRecord {
         #[serde(rename = "type")]
         unit_type: String,
         tile: String,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        cost: Option<i32>,
     },
     Advance {
         unit: String,

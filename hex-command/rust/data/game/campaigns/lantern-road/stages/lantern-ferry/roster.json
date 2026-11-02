@@ -2,7 +2,8 @@
   "initial": {
     "gold": {
       "player": 0,
-      "enemy": 0
+      "enemy": 0,
+      "wildlife": 0
     },
     "units": [
       {

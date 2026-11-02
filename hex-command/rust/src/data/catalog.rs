@@ -317,6 +317,8 @@ impl InitialState {
         }
         validate_factions(&self.factions, &units)
             .map_err(|message| ContentError::new(path, message))?;
+        validate_economy(&self.factions, &self.gold, &self.tiles, types)
+            .map_err(|message| ContentError::new(path, message))?;
         Ok(State {
             factions: self.factions,
             ground_items: vec![],
@@ -793,7 +795,7 @@ impl Rules {
                             .validate(&state.tiles, &mission.events, false)
                             .map_err(|e| ContentError::new(&manifest.simulation.campaign, e))?;
                         condition
-                            .validate_units(&types)
+                            .validate_references(&types, &state.factions)
                             .map_err(|e| ContentError::new(&manifest.simulation.campaign, e))?;
                     }
                 }
@@ -840,6 +842,9 @@ impl Rules {
             })
             .collect();
         for map in &map_definitions {
+            let state = maps
+                .get(&(map.id.clone(), map.revision))
+                .expect("authored map");
             for rule in map
                 .terrain
                 .iter()
@@ -852,7 +857,7 @@ impl Rules {
                 )
             {
                 rule.condition
-                    .validate_units(&types)
+                    .validate_references(&types, &state.factions)
                     .map_err(|message| ContentError::new(&map.id, message))?;
             }
         }
@@ -996,7 +1001,7 @@ fn validate_mission(
                             .validate(&state.tiles, &mission.events, false)
                             .map_err(|message| ContentError::new(path, message))?;
                         condition
-                            .validate_units(types)
+                            .validate_references(types, &state.factions)
                             .map_err(|message| ContentError::new(path, message))?;
                     }
                     if area.is_empty() {
@@ -1014,7 +1019,7 @@ fn validate_mission(
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|message| ContentError::new(path, message))?;
             rule.condition
-                .validate_units(types)
+                .validate_references(types, &state.factions)
                 .map_err(|message| ContentError::new(path, message))?;
         }
     }
@@ -1064,7 +1069,7 @@ fn validate_mission(
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|e| ContentError::new(path, e))?;
             condition
-                .validate_units(types)
+                .validate_references(types, &state.factions)
                 .map_err(|e| ContentError::new(path, e))?;
         }
         for site in goal.sites() {
@@ -1171,7 +1176,7 @@ fn validate_mission(
         }
         if let Trigger::Condition { condition } = &event.trigger {
             condition
-                .validate_units(types)
+                .validate_references(types, &state.factions)
                 .map_err(|message| ContentError::new(path, message))?;
         }
         match &event.trigger {
@@ -1229,14 +1234,14 @@ fn validate_mission(
             .map_err(|message| ContentError::new(path, message))?;
         ritual
             .when
-            .validate_units(types)
+            .validate_references(types, &state.factions)
             .map_err(|message| ContentError::new(path, message))?;
         if let Some(condition) = &ritual.notice_when {
             condition
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|message| ContentError::new(path, message))?;
             condition
-                .validate_units(types)
+                .validate_references(types, &state.factions)
                 .map_err(|message| ContentError::new(path, message))?;
         }
         for unit in &ritual.spawn.units {
@@ -1377,7 +1382,7 @@ fn validate_simulation(
                         terrain.iter().any(|definition| {
                             definition.id.as_str() == t.terrain
                                 && definition.role == TerrainRole::Keep
-                        }) && t.owner == Some(side)
+                        }) && t.owner.as_deref() == Some(side.faction_id())
                     })
                     .count()
                     != 1

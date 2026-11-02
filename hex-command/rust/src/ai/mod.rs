@@ -666,7 +666,7 @@ mod courier_tests {
             }
             for tile in ["6,2", "8,5"] {
                 let tile = game.site(tile);
-                game.owners[tile] = Some(Side::Player);
+                game.owners[tile] = Some("player".into());
             }
             game.roster_changed();
             let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Restrained);

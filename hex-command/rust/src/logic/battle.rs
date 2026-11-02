@@ -93,7 +93,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) rules: &'catalog Rules,
     pub(crate) board: Rc<Board>,
     pub(crate) terrain: Vec<usize>,
-    pub(crate) owners: Vec<Option<Side>>,
+    pub(crate) owners: Vec<Option<String>>,
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) walls: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
@@ -109,7 +109,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) rows: i32,
     pub(crate) round: u32,
     pub(crate) turn: Side,
-    pub(crate) gold: [i32; 2],
+    pub(crate) gold: Gold,
     pub(crate) winner: Option<Side>,
     pub(crate) next_id: u32,
     pub(crate) combat_rng: u32,
@@ -216,7 +216,7 @@ impl<'catalog> Game<'catalog> {
             .iter()
             .map(|tile| rules.terrains[&tile.terrain])
             .collect();
-        let owners = state.tiles.iter().map(|tile| tile.owner).collect();
+        let owners = state.tiles.iter().map(|tile| tile.owner.clone()).collect();
         let connections = Rc::new(
             state
                 .tiles
@@ -257,7 +257,7 @@ impl<'catalog> Game<'catalog> {
             rows: state.rows,
             round: state.round,
             turn: state.turn,
-            gold: [state.gold.player, state.gold.enemy],
+            gold: state.gold,
             winner: state.winner,
             next_id: state.next_id,
             combat_rng: state.combat_rng.unwrap_or(0x6d2b79f5),
@@ -314,10 +314,7 @@ impl<'catalog> Game<'catalog> {
             rows: self.rows,
             round: self.round,
             turn: self.turn,
-            gold: Gold {
-                player: self.gold[0],
-                enemy: self.gold[1],
-            },
+            gold: self.gold.clone(),
             winner: self.winner,
             next_id: self.next_id,
             combat_rng: Some(self.combat_rng),
@@ -338,7 +335,7 @@ impl<'catalog> Game<'catalog> {
                 col: self.board.positions[index].0,
                 row: self.board.positions[index].1,
                 terrain: self.rules.terrain_names[self.terrain[index]].clone(),
-                owner: self.owners[index],
+                owner: self.owners[index].clone(),
                 connections: self.connections[index].clone(),
                 walls: self.walls[index].clone(),
                 dead_ends: self.dead_ends[index].clone(),
@@ -559,7 +556,7 @@ impl<'catalog> Game<'catalog> {
             rows: self.rows,
             round: self.round,
             turn: self.turn,
-            gold: self.gold,
+            gold: self.gold.clone(),
             winner: self.winner,
             next_id: self.next_id,
             combat_rng: self.combat_rng,
@@ -640,6 +637,19 @@ impl<'catalog> Game<'catalog> {
     }
 
     pub(crate) fn recruitment_options(&self, side: Side) -> Vec<usize> {
+        self.recruitment_options_for_faction(self.faction_for_phase(side))
+    }
+    pub(crate) fn recruitment_options_for_faction(&self, id: &str) -> Vec<usize> {
+        if let Some(pool) = self.faction(id).and_then(|f| f.recruits.as_ref()) {
+            return pool.iter().map(|entry| self.kind(&entry.unit)).collect();
+        }
+        match id {
+            "player" => self.phase_recruitment_options(Side::Player),
+            "enemy" => self.phase_recruitment_options(Side::Enemy),
+            _ => vec![],
+        }
+    }
+    fn phase_recruitment_options(&self, side: Side) -> Vec<usize> {
         if let Some(pools) = &self.pools {
             return pools[side.index()].clone();
         }
@@ -694,14 +704,29 @@ impl<'catalog> Game<'catalog> {
         .map(|name| self.kind(name))
         .collect()
     }
+    pub(crate) fn recruitment_options_for(&self, leader: &Unit) -> Vec<usize> {
+        self.recruitment_options_for_faction(self.unit_faction(leader))
+    }
+    pub(crate) fn recruit_cost(&self, leader: &Unit, kind: usize) -> i32 {
+        self.recruit_cost_for_faction(self.unit_faction(leader), kind)
+    }
+    pub(crate) fn recruit_cost_for_faction(&self, id: &str, kind: usize) -> i32 {
+        self.faction(id)
+            .and_then(|f| f.recruits.as_ref())
+            .and_then(|pool| {
+                pool.iter()
+                    .find(|entry| entry.unit == self.rules.units[kind].id)
+            })
+            .map_or(self.rules.units[kind].cost, |entry| entry.cost)
+    }
     pub(crate) fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
         if !leader.is_leader()
-            || !self.recruitment_options(leader.side).contains(&kind)
+            || !self.recruitment_options_for(leader).contains(&kind)
             || self.winner.is_some()
             || !self.may_act(leader)
             || !self.is_keep(leader.tile)
-            || self.owners[leader.tile] != Some(leader.side)
-            || (price && self.gold[leader.side.index()] < self.rules.units[kind].cost)
+            || self.owners[leader.tile].as_deref() != Some(self.unit_faction(leader))
+            || (price && self.gold_for_unit(leader) < self.recruit_cost(leader, kind))
         {
             return vec![];
         }
@@ -714,7 +739,9 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn recruit(&mut self, id: u32, kind: usize, tile: usize) {
         let leader = self.unit(id).unwrap().clone();
         assert!(self.placement_tiles(&leader, kind, true).contains(&tile));
-        self.gold[leader.side.index()] -= self.rules.units[kind].cost;
+        let faction = self.unit_faction(&leader).to_owned();
+        let cost = self.recruit_cost(&leader, kind);
+        self.gold[&faction] -= cost;
         self.add(kind, leader.side, tile);
         let unit = self.units.last_mut().unwrap();
         unit.faction = leader.faction.clone();
@@ -733,6 +760,7 @@ impl<'catalog> Game<'catalog> {
             unit: format!("u{id}"),
             unit_type: self.rules.units[kind].id.clone(),
             tile: self.board.ids[tile].clone(),
+            cost: Some(cost),
         });
     }
 }

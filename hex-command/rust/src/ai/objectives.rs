@@ -103,7 +103,7 @@ impl TileOrder {
             (sum.0 / count as f64, sum.1 / count as f64)
         }
         let mut home_keeps = (0..g.terrain().len())
-            .filter(|&t| g.is_keep(t) && g.owners()[t] == Some(side))
+            .filter(|&t| g.is_keep(t) && g.owns(t, side))
             .peekable();
         let home = if home_keeps.peek().is_some() {
             Some(center(g, home_keeps))
@@ -111,7 +111,7 @@ impl TileOrder {
             None
         };
         let mut opposing = (0..g.terrain().len())
-            .filter(|&t| g.is_keep(t) && g.owners()[t].is_some_and(|s| s != side))
+            .filter(|&t| g.is_keep(t) && g.owners()[t].is_some() && g.captures(t, side))
             .peekable();
         let mut enemies = g
             .units()

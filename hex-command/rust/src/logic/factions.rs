@@ -2,6 +2,26 @@
 use super::Game;
 use crate::data::*;
 impl Game<'_> {
+    pub(crate) fn faction_for_phase(&self, side: Side) -> &str {
+        self.active_faction
+            .as_deref()
+            .filter(|_| self.scoped_phase() == Some(side))
+            .unwrap_or(side.faction_id())
+    }
+    pub(crate) fn gold_for_phase(&self, side: Side) -> i32 {
+        self.gold[self.faction_for_phase(side)]
+    }
+    pub(crate) fn gold_for_unit(&self, unit: &Unit) -> i32 {
+        self.gold[self.unit_faction(unit)]
+    }
+    pub(crate) fn owns(&self, tile: usize, side: Side) -> bool {
+        self.owners[tile].as_deref() == Some(self.faction_for_phase(side))
+    }
+    pub(crate) fn captures(&self, tile: usize, side: Side) -> bool {
+        self.owners[tile].as_deref().is_none_or(|owner| {
+            self.faction_relation(self.faction_for_phase(side), owner) == Relation::Hostile
+        })
+    }
     pub(crate) fn control_roster(&self) -> Vec<(u32, Side, Option<String>, Option<Role>)> {
         self.units
             .iter()
@@ -87,7 +107,7 @@ impl Game<'_> {
         }
         for faction in self.factions.iter().filter(|f| f.phase == self.turn) {
             match faction.controller {
-                Controller::Ai { policy } => controllers.push((faction.id.clone(), Some(policy))),
+                Controller::Ai { policy } => controllers.push((faction.id.clone(), policy)),
                 Controller::Human => controllers.push((faction.id.clone(), None)),
                 Controller::Passive => {}
             }

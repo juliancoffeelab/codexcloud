@@ -89,8 +89,21 @@ export function recruitmentContext(
   }
   const keep = game
     .neighbors(tile.id)
-    .find((neighbor) => TERRAIN[neighbor.terrain].role === "keep" && neighbor.owner === "player");
+    .find(
+      (neighbor) =>
+        TERRAIN[neighbor.terrain].role === "keep" &&
+        (neighbor.owner === "player" ||
+          game.factions.some(
+            (faction) => faction.id === neighbor.owner && faction.controller.kind === "human",
+          )),
+    );
   if (!keep) return null;
-  const commander = game.units.find((unit) => unit.side === "player" && isLeader(unit));
+  const commanders = game.units.filter(
+    (unit) =>
+      game.faction(unit.id).controllable &&
+      game.faction(unit.id).id === keep.owner &&
+      isLeader(unit),
+  );
+  const commander = commanders.find((unit) => unit.tile === keep.id) ?? commanders[0];
   return Object.freeze({ commander, stationed: commander?.tile === keep.id });
 }

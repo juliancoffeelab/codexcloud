@@ -197,3 +197,14 @@ revision five to six. Frozen tile deltas widen and ease the approach to the pass
 while preserving ownership, units, positions, health, gold, fog, completed events
 and outcomes. Other maps pass through unchanged. Departure objectives and script
 conditions use the northern pass through the current scenario definitions.
+
+## Version-twenty migration
+
+The v20-to-v21 step converts phase economies to faction economies. Existing
+player/enemy balances and settlement owners remain unchanged; declared factions
+receive empty independent treasuries. A frozen Villages revision-six tile delta
+adds the marsh keep and funding villages and advances the map to revision seven.
+Existing owners take precedence, followed by occupants on newly owned tiles.
+A living Edrin gains the leader role and keep order; his faction receives its
+explicit recruitment quotes. No units are spawned, revived or relocated, and no
+gold is invented. Health, items, progress, turns and outcomes remain intact.

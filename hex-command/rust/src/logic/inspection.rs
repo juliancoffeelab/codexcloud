@@ -218,7 +218,7 @@ impl Game<'_> {
                         .map(|kind| self.rules.units[kind].id.clone())
                         .collect(),
                     recruitment: self
-                        .recruitment_options(unit.side)
+                        .recruitment_options_for(unit)
                         .into_iter()
                         .map(|kind| {
                             (
@@ -237,26 +237,43 @@ impl Game<'_> {
             objectives: self.campaign_objectives(),
             revision,
             units,
-            recruitment: [Side::Player, Side::Enemy]
-                .into_iter()
-                .map(|side| {
+            recruitment: self
+                .gold
+                .keys()
+                .map(|id| {
                     (
-                        if side == Side::Player {
-                            "player".into()
-                        } else {
-                            "enemy".into()
-                        },
-                        self.recruitment_options(side)
+                        id.clone(),
+                        self.recruitment_options_for_faction(id)
                             .into_iter()
                             .map(|kind| self.rules.units[kind].id.clone())
                             .collect(),
                     )
                 })
                 .collect(),
-            income: Gold {
-                player: self.income(Side::Player),
-                enemy: self.income(Side::Enemy),
-            },
+            recruitment_prices: self
+                .gold
+                .keys()
+                .map(|id| {
+                    (
+                        id.clone(),
+                        self.recruitment_options_for_faction(id)
+                            .into_iter()
+                            .map(|kind| {
+                                (
+                                    self.rules.units[kind].id.clone(),
+                                    self.recruit_cost_for_faction(id, kind),
+                                )
+                            })
+                            .collect(),
+                    )
+                })
+                .collect(),
+            income: Gold(
+                self.gold
+                    .keys()
+                    .map(|id| (id.clone(), self.faction_income(id)))
+                    .collect(),
+            ),
         }
     }
 }

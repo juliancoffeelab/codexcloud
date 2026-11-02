@@ -77,6 +77,7 @@ function fixture() {
         units: [],
         objectives: null,
         recruitment: {},
+        recruitment_prices: {},
         income: { player: 0, enemy: 0 },
       },
     }),

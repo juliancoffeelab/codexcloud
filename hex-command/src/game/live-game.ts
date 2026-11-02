@@ -126,6 +126,10 @@ export class LiveGame {
   get turn() {
     return this.state.turn;
   }
+  get factions() {
+    if (!this.state.factions) throw new Error("Native faction metadata is missing.");
+    return this.state.factions;
+  }
   get gold() {
     return this.state.gold;
   }
@@ -210,14 +214,19 @@ export class LiveGame {
   promotionOptions(id: string): UnitType[] {
     return (this.choices(id)?.promotions ?? []) as UnitType[];
   }
-  recruitmentOptions(side: Side): RecruitType[] {
-    return this.inspection.recruitment[side] as RecruitType[];
+  recruitmentOptions(faction: string): RecruitType[] {
+    return (this.inspection.recruitment[faction] ?? []) as RecruitType[];
   }
   recruitTiles(id: string, type: UnitType): Tile[] {
     return (this.choices(id)?.recruitment[type] ?? []).map((tile) => this.tile(tile)!);
   }
-  income(side: Side): number {
-    return this.inspection.income[side];
+  recruitPrice(faction: string, type: UnitType): number {
+    const price = this.inspection.recruitment_prices[faction]?.[type];
+    if (price === undefined) throw new Error("Unknown faction recruit.");
+    return price;
+  }
+  income(faction: string): number {
+    return this.inspection.income[faction] ?? 0;
   }
   move(id: string, tile: string): Unit {
     this.dispatch({ kind: "move", unit: this.id(id), tile });
@@ -328,6 +337,7 @@ export class LiveGame {
       round: state.round,
       turn: state.turn,
       gold: state.gold,
+      factions: detached.factions,
       winner: state.winner,
       log: state.log,
       tiles: state.tiles,
@@ -345,6 +355,7 @@ export class LiveGame {
       canAttack: detached.canAttack.bind(detached),
       previewDetails: detached.previewDetails.bind(detached),
       recruitmentOptions: detached.recruitmentOptions.bind(detached),
+      recruitPrice: detached.recruitPrice.bind(detached),
       promotionOptions: (id: string) => immutable(detached.promotionOptions(id)),
       income: detached.income.bind(detached),
       snapshot: () => immutable(detached.snapshot()),

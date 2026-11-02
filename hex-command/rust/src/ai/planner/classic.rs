@@ -227,7 +227,7 @@ impl BattleView<'_, '_> {
 
     fn movement_goals(&self, u: &Unit, orders: &crate::ai::orders::TacticalOrders) -> Vec<usize> {
         let villages: Vec<_> = (0..self.terrain().len())
-            .filter(|&t| self.role_is(t, TerrainRole::Village) && self.owners()[t] != Some(u.side))
+            .filter(|&t| self.role_is(t, TerrainRole::Village) && self.captures(t, u.side))
             .collect();
         let goals = if self.rules().units[u.kind].family == Family::Scout && !villages.is_empty() {
             villages
@@ -248,7 +248,7 @@ impl BattleView<'_, '_> {
                 .movement_tiles
                 .iter()
                 .map(|tile| self.site(&tile.0))
-                .filter(|&tile| self.owners()[tile] != Some(u.side))
+                .filter(|&tile| self.captures(tile, u.side))
                 .collect();
             if !contested.is_empty() {
                 return contested;
@@ -404,7 +404,7 @@ impl BattleDraft<'_, '_> {
         let villages: Vec<_> = (0..self.terrain().len())
             .filter(|&t| {
                 self.role_is(t, TerrainRole::Village)
-                    && self.owners()[t] == Some(u.side)
+                    && self.owns(t, u.side)
                     && self.at(t).is_none_or(|o| o.id == id)
                     && self.enemy_danger(&u, t) == 0
             })
@@ -592,19 +592,16 @@ impl BattleDraft<'_, '_> {
                     }
                 }
             }
-            let capture =
-                if self.role_is(t, TerrainRole::Village) && self.owners()[t] != Some(u.side) {
-                    if self.rules().units[u.kind].family == Family::Scout {
-                        8.0
-                    } else {
-                        5.0
-                    }
+            let capture = if self.role_is(t, TerrainRole::Village) && self.captures(t, u.side) {
+                if self.rules().units[u.kind].family == Family::Scout {
+                    8.0
                 } else {
-                    0.0
-                };
-            let heal = if u.hp <= 4
-                && self.role_is(t, TerrainRole::Village)
-                && self.owners()[t] == Some(u.side)
+                    5.0
+                }
+            } else {
+                0.0
+            };
+            let heal = if u.hp <= 4 && self.role_is(t, TerrainRole::Village) && self.owns(t, u.side)
             {
                 9.0
             } else {
@@ -678,9 +675,7 @@ impl BattleDraft<'_, '_> {
                 self.can_pursue(&u, g)
                     && (g.kind != ObjectiveKind::Capture
                         || g.hold == Some(true)
-                        || g.tiles
-                            .iter()
-                            .any(|t| self.owners()[self.site(t)] != Some(u.side)))
+                        || g.tiles.iter().any(|t| self.captures(self.site(t), u.side)))
             })
             .collect();
         if eligible.iter().any(|g| self.assigned_duty(&u, g)) {

@@ -347,8 +347,12 @@ impl<'catalog> Game<'catalog> {
         self.occupied_tiles.insert(tile);
         self.units[index].tile = tile;
         self.units[index].moved = true;
-        if self.terrain_role(tile).capturable() && self.owners[tile] != Some(actor.side) {
-            self.owners[tile] = Some(actor.side);
+        if self.terrain_role(tile).capturable()
+            && self.owners[tile].as_deref().is_none_or(|owner| {
+                self.faction_relation(self.unit_faction(&actor), owner) == Relation::Hostile
+            })
+        {
+            self.owners[tile] = Some(self.unit_faction(&actor).to_owned());
             let unit_name = self.rules.units[actor.kind].name.to_lowercase();
             let capture = if self.role_is(tile, TerrainRole::Village) {
                 "captured a village".to_owned()

@@ -13,6 +13,8 @@ type ReadableGame = Pick<
   | "presentation"
   | "objectives"
   | "faction"
+  | "factions"
+  | "recruitPrice"
   | "campaign"
   | "recruitmentOptions"
   | "promotionOptions"

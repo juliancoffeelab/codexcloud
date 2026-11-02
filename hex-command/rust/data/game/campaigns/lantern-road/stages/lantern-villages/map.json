@@ -2362,8 +2362,8 @@
       "id": "13,7",
       "col": 13,
       "row": 7,
-      "terrain": "forest",
-      "owner": null,
+      "terrain": "village",
+      "owner": "enemy",
       "floor": "green-forest",
       "fog": {
         "condition": {
@@ -2372,7 +2372,8 @@
           "radius": 3
         },
         "remember": true
-      }
+      },
+      "connections": []
     },
     {
       "id": "14,7",
@@ -3328,9 +3329,9 @@
       "id": "16,10",
       "col": 16,
       "row": 10,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain",
+      "terrain": "village",
+      "owner": "swamp-dead",
+      "floor": "marsh",
       "fog": {
         "condition": {
           "kind": "proximity",
@@ -3338,7 +3339,8 @@
           "radius": 3
         },
         "remember": true
-      }
+      },
+      "connections": []
     },
     {
       "id": "17,10",
@@ -3856,8 +3858,8 @@
       "id": "11,12",
       "col": 11,
       "row": 12,
-      "terrain": "marsh",
-      "owner": null,
+      "terrain": "village",
+      "owner": "swamp-dead",
       "floor": "marsh",
       "fog": {
         "condition": {
@@ -3866,14 +3868,15 @@
           "radius": 3
         },
         "remember": true
-      }
+      },
+      "connections": []
     },
     {
       "id": "12,12",
       "col": 12,
       "row": 12,
-      "terrain": "marsh",
-      "owner": null,
+      "terrain": "keep",
+      "owner": "swamp-dead",
       "floor": "marsh",
       "fog": {
         "condition": {
@@ -4005,7 +4008,7 @@
       }
     ]
   },
-  "mapRevision": 6,
+  "mapRevision": 7,
   "factions": [
     {
       "id": "prisoners",
@@ -4035,14 +4038,24 @@
       "id": "swamp-dead",
       "phase": "enemy",
       "controller": {
-        "kind": "ai",
-        "policy": "classic"
+        "kind": "ai"
       },
       "palette": "green",
       "relations": {
         "player": "hostile",
         "enemy": "neutral"
-      }
+      },
+      "name": "Marsh dead",
+      "recruits": [
+        {
+          "unit": "zombie-walker",
+          "cost": 6
+        },
+        {
+          "unit": "zombie-decay-caster",
+          "cost": 10
+        }
+      ]
     }
   ],
   "name": "The Toll Road",

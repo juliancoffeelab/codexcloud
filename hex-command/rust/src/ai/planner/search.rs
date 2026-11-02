@@ -257,7 +257,7 @@ impl BattleView<'_, '_> {
                         let kill_chance = self.potential_kill_chance(unit, target, weapon);
                         let killed = kill_chance == 1.0;
                         let kill_value = kill_chance
-                            * (12.0 + self.rules().units[target.kind].cost as f64 * 0.3);
+                            * (12.0 + self.recruit_cost(target, target.kind) as f64 * 0.3);
                         let essential_value = if orders.important(self, target) {
                             4.0 + 14.0 * kill_chance
                         } else {
@@ -391,7 +391,7 @@ impl BattleView<'_, '_> {
                     && original.actor.is_none()
                     && original.tiles.iter().all(|t| {
                         let tile = self.site(t);
-                        self.owners()[tile] == Some(side)
+                        self.owns(tile, side)
                             && (original.hold != Some(true)
                                 || self.at(tile).is_some_and(|o| {
                                     self.belongs_to_phase(o, side) && o.id != unit.id
@@ -669,11 +669,11 @@ impl BattleView<'_, '_> {
                 }
                 let healing_tile = (self.role_is(tile, TerrainRole::Village)
                     || self.role_is(tile, TerrainRole::Grove))
-                    && (self.owners()[tile] == Some(side) || self.at(tile).is_none());
+                    && (self.owns(tile, side) || self.at(tile).is_none());
                 if healing_tile {
                     positioning += (self.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
                 }
-                if self.role_is(tile, TerrainRole::Village) && self.owners()[tile] != Some(side) {
+                if self.role_is(tile, TerrainRole::Village) && self.captures(tile, side) {
                     positioning += 3.0;
                 }
                 {
@@ -783,7 +783,7 @@ impl BattleView<'_, '_> {
                         finishes_battle = killed && orders.terminal_attack(target);
                         combat = forecast.effective[0] * 2.0
                             + kill_chance
-                                * (12.0 + self.rules().units[target.kind].cost as f64 * 0.3)
+                                * (12.0 + self.recruit_cost(target, target.kind) as f64 * 0.3)
                             - retaliation as f64 * 1.8
                             + escort.attack(unit.id, target, damage, kill_chance);
                         if orders.important(self, target) {

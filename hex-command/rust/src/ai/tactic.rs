@@ -120,7 +120,7 @@ mod tests {
                 .collect();
             assert_eq!(recruits.len(), 2);
             assert!(recruits.iter().all(|unit| unit.moved && unit.attacked));
-            assert!(view.gold()[view.turn().index()] < self.initial_gold);
+            assert!(view.gold_for_phase(view.turn()) < self.initial_gold);
             self.calls.set(self.calls.get() + 1);
             Ok(PlanningReport::default())
         }
@@ -131,7 +131,7 @@ mod tests {
         let mut game = Game::new(&rules, "mirror");
         game.units.retain(|unit| unit.is_leader());
         game.roster_changed();
-        game.gold[game.turn.index()] = 1000;
+        game.gold[game.turn.faction_id()] = 1000;
         let kind = game.recruitment_options(game.turn)[0];
         let calls = Rc::new(Cell::new(0));
         let mut tactic = Tactic::new(
@@ -161,7 +161,7 @@ mod tests {
             assert_eq!(plan.recruitment.recruited.len(), 2);
             assert_eq!(plan.recruitment.mandatory.len(), 1);
             assert!(plan.recruitment.requirements.is_empty());
-            assert_eq!(game.gold[game.turn.index()], 1000);
+            assert_eq!(game.gold[game.turn.faction_id()], 1000);
             let mut replay = game.fork();
             for command in plan.commands {
                 replay.execute(command).unwrap();

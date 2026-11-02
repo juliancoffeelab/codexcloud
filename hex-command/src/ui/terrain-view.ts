@@ -47,10 +47,13 @@ function recruitmentView(view: BattleView, tile: TileView, context: RecruitmentC
   if (!context) return null;
   const { game } = view;
   const isPlayerTurn = game.turn === "player" && !game.winner;
-  const options = game.recruitmentOptions("player").map((type) => ({
+  const faction = context.commander
+    ? game.faction(context.commander.id).id
+    : (tile.owner ?? "player");
+  const options = game.recruitmentOptions(faction).map((type) => ({
     type,
     name: TYPES[type].name,
-    cost: TYPES[type].cost,
+    cost: game.recruitPrice(faction, type),
     hp: TYPES[type].hp,
     move: TYPES[type].move,
     description: TYPES[type].description,
@@ -70,7 +73,7 @@ function recruitmentView(view: BattleView, tile: TileView, context: RecruitmentC
   if (
     isPlayerTurn &&
     context.stationed &&
-    game.gold.player < Math.min(...options.map((option) => option.cost))
+    (game.gold[faction] ?? 0) < Math.min(...options.map((option) => option.cost))
   ) {
     hint += " Not enough gold.";
   }
@@ -87,6 +90,10 @@ export function terrainPanelView(view: BattleView) {
   let ownerLabel = "Unclaimed";
   if (tile.owner === "player") ownerLabel = "Your";
   if (tile.owner === "enemy") ownerLabel = "Enemy";
+  if (tile.owner && tile.owner !== "player" && tile.owner !== "enemy")
+    ownerLabel =
+      view.game.factions.find((faction) => faction.id === tile.owner)?.name ??
+      tile.owner.replaceAll("-", " ");
   const facts = terrainFacts(tile.terrain);
   const campaign = view.game.campaign;
   const mission = campaign && campaignMission(campaign);
@@ -108,7 +115,10 @@ export function terrainPanelView(view: BattleView) {
     name: TERRAIN[tile.terrain].name,
     description: TERRAIN[tile.terrain].description,
     ownership: hasOwnership
-      ? { label: `${ownerLabel} ${tile.terrain}`, className: tile.owner || "neutral" }
+      ? {
+          label: `${ownerLabel} ${tile.terrain}`,
+          className: tile.owner === "player" ? "player" : tile.owner ? "enemy" : "neutral",
+        }
       : null,
     facts,
     recruitment: recruitmentView(view, tile, view.recruitment),

@@ -10,7 +10,7 @@ use rustc_hash::FxHashMap;
 pub(in crate::ai) struct Workspace {
     signature: Vec<(u32, usize, usize, i32, bool, bool)>,
     terrain: Vec<usize>,
-    owners: Vec<Option<Side>>,
+    owners: Vec<Option<String>>,
     fields: FxHashMap<u32, Field>,
     assignments: Vec<(UnitId, Vec<UnitId>, Option<(usize, usize)>)>,
 }

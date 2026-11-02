@@ -152,7 +152,7 @@ impl BattleView<'_, '_> {
             .iter()
             .find(|requirement| requirement.deficit(self) > 0);
         let pool: Vec<_> = self
-            .recruitment_options(side)
+            .recruitment_options_for(&leader)
             .into_iter()
             .filter(|&kind| required.is_none_or(|requirement| requirement.accepts(self, kind)))
             .collect();
@@ -332,7 +332,8 @@ impl BattleView<'_, '_> {
                     .sum::<f64>()
                     / opponents.len() as f64
             };
-            let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5) / r.cost as f64;
+            let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5)
+                / self.recruit_cost(&leader, kind).max(1) as f64;
             let score = if frontline_only {
                 efficiency * 5.0 + r.hp as f64 * 0.15
             } else {
@@ -373,14 +374,16 @@ impl BattleView<'_, '_> {
         };
         // Choose the desired unit before checking the purse. With income, keep
         // its gold instead of continuously replacing it with cheap recruits.
-        let kind = if self.rules().units[preferred].cost <= self.gold()[side.index()] {
+        let kind = if self.recruit_cost(&leader, preferred) <= self.gold_for_unit(&leader) {
             preferred
         } else if self.income(side) > 0 {
             return None;
         } else {
             choices
                 .iter()
-                .find(|&&(kind, _, _)| self.rules().units[kind].cost <= self.gold()[side.index()])?
+                .find(|&&(kind, _, _)| {
+                    self.recruit_cost(&leader, kind) <= self.gold_for_unit(&leader)
+                })?
                 .0
         };
         let mut tiles: Vec<_> = self
@@ -422,7 +425,7 @@ pub(crate) fn diagnostics(
     {
         let recruit = unit.is_leader();
         let options = if recruit {
-            view.recruitment_options(unit.side)
+            view.recruitment_options_for(unit)
         } else {
             view.rules().units[unit.kind]
                 .advances_to
@@ -475,11 +478,16 @@ pub(crate) fn diagnostics(
                         && view.rules().units[u.kind].family == rule.family
                 })
                 .count();
+            let price = if recruit {
+                view.recruit_cost(unit, kind)
+            } else {
+                rule.cost
+            };
             let denominator = if recruit {
-                rule.cost.max(1) as f64
+                price.max(1) as f64
                     * (1.0 + copies as f64 * weights.duplicate_penalty)
                     * (1.0
-                        + f64::from((rule.cost - view.gold()[unit.side.index()]).max(0))
+                        + f64::from((price - view.gold_for_unit(unit)).max(0))
                             / f64::from(view.income(unit.side).max(1))
                             * weights.wait_penalty)
             } else {
@@ -503,7 +511,7 @@ pub(crate) fn diagnostics(
                 }
             }
             if let Some((tile, score)) = best {
-                rows.push(serde_json::json!({"choice":if recruit {"recruit"} else {"promotion"},"actor":unit.id,"base":view.rules().units[unit.kind].id,"unit":rule.id,"tile":view.board().ids[tile],"hp":candidate.hp,"cost":rule.cost,"affordable":rule.cost <= view.gold()[unit.side.index()],"eligible":recruit || view.promotion_options(unit).contains(&kind),"denominator":denominator,"score":score.total/denominator,"components":score}));
+                rows.push(serde_json::json!({"choice":if recruit {"recruit"} else {"promotion"},"actor":unit.id,"base":view.rules().units[unit.kind].id,"unit":rule.id,"tile":view.board().ids[tile],"hp":candidate.hp,"cost":price,"affordable":price <= view.gold_for_unit(unit),"eligible":recruit || view.promotion_options(unit).contains(&kind),"denominator":denominator,"score":score.total/denominator,"components":score}));
             }
         }
     }
@@ -547,7 +555,7 @@ mod tests {
         game.units.retain(|u| u.is_leader());
         game.roster_changed();
         game.pools = Some([vec![a, b], vec![a, b]]);
-        game.gold[0] = 100;
+        game.gold["player"] = 100;
         let orders = crate::ai::orders::RecruitmentOrders::default();
         let draw = |game: &crate::logic::Game<'_>, seed| {
             let result =
@@ -570,7 +578,7 @@ mod tests {
         game.units.retain(|u| u.is_leader());
         game.roster_changed();
         game.pools = Some([vec![a, b], vec![a, b]]);
-        game.gold[0] = 100;
+        game.gold["player"] = 100;
         let leader = game
             .units
             .iter()
@@ -611,7 +619,7 @@ mod tests {
             let mut reversed = available.clone();
             reversed.reverse();
             game.pools = Some([reversed.clone(), reversed]);
-            game.gold[0] = 1000;
+            game.gold["player"] = 1000;
             for &expected in available.iter().cycle().take(available.len() * 2) {
                 let command = RecruiterKind::Rotation
                     .choose_orders(
@@ -667,21 +675,21 @@ mod tests {
         game.add(rules.types["swordsman"], Side::Player, sites[0]);
         game.add(rules.types["archer"], Side::Player, sites[1]);
         game.round = 3;
-        game.gold[Side::Player.index()] = rules.units[rules.types["rider"]].cost;
+        game.gold["player"] = rules.units[rules.types["rider"]].cost;
         let workspace =
             crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
         let orders = crate::ai::CampaignBlock::Arena.campaign_orders(&game, &workspace);
         assert!(orders.recruitment.rotate_pool);
         // A selected mount survives a round boundary while saving, rather
         // than being skipped when the next roster entry comes around.
-        game.gold[0] = 0;
+        game.gold["player"] = 0;
         assert!(
             RecruiterKind::Rotation
                 .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
                 .is_none()
         );
         game.round += 1;
-        game.gold[0] = rules.units[rules.types["rider"]].cost;
+        game.gold["player"] = rules.units[rules.types["rider"]].cost;
         let selected = RecruiterKind::Rotation
             .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
             .unwrap();

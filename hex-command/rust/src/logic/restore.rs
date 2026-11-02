@@ -52,6 +52,8 @@ pub(crate) fn validate_state_geometry(
 ) -> Result<(), StateError> {
     let fail = |message: &str| StateError(message.to_owned());
     validate_factions(&state.factions, &state.units).map_err(StateError)?;
+    validate_economy(&state.factions, &state.gold, &state.tiles, &rules.types)
+        .map_err(StateError)?;
     for required in &authored.factions {
         if !state
             .factions

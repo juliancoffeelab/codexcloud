@@ -6,7 +6,8 @@ retains the implicit `player` and `enemy` factions and its selected AI policy.
 
 A faction declares its stable ID, `phase` (`player` or `enemy`), `controller`,
 visual `palette`, and diplomatic `relations`. Controllers are `human`, `passive`,
-or `ai` with an independently selected policy. Palette IDs name artwork palettes;
+or `ai` with an optional independently selected policy. An omitted AI policy inherits
+the session policy. Palette IDs name artwork palettes;
 adding a visual palette does not require a new Rust enum. Every AI controller receives its
 own planning workspace and can act only with its own units. Controllers sharing
 a phase finish before that phase ends; passive controllers issue no actions.
@@ -48,11 +49,21 @@ immediately, while a unit that already acted gains no extra actions. The destina
 control and palette, so transfer to the implicit player makes the unit blue and
 controllable without spawning a replacement.
 
-The two existing phases still own their treasuries, recruitment pools and tile
-ownership. Separate unit factions and controllers do not create separate
-territorial economies. Runtime state and inspection facts are published by Rust;
-the frontend uses resolved faction palettes, relations and control permissions
-for display and input.
+Factions own treasuries and settlements independently of their turn phase.
+`gold` maps faction IDs to nonnegative balances, including the implicit `player`
+and `enemy` IDs. Every declared faction needs its own entry. A tile's `owner` is
+its faction ID. At phase start each faction receives income from its own villages
+once. Settlement healing requires the unit's faction to own the tile. Moving onto
+unowned or hostile territory captures it; allied and neutral territory is retained.
+
+A recruiting leader must occupy its own faction's keep. An explicit `recruits`
+array supplies `{ "unit": "type-id", "cost": 6 }` quotes; recruitment spends only
+that faction's money and produces a unit in that faction. Named factions without
+a pool cannot recruit. The implicit player/enemy factions retain scenario or
+configured arena pools unless explicitly overridden. Recruitment quotes do not
+change combat unit stats. Native inspection publishes pools, prices and income
+by faction; the frontend uses these facts alongside faction palettes and control
+permissions for display and input.
 
 Transfer conditions use the shared `ConditionRule` vocabulary. An omitted tile
 refers to the unit's current tile. Ownership, event, turn, proximity, and combined

@@ -94,7 +94,10 @@ function tileLabel(
   faction?: import("../../rust/pkg/hex_command").UnitFaction,
 ): string {
   const parts = [TERRAIN[tile.terrain].name, `column ${tile.col + 1}`, `row ${tile.row + 1}`];
-  if (tile.owner) parts.push(tile.owner === "player" ? "your territory" : "enemy territory");
+  if (tile.owner)
+    parts.push(
+      tile.owner === "player" ? "your territory" : `${tile.owner.replaceAll("-", " ")} territory`,
+    );
   if (occupant) {
     const team =
       faction?.relation === "neutral"
@@ -197,7 +200,12 @@ export function battlefieldTiles(
         occupant?.faction,
       ),
       occupant,
-      ownerColor: tile.owner === "player" ? "#6fdec0" : "#ff9590",
+      ownerColor:
+        tile.owner === "player"
+          ? "#6fdec0"
+          : (({ green: "#83b765", passive: "#efecdc", enemy: "#ff9590" } as Record<string, string>)[
+              game.factions.find((f) => f.id === tile.owner)?.palette ?? "enemy"
+            ] ?? "#ff9590"),
     };
   });
 }

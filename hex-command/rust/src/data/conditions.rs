@@ -29,7 +29,8 @@ pub enum Condition {
     Owner {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         tile: Option<String>,
-        side: Side,
+        /// Exact faction identifier (the authoring key predates faction economies).
+        side: String,
     },
     Proximity {
         #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
@@ -118,11 +119,18 @@ impl Condition {
         }
     }
 
-    pub(super) fn validate_units(
+    pub(super) fn validate_references(
         &self,
         types: &std::collections::HashMap<String, usize>,
+        factions: &[super::Faction],
     ) -> Result<(), String> {
         match self {
+            Self::Owner { side, .. }
+                if !matches!(side.as_str(), "player" | "enemy")
+                    && !factions.iter().any(|f| f.id == *side) =>
+            {
+                Err("condition references unknown owner faction".into())
+            }
             Self::Proximity { unit_types, .. }
                 if unit_types.iter().any(|kind| !types.contains_key(kind)) =>
             {
@@ -144,7 +152,7 @@ impl Condition {
             }
             Self::All { conditions } | Self::Any { conditions } => {
                 for condition in conditions {
-                    condition.validate_units(types)?;
+                    condition.validate_references(types, factions)?;
                 }
                 Ok(())
             }

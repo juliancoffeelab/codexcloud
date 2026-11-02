@@ -38,7 +38,7 @@ pub(in crate::ai) struct Workspace {
     front: u16,
     screens: usize,
     roster: Vec<GoalUnit>,
-    owners: Vec<Option<Side>>,
+    owners: Vec<Option<String>>,
     terrain: Vec<usize>,
     gold: i32,
     side: Option<Side>,
@@ -55,7 +55,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
 
     let same = cache.side == Some(game.turn())
         && cache.revision == workspace.cooperation.revision
-        && cache.gold == game.gold()[game.turn().index()]
+        && cache.gold == game.gold_for_phase(game.turn())
         && cache.owners == *game.owners()
         && cache.terrain == *game.terrain()
         && cache.roster.len() == game.units().len()
@@ -77,7 +77,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
     if !same {
         cache.revision = workspace.cooperation.revision;
         cache.side = Some(game.turn());
-        cache.gold = game.gold()[game.turn().index()];
+        cache.gold = game.gold_for_phase(game.turn());
         cache.owners.clone_from(&game.owners());
         cache.terrain.clone_from(&game.terrain());
         cache.orders = orders.clone();
@@ -261,7 +261,7 @@ pub(in crate::ai) fn plan(
             && original.actor.is_none()
             && original.tiles.iter().all(|t| {
                 let tile = game.site(t);
-                game.owners()[tile] == Some(unit.side)
+                game.owns(tile, unit.side)
                     && (original.hold != Some(true)
                         || game
                             .at(tile)
@@ -487,11 +487,11 @@ pub(in crate::ai) fn plan(
         }
         let healing = (game.role_is(tile, TerrainRole::Village)
             || game.role_is(tile, TerrainRole::Grove))
-            && (game.owners()[tile] == Some(unit.side) || game.at(tile).is_none());
+            && (game.owns(tile, unit.side) || game.at(tile).is_none());
         if healing {
             value += (game.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
         }
-        if game.role_is(tile, TerrainRole::Village) && game.owners()[tile] != Some(unit.side) {
+        if game.role_is(tile, TerrainRole::Village) && game.captures(tile, unit.side) {
             value += 3.0;
         }
         let proximity = proximity_grid[tile];
@@ -551,7 +551,7 @@ pub(in crate::ai) fn plan(
                 finishing_sites.contains(&tile) && orders.arrives(game, &unit, tile),
                 (game.role_is(tile, TerrainRole::Village)
                     || game.role_is(tile, TerrainRole::Grove))
-                    && (game.owners()[tile] == Some(unit.side) || game.at(tile).is_none()),
+                    && (game.owns(tile, unit.side) || game.at(tile).is_none()),
             )
         })
         .collect();
@@ -589,7 +589,7 @@ pub(in crate::ai) fn plan(
             eliminated = killed.then_some(target.id);
             terminal = killed && orders.terminal_attack(target);
             combat = forecast.effective[0] * 2.0
-                + kill_chance * (12.0 + game.rules().units[target.kind].cost as f64 * 0.3)
+                + kill_chance * (12.0 + game.recruit_cost(target, target.kind) as f64 * 0.3)
                 - retaliation as f64 * 1.8
                 + drained as f64 * 2.0
                 + workspace

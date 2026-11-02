@@ -42,6 +42,19 @@ def analyze(inputs, journals, value=True, leaders=True):
             initial = chapter['initial']
             tiles = {t['id']: t for t in initial['tiles']}
             owners = {t: u.get('owner') for t, u in tiles.items()}
+            factions = {f['id']: f for f in initial.get('factions', [])}
+            def faction_id(unit):
+                return unit.get('faction') or unit['side']
+            def hostile(first, second):
+                if first == second:
+                    return False
+                relation = factions.get(first, {}).get('relations', {}).get(second)
+                if relation is None:
+                    relation = factions.get(second, {}).get('relations', {}).get(first)
+                return relation == 'hostile' if relation is not None else {first, second} == {'player', 'enemy'}
+            def replacement_cost(unit):
+                pool = factions.get(faction_id(unit), {}).get('recruits') or []
+                return next((entry['cost'] for entry in pool if entry['unit'] == unit['type']), profiles[unit['type']]['cost'])
             captors, investments = {}, {}
             objective_tiles = {side: set() for side in ('player', 'enemy')}
             for phase in chapter['phases']:
@@ -89,17 +102,17 @@ def analyze(inputs, journals, value=True, leaders=True):
                                 and u['type'] == action['type'] and u['id'] not in investments]
                             if len(recruits) != 1:
                                 raise ValueError('Cannot identify recorded new recruit from its deployment tile/type')
-                            investments[recruits[0]['id']] = profiles[action['type']]['cost']
+                            investments[recruits[0]['id']] = action['cost'] if action.get('cost') is not None else replacement_cost(recruits[0])
                         elif action['kind'] == 'move':
                             unit = lookup[action['unit']]
                             tile = action['tile']
-                            if tiles[tile]['terrain'] in CAPTURABLE and owners[tile] != unit['side']:
-                                owners[tile] = unit['side']
+                            if tiles[tile]['terrain'] in CAPTURABLE and (owners[tile] is None or hostile(faction_id(unit), owners[tile])):
+                                owners[tile] = faction_id(unit)
                                 captors[tile] = dict(unit)
                                 add(unit, captures=1, objectiveCaptures=int(tile in objective_tiles[unit['side']]))
                     for loss in phase.get('losses', []):
                         add(loss, casualties=1, recruitGoldLost=investments.pop(loss['id'], 0),
-                            casualtyReplacementValue=profiles[loss['type']]['cost'])
+                            casualtyReplacementValue=replacement_cost(loss))
                     for combat in phase.get('combats', []):
                         mitigation = combat.get('mitigation')
                         if mitigation is None:
@@ -137,7 +150,7 @@ def analyze(inputs, journals, value=True, leaders=True):
                                 add(lookup[source], hpDamageDealt=reflected, thornHPDamageDealt=reflected)
                     observed_owners = {o['tile']: o['owner'] for o in phase['ownership']}
                     for tile, captor in captors.items():
-                        if observed_owners.get(tile) == side and captor['side'] == side:
+                        if observed_owners.get(tile) == faction_id(captor) and captor['side'] == side:
                             add(captor, ownedTileTurns=1,
                                 objectiveControlTurns=int(tile in objective_tiles[side]))
                     owners.update(observed_owners)

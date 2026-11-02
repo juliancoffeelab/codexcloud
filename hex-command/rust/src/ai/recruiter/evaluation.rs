@@ -37,7 +37,7 @@ pub(super) struct Score {
 pub(super) struct Assessment {
     weights: RecruitmentWeights,
     forecasts: Vec<Unit>,
-    forecast_weight: f64,
+    forecast_weights: Vec<f64>,
     approaches: Vec<Approach>,
     support: Vec<Support>,
     captures: Vec<(Rc<Vec<u16>>, f64)>,
@@ -69,12 +69,15 @@ impl Assessment {
             .filter(|u| game.allied(unit, u) && u.id != unit.id)
             .collect();
         let mut forecasts = Vec::new();
-        let mut forecast_weight = 0.0;
+        let mut forecast_weights = Vec::new();
         if predict {
-            let actual = enemies.iter().filter(|e| !e.is_leader()).count();
-            if let Some(leader) = enemies.iter().find(|e| e.is_leader()) {
-                let options = game.recruitment_options(leader.side);
-                forecast_weight =
+            for leader in enemies.iter().filter(|e| e.is_leader()) {
+                let actual = enemies
+                    .iter()
+                    .filter(|e| !e.is_leader() && game.allied(leader, e))
+                    .count();
+                let options = game.recruitment_options_for(leader);
+                let forecast_weight =
                     (weights.future_enemies - actual as f64).max(0.0) / options.len().max(1) as f64;
                 if forecast_weight > 0.0 {
                     for kind in options {
@@ -84,6 +87,7 @@ impl Assessment {
                         forecast.hp = game.rules().units[kind].hp;
                         forecast.id = 0;
                         forecasts.push(forecast);
+                        forecast_weights.push(forecast_weight);
                     }
                 }
             }
@@ -180,7 +184,7 @@ impl Assessment {
                                             if index < enemies.len() {
                                                 1.0
                                             } else {
-                                                forecast_weight
+                                                forecast_weights[index - enemies.len()]
                                             },
                                         )
                                     })
@@ -206,8 +210,8 @@ impl Assessment {
             .owners()
             .iter()
             .enumerate()
-            .filter(|(tile, owner)| {
-                **owner != Some(unit.side) && game.role_is(*tile, TerrainRole::Village)
+            .filter(|(tile, _owner)| {
+                game.captures(*tile, unit.side) && game.role_is(*tile, TerrainRole::Village)
             })
             .map(|(tile, _)| {
                 let covered = allies
@@ -229,7 +233,7 @@ impl Assessment {
         Self {
             weights,
             forecasts,
-            forecast_weight,
+            forecast_weights,
             approaches,
             support,
             captures,
@@ -269,7 +273,7 @@ impl Assessment {
             .enumerate()
         {
             let weight = if index >= enemies.len() {
-                self.forecast_weight
+                self.forecast_weights[index - enemies.len()]
             } else {
                 1.0
             };
@@ -395,7 +399,7 @@ impl Assessment {
                                 if index < enemies.len() {
                                     1.0
                                 } else {
-                                    self.forecast_weight
+                                    self.forecast_weights[index - enemies.len()]
                                 },
                             )
                         })
@@ -664,7 +668,7 @@ mod tests {
             .find(|u| u.id == enemy_id)
             .unwrap()
             .tile = b;
-        game.owners.fill(Some(Side::Player));
+        game.owners.fill(Some("player".into()));
         let view = BattleView::new(&game);
         let unit = game.unit(target_id).unwrap();
         let score = |weights| {
@@ -838,7 +842,7 @@ mod tests {
             .find(|unit| unit.side == Side::Enemy)
             .unwrap()
             .role = Some(Role::Leader);
-        game.owners.fill(Some(Side::Player));
+        game.owners.fill(Some("player".into()));
         let assess = |game: &crate::logic::Game<'_>| {
             let view = BattleView::new(game);
             let unit = game.unit(target).unwrap();
@@ -1051,7 +1055,7 @@ mod tests {
                 .find(|u| u.id == target_id)
                 .unwrap()
                 .hp = hp;
-            game.owners.fill(Some(Side::Player));
+            game.owners.fill(Some("player".into()));
             let view = BattleView::new(&game);
             let unit = game.unit(target_id).unwrap();
             let score = Assessment::new(&view, unit).recruitment_breakdown(&view, unit);
@@ -1082,7 +1086,7 @@ mod tests {
         for tile in 0..game.terrain.len() {
             game.set_terrain(tile, plains);
         }
-        game.owners.fill(Some(Side::Player));
+        game.owners.fill(Some("player".into()));
         let ally_tile = game.site("3,4");
         game.add(game.unit(target).unwrap().kind, Side::Player, ally_tile);
         let other_tile = game.site("8,5");
@@ -1130,7 +1134,7 @@ mod tests {
                     game.units.iter_mut().find(|u| u.id == ally).unwrap().hp = 50;
                 }
                 game.roster_changed();
-                game.owners.fill(Some(Side::Player));
+                game.owners.fill(Some("player".into()));
                 let (recruit, promotion) = {
                     let view = BattleView::new(&game);
                     let unit = game.unit(target_id).unwrap();

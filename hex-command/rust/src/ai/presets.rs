@@ -98,7 +98,7 @@ mod tests {
         game.roster_changed();
         for side in [Side::Player, Side::Enemy] {
             game.begin_turn(side);
-            game.gold[side.index()] = 100;
+            game.gold[side.faction_id()] = 100;
             let leader = game.units.iter().find(|u| u.side == side).unwrap().id;
             let workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
             let orders = CampaignBlock::Mission.campaign_orders(&game, &workspace);

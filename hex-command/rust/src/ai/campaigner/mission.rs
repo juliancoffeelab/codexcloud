@@ -664,7 +664,7 @@ impl Game<'_> {
             Condition::Owner {
                 tile: Some(tile),
                 side,
-            } if *side == self.turn => vec![objective(
+            } if side == self.faction_for_phase(self.turn) => vec![objective(
                 prefix,
                 ObjectiveKind::Capture,
                 vec![tile.clone()],
@@ -1035,7 +1035,7 @@ impl Game<'_> {
             }
         }
         for tile in 0..self.terrain.len() {
-            if self.role_is(tile, TerrainRole::Village) && self.owners[tile] != Some(side) {
+            if self.role_is(tile, TerrainRole::Village) && self.captures(tile, side) {
                 goals.push(objective(
                     &format!("village:{}", self.board.ids[tile]),
                     ObjectiveKind::Capture,
@@ -1159,7 +1159,7 @@ impl Game<'_> {
         {
             let mut homes: Vec<_> = (0..self.terrain.len())
                 .filter(|&t| {
-                    self.owners[t] == Some(u.side)
+                    self.owns(t, u.side)
                         && (self.is_keep(t) || self.role_is(t, TerrainRole::Village))
                 })
                 .collect();
@@ -1189,9 +1189,9 @@ impl Game<'_> {
             return (vec![], u.rebuilding);
         }
         let keeps: Vec<_> = (0..self.terrain.len())
-            .filter(|&t| self.is_keep(t) && self.owners[t] == Some(u.side))
+            .filter(|&t| self.is_keep(t) && self.owns(t, u.side))
             .collect();
-        let options = self.recruitment_options(u.side);
+        let options = self.recruitment_options_for(u);
         if keeps.is_empty() || options.is_empty() {
             return (vec![], None);
         }
@@ -1210,7 +1210,7 @@ impl Game<'_> {
         } else if self.income(u.side) > 0
             || options
                 .iter()
-                .any(|&k| self.rules.units[k].cost <= self.gold[u.side.index()])
+                .any(|&k| self.recruit_cost(u, k) <= self.gold_for_unit(u))
         {
             keeps
         } else if self
@@ -1223,7 +1223,7 @@ impl Game<'_> {
             // Only a nearly wiped-out army sends its leader to recover income.
             (0..self.terrain.len())
                 .filter(|&tile| {
-                    self.role_is(tile, TerrainRole::Village) && self.owners[tile] != Some(u.side)
+                    self.role_is(tile, TerrainRole::Village) && self.captures(tile, u.side)
                 })
                 .collect()
         } else {

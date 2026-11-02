@@ -1,0 +1,62 @@
+{
+  "mapId": "lantern-villages",
+  "fromRevision": 6,
+  "toRevision": 7,
+  "tiles": [
+    {
+      "id": "13,7",
+      "terrain": "village",
+      "floor": "green-forest",
+      "connections": [],
+      "owner": "enemy"
+    },
+    {
+      "id": "16,10",
+      "terrain": "village",
+      "floor": "marsh",
+      "connections": [],
+      "owner": "swamp-dead"
+    },
+    {
+      "id": "11,12",
+      "terrain": "village",
+      "floor": "marsh",
+      "connections": [],
+      "owner": "swamp-dead"
+    },
+    {
+      "id": "12,12",
+      "terrain": "keep",
+      "floor": "marsh",
+      "owner": "swamp-dead"
+    }
+  ],
+  "faction": {
+    "id": "swamp-dead",
+    "phase": "enemy",
+    "controller": {
+      "kind": "ai"
+    },
+    "palette": "green",
+    "relations": {
+      "player": "hostile",
+      "enemy": "neutral"
+    },
+    "name": "Marsh dead",
+    "recruits": [
+      {
+        "unit": "zombie-walker",
+        "cost": 6
+      },
+      {
+        "unit": "zombie-decay-caster",
+        "cost": 10
+      }
+    ]
+  },
+  "leader": {
+    "name": "Edrin",
+    "faction": "swamp-dead",
+    "aiGroup": "swamp-commander"
+  }
+}

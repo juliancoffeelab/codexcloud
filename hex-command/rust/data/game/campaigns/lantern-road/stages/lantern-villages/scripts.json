@@ -541,7 +541,7 @@
         {
           "speaker": "Ivo",
           "portrait": "scout",
-          "text": "Something in the reeds. It heard us."
+          "text": "The reeds are full of them."
         },
         {
           "speaker": "Nera",
@@ -759,14 +759,7 @@
       }
     },
     {
-      "id": "swamp-dead",
-      "when": {
-        "condition": {
-          "kind": "event",
-          "event": "swamp-sighting"
-        },
-        "remember": true
-      }
+      "id": "swamp-dead"
     },
     {
       "id": "tollkeeper",
@@ -779,6 +772,14 @@
           "side": "neutral",
           "name": "The villagers"
         }
+      }
+    },
+    {
+      "id": "swamp-commander",
+      "order": {
+        "kind": "hold",
+        "area": ["12,12"],
+        "attackRadius": 2
       }
     }
   ]

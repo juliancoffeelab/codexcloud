@@ -2,7 +2,8 @@
   "initial": {
     "gold": {
       "player": 20,
-      "enemy": 12
+      "enemy": 12,
+      "prisoners": 0
     },
     "units": [
       {

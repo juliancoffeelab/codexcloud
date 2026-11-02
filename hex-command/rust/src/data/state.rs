@@ -56,7 +56,8 @@ pub struct Tile {
     pub col: i32,
     pub row: i32,
     pub terrain: String,
-    pub owner: Option<Side>,
+    /// Owning faction identifier, independent of its turn phase.
+    pub owner: Option<String>,
     /// Road/village exits or opposite crossing edges; artwork only.
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -157,13 +158,38 @@ pub struct GroundItem {
     pub item: Item,
 }
 
-/// Treasury balances for the player and enemy.
+/// Treasury balances keyed by faction identifier.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Gold {
-    pub player: i32,
-    pub enemy: i32,
+#[serde(transparent)]
+pub struct Gold(pub std::collections::BTreeMap<String, i32>);
+impl Gold {
+    pub fn two(player: i32, enemy: i32) -> Self {
+        Self([("player".into(), player), ("enemy".into(), enemy)].into())
+    }
+}
+impl std::ops::Deref for Gold {
+    type Target = std::collections::BTreeMap<String, i32>;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+impl std::ops::DerefMut for Gold {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+impl std::ops::Index<&str> for Gold {
+    type Output = i32;
+    fn index(&self, id: &str) -> &i32 {
+        &self.0[id]
+    }
+}
+impl std::ops::IndexMut<&str> for Gold {
+    fn index_mut(&mut self, id: &str) -> &mut i32 {
+        self.0.get_mut(id).expect("validated faction treasury")
+    }
 }
 /// A complete owned battle snapshot suitable for persistence and transport.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]

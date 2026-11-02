@@ -37,7 +37,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
         .unwrap()
         .id;
     game.units.retain(|u| u.side == Side::Player);
-    game.owners[wreck] = Some(Side::Player);
+    game.owners[wreck] = Some("player".into());
     game.campaign
         .as_mut()
         .unwrap()
@@ -63,7 +63,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     game.roster_changed();
     game.evaluate_campaign(false, None);
     assert_eq!(game.goal_progress(&goal).current, 0);
-    assert_eq!(game.owners[wreck], Some(Side::Player));
+    assert_eq!(game.owners[wreck], Some("player".into()));
     game.units.iter_mut().find(|u| u.id == actor).unwrap().tile = wreck;
     game.roster_changed();
     for (round, progress) in [(9, 1), (10, 2), (11, 3)] {
@@ -88,7 +88,7 @@ fn internal_completion_queries_match_published_progress_at_goal_transitions() {
         }
         game.units.retain(|unit| unit.side == Side::Player);
         game.roster_changed();
-        game.owners.fill(Some(Side::Player));
+        game.owners.fill(Some("player".into()));
         game.round = 100;
         for side in [Side::Enemy, Side::Player] {
             game.turn = side;

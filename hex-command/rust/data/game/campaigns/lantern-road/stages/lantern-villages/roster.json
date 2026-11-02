@@ -2,7 +2,9 @@
   "initial": {
     "gold": {
       "player": 14,
-      "enemy": 6
+      "enemy": 6,
+      "prisoners": 0,
+      "swamp-dead": 12
     },
     "units": [
       {
@@ -55,7 +57,7 @@
       {
         "type": "zombie-walker",
         "side": "enemy",
-        "col": 8,
+        "col": 11,
         "row": 11,
         "faction": "swamp-dead",
         "aiGroup": "swamp-dead"
@@ -63,15 +65,23 @@
       {
         "type": "zombie-walker",
         "side": "enemy",
-        "col": 11,
-        "row": 10,
+        "col": 13,
+        "row": 11,
         "faction": "swamp-dead",
         "aiGroup": "swamp-dead"
       },
       {
         "type": "zombie-walker",
         "side": "enemy",
-        "col": 15,
+        "col": 14,
+        "row": 12,
+        "faction": "swamp-dead",
+        "aiGroup": "swamp-dead"
+      },
+      {
+        "type": "zombie-decay-caster",
+        "side": "enemy",
+        "col": 14,
         "row": 11,
         "faction": "swamp-dead",
         "aiGroup": "swamp-dead"
@@ -82,7 +92,7 @@
         "col": 12,
         "row": 12,
         "faction": "swamp-dead",
-        "aiGroup": "swamp-dead",
+        "aiGroup": "swamp-commander",
         "items": [
           {
             "id": "healing-bottle",
@@ -95,7 +105,8 @@
             }
           }
         ],
-        "name": "Edrin"
+        "name": "Edrin",
+        "role": "leader"
       }
     ]
   },
@@ -141,8 +152,8 @@
     {
       "type": "necromancer",
       "side": "enemy",
-      "col": 16,
-      "row": 4,
+      "col": 15,
+      "row": 7,
       "name": "The Tollkeeper",
       "role": "leader",
       "aiGroup": "tollkeeper"
@@ -150,7 +161,7 @@
     {
       "type": "zombie-walker",
       "side": "enemy",
-      "col": 8,
+      "col": 11,
       "row": 11,
       "faction": "swamp-dead",
       "aiGroup": "swamp-dead"
@@ -158,15 +169,23 @@
     {
       "type": "zombie-walker",
       "side": "enemy",
-      "col": 11,
-      "row": 10,
+      "col": 13,
+      "row": 11,
       "faction": "swamp-dead",
       "aiGroup": "swamp-dead"
     },
     {
       "type": "zombie-walker",
       "side": "enemy",
-      "col": 15,
+      "col": 14,
+      "row": 12,
+      "faction": "swamp-dead",
+      "aiGroup": "swamp-dead"
+    },
+    {
+      "type": "zombie-decay-caster",
+      "side": "enemy",
+      "col": 14,
       "row": 11,
       "faction": "swamp-dead",
       "aiGroup": "swamp-dead"
@@ -177,7 +196,7 @@
       "col": 12,
       "row": 12,
       "faction": "swamp-dead",
-      "aiGroup": "swamp-dead",
+      "aiGroup": "swamp-commander",
       "items": [
         {
           "id": "healing-bottle",
@@ -190,7 +209,8 @@
           }
         }
       ],
-      "name": "Edrin"
+      "name": "Edrin",
+      "role": "leader"
     }
   ],
   "recruits": [],

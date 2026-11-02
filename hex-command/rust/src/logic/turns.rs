@@ -4,10 +4,13 @@ use super::battle::Game;
 use crate::data::*;
 impl<'catalog> Game<'catalog> {
     pub(crate) fn income(&self, side: Side) -> i32 {
+        self.faction_income(self.faction_for_phase(side))
+    }
+    pub(crate) fn faction_income(&self, faction: &str) -> i32 {
         self.owners
             .iter()
             .enumerate()
-            .filter(|(_, owner)| **owner == Some(side))
+            .filter(|(_, owner)| owner.as_deref() == Some(faction))
             .map(|(tile, _)| self.terrain_role(tile).income())
             .sum()
     }
@@ -15,7 +18,19 @@ impl<'catalog> Game<'catalog> {
         self.turn = side;
         self.last_combat = None;
         self.combat_present = true;
-        self.gold[side.index()] += self.income(side);
+        let factions: Vec<_> = self
+            .gold
+            .keys()
+            .filter(|id| {
+                self.faction(id)
+                    .map_or(id.as_str() == side.faction_id(), |f| f.phase == side)
+            })
+            .cloned()
+            .collect();
+        for faction in factions {
+            let income = self.faction_income(&faction);
+            self.gold[&faction] += income;
+        }
         for unit in &mut self.units {
             if unit.side != side {
                 continue;
@@ -23,7 +38,9 @@ impl<'catalog> Game<'catalog> {
             unit.moved = false;
             unit.attacked = false;
             let terrain = self.rules.terrain_roles[self.terrain[unit.tile]];
-            if self.owners[unit.tile] == Some(side) {
+            if self.owners[unit.tile].as_deref()
+                == Some(unit.faction.as_deref().unwrap_or(unit.side.faction_id()))
+            {
                 unit.hp = (unit.hp + terrain.healing()).min(self.rules.units[unit.kind].hp);
             }
         }

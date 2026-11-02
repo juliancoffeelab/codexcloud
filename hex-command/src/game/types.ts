@@ -165,7 +165,7 @@ export type HexDirection = "e" | "se" | "sw" | "w" | "nw" | "ne";
 export interface Tile extends Coordinates {
   id: string;
   terrain: TerrainType;
-  owner: Side | null;
+  owner: string | null;
   /** Artwork only: road/village exits or opposite bridge/ford edges. */
   connections?: HexDirection[];
   deadEnds?: HexDirection[];
@@ -336,14 +336,14 @@ export interface CombatAnimation {
 }
 export interface VillageState {
   id: string;
-  owner: Side | null;
+  owner: string | null;
 }
 export interface GameSnapshot {
   mapId: MapId;
   mapRevision: number;
   round: number;
   turn: Side;
-  gold: Record<Side, number>;
+  gold: Record<string, number> & Record<Side, number>;
   winner: Side | null;
   units: Unit[];
   villages: VillageState[];
@@ -363,7 +363,7 @@ export interface GameState {
   rows: number;
   round: number;
   turn: Side;
-  gold: Record<Side, number>;
+  gold: Record<string, number> & Record<Side, number>;
   winner: Side | null;
   nextId: number;
   log: string[];

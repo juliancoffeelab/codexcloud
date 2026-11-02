@@ -5,7 +5,7 @@ use crate::data::{CampaignState, Gold, Objective, Progress, PublicUnit, Records,
 use arrow_array::{
     Array, ArrayRef, BooleanArray, Int8Array, Int32Array, ListArray, RecordBatch, StringArray,
     StructArray, UInt32Array,
-    builder::{Int8Builder, ListBuilder, StringBuilder, UInt32Builder},
+    builder::{ListBuilder, StringBuilder, UInt32Builder},
 };
 use arrow_buffer::{NullBuffer, OffsetBuffer};
 use arrow_ipc::{reader::StreamReader, writer::StreamWriter};
@@ -15,7 +15,7 @@ use serde::Serialize;
 use serde_json::{Map, Value};
 use std::{io::Cursor, sync::Arc};
 
-pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v2";
+pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v3";
 
 #[derive(Serialize)]
 struct PhaseHeader<'a> {
@@ -146,12 +146,10 @@ fn ownership_column(
     dictionary: Dictionary<'_, OwnershipSnapshot>,
     rows: usize,
 ) -> Result<ArrayRef, SimulationError> {
-    let mut builder = ListBuilder::new(Int8Builder::new());
+    let mut builder = ListBuilder::new(StringBuilder::new());
     for value in dictionary.values {
         for owner in &value.owners {
-            builder
-                .values()
-                .append_option(owner.map(|s| s.index() as i8));
+            builder.values().append_option(owner.as_deref());
         }
         builder.append(true);
     }
@@ -297,24 +295,31 @@ fn owners(array: &ListArray, index: usize, tiles: &Value) -> Result<Value, Simul
         return Err("Invalid ownership index".into());
     }
     let values = array.value(index);
-    let owners = column::<Int8Array>(values.as_ref())?;
+    let owners: Vec<Value> = if let Some(strings) = values.as_any().downcast_ref::<StringArray>() {
+        strings
+            .iter()
+            .map(|owner| owner.map_or(Value::Null, Value::from))
+            .collect()
+    } else {
+        column::<Int8Array>(values.as_ref())?
+            .iter()
+            .map(|owner| match owner {
+                None => Ok(Value::Null),
+                Some(0) => Ok(Value::from("player")),
+                Some(1) => Ok(Value::from("enemy")),
+                _ => Err(SimulationError::from("Invalid owner side")),
+            })
+            .collect::<Result<_, _>>()?
+    };
     let tiles = tiles.as_array().ok_or("Missing chapter tiles")?;
     if owners.len() != tiles.len() {
         return Err("Ownership length differs from chapter tiles".into());
     }
     let values = tiles
         .iter()
-        .zip(owners.iter())
-        .map(|(tile, owner)| {
-            let owner = match owner {
-                None => Value::Null,
-                Some(0) => Value::from("player"),
-                Some(1) => Value::from("enemy"),
-                _ => return Err("Invalid owner side".into()),
-            };
-            Ok(serde_json::json!({"tile":tile["id"], "owner":owner}))
-        })
-        .collect::<Result<Vec<Value>, SimulationError>>()?;
+        .zip(owners)
+        .map(|(tile, owner)| serde_json::json!({"tile":tile["id"], "owner":owner}))
+        .collect();
     Ok(Value::Array(values))
 }
 fn roster(array: &ListArray, row: usize, dictionary: &[Value]) -> Result<Value, SimulationError> {
@@ -336,12 +341,17 @@ fn roster(array: &ListArray, row: usize, dictionary: &[Value]) -> Result<Value, 
 }
 pub(crate) fn decode(bytes: &[u8]) -> Result<Value, SimulationError> {
     let mut reader = StreamReader::try_new(Cursor::new(bytes), None)?;
-    if reader
+    if !reader
         .schema()
         .metadata()
         .get("hex-command.detail-format")
         .map(String::as_str)
-        != Some(FORMAT)
+        .is_some_and(|name| {
+            matches!(
+                name,
+                "arrow-ipc-snapshot-dictionaries-v2" | "arrow-ipc-snapshot-dictionaries-v3"
+            )
+        })
     {
         return Err("Unknown Arrow gameplay format".into());
     }

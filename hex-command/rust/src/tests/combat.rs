@@ -625,7 +625,7 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
         let b = add(&mut game, "archer", Side::Enemy, "3,3");
         let bi = game.index(b).unwrap();
         game.units[bi].hp = 4;
-        game.gold = [0, 0];
+        game.gold = Gold::two(0, 0);
         let actor = game.unit(a).unwrap();
         let target = game.unit(b).unwrap();
         assert!((game.exchange(actor, target, 0, actor.tile).death[1] - 5. / 9.).abs() < 1e-12);

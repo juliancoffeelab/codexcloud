@@ -121,7 +121,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn terrain(&self) -> &Vec<usize> {
         &self.engine().terrain
     }
-    pub(super) fn owners(&self) -> &Vec<Option<Side>> {
+    pub(super) fn owners(&self) -> &Vec<Option<String>> {
         &self.engine().owners
     }
     pub(super) fn map_id(&self) -> &str {
@@ -133,8 +133,23 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn round(&self) -> u32 {
         self.engine().round
     }
-    pub(super) fn gold(&self) -> [i32; 2] {
-        self.engine().gold
+    pub(super) fn gold_for_phase(&self, side: Side) -> i32 {
+        self.engine().gold_for_phase(side)
+    }
+    pub(super) fn gold_for_unit(&self, unit: &Unit) -> i32 {
+        self.engine().gold_for_unit(unit)
+    }
+    pub(super) fn owns(&self, tile: usize, side: Side) -> bool {
+        self.engine().owns(tile, side)
+    }
+    pub(super) fn captures(&self, tile: usize, side: Side) -> bool {
+        self.engine().captures(tile, side)
+    }
+    pub(super) fn recruitment_options_for(&self, unit: &Unit) -> Vec<usize> {
+        self.engine().recruitment_options_for(unit)
+    }
+    pub(super) fn recruit_cost(&self, unit: &Unit, kind: usize) -> i32 {
+        self.engine().recruit_cost(unit, kind)
     }
     pub(super) fn winner(&self) -> Option<Side> {
         self.engine().winner

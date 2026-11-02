@@ -100,19 +100,22 @@ the skeletons following the road missed it. Its lamps come on only when a unit e
 Tollkeeper holds an opposing keep and recruits from the villages' income.
 Scouting, taking settlements and disrupting recruitment matter alongside combat.
 
-One through-road runs from the western map edge to the eastern map edge. Two
+The through-road enters from the west and bends northeast to the northern pass. Two
 roadside villages accompany the hidden starting village; the hidden village has
-no road connection. The northern woodland approach and southern marsh flank offer different
+no road connection. The northern hill approach and southern marsh flank offer different
 ways through the terrain. Settlements use village tiles; standalone houses are
 reserved for the ferryman's home in the crossing. Burned villages use charred
 home remains at the intact buildings' scale.
 
 One skeleton holds the pass fort. Its local order does not draw the keep's army
 into defending it. The level-one Tollkeeper starts alone at the eastern keep and
-recruits skeletons with ordinary gold and income. Three walkers and a mire caster
-inhabit the southern swamp under their own controller, without recruitment. They
-remain dormant until a player-controlled unit steps onto swamp terrain; that
-activation is remembered, and afterward they can pursue freely beyond the swamp.
+recruits skeletons with its own gold and income. Edrin commands the southern marsh
+from a keep at (12,12), supported by three walkers and another mire caster. His
+faction is active from the opening turn and recruits walkers and casters from its
+own treasury. Two marsh-floor villages fund the dead; two separate villages fund
+the Tollkeeper. Each army earns four gold per turn from its villages. Edrin holds
+his keep while his troops and recruits operate normally. Their neutrality toward
+the skeletons does not merge territory, money or recruitment pools.
 
 The captive group uses one simple genderless villager sprite repeated three
 times in a native 64×64 frame. White cloth and a white base identify neutral,
@@ -123,14 +126,14 @@ available so a rescue need not strand civilians in front of the fort guard.
 Escort the group to the hidden village. Arrival evacuates it from the board and
 records a durable safe outcome; it is not a casualty and must not undo escort
 completion after a reload. A runner takes word back to the ferry asking for
-reinforcements. Only then does Nera depart at the sign beside the eastern road exit. The
+reinforcements. Only then does Nera depart at the sign at the northern pass. The
 player may first clear every hostile force from the map. Defeating the Tollkeeper
 stops recruitment, but the remaining skeletons and swamp dead must also be
 defeated to complete that optional objective. The rescued people remain with the village.
 
 The opening objective is to investigate. It completes when the patrol has claimed
 the camp and met Sella. Rescuing and escorting the prisoners is revealed only by
-her account; the eastern departure and optional defeat-all-enemies objective appear only after
+her account; the northern departure and optional defeat-all-enemies objective appear only after
 the captives reach safety. Unknown goals have no list entries or map markers.
 There is no separate generic courier-protection objective.
 
@@ -138,7 +141,7 @@ Sella joins through that village-entry encounter and unlocks recruitment. If
 Oren survives with the company, he notices a villager with a gift for magic and
 unlocks adept recruitment without needing a separate visit of his own. His death
 therefore changes the available army without preventing the rescue. Any patrol
-unit entering swamp terrain awakens the dead and triggers his observations if
+unit entering swamp terrain discovers the dead and triggers his observations if
 he is alive. He recalls Edrin, an old healer who lived nearby; defeating the mire
 caster reveals what became of his friend. The caster retains that identity when
 promoted. Reactions concern the company’s discovery, not Oren’s exact position.

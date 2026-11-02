@@ -461,6 +461,8 @@ pub struct BattleInspection {
     pub revision: u32,
     pub units: Vec<UnitActions>,
     pub recruitment: std::collections::BTreeMap<String, Vec<String>>,
+    pub recruitment_prices:
+        std::collections::BTreeMap<String, std::collections::BTreeMap<String, i32>>,
     pub income: crate::data::Gold,
 }
 #[cfg(feature = "wasm")]

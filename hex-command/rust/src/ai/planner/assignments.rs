@@ -554,9 +554,7 @@ pub(in crate::ai) fn report(game: &BattleView<'_, '_>, workspace: &mut PlanningW
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ai::{
-        Blocks, CampaignBlock, Diplomacy, Planner, Policy, Recruiter, choose_game_command,
-    };
+    use crate::ai::{Blocks, CampaignBlock, Diplomacy, Planner, Recruiter};
     use crate::logic::Game;
 
     fn small_battle(rules: &Rules) -> Game<'_> {

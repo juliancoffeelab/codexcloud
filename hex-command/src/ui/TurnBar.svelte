@@ -17,9 +17,13 @@
   const isPlayerTurn = $derived(
     game.turn === "player" && !game.winner && !dialoguePending(game.campaign),
   );
-  const income = $derived(game.income("player"));
+  const treasury = $derived.by(() => {
+    const actor = view.selected ? game.unit(view.selected) : view.recruitment?.commander;
+    return actor && game.faction(actor.id).controllable ? game.faction(actor.id).id : "player";
+  });
+  const income = $derived(game.income(treasury));
   const ownedVillages = $derived(
-    game.tiles.filter((tile) => TERRAIN[tile.terrain].role === "village" && tile.owner === "player")
+    game.tiles.filter((tile) => TERRAIN[tile.terrain].role === "village" && tile.owner === treasury)
       .length,
   );
   const totalVillages = $derived(
@@ -38,7 +42,7 @@
 </script>
 
 <BattleBar
-  gold={game.gold.player}
+  gold={game.gold[treasury] ?? 0}
   {income}
   {ownedVillages}
   {totalVillages}

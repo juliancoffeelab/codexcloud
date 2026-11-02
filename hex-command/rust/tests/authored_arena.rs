@@ -60,7 +60,7 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
         let keep = source
             .tiles
             .iter()
-            .find(|t| t.terrain == "keep" && t.owner == Some(unit.side))
+            .find(|t| t.terrain == "keep" && t.owner.as_deref() == Some(unit.side.faction_id()))
             .unwrap();
         assert_eq!(unit.tile, keep.id);
     }

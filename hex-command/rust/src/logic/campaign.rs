@@ -62,7 +62,7 @@ impl<'catalog> Game<'catalog> {
             Goal::Control { .. } => goal
                 .tiles()
                 .iter()
-                .all(|tile| self.owners[self.site(tile)] == Some(Side::Player)),
+                .all(|tile| self.owners[self.site(tile)].as_deref() == Some("player")),
             Goal::Seal { .. } => goal
                 .tiles()
                 .iter()
@@ -92,7 +92,7 @@ impl<'catalog> Game<'catalog> {
                     && (*once || self.turn == Side::Player)
                     && self.round >= *earliest_round
                     && (*once
-                        || (self.owners[self.site(tile)] == Some(Side::Player)
+                        || (self.owners[self.site(tile)].as_deref() == Some("player")
                             && self.hold_actor_present(goal)))
             }
             Goal::Vigil { turns, .. } => {
@@ -139,7 +139,7 @@ impl<'catalog> Game<'catalog> {
                 total = tiles.len() as u32;
                 current = tiles
                     .iter()
-                    .filter(|t| self.owners[self.site(t)] == Some(Side::Player))
+                    .filter(|t| self.owners[self.site(t)].as_deref() == Some("player"))
                     .count() as u32;
             }
             Goal::Seal { .. } => {
@@ -204,7 +204,7 @@ impl<'catalog> Game<'catalog> {
                     (*once || self.turn == Side::Player)
                         && self.round >= *earliest_round
                         && (*once
-                            || (self.owners[self.site(tile)] == Some(Side::Player)
+                            || (self.owners[self.site(tile)].as_deref() == Some("player")
                                 && self.hold_actor_present(goal)))
                 }
                 _ => true,
@@ -424,7 +424,7 @@ impl<'catalog> Game<'catalog> {
                     held_turns: 0,
                     last_counted_round: self.round,
                 });
-            if !present || self.owners[tile] != Some(Side::Player) {
+            if !present || self.owners[tile].as_deref() != Some("player") {
                 counter.held_turns = 0;
                 counter.last_counted_round = self.round;
             } else if at_turn_start && self.round > counter.last_counted_round {
@@ -453,7 +453,7 @@ impl<'catalog> Game<'catalog> {
                 let tile = self.site(goal.tile().unwrap());
                 let counter = self.campaign.as_mut().unwrap().refuge.as_mut().unwrap();
                 if !counter.escalated {
-                    if self.owners[tile] != Some(Side::Player) {
+                    if self.owners[tile].as_deref() != Some("player") {
                         counter.held_turns = 0;
                     } else if at_turn_start && self.round > counter.last_counted_round {
                         counter.held_turns += 1;
@@ -486,7 +486,7 @@ impl<'catalog> Game<'catalog> {
                 {
                     continue;
                 }
-                if !started || !actor_present || self.owners[tile] != Some(Side::Player) {
+                if !started || !actor_present || self.owners[tile].as_deref() != Some("player") {
                     counter.held_turns = 0;
                     counter.last_counted_round = self.round;
                 } else if at_turn_start && self.round > counter.last_counted_round {
@@ -533,7 +533,7 @@ impl<'catalog> Game<'catalog> {
                         .and_then(|h| h.get(tile))
                         .is_some_and(|h| h.held_turns >= *turns),
                     Trigger::Control { tile, round } => {
-                        self.owners[self.site(tile)] == Some(Side::Player)
+                        self.owners[self.site(tile)].as_deref() == Some("player")
                             && self.round >= round.unwrap_or(1)
                     }
                 };
@@ -624,7 +624,7 @@ impl<'catalog> Game<'catalog> {
                         choices.push(choice.clone());
                     }
                 }
-                self.gold[0] += event.gold.unwrap_or(0);
+                self.gold["player"] += event.gold.unwrap_or(0);
                 self.ground_items.extend(event.ground_items.iter().cloned());
                 let collectors: Vec<_> = self
                     .units
@@ -797,7 +797,8 @@ impl<'catalog> Game<'catalog> {
                 added.role = incoming.role.clone();
             }
         }
-        game.gold = [original.gold + carry.clamp(0, 8), original.enemy_gold];
+        game.gold["player"] = original.gold + carry.clamp(0, 8);
+        game.gold["enemy"] = original.enemy_gold;
         for veteran in story {
             if let Some(arrival) = original
                 .arrivals
@@ -866,7 +867,7 @@ impl<'catalog> Game<'catalog> {
         }
         for unit in &game.units {
             if game.terrain_role(unit.tile).capturable() {
-                game.owners[unit.tile] = Some(unit.side);
+                game.owners[unit.tile] = Some(game.unit_faction(&unit).to_owned());
             }
         }
         game.log.clear();
@@ -1041,7 +1042,7 @@ impl<'catalog> Game<'catalog> {
             &state.id,
             state.mission + 1,
             veterans,
-            self.gold[0],
+            self.gold["player"],
             choices,
             story,
             fallen,

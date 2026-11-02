@@ -74,11 +74,11 @@ fn strength(game: &Game<'_>, side: Side) -> ArmyStrength {
     {
         let rule = &game.rules.units[unit.kind];
         total.units += 1;
-        total.cost += rule.cost;
+        let price = game.recruit_cost(unit, unit.kind);
+        total.cost += price;
         total.hp += unit.hp.max(0);
         total.max_hp += rule.hp;
-        total.hp_value +=
-            f64::from(rule.cost) * f64::from(unit.hp.max(0)) / f64::from(rule.hp.max(1));
+        total.hp_value += f64::from(price) * f64::from(unit.hp.max(0)) / f64::from(rule.hp.max(1));
     }
     total
 }
@@ -126,9 +126,10 @@ pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
                     opponent_before: strength(game, leader.side.other()),
                     opponent_after: ArmyStrength::default(),
                     recruitment_before: RecruitmentAvailability {
-                        gold: game.gold[leader.side.index()],
+                        gold: game.gold_for_unit(leader),
                         on_owned_keep: game.is_keep(leader.tile)
-                            && game.owners[leader.tile] == Some(leader.side),
+                            && game.owners[leader.tile].as_deref()
+                                == Some(game.unit_faction(leader)),
                         legal_options,
                         affordable_options,
                     },

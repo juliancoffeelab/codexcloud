@@ -83,7 +83,7 @@ impl BattleView<'_, '_> {
                         let kill_chance = forecast.death[1];
                         let killed = kill_chance == 1.0;
                         let value = forecast.effective[0] * 2.0 - response * 1.8
-                            + kill_chance * (12.0 + self.rules().units[foe.kind].cost as f64 * 0.3)
+                            + kill_chance * (12.0 + self.recruit_cost(foe, foe.kind) as f64 * 0.3)
                             + if killed && cache.orders.terminal_attack(foe) {
                                 100.0
                             } else {

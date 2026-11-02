@@ -29,10 +29,10 @@ pub(crate) fn matches(
     target: Option<&str>,
 ) -> bool {
     match condition {
-        Condition::Owner { tile, side } => input
-            .tiles
-            .iter()
-            .any(|t| Some(t.id.as_str()) == tile.as_deref().or(target) && t.owner == Some(*side)),
+        Condition::Owner { tile, side } => input.tiles.iter().any(|t| {
+            Some(t.id.as_str()) == tile.as_deref().or(target)
+                && t.owner.as_deref() == Some(side.as_str())
+        }),
         Condition::Proximity {
             tile,
             radius,

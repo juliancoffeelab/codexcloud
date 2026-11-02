@@ -379,10 +379,7 @@ mod tests {
             rows: 1,
             round: 1,
             turn: Side::Player,
-            gold: Gold {
-                player: 1,
-                enemy: 2,
-            },
+            gold: Gold::two(1, 2),
             winner: None,
             next_id: 1,
             log: vec![],
@@ -422,6 +419,7 @@ mod tests {
                             unit: "u1".into(),
                             unit_type: "archer".into(),
                             tile: "0,0".into(),
+                            cost: Some(7),
                         },
                         ActionRecord::Advance {
                             unit: "u1".into(),

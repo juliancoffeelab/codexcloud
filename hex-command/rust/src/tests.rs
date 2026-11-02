@@ -49,7 +49,7 @@ fn tide_starts_rescue_before_counting_defended_turns() {
         vec![],
     );
     let wreck = game.site("5,4");
-    game.owners[wreck] = Some(Side::Player);
+    game.owners[wreck] = Some("player".into());
     game.evaluate_campaign(false, Some(wreck));
     assert!(game.campaign.as_ref().unwrap().marked("event:await-tide"));
     let goal = game

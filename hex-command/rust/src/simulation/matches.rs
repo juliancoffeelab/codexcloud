@@ -16,7 +16,7 @@ use std::sync::Arc;
 #[derive(Default)]
 struct RecordingCache {
     units: FxHashMap<Unit, Arc<PublicUnit>>,
-    ownership: FxHashMap<Vec<Option<Side>>, Arc<OwnershipSnapshot>>,
+    ownership: FxHashMap<Vec<Option<String>>, Arc<OwnershipSnapshot>>,
     tiles: Option<Arc<Vec<String>>>,
 }
 impl RecordingCache {
@@ -96,7 +96,7 @@ pub(crate) fn create_arena<'catalog>(
             .iter()
             .find(|tile| {
                 rules.terrain_roles[rules.terrains[&tile.terrain]] == TerrainRole::Keep
-                    && tile.owner == Some(side)
+                    && tile.owner.as_deref() == Some(side.faction_id())
             })
             .ok_or("Arena requires an owned keep for each side")?
             .id
@@ -126,10 +126,10 @@ pub(crate) fn create_arena<'catalog>(
     if starting_cost.iter().any(|&cost| cost > budget) {
         return Err("Arena starting troops exceed the shared budget".into());
     }
-    state.gold = Gold {
-        player: budget - starting_cost[Side::Player.index()],
-        enemy: budget - starting_cost[Side::Enemy.index()],
-    };
+    state.gold = Gold::two(
+        budget - starting_cost[Side::Player.index()],
+        budget - starting_cost[Side::Enemy.index()],
+    );
     state.round = 1;
     state.turn = config.first;
     state.winner = None;
@@ -263,7 +263,7 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
             state.tiles[partner].connections = Some(vec![HexDirection::E, HexDirection::W]);
         }
     }
-    let mut terrain = |q, r, kind: &str, owner| {
+    let mut terrain = |q, r, kind: &str, owner: Option<Side>| {
         let tile = state
             .tiles
             .iter_mut()
@@ -275,7 +275,7 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
             "bridge" | "ford" => Some(vec![HexDirection::E, HexDirection::W]),
             _ => None,
         };
-        tile.owner = owner;
+        tile.owner = owner.map(|side: Side| side.faction_id().to_owned());
     };
     for (q, r, kind, owner) in [
         (-3, 0, "keep", Some(Side::Player)),
@@ -454,10 +454,7 @@ fn phase(
             player: health(Side::Player),
             enemy: health(Side::Enemy),
         },
-        gold: Gold {
-            player: game.gold[0],
-            enemy: game.gold[1],
-        },
+        gold: game.gold.clone(),
         before,
         units: recording.units(game)?,
         ownership: recording.ownership(game)?,
@@ -518,7 +515,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             24.0,
         )];
         for tile in 0..game.terrain.len() {
-            if game.role_is(tile, TerrainRole::Village) && game.owners[tile] != Some(side) {
+            if game.role_is(tile, TerrainRole::Village) && game.captures(tile, side) {
                 goals.push(objective(
                     &format!("village:{}", game.board.ids[tile]),
                     ObjectiveKind::Capture,
@@ -579,7 +576,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
         for owner in [Side::Player, Side::Enemy] {
             if !territory
                 .iter()
-                .all(|tile| game.owners[game.site(tile)] == Some(owner))
+                .all(|tile| game.owners[game.site(tile)].as_deref() == Some(owner.faction_id()))
             {
                 held[owner.index()] = 0;
             } else if owner != side {
@@ -599,7 +596,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
     let score = |side: Side| ArenaScore {
         controlled: territory
             .iter()
-            .filter(|tile| game.owners[game.site(tile)] == Some(side))
+            .filter(|tile| game.owns(game.site(tile), side))
             .count(),
         held: held[side.index()],
         optional_visits: visits[side.index()].len(),
@@ -750,7 +747,7 @@ mod tests {
             let mut game = base.fork();
             game.units.retain(|unit| unit.is_leader());
             game.roster_changed();
-            game.gold[game.turn.index()] = 1000;
+            game.gold[game.turn.faction_id()] = 1000;
             let record = phase(
                 &mut game,
                 &mut RecordingCache::default(),
@@ -796,7 +793,14 @@ mod tests {
         );
         let owners = recording.ownership(&game).unwrap();
         assert!(Arc::ptr_eq(&owners, &recording.ownership(&game).unwrap()));
-        game.owners[0] = Some(game.owners[0].unwrap_or(Side::Enemy).other());
+        game.owners[0] = Some(
+            if game.owners[0].as_deref() == Some("player") {
+                "enemy"
+            } else {
+                "player"
+            }
+            .into(),
+        );
         let changed = recording.ownership(&game).unwrap();
         assert!(!Arc::ptr_eq(&owners, &changed));
         assert!(Arc::ptr_eq(&owners.tiles, &changed.tiles));
@@ -901,13 +905,13 @@ mod tests {
                                 game.units.iter().filter(|u| u.side == side).collect();
                             assert_eq!(troops.len(), 1);
                             assert!(troops[0].is_leader());
-                            game.gold[side.index()]
+                            game.gold[side.faction_id()]
                                 + troops.iter().map(|u| rules.units[u.kind].cost).sum::<i32>()
                         };
                         let budget = total(Side::Player);
                         assert_eq!(budget, total(Side::Enemy));
                         assert!([0, 3, 6].contains(&(budget - rules.arena.starting_budget)));
-                        assert!(game.gold.iter().all(|&gold| gold >= 0));
+                        assert!(game.gold.values().all(|&gold| gold >= 0));
                         assert_eq!(game.turn, Side::Enemy);
                         for unit in &game.units {
                             let sign = if unit.side == Side::Player { -1 } else { 1 };

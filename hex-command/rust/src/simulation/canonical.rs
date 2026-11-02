@@ -125,9 +125,10 @@ impl Serialize for Canonical<'_, PublicUnit> {
 }
 impl Serialize for Canonical<'_, Gold> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        let mut map = serializer.serialize_map(Some(2))?;
-        map.serialize_entry("enemy", &self.0.enemy)?;
-        map.serialize_entry("player", &self.0.player)?;
+        let mut map = serializer.serialize_map(Some(self.0.len()))?;
+        for (id, amount) in self.0.iter() {
+            map.serialize_entry(id, amount)?;
+        }
         map.end()
     }
 }
