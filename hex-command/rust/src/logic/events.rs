@@ -320,16 +320,12 @@ impl Game<'_> {
     ) {
         for action in actions {
             match action {
-                EventAction::SetFlag(id) => {
-                    let flags = self
-                        .campaign
-                        .as_mut()
-                        .unwrap()
-                        .choices
-                        .get_or_insert_with(Vec::new);
-                    if !flags.contains(id) {
-                        flags.push(id.clone());
-                    }
+                EventAction::SetFlag(update) => {
+                    self.campaign.as_mut().unwrap().set_flag(
+                        update.id(),
+                        update.state(),
+                        self.round,
+                    );
                 }
                 EventAction::Say(nodes) => {
                     let mut lines = vec![];

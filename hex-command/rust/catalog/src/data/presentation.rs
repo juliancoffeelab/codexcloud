@@ -40,7 +40,7 @@ pub trait ConditionContext {
     fn visible_at(&self, position: (i32, i32)) -> bool;
     fn any_unit(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
     fn any_pending(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
-    fn choices(&self) -> &[String];
+    fn flag(&self, id: &str) -> bool;
     fn marks(&self) -> &[String];
     fn round(&self) -> u32;
 }
@@ -100,8 +100,8 @@ impl ConditionContext for PresentationInput {
             })
         })
     }
-    fn choices(&self) -> &[String] {
-        &self.choices
+    fn flag(&self, id: &str) -> bool {
+        self.choices.iter().any(|v| v == id)
     }
     fn marks(&self) -> &[String] {
         &self.marks
@@ -191,8 +191,8 @@ fn evaluate(
             !input.any_unit(|unit| unit_matches(unit, *side, unit_type, character))
                 && !input.any_pending(|unit| unit_matches(unit, *side, unit_type, character))
         }
-        Condition::Choice { choice } => input.choices().contains(choice),
-        Condition::Flag { flag } => input.choices().contains(flag),
+        Condition::Choice { choice } => input.flag(choice),
+        Condition::Flag { flag } => input.flag(flag),
         Condition::Event { event } => input
             .marks()
             .iter()

@@ -94,12 +94,8 @@ impl ConditionContext for LiveContext<'_, '_> {
                 })
             })
     }
-    fn choices(&self) -> &[String] {
-        self.game
-            .campaign
-            .as_ref()
-            .and_then(|s| s.choices.as_deref())
-            .unwrap_or_default()
+    fn flag(&self, id: &str) -> bool {
+        self.game.campaign.as_ref().is_some_and(|s| s.chosen(id))
     }
     fn marks(&self) -> &[String] {
         self.game

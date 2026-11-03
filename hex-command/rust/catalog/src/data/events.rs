@@ -304,6 +304,32 @@ pub struct MarkLoop {
     pub actions: Vec<EventAction>,
 }
 
+/// String shorthand sets true; the explicit form can also clear a flag.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub enum FlagUpdate {
+    Name(String),
+    Value { id: String, state: bool },
+}
+impl FlagUpdate {
+    pub fn id(&self) -> &str {
+        match self {
+            Self::Name(id) | Self::Value { id, .. } => id,
+        }
+    }
+    pub fn state(&self) -> bool {
+        match self {
+            Self::Name(_) => true,
+            Self::Value { state, .. } => *state,
+        }
+    }
+}
+
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(
@@ -353,7 +379,7 @@ pub enum EventAction {
     PlaceItem(PlaceItem),
     ChangeAllegiance(AllegianceChange),
     DeleteUnit(UnitReference),
-    SetFlag(String),
+    SetFlag(FlagUpdate),
     Say(Vec<Speech>),
     Sound(String),
     CreateMark(MarkSpec),
@@ -695,7 +721,7 @@ impl ScriptEvent {
                             "deleteUnit requires a selector or a bound unit",
                         ));
                     }
-                    EventAction::SetFlag(id) => identifier(id, path)?,
+                    EventAction::SetFlag(update) => identifier(update.id(), path)?,
                     EventAction::CreateMark(v) => {
                         identifier(&v.kind, path)?;
                         reference(&v.tile)?;

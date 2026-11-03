@@ -3,11 +3,10 @@ import type { Immutable } from "./immutable";
 import type { CampaignState, MissionDefinition, Unit } from "./types";
 
 export function campaignMission(state: Immutable<CampaignState>): Immutable<MissionDefinition> {
+  const chosen = (id: string) => state.flags[id]?.at(-1)?.state ?? false;
   let mission: Immutable<MissionDefinition> = CAMPAIGNS[state.id].missions[state.mission]!;
   if (
-    (state.choices?.includes("refuge-war") ||
-      state.choices?.includes("green-dain-dead") ||
-      state.marks.includes("dain-fell")) &&
+    (chosen("refuge-war") || chosen("green-dain-dead") || state.marks.includes("dain-fell")) &&
     mission.withoutDain
   )
     mission = { ...mission, ...mission.withoutDain };

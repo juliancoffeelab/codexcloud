@@ -267,3 +267,13 @@ Pending spawn members retain their placement area and item IDs; completed
 members do not replay. Captive roles and obsolete faction transfer rules are
 converted with the same frozen recipe. Other campaigns keep their old event
 representation. Units, health, treasury and positions remain unchanged.
+
+## Version 29: stage-stamped flag history
+
+Flat campaign choices become per-flag histories of `{state, stage, turn}`. Frozen
+`legacy/data/flags-v28.json` identifies known producing stages. The conversion
+preserves current truth values, timestamps flags attributed to the current stage
+at the saved round, and uses turn zero for older/unknown incoming facts. Previous
+values and exact historical write turns were not stored and cannot be recovered.
+Retry discards the current stage's positive-turn changes while retaining incoming
+facts. Units, treasury, event state and positions remain unchanged.

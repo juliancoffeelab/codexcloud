@@ -106,9 +106,22 @@ playable stage scripts contain the actual stable tile and faction IDs.
 
 ## Persistence
 
-Save version 28 stores active event IDs, held counters, structured marks,
+Save version 28 introduced storage for active event IDs, held counters, structured marks,
 pending spawn members and unlocked recruitment pools in chapter event state.
-Campaign-wide explicit flags use the existing campaign choices collection.
+Explicit flags store a history of `{state, stage, turn}` changes, where stage is
+zero-based. The final entry supplies the current value; a missing history is
+false. `setFlag: "name"` sets true; `setFlag: {"id": "name", "state": false}`
+clears it. Setting the same value again adds no redundant change.
+
+Retry trims changes from the current stage, restoring values from earlier
+stages, and restarts chapter event state. Turn-zero entries represent incoming
+facts with unavailable historical timestamps; they survive the retry. Advancing
+to the next stage retains the full history. This also governs legacy story
+choices, replacing the refuge-specific retry reset.
+
+Save version 29 replaces the flat choices list with this history. Frozen stage
+provenance preserves old values, but original write turns and prior values cannot
+be recovered from old flat lists.
 The isolated version-27 conversion uses frozen historical recipes and never
 queries the current catalogue or runs game actions. Legacy campaigns keep their
 existing progress representation.

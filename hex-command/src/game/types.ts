@@ -517,7 +517,7 @@ export interface CampaignState {
   refuge?: { heldTurns: number; lastCountedRound: number; escalated: boolean };
   vigil?: { heldTurns: number; lastCountedRound: number };
   holds?: Record<string, { heldTurns: number; lastCountedRound: number }>;
-  choices?: string[];
+  flags: Record<string, import("../../rust/pkg/hex_command").FlagChange[]>;
 }
 export interface CampaignVeteran {
   type: UnitType;

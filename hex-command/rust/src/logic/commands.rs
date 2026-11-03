@@ -139,18 +139,14 @@ impl Game<'_> {
                 let combat_rng = self.combat_rng;
                 #[cfg(not(target_arch = "wasm32"))]
                 let records = self.recordings.take();
-                let choices = if self.mission.as_ref().is_some_and(|m| m.refuge.is_some()) {
-                    vec![]
-                } else {
-                    campaign.choices.clone().unwrap_or_default()
-                };
+                let flags = campaign.retry_flags();
                 *self = Self::start_campaign_from_definition(
                     self.rules,
                     self.campaign_definition(),
                     campaign.mission,
                     campaign.veterans.clone().unwrap_or_default(),
                     campaign.carry_gold,
-                    choices,
+                    flags,
                     campaign.story_veterans.clone().unwrap_or_default(),
                     campaign.fallen_companions.clone().unwrap_or_default(),
                 );

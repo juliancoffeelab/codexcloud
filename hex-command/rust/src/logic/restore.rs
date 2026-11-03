@@ -252,6 +252,21 @@ pub(crate) fn validate_state_geometry_with_campaign(
         if mission.map.id != state.map_id {
             return Err(fail("campaign mission and map differ"));
         }
+        for (id, history) in &campaign.flags {
+            crate::data::catalog::identifier(id, "saved flag")
+                .map_err(|e| StateError(e.message))?;
+            if history.is_empty()
+                || history.iter().any(|v| {
+                    v.stage > campaign.mission
+                        || (v.stage == campaign.mission && v.turn > state.round)
+                })
+                || history
+                    .windows(2)
+                    .any(|pair| (pair[0].stage, pair[0].turn) > (pair[1].stage, pair[1].turn))
+            {
+                return Err(fail("invalid flag history"));
+            }
+        }
         if mission
             .all_goals()
             .flat_map(Goal::sites)

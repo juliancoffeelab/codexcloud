@@ -685,10 +685,7 @@ impl<'catalog> Game<'catalog> {
                 state.evacuated.extend(evacuated);
                 state.marks.push(marker);
                 if let Some(choice) = &event.choice {
-                    let choices = state.choices.get_or_insert_with(Vec::new);
-                    if !choices.contains(choice) {
-                        choices.push(choice.clone());
-                    }
+                    state.set_flag(choice, true, self.round);
                 }
                 self.gold["player"] += event.gold.unwrap_or(0);
                 self.ground_items.extend(event.ground_items.iter().cloned());
@@ -742,10 +739,11 @@ impl<'catalog> Game<'catalog> {
             state.outcome = Some("Mission complete. The company can rest and regroup.".into());
             let war = state.escalated();
             if mission.refuge.is_some() {
-                state
-                    .choices
-                    .get_or_insert_with(Vec::new)
-                    .push(if war { "refuge-war" } else { "refuge-peace" }.into());
+                state.set_flag(
+                    if war { "refuge-war" } else { "refuge-peace" },
+                    true,
+                    self.round,
+                );
             }
             state.say(if mission.refuge.is_some() && war {
                 mission.refuge.as_ref().unwrap().war_victory.clone()
@@ -790,7 +788,19 @@ impl<'catalog> Game<'catalog> {
             index,
             veterans,
             carry,
-            choices,
+            choices
+                .into_iter()
+                .map(|id| {
+                    (
+                        id,
+                        vec![FlagChange {
+                            state: true,
+                            stage: index.saturating_sub(1),
+                            turn: 0,
+                        }],
+                    )
+                })
+                .collect(),
             story,
             fallen,
         )
@@ -801,7 +811,7 @@ impl<'catalog> Game<'catalog> {
         index: usize,
         veterans: Vec<Veteran>,
         carry: i32,
-        choices: Vec<String>,
+        flags: FlagHistory,
         story: Vec<Veteran>,
         fallen: Vec<String>,
     ) -> Self {
@@ -851,7 +861,7 @@ impl<'catalog> Game<'catalog> {
                         last_counted_round: 1,
                     }),
                 holds: Some(holds),
-                choices: (!choices.is_empty()).then_some(choices.clone()),
+                flags,
             }
             .into(),
         );
@@ -863,9 +873,10 @@ impl<'catalog> Game<'catalog> {
         });
         game.roster_changed();
         game.campaign.as_mut().unwrap().dialogue = game.mission.as_ref().unwrap().intro.clone();
-        if (choices
-            .iter()
-            .any(|c| c == "refuge-war" || c == "green-dain-dead"))
+        if game
+            .campaign
+            .as_ref()
+            .is_some_and(|s| s.chosen("refuge-war") || s.chosen("green-dain-dead"))
             && original.without_dain.is_some()
         {
             game.units
@@ -1093,9 +1104,16 @@ impl<'catalog> Game<'catalog> {
                 }
             }
         }
-        let mut choices = state.choices.clone().unwrap_or_default();
-        if state.marked("dain-fell") && !choices.iter().any(|c| c == "green-dain-dead") {
-            choices.push("green-dain-dead".into());
+        let mut flags = state.flags.clone();
+        if state.marked("dain-fell") && !state.chosen("green-dain-dead") {
+            flags
+                .entry("green-dain-dead".into())
+                .or_default()
+                .push(FlagChange {
+                    state: true,
+                    stage: state.mission,
+                    turn: self.round,
+                });
         }
         let mut fallen = state.fallen_companions.clone().unwrap_or_default();
         for name in state
@@ -1132,7 +1150,7 @@ impl<'catalog> Game<'catalog> {
             state.mission + 1,
             veterans,
             self.gold["player"],
-            choices,
+            flags,
             story,
             fallen,
         );

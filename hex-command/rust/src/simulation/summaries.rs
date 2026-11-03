@@ -506,7 +506,7 @@ mod tests {
             unreachable!()
         };
         let mut final_state = arena.r#final;
-        final_state.campaign = Some(serde_json::from_value(json!({"id":"fixture","mission":0,"recall":[],"carryGold":0,"marks":[],"dialogue":[],"dialogueIndex":0,"outcome":null,"completed":false,"refuge":{"heldTurns":0,"lastCountedRound":0,"escalated":true}})).unwrap());
+        final_state.campaign = Some(serde_json::from_value(json!({"id":"fixture","flags":{},"mission":0,"recall":[],"carryGold":0,"marks":[],"dialogue":[],"dialogueIndex":0,"outcome":null,"completed":false,"refuge":{"heldTurns":0,"lastCountedRound":0,"escalated":true}})).unwrap());
         let result = MatchResult::Campaign(CampaignResult {
             config: CampaignConfig {
                 seed: 1,

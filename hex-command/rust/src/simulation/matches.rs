@@ -605,7 +605,7 @@ pub fn run_campaign(
         0,
         vec![],
         0,
-        vec![],
+        FlagHistory::new(),
         vec![],
         vec![],
     );

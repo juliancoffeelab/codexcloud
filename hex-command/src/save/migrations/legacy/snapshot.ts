@@ -1,8 +1,8 @@
+import type { LegacyCampaignState as CampaignState } from "./campaign-state";
 import { CAMPAIGN_MAPS, MAPS, distance, TYPES } from "./frozen";
 import { CAMPAIGNS } from "./catalog";
 import type {
   CampaignId,
-  CampaignState,
   CampaignVeteran,
   RecruitType,
   Side,

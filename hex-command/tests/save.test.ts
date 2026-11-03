@@ -403,7 +403,7 @@ for (const dead of [false, true]) {
     old.state.units = old.state.units.filter(
       (unit) => (unit as unknown as { name?: string }).name !== "Captain Dain",
     );
-    old.state.campaign!.choices = dead ? ["green-dain-dead"] : [];
+    Object.assign(old.state.campaign!, { choices: dead ? ["green-dain-dead"] : [] });
     const converted = migrateSave(old).save;
     assert.equal(converted.checkpoint.state.mapRevision, 2);
     assert.equal(

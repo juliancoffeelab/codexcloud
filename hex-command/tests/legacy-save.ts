@@ -53,6 +53,12 @@ export function historicalCharacters<T>(input: T): T {
   };
   state.units = state.units.map(unit);
   if (campaign) {
+    if (campaign.flags) {
+      campaign.choices = Object.entries(campaign.flags)
+        .filter(([, history]) => (history as { state: boolean }[]).at(-1)?.state)
+        .map(([id]) => id);
+      delete campaign.flags;
+    }
     const definition = CAMPAIGNS[campaign.id as keyof typeof CAMPAIGNS];
     const mission = definition?.missions[campaign.mission];
     const lines = [
