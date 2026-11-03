@@ -184,8 +184,8 @@ fn authored_progression_ladders_are_acyclic_and_preserve_race_and_increase_level
 #[test]
 fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
     let mut game = flat();
-    let id = add(&mut game, "swordsman", Side::Player, "3,3");
-    let target = add(&mut game, "archer", Side::Enemy, "4,3");
+    let id = add(&mut game, "swordsman", Side::Player, "hex-0760-150b2b6a75");
+    let target = add(&mut game, "archer", Side::Enemy, "hex-0856-a2b6e60ea7");
     let index = game.index(id).unwrap();
     game.units[index].hp -= 4;
     let target_index = game.index(target).unwrap();

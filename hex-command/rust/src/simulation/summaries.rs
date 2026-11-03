@@ -337,7 +337,7 @@ mod tests {
             };
             let unit = |id, kind, side| {
                 serde_json::from_value::<PublicUnit>(json!({
-                "id":id,"type":kind,"side":side,"tile":"0,0","hp":20,"moved":true,"attacked":true
+                "id":id,"type":kind,"side":side,"tile":"hex-0001-7256137ec1","hp":20,"moved":true,"attacked":true
             }))
             .unwrap()
             };
@@ -350,7 +350,7 @@ mod tests {
             phase.records.losses = vec![unit("u2", "guard", "enemy")];
             phase.records.combats = vec![
             serde_json::from_value(json!({
-                "unit":"u1","target":"u2","weapon":"hit","from":"0,0","targetTile":"0,1",
+                "unit":"u1","target":"u2","weapon":"hit","from":"hex-0001-7256137ec1","targetTile":"hex-0002-ea8b98a12d",
                 "damage":8,"retaliation":reflected_or_weapon,"count":2,"damagePerHit":4,"retaliationCount":reply_count,
                 "retaliationPerHit":4,"mediationAtRisk":false
             }))
@@ -418,7 +418,7 @@ mod tests {
                         ActionRecord::Recruit {
                             unit: "u1".into(),
                             unit_type: "archer".into(),
-                            tile: "0,0".into(),
+                            tile: "hex-0001-7256137ec1".into(),
                             cost: Some(7),
                         },
                         ActionRecord::Advance {

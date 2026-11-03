@@ -18,9 +18,9 @@ def damage_order(row):
             row.get('level') or 0, row['name'])
 
 
-def adjacent(a, b):
-    x, y = map(int, a.split(','))
-    u, v = map(int, b.split(','))
+def adjacent(a, b, positions):
+    x, y = positions[a]
+    u, v = positions[b]
     q, r = x - y // 2 - u + v // 2, y - v
     return abs(q) + abs(r) + abs(q + r) == 2
 
@@ -110,6 +110,7 @@ def analyze(inputs, presence=True, support=True):
                 for kind in (unit['type'], 'all'):
                     effects[(*key, kind, ability)].update(values)
 
+        positions = {t['id']: (t['col'], t['row']) for t in result['initial']['tiles']}
         seen = {side: set() for side in ('player', 'enemy')}
         for unit in result['initial']['units']:
             if not leader(unit):
@@ -146,7 +147,7 @@ def analyze(inputs, presence=True, support=True):
                     continue
                 composition = Counter(opportunities=1, eligiblePairs=len(providers) * max(0, len(friends)-1))
                 for ally in friends:
-                    touching = [p for p in providers if p['id'] != ally['id'] and adjacent(p['tile'], ally['tile'])]
+                    touching = [p for p in providers if p['id'] != ally['id'] and adjacent(p['tile'], ally['tile'], positions)]
                     composition['contacts'] += len(touching)
                     composition['coveredRecipients'] += bool(touching)
                     composition['overlappingRecipients'] += len(touching) > 1

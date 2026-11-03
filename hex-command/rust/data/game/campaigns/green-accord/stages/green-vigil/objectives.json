@@ -3,7 +3,7 @@
     {
       "kind": "vigil",
       "label": "Protect Lark in the central grove through three enemy turns",
-      "tile": "6,4",
+      "tile": "hex-0923-ec307e92cf",
       "turns": 3,
       "companion": "lark"
     }

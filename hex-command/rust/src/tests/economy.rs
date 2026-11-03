@@ -53,9 +53,9 @@ fn recruitment_requires_gold_legal_destination_and_owned_keep() {
 #[test]
 fn village_capture_changes_income_and_heals_only_the_owners_occupant() {
     let mut game = flat();
-    let village = game.site("3,3");
+    let village = game.site("hex-0760-150b2b6a75");
     game.set_terrain(village, game.rules.terrains["village"]);
-    let id = add(&mut game, "scout", Side::Player, "2,3");
+    let id = add(&mut game, "scout", Side::Player, "hex-0408-edbae05560");
     game.move_unit(id, village);
     assert_eq!(game.owners[village], Some("player".into()));
     let index = game.index(id).unwrap();
@@ -84,10 +84,10 @@ fn village_capture_changes_income_and_heals_only_the_owners_occupant() {
 #[test]
 fn strongest_adjacent_friendly_healer_wins_without_stacking_or_overhealing() {
     let mut game = flat();
-    let ally = add(&mut game, "reefguard", Side::Player, "3,3");
-    add(&mut game, "wavemender", Side::Player, "2,3");
-    add(&mut game, "tidesage", Side::Player, "4,3");
-    let enemy = add(&mut game, "reefguard", Side::Enemy, "4,4");
+    let ally = add(&mut game, "reefguard", Side::Player, "hex-0760-150b2b6a75");
+    add(&mut game, "wavemender", Side::Player, "hex-0408-edbae05560");
+    add(&mut game, "tidesage", Side::Player, "hex-0856-a2b6e60ea7");
+    let enemy = add(&mut game, "reefguard", Side::Enemy, "hex-0859-8a12839c45");
     for id in [ally, enemy] {
         let index = game.index(id).unwrap();
         game.units[index].hp = 1;
@@ -109,11 +109,11 @@ fn strongest_adjacent_friendly_healer_wins_without_stacking_or_overhealing() {
 #[test]
 fn healing_records_credit_tied_strongest_sources_after_terrain_and_hp_caps() {
     let mut game = flat();
-    let ally = add(&mut game, "reefguard", Side::Player, "3,3");
-    let first = add(&mut game, "tidesage", Side::Player, "2,3");
-    let second = add(&mut game, "tidesage", Side::Player, "4,3");
-    add(&mut game, "wavemender", Side::Player, "3,4");
-    let tile = game.site("3,3");
+    let ally = add(&mut game, "reefguard", Side::Player, "hex-0760-150b2b6a75");
+    let first = add(&mut game, "tidesage", Side::Player, "hex-0408-edbae05560");
+    let second = add(&mut game, "tidesage", Side::Player, "hex-0856-a2b6e60ea7");
+    add(&mut game, "wavemender", Side::Player, "hex-0763-c9e627d16e");
+    let tile = game.site("hex-0760-150b2b6a75");
     game.terrain[tile] = game
         .rules
         .terrain_types

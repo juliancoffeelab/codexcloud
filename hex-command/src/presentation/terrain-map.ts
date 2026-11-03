@@ -20,6 +20,7 @@ export function terrainTileView(tile: TileView, mapId: string, artwork: Artwork)
   const frame = artFrame(artwork, "terrain", frameName, "player", tile.floor);
   const scale = battlefieldSpriteSize / 64;
   return {
+    id: tile.id,
     col: tile.col,
     row: tile.row,
     spriteX: x - (frame?.anchorX ?? 32) * scale,

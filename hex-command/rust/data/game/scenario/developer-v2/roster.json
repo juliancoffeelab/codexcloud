@@ -34,539 +34,432 @@
       "units": [
         {
           "type": "commander",
-          "col": 0,
-          "row": 3,
-          "role": "leader"
+          "role": "leader",
+          "tile": "hex-0024-b598c83bd2"
         },
         {
           "type": "soldier",
-          "col": 3,
-          "row": 3
+          "tile": "hex-0760-150b2b6a75"
         },
         {
           "type": "archer",
-          "col": 0,
-          "row": 4
+          "tile": "hex-0027-5828930a2c"
         },
         {
           "type": "scout",
-          "col": 3,
-          "row": 4
+          "tile": "hex-0763-c9e627d16e"
         },
         {
           "type": "warden",
-          "col": 0,
-          "row": 5
+          "tile": "hex-0028-a81ab6c878"
         },
         {
           "type": "adept",
-          "col": 3,
-          "row": 5
+          "tile": "hex-0764-1e6853c01c"
         },
         {
           "type": "skeleton",
-          "col": 0,
-          "row": 6
+          "tile": "hex-0029-15d660627f"
         },
         {
           "type": "bonearcher",
-          "col": 3,
-          "row": 6
+          "tile": "hex-0765-3a0bcc5d48"
         },
         {
           "type": "wolf",
-          "col": 0,
-          "row": 7
+          "tile": "hex-0030-0a7169bf92"
         },
         {
           "type": "boar",
-          "col": 3,
-          "row": 7
+          "tile": "hex-0766-4907292e1d"
         },
         {
           "type": "wildkeeper",
-          "col": 0,
-          "row": 8
+          "tile": "hex-0031-ae6a776b34"
         },
         {
           "type": "necromancer",
-          "col": 3,
-          "row": 8
+          "tile": "hex-0767-3b53c1c4da"
         },
         {
           "type": "thorncaller",
-          "col": 0,
-          "row": 9
+          "tile": "hex-0032-885bfd5174"
         },
         {
           "type": "swordsman",
-          "col": 3,
-          "row": 9
+          "tile": "hex-0768-7e23d46daa"
         },
         {
           "type": "spearman",
-          "col": 0,
-          "row": 10
+          "tile": "hex-0003-09573364f8"
         },
         {
           "type": "tidekeeper",
-          "col": 3,
-          "row": 10
+          "tile": "hex-0739-14062b312d"
         },
         {
           "type": "reefguard",
-          "col": 0,
-          "row": 11
+          "tile": "hex-0004-0bcf36e139"
         },
         {
           "type": "harpooner",
-          "col": 3,
-          "row": 11
+          "tile": "hex-0740-ffb5eaebdf"
         },
         {
           "type": "wavemender",
-          "col": 0,
-          "row": 12
+          "tile": "hex-0005-57ac29f345"
         },
         {
           "type": "marksman",
-          "col": 3,
-          "row": 12
+          "tile": "hex-0741-bc963af854"
         },
         {
           "type": "ranger",
-          "col": 0,
-          "row": 13
+          "tile": "hex-0006-9d59bdc908"
         },
         {
           "type": "mage",
-          "col": 3,
-          "row": 13
+          "tile": "hex-0742-5ef24eb759"
         },
         {
           "type": "revenant",
-          "col": 0,
-          "row": 14
+          "tile": "hex-0007-6884ee640d"
         },
         {
           "type": "deatharcher",
-          "col": 3,
-          "row": 14
+          "tile": "hex-0743-f215d527c5"
         },
         {
           "type": "direwolf",
-          "col": 0,
-          "row": 15
+          "tile": "hex-0008-bc0d15fd92"
         },
         {
           "type": "greatboar",
-          "col": 3,
-          "row": 15
+          "tile": "hex-0744-08b59842e0"
         },
         {
           "type": "briarweaver",
-          "col": 0,
-          "row": 16
+          "tile": "hex-0009-0be6d2acd0"
         },
         {
           "type": "tridentguard",
-          "col": 3,
-          "row": 16
+          "tile": "hex-0745-4cb1b24324"
         },
         {
           "type": "tidehunter",
-          "col": 0,
-          "row": 17
+          "tile": "hex-0010-98367b32ca"
         },
         {
           "type": "tidesage",
-          "col": 3,
-          "row": 17
+          "tile": "hex-0746-8d990f3ec1"
         },
         {
           "type": "marshal",
-          "col": 0,
-          "row": 18
+          "tile": "hex-0011-5d0f5c6ae3"
         },
         {
           "type": "grovewarden",
-          "col": 3,
-          "row": 18
+          "tile": "hex-0747-86b32e3b57"
         },
         {
           "type": "lich",
-          "col": 0,
-          "row": 19
+          "tile": "hex-0012-1cf41019c0"
         },
         {
           "type": "tideseer",
-          "col": 3,
-          "row": 19
+          "tile": "hex-0748-a6c6403395"
         },
         {
           "type": "rider",
-          "col": 2,
-          "row": 5
+          "tile": "hex-0412-0c9247ea66"
         },
         {
           "type": "lancer",
-          "col": 2,
-          "row": 6
+          "tile": "hex-0413-a7f6b5f93d"
         },
         {
           "type": "skeleton-impact-caster",
-          "col": 0,
-          "row": 20
+          "tile": "hex-0014-07a8d4cec1"
         },
         {
           "type": "skeleton-impact-caster-l2",
-          "col": 3,
-          "row": 20
+          "tile": "hex-0750-add04ae96b"
         },
         {
           "type": "merfolk-maceguard",
-          "col": 0,
-          "row": 21
+          "tile": "hex-0015-d462365ab7"
         },
         {
           "type": "merfolk-maceguard-l2",
-          "col": 3,
-          "row": 21
+          "tile": "hex-0751-dfd7fdc6b3"
         },
         {
           "type": "champion",
-          "col": 12,
-          "row": 3
+          "tile": "hex-0152-5fa472486b"
         },
         {
           "type": "hammerman",
-          "col": 15,
-          "row": 3
+          "tile": "hex-0248-d63aa418aa"
         },
         {
           "type": "warhammer",
-          "col": 18,
-          "row": 3
+          "tile": "hex-0344-484f72bf97"
         },
         {
           "type": "sentinel",
-          "col": 21,
-          "row": 3
+          "tile": "hex-0472-a96d3ae453"
         },
         {
           "type": "halberdier",
-          "col": 24,
-          "row": 3
+          "tile": "hex-0568-9ca98fb32f"
         },
         {
           "type": "halberd-master",
-          "col": 27,
-          "row": 3
+          "tile": "hex-0664-c5eb2bcc5e"
         },
         {
           "type": "shadowblade",
-          "col": 30,
-          "row": 3
+          "tile": "hex-0792-905555a7dd"
         },
         {
           "type": "slinger",
-          "col": 9,
-          "row": 4
+          "tile": "hex-1019-90a76d4969"
         },
         {
           "type": "fireslinger",
-          "col": 12,
-          "row": 4
+          "tile": "hex-0155-5d3e2bd499"
         },
         {
           "type": "sharpshooter",
-          "col": 15,
-          "row": 4
+          "tile": "hex-0251-ac4b6cf907"
         },
         {
           "type": "crossbowman",
-          "col": 18,
-          "row": 4
+          "tile": "hex-0347-806685278e"
         },
         {
           "type": "arbalester",
-          "col": 21,
-          "row": 4
+          "tile": "hex-0475-533ea4fc56"
         },
         {
           "type": "archmage",
-          "col": 24,
-          "row": 4
+          "tile": "hex-0571-c558e25411"
         },
         {
           "type": "healer",
-          "col": 27,
-          "row": 4
+          "tile": "hex-0667-5e5592c44c"
         },
         {
           "type": "high-healer",
-          "col": 30,
-          "row": 4
+          "tile": "hex-0795-b5d060da43"
         },
         {
           "type": "knight",
-          "col": 12,
-          "row": 5
+          "tile": "hex-0156-8ab8d06e5a"
         },
         {
           "type": "horse-archer",
-          "col": 15,
-          "row": 5
+          "tile": "hex-0252-5c08da56f2"
         },
         {
           "type": "horse-bowman",
-          "col": 18,
-          "row": 5
+          "tile": "hex-0348-aad6fc71ea"
         },
         {
           "type": "horse-marksman",
-          "col": 21,
-          "row": 5
+          "tile": "hex-0476-aa57f89866"
         },
         {
           "type": "grand-marshal",
-          "col": 24,
-          "row": 5
+          "tile": "hex-0572-16f8762767"
         },
         {
           "type": "skeleton-dreadguard",
-          "col": 27,
-          "row": 5
+          "tile": "hex-0668-d2669b131b"
         },
         {
           "type": "skeleton-flanker-l2",
-          "col": 30,
-          "row": 5
+          "tile": "hex-0796-520397eed6"
         },
         {
           "type": "skeleton-flanker-l3",
-          "col": 6,
-          "row": 6
+          "tile": "hex-0925-815fb4de6a"
         },
         {
           "type": "skeleton-impact-caster-l3",
-          "col": 12,
-          "row": 6
+          "tile": "hex-0157-85cb4b44b0"
         },
         {
           "type": "skeleton-scythe-caster-l2",
-          "col": 15,
-          "row": 6
+          "tile": "hex-0253-f447b7e61e"
         },
         {
           "type": "skeleton-scythe-caster-l3",
-          "col": 18,
-          "row": 6
+          "tile": "hex-0349-81ea4642c3"
         },
         {
           "type": "skeleton-rider",
-          "col": 21,
-          "row": 6
+          "tile": "hex-0477-0b5144e7b1"
         },
         {
           "type": "skeleton-rider-l2",
-          "col": 24,
-          "row": 6
+          "tile": "hex-0573-adbbb67ced"
         },
         {
           "type": "skeleton-rider-l3",
-          "col": 27,
-          "row": 6
+          "tile": "hex-0669-cc26831b61"
         },
         {
           "type": "skeleton-bow-master",
-          "col": 30,
-          "row": 6
+          "tile": "hex-0797-53f9001ae0"
         },
         {
           "type": "skeleton-axeman",
-          "col": 6,
-          "row": 7
+          "tile": "hex-0926-0e03033d23"
         },
         {
           "type": "skeleton-axeman-l2",
-          "col": 9,
-          "row": 7
+          "tile": "hex-1022-0164b0319d"
         },
         {
           "type": "skeleton-axeman-l3",
-          "col": 12,
-          "row": 7
+          "tile": "hex-0158-2325c06ef6"
         },
         {
           "type": "lich-commander-l3",
-          "col": 15,
-          "row": 7
+          "tile": "hex-0254-415f24444c"
         },
         {
           "type": "woodland-alpha-wolf",
-          "col": 18,
-          "row": 7
+          "tile": "hex-0350-448d0ca7b6"
         },
         {
           "type": "woodland-ancient-boar",
-          "col": 21,
-          "row": 7
+          "tile": "hex-0478-3a669794ba"
         },
         {
           "type": "woodland-thorn-oracle",
-          "col": 24,
-          "row": 7
+          "tile": "hex-0574-b845634c28"
         },
         {
           "type": "woodland-bramble-warden",
-          "col": 27,
-          "row": 7
+          "tile": "hex-0670-3f6cc7677d"
         },
         {
           "type": "woodland-thornbinder",
-          "col": 30,
-          "row": 7
+          "tile": "hex-0798-98f64faec4"
         },
         {
           "type": "fox-spearguard",
-          "col": 6,
-          "row": 8
+          "tile": "hex-0927-02b39c9b8e"
         },
         {
           "type": "fox-spearguard-l2",
-          "col": 9,
-          "row": 8
+          "tile": "hex-1023-f2f1852ae2"
         },
         {
           "type": "fox-spearguard-l3",
-          "col": 12,
-          "row": 8
+          "tile": "hex-0159-d132ac6136"
         },
         {
           "type": "treant",
-          "col": 15,
-          "row": 8
+          "tile": "hex-0255-c493068084"
         },
         {
           "type": "treant-l2",
-          "col": 18,
-          "row": 8
+          "tile": "hex-0351-a9a9e23b4b"
         },
         {
           "type": "treant-l3",
-          "col": 21,
-          "row": 8
+          "tile": "hex-0479-222abcd467"
         },
         {
           "type": "woodland-grove-oracle",
-          "col": 24,
-          "row": 8
+          "tile": "hex-0575-b307beee07"
         },
         {
           "type": "merfolk-harpoon-master",
-          "col": 27,
-          "row": 8
+          "tile": "hex-0671-df3b3da226"
         },
         {
           "type": "merfolk-netter-l2",
-          "col": 30,
-          "row": 8
+          "tile": "hex-0799-759443202c"
         },
         {
           "type": "merfolk-netter-l3",
-          "col": 6,
-          "row": 9
+          "tile": "hex-0928-d045e196f8"
         },
         {
           "type": "merfolk-reef-champion",
-          "col": 12,
-          "row": 9
+          "tile": "hex-0160-1ee1cb508b"
         },
         {
           "type": "merfolk-trident-l2",
-          "col": 15,
-          "row": 9
+          "tile": "hex-0256-aaa4fcb236"
         },
         {
           "type": "merfolk-trident-l3",
-          "col": 18,
-          "row": 9
+          "tile": "hex-0352-1f3e270f14"
         },
         {
           "type": "merfolk-tide-oracle",
-          "col": 21,
-          "row": 9
+          "tile": "hex-0480-fd9239f7cf"
         },
         {
           "type": "merfolk-tidecrusher-l2",
-          "col": 24,
-          "row": 9
+          "tile": "hex-0576-3367dfe9d5"
         },
         {
           "type": "merfolk-tidecrusher-l3",
-          "col": 27,
-          "row": 9
+          "tile": "hex-0672-2ef7945423"
         },
         {
           "type": "merfolk-maceguard-l3",
-          "col": 30,
-          "row": 9
+          "tile": "hex-0800-f8a44ad8d2"
         },
         {
           "type": "merfolk-tide-sovereign",
-          "col": 6,
-          "row": 10
+          "tile": "hex-0899-ad0a9f843c"
         },
         {
           "type": "ghost",
-          "col": 31,
-          "row": 31
+          "tile": "hex-0826-1ce94a7823"
         },
         {
           "type": "wraith",
-          "col": 30,
-          "row": 31
+          "tile": "hex-0794-3d4c34b530"
         },
         {
           "type": "spectre",
-          "col": 29,
-          "row": 31
+          "tile": "hex-0730-39f61996ce"
         },
         {
           "type": "bear",
-          "col": 25,
-          "row": 31
+          "tile": "hex-0602-97b1205efa"
         },
         {
           "type": "giant-bat",
-          "col": 23,
-          "row": 31
+          "tile": "hex-0538-dca4402b2f"
         },
         {
           "type": "giant-spider",
-          "col": 21,
-          "row": 31
+          "tile": "hex-0474-3b968971a9"
         },
         {
           "type": "captives",
-          "col": 18,
-          "row": 31
+          "tile": "hex-0346-35cf007ce3"
         },
         {
           "type": "zombie-walker",
-          "col": 17,
-          "row": 31
+          "tile": "hex-0314-db7b54305c"
         },
         {
           "type": "zombie-decay-caster",
-          "col": 15,
-          "row": 31
+          "tile": "hex-0250-e558ed33b3"
         },
         {
           "type": "skeletal-hound",
-          "col": 0,
-          "row": 0
+          "tile": "hex-0001-7256137ec1"
         }
       ],
       "relations": {
@@ -607,539 +500,432 @@
       "units": [
         {
           "type": "commander",
-          "col": 1,
-          "row": 3,
-          "role": "leader"
+          "role": "leader",
+          "tile": "hex-0056-2e6c8414fc"
         },
         {
           "type": "soldier",
-          "col": 4,
-          "row": 3
+          "tile": "hex-0856-a2b6e60ea7"
         },
         {
           "type": "archer",
-          "col": 1,
-          "row": 4
+          "tile": "hex-0059-de5770129b"
         },
         {
           "type": "scout",
-          "col": 4,
-          "row": 4
+          "tile": "hex-0859-8a12839c45"
         },
         {
           "type": "warden",
-          "col": 1,
-          "row": 5
+          "tile": "hex-0060-946ce75068"
         },
         {
           "type": "adept",
-          "col": 4,
-          "row": 5
+          "tile": "hex-0860-3735600481"
         },
         {
           "type": "skeleton",
-          "col": 1,
-          "row": 6
+          "tile": "hex-0061-365e46c4de"
         },
         {
           "type": "bonearcher",
-          "col": 4,
-          "row": 6
+          "tile": "hex-0861-b81de56c08"
         },
         {
           "type": "wolf",
-          "col": 1,
-          "row": 7
+          "tile": "hex-0062-bb3c3143b5"
         },
         {
           "type": "boar",
-          "col": 4,
-          "row": 7
+          "tile": "hex-0862-3ea2b77194"
         },
         {
           "type": "wildkeeper",
-          "col": 1,
-          "row": 8
+          "tile": "hex-0063-800f0fce01"
         },
         {
           "type": "necromancer",
-          "col": 4,
-          "row": 8
+          "tile": "hex-0863-f5faa8d578"
         },
         {
           "type": "thorncaller",
-          "col": 1,
-          "row": 9
+          "tile": "hex-0064-f0696e660a"
         },
         {
           "type": "swordsman",
-          "col": 4,
-          "row": 9
+          "tile": "hex-0864-a20aeacbbc"
         },
         {
           "type": "spearman",
-          "col": 1,
-          "row": 10
+          "tile": "hex-0035-897537cb8f"
         },
         {
           "type": "tidekeeper",
-          "col": 4,
-          "row": 10
+          "tile": "hex-0835-42aa3f9842"
         },
         {
           "type": "reefguard",
-          "col": 1,
-          "row": 11
+          "tile": "hex-0036-49a79b212e"
         },
         {
           "type": "harpooner",
-          "col": 4,
-          "row": 11
+          "tile": "hex-0836-42950299de"
         },
         {
           "type": "wavemender",
-          "col": 1,
-          "row": 12
+          "tile": "hex-0037-481d368fff"
         },
         {
           "type": "marksman",
-          "col": 4,
-          "row": 12
+          "tile": "hex-0837-f0316a8e2e"
         },
         {
           "type": "ranger",
-          "col": 1,
-          "row": 13
+          "tile": "hex-0038-764a820476"
         },
         {
           "type": "mage",
-          "col": 4,
-          "row": 13
+          "tile": "hex-0838-470a0619e4"
         },
         {
           "type": "revenant",
-          "col": 1,
-          "row": 14
+          "tile": "hex-0039-0c6e3f605a"
         },
         {
           "type": "deatharcher",
-          "col": 4,
-          "row": 14
+          "tile": "hex-0839-4831ed5685"
         },
         {
           "type": "direwolf",
-          "col": 1,
-          "row": 15
+          "tile": "hex-0040-96d61ed1d9"
         },
         {
           "type": "greatboar",
-          "col": 4,
-          "row": 15
+          "tile": "hex-0840-2894b03b52"
         },
         {
           "type": "briarweaver",
-          "col": 1,
-          "row": 16
+          "tile": "hex-0041-429fa6f0d6"
         },
         {
           "type": "tridentguard",
-          "col": 4,
-          "row": 16
+          "tile": "hex-0841-4d667d096f"
         },
         {
           "type": "tidehunter",
-          "col": 1,
-          "row": 17
+          "tile": "hex-0042-3103f25c56"
         },
         {
           "type": "tidesage",
-          "col": 4,
-          "row": 17
+          "tile": "hex-0842-fca025bd59"
         },
         {
           "type": "marshal",
-          "col": 1,
-          "row": 18
+          "tile": "hex-0043-cc2388bbb8"
         },
         {
           "type": "grovewarden",
-          "col": 4,
-          "row": 18
+          "tile": "hex-0843-493479e702"
         },
         {
           "type": "lich",
-          "col": 1,
-          "row": 19
+          "tile": "hex-0044-3038c75185"
         },
         {
           "type": "tideseer",
-          "col": 4,
-          "row": 19
+          "tile": "hex-0844-2368204768"
         },
         {
           "type": "rider",
-          "col": 5,
-          "row": 5
+          "tile": "hex-0892-f4d2ec09d8"
         },
         {
           "type": "lancer",
-          "col": 5,
-          "row": 6
+          "tile": "hex-0893-940b4e4db1"
         },
         {
           "type": "skeleton-impact-caster",
-          "col": 1,
-          "row": 20
+          "tile": "hex-0046-f2a54c5674"
         },
         {
           "type": "skeleton-impact-caster-l2",
-          "col": 4,
-          "row": 20
+          "tile": "hex-0846-4bad5fd833"
         },
         {
           "type": "merfolk-maceguard",
-          "col": 1,
-          "row": 21
+          "tile": "hex-0047-7187247eb1"
         },
         {
           "type": "merfolk-maceguard-l2",
-          "col": 4,
-          "row": 21
+          "tile": "hex-0847-17e30ba0e1"
         },
         {
           "type": "champion",
-          "col": 13,
-          "row": 3
+          "tile": "hex-0184-a8e8282394"
         },
         {
           "type": "hammerman",
-          "col": 16,
-          "row": 3
+          "tile": "hex-0280-b99109ea15"
         },
         {
           "type": "warhammer",
-          "col": 19,
-          "row": 3
+          "tile": "hex-0376-4467b62a97"
         },
         {
           "type": "sentinel",
-          "col": 22,
-          "row": 3
+          "tile": "hex-0504-ff75c44ab3"
         },
         {
           "type": "halberdier",
-          "col": 25,
-          "row": 3
+          "tile": "hex-0600-3de7070d7a"
         },
         {
           "type": "halberd-master",
-          "col": 28,
-          "row": 3
+          "tile": "hex-0696-bc9537b9d3"
         },
         {
           "type": "shadowblade",
-          "col": 31,
-          "row": 3
+          "tile": "hex-0824-4d8dfa455c"
         },
         {
           "type": "slinger",
-          "col": 10,
-          "row": 4
+          "tile": "hex-0091-76683d32ca"
         },
         {
           "type": "fireslinger",
-          "col": 13,
-          "row": 4
+          "tile": "hex-0187-8d8ab817b0"
         },
         {
           "type": "sharpshooter",
-          "col": 16,
-          "row": 4
+          "tile": "hex-0283-5270ee2fe5"
         },
         {
           "type": "crossbowman",
-          "col": 19,
-          "row": 4
+          "tile": "hex-0379-fe6753e749"
         },
         {
           "type": "arbalester",
-          "col": 22,
-          "row": 4
+          "tile": "hex-0507-58cb41ca51"
         },
         {
           "type": "archmage",
-          "col": 25,
-          "row": 4
+          "tile": "hex-0603-99a7db7b44"
         },
         {
           "type": "healer",
-          "col": 28,
-          "row": 4
+          "tile": "hex-0699-45e20269ef"
         },
         {
           "type": "high-healer",
-          "col": 31,
-          "row": 4
+          "tile": "hex-0827-2cb91d359b"
         },
         {
           "type": "knight",
-          "col": 13,
-          "row": 5
+          "tile": "hex-0188-58d896051f"
         },
         {
           "type": "horse-archer",
-          "col": 16,
-          "row": 5
+          "tile": "hex-0284-919549e3bc"
         },
         {
           "type": "horse-bowman",
-          "col": 19,
-          "row": 5
+          "tile": "hex-0380-71b0ab39e2"
         },
         {
           "type": "horse-marksman",
-          "col": 22,
-          "row": 5
+          "tile": "hex-0508-ad32d05df3"
         },
         {
           "type": "grand-marshal",
-          "col": 25,
-          "row": 5
+          "tile": "hex-0604-d7dbe05039"
         },
         {
           "type": "skeleton-dreadguard",
-          "col": 28,
-          "row": 5
+          "tile": "hex-0700-2d6d9e62f0"
         },
         {
           "type": "skeleton-flanker-l2",
-          "col": 31,
-          "row": 5
+          "tile": "hex-0828-9e86e3ba36"
         },
         {
           "type": "skeleton-flanker-l3",
-          "col": 7,
-          "row": 6
+          "tile": "hex-0957-c94afbbfa1"
         },
         {
           "type": "skeleton-impact-caster-l3",
-          "col": 13,
-          "row": 6
+          "tile": "hex-0189-ef2f157224"
         },
         {
           "type": "skeleton-scythe-caster-l2",
-          "col": 16,
-          "row": 6
+          "tile": "hex-0285-49166a1e1d"
         },
         {
           "type": "skeleton-scythe-caster-l3",
-          "col": 19,
-          "row": 6
+          "tile": "hex-0381-44c4fac61a"
         },
         {
           "type": "skeleton-rider",
-          "col": 22,
-          "row": 6
+          "tile": "hex-0509-8c38d5d34a"
         },
         {
           "type": "skeleton-rider-l2",
-          "col": 25,
-          "row": 6
+          "tile": "hex-0605-a1a50188de"
         },
         {
           "type": "skeleton-rider-l3",
-          "col": 28,
-          "row": 6
+          "tile": "hex-0701-7201530fa9"
         },
         {
           "type": "skeleton-bow-master",
-          "col": 31,
-          "row": 6
+          "tile": "hex-0829-7d01b8c15b"
         },
         {
           "type": "skeleton-axeman",
-          "col": 7,
-          "row": 7
+          "tile": "hex-0958-45e861932f"
         },
         {
           "type": "skeleton-axeman-l2",
-          "col": 10,
-          "row": 7
+          "tile": "hex-0094-9cab0ab0d2"
         },
         {
           "type": "skeleton-axeman-l3",
-          "col": 13,
-          "row": 7
+          "tile": "hex-0190-2e619349a3"
         },
         {
           "type": "lich-commander-l3",
-          "col": 16,
-          "row": 7
+          "tile": "hex-0286-57919573c2"
         },
         {
           "type": "woodland-alpha-wolf",
-          "col": 19,
-          "row": 7
+          "tile": "hex-0382-b14d136f5e"
         },
         {
           "type": "woodland-ancient-boar",
-          "col": 22,
-          "row": 7
+          "tile": "hex-0510-a8d9467b46"
         },
         {
           "type": "woodland-thorn-oracle",
-          "col": 25,
-          "row": 7
+          "tile": "hex-0606-f8d642b72e"
         },
         {
           "type": "woodland-bramble-warden",
-          "col": 28,
-          "row": 7
+          "tile": "hex-0702-086a5ac363"
         },
         {
           "type": "woodland-thornbinder",
-          "col": 31,
-          "row": 7
+          "tile": "hex-0830-77c554aa8a"
         },
         {
           "type": "fox-spearguard",
-          "col": 7,
-          "row": 8
+          "tile": "hex-0959-77a6a62a36"
         },
         {
           "type": "fox-spearguard-l2",
-          "col": 10,
-          "row": 8
+          "tile": "hex-0095-8f095f9e93"
         },
         {
           "type": "fox-spearguard-l3",
-          "col": 13,
-          "row": 8
+          "tile": "hex-0191-245d1573b9"
         },
         {
           "type": "treant",
-          "col": 16,
-          "row": 8
+          "tile": "hex-0287-ea07c321d3"
         },
         {
           "type": "treant-l2",
-          "col": 19,
-          "row": 8
+          "tile": "hex-0383-47e390fa8b"
         },
         {
           "type": "treant-l3",
-          "col": 22,
-          "row": 8
+          "tile": "hex-0511-f2412123e1"
         },
         {
           "type": "woodland-grove-oracle",
-          "col": 25,
-          "row": 8
+          "tile": "hex-0607-51c5f2d125"
         },
         {
           "type": "merfolk-harpoon-master",
-          "col": 28,
-          "row": 8
+          "tile": "hex-0703-42afaf9b6f"
         },
         {
           "type": "merfolk-netter-l2",
-          "col": 31,
-          "row": 8
+          "tile": "hex-0831-0f3626c326"
         },
         {
           "type": "merfolk-netter-l3",
-          "col": 7,
-          "row": 9
+          "tile": "hex-0960-d0f39b7308"
         },
         {
           "type": "merfolk-reef-champion",
-          "col": 13,
-          "row": 9
+          "tile": "hex-0192-0239378fea"
         },
         {
           "type": "merfolk-trident-l2",
-          "col": 16,
-          "row": 9
+          "tile": "hex-0288-395fc17fc4"
         },
         {
           "type": "merfolk-trident-l3",
-          "col": 19,
-          "row": 9
+          "tile": "hex-0384-f7415670d2"
         },
         {
           "type": "merfolk-tide-oracle",
-          "col": 22,
-          "row": 9
+          "tile": "hex-0512-0e26cd32a1"
         },
         {
           "type": "merfolk-tidecrusher-l2",
-          "col": 25,
-          "row": 9
+          "tile": "hex-0608-38dfaebf8f"
         },
         {
           "type": "merfolk-tidecrusher-l3",
-          "col": 28,
-          "row": 9
+          "tile": "hex-0704-9acbecccac"
         },
         {
           "type": "merfolk-maceguard-l3",
-          "col": 31,
-          "row": 9
+          "tile": "hex-0832-e1b62c57b4"
         },
         {
           "type": "merfolk-tide-sovereign",
-          "col": 7,
-          "row": 10
+          "tile": "hex-0931-48cdae2442"
         },
         {
           "type": "ghost",
-          "col": 28,
-          "row": 31
+          "tile": "hex-0698-2a7cb1d81c"
         },
         {
           "type": "wraith",
-          "col": 27,
-          "row": 31
+          "tile": "hex-0666-486e99c881"
         },
         {
           "type": "spectre",
-          "col": 26,
-          "row": 31
+          "tile": "hex-0634-d69eb8538e"
         },
         {
           "type": "bear",
-          "col": 24,
-          "row": 31
+          "tile": "hex-0570-496b29c956"
         },
         {
           "type": "giant-bat",
-          "col": 22,
-          "row": 31
+          "tile": "hex-0506-da07819840"
         },
         {
           "type": "giant-spider",
-          "col": 20,
-          "row": 31
+          "tile": "hex-0442-0c8b90bd20"
         },
         {
           "type": "captives",
-          "col": 19,
-          "row": 31
+          "tile": "hex-0378-72d9ea3eb2"
         },
         {
           "type": "zombie-walker",
-          "col": 16,
-          "row": 31
+          "tile": "hex-0282-c1cb2efbc4"
         },
         {
           "type": "zombie-decay-caster",
-          "col": 14,
-          "row": 31
+          "tile": "hex-0218-3b212b9817"
         },
         {
           "type": "skeletal-hound",
-          "col": 6,
-          "row": 0
+          "tile": "hex-0897-9650de66eb"
         }
       ],
       "relations": {

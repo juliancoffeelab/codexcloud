@@ -94,7 +94,11 @@ fn arena_only_scenarios_are_loaded_without_playable_metadata() {
 #[test]
 fn invalid_authored_layout_and_capture_references_are_rejected() {
     for (map, targets, message) in [
-        ("missing-layout", vec!["0,0"], "unknown arena map"),
+        (
+            "missing-layout",
+            vec!["hex-0001-7256137ec1"],
+            "unknown arena map",
+        ),
         ("mirror", vec!["999,999"], "outside its authored map"),
     ] {
         let mut bundle = hex_command_core::data::catalog::embedded_bundle();

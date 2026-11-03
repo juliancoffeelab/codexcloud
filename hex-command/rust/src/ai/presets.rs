@@ -153,7 +153,7 @@ mod tests {
             .into_iter()
             .find(|g| g.id == "required:0")
             .unwrap();
-        assert!(!required.tiles.contains(&"6,4".to_owned()));
+        assert!(!required.tiles.contains(&"hex-0923-ec307e92cf".to_owned()));
         assert!(
             required
                 .tiles

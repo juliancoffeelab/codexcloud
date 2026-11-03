@@ -34,9 +34,8 @@
       "units": [
         {
           "type": "commander",
-          "col": 1,
-          "row": 8,
-          "role": "leader"
+          "role": "leader",
+          "tile": "hex-0063-800f0fce01"
         }
       ],
       "relations": {
@@ -77,9 +76,8 @@
       "units": [
         {
           "type": "commander",
-          "col": 12,
-          "row": 8,
-          "role": "leader"
+          "role": "leader",
+          "tile": "hex-0159-d132ac6136"
         }
       ],
       "relations": {

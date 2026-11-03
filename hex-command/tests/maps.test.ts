@@ -1,3 +1,4 @@
+import { historicalTiles } from "./legacy-save";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import { required, TestStorage } from "./helpers.ts";
 import assert from "node:assert/strict";
@@ -35,8 +36,8 @@ test("Developer units use ordinary movement, combat and turns", async () => {
   const enemySoldier = required(
     developerBattle.units.find((unit) => unit.type === "soldier" && unit.side === "enemy"),
   );
-  developerBattle.move(soldier.id, "4,2");
-  assert.equal(soldier.tile, "4,2");
+  developerBattle.move(soldier.id, "hex-0845-9e38fcb018");
+  assert.equal(soldier.tile, "hex-0845-9e38fcb018");
   assert(developerBattle.targets(soldier.id).includes(enemySoldier));
   developerBattle.attack(soldier.id, enemySoldier.id, "sword");
   assert(enemySoldier.hp < TYPES.soldier.hp);
@@ -60,7 +61,7 @@ test("Developer saves remain noncampaign and round-trip", async () => {
 test("Moved developer sites persist ownership", async () => {
   const game = developerFixture(["scout"]);
   const unit = required(game.units.find((unit) => unit.side === "player" && unit.type === "scout"));
-  const destination = "5,1";
+  const destination = "hex-0866-c54da0213d";
   game.move(unit.id, destination);
   assert.equal(required(game.tile(destination)).owner, "player");
   saveBattle(game);
@@ -83,7 +84,7 @@ function validDeveloperSave() {
 test("Legacy developer saves gain neutral sites without resetting units", async () => {
   const validSave = validDeveloperSave();
   const units = structuredClone(validSave.state.units);
-  const legacySave = structuredClone(validSave);
+  const legacySave = historicalTiles(validSave);
   delete legacySave.state.sites;
   localStorage.setItem(SAVE_KEY, JSON.stringify(legacySave));
   const legacy = loadBattle().game;
@@ -112,7 +113,7 @@ const invalidCases: [string, (save: ReturnType<typeof validDeveloperSave>) => vo
   [
     "unit on impassable water",
     (save) => {
-      save.state.units[0]!.tile = "3,0";
+      save.state.units[0]!.tile = "hex-0737-cb60354473";
     },
   ],
   [
@@ -151,7 +152,7 @@ const invalidCases: [string, (save: ReturnType<typeof validDeveloperSave>) => vo
   [
     "site on plains",
     (save) => {
-      required(save.state.sites)[0]!.id = "2,2";
+      required(save.state.sites)[0]!.id = "hex-0397-b042f4a1af";
     },
   ],
   [

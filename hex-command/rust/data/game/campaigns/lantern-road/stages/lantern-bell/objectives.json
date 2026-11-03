@@ -9,7 +9,7 @@
     {
       "kind": "hold",
       "label": "Hold the monastery with a mage for three turns",
-      "tile": "5,5",
+      "tile": "hex-0892-f4d2ec09d8",
       "turns": 3,
       "earliestRound": 1,
       "startEvent": "monastery-start",
@@ -32,7 +32,7 @@
     {
       "kind": "event",
       "label": "Free the northern captives",
-      "tile": "11,5",
+      "tile": "hex-0124-7838ad1797",
       "event": "northern-freed",
       "visibleWhen": {
         "kind": "event",
@@ -42,7 +42,7 @@
     {
       "kind": "event",
       "label": "Free the eastern captives",
-      "tile": "19,10",
+      "tile": "hex-0355-3f598bb97a",
       "event": "eastern-freed",
       "visibleWhen": {
         "kind": "event",
@@ -52,7 +52,7 @@
     {
       "kind": "event",
       "label": "Free the southern captives",
-      "tile": "12,20",
+      "tile": "hex-0142-a3ef30fee6",
       "event": "southern-freed",
       "visibleWhen": {
         "kind": "event",

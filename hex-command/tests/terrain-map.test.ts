@@ -4,10 +4,10 @@ import { terrainMapKey } from "../src/presentation/terrain-map";
 import type { Artwork } from "../src/presentation/art";
 
 test("Terrain cache keys ignore ownership but include every terrain input", () => {
-  const tile = { id: "0,0", col: 0, row: 0, terrain: "road" as const, owner: null };
+  const tile = { id: "hex-0001-7256137ec1", col: 0, row: 0, terrain: "road" as const, owner: null };
   const game = { mapId: "mirror" as const, cols: 1, rows: 1, tiles: [tile] };
   const key = terrainMapKey(game);
-  const other = { ...tile, id: "1,0", col: 1 };
+  const other = { ...tile, id: "hex-0033-68054f369c", col: 1 };
   assert.equal(
     terrainMapKey({ ...game, tiles: [tile, other] }),
     terrainMapKey({ ...game, tiles: [other, tile] }),
@@ -19,7 +19,7 @@ test("Terrain cache keys ignore ownership but include every terrain input", () =
     { ...game, rows: 2 },
     { ...game, tiles: [{ ...tile, col: 1 }] },
     { ...game, tiles: [{ ...tile, row: 1 }] },
-    { ...game, tiles: [{ ...tile, id: "1,0" }] },
+    { ...game, tiles: [{ ...tile, id: "hex-0033-68054f369c" }] },
     { ...game, tiles: [{ ...tile, terrain: "forest" as const }] },
     { ...game, tiles: [{ ...tile, floor: "snow-forest" }] },
     { ...game, tiles: [{ ...tile, connections: ["e" as const, "w" as const] }] },
@@ -30,7 +30,13 @@ test("Terrain cache keys ignore ownership but include every terrain input", () =
 
 test("Static scenes reuse geometry through ownership and unit changes, but invalidate terrain and artwork", async () => {
   const { TerrainViewCache } = await import("../src/presentation/terrain-map");
-  const tile = { id: "0,0", col: 0, row: 0, terrain: "plains" as const, owner: null };
+  const tile = {
+    id: "hex-0001-7256137ec1",
+    col: 0,
+    row: 0,
+    terrain: "plains" as const,
+    owner: null,
+  };
   const game = { mapId: "mirror" as const, cols: 1, rows: 1, tiles: [tile] };
   const artwork: Artwork = { frames: {} };
   const cache = new TerrainViewCache();

@@ -28,16 +28,14 @@
       "units": [
         {
           "type": "swordsman",
-          "col": 2,
-          "row": 7,
           "role": "leader",
-          "character": "nera"
+          "character": "nera",
+          "tile": "hex-0414-7d6a56c9b3"
         },
         {
           "type": "scout",
-          "col": 1,
-          "row": 7,
-          "character": "ivo"
+          "character": "ivo",
+          "tile": "hex-0062-bb3c3143b5"
         }
       ],
       "relations": {
@@ -72,38 +70,32 @@
       "units": [
         {
           "type": "lich-commander-l3",
-          "col": 11,
-          "row": 12,
           "role": "leader",
-          "character": "bellwarden"
+          "character": "bellwarden",
+          "tile": "hex-0101-0061999dcd"
         },
         {
           "type": "skeleton-impact-caster",
-          "col": 10,
-          "row": 13
+          "tile": "hex-0070-6e8ca69657"
         },
         {
           "type": "bonearcher",
-          "col": 11,
-          "row": 13
+          "tile": "hex-0102-20e64861a0"
         },
         {
           "type": "skeleton",
-          "col": 10,
-          "row": 5,
-          "aiGroup": "north-watch"
+          "aiGroup": "north-watch",
+          "tile": "hex-0092-2cbe4dcb7c"
         },
         {
           "type": "bonearcher",
-          "col": 19,
-          "row": 9,
-          "aiGroup": "east-watch"
+          "aiGroup": "east-watch",
+          "tile": "hex-0384-f7415670d2"
         },
         {
           "type": "skeleton",
-          "col": 13,
-          "row": 20,
-          "aiGroup": "south-watch"
+          "aiGroup": "south-watch",
+          "tile": "hex-0174-93d7f87036"
         }
       ],
       "relations": {
@@ -137,35 +129,30 @@
       "units": [
         {
           "type": "captives",
-          "col": 11,
-          "row": 5,
-          "character": "northern-captives"
+          "character": "northern-captives",
+          "tile": "hex-0124-7838ad1797"
         },
         {
           "type": "captives",
-          "col": 19,
-          "row": 10,
-          "character": "eastern-captives"
+          "character": "eastern-captives",
+          "tile": "hex-0355-3f598bb97a"
         },
         {
           "type": "captives",
-          "col": 12,
-          "row": 20,
-          "character": "southern-captives"
+          "character": "southern-captives",
+          "tile": "hex-0142-a3ef30fee6"
         }
       ]
     }
   ],
   "arrivals": [
     {
-      "col": 3,
-      "row": 8,
-      "character": "sella"
+      "character": "sella",
+      "tile": "hex-0767-3b53c1c4da"
     },
     {
-      "col": 3,
-      "row": 7,
-      "character": "oren"
+      "character": "oren",
+      "tile": "hex-0766-4907292e1d"
     }
   ]
 }

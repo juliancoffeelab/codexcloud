@@ -62,6 +62,7 @@ class ThornDeterrenceTests(unittest.TestCase):
             dict(id='u1', type='aura', side='player', tile='0,0'),
             dict(id='u2', type='shield', side='player', tile='1,0'),
             dict(id='u3', type='foot', side='enemy', tile='0,1')])
+        state['tiles'] = [dict(id=u['tile'], col=int(u['tile'].split(',')[0]), row=int(u['tile'].split(',')[1])) for u in state['units']]
         providers, covered = audit.coverage(state, {'aura': dict(thornAura=2), 'shield': dict(thorns=1), 'foot': {}})
         self.assertEqual(len(providers), 1)
         self.assertEqual(covered, {'u2'})
@@ -91,6 +92,7 @@ class ThornDeterrenceTests(unittest.TestCase):
             dict(id='b', type='foot', side='player', tile='1,0'),
             dict(id='c', type='shield', side='player', tile='4,0'),
             dict(id='d', type='shield', side='enemy', tile='0,1')])
+        state['tiles'] = [dict(id=u['tile'], col=int(u['tile'].split(',')[0]), row=int(u['tile'].split(',')[1])) for u in state['units']]
         providers, covered = audit.coverage(state, rules, 'intrinsic')
         self.assertEqual({u['id'] for u in providers}, {'a', 'c'})
         self.assertEqual(covered, {'a', 'c'})
@@ -106,8 +108,10 @@ class ThornDeterrenceTests(unittest.TestCase):
         target = dict(id='a', type='foot', side='player', tile='1,1')
         enemy = dict(id='b', type='foot', side='enemy', tile='2,2')
         state = dict(turn='enemy', units=[target, enemy])
+        state['tiles'] = [dict(id=u['tile'], col=int(u['tile'].split(',')[0]), row=int(u['tile'].split(',')[1])) for u in state['units']]
         self.assertTrue(audit.threatened(state, rules, {'a'}))
         self.assertFalse(audit.threatened(state, rules, set()))
+        state['tiles'].append(dict(id='9,9', col=9, row=9))
         enemy['tile'] = '9,9'
         self.assertFalse(audit.threatened(state, rules, {'a'}))
         enemy.update(type='bow', tile='2,2')

@@ -4,7 +4,7 @@
       "id": "nets",
       "trigger": {
         "kind": "visit",
-        "tile": "5,7"
+        "tile": "hex-0894-59c2dceed8"
       },
       "label": "Recover provisions from the southern fishing hamlet",
       "gold": 4,

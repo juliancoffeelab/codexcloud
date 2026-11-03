@@ -7,11 +7,11 @@ import { required } from "./helpers";
 
 test("Selection and attack targets have accessible labels and health", async () => {
   const game = new Game();
-  const enemy = game.addUnit("archer", "enemy", "2,3");
+  const enemy = game.addUnit("archer", "enemy", "hex-0408-edbae05560");
   const opening = game.publishedView();
   const selected = battlefieldTiles(opening, "u2", currentArtwork(), null);
   assert.equal(selected.length, opening.tiles.length);
-  const soldier = required(selected.find((tile) => tile.id === "1,3"));
+  const soldier = required(selected.find((tile) => tile.id === "hex-0056-2e6c8414fc"));
   assert(soldier.classes.includes("selected"));
   assert.equal(soldier.occupant?.unit, opening.unit("u2"));
   const target = required(selected.find((tile) => tile.id === enemy.tile));
@@ -22,23 +22,30 @@ test("Selection and attack targets have accessible labels and health", async () 
 
 test("Recruitment highlights only legal destinations", async () => {
   const game = new Game();
-  game.addUnit("archer", "enemy", "2,3");
+  game.addUnit("archer", "enemy", "hex-0408-edbae05560");
   const opening = game.publishedView();
 
-  const recruited = battlefieldTiles(opening, null, currentArtwork(), "0,2");
-  assert(required(recruited.find((tile) => tile.id === "0,2")).classes.includes("recruitable"));
+  const recruited = battlefieldTiles(opening, null, currentArtwork(), "hex-0013-23f615dae8");
+  assert(
+    required(recruited.find((tile) => tile.id === "hex-0013-23f615dae8")).classes.includes(
+      "recruitable",
+    ),
+  );
   assert(!recruited.some((tile) => /selected|reachable|target/.test(tile.classes)));
 });
 
 test("Moving units preserves stable terrain and SVG layers", async () => {
   const game = new Game();
-  game.addUnit("archer", "enemy", "2,3");
+  game.addUnit("archer", "enemy", "hex-0408-edbae05560");
   const opening = game.publishedView();
   const selected = battlefieldTiles(opening, "u2", currentArtwork(), null);
-  game.move("u2", "2,2");
+  game.move("u2", "hex-0397-b042f4a1af");
   const moved = battlefieldTiles(game.publishedView(), "u2", currentArtwork(), null);
-  assert.equal(required(moved.find((tile) => tile.id === "1,3")).occupant, null);
-  assert.equal(required(moved.find((tile) => tile.id === "2,2")).occupant?.unit.id, "u2");
+  assert.equal(required(moved.find((tile) => tile.id === "hex-0056-2e6c8414fc")).occupant, null);
+  assert.equal(
+    required(moved.find((tile) => tile.id === "hex-0397-b042f4a1af")).occupant?.unit.id,
+    "u2",
+  );
   for (let index = 0; index < selected.length; index++) {
     const before = required(selected[index]);
     const after = required(moved[index]);
@@ -66,7 +73,7 @@ test("Campaign objectives and named companions have accessible descriptions", ()
 });
 test("Ordinary skirmish labels have no objective", async () => {
   const game = new Game();
-  const enemy = game.addUnit("archer", "enemy", "2,3");
+  const enemy = game.addUnit("archer", "enemy", "hex-0408-edbae05560");
   const opening = game.publishedView();
   const selected = battlefieldTiles(opening, "u2", currentArtwork(), null);
   const target = required(selected.find((tile) => tile.id === enemy.tile));
@@ -76,16 +83,22 @@ test("Ordinary skirmish labels have no objective", async () => {
 // Sealed stones leave the map individually; territory that can be lost stays visible.
 test("Completed seal markers disappear while territory remains visible", async () => {
   const game = Game.startCampaign("ashen-oath", 2);
-  game.campaign!.marks.push("sealed:7,2");
+  game.campaign!.marks.push("sealed:hex-0941-278b487380");
   const tiles = battlefieldTiles(game.publishedView(), null, currentArtwork(), null);
-  assert(!required(tiles.find((tile) => tile.id === "7,2")).classes.includes("objective"));
-  assert(required(tiles.find((tile) => tile.id === "7,6")).classes.includes("objective"));
+  assert(
+    !required(tiles.find((tile) => tile.id === "hex-0941-278b487380")).classes.includes(
+      "objective",
+    ),
+  );
+  assert(
+    required(tiles.find((tile) => tile.id === "hex-0957-c94afbbfa1")).classes.includes("objective"),
+  );
   const escort = Game.startCampaign("green-accord", 2);
-  required(escort.tile("7,4")).owner = "player";
+  required(escort.tile("hex-0955-5859c768ff")).owner = "player";
   assert(
     required(
       battlefieldTiles(escort.publishedView(), null, currentArtwork(), null).find(
-        (tile) => tile.id === "7,4",
+        (tile) => tile.id === "hex-0955-5859c768ff",
       ),
     ).classes.includes("objective"),
   );
@@ -114,10 +127,10 @@ function feedbackNode(attribute: string, tileId: string, occupied = false) {
   };
 }
 test("Selection, unit motion and capture target independent paint layers", async () => {
-  const groundNode = feedbackNode("data-tile", "1,3");
-  const unitNode = feedbackNode("data-unit-tile", "1,3", true);
-  const indicatorNode = feedbackNode("data-indicator-tile", "1,3");
-  const emptyNode = feedbackNode("data-unit-tile", "2,2");
+  const groundNode = feedbackNode("data-tile", "hex-0056-2e6c8414fc");
+  const unitNode = feedbackNode("data-unit-tile", "hex-0056-2e6c8414fc", true);
+  const indicatorNode = feedbackNode("data-indicator-tile", "hex-0056-2e6c8414fc");
+  const emptyNode = feedbackNode("data-unit-tile", "hex-0397-b042f4a1af");
   const feedbackLayers = new Map([
     ["#map [data-tile]", [groundNode]],
     ["#map [data-unit-tile]", [unitNode, emptyNode]],
@@ -138,16 +151,16 @@ test("Selection, unit motion and capture target independent paint layers", async
     }) as unknown as typeof setTimeout;
     globalThis.clearTimeout = (() => undefined) as typeof clearTimeout;
 
-    animateTile("1,3", "select");
+    animateTile("hex-0056-2e6c8414fc", "select");
     assert(groundNode.classes.has("motion-select"));
     assert.equal(unitNode.classes.size, 0);
     for (const kind of ["move", "recruit", "attack"] as const) {
-      animateTile("1,3", kind);
+      animateTile("hex-0056-2e6c8414fc", kind);
       assert.deepEqual([...unitNode.classes], [`motion-${kind}`]);
     }
-    animateTile("1,3", "capture");
+    animateTile("hex-0056-2e6c8414fc", "capture");
     assert(indicatorNode.classes.has("motion-capture"));
-    animateTile("2,2", "move");
+    animateTile("hex-0397-b042f4a1af", "move");
     assert.equal(emptyNode.classes.size, 0);
     for (const finish of cleanup) finish();
     assert.equal(groundNode.classes.size + unitNode.classes.size + indicatorNode.classes.size, 0);

@@ -4,7 +4,7 @@
       "id": "medicine",
       "trigger": {
         "kind": "visit",
-        "tile": "3,0"
+        "tile": "hex-0737-cb60354473"
       },
       "label": "Bring medicine to the villagers",
       "gold": 6,
@@ -38,14 +38,12 @@
         {
           "type": "archer",
           "side": "enemy",
-          "col": 9,
-          "row": 1
+          "tile": "hex-0994-37e28411df"
         },
         {
           "type": "swordsman",
           "side": "enemy",
-          "col": 9,
-          "row": 7
+          "tile": "hex-1022-0164b0319d"
         }
       ]
     },
@@ -57,8 +55,7 @@
         {
           "type": "adept",
           "side": "enemy",
-          "col": 9,
-          "row": 3
+          "tile": "hex-1016-9e0db09d3e"
         }
       ]
     }

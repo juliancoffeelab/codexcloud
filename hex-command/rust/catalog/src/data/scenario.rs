@@ -11,6 +11,7 @@ use std::collections::BTreeMap;
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
+#[serde(deny_unknown_fields)]
 pub struct StartingUnit {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -18,8 +19,7 @@ pub struct StartingUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub faction: Option<String>,
-    pub col: i32,
-    pub row: i32,
+    pub tile: String,
     pub r#type: String,
     pub side: Side,
     #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
@@ -477,8 +477,7 @@ pub struct Wave {
 )]
 pub struct CompanionArrival {
     pub character: String,
-    pub col: i32,
-    pub row: i32,
+    pub tile: String,
 }
 
 /// A conditional opening toll applies the normal ritual to selected initial sources.

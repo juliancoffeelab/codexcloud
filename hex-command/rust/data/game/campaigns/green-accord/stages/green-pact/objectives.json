@@ -3,12 +3,12 @@
     {
       "kind": "control",
       "label": "Secure the fort beside the bridge",
-      "tiles": ["7,4"]
+      "tiles": ["hex-0955-5859c768ff"]
     },
     {
       "kind": "escort",
       "label": "Bring Lark to the northern village",
-      "tile": "12,1"
+      "tile": "hex-0130-cb5c0e2a48"
     }
   ],
   "requiredCompanions": ["lark"]

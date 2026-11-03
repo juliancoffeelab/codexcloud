@@ -3,7 +3,7 @@
     {
       "kind": "event",
       "label": "Reach the ferryman’s house",
-      "tile": "18,10",
+      "tile": "hex-0323-cf4945b8a9",
       "event": "house-visit"
     },
     {
@@ -17,7 +17,7 @@
       "kind": "event",
       "label": "Reach the ferryman by turn 15",
       "event": "ford-shout",
-      "tile": "17,8"
+      "tile": "hex-0319-08df480e03"
     }
   ]
 }

@@ -9,11 +9,32 @@ export { importWaveMarker } from "../src/save/migrations/legacy/snapshot";
 export { SAVE_KEY } from "../src/save/storage";
 import { SAVE_KEY } from "../src/save/storage";
 import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
+import tileHistory from "../src/save/migrations/legacy/data/tiles-v26.json";
 import historical from "../src/save/migrations/legacy/data/characters-v25.json";
+
+/** Encode a current geometric fixture in its published coordinate-key format. */
+export function historicalTiles<T>(input: T): T {
+  const reverse = new Map(
+    Object.values(tileHistory).flatMap((board) =>
+      Object.entries(board).map(([position, id]) => [id, position]),
+    ),
+  );
+  const convert = (v: unknown): unknown => {
+    if (typeof v === "string")
+      return v.replace(/hex-[0-9]{4}-[a-f0-9]{10}/g, (id) => reverse.get(id) ?? id);
+    if (Array.isArray(v)) return v.map(convert);
+    if (v && typeof v === "object")
+      return Object.fromEntries(
+        Object.entries(v).map(([k, value]) => [String(convert(k)), convert(value)]),
+      );
+    return v;
+  };
+  return convert(input) as T;
+}
 
 /** Encode current identity-bearing fixtures in the actual published name-based format. */
 export function historicalCharacters<T>(input: T): T {
-  const state = structuredClone(input) as Record<string, any>;
+  const state = historicalTiles(input) as Record<string, any>;
   const campaign = state.campaign;
   const scope = campaign?.id ?? historical.maps[state.mapId as keyof typeof historical.maps];
   const registry = historical.campaigns[scope as keyof typeof historical.campaigns];

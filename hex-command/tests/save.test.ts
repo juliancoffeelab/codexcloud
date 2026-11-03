@@ -1,4 +1,4 @@
-import { historicalCharacters } from "./legacy-save";
+import { historicalCharacters, historicalTiles } from "./legacy-save";
 import { Game } from "./game-fixture";
 import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
 import { importWaveMarker } from "../src/save/migrations/legacy/snapshot";
@@ -41,7 +41,7 @@ for (const [cols, rows] of [
     });
     state.tiles.find((tile) => tile.terrain === "village")!.owner = "player";
     checkpoint.seed = 42;
-    const old = { version: 3, checkpoint, pendingEnemy: true };
+    const old = { version: 3, checkpoint: historicalTiles(checkpoint), pendingEnemy: true };
     const before = structuredClone(old);
     const migrated = migrateSave(old);
     assert(migrated.migrated);
@@ -88,8 +88,9 @@ for (const [cols, rows] of [
 }
 
 test("Version-three ordinary battles receive only an envelope update", () => {
-  const old = { version: 3, checkpoint: checkpoint(), pendingEnemy: false };
-  assert.deepEqual(migrateSave(old).save, { ...old, version: SAVE_VERSION });
+  const current = checkpoint();
+  const old = { version: 3, checkpoint: historicalTiles(current), pendingEnemy: false };
+  assert.deepEqual(migrateSave(old).save, { ...old, checkpoint: current, version: SAVE_VERSION });
 });
 
 test("Live WASM catalog contains no historical save metadata", () => {
@@ -170,7 +171,11 @@ test("Version-one TS migration is pure, defaults experience and preserves progre
 test("Migration chain distinguishes the original native envelope and rewrites once", () => {
   const saved = checkpoint();
   saved.seed = 42;
-  const old = { engine: "rust-wasm", pendingEnemy: false, saved: { version: 1, ...saved } };
+  const old = {
+    engine: "rust-wasm",
+    pendingEnemy: false,
+    saved: { version: 1, ...historicalTiles(saved) },
+  };
   const raw = JSON.stringify(old);
   localStorage.setItem(SAVE_KEY, raw);
   const result = migrateSave(old);
@@ -221,7 +226,7 @@ for (const raw of [
     assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
     assert.equal(localStorage.getItem(SAVE_KEY), null);
     assert.equal(restored.game.round, 1);
-    restored.game.move("u3", "3,1");
+    restored.game.move("u3", "hex-0738-f0cce97107");
     restored.game.dispose();
   });
 }
@@ -249,7 +254,7 @@ test("Version-four migration discards AI actions without executing the enemy tur
     version: 4,
     pendingEnemy: false,
     checkpoint: {
-      ...checkpoint,
+      ...historicalTiles(checkpoint),
       planner: {
         options: { recruitmentLimit: 2 },
         workspace: { recruitmentRemaining: 0, commands: [] },
@@ -302,14 +307,14 @@ test("Rejected saves clear obsolete backups and leave saving enabled", () => {
   assert(restored.notice);
   assert.equal(localStorage.getItem(SAVE_KEY), null);
   assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
-  restored.game.move("u3", "3,1");
+  restored.game.move("u3", "hex-0738-f0cce97107");
   saveBattle(restored.game);
   assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
   restored.game.dispose();
 });
 
 for (const [id, chapter, type, tile, numericMarks] of [
-  ["ashen-oath", 2, "boar", "9,4", ["wave:0", "wave:1"]],
+  ["ashen-oath", 2, "boar", "hex-1019-90a76d4969", ["wave:0", "wave:1"]],
 ] as const) {
   test(`Legacy ${id} delayed waves retain wounded troops and cannot deploy twice`, () => {
     const game = Game.startCampaign(id, chapter);
@@ -371,12 +376,14 @@ test("Legacy pre-rescue hold clocks reset, while earned victories stay completed
   const game = Game.startCampaign("borrowed-tide", 1);
   const old = oldSnapshot(game.captureState());
   old.state.round = 4;
-  old.state.campaign!.holds = { "5,4": { heldTurns: 2, lastCountedRound: 4 } };
+  old.state.campaign!.holds = historicalTiles({
+    "hex-0891-b20a50ef8c": { heldTurns: 2, lastCountedRound: 4 },
+  });
   const converted = migrateSave(old).save;
-  assert.equal(converted.checkpoint.state.campaign!.holds!["5,4"]!.heldTurns, 0);
+  assert.equal(converted.checkpoint.state.campaign!.holds!["hex-0891-b20a50ef8c"]!.heldTurns, 0);
   assert(!converted.checkpoint.state.campaign!.marks.includes("event:rescue"));
   const restored = LiveGame.restore(createTestFactory(), converted.checkpoint);
-  assert.equal(restored.campaign!.holds!["5,4"]!.heldTurns, 0);
+  assert.equal(restored.campaign!.holds!["hex-0891-b20a50ef8c"]!.heldTurns, 0);
   restored.dispose();
   old.state.winner = "player";
   old.state.campaign!.outcome = "Mission complete. The company can rest and regroup.";

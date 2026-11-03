@@ -6,7 +6,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "2,1",
+          "tile": "hex-0386-9dcf2ec127",
           "radius": 0,
           "side": "player"
         }
@@ -40,7 +40,15 @@
       ],
       "choice": "hidden-village-found",
       "spawn": {
-        "area": ["2,1", "2,0", "1,1", "2,2", "3,1", "1,0", "3,2"],
+        "area": [
+          "hex-0386-9dcf2ec127",
+          "hex-0385-50a8d92c35",
+          "hex-0034-53333de58a",
+          "hex-0397-b042f4a1af",
+          "hex-0738-f0cce97107",
+          "hex-0033-68054f369c",
+          "hex-0749-0fa856724a"
+        ],
         "units": [
           {
             "id": "sella",
@@ -76,7 +84,7 @@
           "conditions": [
             {
               "kind": "owner",
-              "tile": "1,2",
+              "tile": "hex-0045-b0e58b1f93",
               "side": "player"
             },
             {
@@ -176,7 +184,7 @@
           "conditions": [
             {
               "kind": "proximity",
-              "tile": "8,6",
+              "tile": "hex-0989-f27f4a3764",
               "radius": 2,
               "side": "player"
             },
@@ -275,7 +283,7 @@
           "kind": "proximity",
           "side": "player",
           "radius": 0,
-          "tile": "8,6",
+          "tile": "hex-0989-f27f4a3764",
           "unitType": "captives"
         }
       },
@@ -381,7 +389,7 @@
                 },
                 {
                   "kind": "proximity",
-                  "tile": "15,7",
+                  "tile": "hex-0254-415f24444c",
                   "radius": 3,
                   "side": "player"
                 }
@@ -407,277 +415,277 @@
           "conditions": [
             {
               "kind": "proximity",
-              "tile": "16,6",
+              "tile": "hex-0285-49166a1e1d",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "15,7",
+              "tile": "hex-0254-415f24444c",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "13,8",
+              "tile": "hex-0191-245d1573b9",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "14,8",
+              "tile": "hex-0223-33a9629ed8",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "15,8",
+              "tile": "hex-0255-c493068084",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "7,9",
+              "tile": "hex-0960-d0f39b7308",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "8,9",
+              "tile": "hex-0992-f53867adc7",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "9,9",
+              "tile": "hex-1024-1f392012be",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "10,9",
+              "tile": "hex-0096-c02cbc4fed",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "11,9",
+              "tile": "hex-0128-bfe9f9622b",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "13,9",
+              "tile": "hex-0192-0239378fea",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "15,9",
+              "tile": "hex-0256-aaa4fcb236",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "16,9",
+              "tile": "hex-0288-395fc17fc4",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "17,9",
+              "tile": "hex-0320-a99b12320e",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "5,10",
+              "tile": "hex-0867-1772ad8e2e",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "6,10",
+              "tile": "hex-0899-ad0a9f843c",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "7,10",
+              "tile": "hex-0931-48cdae2442",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "8,10",
+              "tile": "hex-0963-08c4eb0b71",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "9,10",
+              "tile": "hex-0995-3a3f0aa41b",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "11,10",
+              "tile": "hex-0099-667f9d3977",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "12,10",
+              "tile": "hex-0131-cdff51851c",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "14,10",
+              "tile": "hex-0195-bc763373a2",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "17,10",
+              "tile": "hex-0291-9fd69564c9",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "6,11",
+              "tile": "hex-0900-78380433d3",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "7,11",
+              "tile": "hex-0932-13617d9242",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "8,11",
+              "tile": "hex-0964-716120f6be",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "10,11",
+              "tile": "hex-0068-9e63bb6de4",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "11,11",
+              "tile": "hex-0100-91773deff8",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "12,11",
+              "tile": "hex-0132-b4813872a6",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "14,11",
+              "tile": "hex-0196-e5b512d671",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "15,11",
+              "tile": "hex-0228-bcfecd1fa8",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "17,11",
+              "tile": "hex-0292-189617d5fd",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "18,11",
+              "tile": "hex-0324-d7a99edd37",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "6,12",
+              "tile": "hex-0901-ec48d5047f",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "7,12",
+              "tile": "hex-0933-28d5db641f",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "8,12",
+              "tile": "hex-0965-a5cef1e31d",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "9,12",
+              "tile": "hex-0997-23ad2602f0",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "10,12",
+              "tile": "hex-0069-c2c36638a8",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "11,12",
+              "tile": "hex-0101-0061999dcd",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "12,12",
+              "tile": "hex-0133-99da47f9af",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "13,12",
+              "tile": "hex-0165-7fc215ecc5",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "14,12",
+              "tile": "hex-0197-08c243d1ee",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "15,12",
+              "tile": "hex-0229-9ae8fd5e6f",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "16,12",
+              "tile": "hex-0261-92bfd31fb2",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "17,12",
+              "tile": "hex-0293-609fdbf2e9",
               "radius": 0,
               "side": "player"
             },
             {
               "kind": "proximity",
-              "tile": "18,12",
+              "tile": "hex-0325-2c51359da3",
               "radius": 0,
               "side": "player"
             }
@@ -740,7 +748,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "2,1",
+          "tile": "hex-0386-9dcf2ec127",
           "radius": 0,
           "side": "player"
         }
@@ -774,7 +782,7 @@
       ],
       "requiresEvent": "prisoners-freed",
       "evacuate": {
-        "tile": "2,1",
+        "tile": "hex-0386-9dcf2ec127",
         "units": {
           "side": "player",
           "role": "courier"
@@ -809,7 +817,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "17,0",
+          "tile": "hex-0289-0646356c88",
           "radius": 0,
           "side": "player",
           "character": "nera"
@@ -953,7 +961,7 @@
       "id": "captive-guard",
       "order": {
         "kind": "hold",
-        "area": ["7,6"],
+        "area": ["hex-0957-c94afbbfa1"],
         "attackRadius": 1,
         "when": {
           "kind": "hasUnits",
@@ -969,7 +977,7 @@
       "id": "tollkeeper",
       "order": {
         "kind": "hold",
-        "area": ["15,7"],
+        "area": ["hex-0254-415f24444c"],
         "attackRadius": 1,
         "when": {
           "kind": "hasUnits",
@@ -982,7 +990,7 @@
       "id": "swamp-commander",
       "order": {
         "kind": "hold",
-        "area": ["12,12"],
+        "area": ["hex-0133-99da47f9af"],
         "attackRadius": 2
       }
     }

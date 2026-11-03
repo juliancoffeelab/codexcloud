@@ -194,7 +194,7 @@
     }
 
     event.preventDefault();
-    const nextTile = game.tile(`${col},${row}`);
+    const nextTile = game.tiles.find((tile) => tile.col === col && tile.row === row);
     if (!nextTile) return;
 
     actions.focusTile(nextTile.id);

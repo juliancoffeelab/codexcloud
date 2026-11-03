@@ -54,6 +54,7 @@ fn drive(
         .as_mut()
         .expect("turn orders")
         .tactics = orders.clone();
+    // Equal priorities retain the Campaigner’s authored order, independent of ID spelling.
     context
         .workspace
         .orders
@@ -61,7 +62,7 @@ fn drive(
         .unwrap()
         .tactics
         .objectives
-        .order_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
+        .order_by(|a, b| b.priority.cmp(&a.priority));
     let recovered: Vec<_> = context
         .battle()
         .units()

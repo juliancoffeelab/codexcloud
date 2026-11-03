@@ -26,7 +26,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "5,5",
+          "tile": "hex-0892-f4d2ec09d8",
           "side": "player",
           "radius": 0,
           "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
@@ -47,7 +47,13 @@
       "label": "The hill ritual begins; skeletal wolves emerge.",
       "spawn": {
         "aiGroup": "monastery-wolves",
-        "area": ["7,5", "6,6", "6,5", "5,6", "7,6"],
+        "area": [
+          "hex-0956-1372406dd4",
+          "hex-0925-815fb4de6a",
+          "hex-0924-5cbf18fdd5",
+          "hex-0893-940b4e4db1",
+          "hex-0957-c94afbbfa1"
+        ],
         "units": [
           {
             "id": "wolf-1",
@@ -66,7 +72,7 @@
       "id": "fog-cleared",
       "trigger": {
         "kind": "held",
-        "tile": "5,5",
+        "tile": "hex-0892-f4d2ec09d8",
         "turns": 3
       },
       "requiresEvent": "monastery-start",
@@ -145,7 +151,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "18,14",
+          "tile": "hex-0327-75e4fc333f",
           "side": "player",
           "radius": 2
         }
@@ -165,7 +171,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "18,14",
+          "tile": "hex-0327-75e4fc333f",
           "side": "player",
           "radius": 0
         }
@@ -184,7 +190,7 @@
       ],
       "groundItems": [
         {
-          "tile": "18,14",
+          "tile": "hex-0327-75e4fc333f",
           "item": {
             "id": "church-mail",
             "name": "Enchanted mail",
@@ -209,7 +215,7 @@
           "conditions": [
             {
               "kind": "proximity",
-              "tile": "11,5",
+              "tile": "hex-0124-7838ad1797",
               "side": "player",
               "radius": 3
             },
@@ -264,7 +270,7 @@
           "conditions": [
             {
               "kind": "proximity",
-              "tile": "19,10",
+              "tile": "hex-0355-3f598bb97a",
               "side": "player",
               "radius": 3
             },
@@ -319,7 +325,7 @@
           "conditions": [
             {
               "kind": "proximity",
-              "tile": "12,20",
+              "tile": "hex-0142-a3ef30fee6",
               "side": "player",
               "radius": 3
             },
@@ -429,7 +435,13 @@
       ],
       "label": "The Tollkeeper's skeleton patrol enters from the southwest.",
       "spawn": {
-        "area": ["2,17", "1,17", "1,18", "2,18", "3,17"],
+        "area": [
+          "hex-0394-7889695a30",
+          "hex-0042-3103f25c56",
+          "hex-0043-cc2388bbb8",
+          "hex-0395-f9b1a8bf44",
+          "hex-0746-8d990f3ec1"
+        ],
         "units": [
           {
             "id": "tollkeeper",
@@ -463,7 +475,7 @@
             },
             {
               "kind": "proximity",
-              "tile": "11,5",
+              "tile": "hex-0124-7838ad1797",
               "radius": 3,
               "side": "player"
             },
@@ -490,7 +502,7 @@
       "id": "north-watch",
       "order": {
         "kind": "hold",
-        "area": ["11,5", "10,5", "10,6"],
+        "area": ["hex-0124-7838ad1797", "hex-0092-2cbe4dcb7c", "hex-0093-9d334ed661"],
         "attackRadius": 2,
         "when": {
           "kind": "hasUnits",
@@ -503,7 +515,7 @@
       "id": "east-watch",
       "order": {
         "kind": "hold",
-        "area": ["19,10", "19,9", "18,10"],
+        "area": ["hex-0355-3f598bb97a", "hex-0384-f7415670d2", "hex-0323-cf4945b8a9"],
         "attackRadius": 2,
         "when": {
           "kind": "hasUnits",
@@ -516,7 +528,7 @@
       "id": "south-watch",
       "order": {
         "kind": "hold",
-        "area": ["12,20", "13,20", "12,19"],
+        "area": ["hex-0142-a3ef30fee6", "hex-0174-93d7f87036", "hex-0140-9331b16706"],
         "attackRadius": 2,
         "when": {
           "kind": "hasUnits",
@@ -541,20 +553,17 @@
         {
           "type": "lancer",
           "side": "player",
-          "col": 0,
-          "row": 7
+          "tile": "hex-0030-0a7169bf92"
         },
         {
           "type": "mage",
           "side": "player",
-          "col": 0,
-          "row": 8
+          "tile": "hex-0031-ae6a776b34"
         },
         {
           "type": "healer",
           "side": "player",
-          "col": 0,
-          "row": 9
+          "tile": "hex-0032-885bfd5174"
         }
       ],
       "dialogue": [
@@ -644,10 +653,10 @@
           "kind": "choice",
           "choice": "bell-tolled-before-arrival"
         },
-        "sites": ["11,5"]
+        "sites": ["hex-0124-7838ad1797"]
       },
       "sourcesPerToll": 1,
-      "sources": ["11,5", "19,10", "12,20"]
+      "sources": ["hex-0124-7838ad1797", "hex-0355-3f598bb97a", "hex-0142-a3ef30fee6"]
     }
   ]
 }

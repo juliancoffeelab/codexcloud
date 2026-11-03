@@ -153,3 +153,16 @@ Named dialogue lines use `"character": "nera"` instead of a speaker name.
 Generic narration may use `"speaker": "The company"`. Character names are resolved
 by Rust inspection for unit labels and current dialogue captions; native saves
 retain character IDs. Promotion and campaign carryover preserve those identities.
+
+## Map location identity
+
+A map tile's `id` is an authored, map-scoped identifier. Its `col` and `row`
+describe geometry only. Keep the ID when moving a tile or changing its terrain;
+never regenerate IDs when sorting or editing a map. Existing cells use opaque
+`hex-…` IDs; newly authored IDs can also use descriptive names such as
+`monastery` or `northern-graveyard`.
+
+Objectives, conditions, spawn areas, ritual sites, army placements and companion
+arrivals reference tile IDs. Placements use `"tile": "monastery"`, rather than
+repeating coordinates. Rust resolves the location through the board. Duplicate
+IDs, duplicate positions and missing references fail catalog validation.

@@ -3,13 +3,13 @@
     {
       "kind": "event",
       "label": "Recover the original ledger from the wreck",
-      "tile": "5,4",
+      "tile": "hex-0891-b20a50ef8c",
       "event": "ledger"
     },
     {
       "kind": "hold",
       "label": "Defend the wreck through 3 enemy turns during the rescue",
-      "tile": "5,4",
+      "tile": "hex-0891-b20a50ef8c",
       "turns": 3,
       "earliestRound": 6,
       "startEvent": "rescue"

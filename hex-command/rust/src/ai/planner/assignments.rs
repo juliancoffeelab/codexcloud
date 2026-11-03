@@ -567,7 +567,7 @@ mod tests {
             .find(|u| u.side == Side::Player)
             .unwrap()
             .id;
-        let tile = game.site("1,3");
+        let tile = game.site("hex-0056-2e6c8414fc");
         let actor = game.units.iter_mut().find(|u| u.id == player).unwrap();
         actor.tile = tile;
         actor.hp = 1;
@@ -577,7 +577,7 @@ mod tests {
         game.next_id += 1;
         threat.side = Side::Enemy;
         threat.kind = game.kind("swordsman");
-        threat.tile = game.site("2,3");
+        threat.tile = game.site("hex-0408-edbae05560");
         threat.hp = 1;
         threat.moved = false;
         threat.character = None;
@@ -588,7 +588,7 @@ mod tests {
         game.next_id += 1;
         helper.side = Side::Player;
         helper.kind = game.kind("archer");
-        helper.tile = game.site("3,3");
+        helper.tile = game.site("hex-0760-150b2b6a75");
         helper.hp = rules.units[helper.kind].hp;
         helper.moved = false;
         helper.attacked = false;

@@ -310,13 +310,13 @@ mod tests {
             .find(|u| u.side == Side::Player)
             .unwrap()
             .id;
-        let actor_tile = game.site("1,3");
+        let actor_tile = game.site("hex-0056-2e6c8414fc");
         game.units.iter_mut().find(|u| u.id == actor).unwrap().tile = actor_tile;
         let mut guard = game.unit(actor).unwrap().clone();
         guard.id = game.next_id;
         game.next_id += 1;
         guard.kind = game.kind("archer");
-        guard.tile = game.site("3,3");
+        guard.tile = game.site("hex-0760-150b2b6a75");
         guard.hp = rules.units[guard.kind].hp;
         guard.character = None;
         guard.role = None;
@@ -327,17 +327,17 @@ mod tests {
         enemy.kind = game.kind("swordsman");
         enemy.hp = rules.units[enemy.kind].hp;
         enemy.side = Side::Enemy;
-        enemy.tile = game.site("5,3");
+        enemy.tile = game.site("hex-0888-a99d723b63");
         let enemy_id = enemy.id;
         game.units.extend([guard, enemy]);
         for tile in 0..game.terrain.len() {
             game.set_terrain(tile, rules.terrains["water"]);
         }
         for col in 0..game.cols {
-            let tile = game.site(&format!("{col},3"));
+            let tile = game.site_at(col, 3);
             game.set_terrain(tile, rules.terrains["plains"]);
         }
-        let branch = game.site("3,2");
+        let branch = game.site("hex-0749-0fa856724a");
         game.set_terrain(branch, rules.terrains["plains"]);
         game.roster_changed();
         let report = PlanningReport {
@@ -357,7 +357,7 @@ mod tests {
             &report,
             &TacticalOrders::default(),
         );
-        let screen = game.site("4,3");
+        let screen = game.site("hex-0856-a2b6e60ea7");
         assert!(game.board.distance(screen, actor_tile) > 1);
         assert!(escort.position(guard_id, screen) > escort.position(guard_id, branch));
         let enemy = game.unit(enemy_id).unwrap();

@@ -4,7 +4,7 @@
       "id": "old-trail",
       "trigger": {
         "kind": "visit",
-        "tile": "6,0"
+        "tile": "hex-0897-9650de66eb"
       },
       "label": "Recover provisions from the old crossing post",
       "gold": 6,
@@ -63,8 +63,7 @@
       {
         "type": "boar",
         "side": "player",
-        "col": 3,
-        "row": 4
+        "tile": "hex-0763-c9e627d16e"
       }
     ],
     "recruitment": {

@@ -51,9 +51,6 @@ impl RecordingCache {
     }
 }
 
-fn axial_id(q: i32, r: i32) -> String {
-    format!("{},{}", q + r.div_euclid(2) + 4, r + 4)
-}
 pub(crate) fn create_arena<'catalog>(
     rules: &'catalog Rules,
     config: &ArenaConfig,
@@ -66,7 +63,7 @@ pub(crate) fn create_arena<'catalog>(
         .iter()
         .find(|l| l.id == config.landscape)
         .unwrap();
-    let map_id = landscape.map.as_deref().unwrap_or("mirror");
+    let map_id = landscape.map.as_deref().unwrap_or("arena-template");
     let mut state = rules
         .maps
         .iter()
@@ -162,28 +159,6 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
     }
     state.cols = 9;
     state.rows = 9;
-    state.tiles.clear();
-    for r in -4i32..=4 {
-        for q in -4i32..=4 {
-            if (q + r).abs() > 4 {
-                continue;
-            }
-            let col = q + r.div_euclid(2) + 4;
-            state.tiles.push(Tile {
-                fog: None,
-                light: None,
-                id: axial_id(q, r),
-                col,
-                row: r + 4,
-                terrain: "plains".into(),
-                owner: None,
-                connections: None,
-                walls: None,
-                dead_ends: None,
-                floor: None,
-            });
-        }
-    }
     let mut used = HashSet::new();
     for index in 0..state.tiles.len() {
         let tile = &state.tiles[index];
@@ -265,11 +240,11 @@ fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Rando
             state.tiles[partner].connections = Some(vec![HexDirection::E, HexDirection::W]);
         }
     }
-    let mut terrain = |q, r, kind: &str, owner: Option<Side>| {
+    let mut terrain = |q: i32, r: i32, kind: &str, owner: Option<Side>| {
         let tile = state
             .tiles
             .iter_mut()
-            .find(|t| t.id == axial_id(q, r))
+            .find(|t| (t.col, t.row) == (q + r.div_euclid(2) + 4, r + 4))
             .unwrap();
         tile.terrain = kind.into();
         tile.connections = match kind {
@@ -919,7 +894,7 @@ mod tests {
                         assert_eq!(game.turn, Side::Enemy);
                         for unit in &game.units {
                             let sign = if unit.side == Side::Player { -1 } else { 1 };
-                            assert_eq!(game.board.ids[unit.tile], axial_id(sign * 3, 0));
+                            assert_eq!(game.board.positions[unit.tile], (sign * 3 + 4, 4));
                         }
                     }
                 }

@@ -5,7 +5,7 @@ import {
   type BattlefieldLighting,
 } from "./battlefield-lighting";
 import { terrainDrawingOrder, terrainMapDimensions, type TerrainMapPlan } from "./terrain-painter";
-import { battlefieldSpriteSize, hexColumnSpacing, tileCenter } from "../ui/geometry";
+import { battlefieldSpriteSize, hexColumnSpacing } from "../ui/geometry";
 import * as shaders from "./map-shaders";
 
 type Target = {
@@ -56,6 +56,7 @@ export class MapRendererGpu {
   private compositionInvalid = true;
   private previousLighting?: BattlefieldLighting;
   private previousFog?: ReadonlySet<string>;
+  private tileCenters = new Map<string, { x: number; y: number }>();
   private fogVertices = new Map<string, Float32Array>();
   private lightCapacity = 0;
   private fogMask?: Target;
@@ -277,6 +278,7 @@ export class MapRendererGpu {
       this.lit = this.target(width, height);
       this.fogMask = this.fogScratch = this.fog = undefined;
     }
+    this.tileCenters = new Map(plan.tiles.map((tile) => [tile.id, { x: tile.x, y: tile.y }]));
     this.straightTerrain = !!prebuilt;
     this.scale = plan.pixelScale;
     this.compositionInvalid = true;
@@ -543,8 +545,8 @@ export class MapRendererGpu {
         .filter((id) => !previous.has(id))
         .concat([...previous].filter((id) => !next.has(id)));
       for (const id of delta) {
-        const [col, row] = id.split(",").map(Number),
-          point = tileCenter({ col: col!, row: row! });
+        const point = this.tileCenters.get(id);
+        if (!point) throw new Error(`Unknown fog tile ${id}`);
         changed = this.union(changed, {
           left: (point.x - hexColumnSpacing / 2) * this.scale - 2,
           top: (point.y - battlefieldSpriteSize / 2) * this.scale - 2,
@@ -560,8 +562,8 @@ export class MapRendererGpu {
     for (const id of next) {
       let hex = this.fogVertices.get(id);
       if (!hex) {
-        const [col, row] = id.split(",").map(Number),
-          center = tileCenter({ col: col!, row: row! });
+        const center = this.tileCenters.get(id);
+        if (!center) throw new Error(`Unknown fog tile ${id}`);
         hex = new Float32Array(36);
         let at = 0;
         for (let i = 0; i < 6; i++) {

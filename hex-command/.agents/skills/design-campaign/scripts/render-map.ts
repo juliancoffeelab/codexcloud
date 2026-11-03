@@ -32,7 +32,10 @@ interface Position {
   col: number;
   row: number;
 }
-interface Unit extends Position {
+interface Unit {
+  tile?: string;
+  col?: number;
+  row?: number;
   faction?: ArtworkFaction;
   type: string;
   side: Side;
@@ -94,6 +97,7 @@ if (
 )
   throw new Error("Expected a mapId, positive integer cols/rows and tiles array");
 const ids = new Set<string>();
+const positions = new Set<string>();
 for (const tile of map.tiles) {
   if (
     !Number.isInteger(tile.col) ||
@@ -102,15 +106,18 @@ for (const tile of map.tiles) {
     tile.col >= map.cols ||
     tile.row < 0 ||
     tile.row >= map.rows ||
-    tile.id !== `${tile.col},${tile.row}` ||
+    !tile.id ||
+    !/^[a-z0-9-]+$/.test(tile.id) ||
+    positions.has(`${tile.col},${tile.row}`) ||
     ids.has(tile.id)
   )
     throw new Error(`Invalid or duplicate tile: ${tile.id}`);
   ids.add(tile.id);
+  positions.add(`${tile.col},${tile.row}`);
 }
 if (ids.size !== map.cols * map.rows) throw new Error("Supply the complete draft tile grid");
 function position(point: Position) {
-  if (!ids.has(`${point.col},${point.row}`))
+  if (!positions.has(`${point.col},${point.row}`))
     throw new Error(`Position outside map: ${point.col},${point.row}`);
   return tileCenter(point);
 }
@@ -142,10 +149,16 @@ async function sprite(key: string) {
   return loadImage(resolve(root, "public", path));
 }
 initSync({ module: await readFile(resolve(root, "rust/pkg/hex_command_bg.wasm")) });
-const units = overlay.units ?? map.units ?? [];
+const units = (overlay.units ?? map.units ?? []).map((unit) => {
+  const tile = unit.tile
+    ? map.tiles.find((tile) => tile.id === unit.tile)
+    : map.tiles.find((tile) => tile.col === unit.col && tile.row === unit.row);
+  if (!tile) throw new Error("Unit placement is outside the draft map");
+  return { ...unit, tile: tile.id, col: tile.col, row: tile.row };
+});
 const resolved = previewPresentation({
   tiles: map.tiles,
-  units,
+  units: units.map(({ col: _col, row: _row, ...unit }) => unit),
   lighting: map.lighting ?? { time: "day" },
   marks: overlay.marks ?? [],
   choices: overlay.choices ?? [],
@@ -253,7 +266,7 @@ paintFog(
 );
 // Match Battlefield.svelte: tile order, feet at center + 20, then a separate
 // indicator layer above every sprite. Draft placements depict full-health units.
-const occupants = new Map(units.map((unit) => [`${unit.col},${unit.row}`, unit]));
+const occupants = new Map(units.map((unit) => [unit.tile, unit]));
 const visibleUnits = map.tiles.flatMap((tile) => {
   const unit = occupants.get(tile.id);
   return unit && !(unit.side === "enemy" && fog.has(tile.id)) ? [unit] : [];

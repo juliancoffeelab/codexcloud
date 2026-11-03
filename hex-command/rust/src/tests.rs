@@ -48,7 +48,7 @@ fn tide_starts_rescue_before_counting_defended_turns() {
         vec![],
         vec![],
     );
-    let wreck = game.site("5,4");
+    let wreck = game.site("hex-0891-b20a50ef8c");
     game.owners[wreck] = Some("player".into());
     game.evaluate_campaign(false, Some(wreck));
     assert!(game.campaign.as_ref().unwrap().marked("event:await-tide"));
@@ -77,8 +77,8 @@ fn tide_starts_rescue_before_counting_defended_turns() {
 #[test]
 fn routing_cache_tracks_terrain_changes() {
     let mut game = Game::new(rules(), "mirror");
-    let start = game.site("4,4");
-    let goal = game.site("5,4");
+    let start = game.site("hex-0859-8a12839c45");
+    let goal = game.site("hex-0891-b20a50ef8c");
     let kind = game.kind("swordsman");
     game.set_terrain(goal, game.rules.terrains["plains"]);
     assert_eq!(game.routes(kind, &[goal])[start], 1);
@@ -93,7 +93,7 @@ fn invalid_commands_are_atomic_and_records_remain_owned() {
     let err = game
         .execute(Command::Move {
             unit: UnitId(u32::MAX),
-            tile: TileId("4,4".into()),
+            tile: TileId("hex-0859-8a12839c45".into()),
         })
         .unwrap_err();
     assert_eq!(err, CommandError::UnknownUnit(UnitId(u32::MAX)));
@@ -101,7 +101,7 @@ fn invalid_commands_are_atomic_and_records_remain_owned() {
     game.action(ActionRecord::Move {
         path: vec![],
         unit: "u1".into(),
-        tile: "4,4".into(),
+        tile: "hex-0859-8a12839c45".into(),
     });
     let fork = game.fork();
     assert!(fork.recordings.is_none());
@@ -192,7 +192,7 @@ fn catalogs_are_shareable_and_cached_routes_reuse_the_distance_field() {
     assert_sync::<Catalog>();
     let game = Game::new(rules(), "mirror");
     let kind = game.kind("swordsman");
-    let goal = game.site("5,4");
+    let goal = game.site("hex-0891-b20a50ef8c");
     assert!(std::rc::Rc::ptr_eq(
         &game.routes(kind, &[goal]),
         &game.routes(kind, &[goal])

@@ -65,13 +65,13 @@ test("Developer map supports normal actions and persistence", async () => {
   const panel = unitPanelView(observed.view);
   assert.equal(panel.kind, "details");
   if (panel.kind === "details") assert.equal(panel.details.actionStatus, "Ready");
-  assert(controller.actions(player.id).moves.some((move) => move.tile === "0,2"));
+  assert(controller.actions(player.id).moves.some((move) => move.tile === "hex-0013-23f615dae8"));
   assert(
     battlefieldTiles(observed.view.game, player.id, currentArtwork(), null).some((tile) =>
       tile.classes.includes("reachable"),
     ),
   );
-  controller.move(player.id, "0,2");
+  controller.move(player.id, "hex-0013-23f615dae8");
   assert(observed.view.canUndo);
   controller.undoMove();
   assert.deepEqual(controller.snapshot(), opening);
@@ -178,7 +178,7 @@ test("Dialogue navigation persists its cursor without advancing gameplay", async
   assert.equal(observed.view.renderRevision, opening.renderRevision);
   const onSecondLine = controller.snapshot();
   assert.throws(
-    () => controller.move(required(onSecondLine.units[0]).id, "3,2"),
+    () => controller.move(required(onSecondLine.units[0]).id, "hex-0749-0fa856724a"),
     /Wait for your turn/,
   );
   await assert.rejects(controller.endTurn(), /Wait for your turn/);
@@ -250,7 +250,7 @@ test("Completed vigil publishes and persists its outcome", async () => {
   assert.equal(goal.kind, "vigil");
   const lark = required(fixture.units.find((unit) => unit.character === "lark"));
   const occupant = fixture.at(goal.tile);
-  if (occupant && occupant.id !== lark.id) occupant.tile = "5,4";
+  if (occupant && occupant.id !== lark.id) occupant.tile = "hex-0891-b20a50ef8c";
   lark.tile = goal.tile;
   required(fixture.tile(goal.tile)).owner = "player";
   fixture.round = 3;
@@ -284,10 +284,10 @@ test("Finished enemy-turn battles persist outcome dialogue", async () => {
     fixture.units.find((unit) => unit.side === "player" && unit.role === "leader"),
   );
   // Use a frontline attacker so leader recruitment restraint cannot alter this defeat fixture.
-  const enemy = fixture.addUnit("soldier", "enemy", "4,4");
-  leader.tile = "3,4";
+  const enemy = fixture.addUnit("soldier", "enemy", "hex-0859-8a12839c45");
+  leader.tile = "hex-0763-c9e627d16e";
   leader.hp = 1;
-  enemy.tile = "4,4";
+  enemy.tile = "hex-0859-8a12839c45";
   saveBattle(fixture);
   const controller = createController(immediatePause);
   await controller.endTurn();
@@ -304,7 +304,7 @@ test("Finished enemy-turn battles persist outcome dialogue", async () => {
 test("Rejected replacement preserves undo and pending turns", async () => {
   const controller = createController(immediatePause);
   const observed = observe(controller);
-  controller.move("u3", "3,1");
+  controller.move("u3", "hex-0738-f0cce97107");
   const before = controller.snapshot();
   const saved = storage.getItem(SAVE_KEY);
   assert.throws(() => controller.reset("unknown"), /Unknown battlefield/);
@@ -331,11 +331,14 @@ test("Publications are immutable and availability follows the revision", async (
   assert.equal(Reflect.get(controller.commands, "active"), undefined);
   assert.equal(Reflect.get(opening.game, "move"), undefined);
   assert(Object.isFrozen(controller.commands));
-  assert.equal(Reflect.set(required(opening.game.unit("u3")), "tile", "3,1"), false);
+  assert.equal(
+    Reflect.set(required(opening.game.unit("u3")), "tile", "hex-0738-f0cce97107"),
+    false,
+  );
 
-  controller.choose("1,2");
+  controller.choose("hex-0045-b0e58b1f93");
   assert.equal(observed.view.game, opening.game, "selection must not rebuild the game view");
-  controller.focusTile("2,2");
+  controller.focusTile("hex-0397-b042f4a1af");
   assert.equal(observed.view.game, opening.game, "keyboard focus reuses the published game");
   controller.message("Inspect the field.");
   assert.equal(observed.view.game, opening.game, "status reuses the published game");
@@ -344,13 +347,13 @@ test("Publications are immutable and availability follows the revision", async (
   controller.clearSelection();
   assert.equal(observed.view.game, opening.game, "deselection must not rebuild the game view");
 
-  controller.move("u3", "3,1");
+  controller.move("u3", "hex-0738-f0cce97107");
   assert.notEqual(observed.view.game, opening.game, "engine actions publish a fresh game");
-  assert.equal(opening.game.unit("u3")?.tile, "1,2");
-  assert.equal(observed.view.game.unit("u3")?.tile, "3,1");
+  assert.equal(opening.game.unit("u3")?.tile, "hex-0045-b0e58b1f93");
+  assert.equal(observed.view.game.unit("u3")?.tile, "hex-0738-f0cce97107");
   assert(observed.view.canUndo);
   assert.equal(observed.view.selected, "u3");
-  assert.equal(observed.view.inspectedTile, "3,1");
+  assert.equal(observed.view.inspectedTile, "hex-0738-f0cce97107");
   const movedGame = observed.view.game;
   controller.message("Inspect the field.");
   assert.equal(observed.view.game, movedGame, "metadata safely reuses an immutable revision");
@@ -358,13 +361,13 @@ test("Publications are immutable and availability follows the revision", async (
   assert.equal(Reflect.set(observed.view, "selected", "u6"), false);
 
   controller.undoMove();
-  assert.equal(observed.view.game.unit("u3")?.tile, "1,2");
+  assert.equal(observed.view.game.unit("u3")?.tile, "hex-0045-b0e58b1f93");
   assert.equal(observed.view.canUndo, false);
-  controller.choose("1,2"); // Clear the restored scout selection.
-  controller.choose("0,2");
+  controller.choose("hex-0045-b0e58b1f93"); // Clear the restored scout selection.
+  controller.choose("hex-0013-23f615dae8");
   assert(observed.view.recruitment?.stationed);
   assert.equal(observed.view.recruitment?.commander?.id, "u1");
-  assert.equal(observed.view.inspectedTile, "0,2");
+  assert.equal(observed.view.inspectedTile, "hex-0013-23f615dae8");
   const inspected = observed.view;
   await controller.endTurn();
   assert.equal(inspected.game.turn, "player");
@@ -380,7 +383,7 @@ test("Publications are immutable and availability follows the revision", async (
 test("Browser commands are player-only and previews cannot mutate rules", async () => {
   storage.clear();
   const fixture = new Game();
-  const enemy = fixture.addUnit("soldier", "enemy", "2,3");
+  const enemy = fixture.addUnit("soldier", "enemy", "hex-0408-edbae05560");
   saveBattle(fixture);
   const paused = pauseTurn();
   const controller = createController(paused.pause);
@@ -391,14 +394,17 @@ test("Browser commands are player-only and previews cannot mutate rules", async 
   weapon.attack.damage = 999;
   assert.equal(TYPES.soldier.attacks[0].damage, damage);
 
-  assert.throws(() => controller.move(enemy.id, "2,2"), /cannot act/);
+  assert.throws(() => controller.move(enemy.id, "hex-0397-b042f4a1af"), /cannot act/);
   const pending = controller.endTurn();
   const enemyTurn = controller.snapshot();
   assert.equal(observed.view.game.turn, "enemy");
   assert.equal(observed.view.canUndo, false);
-  assert.throws(() => controller.move(enemy.id, "2,2"), /Wait for your turn/);
+  assert.throws(() => controller.move(enemy.id, "hex-0397-b042f4a1af"), /Wait for your turn/);
   assert.throws(() => controller.attack(enemy.id, "u2"), /Wait for your turn/);
-  assert.throws(() => controller.recruit("u4", "soldier", "10,2"), /Wait for your turn/);
+  assert.throws(
+    () => controller.recruit("u4", "soldier", "hex-0077-1134d4f5cb"),
+    /Wait for your turn/,
+  );
   assert.deepEqual(controller.snapshot(), enemyTurn);
   paused.release();
   await pending;
@@ -423,7 +429,7 @@ test("Unmounted sessions cannot overwrite replacements", async () => {
   assert.equal(replacement.snapshot().mapId, "river-valley");
   assert.equal(replacement.snapshot().round, 1);
   assert.throws(() => previous.reset(), /session has closed/);
-  assert.throws(() => previous.move("u3", "3,1"), /session has closed/);
+  assert.throws(() => previous.move("u3", "hex-0738-f0cce97107"), /session has closed/);
   replacement.dispose();
 });
 

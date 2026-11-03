@@ -402,11 +402,12 @@ mod target_tests {
             .iter()
             .enumerate()
             .filter_map(|(tile, &(col, row))| {
-                let reflected = format!("{},{}", axis - col - row.rem_euclid(2), row);
+                let reflected = (axis - col - row.rem_euclid(2), row);
                 view.board()
-                    .indices
-                    .get(&reflected)
-                    .map(|&other| (tile, other))
+                    .positions
+                    .iter()
+                    .position(|p| *p == reflected)
+                    .map(|other| (tile, other))
             })
             .collect();
         assert!(pairs.len() > 2);

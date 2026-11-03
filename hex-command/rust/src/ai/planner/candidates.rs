@@ -643,7 +643,7 @@ pub(in crate::ai) fn plan(
                 workspace.seed,
                 game.round(),
                 id,
-                &game.board().ids[tile],
+                game.board().positions[tile],
                 target.map(|u| u.id),
             );
         let candidate = Candidate {
@@ -865,7 +865,7 @@ pub(in crate::ai) fn plan(
                     workspace.seed,
                     game.round(),
                     id,
-                    &game.board().ids[tile],
+                    game.board().positions[tile],
                     None,
                 )
                 + wait_risk

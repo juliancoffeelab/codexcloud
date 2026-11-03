@@ -4,7 +4,7 @@
       "id": "owl-cache",
       "trigger": {
         "kind": "visit",
-        "tile": "6,0"
+        "tile": "hex-0897-9650de66eb"
       },
       "label": "Recover the northern guard-post supplies",
       "gold": 6,
@@ -26,14 +26,12 @@
         {
           "type": "warden",
           "side": "enemy",
-          "col": 11,
-          "row": 1
+          "tile": "hex-0098-b1326129be"
         },
         {
           "type": "archer",
           "side": "enemy",
-          "col": 11,
-          "row": 7
+          "tile": "hex-0126-1b9b97e69c"
         }
       ]
     },
@@ -45,14 +43,12 @@
         {
           "type": "adept",
           "side": "enemy",
-          "col": 10,
-          "row": 3
+          "tile": "hex-0088-d3b4c2a321"
         },
         {
           "type": "soldier",
           "side": "enemy",
-          "col": 10,
-          "row": 5
+          "tile": "hex-0092-2cbe4dcb7c"
         }
       ]
     }
@@ -97,8 +93,7 @@
       {
         "type": "boar",
         "side": "player",
-        "col": 5,
-        "row": 5
+        "tile": "hex-0892-f4d2ec09d8"
       }
     ],
     "recruitment": {

@@ -3,12 +3,12 @@
     {
       "kind": "control",
       "label": "Open both sounding outworks",
-      "tiles": ["6,2", "8,5"]
+      "tiles": ["hex-0909-61c988dee7", "hex-0988-17596734c1"]
     },
     {
       "kind": "escort",
       "label": "Bring pilot Edda to the fishing village",
-      "tile": "9,3"
+      "tile": "hex-1016-9e0db09d3e"
     }
   ]
 }

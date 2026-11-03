@@ -4,7 +4,7 @@
       "id": "ledger",
       "trigger": {
         "kind": "visit",
-        "tile": "5,4"
+        "tile": "hex-0891-b20a50ef8c"
       },
       "label": "Recover the unaltered salvage ledger",
       "dialogue": [
@@ -19,7 +19,7 @@
       "id": "await-tide",
       "trigger": {
         "kind": "control",
-        "tile": "5,4"
+        "tile": "hex-0891-b20a50ef8c"
       },
       "requiresEvent": "ledger",
       "beforeRound": 6,
@@ -35,7 +35,7 @@
       "id": "rescue",
       "trigger": {
         "kind": "control",
-        "tile": "5,4",
+        "tile": "hex-0891-b20a50ef8c",
         "round": 6
       },
       "requiresEvent": "ledger",
@@ -72,14 +72,12 @@
         {
           "type": "swordsman",
           "side": "enemy",
-          "col": 10,
-          "row": 1
+          "tile": "hex-0066-be276ac684"
         },
         {
           "type": "archer",
           "side": "enemy",
-          "col": 11,
-          "row": 5
+          "tile": "hex-0124-7838ad1797"
         }
       ]
     }

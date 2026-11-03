@@ -6,7 +6,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "5,6",
+          "tile": "hex-0893-940b4e4db1",
           "radius": 1,
           "side": "player"
         }
@@ -20,7 +20,15 @@
         }
       ],
       "spawn": {
-        "area": ["5,6", "4,5", "5,5", "4,6", "6,6", "4,7", "5,7"],
+        "area": [
+          "hex-0893-940b4e4db1",
+          "hex-0860-3735600481",
+          "hex-0892-f4d2ec09d8",
+          "hex-0861-b81de56c08",
+          "hex-0925-815fb4de6a",
+          "hex-0862-3ea2b77194",
+          "hex-0894-59c2dceed8"
+        ],
         "units": [
           {
             "type": "scout",
@@ -36,7 +44,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "2,5",
+          "tile": "hex-0412-0c9247ea66",
           "radius": 1,
           "side": "player"
         }
@@ -50,7 +58,15 @@
         }
       ],
       "spawn": {
-        "area": ["2,5", "2,4", "3,4", "1,5", "3,5", "2,6", "3,6"],
+        "area": [
+          "hex-0412-0c9247ea66",
+          "hex-0411-28541665a4",
+          "hex-0763-c9e627d16e",
+          "hex-0060-946ce75068",
+          "hex-0764-1e6853c01c",
+          "hex-0413-a7f6b5f93d",
+          "hex-0765-3a0bcc5d48"
+        ],
         "units": [
           {
             "type": "scout",
@@ -66,7 +82,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "4,3",
+          "tile": "hex-0856-a2b6e60ea7",
           "radius": 1,
           "side": "player"
         }
@@ -80,7 +96,15 @@
         }
       ],
       "spawn": {
-        "area": ["4,3", "4,2", "5,2", "3,3", "5,3", "4,4", "5,4"],
+        "area": [
+          "hex-0856-a2b6e60ea7",
+          "hex-0845-9e38fcb018",
+          "hex-0877-678535c7d6",
+          "hex-0760-150b2b6a75",
+          "hex-0888-a99d723b63",
+          "hex-0859-8a12839c45",
+          "hex-0891-b20a50ef8c"
+        ],
         "units": [
           {
             "type": "scout",
@@ -96,7 +120,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "3,0",
+          "tile": "hex-0737-cb60354473",
           "radius": 1,
           "side": "player"
         }
@@ -104,7 +128,7 @@
       "label": "A bear emerges from the cave",
       "dialogue": [],
       "spawn": {
-        "area": ["2,1", "3,0", "3,1"],
+        "area": ["hex-0386-9dcf2ec127", "hex-0737-cb60354473", "hex-0738-f0cce97107"],
         "units": [
           {
             "type": "bear",
@@ -122,7 +146,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "7,5",
+          "tile": "hex-0956-1372406dd4",
           "radius": 0,
           "side": "player"
         }
@@ -141,7 +165,7 @@
         }
       ],
       "spawn": {
-        "area": ["13,4", "14,5", "14,7"],
+        "area": ["hex-0187-8d8ab817b0", "hex-0220-71856b5fe2", "hex-0222-38c4b50445"],
         "units": [
           {
             "type": "giant-bat",
@@ -169,7 +193,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "17,8",
+          "tile": "hex-0319-08df480e03",
           "radius": 0,
           "side": "player"
         }
@@ -183,7 +207,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "18,10",
+          "tile": "hex-0323-cf4945b8a9",
           "radius": 0,
           "side": "player"
         }
@@ -249,7 +273,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "18,10",
+          "tile": "hex-0323-cf4945b8a9",
           "radius": 0,
           "side": "player"
         }
@@ -289,7 +313,7 @@
           "conditions": [
             {
               "kind": "proximity",
-              "tile": "18,10",
+              "tile": "hex-0323-cf4945b8a9",
               "radius": 0,
               "side": "player"
             },
@@ -331,7 +355,7 @@
           "conditions": [
             {
               "kind": "proximity",
-              "tile": "18,10",
+              "tile": "hex-0323-cf4945b8a9",
               "radius": 1,
               "side": "player"
             },
@@ -374,7 +398,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "21,5",
+          "tile": "hex-0476-aa57f89866",
           "radius": 0,
           "side": "player"
         }
@@ -382,7 +406,15 @@
       "label": "Spiders emerge from the village",
       "dialogue": [],
       "spawn": {
-        "area": ["20,5", "21,4", "21,5", "21,6", "22,4", "22,5", "22,6"],
+        "area": [
+          "hex-0444-7f9879166b",
+          "hex-0475-533ea4fc56",
+          "hex-0476-aa57f89866",
+          "hex-0477-0b5144e7b1",
+          "hex-0507-58cb41ca51",
+          "hex-0508-ad32d05df3",
+          "hex-0509-8c38d5d34a"
+        ],
         "units": [
           {
             "type": "giant-spider",
@@ -405,7 +437,7 @@
         "kind": "condition",
         "condition": {
           "kind": "proximity",
-          "tile": "21,12",
+          "tile": "hex-0453-5d76a2bb0b",
           "radius": 0,
           "side": "player"
         }
@@ -413,7 +445,15 @@
       "label": "Spiders emerge from the village",
       "dialogue": [],
       "spawn": {
-        "area": ["20,12", "20,11", "21,12", "20,13", "21,11", "22,12", "21,13"],
+        "area": [
+          "hex-0421-9fea0a883b",
+          "hex-0420-64e5601fe8",
+          "hex-0453-5d76a2bb0b",
+          "hex-0422-6a48fe5f70",
+          "hex-0452-b47b257c52",
+          "hex-0485-6edc9d487c",
+          "hex-0454-20b394508c"
+        ],
         "units": [
           {
             "type": "giant-spider",
@@ -483,12 +523,12 @@
             },
             {
               "kind": "owner",
-              "tile": "21,5",
+              "tile": "hex-0476-aa57f89866",
               "side": "player"
             },
             {
               "kind": "owner",
-              "tile": "21,12",
+              "tile": "hex-0453-5d76a2bb0b",
               "side": "player"
             },
             {

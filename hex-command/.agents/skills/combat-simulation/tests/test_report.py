@@ -41,7 +41,7 @@ class CompleteDataTests(unittest.TestCase):
                     for u, race, level in [('foot', 'a', 1), ('unused', 'a', 2), ('foe', 'b', 1)]}
         roster = [dict(id='f', type='foot', side='player', tile='0,0', hp=10),
                   dict(id='e', type='foe', side='enemy', tile='1,0', hp=10)]
-        initial = dict(units=roster, tiles=[dict(id=u['tile'], terrain='plains') for u in roster])
+        initial = dict(units=roster, tiles=[dict(id=u['tile'], col=int(u['tile'].split(',')[0]), row=int(u['tile'].split(',')[1]), terrain='plains') for u in roster])
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             paths = []

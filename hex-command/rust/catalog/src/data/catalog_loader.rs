@@ -99,8 +99,7 @@ struct InitialUnit {
     id: Option<String>,
     r#type: String,
     side: Option<Side>,
-    col: i32,
-    row: i32,
+    tile: String,
     hp: Option<i32>,
     character: Option<String>,
     role: Option<Role>,
@@ -157,7 +156,10 @@ impl InitialState {
                     .ok_or_else(|| ContentError::new(path, "initial unit identifier overflow"))?,
             );
             validate_equipment(&unit.items, &rule.attacks, path)?;
-            let tile = format!("{},{}", unit.col, unit.row);
+            let tile = unit.tile;
+            if !self.tiles.iter().any(|t| t.id == tile) {
+                return Err(ContentError::new(path, "initial unit is outside its board"));
+            }
             units.push(PublicUnit {
                 faction: unit.faction,
                 items: unit.items,
@@ -739,8 +741,8 @@ fn insert_map(
                 format!("unknown terrain {}", tile.terrain),
             ));
         }
-        if tile.id != format!("{},{}", tile.col, tile.row)
-            || tile.col < 0
+        identifier(&tile.id, path)?;
+        if tile.col < 0
             || tile.col >= state.cols
             || tile.row < 0
             || tile.row >= state.rows
@@ -1044,7 +1046,7 @@ fn validate_mission(
             }
             reference(&unit.r#type, types, path)?;
             validate_equipment(&unit.items, &units[types[&unit.r#type]].attacks, path)?;
-            tile_ref(&format!("{},{}", unit.col, unit.row))?;
+            tile_ref(&unit.tile)?;
         }
         Ok(())
     };
@@ -1217,7 +1219,7 @@ fn validate_mission(
         if arrival.character.is_empty() {
             return Err(ContentError::new(path, "empty automatic companion name"));
         }
-        tile_ref(&format!("{},{}", arrival.col, arrival.row))?;
+        tile_ref(&arrival.tile)?;
     }
     unique(
         mission.rituals.iter().map(|ritual| ritual.id.as_str()),
@@ -1449,16 +1451,17 @@ fn validate_simulation(
             }
         }
     }
+    let template = arena_maps
+        .iter()
+        .filter(|((id, _), _)| id == "arena-template")
+        .max_by_key(|((_, revision), _)| revision)
+        .map(|(_, state)| state)
+        .ok_or_else(|| ContentError::new(path, "missing arena template"))?;
     for tile in &arena.territory {
-        let parts: Vec<_> = tile.split(',').collect();
-        if parts.len() != 2
-            || parts
-                .iter()
-                .any(|p| p.parse::<u8>().map_or(true, |n| n > 8))
-        {
+        if !template.tiles.iter().any(|t| &t.id == tile) {
             return Err(ContentError::new(
                 path,
-                format!("invalid arena territory tile {tile}"),
+                format!("unknown arena territory tile {tile}"),
             ));
         }
     }
@@ -1700,11 +1703,11 @@ mod tests {
         let mut bundle = test_bundle();
         let path = "game/scenario/mirror-v1/roster.json";
         let mut roster: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
-        roster["factions"][0]["units"][0]["col"] = serde_json::json!(999);
+        roster["factions"][0]["units"][0]["tile"] = serde_json::json!("missing-tile");
         bundle.insert(path.to_owned(), serde_json::to_string(&roster).unwrap());
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
-        assert_eq!(error.path, "game/scenario/mirror-v1/scenario.json");
-        assert!(error.message.contains("invalid unit placement u1"));
+        assert_eq!(error.path, "game/scenario/mirror-v1/roster.json");
+        assert!(error.message.contains("initial unit is outside its board"));
     }
 
     #[test]

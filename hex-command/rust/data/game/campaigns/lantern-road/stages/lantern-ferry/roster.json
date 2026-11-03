@@ -12,27 +12,23 @@
       "units": [
         {
           "type": "swordsman",
-          "col": 3,
-          "row": 8,
           "role": "leader",
-          "character": "nera"
+          "character": "nera",
+          "tile": "hex-0767-3b53c1c4da"
         },
         {
           "type": "scout",
-          "col": 3,
-          "row": 9,
-          "character": "ivo"
+          "character": "ivo",
+          "tile": "hex-0768-7e23d46daa"
         },
         {
           "type": "archer",
-          "col": 4,
-          "row": 8
+          "tile": "hex-0863-f5faa8d578"
         },
         {
           "type": "adept",
-          "col": 4,
-          "row": 9,
-          "character": "oren"
+          "character": "oren",
+          "tile": "hex-0864-a20aeacbbc"
         }
       ],
       "relations": {
@@ -51,15 +47,13 @@
       "units": [
         {
           "type": "skeleton",
-          "col": 18,
-          "row": 9,
-          "aiGroup": "skeletons"
+          "aiGroup": "skeletons",
+          "tile": "hex-0352-1f3e270f14"
         },
         {
           "type": "skeleton",
-          "col": 19,
-          "row": 10,
-          "aiGroup": "skeletons"
+          "aiGroup": "skeletons",
+          "tile": "hex-0355-3f598bb97a"
         }
       ],
       "relations": {

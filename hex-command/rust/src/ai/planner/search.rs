@@ -46,12 +46,12 @@ fn hash_number(mut hash: u32, mut number: u32) -> u32 {
     }
     hash
 }
-/// Hash the action key without allocating formatted strings.
+/// Hash geometric action facts, independently of authored tile identity.
 pub(in crate::ai) fn action_jitter(
     seed: u32,
     round: u32,
     unit: u32,
-    tile: &str,
+    tile: (i32, i32),
     target: Option<u32>,
 ) -> f64 {
     let byte = |hash: u32, byte: u8| (hash ^ byte as u32).wrapping_mul(16777619);
@@ -59,8 +59,14 @@ pub(in crate::ai) fn action_jitter(
     hash = byte(byte(hash, b':'), b'u');
     hash = hash_number(hash, unit);
     hash = byte(hash, b':');
-    for character in tile.encode_utf16() {
-        hash = (hash ^ character as u32).wrapping_mul(16777619);
+    for (index, coordinate) in [tile.0, tile.1].into_iter().enumerate() {
+        if index != 0 {
+            hash = byte(hash, b',');
+        }
+        if coordinate < 0 {
+            hash = byte(hash, b'-');
+        }
+        hash = hash_number(hash, coordinate.unsigned_abs());
     }
     hash = byte(hash, b':');
     if let Some(target) = target {
@@ -949,7 +955,7 @@ impl BattleView<'_, '_> {
                             seed,
                             self.round(),
                             unit.id,
-                            &self.board().ids[tile],
+                            self.board().positions[tile],
                             target.map(|target| target.id),
                         );
                     let withdrawing = unit.side == Side::Enemy
@@ -1118,13 +1124,15 @@ mod tests {
     }
     use super::{Random, action_jitter, jitter};
     #[test]
-    fn action_jitter_matches_formatted_utf16_keys() {
+    fn action_jitter_matches_formatted_position_keys() {
         for seed in [0, 19, u32::MAX] {
             for (round, unit) in [(0, 0), (30, 12), (u32::MAX, u32::MAX)] {
-                for tile in ["3,2", "😀", "-10,100"] {
+                for tile in [(3, 2), (0, 0), (-10, 100)] {
                     for target in [None, Some(0), Some(u32::MAX)] {
                         let key = format!(
-                            "{round}:u{unit}:{tile}:{}",
+                            "{round}:u{unit}:{},{}:{}",
+                            tile.0,
+                            tile.1,
                             target.map_or("move".into(), |id| format!("u{id}"))
                         );
                         assert_eq!(

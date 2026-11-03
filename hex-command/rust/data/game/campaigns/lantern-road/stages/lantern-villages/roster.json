@@ -12,22 +12,19 @@
       "units": [
         {
           "type": "swordsman",
-          "col": 0,
-          "row": 5,
           "role": "leader",
-          "character": "nera"
+          "character": "nera",
+          "tile": "hex-0028-a81ab6c878"
         },
         {
           "type": "scout",
-          "col": 0,
-          "row": 4,
-          "character": "ivo"
+          "character": "ivo",
+          "tile": "hex-0027-5828930a2c"
         },
         {
           "type": "adept",
-          "col": 0,
-          "row": 6,
-          "character": "oren"
+          "character": "oren",
+          "tile": "hex-0029-15d660627f"
         }
       ],
       "relations": {
@@ -56,17 +53,15 @@
       "units": [
         {
           "type": "skeleton",
-          "col": 7,
-          "row": 6,
-          "aiGroup": "captive-guard"
+          "aiGroup": "captive-guard",
+          "tile": "hex-0957-c94afbbfa1"
         },
         {
           "type": "necromancer",
-          "col": 15,
-          "row": 7,
           "role": "leader",
           "aiGroup": "tollkeeper",
-          "character": "tollkeeper"
+          "character": "tollkeeper",
+          "tile": "hex-0254-415f24444c"
         }
       ],
       "relations": {
@@ -101,10 +96,9 @@
       "units": [
         {
           "type": "captives",
-          "col": 8,
-          "row": 6,
           "role": "courier",
-          "character": "villagers"
+          "character": "villagers",
+          "tile": "hex-0989-f27f4a3764"
         }
       ]
     },
@@ -134,8 +128,6 @@
       "units": [
         {
           "type": "zombie-decay-caster",
-          "col": 12,
-          "row": 12,
           "aiGroup": "swamp-commander",
           "items": [
             {
@@ -150,7 +142,8 @@
             }
           ],
           "role": "leader",
-          "character": "edrin"
+          "character": "edrin",
+          "tile": "hex-0133-99da47f9af"
         }
       ]
     }

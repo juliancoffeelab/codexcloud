@@ -593,7 +593,12 @@ mod courier_tests {
             vec![],
         );
         game.units.retain(|u| [1, 2, 4, 5].contains(&u.id));
-        for (id, tile) in [(1, "8,5"), (2, "7,3"), (4, "8,3"), (5, "8,4")] {
+        for (id, tile) in [
+            (1, "hex-0988-17596734c1"),
+            (2, "hex-0952-a980626eda"),
+            (4, "hex-0984-954a3b23d6"),
+            (5, "hex-0987-a19805d204"),
+        ] {
             let tile = game.site(tile);
             game.units.iter_mut().find(|u| u.id == id).unwrap().tile = tile;
         }
@@ -603,7 +608,7 @@ mod courier_tests {
             ally.attacked = true;
         }
         game.roster_changed();
-        let target = game.site("9,3");
+        let target = game.site("hex-1016-9e0db09d3e");
         // Block the other direct approach as well.
         game.units.push(Unit {
             faction: None,
@@ -611,7 +616,7 @@ mod courier_tests {
             ai_group: None,
             id: 100,
             kind: rules.types["reefguard"],
-            tile: game.site("9,4"),
+            tile: game.site("hex-1019-90a76d4969"),
             side: Side::Player,
             hp: rules.units[rules.types["reefguard"]].hp,
             moved: true,
@@ -641,7 +646,10 @@ mod courier_tests {
         };
         assert!(is_command_move(&command), "{command:?}");
         game.execute(command).unwrap();
-        assert_ne!(game.board.ids[game.unit(5).unwrap().tile], "8,4");
+        assert_ne!(
+            game.board.ids[game.unit(5).unwrap().tile],
+            "hex-0987-a19805d204"
+        );
     }
 
     #[test]
@@ -676,11 +684,17 @@ mod courier_tests {
                 vec![],
             );
             game.units.retain(|u| u.side == Side::Player);
-            for (id, tile) in [(1, "8,5"), (2, "7,3"), (3, "9,4"), (4, "8,3"), (5, "8,4")] {
+            for (id, tile) in [
+                (1, "hex-0988-17596734c1"),
+                (2, "hex-0952-a980626eda"),
+                (3, "hex-1019-90a76d4969"),
+                (4, "hex-0984-954a3b23d6"),
+                (5, "hex-0987-a19805d204"),
+            ] {
                 let tile = game.site(tile);
                 game.units.iter_mut().find(|u| u.id == id).unwrap().tile = tile;
             }
-            for tile in ["6,2", "8,5"] {
+            for tile in ["hex-0909-61c988dee7", "hex-0988-17596734c1"] {
                 let tile = game.site(tile);
                 game.owners[tile] = Some("player".into());
             }
@@ -702,7 +716,10 @@ mod courier_tests {
                 "{policy:?}: {:?}",
                 game.public_units()
             );
-            assert_eq!(game.board.ids[game.unit(5).unwrap().tile], "9,3");
+            assert_eq!(
+                game.board.ids[game.unit(5).unwrap().tile],
+                "hex-1016-9e0db09d3e"
+            );
         }
     }
 }

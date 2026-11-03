@@ -83,7 +83,7 @@ impl ConditionContext for PresentationInput {
                 kind: &u.r#type,
                 character: u.character.as_deref(),
                 ai_group: u.ai_group.as_deref(),
-                position: Some((u.col, u.row)),
+                position: self.position(&u.tile),
             })
         })
     }

@@ -192,8 +192,8 @@ mod tests {
         for tile in 0..game.terrain.len() {
             game.set_terrain(tile, rules.terrains["plains"]);
         }
-        let from = game.site("3,4");
-        let target = game.site("5,4");
+        let from = game.site("hex-0763-c9e627d16e");
+        let target = game.site("hex-0891-b20a50ef8c");
         let original = game.attack_origins(Category::Ranged, 2);
         assert!(original[target].contains(from));
         let mut forecast = game.fork();

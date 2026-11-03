@@ -4,7 +4,7 @@
       "id": "boat",
       "trigger": {
         "kind": "visit",
-        "tile": "2,7"
+        "tile": "hex-0414-7d6a56c9b3"
       },
       "label": "Recover the southern ferry's supplies",
       "gold": 4,

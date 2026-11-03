@@ -271,7 +271,8 @@ export interface TerrainOverride extends Coordinates {
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
   light?: import("../../rust/pkg/hex_command").TileLight;
 }
-export interface StartingUnit extends Coordinates {
+export interface StartingUnit {
+  tile: string;
   aiGroup?: string;
   type: UnitType;
   side: Side;
@@ -439,7 +440,7 @@ export interface MissionDefinition {
   briefing: string;
   debrief?: string;
   requiredCompanions?: string[];
-  arrivals?: { character: string; col: number; row: number }[];
+  arrivals?: { character: string; tile: string }[];
   hints: string[];
   goals: MissionGoal[];
   optionalGoals?: MissionGoal[];

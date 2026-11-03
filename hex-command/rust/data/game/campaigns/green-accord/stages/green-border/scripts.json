@@ -4,7 +4,7 @@
       "id": "lost-tools",
       "trigger": {
         "kind": "visit",
-        "tile": "6,1"
+        "tile": "hex-0898-eed2a38c9d"
       },
       "label": "Recover the workers’ pay ledger",
       "dialogue": [

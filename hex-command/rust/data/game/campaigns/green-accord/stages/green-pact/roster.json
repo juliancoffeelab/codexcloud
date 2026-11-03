@@ -28,29 +28,25 @@
       "units": [
         {
           "type": "wildkeeper",
-          "col": 1,
-          "row": 4,
           "role": "leader",
-          "character": "alder"
+          "character": "alder",
+          "tile": "hex-0059-de5770129b"
         },
         {
           "type": "thorncaller",
-          "col": 2,
-          "row": 4,
           "role": "courier",
-          "character": "lark"
+          "character": "lark",
+          "tile": "hex-0411-28541665a4"
         },
         {
           "type": "warden",
-          "col": 3,
-          "row": 4,
-          "character": "dain"
+          "character": "dain",
+          "tile": "hex-0763-c9e627d16e"
         },
         {
           "type": "adept",
-          "col": 2,
-          "row": 5,
-          "character": "tamsin"
+          "character": "tamsin",
+          "tile": "hex-0412-0c9247ea66"
         }
       ],
       "relations": {
@@ -82,35 +78,29 @@
       "units": [
         {
           "type": "necromancer",
-          "col": 13,
-          "row": 5,
           "role": "leader",
-          "character": "rootbinder"
+          "character": "rootbinder",
+          "tile": "hex-0188-58d896051f"
         },
         {
           "type": "skeleton",
-          "col": 10,
-          "row": 2
+          "tile": "hex-0077-1134d4f5cb"
         },
         {
           "type": "skeleton",
-          "col": 10,
-          "row": 6
+          "tile": "hex-0093-9d334ed661"
         },
         {
           "type": "bonearcher",
-          "col": 12,
-          "row": 3
+          "tile": "hex-0152-5fa472486b"
         },
         {
           "type": "bonearcher",
-          "col": 11,
-          "row": 7
+          "tile": "hex-0126-1b9b97e69c"
         },
         {
           "type": "wolf",
-          "col": 11,
-          "row": 4
+          "tile": "hex-0123-676aacd816"
         }
       ],
       "relations": {

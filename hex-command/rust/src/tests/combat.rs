@@ -41,8 +41,8 @@ fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defende
         let mut game = Game::new(&rules, "mirror");
         game.units.clear();
         game.roster_changed();
-        let a = add(&mut game, "scout", Side::Player, "2,3");
-        let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+        let a = add(&mut game, "scout", Side::Player, "hex-0408-edbae05560");
+        let b = add(&mut game, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
         let index = game.index(b).unwrap();
         game.units[index].hp = 90;
         let actor = game.unit(a).unwrap().clone();
@@ -91,11 +91,11 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "soldier", Side::Player, "2,3");
-    let b = add(&mut game, "soldier", Side::Enemy, "3,3");
-    add(&mut game, "archer", Side::Enemy, "4,3");
-    let aura = add(&mut game, "scout", Side::Enemy, "3,4");
-    add(&mut game, "scout", Side::Player, "2,4");
+    let a = add(&mut game, "soldier", Side::Player, "hex-0408-edbae05560");
+    let b = add(&mut game, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
+    add(&mut game, "archer", Side::Enemy, "hex-0856-a2b6e60ea7");
+    let aura = add(&mut game, "scout", Side::Enemy, "hex-0763-c9e627d16e");
+    add(&mut game, "scout", Side::Player, "hex-0411-28541665a4");
     let preview = |game: &Game<'_>| {
         game.preview(
             game.unit(a).unwrap(),
@@ -153,9 +153,9 @@ fn ranged_retaliation_never_gets_thorn_bonus() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "archer", Side::Player, "2,3");
-    let b = add(&mut game, "archer", Side::Enemy, "3,3");
-    add(&mut game, "archer", Side::Enemy, "4,3");
+    let a = add(&mut game, "archer", Side::Player, "hex-0408-edbae05560");
+    let b = add(&mut game, "archer", Side::Enemy, "hex-0760-150b2b6a75");
+    add(&mut game, "archer", Side::Enemy, "hex-0856-a2b6e60ea7");
     assert_eq!(
         game.preview(
             game.unit(a).unwrap(),
@@ -177,8 +177,8 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "soldier", Side::Player, "2,3");
-    let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+    let a = add(&mut game, "soldier", Side::Player, "hex-0408-edbae05560");
+    let b = add(&mut game, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
     let ai = game.index(a).unwrap();
     game.units[ai].hp = 5;
     let inspected = game.inspect(0);
@@ -211,7 +211,7 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
     );
     assert!(restored.unit(b).is_none());
     restored.begin_turn(Side::Player);
-    let c = add(&mut restored, "soldier", Side::Enemy, "3,3");
+    let c = add(&mut restored, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
     let ai = restored.index(a).unwrap();
     restored.units[ai].hp = 99;
     hit(&mut restored, a, c, "sword");
@@ -233,9 +233,12 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
 #[test]
 fn zero_damage_attacks_consume_actions_without_xp_and_keep_retaliation() {
     let mut game = flat();
-    let attacker = add(&mut game, "bonearcher", Side::Player, "2,3");
-    let target = add(&mut game, "soldier", Side::Enemy, "3,3");
-    game.set_terrain(game.site("3,3"), game.rules.terrains["hill"]);
+    let attacker = add(&mut game, "bonearcher", Side::Player, "hex-0408-edbae05560");
+    let target = add(&mut game, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
+    game.set_terrain(
+        game.site("hex-0760-150b2b6a75"),
+        game.rules.terrains["hill"],
+    );
     let hp = game.unit(target).unwrap().hp;
     let attacker_hp = game.unit(attacker).unwrap().hp;
     hit(&mut game, attacker, target, "shard");
@@ -259,8 +262,8 @@ fn zero_damage_attacks_consume_actions_without_xp_and_keep_retaliation() {
 fn kills_suppress_retaliation_and_leader_death_finishes_battle() {
     for leader in [false, true] {
         let mut game = flat();
-        let attacker = add(&mut game, "soldier", Side::Player, "2,3");
-        let target = add(&mut game, "swordsman", Side::Enemy, "3,3");
+        let attacker = add(&mut game, "soldier", Side::Player, "hex-0408-edbae05560");
+        let target = add(&mut game, "swordsman", Side::Enemy, "hex-0760-150b2b6a75");
         let index = game.index(target).unwrap();
         game.units[index].hp = 1;
         game.units[index].role = leader.then_some(Role::Leader);
@@ -281,8 +284,8 @@ fn kills_suppress_retaliation_and_leader_death_finishes_battle() {
 #[test]
 fn ranged_categories_and_intervening_cover_determine_legal_replies() {
     let mut game = flat();
-    let bow = add(&mut game, "archer", Side::Player, "2,3");
-    let target = add(&mut game, "archer", Side::Enemy, "4,3");
+    let bow = add(&mut game, "archer", Side::Player, "hex-0408-edbae05560");
+    let target = add(&mut game, "archer", Side::Enemy, "hex-0856-a2b6e60ea7");
     let archer = game.unit(bow).unwrap().clone();
     let defender = game.unit(target).unwrap().clone();
     let attack = weapon(&game, bow, "bow");
@@ -308,8 +311,8 @@ fn ranged_categories_and_intervening_cover_determine_legal_replies() {
 #[test]
 fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
     let mut game = flat();
-    let scout = add(&mut game, "scout", Side::Player, "2,3");
-    let bow = add(&mut game, "archer", Side::Enemy, "3,3");
+    let scout = add(&mut game, "scout", Side::Player, "hex-0408-edbae05560");
+    let bow = add(&mut game, "archer", Side::Enemy, "hex-0760-150b2b6a75");
     let index = game.index(scout).unwrap();
     game.units[index].hp = 5;
     let a = game.unit(scout).unwrap();
@@ -334,9 +337,12 @@ fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
 fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
     for terrain in ["plains", "forest", "hill", "ford", "marsh"] {
         let mut game = flat();
-        let a = add(&mut game, "soldier", Side::Player, "2,3");
-        let b = add(&mut game, "soldier", Side::Enemy, "3,3");
-        game.set_terrain(game.site("2,3"), game.rules.terrains[terrain]);
+        let a = add(&mut game, "soldier", Side::Player, "hex-0408-edbae05560");
+        let b = add(&mut game, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
+        game.set_terrain(
+            game.site("hex-0408-edbae05560"),
+            game.rules.terrains[terrain],
+        );
         let actor = game.unit(a).unwrap();
         let defender = game.unit(b).unwrap();
         let attack = weapon(&game, a, "sword");
@@ -359,9 +365,12 @@ fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
         assert_eq!(reply, expected);
     }
     let mut game = flat();
-    let a = add(&mut game, "bonearcher", Side::Player, "2,3");
-    let b = add(&mut game, "soldier", Side::Enemy, "3,3");
-    game.set_terrain(game.site("3,3"), game.rules.terrains["hill"]);
+    let a = add(&mut game, "bonearcher", Side::Player, "hex-0408-edbae05560");
+    let b = add(&mut game, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
+    game.set_terrain(
+        game.site("hex-0760-150b2b6a75"),
+        game.rules.terrains["hill"],
+    );
     assert_eq!(
         game.damage(
             game.unit(a).unwrap(),
@@ -396,8 +405,8 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "soldier", Side::Player, "2,3");
-    let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+    let a = add(&mut game, "soldier", Side::Player, "hex-0408-edbae05560");
+    let b = add(&mut game, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
     game.recordings = Some(Records::default());
     let bi = game.index(b).unwrap();
     game.units[bi].attacked = true;
@@ -433,7 +442,7 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     assert!(restored.unit(b).is_none());
     assert_eq!(restored.unit(a).unwrap().experience, Some(7));
     restored.begin_turn(Side::Player);
-    let c = add(&mut restored, "soldier", Side::Enemy, "3,3");
+    let c = add(&mut restored, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
     let ai = restored.index(a).unwrap();
     restored.units[ai].hp = 1;
     hit(&mut restored, a, c, "sword");
@@ -451,9 +460,9 @@ fn reflected_damage_records_separate_own_aura_and_effective_damage() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "soldier", Side::Player, "2,3");
-    let b = add(&mut game, "soldier", Side::Enemy, "3,3");
-    let aura = add(&mut game, "scout", Side::Enemy, "4,3");
+    let a = add(&mut game, "soldier", Side::Player, "hex-0408-edbae05560");
+    let b = add(&mut game, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
+    let aura = add(&mut game, "scout", Side::Enemy, "hex-0856-a2b6e60ea7");
     let index = game.index(a).unwrap();
     game.units[index].hp = 10;
     game.recordings = Some(Records::default());
@@ -492,8 +501,8 @@ fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
         let mut game = Game::new(&rules, "mirror");
         game.units.clear();
         game.roster_changed();
-        let a = add(&mut game, "scout", Side::Player, "2,3");
-        let b = add(&mut game, "soldier", Side::Enemy, "3,3");
+        let a = add(&mut game, "scout", Side::Player, "hex-0408-edbae05560");
+        let b = add(&mut game, "soldier", Side::Enemy, "hex-0760-150b2b6a75");
         let ai = game.index(a).unwrap();
         let bi = game.index(b).unwrap();
         game.units[ai].hp = 50;
@@ -570,8 +579,8 @@ fn seeded_strikes_restore_exactly_and_previews_never_consume_randomness() {
         game.units.clear();
         game.roster_changed();
         game.combat_rng = seed;
-        let a = add(&mut game, "archer", Side::Player, "2,3");
-        let b = add(&mut game, "archer", Side::Enemy, "3,3");
+        let a = add(&mut game, "archer", Side::Player, "hex-0408-edbae05560");
+        let b = add(&mut game, "archer", Side::Enemy, "hex-0760-150b2b6a75");
         game.recordings = Some(Records::default());
         let before = serde_json::to_value(game.state()).unwrap();
         let first = serde_json::to_value(game.inspect(0)).unwrap();
@@ -621,8 +630,8 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
         game.units.clear();
         game.roster_changed();
         game.combat_rng = seed;
-        let a = add(&mut game, "archer", Side::Player, "2,3");
-        let b = add(&mut game, "archer", Side::Enemy, "3,3");
+        let a = add(&mut game, "archer", Side::Player, "hex-0408-edbae05560");
+        let b = add(&mut game, "archer", Side::Enemy, "hex-0760-150b2b6a75");
         let bi = game.index(b).unwrap();
         game.units[bi].hp = 4;
         game.gold = Gold::two(0, 0);

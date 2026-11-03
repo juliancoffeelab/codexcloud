@@ -3,12 +3,12 @@
     {
       "kind": "control",
       "label": "Control both sluice gates",
-      "tiles": ["8,2", "8,5"]
+      "tiles": ["hex-0973-079cfc7b3c", "hex-0988-17596734c1"]
     },
     {
       "kind": "escort",
       "label": "Bring Edda to the release beacon",
-      "tile": "9,4"
+      "tile": "hex-1019-90a76d4969"
     }
   ]
 }

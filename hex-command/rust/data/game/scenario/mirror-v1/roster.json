@@ -34,19 +34,16 @@
       "units": [
         {
           "type": "commander",
-          "col": 0,
-          "row": 3,
-          "role": "leader"
+          "role": "leader",
+          "tile": "hex-0024-b598c83bd2"
         },
         {
           "type": "soldier",
-          "col": 1,
-          "row": 3
+          "tile": "hex-0056-2e6c8414fc"
         },
         {
           "type": "scout",
-          "col": 1,
-          "row": 2
+          "tile": "hex-0045-b0e58b1f93"
         }
       ],
       "relations": {
@@ -87,19 +84,16 @@
       "units": [
         {
           "type": "commander",
-          "col": 10,
-          "row": 3,
-          "role": "leader"
+          "role": "leader",
+          "tile": "hex-0088-d3b4c2a321"
         },
         {
           "type": "soldier",
-          "col": 9,
-          "row": 3
+          "tile": "hex-1016-9e0db09d3e"
         },
         {
           "type": "scout",
-          "col": 9,
-          "row": 2
+          "tile": "hex-1005-f091a76e9d"
         }
       ],
       "relations": {

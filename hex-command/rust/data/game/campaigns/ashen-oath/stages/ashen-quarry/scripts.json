@@ -4,7 +4,7 @@
       "id": "ledger",
       "trigger": {
         "kind": "visit",
-        "tile": "5,5"
+        "tile": "hex-0892-f4d2ec09d8"
       },
       "label": "Recover the forgotten workers’ ledger",
       "gold": 6,
@@ -26,14 +26,12 @@
         {
           "type": "adept",
           "side": "enemy",
-          "col": 11,
-          "row": 6
+          "tile": "hex-0125-7bcb954eb7"
         },
         {
           "type": "warden",
           "side": "enemy",
-          "col": 10,
-          "row": 6
+          "tile": "hex-0093-9d334ed661"
         }
       ]
     }

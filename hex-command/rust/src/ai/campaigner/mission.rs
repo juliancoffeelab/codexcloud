@@ -435,13 +435,13 @@ impl CampaignBlock {
             .flatten()
             .map(|tile| TileId(game.board.ids[tile].clone()))
             .collect();
-        lanes.order_by(|a, b| a.0.cmp(&b.0));
+        lanes.order_by_key(|tile| game.board.positions[game.site(&tile.0)]);
         lanes.dedup();
         recruitment.reserved.extend(lanes);
         tactics.required_units = recruitment.requirements.clone();
         tactics
             .objectives
-            .order_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
+            .order_by(|a, b| b.priority.cmp(&a.priority));
         CampaignOrders {
             recruitment,
             tactics,

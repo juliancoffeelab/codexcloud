@@ -4,7 +4,7 @@
       "id": "names",
       "trigger": {
         "kind": "visit",
-        "tile": "12,0"
+        "tile": "hex-0129-7c8659226d"
       },
       "label": "Recover the stolen names from the old archive",
       "gold": 6,
@@ -22,13 +22,12 @@
       "id": "north-binding-rise",
       "round": 5,
       "label": "An unsealed binding stone raises a skeleton on turn 5",
-      "requiresUnsealed": "7,2",
+      "requiresUnsealed": "hex-0941-278b487380",
       "units": [
         {
           "type": "skeleton",
           "side": "enemy",
-          "col": 7,
-          "row": 2
+          "tile": "hex-0941-278b487380"
         }
       ]
     },
@@ -36,13 +35,12 @@
       "id": "south-binding-rise",
       "round": 5,
       "label": "An unsealed binding stone raises a skeleton on turn 5",
-      "requiresUnsealed": "7,6",
+      "requiresUnsealed": "hex-0957-c94afbbfa1",
       "units": [
         {
           "type": "skeleton",
           "side": "enemy",
-          "col": 7,
-          "row": 6
+          "tile": "hex-0957-c94afbbfa1"
         }
       ]
     },
@@ -54,8 +52,7 @@
         {
           "type": "boar",
           "side": "enemy",
-          "col": 9,
-          "row": 4
+          "tile": "hex-1019-90a76d4969"
         }
       ]
     }
@@ -70,14 +67,12 @@
       {
         "type": "skeleton",
         "side": "player",
-        "col": 2,
-        "row": 4
+        "tile": "hex-0411-28541665a4"
       },
       {
         "type": "bonearcher",
         "side": "player",
-        "col": 1,
-        "row": 3
+        "tile": "hex-0056-2e6c8414fc"
       }
     ],
     "intro": [

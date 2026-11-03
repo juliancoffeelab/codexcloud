@@ -294,7 +294,7 @@ impl<'catalog> Game<'catalog> {
             }
             let mut arrived = 0;
             for incoming in &wave.units {
-                let origin = self.site(&format!("{},{}", incoming.col, incoming.row));
+                let origin = self.site(&incoming.tile);
                 let kind = self.kind(&incoming.r#type);
                 let tile = (0..self.terrain.len())
                     .filter(|&t| {
@@ -874,7 +874,7 @@ impl<'catalog> Game<'catalog> {
                 .unwrap()
             {
                 let kind = game.kind(&incoming.r#type);
-                let tile = game.site(&format!("{},{}", incoming.col, incoming.row));
+                let tile = game.site(&incoming.tile);
                 game.add(kind, incoming.side, tile);
                 let added = game.units.last_mut().unwrap();
                 added.ai_group = incoming.ai_group.clone();
@@ -892,7 +892,7 @@ impl<'catalog> Game<'catalog> {
                 .iter()
                 .find(|arrival| Some(&arrival.character) == veteran.character.as_ref())
             {
-                let tile = game.site(&format!("{},{}", arrival.col, arrival.row));
+                let tile = game.site(&arrival.tile);
                 let kind = game.kind(&veteran.r#type);
                 let destination = (0..game.terrain.len())
                     .filter(|&t| game.at(t).is_none() && game.cost(kind, t) != u16::MAX)

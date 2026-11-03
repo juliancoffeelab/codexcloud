@@ -708,8 +708,8 @@ mod tests {
             .find(|unit| unit.side == Side::Enemy)
             .unwrap()
             .role = Some(Role::Leader);
-        let a = game.site("1,4");
-        let b = game.site("8,4");
+        let a = game.site("hex-0059-de5770129b");
+        let b = game.site("hex-0987-a19805d204");
         game.units
             .iter_mut()
             .find(|u| u.id == target_id)
@@ -826,9 +826,9 @@ mod tests {
         let mut game = crate::logic::Game::new(rules, "mirror");
         game.units.clear();
         game.roster_changed();
-        let tile = game.site("4,4");
+        let tile = game.site("hex-0859-8a12839c45");
         let target = game.add(target, Side::Player, tile);
-        let tile = game.site("5,4");
+        let tile = game.site("hex-0891-b20a50ef8c");
         let enemy = game.add(enemy, Side::Enemy, tile);
         (game, target, enemy)
     }
@@ -916,7 +916,12 @@ mod tests {
         assert_eq!(anticipated.1, neutral.1);
         // Situational never reads the hidden future recruit pool.
         assert_eq!(anticipated.2, neutral.2);
-        for site in ["5,3", "6,3", "6,4", "6,5"] {
+        for site in [
+            "hex-0888-a99d723b63",
+            "hex-0920-dffef5f471",
+            "hex-0923-ec307e92cf",
+            "hex-0924-5cbf18fdd5",
+        ] {
             let tile = game.site(site);
             game.add(observed, Side::Enemy, tile);
         }
@@ -946,7 +951,7 @@ mod tests {
                 .unwrap()
                 .role = Some(Role::Leader);
             if aura {
-                let tile = game.site("3,4");
+                let tile = game.site("hex-0763-c9e627d16e");
                 game.add(target, Side::Player, tile);
             }
             game.pools = Some([vec![], vec![melee]]);
@@ -983,10 +988,10 @@ mod tests {
         for tile in 0..game.terrain.len() {
             game.set_terrain(tile, rules.terrains["plains"]);
         }
-        let tile = game.site("3,4");
+        let tile = game.site("hex-0763-c9e627d16e");
         game.set_terrain(tile, forest);
         let mut health = Vec::new();
-        for site in ["1,4", "8,4"] {
+        for site in ["hex-0059-de5770129b", "hex-0987-a19805d204"] {
             let tile = game.site(site);
             let index = game.index(enemy).unwrap();
             game.units[index].tile = tile;
@@ -1139,12 +1144,16 @@ mod tests {
             game.set_terrain(tile, plains);
         }
         game.owners.fill(Some("player".into()));
-        let ally_tile = game.site("3,4");
+        let ally_tile = game.site("hex-0763-c9e627d16e");
         game.add(game.unit(target).unwrap().kind, Side::Player, ally_tile);
-        let other_tile = game.site("8,5");
+        let other_tile = game.site("hex-0988-17596734c1");
         let other = game.add(other, Side::Enemy, other_tile);
         let mut samples = Vec::new();
-        for (first, second) in [("5,4", "8,5"), ("8,4", "5,5"), ("8,3", "8,5")] {
+        for (first, second) in [
+            ("hex-0891-b20a50ef8c", "hex-0988-17596734c1"),
+            ("hex-0987-a19805d204", "hex-0892-f4d2ec09d8"),
+            ("hex-0984-954a3b23d6", "hex-0988-17596734c1"),
+        ] {
             for (id, site) in [(enemy, first), (other, second)] {
                 let tile = game.site(site);
                 let index = game.index(id).unwrap();
@@ -1174,14 +1183,14 @@ mod tests {
                 rules.units[target].r#move = movement;
                 rules.units[target].healing = healing;
                 let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
-                let start = game.site("1,4");
-                let end = game.site("8,4");
+                let start = game.site("hex-0059-de5770129b");
+                let end = game.site("hex-0987-a19805d204");
                 for unit in &mut game.units {
                     unit.tile = if unit.id == target_id { start } else { end };
                 }
                 assert_eq!(game.unit(enemy_id).unwrap().tile, end);
                 if healing > 0 {
-                    let tile = game.site("6,4");
+                    let tile = game.site("hex-0923-ec307e92cf");
                     let ally = game.add(target, Side::Player, tile);
                     game.units.iter_mut().find(|u| u.id == ally).unwrap().hp = 50;
                 }

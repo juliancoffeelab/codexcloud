@@ -3,8 +3,8 @@
     {
       "kind": "escape",
       "label": "Bring Orin to the northern quarry gate",
-      "tile": "11,1"
+      "tile": "hex-0098-b1326129be"
     }
   ],
-  "enemyLeaderPost": "11,5"
+  "enemyLeaderPost": "hex-0124-7838ad1797"
 }

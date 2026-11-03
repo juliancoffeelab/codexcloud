@@ -76,19 +76,19 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
 #[test]
 fn moves_obey_turns_actions_occupancy_and_passability() {
     let mut game = flat();
-    let actor = add(&mut game, "swordsman", Side::Player, "2,3");
-    add(&mut game, "scout", Side::Enemy, "3,3");
-    let water = game.site("2,2");
+    let actor = add(&mut game, "swordsman", Side::Player, "hex-0408-edbae05560");
+    add(&mut game, "scout", Side::Enemy, "hex-0760-150b2b6a75");
+    let water = game.site("hex-0397-b042f4a1af");
     game.set_terrain(water, game.rules.terrains["water"]);
     assert!(
         !game
             .reachable(game.unit(actor).unwrap())
             .iter()
-            .any(|&(tile, _)| tile == water || tile == game.site("3,3"))
+            .any(|&(tile, _)| tile == water || tile == game.site("hex-0760-150b2b6a75"))
     );
     let movement = Command::Move {
         unit: UnitId(actor),
-        tile: "1,3".into(),
+        tile: "hex-0056-2e6c8414fc".into(),
     };
     game.execute(movement.clone()).unwrap();
     assert!(game.reachable(game.unit(actor).unwrap()).is_empty());
@@ -111,15 +111,15 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
     for tile in 0..game.terrain.len() {
         game.set_terrain(tile, water);
     }
-    let start = game.site("0,0");
+    let start = game.site("hex-0001-7256137ec1");
     game.set_terrain(start, game.rules.terrains["plains"]);
     for col in 1..=5 {
-        let tile = game.site(&format!("{col},0"));
+        let tile = game.site_at(col, 0);
         game.set_terrain(tile, game.rules.terrains[terrain]);
     }
-    let id = add(&mut game, kind, Side::Player, "0,0");
+    let id = add(&mut game, kind, Side::Player, "hex-0001-7256137ec1");
     let allowance = game.rules.units[game.kind(kind)].r#move;
-    let goal = game.site(&format!("{allowance},0"));
+    let goal = game.site_at(allowance as i32, 0);
     assert!(
         game.reachable(game.unit(id).unwrap())
             .contains(&(goal, allowance as u16)),
@@ -139,7 +139,7 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
     game.roster_changed();
     assert!(game.reachable(game.unit(id).unwrap()).is_empty());
     game.units[index].attacked = false;
-    add(&mut game, "wolf", Side::Enemy, "1,0");
+    add(&mut game, "wolf", Side::Enemy, "hex-0033-68054f369c");
     assert!(game.reachable(game.unit(id).unwrap()).is_empty());
 }
 

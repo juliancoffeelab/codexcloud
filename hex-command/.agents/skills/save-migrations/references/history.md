@@ -247,3 +247,13 @@ character IDs. Units, veterans, evacuated units, companion-loss markers and save
 selector conditions retain their identity through conversion. Named dialogue
 uses character IDs; current captions come from Rust inspection. Generic narrator
 labels and existing prose/history remain unchanged. No gameplay commands run.
+
+## Version 27: stable tile identities
+
+Version 26 addressed board cells by coordinate strings. Version 27 gives each
+current authored cell a stable ID independent of its position. The frozen
+`legacy/data/tiles-v26.json` table converts saved tiles, unit positions, dropped
+items, faction-transfer and atmospheric conditions, defended
+site counters, remembered conditions, evacuated units and ritual/event markers.
+It preserves coordinates, ownership, health and progress; conversion never reads
+the current catalog.

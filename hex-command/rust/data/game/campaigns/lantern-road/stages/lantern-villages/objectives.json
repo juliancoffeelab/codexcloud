@@ -9,7 +9,7 @@
     {
       "kind": "escort",
       "label": "Bring the captives safely to the hidden village",
-      "tile": "2,1",
+      "tile": "hex-0386-9dcf2ec127",
       "visibleWhen": {
         "kind": "event",
         "event": "village-contact"
@@ -18,7 +18,7 @@
     {
       "kind": "event",
       "label": "Lead Nera through the northern pass by the end of turn 30",
-      "tile": "17,0",
+      "tile": "hex-0289-0646356c88",
       "event": "eastern-departure",
       "visibleWhen": {
         "kind": "event",

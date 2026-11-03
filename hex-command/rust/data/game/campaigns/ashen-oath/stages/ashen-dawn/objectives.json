@@ -3,7 +3,7 @@
     {
       "kind": "seal",
       "label": "Break both binding stones",
-      "tiles": ["7,2", "7,6"]
+      "tiles": ["hex-0941-278b487380", "hex-0957-c94afbbfa1"]
     },
     {
       "kind": "defeat",

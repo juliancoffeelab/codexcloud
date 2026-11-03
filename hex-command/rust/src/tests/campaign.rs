@@ -13,9 +13,9 @@ fn reach_wreck(game: &mut Game<'_>) {
         .iter()
         .position(|u| u.character.as_deref() == Some("edda"))
         .unwrap();
-    game.units[index].tile = game.site("4,4");
+    game.units[index].tile = game.site("hex-0859-8a12839c45");
     game.roster_changed();
-    game.move_unit(game.units[index].id, game.site("5,4"));
+    game.move_unit(game.units[index].id, game.site("hex-0891-b20a50ef8c"));
 }
 
 #[test]
@@ -57,7 +57,8 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
         game.end_turn();
         if !before_tide {
             assert_eq!(
-                game.campaign.as_ref().unwrap().holds.as_ref().unwrap()["5,4"].held_turns,
+                game.campaign.as_ref().unwrap().holds.as_ref().unwrap()["hex-0891-b20a50ef8c"]
+                    .held_turns,
                 1
             );
         }
@@ -67,10 +68,10 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
             .find(|u| u.character.as_deref() == Some("edda"))
             .unwrap()
             .id;
-        game.move_unit(edda, game.site("5,3"));
-        let raider = add(&mut game, "swordsman", Side::Enemy, "6,4");
+        game.move_unit(edda, game.site("hex-0888-a99d723b63"));
+        let raider = add(&mut game, "swordsman", Side::Enemy, "hex-0923-ec307e92cf");
         game.end_turn();
-        game.move_unit(raider, game.site("5,4"));
+        game.move_unit(raider, game.site("hex-0891-b20a50ef8c"));
         game.end_turn();
         assert_eq!(
             game.campaign
@@ -79,7 +80,7 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
                 .holds
                 .as_ref()
                 .unwrap()
-                .get("5,4")
+                .get("hex-0891-b20a50ef8c")
                 .map(|clock| clock.held_turns)
                 .unwrap_or(0),
             0
@@ -94,9 +95,9 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
             advance_to(&mut game, 6);
             assert!(!game.campaign.as_ref().unwrap().marked("event:rescue"));
             let index = game.index(raider).unwrap();
-            game.units[index].tile = game.site("6,4");
+            game.units[index].tile = game.site("hex-0923-ec307e92cf");
             game.roster_changed();
-            game.move_unit(edda, game.site("5,4"));
+            game.move_unit(edda, game.site("hex-0891-b20a50ef8c"));
             assert!(game.campaign.as_ref().unwrap().marked("event:rescue"));
         }
     }
@@ -109,11 +110,7 @@ fn authored_missions_have_valid_positions_and_restore_cleanly() {
             let game = chapter(&campaign.id, index);
             for wave in &mission.waves {
                 for unit in &wave.units {
-                    assert!(
-                        game.board
-                            .indices
-                            .contains_key(&format!("{},{}", unit.col, unit.row))
-                    );
+                    assert!(game.board.indices.contains_key(&unit.tile));
                 }
             }
             assert!(Game::try_from_state(rules(), game.state()).is_ok());
@@ -124,14 +121,14 @@ fn authored_missions_have_valid_positions_and_restore_cleanly() {
 #[test]
 fn killing_fighting_troops_does_not_escalate_mediation() {
     let mut game = chapter("ashen-oath", 1);
-    let defender = game.at(game.site("5,4")).unwrap().id;
+    let defender = game.at(game.site("hex-0891-b20a50ef8c")).unwrap().id;
     let index = game
         .units
         .iter()
         .position(|u| u.side == Side::Enemy && game.rules.units[u.kind].id == "soldier")
         .unwrap();
     let target = game.units[index].id;
-    game.units[index].tile = game.site("6,4");
+    game.units[index].tile = game.site("hex-0923-ec307e92cf");
     game.units[index].hp = 1;
     game.roster_changed();
     hit(&mut game, defender, target, "shieldbash");
@@ -155,7 +152,7 @@ fn story_companions_are_not_eligible_for_explicit_recall() {
         .unwrap_err(),
         CommandError::NoNextMission
     );
-    let ordinary = add(&mut game, "warden", Side::Player, "1,1");
+    let ordinary = add(&mut game, "warden", Side::Player, "hex-0034-53333de58a");
     game.execute(Command::RecallMission {
         units: vec![UnitId(ordinary)],
     })

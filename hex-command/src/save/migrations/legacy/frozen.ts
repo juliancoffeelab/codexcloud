@@ -12,7 +12,8 @@ import type {
 } from "../../../game/types";
 
 /** Published placements had display names, before stable character IDs. */
-export type LegacyStartingUnit = Omit<StartingUnit, "character"> & { name?: string };
+export type LegacyStartingUnit = Omit<StartingUnit, "character" | "tile"> &
+  Coordinates & { name?: string };
 type LegacyMap = Omit<MapDefinition, "units"> & { units: LegacyStartingUnit[] };
 type LegacyCampaign = Omit<CampaignDefinition, "missions"> & {
   missions: (Omit<CampaignDefinition["missions"][number], "map"> & { map: LegacyMap })[];

@@ -97,13 +97,14 @@ def before_state(detail, index, units):
 
 
 def coverage(state, units, effect='aura'):
+    positions = {t['id']: (t['col'], t['row']) for t in state['tiles']}
     friends = [u for u in state['units'] if u['side'] != state['turn']]
     providers = [u for u in friends if (
         effect in ('aura', 'all') and units[u['type']].get('thornAura', 0)) or (
         effect in ('intrinsic', 'all') and units[u['type']].get('thorns', 0))]
     covered = {u['id'] for u in friends if any(
         p['id'] != u['id'] and units[p['type']].get('thornAura', 0)
-        and effect in ('aura', 'all') and adjacent(p['tile'], u['tile']) for p in providers)}
+        and effect in ('aura', 'all') and adjacent(p['tile'], u['tile'], positions) for p in providers)}
     if effect in ('intrinsic', 'all'):
         covered.update(u['id'] for u in friends if units[u['type']].get('thorns', 0))
     return providers, covered
@@ -120,9 +121,10 @@ def without_effect(rule, effect):
 
 def threatened(state, units, covered):
     """Conservative geometric reach; blockers and terrain may prevent an attack."""
+    positions = {t['id']: (t['col'], t['row']) for t in state['tiles']}
     def distance(a, b):
-        x, y = map(int, a.split(','))
-        u, v = map(int, b.split(','))
+        x, y = positions[a]
+        u, v = positions[b]
         q, r = x - y // 2 - u + v // 2, y - v
         return (abs(q) + abs(r) + abs(q + r)) // 2
     for enemy in state['units']:

@@ -664,6 +664,14 @@ impl<'catalog> Game<'catalog> {
             .copied()
             .filter(|&index| self.units.get(index).is_some_and(|u| u.id == id))
     }
+    #[cfg(test)]
+    pub(crate) fn site_at(&self, col: i32, row: i32) -> usize {
+        self.board
+            .positions
+            .iter()
+            .position(|p| *p == (col, row))
+            .unwrap()
+    }
     pub(crate) fn site(&self, id: &str) -> usize {
         self.board.indices[id]
     }

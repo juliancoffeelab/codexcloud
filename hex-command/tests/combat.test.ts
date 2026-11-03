@@ -5,7 +5,11 @@ import { damageExplanation } from "../src/presentation/combat.ts";
 import { attackChoiceViews } from "../src/ui/combat-view.ts";
 import assert from "node:assert/strict";
 import { Game, TYPES } from "./game-fixture.ts";
-const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = "3,3") => {
+const fixture = (
+  a: UnitType = "soldier",
+  b: UnitType = "soldier",
+  targetTile = "hex-0760-150b2b6a75",
+) => {
   const game = new Game();
   for (const tile of game.tiles) {
     tile.terrain = "plains";
@@ -13,7 +17,7 @@ const fixture = (a: UnitType = "soldier", b: UnitType = "soldier", targetTile = 
     tile.owner = null;
   }
   game.units = [];
-  const attacker = game.addUnit(a, "player", "2,3"),
+  const attacker = game.addUnit(a, "player", "hex-0408-edbae05560"),
     target = game.addUnit(b, "enemy", targetTile);
   return { game, attacker, target };
 };

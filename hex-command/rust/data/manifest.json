@@ -135,6 +135,9 @@
     "arena": "simulation/arena.json",
     "campaign": "simulation/campaign.json"
   },
-  "arenaScenarios": ["simulation/maps/wood-edge/scenario.json"],
+  "arenaScenarios": [
+    "simulation/maps/wood-edge/scenario.json",
+    "simulation/maps/arena-template/scenario.json"
+  ],
   "recruitment": "game/recruitment.json"
 }
