@@ -1,13 +1,31 @@
 //! Shared mechanical valuation for recruits and free, earned promotions.
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
-use std::rc::Rc;
+use std::{cell::RefCell, rc::Rc};
 
 struct Approach {
     enemy: usize,
     weapon: usize,
     origins: Vec<usize>,
     routes: Rc<Vec<u16>>,
+    offense: RefCell<Option<OffensiveAverage>>,
+}
+struct OffensiveAverage {
+    origins: u128,
+    unit: Unit,
+    value: f64,
+    leader_damage: f64,
+}
+impl OffensiveAverage {
+    fn matches(&self, origins: u128, unit: &Unit) -> bool {
+        self.origins == origins
+            && self.unit.id == unit.id
+            && self.unit.kind == unit.kind
+            && self.unit.hp == unit.hp
+            && self.unit.side == unit.side
+            && self.unit.faction == unit.faction
+            && self.unit.items == unit.items
+    }
 }
 // Before four troops are visible, blend the known legal enemy roster into the
 // matchup estimate. This prior prevents opening purchases from countering only
@@ -108,6 +126,7 @@ impl Assessment {
                     weapon,
                     routes: game.routes(unit.kind, &origins),
                     origins,
+                    offense: RefCell::new(None),
                 });
             }
         }
@@ -291,26 +310,54 @@ impl Assessment {
                 if origin_count == 0 {
                     continue;
                 }
-                let mut value = 0.0;
-                let mut leader_damage = 0.0;
-                for origin in origins {
-                    let forecast = game.exchange(unit, enemy, approach.weapon, origin);
-                    let damage = forecast.damage[0].round() as i32;
-                    let response = forecast.damage[1].round() as i32;
-                    let attack = game.weapon(unit, approach.weapon);
-                    let drain = damage.min(enemy.hp) as f64 * f64::from(attack.drain) / 100.0;
-                    let exchange = forecast.effective[0] + drain * coefficients.drain
-                        - response.min(unit.hp) as f64 * coefficients.exchange_retaliation
-                        + forecast.death[1] * coefficients.kill
-                        - if response as f64 >= unit.hp as f64 + drain {
-                            unit.hp as f64
-                        } else {
-                            0.0
-                        };
-                    value += exchange;
-                    leader_damage += damage.min(enemy.hp).max(0) as f64;
-                }
-                value /= origin_count as f64;
+                // Placements with the same legal origins have identical offensive
+                // exchanges. Keep the original sum order and all combat inputs.
+                let mask = (recruitment && approach.origins.len() <= 128).then(|| {
+                    origins
+                        .clone()
+                        .fold(0u128, |mask, (index, _)| mask | (1 << index))
+                });
+                let cached = mask.and_then(|mask| {
+                    approach
+                        .offense
+                        .borrow()
+                        .as_ref()
+                        .filter(|last| last.matches(mask, unit))
+                        .map(|last| (last.value, last.leader_damage))
+                });
+                let (value, leader_damage) = if let Some(cached) = cached {
+                    cached
+                } else {
+                    let mut value = 0.0;
+                    let mut leader_damage = 0.0;
+                    for (_, origin) in origins {
+                        let forecast = game.exchange(unit, enemy, approach.weapon, origin);
+                        let damage = forecast.damage[0].round() as i32;
+                        let response = forecast.damage[1].round() as i32;
+                        let attack = game.weapon(unit, approach.weapon);
+                        let drain = damage.min(enemy.hp) as f64 * f64::from(attack.drain) / 100.0;
+                        let exchange = forecast.effective[0] + drain * coefficients.drain
+                            - response.min(unit.hp) as f64 * coefficients.exchange_retaliation
+                            + forecast.death[1] * coefficients.kill
+                            - if response as f64 >= unit.hp as f64 + drain {
+                                unit.hp as f64
+                            } else {
+                                0.0
+                            };
+                        value += exchange;
+                        leader_damage += damage.min(enemy.hp).max(0) as f64;
+                    }
+                    value /= origin_count as f64;
+                    if let Some(mask) = mask {
+                        *approach.offense.borrow_mut() = Some(OffensiveAverage {
+                            origins: mask,
+                            unit: unit.clone(),
+                            value,
+                            leader_damage,
+                        });
+                    }
+                    (value, leader_damage)
+                };
                 if recruitment && coefficients.leader_pressure > 0.0 && enemy.is_leader() {
                     let turns = f64::from(route) / rule.r#move.max(1) as f64;
                     let fraction = leader_damage / origin_count as f64 / enemy.hp.max(1) as f64;
@@ -523,12 +570,13 @@ fn representative_origins<'a>(
     kind: usize,
     from: usize,
     origins: &'a [usize],
-) -> impl Iterator<Item = usize> + Clone + 'a {
+) -> impl Iterator<Item = (usize, usize)> + Clone + 'a {
     let routes = game.routes_from(kind, from);
     origins
         .iter()
         .copied()
-        .filter(move |&tile| routes[tile] != u16::MAX)
+        .enumerate()
+        .filter(move |&(_, tile)| routes[tile] != u16::MAX)
 }
 
 struct PreferredAttack {
@@ -562,7 +610,7 @@ fn preferred_attack(
         let mut damage_sum = 0.0;
         let mut response_sum = 0.0;
         let mut strikes_sum = 0.0;
-        for origin in origins {
+        for (_, origin) in origins {
             let forecast = if let Some(aura) = aura {
                 let reflection = if attack.category == Category::Melee {
                     game.rules().units[target.kind].thorns + aura
