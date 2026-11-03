@@ -38,7 +38,10 @@
           "row": 4,
           "role": "leader"
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -78,7 +81,10 @@
           "row": 4,
           "role": "leader"
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
   ]
 }

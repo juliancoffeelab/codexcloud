@@ -34,7 +34,10 @@
           "row": 9,
           "name": "Oren"
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -58,7 +61,10 @@
           "row": 10,
           "aiGroup": "skeletons"
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     },
     {
       "id": "wildlife",

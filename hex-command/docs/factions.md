@@ -17,8 +17,9 @@ a phase finish before that phase ends; passive controllers issue no actions.
 Controller workspaces are transient and are never saved.
 
 Relations are `allied`, `neutral`, or `hostile`. Members of the same faction are
-allied. The implicit player and enemy factions are hostile; other relations
-default to neutral. A relation can be declared on either faction, but opposing
+allied. Different factions default to neutral, regardless of their identifiers
+or turn phases. Hostility, including player versus enemy, must be authored in
+`relations`. A relation can be declared on either faction, but opposing
 entries must agree. Attack legality and AI threat/target selection use these
 relations, rather than assuming different turn sides are hostile. Neutral units
 do not count toward defeating the player's enemies, including `noUnits`

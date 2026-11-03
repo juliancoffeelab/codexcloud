@@ -39,7 +39,10 @@
           "row": 7,
           "name": "Ivo"
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -102,7 +105,10 @@
           "row": 20,
           "aiGroup": "south-watch"
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     },
     {
       "id": "prisoners",

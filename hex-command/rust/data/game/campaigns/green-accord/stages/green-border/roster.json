@@ -43,7 +43,10 @@
           "row": 5,
           "name": "Lark"
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -92,7 +95,10 @@
           "col": 7,
           "row": 5
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
   ]
 }

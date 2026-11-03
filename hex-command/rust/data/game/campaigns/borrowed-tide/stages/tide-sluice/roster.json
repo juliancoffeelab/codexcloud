@@ -67,7 +67,10 @@
           "row": 1,
           "name": "Tomas"
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -116,7 +119,10 @@
           "col": 8,
           "row": 6
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
   ]
 }

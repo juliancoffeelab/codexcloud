@@ -232,3 +232,10 @@ Faction rosters replace implicit player/enemy armies. The conversion appends fro
 base controller definitions only where absent, preserving saved units, treasuries,
 existing faction definitions and campaign progress. Campaign recruitment continues
 to use its resolved authored pools and completed recruitment events.
+
+## Version 25: explicit diplomacy
+
+The old engine treated player/enemy as hostile when neither faction declared
+their relation. This conversion records that historical hostility on the existing
+faction definitions. Explicit neutral, allied or hostile declarations on either
+side remain unchanged. Units, gold and campaign progress are preserved.

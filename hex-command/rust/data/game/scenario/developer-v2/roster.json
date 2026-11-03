@@ -568,7 +568,10 @@
           "col": 0,
           "row": 0
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -1138,7 +1141,10 @@
           "col": 6,
           "row": 0
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
   ]
 }

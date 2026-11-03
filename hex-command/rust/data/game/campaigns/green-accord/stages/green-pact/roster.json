@@ -52,7 +52,10 @@
           "row": 5,
           "name": "Adept Tamsin"
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -109,7 +112,10 @@
           "col": 11,
           "row": 4
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
   ]
 }

@@ -251,11 +251,7 @@ pub fn faction_relation(factions: &[Faction], first: &str, second: &str) -> Rela
     {
         return *relation;
     }
-    if matches!((first, second), ("player", "enemy") | ("enemy", "player")) {
-        Relation::Hostile
-    } else {
-        Relation::Neutral
-    }
+    Relation::Neutral
 }
 /// Match an explicit unit selector, not the phase in which it happens to act.
 /// Keep this exhaustive: new allegiance selectors must define their semantics.

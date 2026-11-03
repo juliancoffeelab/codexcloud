@@ -29,7 +29,10 @@
           "row": 6,
           "name": "Oren"
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -65,7 +68,10 @@
           "role": "leader",
           "aiGroup": "tollkeeper"
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     },
     {
       "id": "prisoners",

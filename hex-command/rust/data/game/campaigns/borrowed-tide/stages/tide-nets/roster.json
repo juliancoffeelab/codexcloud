@@ -52,7 +52,10 @@
           "name": "Edda",
           "role": "courier"
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -96,7 +99,10 @@
           "col": 9,
           "row": 4
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
   ]
 }

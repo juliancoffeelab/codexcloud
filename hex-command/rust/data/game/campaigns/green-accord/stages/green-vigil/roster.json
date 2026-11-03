@@ -44,7 +44,10 @@
           "row": 5,
           "name": "Captain Dain"
         }
-      ]
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
     },
     {
       "id": "enemy",
@@ -85,7 +88,10 @@
           "col": 10,
           "row": 6
         }
-      ]
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
   ]
 }
