@@ -5,6 +5,8 @@ description: Use for Hex Command bug fixes, test changes and implementation vali
 
 # Hex Command testing
 
+Run `npm run format` before validating changes.
+
 Tests must be small, fast, and lightweight.
 
 - Data-only changes do not justify new behavioral tests or extra named-content

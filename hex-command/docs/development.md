@@ -1,7 +1,7 @@
 # Development and publication
 
-Development workflow lives in the [development skill](../.agents/skills/development/SKILL.md);
-[AGENTS.md](../AGENTS.md) indexes the project skills.
+Standing project instructions live in [AGENTS.md](../AGENTS.md), which also
+indexes the task-specific skills. This document provides setup and command references.
 
 ## Setup
 
