@@ -16,11 +16,9 @@ export function migrateV20ToV21(value: Record<string, unknown>): Record<string, 
   });
   // This encounter is unconditional after the faction-economy conversion.
   // Its former activation marker has no meaning in the converted campaign.
-  const conditionMemory =
-    old.mapId === frozen.mapId && Array.isArray(old.conditionMemory)
-      ? old.conditionMemory.filter((key) => key !== "group:swamp-dead")
-      : old.conditionMemory;
-  let state: Record<string, unknown> = { ...old, gold, factions, conditionMemory };
+  let state: Record<string, unknown> = { ...old, gold, factions };
+  if (old.mapId === frozen.mapId && Array.isArray(old.conditionMemory))
+    state.conditionMemory = old.conditionMemory.filter((key) => key !== "group:swamp-dead");
   if (old.mapId === frozen.mapId && old.mapRevision === frozen.fromRevision) {
     if (
       !Array.isArray(old.tiles) ||
