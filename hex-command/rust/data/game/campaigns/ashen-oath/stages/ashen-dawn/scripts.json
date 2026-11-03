@@ -164,7 +164,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0941-278b487380",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "skeleton"
@@ -199,7 +199,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0957-c94afbbfa1",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "skeleton"
@@ -225,7 +225,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-1019-90a76d4969",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "boar"
@@ -258,8 +258,7 @@
             "tile": "hex-0941-278b487380",
             "side": "player"
           }
-        },
-        "optional": true
+        }
       }
     },
     {
@@ -282,8 +281,7 @@
             "tile": "hex-0957-c94afbbfa1",
             "side": "player"
           }
-        },
-        "optional": true
+        }
       }
     },
     {
@@ -300,15 +298,9 @@
       },
       "actions": [
         {
-          "setFlag": "goal-0"
+          "setFlag": "ashen-dawn-goal-0"
         }
-      ],
-      "objective": {
-        "label": "Break both binding stones",
-        "intent": {
-          "capture": ["hex-0941-278b487380", "hex-0957-c94afbbfa1"]
-        }
-      }
+      ]
     },
     {
       "id": "goal-1",
@@ -320,7 +312,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-1"
+          "setFlag": "ashen-dawn-goal-1"
         }
       ],
       "objective": {
@@ -338,10 +330,10 @@
       "when": {
         "all": [
           {
-            "flag": "goal-0"
+            "flag": "ashen-dawn-goal-0"
           },
           {
-            "flag": "goal-1"
+            "flag": "ashen-dawn-goal-1"
           },
           {
             "hasUnits": {

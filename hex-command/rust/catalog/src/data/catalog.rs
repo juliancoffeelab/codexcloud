@@ -68,6 +68,8 @@ pub struct ArenaDefaults {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct CampaignDefaults {
+    #[serde(default)]
+    pub escalation_flags: BTreeMap<String, String>,
     pub default_max_rounds: u32,
     pub diplomacy: Vec<String>,
     #[serde(default)]

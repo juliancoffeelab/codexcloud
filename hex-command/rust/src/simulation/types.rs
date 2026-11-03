@@ -145,6 +145,8 @@ pub struct ArenaResult {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Complete trace for one reached chapter of a campaign attempt.
 pub struct MissionResult {
+    #[serde(default)]
+    pub escalated: bool,
     pub id: String,
     pub winner: Option<Side>,
     pub round: u32,

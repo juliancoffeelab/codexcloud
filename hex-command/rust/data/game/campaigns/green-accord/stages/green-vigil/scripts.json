@@ -12,7 +12,7 @@
           "failObjective": "goal-0"
         },
         {
-          "defeat": "The company cannot continue without lark."
+          "defeat": "A protected companion fell. The company cannot continue."
         }
       ]
     },
@@ -172,7 +172,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0098-b1326129be",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "warden"
@@ -184,7 +184,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0126-1b9b97e69c",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "archer"
@@ -210,7 +210,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0088-d3b4c2a321",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "adept"
@@ -222,7 +222,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0092-2cbe4dcb7c",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "soldier"
@@ -253,7 +253,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-0"
+          "setFlag": "green-vigil-goal-0"
         }
       ],
       "objective": {
@@ -273,7 +273,7 @@
       "when": {
         "all": [
           {
-            "flag": "goal-0"
+            "flag": "green-vigil-goal-0"
           },
           {
             "hasUnits": {

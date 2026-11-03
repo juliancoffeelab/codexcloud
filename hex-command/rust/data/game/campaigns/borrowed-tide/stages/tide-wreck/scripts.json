@@ -9,7 +9,7 @@
       },
       "actions": [
         {
-          "defeat": "The company cannot continue without edda."
+          "defeat": "A protected companion fell. The company cannot continue."
         }
       ]
     },
@@ -214,7 +214,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0066-be276ac684",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "swordsman"
@@ -226,7 +226,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0124-7838ad1797",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "archer"
@@ -253,7 +253,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-1"
+          "setFlag": "tide-wreck-goal-1"
         }
       ],
       "objective": {
@@ -278,7 +278,7 @@
             "flag": "ledger"
           },
           {
-            "flag": "goal-1"
+            "flag": "tide-wreck-goal-1"
           },
           {
             "hasUnits": {

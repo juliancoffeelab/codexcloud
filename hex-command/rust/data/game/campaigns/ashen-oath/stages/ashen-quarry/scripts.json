@@ -82,7 +82,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0125-7bcb954eb7",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "adept"
@@ -94,7 +94,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0093-9d334ed661",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "warden"
@@ -118,7 +118,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-0"
+          "setFlag": "ashen-quarry-goal-0"
         }
       ],
       "objective": {
@@ -137,7 +137,7 @@
       "when": {
         "all": [
           {
-            "flag": "goal-0"
+            "flag": "ashen-quarry-goal-0"
           },
           {
             "hasUnits": {

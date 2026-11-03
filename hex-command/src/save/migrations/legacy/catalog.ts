@@ -1,6 +1,7 @@
+import type { MissionDefinition } from "./mission-types";
 /** Historical save metadata stays private to migration; live definitions come from WASM. */
 import { FROZEN_CAMPAIGNS } from "./frozen";
-import type { CampaignId, DialogueLine, MissionDefinition } from "../../../game/types";
+import type { CampaignId, DialogueLine } from "../../../game/types";
 import stages from "./data/stages.json";
 import type { Immutable } from "../../../game/immutable";
 

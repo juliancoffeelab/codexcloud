@@ -336,9 +336,10 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 if board.winner.is_some() {
                     0
                 } else {
-                    let target = board.unit(u.id).unwrap().clone();
-                    let enemies = Self::independent_enemies(&board, u.side, None);
-                    Self::pressure(&board, &target, &enemies, None, true)
+                    board.unit(u.id).map_or(0, |target| {
+                        let enemies = Self::independent_enemies(&board, u.side, None);
+                        Self::pressure(&board, target, &enemies, None, true)
+                    })
                 }
             } else {
                 let fkey = (u.id, eliminated);

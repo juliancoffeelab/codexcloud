@@ -1,7 +1,7 @@
+import type { CampaignDefinition } from "./mission-types";
 /** Frozen v6 conversion metadata; never consult the live gameplay catalog. */
 import snapshot from "./data/catalog-v6.json";
 import type {
-  CampaignDefinition,
   CampaignId,
   Coordinates,
   MapDefinition,

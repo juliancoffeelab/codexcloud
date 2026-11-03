@@ -9,7 +9,7 @@
       },
       "actions": [
         {
-          "defeat": "The company cannot continue without lark."
+          "defeat": "A protected companion fell. The company cannot continue."
         }
       ]
     },
@@ -153,7 +153,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-0"
+          "setFlag": "green-border-goal-0"
         }
       ],
       "objective": {
@@ -168,7 +168,7 @@
       "when": {
         "all": [
           {
-            "flag": "goal-0"
+            "flag": "green-border-goal-0"
           },
           {
             "flag": "lost-tools"

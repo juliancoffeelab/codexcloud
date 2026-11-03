@@ -98,7 +98,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-0994-37e28411df",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "archer"
@@ -110,7 +110,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-1022-0164b0319d",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "swordsman"
@@ -136,7 +136,7 @@
           "spawn": {
             "faction": "enemy",
             "tile": "hex-1016-9e0db09d3e",
-            "radius": 0,
+            "radius": 2,
             "units": [
               {
                 "type": "adept"

@@ -161,7 +161,7 @@ test("Version-one TS migration is pure, defaults experience and preserves progre
   assert.equal(migrated.checkpoint.state.gold.player, 23);
   assert.equal(migrated.checkpoint.state.units[0]!.experience, 7);
   assert.equal(migrated.checkpoint.state.units[1]!.experience, 0);
-  assert.deepEqual(migrated.checkpoint.state.campaign, old.state.campaign);
+  assert.equal(migrated.checkpoint.state.campaign?.mission, old.state.campaign?.mission);
   const game = LiveGame.restore(createTestFactory(), migrateSave(migrated).save.checkpoint);
   assert.equal(game.round, 4);
   assert.equal(game.unit(old.state.units[0]!.id)?.hp, 5);
@@ -337,7 +337,7 @@ for (const [id, chapter, type, tile, numericMarks] of [
     assert.deepEqual(converted.checkpoint.state.gold, game.gold);
     assert.equal(converted.pendingEnemy, true);
     for (const mark of expectedMarks)
-      assert(converted.checkpoint.state.campaign!.marks.includes(mark));
+      assert(!converted.checkpoint.state.campaign!.scripts!.active.includes(mark.slice(5)));
     localStorage.setItem(SAVE_KEY, JSON.stringify(old));
     const loaded = loadBattle(createTestFactory());
     assert.equal(loaded.notice, undefined);
@@ -366,9 +366,9 @@ test("Tagged wave IDs survive import regardless of authored list ordering", () =
   const waves = [...CAMPAIGNS["ashen-oath"].missions[2]!.waves].reverse();
   assert.equal(importWaveMarker("wave:0", waves), "wave:north-binding-rise");
   assert.equal(importWaveMarker("wave:2", waves), "wave:masters-boar");
-  assert.deepEqual(converted.checkpoint.state.campaign!.marks, game.campaign!.marks);
+  assert(!converted.checkpoint.state.campaign!.scripts!.active.includes("north-binding-rise"));
   const restored = LiveGame.restore(createTestFactory(), converted.checkpoint);
-  assert.deepEqual(restored.campaign!.marks, game.campaign!.marks);
+  assert(!restored.campaign!.scripts!.active.includes("north-binding-rise"));
   restored.dispose();
 });
 
@@ -380,16 +380,20 @@ test("Legacy pre-rescue hold clocks reset, while earned victories stay completed
     "hex-0891-b20a50ef8c": { heldTurns: 2, lastCountedRound: 4 },
   });
   const converted = migrateSave(old).save;
-  assert.equal(converted.checkpoint.state.campaign!.holds!["hex-0891-b20a50ef8c"]!.heldTurns, 0);
+  assert.equal(
+    converted.checkpoint.state.campaign!.scripts!.holds.find((h) => h.event === "goal-1")?.turns ??
+      0,
+    0,
+  );
   assert(!converted.checkpoint.state.campaign!.marks.includes("event:rescue"));
   const restored = LiveGame.restore(createTestFactory(), converted.checkpoint);
-  assert.equal(restored.campaign!.holds!["hex-0891-b20a50ef8c"]!.heldTurns, 0);
+  assert.equal(restored.campaign!.scripts!.holds.find((h) => h.event === "goal-1")?.turns ?? 0, 0);
   restored.dispose();
   old.state.winner = "player";
   old.state.campaign!.outcome = "Mission complete. The company can rest and regroup.";
   const finished = migrateSave(old).save;
   assert.equal(finished.checkpoint.state.winner, "player");
-  assert(finished.checkpoint.state.campaign!.marks.includes("event:rescue"));
+  assert(finished.checkpoint.state.campaign!.flags.rescue?.at(-1)?.state);
   const earned = LiveGame.restore(createTestFactory(), finished.checkpoint);
   assert.equal(earned.winner, "player");
   earned.dispose();

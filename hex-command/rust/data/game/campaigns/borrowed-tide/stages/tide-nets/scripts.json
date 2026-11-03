@@ -113,7 +113,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-0"
+          "setFlag": "tide-nets-goal-0"
         }
       ],
       "objective": {
@@ -170,7 +170,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-1"
+          "setFlag": "tide-nets-goal-1"
         }
       ],
       "objective": {
@@ -189,10 +189,10 @@
       "when": {
         "all": [
           {
-            "flag": "goal-0"
+            "flag": "tide-nets-goal-0"
           },
           {
-            "flag": "goal-1"
+            "flag": "tide-nets-goal-1"
           },
           {
             "hasUnits": {

@@ -652,6 +652,11 @@ pub fn run_campaign(
             }
         }
         missions.push(MissionResult {
+            escalated: rules
+                .campaign_defaults
+                .escalation_flags
+                .get(&game.map_id)
+                .is_some_and(|flag| game.campaign.as_ref().is_some_and(|c| c.chosen(flag))),
             id: game.map_id.clone(),
             winner: game.winner,
             round: game.round,

@@ -12,7 +12,7 @@
           "failObjective": "goal-1"
         },
         {
-          "defeat": "The company cannot continue without lark."
+          "defeat": "A protected companion fell. The company cannot continue."
         }
       ]
     },
@@ -199,7 +199,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-0"
+          "setFlag": "green-pact-goal-0"
         }
       ],
       "objective": {
@@ -246,7 +246,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-1"
+          "setFlag": "green-pact-goal-1"
         }
       ],
       "objective": {
@@ -265,10 +265,10 @@
       "when": {
         "all": [
           {
-            "flag": "goal-0"
+            "flag": "green-pact-goal-0"
           },
           {
-            "flag": "goal-1"
+            "flag": "green-pact-goal-1"
           },
           {
             "hasUnits": {

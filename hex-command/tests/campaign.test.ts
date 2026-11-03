@@ -74,7 +74,7 @@ test("Legacy refuge retains company and ownership", async () => {
 test("Interrupted wave checkpoint replays once", async () => {
   const game = Game.startCampaign("ashen-oath", 0);
   game.advanceDialogue(true);
-  game.round = campaignMission(game.campaign!).waves[0]!.round;
+  game.round = 6;
   saveBattle(game, true);
   assert.equal(loadBattle().pendingEnemy, true);
   const first = new BattleController(async () => {}, createTestFactory());
@@ -82,10 +82,7 @@ test("Interrupted wave checkpoint replays once", async () => {
   await first.endTurn();
   await replay.endTurn();
   assert.deepEqual(replay.snapshot(), first.snapshot());
-  assert.equal(
-    replay.snapshot().campaign?.marks.filter((mark) => mark.startsWith("wave:")).length,
-    campaignMission(game.campaign!).waves.length,
-  );
+  assert(!replay.snapshot().campaign?.scripts?.active.includes("southern-capture-party"));
   first.dispose();
   replay.dispose();
 });

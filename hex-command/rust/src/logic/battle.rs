@@ -932,42 +932,15 @@ impl<'catalog> Game<'catalog> {
             return pool.iter().map(|r| self.kind(&r.unit)).collect();
         }
         if let Some(mission) = &self.mission {
-            let mut options: Vec<_> = mission
+            return mission
                 .recruitment
                 .get(id)
                 .into_iter()
                 .flatten()
                 .map(|entry| self.kind(&entry.unit))
                 .collect();
-            for event in &mission.events {
-                if self
-                    .campaign
-                    .as_ref()
-                    .is_some_and(|state| state.marked_prefixed("event:", &event.id))
-                {
-                    for kind in event
-                        .recruitment
-                        .get(id)
-                        .into_iter()
-                        .flatten()
-                        .map(|entry| self.kind(&entry.unit))
-                    {
-                        if !options.contains(&kind) {
-                            options.push(kind);
-                        }
-                    }
-                }
-            }
-            if let Some(state) = self.campaign.as_ref().and_then(|c| c.scripts.as_ref()) {
-                for recruit in state.recruitment.get(id).into_iter().flatten() {
-                    let kind = self.kind(&recruit.unit);
-                    if !options.contains(&kind) {
-                        options.push(kind);
-                    }
-                }
-            }
-            return options;
         }
+
         if let Some(pools) = &self.pools
             && matches!(id, "player" | "enemy")
         {
@@ -1003,15 +976,6 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn recruit_cost_for_faction(&self, id: &str, kind: usize) -> i32 {
         let unit = &self.rules.units[kind].id;
         if let Some(mission) = &self.mission {
-            let base = mission
-                .recruitment
-                .get(id)
-                .into_iter()
-                .flatten()
-                .find(|entry| &entry.unit == unit);
-            if let Some(entry) = base {
-                return entry.cost.unwrap_or(self.rules.units[kind].cost);
-            }
             if let Some(entry) = self
                 .campaign
                 .as_ref()
@@ -1021,22 +985,14 @@ impl<'catalog> Game<'catalog> {
             {
                 return entry.cost.unwrap_or(self.rules.units[kind].cost);
             }
-            for event in &mission.events {
-                if self
-                    .campaign
-                    .as_ref()
-                    .is_some_and(|state| state.marked_prefixed("event:", &event.id))
-                {
-                    if let Some(entry) = event
-                        .recruitment
-                        .get(id)
-                        .into_iter()
-                        .flatten()
-                        .find(|entry| &entry.unit == unit)
-                    {
-                        return entry.cost.unwrap_or(self.rules.units[kind].cost);
-                    }
-                }
+            let base = mission
+                .recruitment
+                .get(id)
+                .into_iter()
+                .flatten()
+                .find(|entry| &entry.unit == unit);
+            if let Some(entry) = base {
+                return entry.cost.unwrap_or(self.rules.units[kind].cost);
             }
             return self.rules.units[kind].cost;
         }

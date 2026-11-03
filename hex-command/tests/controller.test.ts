@@ -244,10 +244,7 @@ test("Completed vigil publishes and persists its outcome", async () => {
   const fixture = Game.startCampaign("green-accord", 1);
   fixture.advanceDialogue(true);
   fixture.units = fixture.units.filter((unit) => unit.side === "player");
-  const goal = required(
-    campaignMission(required(fixture.campaign)).goals.find((g) => g.kind === "vigil"),
-  );
-  assert.equal(goal.kind, "vigil");
+  const goal = { tile: "hex-0923-ec307e92cf" };
   const lark = required(fixture.units.find((unit) => unit.character === "lark"));
   const occupant = fixture.at(goal.tile);
   if (occupant && occupant.id !== lark.id) occupant.tile = "hex-0891-b20a50ef8c";

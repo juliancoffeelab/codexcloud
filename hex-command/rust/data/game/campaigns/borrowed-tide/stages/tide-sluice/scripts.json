@@ -126,7 +126,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-0"
+          "setFlag": "tide-sluice-goal-0"
         }
       ],
       "objective": {
@@ -183,7 +183,7 @@
       },
       "actions": [
         {
-          "setFlag": "goal-1"
+          "setFlag": "tide-sluice-goal-1"
         }
       ],
       "objective": {
@@ -202,10 +202,10 @@
       "when": {
         "all": [
           {
-            "flag": "goal-0"
+            "flag": "tide-sluice-goal-0"
           },
           {
-            "flag": "goal-1"
+            "flag": "tide-sluice-goal-1"
           },
           {
             "hasUnits": {

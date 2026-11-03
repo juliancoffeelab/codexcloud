@@ -1,21 +1,22 @@
 # Authored events
 
-Lantern Road uses the general event schema in
+All playable campaigns use the general event schema in
 `rust/catalog/src/data/events.rs`. Events are authored in each stage's
-`scripts.json`. The other campaigns retain their existing scripts.
+`scripts.json`.
 
 ## Conditions and execution
 
 `when` composes predicates with `all`, `any` and `not`. Supported predicates are
 `stand`, `proximity`, `killed`, `left`, `turn`, `turnAtLeast`, `chapterStarted`,
-`flag`, `hasUnits`, `noUnits`, `visibleUnits`, `owner` and consecutive `held`.
+`flag`, `hasUnits`, `noUnits`, `visibleUnits`, `owner`, `own` and consecutive `held`.
 Character and tile references are stable authored IDs, independent of names and
 coordinates. Unit selectors can narrow by character, role, faction, side, type,
 a list of types or AI group.
 
 Rust evaluates after completed movement, combat, recruitment, advancement and
 equipment actions, at chapter entry and at turn boundaries. `turn` means the
-start of that player turn; `turnAtLeast` is a persistent condition. `killed`
+start of that player turn; `{number, faction}` selects a faction phase boundary.
+`turnAtLeast` is a persistent condition. `killed`
 receives actual deaths from the completed action. `left` receives the moving
 unit's departure. `stand` checks final occupancy unless `through: true` is
 specified. Proximity includes the completed movement route by default; use
@@ -41,7 +42,9 @@ with the tile unoccupied. The counter and last counted round survive reloads.
 
 Actions include `spawn`, `give`, `placeItem`, `changeAllegiance`, `deleteUnit`,
 `setFlag`, `say`, `sound`, `log`, `createMark`, `removeMark`, `forEachUnit`,
-`forEachMark`, `setTerrain`, `gold`, `unlockRecruits`, `victory` and `defeat`.
+`forEachMark`, `setTerrain`, `gold`, `unlockRecruits`, `recruits`,
+`failObjective`, `victory` and `defeat`. `recruits` replaces a faction pool;
+`unlockRecruits` extends it.
 Rescue and sacrifice share `deleteUnit`: deletion emits no `killed` occurrence.
 An explicit flag records what the deletion meant.
 
@@ -66,11 +69,15 @@ campaign character registry. Narrators may provide a speaker label. The
 ferryman's letter is dialogue, not an item.
 
 Objective metadata lives alongside its event. The intent is explicit: `goTo`,
-`approach`, `escape`, `escort`, `capture`, `defeat` or `hold`. Hold includes its
+`approach`, `escape`, `escort`, `capture`, `defeat`, `own` or `hold`. Hold includes its
 selector, destination and duration. Campaigner translates intent rather than
 reverse-engineering arbitrary boolean conditions. Owned capture sites are
 removed from active targets. A hold can request eligible recruits. Visibility is
 an explicit condition; optional objectives are separate from required ones.
+An objective ID defaults to its owning event ID. `failObjective` explicitly
+fails an active objective and retires its event; chapter defeat alone does not
+fail unfinished objectives. `preserveLives` identifies units a diplomatic
+Campaigner should let withdraw. Unrestricted mode grants no such protection.
 Event completion determines objective completion, and authored victory/defeat
 events determine chapter outcomes. AI intent does not execute gameplay.
 
@@ -123,5 +130,19 @@ Save version 29 replaces the flat choices list with this history. Frozen stage
 provenance preserves old values, but original write turns and prior values cannot
 be recovered from old flat lists.
 The isolated version-27 conversion uses frozen historical recipes and never
-queries the current catalogue or runs game actions. Legacy campaigns keep their
-existing progress representation.
+queries the current catalogue or runs game actions. Version 30 converts legacy counters, remembered events and story outcomes to
+general event state using frozen recipes. Completion flags are stage-qualified
+so earlier goals cannot satisfy later chapters.
+
+## Story variants and ownership
+
+`story.json` keeps briefing, debrief and hints. Briefing/debrief accept text or
+an ordered list of `{when?, text}` variants; the first matching entry wins.
+Hints accept text or conditional entries and display every matching entry. Rust
+resolves these conditions and dialogue passages before supplying them to the UI.
+Conditions here are persistent state predicates, not action occurrences or clocks.
+
+`own: {tile, faction, turns: 3}` counts consecutive ownership without requiring
+an occupant. Optional `when` gates both ownership and occupancy clocks and resets
+them whenever false. Guards use state predicates. `killed` can additionally
+select `initiatedBy`, `killedBy`, `defending`, and victim `retreating` state.

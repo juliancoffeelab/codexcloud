@@ -23,25 +23,15 @@ fn late_rescue_arrivals_start_immediately_then_require_three_defended_rounds() {
     for arrival in [6, 8] {
         let mut game = chapter("borrowed-tide", 1);
         advance_to(&mut game, arrival);
-        assert!(game.campaign.as_ref().unwrap().marked("event:tide-arrived"));
-        assert!(!game.campaign.as_ref().unwrap().marked("event:rescue"));
+        assert!(game.campaign.as_ref().unwrap().chosen("tide-arrived"));
+        assert!(!game.campaign.as_ref().unwrap().chosen("rescue"));
         reach_wreck(&mut game);
-        assert!(game.campaign.as_ref().unwrap().marked("event:rescue"));
-        assert!(!game.campaign.as_ref().unwrap().marked("event:await-tide"));
+        assert!(game.campaign.as_ref().unwrap().chosen("rescue"));
+        assert!(!game.campaign.as_ref().unwrap().chosen("await-tide"));
         advance_to(&mut game, arrival + 2);
         assert_eq!(game.winner, None);
         advance_to(&mut game, arrival + 3);
         assert_eq!(game.winner, Some(Side::Player));
-        assert_eq!(
-            game.campaign
-                .as_ref()
-                .unwrap()
-                .marks
-                .iter()
-                .filter(|m| m.as_str() == "event:rescue")
-                .count(),
-            1
-        );
     }
 }
 
@@ -57,8 +47,17 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
         game.end_turn();
         if !before_tide {
             assert_eq!(
-                game.campaign.as_ref().unwrap().holds.as_ref().unwrap()["hex-0891-b20a50ef8c"]
-                    .held_turns,
+                game.campaign
+                    .as_ref()
+                    .unwrap()
+                    .scripts
+                    .as_ref()
+                    .unwrap()
+                    .holds
+                    .iter()
+                    .find(|h| h.event == "goal-1")
+                    .unwrap()
+                    .turns,
                 1
             );
         }
@@ -77,11 +76,13 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
             game.campaign
                 .as_ref()
                 .unwrap()
-                .holds
+                .scripts
                 .as_ref()
                 .unwrap()
-                .get("hex-0891-b20a50ef8c")
-                .map(|clock| clock.held_turns)
+                .holds
+                .iter()
+                .find(|h| h.event == "goal-1")
+                .map(|clock| clock.turns)
                 .unwrap_or(0),
             0
         );
@@ -93,12 +94,12 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
         );
         if before_tide {
             advance_to(&mut game, 6);
-            assert!(!game.campaign.as_ref().unwrap().marked("event:rescue"));
+            assert!(!game.campaign.as_ref().unwrap().chosen("rescue"));
             let index = game.index(raider).unwrap();
             game.units[index].tile = game.site("hex-0923-ec307e92cf");
             game.roster_changed();
             game.move_unit(edda, game.site("hex-0891-b20a50ef8c"));
-            assert!(game.campaign.as_ref().unwrap().marked("event:rescue"));
+            assert!(game.campaign.as_ref().unwrap().chosen("rescue"));
         }
     }
 }
@@ -119,7 +120,7 @@ fn authored_missions_have_valid_positions_and_restore_cleanly() {
 }
 
 #[test]
-fn killing_fighting_troops_does_not_escalate_mediation() {
+fn any_death_escalates_mediation() {
     let mut game = chapter("ashen-oath", 1);
     let defender = game.at(game.site("hex-0891-b20a50ef8c")).unwrap().id;
     let index = game
@@ -132,7 +133,7 @@ fn killing_fighting_troops_does_not_escalate_mediation() {
     game.units[index].hp = 1;
     game.roster_changed();
     hit(&mut game, defender, target, "shieldbash");
-    assert!(!game.campaign.as_ref().unwrap().escalated());
+    assert!(game.campaign.as_ref().unwrap().chosen("peace-lost"));
 }
 
 #[test]

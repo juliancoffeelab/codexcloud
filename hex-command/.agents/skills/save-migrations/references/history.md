@@ -277,3 +277,13 @@ at the saved round, and uses turn zero for older/unknown incoming facts. Previou
 values and exact historical write turns were not stored and cannot be recovered.
 Retry discards the current stage's positive-turn changes while retaining incoming
 facts. Units, treasury, event state and positions remain unchanged.
+
+## Version 30: unified campaign events and story
+
+Frozen `legacy/data/events-v29.json` recipes convert the remaining campaigns'
+remembered events, waves, ownership counters, vigil/refuge progress, named deaths
+and recruitment unlocks into active events and explicit flags. Legacy diplomacy
+mode names become `diplomatic` and `unrestricted`. Current-stage deaths are
+removed from the incoming companion checkpoint so retry restores that chapter's
+starting company. Completed objectives stay complete; impossible active objectives
+receive explicit failure state. Units, health, positions and treasury are preserved.

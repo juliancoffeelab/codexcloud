@@ -187,7 +187,9 @@ impl Game<'_> {
             When::Owner(v) => self.owners[self.site(&v.tile)].as_deref() == Some(&v.faction),
             When::Own(v) if v.turns.is_none() => {
                 self.owners[self.site(&v.tile)].as_deref() == Some(&v.faction)
-                    && v.when.as_ref().is_none_or(|w| self.script_condition(w))
+                    && v.when
+                        .as_ref()
+                        .is_none_or(|w| self.when_matches(w, state, event, false, None, &mut 0))
             }
             When::Own(_) | When::Held(_) => {
                 let index = *hold_index;
@@ -228,7 +230,9 @@ impl Game<'_> {
                     && hold
                         .faction
                         .is_none_or(|f| self.owners[self.site(hold.tile)].as_deref() == Some(f))
-                    && hold.when.is_none_or(|w| self.script_condition(w));
+                    && hold.when.is_none_or(|w| {
+                        self.when_matches(w, state, &event.id, false, None, &mut 0)
+                    });
                 let slot = state
                     .holds
                     .iter()
@@ -681,14 +685,10 @@ impl Game<'_> {
         let mut fired = HashSet::new();
         loop {
             let mut changed = false;
-            for id in state.active.clone() {
-                if !state.active.contains(&id) {
+            for event in events {
+                if !state.active.contains(&event.id) {
                     continue;
                 }
-                let event = events
-                    .iter()
-                    .find(|e| e.id == id)
-                    .expect("validated active event");
                 let ordinary =
                     self.when_matches(&event.when, &state, &event.id, tick, None, &mut 0);
                 let contexts: Vec<_> = if ordinary {
@@ -974,7 +974,7 @@ impl Game<'_> {
             .as_ref()
             .is_none_or(|c| self.script_condition(c));
         ObjectiveStatus {
-            active_tiles: if !done && !failed && visible {
+            active_tiles: if !done && !failed && visible && self.winner.is_none() {
                 tiles.clone()
             } else {
                 vec![]

@@ -68,7 +68,7 @@ export function validSetup(value: unknown): value is SessionSetup {
   if (
     Object.keys(ai).some((k) => !["policy", "diplomacy", "blocks"].includes(k)) ||
     !DIFFICULTIES.some((d) => d.id === ai.policy) ||
-    ai.diplomacy !== "diplomatic"
+    !["diplomatic", "unrestricted"].includes(String(ai.diplomacy))
   )
     return false;
   return (

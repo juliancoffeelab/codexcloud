@@ -10,6 +10,17 @@ use crate::ai::{
 use crate::sort::SharedSort;
 use crate::{data::*, logic::Game};
 use rustc_hash::FxHashSet as HashSet;
+// Visibility can change when an otherwise unrelated unit disappears.
+fn observes_visibility(when: &When) -> bool {
+    match when {
+        When::VisibleUnits(_) => true,
+        When::All(v) | When::Any(v) => v.iter().any(observes_visibility),
+        When::Not(v) => observes_visibility(v),
+        When::Held(v) => v.when.as_deref().is_some_and(observes_visibility),
+        When::Own(v) => v.when.as_deref().is_some_and(observes_visibility),
+        _ => false,
+    }
+}
 fn is_spawn(a: &EventAction) -> bool {
     match a {
         EventAction::Spawn(_) => true,
@@ -291,11 +302,35 @@ impl CampaignBlock {
             .iter()
             .find(|u| game.belongs_to_phase(u, game.turn))
         {
+            let active: Vec<_> = game
+                .mission
+                .as_ref()
+                .into_iter()
+                .flat_map(|m| &m.scripted_events)
+                .filter(|event| {
+                    game.campaign
+                        .as_ref()
+                        .and_then(|c| c.scripts.as_ref())
+                        .is_some_and(|s| s.active.contains(&event.id))
+                })
+                .collect();
+            let indirect = game.campaign.is_none()
+                || game
+                    .campaign
+                    .as_ref()
+                    .and_then(|c| c.scripts.as_ref())
+                    .is_some_and(|s| !s.pending.is_empty())
+                || game.factions.iter().any(|f| f.transfer.is_some())
+                || active.iter().any(|e| observes_visibility(&e.when));
+            let selectors: Vec<_> = active.iter().flat_map(|e| e.selectors()).collect();
             tactics.terminal_targets = game
                 .units
                 .iter()
                 .filter(|enemy| {
-                    game.hostile_to_phase(enemy, game.turn) && terminal_attack(game, unit, enemy)
+                    game.hostile_to_phase(enemy, game.turn)
+                        && (indirect
+                            || selectors.iter().any(|s| game.script_unit_matches(s, enemy)))
+                        && terminal_attack(game, unit, enemy)
                 })
                 .map(|enemy| UnitId(enemy.id))
                 .collect();

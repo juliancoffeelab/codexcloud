@@ -184,6 +184,7 @@ pub(crate) fn arrow_header(summary: &DetailedSummary<'_>) -> Result<String, Simu
     }
     #[derive(Serialize)]
     struct MissionHeader<'a> {
+        escalated: bool,
         id: &'a str,
         winner: Option<Side>,
         round: u32,
@@ -222,6 +223,7 @@ pub(crate) fn arrow_header(summary: &DetailedSummary<'_>) -> Result<String, Simu
                 .missions
                 .iter()
                 .map(|m| MissionHeader {
+                    escalated: m.result.escalated,
                     id: &m.result.id,
                     winner: m.result.winner,
                     round: m.result.round,
@@ -300,13 +302,7 @@ pub fn compact_summary(
                     round: mission.result.round,
                     goals: &mission.result.goals,
                     events: &mission.events,
-                    escalated: mission
-                        .result
-                        .r#final
-                        .campaign
-                        .as_ref()
-                        .and_then(|campaign| campaign.refuge.as_ref())
-                        .is_some_and(|refuge| refuge.escalated),
+                    escalated: mission.result.escalated,
                 })
                 .collect();
             Ok(serde_json::to_value(CampaignCompact {
@@ -522,6 +518,7 @@ mod tests {
             },
             completed: false,
             missions: vec![MissionResult {
+                escalated: true,
                 id: "chapter".into(),
                 winner: None,
                 round: 1,

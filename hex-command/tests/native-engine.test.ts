@@ -76,6 +76,7 @@ function fixture() {
         revision: nextView.revision,
         units: [],
         objectives: null,
+        story: null,
         speakers: [],
         recruitment: {},
         recruitment_prices: {},

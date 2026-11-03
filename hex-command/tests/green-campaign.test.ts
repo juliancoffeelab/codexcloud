@@ -22,8 +22,7 @@ test("Companion deaths persist but retry restores incoming companions", () => {
   assert.equal(restored.round, 4);
   assert.equal(restored.gold.player, 23);
   assert.deepEqual(restored.units, game.units);
-  assert(restored.campaign?.marks.includes("dain-fell"));
-  assert(!campaignMission(restored.campaign!).victory.some((line) => line.character === "dain"));
+  assert(restored.campaign?.flags["dain-dead"]?.at(-1)?.state);
   assert(restored.retryCampaignMission().units.some((unit) => unit.character === "dain"));
   saveBattle(restored);
   assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());

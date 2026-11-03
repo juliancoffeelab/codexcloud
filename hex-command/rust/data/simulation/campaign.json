@@ -71,5 +71,8 @@
         }
       }
     }
+  },
+  "escalationFlags": {
+    "ashen-refuge": "peace-lost"
   }
 }
