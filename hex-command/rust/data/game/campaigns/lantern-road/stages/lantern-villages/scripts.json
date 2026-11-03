@@ -956,7 +956,7 @@
             "stand": {
               "tile": "hex-0386-9dcf2ec127",
               "side": "player",
-              "through": true,
+              "through": false,
               "character": "villagers"
             }
           },

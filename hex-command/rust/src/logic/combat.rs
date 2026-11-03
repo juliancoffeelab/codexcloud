@@ -556,7 +556,13 @@ impl<'catalog> Game<'catalog> {
             .filter(|unit| unit.hp <= 0)
             .cloned()
             .collect();
-        self.event_deaths.extend(defeated.iter().cloned());
+        if self
+            .mission
+            .as_ref()
+            .is_some_and(|m| !m.scripted_events.is_empty())
+        {
+            self.event_deaths.extend(defeated.iter().cloned());
+        }
         for unit in &defeated {
             for item in &unit.items {
                 self.ground_items.push(GroundItem {

@@ -471,18 +471,18 @@ impl Game<'_> {
                         .tile
                         .as_ref()
                         .map(|v| self.bound_tile(v, bindings));
-                    let ids: Vec<_> = self
+                    let units: Vec<_> = self
                         .units
                         .iter()
                         .filter(|u| {
                             self.script_unit_matches(&spec.select.units, u)
                                 && tile.as_ref().is_none_or(|t| &self.board.ids[u.tile] == t)
                         })
-                        .map(|u| u.id)
+                        .cloned()
                         .collect();
-                    for id in ids {
+                    for unit in units {
                         let mut b = bindings.clone();
-                        b.unit = self.unit(id).cloned();
+                        b.unit = Some(unit);
                         self.event_actions(&spec.actions, state, &b);
                     }
                 }
@@ -671,6 +671,7 @@ impl Game<'_> {
             .map(|t| self.board.ids[t].clone())
             .collect()
     }
+    #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn event_goal_progress(&self) -> Vec<Progress> {
         self.mission.as_ref().map_or_else(Vec::new, |mission| {
             if mission.scripted_events.is_empty() {
@@ -760,19 +761,34 @@ impl Game<'_> {
             if tiles.is_empty() {
                 continue;
             }
-            let actor = selector.and_then(|s| {
-                self.units
-                    .iter()
-                    .filter(|u| self.belongs_to_phase(u, side) && self.script_unit_matches(s, u))
-                    .min_by_key(|u| {
-                        tiles
-                            .iter()
-                            .map(|t| self.board.distance(u.tile, self.site(t)))
-                            .min()
-                            .unwrap_or(0)
-                    })
-            });
-            if selector.is_some() && actor.is_none() {
+            let actor = selector
+                .filter(|s| {
+                    s.character.is_some()
+                        || s.role.is_some()
+                        || s.unit_type.is_some()
+                        || !s.unit_types.is_empty()
+                })
+                .and_then(|s| {
+                    self.units
+                        .iter()
+                        .filter(|u| {
+                            self.belongs_to_phase(u, side) && self.script_unit_matches(s, u)
+                        })
+                        .min_by_key(|u| {
+                            tiles
+                                .iter()
+                                .map(|t| self.board.distance(u.tile, self.site(t)))
+                                .min()
+                                .unwrap_or(0)
+                        })
+                });
+            if selector.is_some_and(|s| {
+                s.character.is_some()
+                    || s.role.is_some()
+                    || s.unit_type.is_some()
+                    || !s.unit_types.is_empty()
+            }) && actor.is_none()
+            {
                 continue;
             }
             goals.push(Objective {

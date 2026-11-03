@@ -700,7 +700,10 @@ impl ScriptEvent {
                         identifier(&v.kind, path)?;
                         reference(&v.tile)?;
                         if let Some(l) = &v.light {
-                            l.validate(&[], &[])
+                            let mut appearance = l.clone();
+                            appearance.when = None;
+                            appearance
+                                .validate(&[], &[])
                                 .map_err(|e| ContentError::new(path, e))?;
                         }
                     }

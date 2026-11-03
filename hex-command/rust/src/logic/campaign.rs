@@ -1009,7 +1009,7 @@ impl<'catalog> Game<'catalog> {
             .filter(|u| {
                 u.side == Side::Player
                     && !u.is_leader()
-                    && u.role != Some(Role::Courier)
+                    && !u.role.is_some_and(Role::is_escort)
                     && u.character
                         .as_ref()
                         .is_none_or(|n| !mission.required_companions.contains(n))

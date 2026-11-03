@@ -178,7 +178,7 @@
           "tile": "hex-0892-f4d2ec09d8",
           "side": "player",
           "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"],
-          "through": true
+          "through": false
         }
       },
       "actions": [
@@ -390,7 +390,7 @@
         "stand": {
           "tile": "hex-0327-75e4fc333f",
           "side": "player",
-          "through": true
+          "through": false
         }
       },
       "actions": [
@@ -1170,6 +1170,47 @@
         },
         {
           "log": "Reinforcements from the ferry arrive from the west."
+        }
+      ]
+    },
+    {
+      "id": "monastery-interrupted",
+      "remembers": false,
+      "when": {
+        "all": [
+          {
+            "left": {
+              "tile": "hex-0892-f4d2ec09d8",
+              "side": "player",
+              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
+            }
+          },
+          {
+            "not": {
+              "flag": "fog-cleared"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "with": "oren",
+              "dialogue": [
+                {
+                  "character": "oren",
+                  "text": "The connection broke. I’ll have to start again."
+                }
+              ],
+              "alternative": [
+                {
+                  "character": "nera",
+                  "text": "We’ll have to try again."
+                }
+              ]
+            }
+          ]
         }
       ]
     }

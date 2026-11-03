@@ -992,6 +992,18 @@ fn validate_mission(
                         reference(&member.member().unit_type, types, path)?;
                     }
                 }
+                EventAction::CreateMark(spec) => {
+                    if let Some(light) = &spec.light {
+                        light
+                            .validate(&state.tiles, &mission.events)
+                            .map_err(|e| ContentError::new(path, e))?;
+                        if let Some(rule) = &light.when {
+                            rule.condition
+                                .validate_references(types, &state.factions)
+                                .map_err(|e| ContentError::new(path, e))?;
+                        }
+                    }
+                }
                 EventAction::SetTerrain(spec) => {
                     reference(&spec.terrain, terrains, path)?;
                     let mut tile = state.tiles[0].clone();

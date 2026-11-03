@@ -747,14 +747,11 @@ impl Game<'_> {
                 }))
     }
     pub fn objectives(&self, side: Side) -> Vec<Objective> {
-        if side == Side::Player
+        let scripted = side == Side::Player
             && self
                 .mission
                 .as_ref()
-                .is_some_and(|m| !m.scripted_events.is_empty())
-        {
-            return self.scripted_policy_objectives(side);
-        }
+                .is_some_and(|m| !m.scripted_events.is_empty());
         fn is_condition(value: &Trigger) -> bool {
             match value {
                 Trigger::Condition { .. } => true,
@@ -903,8 +900,12 @@ impl Game<'_> {
             }
         }
 
-        let mut goals = vec![];
-        if let Some(mission) = &self.mission {
+        let mut goals = if scripted {
+            self.scripted_policy_objectives(side)
+        } else {
+            vec![]
+        };
+        if let Some(mission) = self.mission.as_ref().filter(|_| !scripted) {
             let state = self.campaign.as_ref().unwrap();
             if side == Side::Player {
                 for (index, g) in mission.goals.iter().enumerate() {

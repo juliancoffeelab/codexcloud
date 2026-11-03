@@ -222,7 +222,7 @@ impl PlanningWorkspace {
                 roster
                     .iter()
                     .find(|unit| unit.0 == old.0)
-                    .map_or(old.3 == Some(Role::Courier), |unit| {
+                    .map_or(old.3.is_some_and(Role::is_escort), |unit| {
                         unit.1 != old.1 || unit.2 != old.2 || unit.3 != old.3
                     })
             })
