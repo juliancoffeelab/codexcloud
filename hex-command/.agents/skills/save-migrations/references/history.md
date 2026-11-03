@@ -257,3 +257,13 @@ items, faction-transfer and atmospheric conditions, defended
 site counters, remembered conditions, evacuated units and ritual/event markers.
 It preserves coordinates, ownership, health and progress; conversion never reads
 the current catalog.
+
+## Version 28: general authored events
+
+Frozen `legacy/data/events-v27.json` recipes convert Lantern Road's remembered
+events, choices, holds, partial spawns and captive death charges into explicit
+flags and active event state. Each death charge becomes its own structured mark.
+Pending spawn members retain their placement area and item IDs; completed
+members do not replay. Captive roles and obsolete faction transfer rules are
+converted with the same frozen recipe. Other campaigns keep their old event
+representation. Units, health, treasury and positions remain unchanged.

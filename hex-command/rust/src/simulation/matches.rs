@@ -435,13 +435,7 @@ fn phase(
         before,
         units: recording.units(game)?,
         ownership: recording.ownership(game)?,
-        goals: game.mission.as_ref().map_or_else(Vec::new, |mission| {
-            mission
-                .goals
-                .iter()
-                .map(|goal| game.goal_progress(goal))
-                .collect()
-        }),
+        goals: game.event_goal_progress(),
         objectives: goals.unwrap_or(&[]).to_vec(),
         campaign: game.campaign.as_deref().cloned(),
     };
@@ -661,14 +655,7 @@ pub fn run_campaign(
             id: game.map_id.clone(),
             winner: game.winner,
             round: game.round,
-            goals: game
-                .mission
-                .as_ref()
-                .ok_or("Campaign mission missing")?
-                .goals
-                .iter()
-                .map(|goal| game.goal_progress(goal))
-                .collect(),
+            goals: game.event_goal_progress(),
             phases,
             initial,
             r#final: game.state(),

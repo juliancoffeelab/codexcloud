@@ -53,7 +53,7 @@ function fixture() {
   const bridge: NativeBridge = {
     catalog: () => ({
       ok: true,
-      value: { maps: [], campaigns: [], units: [], terrain: [], races: [] },
+      value: { maps: [], campaigns: [], units: [], items: [], terrain: [], races: [] },
     }),
     create: () => ({ ok: true, value: { id: nextId++, view: nextView } }),
     restore: (input) => {

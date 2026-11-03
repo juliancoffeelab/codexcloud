@@ -160,7 +160,7 @@ impl CampaignBlock {
                 let mut sites = Vec::new();
                 for goal in &mission.goals {
                     let eligible = match goal {
-                        Goal::Escort { .. } => unit.role == Some(Role::Courier),
+                        Goal::Escort { .. } => unit.role.is_some_and(Role::is_escort),
                         Goal::Escape { .. } => unit.role == Some(Role::Leader),
                         Goal::Vigil { .. }
                         | Goal::Hold {
@@ -209,6 +209,42 @@ impl CampaignBlock {
         recruitment.rotate_pool = campaign || game.pools.is_some();
         if game.turn == Side::Player {
             if let Some(mission) = &game.mission {
+                for event in &mission.scripted_events {
+                    let Some(objective) = &event.objective else {
+                        continue;
+                    };
+                    let EventIntent::Hold(hold) = &objective.intent else {
+                        continue;
+                    };
+                    if !game
+                        .campaign
+                        .as_ref()
+                        .and_then(|c| c.scripts.as_ref())
+                        .is_some_and(|s| s.active.contains(&event.id))
+                        || objective
+                            .visible_when
+                            .as_ref()
+                            .is_some_and(|c| !game.script_condition(c))
+                    {
+                        continue;
+                    }
+                    let kinds: Vec<_> = hold
+                        .units
+                        .unit_type
+                        .iter()
+                        .chain(hold.units.unit_types.iter())
+                        .cloned()
+                        .map(UnitTypeId)
+                        .collect();
+                    if !kinds.is_empty() {
+                        recruitment
+                            .requirements
+                            .push(RecruitRequirement::EnsureUnits {
+                                selector: UnitSelector::AnyOf(kinds),
+                                count: 1,
+                            });
+                    }
+                }
                 for goal in &mission.goals {
                     let specialist = match goal {
                         Goal::Seal { unit_type, .. } => {
@@ -389,7 +425,7 @@ impl CampaignBlock {
                         .filter(|unit| {
                             game.belongs_to_phase(unit, game.turn)
                                 && !unit.is_leader()
-                                && unit.role != Some(Role::Courier)
+                                && !unit.role.is_some_and(Role::is_escort)
                                 && game.rules.units[unit.kind].role == role
                         })
                         .count();
@@ -702,7 +738,7 @@ impl Game<'_> {
     }
     pub fn essential(&self, u: &Unit) -> bool {
         u.is_leader()
-            || u.role == Some(Role::Courier)
+            || u.role.is_some_and(Role::is_escort)
             || (u.side == Side::Player
                 && self.mission.as_ref().is_some_and(|m| {
                     u.character
@@ -711,6 +747,14 @@ impl Game<'_> {
                 }))
     }
     pub fn objectives(&self, side: Side) -> Vec<Objective> {
+        if side == Side::Player
+            && self
+                .mission
+                .as_ref()
+                .is_some_and(|m| !m.scripted_events.is_empty())
+        {
+            return self.scripted_policy_objectives(side);
+        }
         fn is_condition(value: &Trigger) -> bool {
             match value {
                 Trigger::Condition { .. } => true,
@@ -869,7 +913,7 @@ impl Game<'_> {
                     }
                     let evacuated = g.kind() == GoalKind::Escort
                         && state.evacuated.iter().any(|record| {
-                            record.unit.role == Some(Role::Courier)
+                            record.unit.role.is_some_and(Role::is_escort)
                                 && record.unit.side == Side::Player
                                 && Some(&record.unit.tile) == g.tile()
                         });
@@ -878,7 +922,7 @@ impl Game<'_> {
                     }
                     if let Goal::Escort { .. } = g {
                         let human_courier = self.units.iter().any(|unit| {
-                            unit.role == Some(Role::Courier)
+                            unit.role.is_some_and(Role::is_escort)
                                 && self
                                     .faction(self.unit_faction(unit))
                                     .map_or(unit.side == Side::Player, |faction| {
@@ -887,7 +931,7 @@ impl Game<'_> {
                         });
                         if !human_courier {
                             for courier in self.units.iter().filter(|unit| {
-                                unit.role == Some(Role::Courier)
+                                unit.role.is_some_and(Role::is_escort)
                                     && !self.hostile_to_phase(unit, Side::Player)
                             }) {
                                 let Some(transfer) = self

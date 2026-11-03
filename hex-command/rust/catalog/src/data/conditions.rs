@@ -80,6 +80,9 @@ pub enum Condition {
     Choice {
         choice: String,
     },
+    Flag {
+        flag: String,
+    },
     Event {
         event: String,
     },
@@ -127,6 +130,7 @@ impl Condition {
             | Self::HasUnits { .. }
             | Self::NoUnits { .. }
             | Self::Choice { .. }
+            | Self::Flag { .. }
             | Self::Event { .. }
             | Self::Round { .. } => {}
         }

@@ -556,7 +556,7 @@ impl<'catalog> Game<'catalog> {
             .filter(|unit| unit.hp <= 0)
             .cloned()
             .collect();
-        self.charge_deaths(&defeated);
+        self.event_deaths.extend(defeated.iter().cloned());
         for unit in &defeated {
             for item in &unit.items {
                 self.ground_items.push(GroundItem {
@@ -564,6 +564,10 @@ impl<'catalog> Game<'catalog> {
                     item: item.clone(),
                 });
             }
+            let scripted = self
+                .mission
+                .as_ref()
+                .is_some_and(|m| !m.scripted_events.is_empty());
             let definition = self.campaign.as_ref().map(|_| self.campaign_definition());
             if let Some(campaign) = &mut self.campaign {
                 if unit.side == Side::Player {
@@ -574,9 +578,17 @@ impl<'catalog> Game<'catalog> {
                             .iter()
                             .any(|chapter| chapter.companion_ids().any(|incoming| incoming == name))
                         {
-                            let mark = format!("fallen:{name}");
-                            if !campaign.marked(&mark) {
-                                campaign.marks.push(mark);
+                            if scripted {
+                                let fallen =
+                                    campaign.fallen_companions.get_or_insert_with(Vec::new);
+                                if !fallen.contains(name) {
+                                    fallen.push(name.clone());
+                                }
+                            } else {
+                                let mark = format!("fallen:{name}");
+                                if !campaign.marked(&mark) {
+                                    campaign.marks.push(mark);
+                                }
                             }
                         }
                     }

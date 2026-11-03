@@ -54,7 +54,7 @@ def analyze(inputs, journals, value=True, leaders=True):
                 return relation == 'hostile' if relation is not None else {first, second} == {'player', 'enemy'}
             def replacement_cost(unit):
                 pool = factions.get(faction_id(unit), {}).get('recruits') or []
-                return next((entry['cost'] for entry in pool if entry['unit'] == unit['type']), profiles[unit['type']]['cost'])
+                return next((entry.get('cost', profiles[unit['type']]['cost']) for entry in pool if entry['unit'] == unit['type']), profiles[unit['type']]['cost'])
             captors, investments = {}, {}
             objective_tiles = {side: set() for side in ('player', 'enemy')}
             for phase in chapter['phases']:

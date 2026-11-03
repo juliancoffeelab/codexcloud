@@ -115,6 +115,7 @@ impl Game<'_> {
                     unit: format!("u{}", unit.0),
                     item: self.ground_items.last().unwrap().item.id.clone(),
                 });
+                self.evaluate_campaign(false, None);
             }
             Command::EndTurn => self.end_turn(),
             Command::DismissDialogue => {

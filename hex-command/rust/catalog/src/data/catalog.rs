@@ -94,6 +94,10 @@ pub struct SimulationObjective {
 )]
 pub struct SimulationStageObjective {
     #[serde(default)]
+    pub script_conditions: BTreeMap<String, When>,
+    #[serde(default)]
+    pub script_events: Vec<ScriptEvent>,
+    #[serde(default)]
     pub goals: Option<Vec<Goal>>,
     #[serde(default)]
     pub optional_goals: Option<Vec<Goal>>,

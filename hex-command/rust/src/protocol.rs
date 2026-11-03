@@ -337,6 +337,7 @@ pub struct AiDecision {
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[serde(rename_all = "camelCase")]
 pub struct CatalogView {
+    pub items: Vec<crate::data::Item>,
     pub units: Vec<crate::data::UnitRule>,
     pub terrain: Vec<crate::data::TerrainDefinition>,
     pub races: Vec<crate::data::RaceDefinition>,

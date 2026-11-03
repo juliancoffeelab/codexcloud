@@ -13,7 +13,8 @@
           "tile": "$event.deathTile"
         }
       }
-    ]
+    ],
+    "remembers": false
   },
   {
     "id": "first-toll",

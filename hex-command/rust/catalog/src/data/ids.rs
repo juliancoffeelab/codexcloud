@@ -448,14 +448,19 @@ impl std::fmt::Display for Terrain {
 pub enum Role {
     Leader,
     Courier,
+    Captive,
 }
 impl Role {
+    pub fn is_escort(self) -> bool {
+        matches!(self, Self::Courier | Self::Captive)
+    }
     /// Return the stable authored identifier used at serialization boundaries.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Leader => "leader",
             Self::Courier => "courier",
+            Self::Captive => "captive",
         }
     }
 }

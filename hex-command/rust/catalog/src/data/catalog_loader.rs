@@ -17,6 +17,7 @@ struct Manifest {
     terrain: String,
     races: Vec<String>,
     units: Vec<String>,
+    items: Vec<String>,
     scenarios: Vec<String>,
     #[serde(default)]
     arena_scenarios: Vec<String>,
@@ -285,6 +286,16 @@ impl Rules {
             ));
         }
         let terrain: Vec<TerrainDefinition> = parse(bundle, &manifest.terrain)?;
+        unique(manifest.items.iter().map(String::as_str), "manifest.json")?;
+        let mut items = HashMap::new();
+        for path in &manifest.items {
+            let item: Item = parse(bundle, path)?;
+            item.validate(path)?;
+            if items.insert(item.id.clone(), item).is_some() {
+                return Err(ContentError::new(path, "duplicate item ID"));
+            }
+        }
+
         unique(manifest.races.iter().map(String::as_str), "manifest.json")?;
         let races: Vec<(String, RaceDefinition)> = manifest
             .races
@@ -461,7 +472,7 @@ impl Rules {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let (initial, roster_path) = documents::scenario(bundle, path)?;
+            let (initial, roster_path) = documents::scenario(bundle, path, &items)?;
             let state = initial.resolve(&units, &types, &roster_path)?;
             map_definitions.push(documents::map_metadata(bundle, path, &state, None)?);
             insert_map(&mut maps, state, &terrains, &types, path)?;
@@ -470,7 +481,7 @@ impl Rules {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let (initial, roster_path) = documents::scenario(bundle, path)?;
+            let (initial, roster_path) = documents::scenario(bundle, path, &items)?;
             let state = initial.resolve(&units, &types, &roster_path)?;
             insert_map(&mut arena_maps, state, &terrains, &types, path)?;
         }
@@ -512,7 +523,7 @@ impl Rules {
                 if !used_paths.insert(stage_path.clone()) {
                     return Err(ContentError::new(&stage_path, "duplicate catalog path"));
                 }
-                let mut stage = documents::stage(bundle, &stage_path)?;
+                let mut stage = documents::stage(bundle, &stage_path, &items)?;
                 let state = stage.state.resolve(&units, &types, &stage_path)?;
                 identifier(&stage.id, &stage_path)?;
                 if !stage_ids.insert(stage.id.clone())
@@ -672,6 +683,7 @@ impl Rules {
         Ok(Self {
             content_fingerprint: content_fingerprint(bundle),
             recruitment,
+            items,
             terrain_types: terrain.iter().map(|t| t.id).collect(),
             terrain_roles: terrain.iter().map(|t| t.role).collect(),
             terrain_names,
@@ -835,6 +847,9 @@ fn validate_character_references(
         Ok(())
     };
     placements(&mission.map.units)?;
+    for event in &mission.scripted_events {
+        event.validate_characters(characters, path)?;
+    }
     for id in &mission.required_companions {
         check(id)?;
     }
@@ -858,23 +873,6 @@ fn validate_character_references(
         }
         if let Some(GroupOrder::Hold { when: Some(c), .. }) = &group.order {
             condition(c)?;
-        }
-    }
-    for ritual in &mission.rituals {
-        condition(&ritual.when)?;
-        if let Some(c) = &ritual.notice_when {
-            condition(c)?;
-        }
-        if let Some(opening) = &ritual.opening {
-            condition(&opening.when)?;
-        }
-        for unit in &ritual.spawn.units {
-            if let Some(id) = &unit.character {
-                check(id)?;
-            }
-        }
-        if let Some(rule) = &ritual.death_light.when {
-            condition(&rule.condition)?;
         }
     }
     for tile in &state.tiles {
@@ -965,6 +963,58 @@ fn validate_mission(
         }
         Ok(())
     };
+    for event in &mission.scripted_events {
+        for selector in event.selectors() {
+            for id in selector.unit_type.iter().chain(&selector.unit_types) {
+                reference(id, types, path)?;
+            }
+            if let Some(id) = &selector.faction {
+                if !state.factions.iter().any(|f| &f.id == id) {
+                    return Err(ContentError::new(
+                        path,
+                        format!("unknown selector faction {id}"),
+                    ));
+                }
+            }
+        }
+        for action in event.actions_recursive() {
+            match action {
+                EventAction::Spawn(spec) => {
+                    if let Some(group) = &spec.ai_group {
+                        if !mission.enemy_groups.iter().any(|g| &g.id == group) {
+                            return Err(ContentError::new(
+                                path,
+                                format!("unknown spawn AI group {group}"),
+                            ));
+                        }
+                    }
+                    for member in &spec.units {
+                        reference(&member.member().unit_type, types, path)?;
+                    }
+                }
+                EventAction::SetTerrain(spec) => {
+                    reference(&spec.terrain, terrains, path)?;
+                    let mut tile = state.tiles[0].clone();
+                    tile.terrain = spec.terrain.clone();
+                    tile.connections = None;
+                    tile.walls = None;
+                    tile.dead_ends = None;
+                    if !tile.valid_connections() {
+                        return Err(ContentError::new(
+                            path,
+                            "setTerrain requires complete authored geometry for connected terrain",
+                        ));
+                    }
+                }
+                EventAction::UnlockRecruits(spec) => {
+                    for unit in &spec.units {
+                        reference(&unit.unit, types, path)?;
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
     for loss in &mission.lose_conditions {
         if loss.label.trim().is_empty() || loss.message.trim().is_empty() {
             return Err(ContentError::new(path, "empty defeat condition text"));
@@ -1074,7 +1124,9 @@ fn validate_mission(
     if let Some(id) = &mission.enemy_leader_post {
         tile_ref(id)?;
     }
-    if mission.briefing.is_empty() || mission.goals.is_empty() {
+    if mission.briefing.is_empty()
+        || (mission.goals.is_empty() && mission.scripted_events.is_empty())
+    {
         return Err(ContentError::new(
             path,
             "mission briefing and goals are required",
@@ -1220,102 +1272,6 @@ fn validate_mission(
             return Err(ContentError::new(path, "empty automatic companion name"));
         }
         tile_ref(&arrival.tile)?;
-    }
-    unique(
-        mission.rituals.iter().map(|ritual| ritual.id.as_str()),
-        path,
-    )?;
-    for ritual in &mission.rituals {
-        identifier(&ritual.id, path)?;
-        unique(ritual.sources.iter().map(String::as_str), path)?;
-        let expected: Vec<_> = state
-            .tiles
-            .iter()
-            .filter(|tile| tile.terrain == ritual.source_terrain)
-            .map(|tile| &tile.id)
-            .collect();
-        if expected.len() != ritual.sources.len()
-            || expected.iter().any(|id| !ritual.sources.contains(id))
-        {
-            return Err(ContentError::new(
-                path,
-                "ritual sources must list every source tile exactly once",
-            ));
-        }
-        if ritual.interval == 0
-            || ritual.sources_per_toll == Some(0)
-            || ritual.first_round == 0
-            || ritual.unit_types.is_empty()
-            || ritual.spawn.units.is_empty()
-            || ritual.spawn.radius == 0
-        {
-            return Err(ContentError::new(path, "invalid periodic ritual"));
-        }
-        if let Some(opening) = &ritual.opening {
-            if opening.sites.is_empty() {
-                return Err(ContentError::new(path, "empty ritual opening sites"));
-            }
-            unique(opening.sites.iter().map(String::as_str), path)?;
-            for site in &opening.sites {
-                tile_ref(site)?;
-                if !state
-                    .tiles
-                    .iter()
-                    .any(|tile| &tile.id == site && tile.terrain == ritual.source_terrain)
-                {
-                    return Err(ContentError::new(
-                        path,
-                        "ritual opening must target its source terrain",
-                    ));
-                }
-            }
-            opening
-                .when
-                .validate(&state.tiles, &mission.events, false)
-                .map_err(|message| ContentError::new(path, message))?;
-            opening
-                .when
-                .validate_references(types, &state.factions)
-                .map_err(|message| ContentError::new(path, message))?;
-        }
-        for kind in &ritual.unit_types {
-            reference(kind, types, path)?;
-        }
-        if !terrains.contains_key(&ritual.source_terrain)
-            || !terrains.contains_key(&ritual.spent_terrain)
-        {
-            return Err(ContentError::new(path, "unknown ritual terrain"));
-        }
-        ritual
-            .when
-            .validate(&state.tiles, &mission.events, false)
-            .map_err(|message| ContentError::new(path, message))?;
-        ritual
-            .when
-            .validate_references(types, &state.factions)
-            .map_err(|message| ContentError::new(path, message))?;
-        if let Some(condition) = &ritual.notice_when {
-            condition
-                .validate(&state.tiles, &mission.events, false)
-                .map_err(|message| ContentError::new(path, message))?;
-            condition
-                .validate_references(types, &state.factions)
-                .map_err(|message| ContentError::new(path, message))?;
-        }
-        for unit in &ritual.spawn.units {
-            reference(&unit.r#type, types, path)?;
-            identifier(&unit.id, path)?;
-        }
-        unique(ritual.spawn.units.iter().map(|unit| unit.id.as_str()), path)?;
-        if let Some(group) = &ritual.spawn.ai_group {
-            group_ref(group, Side::Enemy)?;
-        }
-        BattlefieldLighting {
-            time: TimeOfDay::Night,
-            lights: vec![ritual.death_light.clone()],
-        }
-        .validate(&state.tiles, &mission.events)
-        .map_err(|message| ContentError::new(path, message))?;
     }
     for goal in mission.all_goals() {
         if let Goal::Hold { unit_types, .. } = goal {
@@ -1825,6 +1781,15 @@ fn apply_objective_route(
             mission.optional_goals = goals.clone();
         }
         mission.events.extend(plan.events.clone());
+        mission.scripted_events.extend(plan.script_events.clone());
+        for (id, condition) in &plan.script_conditions {
+            let event = mission
+                .scripted_events
+                .iter_mut()
+                .find(|e| &e.id == id)
+                .ok_or_else(|| ContentError::new(path, format!("unknown script event {id}")))?;
+            event.when = condition.clone();
+        }
         for (id, condition) in &plan.event_conditions {
             let event = mission
                 .events
@@ -1896,6 +1861,8 @@ impl Rules {
         let changes_definition = plan.stages.values().any(|stage| {
             stage.goals.is_some()
                 || stage.optional_goals.is_some()
+                || !stage.script_events.is_empty()
+                || !stage.script_conditions.is_empty()
                 || !stage.events.is_empty()
                 || !stage.event_conditions.is_empty()
         });

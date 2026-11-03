@@ -4013,8 +4013,8 @@
         "power": 0.9,
         "when": {
           "condition": {
-            "kind": "event",
-            "event": "house-visit"
+            "kind": "flag",
+            "flag": "house-visit"
           },
           "remember": false
         }

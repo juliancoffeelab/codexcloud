@@ -3,6 +3,7 @@ pub(crate) mod battle;
 mod combat;
 mod commands;
 pub(crate) mod damage;
+mod events;
 pub(crate) mod exchange;
 mod factions;
 #[cfg(any(test, feature = "wasm"))]
@@ -10,7 +11,6 @@ mod inspection;
 mod items;
 mod movement;
 mod restore;
-mod rituals;
 mod turns;
 pub use restore::{StateError, validate_state};
 #[cfg(not(target_arch = "wasm32"))]

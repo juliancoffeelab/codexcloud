@@ -139,5 +139,10 @@
     "simulation/maps/wood-edge/scenario.json",
     "simulation/maps/arena-template/scenario.json"
   ],
-  "recruitment": "game/recruitment.json"
+  "recruitment": "game/recruitment.json",
+  "items": [
+    "game/items/church-mail.json",
+    "game/items/healing-bottle.json",
+    "game/items/quarry-hammer.json"
+  ]
 }

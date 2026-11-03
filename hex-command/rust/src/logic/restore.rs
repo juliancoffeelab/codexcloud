@@ -259,19 +259,7 @@ pub(crate) fn validate_state_geometry_with_campaign(
         {
             return Err(fail("missing objective tile"));
         }
-        // Ritual groups persist their own source site, including pending members.
-        // Reject invalid references here rather than relocating a restored spawn.
-        for mark in campaign
-            .marks
-            .iter()
-            .filter(|mark| mark.starts_with("ritual:") || mark.starts_with("charge:"))
-        {
-            let source =
-                super::rituals::ritual_source(mark).ok_or_else(|| fail("invalid ritual source"))?;
-            if !tiles.contains(source) {
-                return Err(fail("unknown ritual source tile"));
-            }
-        }
+        super::events::validate_event_state(rules, state, mission).map_err(StateError)?;
         for record in &campaign.evacuated {
             let unit = &record.unit;
             let id = unit
@@ -335,7 +323,8 @@ pub(crate) fn validate_state_geometry_with_campaign(
         {
             return Err(fail("invalid campaign carryover"));
         }
-        let previous_companions: HashSet<_> = definition.missions[..campaign.mission]
+        let previous_companions: HashSet<_> = definition.missions
+            [..campaign.mission + usize::from(!mission.scripted_events.is_empty())]
             .iter()
             .flat_map(|mission| mission.companion_ids())
             .collect();
@@ -424,6 +413,11 @@ pub(crate) fn validate_state_geometry_with_campaign(
                     .ground_items
                     .iter()
                     .flat_map(|g| &g.item.attacks)
+                    .any(|a| a.id == combat.attack_id)
+                && !rules
+                    .items
+                    .values()
+                    .flat_map(|i| &i.attacks)
                     .any(|a| a.id == combat.attack_id)
                 && !rules
                     .campaigns

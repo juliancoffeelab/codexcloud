@@ -9,8 +9,8 @@
         "stages": {
           "lantern-villages": {
             "ignoreOptionalWhen": {
-              "kind": "event",
-              "event": "village-safe"
+              "kind": "flag",
+              "flag": "village-safe"
             }
           }
         }
@@ -18,77 +18,51 @@
       "fight": {
         "stages": {
           "lantern-villages": {
-            "goals": [
-              {
-                "kind": "event",
-                "label": "Investigate the area",
-                "event": "foothold-established"
-              },
-              {
-                "kind": "escort",
-                "label": "Bring the captives safely to the hidden village",
-                "tile": "hex-0386-9dcf2ec127",
-                "visibleWhen": {
-                  "kind": "event",
-                  "event": "village-contact"
-                }
-              },
-              {
-                "kind": "event",
-                "label": "Defeat all enemies before leaving",
-                "event": "simulation-road-cleared",
-                "visibleWhen": {
-                  "kind": "event",
-                  "event": "village-safe"
-                }
-              },
-              {
-                "kind": "event",
-                "label": "Lead Nera through the northern pass",
-                "tile": "hex-0289-0646356c88",
-                "event": "eastern-departure",
-                "visibleWhen": {
-                  "kind": "all",
-                  "conditions": [
-                    {
-                      "kind": "event",
-                      "event": "village-safe"
-                    },
-                    {
-                      "kind": "event",
-                      "event": "road-cleared"
-                    }
-                  ]
-                }
-              }
-            ],
-            "events": [
+            "scriptEvents": [
               {
                 "id": "simulation-road-cleared",
-                "trigger": {
-                  "kind": "condition",
-                  "condition": {
-                    "kind": "event",
-                    "event": "road-cleared"
+                "when": {
+                  "flag": "road-cleared"
+                },
+                "objective": {
+                  "label": "Defeat all enemies before leaving",
+                  "optional": false,
+                  "visibleWhen": {
+                    "flag": "village-safe"
+                  },
+                  "intent": {
+                    "defeat": {
+                      "side": "enemy"
+                    }
                   }
                 },
-                "dialogue": []
+                "actions": [
+                  {
+                    "setFlag": "simulation-road-cleared"
+                  }
+                ]
               }
             ],
-            "eventConditions": {
+            "scriptConditions": {
               "eastern-departure": {
-                "kind": "all",
-                "conditions": [
+                "all": [
                   {
-                    "kind": "proximity",
-                    "tile": "hex-0289-0646356c88",
-                    "radius": 0,
-                    "side": "player",
-                    "character": "nera"
+                    "all": [
+                      {
+                        "stand": {
+                          "tile": "hex-0289-0646356c88",
+                          "side": "player",
+                          "character": "nera",
+                          "through": true
+                        }
+                      },
+                      {
+                        "flag": "village-safe"
+                      }
+                    ]
                   },
                   {
-                    "kind": "event",
-                    "event": "road-cleared"
+                    "flag": "simulation-road-cleared"
                   }
                 ]
               }

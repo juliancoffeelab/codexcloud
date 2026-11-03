@@ -194,7 +194,7 @@ export interface Unit {
   character?: string;
   /** Resolved by Rust inspection for display; absent from native checkpoints. */
   name?: string;
-  role?: "leader" | "courier";
+  role?: "leader" | "courier" | "captive";
   /** Set by the enemy AI when withdrawing; visible before the player chooses to pursue. */
   retreating?: boolean;
   /** AI reinforcement hysteresis; saved so reloading does not release a rebuilding leader. */
@@ -277,7 +277,7 @@ export interface StartingUnit {
   type: UnitType;
   side: Side;
   character?: string;
-  role?: "leader" | "courier";
+  role?: "leader" | "courier" | "captive";
 }
 export interface MapDefinition {
   id: MapId;
@@ -435,6 +435,8 @@ export interface ReinforcementWave {
   requiresUnsealed?: string;
 }
 export interface MissionDefinition {
+  itemIds?: string[];
+  scriptedEvents?: import("../../rust/pkg/hex_command").ScriptEvent[];
   map: MapDefinition;
   subtitle: string;
   briefing: string;
@@ -496,6 +498,7 @@ export interface CampaignDefinition {
   ending: DialogueLine[];
 }
 export interface CampaignState {
+  scripts?: import("../../rust/pkg/hex_command").EventState;
   evacuated?: { event: string; unit: Unit }[];
   id: CampaignId;
   mission: number;
@@ -514,7 +517,7 @@ export interface CampaignState {
   refuge?: { heldTurns: number; lastCountedRound: number; escalated: boolean };
   vigil?: { heldTurns: number; lastCountedRound: number };
   holds?: Record<string, { heldTurns: number; lastCountedRound: number }>;
-  choices?: ("refuge-peace" | "refuge-war" | "green-dain-dead")[];
+  choices?: string[];
 }
 export interface CampaignVeteran {
   type: UnitType;

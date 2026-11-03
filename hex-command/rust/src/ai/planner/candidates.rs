@@ -497,7 +497,7 @@ pub(in crate::ai) fn plan(
         }
         let proximity = proximity_grid[tile];
         if important
-            && unit.role != Some(Role::Courier)
+            && !unit.role.is_some_and(Role::is_escort)
             && !unit.is_leader()
             && !duty.as_ref().is_some_and(|d| d.2)
             && has_screens
@@ -623,7 +623,7 @@ pub(in crate::ai) fn plan(
         }
         let finishing = finish_objective && response < unit.hp;
         if important && !finishing && !terminal {
-            combat *= if unit.role == Some(Role::Courier) {
+            combat *= if unit.role.is_some_and(Role::is_escort) {
                 0.1
             } else {
                 0.5

@@ -33,6 +33,7 @@ function keyed<T extends { id: string }>(definitions: readonly T[]) {
 
 // These casts narrow authored identifiers to the UI vocabulary. Rust validates
 // the values and inheritance; TypeScript does not parse or resolve game rules.
+export const AUTHORED_ITEMS = keyed(catalog.items);
 export const AUTHORED_UNITS = keyed(catalog.units) as unknown as Record<UnitType, UnitDefinition>;
 export const AUTHORED_RACES = keyed(catalog.races) as unknown as Record<Race, RaceDefinition>;
 export const AUTHORED_TERRAIN = keyed(catalog.terrain) as unknown as Record<

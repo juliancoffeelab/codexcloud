@@ -190,7 +190,7 @@ impl Game<'_> {
     }
     pub(crate) fn presentation(&self) -> BattlefieldPresentation {
         let mut result = presentation::render(&self.condition_context(), &self.condition_memory);
-        result.lighting.lights.extend(self.ritual_lights());
+        result.lighting.lights.extend(self.script_mark_lights());
         result
     }
     pub(crate) fn remember_conditions(&mut self) {

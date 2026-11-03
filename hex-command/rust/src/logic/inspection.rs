@@ -109,7 +109,7 @@ impl Game<'_> {
                 alive,
             ));
         }
-        let mut notices = self.ritual_notices();
+        let mut notices = self.script_notices();
         for loss in &mission.lose_conditions {
             if let Condition::Round { round: deadline } = &loss.condition {
                 notices.push(format!(
@@ -123,6 +123,22 @@ impl Game<'_> {
                 loss.label.clone(),
                 !self.event_condition_met(&loss.condition),
             ));
+        }
+        if !mission.scripted_events.is_empty() {
+            let status = |optional| {
+                mission
+                    .scripted_events
+                    .iter()
+                    .filter(|e| e.objective.as_ref().is_some_and(|o| o.optional == optional))
+                    .map(|e| self.scripted_objective_status(e))
+                    .collect()
+            };
+            return Some(CampaignObjectives {
+                notices,
+                goals: status(false),
+                optional: status(true),
+                survival: protected,
+            });
         }
         Some(CampaignObjectives {
             notices,

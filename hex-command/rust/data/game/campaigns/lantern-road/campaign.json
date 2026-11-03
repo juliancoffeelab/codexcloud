@@ -63,6 +63,10 @@
     {
       "id": "sella",
       "name": "Warden Sella"
+    },
+    {
+      "id": "quarry-bear",
+      "name": "Quarry bear"
     }
   ]
 }

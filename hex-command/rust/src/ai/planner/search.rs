@@ -337,7 +337,7 @@ impl BattleView<'_, '_> {
                                 value + 100.0
                             } else if important {
                                 value
-                                    * if unit.role == Some(Role::Courier) {
+                                    * if unit.role.is_some_and(Role::is_escort) {
                                         0.1
                                     } else {
                                         0.5
@@ -360,7 +360,7 @@ impl BattleView<'_, '_> {
                                 bound = (bound + 100.0).upper();
                             } else if important && !terminal_objective {
                                 bound = (bound
-                                    * if unit.role == Some(Role::Courier) {
+                                    * if unit.role.is_some_and(Role::is_escort) {
                                         0.1
                                     } else {
                                         0.5
@@ -875,7 +875,7 @@ impl BattleView<'_, '_> {
                     // this bound. Keep strict winner/tie ordering unchanged.
                     let weighted_combat = if important && !finishing && !finishes_battle {
                         combat
-                            * if unit.role == Some(Role::Courier) {
+                            * if unit.role.is_some_and(Role::is_escort) {
                                 0.1
                             } else {
                                 0.5
@@ -920,7 +920,7 @@ impl BattleView<'_, '_> {
                     let incoming = super::recruitment::exposure(&unit, incoming, important);
                     let lethal = incoming >= unit.hp - retaliation;
                     if important && !finishing && !finishes_battle {
-                        combat *= if unit.role == Some(Role::Courier) {
+                        combat *= if unit.role.is_some_and(Role::is_escort) {
                             0.1
                         } else {
                             0.5

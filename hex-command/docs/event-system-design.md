@@ -1,141 +1,114 @@
-# Event system design
+# Authored events
 
-These examples preserve the agreed direction for Lantern Road's event redesign.
-They are proposed authoring data, not inputs supported by the current engine.
-The JSON spelling, selector shapes and variable-reference syntax are provisional;
-the agreed behaviors below take precedence. Dialogue wording, descriptive location
-IDs, faction IDs and spawn compositions in examples are illustrative, not changes
-to the playable campaign. Do not treat this design as authorization to implement
-or deploy it.
+Lantern Road uses the general event schema in
+`rust/catalog/src/data/events.rs`. Events are authored in each stage's
+`scripts.json`. The other campaigns retain their existing scripts.
 
-## Examples
+## Conditions and execution
 
-- [Bear encounter and hammer](event-examples/bear.json): proximity spawns a
-  particular identified bear; that bear being killed gives Nera the hammer.
-  This is a death event, not an inference that no bears remain anywhere.
-- [Ferryman](event-examples/ferryman.json): reaching the eastern ford in time
-  saves him; the house has separate saved/dead conversation events. His letter
-  is dialogue, not an inventory item.
-- [Turn warning](event-examples/turn-warning.json): Oren delivers an informed
-  warning if alive and present; otherwise Nera delivers the fallback.
-- [Captive rescue and safety](event-examples/captives.json): proximity changes
-  allegiance. Standing at shelter completes the explicitly signalled escort,
-  deletes the captives and records their safety.
-- [Monastery](event-examples/monastery.json): an eligible mage stands there for
-  three consecutive turns. Completion sets the fog-cleared flag. The terrain's
-  fog condition references that flag; no separate clear-fog action is needed.
-- [Bell](event-examples/bell.json): three individually authored tolls and a
-  captive-death event. This combines the agreed ritual behavior and schedule in
-  the current draft notation; it is not a separately approved final JSON schema.
+`when` composes predicates with `all`, `any` and `not`. Supported predicates are
+`stand`, `proximity`, `killed`, `left`, `turn`, `turnAtLeast`, `chapterStarted`,
+`flag`, `hasUnits`, `noUnits`, `visibleUnits`, `owner` and consecutive `held`.
+Character and tile references are stable authored IDs, independent of names and
+coordinates. Unit selectors can narrow by character, role, faction, side, type,
+a list of types or AI group.
 
-## Agreed semantics
+Rust evaluates after completed movement, combat, recruitment, advancement and
+equipment actions, at chapter entry and at turn boundaries. `turn` means the
+start of that player turn; `turnAtLeast` is a persistent condition. `killed`
+receives actual deaths from the completed action. `left` receives the moving
+unit's departure. `stand` checks final occupancy unless `through: true` is
+specified. Proximity includes the completed movement route by default; use
+`through: false` to inspect only final occupancy.
 
-### Identity, predicates and actions
+Events and their actions execute in authored order. Higher optional `priority`
+values execute first, preserving authored order among ties. Effects are visible
+to later events immediately. Further scans allow a later event to enable an
+earlier event. Within one evaluation an event can fire only once, or once per
+matching death for a repeating death event. This bounds cascades.
 
-Character and tile references use stable authored IDs, independent of display
-names and coordinates. Unit types, character IDs and runtime unit IDs are distinct.
-A selector can match one character, a role/type, or a collection of mark instances.
+By default a completed event is removed from the active event list. Setting
+`remembers: false` leaves it eligible for subsequent evaluations; it does not
+require leaving/re-entering a tile. Events that need previous outcomes read
+explicit flags written with `setFlag`; an event ID alone is not a flag.
 
-Conditions compose through `all`, `any` and `not`. `stand` means currently
-occupying a tile, regardless of how the unit arrived. It replaces the proposed
-`visit` predicate. `left` detects leaving. `killed` is an actual death occurrence.
-`proximity.target` in the captive example identifies whom the player approaches,
-rather than restricting the approaching unit's character identity.
+`held` counts completed intervals at player-turn starts. Its per-event,
+per-predicate counter resets whenever no eligible unit occupies its tile. Another
+eligible unit may continue the occupation if there is no intervening evaluation
+with the tile unoccupied. The counter and last counted round survive reloads.
 
-Actions include spawning, giving equipment, changing allegiance, setting flags,
-speaking, changing terrain, creating/removing marks and deleting units. Rescue
-and ritual sacrifice use the same deletion action. Deletion does not emit a
-killed event. The surrounding event records whether deletion meant rescue or
-sacrifice. No distinct evacuation action is required by these examples.
+## Actions and durable state
 
-Most examples are once-only chapter events. The captive-death event must handle
-each matching death, including several on one turn. The precise repeat/once
-schema remains to be specified rather than silently making this event once-only.
-Existing blocked-spawn placement/retry behavior should be reused. Consuming a
-mark after issuing a spawn must not discard an already pending spawn request.
+Actions include `spawn`, `give`, `placeItem`, `changeAllegiance`, `deleteUnit`,
+`setFlag`, `say`, `sound`, `log`, `createMark`, `removeMark`, `forEachUnit`,
+`forEachMark`, `setTerrain`, `gold`, `unlockRecruits`, `victory` and `defeat`.
+Rescue and sacrifice share `deleteUnit`: deletion emits no `killed` occurrence.
+An explicit flag records what the deletion meant.
 
-### Dialogue
+A spawn uses a faction and either an ordered placement area or an origin tile
+with a radius. Occupied/impassable sites leave remaining members pending; the
+request survives event completion and save/load. It is retried on later
+evaluations without replaying dialogue or recreating already placed members.
 
-A `say` action contains ordered lines and optional `with` passages. A passage
-can contain multiple speakers, including replies that must disappear together
-with the initiating character's line. `with` selects the passage when its
-character is alive and present. An optional `alternative` supplies a fallback;
-without it the whole passage is skipped. Names are resolved from the campaign
-registry. Narrators can use a speaker label.
+Map marks are structured instances with a unique numeric ID, shared type and
+tile ID. Several instances may occupy one tile. Optional mark lights use the
+same light definition and condition rules as tile lights, including remembered
+activation. Loop bindings expose `$unit`, `$unit.tile`, `$mark`, `$mark.tile`
+and `$event.deathTile`; references are validated against their binding scopes.
 
-Branching saved/dead Ferryman outcomes remains in separate event conditions.
-Speaker-dependent exchanges belong inside dialogue. A general-purpose `If`
-action language has not been approved or shown necessary.
+## Dialogue and objectives
 
-### Hold and objectives
+`say` contains ordered lines and `with` passages. A passage is selected when its
+character is alive and present; optional `alternative` supplies the fallback.
+A passage may contain several speakers. Selection happens when the action runs;
+the selected dialogue queue and its cursor survive reloads. Names come from the
+campaign character registry. Narrators may provide a speaker label. The
+ferryman's letter is dialogue, not an item.
 
-The monastery accepts any eligible mage, not specifically Oren. `held` maintains
-consecutive-turn progress and resets on interruption. The current engine counts
-at player-turn start; the exact new timing rules and actor substitution semantics
-are still questions, not newly agreed rules.
+Objective metadata lives alongside its event. The intent is explicit: `goTo`,
+`approach`, `escape`, `escort`, `capture`, `defeat` or `hold`. Hold includes its
+selector, destination and duration. Campaigner translates intent rather than
+reverse-engineering arbitrary boolean conditions. Owned capture sites are
+removed from active targets. A hold can request eligible recruits. Visibility is
+an explicit condition; optional objectives are separate from required ones.
+Event completion determines objective completion, and authored victory/defeat
+events determine chapter outcomes. AI intent does not execute gameplay.
 
-An event may carry optional objective metadata in the same definition/file.
-The objective explicitly describes its intent, including selector, destination
-and duration: `hold` includes `turns: 3`, rather than requiring Campaigner to
-infer instructions from arbitrary event logic. The event condition owns actual
-completion/progress; objectives expose intent and information to the player and
-AI without independently implementing the same counter. Existing campaigns other
-than Lantern Road are not the design focus.
+## Items
 
-### Bell ritual
+Shared definitions live in `rust/data/game/items/*.json` and the manifest lists
+them. Roster inventories and event rewards reference item IDs. Rust resolves
+stats and supplies the catalogue to the frontend. Presentation-only assets are
+keyed by item ID in `src/presentation/item-assets.ts` and preloaded for the
+current map, including possible rewards and carried equipment.
 
-There are three original ritual marks and three captives. Each toll processes
-its designated original mark, deleting an occupying captive and spawning the
-associated group, then deactivates that original mark. A moved captive's death
-creates a mark where it actually died, not at its original ritual location.
-Each toll also processes all pending captive-death mark instances.
+## Bell
 
-A death mark is a persistent instance attached to a tile, with its own unique ID
-and shared type/tag `captive-death`. Two deaths on one tile create two instances
-and therefore two spawn groups. Tile identity remains unique; duplicate IDs are
-not needed for selection. A glow can be derived from mark presence. The precise
-runtime representation of marks and their appearance is not yet settled.
-
-Ritual deletion does not create a death mark. A dead captive cannot also be
-standing on its original mark. Multiple eligible captives/death marks processed
-by the same toll intentionally produce their respective groups. Do not add a
-special automatic next-mark or recurring ritual scheduler.
-
-The approved schedule is deliberately **not** a uniformly shifted schedule:
+Bell uses three ordinary events, with no special ritual runtime or periodic
+scheduler:
 
 | Arrival | First toll | Second toll | Third toll |
 | --- | --- | --- | --- |
 | Normal | Turn 6 | Turn 12 | Turn 18 |
 | Late | Chapter start | Turn 6 | Never |
 
-- First: turn 6 OR (chapter started AND late).
-- Second: turn 12 OR (late AND turn 6).
-- Third: turn 18 AND NOT late.
+Each toll processes its designated original ritual tile and all pending
+`captive-death` mark instances. It deletes any occupying captive, spawns three
+skeleton troops per consumed captive/death mark, spends the original terrain
+mark and removes consumed death marks. A moved captive creates its death mark
+where it dies. Two deaths on one tile create two marks and two groups. Sacrifice
+does not create a death mark. Blocked placement remains pending after the mark
+is consumed. The late branch never gets a third toll on turn 12.
 
-Each toll fires only once even if its condition matches again later. The late
-branch must not receive a third toll on turn 12. Applying the opening toll during
-setup versus presenting it at chapter start, including sound/dialogue handling,
-is still an execution-timing question.
+The illustrative JSONs in [event-examples](event-examples/) preserve the agreed
+examples; descriptive location IDs and prose there are illustrative. The
+playable stage scripts contain the actual stable tile and faction IDs.
 
-## Remaining design questions
+## Persistence
 
-1. Evaluation timing: how do occurrence triggers such as killed/left/chapter start
-   combine with state predicates, and when are they evaluated relative to actions?
-2. Once/repeat behavior: what is the explicit authoring rule for per-death events
-   versus once-per-chapter milestones, and how is completion persisted?
-3. Action ordering and cascading: can one event's effects immediately enable
-   another event in the same evaluation, and how are accidental cycles bounded?
-4. Hold tracking: which turn boundary counts, what resets progress, and can a
-   replacement eligible mage continue the same hold?
-5. Dialogue selection: when are `with` branches resolved, and what exactly is
-   saved if the player reloads midway through a conversation?
-6. Mark representation and appearance: how are instances stored on tiles and
-   connected to fog/light/terrain presentation without replacing base terrain?
-7. Referenced content: where do item definitions such as quarry-hammer live?
-   Item-catalog authoring has not been finalized.
-8. Objective lifecycle: how do visibility, progress, failure, required completion
-   and chapter victory/defeat connect to event state and explicit AI intent?
-
-These are unanswered design questions, not implementation requirements to fill
-in without discussion. Generalized conditional actions, special ritual types and
-separate objective files are not prerequisites established by this design.
+Save version 28 stores active event IDs, held counters, structured marks,
+pending spawn members and unlocked recruitment pools in chapter event state.
+Campaign-wide explicit flags use the existing campaign choices collection.
+The isolated version-27 conversion uses frozen historical recipes and never
+queries the current catalogue or runs game actions. Legacy campaigns keep their
+existing progress representation.

@@ -113,34 +113,26 @@
         "player": "neutral",
         "enemy": "allied"
       },
-      "transfer": {
-        "to": "player",
-        "when": {
-          "condition": {
-            "kind": "proximity",
-            "side": "player",
-            "radius": 1
-          },
-          "remember": false
-        }
-      },
       "gold": 0,
       "recruits": [],
       "units": [
         {
           "type": "captives",
           "character": "northern-captives",
-          "tile": "hex-0124-7838ad1797"
+          "tile": "hex-0124-7838ad1797",
+          "role": "captive"
         },
         {
           "type": "captives",
           "character": "eastern-captives",
-          "tile": "hex-0355-3f598bb97a"
+          "tile": "hex-0355-3f598bb97a",
+          "role": "captive"
         },
         {
           "type": "captives",
           "character": "southern-captives",
-          "tile": "hex-0142-a3ef30fee6"
+          "tile": "hex-0142-a3ef30fee6",
+          "role": "captive"
         }
       ]
     }

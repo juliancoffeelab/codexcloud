@@ -10,6 +10,8 @@ mod factions;
 pub use factions::*;
 mod units;
 pub use units::*;
+mod events;
+pub use events::*;
 mod campaign;
 pub use campaign::*;
 mod state;
@@ -37,6 +39,7 @@ pub struct Rules {
     /// SHA-256 of relative document paths and their exact JSON bytes.
     pub content_fingerprint: String,
     pub recruitment: RecruitmentProfiles,
+    pub items: HashMap<String, Item>,
     /// Ordered simulation recruitment rosters, independent of campaign rosters.
     pub rosters: Vec<ArmyRoster>,
     /// Native arena defaults and landscape definitions.

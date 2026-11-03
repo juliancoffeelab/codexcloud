@@ -361,8 +361,8 @@
         "power": 0.8,
         "when": {
           "condition": {
-            "kind": "event",
-            "event": "village-contact"
+            "kind": "flag",
+            "flag": "village-contact"
           },
           "remember": false
         }

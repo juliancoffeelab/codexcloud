@@ -5,6 +5,7 @@
   import { BattleController } from "./controller/battle";
   import { registerBattleTools } from "./controller/tools";
   import { unlockSound, playSound, prepareSounds } from "./presentation/sound";
+  import { preloadItemAssets } from "./presentation/item-assets";
   import { missionSounds } from "./presentation/campaign-sound";
   import { CAMPAIGNS } from "./game/campaign-data";
   import NewGameDialog from "./ui/NewGameDialog.svelte";
@@ -34,6 +35,14 @@
           )
         : [],
     );
+  });
+  $effect(() => {
+    $view.game.mapId;
+    preloadItemAssets([
+      ...(soundMission?.itemIds ?? []),
+      ...$view.game.units.flatMap((unit) => unit.items?.map((item) => item.id) ?? []),
+      ...$view.game.groundItems.map((entry) => entry.item.id),
+    ]);
   });
   const inspectionOpen = $derived(
     !!($view.selected || $view.inspectedTile || ($view.game.winner && !$view.game.campaign)),

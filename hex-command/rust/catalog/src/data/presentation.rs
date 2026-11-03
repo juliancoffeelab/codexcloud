@@ -192,6 +192,7 @@ fn evaluate(
                 && !input.any_pending(|unit| unit_matches(unit, *side, unit_type, character))
         }
         Condition::Choice { choice } => input.choices().contains(choice),
+        Condition::Flag { flag } => input.choices().contains(flag),
         Condition::Event { event } => input
             .marks()
             .iter()

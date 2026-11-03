@@ -80,23 +80,12 @@
         "enemy": "allied",
         "swamp-dead": "neutral"
       },
-      "transfer": {
-        "to": "player",
-        "when": {
-          "condition": {
-            "kind": "proximity",
-            "side": "player",
-            "radius": 1
-          },
-          "remember": false
-        }
-      },
       "gold": 0,
       "recruits": [],
       "units": [
         {
           "type": "captives",
-          "role": "courier",
+          "role": "captive",
           "character": "villagers",
           "tile": "hex-0989-f27f4a3764"
         }
@@ -129,18 +118,7 @@
         {
           "type": "zombie-decay-caster",
           "aiGroup": "swamp-commander",
-          "items": [
-            {
-              "id": "healing-bottle",
-              "name": "Healing bottle",
-              "description": "A stoppered bottle of green balm. Restores 2 HP to its carrier and adjacent allies at the start of their turn. Move onto a dropped item to collect it.",
-              "attacks": [],
-              "healing": {
-                "amount": 2,
-                "radius": 1
-              }
-            }
-          ],
+          "items": ["healing-bottle"],
           "role": "leader",
           "character": "edrin",
           "tile": "hex-0133-99da47f9af"

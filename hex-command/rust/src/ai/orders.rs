@@ -61,6 +61,7 @@ pub(in crate::ai) fn target(id: &str, kind: TargetKind, tiles: Vec<String>, weig
 #[serde(rename_all = "camelCase")]
 pub enum UnitSelector {
     Type(UnitTypeId),
+    AnyOf(Vec<UnitTypeId>),
     Family(Family),
     Role(UnitRole),
 }
@@ -69,6 +70,7 @@ impl UnitSelector {
         let rule = &game.rules().units[kind];
         match self {
             Self::Type(id) => rule.id == id.0,
+            Self::AnyOf(ids) => ids.iter().any(|id| rule.id == id.0),
             Self::Family(family) => rule.family == *family,
             Self::Role(role) => rule.role == *role,
         }
@@ -350,7 +352,7 @@ impl TacticalOrders {
         })
     }
     pub(crate) fn important(&self, _game: &BattleView<'_, '_>, unit: &Unit) -> bool {
-        self.protects(unit.id) || unit.is_leader() || unit.role == Some(Role::Courier)
+        self.protects(unit.id) || unit.is_leader() || unit.role.is_some_and(Role::is_escort)
     }
     pub(crate) fn arrives(&self, game: &BattleView<'_, '_>, unit: &Unit, tile: usize) -> bool {
         self.terminal_arrivals.iter().any(|(actor, destination)| {

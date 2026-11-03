@@ -480,71 +480,6 @@ pub struct CompanionArrival {
     pub tile: String,
 }
 
-/// A conditional opening toll applies the normal ritual to selected initial sources.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-#[cfg_attr(
-    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
-    derive(hex_catalog_freeze_derive::Freeze)
-)]
-pub struct RitualOpening {
-    pub when: Condition,
-    pub sites: Vec<String>,
-}
-
-/// Periodic consumption of occupied source terrain and lights left by matching deaths.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-#[cfg_attr(
-    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
-    derive(hex_catalog_freeze_derive::Freeze)
-)]
-pub struct Ritual {
-    /// Ordered authored source tiles; map serialization does not schedule tolls.
-    pub sources: Vec<String>,
-    /// Maximum source activations per toll; omitted preserves simultaneous rituals.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub sources_per_toll: Option<usize>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub opening: Option<RitualOpening>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub notice_when: Option<Condition>,
-    pub when: Condition,
-    pub id: String,
-    pub source_terrain: String,
-    pub spent_terrain: String,
-    pub unit_types: Vec<String>,
-    pub first_round: u32,
-    pub interval: u32,
-    pub spawn: RitualSpawn,
-    pub death_light: super::BattlefieldLight,
-    pub label: String,
-}
-
-/// Each consumed ritual source supplies its own origin; placement never uses a fixed map area.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-#[cfg_attr(
-    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
-    derive(hex_catalog_freeze_derive::Freeze)
-)]
-pub struct RitualSpawn {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub faction: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub ai_group: Option<String>,
-    pub radius: u16,
-    pub units: Vec<SpawnUnit>,
-}
-
 /// The peaceful and escalated outcomes of a refuge-defense mission.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -665,6 +600,10 @@ pub struct LossCondition {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Mission {
+    #[serde(default)]
+    pub item_ids: Vec<String>,
+    #[serde(default)]
+    pub scripted_events: Vec<ScriptEvent>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub lose_conditions: Vec<LossCondition>,
@@ -681,9 +620,6 @@ pub struct Mission {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub arrivals: Vec<CompanionArrival>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub rituals: Vec<Ritual>,
     pub goals: Vec<Goal>,
     /// Authored side objectives, displayed separately and never required for victory.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -728,6 +664,21 @@ impl Mission {
                     .flat_map(|group| &group.units)
                     .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
                     .filter_map(|u| u.character.as_deref()),
+            )
+            .chain(self.arrivals.iter().map(|a| a.character.as_str()))
+            .chain(
+                self.scripted_events
+                    .iter()
+                    .flat_map(|e| e.actions_recursive())
+                    .filter_map(|a| match a {
+                        EventAction::Spawn(s) if s.faction == "player" => Some(&s.units),
+                        _ => None,
+                    })
+                    .flatten()
+                    .filter_map(|u| match u {
+                        SpawnEntry::Member(m) => m.character.as_deref(),
+                        _ => None,
+                    }),
             )
     }
     /// Shared progress rules apply to required and optional goals alike.

@@ -165,6 +165,9 @@ pub(crate) struct Game<'catalog> {
     /// Derived tile-indexed remembered fog; never serialized.
     pub(crate) fog_memory: Vec<u64>,
     pub(super) traversal: Option<(u32, Vec<usize>)>,
+    pub(crate) event_deaths: Vec<Unit>,
+    pub(super) event_departure: Option<Unit>,
+    pub(super) event_opening: bool,
     pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
     pub(crate) ground_items: Vec<GroundItem>,
@@ -416,6 +419,9 @@ impl<'catalog> Game<'catalog> {
             condition_memory: Rc::new(state.condition_memory),
             fog_memory,
             traversal: None,
+            event_deaths: vec![],
+            event_departure: None,
+            event_opening: false,
             rules,
             board,
             terrain,
@@ -865,6 +871,9 @@ impl<'catalog> Game<'catalog> {
             condition_memory: self.condition_memory.clone(),
             fog_memory: self.fog_memory.clone(),
             traversal: None,
+            event_deaths: vec![],
+            event_departure: None,
+            event_opening: false,
             fog: self.fog.clone(),
             light: self.light.clone(),
             rules: self.rules,
@@ -961,6 +970,7 @@ impl<'catalog> Game<'catalog> {
             unit: format!("u{id}"),
             unit_type: self.rules.units[kind].id.clone(),
         });
+        self.evaluate_campaign(false, None);
     }
 
     pub(crate) fn recruitment_options(&self, side: Side) -> Vec<usize> {
@@ -991,6 +1001,14 @@ impl<'catalog> Game<'catalog> {
                         if !options.contains(&kind) {
                             options.push(kind);
                         }
+                    }
+                }
+            }
+            if let Some(state) = self.campaign.as_ref().and_then(|c| c.scripts.as_ref()) {
+                for recruit in state.recruitment.get(id).into_iter().flatten() {
+                    let kind = self.kind(&recruit.unit);
+                    if !options.contains(&kind) {
+                        options.push(kind);
                     }
                 }
             }
@@ -1038,6 +1056,15 @@ impl<'catalog> Game<'catalog> {
                 .flatten()
                 .find(|entry| &entry.unit == unit);
             if let Some(entry) = base {
+                return entry.cost.unwrap_or(self.rules.units[kind].cost);
+            }
+            if let Some(entry) = self
+                .campaign
+                .as_ref()
+                .and_then(|c| c.scripts.as_ref())
+                .and_then(|s| s.recruitment.get(id))
+                .and_then(|v| v.iter().find(|r| &r.unit == unit))
+            {
                 return entry.cost.unwrap_or(self.rules.units[kind].cost);
             }
             for event in &mission.events {
@@ -1109,5 +1136,6 @@ impl<'catalog> Game<'catalog> {
             tile: self.board.ids[tile].clone(),
             cost: Some(cost),
         });
+        self.evaluate_campaign(false, None);
     }
 }

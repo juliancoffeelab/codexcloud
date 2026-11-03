@@ -191,7 +191,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         }
         let incoming = self.risk(from, (killed).then_some(target.id));
         incoming + retaliation < self.unit.hp
-            && (self.unit.role != Some(Role::Courier) || incoming + retaliation == 0)
+            && (!self.unit.role.is_some_and(Role::is_escort) || incoming + retaliation == 0)
             && g.allied(u, &self.unit)
     }
 
@@ -248,7 +248,7 @@ impl BattleView<'_, '_> {
         let retaliation = forecast.damage[1];
         (if target.is_leader() {
             20.0
-        } else if target.role == Some(Role::Courier) {
+        } else if target.role.is_some_and(Role::is_escort) {
             12.0
         } else {
             0.0
@@ -893,7 +893,7 @@ impl BattleView<'_, '_> {
                     self.belongs_to_phase(u, self.turn())
                         && (goal.actor.is_some()
                             || goal.family.is_some()
-                            || !u.is_leader() && u.role != Some(Role::Courier))
+                            || !u.is_leader() && !u.role.is_some_and(Role::is_escort))
                         && if goal.actor.is_some() {
                             actor_matches(&goal.actor, u.id)
                         } else {

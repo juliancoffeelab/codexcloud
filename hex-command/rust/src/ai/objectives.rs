@@ -328,7 +328,7 @@ impl BattleView<'_, '_> {
             self.allied(u, o)
                 && self.available_combatant(o)
                 && !o.is_leader()
-                && o.role != Some(Role::Courier)
+                && !o.role.is_some_and(Role::is_escort)
                 && self.rules().units[o.kind].healing == 0
         })
     }

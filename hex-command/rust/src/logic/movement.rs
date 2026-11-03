@@ -311,6 +311,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn move_unit(&mut self, id: u32, tile: usize) {
         let index = self.index(id).unwrap();
         let actor = self.units[index].clone();
+        self.event_departure = Some(actor.clone());
         assert!(
             actor.side == self.turn
                 && self.winner.is_none()
@@ -320,10 +321,14 @@ impl<'catalog> Game<'catalog> {
         // Conditions observe the legal route traversed by this atomic move.
         let observes_path = self.fog.iter().any(Option::is_some)
             || self.mission.as_ref().is_some_and(|mission| {
-                mission.events.iter().any(|event| match &event.trigger {
-                    Trigger::Condition { condition } => condition.uses_proximity(),
-                    _ => false,
-                })
+                mission
+                    .scripted_events
+                    .iter()
+                    .any(|event| event.when.uses_path())
+                    || mission.events.iter().any(|event| match &event.trigger {
+                        Trigger::Condition { condition } => condition.uses_proximity(),
+                        _ => false,
+                    })
             });
         if observes_path {
             let mut costs = vec![u16::MAX; self.terrain.len()];

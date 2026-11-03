@@ -178,7 +178,10 @@ impl NativeEngineFactory {
     pub fn catalog(&self) -> Result<Ts<CatalogResponse>, JsError> {
         let mut campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
         campaigns.order_by(|a, b| a.id.cmp(&b.id));
+        let mut items: Vec<_> = self.rules.items.values().cloned().collect();
+        items.order_by(|a, b| a.id.cmp(&b.id));
         encode(Ok(CatalogView {
+            items,
             units: self.rules.units.clone(),
             terrain: self.rules.terrain_definitions.clone(),
             races: self.rules.race_definitions.clone(),

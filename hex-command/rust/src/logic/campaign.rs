@@ -449,6 +449,10 @@ impl<'catalog> Game<'catalog> {
         }
         // Recheck defeat only after scripted work changes state. The initial check
         // already covers the triggering move/attack and current round.
+        if !mission.scripted_events.is_empty() {
+            self.evaluate_scripted_events(at_turn_start);
+            return;
+        }
         let mut scripts_changed = false;
         if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Vigil) {
             let tile = self.site(goal.tile().unwrap());
@@ -725,7 +729,6 @@ impl<'catalog> Game<'catalog> {
         }
         scripts_changed |= self.spawn_events();
         scripts_changed |= self.apply_faction_transfers();
-        scripts_changed |= self.evaluate_rituals(at_turn_start);
         if scripts_changed && self.evaluate_campaign_loss(&mission) {
             return;
         }
@@ -820,6 +823,8 @@ impl<'catalog> Game<'catalog> {
             .collect();
         game.campaign = Some(
             CampaignState {
+                scripts: (!original.scripted_events.is_empty())
+                    .then(|| EventState::new(&original.scripted_events)),
                 evacuated: vec![],
                 id: id.into(),
                 mission: index,
@@ -959,7 +964,7 @@ impl<'catalog> Game<'catalog> {
         }
         game.log.clear();
         game.record(game.mission.as_ref().unwrap().briefing.clone());
-        game.evaluate_rituals(true);
+        game.event_opening = true;
         game.evaluate_campaign(false, None);
         game.remember_conditions();
         game

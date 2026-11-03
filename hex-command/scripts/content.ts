@@ -19,6 +19,7 @@ function components(path: string, fields: string[]): void {
   const descriptor = read<Record<string, string>>(path);
   for (const field of fields) {
     const component = descriptor[field];
+    if (!component && field === "objectives") continue;
     if (!component) throw new Error(`${path}: missing ${field}`);
     const componentPath = posix.join(posix.dirname(path), component);
     const document = read<{ tiles?: TerrainOverride[] }>(componentPath);
@@ -44,6 +45,7 @@ function components(path: string, fields: string[]): void {
 }
 const manifest = read<{
   units: string[];
+  items: string[];
   terrain: string;
   recruitment?: string;
   races: string[];
@@ -54,6 +56,7 @@ const manifest = read<{
 }>("manifest.json");
 for (const path of [
   ...manifest.units,
+  ...manifest.items,
   manifest.terrain,
   ...(manifest.recruitment ? [manifest.recruitment] : []),
   ...manifest.races,

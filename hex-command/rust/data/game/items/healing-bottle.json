@@ -1,0 +1,10 @@
+{
+  "id": "healing-bottle",
+  "name": "Healing bottle",
+  "description": "A stoppered bottle of green balm. Restores 2 HP to its carrier and adjacent allies at the start of their turn. Move onto a dropped item to collect it.",
+  "attacks": [],
+  "healing": {
+    "amount": 2,
+    "radius": 1
+  }
+}

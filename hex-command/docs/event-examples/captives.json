@@ -12,6 +12,9 @@
     },
     "actions": [
       {
+        "setFlag": "captives-rescued"
+      },
+      {
         "changeAllegiance": {
           "units": {
             "character": "villagers"
@@ -49,7 +52,7 @@
     "when": {
       "all": [
         {
-          "event": "captives-rescued"
+          "flag": "captives-rescued"
         },
         {
           "stand": {
@@ -63,7 +66,7 @@
       "label": "Bring the captives safely to the hidden village",
       "optional": false,
       "visibleWhen": {
-        "event": "captives-rescued"
+        "flag": "captives-rescued"
       },
       "intent": {
         "escort": {

@@ -13,7 +13,7 @@ struct StageDocuments {
     id: String,
     map: String,
     roster: String,
-    objectives: String,
+    objectives: Option<String>,
     story: String,
     scripts: String,
 }
@@ -63,7 +63,14 @@ struct RosterFaction {
     #[serde(flatten)]
     faction: Faction,
     gold: i32,
-    units: Vec<InitialUnit>,
+    units: Vec<RosterUnit>,
+}
+#[derive(Deserialize)]
+struct RosterUnit {
+    #[serde(default)]
+    items: Vec<String>,
+    #[serde(flatten)]
+    unit: InitialUnit,
 }
 struct InitialRoster {
     factions: Vec<Faction>,
@@ -74,6 +81,7 @@ impl RosterDocument {
     fn resolve(
         self,
         path: &str,
+        items: &HashMap<String, Item>,
     ) -> Result<(InitialRoster, Vec<StartingUnit>, Vec<CompanionArrival>), ContentError> {
         unique(
             self.factions.iter().map(|entry| entry.faction.id.as_str()),
@@ -92,7 +100,18 @@ impl RosterDocument {
                 ));
             }
             gold.insert(faction.id.clone(), entry.gold);
-            for mut unit in entry.units {
+            for source in entry.units {
+                let mut unit = source.unit;
+                unit.items = source
+                    .items
+                    .iter()
+                    .map(|id| {
+                        items
+                            .get(id)
+                            .cloned()
+                            .ok_or_else(|| ContentError::new(path, format!("unknown item {id}")))
+                    })
+                    .collect::<Result<_, _>>()?;
                 if unit.side.is_some() || unit.faction.is_some() {
                     return Err(ContentError::new(
                         path,
@@ -127,7 +146,7 @@ impl RosterDocument {
         ))
     }
 }
-#[derive(Deserialize)]
+#[derive(Default, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageObjectives {
     #[serde(default)]
@@ -156,14 +175,20 @@ struct StageStory {
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageScripts {
     #[serde(default)]
-    rituals: Vec<Ritual>,
-    #[serde(default)]
     enemy_groups: Vec<EnemyGroup>,
-    events: Vec<Event>,
+    events: Vec<EventDocument>,
+    #[serde(default)]
     waves: Vec<Wave>,
     companion_losses: Option<BTreeMap<String, MissionPatch>>,
     refuge: Option<Refuge>,
     without_dain: Option<MissionPatch>,
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum EventDocument {
+    Script(ScriptEvent),
+    Legacy(Event),
 }
 
 /// Component references are local to their descriptor, with traversal rejected.
@@ -219,6 +244,7 @@ pub fn collect_bundle(
     .chain(manifest.recruitment.iter())
     .chain(&manifest.races)
     .chain(&manifest.units)
+    .chain(&manifest.items)
     .chain(&manifest.scenarios)
     .chain(&manifest.arena_scenarios)
     .chain(&manifest.campaigns)
@@ -237,10 +263,12 @@ pub fn collect_bundle(
             let path = stage_path(campaign_path, &stage)?;
             read(&mut bundle, &mut source, &path)?;
             let documents: StageDocuments = parse(&bundle, &path)?;
+            if let Some(component) = &documents.objectives {
+                read(&mut bundle, &mut source, &sibling(&path, component)?)?;
+            }
             for component in [
                 &documents.map,
                 &documents.roster,
-                &documents.objectives,
                 &documents.story,
                 &documents.scripts,
             ] {
@@ -250,7 +278,11 @@ pub fn collect_bundle(
     }
     Ok(bundle)
 }
-pub fn scenario(bundle: &JsonBundle, path: &str) -> Result<(InitialState, String), ContentError> {
+pub fn scenario(
+    bundle: &JsonBundle,
+    path: &str,
+    items: &HashMap<String, Item>,
+) -> Result<(InitialState, String), ContentError> {
     let documents: ScenarioDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
@@ -271,29 +303,56 @@ pub fn scenario(bundle: &JsonBundle, path: &str) -> Result<(InitialState, String
     }
     let roster_path = sibling(path, &documents.roster)?;
     let roster: RosterDocument = parse(bundle, &roster_path)?;
-    let (roster, _, _) = roster.resolve(&roster_path)?;
+    let (roster, _, _) = roster.resolve(&roster_path, items)?;
     Ok((map.initial(roster), roster_path))
 }
-pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError> {
+pub fn stage(
+    bundle: &JsonBundle,
+    path: &str,
+    items: &HashMap<String, Item>,
+) -> Result<StageFile, ContentError> {
     let documents: StageDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
     let roster_path = sibling(path, &documents.roster)?;
     let document: RosterDocument = parse(bundle, &roster_path)?;
-    let (roster, placements, arrivals) = document.resolve(&roster_path)?;
+    let (roster, placements, arrivals) = document.resolve(&roster_path, items)?;
     let gold = roster.gold.clone();
     let recruitment = roster
         .factions
         .iter()
         .map(|f| (f.id.clone(), f.recruits.clone().unwrap()))
         .collect();
-    let objectives: StageObjectives = parse(bundle, &sibling(path, &documents.objectives)?)?;
+    let objectives: StageObjectives = match &documents.objectives {
+        Some(component) => parse(bundle, &sibling(path, component)?)?,
+        None => StageObjectives::default(),
+    };
     let story: StageStory = parse(bundle, &sibling(path, &documents.story)?)?;
     let scripts: StageScripts = parse(bundle, &sibling(path, &documents.scripts)?)?;
+    let mut events = vec![];
+    let mut scripted_events = vec![];
+    for event in scripts.events {
+        match event {
+            EventDocument::Script(e) => scripted_events.push(e),
+            EventDocument::Legacy(e) => events.push(e),
+        }
+    }
+    unique(scripted_events.iter().map(|e| e.id.as_str()), &map_path)?;
+    if !events.is_empty() && !scripted_events.is_empty() {
+        return Err(ContentError::new(
+            &map_path,
+            "a stage cannot mix legacy and general events",
+        ));
+    }
+    scripted_events.sort_by_key(|e| std::cmp::Reverse(e.priority));
+    for e in &scripted_events {
+        e.validate(&map.tiles, &roster.factions, items, &map_path)?;
+    }
+
     for tile in &map.tiles {
         if let Some(light) = &tile.light {
             light
-                .validate(&map.tiles, &scripts.events)
+                .validate(&map.tiles, &events)
                 .map_err(|message| ContentError::new(&map_path, message))?;
         }
         if let Some(rule) = &tile.fog {
@@ -301,10 +360,30 @@ pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError>
                 .validate_presentation()
                 .map_err(|message| ContentError::new(&map_path, message))?;
             rule.condition
-                .validate(&map.tiles, &scripts.events, true)
+                .validate(&map.tiles, &events, true)
                 .map_err(|message| ContentError::new(&map_path, message))?;
         }
     }
+    let mut item_ids: Vec<String> = placements
+        .iter()
+        .flat_map(|u| u.items.iter().map(|i| i.id.clone()))
+        .collect();
+    for event in &scripted_events {
+        for action in event.actions_recursive() {
+            match action {
+                EventAction::Give(v) => item_ids.push(v.item.clone()),
+                EventAction::PlaceItem(v) => item_ids.push(v.item.clone()),
+                EventAction::Spawn(v) => {
+                    for u in &v.units {
+                        item_ids.extend(u.member().items);
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+    item_ids.sort();
+    item_ids.dedup();
     let layout = Layout {
         id: map.map_id.clone(),
         units: placements,
@@ -313,6 +392,8 @@ pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError>
         id: documents.id,
         state: map.initial(roster),
         mission: Mission {
+            item_ids,
+            scripted_events,
             lose_conditions: objectives.lose_conditions,
             map: layout,
             subtitle: story.subtitle.unwrap_or_default(),
@@ -323,14 +404,13 @@ pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError>
             victory: story.victory,
             required_companions: objectives.required_companions,
             arrivals,
-            rituals: scripts.rituals,
             goals: objectives.goals,
             optional_goals: objectives.optional_goals,
             defend_objectives: objectives.defend_objectives,
             enemy_leader_post: objectives.enemy_leader_post,
             recruitment,
             gold,
-            events: scripts.events,
+            events,
             enemy_groups: scripts.enemy_groups,
             waves: scripts.waves,
             companion_losses: scripts.companion_losses,

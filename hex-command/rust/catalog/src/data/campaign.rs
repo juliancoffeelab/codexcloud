@@ -83,6 +83,9 @@ pub struct EvacuatedUnit {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct CampaignState {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub scripts: Option<EventState>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub evacuated: Vec<EvacuatedUnit>,

@@ -9,7 +9,8 @@
   let nextButton = $state<HTMLButtonElement>();
   const campaign = $derived(view.game.campaign);
   const line = $derived(campaign?.dialogue[campaign.dialogueIndex]);
-  const pending = $derived(dialoguePending(campaign));
+  const queued = $derived(dialoguePending(campaign));
+  const pending = $derived(queued && !!line?.text);
   const mission = $derived(campaign ? campaignMission(campaign) : null);
   const forwardLabel = $derived(
     campaign && campaign.dialogueIndex + 1 === campaign.dialogue.length
@@ -20,12 +21,16 @@
   );
   let lastSoundKey = "";
   $effect(() => {
-    if (!pending || !campaign || !line?.sound) return;
+    if (!queued || !campaign || !line?.sound) return;
     const key = `${view.sessionVersion}:${campaign.id}:${campaign.mission}:${campaign.dialogueIndex}:${line.sound}`;
     if (key !== lastSoundKey) {
       lastSoundKey = key;
       playSound(line.sound);
     }
+  });
+
+  $effect(() => {
+    if (queued && line && !line.text) actions.advanceDialogue();
   });
 
   $effect(() => {
