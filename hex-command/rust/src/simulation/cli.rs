@@ -1,5 +1,6 @@
 //! Native schedule, bounded scoped worker pool, reporting and replay.
 use super::{
+    CampaignDefinitions,
     checkpoint::{IndexedOutcome, Progress},
     error::SimulationError,
     matches,
@@ -351,13 +352,15 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
     let stdin = io::stdin();
     let stdout = io::stdout();
     let mut output = io::BufWriter::new(stdout.lock());
+    let mut definitions = CampaignDefinitions::new(rules);
     for line in stdin.lock().lines() {
         let line = line?;
         if line.trim().is_empty() {
             continue;
         }
         let config: MatchConfig = serde_json::from_str(&line)?;
-        let result = matches::run(rules, config)?;
+        definitions.prepare_match(&config)?;
+        let result = matches::run(rules, config, &definitions)?;
         serde_json::to_writer(&mut output, &result)?;
         writeln!(output)?;
         output.flush()?;
@@ -393,28 +396,30 @@ struct PhaseRequest {
 /// Replay one own phase from a saved position, for fixed-input policy profiling.
 fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
     let mut output = io::BufWriter::new(io::stdout().lock());
+    let mut definitions = CampaignDefinitions::new(rules);
     for line in io::stdin().lock().lines() {
         let line = line?;
         if line.trim().is_empty() {
             continue;
         }
         let request: PhaseRequest = serde_json::from_str(&line)?;
-        serde_json::to_writer(&mut output, &saved_phase(rules, request)?)?;
+        serde_json::to_writer(&mut output, &saved_phase(rules, &mut definitions, request)?)?;
         writeln!(output)?;
         output.flush()?;
     }
     Ok(())
 }
-fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, SimulationError> {
-    let objective_campaign = request
-        .state
-        .campaign
-        .as_ref()
-        .map(|campaign| rules.simulation_objective_campaign(&campaign.id, &request.objective))
-        .transpose()
-        .map_err(|e| SimulationError::InvalidConfig(e.to_string()))?
-        .flatten();
-    let objective_campaign = objective_campaign.map(std::rc::Rc::new);
+fn saved_phase(
+    rules: &Rules,
+    definitions: &mut CampaignDefinitions<'_>,
+    request: PhaseRequest,
+) -> Result<Value, SimulationError> {
+    let definition = if let Some(campaign) = &request.state.campaign {
+        definitions.prepare(&campaign.id, &request.objective)?;
+        Some(definitions.get(&campaign.id, &request.objective)?)
+    } else {
+        None
+    };
     let arena = request
         .arena
         .as_ref()
@@ -433,16 +438,15 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
             .maps
             .get(&(request.state.map_id.clone(), request.state.map_revision))
             .ok_or_else(|| SimulationError::InvalidConfig("unknown map revision".into()))?;
-        crate::logic::validate_state_geometry_for_campaign(
+        crate::logic::validate_state_geometry_with_campaign(
             rules,
             &request.state,
             authored,
-            objective_campaign.as_deref(),
+            definition,
         )
         .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     }
-    let mut game = crate::logic::Game::from_state(rules, request.state);
-    game.set_campaign_override(objective_campaign);
+    let mut game = crate::logic::Game::from_state_with_campaign(rules, request.state, definition);
     if let Some(arena) = arena {
         game.pools = arena.pools;
         game.arena_first = arena.arena_first;
@@ -517,6 +521,7 @@ fn replay(rules: &Rules, path: &Path, fingerprint: &str) -> Result<(), Simulatio
     let outcomes = saved["outcomes"]
         .as_array()
         .ok_or("Replay report outcomes missing")?;
+    let mut definitions = CampaignDefinitions::new(rules);
     for (index, outcome) in outcomes.iter().enumerate() {
         let expected = if let Some(reference) = outcome.get("detail") {
             let reference: DetailRecord = serde_json::from_value(reference.clone())?;
@@ -525,7 +530,8 @@ fn replay(rules: &Rules, path: &Path, fingerprint: &str) -> Result<(), Simulatio
             outcome.clone()
         };
         let config: MatchConfig = serde_json::from_value(expected["config"].clone())?;
-        let actual = report::detailed_summary(&matches::run(rules, config)?)?;
+        definitions.prepare_match(&config)?;
+        let actual = report::detailed_summary(&matches::run(rules, config, &definitions)?)?;
         if actual != expected {
             return Err(SimulationError::Replay(format!(
                 "Replay mismatch at game {}: {}",
@@ -564,6 +570,10 @@ fn execute_schedule<F>(
 where
     F: FnMut(usize, PreparedMatch, f64) -> Result<(), SimulationError>,
 {
+    let mut definitions = CampaignDefinitions::new(rules);
+    for config in configs {
+        definitions.prepare_match(config)?;
+    }
     let prepare = |result: MatchResult, elapsed: f64| {
         let summary = report::borrowed_summary(&result, true)?;
         let details = if arrow {
@@ -598,7 +608,7 @@ where
         workers,
         &|config| {
             let start = Instant::now();
-            let result = matches::run(rules, config.clone())?;
+            let result = matches::run(rules, config.clone(), &definitions)?;
             prepare(result, start.elapsed().as_secs_f64() * 1000.0)
         },
         |index, result, elapsed| append(index, result, elapsed),
@@ -1013,6 +1023,7 @@ mod tests {
     #[test]
     fn saved_phase_restores_generated_arenas_and_validates_geometry() {
         let rules = Rules::load().unwrap();
+        let mut definitions = CampaignDefinitions::new(&rules);
         let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
             "seed": 7, "maxRounds": 30, "recruitLimit": 0, "landscape": "open",
             "first": "player", "player": "balanced", "enemy": "balanced",
@@ -1041,12 +1052,12 @@ mod tests {
             )
             .unwrap();
         assert_eq!(
-            saved_phase(&rules, request(state.clone())).unwrap(),
+            saved_phase(&rules, &mut definitions, request(state.clone())).unwrap(),
             json!({"final": expected.state(), "records": expected.recordings})
         );
         let mut inspected = request(state.clone());
         inspected.inspect_recruitment = true;
-        let mut diagnostic = saved_phase(&rules, inspected).unwrap();
+        let mut diagnostic = saved_phase(&rules, &mut definitions, inspected).unwrap();
         assert!(
             !diagnostic
                 .as_object_mut()
@@ -1063,10 +1074,10 @@ mod tests {
         );
         let mut invalid = state.clone();
         invalid.tiles[0].col = -1;
-        assert!(saved_phase(&rules, request(invalid)).is_err());
+        assert!(saved_phase(&rules, &mut definitions, request(invalid)).is_err());
         let mut invalid = request(state);
         invalid.advance_turn = true;
-        assert!(saved_phase(&rules, invalid).is_err());
+        assert!(saved_phase(&rules, &mut definitions, invalid).is_err());
     }
     #[test]
     fn append_failure_drains_in_flight_workers() {

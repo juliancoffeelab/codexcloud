@@ -1616,13 +1616,19 @@ fn apply_objective_route(
 }
 impl Rules {
     /// Resolve a simulation-only campaign while sharing the rest of the catalog.
-    pub fn simulation_objective_campaign(
+    pub fn prepare_simulation_campaign(
         &self,
         campaign: &str,
         route: &str,
-    ) -> Result<Option<Campaign>, ContentError> {
+    ) -> Result<std::borrow::Cow<'_, Campaign>, ContentError> {
+        let authored = self.campaigns.get(campaign).ok_or_else(|| {
+            ContentError::new(
+                "simulation/campaign.json",
+                format!("unknown campaign {campaign}"),
+            )
+        })?;
         if route == "authored" {
-            return Ok(None);
+            return Ok(std::borrow::Cow::Borrowed(authored));
         }
         let plan = self
             .campaign_defaults
@@ -1642,17 +1648,28 @@ impl Rules {
                 "objective routes need stages",
             ));
         }
-        let mut selected = self
-            .campaigns
-            .get(campaign)
-            .ok_or_else(|| {
-                ContentError::new(
+        for stage in plan.stages.keys() {
+            if !authored
+                .missions
+                .iter()
+                .any(|mission| &mission.map.id == stage)
+            {
+                return Err(ContentError::new(
                     "simulation/campaign.json",
-                    format!("unknown campaign {campaign}"),
-                )
-            })?
-            .clone();
-        apply_objective_route(&mut selected, plan, "simulation/campaign.json")?;
+                    format!("objective route references unknown stage {stage}"),
+                ));
+            }
+        }
+        let changes_definition = plan.stages.values().any(|stage| {
+            stage.goals.is_some()
+                || stage.optional_goals.is_some()
+                || !stage.events.is_empty()
+                || !stage.event_conditions.is_empty()
+        });
+        let mut selected = std::borrow::Cow::Borrowed(authored);
+        if changes_definition {
+            apply_objective_route(selected.to_mut(), plan, "simulation/campaign.json")?;
+        }
         for mission in &selected.missions {
             let state = self
                 .maps
@@ -1662,14 +1679,16 @@ impl Rules {
                 .ok_or_else(|| {
                     ContentError::new("simulation/campaign.json", "unknown route stage map")
                 })?;
-            validate_mission(
-                mission,
-                state,
-                &self.types,
-                &self.units,
-                &self.terrains,
-                "simulation/campaign.json",
-            )?;
+            if changes_definition {
+                validate_mission(
+                    mission,
+                    state,
+                    &self.types,
+                    &self.units,
+                    &self.terrains,
+                    "simulation/campaign.json",
+                )?;
+            }
             if let Some(stage) = plan.stages.get(&mission.map.id) {
                 if let Some(condition) = &stage.ignore_optional_when {
                     condition
@@ -1681,6 +1700,6 @@ impl Rules {
                 }
             }
         }
-        Ok(Some(selected))
+        Ok(selected)
     }
 }

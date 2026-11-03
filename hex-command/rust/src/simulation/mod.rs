@@ -1,6 +1,8 @@
 //! Native match execution, deterministic schedules, indexed journals and reports.
 mod arrow;
+mod campaigns;
 mod canonical;
+pub use campaigns::CampaignDefinitions;
 pub mod checkpoint;
 pub mod cli;
 mod damage;

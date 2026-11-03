@@ -185,7 +185,8 @@ pub(crate) struct Game<'catalog> {
     pub(crate) pools: Option<[Vec<usize>; 2]>,
     pub(crate) arena_first: Option<Side>,
     pub(crate) mission: Option<Rc<Mission>>,
-    pub(crate) campaign_override: Option<Rc<Campaign>>,
+    /// The selected immutable definition; absent only for a non-campaign game.
+    campaign_definition: Option<&'catalog Campaign>,
     mission_key: Option<MissionKey>,
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) recordings: Option<Records>,
@@ -203,6 +204,17 @@ pub(crate) struct Game<'catalog> {
 }
 impl<'catalog> Game<'catalog> {
     pub(crate) fn from_state(rules: &'catalog Rules, state: State) -> Self {
+        let definition = state
+            .campaign
+            .as_ref()
+            .map(|state| &rules.campaigns[&state.id]);
+        Self::from_state_with_campaign(rules, state, definition)
+    }
+    pub(crate) fn from_state_with_campaign(
+        rules: &'catalog Rules,
+        state: State,
+        definition: Option<&'catalog Campaign>,
+    ) -> Self {
         let key = (
             rules.content_fingerprint.clone(),
             state
@@ -215,7 +227,7 @@ impl<'catalog> Game<'catalog> {
         let board = cached
             .as_ref()
             .map_or_else(|| Board::new(&state.tiles), |c| c.board.clone());
-        let mut game = Self::from_state_with_board(rules, state, board);
+        let mut game = Self::from_state_with_board_and_campaign(rules, state, board, definition);
         if let Some(cached) = cached {
             game.route_cache = cached.routes;
             game.route_order = cached.route_order;
@@ -254,6 +266,18 @@ impl<'catalog> Game<'catalog> {
         state: State,
         board: Rc<Board>,
     ) -> Self {
+        let definition = state
+            .campaign
+            .as_ref()
+            .map(|state| &rules.campaigns[&state.id]);
+        Self::from_state_with_board_and_campaign(rules, state, board, definition)
+    }
+    fn from_state_with_board_and_campaign(
+        rules: &'catalog Rules,
+        state: State,
+        board: Rc<Board>,
+        definition: Option<&'catalog Campaign>,
+    ) -> Self {
         let (state, tiles) = StateFrame::split(state);
         let n = tiles.len();
         let mut terrain = Vec::with_capacity(n);
@@ -288,6 +312,7 @@ impl<'catalog> Game<'catalog> {
             state,
             board,
             RuntimeCache::default(),
+            definition,
             terrain,
             owners,
             geometry,
@@ -315,6 +340,10 @@ impl<'catalog> Game<'catalog> {
             StateFrame::from(state),
             board,
             cache,
+            state
+                .campaign
+                .as_ref()
+                .map(|state| &rules.campaigns[&state.id]),
             terrain,
             owners,
             geometry,
@@ -325,6 +354,7 @@ impl<'catalog> Game<'catalog> {
         state: StateFrame,
         board: Rc<Board>,
         cache: RuntimeCache,
+        campaign_definition: Option<&'catalog Campaign>,
         terrain: Vec<usize>,
         owners: Vec<Option<String>>,
         geometry: TileGeometry,
@@ -408,7 +438,7 @@ impl<'catalog> Game<'catalog> {
             pools: None,
             arena_first: None,
             mission: cache.mission,
-            campaign_override: None,
+            campaign_definition,
             mission_key: cache.key,
             #[cfg(not(target_arch = "wasm32"))]
             recordings: None,
@@ -429,7 +459,15 @@ impl<'catalog> Game<'catalog> {
         game.remember_conditions();
         game
     }
+    #[cfg(test)]
     pub(crate) fn new(rules: &'catalog Rules, map: &str) -> Self {
+        Self::new_with_campaign(rules, map, None)
+    }
+    pub(super) fn new_with_campaign(
+        rules: &'catalog Rules,
+        map: &str,
+        definition: Option<&'catalog Campaign>,
+    ) -> Self {
         let state = rules
             .maps
             .iter()
@@ -438,7 +476,7 @@ impl<'catalog> Game<'catalog> {
             .unwrap()
             .1
             .clone();
-        Self::from_state(rules, state)
+        Self::from_state_with_campaign(rules, state, definition)
     }
     /// Materialize the protocol snapshot without changing battle state.
     pub(crate) fn state(&self) -> State {
@@ -703,11 +741,9 @@ impl<'catalog> Game<'catalog> {
             mission: self.mission.clone(),
         }
     }
-    #[cfg(not(target_arch = "wasm32"))]
-    pub(crate) fn set_campaign_override(&mut self, definition: Option<Rc<Campaign>>) {
-        self.campaign_override = definition;
-        self.mission_key = None;
-        self.refresh_mission();
+    pub(crate) fn campaign_definition(&self) -> &'catalog Campaign {
+        self.campaign_definition
+            .expect("campaign game has a definition")
     }
     pub(crate) fn refresh_mission(&mut self) {
         let Some(state) = &self.campaign else {
@@ -737,13 +773,7 @@ impl<'catalog> Game<'catalog> {
             return;
         }
         self.mission_key = Some(key);
-        let mut mission = Rc::new(
-            self.campaign_override
-                .as_deref()
-                .unwrap_or(&self.rules.campaigns[&state.id])
-                .missions[state.mission]
-                .clone(),
-        );
+        let mut mission = Rc::new(self.campaign_definition().missions[state.mission].clone());
         if without_dain {
             if let Some(patch) = mission.without_dain.clone() {
                 Rc::make_mut(&mut mission).apply(&patch);
@@ -826,7 +856,7 @@ impl<'catalog> Game<'catalog> {
             pools: self.pools.clone(),
             arena_first: self.arena_first,
             mission: self.mission.clone(),
-            campaign_override: self.campaign_override.clone(),
+            campaign_definition: self.campaign_definition,
             mission_key: self.mission_key.clone(),
             #[cfg(not(target_arch = "wasm32"))]
             recordings: None,

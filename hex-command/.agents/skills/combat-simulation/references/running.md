@@ -58,5 +58,10 @@ Definitions are explicit: the runner never infers exits, enemy factions, goal
 positions or a campaign's intended branches. Selecting a simulation route validates its
 name, stages, goals, events and conditions with the normal campaign validators.
 Playable catalog loading does not validate simulation route references.
-Routes apply to a private campaign override sharing the native simulation catalog; they add no playable
-menus, choices, commands or save fields. The browser retains its authored goals.
+Simulation setup prepares each selected campaign/route once and shares its immutable
+definition across trials and streamed phase requests. Routes that only filter AI
+targets borrow the authored definition. Changed definitions copy only the selected
+campaign; the rest of the catalog remains shared. Each game reads one supplied
+campaign definition throughout restore, retry, combat and mission progression.
+Routes add no playable menus, choices, commands or save fields. The browser retains
+its authored goals.

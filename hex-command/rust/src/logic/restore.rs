@@ -50,13 +50,17 @@ pub(crate) fn validate_state_geometry(
     state: &State,
     authored: &State,
 ) -> Result<(), StateError> {
-    validate_state_geometry_for_campaign(rules, state, authored, None)
+    let definition = state
+        .campaign
+        .as_ref()
+        .and_then(|state| rules.campaigns.get(&state.id));
+    validate_state_geometry_with_campaign(rules, state, authored, definition)
 }
-pub(crate) fn validate_state_geometry_for_campaign(
+pub(crate) fn validate_state_geometry_with_campaign(
     rules: &Rules,
     state: &State,
     authored: &State,
-    campaign_override: Option<&Campaign>,
+    campaign_definition: Option<&Campaign>,
 ) -> Result<(), StateError> {
     let fail = |message: &str| StateError(message.to_owned());
     validate_factions(&state.factions, &state.units).map_err(StateError)?;
@@ -137,10 +141,7 @@ pub(crate) fn validate_state_geometry_for_campaign(
         }
     }
     if let Some(campaign) = &state.campaign {
-        if let Some(mission) = campaign_override
-            .or_else(|| rules.campaigns.get(&campaign.id))
-            .and_then(|c| c.missions.get(campaign.mission))
-        {
+        if let Some(mission) = campaign_definition.and_then(|c| c.missions.get(campaign.mission)) {
             for group in &mission.enemy_groups {
                 if group.when.as_ref().is_some_and(|rule| rule.remember) {
                     allowed_memory.insert(format!("group:{}", group.id));
@@ -206,9 +207,10 @@ pub(crate) fn validate_state_geometry_for_campaign(
         }
     }
     if let Some(campaign) = &state.campaign {
-        let definition = campaign_override
-            .or_else(|| rules.campaigns.get(&campaign.id))
-            .ok_or_else(|| fail("unknown campaign"))?;
+        let definition = campaign_definition.ok_or_else(|| fail("unknown campaign"))?;
+        if definition.id != campaign.id {
+            return Err(fail("campaign definition and saved campaign differ"));
+        }
         if campaign.mission >= definition.missions.len() {
             return Err(fail("unknown mission"));
         }
@@ -391,7 +393,10 @@ pub(crate) fn validate_state_geometry_for_campaign(
                 && !rules
                     .campaigns
                     .values()
-                    .chain(campaign_override)
+                    .filter(|candidate| {
+                        campaign_definition.is_none_or(|definition| candidate.id != definition.id)
+                    })
+                    .chain(campaign_definition)
                     .flat_map(|c| &c.missions)
                     .flat_map(|m| &m.events)
                     .flat_map(|e| &e.items)

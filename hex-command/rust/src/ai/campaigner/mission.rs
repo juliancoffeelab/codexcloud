@@ -1302,19 +1302,14 @@ pub(in crate::ai) fn heavy_campaign(game: &Game<'_>) -> bool {
         }
     }
 
-    game.campaign.as_ref().is_some_and(|state| {
-        game.campaign_override
-            .as_deref()
-            .unwrap_or(&game.rules.campaigns[&state.id])
-            .missions
-            .iter()
-            .any(|mission| {
-                mission.goals.iter().any(|g| is_goal_defeat(g))
-                    && mission
-                        .goals
-                        .iter()
-                        .any(|g| is_goal_seal(g) && g.unit_type().is_none())
-            })
+    game.campaign.as_ref().is_some_and(|_| {
+        game.campaign_definition().missions.iter().any(|mission| {
+            mission.goals.iter().any(|g| is_goal_defeat(g))
+                && mission
+                    .goals
+                    .iter()
+                    .any(|g| is_goal_seal(g) && g.unit_type().is_none())
+        })
     })
 }
 pub(in crate::ai) fn restrained(game: &Game<'_>, workspace: &PlanningWorkspace) -> bool {

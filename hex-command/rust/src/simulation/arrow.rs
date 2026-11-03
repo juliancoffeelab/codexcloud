@@ -512,6 +512,7 @@ mod tests {
                 max_rounds: 1,
                 recruit_limit: Some(0),
             },
+            &rules.campaigns["green-accord"],
         )
         .unwrap();
         campaign.missions.push(campaign.missions[0].clone());

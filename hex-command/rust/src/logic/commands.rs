@@ -146,9 +146,9 @@ impl Game<'_> {
                 } else {
                     campaign.choices.clone().unwrap_or_default()
                 };
-                *self = Self::start_campaign(
+                *self = Self::start_campaign_from_definition(
                     self.rules,
-                    &campaign.id,
+                    self.campaign_definition(),
                     campaign.mission,
                     campaign.veterans.clone().unwrap_or_default(),
                     campaign.carry_gold,
@@ -166,7 +166,7 @@ impl Game<'_> {
                 let campaign = self.campaign.as_ref().ok_or(CommandError::NoCampaign)?;
                 if self.winner != Some(Side::Player)
                     || campaign.completed
-                    || campaign.mission + 1 >= self.rules.campaigns[&campaign.id].missions.len()
+                    || campaign.mission + 1 >= self.campaign_definition().missions.len()
                 {
                     return Err(CommandError::NoNextMission);
                 }

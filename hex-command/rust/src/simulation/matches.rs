@@ -620,24 +620,18 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
 pub fn run_campaign(
     rules: &Rules,
     config: CampaignConfig,
+    definition: &Campaign,
 ) -> Result<CampaignResult, SimulationError> {
     validate_limits(config.max_rounds, config.recruit_limit)?;
-    let objective_campaign = rules
-        .simulation_objective_campaign(&config.campaign, &config.objective)
-        .map_err(|e| SimulationError::InvalidConfig(e.to_string()))?;
-    let objective_campaign = objective_campaign.map(std::rc::Rc::new);
-    let chapters = rules
-        .campaigns
-        .get(&config.campaign)
-        .ok_or_else(|| {
-            SimulationError::InvalidConfig(format!("Unknown campaign: {}", config.campaign))
-        })?
-        .missions
-        .len();
-    let mut game = Game::start_campaign_with_override(
+    if definition.id != config.campaign {
+        return Err(SimulationError::InvalidConfig(
+            "campaign definition does not match configuration".into(),
+        ));
+    }
+    let chapters = definition.missions.len();
+    let mut game = Game::start_campaign_from_definition(
         rules,
-        objective_campaign,
-        &config.campaign,
+        definition,
         0,
         vec![],
         0,
@@ -725,10 +719,17 @@ pub fn run_campaign(
     })
 }
 /// Dispatch a validated configuration to the corresponding complete match runner.
-pub fn run(rules: &Rules, config: MatchConfig) -> Result<MatchResult, SimulationError> {
+pub fn run(
+    rules: &Rules,
+    config: MatchConfig,
+    definitions: &super::CampaignDefinitions<'_>,
+) -> Result<MatchResult, SimulationError> {
     match config {
         MatchConfig::Arena(config) => run_arena(rules, config).map(MatchResult::Arena),
-        MatchConfig::Campaign(config) => run_campaign(rules, config).map(MatchResult::Campaign),
+        MatchConfig::Campaign(config) => {
+            let definition = definitions.get(&config.campaign, &config.objective)?;
+            run_campaign(rules, config, definition).map(MatchResult::Campaign)
+        }
     }
 }
 

@@ -2,7 +2,7 @@
 
 use crate::sort::SharedSort;
 use crate::{data::*, logic::battle::Game};
-use std::{collections::BTreeMap, rc::Rc};
+use std::collections::BTreeMap;
 impl<'catalog> Game<'catalog> {
     fn human_owns(&self, tile: usize) -> bool {
         self.owners[tile].as_deref().is_some_and(|owner| {
@@ -360,6 +360,7 @@ impl<'catalog> Game<'catalog> {
         }
     }
     fn evaluate_campaign_loss(&mut self, mission: &Mission) -> bool {
+        let definition = self.campaign_definition();
         let leader = self
             .units
             .iter()
@@ -416,7 +417,7 @@ impl<'catalog> Game<'catalog> {
             self.winner = Some(Side::Enemy);
             let state = self.campaign.as_mut().unwrap();
             state.outcome = Some(text.clone());
-            let portrait = self.rules.campaigns[&state.id].leader.clone();
+            let portrait = definition.leader.clone();
             state.say([Dialogue {
                 sound: None,
                 speaker: "The company".into(),
@@ -433,6 +434,7 @@ impl<'catalog> Game<'catalog> {
             return;
         }
         self.apply_faction_transfers();
+        let definition = self.campaign_definition();
         let mission = self.mission.clone().unwrap();
         if self.evaluate_campaign_loss(&mission) {
             return;
@@ -716,7 +718,6 @@ impl<'catalog> Game<'catalog> {
             } else {
                 mission.victory.clone()
             });
-            let definition = &self.rules.campaigns[&state.id];
             state.completed = state.mission == definition.missions.len() - 1;
             if state.completed {
                 let survived = dain_survived
@@ -751,14 +752,20 @@ impl<'catalog> Game<'catalog> {
         story: Vec<Veteran>,
         fallen: Vec<String>,
     ) -> Self {
-        Self::start_campaign_with_override(
-            rules, None, id, index, veterans, carry, choices, story, fallen,
+        Self::start_campaign_from_definition(
+            rules,
+            &rules.campaigns[id],
+            index,
+            veterans,
+            carry,
+            choices,
+            story,
+            fallen,
         )
     }
-    pub(crate) fn start_campaign_with_override(
+    pub(crate) fn start_campaign_from_definition(
         rules: &'catalog Rules,
-        campaign_override: Option<Rc<Campaign>>,
-        id: &str,
+        definition: &'catalog Campaign,
         index: usize,
         veterans: Vec<Veteran>,
         carry: i32,
@@ -766,13 +773,9 @@ impl<'catalog> Game<'catalog> {
         story: Vec<Veteran>,
         fallen: Vec<String>,
     ) -> Self {
-        let original = campaign_override
-            .as_deref()
-            .unwrap_or(&rules.campaigns[id])
-            .missions[index]
-            .clone();
-        let mut game = Game::new(rules, &original.map.id);
-        game.campaign_override = campaign_override;
+        let id = definition.id.as_str();
+        let original = &definition.missions[index];
+        let mut game = Game::new_with_campaign(rules, &original.map.id, Some(definition));
         let holds = original
             .all_goals()
             .filter(|g| g.kind() == GoalKind::Hold)
@@ -934,7 +937,7 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn returns_with_story(&self, u: &Unit) -> bool {
         let state = self.campaign.as_ref().unwrap();
-        self.rules.campaigns[&state.id]
+        self.campaign_definition()
             .missions
             .get(state.mission + 1)
             .is_some_and(|mission| {
@@ -1031,10 +1034,7 @@ impl<'catalog> Game<'catalog> {
             .filter(|u| u.side == Side::Player && self.returns_with_story(u))
             .map(|u| veteran(u, true))
             .collect();
-        if let Some(next) = self.rules.campaigns[&state.id]
-            .missions
-            .get(state.mission + 1)
-        {
+        if let Some(next) = self.campaign_definition().missions.get(state.mission + 1) {
             for record in &state.evacuated {
                 let unit = &record.unit;
                 if unit.side == Side::Player
@@ -1093,10 +1093,9 @@ impl<'catalog> Game<'catalog> {
                 fallen.push(name);
             }
         }
-        let mut next = Self::start_campaign_with_override(
+        let mut next = Self::start_campaign_from_definition(
             self.rules,
-            self.campaign_override.clone(),
-            &state.id,
+            self.campaign_definition(),
             state.mission + 1,
             veterans,
             self.gold["player"],

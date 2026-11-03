@@ -14,7 +14,7 @@ mod rituals;
 mod turns;
 pub use restore::{StateError, validate_state};
 #[cfg(not(target_arch = "wasm32"))]
-pub(crate) use restore::{validate_state_geometry, validate_state_geometry_for_campaign};
+pub(crate) use restore::{validate_state_geometry, validate_state_geometry_with_campaign};
 pub mod campaign;
 pub use crate::data::{Command, CommandError};
 pub(crate) use battle::Game;
