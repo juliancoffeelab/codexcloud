@@ -568,71 +568,6 @@ impl Rules {
         let rosters: Vec<ArmyRoster> = parse(bundle, &manifest.simulation.rosters)?;
         let arena: ArenaDefaults = parse(bundle, &manifest.simulation.arena)?;
         let campaign_defaults: CampaignDefaults = parse(bundle, &manifest.simulation.campaign)?;
-        for (id, routes) in &campaign_defaults.objectives {
-            let authored = campaigns.get(id).ok_or_else(|| {
-                ContentError::new(
-                    &manifest.simulation.campaign,
-                    format!("unknown campaign {id}"),
-                )
-            })?;
-            if routes.is_empty() {
-                return Err(ContentError::new(
-                    &manifest.simulation.campaign,
-                    "simulation objective routes must not be empty",
-                ));
-            }
-            for (name, route) in routes {
-                identifier(name, &manifest.simulation.campaign)?;
-                if name == "authored" || route.stages.is_empty() {
-                    return Err(ContentError::new(
-                        &manifest.simulation.campaign,
-                        "objective routes need stages and cannot use the reserved name authored",
-                    ));
-                }
-                let mut selected = authored.clone();
-                apply_objective_route(&mut selected, route, &manifest.simulation.campaign)?;
-                for mission in &selected.missions {
-                    let state = maps
-                        .iter()
-                        .find(|((id, _), _)| *id == mission.map.id)
-                        .map(|(_, state)| state)
-                        .ok_or_else(|| {
-                            ContentError::new(
-                                &manifest.simulation.campaign,
-                                "unknown route stage map",
-                            )
-                        })?;
-                    validate_mission(
-                        mission,
-                        state,
-                        &types,
-                        &units,
-                        &terrains,
-                        &manifest.simulation.campaign,
-                    )?;
-                }
-                for (stage, plan) in &route.stages {
-                    let mission = selected
-                        .missions
-                        .iter()
-                        .find(|m| &m.map.id == stage)
-                        .unwrap();
-                    let state = maps
-                        .iter()
-                        .find(|((id, _), _)| id == stage)
-                        .map(|(_, state)| state)
-                        .unwrap();
-                    if let Some(condition) = &plan.ignore_optional_when {
-                        condition
-                            .validate(&state.tiles, &mission.events, false)
-                            .map_err(|e| ContentError::new(&manifest.simulation.campaign, e))?;
-                        condition
-                            .validate_references(&types, &state.factions)
-                            .map_err(|e| ContentError::new(&manifest.simulation.campaign, e))?;
-                    }
-                }
-            }
-        }
         validate_simulation(
             &rosters,
             &arena,
@@ -1058,6 +993,21 @@ fn validate_mission(
     )?;
     for ritual in &mission.rituals {
         identifier(&ritual.id, path)?;
+        unique(ritual.sources.iter().map(String::as_str), path)?;
+        let expected: Vec<_> = state
+            .tiles
+            .iter()
+            .filter(|tile| tile.terrain == ritual.source_terrain)
+            .map(|tile| &tile.id)
+            .collect();
+        if expected.len() != ritual.sources.len()
+            || expected.iter().any(|id| !ritual.sources.contains(id))
+        {
+            return Err(ContentError::new(
+                path,
+                "ritual sources must list every source tile exactly once",
+            ));
+        }
         if ritual.interval == 0
             || ritual.sources_per_toll == Some(0)
             || ritual.first_round == 0
@@ -1665,12 +1615,12 @@ fn apply_objective_route(
     Ok(())
 }
 impl Rules {
-    /// A named route changes only the native simulation's private catalog copy.
-    pub fn simulation_objective_rules(
+    /// Resolve a simulation-only campaign while sharing the rest of the catalog.
+    pub fn simulation_objective_campaign(
         &self,
         campaign: &str,
         route: &str,
-    ) -> Result<Option<Self>, ContentError> {
+    ) -> Result<Option<Campaign>, ContentError> {
         if route == "authored" {
             return Ok(None);
         }
@@ -1685,12 +1635,52 @@ impl Rules {
                     format!("unknown objective route {route} for {campaign}"),
                 )
             })?;
-        let mut selected = self.clone();
-        apply_objective_route(
-            selected.campaigns.get_mut(campaign).unwrap(),
-            plan,
-            "simulation/campaign.json",
-        )?;
+        identifier(route, "simulation/campaign.json")?;
+        if plan.stages.is_empty() {
+            return Err(ContentError::new(
+                "simulation/campaign.json",
+                "objective routes need stages",
+            ));
+        }
+        let mut selected = self
+            .campaigns
+            .get(campaign)
+            .ok_or_else(|| {
+                ContentError::new(
+                    "simulation/campaign.json",
+                    format!("unknown campaign {campaign}"),
+                )
+            })?
+            .clone();
+        apply_objective_route(&mut selected, plan, "simulation/campaign.json")?;
+        for mission in &selected.missions {
+            let state = self
+                .maps
+                .iter()
+                .find(|((id, _), _)| id == &mission.map.id)
+                .map(|(_, state)| state)
+                .ok_or_else(|| {
+                    ContentError::new("simulation/campaign.json", "unknown route stage map")
+                })?;
+            validate_mission(
+                mission,
+                state,
+                &self.types,
+                &self.units,
+                &self.terrains,
+                "simulation/campaign.json",
+            )?;
+            if let Some(stage) = plan.stages.get(&mission.map.id) {
+                if let Some(condition) = &stage.ignore_optional_when {
+                    condition
+                        .validate(&state.tiles, &mission.events, false)
+                        .map_err(|e| ContentError::new("simulation/campaign.json", e))?;
+                    condition
+                        .validate_references(&self.types, &state.factions)
+                        .map_err(|e| ContentError::new("simulation/campaign.json", e))?;
+                }
+            }
+        }
         Ok(Some(selected))
     }
 }

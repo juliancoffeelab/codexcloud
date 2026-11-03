@@ -138,10 +138,7 @@ impl BattleView<'_, '_> {
         seed: u32,
         orders: &super::orders::RecruitmentOrders,
     ) -> Option<Command> {
-        let (rotation, frontline_only, balanced) = match recruiter {
-            RecruiterKind::Classic | RecruiterKind::Rotation => (true, false, false),
-            RecruiterKind::Frontline => (false, true, false),
-            RecruiterKind::Balanced => (false, false, true),
+        match recruiter {
             RecruiterKind::Situational => return situational::choose(self, seed, orders),
             RecruiterKind::Predictor => {
                 return situational::choose_with_forecast(self, seed, orders, true);
@@ -155,15 +152,34 @@ impl BattleView<'_, '_> {
                     self.rules().recruitment.aggressive_predictor,
                 );
             }
+            RecruiterKind::Classic
+            | RecruiterKind::Rotation
+            | RecruiterKind::Frontline
+            | RecruiterKind::Balanced => {}
+        }
+        self.units()
+            .iter()
+            .filter(|u| self.belongs_to_phase(u, self.turn()) && u.is_leader())
+            .find_map(|leader| self.recruit_for_leader(recruiter, seed, orders, leader))
+    }
+    fn recruit_for_leader(
+        &self,
+        recruiter: RecruiterKind,
+        seed: u32,
+        orders: &super::orders::RecruitmentOrders,
+        leader: &Unit,
+    ) -> Option<Command> {
+        let (rotation, frontline_only, balanced) = match recruiter {
+            RecruiterKind::Classic | RecruiterKind::Rotation => (true, false, false),
+            RecruiterKind::Frontline => (false, true, false),
+            RecruiterKind::Balanced => (false, false, true),
+            RecruiterKind::Situational
+            | RecruiterKind::Predictor
+            | RecruiterKind::AggressivePredictor => {
+                unreachable!("adaptive recruiters evaluate all commanders together")
+            }
         };
         let side = self.turn();
-        let Some(leader) = self
-            .units()
-            .iter()
-            .find(|u| self.belongs_to_phase(u, side) && u.is_leader())
-        else {
-            return None;
-        };
         let required = orders
             .requirements
             .iter()

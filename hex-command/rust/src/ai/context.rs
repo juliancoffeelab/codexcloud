@@ -105,6 +105,9 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn hostile(&self, first: &Unit, second: &Unit) -> bool {
         self.engine().hostile(first, second)
     }
+    pub(super) fn same_faction(&self, first: &Unit, second: &Unit) -> bool {
+        self.engine().unit_faction(first) == self.engine().unit_faction(second)
+    }
     pub(super) fn allied(&self, first: &Unit, second: &Unit) -> bool {
         self.engine().allied(first, second)
     }

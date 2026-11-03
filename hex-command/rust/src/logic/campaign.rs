@@ -2,8 +2,17 @@
 
 use crate::sort::SharedSort;
 use crate::{data::*, logic::battle::Game};
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, rc::Rc};
 impl<'catalog> Game<'catalog> {
+    fn human_owns(&self, tile: usize) -> bool {
+        self.owners[tile].as_deref().is_some_and(|owner| {
+            owner == "player"
+                || self
+                    .faction(owner)
+                    .is_some_and(|f| f.controller == Controller::Human)
+        })
+    }
+
     fn hold_actor_present(&self, goal: &Goal) -> bool {
         if let Goal::Hold {
             unit_types, tile, ..
@@ -63,7 +72,7 @@ impl<'catalog> Game<'catalog> {
             Goal::Control { .. } => goal
                 .tiles()
                 .iter()
-                .all(|tile| self.owners[self.site(tile)].as_deref() == Some("player")),
+                .all(|tile| self.human_owns(self.site(tile))),
             Goal::Seal { .. } => goal
                 .tiles()
                 .iter()
@@ -93,8 +102,7 @@ impl<'catalog> Game<'catalog> {
                     && (*once || self.turn == Side::Player)
                     && self.round >= *earliest_round
                     && (*once
-                        || (self.owners[self.site(tile)].as_deref() == Some("player")
-                            && self.hold_actor_present(goal)))
+                        || (self.human_owns(self.site(tile)) && self.hold_actor_present(goal)))
             }
             Goal::Vigil { turns, .. } => {
                 state.vigil.as_ref().map_or(0, |counter| counter.held_turns) >= *turns
@@ -140,7 +148,7 @@ impl<'catalog> Game<'catalog> {
                 total = tiles.len() as u32;
                 current = tiles
                     .iter()
-                    .filter(|t| self.owners[self.site(t)].as_deref() == Some("player"))
+                    .filter(|t| self.human_owns(self.site(t)))
                     .count() as u32;
             }
             Goal::Seal { .. } => {
@@ -205,8 +213,7 @@ impl<'catalog> Game<'catalog> {
                     (*once || self.turn == Side::Player)
                         && self.round >= *earliest_round
                         && (*once
-                            || (self.owners[self.site(tile)].as_deref() == Some("player")
-                                && self.hold_actor_present(goal)))
+                            || (self.human_owns(self.site(tile)) && self.hold_actor_present(goal)))
                 }
                 _ => true,
             };
@@ -352,12 +359,7 @@ impl<'catalog> Game<'catalog> {
             }
         }
     }
-    pub(crate) fn evaluate_campaign(&mut self, at_turn_start: bool, entered: Option<usize>) {
-        if self.campaign.is_none() || self.winner.is_some() {
-            return;
-        }
-        self.apply_faction_transfers();
-        let mission = self.mission.clone().unwrap();
+    fn evaluate_campaign_loss(&mut self, mission: &Mission) -> bool {
         let leader = self
             .units
             .iter()
@@ -422,6 +424,17 @@ impl<'catalog> Game<'catalog> {
                 text: text.clone(),
             }]);
             self.record(text);
+            return true;
+        }
+        false
+    }
+    pub(crate) fn evaluate_campaign(&mut self, at_turn_start: bool, entered: Option<usize>) {
+        if self.campaign.is_none() || self.winner.is_some() {
+            return;
+        }
+        self.apply_faction_transfers();
+        let mission = self.mission.clone().unwrap();
+        if self.evaluate_campaign_loss(&mission) {
             return;
         }
         if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Vigil) {
@@ -429,6 +442,7 @@ impl<'catalog> Game<'catalog> {
             let present = self.units.iter().any(|u| {
                 u.side == Side::Player && u.name.as_ref() == goal.companion() && u.tile == tile
             });
+            let owned = self.human_owns(tile);
             let counter = self
                 .campaign
                 .as_mut()
@@ -438,7 +452,7 @@ impl<'catalog> Game<'catalog> {
                     held_turns: 0,
                     last_counted_round: self.round,
                 });
-            if !present || self.owners[tile].as_deref() != Some("player") {
+            if !present || !owned {
                 counter.held_turns = 0;
                 counter.last_counted_round = self.round;
             } else if at_turn_start && self.round > counter.last_counted_round {
@@ -465,9 +479,10 @@ impl<'catalog> Game<'catalog> {
             }
             if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Refuge) {
                 let tile = self.site(goal.tile().unwrap());
+                let owned = self.human_owns(tile);
                 let counter = self.campaign.as_mut().unwrap().refuge.as_mut().unwrap();
                 if !counter.escalated {
-                    if self.owners[tile].as_deref() != Some("player") {
+                    if !owned {
                         counter.held_turns = 0;
                     } else if at_turn_start && self.round > counter.last_counted_round {
                         counter.held_turns += 1;
@@ -482,6 +497,7 @@ impl<'catalog> Game<'catalog> {
             if goal.kind() == GoalKind::Hold {
                 let tile = self.site(goal.tile().unwrap());
                 let actor_present = self.hold_actor_present(goal);
+                let owned = self.human_owns(tile);
                 let state = self.campaign.as_mut().unwrap();
                 let started = goal
                     .start_event()
@@ -500,7 +516,7 @@ impl<'catalog> Game<'catalog> {
                 {
                     continue;
                 }
-                if !started || !actor_present || self.owners[tile].as_deref() != Some("player") {
+                if !started || !actor_present || !owned {
                     counter.held_turns = 0;
                     counter.last_counted_round = self.round;
                 } else if at_turn_start && self.round > counter.last_counted_round {
@@ -547,8 +563,7 @@ impl<'catalog> Game<'catalog> {
                         .and_then(|h| h.get(tile))
                         .is_some_and(|h| h.held_turns >= *turns),
                     Trigger::Control { tile, round } => {
-                        self.owners[self.site(tile)].as_deref() == Some("player")
-                            && self.round >= round.unwrap_or(1)
+                        self.human_owns(self.site(tile)) && self.round >= round.unwrap_or(1)
                     }
                 };
                 if !triggered
@@ -678,6 +693,9 @@ impl<'catalog> Game<'catalog> {
         self.spawn_events();
         self.apply_faction_transfers();
         self.evaluate_rituals(at_turn_start);
+        if self.evaluate_campaign_loss(&mission) {
+            return;
+        }
         if mission.goals.iter().all(|g| self.goal_done(g)) {
             self.winner = Some(Side::Player);
             let dain_survived = self
@@ -733,8 +751,28 @@ impl<'catalog> Game<'catalog> {
         story: Vec<Veteran>,
         fallen: Vec<String>,
     ) -> Self {
-        let original = rules.campaigns[id].missions[index].clone();
+        Self::start_campaign_with_override(
+            rules, None, id, index, veterans, carry, choices, story, fallen,
+        )
+    }
+    pub(crate) fn start_campaign_with_override(
+        rules: &'catalog Rules,
+        campaign_override: Option<Rc<Campaign>>,
+        id: &str,
+        index: usize,
+        veterans: Vec<Veteran>,
+        carry: i32,
+        choices: Vec<String>,
+        story: Vec<Veteran>,
+        fallen: Vec<String>,
+    ) -> Self {
+        let original = campaign_override
+            .as_deref()
+            .unwrap_or(&rules.campaigns[id])
+            .missions[index]
+            .clone();
         let mut game = Game::new(rules, &original.map.id);
+        game.campaign_override = campaign_override;
         let holds = original
             .all_goals()
             .filter(|g| g.kind() == GoalKind::Hold)
@@ -1055,8 +1093,9 @@ impl<'catalog> Game<'catalog> {
                 fallen.push(name);
             }
         }
-        let mut next = Self::start_campaign(
+        let mut next = Self::start_campaign_with_override(
             self.rules,
+            self.campaign_override.clone(),
             &state.id,
             state.mission + 1,
             veterans,

@@ -21,7 +21,7 @@
   let lastSoundKey = "";
   $effect(() => {
     if (!pending || !campaign || !line?.sound) return;
-    const key = `${campaign.id}:${campaign.mission}:${campaign.dialogueIndex}:${line.sound}`;
+    const key = `${view.sessionVersion}:${campaign.id}:${campaign.mission}:${campaign.dialogueIndex}:${line.sound}`;
     if (key !== lastSoundKey) {
       lastSoundKey = key;
       playSound(line.sound);

@@ -16,6 +16,7 @@ function published(game: Game, selected: string): BattleView {
     inspectedTile: required(game.unit(selected)).tile,
     focusedTile: "0,0",
     renderRevision: 0,
+    sessionVersion: 0,
     status: "",
     artwork: currentArtwork(),
     sound: false,

@@ -503,6 +503,8 @@ pub struct RitualOpening {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Ritual {
+    /// Ordered authored source tiles; map serialization does not schedule tolls.
+    pub sources: Vec<String>,
     /// Maximum source activations per toll; omitted preserves simultaneous rituals.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]

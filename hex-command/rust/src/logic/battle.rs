@@ -185,6 +185,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) pools: Option<[Vec<usize>; 2]>,
     pub(crate) arena_first: Option<Side>,
     pub(crate) mission: Option<Rc<Mission>>,
+    pub(crate) campaign_override: Option<Rc<Campaign>>,
     mission_key: Option<MissionKey>,
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) recordings: Option<Records>,
@@ -407,6 +408,7 @@ impl<'catalog> Game<'catalog> {
             pools: None,
             arena_first: None,
             mission: cache.mission,
+            campaign_override: None,
             mission_key: cache.key,
             #[cfg(not(target_arch = "wasm32"))]
             recordings: None,
@@ -701,6 +703,12 @@ impl<'catalog> Game<'catalog> {
             mission: self.mission.clone(),
         }
     }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub(crate) fn set_campaign_override(&mut self, definition: Option<Rc<Campaign>>) {
+        self.campaign_override = definition;
+        self.mission_key = None;
+        self.refresh_mission();
+    }
     pub(crate) fn refresh_mission(&mut self) {
         let Some(state) = &self.campaign else {
             self.mission = None;
@@ -729,7 +737,13 @@ impl<'catalog> Game<'catalog> {
             return;
         }
         self.mission_key = Some(key);
-        let mut mission = Rc::new(self.rules.campaigns[&state.id].missions[state.mission].clone());
+        let mut mission = Rc::new(
+            self.campaign_override
+                .as_deref()
+                .unwrap_or(&self.rules.campaigns[&state.id])
+                .missions[state.mission]
+                .clone(),
+        );
         if without_dain {
             if let Some(patch) = mission.without_dain.clone() {
                 Rc::make_mut(&mut mission).apply(&patch);
@@ -812,6 +826,7 @@ impl<'catalog> Game<'catalog> {
             pools: self.pools.clone(),
             arena_first: self.arena_first,
             mission: self.mission.clone(),
+            campaign_override: self.campaign_override.clone(),
             mission_key: self.mission_key.clone(),
             #[cfg(not(target_arch = "wasm32"))]
             recordings: None,

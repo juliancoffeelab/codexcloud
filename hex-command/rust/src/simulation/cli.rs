@@ -406,15 +406,15 @@ fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
     Ok(())
 }
 fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, SimulationError> {
-    let objective_rules = request
+    let objective_campaign = request
         .state
         .campaign
         .as_ref()
-        .map(|campaign| rules.simulation_objective_rules(&campaign.id, &request.objective))
+        .map(|campaign| rules.simulation_objective_campaign(&campaign.id, &request.objective))
         .transpose()
         .map_err(|e| SimulationError::InvalidConfig(e.to_string()))?
         .flatten();
-    let rules = objective_rules.as_ref().unwrap_or(rules);
+    let objective_campaign = objective_campaign.map(std::rc::Rc::new);
     let arena = request
         .arena
         .as_ref()
@@ -429,10 +429,20 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
         crate::logic::validate_state_geometry(rules, &request.state, &arena.state())
             .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     } else {
-        crate::logic::validate_state(rules, &request.state)
-            .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
+        let authored = rules
+            .maps
+            .get(&(request.state.map_id.clone(), request.state.map_revision))
+            .ok_or_else(|| SimulationError::InvalidConfig("unknown map revision".into()))?;
+        crate::logic::validate_state_geometry_for_campaign(
+            rules,
+            &request.state,
+            authored,
+            objective_campaign.as_deref(),
+        )
+        .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     }
     let mut game = crate::logic::Game::from_state(rules, request.state);
+    game.set_campaign_override(objective_campaign);
     if let Some(arena) = arena {
         game.pools = arena.pools;
         game.arena_first = arena.arena_first;

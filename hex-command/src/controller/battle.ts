@@ -4,7 +4,7 @@ import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { TYPES, TERRAIN, isLeader, type Tile, type Unit } from "../game/catalog";
+import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle } from "../save/load";
 import { saveBattle } from "../save/write";
@@ -137,6 +137,7 @@ export class BattleController {
     return Object.freeze({
       ...this.state,
       game: this.gameView,
+      sessionVersion: this.sessionVersion,
       opponent: opponentSummary(this.#game.setup.enemy),
       combat: this.#game.combat,
       artwork: currentArtwork(),
@@ -475,7 +476,7 @@ export class BattleController {
 
   recruitHere(type: RecruitType, tileId: string) {
     try {
-      const commander = this.#game.units.find((unit) => unit.side === "player" && isLeader(unit));
+      const commander = recruitmentContext(this.gameView, null, tileId)?.commander;
       if (!commander) {
         throw new Error("This unit cannot act now.");
       }

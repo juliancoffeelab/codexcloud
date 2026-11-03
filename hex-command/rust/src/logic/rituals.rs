@@ -149,21 +149,20 @@ impl Game<'_> {
                 } else {
                     ritual.sources_per_toll.unwrap_or(usize::MAX)
                 };
-                let sites: Vec<_> = self
-                    .terrain
+                let sites: Vec<_> = ritual
+                    .sources
                     .iter()
-                    .enumerate()
-                    .filter(|(tile, terrain)| {
-                        **terrain == source
+                    .map(|id| self.site(id))
+                    .filter(|&tile| {
+                        self.terrain[tile] == source
                             && (!opening
                                 || ritual
                                     .opening
                                     .as_ref()
                                     .unwrap()
                                     .sites
-                                    .contains(&self.board.ids[*tile]))
+                                    .contains(&self.board.ids[tile]))
                     })
-                    .map(|(tile, _)| tile)
                     .take(budget)
                     .collect();
                 let remaining = budget.saturating_sub(sites.len());

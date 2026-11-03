@@ -203,6 +203,9 @@ pub fn scenario(bundle: &JsonBundle, path: &str) -> Result<(InitialState, String
     for tile in &map.tiles {
         if let Some(rule) = &tile.fog {
             rule.condition
+                .validate_presentation()
+                .map_err(|message| ContentError::new(&map_path, message))?;
+            rule.condition
                 .validate(&map.tiles, &[], true)
                 .map_err(|message| ContentError::new(&map_path, message))?;
         }
@@ -224,6 +227,9 @@ pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError>
         .map_err(|message| ContentError::new(&map_path, message))?;
     for tile in &map.tiles {
         if let Some(rule) = &tile.fog {
+            rule.condition
+                .validate_presentation()
+                .map_err(|message| ContentError::new(&map_path, message))?;
             rule.condition
                 .validate(&map.tiles, &scripts.events, true)
                 .map_err(|message| ContentError::new(&map_path, message))?;

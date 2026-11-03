@@ -145,6 +145,21 @@ impl Condition {
         }
     }
 
+    pub fn validate_presentation(&self) -> Result<(), String> {
+        match self {
+            Self::VisibleUnits { .. } => {
+                Err("visibility queries cannot define fog or lighting conditions".into())
+            }
+            Self::All { conditions } | Self::Any { conditions } => {
+                for condition in conditions {
+                    condition.validate_presentation()?;
+                }
+                Ok(())
+            }
+            _ => Ok(()),
+        }
+    }
+
     pub fn validate_references(
         &self,
         types: &std::collections::HashMap<String, usize>,
@@ -193,9 +208,6 @@ impl Condition {
         contextual: bool,
     ) -> Result<(), String> {
         match self {
-            Self::VisibleUnits { .. } if contextual => {
-                return Err("visibility queries cannot define fog or lighting conditions".into());
-            }
             Self::Owner { tile, .. } | Self::Proximity { tile, .. } => match tile {
                 Some(id) if !tiles.iter().any(|tile| tile.id == *id) => {
                     return Err(format!("condition references unknown tile: {id}"));

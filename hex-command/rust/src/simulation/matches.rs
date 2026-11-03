@@ -622,10 +622,10 @@ pub fn run_campaign(
     config: CampaignConfig,
 ) -> Result<CampaignResult, SimulationError> {
     validate_limits(config.max_rounds, config.recruit_limit)?;
-    let objective_rules = rules
-        .simulation_objective_rules(&config.campaign, &config.objective)
+    let objective_campaign = rules
+        .simulation_objective_campaign(&config.campaign, &config.objective)
         .map_err(|e| SimulationError::InvalidConfig(e.to_string()))?;
-    let rules = objective_rules.as_ref().unwrap_or(rules);
+    let objective_campaign = objective_campaign.map(std::rc::Rc::new);
     let chapters = rules
         .campaigns
         .get(&config.campaign)
@@ -634,8 +634,9 @@ pub fn run_campaign(
         })?
         .missions
         .len();
-    let mut game = Game::start_campaign(
+    let mut game = Game::start_campaign_with_override(
         rules,
+        objective_campaign,
         &config.campaign,
         0,
         vec![],

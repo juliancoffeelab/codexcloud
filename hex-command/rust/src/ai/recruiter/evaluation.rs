@@ -93,11 +93,16 @@ impl Assessment {
             for leader in enemies.iter().filter(|e| e.is_leader()) {
                 let actual = enemies
                     .iter()
-                    .filter(|e| !e.is_leader() && game.allied(leader, e))
+                    .filter(|e| !e.is_leader() && game.same_faction(leader, e))
+                    .count();
+                let commanders = enemies
+                    .iter()
+                    .filter(|e| e.is_leader() && game.same_faction(leader, e))
                     .count();
                 let options = game.recruitment_options_for(leader);
-                let forecast_weight =
-                    (weights.future_enemies - actual as f64).max(0.0) / options.len().max(1) as f64;
+                let forecast_weight = (weights.future_enemies - actual as f64).max(0.0)
+                    / options.len().max(1) as f64
+                    / commanders as f64;
                 if forecast_weight > 0.0 {
                     for kind in options {
                         let mut forecast = (*leader).clone();

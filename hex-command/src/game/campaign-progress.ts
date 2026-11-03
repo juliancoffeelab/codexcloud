@@ -1,3 +1,4 @@
+import type { Faction } from "../../rust/pkg/hex_command";
 import { CAMPAIGNS } from "./campaign-data";
 import type { Immutable } from "./immutable";
 import type { CampaignState, MissionDefinition, MissionGoal, Side, Tile, Unit } from "./types";
@@ -5,6 +6,7 @@ import type { CampaignState, MissionDefinition, MissionGoal, Side, Tile, Unit } 
 export interface CampaignBoard {
   campaign?: Immutable<CampaignState>;
   units: readonly Readonly<Unit>[];
+  factions?: readonly Immutable<Faction>[];
   round: number;
   turn: Side;
   winner?: Side | null;
@@ -45,6 +47,13 @@ export function goalTiles(goal: Immutable<MissionGoal>): readonly string[] {
 }
 
 export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>) {
+  const owned = (id: string) => {
+    const owner = board.tile(id)?.owner;
+    return (
+      owner === "player" ||
+      board.factions?.some((f) => f.id === owner && f.controller.kind === "human") === true
+    );
+  };
   let current = 0;
   let total = 1;
   let label = goal.label;
@@ -79,7 +88,7 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
       break;
     case "control":
       total = goal.tiles.length;
-      current = goal.tiles.filter((id) => board.tile(id)?.owner === "player").length;
+      current = goal.tiles.filter((id) => owned(id)).length;
       break;
     case "seal":
       total = goal.tiles.length;
@@ -118,7 +127,7 @@ export function goalProgress(board: CampaignBoard, goal: Immutable<MissionGoal>)
     (goal.kind !== "hold" ||
       ((goal.once || board.turn === "player") &&
         board.round >= goal.earliestRound &&
-        (goal.once || board.tile(goal.tile)?.owner === "player")));
+        (goal.once || owned(goal.tile))));
   return { label, current, total, done, tiles };
 }
 

@@ -82,6 +82,7 @@ impl BattlefieldLighting {
                 );
             }
             if let Some(rule) = &light.when {
+                rule.condition.validate_presentation()?;
                 rule.condition.validate(tiles, events, true)?;
             }
         }

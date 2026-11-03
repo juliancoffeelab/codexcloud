@@ -25,6 +25,7 @@ export interface BattleView {
   readonly focusedTile: string;
   readonly inspectedTile: string | null;
   readonly renderRevision: number;
+  readonly sessionVersion: number;
   readonly status: string;
   readonly artwork: Artwork;
   readonly sound: boolean;
@@ -90,9 +91,9 @@ export function recruitmentContext(
   if (!tile || game.at(tile.id) || game.winner || game.unit(selected)) {
     return null;
   }
-  const keep = game
+  const keeps = game
     .neighbors(tile.id)
-    .find(
+    .filter(
       (neighbor) =>
         TERRAIN[neighbor.terrain].role === "keep" &&
         (neighbor.owner === "player" ||
@@ -100,13 +101,20 @@ export function recruitmentContext(
             (faction) => faction.id === neighbor.owner && faction.controller.kind === "human",
           )),
     );
-  if (!keep) return null;
+  if (!keeps.length) return null;
   const commanders = game.units.filter(
-    (unit) =>
-      game.faction(unit.id).controllable &&
-      game.faction(unit.id).id === keep.owner &&
-      isLeader(unit),
+    (unit) => game.faction(unit.id).controllable && isLeader(unit),
   );
-  const commander = commanders.find((unit) => unit.tile === keep.id) ?? commanders[0];
-  return Object.freeze({ commander, stationed: commander?.tile === keep.id });
+  const commander =
+    commanders.find((unit) =>
+      keeps.some((keep) => keep.id === unit.tile && keep.owner === game.faction(unit.id).id),
+    ) ?? commanders.find((unit) => keeps.some((keep) => keep.owner === game.faction(unit.id).id));
+  return Object.freeze({
+    commander,
+    stationed:
+      !!commander &&
+      keeps.some(
+        (keep) => keep.id === commander.tile && keep.owner === game.faction(commander.id).id,
+      ),
+  });
 }

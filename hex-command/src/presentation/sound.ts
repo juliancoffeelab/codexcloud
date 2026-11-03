@@ -19,7 +19,7 @@ type AudioGlobals = typeof globalThis & {
 const STORAGE_KEY = "hex-command-sound-enabled";
 const VOLUME = 0.29;
 const AUDIO_REVISION = "6ad634f16189";
-const families = new Set([
+const warmFamilies = new Set([
   "attack-bow",
   "attack-melee",
   "unit-soldier",
@@ -37,8 +37,9 @@ const families = new Set([
   "turn",
   "victory",
   "defeat",
-  "bell",
 ]);
+// Narrative cues are valid sounds, but do not belong to global gesture warmup.
+const families = new Set([...warmFamilies, "bell"]);
 export function createSound() {
   let enabled = true;
   try {
@@ -128,8 +129,8 @@ export function createSound() {
         master = context.createGain();
         master.gain.value = VOLUME;
         master.connect(context.destination);
-        // Warm every variation once after the first gesture, without playing it.
-        for (const family of families) {
+        // Warm common interaction sounds; campaign cues load on demand.
+        for (const family of warmFamilies) {
           for (const variant of [1, 2, 3]) void sample(family, variant).catch(() => {});
         }
       }

@@ -48,77 +48,79 @@ pub(super) fn choose_with_weights(
     weights: RecruitmentWeights,
 ) -> Option<Command> {
     let side = game.turn();
-    let leader = game
-        .units()
-        .iter()
-        .find(|u| game.belongs_to_phase(u, side) && u.is_leader())?;
     let required = orders.requirements.iter().find(|r| r.deficit(game) > 0);
     let reserved: rustc_hash::FxHashSet<_> =
         orders.reserved.iter().map(|t| game.site(&t.0)).collect();
     let mut choices = Vec::new();
-    for kind in game.recruitment_options_for(leader) {
-        if required.is_some_and(|r| !r.accepts(game, kind)) {
-            continue;
-        }
-        let tiles: Vec<_> = game
-            .placement_tiles(leader, kind, false)
-            .into_iter()
-            .filter(|t| !reserved.contains(t))
-            .collect();
-        let Some(&tile) = tiles.first() else {
-            continue;
-        };
-        let rule = &game.rules().units[kind];
-        let price = game.recruit_cost(leader, kind);
-        let mut recruit = Unit {
-            faction: leader.faction.clone(),
-            items: vec![],
-            ai_group: None,
-            id: 0,
-            kind,
-            side,
-            tile,
-            hp: rule.hp,
-            moved: true,
-            attacked: true,
-            experience: None,
-            name: None,
-            role: None,
-            retreating: None,
-            rebuilding: None,
-        };
-        let assessment =
-            super::evaluation::Assessment::with_weights(game, &recruit, predict, weights);
-        let copies = game
-            .units()
-            .iter()
-            .filter(|u| {
-                game.belongs_to_phase(u, side)
-                    && !u.is_leader()
-                    && game.rules().units[u.kind].family == rule.family
-            })
-            .count();
-        if price > game.gold_for_unit(leader) && game.income(side) == 0 {
-            continue;
-        }
-        // An unaffordable unit must justify the income spent waiting rather
-        // than fielding an available alternative now.
-        let wait = f64::from((price - game.gold_for_unit(leader)).max(0))
-            / f64::from(game.income(side).max(1));
-        for tile in tiles {
-            recruit.tile = tile;
-            let score = assessment.recruitment_breakdown(game, &recruit).total
-                / price.max(1) as f64
-                / (1.0 + copies as f64 * weights.duplicate_penalty)
-                / (1.0 + wait * weights.wait_penalty)
-                + super::random(
-                    seed,
-                    &format!("situational:{}:{}:{tile}", game.round(), rule.id),
-                ) * 0.0005;
-            choices.push((score, kind, tile));
+    for leader in game
+        .units()
+        .iter()
+        .filter(|u| game.belongs_to_phase(u, side) && u.is_leader())
+    {
+        for kind in game.recruitment_options_for(leader) {
+            if required.is_some_and(|r| !r.accepts(game, kind)) {
+                continue;
+            }
+            let tiles: Vec<_> = game
+                .placement_tiles(leader, kind, false)
+                .into_iter()
+                .filter(|t| !reserved.contains(t))
+                .collect();
+            let Some(&tile) = tiles.first() else {
+                continue;
+            };
+            let rule = &game.rules().units[kind];
+            let price = game.recruit_cost(leader, kind);
+            let mut recruit = Unit {
+                faction: leader.faction.clone(),
+                items: vec![],
+                ai_group: None,
+                id: 0,
+                kind,
+                side,
+                tile,
+                hp: rule.hp,
+                moved: true,
+                attacked: true,
+                experience: None,
+                name: None,
+                role: None,
+                retreating: None,
+                rebuilding: None,
+            };
+            let assessment =
+                super::evaluation::Assessment::with_weights(game, &recruit, predict, weights);
+            let copies = game
+                .units()
+                .iter()
+                .filter(|u| {
+                    game.belongs_to_phase(u, side)
+                        && !u.is_leader()
+                        && game.rules().units[u.kind].family == rule.family
+                })
+                .count();
+            if price > game.gold_for_unit(leader) && game.income(side) == 0 {
+                continue;
+            }
+            // An unaffordable unit must justify the income spent waiting rather
+            // than fielding an available alternative now.
+            let wait = f64::from((price - game.gold_for_unit(leader)).max(0))
+                / f64::from(game.income(side).max(1));
+            for tile in tiles {
+                recruit.tile = tile;
+                let score = assessment.recruitment_breakdown(game, &recruit).total
+                    / price.max(1) as f64
+                    / (1.0 + copies as f64 * weights.duplicate_penalty)
+                    / (1.0 + wait * weights.wait_penalty)
+                    + super::random(
+                        seed,
+                        &format!("situational:{}:{}:{tile}", game.round(), rule.id),
+                    ) * 0.0005;
+                choices.push((score, leader, kind, tile));
+            }
         }
     }
-    let (_, kind, tile) = choices.into_iter().max_by(|a, b| a.0.total_cmp(&b.0))?;
+    let (_, leader, kind, tile) = choices.into_iter().max_by(|a, b| a.0.total_cmp(&b.0))?;
     if game.recruit_cost(leader, kind) > game.gold_for_unit(leader) {
         return None;
     }

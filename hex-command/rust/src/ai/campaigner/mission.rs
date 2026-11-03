@@ -1303,7 +1303,9 @@ pub(in crate::ai) fn heavy_campaign(game: &Game<'_>) -> bool {
     }
 
     game.campaign.as_ref().is_some_and(|state| {
-        game.rules.campaigns[&state.id]
+        game.campaign_override
+            .as_deref()
+            .unwrap_or(&game.rules.campaigns[&state.id])
             .missions
             .iter()
             .any(|mission| {
