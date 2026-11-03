@@ -179,6 +179,6 @@ fn native_restore_rejects_invalid_positions_hit_points_and_wrong_campaign_map() 
     hp.units[0].hp = 0;
     assert!(Game::try_from_state(rules(), hp).is_err());
     let mut attached = state.clone();
-    attached.campaign = chapter("green-accord", 0).state().campaign;
+    attached.campaign = chapter("green-accord", 0).state().campaign.map(Into::into);
     assert!(Game::try_from_state(rules(), attached).is_err());
 }

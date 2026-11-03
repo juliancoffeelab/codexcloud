@@ -114,22 +114,34 @@ pub(crate) struct RuntimeCache {
     key: Option<MissionKey>,
     mission: Option<Rc<Mission>>,
 }
-/// Planning forks share ownership; a capture detaches only the changed branch.
+/// Immutable planning facts are shared; a mutation detaches only its branch.
 #[derive(Clone, Debug)]
-pub(crate) struct SharedOwners(Rc<Vec<Option<String>>>);
-impl std::ops::Deref for SharedOwners {
-    type Target = Vec<Option<String>>;
+pub(crate) struct Shared<T: Clone>(Rc<T>);
+impl<T: Clone> From<T> for Shared<T> {
+    fn from(value: T) -> Self {
+        Self(Rc::new(value))
+    }
+}
+impl<T: Clone> Shared<T> {
+    fn into_owned(self) -> T {
+        Rc::unwrap_or_clone(self.0)
+    }
+}
+impl<T: Clone> std::ops::Deref for Shared<T> {
+    type Target = T;
+    #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
-impl std::ops::DerefMut for SharedOwners {
+impl<T: Clone> std::ops::DerefMut for Shared<T> {
+    #[inline(always)]
     fn deref_mut(&mut self) -> &mut Self::Target {
         Rc::make_mut(&mut self.0)
     }
 }
-impl AsRef<Vec<Option<String>>> for SharedOwners {
-    fn as_ref(&self) -> &Vec<Option<String>> {
+impl<T: Clone> AsRef<T> for Shared<T> {
+    fn as_ref(&self) -> &T {
         &self.0
     }
 }
@@ -141,7 +153,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) rules: &'catalog Rules,
     pub(crate) board: Rc<Board>,
     pub(crate) terrain: Vec<usize>,
-    pub(crate) owners: SharedOwners,
+    pub(crate) owners: Shared<Vec<Option<String>>>,
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) walls: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
@@ -164,7 +176,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) next_id: u32,
     pub(crate) combat_rng: u32,
     pub(crate) log: Vec<String>,
-    pub(crate) campaign: Option<CampaignState>,
+    pub(crate) campaign: Option<Shared<CampaignState>>,
     pub(crate) last_combat: Option<LastCombat>,
     #[cfg(feature = "wasm")]
     pub(crate) combat_animation: Option<crate::protocol::CombatAnimation>,
@@ -369,7 +381,7 @@ impl<'catalog> Game<'catalog> {
             rules,
             board,
             terrain,
-            owners: SharedOwners(Rc::new(owners)),
+            owners: owners.into(),
             connections: geometry.connections,
             walls: geometry.walls,
             dead_ends: geometry.dead_ends,
@@ -386,7 +398,7 @@ impl<'catalog> Game<'catalog> {
             next_id: state.next_id,
             combat_rng: state.combat_rng.unwrap_or(0x6d2b79f5),
             log: state.log,
-            campaign: state.campaign,
+            campaign: state.campaign.map(Into::into),
             last_combat,
             #[cfg(feature = "wasm")]
             combat_animation: None,
@@ -446,7 +458,7 @@ impl<'catalog> Game<'catalog> {
             log: self.log.clone(),
             tiles: self.tiles(),
             units: self.public_units(),
-            campaign: self.campaign.clone(),
+            campaign: self.campaign.as_deref().cloned(),
             last_combat: self.combat_present.then(|| self.last_combat.clone()),
         }
     }
@@ -492,7 +504,7 @@ impl<'catalog> Game<'catalog> {
             log: self.log,
             tiles,
             units,
-            campaign: self.campaign,
+            campaign: self.campaign.map(Shared::into_owned),
             last_combat: self.combat_present.then_some(self.last_combat),
         }
     }

@@ -467,7 +467,7 @@ fn phase(
                 .collect()
         }),
         objectives: goals.unwrap_or(&[]).to_vec(),
-        campaign: game.campaign.clone(),
+        campaign: game.campaign.as_deref().cloned(),
     };
     if let Some(timing) = timing {
         timing.finish();

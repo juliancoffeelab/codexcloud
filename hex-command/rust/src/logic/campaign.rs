@@ -414,10 +414,11 @@ impl<'catalog> Game<'catalog> {
             self.winner = Some(Side::Enemy);
             let state = self.campaign.as_mut().unwrap();
             state.outcome = Some(text.clone());
+            let portrait = self.rules.campaigns[&state.id].leader.clone();
             state.say([Dialogue {
                 sound: None,
                 speaker: "The company".into(),
-                portrait: self.rules.campaigns[&state.id].leader.clone(),
+                portrait,
                 text: text.clone(),
             }]);
             self.record(text);
@@ -747,35 +748,38 @@ impl<'catalog> Game<'catalog> {
                 )
             })
             .collect();
-        game.campaign = Some(CampaignState {
-            evacuated: vec![],
-            id: id.into(),
-            mission: index,
-            recall: veterans.iter().map(|v| v.r#type.clone()).collect(),
-            veterans: Some(veterans.clone()),
-            story_veterans: Some(story.clone()),
-            fallen_companions: Some(fallen.clone()),
-            carry_gold: carry.clamp(0, 8),
-            marks: vec![],
-            dialogue: original.intro.clone(),
-            dialogue_index: 0,
-            outcome: None,
-            completed: false,
-            refuge: original.refuge.as_ref().map(|_| RefugeCounter {
-                held_turns: 0,
-                last_counted_round: 1,
-                escalated: false,
-            }),
-            vigil: original
-                .all_goals()
-                .any(|g| g.kind() == GoalKind::Vigil)
-                .then_some(Counter {
+        game.campaign = Some(
+            CampaignState {
+                evacuated: vec![],
+                id: id.into(),
+                mission: index,
+                recall: veterans.iter().map(|v| v.r#type.clone()).collect(),
+                veterans: Some(veterans.clone()),
+                story_veterans: Some(story.clone()),
+                fallen_companions: Some(fallen.clone()),
+                carry_gold: carry.clamp(0, 8),
+                marks: vec![],
+                dialogue: original.intro.clone(),
+                dialogue_index: 0,
+                outcome: None,
+                completed: false,
+                refuge: original.refuge.as_ref().map(|_| RefugeCounter {
                     held_turns: 0,
                     last_counted_round: 1,
+                    escalated: false,
                 }),
-            holds: Some(holds),
-            choices: (!choices.is_empty()).then_some(choices.clone()),
-        });
+                vigil: original
+                    .all_goals()
+                    .any(|g| g.kind() == GoalKind::Vigil)
+                    .then_some(Counter {
+                        held_turns: 0,
+                        last_counted_round: 1,
+                    }),
+                holds: Some(holds),
+                choices: (!choices.is_empty()).then_some(choices.clone()),
+            }
+            .into(),
+        );
         game.refresh_mission();
         game.units.retain(|u| {
             u.side != Side::Player
