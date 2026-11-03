@@ -1,9 +1,19 @@
 ---
 name: combat-simulation
-description: Use for AI policy work, combat simulations, roster balance or campaign competence analysis.
+description: Use for AI policy work, simulation harness or analyzer changes, combat simulations, roster balance or campaign competence analysis.
 ---
 
 # Combat simulation
+
+- Keep Classic's decision flow, escort evaluation, and route-selection heuristics
+  owned by Classic. Queued/Full search heuristics must not be applied to Classic
+  through shared preparation or mode flags. Share mechanical facts and explicit
+  order/command handling rather than implicit heuristic weights.
+
+Run combat simulations when needed to explore or validate balance without waiting
+for separate permission. Experiments stay separate from the playable catalog;
+use ignored data copies and `--data-dir`. Requests to prototype, render, simulate
+or evaluate content do not authorize promoting it into the playable catalog.
 
 Work from the game root. For policy or balance work, read
 [purpose](purpose.md) for comparison goals and [army design](design.md) for

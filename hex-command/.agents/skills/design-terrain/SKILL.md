@@ -6,8 +6,8 @@ description: Use when authoring, revising or integrating terrain artwork, connec
 # Design terrain
 
 Work from the game root. Apply the native scale and canvas rules in
-[AGENTS.md](../../../AGENTS.md), including its
-[permanent terrain contract](../../../AGENTS.md#permanent-prohibition-on-map-post-processing).
+[battlefield contract](../battlefield-contract/SKILL.md), including its
+[permanent terrain contract](../battlefield-contract/SKILL.md#permanent-prohibition-on-map-post-processing).
 Deliver complete, prebuilt tile frames selected by explicit map data.
 Generate reusable tile libraries from tile definitions before constructing maps.
 Artwork generators accept no map input. Maps use the shared terrain selector;

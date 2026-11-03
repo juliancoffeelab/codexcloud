@@ -1,6 +1,7 @@
 # Development and publication
 
-Development rules live in [AGENTS.md](../AGENTS.md).
+Development workflow lives in the [development skill](../.agents/skills/development/SKILL.md);
+[AGENTS.md](../AGENTS.md) indexes the project skills.
 
 ## Setup
 
