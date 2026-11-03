@@ -1,6 +1,22 @@
 # Present simulation results
 
-## Arena and campaign summaries
+## Choose the report for the task
+
+For maintenance, tooling and bug fixes, summarize simulation validation in a short
+paragraph: completed/expected runs and affected scope, relevant failures or caps,
+whether the changed behavior was verified, and material limits. A completed run
+is not necessarily a successful gameplay outcome; distinguish execution errors
+from in-game defeats. Include a failing case when it affects confidence in the fix.
+Do not attach matchup matrices, campaign tables or balance commentary simply
+because validation ran the full panel. Keep detailed reports internal unless
+requested or needed to explain a task-relevant finding.
+
+Use the tables below for requested simulation reports, comparisons and balance
+investigations. Scope them to the user's question. A maintenance smoke run does
+not establish balance or performance improvement. For small smoke samples, prefer
+counts such as `3/4` over percentages that obscure the sample size.
+
+## Arena and campaign summaries for requested analysis
 
 1. State completed coverage, seeds, round/recruit limits and pooled dimensions.
 2. For an arena workload, default to **one faction-versus-faction matrix per map**, with row factions

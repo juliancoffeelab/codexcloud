@@ -23,10 +23,14 @@ faction roles. For coefficient tuning, read [recruitment](recruitment.md).
 4. Read the printed findings. If output is truncated, consult the run’s
    analytics/findings.md and summary.md. Separate observations from proposed
    causes, and use recorded terminal reasons, goal progress and casualties.
-5. Present the results using [reporting](references/reporting.md), covering every
-   requested workload. State completed/expected coverage and limits, including
-   failures, caps and missing telemetry. Report files remain internal unless asked for.
+5. Match delivery to the task using [reporting](references/reporting.md).
+   Maintenance and bug fixes need a concise validation summary, including
+   completed/expected runs, relevant failures or caps, and verification of the
+   changed behavior. Do not automatically include balance tables or analysis.
+   Requested comparisons need their results, denominators and limitations for
+   every requested workload. Report files remain internal unless asked for.
 
-The task is complete when the requested comparisons are reported with their
-actual denominators, evidence scope and limitations. A successful test or run
-alone is not delivery. Missing evidence bounds the claim or requires a new run.
+For maintenance, complete the requested fix and report its validation; a full
+simulation report is not an additional deliverable. For requested comparisons,
+a successful run alone is not delivery: report the actual comparison and its
+limitations. Missing evidence bounds the claim or requires a new run.

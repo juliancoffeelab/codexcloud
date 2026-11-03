@@ -98,9 +98,14 @@
 - Run combat simulations when needed to explore or validate balance. Do not wait
   for separate permission to use them during balance work.
 - After changing the simulation harness, analyzer or AI behavior, run fresh
-  simulations and include the report directly in the final reply without waiting
-  for another request. A successful run or test status alone is not delivery.
-  Report the affected workload; use the full panel when scope is unclear.
+  simulations of the affected workload; use the full panel when scope is unclear.
+  Match reporting to the task. For maintenance and bug fixes, give a concise
+  validation summary: completed/expected runs, relevant failures or caps, and
+  whether the changed behavior was verified. Do not include matchup matrices,
+  win-rate tables or balance analysis unless requested or needed to substantiate
+  a task-relevant finding. Running simulations does not make a task balance work.
+  For requested comparisons or balance investigations, deliver the relevant
+  results directly with their denominators and limitations.
 - Continue on the current feature branch and pull request unless the user asks
   to change branches. New branches must start from the freshly fetched upstream
   default branch (`main` here), never a stale local copy. Never push directly to
