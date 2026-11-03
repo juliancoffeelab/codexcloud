@@ -51,6 +51,18 @@ export function createSound() {
   let primed = false,
     request = 0;
   const buffers = new Map<string, Promise<AudioBuffer>>();
+  let preparedFamilies = new Set<string>();
+  function warmSounds(requested: Iterable<string>) {
+    if (!enabled || !context || context.state === "closed") return;
+    for (const family of requested) {
+      for (const variant of [1, 2, 3]) void sample(family, variant).catch(() => {});
+    }
+  }
+  /** Set cues for the current scene; queue them until audio is unlocked. */
+  function prepareSounds(requested: Iterable<string>) {
+    preparedFamilies = new Set([...requested].filter((family) => families.has(family)));
+    warmSounds(preparedFamilies);
+  }
   const bags = new Map<string, number[]>();
   const lastVariation = new Map<string, number>();
   const voices = new Set<Voice>();
@@ -116,6 +128,7 @@ export function createSound() {
       localStorage.setItem(STORAGE_KEY, String(enabled));
     } catch {}
     if (!enabled) stopVoices();
+    else warmSounds(preparedFamilies);
   }
   async function unlockSound(event?: Pick<Event, "isTrusted">) {
     if (!enabled || event?.isTrusted === false) return false;
@@ -129,10 +142,9 @@ export function createSound() {
         master = context.createGain();
         master.gain.value = VOLUME;
         master.connect(context.destination);
-        // Warm common interaction sounds; campaign cues load on demand.
-        for (const family of warmFamilies) {
-          for (const variant of [1, 2, 3]) void sample(family, variant).catch(() => {});
-        }
+        // Common feedback is global; narrative cues belong to the selected scene.
+        warmSounds(warmFamilies);
+        warmSounds(preparedFamilies);
       }
       if (context.state === "running") unlocking = null;
       else {
@@ -225,6 +237,7 @@ export function createSound() {
 
   return {
     soundEnabled,
+    prepareSounds,
     soundForInteraction,
     playInteraction,
     cancelSound,
@@ -236,6 +249,7 @@ export function createSound() {
 
 export const {
   soundEnabled,
+  prepareSounds,
   soundForInteraction,
   playInteraction,
   cancelSound,

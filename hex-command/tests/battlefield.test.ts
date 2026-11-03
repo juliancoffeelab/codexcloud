@@ -2,7 +2,6 @@ import { test } from "vitest";
 import assert from "node:assert/strict";
 import { currentArtwork } from "../src/presentation/art";
 import { Game } from "./game-fixture";
-import { campaignMission, goalProgress } from "../src/game/campaign-progress";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
 import { required } from "./helpers";
 
@@ -54,9 +53,8 @@ test("Moving units preserves stable terrain and SVG layers", async () => {
 test("Campaign objectives and named companions have accessible descriptions", () => {
   const campaign = Game.startCampaign("green-accord");
   const tiles = battlefieldTiles(campaign.publishedView(), null, currentArtwork(), null);
-  for (const goal of campaignMission(campaign.campaign!).goals) {
-    const progress = goalProgress(campaign, goal);
-    for (const id of progress.tiles) {
+  for (const { progress, activeTiles } of required(campaign.publishedView().objectives).goals) {
+    for (const id of activeTiles) {
       const destination = required(tiles.find((tile) => tile.id === id));
       assert(destination.classes.includes("objective"));
       assert(destination.label.includes(`Objective: ${progress.label}`));

@@ -140,13 +140,13 @@ impl Game<'_> {
         }
         controllers
     }
-    pub(crate) fn apply_faction_transfers(&mut self) {
+    pub(crate) fn apply_faction_transfers(&mut self) -> bool {
         if self
             .factions
             .iter()
             .all(|faction| faction.transfer.is_none())
         {
-            return;
+            return false;
         }
         let input = self.condition_context();
         let changes: Vec<_> = self
@@ -172,7 +172,7 @@ impl Game<'_> {
             })
             .collect();
         if changes.is_empty() {
-            return;
+            return false;
         }
         for (id, faction, phase) in changes {
             let index = self.index(id).expect("transferred unit exists");
@@ -186,5 +186,6 @@ impl Game<'_> {
             self.record(format!("{label} joined {faction}."));
         }
         self.roster_changed();
+        true
     }
 }

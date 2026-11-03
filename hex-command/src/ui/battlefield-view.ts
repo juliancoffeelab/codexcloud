@@ -1,4 +1,3 @@
-import { activeGoalTiles, campaignMission, goalProgress } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { Artwork } from "../presentation/art";
 import type { FrameImage } from "../presentation/art";
@@ -135,15 +134,12 @@ export function battlefieldTiles(
   const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
 
   const objectiveTiles = new Map<string, string[]>();
-  if (game.campaign) {
-    for (const [index, goal] of campaignMission(game.campaign).goals.entries()) {
-      if (game.objectives && !game.objectives.goals[index]?.visible) continue;
-      const progress = goalProgress(game, goal);
-      for (const tile of activeGoalTiles(game, goal)) {
-        const labels = objectiveTiles.get(tile) ?? [];
-        labels.push(progress.label);
-        objectiveTiles.set(tile, labels);
-      }
+  for (const status of game.objectives?.goals ?? []) {
+    if (!status.visible) continue;
+    for (const tile of status.activeTiles) {
+      const labels = objectiveTiles.get(tile) ?? [];
+      labels.push(status.progress.label);
+      objectiveTiles.set(tile, labels);
     }
   }
   const occupants = new Map(game.units.map((unit) => [unit.tile, unit]));

@@ -66,6 +66,7 @@ impl Game<'_> {
                     _ => false,
                 });
         ObjectiveStatus {
+            active_tiles: self.active_goal_tiles(goal),
             visible: self.goal_visible(goal),
             progress,
             failed,
@@ -82,6 +83,7 @@ impl Game<'_> {
                 record.unit.side == Side::Player && record.unit.role == Some(Role::Leader)
             });
         let survival = |label: String, alive: bool| ObjectiveStatus {
+            active_tiles: vec![],
             visible: true,
             progress: Progress {
                 label,

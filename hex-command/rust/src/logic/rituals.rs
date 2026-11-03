@@ -116,13 +116,14 @@ impl Game<'_> {
         lights
     }
 
-    pub(crate) fn evaluate_rituals(&mut self, at_turn_start: bool) {
+    pub(crate) fn evaluate_rituals(&mut self, at_turn_start: bool) -> bool {
         if self.turn != Side::Player || self.winner.is_some() {
-            return;
+            return false;
         }
         let Some(mission) = self.mission.clone() else {
-            return;
+            return false;
         };
+        let mut changed = false;
         for ritual in &mission.rituals {
             if !self.event_condition_met(&ritual.when) {
                 continue;
@@ -140,6 +141,7 @@ impl Game<'_> {
                 && (self.round - ritual.first_round) % ritual.interval == 0
                 && !self.campaign.as_ref().unwrap().marked(&tick);
             if due || opening {
+                changed = true;
                 self.campaign.as_mut().unwrap().marks.push(tick);
                 self.record(ritual.label.clone());
                 let source = self.rules.terrains[&ritual.source_terrain];
@@ -247,6 +249,7 @@ impl Game<'_> {
                         })
                         .min_by_key(|&tile| (self.board.distance(tile, origin), tile));
                     if let Some(site) = site {
+                        changed = true;
                         let id = self.add(kind, incoming.side, site);
                         let unit = self.units.iter_mut().find(|u| u.id == id).unwrap();
                         unit.faction = incoming
@@ -261,5 +264,6 @@ impl Game<'_> {
                 }
             }
         }
+        changed
     }
 }

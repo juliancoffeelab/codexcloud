@@ -252,12 +252,12 @@ impl<'catalog> Game<'catalog> {
             goal.sites()
         }
     }
-    pub(crate) fn escalate_refuge(&mut self) {
+    pub(crate) fn escalate_refuge(&mut self) -> bool {
         let Some(refuge) = self.mission.as_ref().and_then(|m| m.refuge.clone()) else {
-            return;
+            return false;
         };
         let Some(state) = &mut self.campaign else {
-            return;
+            return false;
         };
         let counter = state.refuge.get_or_insert(RefugeCounter {
             held_turns: 0,
@@ -265,12 +265,13 @@ impl<'catalog> Game<'catalog> {
             escalated: false,
         });
         if counter.escalated {
-            return;
+            return false;
         }
         counter.escalated = true;
         state.say(refuge.escalation);
         self.record("The chance of mediation is lost. Defeat the remaining patrol.".into());
         self.refresh_mission();
+        true
     }
     pub(crate) fn spawn_waves(&mut self) {
         if self.campaign.is_none() || self.winner.is_some() {
@@ -321,10 +322,11 @@ impl<'catalog> Game<'catalog> {
         }
     }
     /// Activation is remembered independently from placement and each member is released once.
-    pub(crate) fn spawn_events(&mut self) {
+    pub(crate) fn spawn_events(&mut self) -> bool {
         let Some(mission) = self.mission.clone() else {
-            return;
+            return false;
         };
+        let mut changed = false;
         for event in &mission.events {
             let Some(group) = &event.spawn else {
                 continue;
@@ -348,6 +350,7 @@ impl<'catalog> Game<'catalog> {
                     .map(|id| self.site(id))
                     .find(|&tile| self.at(tile).is_none() && self.cost(kind, tile) != u16::MAX);
                 if let Some(tile) = tile {
+                    changed = true;
                     let id = self.add(kind, incoming.side, tile);
                     let unit = self.units.iter_mut().find(|unit| unit.id == id).unwrap();
                     unit.ai_group = group.ai_group.clone();
@@ -358,6 +361,7 @@ impl<'catalog> Game<'catalog> {
                 }
             }
         }
+        changed
     }
     fn evaluate_campaign_loss(&mut self, mission: &Mission) -> bool {
         let definition = self.campaign_definition();
@@ -439,6 +443,9 @@ impl<'catalog> Game<'catalog> {
         if self.evaluate_campaign_loss(&mission) {
             return;
         }
+        // Recheck defeat only after scripted work changes state. The initial check
+        // already covers the triggering move/attack and current round.
+        let mut scripts_changed = false;
         if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Vigil) {
             let tile = self.site(goal.tile().unwrap());
             let present = self.units.iter().any(|u| {
@@ -450,10 +457,14 @@ impl<'catalog> Game<'catalog> {
                 .as_mut()
                 .unwrap()
                 .vigil
-                .get_or_insert(Counter {
-                    held_turns: 0,
-                    last_counted_round: self.round,
+                .get_or_insert_with(|| {
+                    scripts_changed = true;
+                    Counter {
+                        held_turns: 0,
+                        last_counted_round: self.round,
+                    }
                 });
+            let before = (counter.held_turns, counter.last_counted_round);
             if !present || !owned {
                 counter.held_turns = 0;
                 counter.last_counted_round = self.round;
@@ -461,28 +472,33 @@ impl<'catalog> Game<'catalog> {
                 counter.held_turns = (counter.held_turns + 1).min(goal.turns().unwrap());
                 counter.last_counted_round = self.round;
             }
+            scripts_changed |= before != (counter.held_turns, counter.last_counted_round);
         }
         if mission.refuge.is_some() {
             self.campaign
                 .as_mut()
                 .unwrap()
                 .refuge
-                .get_or_insert(RefugeCounter {
-                    held_turns: 0,
-                    last_counted_round: self.round,
-                    escalated: false,
+                .get_or_insert_with(|| {
+                    scripts_changed = true;
+                    RefugeCounter {
+                        held_turns: 0,
+                        last_counted_round: self.round,
+                        escalated: false,
+                    }
                 });
             if !self
                 .units
                 .iter()
                 .any(|u| self.hostile_to_phase(u, Side::Player) && u.role == Some(Role::Leader))
             {
-                self.escalate_refuge();
+                scripts_changed |= self.escalate_refuge();
             }
             if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Refuge) {
                 let tile = self.site(goal.tile().unwrap());
                 let owned = self.human_owns(tile);
                 let counter = self.campaign.as_mut().unwrap().refuge.as_mut().unwrap();
+                let before = (counter.held_turns, counter.last_counted_round);
                 if !counter.escalated {
                     if !owned {
                         counter.held_turns = 0;
@@ -493,6 +509,7 @@ impl<'catalog> Game<'catalog> {
                         counter.last_counted_round = self.round;
                     }
                 }
+                scripts_changed |= before != (counter.held_turns, counter.last_counted_round);
             }
         }
         for goal in mission.all_goals() {
@@ -509,10 +526,14 @@ impl<'catalog> Game<'catalog> {
                     .holds
                     .get_or_insert_with(BTreeMap::new)
                     .entry(goal.tile().unwrap().clone())
-                    .or_insert(Counter {
-                        held_turns: 0,
-                        last_counted_round: self.round,
+                    .or_insert_with(|| {
+                        scripts_changed = true;
+                        Counter {
+                            held_turns: 0,
+                            last_counted_round: self.round,
+                        }
                     });
+                let before = (counter.held_turns, counter.last_counted_round);
                 if matches!(goal, Goal::Hold { once: true, .. })
                     && counter.held_turns >= goal.turns().unwrap()
                 {
@@ -525,6 +546,7 @@ impl<'catalog> Game<'catalog> {
                     counter.held_turns = (counter.held_turns + 1).min(goal.turns().unwrap());
                     counter.last_counted_round = self.round;
                 }
+                scripts_changed |= before != (counter.held_turns, counter.last_counted_round);
             }
             if goal.kind() != GoalKind::Seal {
                 continue;
@@ -543,6 +565,7 @@ impl<'catalog> Game<'catalog> {
                         })
                 });
                 if eligible {
+                    scripts_changed = true;
                     self.campaign.as_mut().unwrap().marks.push(mark);
                     self.record(
                         "A binding stone was sealed. It will no longer raise the dead.".into(),
@@ -595,6 +618,7 @@ impl<'catalog> Game<'catalog> {
                 {
                     continue;
                 }
+                scripts_changed = true;
                 let lines = if state.escalated() {
                     event.war_dialogue.as_ref().unwrap_or(&event.dialogue)
                 } else {
@@ -692,10 +716,10 @@ impl<'catalog> Game<'catalog> {
                 );
             }
         }
-        self.spawn_events();
-        self.apply_faction_transfers();
-        self.evaluate_rituals(at_turn_start);
-        if self.evaluate_campaign_loss(&mission) {
+        scripts_changed |= self.spawn_events();
+        scripts_changed |= self.apply_faction_transfers();
+        scripts_changed |= self.evaluate_rituals(at_turn_start);
+        if scripts_changed && self.evaluate_campaign_loss(&mission) {
             return;
         }
         if mission.goals.iter().all(|g| self.goal_done(g)) {
