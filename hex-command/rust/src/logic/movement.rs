@@ -198,8 +198,15 @@ impl<'catalog> Game<'catalog> {
         reachable
     }
     pub(crate) fn routes(&self, kind: usize, goals: &[usize]) -> Rc<Vec<u16>> {
+        self.route_distances(kind, goals, false)
+    }
+    /// Distances from one source, charging each destination's entry cost.
+    pub(crate) fn routes_from(&self, kind: usize, start: usize) -> Rc<Vec<u16>> {
+        self.route_distances(kind, &[start], true)
+    }
+    fn route_distances(&self, kind: usize, goals: &[usize], forward: bool) -> Rc<Vec<u16>> {
         let kind = self.rules.route_classes[kind];
-        let key = (kind, goals.to_vec(), self.terrain_revision);
+        let key = (kind, goals.to_vec(), self.terrain_revision, forward);
         if let Some(route) = self.route_cache.borrow().get(&key) {
             return route.clone();
         }
@@ -223,10 +230,11 @@ impl<'catalog> Game<'catalog> {
                 continue;
             }
             for &next in &self.board.adjacent[current] {
-                if self.cost(kind, next) == u16::MAX {
+                let next_entry = self.cost(kind, next);
+                if next_entry == u16::MAX {
                     continue;
                 }
-                let cost = spent.saturating_add(entry);
+                let cost = spent.saturating_add(if forward { next_entry } else { entry });
                 if cost >= costs[next] {
                     continue;
                 }

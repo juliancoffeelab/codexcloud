@@ -74,8 +74,8 @@ type TerrainKey = (String, Vec<(String, i32, i32, String)>);
 #[derive(Clone)]
 struct SharedTerrain {
     board: Rc<Board>,
-    routes: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
-    route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64)>>>,
+    routes: Rc<RefCell<HashMap<(usize, Vec<usize>, u64, bool), Rc<Vec<u16>>>>>,
+    route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64, bool)>>>,
     attacks: super::geometry::AttackGeometry,
     masks: super::geometry::AttackMasks,
     reach: super::movement::ReachCache,
@@ -188,14 +188,14 @@ pub(crate) struct Game<'catalog> {
     mission_key: Option<MissionKey>,
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) recordings: Option<Records>,
-    pub(super) route_cache: Rc<RefCell<HashMap<(usize, Vec<usize>, u64), Rc<Vec<u16>>>>>,
+    pub(super) route_cache: Rc<RefCell<HashMap<(usize, Vec<usize>, u64, bool), Rc<Vec<u16>>>>>,
     pub(super) terrain_revision: u64,
     pub(super) attack_geometry: super::geometry::AttackGeometry,
     pub(super) attack_masks: super::geometry::AttackMasks,
     pub(super) reach_cache: super::movement::ReachCache,
     pub(super) threat_reach_cache: super::movement::ThreatReachCache,
     pub(super) movement_masks: super::movement::MovementMasks,
-    pub(super) route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64)>>>,
+    pub(super) route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64, bool)>>>,
     pub(super) occupancy: Vec<Option<usize>>,
     pub(crate) occupied_tiles: super::geometry::TileSet,
     pub(super) unit_indices: HashMap<u32, usize>,

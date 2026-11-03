@@ -346,6 +346,9 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn routes(&self, kind: usize, goals: &[usize]) -> Rc<Vec<u16>> {
         self.engine().routes(kind, goals)
     }
+    pub(super) fn routes_from(&self, kind: usize, start: usize) -> Rc<Vec<u16>> {
+        self.engine().routes_from(kind, start)
+    }
     pub(super) fn occupied_routes(&self, unit: &Unit, goals: &[usize], yielding: bool) -> Vec<u16> {
         self.engine().occupied_routes(unit, goals, yielding)
     }

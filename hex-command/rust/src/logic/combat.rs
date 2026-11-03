@@ -114,6 +114,7 @@ impl<'catalog> Game<'catalog> {
             reflection,
         }
     }
+    /// `from` supplies the hypothetical attacker position without cloning its unit.
     pub(crate) fn exchange(
         &self,
         unit: &Unit,

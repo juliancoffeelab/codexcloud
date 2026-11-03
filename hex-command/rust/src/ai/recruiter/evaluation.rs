@@ -287,15 +287,14 @@ impl Assessment {
                 }
                 let access = 1.0;
                 let origins = representative_origins(game, unit.kind, unit.tile, &approach.origins);
-                if origins.is_empty() {
+                let origin_count = origins.clone().count();
+                if origin_count == 0 {
                     continue;
                 }
                 let mut value = 0.0;
                 let mut leader_damage = 0.0;
-                for &origin in &origins {
-                    let mut attacker = unit.clone();
-                    attacker.tile = origin;
-                    let forecast = game.exchange(&attacker, enemy, approach.weapon, origin);
+                for origin in origins {
+                    let forecast = game.exchange(unit, enemy, approach.weapon, origin);
                     let damage = forecast.damage[0].round() as i32;
                     let response = forecast.damage[1].round() as i32;
                     let attack = game.weapon(unit, approach.weapon);
@@ -311,10 +310,10 @@ impl Assessment {
                     value += exchange;
                     leader_damage += damage.min(enemy.hp).max(0) as f64;
                 }
-                value /= origins.len() as f64;
+                value /= origin_count as f64;
                 if recruitment && coefficients.leader_pressure > 0.0 && enemy.is_leader() {
                     let turns = f64::from(route) / rule.r#move.max(1) as f64;
-                    let fraction = leader_damage / origins.len() as f64 / enemy.hp.max(1) as f64;
+                    let fraction = leader_damage / origin_count as f64 / enemy.hp.max(1) as f64;
                     leader_pressure = leader_pressure.max(fraction.min(1.0) / (1.0 + turns));
                 }
                 best_offense = best_offense.max(value * access);
@@ -519,17 +518,17 @@ fn dominant_melee_strikes(
 
 // Equally sample terrain-reachable legal exchange positions. Travel distance
 // never chooses a representative or changes the matchup's weight.
-fn representative_origins(
+fn representative_origins<'a>(
     game: &BattleView<'_, '_>,
     kind: usize,
     from: usize,
-    origins: &[usize],
-) -> Vec<usize> {
+    origins: &'a [usize],
+) -> impl Iterator<Item = usize> + Clone + 'a {
+    let routes = game.routes_from(kind, from);
     origins
         .iter()
         .copied()
-        .filter(|&tile| game.routes(kind, &[tile])[from] != u16::MAX)
-        .collect()
+        .filter(move |&tile| routes[tile] != u16::MAX)
 }
 
 struct PreferredAttack {
@@ -555,25 +554,24 @@ fn preferred_attack(
             }
         });
         let origins = representative_origins(game, enemy.kind, enemy.tile, &legal);
-        if origins.is_empty() {
+        let origin_count = origins.clone().count();
+        if origin_count == 0 {
             continue;
         }
         let mut value = 0.0;
         let mut damage_sum = 0.0;
         let mut response_sum = 0.0;
         let mut strikes_sum = 0.0;
-        for &origin in &origins {
-            let mut attacker = enemy.clone();
-            attacker.tile = origin;
+        for origin in origins {
             let forecast = if let Some(aura) = aura {
                 let reflection = if attack.category == Category::Melee {
                     game.rules().units[target.kind].thorns + aura
                 } else {
                     0
                 };
-                game.exchange_with_thorns(&attacker, target, weapon, origin, reflection)
+                game.exchange_with_thorns(enemy, target, weapon, origin, reflection)
             } else {
-                game.exchange(&attacker, target, weapon, origin)
+                game.exchange(enemy, target, weapon, origin)
             };
             let damage = forecast.damage[0];
             let response = forecast.damage[1];
@@ -585,10 +583,10 @@ fn preferred_attack(
             response_sum += response;
             strikes_sum += forecast.strikes[0];
         }
-        value /= origins.len() as f64;
-        let damage = damage_sum / origins.len() as f64;
-        let response = response_sum / origins.len() as f64;
-        let strikes = strikes_sum / origins.len() as f64;
+        value /= origin_count as f64;
+        let damage = damage_sum / origin_count as f64;
+        let response = response_sum / origin_count as f64;
+        let strikes = strikes_sum / origin_count as f64;
         if best.as_ref().is_none_or(|(score, _)| value > *score) {
             best = Some((
                 value,
