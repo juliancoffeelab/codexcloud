@@ -1048,7 +1048,7 @@ mod tests {
                 7,
                 1,
                 None,
-                crate::ai::Diplomacy::Pragmatic,
+                crate::ai::Diplomacy::Unrestricted,
             )
             .unwrap();
         assert_eq!(

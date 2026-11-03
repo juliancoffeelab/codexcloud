@@ -23,7 +23,7 @@
     "stages/green-vigil/stage.json",
     "stages/green-pact/stage.json"
   ],
-  "playerDiplomacy": ["pragmatic"],
+  "playerDiplomacy": ["unrestricted"],
   "characters": [
     {
       "id": "tamsin",

@@ -30,48 +30,6 @@ impl Game<'_> {
         }
     }
 
-    fn event_unavailable(&self, id: &str, remaining: usize) -> bool {
-        let state = self.campaign.as_ref().unwrap();
-        if state.marked(&format!("event:{id}")) || remaining == 0 {
-            return false;
-        }
-        let Some(event) = self
-            .mission
-            .as_ref()
-            .unwrap()
-            .events
-            .iter()
-            .find(|e| e.id == id)
-        else {
-            return false;
-        };
-        event.before_round.is_some_and(|round| self.round >= round)
-            || event
-                .unless_event
-                .as_ref()
-                .is_some_and(|other| state.marked(&format!("event:{other}")))
-            || event
-                .requires_event
-                .as_ref()
-                .is_some_and(|other| self.event_unavailable(other, remaining - 1))
-    }
-    fn objective_status(&self, goal: &Goal) -> ObjectiveStatus {
-        let progress = self.goal_progress(goal);
-        let failed = !progress.done
-            && (self.winner.is_some()
-                || match goal {
-                    Goal::Event { event, .. } => {
-                        self.event_unavailable(event, self.mission.as_ref().unwrap().events.len())
-                    }
-                    _ => false,
-                });
-        ObjectiveStatus {
-            active_tiles: self.active_goal_tiles(goal),
-            visible: self.goal_visible(goal),
-            progress,
-            failed,
-        }
-    }
     fn campaign_objectives(&self) -> Option<CampaignObjectives> {
         let state = self.campaign.as_ref()?;
         let mission = self.mission.as_ref()?;
@@ -109,49 +67,19 @@ impl Game<'_> {
                 alive,
             ));
         }
-        let mut notices = self.script_notices();
-        for loss in &mission.lose_conditions {
-            if let Condition::Round { round: deadline } = &loss.condition {
-                notices.push(format!(
-                    "Turn {}/{} — {}",
-                    self.round,
-                    deadline.saturating_sub(1),
-                    loss.label
-                ));
-            }
-            protected.push(survival(
-                loss.label.clone(),
-                !self.event_condition_met(&loss.condition),
-            ));
-        }
-        if !mission.scripted_events.is_empty() {
-            let status = |optional| {
-                mission
-                    .scripted_events
-                    .iter()
-                    .filter(|e| e.objective.as_ref().is_some_and(|o| o.optional == optional))
-                    .map(|e| self.scripted_objective_status(e))
-                    .collect()
-            };
-            return Some(CampaignObjectives {
-                notices,
-                goals: status(false),
-                optional: status(true),
-                survival: protected,
-            });
-        }
+        let notices = self.script_notices();
+        let status = |optional| {
+            mission
+                .scripted_events
+                .iter()
+                .filter(|e| e.objective.as_ref().is_some_and(|o| o.optional == optional))
+                .map(|e| self.scripted_objective_status(e))
+                .collect()
+        };
         Some(CampaignObjectives {
             notices,
-            goals: mission
-                .goals
-                .iter()
-                .map(|g| self.objective_status(g))
-                .collect(),
-            optional: mission
-                .optional_goals
-                .iter()
-                .map(|g| self.objective_status(g))
-                .collect(),
+            goals: status(false),
+            optional: status(true),
             survival: protected,
         })
     }
@@ -275,6 +203,7 @@ impl Game<'_> {
             })
             .collect();
         BattleInspection {
+            story: self.resolved_story(),
             speakers: self
                 .campaign
                 .as_ref()

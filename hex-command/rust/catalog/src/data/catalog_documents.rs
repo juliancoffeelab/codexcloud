@@ -165,30 +165,24 @@ struct StageObjectives {
 struct StageStory {
     #[serde(rename = "subtitle")]
     subtitle: Option<String>,
-    briefing: String,
-    debrief: Option<String>,
-    hints: Vec<String>,
-    intro: Vec<Dialogue>,
-    victory: Vec<Dialogue>,
+    briefing: ConditionalText,
+    debrief: Option<ConditionalText>,
+    hints: Vec<ConditionalHint>,
+    intro: Vec<Speech>,
+    victory: Vec<Speech>,
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageScripts {
     #[serde(default)]
     enemy_groups: Vec<EnemyGroup>,
-    events: Vec<EventDocument>,
+    events: Vec<ScriptEvent>,
     #[serde(default)]
-    waves: Vec<Wave>,
-    companion_losses: Option<BTreeMap<String, MissionPatch>>,
-    refuge: Option<Refuge>,
-    without_dain: Option<MissionPatch>,
-}
-
-#[derive(Deserialize)]
-#[serde(untagged)]
-enum EventDocument {
-    Script(ScriptEvent),
-    Legacy(Event),
+    required_companions: Vec<String>,
+    #[serde(default)]
+    defend_objectives: bool,
+    #[serde(default)]
+    enemy_leader_post: Option<String>,
 }
 
 /// Component references are local to their descriptor, with traversal rejected.
@@ -329,26 +323,13 @@ pub fn stage(
     };
     let story: StageStory = parse(bundle, &sibling(path, &documents.story)?)?;
     let scripts: StageScripts = parse(bundle, &sibling(path, &documents.scripts)?)?;
-    let mut events = vec![];
-    let mut scripted_events = vec![];
-    for event in scripts.events {
-        match event {
-            EventDocument::Script(e) => scripted_events.push(e),
-            EventDocument::Legacy(e) => events.push(e),
-        }
-    }
+    let events = vec![];
+    let mut scripted_events = scripts.events;
     unique(scripted_events.iter().map(|e| e.id.as_str()), &map_path)?;
-    if !events.is_empty() && !scripted_events.is_empty() {
-        return Err(ContentError::new(
-            &map_path,
-            "a stage cannot mix legacy and general events",
-        ));
-    }
     scripted_events.sort_by_key(|e| std::cmp::Reverse(e.priority));
     for e in &scripted_events {
         e.validate(&map.tiles, &roster.factions, items, &map_path)?;
     }
-
     for tile in &map.tiles {
         if let Some(light) = &tile.light {
             light
@@ -402,20 +383,20 @@ pub fn stage(
             hints: story.hints,
             intro: story.intro,
             victory: story.victory,
-            required_companions: objectives.required_companions,
+            required_companions: scripts.required_companions,
             arrivals,
             goals: objectives.goals,
             optional_goals: objectives.optional_goals,
-            defend_objectives: objectives.defend_objectives,
-            enemy_leader_post: objectives.enemy_leader_post,
+            defend_objectives: scripts.defend_objectives,
+            enemy_leader_post: scripts.enemy_leader_post,
             recruitment,
             gold,
             events,
             enemy_groups: scripts.enemy_groups,
-            waves: scripts.waves,
-            companion_losses: scripts.companion_losses,
-            refuge: scripts.refuge,
-            without_dain: scripts.without_dain,
+            waves: vec![],
+            companion_losses: None,
+            refuge: None,
+            without_dain: None,
         },
     })
 }

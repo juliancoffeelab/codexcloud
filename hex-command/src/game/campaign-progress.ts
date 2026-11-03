@@ -3,34 +3,7 @@ import type { Immutable } from "./immutable";
 import type { CampaignState, MissionDefinition, Unit } from "./types";
 
 export function campaignMission(state: Immutable<CampaignState>): Immutable<MissionDefinition> {
-  const chosen = (id: string) => state.flags[id]?.at(-1)?.state ?? false;
-  let mission: Immutable<MissionDefinition> = CAMPAIGNS[state.id].missions[state.mission]!;
-  if (
-    (chosen("refuge-war") || chosen("green-dain-dead") || state.marks.includes("dain-fell")) &&
-    mission.withoutDain
-  )
-    mission = { ...mission, ...mission.withoutDain };
-  const fallen = new Set([
-    ...(state.fallenCompanions ?? []),
-    ...state.marks.filter((mark) => mark.startsWith("fallen:")).map((mark) => mark.slice(7)),
-  ]);
-  for (const name of fallen) {
-    const changes = mission.companionLosses?.[name];
-    if (changes) mission = { ...mission, ...changes };
-  }
-  if (
-    [...mission.intro, ...mission.victory].some(
-      (line) => !!line.character && fallen.has(line.character),
-    )
-  )
-    mission = {
-      ...mission,
-      intro: mission.intro.filter((line) => !line.character || !fallen.has(line.character)),
-      victory: mission.victory.filter((line) => !line.character || !fallen.has(line.character)),
-    };
-  if (state.refuge?.escalated && mission.refuge)
-    return { ...mission, briefing: mission.refuge.warBriefing, hints: mission.refuge.warHints };
-  return mission;
+  return CAMPAIGNS[state.id].missions[state.mission]!;
 }
 
 export function dialoguePending(state: Immutable<CampaignState> | undefined): boolean {

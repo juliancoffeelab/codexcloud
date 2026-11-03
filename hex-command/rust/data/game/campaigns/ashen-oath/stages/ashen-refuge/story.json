@@ -1,10 +1,53 @@
 {
   "subtitle": "A refuge needs neighbors, not another war.",
-  "briefing": "Orin’s company has found empty houses beside living villages. Captain Dain has orders to drive the dead away; the villagers want time to judge their new neighbors for themselves. Orin will defend the refuge while they gather. Helping the sick can win their support sooner, but a withdrawing soldier’s death would destroy the chance of peace.",
+  "briefing": [
+    {
+      "when": {
+        "flag": "peace-lost"
+      },
+      "text": "The attempt to live beside the villages has become an open battle. After the bloodshed, the households can no longer persuade the patrol to stand down. Orin’s company must break the remaining patrol to leave, and will face the Master without Dain’s help."
+    },
+    {
+      "text": "Orin’s company has found empty houses beside living villages. Captain Dain has orders to drive the dead away; the villagers want time to judge their new neighbors for themselves. Orin will defend the refuge while they gather. Helping the sick can win their support sooner, but any death would destroy the chance of peace."
+    }
+  ],
   "hints": [
-    "Defend ownership of the refuge through six enemy turns. Troops can leave the ruins to screen it; enemy recapture resets the count. Medicine reduces the defense to five turns.",
-    "Skeleton clubs punish the armored patrol. Bone bows answer its unarmored swordsmen, archers and adepts; protect those bows with a melee screen.",
-    "Nonlethal defensive attacks are allowed. Killing Dain or a retreating soldier ends mediation; check the combat preview before attacking and leave withdrawing men a way home."
+    {
+      "when": {
+        "not": {
+          "flag": "peace-lost"
+        }
+      },
+      "text": "Defend ownership of the refuge through six enemy turns. Troops can leave the ruins to screen it; enemy recapture resets the count. Medicine reduces the defense to five turns."
+    },
+    {
+      "when": {
+        "not": {
+          "flag": "peace-lost"
+        }
+      },
+      "text": "Skeleton clubs punish the armored patrol. Bone bows answer its unarmored swordsmen, archers and adepts; protect those bows with a melee screen."
+    },
+    {
+      "when": {
+        "not": {
+          "flag": "peace-lost"
+        }
+      },
+      "text": "Nonlethal defensive attacks are allowed. Any death ends mediation; check the combat preview before attacking and leave withdrawing men a way home."
+    },
+    {
+      "when": {
+        "flag": "peace-lost"
+      },
+      "text": "The patrol still has somewhere to run."
+    },
+    {
+      "when": {
+        "flag": "peace-lost"
+      },
+      "text": "The empty houses remain, even after peace is lost."
+    }
   ],
   "intro": [
     {
@@ -28,26 +71,5 @@
       "character": "orin"
     }
   ],
-  "victory": [
-    {
-      "speaker": "Village elder",
-      "portrait": "worker",
-      "text": "Enough, Captain. They held their shelter and let your wounded leave. These houses are ours to offer. The dead may stay as our neighbors."
-    },
-    {
-      "portrait": "warden",
-      "text": "My orders did not mention people who would ask the dead to stay. Perhaps the man who wrote them left other things out.",
-      "character": "dain"
-    },
-    {
-      "portrait": "necromancer",
-      "text": "He used to write my orders too. Come with us, and see what he has been hiding.",
-      "character": "orin"
-    },
-    {
-      "portrait": "warden",
-      "text": "I will. My soldiers can rest here. I know which road we take next.",
-      "character": "dain"
-    }
-  ]
+  "victory": []
 }

@@ -1,113 +1,294 @@
 {
   "events": [
     {
-      "id": "owl-cache",
-      "trigger": {
-        "kind": "visit",
-        "tile": "hex-0897-9650de66eb"
-      },
-      "label": "Recover the northern guard-post supplies",
-      "gold": 6,
-      "dialogue": [
-        {
-          "portrait": "wildkeeper",
-          "text": "The abandoned guard post still has funds for provisions. Use them to bring another defender to the grove; Lark cannot finish her work if we lose it.",
-          "character": "alder"
+      "id": "lark-lost",
+      "when": {
+        "killed": {
+          "character": "lark"
         }
-      ]
-    }
-  ],
-  "waves": [
-    {
-      "round": 3,
-      "label": "A warden and archer arrive from the east on turn 3",
-      "id": "eastern-patrol",
-      "units": [
+      },
+      "actions": [
         {
-          "type": "warden",
-          "side": "enemy",
-          "tile": "hex-0098-b1326129be"
+          "failObjective": "goal-0"
         },
         {
-          "type": "archer",
-          "side": "enemy",
-          "tile": "hex-0126-1b9b97e69c"
+          "defeat": "The company cannot continue without lark."
         }
       ]
     },
     {
-      "round": 5,
-      "label": "An adept and soldier arrive from the east on turn 5",
-      "id": "eastern-support",
-      "units": [
+      "id": "alder-death",
+      "when": {
+        "killed": {
+          "character": "alder"
+        }
+      },
+      "actions": [
         {
-          "type": "adept",
-          "side": "enemy",
-          "tile": "hex-0088-d3b4c2a321"
+          "setFlag": "alder-dead"
+        }
+      ]
+    },
+    {
+      "id": "dain-death",
+      "when": {
+        "killed": {
+          "character": "dain"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "dain-dead"
+        }
+      ]
+    },
+    {
+      "id": "lark-death",
+      "when": {
+        "killed": {
+          "character": "lark"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "lark-dead"
+        }
+      ]
+    },
+    {
+      "id": "overseer-death",
+      "when": {
+        "killed": {
+          "character": "overseer"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "overseer-dead"
+        }
+      ]
+    },
+    {
+      "id": "alternate-company",
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "flag": "dain-dead"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "deleteUnit": {
+            "character": "dain"
+          }
         },
         {
-          "type": "soldier",
-          "side": "enemy",
-          "tile": "hex-0092-2cbe4dcb7c"
+          "spawn": {
+            "faction": "player",
+            "tile": "hex-0892-f4d2ec09d8",
+            "radius": 0,
+            "units": [
+              {
+                "type": "boar"
+              }
+            ]
+          }
+        },
+        {
+          "recruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "wolf"
+              },
+              {
+                "unit": "boar"
+              },
+              {
+                "unit": "thorncaller"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "owl-cache",
+      "when": {
+        "stand": {
+          "tile": "hex-0897-9650de66eb",
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 6
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "wildkeeper",
+              "text": "The abandoned guard post still has funds for provisions. Use them to bring another defender to the grove; Lark cannot finish her work if we lose it.",
+              "character": "alder"
+            }
+          ]
+        },
+        {
+          "setFlag": "owl-cache"
+        },
+        {
+          "log": "Recover the northern guard-post supplies"
+        }
+      ],
+      "objective": {
+        "label": "Recover the northern guard-post supplies",
+        "intent": {
+          "goTo": {
+            "tile": "hex-0897-9650de66eb",
+            "side": "player"
+          }
+        },
+        "optional": true
+      }
+    },
+    {
+      "id": "eastern-patrol",
+      "when": {
+        "turn": {
+          "number": 3,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-0098-b1326129be",
+            "radius": 0,
+            "units": [
+              {
+                "type": "warden"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-0126-1b9b97e69c",
+            "radius": 0,
+            "units": [
+              {
+                "type": "archer"
+              }
+            ]
+          }
+        },
+        {
+          "log": "A warden and archer arrive from the east on turn 3"
+        }
+      ]
+    },
+    {
+      "id": "eastern-support",
+      "when": {
+        "turn": {
+          "number": 5,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-0088-d3b4c2a321",
+            "radius": 0,
+            "units": [
+              {
+                "type": "adept"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-0092-2cbe4dcb7c",
+            "radius": 0,
+            "units": [
+              {
+                "type": "soldier"
+              }
+            ]
+          }
+        },
+        {
+          "log": "An adept and soldier arrive from the east on turn 5"
+        }
+      ]
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "held": {
+          "tile": "hex-0923-ec307e92cf",
+          "turns": 3,
+          "character": "lark",
+          "side": "player",
+          "when": {
+            "own": {
+              "tile": "hex-0923-ec307e92cf",
+              "faction": "player"
+            }
+          }
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "goal-0"
+        }
+      ],
+      "objective": {
+        "label": "Protect Lark in the central grove through three enemy turns",
+        "intent": {
+          "hold": {
+            "tile": "hex-0923-ec307e92cf",
+            "turns": 3,
+            "character": "lark",
+            "side": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "goal-0"
+          },
+          {
+            "hasUnits": {
+              "role": "leader",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "withoutDain": {
-    "briefing": "Dain is dead. The ledger still names the Overseer and the Rootbinder, but the council needs more than accusations from the pack. Keep Lark in the central grove through three full enemy turns so she can carry the workers’ memories in a living branch. The Overseer’s remaining charter guards are attacking to destroy that evidence.",
-    "hints": [
-      "Protect Lark in the grove through three enemy turns.",
-      "Leaving or losing the grove resets the vigil."
-    ],
-    "intro": [
-      {
-        "portrait": "thorncaller",
-        "text": "Dain cannot be our witness. The roots can. Keep me in the central grove while I listen.",
-        "character": "lark"
-      },
-      {
-        "portrait": "commander",
-        "text": "The captain is dead. Destroy that branch before the council hears a word of this.",
-        "character": "overseer"
-      },
-      {
-        "portrait": "wildkeeper",
-        "text": "They will hear the workers themselves. We defend the grove until Lark has their memories.",
-        "character": "alder"
-      }
-    ],
-    "victory": [
-      {
-        "portrait": "thorncaller",
-        "text": "The workers demanded their wages and refused to cut the grove. The Overseer delivered them to the Rootbinder; he killed and bound them into his logging crews.",
-        "character": "lark"
-      },
-      {
-        "portrait": "wildkeeper",
-        "text": "Dain is among the dead now too. We cannot undo that. Bring the branch and the ledger to the families, and let them judge the whole account.",
-        "character": "alder"
-      }
-    ],
-    "debrief": "The roots revealed the workers’ murder and binding. Dain cannot testify, but the living branch carries their memories. The pack must take it and the ledger to the council across the river.",
-    "reinforcements": [
-      {
-        "type": "boar",
-        "side": "player",
-        "tile": "hex-0892-f4d2ec09d8"
-      }
-    ],
-    "recruitment": {
-      "player": [
-        {
-          "unit": "wolf"
-        },
-        {
-          "unit": "boar"
-        },
-        {
-          "unit": "thorncaller"
-        }
-      ]
-    }
-  }
+  "requiredCompanions": ["lark"]
 }

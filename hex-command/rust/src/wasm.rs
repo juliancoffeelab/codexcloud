@@ -624,7 +624,7 @@ mod tests {
         let options = AiOptions {
             blocks: None,
             policy: AiPolicy::Balanced,
-            diplomacy: AiDiplomacy::Restrained,
+            diplomacy: AiDiplomacy::Diplomatic,
             recruitment_limit: Some(2),
         };
         factory.decision(original.id, 0, options).unwrap();

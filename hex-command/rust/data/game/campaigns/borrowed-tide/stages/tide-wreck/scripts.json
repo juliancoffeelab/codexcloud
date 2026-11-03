@@ -1,102 +1,299 @@
 {
   "events": [
     {
-      "id": "ledger",
-      "trigger": {
-        "kind": "visit",
-        "tile": "hex-0891-b20a50ef8c"
+      "id": "edda-lost",
+      "when": {
+        "killed": {
+          "character": "edda"
+        }
       },
-      "label": "Recover the unaltered salvage ledger",
-      "dialogue": [
+      "actions": [
         {
-          "speaker": "Clerk",
-          "portrait": "worker",
-          "text": "These are the original accounts. He rewrote the council's order, then made each village pay for the delay. Keep them dry; I still have two colleagues below."
+          "defeat": "The company cannot continue without edda."
         }
       ]
     },
     {
-      "id": "await-tide",
-      "trigger": {
-        "kind": "control",
-        "tile": "hex-0891-b20a50ef8c"
+      "id": "cale-death",
+      "when": {
+        "killed": {
+          "character": "cale"
+        }
       },
-      "requiresEvent": "ledger",
-      "beforeRound": 6,
-      "dialogue": [
+      "actions": [
         {
-          "portrait": "harpooner",
-          "text": "We have the wreck. Now wait for high tide on turn 6 so the rescue boat can reach us.",
+          "setFlag": "cale-dead"
+        }
+      ]
+    },
+    {
+      "id": "edda-death",
+      "when": {
+        "killed": {
           "character": "edda"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "edda-dead"
+        }
+      ]
+    },
+    {
+      "id": "mira-death",
+      "when": {
+        "killed": {
+          "character": "mira"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "mira-dead"
+        }
+      ]
+    },
+    {
+      "id": "tomas-death",
+      "when": {
+        "killed": {
+          "character": "tomas"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "tomas-dead"
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "when": {
+        "stand": {
+          "tile": "hex-0891-b20a50ef8c",
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Clerk",
+              "portrait": "worker",
+              "text": "These are the original accounts. He rewrote the council's order, then made each village pay for the delay. Keep them dry; I still have two colleagues below."
+            }
+          ]
+        },
+        {
+          "setFlag": "ledger"
+        },
+        {
+          "log": "Recover the unaltered salvage ledger"
+        }
+      ],
+      "objective": {
+        "label": "Recover the original ledger from the wreck",
+        "intent": {
+          "goTo": {
+            "tile": "hex-0891-b20a50ef8c",
+            "side": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "await-tide",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": "hex-0891-b20a50ef8c",
+              "faction": "player"
+            }
+          },
+          {
+            "flag": "ledger"
+          },
+          {
+            "not": {
+              "turnAtLeast": 6
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "harpooner",
+              "text": "We have the wreck. Now wait for high tide on turn 6 so the rescue boat can reach us.",
+              "character": "edda"
+            }
+          ]
+        },
+        {
+          "setFlag": "await-tide"
         }
       ]
     },
     {
       "id": "rescue",
-      "trigger": {
-        "kind": "control",
-        "tile": "hex-0891-b20a50ef8c",
-        "round": 6
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": "hex-0891-b20a50ef8c",
+              "faction": "player"
+            }
+          },
+          {
+            "turnAtLeast": 6
+          },
+          {
+            "flag": "ledger"
+          }
+        ]
       },
-      "requiresEvent": "ledger",
-      "dialogue": [
+      "actions": [
         {
-          "portrait": "harpooner",
-          "text": "The boat is here. Hold the wreck for three turns while we bring the workers out.",
-          "character": "edda"
+          "say": [
+            {
+              "portrait": "harpooner",
+              "text": "The boat is here. Hold the wreck for three turns while we bring the workers out.",
+              "character": "edda"
+            }
+          ]
+        },
+        {
+          "setFlag": "rescue"
         }
       ]
     },
     {
       "id": "tide-arrived",
-      "trigger": {
-        "kind": "round",
-        "round": 6
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 6
+          },
+          {
+            "turnAtLeast": 6
+          },
+          {
+            "not": {
+              "flag": "rescue"
+            }
+          }
+        ]
       },
-      "unlessEvent": "rescue",
-      "dialogue": [
+      "actions": [
         {
-          "portrait": "harpooner",
-          "text": "High tide. The rescue boat is waiting. Get to the wreck so we can start.",
-          "character": "edda"
+          "say": [
+            {
+              "portrait": "harpooner",
+              "text": "High tide. The rescue boat is waiting. Get to the wreck so we can start.",
+              "character": "edda"
+            }
+          ]
+        },
+        {
+          "setFlag": "tide-arrived"
         }
       ]
-    }
-  ],
-  "waves": [
+    },
     {
-      "round": 4,
-      "label": "Senn's hired guard arrives along the wooded shore",
       "id": "senns-guards",
-      "units": [
+      "when": {
+        "turn": {
+          "number": 4,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
         {
-          "type": "swordsman",
-          "side": "enemy",
-          "tile": "hex-0066-be276ac684"
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-0066-be276ac684",
+            "radius": 0,
+            "units": [
+              {
+                "type": "swordsman"
+              }
+            ]
+          }
         },
         {
-          "type": "archer",
-          "side": "enemy",
-          "tile": "hex-0124-7838ad1797"
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-0124-7838ad1797",
+            "radius": 0,
+            "units": [
+              {
+                "type": "archer"
+              }
+            ]
+          }
+        },
+        {
+          "log": "Senn's hired guard arrives along the wooded shore"
+        }
+      ]
+    },
+    {
+      "id": "goal-1",
+      "when": {
+        "own": {
+          "tile": "hex-0891-b20a50ef8c",
+          "faction": "player",
+          "turns": 3,
+          "when": {
+            "flag": "rescue"
+          }
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "goal-1"
+        }
+      ],
+      "objective": {
+        "label": "Defend the wreck through 3 enemy turns during the rescue",
+        "intent": {
+          "own": {
+            "tile": "hex-0891-b20a50ef8c",
+            "faction": "player",
+            "turns": 3,
+            "when": {
+              "flag": "rescue"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "ledger"
+          },
+          {
+            "flag": "goal-1"
+          },
+          {
+            "hasUnits": {
+              "role": "leader",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "companionLosses": {
-    "tomas": {
-      "debrief": "The workers leave with the ledger, but Tomas dies defending their escape. The rescued clerk explains that Senn's upper gate must open with the lower one to avoid flooding the village. His fellow deserters offer to guide the company along the wooded bank.",
-      "victory": [
-        {
-          "portrait": "harpooner",
-          "text": "Last boat away. The clerk has the books. Tomas did not make it back.",
-          "character": "edda"
-        },
-        {
-          "portrait": "tidekeeper",
-          "text": "We carry his testimony too. The clerk says we need both gates and the beacon; nobody else will die in a release we could have prevented.",
-          "character": "mira"
-        }
-      ]
-    }
-  }
+  "requiredCompanions": ["edda"]
 }

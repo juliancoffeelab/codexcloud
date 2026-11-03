@@ -1,72 +1,193 @@
 {
   "events": [
     {
-      "id": "lost-tools",
-      "trigger": {
-        "kind": "visit",
-        "tile": "hex-0898-eed2a38c9d"
-      },
-      "label": "Recover the workers’ pay ledger",
-      "dialogue": [
-        {
-          "portrait": "thorncaller",
-          "text": "The missing crew refused to cut the sacred grove until their overdue wages were paid. Then they were ordered to report to the Rootbinder at the Overseer’s river works. Their pay was never collected.",
+      "id": "lark-lost",
+      "when": {
+        "killed": {
           "character": "lark"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without lark."
+        }
+      ]
+    },
+    {
+      "id": "alder-death",
+      "when": {
+        "killed": {
+          "character": "alder"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "alder-dead"
+        }
+      ]
+    },
+    {
+      "id": "dain-death",
+      "when": {
+        "killed": {
+          "character": "dain"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "dain-dead"
+        }
+      ]
+    },
+    {
+      "id": "lark-death",
+      "when": {
+        "killed": {
+          "character": "lark"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "lark-dead"
+        }
+      ]
+    },
+    {
+      "id": "alternate-company",
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "flag": "dain-dead"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "deleteUnit": {
+            "character": "dain"
+          }
         },
         {
-          "portrait": "wildkeeper",
-          "text": "Take the ledger. We can stop the cutting, but the roots must tell us what became of those workers.",
-          "character": "alder"
+          "recruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "wolf"
+              },
+              {
+                "unit": "boar"
+              },
+              {
+                "unit": "thorncaller"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "lost-tools",
+      "when": {
+        "stand": {
+          "tile": "hex-0898-eed2a38c9d",
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "thorncaller",
+              "text": "The missing crew refused to cut the sacred grove until their overdue wages were paid. Then they were ordered to report to the Rootbinder at the Overseer’s river works. Their pay was never collected.",
+              "character": "lark"
+            },
+            {
+              "portrait": "wildkeeper",
+              "text": "Take the ledger. We can stop the cutting, but the roots must tell us what became of those workers.",
+              "character": "alder"
+            }
+          ]
+        },
+        {
+          "setFlag": "lost-tools"
+        },
+        {
+          "log": "Recover the workers’ pay ledger"
+        }
+      ],
+      "objective": {
+        "label": "Recover the workers’ pay ledger",
+        "intent": {
+          "goTo": {
+            "tile": "hex-0898-eed2a38c9d",
+            "side": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "own": {
+                  "tile": "hex-0952-a980626eda",
+                  "faction": "player"
+                }
+              },
+              {
+                "own": {
+                  "tile": "hex-0956-1372406dd4",
+                  "faction": "player"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "goal-0"
+        }
+      ],
+      "objective": {
+        "label": "Capture both logging camps",
+        "intent": {
+          "capture": ["hex-0952-a980626eda", "hex-0956-1372406dd4"]
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "goal-0"
+          },
+          {
+            "flag": "lost-tools"
+          },
+          {
+            "hasUnits": {
+              "role": "leader",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "waves": [],
-  "withoutDain": {
-    "briefing": "Dain has fallen. Capture both logging camps to stop their crews, and recover the workers’ pay ledger from the northern ruin. His death does not answer what happened to the missing woodcutters; Lark must find evidence their families can hear without him.",
-    "hints": [
-      "Capture both logging forts; standing in a marked grove does not stop the operation.",
-      "Search the northern ruin for the workers’ ledger.",
-      "Wolves cross woods easily. Boars and thorncaller staves fare better against armor."
-    ],
-    "intro": [
-      {
-        "portrait": "thorncaller",
-        "text": "Dain is dead. His patrol’s orders still do not tell us what happened to the workers.",
-        "character": "lark"
-      },
-      {
-        "portrait": "wildkeeper",
-        "text": "Take both tool camps and recover their ledger. We still owe the families an answer.",
-        "character": "alder"
-      }
-    ],
-    "victory": [
-      {
-        "portrait": "thorncaller",
-        "text": "The camps are ours and the cutting has stopped. The missing workers’ wages went to the Overseer, and their last orders sent them to the Rootbinder.",
-        "character": "lark"
-      },
-      {
-        "portrait": "wildkeeper",
-        "text": "Dain will never hear their story. Lark, bring it back in a living branch. The families must be able to hear it for themselves.",
-        "character": "alder"
-      }
-    ],
-    "debrief": "The cutting operation has lost both camps. Dain died in the fighting; his death remains part of what happened. The ledger leads Lark to question the roots about the Rootbinder and the Overseer.",
-    "reinforcements": [],
-    "recruitment": {
-      "player": [
-        {
-          "unit": "wolf"
-        },
-        {
-          "unit": "boar"
-        },
-        {
-          "unit": "thorncaller"
-        }
-      ]
-    }
-  }
+  "requiredCompanions": ["lark"],
+  "defendObjectives": true
 }

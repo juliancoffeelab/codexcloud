@@ -309,15 +309,20 @@ impl<'catalog> Game<'catalog> {
     }
 
     pub(crate) fn mediation_at_risk(&self, target: &Unit) -> bool {
-        self.campaign
-            .as_ref()
-            .is_some_and(|state| !state.escalated())
-            && self
-                .mission
-                .as_ref()
-                .is_some_and(|mission| mission.refuge.is_some())
-            && target.side == Side::Enemy
-            && (target.retreating == Some(true) || target.role == Some(Role::Leader))
+        self.mission.as_ref().is_some_and(|m| {
+            m.scripted_events.iter().any(|e| {
+                e.objective
+                    .as_ref()
+                    .and_then(|o| o.preserve_lives.as_ref())
+                    .is_some_and(|s| {
+                        self.campaign
+                            .as_ref()
+                            .and_then(|c| c.scripts.as_ref())
+                            .is_some_and(|state| state.active.contains(&e.id))
+                            && self.script_unit_matches(s, target)
+                    })
+            })
+        })
     }
     pub(crate) fn attack(&mut self, id: u32, target_id: u32, weapon: usize) {
         let a = self.index(id).unwrap();
@@ -561,7 +566,25 @@ impl<'catalog> Game<'catalog> {
             .as_ref()
             .is_some_and(|m| !m.scripted_events.is_empty())
         {
-            self.event_deaths.extend(defeated.iter().cloned());
+            let initiated_by = self.unit_faction(&attacker).to_owned();
+            self.event_deaths.extend(
+                defeated
+                    .iter()
+                    .map(|unit| super::events::DeathOccurrence {
+                        unit: unit.clone(),
+                        initiated_by: initiated_by.clone(),
+                        killed_by: Some(
+                            self.unit_faction(if unit.id == target.id {
+                                &attacker
+                            } else {
+                                &target
+                            })
+                            .to_owned(),
+                        ),
+                        defending: unit.id == target.id,
+                    })
+                    .collect::<Vec<_>>(),
+            );
         }
         for unit in &defeated {
             for item in &unit.items {
@@ -585,11 +608,8 @@ impl<'catalog> Game<'catalog> {
                             .any(|chapter| chapter.companion_ids().any(|incoming| incoming == name))
                         {
                             if scripted {
-                                let fallen =
-                                    campaign.fallen_companions.get_or_insert_with(Vec::new);
-                                if !fallen.contains(name) {
-                                    fallen.push(name.clone());
-                                }
+                                // Current-stage deaths are authored flags; the incoming survivor
+                                // checkpoint must remain unchanged for Retry.
                             } else {
                                 let mark = format!("fallen:{name}");
                                 if !campaign.marked(&mark) {
@@ -599,15 +619,6 @@ impl<'catalog> Game<'catalog> {
                         }
                     }
                 }
-                if campaign.id == "green-accord"
-                    && unit.character.as_deref() == Some("dain")
-                    && !campaign.marked("dain-fell")
-                {
-                    campaign.marks.push("dain-fell".into());
-                }
-            }
-            if self.mediation_at_risk(unit) {
-                self.escalate_refuge();
             }
             if unit.is_leader() && self.campaign.is_none() {
                 let relation = self.faction_relation("player", self.unit_faction(unit));

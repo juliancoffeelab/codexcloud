@@ -439,11 +439,11 @@ export interface MissionDefinition {
   scriptedEvents?: import("../../rust/pkg/hex_command").ScriptEvent[];
   map: MapDefinition;
   subtitle: string;
-  briefing: string;
-  debrief?: string;
+  briefing: import("../../rust/pkg/hex_command").ConditionalText;
+  debrief?: import("../../rust/pkg/hex_command").ConditionalText;
   requiredCompanions?: string[];
   arrivals?: { character: string; tile: string }[];
-  hints: string[];
+  hints: import("../../rust/pkg/hex_command").ConditionalHint[];
   goals: MissionGoal[];
   optionalGoals?: MissionGoal[];
   recruitment: Record<string, import("../../rust/pkg/hex_command").FactionRecruit[]>;
@@ -452,8 +452,8 @@ export interface MissionDefinition {
   defendObjectives?: boolean;
   /** An enemy leader guards this post and its immediate approaches; retreat remains free. */
   enemyLeaderPost?: string;
-  intro: DialogueLine[];
-  victory: DialogueLine[];
+  intro: import("../../rust/pkg/hex_command").Speech[];
+  victory: import("../../rust/pkg/hex_command").Speech[];
   events: MissionEvent[];
   waves: ReinforcementWave[];
   /** Authored story changes when a named ally has fallen, without resurrecting them. */
@@ -475,18 +475,18 @@ export interface MissionDefinition {
     warHints: string[];
   };
   withoutDain?: {
-    briefing: string;
-    hints: string[];
-    intro: DialogueLine[];
+    briefing: import("../../rust/pkg/hex_command").ConditionalText;
+    hints: import("../../rust/pkg/hex_command").ConditionalHint[];
+    intro: import("../../rust/pkg/hex_command").Speech[];
     recruitment: Record<string, import("../../rust/pkg/hex_command").FactionRecruit[]>;
     reinforcements: StartingUnit[];
     victory?: DialogueLine[];
-    debrief?: string;
+    debrief?: import("../../rust/pkg/hex_command").ConditionalText;
   };
 }
 export interface CampaignDefinition {
   characters: { id: string; name: string }[];
-  playerDiplomacy: ("pragmatic" | "restrained")[];
+  playerDiplomacy: ("unrestricted" | "diplomatic")[];
   id: CampaignId;
   name: string;
   tagline: string;
@@ -495,7 +495,7 @@ export interface CampaignDefinition {
   race: Race;
   leader: UnitType;
   missions: MissionDefinition[];
-  ending: DialogueLine[];
+  ending: import("../../rust/pkg/hex_command").Speech[];
 }
 export interface CampaignState {
   scripts?: import("../../rust/pkg/hex_command").EventState;

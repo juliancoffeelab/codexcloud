@@ -85,7 +85,7 @@
             : (first as "player" | "enemy"),
       enemy: {
         policy,
-        diplomacy: "restrained",
+        diplomacy: "diplomatic",
         ...(mode === "skirmish"
           ? {
               blocks: {

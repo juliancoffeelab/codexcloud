@@ -1,53 +1,143 @@
 {
-  "debrief": "Lark delivered the memories and the bridge fort remains secure. The council revoked the Overseer’s timber and toll charter. The villages and Alder’s pack agreed to protect the crossing and spare the sacred groves. The Rootbinder may still threaten the valley; this victory delivered the truth and established a road both peoples can defend.",
+  "debrief": [
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "The council heard the branch, examined the ledger and learned of Dain’s death. It revoked the Overseer’s charter and agreed to protect the road with the pack. The Rootbinder remains a danger, but the workers’ murder is exposed and the crossing is held."
+    },
+    {
+      "text": "Lark delivered the memories and the bridge fort remains secure. The council revoked the Overseer’s timber and toll charter. The villages and Alder’s pack agreed to protect the crossing and spare the sacred groves. The Rootbinder may still threaten the valley; this victory delivered the truth and established a road both peoples can defend."
+    }
+  ],
   "subtitle": "A witness, a bridge, and a promise.",
-  "briefing": "The village council is meeting at the northern village across the river. Lark’s branch carries the murdered workers’ memories; the ledger and Dain’s testimony identify the Overseer who supplied them to the Rootbinder. The necromancer has barred the crossing to protect that bargain. Capture the bridge fort so the households can cross safely, and bring Lark to the meeting alive. Tamsin, a village adept, joins the escort against the bound dead.",
+  "briefing": [
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "Dain is dead, but Lark’s living branch carries the workers’ memories and the ledger records their last orders. Tamsin, an adept from the villages, has joined the escort to help bring that evidence to the council. The Rootbinder bars the river to protect his supply of bodies. Capture the bridge fort and bring Lark to the northern meeting alive."
+    },
+    {
+      "text": "The village council is meeting at the northern village across the river. Lark’s branch carries the murdered workers’ memories; the ledger and Dain’s testimony identify the Overseer who supplied them to the Rootbinder. The necromancer has barred the crossing to protect that bargain. Capture the bridge fort so the households can cross safely, and bring Lark to the meeting alive. Tamsin, a village adept, joins the escort against the bound dead."
+    }
+  ],
   "hints": [
-    "The northern trees may offer a gentler journey.",
-    "A witness need not stand in the front rank."
+    {
+      "when": {
+        "not": {
+          "flag": "dain-dead"
+        }
+      },
+      "text": "The northern trees may offer a gentler journey."
+    },
+    {
+      "when": {
+        "not": {
+          "flag": "dain-dead"
+        }
+      },
+      "text": "A witness need not stand in the front rank."
+    },
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "The northern trees may offer a gentler journey."
+    },
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "A witness need not stand in the front rank."
+    }
   ],
   "intro": [
     {
-      "portrait": "warden",
-      "text": "The council gave the Overseer his timber and toll charter. With the ledger and the workers’ memories, they can take it away. I will answer for my patrol’s part as well.",
-      "character": "dain"
-    },
-    {
-      "portrait": "thorncaller",
-      "text": "The Rootbinder has put his dead on the crossing. He needs the Overseer’s protection and his supply of bodies. He would rather burn this branch than let the families hear it.",
-      "character": "lark"
-    },
-    {
-      "portrait": "wildkeeper",
-      "text": "Take the bridge fort so the households can cross. Bring Lark to the northern meeting alive; a dead necromancer alone will not open a shared road.",
-      "character": "alder"
-    },
-    {
-      "portrait": "adept",
-      "text": "Dain sent for me. Some of those workers were my neighbors. Stone sparks crack bone; let the shields hold the dead while I clear your road.",
-      "character": "tamsin"
+      "with": "dain",
+      "dialogue": [
+        {
+          "portrait": "warden",
+          "text": "The council gave the Overseer his timber and toll charter. With the ledger and the workers’ memories, they can take it away. I will answer for my patrol’s part as well.",
+          "character": "dain"
+        },
+        {
+          "portrait": "thorncaller",
+          "text": "The Rootbinder has put his dead on the crossing. He needs the Overseer’s protection and his supply of bodies. He would rather burn this branch than let the families hear it.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "Take the bridge fort so the households can cross. Bring Lark to the northern meeting alive; a dead necromancer alone will not open a shared road.",
+          "character": "alder"
+        },
+        {
+          "portrait": "adept",
+          "text": "Dain sent for me. Some of those workers were my neighbors. Stone sparks crack bone; let the shields hold the dead while I clear your road.",
+          "character": "tamsin"
+        }
+      ],
+      "alternative": [
+        {
+          "portrait": "adept",
+          "text": "I came from the villages to help you reach the council. The workers were our neighbors. Dain cannot speak; their families must hear this branch.",
+          "character": "tamsin"
+        },
+        {
+          "portrait": "thorncaller",
+          "text": "The Rootbinder wants his bargain kept hidden. The branch and the ledger must reach the northern village.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "Take the bridge fort and protect Lark. We owe the families an open road and an honest account, including Dain’s death.",
+          "character": "alder"
+        }
+      ]
     }
   ],
   "victory": [
     {
-      "portrait": "thorncaller",
-      "text": "The families heard the branch. The council matched the orders to the ledger and revoked the Overseer’s charter.",
-      "character": "lark"
-    },
-    {
-      "portrait": "warden",
-      "text": "I have given them my account too. We will harvest the ordinary woods for repairs. Your groves are outside the charter.",
-      "character": "dain"
-    },
-    {
-      "portrait": "wildkeeper",
-      "text": "The fort is ours. Village and woodland guards can keep this road together; neither side owns the right to close it.",
-      "character": "alder"
-    },
-    {
-      "portrait": "thorncaller",
-      "text": "The Rootbinder still has his dead. But he no longer has a silent village to hide them in.",
-      "character": "lark"
+      "with": "dain",
+      "dialogue": [
+        {
+          "portrait": "thorncaller",
+          "text": "The families heard the branch. The council matched the orders to the ledger and revoked the Overseer’s charter.",
+          "character": "lark"
+        },
+        {
+          "portrait": "warden",
+          "text": "I have given them my account too. We will harvest the ordinary woods for repairs. Your groves are outside the charter.",
+          "character": "dain"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "The fort is ours. Village and woodland guards can keep this road together; neither side owns the right to close it.",
+          "character": "alder"
+        },
+        {
+          "portrait": "thorncaller",
+          "text": "The Rootbinder still has his dead. But he no longer has a silent village to hide them in.",
+          "character": "lark"
+        }
+      ],
+      "alternative": [
+        {
+          "portrait": "thorncaller",
+          "text": "The families heard the workers’ memories. We told them about Dain too. The council has revoked the Overseer’s charter.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "The fort is ours. The households will help us guard the crossing and keep the sacred groves outside their timber cutting.",
+          "character": "alder"
+        },
+        {
+          "portrait": "thorncaller",
+          "text": "Then let the first travelers cross. We have enough graves; we need neighbors.",
+          "character": "lark"
+        }
+      ]
     }
   ]
 }

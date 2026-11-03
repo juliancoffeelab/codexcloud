@@ -493,7 +493,7 @@ mod tests {
         campaign.campaigns = vec!["example".into()];
         campaign.campaign_diplomacy = std::collections::BTreeMap::from([(
             "example".into(),
-            vec![crate::ai::Diplomacy::Pragmatic],
+            vec![crate::ai::Diplomacy::Unrestricted],
         )]);
         let configs = schedule(&campaign).unwrap();
         assert_eq!(configs.len(), 2);
@@ -511,10 +511,10 @@ mod tests {
         options.campaigns = vec!["single".into(), "choice".into()];
         options.policies = vec![Policy::Balanced];
         options.campaign_diplomacy = BTreeMap::from([
-            ("single".into(), vec![Diplomacy::Pragmatic]),
+            ("single".into(), vec![Diplomacy::Unrestricted]),
             (
                 "choice".into(),
-                vec![Diplomacy::Pragmatic, Diplomacy::Restrained],
+                vec![Diplomacy::Unrestricted, Diplomacy::Diplomatic],
             ),
         ]);
         let configs = schedule(&options).unwrap();
@@ -522,15 +522,15 @@ mod tests {
         assert_eq!(configs.len(), 6);
         assert!(configs.iter().all(|config| match config {
             MatchConfig::Campaign(config) =>
-                config.campaign != "single" || config.diplomacy == Diplomacy::Pragmatic,
+                config.campaign != "single" || config.diplomacy == Diplomacy::Unrestricted,
             _ => false,
         }));
-        options.diplomacy = vec![Diplomacy::Restrained];
+        options.diplomacy = vec![Diplomacy::Diplomatic];
         let configs = schedule(&options).unwrap();
         assert_eq!(options.expected_games().unwrap(), 2);
         assert_eq!(configs.len(), 2);
         assert!(configs.iter().all(|config| matches!(config,
-            MatchConfig::Campaign(config) if config.campaign == "choice" && config.diplomacy == Diplomacy::Restrained)));
+            MatchConfig::Campaign(config) if config.campaign == "choice" && config.diplomacy == Diplomacy::Diplomatic)));
     }
     #[test]
     fn fixed_opponent_panel_preserves_seats_and_initiative_without_duplicate_matches() {
@@ -596,7 +596,7 @@ mod tests {
             policies: vec![Policy::Classic],
             campaign_players: None,
             campaign_enemies: None,
-            diplomacy: vec![Diplomacy::Pragmatic],
+            diplomacy: vec![Diplomacy::Unrestricted],
             campaign_diplomacy: BTreeMap::new(),
             objectives: None,
             campaign_objectives: BTreeMap::new(),

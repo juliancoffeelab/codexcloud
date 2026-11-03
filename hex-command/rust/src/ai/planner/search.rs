@@ -1041,7 +1041,7 @@ mod tests {
             ),
         ] {
             let workspace = || {
-                crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic)
+                crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted)
                     .with_blocks(crate::ai::Blocks {
                         planner: crate::ai::Planner::Full,
                         ..crate::ai::Policy::Balanced.blocks()
@@ -1066,7 +1066,7 @@ mod tests {
                                     7,
                                     1,
                                     None,
-                                    crate::ai::Diplomacy::Pragmatic,
+                                    crate::ai::Diplomacy::Unrestricted,
                                 ),
                             )
                             .tactics,
@@ -1089,7 +1089,7 @@ mod tests {
                                         7,
                                         1,
                                         None,
-                                        crate::ai::Diplomacy::Pragmatic,
+                                        crate::ai::Diplomacy::Unrestricted,
                                     ),
                                 )
                                 .tactics,

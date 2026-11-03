@@ -511,7 +511,7 @@ mod tests {
             config: CampaignConfig {
                 seed: 1,
                 objective: "authored".into(),
-                diplomacy: crate::ai::Diplomacy::Pragmatic,
+                diplomacy: crate::ai::Diplomacy::Unrestricted,
                 campaign: "fixture".into(),
                 player: Policy::Classic,
                 enemy: Policy::Classic,

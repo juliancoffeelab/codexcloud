@@ -499,7 +499,7 @@ mod tests {
             policies: vec![Policy::Classic],
             campaign_players: None,
             campaign_enemies: None,
-            diplomacy: vec![Diplomacy::Pragmatic],
+            diplomacy: vec![Diplomacy::Unrestricted],
             campaign_diplomacy: Default::default(),
             objectives: None,
             campaign_objectives: Default::default(),

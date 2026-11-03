@@ -600,7 +600,7 @@ mod tests {
     }
     fn workspace(game: &Game<'_>, planner: Planner) -> PlanningWorkspace {
         let mut workspace =
-            PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained).with_blocks(Blocks {
+            PlanningWorkspace::new(7, 0, None, Diplomacy::Diplomatic).with_blocks(Blocks {
                 recruiter: Recruiter::Balanced,
                 campaign: CampaignBlock::Mission,
                 planner,

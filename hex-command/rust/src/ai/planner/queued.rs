@@ -326,8 +326,8 @@ mod tests {
         );
         let mut blocks = Policy::Balanced.blocks();
         blocks.campaign = crate::ai::CampaignBlock::Arena;
-        let mut workspace =
-            PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic).with_blocks(blocks);
+        let mut workspace = PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Unrestricted)
+            .with_blocks(blocks);
         assert_eq!(
             crate::ai::choose_game_command(&campaign, Policy::Balanced, &mut workspace),
             Err(CommandError::BattleOnlyPolicy)

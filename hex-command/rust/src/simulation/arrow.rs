@@ -503,7 +503,7 @@ mod tests {
             CampaignConfig {
                 seed: 17,
                 objective: "authored".into(),
-                diplomacy: Diplomacy::Restrained,
+                diplomacy: Diplomacy::Diplomatic,
                 campaign: "green-accord".into(),
                 player: Policy::Balanced,
                 enemy: Policy::Classic,

@@ -79,7 +79,7 @@ struct CampaignFile {
     leader: String,
     stages: Vec<String>,
     characters: Vec<Character>,
-    ending: Vec<Dialogue>,
+    ending: Vec<Speech>,
 }
 #[derive(Deserialize)]
 struct StageFile {
@@ -489,7 +489,7 @@ impl Rules {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let mut source: CampaignFile = parse(bundle, path)?;
+            let source: CampaignFile = parse(bundle, path)?;
             identifier(&source.id, path)?;
             reference(&source.leader, &types, path)?;
             unique(source.player_diplomacy.iter().map(String::as_str), path)?;
@@ -497,7 +497,7 @@ impl Rules {
                 || source
                     .player_diplomacy
                     .iter()
-                    .any(|mode| !["pragmatic", "restrained"].contains(&mode.as_str()))
+                    .any(|mode| !["unrestricted", "diplomatic"].contains(&mode.as_str()))
             {
                 return Err(ContentError::new(
                     path,
@@ -515,7 +515,7 @@ impl Rules {
                 ));
             }
             validate_characters(&source.characters, path)?;
-            resolve_dialogues(&mut source.ending, &source.characters, path)?;
+            validate_speech(&source.ending, &source.characters, path)?;
             let mut missions = Vec::new();
             let mut stage_ids = HashSet::new();
             for stage_path in source.stages {
@@ -827,6 +827,22 @@ fn resolve_dialogues(
     }
     Ok(())
 }
+fn validate_speech(
+    lines: &[Speech],
+    characters: &[Character],
+    path: &str,
+) -> Result<(), ContentError> {
+    ScriptEvent {
+        id: "speech-validation".into(),
+        when: When::ChapterStarted(true),
+        notice: None,
+        remembers: true,
+        priority: 0,
+        objective: None,
+        actions: vec![EventAction::Say(lines.to_vec())],
+    }
+    .validate_characters(characters, path)
+}
 fn validate_character_references(
     mission: &mut Mission,
     state: &State,
@@ -847,6 +863,18 @@ fn validate_character_references(
         Ok(())
     };
     placements(&mission.map.units)?;
+    for w in mission.story_conditions() {
+        let e = ScriptEvent {
+            id: "story-condition".into(),
+            when: w.clone(),
+            notice: None,
+            remembers: true,
+            priority: 0,
+            objective: None,
+            actions: vec![],
+        };
+        e.validate_characters(characters, path)?;
+    }
     for event in &mission.scripted_events {
         event.validate_characters(characters, path)?;
     }
@@ -888,8 +916,8 @@ fn validate_character_references(
             condition(&rule.when.condition)?;
         }
     }
-    resolve_dialogues(&mut mission.intro, characters, path)?;
-    resolve_dialogues(&mut mission.victory, characters, path)?;
+    validate_speech(&mission.intro, characters, path)?;
+    validate_speech(&mission.victory, characters, path)?;
     for event in &mut mission.events {
         if let Trigger::Condition { condition: c } = &event.trigger {
             condition(c)?;
@@ -963,6 +991,59 @@ fn validate_mission(
         }
         Ok(())
     };
+    unique(
+        mission
+            .scripted_events
+            .iter()
+            .filter(|e| e.objective.is_some())
+            .map(ScriptEvent::objective_id),
+        path,
+    )?;
+    let ids: HashSet<_> = mission
+        .scripted_events
+        .iter()
+        .filter(|e| e.objective.is_some())
+        .map(ScriptEvent::objective_id)
+        .collect();
+    for action in mission
+        .scripted_events
+        .iter()
+        .flat_map(ScriptEvent::actions_recursive)
+    {
+        if let EventAction::FailObjective(id) = action {
+            if !ids.contains(id.as_str()) {
+                return Err(ContentError::new(path, format!("unknown objective {id}")));
+            }
+        }
+    }
+    for condition in mission.story_conditions() {
+        if !condition.state_only() {
+            return Err(ContentError::new(
+                path,
+                "story text conditions must be state predicates",
+            ));
+        }
+        let check = ScriptEvent {
+            id: "story-condition".into(),
+            when: condition.clone(),
+            notice: None,
+            remembers: true,
+            priority: 0,
+            objective: None,
+            actions: vec![],
+        };
+        check.validate(
+            &state.tiles,
+            &state.factions,
+            &std::collections::HashMap::new(),
+            path,
+        )?;
+        for selector in check.selectors() {
+            for id in selector.unit_type.iter().chain(&selector.unit_types) {
+                reference(id, types, path)?;
+            }
+        }
+    }
     for event in &mission.scripted_events {
         for selector in event.selectors() {
             for id in selector.unit_type.iter().chain(&selector.unit_types) {
@@ -1018,7 +1099,7 @@ fn validate_mission(
                         ));
                     }
                 }
-                EventAction::UnlockRecruits(spec) => {
+                EventAction::UnlockRecruits(spec) | EventAction::Recruits(spec) => {
                     for unit in &spec.units {
                         reference(&unit.unit, types, path)?;
                     }
@@ -1446,7 +1527,7 @@ fn validate_simulation(
         ),
         (
             &campaign.diplomacy,
-            ["pragmatic", "restrained"].as_slice(),
+            ["unrestricted", "diplomatic"].as_slice(),
             "simulation/campaign.json",
         ),
     ] {
@@ -1709,7 +1790,7 @@ mod tests {
     #[test]
     fn component_references_report_missing_files_and_reject_traversal() {
         let mut bundle = test_bundle();
-        let path = "game/campaigns/borrowed-tide/stages/tide-wreck/objectives.json";
+        let path = "game/campaigns/borrowed-tide/stages/tide-wreck/story.json";
         bundle.remove(path);
         assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
         let mut bundle = test_bundle();

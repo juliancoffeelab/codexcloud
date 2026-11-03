@@ -8,9 +8,14 @@
   "leader": "necromancer",
   "ending": [
     {
-      "portrait": "warden",
-      "text": "What should I put in the new ledger?",
-      "character": "dain"
+      "with": "dain",
+      "dialogue": [
+        {
+          "portrait": "warden",
+          "text": "What should I put in the new ledger?",
+          "character": "dain"
+        }
+      ]
     },
     {
       "portrait": "necromancer",
@@ -23,7 +28,7 @@
     "stages/ashen-refuge/stage.json",
     "stages/ashen-dawn/stage.json"
   ],
-  "playerDiplomacy": ["pragmatic", "restrained"],
+  "playerDiplomacy": ["unrestricted", "diplomatic"],
   "characters": [
     {
       "id": "dain",

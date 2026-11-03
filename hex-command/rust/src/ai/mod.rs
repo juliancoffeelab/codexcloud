@@ -109,15 +109,19 @@ impl From<crate::data::FactionPolicy> for Policy {
 /// Treatment of retreating and mediated opponents during campaign battles.
 pub enum Diplomacy {
     #[default]
-    Restrained,
-    Pragmatic,
+    #[serde(alias = "restrained")]
+    #[cfg_attr(not(target_arch = "wasm32"), value(alias = "restrained"))]
+    Diplomatic,
+    #[serde(alias = "pragmatic")]
+    #[cfg_attr(not(target_arch = "wasm32"), value(alias = "pragmatic"))]
+    Unrestricted,
 }
 impl Diplomacy {
     /// Stable JSON/CLI treatment identifier.
     pub const fn as_str(self) -> &'static str {
         match self {
-            Self::Restrained => "restrained",
-            Self::Pragmatic => "pragmatic",
+            Self::Diplomatic => "diplomatic",
+            Self::Unrestricted => "unrestricted",
         }
     }
 }
@@ -635,7 +639,7 @@ mod courier_tests {
                 .iter()
                 .all(|&(tile, _)| static_route[tile] >= static_route[courier.tile])
         );
-        let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Restrained);
+        let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Diplomatic);
         let command = loop {
             let command = choose_game_command(&game, Policy::Balanced, &mut workspace).unwrap();
             if is_command_setunitintent(&command) {
@@ -699,7 +703,7 @@ mod courier_tests {
                 game.owners[tile] = Some("player".into());
             }
             game.roster_changed();
-            let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Restrained);
+            let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Diplomatic);
             for _ in 0..40 {
                 let command = choose_game_command(&game, policy, &mut workspace).unwrap();
                 if is_command_endturn(&command) {

@@ -933,7 +933,8 @@ mod tests {
             Game::start_campaign(&rules, "lantern-road", 0, vec![], 0, vec![], vec![], vec![]),
         ];
         for game in &mut games {
-            let mut workspace = PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
+            let mut workspace =
+                PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted);
             for _ in 0..24 {
                 if workspace.orders.is_none() {
                     workspace.orders =
@@ -1021,7 +1022,8 @@ mod tests {
                 let boundary = is_command_endturn(&command);
                 game.execute(command).unwrap();
                 if boundary {
-                    workspace = PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
+                    workspace =
+                        PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted);
                 }
             }
         }

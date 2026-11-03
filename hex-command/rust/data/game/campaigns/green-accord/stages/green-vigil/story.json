@@ -1,54 +1,146 @@
 {
-  "debrief": "The vigil revealed a bargain: the Overseer supplied workers to the Rootbinder, who killed and bound them into unpaid logging crews. Lark carries their memories in a living branch. Dain will help bring that evidence to the village council; the Overseer’s false report can no longer be the only account.",
+  "debrief": [
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "The roots revealed the workers’ murder and binding. Dain cannot testify, but the living branch carries their memories. The pack must take it and the ledger to the council across the river."
+    },
+    {
+      "text": "The vigil revealed a bargain: the Overseer supplied workers to the Rootbinder, who killed and bound them into unpaid logging crews. Lark carries their memories in a living branch. Dain will help bring that evidence to the village council; the Overseer’s false report can no longer be the only account."
+    }
+  ],
   "subtitle": "A personal truce. An officer’s cover-up.",
-  "briefing": "Dain has suspended his patrol’s attacks and stands with Alder at the central grove. The Overseer, the council’s timber and toll officer, still commands the other paid charter guards. The ledger threatens his office; he calls Dain a mutineer and orders the grove silenced. Keep Lark in the central grove through three enemy turns while she listens to the workers’ memories. Dain is here to defend the investigation, not command the attacking guards.",
+  "briefing": [
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "Dain is dead. The ledger still names the Overseer and the Rootbinder, but the council needs more than accusations from the pack. Keep Lark in the central grove through three full enemy turns so she can carry the workers’ memories in a living branch. The Overseer’s remaining charter guards are attacking to destroy that evidence."
+    },
+    {
+      "text": "Dain has suspended his patrol’s attacks and stands with Alder at the central grove. The Overseer, the council’s timber and toll officer, still commands the other paid charter guards. The ledger threatens his office; he calls Dain a mutineer and orders the grove silenced. Keep Lark in the central grove through three enemy turns while she listens to the workers’ memories. Dain is here to defend the investigation, not command the attacking guards."
+    }
+  ],
   "hints": [
-    "Move Lark into the central grove and protect her through three full enemy turns.",
-    "Leaving the grove or losing ownership resets the vigil.",
-    "Dain is your ally; the Overseer’s remaining charter guards are the enemy."
+    {
+      "when": {
+        "not": {
+          "flag": "dain-dead"
+        }
+      },
+      "text": "Move Lark into the central grove and protect her through three full enemy turns."
+    },
+    {
+      "when": {
+        "not": {
+          "flag": "dain-dead"
+        }
+      },
+      "text": "Leaving the grove or losing ownership resets the vigil."
+    },
+    {
+      "when": {
+        "not": {
+          "flag": "dain-dead"
+        }
+      },
+      "text": "Dain is your ally; the Overseer’s remaining charter guards are the enemy."
+    },
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "Protect Lark in the grove through three enemy turns."
+    },
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "Leaving or losing the grove resets the vigil."
+    }
   ],
   "intro": [
     {
-      "portrait": "warden",
-      "text": "I suspended my patrol’s orders. These other guards answer to the Overseer. I will stand here with you until we know what happened.",
-      "character": "dain"
-    },
-    {
-      "portrait": "commander",
-      "text": "Dain is dismissed. His truce binds none of you. Destroy the branch and break their circle before the council hears their lies.",
-      "character": "overseer"
-    },
-    {
-      "portrait": "thorncaller",
-      "text": "Bring me to the central grove. The roots kept the workers’ last memories. If I am driven out, I must begin again.",
-      "character": "lark"
-    },
-    {
-      "portrait": "wildkeeper",
-      "text": "Then we defend the grove, captain included. The Overseer has given us a reason to keep listening.",
-      "character": "alder"
+      "with": "dain",
+      "dialogue": [
+        {
+          "portrait": "warden",
+          "text": "I suspended my patrol’s orders. These other guards answer to the Overseer. I will stand here with you until we know what happened.",
+          "character": "dain"
+        },
+        {
+          "portrait": "commander",
+          "text": "Dain is dismissed. His truce binds none of you. Destroy the branch and break their circle before the council hears their lies.",
+          "character": "overseer"
+        },
+        {
+          "portrait": "thorncaller",
+          "text": "Bring me to the central grove. The roots kept the workers’ last memories. If I am driven out, I must begin again.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "Then we defend the grove, captain included. The Overseer has given us a reason to keep listening.",
+          "character": "alder"
+        }
+      ],
+      "alternative": [
+        {
+          "portrait": "thorncaller",
+          "text": "Dain cannot be our witness. The roots can. Keep me in the central grove while I listen.",
+          "character": "lark"
+        },
+        {
+          "portrait": "commander",
+          "text": "The captain is dead. Destroy that branch before the council hears a word of this.",
+          "character": "overseer"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "They will hear the workers themselves. We defend the grove until Lark has their memories.",
+          "character": "alder"
+        }
+      ]
     }
   ],
   "victory": [
     {
-      "portrait": "thorncaller",
-      "text": "The workers asked for the pay he owed them and refused to cut this grove. The Overseer handed them to the Rootbinder. He killed them and bound their bodies to the logging crews.",
-      "character": "lark"
-    },
-    {
-      "portrait": "warden",
-      "text": "Unpaid labor for the Overseer. Bodies and protection for the Rootbinder. And my patrol sent to punish you for their murders.",
-      "character": "dain"
-    },
-    {
-      "portrait": "thorncaller",
-      "text": "This branch holds what the roots remember. Their families can hear it too.",
-      "character": "lark"
-    },
-    {
-      "portrait": "wildkeeper",
-      "text": "The council is meeting across the river. We take the branch and the ledger there. Let the people who gave him his office judge what he did with it.",
-      "character": "alder"
+      "with": "dain",
+      "dialogue": [
+        {
+          "portrait": "thorncaller",
+          "text": "The workers asked for the pay he owed them and refused to cut this grove. The Overseer handed them to the Rootbinder. He killed them and bound their bodies to the logging crews.",
+          "character": "lark"
+        },
+        {
+          "portrait": "warden",
+          "text": "Unpaid labor for the Overseer. Bodies and protection for the Rootbinder. And my patrol sent to punish you for their murders.",
+          "character": "dain"
+        },
+        {
+          "portrait": "thorncaller",
+          "text": "This branch holds what the roots remember. Their families can hear it too.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "The council is meeting across the river. We take the branch and the ledger there. Let the people who gave him his office judge what he did with it.",
+          "character": "alder"
+        }
+      ],
+      "alternative": [
+        {
+          "portrait": "thorncaller",
+          "text": "The workers demanded their wages and refused to cut the grove. The Overseer delivered them to the Rootbinder; he killed and bound them into his logging crews.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "Dain is among the dead now too. We cannot undo that. Bring the branch and the ledger to the families, and let them judge the whole account.",
+          "character": "alder"
+        }
+      ]
     }
   ]
 }

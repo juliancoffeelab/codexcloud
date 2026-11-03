@@ -12,6 +12,7 @@ type ReadableGame = Pick<
   LiveGame,
   | "presentation"
   | "objectives"
+  | "story"
   | "faction"
   | "factions"
   | "recruitPrice"

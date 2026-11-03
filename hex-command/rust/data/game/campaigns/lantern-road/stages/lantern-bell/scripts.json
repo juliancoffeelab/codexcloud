@@ -71,6 +71,45 @@
       ]
     },
     {
+      "id": "lost-southern-captives",
+      "when": {
+        "killed": {
+          "character": "southern-captives"
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "southern-freed"
+        }
+      ]
+    },
+    {
+      "id": "lost-eastern-captives",
+      "when": {
+        "killed": {
+          "character": "eastern-captives"
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "eastern-freed"
+        }
+      ]
+    },
+    {
+      "id": "lost-northern-captives",
+      "when": {
+        "killed": {
+          "character": "northern-captives"
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "northern-freed"
+        }
+      ]
+    },
+    {
       "id": "rescue-southern-captives",
       "when": {
         "proximity": {
@@ -868,6 +907,9 @@
             },
             "actions": [
               {
+                "failObjective": "northern-freed"
+              },
+              {
                 "deleteUnit": "$unit"
               },
               {
@@ -949,6 +991,9 @@
             },
             "actions": [
               {
+                "failObjective": "eastern-freed"
+              },
+              {
                 "deleteUnit": "$unit"
               },
               {
@@ -1024,6 +1069,9 @@
               "tile": "hex-0142-a3ef30fee6"
             },
             "actions": [
+              {
+                "failObjective": "southern-freed"
+              },
               {
                 "deleteUnit": "$unit"
               },

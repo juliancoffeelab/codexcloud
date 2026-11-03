@@ -79,10 +79,18 @@ impl<'catalog> Game<'catalog> {
             self.units[index].hp =
                 (self.units[index].hp + healing).min(self.rules.units[self.units[index].kind].hp);
         }
-        if side == Side::Enemy {
-            self.spawn_waves();
+        self.evaluate_campaign(true, None);
+        let factions: Vec<_> = self
+            .factions
+            .iter()
+            .filter(|f| f.phase == side)
+            .map(|f| f.id.clone())
+            .collect();
+        for faction in factions {
+            self.event_turn_faction = Some(faction);
+            self.evaluate_campaign(true, None);
         }
-        self.evaluate_campaign(side == Side::Player, None);
+        self.event_turn_faction = None;
     }
     pub(crate) fn end_turn(&mut self) {
         assert!(self.winner.is_none());

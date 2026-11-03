@@ -23,6 +23,8 @@ pub struct UnitMatch {
     pub unit_types: Vec<String>,
     #[serde(default, rename = "aiGroup")]
     pub ai_group: Option<String>,
+    #[serde(default)]
+    pub retreating: Option<bool>,
 }
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -66,6 +68,8 @@ pub struct ProximitySelection {
 pub struct HoldSelection {
     pub tile: String,
     pub turns: u32,
+    #[serde(default)]
+    pub when: Option<Box<When>>,
     #[serde(flatten)]
     pub units: UnitMatch,
 }
@@ -88,6 +92,98 @@ pub struct OwnerSelection {
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct OwnSelection {
+    pub tile: String,
+    pub faction: String,
+    #[serde(default)]
+    pub turns: Option<u32>,
+    #[serde(default)]
+    pub when: Option<Box<When>>,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+#[serde(untagged)]
+pub enum TurnSelection {
+    Number(u32),
+    Faction { number: u32, faction: String },
+}
+impl TurnSelection {
+    pub fn number(&self) -> u32 {
+        match self {
+            Self::Number(n) | Self::Faction { number: n, .. } => *n,
+        }
+    }
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+#[serde(rename_all = "camelCase")]
+pub struct DeathSelection {
+    #[serde(flatten)]
+    pub units: UnitMatch,
+    #[serde(default)]
+    pub initiated_by: Option<String>,
+    #[serde(default)]
+    pub killed_by: Option<String>,
+    #[serde(default)]
+    pub defending: Option<bool>,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+#[serde(deny_unknown_fields)]
+pub struct TextVariant {
+    #[serde(default)]
+    pub when: Option<When>,
+    pub text: String,
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+#[serde(untagged)]
+pub enum ConditionalText {
+    Text(String),
+    Variants(Vec<TextVariant>),
+}
+impl ConditionalText {
+    pub fn conditions(&self) -> Vec<&When> {
+        match self {
+            Self::Text(_) => vec![],
+            Self::Variants(v) => v.iter().filter_map(|v| v.when.as_ref()).collect(),
+        }
+    }
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+#[serde(untagged)]
+pub enum ConditionalHint {
+    Text(String),
+    Variant(TextVariant),
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 #[serde(rename_all = "camelCase")]
 pub enum When {
     All(Vec<When>),
@@ -95,9 +191,9 @@ pub enum When {
     Not(Box<When>),
     Stand(SiteSelection),
     Proximity(ProximitySelection),
-    Killed(UnitMatch),
+    Killed(DeathSelection),
     Left(SiteSelection),
-    Turn(u32),
+    Turn(TurnSelection),
     TurnAtLeast(u32),
     ChapterStarted(bool),
     Flag(String),
@@ -105,6 +201,7 @@ pub enum When {
     NoUnits(UnitMatch),
     VisibleUnits(UnitMatch),
     Owner(OwnerSelection),
+    Own(OwnSelection),
     Held(HoldSelection),
 }
 
@@ -392,6 +489,8 @@ pub enum EventAction {
     Victory(String),
     Defeat(String),
     Log(String),
+    FailObjective(String),
+    Recruits(RecruitmentUnlock),
 }
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -403,6 +502,7 @@ pub enum EventAction {
 #[serde(rename_all = "camelCase")]
 pub enum EventIntent {
     Hold(HoldSelection),
+    Own(OwnSelection),
     Escort(SiteSelection),
     GoTo(SiteSelection),
     Escape(SiteSelection),
@@ -419,6 +519,10 @@ pub enum EventIntent {
 )]
 #[serde(deny_unknown_fields)]
 pub struct EventObjective {
+    #[serde(default)]
+    pub id: Option<String>,
+    #[serde(default, rename = "preserveLives")]
+    pub preserve_lives: Option<UnitMatch>,
     pub label: String,
     #[serde(default)]
     pub optional: bool,
@@ -503,6 +607,8 @@ pub struct PendingEventSpawn {
 )]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct EventState {
+    #[serde(default)]
+    pub failed: Vec<String>,
     pub recruitment: std::collections::BTreeMap<String, Vec<FactionRecruit>>,
     pub active: Vec<String>,
     pub holds: Vec<EventHold>,
@@ -530,7 +636,28 @@ impl SpawnEntry {
         }
     }
 }
+pub struct EventClock<'a> {
+    pub tile: &'a str,
+    pub turns: u32,
+    pub units: Option<&'a UnitMatch>,
+    pub faction: Option<&'a str>,
+    pub when: Option<&'a When>,
+}
 impl When {
+    pub fn state_only(&self) -> bool {
+        match self {
+            Self::All(v) | Self::Any(v) => v.iter().all(Self::state_only),
+            Self::Not(v) => v.state_only(),
+            Self::Own(v) => v.turns.is_none() && v.when.as_ref().is_none_or(|w| w.state_only()),
+            Self::Held(_)
+            | Self::Killed(_)
+            | Self::Left(_)
+            | Self::Turn(_)
+            | Self::ChapterStarted(_) => false,
+            _ => true,
+        }
+    }
+
     fn requires_death(&self) -> bool {
         match self {
             Self::Killed(_) => true,
@@ -547,9 +674,22 @@ impl When {
             _ => false,
         }
     }
-    pub fn holds(&self) -> Vec<&HoldSelection> {
+    pub fn holds(&self) -> Vec<EventClock<'_>> {
         match self {
-            Self::Held(v) => vec![v],
+            Self::Held(v) => vec![EventClock {
+                tile: &v.tile,
+                turns: v.turns,
+                units: Some(&v.units),
+                faction: None,
+                when: v.when.as_deref(),
+            }],
+            Self::Own(v) if v.turns.is_some() => vec![EventClock {
+                tile: &v.tile,
+                turns: v.turns.unwrap(),
+                units: None,
+                faction: Some(&v.faction),
+                when: v.when.as_deref(),
+            }],
             Self::All(v) | Self::Any(v) => v.iter().flat_map(Self::holds).collect(),
             Self::Not(v) => v.holds(),
             _ => vec![],
@@ -559,6 +699,7 @@ impl When {
 impl EventState {
     pub fn new(events: &[ScriptEvent]) -> Self {
         Self {
+            failed: vec![],
             recruitment: Default::default(),
             active: events.iter().map(|e| e.id.clone()).collect(),
             holds: vec![],
@@ -570,6 +711,12 @@ impl EventState {
 }
 
 impl ScriptEvent {
+    pub fn objective_id(&self) -> &str {
+        self.objective
+            .as_ref()
+            .and_then(|o| o.id.as_deref())
+            .unwrap_or(&self.id)
+    }
     pub fn validate(
         &self,
         tiles: &[Tile],
@@ -631,13 +778,47 @@ impl ScriptEvent {
                 }
                 When::Held(v) => {
                     tile(&v.tile)?;
+                    if let Some(c) = &v.when {
+                        if !c.state_only() {
+                            return Err(ContentError::new(
+                                path,
+                                "clock gates must be state predicates",
+                            ));
+                        }
+                        when(c, tile, faction, path)?;
+                    }
                     if v.turns == 0 {
                         return Err(ContentError::new(path, "hold duration must be positive"));
                     }
                 }
+                When::Own(v) => {
+                    tile(&v.tile)?;
+                    faction(&v.faction)?;
+                    if v.turns == Some(0) {
+                        return Err(ContentError::new(
+                            path,
+                            "ownership duration must be positive",
+                        ));
+                    }
+                    if let Some(c) = &v.when {
+                        if !c.state_only() {
+                            return Err(ContentError::new(
+                                path,
+                                "ownership gate must be a state predicate",
+                            ));
+                        }
+                        when(c, tile, faction, path)?;
+                    }
+                }
+                When::Turn(TurnSelection::Faction { faction: id, .. }) => faction(id)?,
                 When::Owner(v) => {
                     tile(&v.tile)?;
                     faction(&v.faction)?;
+                }
+                When::Killed(v) => {
+                    for id in v.initiated_by.iter().chain(&v.killed_by) {
+                        faction(id)?;
+                    }
                 }
                 When::Flag(id) => identifier(id, path)?,
                 When::ChapterStarted(false) => {
@@ -752,7 +933,7 @@ impl ScriptEvent {
                     }
                     EventAction::SetTerrain(v) => reference(&v.tile)?,
                     EventAction::Gold(v) => faction(&v.faction)?,
-                    EventAction::UnlockRecruits(v) => {
+                    EventAction::UnlockRecruits(v) | EventAction::Recruits(v) => {
                         faction(&v.faction)?;
                         unique(v.units.iter().map(|r| r.unit.as_str()), path)?;
                         if v.units.iter().any(|r| r.cost.is_some_and(|c| c < 0)) {
@@ -776,6 +957,9 @@ impl ScriptEvent {
             self.when.requires_death(),
         )?;
         if let Some(o) = &self.objective {
+            if let Some(id) = &o.id {
+                identifier(id, path)?;
+            }
             if o.label.trim().is_empty() || !self.remembers {
                 return Err(fail(
                     "objectives require a label and a remembered event".into(),
@@ -805,6 +989,13 @@ impl ScriptEvent {
                 EventIntent::Approach(v) => {
                     when(&When::Proximity(v.clone()), &tile, &faction, path)?
                 }
+                EventIntent::Own(v) => {
+                    tile(&v.tile)?;
+                    faction(&v.faction)?;
+                    if v.turns == Some(0) {
+                        return Err(fail("ownership intent duration must be positive".into()));
+                    }
+                }
                 EventIntent::Defeat(_) => {}
             }
         }
@@ -821,16 +1012,25 @@ impl ScriptEvent {
                 }
                 When::Not(v) => conditions(v, out),
                 When::Stand(v) | When::Left(v) => out.push(&v.units),
-                When::Held(v) => out.push(&v.units),
+                When::Held(v) => {
+                    out.push(&v.units);
+                    if let Some(c) = &v.when {
+                        conditions(c, out);
+                    }
+                }
+                When::Own(v) => {
+                    if let Some(c) = &v.when {
+                        conditions(c, out);
+                    }
+                }
                 When::Proximity(v) => {
                     out.push(&v.units);
                     if let Some(s) = &v.target {
                         out.push(s);
                     }
                 }
-                When::Killed(v) | When::HasUnits(v) | When::NoUnits(v) | When::VisibleUnits(v) => {
-                    out.push(v)
-                }
+                When::Killed(v) => out.push(&v.units),
+                When::HasUnits(v) | When::NoUnits(v) | When::VisibleUnits(v) => out.push(v),
                 _ => {}
             }
         }
@@ -855,6 +1055,9 @@ impl ScriptEvent {
         if let Some(o) = &self.objective {
             if let Some(w) = &o.visible_when {
                 conditions(w, &mut out);
+            }
+            if let Some(v) = &o.preserve_lives {
+                out.push(v);
             }
             match &o.intent {
                 EventIntent::Hold(v) => out.push(&v.units),
@@ -980,4 +1183,37 @@ pub struct LoopSelection {
     pub tile: Option<String>,
     #[serde(flatten)]
     pub units: UnitMatch,
+}
+
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ResolvedStory {
+    pub briefing: String,
+    pub debrief: Option<String>,
+    pub hints: Vec<String>,
+}
+impl ConditionalText {
+    pub fn is_empty(&self) -> bool {
+        match self {
+            Self::Text(t) => t.trim().is_empty(),
+            Self::Variants(v) => v.is_empty() || v.iter().any(|v| v.text.trim().is_empty()),
+        }
+    }
+}
+
+impl Mission {
+    pub fn story_conditions(&self) -> Vec<&When> {
+        let mut out = self.briefing.conditions();
+        if let Some(t) = &self.debrief {
+            out.extend(t.conditions());
+        }
+        for h in &self.hints {
+            if let ConditionalHint::Variant(v) = h {
+                if let Some(w) = &v.when {
+                    out.push(w);
+                }
+            }
+        }
+        out
+    }
 }

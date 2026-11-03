@@ -46,6 +46,15 @@
       },
       "actions": [
         {
+          "failObjective": "prisoners-freed"
+        },
+        {
+          "failObjective": "village-safe"
+        },
+        {
+          "failObjective": "eastern-departure"
+        },
+        {
           "defeat": "The Bellwarden's final toll seals the road. The company has run out of time."
         }
       ],
@@ -1274,6 +1283,15 @@
         }
       },
       "actions": [
+        {
+          "failObjective": "prisoners-freed"
+        },
+        {
+          "failObjective": "village-safe"
+        },
+        {
+          "failObjective": "eastern-departure"
+        },
         {
           "defeat": "The captives were killed before reaching safety."
         }

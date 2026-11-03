@@ -528,7 +528,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
             config.seed,
             config.recruit_limit,
             Some(&goals),
-            Diplomacy::Pragmatic,
+            Diplomacy::Unrestricted,
             &mut tactics[side.index()],
         )?;
         for command in &record.records.actions {
@@ -721,7 +721,7 @@ mod tests {
                 7,
                 limit,
                 None,
-                Diplomacy::Pragmatic,
+                Diplomacy::Unrestricted,
                 &mut PresetTactic::preset(policy),
             )
             .unwrap();

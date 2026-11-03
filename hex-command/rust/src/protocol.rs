@@ -465,6 +465,7 @@ pub struct UnitActions {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct BattleInspection {
+    pub story: Option<crate::data::ResolvedStory>,
     /// Current dialogue captions resolved from character IDs for display only.
     pub speakers: Vec<String>,
     pub objectives: Option<crate::data::CampaignObjectives>,

@@ -1,39 +1,159 @@
 {
   "events": [
     {
-      "id": "ledger",
-      "trigger": {
-        "kind": "visit",
-        "tile": "hex-0892-f4d2ec09d8"
+      "id": "ledgerkeeper-death",
+      "when": {
+        "killed": {
+          "character": "ledgerkeeper"
+        }
       },
-      "label": "Recover the forgotten workers’ ledger",
-      "gold": 6,
-      "dialogue": [
+      "actions": [
         {
-          "portrait": "necromancer",
-          "text": "They wrote down our wages. They did not write down our names. Take the six coins. We can begin with that.",
+          "setFlag": "ledgerkeeper-dead"
+        }
+      ]
+    },
+    {
+      "id": "orin-death",
+      "when": {
+        "killed": {
           "character": "orin"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "orin-dead"
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "when": {
+        "stand": {
+          "tile": "hex-0892-f4d2ec09d8",
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 6
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "necromancer",
+              "text": "They wrote down our wages. They did not write down our names. Take the six coins. We can begin with that.",
+              "character": "orin"
+            }
+          ]
+        },
+        {
+          "setFlag": "ledger"
+        },
+        {
+          "log": "Recover the forgotten workers’ ledger"
+        }
+      ],
+      "objective": {
+        "label": "Recover the forgotten workers’ ledger",
+        "intent": {
+          "goTo": {
+            "tile": "hex-0892-f4d2ec09d8",
+            "side": "player"
+          }
+        },
+        "optional": true
+      }
+    },
+    {
+      "id": "southern-capture-party",
+      "when": {
+        "turn": {
+          "number": 6,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-0125-7bcb954eb7",
+            "radius": 0,
+            "units": [
+              {
+                "type": "adept"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-0093-9d334ed661",
+            "radius": 0,
+            "units": [
+              {
+                "type": "warden"
+              }
+            ]
+          }
+        },
+        {
+          "log": "An adept and warden arrive from the southern road on turn 6"
+        }
+      ]
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "stand": {
+          "tile": "hex-0098-b1326129be",
+          "role": "leader",
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "goal-0"
+        }
+      ],
+      "objective": {
+        "label": "Bring Orin to the northern quarry gate",
+        "intent": {
+          "escape": {
+            "tile": "hex-0098-b1326129be",
+            "role": "leader",
+            "side": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "goal-0"
+          },
+          {
+            "hasUnits": {
+              "role": "leader",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "waves": [
-    {
-      "round": 6,
-      "label": "An adept and warden arrive from the southern road on turn 6",
-      "id": "southern-capture-party",
-      "units": [
-        {
-          "type": "adept",
-          "side": "enemy",
-          "tile": "hex-0125-7bcb954eb7"
-        },
-        {
-          "type": "warden",
-          "side": "enemy",
-          "tile": "hex-0093-9d334ed661"
-        }
-      ]
-    }
-  ]
+  "requiredCompanions": [],
+  "enemyLeaderPost": "hex-0124-7838ad1797"
 }

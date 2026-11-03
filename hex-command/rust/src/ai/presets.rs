@@ -100,7 +100,7 @@ mod tests {
             game.begin_turn(side);
             game.gold[side.faction_id()] = 100;
             let leader = game.units.iter().find(|u| u.side == side).unwrap().id;
-            let workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
+            let workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Diplomatic);
             let orders = CampaignBlock::Mission.campaign_orders(&game, &workspace);
             let emitted: Vec<_> = orders
                 .tactics
@@ -125,8 +125,8 @@ mod tests {
         let mut game = Game::new(&rules, "mirror");
         let blocks = Policy::Balanced.blocks();
         let mut custom =
-            PlanningWorkspace::new(7, 1, None, Diplomacy::Restrained).with_blocks(blocks);
-        let mut preset = PlanningWorkspace::new(7, 1, None, Diplomacy::Restrained);
+            PlanningWorkspace::new(7, 1, None, Diplomacy::Diplomatic).with_blocks(blocks);
+        let mut preset = PlanningWorkspace::new(7, 1, None, Diplomacy::Diplomatic);
         for _ in 0..64 {
             let command = choose_game_command(&game, Policy::Classic, &mut custom).unwrap();
             assert_eq!(
@@ -147,11 +147,15 @@ mod tests {
         let rules = Rules::load().unwrap();
         let mut game =
             Game::start_campaign(&rules, "ashen-oath", 1, vec![], 0, vec![], vec![], vec![]);
-        game.escalate_refuge();
+        let state = game.campaign.as_mut().unwrap();
+        state.set_flag("peace-lost", true, 1);
+        let scripts = state.scripts.as_mut().unwrap();
+        scripts.active.retain(|id| id != "refuge-peace");
+        scripts.failed.push("refuge-peace".into());
         let required = game
             .objectives(Side::Player)
             .into_iter()
-            .find(|g| g.id == "required:0")
+            .find(|g| g.id == "required:refuge-war")
             .unwrap();
         assert!(!required.tiles.contains(&"hex-0923-ec307e92cf".to_owned()));
         assert!(

@@ -640,7 +640,7 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
         assert!((game.exchange(actor, target, 0, actor.tile).death[1] - 5. / 9.).abs() < 1e-12);
         assert!(game.preview(actor, target, 0, actor.tile).2.is_some());
         let mut workspace =
-            crate::ai::PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Pragmatic);
+            crate::ai::PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Unrestricted);
         let command =
             crate::ai::choose_game_command(&game, crate::ai::Policy::Balanced, &mut workspace)
                 .unwrap();

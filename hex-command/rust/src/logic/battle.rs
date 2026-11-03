@@ -165,7 +165,8 @@ pub(crate) struct Game<'catalog> {
     /// Derived tile-indexed remembered fog; never serialized.
     pub(crate) fog_memory: Vec<u64>,
     pub(super) traversal: Option<(u32, Vec<usize>)>,
-    pub(crate) event_deaths: Vec<Unit>,
+    pub(crate) event_deaths: Vec<super::events::DeathOccurrence>,
+    pub(crate) event_turn_faction: Option<String>,
     pub(super) event_departure: Option<Unit>,
     pub(super) event_opening: bool,
     pub(crate) floors: Rc<Vec<Option<String>>>,
@@ -420,6 +421,7 @@ impl<'catalog> Game<'catalog> {
             fog_memory,
             traversal: None,
             event_deaths: vec![],
+            event_turn_faction: None,
             event_departure: None,
             event_opening: false,
             rules,
@@ -789,71 +791,14 @@ impl<'catalog> Game<'catalog> {
             self.mission_key = None;
             return;
         };
-        let without_dain = state.chosen("refuge-war")
-            || state.chosen("green-dain-dead")
-            || state.marked("dain-fell");
-        let mut fallen = state.fallen_companions.clone().unwrap_or_default();
-        for mark in &state.marks {
-            if let Some(name) = mark.strip_prefix("fallen:") {
-                if !fallen.iter().any(|n| n == name) {
-                    fallen.push(name.to_owned());
-                }
-            }
-        }
-        let key = (
-            state.id.clone(),
-            state.mission,
-            without_dain,
-            fallen.clone(),
-            state.escalated(),
-        );
+        let key = (state.id.clone(), state.mission, false, vec![], false);
         if self.mission_key.as_ref() == Some(&key) {
             return;
         }
         self.mission_key = Some(key);
-        let mut mission = Rc::new(self.campaign_definition().missions[state.mission].clone());
-        if without_dain {
-            if let Some(patch) = mission.without_dain.clone() {
-                Rc::make_mut(&mut mission).apply(&patch);
-            }
-        }
-        for name in &fallen {
-            if let Some(patch) = mission
-                .companion_losses
-                .as_ref()
-                .and_then(|patches| patches.get(name))
-                .cloned()
-            {
-                Rc::make_mut(&mut mission).apply(&patch);
-            }
-        }
-        if mission.intro.iter().chain(&mission.victory).any(|line| {
-            line.character
-                .as_ref()
-                .is_some_and(|id| fallen.contains(id))
-        }) {
-            let changed = Rc::make_mut(&mut mission);
-            changed.intro.retain(|line| {
-                !line
-                    .character
-                    .as_ref()
-                    .is_some_and(|id| fallen.contains(id))
-            });
-            changed.victory.retain(|line| {
-                !line
-                    .character
-                    .as_ref()
-                    .is_some_and(|id| fallen.contains(id))
-            });
-        }
-        if state.escalated() {
-            if let Some(refuge) = mission.refuge.clone() {
-                let changed = Rc::make_mut(&mut mission);
-                changed.briefing = refuge.war_briefing;
-                changed.hints = refuge.war_hints;
-            }
-        }
-        self.mission = Some(mission);
+        self.mission = Some(Rc::new(
+            self.campaign_definition().missions[state.mission].clone(),
+        ));
     }
 }
 
@@ -872,6 +817,7 @@ impl<'catalog> Game<'catalog> {
             fog_memory: self.fog_memory.clone(),
             traversal: None,
             event_deaths: vec![],
+            event_turn_faction: None,
             event_departure: None,
             event_opening: false,
             fog: self.fog.clone(),
@@ -977,6 +923,14 @@ impl<'catalog> Game<'catalog> {
         self.recruitment_options_for_faction(self.faction_for_phase(side))
     }
     pub(crate) fn recruitment_options_for_faction(&self, id: &str) -> Vec<usize> {
+        if let Some(pool) = self
+            .campaign
+            .as_ref()
+            .and_then(|c| c.scripts.as_ref())
+            .and_then(|s| s.recruitment.get(id))
+        {
+            return pool.iter().map(|r| self.kind(&r.unit)).collect();
+        }
         if let Some(mission) = &self.mission {
             let mut options: Vec<_> = mission
                 .recruitment

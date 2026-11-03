@@ -23,7 +23,7 @@
     "stages/tide-wreck/stage.json",
     "stages/tide-sluice/stage.json"
   ],
-  "playerDiplomacy": ["pragmatic"],
+  "playerDiplomacy": ["unrestricted"],
   "characters": [
     {
       "id": "vale",

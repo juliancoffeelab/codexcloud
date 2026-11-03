@@ -18,7 +18,7 @@
     "stages/lantern-villages/stage.json",
     "stages/lantern-bell/stage.json"
   ],
-  "playerDiplomacy": ["pragmatic"],
+  "playerDiplomacy": ["unrestricted"],
   "characters": [
     {
       "id": "nera",

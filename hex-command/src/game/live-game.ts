@@ -192,6 +192,9 @@ export class LiveGame {
   get rows() {
     return this.state.rows;
   }
+  get story() {
+    return this.inspection.story;
+  }
   get objectives() {
     return this.inspection.objectives;
   }
@@ -419,6 +422,7 @@ export class LiveGame {
     return immutable({
       presentation: this.resolvedPresentation,
       objectives: this.objectives,
+      story: this.story,
       campaign: this.displayedCampaign,
       mapId: state.mapId,
       mapRevision: state.mapRevision,

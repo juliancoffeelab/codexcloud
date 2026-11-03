@@ -361,7 +361,7 @@ mod tests {
             for planner in [PlannerKind::Classic, PlannerKind::Full, PlannerKind::Queued] {
                 let (game, id) = battle(&rules, base);
                 let mut tactic = Tactic::new(Fixed(branch), CampaignerKind::Arena, planner);
-                let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
+                let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Diplomatic);
                 let plan = tactic.run_turn(&game, &mut workspace).unwrap();
                 assert!(
                     plan.commands.contains(&crate::logic::Command::Advance {

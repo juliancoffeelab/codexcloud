@@ -50,28 +50,35 @@ fn tide_starts_rescue_before_counting_defended_turns() {
     );
     let wreck = game.site("hex-0891-b20a50ef8c");
     game.owners[wreck] = Some("player".into());
+    let actor = game
+        .units
+        .iter()
+        .position(|u| u.side == Side::Player && u.is_leader())
+        .unwrap();
+    game.units[actor].tile = wreck;
+    game.roster_changed();
     game.evaluate_campaign(false, Some(wreck));
-    assert!(game.campaign.as_ref().unwrap().marked("event:await-tide"));
+    assert!(game.campaign.as_ref().unwrap().chosen("await-tide"));
     let goal = game
         .mission
         .as_ref()
         .unwrap()
-        .goals
+        .scripted_events
         .iter()
-        .find(|g| g.kind() == GoalKind::Hold)
+        .find(|e| e.id == "goal-1")
         .unwrap()
         .clone();
     while game.round < 6 {
         game.end_turn();
         game.end_turn();
     }
-    assert!(game.campaign.as_ref().unwrap().marked("event:rescue"));
-    assert_eq!(game.goal_progress(&goal).current, 0);
+    assert!(game.campaign.as_ref().unwrap().chosen("rescue"));
+    assert_eq!(game.scripted_objective_status(&goal).progress.current, 0);
     for _ in 0..3 {
         game.end_turn();
         game.end_turn();
     }
-    assert_eq!(game.goal_progress(&goal).current, 3);
+    assert_eq!(game.scripted_objective_status(&goal).progress.current, 3);
     assert_eq!(game.winner, Some(Side::Player));
 }
 #[test]

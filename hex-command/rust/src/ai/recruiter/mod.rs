@@ -710,7 +710,7 @@ mod tests {
         game.round = 3;
         game.gold["player"] = rules.units[rules.types["rider"]].cost;
         let workspace =
-            crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic);
+            crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted);
         let orders = crate::ai::CampaignBlock::Arena.campaign_orders(&game, &workspace);
         assert!(orders.recruitment.rotate_pool);
         // A selected mount survives a round boundary while saving, rather

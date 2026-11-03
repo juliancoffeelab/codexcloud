@@ -4,25 +4,9 @@ import type { DialogueLine, MissionDefinition } from "../game/types";
 /** Discover all dialogue cues for this mission, including authored story branches. */
 export function missionSounds(
   mission: Immutable<MissionDefinition>,
-  ending: readonly Immutable<DialogueLine>[] = [],
+  ending: readonly Immutable<import("../../rust/pkg/hex_command").Speech>[] = [],
 ): string[] {
-  const variants: Partial<Immutable<MissionDefinition>>[] = [
-    mission,
-    ...Object.values(mission.companionLosses ?? {}),
-  ];
-  if (mission.withoutDain) variants.push(mission.withoutDain);
-  const lines = [
-    ...ending,
-    ...variants.flatMap((story) => [
-      ...(story.intro ?? []),
-      ...(story.victory ?? []),
-      ...(story.events ?? []).flatMap((event) => [...event.dialogue, ...(event.warDialogue ?? [])]),
-      ...(story.waves ?? []).flatMap((wave) => wave.dialogue ?? []),
-      ...(story.refuge?.escalation ?? []),
-      ...(story.refuge?.warVictory ?? []),
-    ]),
-  ];
-  const sounds = lines.flatMap((line) => (line.sound ? [line.sound] : []));
+  const sounds: string[] = [];
   const speech = (
     nodes: readonly import("../game/immutable").Immutable<
       import("../../rust/pkg/hex_command").Speech
@@ -47,6 +31,9 @@ export function missionSounds(
       else if ("forEachMark" in action) actions(action.forEachMark.actions);
     }
   };
+  speech(mission.intro);
+  speech(mission.victory);
+  speech(ending);
   for (const event of mission.scriptedEvents ?? []) actions(event.actions);
   return [...new Set(sounds)];
 }

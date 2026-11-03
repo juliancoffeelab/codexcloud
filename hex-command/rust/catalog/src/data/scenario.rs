@@ -610,11 +610,11 @@ pub struct Mission {
     pub map: Layout,
     #[serde(default)]
     pub subtitle: String,
-    pub briefing: String,
+    pub briefing: ConditionalText,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub debrief: Option<String>,
-    pub hints: Vec<String>,
+    pub debrief: Option<ConditionalText>,
+    pub hints: Vec<ConditionalHint>,
     #[serde(default)]
     pub required_companions: Vec<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -632,8 +632,8 @@ pub struct Mission {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub enemy_leader_post: Option<String>,
-    pub intro: Vec<Dialogue>,
-    pub victory: Vec<Dialogue>,
+    pub intro: Vec<Speech>,
+    pub victory: Vec<Speech>,
     pub events: Vec<Event>,
     #[serde(default)]
     pub enemy_groups: Vec<EnemyGroup>,
@@ -686,28 +686,6 @@ impl Mission {
     pub fn all_goals(&self) -> impl Iterator<Item = &Goal> {
         self.goals.iter().chain(&self.optional_goals)
     }
-    /// Apply the authored fields of a story-dependent mission override.
-    #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn apply(&mut self, patch: &MissionPatch) {
-        if let Some(value) = &patch.briefing {
-            self.briefing = value.clone();
-        }
-        if let Some(value) = &patch.debrief {
-            self.debrief = Some(value.clone());
-        }
-        if let Some(value) = &patch.hints {
-            self.hints = value.clone();
-        }
-        if let Some(value) = &patch.intro {
-            self.intro = value.clone();
-        }
-        if let Some(value) = &patch.victory {
-            self.victory = value.clone();
-        }
-        if let Some(value) = &patch.recruitment {
-            self.recruitment.extend(value.clone());
-        }
-    }
 }
 /// An ordered set of authored chapters and their final dialogue.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -730,7 +708,7 @@ pub struct Campaign {
     pub leader: String,
     pub characters: Vec<Character>,
     pub missions: Vec<Mission>,
-    pub ending: Vec<Dialogue>,
+    pub ending: Vec<Speech>,
 }
 impl Campaign {
     pub fn character(&self, id: &str) -> Option<&Character> {

@@ -165,7 +165,7 @@ test("Native adapter forwards revisions and keeps old publications after a stale
   const decision = value(
     engine.chooseAiCommand({
       policy: "balanced",
-      diplomacy: "restrained",
+      diplomacy: "diplomatic",
       recruitmentLimit: 2,
     }),
   );

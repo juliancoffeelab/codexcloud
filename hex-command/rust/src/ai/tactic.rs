@@ -174,7 +174,7 @@ mod tests {
             },
         );
         for _ in 0..2 {
-            let mut workspace = PlanningWorkspace::new(7, 2, None, Diplomacy::Restrained);
+            let mut workspace = PlanningWorkspace::new(7, 2, None, Diplomacy::Diplomatic);
             let plan = tactic.run_turn(&game, &mut workspace).unwrap();
             assert_eq!(plan.recruitment.recruited.len(), 2);
             assert_eq!(plan.recruitment.mandatory.len(), 1);

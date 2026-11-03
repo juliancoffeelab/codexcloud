@@ -1,775 +1,44 @@
-//! Campaign objectives, scripted events, reinforcement waves and chapter transitions.
-
+//! Chapter initialization, generic survival and veteran carryover.
 use crate::sort::SharedSort;
 use crate::{data::*, logic::battle::Game};
-use std::collections::BTreeMap;
 impl<'catalog> Game<'catalog> {
-    fn human_owns(&self, tile: usize) -> bool {
-        self.owners[tile].as_deref().is_some_and(|owner| {
-            owner == "player"
-                || self
-                    .faction(owner)
-                    .is_some_and(|f| f.controller == Controller::Human)
-        })
-    }
-
-    fn hold_actor_present(&self, goal: &Goal) -> bool {
-        if let Goal::Hold {
-            unit_types, tile, ..
-        } = goal
-        {
-            if !unit_types.is_empty()
-                && !self.units.iter().any(|u| {
-                    u.side == Side::Player
-                        && self.board.ids[u.tile] == *tile
-                        && unit_types.contains(&self.rules.units[u.kind].id)
-                })
-            {
-                return false;
-            }
-        }
-        goal.companion().is_none_or(|name| {
-            self.units.iter().any(|u| {
-                u.side == Side::Player
-                    && u.character.as_ref() == Some(name)
-                    && self.board.ids[u.tile] == *goal.tile().unwrap()
-            })
-        })
-    }
-    pub(crate) fn goal_visible(&self, goal: &Goal) -> bool {
-        goal.visible_when()
-            .is_none_or(|condition| self.event_condition_met(condition))
-    }
-    /// Internal completion queries do not need labels or serialized tile lists.
-    pub(crate) fn goal_done(&self, goal: &Goal) -> bool {
-        let state = self.campaign.as_ref().unwrap();
-        match goal {
-            Goal::Defeat { .. } => !self
-                .units
-                .iter()
-                .any(|u| self.hostile_to_phase(u, Side::Player) && u.role == Some(Role::Leader)),
-            Goal::Escort { tile, .. } | Goal::Escape { tile, .. } => {
-                self.units.iter().any(|u| {
-                    u.side == Side::Player
-                        && u.role
-                            == Some(if matches!(goal, Goal::Escort { .. }) {
-                                Role::Courier
-                            } else {
-                                Role::Leader
-                            })
-                        && &self.board.ids[u.tile] == tile
-                }) || state.evacuated.iter().any(|record| {
-                    record.unit.side == Side::Player
-                        && record.unit.role
-                            == Some(if matches!(goal, Goal::Escort { .. }) {
-                                Role::Courier
-                            } else {
-                                Role::Leader
-                            })
-                        && &record.unit.tile == tile
-                })
-            }
-            Goal::Control { .. } => goal
-                .tiles()
-                .iter()
-                .all(|tile| self.human_owns(self.site(tile))),
-            Goal::Seal { .. } => goal
-                .tiles()
-                .iter()
-                .all(|tile| state.marked_prefixed("sealed:", tile)),
-            Goal::Event { event, .. } => state.marked_prefixed("event:", event),
-            Goal::Hold {
-                once,
-                tile,
-                turns,
-                earliest_round,
-                start_event,
-                ..
-            } => {
-                let started = start_event
-                    .as_ref()
-                    .is_none_or(|event| state.marked_prefixed("event:", event));
-                let held = if started {
-                    state
-                        .holds
-                        .as_ref()
-                        .and_then(|holds| holds.get(tile))
-                        .map_or(0, |counter| counter.held_turns)
-                } else {
-                    0
-                };
-                held >= *turns
-                    && (*once || self.turn == Side::Player)
-                    && self.round >= *earliest_round
-                    && (*once
-                        || (self.human_owns(self.site(tile)) && self.hold_actor_present(goal)))
-            }
-            Goal::Vigil { turns, .. } => {
-                state.vigil.as_ref().map_or(0, |counter| counter.held_turns) >= *turns
-            }
-            Goal::Refuge { turns, .. } => {
-                if state.escalated() {
-                    return !self
-                        .units
-                        .iter()
-                        .any(|u| self.hostile_to_phase(u, Side::Player));
-                }
-                let refuge = self.mission.as_ref().unwrap().refuge.as_ref().unwrap();
-                let total = if state.marked_prefixed("event:", &refuge.medicine_event) {
-                    refuge.medicine_turns
-                } else {
-                    *turns
-                };
-                state
-                    .refuge
-                    .as_ref()
-                    .map_or(0, |counter| counter.held_turns)
-                    >= total
-            }
-        }
-    }
-    pub(crate) fn goal_progress(&self, goal: &Goal) -> Progress {
-        let mut current = 0;
-        let mut total = 1;
-        let mut label = goal.label().to_owned();
-        let mut tiles = goal.sites();
-        let state = self.campaign.as_ref().unwrap();
-        match goal {
-            Goal::Defeat { .. } => {
-                tiles.clear();
-                current = (!self.units.iter().any(|u| {
-                    self.hostile_to_phase(u, Side::Player) && u.role == Some(Role::Leader)
-                })) as u32;
-            }
-            Goal::Escort { .. } | Goal::Escape { .. } => {
-                current = self.goal_done(goal) as u32;
-            }
-            Goal::Control { .. } => {
-                total = tiles.len() as u32;
-                current = tiles
-                    .iter()
-                    .filter(|t| self.human_owns(self.site(t)))
-                    .count() as u32;
-            }
-            Goal::Seal { .. } => {
-                total = tiles.len() as u32;
-                current = tiles
-                    .iter()
-                    .filter(|t| state.marked(&format!("sealed:{t}")))
-                    .count() as u32;
-            }
-            Goal::Event { event, .. } => current = state.marked(&format!("event:{}", event)) as u32,
-            Goal::Hold {
-                tile,
-                turns,
-                start_event,
-                ..
-            } => {
-                total = *turns;
-                if !start_event
-                    .as_ref()
-                    .is_some_and(|e| !state.marked(&format!("event:{e}")))
-                {
-                    current = state
-                        .holds
-                        .as_ref()
-                        .and_then(|h| h.get(tile))
-                        .map_or(0, |h| h.held_turns)
-                        .min(total);
-                }
-            }
-            Goal::Vigil { turns, .. } => {
-                total = *turns;
-                current = state.vigil.as_ref().map_or(0, |p| p.held_turns).min(total);
-            }
-            Goal::Refuge { turns, .. } => {
-                if state.escalated() {
-                    label = "Defeat the remaining patrol".into();
-                    current = (!self
-                        .units
-                        .iter()
-                        .any(|u| self.hostile_to_phase(u, Side::Player)))
-                        as u32;
-                    tiles.clear();
-                } else {
-                    let refuge = self.mission.as_ref().unwrap().refuge.as_ref().unwrap();
-                    total = if state.marked(&format!("event:{}", refuge.medicine_event)) {
-                        refuge.medicine_turns
-                    } else {
-                        *turns
-                    };
-                    current = state.refuge.as_ref().map_or(0, |p| p.held_turns).min(total);
-                }
-            }
-        }
-        let done = current == total
-            && match goal {
-                Goal::Hold {
-                    once,
-                    tile,
-                    earliest_round,
-                    ..
-                } => {
-                    (*once || self.turn == Side::Player)
-                        && self.round >= *earliest_round
-                        && (*once
-                            || (self.human_owns(self.site(tile)) && self.hold_actor_present(goal)))
-                }
-                _ => true,
-            };
-        Progress {
-            label,
-            current,
-            total,
-            done,
-            tiles,
-        }
-    }
-    pub(crate) fn active_goal_tiles(&self, goal: &Goal) -> Vec<String> {
-        if self.winner.is_some() || !self.goal_visible(goal) {
-            return vec![];
-        }
-        if goal.kind() == GoalKind::Seal {
-            return goal
-                .tiles()
-                .iter()
-                .filter(|t| {
-                    !self
-                        .campaign
-                        .as_ref()
-                        .unwrap()
-                        .marked(&format!("sealed:{t}"))
-                })
-                .cloned()
-                .collect();
-        }
-        if goal.kind() == GoalKind::Event && self.goal_done(goal) {
-            return vec![];
-        }
-        if goal.kind() == GoalKind::Defeat {
-            vec![]
-        } else {
-            goal.sites()
-        }
-    }
-    pub(crate) fn escalate_refuge(&mut self) -> bool {
-        let Some(refuge) = self.mission.as_ref().and_then(|m| m.refuge.clone()) else {
-            return false;
-        };
-        let Some(state) = &mut self.campaign else {
-            return false;
-        };
-        let counter = state.refuge.get_or_insert(RefugeCounter {
-            held_turns: 0,
-            last_counted_round: self.round,
-            escalated: false,
-        });
-        if counter.escalated {
-            return false;
-        }
-        counter.escalated = true;
-        state.say(refuge.escalation);
-        self.record("The chance of mediation is lost. Defeat the remaining patrol.".into());
-        self.refresh_mission();
-        true
-    }
-    pub(crate) fn spawn_waves(&mut self) {
-        if self.campaign.is_none() || self.winner.is_some() {
-            return;
-        }
-        let mission = self.mission.clone().unwrap();
-        for wave in &mission.waves {
-            let marker = format!("wave:{}", wave.id);
-            if self.round < wave.round || self.campaign.as_ref().unwrap().marked(&marker) {
-                continue;
-            }
-            self.campaign.as_mut().unwrap().marks.push(marker);
-            if wave.requires_unsealed.as_ref().is_some_and(|t| {
-                self.campaign
-                    .as_ref()
-                    .unwrap()
-                    .marked(&format!("sealed:{t}"))
-            }) {
-                continue;
-            }
-            let mut arrived = 0;
-            for incoming in &wave.units {
-                let origin = self.site(&incoming.tile);
-                let kind = self.kind(&incoming.r#type);
-                let tile = (0..self.terrain.len())
-                    .filter(|&t| {
-                        self.cost(kind, t) != u16::MAX
-                            && self.at(t).is_none()
-                            && self.board.distance(t, origin) <= 2
-                    })
-                    .min_by_key(|&t| self.board.distance(t, origin));
-                if let Some(tile) = tile {
-                    let id = self.add(kind, incoming.side, tile);
-                    let unit = self.units.iter_mut().find(|unit| unit.id == id).unwrap();
-                    unit.ai_group = incoming.ai_group.clone();
-                    unit.items = incoming.items.clone();
-                    unit.faction = incoming.faction.clone();
-                    arrived += 1;
-                }
-            }
-            if arrived > 0 {
-                self.record(wave.label.clone());
-                self.campaign
-                    .as_mut()
-                    .unwrap()
-                    .say(wave.dialogue.iter().cloned());
-            }
-        }
-    }
-    /// Activation is remembered independently from placement and each member is released once.
-    pub(crate) fn spawn_events(&mut self) -> bool {
-        let Some(mission) = self.mission.clone() else {
-            return false;
-        };
-        let mut changed = false;
-        for event in &mission.events {
-            let Some(group) = &event.spawn else {
-                continue;
-            };
-            if !self
-                .campaign
-                .as_ref()
-                .is_some_and(|state| state.marked(&format!("event:{}", event.id)))
-            {
-                continue;
-            }
-            for incoming in &group.units {
-                let marker = format!("spawn:{}:{}", event.id, incoming.id);
-                if self.campaign.as_ref().unwrap().marked(&marker) {
-                    continue;
-                }
-                let kind = self.kind(&incoming.r#type);
-                let tile = group
-                    .area
-                    .iter()
-                    .map(|id| self.site(id))
-                    .find(|&tile| self.at(tile).is_none() && self.cost(kind, tile) != u16::MAX);
-                if let Some(tile) = tile {
-                    changed = true;
-                    let id = self.add(kind, incoming.side, tile);
-                    let unit = self.units.iter_mut().find(|unit| unit.id == id).unwrap();
-                    unit.ai_group = group.ai_group.clone();
-                    unit.faction = incoming.faction.clone().or_else(|| group.faction.clone());
-                    unit.character = incoming.character.clone();
-                    unit.role = incoming.role.clone();
-                    self.campaign.as_mut().unwrap().marks.push(marker);
-                }
-            }
-        }
-        changed
-    }
-    fn evaluate_campaign_loss(&mut self, mission: &Mission) -> bool {
-        let definition = self.campaign_definition();
-        let leader = self
-            .units
-            .iter()
-            .any(|u| u.side == Side::Player && u.role == Some(Role::Leader))
-            || self
-                .campaign
-                .as_ref()
-                .unwrap()
-                .evacuated
-                .iter()
-                .any(|record| {
-                    record.unit.side == Side::Player && record.unit.role == Some(Role::Leader)
-                });
-        let missing = mission.required_companions.iter().find(|name| {
-            !self
-                .units
-                .iter()
-                .any(|u| u.side == Side::Player && u.character.as_ref() == Some(name))
-                && !self
-                    .campaign
-                    .as_ref()
-                    .unwrap()
-                    .evacuated
-                    .iter()
-                    .any(|record| record.unit.character.as_ref() == Some(name))
-        });
-        let courier = self
-            .units
-            .iter()
-            .any(|u| !self.hostile_to_phase(u, Side::Player) && u.role == Some(Role::Courier))
-            || mission
-                .goals
-                .iter()
-                .filter(|goal| matches!(goal, Goal::Escort { .. }))
-                .all(|goal| self.goal_done(goal));
-        let loss = mission
-            .lose_conditions
-            .iter()
-            .find(|loss| self.event_condition_met(&loss.condition));
-        if loss.is_some()
-            || !leader
-            || missing.is_some()
-            || (mission.goals.iter().any(|g| g.kind() == GoalKind::Escort) && !courier)
-        {
-            let text = if let Some(loss) = loss {
-                loss.message.clone()
-            } else if !leader {
-                "Your leader fell. The company cannot continue without them.".into()
-            } else if let Some(name) = missing {
-                format!(
-                    "{} fell. The company cannot continue without them.",
-                    self.character_name(name).unwrap_or(name)
-                )
-            } else {
-                "The people you were escorting were killed before reaching safety.".into()
-            };
-            self.winner = Some(Side::Enemy);
-            let state = self.campaign.as_mut().unwrap();
-            state.outcome = Some(text.clone());
-            let portrait = definition.leader.clone();
-            state.say([Dialogue {
-                sound: None,
-                speaker: "The company".into(),
-                character: None,
-                portrait,
-                text: text.clone(),
-            }]);
-            self.record(text);
-            return true;
-        }
-        false
-    }
-    pub(crate) fn evaluate_campaign(&mut self, at_turn_start: bool, entered: Option<usize>) {
+    pub(crate) fn evaluate_campaign(&mut self, at_turn_start: bool, _entered: Option<usize>) {
         if self.campaign.is_none() || self.winner.is_some() {
             return;
         }
         self.apply_faction_transfers();
-        let definition = self.campaign_definition();
-        let mission = self.mission.clone().unwrap();
-        if self.evaluate_campaign_loss(&mission) {
+        self.evaluate_scripted_events(at_turn_start);
+        if self.winner.is_some() {
             return;
         }
-        // Recheck defeat only after scripted work changes state. The initial check
-        // already covers the triggering move/attack and current round.
-        if !mission.scripted_events.is_empty() {
-            self.evaluate_scripted_events(at_turn_start);
-            return;
-        }
-        let mut scripts_changed = false;
-        if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Vigil) {
-            let tile = self.site(goal.tile().unwrap());
-            let present = self.units.iter().any(|u| {
-                u.side == Side::Player && u.character.as_ref() == goal.companion() && u.tile == tile
-            });
-            let owned = self.human_owns(tile);
-            let counter = self
-                .campaign
-                .as_mut()
-                .unwrap()
-                .vigil
-                .get_or_insert_with(|| {
-                    scripts_changed = true;
-                    Counter {
-                        held_turns: 0,
-                        last_counted_round: self.round,
-                    }
-                });
-            let before = (counter.held_turns, counter.last_counted_round);
-            if !present || !owned {
-                counter.held_turns = 0;
-                counter.last_counted_round = self.round;
-            } else if at_turn_start && self.round > counter.last_counted_round {
-                counter.held_turns = (counter.held_turns + 1).min(goal.turns().unwrap());
-                counter.last_counted_round = self.round;
-            }
-            scripts_changed |= before != (counter.held_turns, counter.last_counted_round);
-        }
-        if mission.refuge.is_some() {
-            self.campaign
-                .as_mut()
-                .unwrap()
-                .refuge
-                .get_or_insert_with(|| {
-                    scripts_changed = true;
-                    RefugeCounter {
-                        held_turns: 0,
-                        last_counted_round: self.round,
-                        escalated: false,
-                    }
-                });
-            if !self
-                .units
-                .iter()
-                .any(|u| self.hostile_to_phase(u, Side::Player) && u.role == Some(Role::Leader))
-            {
-                scripts_changed |= self.escalate_refuge();
-            }
-            if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Refuge) {
-                let tile = self.site(goal.tile().unwrap());
-                let owned = self.human_owns(tile);
-                let counter = self.campaign.as_mut().unwrap().refuge.as_mut().unwrap();
-                let before = (counter.held_turns, counter.last_counted_round);
-                if !counter.escalated {
-                    if !owned {
-                        counter.held_turns = 0;
-                    } else if at_turn_start && self.round > counter.last_counted_round {
-                        counter.held_turns += 1;
-                    }
-                    if at_turn_start {
-                        counter.last_counted_round = self.round;
-                    }
-                }
-                scripts_changed |= before != (counter.held_turns, counter.last_counted_round);
-            }
-        }
-        for goal in mission.all_goals() {
-            if goal.kind() == GoalKind::Hold {
-                let tile = self.site(goal.tile().unwrap());
-                let actor_present = self.hold_actor_present(goal);
-                let owned = self.human_owns(tile);
-                let state = self.campaign.as_mut().unwrap();
-                let started = goal
-                    .start_event()
-                    .as_ref()
-                    .is_none_or(|e| state.marked(&format!("event:{e}")));
-                let counter = state
-                    .holds
-                    .get_or_insert_with(BTreeMap::new)
-                    .entry(goal.tile().unwrap().clone())
-                    .or_insert_with(|| {
-                        scripts_changed = true;
-                        Counter {
-                            held_turns: 0,
-                            last_counted_round: self.round,
-                        }
-                    });
-                let before = (counter.held_turns, counter.last_counted_round);
-                if matches!(goal, Goal::Hold { once: true, .. })
-                    && counter.held_turns >= goal.turns().unwrap()
-                {
-                    continue;
-                }
-                if !started || !actor_present || !owned {
-                    counter.held_turns = 0;
-                    counter.last_counted_round = self.round;
-                } else if at_turn_start && self.round > counter.last_counted_round {
-                    counter.held_turns = (counter.held_turns + 1).min(goal.turns().unwrap());
-                    counter.last_counted_round = self.round;
-                }
-                scripts_changed |= before != (counter.held_turns, counter.last_counted_round);
-            }
-            if goal.kind() != GoalKind::Seal {
-                continue;
-            }
-            for id in goal.tiles() {
-                let mark = format!("sealed:{id}");
-                if self.campaign.as_ref().unwrap().marked(&mark) {
-                    continue;
-                }
-                let eligible = self.at(self.site(id)).is_some_and(|u| {
-                    u.side == Side::Player
-                        && goal.unit_type().is_none_or(|k| {
-                            self.rules.units[u.kind].id == *k
-                                || self.rules.units[u.kind].family
-                                    == self.rules.units[self.kind(k)].family
-                        })
-                });
-                if eligible {
-                    scripts_changed = true;
-                    self.campaign.as_mut().unwrap().marks.push(mark);
-                    self.record(
-                        "A binding stone was sealed. It will no longer raise the dead.".into(),
-                    );
-                }
-            }
-        }
-        if self.turn == Side::Player {
-            for event in &mission.events {
-                let marker = format!("event:{}", event.id);
-                let state = self.campaign.as_ref().unwrap();
-                let triggered = match &event.trigger {
-                    Trigger::Condition { condition } => self.event_condition_met(condition),
-                    Trigger::Visit { tile } => entered.is_some_and(|t| &self.board.ids[t] == tile),
-                    Trigger::Round { round } => self.round >= *round,
-                    Trigger::Held { tile, turns } => self
-                        .campaign
-                        .as_ref()
-                        .and_then(|c| c.holds.as_ref())
-                        .and_then(|h| h.get(tile))
-                        .is_some_and(|h| h.held_turns >= *turns),
-                    Trigger::Control { tile, round } => {
-                        self.human_owns(self.site(tile)) && self.round >= round.unwrap_or(1)
-                    }
-                };
-                if !triggered
-                    || event.evacuate.as_ref().is_some_and(|effect| {
-                        !self.units.iter().any(|unit| {
-                            effect.units.accepts(unit) && self.board.ids[unit.tile] == effect.tile
-                        })
-                    })
-                    || event
-                        .items
-                        .iter()
-                        .any(|reward| !self.units.iter().any(|unit| reward.recipient.accepts(unit)))
-                    || state.marked(&marker)
-                    || event
-                        .requires_event
-                        .as_ref()
-                        .is_some_and(|e| !state.marked(&format!("event:{e}")))
-                    || event
-                        .unless_event
-                        .as_ref()
-                        .is_some_and(|e| state.marked(&format!("event:{e}")))
-                    || event
-                        .unless_choice
-                        .as_ref()
-                        .is_some_and(|choice| state.chosen(choice))
-                    || event.before_round.is_some_and(|r| self.round >= r)
-                {
-                    continue;
-                }
-                scripts_changed = true;
-                let lines = if state.escalated() {
-                    event.war_dialogue.as_ref().unwrap_or(&event.dialogue)
-                } else {
-                    &event.dialogue
-                };
-                // Named party members speak only while present, including after promotion.
-                // Unbound speakers such as local witnesses and narration remain available.
-                let lines: Vec<_> = lines
-                    .iter()
-                    .filter(|line| {
-                        let Some(id) = line.character.as_deref() else {
-                            return true;
-                        };
-                        !state.marked(&format!("fallen:{id}"))
-                            && (!(mission
-                                .arrivals
-                                .iter()
-                                .any(|arrival| arrival.character == id)
-                                || mission.map.units.iter().any(|unit| {
-                                    unit.side == Side::Player
-                                        && unit.character.as_deref() == Some(id)
-                                }))
-                                || self.units.iter().any(|unit| {
-                                    unit.side == Side::Player
-                                        && unit.character.as_deref() == Some(id)
-                                }))
-                    })
-                    .cloned()
-                    .collect();
-                let evacuated: Vec<_> = event
-                    .evacuate
-                    .as_ref()
-                    .map(|effect| {
-                        self.units
-                            .iter()
-                            .filter(|unit| {
-                                effect.units.accepts(unit)
-                                    && self.board.ids[unit.tile] == effect.tile
-                            })
-                            .map(|unit| EvacuatedUnit {
-                                event: event.id.clone(),
-                                unit: self.public_unit(unit),
-                            })
-                            .collect()
-                    })
-                    .unwrap_or_default();
-                if !evacuated.is_empty() {
-                    self.units.retain(|unit| {
-                        !evacuated
-                            .iter()
-                            .any(|record| record.unit.id == format!("u{}", unit.id))
-                    });
-                    self.roster_changed();
-                }
-                let state = self.campaign.as_mut().unwrap();
-                state.evacuated.extend(evacuated);
-                state.marks.push(marker);
-                if let Some(choice) = &event.choice {
-                    state.set_flag(choice, true, self.round);
-                }
-                self.gold["player"] += event.gold.unwrap_or(0);
-                self.ground_items.extend(event.ground_items.iter().cloned());
-                let collectors: Vec<_> = self
+        let missing = self
+            .mission
+            .as_ref()
+            .unwrap()
+            .required_companions
+            .iter()
+            .find(|id| {
+                !self
                     .units
                     .iter()
-                    .filter(|u| {
-                        u.side == Side::Player
-                            && event
-                                .ground_items
-                                .iter()
-                                .any(|item| item.tile == self.board.ids[u.tile])
-                    })
-                    .map(|u| u.id)
-                    .collect();
-                state.say(lines);
-                for id in collectors {
-                    self.collect_items(id);
-                }
-                for reward in &event.items {
-                    for unit in self
-                        .units
-                        .iter_mut()
-                        .filter(|unit| reward.recipient.accepts(unit))
-                    {
-                        if !unit.items.iter().any(|item| item.id == reward.item.id) {
-                            unit.items.push(reward.item.clone());
-                        }
-                    }
-                }
-                self.record(
-                    event
-                        .label
-                        .clone()
-                        .unwrap_or("The company found a new story.".into()),
-                );
-            }
-        }
-        scripts_changed |= self.spawn_events();
-        scripts_changed |= self.apply_faction_transfers();
-        if scripts_changed && self.evaluate_campaign_loss(&mission) {
-            return;
-        }
-        if mission.goals.iter().all(|g| self.goal_done(g)) {
-            self.winner = Some(Side::Player);
-            let dain_survived = self
+                    .any(|u| u.character.as_ref() == Some(id) && u.side == Side::Player)
+            });
+        if missing.is_some()
+            || !self
                 .units
                 .iter()
-                .any(|u| u.side == Side::Player && u.character.as_deref() == Some("dain"));
-            let state = self.campaign.as_mut().unwrap();
-            state.outcome = Some("Mission complete. The company can rest and regroup.".into());
-            let war = state.escalated();
-            if mission.refuge.is_some() {
-                state.set_flag(
-                    if war { "refuge-war" } else { "refuge-peace" },
-                    true,
-                    self.round,
-                );
-            }
-            state.say(if mission.refuge.is_some() && war {
-                mission.refuge.as_ref().unwrap().war_victory.clone()
-            } else {
-                mission.victory.clone()
-            });
-            state.completed = state.mission == definition.missions.len() - 1;
-            if state.completed {
-                let survived = dain_survived
-                    && !state.chosen("refuge-war")
-                    && !state.chosen("green-dain-dead")
-                    && !state.marked("dain-fell");
-                state.say(
-                    definition
-                        .ending
-                        .iter()
-                        .filter(|line| survived || (line.character.as_deref() != Some("dain")))
-                        .cloned(),
-                );
-            }
-            let text = if state.completed {
-                format!("{} is complete.", definition.name)
-            } else {
-                "Mission complete.".into()
-            };
-            self.record(text);
+                .any(|u| u.is_leader() && u.side == Side::Player)
+        {
+            self.winner = Some(Side::Enemy);
+            let message = "The company cannot continue without its protected companions.";
+            self.campaign.as_mut().unwrap().outcome = Some(message.into());
+            self.campaign.as_mut().unwrap().say([Dialogue {
+                character: None,
+                speaker: "The company".into(),
+                portrait: "worker".into(),
+                text: message.into(),
+                sound: None,
+            }]);
         }
     }
     pub(crate) fn start_campaign(
@@ -818,19 +87,6 @@ impl<'catalog> Game<'catalog> {
         let id = definition.id.as_str();
         let original = &definition.missions[index];
         let mut game = Game::new_with_campaign(rules, &original.map.id, Some(definition));
-        let holds = original
-            .all_goals()
-            .filter(|g| g.kind() == GoalKind::Hold)
-            .map(|g| {
-                (
-                    g.tile().unwrap().clone(),
-                    Counter {
-                        held_turns: 0,
-                        last_counted_round: 1,
-                    },
-                )
-            })
-            .collect();
         game.campaign = Some(
             CampaignState {
                 scripts: (!original.scripted_events.is_empty())
@@ -844,23 +100,13 @@ impl<'catalog> Game<'catalog> {
                 fallen_companions: Some(fallen.clone()),
                 carry_gold: carry.clamp(0, 8),
                 marks: vec![],
-                dialogue: original.intro.clone(),
+                dialogue: vec![],
                 dialogue_index: 0,
                 outcome: None,
                 completed: false,
-                refuge: original.refuge.as_ref().map(|_| RefugeCounter {
-                    held_turns: 0,
-                    last_counted_round: 1,
-                    escalated: false,
-                }),
-                vigil: original
-                    .all_goals()
-                    .any(|g| g.kind() == GoalKind::Vigil)
-                    .then_some(Counter {
-                        held_turns: 0,
-                        last_counted_round: 1,
-                    }),
-                holds: Some(holds),
+                refuge: None,
+                vigil: None,
+                holds: None,
                 flags,
             }
             .into(),
@@ -872,34 +118,7 @@ impl<'catalog> Game<'catalog> {
                 || u.character.as_ref().is_none_or(|n| !fallen.contains(n))
         });
         game.roster_changed();
-        game.campaign.as_mut().unwrap().dialogue = game.mission.as_ref().unwrap().intro.clone();
-        if game
-            .campaign
-            .as_ref()
-            .is_some_and(|s| s.chosen("refuge-war") || s.chosen("green-dain-dead"))
-            && original.without_dain.is_some()
-        {
-            game.units
-                .retain(|u| u.character.as_deref() != Some("dain"));
-            for incoming in original
-                .without_dain
-                .as_ref()
-                .unwrap()
-                .reinforcements
-                .as_ref()
-                .unwrap()
-            {
-                let kind = game.kind(&incoming.r#type);
-                let tile = game.site(&incoming.tile);
-                game.add(kind, incoming.side, tile);
-                let added = game.units.last_mut().unwrap();
-                added.ai_group = incoming.ai_group.clone();
-                added.items = incoming.items.clone();
-                added.faction = incoming.faction.clone();
-                added.character = incoming.character.clone();
-                added.role = incoming.role.clone();
-            }
-        }
+
         game.gold = original.gold.clone();
         game.gold["player"] += carry.clamp(0, 8);
         for veteran in story {
@@ -974,9 +193,18 @@ impl<'catalog> Game<'catalog> {
             }
         }
         game.log.clear();
-        game.record(game.mission.as_ref().unwrap().briefing.clone());
+
         game.event_opening = true;
         game.evaluate_campaign(false, None);
+        let mut intro = vec![];
+        game.script_speech(&game.mission.as_ref().unwrap().intro, &mut intro);
+        intro.extend(std::mem::take(
+            &mut game.campaign.as_mut().unwrap().dialogue,
+        ));
+        game.campaign.as_mut().unwrap().dialogue = intro;
+        if let Some(story) = game.resolved_story() {
+            game.record(story.briefing);
+        }
         game.remember_conditions();
         game
     }
@@ -1104,17 +332,7 @@ impl<'catalog> Game<'catalog> {
                 }
             }
         }
-        let mut flags = state.flags.clone();
-        if state.marked("dain-fell") && !state.chosen("green-dain-dead") {
-            flags
-                .entry("green-dain-dead".into())
-                .or_default()
-                .push(FlagChange {
-                    state: true,
-                    stage: state.mission,
-                    turn: self.round,
-                });
-        }
+        let flags = state.flags.clone();
         let mut fallen = state.fallen_companions.clone().unwrap_or_default();
         for name in state
             .marks
