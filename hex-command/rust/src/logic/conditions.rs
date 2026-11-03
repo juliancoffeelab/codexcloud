@@ -123,10 +123,9 @@ impl PresentationContext for LiveContext<'_, '_> {
             .get(i / 64)
             .is_some_and(|word| word & (1u64 << (i % 64)) != 0)
     }
-    fn lighting(&self) -> &BattlefieldLighting {
-        static DEFAULT: BattlefieldLighting = BattlefieldLighting {
+    fn lighting(&self) -> &MapLighting {
+        static DEFAULT: MapLighting = MapLighting {
             time: TimeOfDay::Day,
-            lights: Vec::new(),
         };
         self.game
             .rules
@@ -135,6 +134,14 @@ impl PresentationContext for LiveContext<'_, '_> {
             .find(|map| map.id == self.game.map_id)
             .map(|m| &m.lighting)
             .unwrap_or(&DEFAULT)
+    }
+    fn visit_lights(&self, mut visitor: impl FnMut(&str, i32, i32, &TileLight)) {
+        for (i, light) in self.game.light.iter().enumerate() {
+            if let Some(light) = light {
+                let (col, row) = self.game.board.positions[i];
+                visitor(&self.game.board.ids[i], col, row, light);
+            }
+        }
     }
     fn visit_fog(&self, mut visitor: impl FnMut(&str, &ConditionRule)) {
         for (i, rule) in self.game.fog.iter().enumerate() {
@@ -193,10 +200,9 @@ impl Game<'_> {
                 .any(|g| g.when.as_ref().is_some_and(|r| r.remember))
         });
         let lights = self
-            .condition_context()
-            .lighting()
-            .lights
+            .light
             .iter()
+            .flatten()
             .any(|l| l.when.as_ref().is_some_and(|r| r.remember));
         if !groups
             && !lights

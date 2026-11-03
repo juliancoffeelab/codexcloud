@@ -826,6 +826,6 @@ pub struct MapDefinition {
     pub rows: i32,
     pub terrain: Vec<Tile>,
     pub units: Vec<StartingUnit>,
-    pub lighting: BattlefieldLighting,
+    pub lighting: MapLighting,
     pub presentation: BattlefieldPresentation,
 }

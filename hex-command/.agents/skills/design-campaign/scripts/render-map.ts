@@ -12,17 +12,16 @@ import {
   terrainMapTiles,
 } from "../../../../src/presentation/terrain-map";
 import {
-  daylight,
   lightingMatrix,
   paintLights,
   shadePixels,
-  type BattlefieldLighting,
 } from "../../../../src/presentation/battlefield-lighting";
 import { paintFog } from "../../../../src/presentation/battlefield-fog";
 import {
   initSync,
   previewPresentation,
   type PresentationInput,
+  type MapLighting,
 } from "../../../../rust/pkg/hex_command";
 import { battlefieldSpriteSize, mapDimensions, tileCenter } from "../../../../src/ui/geometry";
 import type { TileView } from "../../../../src/game/view";
@@ -45,7 +44,7 @@ interface DraftMap {
   rows: number;
   tiles: TileView[];
   units?: Unit[];
-  lighting?: BattlefieldLighting;
+  lighting?: MapLighting;
 }
 interface Annotation extends Position {
   text?: string;
@@ -147,7 +146,7 @@ const units = overlay.units ?? map.units ?? [];
 const resolved = previewPresentation({
   tiles: map.tiles,
   units,
-  lighting: map.lighting ?? daylight,
+  lighting: map.lighting ?? { time: "day" },
   marks: overlay.marks ?? [],
   choices: overlay.choices ?? [],
   memory: overlay.memory ?? [],

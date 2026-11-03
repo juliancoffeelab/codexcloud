@@ -28,7 +28,7 @@ struct MapDocument {
     rows: i32,
     tiles: Vec<Tile>,
     #[serde(default)]
-    lighting: BattlefieldLighting,
+    lighting: MapLighting,
     #[serde(default)]
     hidden: bool,
     #[serde(rename = "name")]
@@ -197,10 +197,12 @@ pub fn scenario(bundle: &JsonBundle, path: &str) -> Result<(InitialState, String
     let documents: ScenarioDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
-    map.lighting
-        .validate(&map.tiles, &[])
-        .map_err(|message| ContentError::new(&map_path, message))?;
     for tile in &map.tiles {
+        if let Some(light) = &tile.light {
+            light
+                .validate(&map.tiles, &[])
+                .map_err(|message| ContentError::new(&map_path, message))?;
+        }
         if let Some(rule) = &tile.fog {
             rule.condition
                 .validate_presentation()
@@ -222,10 +224,12 @@ pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError>
     let objectives: StageObjectives = parse(bundle, &sibling(path, &documents.objectives)?)?;
     let story: StageStory = parse(bundle, &sibling(path, &documents.story)?)?;
     let scripts: StageScripts = parse(bundle, &sibling(path, &documents.scripts)?)?;
-    map.lighting
-        .validate(&map.tiles, &scripts.events)
-        .map_err(|message| ContentError::new(&map_path, message))?;
     for tile in &map.tiles {
+        if let Some(light) = &tile.light {
+            light
+                .validate(&map.tiles, &scripts.events)
+                .map_err(|message| ContentError::new(&map_path, message))?;
+        }
         if let Some(rule) = &tile.fog {
             rule.condition
                 .validate_presentation()

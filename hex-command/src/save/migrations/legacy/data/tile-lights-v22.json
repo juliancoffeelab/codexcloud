@@ -1,0 +1,208 @@
+{
+  "lantern-ferry": {
+    "revision": 2,
+    "lights": [
+      {
+        "tile": "3,11",
+        "legacyKey": "light:0:3,11",
+        "light": {
+          "dy": 6,
+          "radius": 105,
+          "power": 0.75
+        }
+      },
+      {
+        "tile": "18,10",
+        "legacyKey": "light:1:18,10",
+        "light": {
+          "dy": 6,
+          "radius": 92,
+          "power": 0.9,
+          "when": {
+            "condition": {
+              "kind": "event",
+              "event": "house-visit"
+            },
+            "remember": false
+          }
+        }
+      },
+      {
+        "tile": "21,5",
+        "legacyKey": "light:2:21,5",
+        "light": {
+          "dy": 6,
+          "radius": 95,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "owner",
+              "side": "player"
+            },
+            "remember": false
+          }
+        }
+      },
+      {
+        "tile": "21,12",
+        "legacyKey": "light:3:21,12",
+        "light": {
+          "dy": 6,
+          "radius": 95,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "owner",
+              "side": "player"
+            },
+            "remember": false
+          }
+        }
+      }
+    ]
+  },
+  "lantern-bell": {
+    "revision": 3,
+    "lights": [
+      {
+        "tile": "5,5",
+        "legacyKey": "light:0:5,5",
+        "light": {
+          "radius": 110,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "event",
+              "event": "monastery-start"
+            },
+            "remember": false
+          }
+        }
+      },
+      {
+        "tile": "15,6",
+        "legacyKey": "light:1:15,6",
+        "light": {
+          "dy": 6,
+          "radius": 95,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "owner",
+              "side": "player"
+            },
+            "remember": false
+          }
+        }
+      },
+      {
+        "tile": "4,12",
+        "legacyKey": "light:2:4,12",
+        "light": {
+          "dy": 6,
+          "radius": 95,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "owner",
+              "side": "player"
+            },
+            "remember": false
+          }
+        }
+      },
+      {
+        "tile": "15,18",
+        "legacyKey": "light:3:15,18",
+        "light": {
+          "dy": 6,
+          "radius": 95,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "owner",
+              "side": "player"
+            },
+            "remember": false
+          }
+        }
+      },
+      {
+        "tile": "9,11",
+        "legacyKey": "light:4:9,11",
+        "light": {
+          "dy": 6,
+          "radius": 95,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "owner",
+              "side": "player"
+            },
+            "remember": false
+          }
+        }
+      },
+      {
+        "tile": "13,12",
+        "legacyKey": "light:5:13,12",
+        "light": {
+          "dy": 6,
+          "radius": 95,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "owner",
+              "side": "player"
+            },
+            "remember": false
+          }
+        }
+      },
+      {
+        "tile": "11,15",
+        "legacyKey": "light:6:11,15",
+        "light": {
+          "dy": 6,
+          "radius": 95,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "owner",
+              "side": "player"
+            },
+            "remember": false
+          }
+        }
+      }
+    ]
+  },
+  "lantern-villages": {
+    "revision": 8,
+    "lights": [
+      {
+        "tile": "2,1",
+        "legacyKey": "light:0:2,1",
+        "light": {
+          "radius": 100,
+          "power": 0.8,
+          "when": {
+            "condition": {
+              "kind": "event",
+              "event": "village-contact"
+            },
+            "remember": false
+          }
+        }
+      },
+      {
+        "tile": "8,6",
+        "legacyKey": "light:1:8,6",
+        "light": {
+          "radius": 75,
+          "power": 0.5
+        }
+      }
+    ]
+  }
+}

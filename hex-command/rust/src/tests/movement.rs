@@ -10,6 +10,7 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
         state.tiles = (0..size)
             .map(|tile| Tile {
                 fog: None,
+                light: None,
                 id: format!("{},{}", tile % 9, tile / 9),
                 col: (tile % 9) as i32,
                 row: (tile / 9) as i32,

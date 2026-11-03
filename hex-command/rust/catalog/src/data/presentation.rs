@@ -13,7 +13,7 @@ pub struct PresentationInput {
     pub units: Vec<StartingUnit>,
     #[serde(default)]
     pub pending: Vec<SpawnUnit>,
-    pub lighting: BattlefieldLighting,
+    pub lighting: MapLighting,
     #[serde(default)]
     pub marks: Vec<String>,
     #[serde(default)]
@@ -206,76 +206,25 @@ fn evaluate(
 
 /// Presentation rules read the same borrowed context as gameplay conditions.
 pub trait PresentationContext: ConditionContext {
-    fn lighting(&self) -> &BattlefieldLighting;
+    fn lighting(&self) -> &MapLighting;
+    fn visit_lights(&self, visitor: impl FnMut(&str, i32, i32, &TileLight));
     fn visit_fog(&self, visitor: impl FnMut(&str, &ConditionRule));
     fn fog_index(&self, id: &str) -> usize;
     fn fog_remembered(&self, id: &str) -> bool;
 }
-// Numeric light identities fit in a small stack buffer; durable keys are allocated
-// only when a fact first becomes remembered.
-struct Key {
-    bytes: [u8; 64],
-    len: usize,
-}
-impl Key {
-    fn new(args: std::fmt::Arguments<'_>) -> Self {
-        use std::fmt::Write;
-        let mut key = Self {
-            bytes: [0; 64],
-            len: 0,
-        };
-        key.write_fmt(args).expect("numeric condition key");
-        key
-    }
-    fn text(&self) -> &str {
-        std::str::from_utf8(&self.bytes[..self.len]).expect("numeric condition key")
-    }
-}
-impl std::fmt::Write for Key {
-    fn write_str(&mut self, value: &str) -> std::fmt::Result {
-        let end = self.len + value.len();
-        if end > self.bytes.len() {
-            return Err(std::fmt::Error);
-        }
-        self.bytes[self.len..end].copy_from_slice(value.as_bytes());
-        self.len = end;
-        Ok(())
-    }
-}
-fn resolved_light(light: &BattlefieldLight) -> BattlefieldLight {
-    BattlefieldLight {
-        color: light.color,
-        fixture: light.fixture,
-        col: light.col,
-        row: light.row,
-        dx: light.dx,
-        dy: light.dy,
-        radius: light.radius,
-        power: light.power,
-        when: None,
-    }
-}
 /// Render current facts without cloning or updating durable condition memory.
 pub fn render(input: &impl PresentationContext, memory: &[String]) -> BattlefieldPresentation {
     let lighting = input.lighting();
-    let lights = lighting
-        .lights
-        .iter()
-        .enumerate()
-        .filter(|(i, light)| {
-            light.when.as_ref().is_none_or(|rule| {
-                let key = Key::new(format_args!("light:{i}:{},{}", light.col, light.row));
-                let remembered = rule.remember && memory.iter().any(|m| m == key.text());
-                remembered
-                    || matches(
-                        &rule.condition,
-                        input,
-                        Some(Key::new(format_args!("{},{}", light.col, light.row)).text()),
-                    )
-            })
-        })
-        .map(|(_, light)| resolved_light(light))
-        .collect();
+    let mut lights = Vec::new();
+    input.visit_lights(|id, col, row, light| {
+        let active = light.when.as_ref().is_none_or(|rule| {
+            (rule.remember && memory.iter().any(|m| m.strip_prefix("light:") == Some(id)))
+                || matches(&rule.condition, input, Some(id))
+        });
+        if active {
+            lights.push(light.at(col, row));
+        }
+    });
     let mut fog = Vec::new();
     input.visit_fog(|id, rule| {
         let remembered = rule.remember && input.fog_remembered(id);
@@ -298,20 +247,15 @@ pub fn discover(
     known: &mut [u64],
 ) -> Vec<String> {
     let mut added = Vec::new();
-    for (i, light) in input.lighting().lights.iter().enumerate() {
+    input.visit_lights(|id, _, _, light| {
         if let Some(rule) = light.when.as_ref().filter(|r| r.remember) {
-            let key = Key::new(format_args!("light:{i}:{},{}", light.col, light.row));
-            if !memory.iter().any(|m| m == key.text())
-                && matches(
-                    &rule.condition,
-                    input,
-                    Some(Key::new(format_args!("{},{}", light.col, light.row)).text()),
-                )
+            if !memory.iter().any(|m| m.strip_prefix("light:") == Some(id))
+                && matches(&rule.condition, input, Some(id))
             {
-                added.push(key.text().to_owned());
+                added.push(format!("light:{id}"));
             }
         }
-    }
+    });
     input.visit_fog(|id, rule| {
         if rule.remember {
             let i = input.fog_index(id);
@@ -344,23 +288,15 @@ pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<Strin
     let lighting = BattlefieldLighting {
         time: input.lighting.time,
         lights: input
-            .lighting
-            .lights
+            .tiles
             .iter()
-            .enumerate()
-            .filter(|(i, light)| {
-                light.when.as_ref().is_none_or(|rule| {
-                    rule_met(
-                        rule,
-                        format!("light:{i}:{},{}", light.col, light.row),
-                        &format!("{},{}", light.col, light.row),
-                    )
-                })
-            })
-            .map(|(_, light)| {
-                let mut light = light.clone();
-                light.when = None;
+            .filter_map(|tile| {
+                let light = tile.light.as_ref()?;
                 light
+                    .when
+                    .as_ref()
+                    .is_none_or(|rule| rule_met(rule, format!("light:{}", tile.id), &tile.id))
+                    .then(|| light.at(tile.col, tile.row))
             })
             .collect(),
     };

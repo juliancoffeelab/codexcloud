@@ -174,6 +174,7 @@ export interface Tile extends Coordinates {
   /** Artwork only: reusable floor palette, independent of terrain rules. */
   floor?: string;
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
+  light?: import("../../rust/pkg/hex_command").TileLight;
 }
 export interface Unit {
   faction?: string;
@@ -266,6 +267,7 @@ export interface TerrainOverride extends Coordinates {
   walls?: HexDirection[];
   floor?: string;
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
+  light?: import("../../rust/pkg/hex_command").TileLight;
 }
 export interface StartingUnit extends Coordinates {
   aiGroup?: string;
@@ -284,7 +286,7 @@ export interface MapDefinition {
   rows: number;
   terrain: TerrainOverride[];
   units: StartingUnit[];
-  lighting?: import("../../rust/pkg/hex_command").BattlefieldLighting;
+  lighting?: import("../../rust/pkg/hex_command").MapLighting;
   presentation: import("../../rust/pkg/hex_command").BattlefieldPresentation;
 }
 export interface DamageBreakdown {

@@ -130,28 +130,27 @@ unpublished release is requested. Its `prepare` operation saves without deployin
 ## Battlefield presentation
 
 An optional `lighting` object in a scenario's `map.json` selects `time` (`day`
-or `night`) and `lights`. Rust loads and validates this object with the map,
-includes it in the content fingerprint, and exports it through the WASM catalog.
-Runtime obtains these definitions from `MAPS`; generated terrain modules contain
-only opaque image keys, URLs and image dimensions. Devtools may read source JSON
-to bake images, but must not export scenario definitions into runtime modules.
+or `night`). Terrain emitters are authored on the owning tile as `light`, beside
+its optional `fog` rule. A light inherits the tile's coordinates; it has optional
+`dx`/`dy` offsets, positive `radius`, nonnegative `power`, optional RGB `color`,
+and an optional `fixture` flag. Do not duplicate tile coordinates or keep a
+separate map-level emitter list.
 
-Each light has integer `col`/`row`, optional `dx`/`dy`, positive `radius` and
-nonnegative `power`. Its optional `when` rule contains a `condition` and a
-`remember` boolean. Conditions include `owner`, `proximity`, `event`, `round`,
-`noUnits`, `all` and `any`. Owner/proximity conditions can omit `tile` to use the
-light or fog tile. Proximity uses hex distance (`radius: 0` means occupying the
-tile), side, and optional `unitType` and `name` filters. Conditions are evaluated
-by Rust. `remember: false` follows current state; `true` retains satisfaction as a
-durable fact. Event completion is already remembered by campaign state.
+A light's optional `when` contains a shared `condition` and `remember` boolean.
+A tile's `fog` uses that same condition wrapper and specifies what clears it.
+Owner/proximity conditions can omit `tile` to use the owning tile ID. Proximity
+uses hex distance (`radius: 0` means occupying the tile). `remember: false`
+follows current state; `true` retains satisfaction under the stable `light:<tile>`
+or `fog:<tile>` identity. Event completion is already remembered by campaign state.
+Visibility queries cannot define lighting or fog conditions recursively.
 
-A tile's optional `fog` uses the same rule format and specifies what clears it.
-Rust exports the resolved lights and fogged tile IDs in each engine view and the
-initial presentation in the catalog. The rendering worker paints soft fog; the UI hides
-covered enemies; Rust rejects attacks on covered enemies. Remembered condition
-facts persist in `conditionMemory`; resolved masks and rendered images do not.
-Missing lighting defaults to daylight. Color transforms, palette colors and glow
-rendering remain frontend presentation details.
+Rust validates these definitions and resolves active lights to positioned render
+sources, shared by initial catalog previews, devtools and live engine views.
+The rendering worker paints soft fog; the UI hides covered enemies and Rust
+rejects attacks on covered enemies. Remembered facts persist in `conditionMemory`;
+resolved masks and rendered images do not. Missing lighting defaults to daylight.
+Dynamic ritual death lights remain positioned runtime sources, separate from
+terrain emitters. Color transforms and glow rendering remain presentation details.
 
 Scenario events can use `trigger: {kind: "condition", condition: ...}`. An
 optional `spawn` contains an ordered tile-ID `area` and units with stable `id`,

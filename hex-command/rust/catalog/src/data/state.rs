@@ -30,7 +30,7 @@ impl HexDirection {
 /// A tile snapshot combining authored coordinates with current terrain and ownership.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
@@ -63,6 +63,10 @@ pub struct Tile {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fog: Option<std::sync::Arc<ConditionRule>>,
+    /// Terrain light anchored to this tile, using the same contextual rules as fog.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub light: Option<std::sync::Arc<TileLight>>,
 }
 impl Tile {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]

@@ -355,7 +355,18 @@
         },
         "remember": true
       },
-      "connections": []
+      "connections": [],
+      "light": {
+        "radius": 100,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "event",
+            "event": "village-contact"
+          },
+          "remember": false
+        }
+      }
     },
     {
       "id": "3,1",
@@ -1985,6 +1996,10 @@
           "radius": 3
         },
         "remember": true
+      },
+      "light": {
+        "radius": 75,
+        "power": 0.5
       }
     },
     {
@@ -3983,28 +3998,7 @@
     }
   ],
   "lighting": {
-    "time": "night",
-    "lights": [
-      {
-        "col": 2,
-        "row": 1,
-        "radius": 100,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "event",
-            "event": "village-contact"
-          },
-          "remember": false
-        }
-      },
-      {
-        "col": 8,
-        "row": 6,
-        "radius": 75,
-        "power": 0.5
-      }
-    ]
+    "time": "night"
   },
   "mapRevision": 8,
   "factions": [

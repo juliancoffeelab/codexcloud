@@ -2199,7 +2199,19 @@
         },
         "remember": true
       },
-      "connections": []
+      "connections": [],
+      "light": {
+        "dy": 6,
+        "radius": 95,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "owner",
+            "side": "player"
+          },
+          "remember": false
+        }
+      }
     },
     {
       "id": "22,5",
@@ -3994,6 +4006,18 @@
           "radius": 2
         },
         "remember": true
+      },
+      "light": {
+        "dy": 6,
+        "radius": 92,
+        "power": 0.9,
+        "when": {
+          "condition": {
+            "kind": "event",
+            "event": "house-visit"
+          },
+          "remember": false
+        }
       }
     },
     {
@@ -4123,7 +4147,12 @@
         },
         "remember": true
       },
-      "connections": []
+      "connections": [],
+      "light": {
+        "dy": 6,
+        "radius": 105,
+        "power": 0.75
+      }
     },
     {
       "id": "4,11",
@@ -4780,7 +4809,19 @@
         },
         "remember": true
       },
-      "connections": []
+      "connections": [],
+      "light": {
+        "dy": 6,
+        "radius": 95,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "owner",
+            "side": "player"
+          },
+          "remember": false
+        }
+      }
     },
     {
       "id": "22,12",
@@ -5536,58 +5577,7 @@
     }
   ],
   "lighting": {
-    "time": "night",
-    "lights": [
-      {
-        "col": 3,
-        "row": 11,
-        "dy": 6,
-        "radius": 105,
-        "power": 0.75
-      },
-      {
-        "col": 18,
-        "row": 10,
-        "dy": 6,
-        "radius": 92,
-        "power": 0.9,
-        "when": {
-          "condition": {
-            "kind": "event",
-            "event": "house-visit"
-          },
-          "remember": false
-        }
-      },
-      {
-        "col": 21,
-        "row": 5,
-        "dy": 6,
-        "radius": 95,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "owner",
-            "side": "player"
-          },
-          "remember": false
-        }
-      },
-      {
-        "col": 21,
-        "row": 12,
-        "dy": 6,
-        "radius": 95,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "owner",
-            "side": "player"
-          },
-          "remember": false
-        }
-      }
-    ]
+    "time": "night"
   },
   "factions": [
     {

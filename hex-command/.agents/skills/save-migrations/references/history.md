@@ -218,3 +218,10 @@ The v21-to-v22 step removes two added Villages settlements, restoring forest at
 uses frozen coordinates and terrain values. It preserves ownership, units, gold,
 turns, equipment and campaign progress; existing armies are not disbanded and
 treasuries are not reset to the new opening budgets. Other maps pass through.
+
+## Version 23: tile-owned terrain lighting
+
+Version 22 map emitters move onto their owning tiles using frozen light definitions
+under `legacy/data/tile-lights-v22.json`. Remembered light keys change from list
+index/coordinates to tile identity. Gameplay state and fog discovery are preserved;
+rendered light positions are derived from tile coordinates.

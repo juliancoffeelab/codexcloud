@@ -94,6 +94,7 @@ struct TileGeometry {
     dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
     floors: Rc<Vec<Option<String>>>,
     fog: Rc<Vec<Option<std::sync::Arc<ConditionRule>>>>,
+    light: Rc<Vec<Option<std::sync::Arc<TileLight>>>>,
 }
 #[cfg(feature = "wasm")]
 impl TileGeometry {
@@ -104,6 +105,7 @@ impl TileGeometry {
             dead_ends: Rc::new(tiles.iter().map(|t| t.dead_ends.clone()).collect()),
             floors: Rc::new(tiles.iter().map(|t| t.floor.clone()).collect()),
             fog: Rc::new(tiles.iter().map(|t| t.fog.clone()).collect()),
+            light: Rc::new(tiles.iter().map(|t| t.light.clone()).collect()),
         }
     }
 }
@@ -158,6 +160,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) walls: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) fog: Rc<Vec<Option<std::sync::Arc<ConditionRule>>>>,
+    pub(crate) light: Rc<Vec<Option<std::sync::Arc<TileLight>>>>,
     pub(crate) condition_memory: Rc<Vec<String>>,
     /// Derived tile-indexed remembered fog; never serialized.
     pub(crate) fog_memory: Vec<u64>,
@@ -287,6 +290,7 @@ impl<'catalog> Game<'catalog> {
         let mut dead_ends = Vec::with_capacity(n);
         let mut floors = Vec::with_capacity(n);
         let mut fog = Vec::with_capacity(n);
+        let mut light = Vec::with_capacity(n);
         for tile in tiles {
             terrain.push(rules.terrains[&tile.terrain]);
             owners.push(tile.owner);
@@ -295,6 +299,7 @@ impl<'catalog> Game<'catalog> {
             dead_ends.push(tile.dead_ends);
             floors.push(tile.floor);
             fog.push(tile.fog);
+            light.push(tile.light);
         }
         let connections = Rc::new(connections);
         let walls = Rc::new(walls);
@@ -306,6 +311,7 @@ impl<'catalog> Game<'catalog> {
             dead_ends,
             floors,
             fog: Rc::new(fog),
+            light: Rc::new(light),
         };
         Self::from_parts(
             rules,
@@ -406,6 +412,7 @@ impl<'catalog> Game<'catalog> {
             ground_items: state.ground_items,
             active_faction: None,
             fog: geometry.fog,
+            light: geometry.light,
             condition_memory: Rc::new(state.condition_memory),
             fog_memory,
             traversal: None,
@@ -565,6 +572,7 @@ impl<'catalog> Game<'catalog> {
                 walls,
                 floor,
                 fog,
+                light,
             } = tile;
             let position = self.board.positions[i];
             let kind = &self.rules.terrain_names[self.terrain[i]];
@@ -577,6 +585,7 @@ impl<'catalog> Game<'catalog> {
                 || *walls != self.walls[i]
                 || *floor != self.floors[i]
                 || *fog != self.fog[i]
+                || *light != self.light[i]
             {
                 *col = position.0;
                 *row = position.1;
@@ -587,6 +596,7 @@ impl<'catalog> Game<'catalog> {
                 walls.clone_from(&self.walls[i]);
                 floor.clone_from(&self.floors[i]);
                 fog.clone_from(&self.fog[i]);
+                light.clone_from(&self.light[i]);
                 changed.push(i);
             }
         }
@@ -608,6 +618,7 @@ impl<'catalog> Game<'catalog> {
                 dead_ends: self.dead_ends[index].clone(),
                 floor: self.floors[index].clone(),
                 fog: self.fog[index].clone(),
+                light: self.light[index].clone(),
             })
             .collect()
     }
@@ -736,6 +747,7 @@ impl<'catalog> Game<'catalog> {
                 dead_ends: self.dead_ends.clone(),
                 floors: self.floors.clone(),
                 fog: self.fog.clone(),
+                light: self.light.clone(),
             }),
             key: self.mission_key.clone(),
             mission: self.mission.clone(),
@@ -827,6 +839,7 @@ impl<'catalog> Game<'catalog> {
             fog_memory: self.fog_memory.clone(),
             traversal: None,
             fog: self.fog.clone(),
+            light: self.light.clone(),
             rules: self.rules,
             board: self.board.clone(),
             terrain: self.terrain.clone(),

@@ -129,15 +129,13 @@ pub(crate) fn validate_state_geometry_with_campaign(
         .filter(|tile| tile.fog.as_ref().is_some_and(|rule| rule.remember))
         .map(|tile| format!("fog:{}", tile.id))
         .collect();
-    if let Some(map) = rules
-        .map_definitions
-        .iter()
-        .find(|map| map.id == state.map_id)
-    {
-        for (index, light) in map.lighting.lights.iter().enumerate() {
-            if light.when.as_ref().is_some_and(|rule| rule.remember) {
-                allowed_memory.insert(format!("light:{index}:{},{}", light.col, light.row));
-            }
+    for tile in &authored.tiles {
+        if tile
+            .light
+            .as_ref()
+            .is_some_and(|light| light.when.as_ref().is_some_and(|rule| rule.remember))
+        {
+            allowed_memory.insert(format!("light:{}", tile.id));
         }
     }
     if let Some(campaign) = &state.campaign {

@@ -617,9 +617,9 @@ impl Rules {
                 .iter()
                 .filter_map(|tile| tile.fog.as_deref())
                 .chain(
-                    map.lighting
-                        .lights
+                    map.terrain
                         .iter()
+                        .filter_map(|tile| tile.light.as_ref())
                         .filter_map(|light| light.when.as_ref()),
                 )
             {

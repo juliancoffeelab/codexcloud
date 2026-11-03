@@ -3027,6 +3027,17 @@
           ]
         },
         "remember": true
+      },
+      "light": {
+        "radius": 110,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "event",
+            "event": "monastery-start"
+          },
+          "remember": false
+        }
       }
     },
     {
@@ -3853,6 +3864,18 @@
           ]
         },
         "remember": true
+      },
+      "light": {
+        "dy": 6,
+        "radius": 95,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "owner",
+            "side": "player"
+          },
+          "remember": false
+        }
       }
     },
     {
@@ -6580,7 +6603,19 @@
         },
         "remember": true
       },
-      "connections": []
+      "connections": [],
+      "light": {
+        "dy": 6,
+        "radius": 95,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "owner",
+            "side": "player"
+          },
+          "remember": false
+        }
+      }
     },
     {
       "id": "10,11",
@@ -7032,6 +7067,18 @@
           ]
         },
         "remember": true
+      },
+      "light": {
+        "dy": 6,
+        "radius": 95,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "owner",
+            "side": "player"
+          },
+          "remember": false
+        }
       }
     },
     {
@@ -7260,6 +7307,18 @@
           ]
         },
         "remember": true
+      },
+      "light": {
+        "dy": 6,
+        "radius": 95,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "owner",
+            "side": "player"
+          },
+          "remember": false
+        }
       }
     },
     {
@@ -8938,7 +8997,19 @@
         },
         "remember": true
       },
-      "connections": []
+      "connections": [],
+      "light": {
+        "dy": 6,
+        "radius": 95,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "owner",
+            "side": "player"
+          },
+          "remember": false
+        }
+      }
     },
     {
       "id": "12,15",
@@ -10764,6 +10835,18 @@
           ]
         },
         "remember": true
+      },
+      "light": {
+        "dy": 6,
+        "radius": 95,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "owner",
+            "side": "player"
+          },
+          "remember": false
+        }
       }
     },
     {
@@ -14393,109 +14476,10 @@
     }
   ],
   "lighting": {
-    "time": "night",
-    "lights": [
-      {
-        "col": 5,
-        "row": 5,
-        "radius": 110,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "event",
-            "event": "monastery-start"
-          },
-          "remember": false
-        }
-      },
-      {
-        "col": 15,
-        "row": 6,
-        "dy": 6,
-        "radius": 95,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "owner",
-            "side": "player"
-          },
-          "remember": false
-        }
-      },
-      {
-        "col": 4,
-        "row": 12,
-        "dy": 6,
-        "radius": 95,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "owner",
-            "side": "player"
-          },
-          "remember": false
-        }
-      },
-      {
-        "col": 15,
-        "row": 18,
-        "dy": 6,
-        "radius": 95,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "owner",
-            "side": "player"
-          },
-          "remember": false
-        }
-      },
-      {
-        "col": 9,
-        "row": 11,
-        "dy": 6,
-        "radius": 95,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "owner",
-            "side": "player"
-          },
-          "remember": false
-        }
-      },
-      {
-        "col": 13,
-        "row": 12,
-        "dy": 6,
-        "radius": 95,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "owner",
-            "side": "player"
-          },
-          "remember": false
-        }
-      },
-      {
-        "col": 11,
-        "row": 15,
-        "dy": 6,
-        "radius": 95,
-        "power": 0.8,
-        "when": {
-          "condition": {
-            "kind": "owner",
-            "side": "player"
-          },
-          "remember": false
-        }
-      }
-    ]
+    "time": "night"
   },
   "mapRevision": 3,
-  "description": "A night valley of captive rituals, a hill monastery, and the Bellwarden\u2019s fortified court.",
+  "description": "A night valley of captive rituals, a hill monastery, and the Bellwarden’s fortified court.",
   "factions": [
     {
       "id": "prisoners",
