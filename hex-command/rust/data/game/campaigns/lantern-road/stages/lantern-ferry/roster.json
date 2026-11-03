@@ -1,101 +1,79 @@
 {
-  "initial": {
-    "gold": {
-      "player": 0,
-      "enemy": 0,
-      "wildlife": 0
-    },
-    "units": [
-      {
-        "type": "swordsman",
-        "side": "player",
-        "col": 3,
-        "row": 8,
-        "name": "Captain Nera",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "scout",
-        "side": "player",
-        "col": 3,
-        "row": 9,
-        "name": "Ivo"
+      "palette": "player",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "swordsman",
+          "col": 3,
+          "row": 8,
+          "name": "Captain Nera",
+          "role": "leader"
+        },
+        {
+          "type": "scout",
+          "col": 3,
+          "row": 9,
+          "name": "Ivo"
+        },
+        {
+          "type": "archer",
+          "col": 4,
+          "row": 8
+        },
+        {
+          "type": "adept",
+          "col": 4,
+          "row": 9,
+          "name": "Oren"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
       },
-      {
-        "type": "archer",
-        "side": "player",
-        "col": 4,
-        "row": 8
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "skeleton",
+          "col": 18,
+          "row": 9,
+          "aiGroup": "skeletons"
+        },
+        {
+          "type": "skeleton",
+          "col": 19,
+          "row": 10,
+          "aiGroup": "skeletons"
+        }
+      ]
+    },
+    {
+      "id": "wildlife",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai",
+        "policy": "classic"
       },
-      {
-        "type": "adept",
-        "side": "player",
-        "col": 4,
-        "row": 9,
-        "name": "Oren"
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile"
       },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 18,
-        "row": 9,
-        "aiGroup": "skeletons"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 19,
-        "row": 10,
-        "aiGroup": "skeletons"
-      }
-    ]
-  },
-  "units": [
-    {
-      "type": "swordsman",
-      "side": "player",
-      "col": 3,
-      "row": 8,
-      "name": "Captain Nera",
-      "role": "leader"
-    },
-    {
-      "type": "scout",
-      "side": "player",
-      "col": 3,
-      "row": 9,
-      "name": "Ivo"
-    },
-    {
-      "type": "archer",
-      "side": "player",
-      "col": 4,
-      "row": 8
-    },
-    {
-      "type": "adept",
-      "side": "player",
-      "col": 4,
-      "row": 9,
-      "name": "Oren"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 18,
-      "row": 9,
-      "aiGroup": "skeletons"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 19,
-      "row": 10,
-      "aiGroup": "skeletons"
+      "gold": 0,
+      "recruits": [],
+      "units": []
     }
-  ],
-  "recruits": [],
-  "enemyRecruits": [],
-  "gold": 0,
-  "enemyGold": 0
+  ]
 }

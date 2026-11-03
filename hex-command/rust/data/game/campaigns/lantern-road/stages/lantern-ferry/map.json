@@ -5578,19 +5578,5 @@
   ],
   "lighting": {
     "time": "night"
-  },
-  "factions": [
-    {
-      "id": "wildlife",
-      "phase": "enemy",
-      "controller": {
-        "kind": "ai",
-        "policy": "classic"
-      },
-      "palette": "enemy",
-      "relations": {
-        "player": "hostile"
-      }
-    }
-  ]
+  }
 }

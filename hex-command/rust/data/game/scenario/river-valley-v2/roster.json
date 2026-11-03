@@ -1,22 +1,84 @@
 {
-  "gold": {
-    "player": 12,
-    "enemy": 12
-  },
-  "units": [
+  "factions": [
     {
-      "type": "commander",
-      "side": "player",
-      "col": 1,
-      "row": 8,
-      "role": "leader"
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 12,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "rider"
+        },
+        {
+          "unit": "horse-archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "col": 1,
+          "row": 8,
+          "role": "leader"
+        }
+      ]
     },
     {
-      "type": "commander",
-      "side": "enemy",
-      "col": 12,
-      "row": 7,
-      "role": "leader"
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 12,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "rider"
+        },
+        {
+          "unit": "horse-archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "col": 12,
+          "row": 7,
+          "role": "leader"
+        }
+      ]
     }
   ]
 }

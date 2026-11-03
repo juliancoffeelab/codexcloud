@@ -1,152 +1,115 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "wildkeeper",
-        "side": "player",
-        "col": 1,
-        "row": 4,
-        "name": "Alder",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "thorncaller",
-        "side": "player",
-        "col": 2,
-        "row": 4,
-        "name": "Lark",
-        "role": "courier"
+      "palette": "player",
+      "gold": 18,
+      "recruits": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "adept"
+        }
+      ],
+      "units": [
+        {
+          "type": "wildkeeper",
+          "col": 1,
+          "row": 4,
+          "name": "Alder",
+          "role": "leader"
+        },
+        {
+          "type": "thorncaller",
+          "col": 2,
+          "row": 4,
+          "name": "Lark",
+          "role": "courier"
+        },
+        {
+          "type": "warden",
+          "col": 3,
+          "row": 4,
+          "name": "Captain Dain"
+        },
+        {
+          "type": "adept",
+          "col": 2,
+          "row": 5,
+          "name": "Adept Tamsin"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
       },
-      {
-        "type": "warden",
-        "side": "player",
-        "col": 3,
-        "row": 4,
-        "name": "Captain Dain"
-      },
-      {
-        "type": "adept",
-        "side": "player",
-        "col": 2,
-        "row": 5,
-        "name": "Adept Tamsin"
-      },
-      {
-        "type": "necromancer",
-        "side": "enemy",
-        "col": 13,
-        "row": 5,
-        "name": "The Rootbinder",
-        "role": "leader"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 10,
-        "row": 2
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 10,
-        "row": 6
-      },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 12,
-        "row": 3
-      },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 11,
-        "row": 7
-      },
-      {
-        "type": "wolf",
-        "side": "enemy",
-        "col": 11,
-        "row": 4
-      }
-    ]
-  },
-  "units": [
-    {
-      "type": "wildkeeper",
-      "side": "player",
-      "col": 1,
-      "row": 4,
-      "name": "Alder",
-      "role": "leader"
-    },
-    {
-      "type": "thorncaller",
-      "side": "player",
-      "col": 2,
-      "row": 4,
-      "name": "Lark",
-      "role": "courier"
-    },
-    {
-      "type": "warden",
-      "side": "player",
-      "col": 3,
-      "row": 4,
-      "name": "Captain Dain"
-    },
-    {
-      "type": "adept",
-      "side": "player",
-      "col": 2,
-      "row": 5,
-      "name": "Adept Tamsin"
-    },
-    {
-      "type": "necromancer",
-      "side": "enemy",
-      "col": 13,
-      "row": 5,
-      "name": "The Rootbinder",
-      "role": "leader"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 10,
-      "row": 2
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 10,
-      "row": 6
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 12,
-      "row": 3
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 11,
-      "row": 7
-    },
-    {
-      "type": "wolf",
-      "side": "enemy",
-      "col": 11,
-      "row": 4
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "col": 13,
+          "row": 5,
+          "name": "The Rootbinder",
+          "role": "leader"
+        },
+        {
+          "type": "skeleton",
+          "col": 10,
+          "row": 2
+        },
+        {
+          "type": "skeleton",
+          "col": 10,
+          "row": 6
+        },
+        {
+          "type": "bonearcher",
+          "col": 12,
+          "row": 3
+        },
+        {
+          "type": "bonearcher",
+          "col": 11,
+          "row": 7
+        },
+        {
+          "type": "wolf",
+          "col": 11,
+          "row": 4
+        }
+      ]
     }
-  ],
-  "recruits": ["wolf", "boar", "thorncaller", "spearman", "adept"],
-  "enemyRecruits": ["skeleton", "bonearcher", "wolf", "skeleton-impact-caster"],
-  "gold": 18,
-  "enemyGold": 0
+  ]
 }

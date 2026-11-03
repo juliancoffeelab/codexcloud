@@ -55,7 +55,9 @@ pub struct FactionTransfer {
 )]
 pub struct FactionRecruit {
     pub unit: String,
-    pub cost: i32,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub cost: Option<i32>,
 }
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -135,7 +137,10 @@ pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> R
         if let Some(pool) = &faction.recruits {
             let mut seen = std::collections::HashSet::new();
             for recruit in pool {
-                if recruit.cost < 0 || recruit.unit.is_empty() || !seen.insert(&recruit.unit) {
+                if recruit.cost.is_some_and(|cost| cost < 0)
+                    || recruit.unit.is_empty()
+                    || !seen.insert(&recruit.unit)
+                {
                     return Err("invalid faction recruitment pool".into());
                 }
             }

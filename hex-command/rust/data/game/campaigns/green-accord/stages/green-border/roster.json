@@ -1,134 +1,98 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "wildkeeper",
-        "side": "player",
-        "col": 1,
-        "row": 4,
-        "name": "Alder",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "wolf",
-        "side": "player",
-        "col": 2,
-        "row": 3
+      "palette": "player",
+      "gold": 12,
+      "recruits": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        }
+      ],
+      "units": [
+        {
+          "type": "wildkeeper",
+          "col": 1,
+          "row": 4,
+          "name": "Alder",
+          "role": "leader"
+        },
+        {
+          "type": "wolf",
+          "col": 2,
+          "row": 3
+        },
+        {
+          "type": "boar",
+          "col": 2,
+          "row": 4
+        },
+        {
+          "type": "thorncaller",
+          "col": 2,
+          "row": 5,
+          "name": "Lark"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
       },
-      {
-        "type": "boar",
-        "side": "player",
-        "col": 2,
-        "row": 4
-      },
-      {
-        "type": "thorncaller",
-        "side": "player",
-        "col": 2,
-        "row": 5,
-        "name": "Lark"
-      },
-      {
-        "type": "commander",
-        "side": "enemy",
-        "col": 9,
-        "row": 4,
-        "name": "Captain Dain",
-        "role": "leader"
-      },
-      {
-        "type": "spearman",
-        "side": "enemy",
-        "col": 7,
-        "row": 3
-      },
-      {
-        "type": "spearman",
-        "side": "enemy",
-        "col": 7,
-        "row": 6
-      },
-      {
-        "type": "archer",
-        "side": "enemy",
-        "col": 6,
-        "row": 2
-      },
-      {
-        "type": "archer",
-        "side": "enemy",
-        "col": 7,
-        "row": 5
-      }
-    ]
-  },
-  "units": [
-    {
-      "type": "wildkeeper",
-      "side": "player",
-      "col": 1,
-      "row": 4,
-      "name": "Alder",
-      "role": "leader"
-    },
-    {
-      "type": "wolf",
-      "side": "player",
-      "col": 2,
-      "row": 3
-    },
-    {
-      "type": "boar",
-      "side": "player",
-      "col": 2,
-      "row": 4
-    },
-    {
-      "type": "thorncaller",
-      "side": "player",
-      "col": 2,
-      "row": 5,
-      "name": "Lark"
-    },
-    {
-      "type": "commander",
-      "side": "enemy",
-      "col": 9,
-      "row": 4,
-      "name": "Captain Dain",
-      "role": "leader"
-    },
-    {
-      "type": "spearman",
-      "side": "enemy",
-      "col": 7,
-      "row": 3
-    },
-    {
-      "type": "spearman",
-      "side": "enemy",
-      "col": 7,
-      "row": 6
-    },
-    {
-      "type": "archer",
-      "side": "enemy",
-      "col": 6,
-      "row": 2
-    },
-    {
-      "type": "archer",
-      "side": "enemy",
-      "col": 7,
-      "row": 5
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "spearman"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "col": 9,
+          "row": 4,
+          "name": "Captain Dain",
+          "role": "leader"
+        },
+        {
+          "type": "spearman",
+          "col": 7,
+          "row": 3
+        },
+        {
+          "type": "spearman",
+          "col": 7,
+          "row": 6
+        },
+        {
+          "type": "archer",
+          "col": 6,
+          "row": 2
+        },
+        {
+          "type": "archer",
+          "col": 7,
+          "row": 5
+        }
+      ]
     }
-  ],
-  "recruits": ["wolf", "boar", "thorncaller"],
-  "enemyRecruits": ["swordsman", "archer", "spearman"],
-  "gold": 12,
-  "enemyGold": 0
+  ]
 }

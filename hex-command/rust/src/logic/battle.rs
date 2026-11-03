@@ -943,69 +943,60 @@ impl<'catalog> Game<'catalog> {
         self.recruitment_options_for_faction(self.faction_for_phase(side))
     }
     pub(crate) fn recruitment_options_for_faction(&self, id: &str) -> Vec<usize> {
-        if let Some(pool) = self.faction(id).and_then(|f| f.recruits.as_ref()) {
-            return pool.iter().map(|entry| self.kind(&entry.unit)).collect();
-        }
-        match id {
-            "player" => self.phase_recruitment_options(Side::Player),
-            "enemy" => self.phase_recruitment_options(Side::Enemy),
-            _ => vec![],
-        }
-    }
-    fn phase_recruitment_options(&self, side: Side) -> Vec<usize> {
-        if let Some(pools) = &self.pools {
-            return pools[side.index()].clone();
-        }
-        if let Some(armies) = &self.armies {
-            return self
-                .rules
-                .rosters
-                .iter()
-                .find(|roster| roster.id == armies[side.index()])
-                .expect("validated skirmish faction")
-                .pool
-                .iter()
-                .map(|name| self.kind(name))
-                .collect();
-        }
         if let Some(mission) = &self.mission {
-            let mut options: Vec<_> = if side == Side::Player {
-                &mission.recruits
-            } else {
-                &mission.enemy_recruits
-            }
-            .iter()
-            .map(|name| self.kind(name))
-            .collect();
-            if side == Side::Player {
-                for event in &mission.events {
-                    if self
-                        .campaign
-                        .as_ref()
-                        .is_some_and(|state| state.marked_prefixed("event:", &event.id))
+            let mut options: Vec<_> = mission
+                .recruitment
+                .get(id)
+                .into_iter()
+                .flatten()
+                .map(|entry| self.kind(&entry.unit))
+                .collect();
+            for event in &mission.events {
+                if self
+                    .campaign
+                    .as_ref()
+                    .is_some_and(|state| state.marked_prefixed("event:", &event.id))
+                {
+                    for kind in event
+                        .recruitment
+                        .get(id)
+                        .into_iter()
+                        .flatten()
+                        .map(|entry| self.kind(&entry.unit))
                     {
-                        for kind in event.recruits.iter().map(|name| self.kind(name)) {
-                            if !options.contains(&kind) {
-                                options.push(kind);
-                            }
+                        if !options.contains(&kind) {
+                            options.push(kind);
                         }
                     }
                 }
             }
             return options;
         }
-        [
-            "swordsman",
-            "spearman",
-            "archer",
-            "scout",
-            "adept",
-            "rider",
-            "horse-archer",
-        ]
-        .iter()
-        .map(|name| self.kind(name))
-        .collect()
+        if let Some(pools) = &self.pools
+            && matches!(id, "player" | "enemy")
+        {
+            return pools[if id == "player" { 0 } else { 1 }].clone();
+        }
+        if let Some(armies) = &self.armies
+            && matches!(id, "player" | "enemy")
+        {
+            return self
+                .rules
+                .rosters
+                .iter()
+                .find(|roster| roster.id == armies[if id == "player" { 0 } else { 1 }])
+                .expect("validated skirmish faction")
+                .pool
+                .iter()
+                .map(|name| self.kind(name))
+                .collect();
+        }
+        self.faction(id)
+            .and_then(|f| f.recruits.as_ref())
+            .into_iter()
+            .flatten()
+            .map(|entry| self.kind(&entry.unit))
+            .collect()
     }
     pub(crate) fn recruitment_options_for(&self, leader: &Unit) -> Vec<usize> {
         self.recruitment_options_for_faction(self.unit_faction(leader))
@@ -1014,13 +1005,41 @@ impl<'catalog> Game<'catalog> {
         self.recruit_cost_for_faction(self.unit_faction(leader), kind)
     }
     pub(crate) fn recruit_cost_for_faction(&self, id: &str, kind: usize) -> i32 {
+        let unit = &self.rules.units[kind].id;
+        if let Some(mission) = &self.mission {
+            let base = mission
+                .recruitment
+                .get(id)
+                .into_iter()
+                .flatten()
+                .find(|entry| &entry.unit == unit);
+            if let Some(entry) = base {
+                return entry.cost.unwrap_or(self.rules.units[kind].cost);
+            }
+            for event in &mission.events {
+                if self
+                    .campaign
+                    .as_ref()
+                    .is_some_and(|state| state.marked_prefixed("event:", &event.id))
+                {
+                    if let Some(entry) = event
+                        .recruitment
+                        .get(id)
+                        .into_iter()
+                        .flatten()
+                        .find(|entry| &entry.unit == unit)
+                    {
+                        return entry.cost.unwrap_or(self.rules.units[kind].cost);
+                    }
+                }
+            }
+            return self.rules.units[kind].cost;
+        }
         self.faction(id)
             .and_then(|f| f.recruits.as_ref())
-            .and_then(|pool| {
-                pool.iter()
-                    .find(|entry| entry.unit == self.rules.units[kind].id)
-            })
-            .map_or(self.rules.units[kind].cost, |entry| entry.cost)
+            .and_then(|pool| pool.iter().find(|entry| &entry.unit == unit))
+            .and_then(|entry| entry.cost)
+            .unwrap_or(self.rules.units[kind].cost)
     }
     pub(crate) fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
         if !leader.is_leader()

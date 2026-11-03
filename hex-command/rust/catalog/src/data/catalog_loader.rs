@@ -88,7 +88,7 @@ struct StageFile {
 }
 
 /// Authored initial placements derive omitted runtime defaults from unit rules.
-#[derive(Deserialize)]
+#[derive(Clone, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialUnit {
     #[serde(default)]
@@ -97,7 +97,7 @@ struct InitialUnit {
     ai_group: Option<String>,
     id: Option<String>,
     r#type: String,
-    side: Side,
+    side: Option<Side>,
     col: i32,
     row: i32,
     hp: Option<i32>,
@@ -163,7 +163,9 @@ impl InitialState {
                 ai_group: unit.ai_group,
                 id,
                 r#type: unit.r#type,
-                side: unit.side,
+                side: unit
+                    .side
+                    .ok_or_else(|| ContentError::new(path, "initial unit requires a phase"))?,
                 tile,
                 hp,
                 moved: false,
@@ -832,9 +834,26 @@ fn validate_mission(
         Ok(())
     };
     starting(&mission.map.units)?;
-    for id in mission.recruits.iter().chain(&mission.enemy_recruits) {
-        reference(id, types, path)?;
-    }
+    let validate_recruitment =
+        |pools: &BTreeMap<String, Vec<FactionRecruit>>| -> Result<(), ContentError> {
+            for (id, recruits) in pools {
+                if !state.factions.iter().any(|f| &f.id == id) {
+                    return Err(ContentError::new(
+                        path,
+                        format!("unknown recruitment faction {id}"),
+                    ));
+                }
+                unique(recruits.iter().map(|r| r.unit.as_str()), path)?;
+                for recruit in recruits {
+                    reference(&recruit.unit, types, path)?;
+                    if recruit.cost.is_some_and(|cost| cost < 0) {
+                        return Err(ContentError::new(path, "negative recruitment price"));
+                    }
+                }
+            }
+            Ok(())
+        };
+    validate_recruitment(&mission.recruitment)?;
     if let Some(id) = &mission.enemy_leader_post {
         tile_ref(id)?;
     }
@@ -883,12 +902,7 @@ fn validate_mission(
         }
     }
     for event in &mission.events {
-        unique(event.recruits.iter().map(String::as_str), path)?;
-        for recruit in &event.recruits {
-            if !types.contains_key(recruit) {
-                return Err(ContentError::new(path, "unknown event recruit"));
-            }
-        }
+        validate_recruitment(&event.recruitment)?;
         if let Some(effect) = &event.evacuate {
             tile_ref(&effect.tile)?;
             if effect
@@ -1112,10 +1126,8 @@ fn validate_mission(
         event_ref(&refuge.medicine_event)?;
     }
     let validate_patch = |patch: &MissionPatch| -> Result<(), ContentError> {
-        if let Some(recruits) = &patch.recruits {
-            for id in recruits {
-                reference(id, types, path)?;
-            }
+        if let Some(recruitment) = &patch.recruitment {
+            validate_recruitment(recruitment)?;
         }
         if let Some(units) = &patch.reinforcements {
             starting(units)?;
@@ -1470,7 +1482,7 @@ mod tests {
         let mut bundle = test_bundle();
         let path = "game/scenario/mirror-v1/roster.json";
         let mut roster: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
-        roster["units"][0]["col"] = serde_json::json!(999);
+        roster["factions"][0]["units"][0]["col"] = serde_json::json!(999);
         bundle.insert(path.to_owned(), serde_json::to_string(&roster).unwrap());
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
         assert_eq!(error.path, "game/scenario/mirror-v1/scenario.json");

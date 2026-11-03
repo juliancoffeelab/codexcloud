@@ -1,173 +1,153 @@
 {
-  "initial": {
-    "gold": {
-      "player": 20,
-      "enemy": 24,
-      "prisoners": 0
-    },
-    "units": [
-      {
-        "type": "swordsman",
-        "side": "player",
-        "col": 2,
-        "row": 7,
-        "name": "Captain Nera",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "scout",
-        "side": "player",
-        "col": 1,
-        "row": 7,
-        "name": "Ivo"
+      "palette": "player",
+      "gold": 20,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "adept"
+        }
+      ],
+      "units": [
+        {
+          "type": "swordsman",
+          "col": 2,
+          "row": 7,
+          "name": "Captain Nera",
+          "role": "leader"
+        },
+        {
+          "type": "scout",
+          "col": 1,
+          "row": 7,
+          "name": "Ivo"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
       },
-      {
-        "type": "lich-commander-l3",
-        "side": "enemy",
-        "col": 11,
-        "row": 12,
-        "name": "The Bellwarden",
-        "role": "leader"
+      "palette": "enemy",
+      "gold": 24,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        },
+        {
+          "unit": "skeleton-axeman"
+        },
+        {
+          "unit": "skeleton-rider"
+        }
+      ],
+      "units": [
+        {
+          "type": "lich-commander-l3",
+          "col": 11,
+          "row": 12,
+          "name": "The Bellwarden",
+          "role": "leader"
+        },
+        {
+          "type": "skeleton-impact-caster",
+          "col": 10,
+          "row": 13
+        },
+        {
+          "type": "bonearcher",
+          "col": 11,
+          "row": 13
+        },
+        {
+          "type": "skeleton",
+          "col": 10,
+          "row": 5,
+          "aiGroup": "north-watch"
+        },
+        {
+          "type": "bonearcher",
+          "col": 19,
+          "row": 9,
+          "aiGroup": "east-watch"
+        },
+        {
+          "type": "skeleton",
+          "col": 13,
+          "row": 20,
+          "aiGroup": "south-watch"
+        }
+      ]
+    },
+    {
+      "id": "prisoners",
+      "phase": "enemy",
+      "controller": {
+        "kind": "passive"
       },
-      {
-        "type": "skeleton-impact-caster",
-        "side": "enemy",
-        "col": 10,
-        "row": 13
+      "palette": "passive",
+      "relations": {
+        "player": "neutral",
+        "enemy": "allied"
       },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 11,
-        "row": 13
+      "transfer": {
+        "to": "player",
+        "when": {
+          "condition": {
+            "kind": "proximity",
+            "side": "player",
+            "radius": 1
+          },
+          "remember": false
+        }
       },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 10,
-        "row": 5,
-        "aiGroup": "north-watch"
-      },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 19,
-        "row": 9,
-        "aiGroup": "east-watch"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 13,
-        "row": 20,
-        "aiGroup": "south-watch"
-      },
-      {
-        "type": "captives",
-        "side": "enemy",
-        "col": 11,
-        "row": 5,
-        "name": "Northern captives",
-        "faction": "prisoners"
-      },
-      {
-        "type": "captives",
-        "side": "enemy",
-        "col": 19,
-        "row": 10,
-        "name": "Eastern captives",
-        "faction": "prisoners"
-      },
-      {
-        "type": "captives",
-        "side": "enemy",
-        "col": 12,
-        "row": 20,
-        "name": "Southern captives",
-        "faction": "prisoners"
-      }
-    ]
-  },
-  "units": [
-    {
-      "type": "swordsman",
-      "side": "player",
-      "col": 2,
-      "row": 7,
-      "name": "Captain Nera",
-      "role": "leader"
-    },
-    {
-      "type": "scout",
-      "side": "player",
-      "col": 1,
-      "row": 7,
-      "name": "Ivo"
-    },
-    {
-      "type": "lich-commander-l3",
-      "side": "enemy",
-      "col": 11,
-      "row": 12,
-      "name": "The Bellwarden",
-      "role": "leader"
-    },
-    {
-      "type": "skeleton-impact-caster",
-      "side": "enemy",
-      "col": 10,
-      "row": 13
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 11,
-      "row": 13
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 10,
-      "row": 5,
-      "aiGroup": "north-watch"
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 19,
-      "row": 9,
-      "aiGroup": "east-watch"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 13,
-      "row": 20,
-      "aiGroup": "south-watch"
-    },
-    {
-      "type": "captives",
-      "side": "enemy",
-      "col": 11,
-      "row": 5,
-      "name": "Northern captives",
-      "faction": "prisoners"
-    },
-    {
-      "type": "captives",
-      "side": "enemy",
-      "col": 19,
-      "row": 10,
-      "name": "Eastern captives",
-      "faction": "prisoners"
-    },
-    {
-      "type": "captives",
-      "side": "enemy",
-      "col": 12,
-      "row": 20,
-      "name": "Southern captives",
-      "faction": "prisoners"
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "captives",
+          "col": 11,
+          "row": 5,
+          "name": "Northern captives"
+        },
+        {
+          "type": "captives",
+          "col": 19,
+          "row": 10,
+          "name": "Eastern captives"
+        },
+        {
+          "type": "captives",
+          "col": 12,
+          "row": 20,
+          "name": "Southern captives"
+        }
+      ]
     }
   ],
   "arrivals": [
@@ -181,15 +161,5 @@
       "col": 3,
       "row": 7
     }
-  ],
-  "recruits": ["swordsman", "spearman", "archer", "scout", "adept"],
-  "enemyRecruits": [
-    "skeleton",
-    "bonearcher",
-    "skeleton-impact-caster",
-    "skeleton-axeman",
-    "skeleton-rider"
-  ],
-  "gold": 20,
-  "enemyGold": 24
+  ]
 }

@@ -15,7 +15,7 @@
         {
           "speaker": "Warden Sella",
           "portrait": "warden",
-          "text": "Easy. Living faces\u2014I\u2019d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by."
+          "text": "Easy. Living faces—I’d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by."
         },
         {
           "speaker": "Nera",
@@ -25,20 +25,19 @@
         {
           "speaker": "Warden Sella",
           "portrait": "warden",
-          "text": "They emptied the roadside villages. There are prisoners at the old pass fort, waiting to be marched east. We haven\u2019t the strength to fetch them."
+          "text": "They emptied the roadside villages. There are prisoners at the old pass fort, waiting to be marched east. We haven’t the strength to fetch them."
         },
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Then we\u2019ll bring them here. Can you keep them safe?"
+          "text": "Then we’ll bring them here. Can you keep them safe?"
         },
         {
           "speaker": "Warden Sella",
           "portrait": "warden",
-          "text": "We can. I\u2019ll go with you. There are a few here who can take up arms; give us somewhere to muster."
+          "text": "We can. I’ll go with you. There are a few here who can take up arms; give us somewhere to muster."
         }
       ],
-      "recruits": ["swordsman", "spearman", "archer", "scout"],
       "choice": "hidden-village-found",
       "spawn": {
         "area": ["2,1", "2,0", "1,1", "2,2", "3,1", "1,0", "3,2"],
@@ -48,6 +47,22 @@
             "type": "warden",
             "side": "player",
             "name": "Warden Sella"
+          }
+        ]
+      },
+      "recruitment": {
+        "player": [
+          {
+            "unit": "swordsman"
+          },
+          {
+            "unit": "spearman"
+          },
+          {
+            "unit": "archer"
+          },
+          {
+            "unit": "scout"
           }
         ]
       }
@@ -96,20 +111,26 @@
         {
           "speaker": "Oren",
           "portrait": "adept",
-          "text": "That child by the hearth\u2014those marks on the slate aren\u2019t letters. Who taught you to draw them?"
+          "text": "That child by the hearth—those marks on the slate aren’t letters. Who taught you to draw them?"
         },
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "Nobody. They appear when I\u2019m trying to remember things."
+          "text": "Nobody. They appear when I’m trying to remember things."
         },
         {
           "speaker": "Oren",
           "portrait": "adept",
-          "text": "A little training, then. We haven\u2019t an academy to hand, but this is better than leaving a gift untended. Stay with me; I\u2019ll show you how to keep it from burning your fingers."
+          "text": "A little training, then. We haven’t an academy to hand, but this is better than leaving a gift untended. Stay with me; I’ll show you how to keep it from burning your fingers."
         }
       ],
-      "recruits": ["adept"]
+      "recruitment": {
+        "player": [
+          {
+            "unit": "adept"
+          }
+        ]
+      }
     },
     {
       "id": "ferry-supplies",
@@ -124,7 +145,7 @@
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "The ferryman\u2019s purse will buy a few more hands. Let\u2019s make his coins count."
+          "text": "The ferryman’s purse will buy a few more hands. Let’s make his coins count."
         }
       ],
       "gold": 6
@@ -207,7 +228,7 @@
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "Please\u2014before it\u2019s too late!"
+          "text": "Please—before it’s too late!"
         },
         {
           "speaker": "Skeleton guard",
@@ -232,17 +253,17 @@
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Keep your heads down. We\u2019re getting you out."
+          "text": "Keep your heads down. We’re getting you out."
         },
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "They said another column was coming for us. Please\u2014don\u2019t let them take us."
+          "text": "They said another column was coming for us. Please—don’t let them take us."
         },
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Stay together. We\u2019ll get you somewhere safe."
+          "text": "Stay together. We’ll get you somewhere safe."
         }
       ]
     },
@@ -262,12 +283,12 @@
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "There\u2019s a village hidden in the western woods. Stay together. We\u2019ll take you there."
+          "text": "There’s a village hidden in the western woods. Stay together. We’ll take you there."
         },
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "They took the others down the road. My brother, the children\u2014everyone who could still walk."
+          "text": "They took the others down the road. My brother, the children—everyone who could still walk."
         },
         {
           "speaker": "Villager",
@@ -307,7 +328,7 @@
         {
           "speaker": "Oren",
           "portrait": "adept",
-          "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it\u2019s too late."
+          "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it’s too late."
         }
       ]
     },
@@ -335,7 +356,7 @@
         {
           "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "They\u2019re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays\u2014we have to reach them while they\u2019re still alive."
+          "text": "They’re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays—we have to reach them while they’re still alive."
         }
       ]
     },
@@ -373,7 +394,7 @@
         {
           "speaker": "The Tollkeeper",
           "portrait": "necromancer",
-          "text": "Living soldiers on my road? You\u2019ll pay for every step. Come closer\u2014I\u2019ll take the toll in bones."
+          "text": "Living soldiers on my road? You’ll pay for every step. Come closer—I’ll take the toll in bones."
         }
       ]
     },
@@ -699,7 +720,7 @@
         {
           "speaker": "Oren",
           "portrait": "adept",
-          "text": "That smell. Something\u2019s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire."
+          "text": "That smell. Something’s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire."
         },
         {
           "speaker": "Nera",
@@ -728,12 +749,12 @@
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "Inside. There\u2019s broth, and room enough if we move the tables."
+          "text": "Inside. There’s broth, and room enough if we move the tables."
         },
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "Thank you. The others are still out there. Please don\u2019t leave them to the dead."
+          "text": "Thank you. The others are still out there. Please don’t leave them to the dead."
         },
         {
           "speaker": "Nera",
@@ -743,12 +764,12 @@
         {
           "speaker": "Villager",
           "portrait": "captives",
-          "text": "They\u2019ll have your message. I\u2019ll keep these people safe."
+          "text": "They’ll have your message. I’ll keep these people safe."
         },
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "We can move on now, or finish the dead here so they can\u2019t follow us. But every fight costs us time."
+          "text": "We can move on now, or finish the dead here so they can’t follow us. But every fight costs us time."
         }
       ],
       "requiresEvent": "prisoners-freed",
@@ -828,12 +849,12 @@
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Oren\u2026"
+          "text": "Oren…"
         },
         {
           "speaker": "Oren",
           "portrait": "adept",
-          "text": "He spent his life keeping people out of graves. Let\u2019s leave him in peace, and see that those villagers get home."
+          "text": "He spent his life keeping people out of graves. Let’s leave him in peace, and see that those villagers get home."
         }
       ]
     },
@@ -851,7 +872,7 @@
         {
           "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "There\u2019s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done."
+          "text": "There’s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done."
         }
       ],
       "requiresEvent": "swamp-sighting"
@@ -920,7 +941,7 @@
         {
           "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "They\u2019ve started. We cannot lose another moment. Hurry!"
+          "text": "They’ve started. We cannot lose another moment. Hurry!"
         }
       ],
       "requiresEvent": "first-bell-toll"

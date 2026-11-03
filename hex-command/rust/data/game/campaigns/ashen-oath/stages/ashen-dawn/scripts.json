@@ -66,7 +66,6 @@
       "The dead will have to look after their own.",
       "The stones are where the Master’s reach begins."
     ],
-    "recruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
     "reinforcements": [
       {
         "type": "skeleton",
@@ -97,6 +96,19 @@
         "portrait": "skeleton",
         "text": "No captain is coming to help us. Break the binding stones. We can still bring the others home."
       }
-    ]
+    ],
+    "recruitment": {
+      "player": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ]
+    }
   }
 }

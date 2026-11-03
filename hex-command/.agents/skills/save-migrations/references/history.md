@@ -225,3 +225,10 @@ Version 22 map emitters move onto their owning tiles using frozen light definiti
 under `legacy/data/tile-lights-v22.json`. Remembered light keys change from list
 index/coordinates to tile identity. Gameplay state and fog discovery are preserved;
 rendered light positions are derived from tile coordinates.
+
+## Version 24: explicit base factions
+
+Faction rosters replace implicit player/enemy armies. The conversion appends frozen
+base controller definitions only where absent, preserving saved units, treasuries,
+existing faction definitions and campaign progress. Campaign recruitment continues
+to use its resolved authored pools and completed recruitment events.

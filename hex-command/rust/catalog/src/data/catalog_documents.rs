@@ -20,8 +20,6 @@ struct StageDocuments {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct MapDocument {
-    #[serde(default)]
-    factions: Vec<Faction>,
     map_id: String,
     map_revision: u32,
     cols: i32,
@@ -41,7 +39,7 @@ struct MapDocument {
 impl MapDocument {
     fn initial(self, roster: InitialRoster) -> InitialState {
         InitialState {
-            factions: self.factions,
+            factions: roster.factions,
             map_id: self.map_id,
             map_revision: self.map_revision,
             cols: self.cols,
@@ -52,23 +50,83 @@ impl MapDocument {
         }
     }
 }
+/// One authored army owns its controller, economy, recruitment and placements.
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
+struct RosterDocument {
+    factions: Vec<RosterFaction>,
+    #[serde(default)]
+    arrivals: Vec<CompanionArrival>,
+}
+#[derive(Deserialize)]
+struct RosterFaction {
+    #[serde(flatten)]
+    faction: Faction,
+    gold: i32,
+    units: Vec<InitialUnit>,
+}
 struct InitialRoster {
+    factions: Vec<Faction>,
     gold: Gold,
     units: Vec<InitialUnit>,
 }
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct StageRoster {
-    initial: InitialRoster,
-    #[serde(default)]
-    arrivals: Vec<CompanionArrival>,
-    units: Vec<StartingUnit>,
-    recruits: Vec<String>,
-    enemy_recruits: Vec<String>,
-    gold: i32,
-    enemy_gold: i32,
+impl RosterDocument {
+    fn resolve(
+        self,
+        path: &str,
+    ) -> Result<(InitialRoster, Vec<StartingUnit>, Vec<CompanionArrival>), ContentError> {
+        unique(
+            self.factions.iter().map(|entry| entry.faction.id.as_str()),
+            path,
+        )?;
+        let mut factions = Vec::new();
+        let mut gold = BTreeMap::new();
+        let mut initial = Vec::new();
+        let mut placements = Vec::new();
+        for entry in self.factions {
+            let faction = entry.faction;
+            if entry.gold < 0 || faction.recruits.is_none() {
+                return Err(ContentError::new(
+                    path,
+                    "each faction requires nonnegative gold and a recruit list",
+                ));
+            }
+            gold.insert(faction.id.clone(), entry.gold);
+            for mut unit in entry.units {
+                if unit.side.is_some() || unit.faction.is_some() {
+                    return Err(ContentError::new(
+                        path,
+                        "roster units inherit side and faction from their army",
+                    ));
+                }
+                unit.side = Some(faction.phase);
+                unit.faction = (!matches!(faction.id.as_str(), "player" | "enemy"))
+                    .then(|| faction.id.clone());
+                placements.push(StartingUnit {
+                    items: unit.items.clone(),
+                    faction: unit.faction.clone(),
+                    col: unit.col,
+                    row: unit.row,
+                    r#type: unit.r#type.clone(),
+                    side: faction.phase,
+                    ai_group: unit.ai_group.clone(),
+                    name: unit.name.clone(),
+                    role: unit.role,
+                });
+                initial.push(unit);
+            }
+            factions.push(faction);
+        }
+        Ok((
+            InitialRoster {
+                factions,
+                gold: Gold(std::sync::Arc::new(gold)),
+                units: initial,
+            },
+            placements,
+            self.arrivals,
+        ))
+    }
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -213,14 +271,23 @@ pub fn scenario(bundle: &JsonBundle, path: &str) -> Result<(InitialState, String
         }
     }
     let roster_path = sibling(path, &documents.roster)?;
-    let roster: InitialRoster = parse(bundle, &roster_path)?;
+    let roster: RosterDocument = parse(bundle, &roster_path)?;
+    let (roster, _, _) = roster.resolve(&roster_path)?;
     Ok((map.initial(roster), roster_path))
 }
 pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError> {
     let documents: StageDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
-    let roster: StageRoster = parse(bundle, &sibling(path, &documents.roster)?)?;
+    let roster_path = sibling(path, &documents.roster)?;
+    let document: RosterDocument = parse(bundle, &roster_path)?;
+    let (roster, placements, arrivals) = document.resolve(&roster_path)?;
+    let gold = roster.gold.clone();
+    let recruitment = roster
+        .factions
+        .iter()
+        .map(|f| (f.id.clone(), f.recruits.clone().unwrap()))
+        .collect();
     let objectives: StageObjectives = parse(bundle, &sibling(path, &documents.objectives)?)?;
     let story: StageStory = parse(bundle, &sibling(path, &documents.story)?)?;
     let scripts: StageScripts = parse(bundle, &sibling(path, &documents.scripts)?)?;
@@ -241,11 +308,11 @@ pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError>
     }
     let layout = Layout {
         id: map.map_id.clone(),
-        units: roster.units,
+        units: placements,
     };
     Ok(StageFile {
         id: documents.id,
-        state: map.initial(roster.initial),
+        state: map.initial(roster),
         mission: Mission {
             lose_conditions: objectives.lose_conditions,
             map: layout,
@@ -256,16 +323,14 @@ pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError>
             intro: story.intro,
             victory: story.victory,
             required_companions: objectives.required_companions,
-            arrivals: roster.arrivals,
+            arrivals,
             rituals: scripts.rituals,
             goals: objectives.goals,
             optional_goals: objectives.optional_goals,
             defend_objectives: objectives.defend_objectives,
             enemy_leader_post: objectives.enemy_leader_post,
-            recruits: roster.recruits,
-            enemy_recruits: roster.enemy_recruits,
-            gold: roster.gold,
-            enemy_gold: roster.enemy_gold,
+            recruitment,
+            gold,
             events: scripts.events,
             enemy_groups: scripts.enemy_groups,
             waves: scripts.waves,

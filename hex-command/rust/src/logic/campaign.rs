@@ -879,8 +879,8 @@ impl<'catalog> Game<'catalog> {
                 added.role = incoming.role.clone();
             }
         }
-        game.gold["player"] = original.gold + carry.clamp(0, 8);
-        game.gold["enemy"] = original.enemy_gold;
+        game.gold = original.gold.clone();
+        game.gold["player"] += carry.clamp(0, 8);
         for veteran in story {
             if let Some(arrival) = original
                 .arrivals

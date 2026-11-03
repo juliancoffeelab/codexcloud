@@ -14479,30 +14479,5 @@
     "time": "night"
   },
   "mapRevision": 3,
-  "description": "A night valley of captive rituals, a hill monastery, and the Bellwarden’s fortified court.",
-  "factions": [
-    {
-      "id": "prisoners",
-      "phase": "enemy",
-      "controller": {
-        "kind": "passive"
-      },
-      "palette": "passive",
-      "relations": {
-        "player": "neutral",
-        "enemy": "allied"
-      },
-      "transfer": {
-        "to": "player",
-        "when": {
-          "condition": {
-            "kind": "proximity",
-            "side": "player",
-            "radius": 1
-          },
-          "remember": false
-        }
-      }
-    }
-  ]
+  "description": "A night valley of captive rituals, a hill monastery, and the Bellwarden’s fortified court."
 }

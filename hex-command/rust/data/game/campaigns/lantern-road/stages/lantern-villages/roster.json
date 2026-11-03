@@ -1,156 +1,152 @@
 {
-  "initial": {
-    "gold": {
-      "player": 14,
-      "enemy": 6,
-      "prisoners": 0,
-      "swamp-dead": 0
-    },
-    "units": [
-      {
-        "type": "swordsman",
-        "side": "player",
-        "col": 0,
-        "row": 5,
-        "name": "Captain Nera",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "scout",
-        "side": "player",
-        "col": 0,
-        "row": 4,
-        "name": "Ivo"
-      },
-      {
-        "type": "adept",
-        "side": "player",
-        "col": 0,
-        "row": 6,
-        "name": "Oren"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 7,
-        "row": 6,
-        "aiGroup": "captive-guard"
-      },
-      {
-        "type": "captives",
-        "side": "enemy",
-        "col": 8,
-        "row": 6,
-        "name": "The villagers",
-        "role": "courier",
-        "faction": "prisoners"
-      },
-      {
-        "type": "necromancer",
-        "side": "enemy",
-        "col": 15,
-        "row": 7,
-        "name": "The Tollkeeper",
-        "role": "leader",
-        "aiGroup": "tollkeeper"
-      },
-      {
-        "type": "zombie-decay-caster",
-        "side": "enemy",
-        "col": 12,
-        "row": 12,
-        "faction": "swamp-dead",
-        "aiGroup": "swamp-commander",
-        "items": [
-          {
-            "id": "healing-bottle",
-            "name": "Healing bottle",
-            "description": "A stoppered bottle of green balm. Restores 2 HP to its carrier and adjacent allies at the start of their turn. Move onto a dropped item to collect it.",
-            "attacks": [],
-            "healing": {
-              "amount": 2,
-              "radius": 1
-            }
-          }
-        ],
-        "name": "Edrin",
-        "role": "leader"
-      }
-    ]
-  },
-  "units": [
-    {
-      "type": "swordsman",
-      "side": "player",
-      "col": 0,
-      "row": 5,
-      "name": "Captain Nera",
-      "role": "leader"
-    },
-    {
-      "type": "scout",
-      "side": "player",
-      "col": 0,
-      "row": 4,
-      "name": "Ivo"
-    },
-    {
-      "type": "adept",
-      "side": "player",
-      "col": 0,
-      "row": 6,
-      "name": "Oren"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 7,
-      "row": 6,
-      "aiGroup": "captive-guard"
-    },
-    {
-      "type": "captives",
-      "side": "enemy",
-      "col": 8,
-      "row": 6,
-      "name": "The villagers",
-      "role": "courier",
-      "faction": "prisoners"
-    },
-    {
-      "type": "necromancer",
-      "side": "enemy",
-      "col": 15,
-      "row": 7,
-      "name": "The Tollkeeper",
-      "role": "leader",
-      "aiGroup": "tollkeeper"
-    },
-    {
-      "type": "zombie-decay-caster",
-      "side": "enemy",
-      "col": 12,
-      "row": 12,
-      "faction": "swamp-dead",
-      "aiGroup": "swamp-commander",
-      "items": [
+      "palette": "player",
+      "gold": 14,
+      "recruits": [],
+      "units": [
         {
-          "id": "healing-bottle",
-          "name": "Healing bottle",
-          "description": "A stoppered bottle of green balm. Restores 2 HP to its carrier and adjacent allies at the start of their turn. Move onto a dropped item to collect it.",
-          "attacks": [],
-          "healing": {
-            "amount": 2,
-            "radius": 1
-          }
+          "type": "swordsman",
+          "col": 0,
+          "row": 5,
+          "name": "Captain Nera",
+          "role": "leader"
+        },
+        {
+          "type": "scout",
+          "col": 0,
+          "row": 4,
+          "name": "Ivo"
+        },
+        {
+          "type": "adept",
+          "col": 0,
+          "row": 6,
+          "name": "Oren"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 6,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
         }
       ],
-      "name": "Edrin",
-      "role": "leader"
+      "units": [
+        {
+          "type": "skeleton",
+          "col": 7,
+          "row": 6,
+          "aiGroup": "captive-guard"
+        },
+        {
+          "type": "necromancer",
+          "col": 15,
+          "row": 7,
+          "name": "The Tollkeeper",
+          "role": "leader",
+          "aiGroup": "tollkeeper"
+        }
+      ]
+    },
+    {
+      "id": "prisoners",
+      "phase": "enemy",
+      "controller": {
+        "kind": "passive"
+      },
+      "palette": "passive",
+      "relations": {
+        "player": "neutral",
+        "enemy": "allied",
+        "swamp-dead": "neutral"
+      },
+      "transfer": {
+        "to": "player",
+        "when": {
+          "condition": {
+            "kind": "proximity",
+            "side": "player",
+            "radius": 1
+          },
+          "remember": false
+        }
+      },
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "captives",
+          "col": 8,
+          "row": 6,
+          "name": "The villagers",
+          "role": "courier"
+        }
+      ]
+    },
+    {
+      "id": "swamp-dead",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "green",
+      "relations": {
+        "player": "hostile",
+        "enemy": "neutral"
+      },
+      "name": "Marsh dead",
+      "recruits": [
+        {
+          "unit": "zombie-walker",
+          "cost": 6
+        },
+        {
+          "unit": "zombie-decay-caster",
+          "cost": 10
+        }
+      ],
+      "gold": 0,
+      "units": [
+        {
+          "type": "zombie-decay-caster",
+          "col": 12,
+          "row": 12,
+          "aiGroup": "swamp-commander",
+          "items": [
+            {
+              "id": "healing-bottle",
+              "name": "Healing bottle",
+              "description": "A stoppered bottle of green balm. Restores 2 HP to its carrier and adjacent allies at the start of their turn. Move onto a dropped item to collect it.",
+              "attacks": [],
+              "healing": {
+                "amount": 2,
+                "radius": 1
+              }
+            }
+          ],
+          "name": "Edrin",
+          "role": "leader"
+        }
+      ]
     }
-  ],
-  "recruits": [],
-  "enemyRecruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
-  "gold": 14,
-  "enemyGold": 6
+  ]
 }

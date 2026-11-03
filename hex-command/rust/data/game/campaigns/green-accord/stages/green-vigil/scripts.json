@@ -93,7 +93,6 @@
       }
     ],
     "debrief": "The roots revealed the workers’ murder and binding. Dain cannot testify, but the living branch carries their memories. The pack must take it and the ledger to the council across the river.",
-    "recruits": ["wolf", "boar", "thorncaller"],
     "reinforcements": [
       {
         "type": "boar",
@@ -101,6 +100,19 @@
         "col": 5,
         "row": 5
       }
-    ]
+    ],
+    "recruitment": {
+      "player": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        }
+      ]
+    }
   }
 }

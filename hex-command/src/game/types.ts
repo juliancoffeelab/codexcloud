@@ -405,6 +405,7 @@ export type MissionGoal = (
 ) & { visibleWhen?: import("../../rust/pkg/hex_command").Condition };
 export interface MissionEvent {
   id: string;
+  recruitment?: Record<string, import("../../rust/pkg/hex_command").FactionRecruit[]>;
   spawn?: import("../../rust/pkg/hex_command").SpawnGroup;
   trigger:
     | { kind: "condition"; condition: import("../../rust/pkg/hex_command").Condition }
@@ -439,10 +440,8 @@ export interface MissionDefinition {
   hints: string[];
   goals: MissionGoal[];
   optionalGoals?: MissionGoal[];
-  recruits: RecruitType[];
-  enemyRecruits: RecruitType[];
-  gold: number;
-  enemyGold: number;
+  recruitment: Record<string, import("../../rust/pkg/hex_command").FactionRecruit[]>;
+  gold: import("../../rust/pkg/hex_command").Gold;
   /** Occupying guards patrol their control objectives instead of raiding the starting camp. */
   defendObjectives?: boolean;
   /** An enemy leader guards this post and its immediate approaches; retreat remains free. */
@@ -454,7 +453,12 @@ export interface MissionDefinition {
   /** Authored story changes when a named ally has fallen, without resurrecting them. */
   companionLosses?: Record<
     string,
-    Partial<Pick<MissionDefinition, "briefing" | "debrief" | "hints" | "intro" | "victory">>
+    Partial<
+      Pick<
+        MissionDefinition,
+        "briefing" | "debrief" | "hints" | "intro" | "victory" | "recruitment"
+      >
+    >
   >;
   refuge?: {
     medicineEvent: string;
@@ -468,7 +472,7 @@ export interface MissionDefinition {
     briefing: string;
     hints: string[];
     intro: DialogueLine[];
-    recruits: RecruitType[];
+    recruitment: Record<string, import("../../rust/pkg/hex_command").FactionRecruit[]>;
     reinforcements: StartingUnit[];
     victory?: DialogueLine[];
     debrief?: string;

@@ -54,7 +54,19 @@
       }
     ],
     "debrief": "The cutting operation has lost both camps. Dain died in the fighting; his death remains part of what happened. The ledger leads Lark to question the roots about the Rootbinder and the Overseer.",
-    "recruits": ["wolf", "boar", "thorncaller"],
-    "reinforcements": []
+    "reinforcements": [],
+    "recruitment": {
+      "player": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        }
+      ]
+    }
   }
 }

@@ -393,16 +393,16 @@ pub struct SpawnGroup {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Event {
     /// Recruitment unlocked by this event, derived from its durable marker.
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub recruits: Vec<String>,
+    pub recruitment: BTreeMap<String, Vec<FactionRecruit>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub evacuate: Option<Evacuation>,
@@ -567,7 +567,7 @@ pub struct Refuge {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
@@ -587,7 +587,7 @@ pub struct MissionPatch {
     pub intro: Option<Vec<Dialogue>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub recruits: Option<Vec<String>>,
+    pub recruitment: Option<BTreeMap<String, Vec<FactionRecruit>>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub reinforcements: Option<Vec<StartingUnit>>,
@@ -690,10 +690,8 @@ pub struct Mission {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub optional_goals: Vec<Goal>,
-    pub recruits: Vec<String>,
-    pub enemy_recruits: Vec<String>,
-    pub gold: i32,
-    pub enemy_gold: i32,
+    pub recruitment: BTreeMap<String, Vec<FactionRecruit>>,
+    pub gold: Gold,
     #[serde(default)]
     pub defend_objectives: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -756,8 +754,8 @@ impl Mission {
         if let Some(value) = &patch.victory {
             self.victory = value.clone();
         }
-        if let Some(value) = &patch.recruits {
-            self.recruits = value.clone();
+        if let Some(value) = &patch.recruitment {
+            self.recruitment.extend(value.clone());
         }
     }
 }

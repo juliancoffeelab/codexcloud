@@ -4001,55 +4001,6 @@
     "time": "night"
   },
   "mapRevision": 8,
-  "factions": [
-    {
-      "id": "prisoners",
-      "phase": "enemy",
-      "controller": {
-        "kind": "passive"
-      },
-      "palette": "passive",
-      "relations": {
-        "player": "neutral",
-        "enemy": "allied",
-        "swamp-dead": "neutral"
-      },
-      "transfer": {
-        "to": "player",
-        "when": {
-          "condition": {
-            "kind": "proximity",
-            "side": "player",
-            "radius": 1
-          },
-          "remember": false
-        }
-      }
-    },
-    {
-      "id": "swamp-dead",
-      "phase": "enemy",
-      "controller": {
-        "kind": "ai"
-      },
-      "palette": "green",
-      "relations": {
-        "player": "hostile",
-        "enemy": "neutral"
-      },
-      "name": "Marsh dead",
-      "recruits": [
-        {
-          "unit": "zombie-walker",
-          "cost": 6
-        },
-        {
-          "unit": "zombie-decay-caster",
-          "cost": 10
-        }
-      ]
-    }
-  ],
   "name": "The Toll Road",
   "description": "A hidden woodland refuge, a guarded mountain pass, and a prisoner road through the marshes."
 }

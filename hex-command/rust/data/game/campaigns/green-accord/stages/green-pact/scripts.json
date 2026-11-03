@@ -59,7 +59,6 @@
       }
     ],
     "debrief": "The council heard the branch, examined the ledger and learned of Dain’s death. It revoked the Overseer’s charter and agreed to protect the road with the pack. The Rootbinder remains a danger, but the workers’ murder is exposed and the crossing is held.",
-    "recruits": ["wolf", "boar", "thorncaller", "spearman", "adept"],
     "reinforcements": [
       {
         "type": "boar",
@@ -67,6 +66,25 @@
         "col": 3,
         "row": 4
       }
-    ]
+    ],
+    "recruitment": {
+      "player": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "adept"
+        }
+      ]
+    }
   }
 }

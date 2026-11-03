@@ -1,8 +1,11 @@
 # Factions and controllers
 
-Units can declare a `faction` independently of their turn `side`. A map's optional
-`factions` array defines those factions. Existing content without these fields
-retains the implicit `player` and `enemy` factions and its selected AI policy.
+Every scenario and campaign stage defines its armies in `roster.json` under
+`factions`. Each entry owns its ID, controller, palette, relations, starting `gold`,
+`recruits` and `units`. Starting units inherit their faction and phase from that
+entry; do not repeat `side` or `faction` on roster placements. `map.json` contains
+terrain and presentation, not armies. Campaign and map metadata derive from the
+same roster; there is no separate `initial` roster.
 
 A faction declares its stable ID, `phase` (`player` or `enemy`), `controller`,
 visual `palette`, and diplomatic `relations`. Controllers are `human`, `passive`,
@@ -40,7 +43,7 @@ For example, a civilian faction can wait for a neighboring player unit:
 }
 ```
 
-An initial unit uses `"side": "enemy", "faction": "villagers"`; a scripted spawn
+An initial unit belongs to the containing faction entry; a scripted spawn
 sets `faction` on its spawn group. Here `enemy` selects the automatic phase, not
 hostility. The passive palette is white. On conditional transfer, the existing unit
 changes faction and phase, retaining its ID, health, items and physical type. It
@@ -50,17 +53,18 @@ control and palette, so transfer to the implicit player makes the unit blue and
 controllable without spawning a replacement.
 
 Factions own treasuries and settlements independently of their turn phase.
-`gold` maps faction IDs to nonnegative balances, including the implicit `player`
-and `enemy` IDs. Every declared faction needs its own entry. A tile's `owner` is
+The roster gives each faction a nonnegative `gold` balance. Runtime snapshots
+store those balances in a map keyed by faction ID. A tile's `owner` is
 its faction ID. At phase start each faction receives income from its own villages
 once. Settlement healing requires the unit's faction to own the tile. Moving onto
 unowned or hostile territory captures it; allied and neutral territory is retained.
 
 A recruiting leader must occupy its own faction's keep. An explicit `recruits`
-array supplies `{ "unit": "type-id", "cost": 6 }` quotes; recruitment spends only
-that faction's money and produces a unit in that faction. Named factions without
-a pool cannot recruit. The implicit player/enemy factions retain scenario or
-configured arena pools unless explicitly overridden. Recruitment quotes do not
+array supplies `{ "unit": "type-id" }` entries, optionally overriding the price
+with `"cost": 6`. Omitted prices follow current unit rules. An empty array disables
+recruitment until an event unlocks troops. Recruitment spends only that faction's
+money and produces a unit in that faction. Generated arenas retain their configured
+roster pools. Recruitment quotes do not
 change combat unit stats. Native inspection publishes pools, prices and income
 by faction; the frontend uses these facts alongside faction palettes and control
 permissions for display and input.
@@ -98,7 +102,7 @@ survival recognize these safe outcomes after reload. Matching named companions
 and leaders can carry their progression and equipment into the next chapter;
 ordinary rescued civilians remain off the battlefield.
 
-Events can also unlock a `recruits` list. Recruitment availability is derived
+Events can also unlock faction-keyed `recruitment` lists. Recruitment availability is derived
 from completed event markers, so it persists without a parallel saved unlock
 flag and can depend on meeting or retaining a particular character.
 
@@ -110,3 +114,27 @@ group with no active local order remains an ordinary part of its army. This is a
 mechanical availability fact shared by planners; their recruitment thresholds and
 movement scoring remain independently owned. Leader diagnostics use actual
 relations and the same availability facts rather than counting a whole phase.
+
+## Roster authoring
+
+```json
+{
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": { "kind": "human" },
+      "palette": "player",
+      "gold": 14,
+      "recruits": [{ "unit": "swordsman" }],
+      "units": [{ "type": "swordsman", "col": 0, "row": 5, "role": "leader" }]
+    }
+  ]
+}
+```
+
+A full battle also declares its other factions. Campaign carryover adds gold to
+the player treasury after loading these balances. Event grants and companion-loss
+patches use `"recruitment": { "faction-id": [{ "unit": "type-id" }] }`; grants
+unlock entries, while patches replace the listed factions' base pools. Completed
+event markers remain the durable unlock facts.
