@@ -2,13 +2,16 @@
 
 ## Choose the report for the task
 
-For maintenance, tooling and bug fixes, summarize simulation validation in a short
-paragraph: completed/expected runs and affected scope, relevant failures or caps,
-whether the changed behavior was verified, and material limits. A completed run
-is not necessarily a successful gameplay outcome; distinguish execution errors
-from in-game defeats. Include a failing case when it affects confidence in the fix.
-Do not attach matchup matrices, campaign tables or balance commentary simply
-because validation ran the full panel. Keep detailed reports internal unless
+For maintenance, tooling and bug fixes, still run the required simulations and
+compare relevant outcomes with a matching baseline. Keep unchanged results
+internal; a brief statement that simulation validation passed is sufficient.
+Do not print unchanged counts, win rates, matchup matrices or campaign tables.
+
+Investigate differences and report meaningful changes, regressions or validation
+gaps with the affected scope, evidence and limits. Expected effects of the fix
+are not automatically regressions. Distinguish execution errors from in-game
+defeats. Disclose when a baseline comparison was unavailable; completing a run
+alone does not establish unchanged behavior. Include detailed results only when
 requested or needed to explain a task-relevant finding.
 
 Use the tables below for requested simulation reports, comparisons and balance

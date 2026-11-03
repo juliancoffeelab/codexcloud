@@ -19,14 +19,17 @@ faction roles. For coefficient tuning, read [recruitment](recruitment.md).
 3. Run the selected scope. After changing the harness, analyzer or AI behavior,
    run fresh simulations of the affected workload; use the full panel when the
    affected scope is unclear. Use [rust-toolchain](../rust-toolchain/SKILL.md)
-   for build problems.
+   for build problems. For maintenance and bug fixes, use a matching baseline to
+   check for unintended outcome changes. Investigate differences and distinguish
+   expected effects of the fix from regressions; disclose missing comparisons.
 4. Read the printed findings. If output is truncated, consult the run’s
    analytics/findings.md and summary.md. Separate observations from proposed
    causes, and use recorded terminal reasons, goal progress and casualties.
 5. Match delivery to the task using [reporting](references/reporting.md).
-   Maintenance and bug fixes need a concise validation summary, including
-   completed/expected runs, relevant failures or caps, and verification of the
-   changed behavior. Do not automatically include balance tables or analysis.
+   For maintenance and bug fixes, keep unchanged simulation results internal and
+   briefly confirm validation passed. Report meaningful differences, regressions
+   or validation gaps; give counts and details only when they help assess those
+   findings. Do not automatically include balance tables or analysis.
    Requested comparisons need their results, denominators and limitations for
    every requested workload. Report files remain internal unless asked for.
 

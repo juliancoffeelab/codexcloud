@@ -99,9 +99,12 @@
   for separate permission to use them during balance work.
 - After changing the simulation harness, analyzer or AI behavior, run fresh
   simulations of the affected workload; use the full panel when scope is unclear.
-  Match reporting to the task. For maintenance and bug fixes, give a concise
-  validation summary: completed/expected runs, relevant failures or caps, and
-  whether the changed behavior was verified. Do not include matchup matrices,
+  For maintenance and bug fixes, compare relevant simulation outcomes with a
+  matching baseline to check for unintended changes. Investigate differences;
+  expected changes from a fix are not automatically regressions. Keep unchanged
+  results internal and briefly state that simulation validation passed. Report
+  meaningful differences, regressions or validation gaps with enough evidence to
+  assess them. Do not include matchup matrices,
   win-rate tables or balance analysis unless requested or needed to substantiate
   a task-relevant finding. Running simulations does not make a task balance work.
   For requested comparisons or balance investigations, deliver the relevant
