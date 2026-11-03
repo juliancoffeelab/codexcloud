@@ -24,14 +24,14 @@
           "type": "wildkeeper",
           "col": 2,
           "row": 4,
-          "name": "Alder",
-          "role": "leader"
+          "role": "leader",
+          "character": "alder"
         },
         {
           "type": "thorncaller",
           "col": 2,
           "row": 3,
-          "name": "Lark"
+          "character": "lark"
         },
         {
           "type": "boar",
@@ -42,7 +42,7 @@
           "type": "warden",
           "col": 5,
           "row": 5,
-          "name": "Captain Dain"
+          "character": "dain"
         }
       ],
       "relations": {
@@ -70,8 +70,8 @@
           "type": "commander",
           "col": 11,
           "row": 4,
-          "name": "The Overseer",
-          "role": "leader"
+          "role": "leader",
+          "character": "overseer"
         },
         {
           "type": "warden",

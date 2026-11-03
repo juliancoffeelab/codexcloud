@@ -9,46 +9,46 @@
   ],
   "intro": [
     {
-      "speaker": "Captain Dain",
       "portrait": "warden",
-      "text": "I suspended my patrol’s orders. These other guards answer to the Overseer. I will stand here with you until we know what happened."
+      "text": "I suspended my patrol’s orders. These other guards answer to the Overseer. I will stand here with you until we know what happened.",
+      "character": "dain"
     },
     {
-      "speaker": "The Overseer",
       "portrait": "commander",
-      "text": "Dain is dismissed. His truce binds none of you. Destroy the branch and break their circle before the council hears their lies."
+      "text": "Dain is dismissed. His truce binds none of you. Destroy the branch and break their circle before the council hears their lies.",
+      "character": "overseer"
     },
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "Bring me to the central grove. The roots kept the workers’ last memories. If I am driven out, I must begin again."
+      "text": "Bring me to the central grove. The roots kept the workers’ last memories. If I am driven out, I must begin again.",
+      "character": "lark"
     },
     {
-      "speaker": "Alder",
       "portrait": "wildkeeper",
-      "text": "Then we defend the grove, captain included. The Overseer has given us a reason to keep listening."
+      "text": "Then we defend the grove, captain included. The Overseer has given us a reason to keep listening.",
+      "character": "alder"
     }
   ],
   "victory": [
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "The workers asked for the pay he owed them and refused to cut this grove. The Overseer handed them to the Rootbinder. He killed them and bound their bodies to the logging crews."
+      "text": "The workers asked for the pay he owed them and refused to cut this grove. The Overseer handed them to the Rootbinder. He killed them and bound their bodies to the logging crews.",
+      "character": "lark"
     },
     {
-      "speaker": "Captain Dain",
       "portrait": "warden",
-      "text": "Unpaid labor for the Overseer. Bodies and protection for the Rootbinder. And my patrol sent to punish you for their murders."
+      "text": "Unpaid labor for the Overseer. Bodies and protection for the Rootbinder. And my patrol sent to punish you for their murders.",
+      "character": "dain"
     },
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "This branch holds what the roots remember. Their families can hear it too."
+      "text": "This branch holds what the roots remember. Their families can hear it too.",
+      "character": "lark"
     },
     {
-      "speaker": "Alder",
       "portrait": "wildkeeper",
-      "text": "The council is meeting across the river. We take the branch and the ledger there. Let the people who gave him his office judge what he did with it."
+      "text": "The council is meeting across the river. We take the branch and the ledger there. Let the people who gave him his office judge what he did with it.",
+      "character": "alder"
     }
   ]
 }

@@ -567,10 +567,13 @@ impl<'catalog> Game<'catalog> {
             let definition = self.campaign.as_ref().map(|_| self.campaign_definition());
             if let Some(campaign) = &mut self.campaign {
                 if unit.side == Side::Player {
-                    if let Some(name) = &unit.name {
-                        if definition.unwrap().missions.iter().any(|chapter| {
-                            chapter.companion_names().any(|incoming| incoming == name)
-                        }) {
+                    if let Some(name) = &unit.character {
+                        if definition
+                            .unwrap()
+                            .missions
+                            .iter()
+                            .any(|chapter| chapter.companion_ids().any(|incoming| incoming == name))
+                        {
                             let mark = format!("fallen:{name}");
                             if !campaign.marked(&mark) {
                                 campaign.marks.push(mark);
@@ -579,7 +582,7 @@ impl<'catalog> Game<'catalog> {
                     }
                 }
                 if campaign.id == "green-accord"
-                    && unit.name.as_deref() == Some("Captain Dain")
+                    && unit.character.as_deref() == Some("dain")
                     && !campaign.marked("dain-fell")
                 {
                     campaign.marks.push("dain-fell".into());

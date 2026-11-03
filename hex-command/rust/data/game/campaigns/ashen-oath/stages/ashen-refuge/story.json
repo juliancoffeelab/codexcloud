@@ -8,14 +8,14 @@
   ],
   "intro": [
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "These houses are empty. The people next door are not. We could be neighbors, if they let us stay."
+      "text": "These houses are empty. The people next door are not. We could be neighbors, if they let us stay.",
+      "character": "orin"
     },
     {
-      "speaker": "Captain Dain",
       "portrait": "warden",
-      "text": "My orders say the dead must leave. My patrol is coming to enforce them."
+      "text": "My orders say the dead must leave. My patrol is coming to enforce them.",
+      "character": "dain"
     },
     {
       "speaker": "Village elder",
@@ -23,9 +23,9 @@
       "text": "Give us six days to gather the households. Defend your shelter if you must, but let men who turn back go home. There are sick families here who need the herbs in the northern grove."
     },
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "Then we hold our ground. We will not hunt your wounded. And we will bring the medicine."
+      "text": "Then we hold our ground. We will not hunt your wounded. And we will bring the medicine.",
+      "character": "orin"
     }
   ],
   "victory": [
@@ -35,19 +35,19 @@
       "text": "Enough, Captain. They held their shelter and let your wounded leave. These houses are ours to offer. The dead may stay as our neighbors."
     },
     {
-      "speaker": "Dain",
       "portrait": "warden",
-      "text": "My orders did not mention people who would ask the dead to stay. Perhaps the man who wrote them left other things out."
+      "text": "My orders did not mention people who would ask the dead to stay. Perhaps the man who wrote them left other things out.",
+      "character": "dain"
     },
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "He used to write my orders too. Come with us, and see what he has been hiding."
+      "text": "He used to write my orders too. Come with us, and see what he has been hiding.",
+      "character": "orin"
     },
     {
-      "speaker": "Dain",
       "portrait": "warden",
-      "text": "I will. My soldiers can rest here. I know which road we take next."
+      "text": "I will. My soldiers can rest here. I know which road we take next.",
+      "character": "dain"
     }
   ]
 }

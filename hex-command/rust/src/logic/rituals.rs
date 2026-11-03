@@ -257,7 +257,7 @@ impl Game<'_> {
                             .clone()
                             .or_else(|| ritual.spawn.faction.clone());
                         unit.ai_group = ritual.spawn.ai_group.clone();
-                        unit.name = incoming.name.clone();
+                        unit.character = incoming.character.clone();
                         unit.role = incoming.role;
                         self.campaign.as_mut().unwrap().marks.push(mark);
                     }

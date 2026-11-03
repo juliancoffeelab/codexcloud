@@ -8,9 +8,9 @@
   "leader": "swordsman",
   "ending": [
     {
-      "speaker": "Nera",
       "portrait": "swordsman",
-      "text": "Leave a watch at every crossing. Carry lamps down the road. We opened the valley; now we keep it open."
+      "text": "Leave a watch at every crossing. Carry lamps down the road. We opened the valley; now we keep it open.",
+      "character": "nera"
     }
   ],
   "stages": [
@@ -18,5 +18,51 @@
     "stages/lantern-villages/stage.json",
     "stages/lantern-bell/stage.json"
   ],
-  "playerDiplomacy": ["pragmatic"]
+  "playerDiplomacy": ["pragmatic"],
+  "characters": [
+    {
+      "id": "nera",
+      "name": "Captain Nera"
+    },
+    {
+      "id": "eastern-captives",
+      "name": "Eastern captives"
+    },
+    {
+      "id": "edrin",
+      "name": "Edrin"
+    },
+    {
+      "id": "ivo",
+      "name": "Ivo"
+    },
+    {
+      "id": "northern-captives",
+      "name": "Northern captives"
+    },
+    {
+      "id": "oren",
+      "name": "Oren"
+    },
+    {
+      "id": "southern-captives",
+      "name": "Southern captives"
+    },
+    {
+      "id": "bellwarden",
+      "name": "The Bellwarden"
+    },
+    {
+      "id": "tollkeeper",
+      "name": "The Tollkeeper"
+    },
+    {
+      "id": "villagers",
+      "name": "The villagers"
+    },
+    {
+      "id": "sella",
+      "name": "Warden Sella"
+    }
+  ]
 }

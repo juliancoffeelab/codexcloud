@@ -15,5 +15,5 @@
       "startEvent": "rescue"
     }
   ],
-  "requiredCompanions": ["Edda"]
+  "requiredCompanions": ["edda"]
 }

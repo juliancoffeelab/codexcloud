@@ -449,6 +449,7 @@ pub struct AttackDetails {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct UnitActions {
+    pub name: Option<String>,
     pub faction: crate::data::UnitFaction,
     pub unit: String,
     pub reachable: Vec<ReachableTile>,
@@ -463,6 +464,8 @@ pub struct UnitActions {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 pub struct BattleInspection {
+    /// Current dialogue captions resolved from character IDs for display only.
+    pub speakers: Vec<String>,
     pub objectives: Option<crate::data::CampaignObjectives>,
     pub revision: u32,
     pub units: Vec<UnitActions>,

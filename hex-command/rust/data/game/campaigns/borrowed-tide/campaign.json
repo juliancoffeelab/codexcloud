@@ -8,14 +8,14 @@
   "leader": "tidekeeper",
   "ending": [
     {
-      "speaker": "Edda",
       "portrait": "harpooner",
-      "text": "The next sounding chart has two signatures. One from the quay, one from the reef."
+      "text": "The next sounding chart has two signatures. One from the quay, one from the reef.",
+      "character": "edda"
     },
     {
-      "speaker": "Mira",
       "portrait": "tidekeeper",
-      "text": "And if the numbers disagree, we go out together and measure again."
+      "text": "And if the numbers disagree, we go out together and measure again.",
+      "character": "mira"
     }
   ],
   "stages": [
@@ -23,5 +23,31 @@
     "stages/tide-wreck/stage.json",
     "stages/tide-sluice/stage.json"
   ],
-  "playerDiplomacy": ["pragmatic"]
+  "playerDiplomacy": ["pragmatic"],
+  "characters": [
+    {
+      "id": "vale",
+      "name": "Captain Vale"
+    },
+    {
+      "id": "edda",
+      "name": "Edda"
+    },
+    {
+      "id": "cale",
+      "name": "Foreman Cale"
+    },
+    {
+      "id": "mira",
+      "name": "Mira"
+    },
+    {
+      "id": "harl",
+      "name": "Postmaster Harl"
+    },
+    {
+      "id": "tomas",
+      "name": "Tomas"
+    }
+  ]
 }

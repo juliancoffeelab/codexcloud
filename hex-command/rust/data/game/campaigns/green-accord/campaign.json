@@ -8,14 +8,14 @@
   "leader": "wildkeeper",
   "ending": [
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "The first cart crossed today. It carried apples, not axes."
+      "text": "The first cart crossed today. It carried apples, not axes.",
+      "character": "lark"
     },
     {
-      "speaker": "Alder",
       "portrait": "wildkeeper",
-      "text": "Keep the road open. The roots will do the rest."
+      "text": "Keep the road open. The roots will do the rest.",
+      "character": "alder"
     }
   ],
   "stages": [
@@ -23,5 +23,31 @@
     "stages/green-vigil/stage.json",
     "stages/green-pact/stage.json"
   ],
-  "playerDiplomacy": ["pragmatic"]
+  "playerDiplomacy": ["pragmatic"],
+  "characters": [
+    {
+      "id": "tamsin",
+      "name": "Adept Tamsin"
+    },
+    {
+      "id": "alder",
+      "name": "Alder"
+    },
+    {
+      "id": "dain",
+      "name": "Captain Dain"
+    },
+    {
+      "id": "lark",
+      "name": "Lark"
+    },
+    {
+      "id": "overseer",
+      "name": "The Overseer"
+    },
+    {
+      "id": "rootbinder",
+      "name": "The Rootbinder"
+    }
+  ]
 }

@@ -85,3 +85,11 @@ pub use conditions::*;
 mod policy;
 pub use policy::*;
 pub mod presentation;
+
+impl Rules {
+    pub fn campaign_for_map(&self, map: &str) -> Option<&Campaign> {
+        self.campaigns
+            .values()
+            .find(|c| c.missions.iter().any(|m| m.map.id == map))
+    }
+}

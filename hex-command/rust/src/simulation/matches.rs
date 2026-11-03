@@ -116,7 +116,7 @@ pub(crate) fn create_arena<'catalog>(
             moved: false,
             attacked: false,
             experience: Some(0),
-            name: None,
+            character: None,
             role: Some(Role::Leader),
             retreating: None,
             rebuilding: None,

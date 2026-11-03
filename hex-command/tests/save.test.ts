@@ -1,3 +1,4 @@
+import { historicalCharacters } from "./legacy-save";
 import { Game } from "./game-fixture";
 import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
 import { importWaveMarker } from "../src/save/migrations/legacy/snapshot";
@@ -126,7 +127,7 @@ function oldSnapshot(
     cols: _cols,
     rows: _rows,
     ...state
-  } = structuredClone(input) as import("../rust/pkg/hex_command").State;
+  } = historicalCharacters(input) as import("../rust/pkg/hex_command").State;
   return {
     version: 1,
     campaignDeploymentFormat: "named-waves-v1",
@@ -336,9 +337,13 @@ for (const [id, chapter, type, tile, numericMarks] of [
     const loaded = loadBattle(createTestFactory());
     assert.equal(loaded.notice, undefined);
     assert.equal(loaded.game.mapRevision, 2);
-    assert.deepEqual(loaded.game.units, game.units);
+    assert.deepEqual(loaded.game.captureState().units, game.units);
     loaded.game.endTurn();
-    assert.deepEqual(loaded.game.units, game.units, "Previously deployed waves cannot respawn");
+    assert.deepEqual(
+      loaded.game.captureState().units,
+      game.units,
+      "Previously deployed waves cannot respawn",
+    );
     while (loaded.game.turn === "enemy" && !loaded.game.winner) loaded.game.enemyStep();
     saveBattle(loaded.game);
     const again = loadBattle(createTestFactory());
@@ -388,18 +393,20 @@ for (const dead of [false, true]) {
     const game = Game.startCampaign("green-accord", 1);
     const old = oldSnapshot(game.captureState());
     old.state.mapRevision = 1;
-    old.state.units = old.state.units.filter((unit) => unit.name !== "Captain Dain");
+    old.state.units = old.state.units.filter(
+      (unit) => (unit as unknown as { name?: string }).name !== "Captain Dain",
+    );
     old.state.campaign!.choices = dead ? ["green-dain-dead"] : [];
     const converted = migrateSave(old).save;
     assert.equal(converted.checkpoint.state.mapRevision, 2);
     assert.equal(
-      converted.checkpoint.state.units.some((unit) => unit.name === "Captain Dain"),
+      converted.checkpoint.state.units.some((unit) => unit.character === "dain"),
       !dead,
     );
     assert(!converted.checkpoint.state.campaign!.marks.includes("dain-fell"));
     const restored = LiveGame.restore(createTestFactory(), converted.checkpoint);
     assert.equal(
-      restored.units.some((unit) => unit.name === "Captain Dain"),
+      restored.units.some((unit) => unit.character === "dain"),
       !dead,
     );
     restored.dispose();

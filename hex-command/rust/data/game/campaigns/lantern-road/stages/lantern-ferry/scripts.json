@@ -130,14 +130,14 @@
       "label": "Three bats burst from the island woods",
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Bats! Keep them off the horses!"
+          "text": "Bats! Keep them off the horses!",
+          "character": "nera"
         },
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "There are accounts of swarms like this in the old siege chronicles. I thought the writers were embellishing."
+          "text": "There are accounts of swarms like this in the old siege chronicles. I thought the writers were embellishing.",
+          "character": "oren"
         }
       ],
       "spawn": {
@@ -208,9 +208,9 @@
           "text": "Over here! They’re at the door! For the love of anything living, get them away from the door!"
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Shields up. Make them come to us."
+          "text": "Shields up. Make them come to us.",
+          "character": "nera"
         }
       ],
       "beforeRound": 16
@@ -236,9 +236,9 @@
       "label": "No voice answers from the house",
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "No lamp. No answer. Get to the house."
+          "text": "No lamp. No answer. Get to the house.",
+          "character": "nera"
         }
       ],
       "unlessEvent": "ford-shout"
@@ -262,9 +262,9 @@
           "text": "I thought the door would give before anyone heard me."
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "We saw the landing lantern go out. Where is everyone?"
+          "text": "We saw the landing lantern go out. Where is everyone?",
+          "character": "nera"
         },
         {
           "speaker": "Ferryman",
@@ -272,9 +272,9 @@
           "text": "The dead took them. Went house to house, drove them out onto the eastern road. I barred this door and put the lamp out."
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Stay inside. We’ll light the villages and see what’s left."
+          "text": "Stay inside. We’ll light the villages and see what’s left.",
+          "character": "nera"
         }
       ],
       "requiresEvent": "ford-shout",
@@ -303,9 +303,9 @@
       "label": "A letter lies beside the extinguished lamp",
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "The door is broken. We’re too late."
+          "text": "The door is broken. We’re too late.",
+          "character": "nera"
         },
         {
           "speaker": "The letter",
@@ -313,9 +313,9 @@
           "text": "If someone finds this: skeletons took the villagers up the eastern road. I stayed to keep the ferry ready. They have come back for me. Leave the light out. Save yourselves."
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "We’re lighting it. Then we follow the road."
+          "text": "We’re lighting it. Then we follow the road.",
+          "character": "nera"
         }
       ],
       "requiresEvent": "house-visit",
@@ -338,7 +338,7 @@
             {
               "kind": "hasUnits",
               "side": "player",
-              "name": "Oren"
+              "character": "oren"
             }
           ]
         }
@@ -346,9 +346,9 @@
       "label": "The company questions the ferryman",
       "dialogue": [
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "Who gave the skeletons their orders? Did you see him?"
+          "text": "Who gave the skeletons their orders? Did you see him?",
+          "character": "oren"
         },
         {
           "speaker": "Ferryman",
@@ -356,9 +356,9 @@
           "text": "Something in a robe. Bare bone where its face should be. The other dead stood still when it spoke."
         },
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "A lich. Those villages weren’t attacked for their coin."
+          "text": "A lich. Those villages weren’t attacked for their coin.",
+          "character": "oren"
         },
         {
           "speaker": "Ferryman",
@@ -451,14 +451,14 @@
       "label": "Giant spiders spill out of the houses",
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Spiders! Back from the doorway!"
+          "text": "Spiders! Back from the doorway!",
+          "character": "nera"
         },
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "Cellar spiders. We raised them at the Collegium. All the food in the world wouldn’t make them grow like this."
+          "text": "Cellar spiders. We raised them at the Collegium. All the food in the world wouldn’t make them grow like this.",
+          "character": "oren"
         }
       ]
     },
@@ -516,9 +516,9 @@
       "label": "Nera takes a quarry hammer",
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Quarry tools. This hammer still has a sound head. I’ll take it."
+          "text": "Quarry tools. This hammer still has a sound head. I’ll take it.",
+          "character": "nera"
         }
       ],
       "items": [

@@ -24,8 +24,8 @@
           "type": "necromancer",
           "col": 1,
           "row": 4,
-          "name": "Orin",
-          "role": "leader"
+          "role": "leader",
+          "character": "orin"
         },
         {
           "type": "skeleton",
@@ -68,8 +68,8 @@
           "type": "commander",
           "col": 9,
           "row": 4,
-          "name": "Captain Dain",
-          "role": "leader"
+          "role": "leader",
+          "character": "dain"
         },
         {
           "type": "soldier",

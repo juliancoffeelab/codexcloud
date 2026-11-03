@@ -324,7 +324,7 @@ impl BattleView<'_, '_> {
                 moved: true,
                 attacked: true,
                 experience: None,
-                name: None,
+                character: None,
                 role: None,
                 retreating: None,
                 rebuilding: None,

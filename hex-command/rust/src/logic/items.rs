@@ -26,10 +26,7 @@ impl Game<'_> {
             {
                 self.record(format!(
                     "{} picked up {}.",
-                    self.units[index]
-                        .name
-                        .as_deref()
-                        .unwrap_or(&self.rules.units[self.units[index].kind].name),
+                    self.unit_name(&self.units[index]),
                     ground.item.name
                 ));
                 self.units[index].items = inventory;

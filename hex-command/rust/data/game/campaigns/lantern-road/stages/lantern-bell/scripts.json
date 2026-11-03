@@ -7,14 +7,14 @@
         "condition": {
           "kind": "hasUnits",
           "side": "player",
-          "name": "Oren"
+          "character": "oren"
         }
       },
       "dialogue": [
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "The monastery is on the hill to the north. Get me there, and I can use its wards to clear this fog."
+          "text": "The monastery is on the hill to the north. Get me there, and I can use its wards to clear this fog.",
+          "character": "oren"
         }
       ],
       "label": "Oren can clear the fog from the northern hill monastery.",
@@ -39,9 +39,9 @@
           "text": "The stones answer the mage’s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
         },
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "Keep them back. I need three turns here to break the veil."
+          "text": "Keep them back. I need three turns here to break the veil.",
+          "character": "oren"
         }
       ],
       "label": "The hill ritual begins; skeletal wolves emerge.",
@@ -89,7 +89,7 @@
             {
               "kind": "hasUnits",
               "side": "enemy",
-              "name": "The Bellwarden"
+              "character": "bellwarden"
             },
             {
               "kind": "visibleUnits",
@@ -107,14 +107,14 @@
       },
       "dialogue": [
         {
-          "speaker": "The Bellwarden",
           "portrait": "lich",
-          "text": "More names for the bell."
+          "text": "More names for the bell.",
+          "character": "bellwarden"
         },
         {
-          "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "You’ll have no more of them."
+          "text": "You’ll have no more of them.",
+          "character": "nera"
         }
       ],
       "label": "A voice carries across the valley."
@@ -132,9 +132,9 @@
           "text": "A low note builds beneath the mist. The marked stones begin to glow."
         },
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "The bell is gathering strength. Get the prisoners off those marks—cutting their bonds won’t be enough."
+          "text": "The bell is gathering strength. Get the prisoners off those marks—cutting their bonds won’t be enough.",
+          "character": "oren"
         }
       ],
       "label": "The next toll is close."
@@ -152,9 +152,9 @@
       },
       "dialogue": [
         {
-          "speaker": "Ivo",
           "portrait": "scout",
-          "text": "A church beyond the trees. The door is open."
+          "text": "A church beyond the trees. The door is open.",
+          "character": "ivo"
         }
       ],
       "label": "The eastern church comes into view."
@@ -177,9 +177,9 @@
           "text": "A shirt of mail beneath the bench. No rust, and silver runes worked into the links."
         },
         {
-          "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "Take what we can use. Leave the door unbarred for anyone coming after us."
+          "text": "Take what we can use. Leave the door unbarred for anyone coming after us.",
+          "character": "nera"
         }
       ],
       "groundItems": [
@@ -216,7 +216,7 @@
             {
               "kind": "hasUnits",
               "side": "any",
-              "name": "Northern captives"
+              "character": "northern-captives"
             }
           ]
         }
@@ -237,7 +237,7 @@
         "condition": {
           "kind": "hasUnits",
           "side": "player",
-          "name": "Northern captives"
+          "character": "northern-captives"
         }
       },
       "dialogue": [
@@ -247,9 +247,9 @@
           "text": "Our hands are free. Where do we go?"
         },
         {
-          "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "Off the marked stones. Stay clear of the fighting."
+          "text": "Off the marked stones. Stay clear of the fighting.",
+          "character": "nera"
         }
       ],
       "requiresEvent": "northern-sighted",
@@ -271,7 +271,7 @@
             {
               "kind": "hasUnits",
               "side": "any",
-              "name": "Eastern captives"
+              "character": "eastern-captives"
             }
           ]
         }
@@ -292,7 +292,7 @@
         "condition": {
           "kind": "hasUnits",
           "side": "player",
-          "name": "Eastern captives"
+          "character": "eastern-captives"
         }
       },
       "dialogue": [
@@ -302,9 +302,9 @@
           "text": "Our hands are free. Where do we go?"
         },
         {
-          "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "Off the marked stones. Stay clear of the fighting."
+          "text": "Off the marked stones. Stay clear of the fighting.",
+          "character": "nera"
         }
       ],
       "requiresEvent": "eastern-sighted",
@@ -326,7 +326,7 @@
             {
               "kind": "hasUnits",
               "side": "any",
-              "name": "Southern captives"
+              "character": "southern-captives"
             }
           ]
         }
@@ -347,7 +347,7 @@
         "condition": {
           "kind": "hasUnits",
           "side": "player",
-          "name": "Southern captives"
+          "character": "southern-captives"
         }
       },
       "dialogue": [
@@ -357,9 +357,9 @@
           "text": "Our hands are free. Where do we go?"
         },
         {
-          "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "Off the marked stones. Stay clear of the fighting."
+          "text": "Off the marked stones. Stay clear of the fighting.",
+          "character": "nera"
         }
       ],
       "requiresEvent": "southern-sighted",
@@ -375,7 +375,7 @@
             {
               "kind": "hasUnits",
               "side": "enemy",
-              "name": "The Bellwarden"
+              "character": "bellwarden"
             },
             {
               "kind": "any",
@@ -383,17 +383,17 @@
                 {
                   "kind": "hasUnits",
                   "side": "player",
-                  "name": "Northern captives"
+                  "character": "northern-captives"
                 },
                 {
                   "kind": "hasUnits",
                   "side": "player",
-                  "name": "Eastern captives"
+                  "character": "eastern-captives"
                 },
                 {
                   "kind": "hasUnits",
                   "side": "player",
-                  "name": "Southern captives"
+                  "character": "southern-captives"
                 }
               ]
             }
@@ -402,9 +402,9 @@
       },
       "dialogue": [
         {
-          "speaker": "The Bellwarden",
           "portrait": "lich",
-          "text": "Bring them back. Alive or dead—their blood will serve the ritual just the same."
+          "text": "Bring them back. Alive or dead—their blood will serve the ritual just the same.",
+          "character": "bellwarden"
         }
       ]
     },
@@ -417,14 +417,14 @@
       "unlessChoice": "tollkeeper-defeated",
       "dialogue": [
         {
-          "speaker": "Ivo",
           "portrait": "scout",
-          "text": "The dead from the pass—they’ve followed us!"
+          "text": "The dead from the pass—they’ve followed us!",
+          "character": "ivo"
         },
         {
-          "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "Hold them at the tree line. The rest of you, keep moving."
+          "text": "Hold them at the tree line. The rest of you, keep moving.",
+          "character": "nera"
         }
       ],
       "label": "The Tollkeeper's skeleton patrol enters from the southwest.",
@@ -435,7 +435,7 @@
             "id": "tollkeeper",
             "type": "necromancer",
             "side": "enemy",
-            "name": "The Tollkeeper"
+            "character": "tollkeeper"
           },
           {
             "id": "spear",
@@ -470,7 +470,7 @@
             {
               "kind": "noUnits",
               "side": "any",
-              "name": "Northern captives"
+              "character": "northern-captives"
             }
           ]
         }
@@ -495,7 +495,7 @@
         "when": {
           "kind": "hasUnits",
           "side": "neutral",
-          "name": "Northern captives"
+          "character": "northern-captives"
         }
       }
     },
@@ -508,7 +508,7 @@
         "when": {
           "kind": "hasUnits",
           "side": "neutral",
-          "name": "Eastern captives"
+          "character": "eastern-captives"
         }
       }
     },
@@ -521,7 +521,7 @@
         "when": {
           "kind": "hasUnits",
           "side": "neutral",
-          "name": "Southern captives"
+          "character": "southern-captives"
         }
       }
     },
@@ -564,9 +564,9 @@
           "text": "Captain! Your runner reached the ferry. We followed your trail."
         },
         {
-          "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "Good timing. Join the company—we need to silence that bell."
+          "text": "Good timing. Join the company—we need to silence that bell.",
+          "character": "nera"
         }
       ]
     }
@@ -577,7 +577,7 @@
       "when": {
         "kind": "hasUnits",
         "side": "enemy",
-        "name": "The Bellwarden"
+        "character": "bellwarden"
       },
       "sourceTerrain": "ritual-star",
       "spentTerrain": "ritual-spent",

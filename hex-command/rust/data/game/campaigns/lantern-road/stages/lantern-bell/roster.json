@@ -30,14 +30,14 @@
           "type": "swordsman",
           "col": 2,
           "row": 7,
-          "name": "Captain Nera",
-          "role": "leader"
+          "role": "leader",
+          "character": "nera"
         },
         {
           "type": "scout",
           "col": 1,
           "row": 7,
-          "name": "Ivo"
+          "character": "ivo"
         }
       ],
       "relations": {
@@ -74,8 +74,8 @@
           "type": "lich-commander-l3",
           "col": 11,
           "row": 12,
-          "name": "The Bellwarden",
-          "role": "leader"
+          "role": "leader",
+          "character": "bellwarden"
         },
         {
           "type": "skeleton-impact-caster",
@@ -139,33 +139,33 @@
           "type": "captives",
           "col": 11,
           "row": 5,
-          "name": "Northern captives"
+          "character": "northern-captives"
         },
         {
           "type": "captives",
           "col": 19,
           "row": 10,
-          "name": "Eastern captives"
+          "character": "eastern-captives"
         },
         {
           "type": "captives",
           "col": 12,
           "row": 20,
-          "name": "Southern captives"
+          "character": "southern-captives"
         }
       ]
     }
   ],
   "arrivals": [
     {
-      "name": "Warden Sella",
       "col": 3,
-      "row": 8
+      "row": 8,
+      "character": "sella"
     },
     {
-      "name": "Oren",
       "col": 3,
-      "row": 7
+      "row": 7,
+      "character": "oren"
     }
   ]
 }

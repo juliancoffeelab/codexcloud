@@ -31,7 +31,7 @@ impl<'catalog> Game<'catalog> {
         goal.companion().is_none_or(|name| {
             self.units.iter().any(|u| {
                 u.side == Side::Player
-                    && u.name.as_ref() == Some(name)
+                    && u.character.as_ref() == Some(name)
                     && self.board.ids[u.tile] == *goal.tile().unwrap()
             })
         })
@@ -355,7 +355,7 @@ impl<'catalog> Game<'catalog> {
                     let unit = self.units.iter_mut().find(|unit| unit.id == id).unwrap();
                     unit.ai_group = group.ai_group.clone();
                     unit.faction = incoming.faction.clone().or_else(|| group.faction.clone());
-                    unit.name = incoming.name.clone();
+                    unit.character = incoming.character.clone();
                     unit.role = incoming.role.clone();
                     self.campaign.as_mut().unwrap().marks.push(marker);
                 }
@@ -382,14 +382,14 @@ impl<'catalog> Game<'catalog> {
             !self
                 .units
                 .iter()
-                .any(|u| u.side == Side::Player && u.name.as_ref() == Some(name))
+                .any(|u| u.side == Side::Player && u.character.as_ref() == Some(name))
                 && !self
                     .campaign
                     .as_ref()
                     .unwrap()
                     .evacuated
                     .iter()
-                    .any(|record| record.unit.name.as_ref() == Some(name))
+                    .any(|record| record.unit.character.as_ref() == Some(name))
         });
         let courier = self
             .units
@@ -414,7 +414,10 @@ impl<'catalog> Game<'catalog> {
             } else if !leader {
                 "Your leader fell. The company cannot continue without them.".into()
             } else if let Some(name) = missing {
-                format!("{name} fell. The company cannot continue without them.")
+                format!(
+                    "{} fell. The company cannot continue without them.",
+                    self.character_name(name).unwrap_or(name)
+                )
             } else {
                 "The people you were escorting were killed before reaching safety.".into()
             };
@@ -425,6 +428,7 @@ impl<'catalog> Game<'catalog> {
             state.say([Dialogue {
                 sound: None,
                 speaker: "The company".into(),
+                character: None,
                 portrait,
                 text: text.clone(),
             }]);
@@ -449,7 +453,7 @@ impl<'catalog> Game<'catalog> {
         if let Some(goal) = mission.all_goals().find(|g| g.kind() == GoalKind::Vigil) {
             let tile = self.site(goal.tile().unwrap());
             let present = self.units.iter().any(|u| {
-                u.side == Side::Player && u.name.as_ref() == goal.companion() && u.tile == tile
+                u.side == Side::Player && u.character.as_ref() == goal.companion() && u.tile == tile
             });
             let owned = self.human_owns(tile);
             let counter = self
@@ -628,20 +632,23 @@ impl<'catalog> Game<'catalog> {
                 // Unbound speakers such as local witnesses and narration remain available.
                 let lines: Vec<_> = lines
                     .iter()
-                    .filter(|line| !state.marked(&format!("fallen:{}", line.speaker)))
                     .filter(|line| {
-                        !(mission
-                            .arrivals
-                            .iter()
-                            .any(|arrival| arrival.name == line.speaker)
-                            || mission.map.units.iter().any(|unit| {
-                                unit.side == Side::Player
-                                    && unit.name.as_deref() == Some(line.speaker.as_str())
-                            }))
-                            || self.units.iter().any(|unit| {
-                                unit.side == Side::Player
-                                    && unit.name.as_deref() == Some(line.speaker.as_str())
-                            })
+                        let Some(id) = line.character.as_deref() else {
+                            return true;
+                        };
+                        !state.marked(&format!("fallen:{id}"))
+                            && (!(mission
+                                .arrivals
+                                .iter()
+                                .any(|arrival| arrival.character == id)
+                                || mission.map.units.iter().any(|unit| {
+                                    unit.side == Side::Player
+                                        && unit.character.as_deref() == Some(id)
+                                }))
+                                || self.units.iter().any(|unit| {
+                                    unit.side == Side::Player
+                                        && unit.character.as_deref() == Some(id)
+                                }))
                     })
                     .cloned()
                     .collect();
@@ -727,7 +734,7 @@ impl<'catalog> Game<'catalog> {
             let dain_survived = self
                 .units
                 .iter()
-                .any(|u| u.side == Side::Player && u.name.as_deref() == Some("Captain Dain"));
+                .any(|u| u.side == Side::Player && u.character.as_deref() == Some("dain"));
             let state = self.campaign.as_mut().unwrap();
             state.outcome = Some("Mission complete. The company can rest and regroup.".into());
             let war = state.escalated();
@@ -752,9 +759,7 @@ impl<'catalog> Game<'catalog> {
                     definition
                         .ending
                         .iter()
-                        .filter(|line| {
-                            survived || (line.speaker != "Dain" && line.speaker != "Captain Dain")
-                        })
+                        .filter(|line| survived || (line.character.as_deref() != Some("dain")))
                         .cloned(),
                 );
             }
@@ -849,7 +854,7 @@ impl<'catalog> Game<'catalog> {
         game.units.retain(|u| {
             u.side != Side::Player
                 || u.role == Some(Role::Leader)
-                || u.name.as_ref().is_none_or(|n| !fallen.contains(n))
+                || u.character.as_ref().is_none_or(|n| !fallen.contains(n))
         });
         game.roster_changed();
         game.campaign.as_mut().unwrap().dialogue = game.mission.as_ref().unwrap().intro.clone();
@@ -859,7 +864,7 @@ impl<'catalog> Game<'catalog> {
             && original.without_dain.is_some()
         {
             game.units
-                .retain(|u| u.name.as_deref() != Some("Captain Dain"));
+                .retain(|u| u.character.as_deref() != Some("dain"));
             for incoming in original
                 .without_dain
                 .as_ref()
@@ -875,7 +880,7 @@ impl<'catalog> Game<'catalog> {
                 added.ai_group = incoming.ai_group.clone();
                 added.items = incoming.items.clone();
                 added.faction = incoming.faction.clone();
-                added.name = incoming.name.clone();
+                added.character = incoming.character.clone();
                 added.role = incoming.role.clone();
             }
         }
@@ -885,7 +890,7 @@ impl<'catalog> Game<'catalog> {
             if let Some(arrival) = original
                 .arrivals
                 .iter()
-                .find(|arrival| Some(&arrival.name) == veteran.name.as_ref())
+                .find(|arrival| Some(&arrival.character) == veteran.character.as_ref())
             {
                 let tile = game.site(&format!("{},{}", arrival.col, arrival.row));
                 let kind = game.kind(&veteran.r#type);
@@ -896,7 +901,7 @@ impl<'catalog> Game<'catalog> {
                     let id = game.add(kind, Side::Player, destination);
                     let unit = game.units.iter_mut().find(|u| u.id == id).unwrap();
                     unit.items = veteran.items.clone();
-                    unit.name = veteran.name.clone();
+                    unit.character = veteran.character.clone();
                     unit.experience = Some(veteran.experience);
                     unit.role = veteran.role;
                 }
@@ -908,7 +913,7 @@ impl<'catalog> Game<'catalog> {
                     && if veteran.role == Some(Role::Leader) {
                         u.role == Some(Role::Leader)
                     } else {
-                        veteran.name.is_some() && u.name == veteran.name
+                        veteran.character.is_some() && u.character == veteran.character
                     }
             }) {
                 if game.rules.units[unit.kind].family == game.rules.units[kind].family {
@@ -944,7 +949,7 @@ impl<'catalog> Game<'catalog> {
             game.add(kind, Side::Player, tile);
             let unit = game.units.last_mut().unwrap();
             unit.experience = Some(veteran.experience);
-            unit.name = veteran.name;
+            unit.character = veteran.character;
             unit.items = veteran.items;
         }
         for unit in &game.units {
@@ -968,7 +973,7 @@ impl<'catalog> Game<'catalog> {
                 mission
                     .arrivals
                     .iter()
-                    .any(|arrival| u.name.as_ref() == Some(&arrival.name))
+                    .any(|arrival| u.character.as_ref() == Some(&arrival.character))
                     || mission.map.units.iter().any(|incoming| {
                         incoming.side == Side::Player
                             && self.rules.units[self.kind(&incoming.r#type)].family
@@ -976,7 +981,7 @@ impl<'catalog> Game<'catalog> {
                             && if u.role == Some(Role::Leader) {
                                 incoming.role == Some(Role::Leader)
                             } else {
-                                u.name.is_some() && incoming.name == u.name
+                                u.character.is_some() && incoming.character == u.character
                             }
                     })
             })
@@ -1000,7 +1005,7 @@ impl<'catalog> Game<'catalog> {
                 u.side == Side::Player
                     && !u.is_leader()
                     && u.role != Some(Role::Courier)
-                    && u.name
+                    && u.character
                         .as_ref()
                         .is_none_or(|n| !mission.required_companions.contains(n))
                     && !self.returns_with_story(u)
@@ -1037,7 +1042,7 @@ impl<'catalog> Game<'catalog> {
             items: u.items.clone(),
             r#type: self.rules.units[u.kind].id.clone(),
             experience: u.experience.unwrap_or(0),
-            name: u.name.clone(),
+            character: u.character.clone(),
             role: if role { u.role.clone() } else { None },
         };
         eligible.truncate(4);
@@ -1069,7 +1074,7 @@ impl<'catalog> Game<'catalog> {
                             && if unit.role == Some(Role::Leader) {
                                 incoming.role == Some(Role::Leader)
                             } else {
-                                unit.name.is_some() && incoming.name == unit.name
+                                unit.character.is_some() && incoming.character == unit.character
                             }
                     })
                 {
@@ -1077,7 +1082,7 @@ impl<'catalog> Game<'catalog> {
                         r#type: unit.r#type.clone(),
                         items: unit.items.clone(),
                         experience: unit.experience.unwrap_or(0),
-                        name: unit.name.clone(),
+                        character: unit.character.clone(),
                         role: unit.role,
                     });
                 }
@@ -1099,18 +1104,17 @@ impl<'catalog> Game<'catalog> {
                     .iter()
                     .filter(|u| {
                         u.side == Side::Player
-                            && u.name.is_some()
+                            && u.character.is_some()
                             && u.role != Some(Role::Leader)
-                            && !self
-                                .units
-                                .iter()
-                                .any(|alive| alive.side == Side::Player && alive.name == u.name)
+                            && !self.units.iter().any(|alive| {
+                                alive.side == Side::Player && alive.character == u.character
+                            })
                             && !state
                                 .evacuated
                                 .iter()
-                                .any(|record| record.unit.name == u.name)
+                                .any(|record| record.unit.character == u.character)
                     })
-                    .map(|u| u.name.clone().unwrap()),
+                    .map(|u| u.character.clone().unwrap()),
             )
         {
             if !fallen.contains(&name) {

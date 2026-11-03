@@ -62,6 +62,7 @@ export class LiveGame {
     return this.resolvedPresentation;
   }
   private inspection!: BattleInspection;
+  private displayedCampaign?: Immutable<NonNullable<GameState["campaign"]>>;
   private geometry!: Immutable<BoardInspection>;
   private tilesById!: Map<string, Tile>;
   private visibleUnits!: Unit[];
@@ -131,6 +132,15 @@ export class LiveGame {
     this.inspection = nativeValue(this.engine.inspect()) as BattleInspection;
     if (view.revision !== this.inspection.revision)
       throw new Error("Incoherent native publication");
+    this.displayedCampaign = this.state.campaign
+      ? immutable({
+          ...this.state.campaign,
+          dialogue: this.state.campaign.dialogue.map((line, index) => ({
+            ...line,
+            speaker: this.inspection.speakers[index] ?? line.speaker,
+          })),
+        })
+      : undefined;
     const previousInspections = this.inspectedUnits;
     this.inspectedUnits = new Map(
       this.inspection.units.map((unit) => {
@@ -147,7 +157,9 @@ export class LiveGame {
     const previousUnits = this.unitsById;
     this.visibleUnits = this.state.units
       .filter((unit) => this.choices(unit.id)?.faction.controllable || !fog.has(unit.tile))
-      .map((unit) => {
+      .map((source) => {
+        const name = this.choices(source.id)?.name;
+        const unit = name ? { ...source, name } : source;
         const previous = previousUnits?.get(unit.id);
         return previous && sameData(previous, unit) ? previous : unit;
       });
@@ -212,7 +224,7 @@ export class LiveGame {
     return [...this.visibleUnits];
   }
   get campaign() {
-    return this.state.campaign;
+    return this.displayedCampaign;
   }
   get lastCombat() {
     return this.state.lastCombat;
@@ -393,6 +405,7 @@ export class LiveGame {
     const inspection = this.inspection;
     const detached = Object.create(LiveGame.prototype) as LiveGame;
     detached.state = state;
+    detached.displayedCampaign = this.displayedCampaign;
     detached.inspection = inspection;
     detached.snapshotView = this.snapshotView;
     detached.geometry = this.geometry;
@@ -406,7 +419,7 @@ export class LiveGame {
     return immutable({
       presentation: this.resolvedPresentation,
       objectives: this.objectives,
-      campaign: state.campaign,
+      campaign: this.displayedCampaign,
       mapId: state.mapId,
       mapRevision: state.mapRevision,
       cols: state.cols,

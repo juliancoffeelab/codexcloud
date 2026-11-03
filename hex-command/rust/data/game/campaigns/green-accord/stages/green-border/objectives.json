@@ -12,6 +12,6 @@
       "event": "lost-tools"
     }
   ],
-  "requiredCompanions": ["Lark"],
+  "requiredCompanions": ["lark"],
   "defendObjectives": true
 }

@@ -27,8 +27,8 @@
           "type": "tidekeeper",
           "col": 2,
           "row": 2,
-          "name": "Mira",
-          "role": "leader"
+          "role": "leader",
+          "character": "mira"
         },
         {
           "type": "reefguard",
@@ -49,8 +49,8 @@
           "type": "harpooner",
           "col": 4,
           "row": 4,
-          "name": "Edda",
-          "role": "courier"
+          "role": "courier",
+          "character": "edda"
         }
       ],
       "relations": {
@@ -81,8 +81,8 @@
           "type": "commander",
           "col": 10,
           "row": 5,
-          "name": "Postmaster Harl",
-          "role": "leader"
+          "role": "leader",
+          "character": "harl"
         },
         {
           "type": "spearman",

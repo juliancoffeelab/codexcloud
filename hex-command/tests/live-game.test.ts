@@ -124,7 +124,7 @@ test("Supported legacy woodland revisions migrate without losing campaign progre
   assert.equal(restored.game.mapRevision, 2);
   assert.equal(restored.game.round, 3);
   assert.equal(restored.game.gold.player, 19);
-  assert.deepEqual(restored.game.units, old.units);
+  assert.deepEqual(restored.game.captureState().units, old.units);
   writeBattle(restored.game);
   const reloaded = loadLiveBattle(factory);
   assert.deepEqual(reloaded.game.snapshot(), restored.game.snapshot());

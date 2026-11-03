@@ -10,9 +10,9 @@
       "gold": 6,
       "dialogue": [
         {
-          "speaker": "Lark",
           "portrait": "thorncaller",
-          "text": "The old crossing post has provisions for a stranded escort. Bring another shield to the road; the families are waiting on the other bank."
+          "text": "The old crossing post has provisions for a stranded escort. Bring another shield to the road; the families are waiting on the other bank.",
+          "character": "lark"
         }
       ]
     }
@@ -26,36 +26,36 @@
     ],
     "intro": [
       {
-        "speaker": "Tamsin",
         "portrait": "adept",
-        "text": "I came from the villages to help you reach the council. The workers were our neighbors. Dain cannot speak; their families must hear this branch."
+        "text": "I came from the villages to help you reach the council. The workers were our neighbors. Dain cannot speak; their families must hear this branch.",
+        "character": "tamsin"
       },
       {
-        "speaker": "Lark",
         "portrait": "thorncaller",
-        "text": "The Rootbinder wants his bargain kept hidden. The branch and the ledger must reach the northern village."
+        "text": "The Rootbinder wants his bargain kept hidden. The branch and the ledger must reach the northern village.",
+        "character": "lark"
       },
       {
-        "speaker": "Alder",
         "portrait": "wildkeeper",
-        "text": "Take the bridge fort and protect Lark. We owe the families an open road and an honest account, including Dain’s death."
+        "text": "Take the bridge fort and protect Lark. We owe the families an open road and an honest account, including Dain’s death.",
+        "character": "alder"
       }
     ],
     "victory": [
       {
-        "speaker": "Lark",
         "portrait": "thorncaller",
-        "text": "The families heard the workers’ memories. We told them about Dain too. The council has revoked the Overseer’s charter."
+        "text": "The families heard the workers’ memories. We told them about Dain too. The council has revoked the Overseer’s charter.",
+        "character": "lark"
       },
       {
-        "speaker": "Alder",
         "portrait": "wildkeeper",
-        "text": "The fort is ours. The households will help us guard the crossing and keep the sacred groves outside their timber cutting."
+        "text": "The fort is ours. The households will help us guard the crossing and keep the sacred groves outside their timber cutting.",
+        "character": "alder"
       },
       {
-        "speaker": "Lark",
         "portrait": "thorncaller",
-        "text": "Then let the first travelers cross. We have enough graves; we need neighbors."
+        "text": "Then let the first travelers cross. We have enough graves; we need neighbors.",
+        "character": "lark"
       }
     ],
     "debrief": "The council heard the branch, examined the ledger and learned of Dain’s death. It revoked the Overseer’s charter and agreed to protect the road with the pack. The Rootbinder remains a danger, but the workers’ murder is exposed and the crossing is held.",

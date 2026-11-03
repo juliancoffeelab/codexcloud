@@ -165,7 +165,7 @@ impl CampaignBlock {
                         Goal::Vigil { .. }
                         | Goal::Hold {
                             companion: Some(_), ..
-                        } => unit.name.as_ref() == goal.companion(),
+                        } => unit.character.as_ref() == goal.companion(),
                         Goal::Seal { .. } => goal.unit_type().is_none_or(|kind| {
                             game.rules.units[game.kind(kind)].family
                                 == game.rules.units[unit.kind].family
@@ -266,7 +266,7 @@ impl CampaignBlock {
             let leader = unit.is_leader();
             let needs_protection = campaign
                 && game.turn == Side::Player
-                && unit.name.is_some()
+                && unit.character.is_some()
                 && game.essential(unit)
                 && (!leader
                     || unit.hp * 2 <= game.rules.units[unit.kind].hp
@@ -337,7 +337,7 @@ impl CampaignBlock {
             let actor_id = UnitId(actor.id);
             if campaign
                 && game.turn == Side::Player
-                && actor.name.is_some()
+                && actor.character.is_some()
                 && !tactics.protects(actor.id)
             {
                 tactics
@@ -621,7 +621,7 @@ impl Game<'_> {
                 radius,
                 side,
                 unit_type,
-                name,
+                character,
                 unit_types,
             } if *side == ConditionSide::from(self.turn) => {
                 let center = self.site(tile);
@@ -634,9 +634,10 @@ impl Game<'_> {
                     .map(|(_, id)| id.clone())
                     .collect();
                 let mut target = objective(prefix, ObjectiveKind::Visit, tiles, weight);
-                if let Some(name) = name {
+                if let Some(character) = character {
                     let Some(unit) = self.units.iter().find(|u| {
-                        self.belongs_to_phase(u, self.turn) && u.name.as_ref() == Some(name)
+                        self.belongs_to_phase(u, self.turn)
+                            && u.character.as_ref() == Some(character)
                     }) else {
                         return vec![];
                     };
@@ -674,16 +675,16 @@ impl Game<'_> {
             Condition::NoUnits {
                 side,
                 unit_type,
-                name,
+                character,
             } if *side == ConditionSide::from(self.turn.other()) => {
                 let tiles: Vec<_> = self
                     .units
                     .iter()
                     .filter(|u| {
                         faction_matches_side(&self.factions, u.faction.as_deref(), u.side, *side)
-                            && name
+                            && character
                                 .as_ref()
-                                .is_none_or(|name| u.name.as_ref() == Some(name))
+                                .is_none_or(|character| u.character.as_ref() == Some(character))
                             && unit_type
                                 .as_ref()
                                 .is_none_or(|kind| self.rules.units[u.kind].id == *kind)
@@ -704,7 +705,7 @@ impl Game<'_> {
             || u.role == Some(Role::Courier)
             || (u.side == Side::Player
                 && self.mission.as_ref().is_some_and(|m| {
-                    u.name
+                    u.character
                         .as_ref()
                         .is_some_and(|n| m.required_companions.contains(n))
                 }))
@@ -785,7 +786,7 @@ impl Game<'_> {
                     ObjectiveKind::Vigil,
                     game.units
                         .iter()
-                        .find(|u| u.side == side && u.name.as_ref() == Some(companion))
+                        .find(|u| u.side == side && u.character.as_ref() == Some(companion))
                         .map(|u| format!("u{}", u.id)),
                     None,
                     false,
@@ -815,7 +816,7 @@ impl Game<'_> {
                             unit.side == side
                                 && companion
                                     .as_ref()
-                                    .is_none_or(|name| unit.name.as_ref() == Some(name))
+                                    .is_none_or(|name| unit.character.as_ref() == Some(name))
                                 && (unit_types.is_empty()
                                     || unit_types.contains(&game.rules.units[unit.kind].id))
                         })

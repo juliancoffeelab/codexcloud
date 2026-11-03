@@ -9,36 +9,36 @@
   ],
   "intro": [
     {
-      "speaker": "Tomas",
       "portrait": "spearman",
-      "text": "I was hired to guard a salvage crew. Today Senn ordered us to set the ship alight. There are still people down there."
+      "text": "I was hired to guard a salvage crew. Today Senn ordered us to set the ship alight. There are still people down there.",
+      "character": "tomas"
     },
     {
-      "speaker": "Edda",
       "portrait": "harpooner",
-      "text": "The rescue boat can enter this channel at high tide. First, get us to the wreck. Nobody touches the quarry gate while people are still inside."
+      "text": "The rescue boat can enter this channel at high tide. First, get us to the wreck. Nobody touches the quarry gate while people are still inside.",
+      "character": "edda"
     },
     {
-      "speaker": "Foreman Cale",
       "portrait": "commander",
-      "text": "The factor's ledger is company property. Clear the landing and burn the books."
+      "text": "The factor's ledger is company property. Clear the landing and burn the books.",
+      "character": "cale"
     },
     {
-      "speaker": "Mira",
       "portrait": "tidekeeper",
-      "text": "A debt cannot give you ownership of a person. We take the wreck and get everyone out."
+      "text": "A debt cannot give you ownership of a person. We take the wreck and get everyone out.",
+      "character": "mira"
     }
   ],
   "victory": [
     {
-      "speaker": "Edda",
       "portrait": "harpooner",
-      "text": "Last boat away. The clerk brought the books with her. Every order, every payment."
+      "text": "Last boat away. The clerk brought the books with her. Every order, every payment.",
+      "character": "edda"
     },
     {
-      "speaker": "Tomas",
       "portrait": "spearman",
-      "text": "Senn has shut the upper gate now. If we open only the lower one, the quarry water will flood the village. We need both controls and the beacon."
+      "text": "Senn has shut the upper gate now. If we open only the lower one, the quarry water will flood the village. We need both controls and the beacon.",
+      "character": "tomas"
     }
   ]
 }

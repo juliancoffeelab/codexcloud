@@ -617,7 +617,7 @@ mod courier_tests {
             moved: true,
             attacked: true,
             experience: None,
-            name: None,
+            character: None,
             role: None,
             retreating: None,
             rebuilding: None,

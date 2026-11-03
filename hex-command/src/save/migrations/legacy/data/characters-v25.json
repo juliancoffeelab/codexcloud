@@ -1,0 +1,181 @@
+{
+  "campaigns": {
+    "borrowed-tide": {
+      "characters": [
+        {
+          "id": "vale",
+          "name": "Captain Vale"
+        },
+        {
+          "id": "edda",
+          "name": "Edda"
+        },
+        {
+          "id": "cale",
+          "name": "Foreman Cale"
+        },
+        {
+          "id": "mira",
+          "name": "Mira"
+        },
+        {
+          "id": "harl",
+          "name": "Postmaster Harl"
+        },
+        {
+          "id": "tomas",
+          "name": "Tomas"
+        }
+      ],
+      "aliases": {
+        "Captain Vale": "vale",
+        "Edda": "edda",
+        "Foreman Cale": "cale",
+        "Mira": "mira",
+        "Postmaster Harl": "harl",
+        "Tomas": "tomas"
+      }
+    },
+    "lantern-road": {
+      "characters": [
+        {
+          "id": "nera",
+          "name": "Captain Nera"
+        },
+        {
+          "id": "eastern-captives",
+          "name": "Eastern captives"
+        },
+        {
+          "id": "edrin",
+          "name": "Edrin"
+        },
+        {
+          "id": "ivo",
+          "name": "Ivo"
+        },
+        {
+          "id": "northern-captives",
+          "name": "Northern captives"
+        },
+        {
+          "id": "oren",
+          "name": "Oren"
+        },
+        {
+          "id": "southern-captives",
+          "name": "Southern captives"
+        },
+        {
+          "id": "bellwarden",
+          "name": "The Bellwarden"
+        },
+        {
+          "id": "tollkeeper",
+          "name": "The Tollkeeper"
+        },
+        {
+          "id": "villagers",
+          "name": "The villagers"
+        },
+        {
+          "id": "sella",
+          "name": "Warden Sella"
+        }
+      ],
+      "aliases": {
+        "Captain Nera": "nera",
+        "Eastern captives": "eastern-captives",
+        "Edrin": "edrin",
+        "Ivo": "ivo",
+        "Northern captives": "northern-captives",
+        "Oren": "oren",
+        "Southern captives": "southern-captives",
+        "The Bellwarden": "bellwarden",
+        "The Tollkeeper": "tollkeeper",
+        "The villagers": "villagers",
+        "Warden Sella": "sella",
+        "Nera": "nera"
+      }
+    },
+    "green-accord": {
+      "characters": [
+        {
+          "id": "tamsin",
+          "name": "Adept Tamsin"
+        },
+        {
+          "id": "alder",
+          "name": "Alder"
+        },
+        {
+          "id": "dain",
+          "name": "Captain Dain"
+        },
+        {
+          "id": "lark",
+          "name": "Lark"
+        },
+        {
+          "id": "overseer",
+          "name": "The Overseer"
+        },
+        {
+          "id": "rootbinder",
+          "name": "The Rootbinder"
+        }
+      ],
+      "aliases": {
+        "Adept Tamsin": "tamsin",
+        "Alder": "alder",
+        "Captain Dain": "dain",
+        "Lark": "lark",
+        "The Overseer": "overseer",
+        "The Rootbinder": "rootbinder",
+        "Dain": "dain",
+        "Tamsin": "tamsin"
+      }
+    },
+    "ashen-oath": {
+      "characters": [
+        {
+          "id": "dain",
+          "name": "Captain Dain"
+        },
+        {
+          "id": "orin",
+          "name": "Orin"
+        },
+        {
+          "id": "ledgerkeeper",
+          "name": "The Ledgerkeeper"
+        },
+        {
+          "id": "master",
+          "name": "The Master"
+        }
+      ],
+      "aliases": {
+        "Captain Dain": "dain",
+        "Orin": "orin",
+        "The Ledgerkeeper": "ledgerkeeper",
+        "The Master": "master",
+        "Dain": "dain"
+      }
+    }
+  },
+  "maps": {
+    "tide-wreck": "borrowed-tide",
+    "tide-sluice": "borrowed-tide",
+    "tide-nets": "borrowed-tide",
+    "lantern-ferry": "lantern-road",
+    "lantern-bell": "lantern-road",
+    "lantern-villages": "lantern-road",
+    "green-border": "green-accord",
+    "green-pact": "green-accord",
+    "green-vigil": "green-accord",
+    "ashen-refuge": "ashen-oath",
+    "ashen-quarry": "ashen-oath",
+    "ashen-dawn": "ashen-oath"
+  }
+}

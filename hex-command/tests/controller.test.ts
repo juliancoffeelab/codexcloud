@@ -248,7 +248,7 @@ test("Completed vigil publishes and persists its outcome", async () => {
     campaignMission(required(fixture.campaign)).goals.find((g) => g.kind === "vigil"),
   );
   assert.equal(goal.kind, "vigil");
-  const lark = required(fixture.units.find((unit) => unit.name === "Lark"));
+  const lark = required(fixture.units.find((unit) => unit.character === "lark"));
   const occupant = fixture.at(goal.tile);
   if (occupant && occupant.id !== lark.id) occupant.tile = "5,4";
   lark.tile = goal.tile;
@@ -277,7 +277,9 @@ test("Completed vigil publishes and persists its outcome", async () => {
 test("Finished enemy-turn battles persist outcome dialogue", async () => {
   const fixture = Game.startCampaign("green-accord");
   fixture.advanceDialogue(true);
-  fixture.units = fixture.units.filter((unit) => unit.role === "leader" || unit.name === "Lark");
+  fixture.units = fixture.units.filter(
+    (unit) => unit.role === "leader" || unit.character === "lark",
+  );
   const leader = required(
     fixture.units.find((unit) => unit.side === "player" && unit.role === "leader"),
   );

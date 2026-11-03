@@ -33,8 +33,8 @@
           "type": "tidekeeper",
           "col": 1,
           "row": 2,
-          "name": "Mira",
-          "role": "leader"
+          "role": "leader",
+          "character": "mira"
         },
         {
           "type": "reefguard",
@@ -55,14 +55,14 @@
           "type": "harpooner",
           "col": 3,
           "row": 3,
-          "name": "Edda",
-          "role": "courier"
+          "role": "courier",
+          "character": "edda"
         },
         {
           "type": "spearman",
           "col": 4,
           "row": 2,
-          "name": "Tomas"
+          "character": "tomas"
         }
       ],
       "relations": {
@@ -93,8 +93,8 @@
           "type": "commander",
           "col": 10,
           "row": 2,
-          "name": "Foreman Cale",
-          "role": "leader"
+          "role": "leader",
+          "character": "cale"
         },
         {
           "type": "soldier",

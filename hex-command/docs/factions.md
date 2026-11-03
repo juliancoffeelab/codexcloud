@@ -139,3 +139,17 @@ the player treasury after loading these balances. Event grants and companion-los
 patches use `"recruitment": { "faction-id": [{ "unit": "type-id" }] }`; grants
 unlock entries, while patches replace the listed factions' base pools. Completed
 event markers remain the durable unlock facts.
+
+## Character identity
+
+Each campaign's `campaign.json` defines `characters: [{ "id": "nera", "name":
+"Captain Nera" }]`. Roster and spawn placements reference `"character": "nera"`;
+conditions and item/evacuation filters use that same field. Companion arrivals,
+required companions, goal companion selectors and companion-loss patch keys use
+character IDs. IDs are scoped to the campaign and validated against its registry.
+A unit's runtime `uN` ID remains separate and identifies the current battle instance.
+
+Named dialogue lines use `"character": "nera"` instead of a speaker name.
+Generic narration may use `"speaker": "The company"`. Character names are resolved
+by Rust inspection for unit labels and current dialogue captions; native saves
+retain character IDs. Promotion and campaign carryover preserve those identities.

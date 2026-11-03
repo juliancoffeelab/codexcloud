@@ -239,3 +239,11 @@ The old engine treated player/enemy as hostile when neither faction declared
 their relation. This conversion records that historical hostility on the existing
 faction definitions. Explicit neutral, allied or hostile declarations on either
 side remain unchanged. Units, gold and campaign progress are preserved.
+
+## Version 26: campaign character identities
+
+Frozen campaign registries map historical unit names and dialogue aliases to
+character IDs. Units, veterans, evacuated units, companion-loss markers and saved
+selector conditions retain their identity through conversion. Named dialogue
+uses character IDs; current captions come from Rust inspection. Generic narrator
+labels and existing prose/history remain unchanged. No gameplay commands run.

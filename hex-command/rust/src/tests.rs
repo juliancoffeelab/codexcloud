@@ -149,7 +149,7 @@ fn restore_rejects_experience_outside_progression_limits() {
             items: vec![],
             r#type: if story { "commander" } else { "swordsman" }.into(),
             experience: u32::MAX,
-            name: story.then(|| "Captain Nera".into()),
+            character: story.then(|| "nera".into()),
             role: story.then_some(Role::Leader),
         };
         if story {
@@ -183,7 +183,7 @@ fn restore_rejects_invalid_campaign_carryover_before_retry() {
     state.campaign.as_mut().unwrap().recall = vec!["commander".into()];
     assert!(Game::try_from_state(rules(), state).is_err());
     let mut state = opening;
-    state.campaign.as_mut().unwrap().fallen_companions = Some(vec!["Ivo".into()]);
+    state.campaign.as_mut().unwrap().fallen_companions = Some(vec!["ivo".into()]);
     assert!(Game::try_from_state(rules(), state).is_ok());
 }
 #[test]

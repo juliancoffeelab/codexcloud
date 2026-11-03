@@ -8,14 +8,14 @@
   "leader": "necromancer",
   "ending": [
     {
-      "speaker": "Dain",
       "portrait": "warden",
-      "text": "What should I put in the new ledger?"
+      "text": "What should I put in the new ledger?",
+      "character": "dain"
     },
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "Names first. And leave a blank page. We may become more than you expected."
+      "text": "Names first. And leave a blank page. We may become more than you expected.",
+      "character": "orin"
     }
   ],
   "stages": [
@@ -23,5 +23,23 @@
     "stages/ashen-refuge/stage.json",
     "stages/ashen-dawn/stage.json"
   ],
-  "playerDiplomacy": ["pragmatic", "restrained"]
+  "playerDiplomacy": ["pragmatic", "restrained"],
+  "characters": [
+    {
+      "id": "dain",
+      "name": "Captain Dain"
+    },
+    {
+      "id": "orin",
+      "name": "Orin"
+    },
+    {
+      "id": "ledgerkeeper",
+      "name": "The Ledgerkeeper"
+    },
+    {
+      "id": "master",
+      "name": "The Master"
+    }
+  ]
 }

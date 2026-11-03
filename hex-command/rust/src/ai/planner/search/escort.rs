@@ -318,7 +318,7 @@ mod tests {
         guard.kind = game.kind("archer");
         guard.tile = game.site("3,3");
         guard.hp = rules.units[guard.kind].hp;
-        guard.name = None;
+        guard.character = None;
         guard.role = None;
         let guard_id = guard.id;
         let mut enemy = guard.clone();

@@ -7,31 +7,31 @@
   ],
   "intro": [
     {
-      "speaker": "The Master",
       "portrait": "necromancer",
-      "text": "I gave you a second life. You owe me the use of it."
+      "text": "I gave you a second life. You owe me the use of it.",
+      "character": "master"
     },
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "A life is not a ledger. These people choose whom they follow."
+      "text": "A life is not a ledger. These people choose whom they follow.",
+      "character": "orin"
     },
     {
-      "speaker": "Dain",
       "portrait": "warden",
-      "text": "My wardens chose the same road. Break his binding stones. The adepts can answer his bones; my spears can keep the beasts off them."
+      "text": "My wardens chose the same road. Break his binding stones. The adepts can answer his bones; my spears can keep the beasts off them.",
+      "character": "dain"
     }
   ],
   "victory": [
     {
-      "speaker": "The Master",
       "portrait": "necromancer",
-      "text": "Without me, what are you?"
+      "text": "Without me, what are you?",
+      "character": "master"
     },
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "We have not decided yet. That is the point."
+      "text": "We have not decided yet. That is the point.",
+      "character": "orin"
     }
   ]
 }

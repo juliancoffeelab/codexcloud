@@ -10,9 +10,9 @@
       "gold": 6,
       "dialogue": [
         {
-          "speaker": "Orin",
           "portrait": "necromancer",
-          "text": "They wrote down our wages. They did not write down our names. Take the six coins. We can begin with that."
+          "text": "They wrote down our wages. They did not write down our names. Take the six coins. We can begin with that.",
+          "character": "orin"
         }
       ]
     }

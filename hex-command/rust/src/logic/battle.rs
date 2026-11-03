@@ -399,7 +399,7 @@ impl<'catalog> Game<'catalog> {
                 moved: unit.moved,
                 attacked: unit.attacked,
                 experience: unit.experience,
-                name: unit.name,
+                character: unit.character,
                 role: unit.role,
                 retreating: unit.retreating,
                 rebuilding: unit.rebuilding,
@@ -527,7 +527,7 @@ impl<'catalog> Game<'catalog> {
                 moved: unit.moved,
                 attacked: unit.attacked,
                 experience: unit.experience,
-                name: unit.name,
+                character: unit.character,
                 role: unit.role,
                 retreating: unit.retreating,
                 rebuilding: unit.rebuilding,
@@ -635,7 +635,7 @@ impl<'catalog> Game<'catalog> {
             moved: unit.moved,
             attacked: unit.attacked,
             experience: unit.experience,
-            name: unit.name.clone(),
+            character: unit.character.clone(),
             role: unit.role.clone(),
             retreating: unit.retreating,
             rebuilding: unit.rebuilding,
@@ -666,6 +666,18 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn site(&self, id: &str) -> usize {
         self.board.indices[id]
+    }
+    pub(crate) fn character_name(&self, id: &str) -> Option<&str> {
+        self.campaign_definition
+            .or_else(|| self.rules.campaign_for_map(&self.map_id))
+            .and_then(|campaign| campaign.character(id))
+            .map(|c| c.name.as_str())
+    }
+    pub(crate) fn unit_name<'a>(&'a self, unit: &'a Unit) -> &'a str {
+        unit.character
+            .as_deref()
+            .and_then(|id| self.character_name(id))
+            .unwrap_or(&self.rules.units[unit.kind].name)
     }
     pub(crate) fn kind(&self, name: &str) -> usize {
         self.rules.types[name]
@@ -699,7 +711,7 @@ impl<'catalog> Game<'catalog> {
             moved: false,
             attacked: false,
             experience: Some(0),
-            name: None,
+            character: None,
             role: None,
             retreating: None,
             rebuilding: None,
@@ -801,17 +813,24 @@ impl<'catalog> Game<'catalog> {
                 Rc::make_mut(&mut mission).apply(&patch);
             }
         }
-        if mission
-            .intro
-            .iter()
-            .chain(&mission.victory)
-            .any(|line| fallen.contains(&line.speaker))
-        {
+        if mission.intro.iter().chain(&mission.victory).any(|line| {
+            line.character
+                .as_ref()
+                .is_some_and(|id| fallen.contains(id))
+        }) {
             let changed = Rc::make_mut(&mut mission);
-            changed.intro.retain(|line| !fallen.contains(&line.speaker));
-            changed
-                .victory
-                .retain(|line| !fallen.contains(&line.speaker));
+            changed.intro.retain(|line| {
+                !line
+                    .character
+                    .as_ref()
+                    .is_some_and(|id| fallen.contains(id))
+            });
+            changed.victory.retain(|line| {
+                !line
+                    .character
+                    .as_ref()
+                    .is_some_and(|id| fallen.contains(id))
+            });
         }
         if state.escalated() {
             if let Some(refuge) = mission.refuge.clone() {
@@ -913,10 +932,7 @@ impl<'catalog> Game<'catalog> {
         let index = self.index(id).unwrap();
         assert!(self.promotion_options(&self.units[index]).contains(&kind));
         let previous = &self.rules.units[self.units[index].kind];
-        let name = self.units[index]
-            .name
-            .clone()
-            .unwrap_or(previous.name.clone());
+        let name = self.unit_name(&self.units[index]).to_owned();
         let wounds = previous.hp - self.units[index].hp;
         let experience = self.units[index]
             .experience

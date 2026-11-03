@@ -24,8 +24,8 @@
           "type": "wildkeeper",
           "col": 1,
           "row": 4,
-          "name": "Alder",
-          "role": "leader"
+          "role": "leader",
+          "character": "alder"
         },
         {
           "type": "wolf",
@@ -41,7 +41,7 @@
           "type": "thorncaller",
           "col": 2,
           "row": 5,
-          "name": "Lark"
+          "character": "lark"
         }
       ],
       "relations": {
@@ -72,8 +72,8 @@
           "type": "commander",
           "col": 9,
           "row": 4,
-          "name": "Captain Dain",
-          "role": "leader"
+          "role": "leader",
+          "character": "dain"
         },
         {
           "type": "spearman",

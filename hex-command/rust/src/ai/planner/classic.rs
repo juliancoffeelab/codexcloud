@@ -498,11 +498,7 @@ impl BattleDraft<'_, '_> {
                 self.units_mut()[index].retreating = Some(true);
                 self.units_mut()[index].attacked = true;
                 recorder.mark_retreat(id);
-                self.record(format!(
-                    "{} is retreating.",
-                    u.name
-                        .unwrap_or_else(|| self.rules().units[u.kind].name.clone())
-                ));
+                self.record(format!("{} is retreating.", self.unit_name(&u)));
                 return Retreat::Retreated;
             }
         }

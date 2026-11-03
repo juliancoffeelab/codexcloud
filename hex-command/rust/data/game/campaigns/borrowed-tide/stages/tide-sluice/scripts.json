@@ -19,44 +19,44 @@
   ],
   "waves": [],
   "companionLosses": {
-    "Tomas": {
+    "tomas": {
       "intro": [
         {
-          "speaker": "Mira",
           "portrait": "tidekeeper",
-          "text": "Tomas's companions showed us the high bank through the woods. They will lead our land fighters. We take the lower wheel through the reeds."
+          "text": "Tomas's companions showed us the high bank through the woods. They will lead our land fighters. We take the lower wheel through the reeds.",
+          "character": "mira"
         },
         {
-          "speaker": "Captain Vale",
           "portrait": "commander",
-          "text": "Senn says the council will hang deserters first. Your testimony will not save you."
+          "text": "Senn says the council will hang deserters first. Your testimony will not save you.",
+          "character": "vale"
         },
         {
-          "speaker": "Mira",
           "portrait": "tidekeeper",
-          "text": "He forged the council's order. Hear the clerk, or answer for holding this flood above the village."
+          "text": "He forged the council's order. Hear the clerk, or answer for holding this flood above the village.",
+          "character": "mira"
         },
         {
-          "speaker": "Edda",
           "portrait": "harpooner",
-          "text": "Bring me to the beacon. I will signal only when both wheels are ours."
+          "text": "Bring me to the beacon. I will signal only when both wheels are ours.",
+          "character": "edda"
         }
       ],
       "victory": [
         {
-          "speaker": "Edda",
           "portrait": "harpooner",
-          "text": "Both flags up. Open together—now."
+          "text": "Both flags up. Open together—now.",
+          "character": "edda"
         },
         {
-          "speaker": "Mira",
           "portrait": "tidekeeper",
-          "text": "The tide is home. Tomas should have seen it."
+          "text": "The tide is home. Tomas should have seen it.",
+          "character": "mira"
         },
         {
-          "speaker": "Edda",
           "portrait": "harpooner",
-          "text": "Put someone from each shore beside each wheel. Keep this from happening again."
+          "text": "Put someone from each shore beside each wheel. Keep this from happening again.",
+          "character": "edda"
         }
       ]
     }

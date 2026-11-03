@@ -5,8 +5,8 @@
       "label": "Protect Lark in the central grove through three enemy turns",
       "tile": "6,4",
       "turns": 3,
-      "companion": "Lark"
+      "companion": "lark"
     }
   ],
-  "requiredCompanions": ["Lark"]
+  "requiredCompanions": ["lark"]
 }

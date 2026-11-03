@@ -11,5 +11,5 @@
       "tile": "12,1"
     }
   ],
-  "requiredCompanions": ["Lark"]
+  "requiredCompanions": ["lark"]
 }

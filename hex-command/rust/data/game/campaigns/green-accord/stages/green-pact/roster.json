@@ -30,27 +30,27 @@
           "type": "wildkeeper",
           "col": 1,
           "row": 4,
-          "name": "Alder",
-          "role": "leader"
+          "role": "leader",
+          "character": "alder"
         },
         {
           "type": "thorncaller",
           "col": 2,
           "row": 4,
-          "name": "Lark",
-          "role": "courier"
+          "role": "courier",
+          "character": "lark"
         },
         {
           "type": "warden",
           "col": 3,
           "row": 4,
-          "name": "Captain Dain"
+          "character": "dain"
         },
         {
           "type": "adept",
           "col": 2,
           "row": 5,
-          "name": "Adept Tamsin"
+          "character": "tamsin"
         }
       ],
       "relations": {
@@ -84,8 +84,8 @@
           "type": "necromancer",
           "col": 13,
           "row": 5,
-          "name": "The Rootbinder",
-          "role": "leader"
+          "role": "leader",
+          "character": "rootbinder"
         },
         {
           "type": "skeleton",

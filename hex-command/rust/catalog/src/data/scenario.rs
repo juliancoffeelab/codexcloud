@@ -26,7 +26,7 @@ pub struct StartingUnit {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub ai_group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
+    pub character: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
 }
@@ -45,7 +45,7 @@ pub struct UnitFilter {
     pub role: Option<Role>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub name: Option<String>,
+    pub character: Option<String>,
 }
 impl UnitFilter {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
@@ -56,9 +56,9 @@ impl UnitFilter {
                 .as_ref()
                 .is_none_or(|role| unit.role.as_ref() == Some(role))
             && self
-                .name
+                .character
                 .as_ref()
-                .is_none_or(|name| unit.name.as_ref() == Some(name))
+                .is_none_or(|name| unit.character.as_ref() == Some(name))
     }
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -368,7 +368,7 @@ pub struct SpawnUnit {
     pub r#type: String,
     pub side: Side,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
+    pub character: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
 }
@@ -476,7 +476,7 @@ pub struct Wave {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct CompanionArrival {
-    pub name: String,
+    pub character: String,
     pub col: i32,
     pub row: i32,
 }
@@ -716,19 +716,19 @@ pub struct Mission {
 impl Mission {
     /// Named companions may arrive through encounters as well as the opening roster.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn companion_names(&self) -> impl Iterator<Item = &str> {
+    pub fn companion_ids(&self) -> impl Iterator<Item = &str> {
         self.map
             .units
             .iter()
             .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
-            .filter_map(|u| u.name.as_deref())
+            .filter_map(|u| u.character.as_deref())
             .chain(
                 self.events
                     .iter()
                     .filter_map(|e| e.spawn.as_ref())
                     .flat_map(|group| &group.units)
                     .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
-                    .filter_map(|u| u.name.as_deref()),
+                    .filter_map(|u| u.character.as_deref()),
             )
     }
     /// Shared progress rules apply to required and optional goals alike.
@@ -778,8 +778,14 @@ pub struct Campaign {
     pub id: String,
     pub name: String,
     pub leader: String,
+    pub characters: Vec<Character>,
     pub missions: Vec<Mission>,
     pub ending: Vec<Dialogue>,
+}
+impl Campaign {
+    pub fn character(&self, id: &str) -> Option<&Character> {
+        self.characters.iter().find(|c| c.id == id)
+    }
 }
 impl Trigger {
     /// Return the structural category without interpreting a string tag.

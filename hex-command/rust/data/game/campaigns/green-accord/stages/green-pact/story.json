@@ -8,46 +8,46 @@
   ],
   "intro": [
     {
-      "speaker": "Captain Dain",
       "portrait": "warden",
-      "text": "The council gave the Overseer his timber and toll charter. With the ledger and the workers’ memories, they can take it away. I will answer for my patrol’s part as well."
+      "text": "The council gave the Overseer his timber and toll charter. With the ledger and the workers’ memories, they can take it away. I will answer for my patrol’s part as well.",
+      "character": "dain"
     },
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "The Rootbinder has put his dead on the crossing. He needs the Overseer’s protection and his supply of bodies. He would rather burn this branch than let the families hear it."
+      "text": "The Rootbinder has put his dead on the crossing. He needs the Overseer’s protection and his supply of bodies. He would rather burn this branch than let the families hear it.",
+      "character": "lark"
     },
     {
-      "speaker": "Alder",
       "portrait": "wildkeeper",
-      "text": "Take the bridge fort so the households can cross. Bring Lark to the northern meeting alive; a dead necromancer alone will not open a shared road."
+      "text": "Take the bridge fort so the households can cross. Bring Lark to the northern meeting alive; a dead necromancer alone will not open a shared road.",
+      "character": "alder"
     },
     {
-      "speaker": "Tamsin",
       "portrait": "adept",
-      "text": "Dain sent for me. Some of those workers were my neighbors. Stone sparks crack bone; let the shields hold the dead while I clear your road."
+      "text": "Dain sent for me. Some of those workers were my neighbors. Stone sparks crack bone; let the shields hold the dead while I clear your road.",
+      "character": "tamsin"
     }
   ],
   "victory": [
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "The families heard the branch. The council matched the orders to the ledger and revoked the Overseer’s charter."
+      "text": "The families heard the branch. The council matched the orders to the ledger and revoked the Overseer’s charter.",
+      "character": "lark"
     },
     {
-      "speaker": "Captain Dain",
       "portrait": "warden",
-      "text": "I have given them my account too. We will harvest the ordinary woods for repairs. Your groves are outside the charter."
+      "text": "I have given them my account too. We will harvest the ordinary woods for repairs. Your groves are outside the charter.",
+      "character": "dain"
     },
     {
-      "speaker": "Alder",
       "portrait": "wildkeeper",
-      "text": "The fort is ours. Village and woodland guards can keep this road together; neither side owns the right to close it."
+      "text": "The fort is ours. Village and woodland guards can keep this road together; neither side owns the right to close it.",
+      "character": "alder"
     },
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "The Rootbinder still has his dead. But he no longer has a silent village to hide them in."
+      "text": "The Rootbinder still has his dead. But he no longer has a silent village to hide them in.",
+      "character": "lark"
     }
   ]
 }

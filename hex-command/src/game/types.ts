@@ -191,6 +191,8 @@ export interface Unit {
   hp: number;
   moved: boolean;
   attacked: boolean;
+  character?: string;
+  /** Resolved by Rust inspection for display; absent from native checkpoints. */
   name?: string;
   role?: "leader" | "courier";
   /** Set by the enemy AI when withdrawing; visible before the player chooses to pursue. */
@@ -273,7 +275,7 @@ export interface StartingUnit extends Coordinates {
   aiGroup?: string;
   type: UnitType;
   side: Side;
-  name?: string;
+  character?: string;
   role?: "leader" | "courier";
 }
 export interface MapDefinition {
@@ -379,6 +381,7 @@ export type DialoguePortrait = UnitType | "worker";
 export interface DialogueLine {
   sound?: string;
   speaker: string;
+  character?: string;
   portrait: DialoguePortrait;
   text: string;
 }
@@ -436,7 +439,7 @@ export interface MissionDefinition {
   briefing: string;
   debrief?: string;
   requiredCompanions?: string[];
-  arrivals?: { name: string; col: number; row: number }[];
+  arrivals?: { character: string; col: number; row: number }[];
   hints: string[];
   goals: MissionGoal[];
   optionalGoals?: MissionGoal[];
@@ -479,6 +482,7 @@ export interface MissionDefinition {
   };
 }
 export interface CampaignDefinition {
+  characters: { id: string; name: string }[];
   playerDiplomacy: ("pragmatic" | "restrained")[];
   id: CampaignId;
   name: string;

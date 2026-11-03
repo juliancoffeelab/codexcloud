@@ -10,9 +10,9 @@
       "gold": 6,
       "dialogue": [
         {
-          "speaker": "Orin",
           "portrait": "necromancer",
-          "text": "Here they are. All the names he took. We will return them, one house at a time."
+          "text": "Here they are. All the names he took. We will return them, one house at a time.",
+          "character": "orin"
         }
       ]
     }
@@ -82,14 +82,14 @@
     ],
     "intro": [
       {
-        "speaker": "The Master",
         "portrait": "necromancer",
-        "text": "You broke the patrol that came to turn you back. You have learned my methods well."
+        "text": "You broke the patrol that came to turn you back. You have learned my methods well.",
+        "character": "master"
       },
       {
-        "speaker": "Orin",
         "portrait": "necromancer",
-        "text": "We chose that battle. We will carry what it cost us. But you will not choose our lives again."
+        "text": "We chose that battle. We will carry what it cost us. But you will not choose our lives again.",
+        "character": "orin"
       },
       {
         "speaker": "A hollow voice",

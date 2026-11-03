@@ -3,6 +3,18 @@
 use super::*;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+/// Stable campaign-local identity; display names are presentation data.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct Character {
+    pub id: String,
+    pub name: String,
+}
 /// One scripted dialogue line with its speaker, portrait and display text.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -15,7 +27,11 @@ pub struct Dialogue {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub sound: Option<String>,
+    #[serde(default)]
     pub speaker: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub character: Option<String>,
     pub portrait: String,
     pub text: String,
 }

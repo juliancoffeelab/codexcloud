@@ -10,9 +10,9 @@
       "gold": 6,
       "dialogue": [
         {
-          "speaker": "Alder",
           "portrait": "wildkeeper",
-          "text": "The abandoned guard post still has funds for provisions. Use them to bring another defender to the grove; Lark cannot finish her work if we lose it."
+          "text": "The abandoned guard post still has funds for provisions. Use them to bring another defender to the grove; Lark cannot finish her work if we lose it.",
+          "character": "alder"
         }
       ]
     }
@@ -65,31 +65,31 @@
     ],
     "intro": [
       {
-        "speaker": "Lark",
         "portrait": "thorncaller",
-        "text": "Dain cannot be our witness. The roots can. Keep me in the central grove while I listen."
+        "text": "Dain cannot be our witness. The roots can. Keep me in the central grove while I listen.",
+        "character": "lark"
       },
       {
-        "speaker": "The Overseer",
         "portrait": "commander",
-        "text": "The captain is dead. Destroy that branch before the council hears a word of this."
+        "text": "The captain is dead. Destroy that branch before the council hears a word of this.",
+        "character": "overseer"
       },
       {
-        "speaker": "Alder",
         "portrait": "wildkeeper",
-        "text": "They will hear the workers themselves. We defend the grove until Lark has their memories."
+        "text": "They will hear the workers themselves. We defend the grove until Lark has their memories.",
+        "character": "alder"
       }
     ],
     "victory": [
       {
-        "speaker": "Lark",
         "portrait": "thorncaller",
-        "text": "The workers demanded their wages and refused to cut the grove. The Overseer delivered them to the Rootbinder; he killed and bound them into his logging crews."
+        "text": "The workers demanded their wages and refused to cut the grove. The Overseer delivered them to the Rootbinder; he killed and bound them into his logging crews.",
+        "character": "lark"
       },
       {
-        "speaker": "Alder",
         "portrait": "wildkeeper",
-        "text": "Dain is among the dead now too. We cannot undo that. Bring the branch and the ledger to the families, and let them judge the whole account."
+        "text": "Dain is among the dead now too. We cannot undo that. Bring the branch and the ledger to the families, and let them judge the whole account.",
+        "character": "alder"
       }
     ],
     "debrief": "The roots revealed the workers’ murder and binding. Dain cannot testify, but the living branch carries their memories. The pack must take it and the ledger to the council across the river.",

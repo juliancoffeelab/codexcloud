@@ -9,51 +9,51 @@
   ],
   "intro": [
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "The council promised the villages repair timber. Its Overseer marked our sacred groves instead. His crews keep their tools and carts in those two forts."
+      "text": "The council promised the villages repair timber. Its Overseer marked our sacred groves instead. His crews keep their tools and carts in those two forts.",
+      "character": "lark"
     },
     {
-      "speaker": "Alder",
       "portrait": "wildkeeper",
-      "text": "Take the camps and the cutting stops. The northern post kept the workers’ records. Bring those back too."
+      "text": "Take the camps and the cutting stops. The northern post kept the workers’ records. Bring those back too.",
+      "character": "alder"
     },
     {
-      "speaker": "Captain Dain",
       "portrait": "warden",
-      "text": "My missing woodcutters were sent here. The Overseer says your pack killed them. I have orders to protect the crews that remain."
+      "text": "My missing woodcutters were sent here. The Overseer says your pack killed them. I have orders to protect the crews that remain.",
+      "character": "dain"
     },
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "Your orders won’t tell us where they went. Their ledger might."
+      "text": "Your orders won’t tell us where they went. Their ledger might.",
+      "character": "lark"
     },
     {
-      "speaker": "Alder",
       "portrait": "wildkeeper",
-      "text": "We need our roots back, not your bones. Keep away from our groves, captain, and help us find your people."
+      "text": "We need our roots back, not your bones. Keep away from our groves, captain, and help us find your people.",
+      "character": "alder"
     }
   ],
   "victory": [
     {
-      "speaker": "Lark",
       "portrait": "thorncaller",
-      "text": "Both camps are ours. Without their tools and carts, the crews have stopped cutting. Here is the ledger."
+      "text": "Both camps are ours. Without their tools and carts, the crews have stopped cutting. Here is the ledger.",
+      "character": "lark"
     },
     {
-      "speaker": "Captain Dain",
       "portrait": "warden",
-      "text": "These men were marked as deserters, but their wages went to the Overseer’s own account. That is his seal. I cannot explain it."
+      "text": "These men were marked as deserters, but their wages went to the Overseer’s own account. That is his seal. I cannot explain it.",
+      "character": "dain"
     },
     {
-      "speaker": "Alder",
       "portrait": "wildkeeper",
-      "text": "Lark can ask the grove what happened. Come and watch her work."
+      "text": "Lark can ask the grove what happened. Come and watch her work.",
+      "character": "alder"
     },
     {
-      "speaker": "Captain Dain",
       "portrait": "warden",
-      "text": "Your pack has hurt my patrol, and mine has hurt yours. I am offering a truce for this investigation, not pretending that never happened."
+      "text": "Your pack has hurt my patrol, and mine has hurt yours. I am offering a truce for this investigation, not pretending that never happened.",
+      "character": "dain"
     }
   ]
 }

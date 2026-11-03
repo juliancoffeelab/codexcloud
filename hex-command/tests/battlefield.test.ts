@@ -60,7 +60,7 @@ test("Campaign objectives and named companions have accessible descriptions", ()
       assert(destination.label.includes(`Objective: ${progress.label}`));
     }
   }
-  for (const unit of campaign.units.filter((unit) => unit.name)) {
+  for (const unit of campaign.publishedView().units.filter((unit) => unit.character)) {
     assert(required(tiles.find((tile) => tile.id === unit.tile)).label.includes(unit.name!));
   }
 });

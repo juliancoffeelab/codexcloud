@@ -76,6 +76,7 @@ function fixture() {
         revision: nextView.revision,
         units: [],
         objectives: null,
+        speakers: [],
         recruitment: {},
         recruitment_prices: {},
         income: { player: 0, enemy: 0 },

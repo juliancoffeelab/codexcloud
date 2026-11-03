@@ -77,6 +77,7 @@ struct CampaignFile {
     race: Race,
     leader: String,
     stages: Vec<String>,
+    characters: Vec<Character>,
     ending: Vec<Dialogue>,
 }
 #[derive(Deserialize)]
@@ -101,7 +102,7 @@ struct InitialUnit {
     col: i32,
     row: i32,
     hp: Option<i32>,
-    name: Option<String>,
+    character: Option<String>,
     role: Option<Role>,
 }
 fn initial_round() -> u32 {
@@ -171,7 +172,7 @@ impl InitialState {
                 moved: false,
                 attacked: false,
                 experience: Some(0),
-                name: unit.name,
+                character: unit.character,
                 role: unit.role,
                 retreating: None,
                 rebuilding: None,
@@ -475,7 +476,7 @@ impl Rules {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let source: CampaignFile = parse(bundle, path)?;
+            let mut source: CampaignFile = parse(bundle, path)?;
             identifier(&source.id, path)?;
             reference(&source.leader, &types, path)?;
             unique(source.player_diplomacy.iter().map(String::as_str), path)?;
@@ -500,6 +501,8 @@ impl Rules {
                     "campaign name and stages are required",
                 ));
             }
+            validate_characters(&source.characters, path)?;
+            resolve_dialogues(&mut source.ending, &source.characters, path)?;
             let mut missions = Vec::new();
             let mut stage_ids = HashSet::new();
             for stage_path in source.stages {
@@ -507,7 +510,7 @@ impl Rules {
                 if !used_paths.insert(stage_path.clone()) {
                     return Err(ContentError::new(&stage_path, "duplicate catalog path"));
                 }
-                let stage = documents::stage(bundle, &stage_path)?;
+                let mut stage = documents::stage(bundle, &stage_path)?;
                 let state = stage.state.resolve(&units, &types, &stage_path)?;
                 identifier(&stage.id, &stage_path)?;
                 if !stage_ids.insert(stage.id.clone())
@@ -519,6 +522,12 @@ impl Rules {
                         "duplicate or mismatched stage/map identifier",
                     ));
                 }
+                validate_character_references(
+                    &mut stage.mission,
+                    &state,
+                    &source.characters,
+                    &stage_path,
+                )?;
                 validate_mission(
                     &stage.mission,
                     &state,
@@ -543,6 +552,7 @@ impl Rules {
                     Campaign {
                         id: source.id,
                         name: source.name,
+                        characters: source.characters,
                         tagline: source.tagline,
                         description: source.description,
                         short_description: source.short_description,
@@ -610,10 +620,34 @@ impl Rules {
                     .unwrap()
             })
             .collect();
+        for state in maps.values().chain(arena_maps.values()) {
+            let characters = campaigns
+                .values()
+                .find(|c| c.missions.iter().any(|m| m.map.id == state.map_id))
+                .map_or(&[][..], |c| c.characters.as_slice());
+            for unit in &state.units {
+                if let Some(id) = &unit.character {
+                    character_ref(id, characters, &state.map_id)?;
+                }
+            }
+            for faction in &state.factions {
+                if let Some(transfer) = &faction.transfer {
+                    transfer
+                        .when
+                        .condition
+                        .validate_characters(characters)
+                        .map_err(|e| ContentError::new(&state.map_id, e))?;
+                }
+            }
+        }
         for map in &map_definitions {
             let state = maps
                 .get(&(map.id.clone(), map.revision))
                 .expect("authored map");
+            let characters = campaigns
+                .values()
+                .find(|c| c.missions.iter().any(|m| m.map.id == map.id))
+                .map_or(&[][..], |c| c.characters.as_slice());
             for rule in map
                 .terrain
                 .iter()
@@ -625,6 +659,9 @@ impl Rules {
                         .filter_map(|light| light.when.as_ref()),
                 )
             {
+                rule.condition
+                    .validate_characters(characters)
+                    .map_err(|e| ContentError::new(&map.id, e))?;
                 rule.condition
                     .validate_references(&types, &state.factions)
                     .map_err(|message| ContentError::new(&map.id, message))?;
@@ -733,6 +770,184 @@ fn insert_map(
     }
     Ok(())
 }
+fn validate_characters(characters: &[Character], path: &str) -> Result<(), ContentError> {
+    unique(characters.iter().map(|c| c.id.as_str()), path)?;
+    for character in characters {
+        identifier(&character.id, path)?;
+        if character.name.trim().is_empty() {
+            return Err(ContentError::new(
+                path,
+                "character display name must not be empty",
+            ));
+        }
+    }
+    Ok(())
+}
+fn character_ref(id: &str, characters: &[Character], path: &str) -> Result<(), ContentError> {
+    if characters.iter().any(|c| c.id == id) {
+        Ok(())
+    } else {
+        Err(ContentError::new(path, format!("unknown character {id}")))
+    }
+}
+fn resolve_dialogues(
+    lines: &mut [Dialogue],
+    characters: &[Character],
+    path: &str,
+) -> Result<(), ContentError> {
+    for line in lines {
+        if let Some(id) = &line.character {
+            character_ref(id, characters, path)?;
+            line.speaker.clear();
+        } else if line.speaker.trim().is_empty() {
+            return Err(ContentError::new(
+                path,
+                "dialogue requires a character ID or a narrator label",
+            ));
+        } else if characters.iter().any(|c| c.name == line.speaker) {
+            return Err(ContentError::new(
+                path,
+                "named dialogue speakers must reference a character ID",
+            ));
+        }
+    }
+    Ok(())
+}
+fn validate_character_references(
+    mission: &mut Mission,
+    state: &State,
+    characters: &[Character],
+    path: &str,
+) -> Result<(), ContentError> {
+    let check = |id: &str| character_ref(id, characters, path);
+    let condition = |c: &Condition| {
+        c.validate_characters(characters)
+            .map_err(|e| ContentError::new(path, e))
+    };
+    let placements = |units: &[StartingUnit]| -> Result<(), ContentError> {
+        for unit in units {
+            if let Some(id) = &unit.character {
+                check(id)?;
+            }
+        }
+        Ok(())
+    };
+    placements(&mission.map.units)?;
+    for id in &mission.required_companions {
+        check(id)?;
+    }
+    for arrival in &mission.arrivals {
+        check(&arrival.character)?;
+    }
+    for goal in mission.all_goals() {
+        if let Some(id) = goal.companion() {
+            check(id)?;
+        }
+        if let Some(c) = goal.visible_when() {
+            condition(c)?;
+        }
+    }
+    for loss in &mission.lose_conditions {
+        condition(&loss.condition)?;
+    }
+    for group in &mission.enemy_groups {
+        if let Some(rule) = &group.when {
+            condition(&rule.condition)?;
+        }
+        if let Some(GroupOrder::Hold { when: Some(c), .. }) = &group.order {
+            condition(c)?;
+        }
+    }
+    for ritual in &mission.rituals {
+        condition(&ritual.when)?;
+        if let Some(c) = &ritual.notice_when {
+            condition(c)?;
+        }
+        if let Some(opening) = &ritual.opening {
+            condition(&opening.when)?;
+        }
+        for unit in &ritual.spawn.units {
+            if let Some(id) = &unit.character {
+                check(id)?;
+            }
+        }
+        if let Some(rule) = &ritual.death_light.when {
+            condition(&rule.condition)?;
+        }
+    }
+    for tile in &state.tiles {
+        if let Some(rule) = &tile.fog {
+            condition(&rule.condition)?;
+        }
+        if let Some(rule) = tile.light.as_ref().and_then(|l| l.when.as_ref()) {
+            condition(&rule.condition)?;
+        }
+    }
+    for faction in &state.factions {
+        if let Some(rule) = &faction.transfer {
+            condition(&rule.when.condition)?;
+        }
+    }
+    resolve_dialogues(&mut mission.intro, characters, path)?;
+    resolve_dialogues(&mut mission.victory, characters, path)?;
+    for event in &mut mission.events {
+        if let Trigger::Condition { condition: c } = &event.trigger {
+            condition(c)?;
+        }
+        if let Some(effect) = &event.evacuate {
+            if let Some(id) = &effect.units.character {
+                check(id)?;
+            }
+        }
+        for reward in &event.items {
+            if let Some(id) = &reward.recipient.character {
+                check(id)?;
+            }
+        }
+        if let Some(spawn) = &event.spawn {
+            for unit in &spawn.units {
+                if let Some(id) = &unit.character {
+                    check(id)?;
+                }
+            }
+        }
+        resolve_dialogues(&mut event.dialogue, characters, path)?;
+        if let Some(lines) = &mut event.war_dialogue {
+            resolve_dialogues(lines, characters, path)?;
+        }
+    }
+    for wave in &mut mission.waves {
+        placements(&wave.units)?;
+        resolve_dialogues(&mut wave.dialogue, characters, path)?;
+    }
+    if let Some(refuge) = &mut mission.refuge {
+        resolve_dialogues(&mut refuge.escalation, characters, path)?;
+        resolve_dialogues(&mut refuge.war_victory, characters, path)?;
+    }
+    let patch = |p: &mut MissionPatch| -> Result<(), ContentError> {
+        if let Some(units) = &p.reinforcements {
+            placements(units)?;
+        }
+        if let Some(lines) = &mut p.intro {
+            resolve_dialogues(lines, characters, path)?;
+        }
+        if let Some(lines) = &mut p.victory {
+            resolve_dialogues(lines, characters, path)?;
+        }
+        Ok(())
+    };
+    if let Some(p) = &mut mission.without_dain {
+        patch(p)?;
+    }
+    if let Some(patches) = &mut mission.companion_losses {
+        for (id, p) in patches {
+            check(id)?;
+            patch(p)?;
+        }
+    }
+    Ok(())
+}
+
 fn validate_mission(
     mission: &Mission,
     state: &State,
@@ -889,7 +1104,7 @@ fn validate_mission(
                 .map
                 .units
                 .iter()
-                .any(|unit| unit.side == Side::Player && unit.name.as_ref() == Some(name))
+                .any(|unit| unit.side == Side::Player && unit.character.as_ref() == Some(name))
             {
                 return Err(ContentError::new(
                     path,
@@ -907,7 +1122,7 @@ fn validate_mission(
             tile_ref(&effect.tile)?;
             if effect
                 .units
-                .name
+                .character
                 .as_ref()
                 .is_some_and(|name| name.is_empty())
             {
@@ -928,7 +1143,7 @@ fn validate_mission(
             }
             if reward
                 .recipient
-                .name
+                .character
                 .as_ref()
                 .is_some_and(|name| name.is_empty())
             {
@@ -992,11 +1207,14 @@ fn validate_mission(
         }
     }
     unique(
-        mission.arrivals.iter().map(|arrival| arrival.name.as_str()),
+        mission
+            .arrivals
+            .iter()
+            .map(|arrival| arrival.character.as_str()),
         path,
     )?;
     for arrival in &mission.arrivals {
-        if arrival.name.is_empty() {
+        if arrival.character.is_empty() {
             return Err(ContentError::new(path, "empty automatic companion name"));
         }
         tile_ref(&format!("{},{}", arrival.col, arrival.row))?;
@@ -1682,6 +1900,25 @@ impl Rules {
         if changes_definition {
             apply_objective_route(selected.to_mut(), plan, "simulation/campaign.json")?;
         }
+        if changes_definition {
+            let characters = selected.characters.clone();
+            for mission in &mut selected.to_mut().missions {
+                let state = self
+                    .maps
+                    .iter()
+                    .find(|((id, _), _)| id == &mission.map.id)
+                    .map(|(_, state)| state)
+                    .ok_or_else(|| {
+                        ContentError::new("simulation/campaign.json", "unknown route stage map")
+                    })?;
+                validate_character_references(
+                    mission,
+                    state,
+                    &characters,
+                    "simulation/campaign.json",
+                )?;
+            }
+        }
         for mission in &selected.missions {
             let state = self
                 .maps
@@ -1705,6 +1942,9 @@ impl Rules {
                 if let Some(condition) = &stage.ignore_optional_when {
                     condition
                         .validate(&state.tiles, &mission.events, false)
+                        .map_err(|e| ContentError::new("simulation/campaign.json", e))?;
+                    condition
+                        .validate_characters(&selected.characters)
                         .map_err(|e| ContentError::new("simulation/campaign.json", e))?;
                     condition
                         .validate_references(&self.types, &state.factions)

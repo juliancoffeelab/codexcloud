@@ -54,7 +54,7 @@ test("Progressed campaign units persist and invalid XP is rejected", async () =>
   campaign.advanceUnit(recruit.id, required(TYPES[recruit.type].advancesTo?.[0]));
   leader.experience = required(TYPES[leader.type].experienceNeeded);
   campaign.advanceUnit(leader.id, required(TYPES[leader.type].advancesTo?.[0]));
-  const pilot = required(campaign.units.find((unit) => unit.name === "Edda"));
+  const pilot = required(campaign.units.find((unit) => unit.character === "edda"));
   pilot.experience = 7;
   campaign.winner = "player";
   const next = campaign.nextCampaignMission([recruit.id]);
@@ -101,8 +101,10 @@ for (const [chapter, oldName, officerName] of [
       saveBattle(oldCoast);
       const migrated = loadBattle().game;
       assert.equal(migrated.campaign?.id, "borrowed-tide");
-      assert.deepEqual(migrated.unit(officer.id), { ...officer, name: officerName });
-      assert.equal(migrated.campaign!.dialogue[0]?.speaker, officerName);
+      const { name: _legacyName, ...identity } = officer;
+      assert.deepEqual(migrated.unit(officer.id), identity);
+      assert.equal(migrated.publishedView().unit(officer.id)?.name, officerName);
+      assert.equal(migrated.publishedView().campaign!.dialogue[0]?.speaker, officerName);
     },
   );
 }

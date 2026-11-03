@@ -84,7 +84,7 @@
                     "tile": "17,0",
                     "radius": 0,
                     "side": "player",
-                    "name": "Captain Nera"
+                    "character": "nera"
                   },
                   {
                     "kind": "event",

@@ -14,20 +14,20 @@
           "type": "swordsman",
           "col": 0,
           "row": 5,
-          "name": "Captain Nera",
-          "role": "leader"
+          "role": "leader",
+          "character": "nera"
         },
         {
           "type": "scout",
           "col": 0,
           "row": 4,
-          "name": "Ivo"
+          "character": "ivo"
         },
         {
           "type": "adept",
           "col": 0,
           "row": 6,
-          "name": "Oren"
+          "character": "oren"
         }
       ],
       "relations": {
@@ -64,9 +64,9 @@
           "type": "necromancer",
           "col": 15,
           "row": 7,
-          "name": "The Tollkeeper",
           "role": "leader",
-          "aiGroup": "tollkeeper"
+          "aiGroup": "tollkeeper",
+          "character": "tollkeeper"
         }
       ],
       "relations": {
@@ -103,8 +103,8 @@
           "type": "captives",
           "col": 8,
           "row": 6,
-          "name": "The villagers",
-          "role": "courier"
+          "role": "courier",
+          "character": "villagers"
         }
       ]
     },
@@ -149,8 +149,8 @@
               }
             }
           ],
-          "name": "Edrin",
-          "role": "leader"
+          "role": "leader",
+          "character": "edrin"
         }
       ]
     }

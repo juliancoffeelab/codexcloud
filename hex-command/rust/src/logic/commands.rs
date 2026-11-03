@@ -103,10 +103,7 @@ impl Game<'_> {
                 let item = self.units[index].items.remove(slot);
                 self.record(format!(
                     "{} dropped {}.",
-                    self.units[index]
-                        .name
-                        .as_deref()
-                        .unwrap_or(&self.rules.units[self.units[index].kind].name),
+                    self.unit_name(&self.units[index]),
                     item.name
                 ));
                 self.ground_items.push(GroundItem {
@@ -198,12 +195,7 @@ impl Game<'_> {
                 {
                     return Err(CommandError::IllegalIntent);
                 }
-                let name = record_retreat.then(|| {
-                    self.units[index]
-                        .name
-                        .clone()
-                        .unwrap_or_else(|| self.rules.units[self.units[index].kind].name.clone())
-                });
+                let name = record_retreat.then(|| self.unit_name(&self.units[index]).to_owned());
                 self.units[index].retreating = retreating;
                 self.units[index].rebuilding = rebuilding;
                 self.units[index].attacked = attacked;

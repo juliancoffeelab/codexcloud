@@ -83,7 +83,7 @@ pub(super) fn choose_with_weights(
                 moved: true,
                 attacked: true,
                 experience: None,
-                name: None,
+                character: None,
                 role: None,
                 retreating: None,
                 rebuilding: None,

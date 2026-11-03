@@ -51,7 +51,7 @@ pub enum Condition {
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        name: Option<String>,
+        character: Option<String>,
     },
     /// A matching unit stands on a tile currently visible through authored fog.
     VisibleUnits {
@@ -68,14 +68,14 @@ pub enum Condition {
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        name: Option<String>,
+        character: Option<String>,
     },
     NoUnits {
         side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        name: Option<String>,
+        character: Option<String>,
     },
     Choice {
         choice: String,
@@ -145,6 +145,33 @@ impl Condition {
         }
     }
 
+    pub fn validate_characters(&self, characters: &[super::Character]) -> Result<(), String> {
+        match self {
+            Self::Proximity {
+                character: Some(id),
+                ..
+            }
+            | Self::HasUnits {
+                character: Some(id),
+                ..
+            }
+            | Self::NoUnits {
+                character: Some(id),
+                ..
+            } => {
+                if !characters.iter().any(|c| &c.id == id) {
+                    return Err(format!("unknown character {id}"));
+                }
+            }
+            Self::All { conditions } | Self::Any { conditions } => {
+                for c in conditions {
+                    c.validate_characters(characters)?;
+                }
+            }
+            _ => {}
+        }
+        Ok(())
+    }
     pub fn validate_presentation(&self) -> Result<(), String> {
         match self {
             Self::VisibleUnits { .. } => {

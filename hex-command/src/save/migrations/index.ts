@@ -1,3 +1,4 @@
+import { migrateV25ToV26 } from "./v25-to-v26";
 import { migrateV24ToV25 } from "./v24-to-v25";
 import { migrateV23ToV24 } from "./v23-to-v24";
 import { migrateV22ToV23 } from "./v22-to-v23";
@@ -43,6 +44,9 @@ export function migrateSave(input: unknown): MigrationResult {
   const originalVersion = value.version;
   while (value.version !== SAVE_VERSION) {
     switch (value.version) {
+      case 25:
+        value = migrateV25ToV26(value);
+        break;
       case 24:
         value = migrateV24ToV25(value);
         break;

@@ -99,12 +99,15 @@ impl Game<'_> {
             let alive = self
                 .units
                 .iter()
-                .any(|u| u.side == Side::Player && u.name.as_ref() == Some(name))
+                .any(|u| u.side == Side::Player && u.character.as_ref() == Some(name))
                 || state
                     .evacuated
                     .iter()
-                    .any(|record| record.unit.name.as_ref() == Some(name));
-            protected.push(survival(format!("Keep {name} alive."), alive));
+                    .any(|record| record.unit.character.as_ref() == Some(name));
+            protected.push(survival(
+                format!("Keep {} alive.", self.character_name(name).unwrap_or(name)),
+                alive,
+            ));
         }
         let mut notices = self.ritual_notices();
         for loss in &mission.lose_conditions {
@@ -217,6 +220,11 @@ impl Game<'_> {
                     }
                 }
                 UnitActions {
+                    name: unit
+                        .character
+                        .as_deref()
+                        .and_then(|id| self.character_name(id))
+                        .map(str::to_owned),
                     faction: self.unit_faction_view(unit),
                     unit: format!("u{}", unit.id),
                     reachable: self
@@ -251,6 +259,23 @@ impl Game<'_> {
             })
             .collect();
         BattleInspection {
+            speakers: self
+                .campaign
+                .as_ref()
+                .map(|state| {
+                    state
+                        .dialogue
+                        .iter()
+                        .map(|line| {
+                            line.character
+                                .as_deref()
+                                .and_then(|id| self.character_name(id))
+                                .unwrap_or(&line.speaker)
+                                .to_owned()
+                        })
+                        .collect()
+                })
+                .unwrap_or_default(),
             objectives: self.campaign_objectives(),
             revision,
             units,

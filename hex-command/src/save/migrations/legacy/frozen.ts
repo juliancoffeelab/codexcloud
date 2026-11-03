@@ -8,7 +8,15 @@ import type {
   MapId,
   UnitDefinition,
   UnitType,
+  StartingUnit,
 } from "../../../game/types";
+
+/** Published placements had display names, before stable character IDs. */
+export type LegacyStartingUnit = Omit<StartingUnit, "character"> & { name?: string };
+type LegacyMap = Omit<MapDefinition, "units"> & { units: LegacyStartingUnit[] };
+type LegacyCampaign = Omit<CampaignDefinition, "missions"> & {
+  missions: (Omit<CampaignDefinition["missions"][number], "map"> & { map: LegacyMap })[];
+};
 
 export const MAPS = Object.fromEntries(
   Object.entries(snapshot.maps).map(([id, map]) => [
@@ -27,7 +35,7 @@ export const MAPS = Object.fromEntries(
       })),
     },
   ]),
-) as unknown as Record<MapId, MapDefinition>;
+) as unknown as Record<MapId, LegacyMap>;
 export const TYPES = snapshot.units as unknown as Record<
   UnitType,
   Pick<UnitDefinition, "hp" | "experienceNeeded" | "family" | "costs">
@@ -44,7 +52,7 @@ export const FROZEN_CAMPAIGNS = Object.fromEntries(
       })),
     },
   ]),
-) as unknown as Record<CampaignId, CampaignDefinition>;
+) as unknown as Record<CampaignId, LegacyCampaign>;
 export const CAMPAIGN_MAPS = Object.fromEntries(
   Object.values(FROZEN_CAMPAIGNS).flatMap((campaign) =>
     campaign.missions.map((mission) => [mission.map.id, mission.map]),

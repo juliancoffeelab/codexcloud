@@ -63,6 +63,42 @@ pub(crate) fn validate_state_geometry_with_campaign(
     campaign_definition: Option<&Campaign>,
 ) -> Result<(), StateError> {
     let fail = |message: &str| StateError(message.to_owned());
+    let registry = campaign_definition.or_else(|| rules.campaign_for_map(&state.map_id));
+    let check_character = |id: &str| -> Result<(), StateError> {
+        if registry.is_some_and(|c| c.character(id).is_some()) {
+            Ok(())
+        } else {
+            Err(fail("unknown saved character"))
+        }
+    };
+    for unit in &state.units {
+        if let Some(id) = &unit.character {
+            check_character(id)?;
+        }
+    }
+    if let Some(campaign) = &state.campaign {
+        for record in &campaign.evacuated {
+            if let Some(id) = &record.unit.character {
+                check_character(id)?;
+            }
+        }
+        for veteran in campaign
+            .veterans
+            .iter()
+            .chain(&campaign.story_veterans)
+            .flatten()
+        {
+            if let Some(id) = &veteran.character {
+                check_character(id)?;
+            }
+        }
+        for line in &campaign.dialogue {
+            if let Some(id) = &line.character {
+                check_character(id)?;
+            }
+        }
+    }
+
     validate_factions(&state.factions, &state.units).map_err(StateError)?;
     validate_economy(&state.factions, &state.gold, &state.tiles, &rules.types)
         .map_err(StateError)?;
@@ -265,9 +301,9 @@ pub(crate) fn validate_state_geometry_with_campaign(
                     .is_some_and(|role| unit.role != Some(role))
                 || effect
                     .units
-                    .name
+                    .character
                     .as_ref()
-                    .is_some_and(|name| unit.name.as_ref() != Some(name))
+                    .is_some_and(|name| unit.character.as_ref() != Some(name))
             {
                 return Err(fail("invalid evacuated unit outcome"));
             }
@@ -301,7 +337,7 @@ pub(crate) fn validate_state_geometry_with_campaign(
         }
         let previous_companions: HashSet<_> = definition.missions[..campaign.mission]
             .iter()
-            .flat_map(|mission| mission.companion_names())
+            .flat_map(|mission| mission.companion_ids())
             .collect();
         if let Some(fallen) = &campaign.fallen_companions {
             let unique: HashSet<_> = fallen.iter().collect();
@@ -351,13 +387,14 @@ pub(crate) fn validate_state_geometry_with_campaign(
                         && mission
                             .arrivals
                             .iter()
-                            .any(|arrival| veteran.name.as_ref() == Some(&arrival.name)))
+                            .any(|arrival| veteran.character.as_ref() == Some(&arrival.character)))
                         && !mission.map.units.iter().any(|unit| {
                             unit.side == Side::Player
                                 && (if veteran.role == Some(Role::Leader) {
                                     unit.role == Some(Role::Leader)
                                 } else {
-                                    veteran.name.is_some() && veteran.name == unit.name
+                                    veteran.character.is_some()
+                                        && veteran.character == unit.character
                                 })
                                 && rules.units[rules.types[&unit.r#type]].family == *family
                         })

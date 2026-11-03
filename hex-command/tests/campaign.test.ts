@@ -1,3 +1,4 @@
+import characterHistory from "../src/save/migrations/legacy/data/characters-v25.json";
 import { createTestFactory } from "./native-fixture";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
@@ -22,7 +23,14 @@ test("Legacy refuge retains company and ownership", async () => {
   legacy.nextId = 1;
   for (const unit of LEGACY_ASHEN_REFUGE.units)
     Object.assign(legacy.addUnit(unit.type, unit.side, `${unit.col},${unit.row}`), {
-      ...(unit.name ? { name: unit.name } : {}),
+      ...(unit.name
+        ? {
+            character:
+              characterHistory.campaigns["ashen-oath"].aliases[
+                unit.name as keyof (typeof characterHistory.campaigns)["ashen-oath"]["aliases"]
+              ],
+          }
+        : {}),
       ...(unit.role ? { role: unit.role } : {}),
     });
   legacy.campaign = structuredClone(current.campaign!);

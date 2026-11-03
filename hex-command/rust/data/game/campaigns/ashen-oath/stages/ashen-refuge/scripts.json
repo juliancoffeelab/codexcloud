@@ -22,9 +22,9 @@
           "text": "The fever is easing. We will send word with the families you helped; the households will gather a day sooner. Take these six coins for your shelter."
         },
         {
-          "speaker": "Orin",
           "portrait": "necromancer",
-          "text": "We did not need the herbs ourselves. I am glad someone did."
+          "text": "We did not need the herbs ourselves. I am glad someone did.",
+          "character": "orin"
         }
       ]
     }
@@ -78,16 +78,16 @@
         "text": "There has been too much bloodshed for the patrol to accept our mediation. We cannot stop this battle for you."
       },
       {
-        "speaker": "Orin",
         "portrait": "necromancer",
-        "text": "Then there is no agreement left to make. We must break the patrol before we can leave."
+        "text": "Then there is no agreement left to make. We must break the patrol before we can leave.",
+        "character": "orin"
       }
     ],
     "warVictory": [
       {
-        "speaker": "Orin",
         "portrait": "necromancer",
-        "text": "The patrol is broken. But we have lost the chance to leave here with friends. We face the Master with our own company."
+        "text": "The patrol is broken. But we have lost the chance to leave here with friends. We face the Master with our own company.",
+        "character": "orin"
       }
     ]
   }

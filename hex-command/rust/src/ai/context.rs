@@ -295,6 +295,9 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub(super) fn site(&self, id: &str) -> usize {
         self.engine().site(id)
     }
+    pub(super) fn unit_name(&self, unit: &Unit) -> String {
+        self.engine().unit_name(unit).to_owned()
+    }
     pub(super) fn kind(&self, name: &str) -> usize {
         self.engine().kind(name)
     }

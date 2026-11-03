@@ -14,14 +14,14 @@
           "type": "swordsman",
           "col": 3,
           "row": 8,
-          "name": "Captain Nera",
-          "role": "leader"
+          "role": "leader",
+          "character": "nera"
         },
         {
           "type": "scout",
           "col": 3,
           "row": 9,
-          "name": "Ivo"
+          "character": "ivo"
         },
         {
           "type": "archer",
@@ -32,7 +32,7 @@
           "type": "adept",
           "col": 4,
           "row": 9,
-          "name": "Oren"
+          "character": "oren"
         }
       ],
       "relations": {

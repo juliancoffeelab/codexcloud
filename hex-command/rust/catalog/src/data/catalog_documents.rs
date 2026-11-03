@@ -110,7 +110,7 @@ impl RosterDocument {
                     r#type: unit.r#type.clone(),
                     side: faction.phase,
                     ai_group: unit.ai_group.clone(),
-                    name: unit.name.clone(),
+                    character: unit.character.clone(),
                     role: unit.role,
                 });
                 initial.push(unit);
@@ -375,7 +375,7 @@ pub fn map_metadata(
                     row: tile.row,
                     r#type: unit.r#type.clone(),
                     side: unit.side,
-                    name: unit.name.clone(),
+                    character: unit.character.clone(),
                     role: unit.role,
                 })
             })

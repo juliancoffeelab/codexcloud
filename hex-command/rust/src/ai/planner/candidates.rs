@@ -67,7 +67,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
                 && key.3 == (game.hostile_to_phase(u, game.turn())).then_some(u.tile)
                 && key.4 == u.role
                 && key.5 == u.rebuilding
-                && key.6 == u.name
+                && key.6 == u.character
         });
     let spatial_same = cache.positions.len() == game.units().len()
         && cache
@@ -91,7 +91,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
                 (game.hostile_to_phase(u, game.turn())).then_some(u.tile),
                 u.role,
                 u.rebuilding,
-                u.name.clone(),
+                u.character.clone(),
             )
         }));
 

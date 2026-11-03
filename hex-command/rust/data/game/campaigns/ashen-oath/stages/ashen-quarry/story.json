@@ -9,9 +9,9 @@
   ],
   "intro": [
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "The binding broke at midnight. I waited for another order. None came."
+      "text": "The binding broke at midnight. I waited for another order. None came.",
+      "character": "orin"
     },
     {
       "speaker": "A hollow voice",
@@ -19,16 +19,16 @@
       "text": "Then give us one of our own."
     },
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "We leave the quarry. Keep the archers behind the bones. If the mage finds me, there may not be a second midnight."
+      "text": "We leave the quarry. Keep the archers behind the bones. If the mage finds me, there may not be a second midnight.",
+      "character": "orin"
     }
   ],
   "victory": [
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "The gate is open. I thought freedom would sound louder."
+      "text": "The gate is open. I thought freedom would sound louder.",
+      "character": "orin"
     },
     {
       "speaker": "A hollow voice",
@@ -36,9 +36,9 @@
       "text": "It sounds like no one telling us to go back."
     },
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "There are empty houses west of here. Let us give them neighbors."
+      "text": "There are empty houses west of here. Let us give them neighbors.",
+      "character": "orin"
     }
   ]
 }

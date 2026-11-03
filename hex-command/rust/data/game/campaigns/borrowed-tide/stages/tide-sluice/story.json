@@ -9,46 +9,46 @@
   ],
   "intro": [
     {
-      "speaker": "Tomas",
       "portrait": "spearman",
-      "text": "The high gate is reached through the woods. I can take that path. Your swimmers can reach the lower wheel through the reeds."
+      "text": "The high gate is reached through the woods. I can take that path. Your swimmers can reach the lower wheel through the reeds.",
+      "character": "tomas"
     },
     {
-      "speaker": "Captain Vale",
       "portrait": "commander",
-      "text": "You have taken a company's books and attacked its guards. Senn says the council will hang deserters first."
+      "text": "You have taken a company's books and attacked its guards. Senn says the council will hang deserters first.",
+      "character": "vale"
     },
     {
-      "speaker": "Mira",
       "portrait": "tidekeeper",
-      "text": "He forged the council's order. The clerk will testify. Stand aside and hear her, or answer for keeping this flood above the village."
+      "text": "He forged the council's order. The clerk will testify. Stand aside and hear her, or answer for keeping this flood above the village.",
+      "character": "mira"
     },
     {
-      "speaker": "Edda",
       "portrait": "harpooner",
-      "text": "They are staying. Bring me to the beacon. I will not signal until both wheels are ours."
+      "text": "They are staying. Bring me to the beacon. I will not signal until both wheels are ours.",
+      "character": "edda"
     }
   ],
   "victory": [
     {
-      "speaker": "Edda",
       "portrait": "harpooner",
-      "text": "Both flags up. Open together—now."
+      "text": "Both flags up. Open together—now.",
+      "character": "edda"
     },
     {
-      "speaker": "Mira",
       "portrait": "tidekeeper",
-      "text": "Watch the mudflats. There. The tide is home."
+      "text": "Watch the mudflats. There. The tide is home.",
+      "character": "mira"
     },
     {
-      "speaker": "Tomas",
       "portrait": "spearman",
-      "text": "And tomorrow?"
+      "text": "And tomorrow?",
+      "character": "tomas"
     },
     {
-      "speaker": "Mira",
       "portrait": "tidekeeper",
-      "text": "Tomorrow we put someone from each shore beside each wheel."
+      "text": "Tomorrow we put someone from each shore beside each wheel.",
+      "character": "mira"
     }
   ]
 }

@@ -39,7 +39,7 @@
         unit.side === "player" &&
         !isLeader(unit) &&
         unit.role !== "courier" &&
-        !mission?.requiredCompanions?.includes(unit.name ?? "") &&
+        !mission?.requiredCompanions?.includes(unit.character ?? "") &&
         !(campaign && returnsWithStory(campaign, unit)),
     ),
   );

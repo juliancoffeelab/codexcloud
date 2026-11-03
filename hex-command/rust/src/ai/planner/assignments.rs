@@ -580,7 +580,7 @@ mod tests {
         threat.tile = game.site("2,3");
         threat.hp = 1;
         threat.moved = false;
-        threat.name = None;
+        threat.character = None;
         threat.role = None;
         game.units.push(threat);
         let mut helper = game.units[0].clone();
@@ -592,7 +592,7 @@ mod tests {
         helper.hp = rules.units[helper.kind].hp;
         helper.moved = false;
         helper.attacked = false;
-        helper.name = None;
+        helper.character = None;
         helper.role = None;
         game.units.push(helper);
         game.roster_changed();

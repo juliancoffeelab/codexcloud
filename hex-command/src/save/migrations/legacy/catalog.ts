@@ -13,7 +13,8 @@ interface StageHistory {
   dialogue: DialogueLine[];
   waves: WaveHistory[];
 }
-type MigrationMission = Omit<Immutable<MissionDefinition>, "waves"> & {
+type MigrationMission = Omit<Immutable<MissionDefinition>, "waves" | "map"> & {
+  map: Immutable<(typeof FROZEN_CAMPAIGNS)[CampaignId]["missions"][number]["map"]>;
   waves: (Immutable<MissionDefinition["waves"][number]> & Partial<WaveHistory>)[];
   legacyDialogue: DialogueLine[];
 };

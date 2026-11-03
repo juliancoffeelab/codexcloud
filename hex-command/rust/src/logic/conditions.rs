@@ -57,7 +57,7 @@ impl ConditionContext for LiveContext<'_, '_> {
                 faction: unit.faction.as_deref(),
                 side: unit.side,
                 kind: &self.game.rules.units[unit.kind].id,
-                name: unit.name.as_deref(),
+                character: unit.character.as_deref(),
                 ai_group: unit.ai_group.as_deref(),
                 position: Some(self.game.board.positions[tile]),
             })
@@ -86,7 +86,7 @@ impl ConditionContext for LiveContext<'_, '_> {
                                 faction: unit.faction.as_deref().or(group.faction.as_deref()),
                                 side: unit.side,
                                 kind: &unit.r#type,
-                                name: unit.name.as_deref(),
+                                character: unit.character.as_deref(),
                                 ai_group: group.ai_group.as_deref(),
                                 position: None,
                             })

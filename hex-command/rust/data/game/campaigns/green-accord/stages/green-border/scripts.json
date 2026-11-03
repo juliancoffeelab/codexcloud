@@ -9,14 +9,14 @@
       "label": "Recover the workers’ pay ledger",
       "dialogue": [
         {
-          "speaker": "Lark",
           "portrait": "thorncaller",
-          "text": "The missing crew refused to cut the sacred grove until their overdue wages were paid. Then they were ordered to report to the Rootbinder at the Overseer’s river works. Their pay was never collected."
+          "text": "The missing crew refused to cut the sacred grove until their overdue wages were paid. Then they were ordered to report to the Rootbinder at the Overseer’s river works. Their pay was never collected.",
+          "character": "lark"
         },
         {
-          "speaker": "Alder",
           "portrait": "wildkeeper",
-          "text": "Take the ledger. We can stop the cutting, but the roots must tell us what became of those workers."
+          "text": "Take the ledger. We can stop the cutting, but the roots must tell us what became of those workers.",
+          "character": "alder"
         }
       ]
     }
@@ -31,26 +31,26 @@
     ],
     "intro": [
       {
-        "speaker": "Lark",
         "portrait": "thorncaller",
-        "text": "Dain is dead. His patrol’s orders still do not tell us what happened to the workers."
+        "text": "Dain is dead. His patrol’s orders still do not tell us what happened to the workers.",
+        "character": "lark"
       },
       {
-        "speaker": "Alder",
         "portrait": "wildkeeper",
-        "text": "Take both tool camps and recover their ledger. We still owe the families an answer."
+        "text": "Take both tool camps and recover their ledger. We still owe the families an answer.",
+        "character": "alder"
       }
     ],
     "victory": [
       {
-        "speaker": "Lark",
         "portrait": "thorncaller",
-        "text": "The camps are ours and the cutting has stopped. The missing workers’ wages went to the Overseer, and their last orders sent them to the Rootbinder."
+        "text": "The camps are ours and the cutting has stopped. The missing workers’ wages went to the Overseer, and their last orders sent them to the Rootbinder.",
+        "character": "lark"
       },
       {
-        "speaker": "Alder",
         "portrait": "wildkeeper",
-        "text": "Dain will never hear their story. Lark, bring it back in a living branch. The families must be able to hear it for themselves."
+        "text": "Dain will never hear their story. Lark, bring it back in a living branch. The families must be able to hear it for themselves.",
+        "character": "alder"
       }
     ],
     "debrief": "The cutting operation has lost both camps. Dain died in the fighting; his death remains part of what happened. The ledger leads Lark to question the roots about the Rootbinder and the Overseer.",

@@ -28,7 +28,7 @@ pub struct ConditionUnit<'a> {
     pub faction: Option<&'a str>,
     pub side: Side,
     pub kind: &'a str,
-    pub name: Option<&'a str>,
+    pub character: Option<&'a str>,
     pub ai_group: Option<&'a str>,
     pub position: Option<(i32, i32)>,
 }
@@ -81,7 +81,7 @@ impl ConditionContext for PresentationInput {
                 faction: u.faction.as_deref(),
                 side: u.side,
                 kind: &u.r#type,
-                name: u.name.as_deref(),
+                character: u.character.as_deref(),
                 ai_group: u.ai_group.as_deref(),
                 position: Some((u.col, u.row)),
             })
@@ -94,7 +94,7 @@ impl ConditionContext for PresentationInput {
                 faction: u.faction.as_deref(),
                 side: u.side,
                 kind: &u.r#type,
-                name: u.name.as_deref(),
+                character: u.character.as_deref(),
                 ai_group: None,
                 position: None,
             })
@@ -129,10 +129,12 @@ fn evaluate(
     allow_visibility: bool,
 ) -> bool {
     let unit_matches =
-        |unit: ConditionUnit<'_>, side, kind: &Option<String>, name: &Option<String>| {
+        |unit: ConditionUnit<'_>, side, kind: &Option<String>, character: &Option<String>| {
             faction_matches_side(input.factions(), unit.faction, unit.side, side)
                 && kind.as_deref().is_none_or(|kind| unit.kind == kind)
-                && name.as_deref().is_none_or(|name| unit.name == Some(name))
+                && character
+                    .as_deref()
+                    .is_none_or(|character| unit.character == Some(character))
         };
     match condition {
         Condition::Owner { tile, side } => tile
@@ -145,14 +147,14 @@ fn evaluate(
             side,
             unit_type,
             unit_types,
-            name,
+            character,
         } => {
             let Some(position) = tile.as_deref().or(target).and_then(|id| input.position(id))
             else {
                 return false;
             };
             input.any_unit(|unit| {
-                unit_matches(unit, *side, unit_type, name)
+                unit_matches(unit, *side, unit_type, character)
                     && (unit_types.is_empty() || unit_types.iter().any(|kind| kind == unit.kind))
                     && unit
                         .position
@@ -174,9 +176,9 @@ fn evaluate(
             ai_group,
             side,
             unit_type,
-            name,
+            character,
         } => input.any_unit(|unit| {
-            unit_matches(unit, *side, unit_type, name)
+            unit_matches(unit, *side, unit_type, character)
                 && ai_group
                     .as_deref()
                     .is_none_or(|group| unit.ai_group == Some(group))
@@ -184,10 +186,10 @@ fn evaluate(
         Condition::NoUnits {
             side,
             unit_type,
-            name,
+            character,
         } => {
-            !input.any_unit(|unit| unit_matches(unit, *side, unit_type, name))
-                && !input.any_pending(|unit| unit_matches(unit, *side, unit_type, name))
+            !input.any_unit(|unit| unit_matches(unit, *side, unit_type, character))
+                && !input.any_pending(|unit| unit_matches(unit, *side, unit_type, character))
         }
         Condition::Choice { choice } => input.choices().contains(choice),
         Condition::Event { event } => input

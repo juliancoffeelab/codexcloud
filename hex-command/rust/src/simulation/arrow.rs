@@ -109,7 +109,7 @@ fn unit_column(
         )),
         Arc::new(UInt32Array::from_iter(values.iter().map(|u| u.experience))),
         Arc::new(StringArray::from_iter(
-            values.iter().map(|u| u.name.as_deref()),
+            values.iter().map(|u| u.character.as_deref()),
         )),
         Arc::new(StringArray::from_iter(
             values.iter().map(|u| u.role.as_ref().map(|r| r.as_str())),
@@ -135,7 +135,7 @@ fn unit_column(
         "moved",
         "attacked",
         "experience",
-        "name",
+        "character",
         "role",
         "retreating",
         "rebuilding",
@@ -489,7 +489,7 @@ mod tests {
         unit.retreating = Some(false);
         unit.rebuilding = Some(true);
         unit.role = Some(Role::Courier);
-        unit.name = Some("河😀".into());
+        unit.character = Some("河😀".into());
         unit.faction = Some("independent".into());
         unit.ai_group = Some("guard".into());
         unit.items = serde_json::from_value(serde_json::json!([{

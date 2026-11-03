@@ -13,29 +13,29 @@
       },
       "dialogue": [
         {
-          "speaker": "Warden Sella",
           "portrait": "warden",
-          "text": "Easy. Living faces—I’d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by."
+          "text": "Easy. Living faces—I’d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by.",
+          "character": "sella"
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "We came from the crossing. What happened here?"
+          "text": "We came from the crossing. What happened here?",
+          "character": "nera"
         },
         {
-          "speaker": "Warden Sella",
           "portrait": "warden",
-          "text": "They emptied the roadside villages. There are prisoners at the old pass fort, waiting to be marched east. We haven’t the strength to fetch them."
+          "text": "They emptied the roadside villages. There are prisoners at the old pass fort, waiting to be marched east. We haven’t the strength to fetch them.",
+          "character": "sella"
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Then we’ll bring them here. Can you keep them safe?"
+          "text": "Then we’ll bring them here. Can you keep them safe?",
+          "character": "nera"
         },
         {
-          "speaker": "Warden Sella",
           "portrait": "warden",
-          "text": "We can. I’ll go with you. There are a few here who can take up arms; give us somewhere to muster."
+          "text": "We can. I’ll go with you. There are a few here who can take up arms; give us somewhere to muster.",
+          "character": "sella"
         }
       ],
       "choice": "hidden-village-found",
@@ -46,7 +46,7 @@
             "id": "sella",
             "type": "warden",
             "side": "player",
-            "name": "Warden Sella"
+            "character": "sella"
           }
         ]
       },
@@ -102,16 +102,16 @@
             {
               "kind": "hasUnits",
               "side": "player",
-              "name": "Oren"
+              "character": "oren"
             }
           ]
         }
       },
       "dialogue": [
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "That child by the hearth—those marks on the slate aren’t letters. Who taught you to draw them?"
+          "text": "That child by the hearth—those marks on the slate aren’t letters. Who taught you to draw them?",
+          "character": "oren"
         },
         {
           "speaker": "Villager",
@@ -119,9 +119,9 @@
           "text": "Nobody. They appear when I’m trying to remember things."
         },
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "A little training, then. We haven’t an academy to hand, but this is better than leaving a gift untended. Stay with me; I’ll show you how to keep it from burning your fingers."
+          "text": "A little training, then. We haven’t an academy to hand, but this is better than leaving a gift untended. Stay with me; I’ll show you how to keep it from burning your fingers.",
+          "character": "oren"
         }
       ],
       "recruitment": {
@@ -143,9 +143,9 @@
       },
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "The ferryman’s purse will buy a few more hands. Let’s make his coins count."
+          "text": "The ferryman’s purse will buy a few more hands. Let’s make his coins count.",
+          "character": "nera"
         }
       ],
       "gold": 6
@@ -161,9 +161,9 @@
       },
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "He asked us to follow the people taken from the bank. This is their road."
+          "text": "He asked us to follow the people taken from the bank. This is their road.",
+          "character": "nera"
         }
       ]
     },
@@ -183,7 +183,7 @@
             {
               "kind": "hasUnits",
               "side": "any",
-              "name": "The villagers"
+              "character": "villagers"
             }
           ]
         }
@@ -209,7 +209,7 @@
             {
               "kind": "hasUnits",
               "side": "any",
-              "name": "The villagers"
+              "character": "villagers"
             },
             {
               "kind": "hasUnits",
@@ -246,14 +246,14 @@
         "condition": {
           "kind": "hasUnits",
           "side": "any",
-          "name": "The villagers"
+          "character": "villagers"
         }
       },
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Keep your heads down. We’re getting you out."
+          "text": "Keep your heads down. We’re getting you out.",
+          "character": "nera"
         },
         {
           "speaker": "Villager",
@@ -261,9 +261,9 @@
           "text": "They said another column was coming for us. Please—don’t let them take us."
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Stay together. We’ll get you somewhere safe."
+          "text": "Stay together. We’ll get you somewhere safe.",
+          "character": "nera"
         }
       ]
     },
@@ -281,9 +281,9 @@
       },
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "There’s a village hidden in the western woods. Stay together. We’ll take you there."
+          "text": "There’s a village hidden in the western woods. Stay together. We’ll take you there.",
+          "character": "nera"
         },
         {
           "speaker": "Villager",
@@ -296,9 +296,9 @@
           "text": "We heard a bell somewhere ahead of the column. It kept ringing long after midnight."
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "First we get you somewhere safe."
+          "text": "First we get you somewhere safe.",
+          "character": "nera"
         }
       ],
       "choice": "road-prisoners-freed",
@@ -318,7 +318,7 @@
             {
               "kind": "hasUnits",
               "side": "player",
-              "name": "Oren"
+              "character": "oren"
             }
           ]
         }
@@ -326,9 +326,9 @@
       "unlessEvent": "road-urgency-nera",
       "dialogue": [
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it’s too late."
+          "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it’s too late.",
+          "character": "oren"
         }
       ]
     },
@@ -346,7 +346,7 @@
             {
               "kind": "noUnits",
               "side": "player",
-              "name": "Oren"
+              "character": "oren"
             }
           ]
         }
@@ -354,9 +354,9 @@
       "unlessEvent": "road-urgency-oren",
       "dialogue": [
         {
-          "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "They’re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays—we have to reach them while they’re still alive."
+          "text": "They’re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays—we have to reach them while they’re still alive.",
+          "character": "nera"
         }
       ]
     },
@@ -370,7 +370,7 @@
             {
               "kind": "hasUnits",
               "side": "enemy",
-              "name": "The Tollkeeper"
+              "character": "tollkeeper"
             },
             {
               "kind": "any",
@@ -392,9 +392,9 @@
       },
       "dialogue": [
         {
-          "speaker": "The Tollkeeper",
           "portrait": "necromancer",
-          "text": "Living soldiers on my road? You’ll pay for every step. Come closer—I’ll take the toll in bones."
+          "text": "Living soldiers on my road? You’ll pay for every step. Come closer—I’ll take the toll in bones.",
+          "character": "tollkeeper"
         }
       ]
     },
@@ -686,14 +686,14 @@
       },
       "dialogue": [
         {
-          "speaker": "Ivo",
           "portrait": "scout",
-          "text": "The reeds are full of them."
+          "text": "The reeds are full of them.",
+          "character": "ivo"
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Back onto firm ground. Let it come out where we can see it."
+          "text": "Back onto firm ground. Let it come out where we can see it.",
+          "character": "nera"
         }
       ]
     },
@@ -711,26 +711,26 @@
             {
               "kind": "hasUnits",
               "side": "player",
-              "name": "Oren"
+              "character": "oren"
             }
           ]
         }
       },
       "dialogue": [
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "That smell. Something’s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire."
+          "text": "That smell. Something’s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire.",
+          "character": "oren"
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "A friend of yours?"
+          "text": "A friend of yours?",
+          "character": "nera"
         },
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "An old healer. A better one than most of my tutors. He had a house along this bank. I hope he had the sense to leave."
+          "text": "An old healer. A better one than most of my tutors. He had a house along this bank. I hope he had the sense to leave.",
+          "character": "oren"
         }
       ]
     },
@@ -757,9 +757,9 @@
           "text": "Thank you. The others are still out there. Please don’t leave them to the dead."
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Send a runner back to the ferry. Tell them the dead are taking people east. We need reinforcements, and a watch along this road."
+          "text": "Send a runner back to the ferry. Tell them the dead are taking people east. We need reinforcements, and a watch along this road.",
+          "character": "nera"
         },
         {
           "speaker": "Villager",
@@ -767,9 +767,9 @@
           "text": "They’ll have your message. I’ll keep these people safe."
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "We can move on now, or finish the dead here so they can’t follow us. But every fight costs us time."
+          "text": "We can move on now, or finish the dead here so they can’t follow us. But every fight costs us time.",
+          "character": "nera"
         }
       ],
       "requiresEvent": "prisoners-freed",
@@ -789,14 +789,14 @@
         "condition": {
           "kind": "noUnits",
           "side": "enemy",
-          "name": "The Tollkeeper"
+          "character": "tollkeeper"
         }
       },
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "No more soldiers from this keep. Gather what we can carry; the prisoners ahead still need us."
+          "text": "No more soldiers from this keep. Gather what we can carry; the prisoners ahead still need us.",
+          "character": "nera"
         }
       ],
       "choice": "tollkeeper-defeated",
@@ -812,7 +812,7 @@
           "tile": "17,0",
           "radius": 0,
           "side": "player",
-          "name": "Captain Nera"
+          "character": "nera"
         }
       },
       "dialogue": [],
@@ -829,12 +829,12 @@
             {
               "kind": "noUnits",
               "side": "enemy",
-              "name": "Edrin"
+              "character": "edrin"
             },
             {
               "kind": "hasUnits",
               "side": "player",
-              "name": "Oren"
+              "character": "oren"
             }
           ]
         }
@@ -842,19 +842,19 @@
       "requiresEvent": "oren-swamp",
       "dialogue": [
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "Edrin. Oh, my friend. So this is what they made of you."
+          "text": "Edrin. Oh, my friend. So this is what they made of you.",
+          "character": "oren"
         },
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "Oren…"
+          "text": "Oren…",
+          "character": "nera"
         },
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "He spent his life keeping people out of graves. Let’s leave him in peace, and see that those villagers get home."
+          "text": "He spent his life keeping people out of graves. Let’s leave him in peace, and see that those villagers get home.",
+          "character": "oren"
         }
       ]
     },
@@ -865,14 +865,14 @@
         "condition": {
           "kind": "noUnits",
           "side": "enemy",
-          "name": "Edrin"
+          "character": "edrin"
         }
       },
       "dialogue": [
         {
-          "speaker": "Nera",
           "portrait": "swordsman",
-          "text": "There’s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done."
+          "text": "There’s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done.",
+          "character": "nera"
         }
       ],
       "requiresEvent": "swamp-sighting"
@@ -913,15 +913,15 @@
         "condition": {
           "kind": "hasUnits",
           "side": "player",
-          "name": "Oren"
+          "character": "oren"
         }
       },
       "unlessEvent": "road-bell-warning-nera",
       "dialogue": [
         {
-          "speaker": "Oren",
           "portrait": "adept",
-          "text": "The ritual has started. Hurry! We have to reach the valley before the final toll."
+          "text": "The ritual has started. Hurry! We have to reach the valley before the final toll.",
+          "character": "oren"
         }
       ],
       "requiresEvent": "first-bell-toll"
@@ -933,15 +933,15 @@
         "condition": {
           "kind": "noUnits",
           "side": "player",
-          "name": "Oren"
+          "character": "oren"
         }
       },
       "unlessEvent": "road-bell-warning-oren",
       "dialogue": [
         {
-          "speaker": "Captain Nera",
           "portrait": "swordsman",
-          "text": "They’ve started. We cannot lose another moment. Hurry!"
+          "text": "They’ve started. We cannot lose another moment. Hurry!",
+          "character": "nera"
         }
       ],
       "requiresEvent": "first-bell-toll"
@@ -958,7 +958,7 @@
         "when": {
           "kind": "hasUnits",
           "side": "neutral",
-          "name": "The villagers"
+          "character": "villagers"
         }
       }
     },
@@ -974,7 +974,7 @@
         "when": {
           "kind": "hasUnits",
           "side": "neutral",
-          "name": "The villagers"
+          "character": "villagers"
         }
       }
     },

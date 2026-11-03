@@ -25,7 +25,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let Goal::Hold { companion, .. } = &mut goal else {
         unreachable!()
     };
-    *companion = Some("Edda".into());
+    *companion = Some("edda".into());
     let mission = std::rc::Rc::make_mut(game.mission.as_mut().unwrap());
     mission.goals = vec![goal.clone()];
     mission.waves.clear();
@@ -33,7 +33,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let actor = game
         .units
         .iter()
-        .find(|u| u.name.as_deref() == Some("Edda"))
+        .find(|u| u.character.as_deref() == Some("edda"))
         .unwrap()
         .id;
     game.units.retain(|u| u.side == Side::Player);
@@ -247,7 +247,7 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     let pilot = game
         .units
         .iter()
-        .position(|u| u.name.as_deref() == Some("Edda"))
+        .position(|u| u.character.as_deref() == Some("edda"))
         .unwrap();
     game.units[pilot].experience = Some(7);
     game.winner = Some(Side::Player);
@@ -268,14 +268,14 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     assert_eq!(
         game.units
             .iter()
-            .filter(|u| u.name.as_deref() == Some("Edda"))
+            .filter(|u| u.character.as_deref() == Some("edda"))
             .count(),
         1
     );
     let pilot = game
         .units
         .iter()
-        .position(|u| u.name.as_deref() == Some("Edda"))
+        .position(|u| u.character.as_deref() == Some("edda"))
         .unwrap();
     assert_eq!(game.units[pilot].experience, Some(7));
     game.units[pilot].experience = Some(10);
@@ -283,7 +283,7 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     assert_eq!(
         game.units
             .iter()
-            .find(|u| u.name.as_deref() == Some("Edda"))
+            .find(|u| u.character.as_deref() == Some("edda"))
             .unwrap()
             .experience,
         Some(7)

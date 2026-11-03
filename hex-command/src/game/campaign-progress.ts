@@ -19,11 +19,15 @@ export function campaignMission(state: Immutable<CampaignState>): Immutable<Miss
     const changes = mission.companionLosses?.[name];
     if (changes) mission = { ...mission, ...changes };
   }
-  if ([...mission.intro, ...mission.victory].some((line) => fallen.has(line.speaker)))
+  if (
+    [...mission.intro, ...mission.victory].some(
+      (line) => !!line.character && fallen.has(line.character),
+    )
+  )
     mission = {
       ...mission,
-      intro: mission.intro.filter((line) => !fallen.has(line.speaker)),
-      victory: mission.victory.filter((line) => !fallen.has(line.speaker)),
+      intro: mission.intro.filter((line) => !line.character || !fallen.has(line.character)),
+      victory: mission.victory.filter((line) => !line.character || !fallen.has(line.character)),
     };
   if (state.refuge?.escalated && mission.refuge)
     return { ...mission, briefing: mission.refuge.warBriefing, hints: mission.refuge.warHints };
@@ -38,10 +42,10 @@ export function dialoguePending(state: Immutable<CampaignState> | undefined): bo
 export function returnsWithStory(state: Immutable<CampaignState>, unit: Readonly<Unit>): boolean {
   const next = CAMPAIGNS[state.id].missions[state.mission + 1];
   return Boolean(
-    unit.name &&
-    (next?.arrivals?.some((arrival) => arrival.name === unit.name) ||
+    unit.character &&
+    (next?.arrivals?.some((arrival) => arrival.character === unit.character) ||
       next?.map.units.some(
-        (incoming) => incoming.side === "player" && incoming.name === unit.name,
+        (incoming) => incoming.side === "player" && incoming.character === unit.character,
       )),
   );
 }
