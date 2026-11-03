@@ -67,6 +67,10 @@ function recruitmentView(view: BattleView, tile: TileView, context: RecruitmentC
     ),
   }));
 
+  if (!options.length) {
+    return { options, hint: "No units are available for recruitment." };
+  }
+
   let hint = "New recruits act next turn.";
   if (!context.stationed) hint = "Return your leader to this keep to recruit.";
   else if (!isPlayerTurn) hint = "Recruit on your turn.";

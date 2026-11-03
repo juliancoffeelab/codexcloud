@@ -19,7 +19,7 @@
   {#if panel}
     {#if panel.recruitment}
       <div class="terrain-recruitment">
-        <h3>Recruit here</h3>
+        <h3>{panel.recruitment.options.length ? "Recruit here" : "Recruitment unavailable"}</h3>
         <div class="recruit-list">
           {#each panel.recruitment.options as recruit}
             <button
