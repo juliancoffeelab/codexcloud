@@ -1,3 +1,4 @@
+import { measureTrace } from "../presentation/performance-trace";
 import { immutable, type Immutable } from "./immutable";
 import type {
   AiDecision,
@@ -133,13 +134,15 @@ export function createNativeEngineFactory(
         command: Immutable<Command>,
         expectedRevision = revision,
       ): NativeResponse<DispatchResult> => {
-        const dispatched = owned(
-          active(() =>
-            bridge.dispatchUpdate(
-              id,
-              expectedRevision,
-              structuredClone(command) as Command,
-              responseOwnership === "transferred" ? true : undefined,
+        const dispatched = measureTrace("engine.dispatch", () =>
+          owned(
+            active(() =>
+              bridge.dispatchUpdate(
+                id,
+                expectedRevision,
+                structuredClone(command) as Command,
+                responseOwnership === "transferred" ? true : undefined,
+              ),
             ),
           ),
         );
@@ -182,7 +185,9 @@ export function createNativeEngineFactory(
         return { ok: true, value: immutable({ view: current, combat: update.combat }) };
       },
       chooseAiCommand: (options: AiOptions) =>
-        owned(active(() => bridge.chooseAiCommand(id, revision, structuredClone(options)))),
+        measureTrace("engine.chooseAiCommand", () =>
+          owned(active(() => bridge.chooseAiCommand(id, revision, structuredClone(options)))),
+        ),
       save: () => owned(active(() => bridge.save(id, revision))),
       saveJson: () => owned(active(() => bridge.saveJson(id, revision))),
       dispose: (): EngineResult<null> => {

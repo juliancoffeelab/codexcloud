@@ -1,3 +1,4 @@
+import { traceInstant } from "./performance-trace";
 /** DOM camera transforms the single GPU canvas and its transparent input surface
  * together. Panning/zooming never rebuilds terrain or sends a worker frame. */
 export function battlefieldCamera(viewport: HTMLDivElement) {
@@ -16,6 +17,7 @@ export function battlefieldCamera(viewport: HTMLDivElement) {
     const top = (viewport.scrollTop + y) * ratio - y;
     const minimum = parseFloat(getComputedStyle(svg).minWidth) / zoom;
     zoom = next;
+    traceInstant("Camera zoom", { zoom });
     svg.style.width = `calc(100% * ${zoom})`;
     svg.style.minWidth = `${minimum * zoom}px`;
     cancelAnimationFrame(pendingZoom);
@@ -75,6 +77,7 @@ export function battlefieldCamera(viewport: HTMLDivElement) {
     if (drag?.id !== event.pointerId) return;
     if (viewport.hasPointerCapture(event.pointerId))
       viewport.releasePointerCapture(event.pointerId);
+    if (dragged) traceInstant("Camera pan", { left: viewport.scrollLeft, top: viewport.scrollTop });
     drag = undefined;
     viewport.style.cursor = "";
   };

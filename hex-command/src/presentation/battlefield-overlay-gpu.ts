@@ -243,6 +243,15 @@ export class BattlefieldOverlayGpu {
     this.hovered = hovered;
     this.focused = focused;
   }
+  get statistics() {
+    return {
+      units: this.scene?.units.length ?? 0,
+      items: this.scene?.items.length ?? 0,
+      tiles: this.scene?.tiles.length ?? 0,
+      batches: this.batches.length,
+      vertices: this.batches.reduce((sum, batch) => sum + batch.values.length / stride, 0),
+    };
+  }
   get animating() {
     return this.transitions.size > 0 || this.pulses.size > 0;
   }

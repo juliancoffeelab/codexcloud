@@ -1,7 +1,15 @@
+import {
+  configureWorkerTrace,
+  stopWorkerTrace,
+  workerTraceStart,
+  workerTraceEnd,
+} from "./worker-trace";
+import type { TraceConfig } from "./performance-trace";
 import { MapRendererGpu } from "./map-renderer-gpu";
 import type { MapFrameRequest, MapRenderRequest, MapRenderResponse } from "./map-renderer";
 
 let gpu: MapRendererGpu | undefined;
+let traceConfig: TraceConfig | undefined;
 let baseKey: string | undefined;
 type RenderJob = MapFrameRequest & { revision: number };
 let scene: Omit<MapFrameRequest, "fog" | "battlefield"> | undefined;
@@ -16,9 +24,12 @@ let latestRevision = 0;
 let activeLoad: { terrainKey: string; controller: AbortController } | undefined;
 
 async function loadImage(url: string, signal: AbortSignal) {
+  const started = workerTraceStart();
   const response = await fetch(url, { signal });
   if (!response.ok) throw new Error(`Map image failed to load (${response.status}): ${url}`);
-  return createImageBitmap(await response.blob(), { premultiplyAlpha: "none" });
+  const image = await createImageBitmap(await response.blob(), { premultiplyAlpha: "none" });
+  workerTraceEnd("Sprite fetch and decode", started, { width: image.width, height: image.height });
+  return image;
 }
 
 const decodedBases = new Map<string, ImageBitmap>();
@@ -158,6 +169,17 @@ async function render(request: RenderJob) {
 }
 
 self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
+  if (event.data.traceControl) {
+    const control = event.data.traceControl;
+    if (control.stop !== undefined) {
+      traceConfig = undefined;
+      void stopWorkerTrace(control.stop);
+    } else {
+      traceConfig = control.config;
+      configureWorkerTrace(traceConfig, gpu?.context);
+    }
+    return;
+  }
   if (event.data.preparePrograms) {
     const input = event.data.preparePrograms;
     if (gpu)
@@ -194,6 +216,7 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
     );
     try {
       gpu = new MapRendererGpu(canvas);
+      if (traceConfig) configureWorkerTrace(traceConfig, gpu.context);
     } catch (error) {
       self.postMessage({
         revision: latestRevision,

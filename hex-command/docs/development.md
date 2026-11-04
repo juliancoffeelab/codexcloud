@@ -431,3 +431,30 @@ limit retains simultaneous resolution.
 Dialogue lines may declare an optional `sound` family. The dialogue view plays
 that cue when the line is first presented through the gesture-unlocked sound
 player; ordinary sound preferences still apply.
+
+## Live performance traces
+
+Settings → Debug tools provides **Start recording trace**, **Stop recording**
+and **Download trace**. Starting closes Settings so the battle can be exercised;
+reopen Settings to stop/download. Downloading during capture first stops and
+flushes worker data. Recordings stay in memory until reload; starting another
+recording replaces the previous one. Nothing is uploaded automatically.
+
+The bounded Chrome/Perfetto JSON trace includes action and engine timings,
+browser callback intervals and long tasks, map-worker stages, render workload
+counts, optional asynchronous GPU timer queries, renderer information and the
+start/end battle state. Worker clock origins are normalized to the recording.
+Recording stops after two minutes or 50,000 events; the export reports dropped
+events and worker flush failures. GPU disjoint/incomplete samples are identified;
+GPU duration tracks use CPU submission timestamps for approximate placement.
+Recording never inserts completion fences. Callback intervals are not physical
+display frame rates, and API submission time is not GPU execution time.
+
+**Start Mirror Night** in the same debug panel starts a single-battle test
+scenario using Classic Mirror's terrain and armies. It also appears in the
+campaign picker because the shared campaign event system owns persistent death
+marks. Player proximity clears fog permanently within two hexes. Player-owned
+villages emit light until ownership changes; both keeps have fixed lamps.
+Every death creates its own persistent red-light mark, including repeated deaths
+on one hex. The usual commander victory/loss conditions end the battle. No test
+scenario conditions are implemented in frontend rendering.

@@ -1,3 +1,4 @@
+import { traceCommand } from "../presentation/performance-trace";
 import type { SessionSetup, OpponentSummary } from "../game/setup";
 import type { GameView, UnitView, Immutable } from "../game/view";
 import type {
@@ -60,24 +61,39 @@ export interface BattleCommands {
 
 export function createBattleCommands(controller: BattleCommands): BattleCommands {
   return Object.freeze({
-    startCampaign: controller.startCampaign.bind(controller),
-    nextMission: controller.nextMission.bind(controller),
-    retryMission: controller.retryMission.bind(controller),
-    advanceDialogue: controller.advanceDialogue.bind(controller),
-    previousDialogue: controller.previousDialogue.bind(controller),
-    choose: controller.choose.bind(controller),
-    focusTile: controller.focusTile.bind(controller),
-    clearSelection: controller.clearSelection.bind(controller),
-    attackSelected: controller.attackSelected.bind(controller),
-    recruitHere: controller.recruitHere.bind(controller),
-    advanceUnit: controller.advanceUnit.bind(controller),
-    dropItem: controller.dropItem.bind(controller),
-    endTurn: controller.endTurn.bind(controller),
-    undoMove: controller.undoMove.bind(controller),
-    reset: controller.reset.bind(controller),
-    setSound: controller.setSound.bind(controller),
-    downloadDebugReport: controller.downloadDebugReport.bind(controller),
-    error: controller.error.bind(controller),
+    startCampaign: traceCommand("action.startCampaign", controller.startCampaign.bind(controller)),
+    nextMission: traceCommand("action.nextMission", controller.nextMission.bind(controller)),
+    retryMission: traceCommand("action.retryMission", controller.retryMission.bind(controller)),
+    advanceDialogue: traceCommand(
+      "action.advanceDialogue",
+      controller.advanceDialogue.bind(controller),
+    ),
+    previousDialogue: traceCommand(
+      "action.previousDialogue",
+      controller.previousDialogue.bind(controller),
+    ),
+    choose: traceCommand("action.choose", controller.choose.bind(controller)),
+    focusTile: traceCommand("action.focusTile", controller.focusTile.bind(controller)),
+    clearSelection: traceCommand(
+      "action.clearSelection",
+      controller.clearSelection.bind(controller),
+    ),
+    attackSelected: traceCommand(
+      "action.attackSelected",
+      controller.attackSelected.bind(controller),
+    ),
+    recruitHere: traceCommand("action.recruitHere", controller.recruitHere.bind(controller)),
+    advanceUnit: traceCommand("action.advanceUnit", controller.advanceUnit.bind(controller)),
+    dropItem: traceCommand("action.dropItem", controller.dropItem.bind(controller)),
+    endTurn: traceCommand("action.endTurn", controller.endTurn.bind(controller)),
+    undoMove: traceCommand("action.undoMove", controller.undoMove.bind(controller)),
+    reset: traceCommand("action.reset", controller.reset.bind(controller)),
+    setSound: traceCommand("action.setSound", controller.setSound.bind(controller)),
+    downloadDebugReport: traceCommand(
+      "action.downloadDebugReport",
+      controller.downloadDebugReport.bind(controller),
+    ),
+    error: traceCommand("action.error", controller.error.bind(controller)),
   });
 }
 

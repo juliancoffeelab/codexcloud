@@ -1,3 +1,11 @@
+import {
+  registerTraceSource,
+  receiveTrace,
+  traceInstant,
+  traceConfiguration,
+  type TraceConfig,
+} from "./performance-trace";
+import type { TraceBatch } from "./worker-trace";
 import type { BattlefieldScene } from "./battlefield-scene";
 import type { MotionKind } from "./motion";
 import { lightingKey, daylight } from "./battlefield-lighting";
@@ -11,6 +19,7 @@ export interface MapFrameRequest {
   battlefield?: BattlefieldScene;
 }
 export interface MapRenderRequest {
+  traceControl?: { config?: TraceConfig; stop?: number };
   preparePrograms?: { lighting: TerrainMapPlan["lighting"]; fog: boolean; prebuilt: boolean };
   revision: number;
   fog: readonly string[];
@@ -27,10 +36,12 @@ export type MapRenderResponse =
   | { revision: number; error: string };
 
 const renderers = new Set<MapRenderer>();
+let rendererSerial = 0;
 
 /** The worker owns the visible canvas. Messages contain scene changes and acknowledgements only. */
 export class MapRenderer {
   private worker: Worker;
+  private workerId = ++rendererSerial;
   private canvas = document.createElement("canvas");
   private offscreen?: OffscreenCanvas;
   private revision = 0;
@@ -40,6 +51,9 @@ export class MapRenderer {
   private failed = false;
   private displayed = false;
   private battlefield?: BattlefieldScene;
+  private unregisterTrace?: () => void;
+  private traceStop?: { id: number; resolve: () => void; timer: ReturnType<typeof setTimeout> };
+  private frameStarted = new Map<number, { time: number; trace?: TraceConfig }>();
 
   get hasFrame() {
     return this.displayed;
@@ -70,8 +84,34 @@ export class MapRenderer {
       this.fail(`Map worker failed: ${event.message || "script could not load"}`);
     this.worker.onmessageerror = () =>
       this.fail("Map worker returned an unreadable acknowledgement");
-    this.worker.onmessage = (event: MessageEvent<MapRenderResponse>) => {
+    this.worker.onmessage = (event: MessageEvent<MapRenderResponse | TraceBatch>) => {
+      if ("trace" in event.data) {
+        const { id, events, stopped } = event.data.trace;
+        receiveTrace(id, events);
+        if (stopped && this.traceStop?.id === id) {
+          clearTimeout(this.traceStop.timer);
+          this.traceStop.resolve();
+          this.traceStop = undefined;
+        }
+        return;
+      }
       const frame = event.data;
+      const submission = this.frameStarted.get(frame.revision);
+      if (submission?.trace)
+        receiveTrace(submission.trace.id, [
+          {
+            name: "Map request to acknowledgement",
+            cat: "latency",
+            ph: "X",
+            pid: 1,
+            tid: 1,
+            ts: (submission.time - submission.trace.origin) * 1000,
+            dur: (performance.timeOrigin + performance.now() - submission.time) * 1000,
+            args: { revision: frame.revision, error: "error" in frame ? frame.error : undefined },
+          },
+        ]);
+      for (const revision of this.frameStarted.keys())
+        if (revision <= frame.revision) this.frameStarted.delete(revision);
       if (this.failed || frame.revision !== this.revision) return;
       clearTimeout(this.timeout);
       if ("error" in frame) {
@@ -82,6 +122,21 @@ export class MapRenderer {
       this.displayed = true;
       this.onFrame?.(frame.revision);
     };
+    this.unregisterTrace = registerTraceSource({
+      start: (config) =>
+        this.worker.postMessage({
+          traceControl: { config: { ...config, workerId: this.workerId } },
+        }),
+      stop: (id) =>
+        new Promise<void>((resolve, reject) => {
+          const timer = setTimeout(() => {
+            this.traceStop = undefined;
+            reject(new Error("Map worker trace flush timed out"));
+          }, 1500);
+          this.traceStop = { id, resolve, timer };
+          this.worker.postMessage({ traceControl: { stop: id } });
+        }),
+    });
   }
 
   /** Adopt a pre-rendered canvas without recreating its worker or GPU context. */
@@ -115,6 +170,7 @@ export class MapRenderer {
 
   private fail(message: string) {
     if (this.failed) return;
+    traceInstant("Map renderer error", { message });
     this.failed = true;
     clearTimeout(this.timeout);
     // Keep the context alive until replacement/disposal so recoverable image or
@@ -153,9 +209,16 @@ export class MapRenderer {
             },
           };
     const canvas = this.offscreen;
+    const revision = ++this.revision;
+    const trace = traceConfiguration();
+    if (trace) {
+      this.frameStarted.set(revision, { time: performance.timeOrigin + performance.now(), trace });
+      if (this.frameStarted.size > 128)
+        this.frameStarted.delete(this.frameStarted.keys().next().value!);
+    }
     this.worker.postMessage(
       {
-        revision: ++this.revision,
+        revision,
         fog: frame.fog,
         lighting: frame.plan.lighting,
         scene,
@@ -192,6 +255,13 @@ export class MapRenderer {
   }
 
   destroy() {
+    this.unregisterTrace?.();
+    this.frameStarted.clear();
+    if (this.traceStop) {
+      clearTimeout(this.traceStop.timer);
+      this.traceStop.resolve();
+      this.traceStop = undefined;
+    }
     clearTimeout(this.timeout);
     ++this.revision;
     this.worker.terminate();

@@ -1,3 +1,4 @@
+import { workerTraceStart, workerTraceEnd, beginGpuTrace, endGpuTrace } from "./worker-trace";
 import {
   daylight,
   lightingKey,
@@ -110,6 +111,10 @@ export class MapRendererGpu {
     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
     gl.bindVertexArray(null);
     this.check();
+  }
+
+  get context() {
+    return this.gl;
   }
 
   hasSprite(url: string, key: string) {
@@ -717,13 +722,23 @@ export class MapRendererGpu {
   render(lighting: BattlefieldLighting = daylight, fog: readonly string[]) {
     const gl = this.gl;
     if (gl.isContextLost()) throw new Error("Map GPU context was lost. Retry map rendering.");
+    const renderStarted = workerTraceStart();
+    beginGpuTrace(gl);
     const lightKey = lightingKey(lighting),
       fogKey = JSON.stringify(fog);
     let dirty = this.compositionInvalid ? this.fullRegion() : null;
     if (this.lightKey !== lightKey) {
+      const uploadStarted = workerTraceStart();
       this.uploadLights(lighting);
+      workerTraceEnd("Light spatial index upload", uploadStarted, {
+        lights: lighting.lights?.length ?? 0,
+      });
       const region = this.lightingRegion(lighting);
-      if (region) this.shade(lighting, region);
+      if (region) {
+        const started = workerTraceStart();
+        this.shade(lighting, region);
+        workerTraceEnd("Terrain lighting", started, { ...region });
+      }
       // Live sprites sample light at their ground position; redraw the entire
       // sprite even when its pixels extend beyond a changed light's radius.
       dirty = this.union(
@@ -734,7 +749,9 @@ export class MapRendererGpu {
       this.lightKey = lightKey;
     }
     if (this.fogKey !== fogKey) {
+      const started = workerTraceStart();
       dirty = this.union(dirty, this.paintFog(fog));
+      workerTraceEnd("Fog mask and blur", started, { tiles: fog.length });
       this.fogKey = fogKey;
     }
     const now = performance.now();
@@ -743,18 +760,30 @@ export class MapRendererGpu {
       this.overlays?.dirty(now, this.scale, this.canvas.width, this.canvas.height) ?? null,
     );
     if (dirty) {
+      const composeStarted = workerTraceStart();
       this.compose(dirty);
+      workerTraceEnd("Restore cached background", composeStarted, { ...dirty });
       if (this.overlays) {
         this.scissor(dirty, this.canvas);
+        const overlayStarted = workerTraceStart();
         this.overlays.draw(
           now,
           this.canvas.width / this.scale,
           this.canvas.height / this.scale,
           (u) => this.configureLighting(u, lighting),
         );
+        workerTraceEnd("Live overlay draw", overlayStarted);
         gl.disable(gl.SCISSOR_TEST);
       }
     }
+    endGpuTrace();
+    workerTraceEnd("Map render CPU submission", renderStarted, {
+      lights: lighting.lights?.length ?? 0,
+      fog: fog.length,
+      dirty: !!dirty,
+      animating: this.animating,
+      ...this.overlays?.statistics,
+    });
     this.compositionInvalid = false;
     return this.present();
   }

@@ -1,0 +1,106 @@
+{
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 12,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "rider"
+        },
+        {
+          "unit": "horse-archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "tile": "hex-0024-b598c83bd2",
+          "character": "mirror-captain"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0056-2e6c8414fc"
+        },
+        {
+          "type": "scout",
+          "tile": "hex-0045-b0e58b1f93"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 12,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "rider"
+        },
+        {
+          "unit": "horse-archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "tile": "hex-0088-d3b4c2a321",
+          "character": "mirror-rival"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-1016-9e0db09d3e"
+        },
+        {
+          "type": "scout",
+          "tile": "hex-1005-f091a76e9d"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
+    }
+  ]
+}
