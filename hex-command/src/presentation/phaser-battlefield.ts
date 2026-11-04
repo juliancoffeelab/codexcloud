@@ -679,6 +679,7 @@ export class PhaserBattlefield {
     }
     const size = this.terrain.dimensions;
     g.setScale(this.canvas.width / size.width, this.canvas.height / size.height);
+    this.stage = "outline target allocation";
     this.outlines = this.scene.add
       .renderTexture(0, 0, 1, 1)
       .setOrigin(0)
@@ -701,7 +702,7 @@ export class PhaserBattlefield {
     texture.setFromRenderTarget();
     previousTarget.destroy();
     this.outlines
-      .resize(this.canvas.width, this.canvas.height)
+      .resize(this.canvas.width, this.canvas.height, false)
       .setDisplaySize(size.width, size.height);
     // DynamicTexture.draw uses Phaser's capture target. Grow that one on demand,
     // without subscribing it (or unused FX/mask buffers) to display resizes.
