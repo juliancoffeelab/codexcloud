@@ -29,7 +29,6 @@
   let renderError = $state<string>();
   let renderAttempt = $state(0);
   let activeRenderer = $state.raw<MapRenderer>();
-  let hoveredTile = $state<string | null>(null);
   let keyboardTile = $state<string | null>(null);
   let reducedMotion = $state(false);
   $effect(() => {
@@ -42,7 +41,7 @@
     return () => preference.removeEventListener("change", update);
   });
   $effect(() => {
-    activeRenderer?.inspect(hoveredTile, keyboardTile);
+    activeRenderer?.inspect(null, keyboardTile);
   });
 
   const game = $derived(view.game);
@@ -59,7 +58,7 @@
   );
   const sessionVersion = $derived(view.sessionVersion);
   const liveScene = $derived(
-    battlefieldScene(game, tiles, reducedMotion, `${sessionVersion}:${game.mapId}`),
+    battlefieldScene(game, tiles, reducedMotion, `${sessionVersion}:${game.mapId}`, artwork),
   );
   const size = $derived(mapDimensions(game));
   const mapWidth = $derived(size.width);
@@ -249,9 +248,6 @@
       id="map"
       data-gpu-battlefield
       use:listenMotion
-      onpointerleave={() => {
-        hoveredTile = null;
-      }}
       {viewBox}
       style={`--map-scale: ${game.cols / 11};`}
       role="group"
@@ -287,9 +283,6 @@
             data-tile={tile.id}
             onclick={() => actions.choose(tile.id)}
             onkeydown={(event) => handleTileKey(event, tile)}
-            onpointerenter={() => {
-              hoveredTile = tile.id;
-            }}
             onfocus={(event) => {
               keyboardTile = event.currentTarget.matches(":focus-visible") ? tile.id : null;
             }}

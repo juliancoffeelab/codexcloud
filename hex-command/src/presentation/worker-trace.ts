@@ -83,6 +83,7 @@ export function configureWorkerTrace(
       version: gl.getParameter(gl.VERSION),
       maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
       gpuTimers: !!extension,
+      antialias: gl.getContextAttributes()?.antialias,
     });
   }
 }

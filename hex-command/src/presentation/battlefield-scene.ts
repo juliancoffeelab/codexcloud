@@ -1,5 +1,7 @@
 import type { BattlefieldTileView } from "../ui/battlefield-view";
 import type { GameView } from "../game/view";
+import { artFrame } from "./art";
+import type { Artwork } from "./art";
 import { pixelSprites } from "./pixel-art";
 
 export interface BattlefieldUnit {
@@ -22,6 +24,7 @@ export interface BattlefieldScene {
   units: BattlefieldUnit[];
   items: { x: number; y: number; url?: string }[];
   fog: readonly string[];
+  prefetch?: string[];
 }
 
 /** Presentation-only snapshot; gameplay and authored data still come from Rust. */
@@ -30,6 +33,7 @@ export function battlefieldScene(
   tiles: readonly BattlefieldTileView[],
   reducedMotion: boolean,
   key: string,
+  artwork: Artwork,
 ): BattlefieldScene {
   const fog = new Set(game.presentation.fog);
   const centers = new Map(tiles.map((tile) => [tile.id, tile]));
@@ -39,6 +43,21 @@ export function battlefieldScene(
   return {
     key,
     reducedMotion,
+    prefetch: [
+      ...new Set(
+        game.factions.flatMap((faction) =>
+          [
+            ...new Set([
+              ...(faction.recruits ?? []).map((recruit) => recruit.unit),
+              ...game.recruitmentOptions(faction.id),
+            ]),
+          ].flatMap((type) => {
+            const frame = artFrame(artwork, "units", type, faction.palette);
+            return frame ? [frame.url] : [];
+          }),
+        ),
+      ),
+    ],
     tiles: tiles.map((tile) => ({
       id: tile.id,
       x: tile.x,

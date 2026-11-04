@@ -10,6 +10,7 @@ import type { MapFrameRequest, MapRenderRequest, MapRenderResponse } from "./map
 
 let gpu: MapRendererGpu | undefined;
 let traceConfig: TraceConfig | undefined;
+let displaySize: { width: number; height: number } | undefined;
 let baseKey: string | undefined;
 type RenderJob = MapFrameRequest & { revision: number };
 let scene: Omit<MapFrameRequest, "fog" | "battlefield"> | undefined;
@@ -23,13 +24,76 @@ let running = false;
 let latestRevision = 0;
 let activeLoad: { terrainKey: string; controller: AbortController } | undefined;
 
-async function loadImage(url: string, signal: AbortSignal) {
+async function loadImage(url: string, signal: AbortSignal, purpose = "terrain") {
   const started = workerTraceStart();
   const response = await fetch(url, { signal });
   if (!response.ok) throw new Error(`Map image failed to load (${response.status}): ${url}`);
   const image = await createImageBitmap(await response.blob(), { premultiplyAlpha: "none" });
-  workerTraceEnd("Sprite fetch and decode", started, { width: image.width, height: image.height });
+  workerTraceEnd("Sprite fetch and decode", started, {
+    width: image.width,
+    height: image.height,
+    asset: new URL(url, self.location.href).pathname,
+    purpose,
+  });
   return image;
+}
+
+// Speculative loads share the exact worker fetch/decode/upload path with first use.
+// Only three background requests run at a time; gameplay requests bypass that queue.
+const spriteLoads = new Map<
+  string,
+  { key: string; controller: AbortController; promise: Promise<void> }
+>();
+let warmQueue: { url: string; key: string }[] = [];
+let warming = 0;
+function ensureSprite(url: string, key: string, background = false): Promise<void> {
+  if (gpu!.hasSprite(url, key)) return Promise.resolve();
+  const identity = JSON.stringify([key, url]);
+  const existing = spriteLoads.get(identity);
+  if (existing) return existing.promise;
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(new Error("Battlefield sprite did not load within 15 seconds")),
+    15000,
+  );
+  const promise = loadImage(url, controller.signal, background ? "prefetch" : "required")
+    .then((image) => {
+      try {
+        if (!controller.signal.aborted) {
+          const started = workerTraceStart();
+          gpu!.uploadSprite(url, key, image);
+          workerTraceEnd("Sprite atlas upload", started, {
+            asset: new URL(url, self.location.href).pathname,
+            purpose: background ? "prefetch" : "required",
+          });
+        }
+      } finally {
+        image.close();
+      }
+    })
+    .finally(() => {
+      clearTimeout(timeout);
+      spriteLoads.delete(identity);
+    });
+  spriteLoads.set(identity, { key, controller, promise });
+  return promise;
+}
+function warmSprites() {
+  if (running || pending || !gpu) return;
+  while (warming < 3 && warmQueue.length) {
+    const next = warmQueue.shift()!;
+    if (gpu.hasSprite(next.url, next.key) || spriteLoads.has(JSON.stringify([next.key, next.url])))
+      continue;
+    warming++;
+    void ensureSprite(next.url, next.key, true)
+      .catch(() => {
+        // A failed speculative request can be retried by actual use and diagnosed there.
+      })
+      .finally(() => {
+        warming--;
+        warmSprites();
+      });
+  }
 }
 
 const decodedBases = new Map<string, ImageBitmap>();
@@ -135,33 +199,27 @@ async function render(request: RenderJob) {
   await preparePrograms(request);
   if (pending) return false;
   if (request.battlefield && request.battlefield !== displayedBattlefield) {
-    const images = new Map<string, ImageBitmap>();
-    const controller = new AbortController();
-    const timer = setTimeout(
-      () => controller.abort(new Error("Battlefield sprites did not load within 15 seconds")),
-      15000,
-    );
-    try {
-      const urls = [
-        ...new Set(
-          [...request.battlefield.units, ...request.battlefield.items].flatMap((sprite) =>
-            sprite.url && !gpu!.hasSprite(sprite.url, request.battlefield!.key) ? [sprite.url] : [],
-          ),
+    gpu.prepareBattlefield(request.battlefield.key);
+    const urls = [
+      ...new Set(
+        [...request.battlefield.units, ...request.battlefield.items].flatMap((sprite) =>
+          sprite.url ? [sprite.url] : [],
         ),
-      ];
-      const loaded = await Promise.allSettled(
-        urls.map(async (url) => images.set(url, await loadImage(url, controller.signal))),
-      );
-      const failed = loaded.find((result) => result.status === "rejected");
-      if (failed?.status === "rejected") throw failed.reason;
-      if (pending) return false;
-      gpu.setBattlefield(request.battlefield, images);
-      gpu.inspect(interaction.hovered, interaction.focused);
-      displayedBattlefield = request.battlefield;
-    } finally {
-      clearTimeout(timer);
-      for (const image of images.values()) image.close();
-    }
+      ),
+    ];
+    const loaded = await Promise.allSettled(
+      urls.map((url) => ensureSprite(url, request.battlefield!.key)),
+    );
+    const failed = loaded.find((result) => result.status === "rejected");
+    if (failed?.status === "rejected") throw failed.reason;
+    if (pending) return false;
+    gpu.setBattlefield(request.battlefield, new Map());
+    gpu.inspect(interaction.hovered, interaction.focused);
+    displayedBattlefield = request.battlefield;
+    warmQueue = (request.battlefield.prefetch ?? []).map((url) => ({
+      url,
+      key: request.battlefield!.key,
+    }));
   }
   gpu.render(plan.lighting, fog);
   displayedJob = request;
@@ -169,6 +227,12 @@ async function render(request: RenderJob) {
 }
 
 self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
+  if (event.data.resize) {
+    displaySize = event.data.resize;
+    gpu?.setPresentationSize(displaySize);
+    scheduleAnimation();
+    return;
+  }
   if (event.data.traceControl) {
     const control = event.data.traceControl;
     if (control.stop !== undefined) {
@@ -216,6 +280,7 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
     );
     try {
       gpu = new MapRendererGpu(canvas);
+      if (displaySize) gpu.setPresentationSize(displaySize);
       if (traceConfig) configureWorkerTrace(traceConfig, gpu.context);
     } catch (error) {
       self.postMessage({
@@ -226,7 +291,13 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
     }
   }
   if (event.data.scene) scene = event.data.scene;
-  if (event.data.battlefield) battlefield = event.data.battlefield;
+  if (event.data.battlefield) {
+    battlefield = event.data.battlefield;
+    for (const load of spriteLoads.values())
+      if (load.key !== battlefield.key)
+        load.controller.abort(new Error("Battlefield scene replaced"));
+    warmQueue = [];
+  }
   if (activeLoad && scene && activeLoad.terrainKey !== scene.terrainKey)
     activeLoad.controller.abort(new Error("Map scene was replaced"));
   if (!scene) {
@@ -269,6 +340,7 @@ async function drain() {
   }
   running = false;
   if (gpu?.animating) scheduleAnimation();
+  warmSprites();
 }
 
 // Worker animation runs only while feedback is active. Terrain/light/fog caches

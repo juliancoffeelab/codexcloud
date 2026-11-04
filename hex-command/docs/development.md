@@ -240,7 +240,8 @@ are packed into nearest-sampled GPU atlas pages; batches share one vertex format
 Unit sprites sample the same colored lighting function as terrain, replacing
 per-tile SVG color filters. Transparent SVG hexes retain click targets, keyboard
 navigation and accessible labels. Drag panning and Control/Command-wheel or
-plus/minus zoom transform this shared canvas/input surface without repainting.
+plus/minus zoom transform this shared canvas/input surface while retaining native
+terrain, lighting and fog caches.
 Zero resets zoom.
 
 Production prebuilds unlit terrain PNGs, independent of light state. The worker
@@ -458,3 +459,23 @@ villages emit light until ownership changes; both keeps have fixed lamps.
 Every death creates its own persistent red-light mark, including repeated deaths
 on one hex. The usual commander victory/loss conditions end the battle. No test
 scenario conditions are implemented in frontend rendering.
+
+### Sprite preparation and outline resolution
+
+After the first battlefield frame, the worker fetches, decodes and uploads the
+published factions' recruitment-pool artwork in the background. Three speculative
+requests run at once. Actual use shares an in-flight request or an uploaded atlas
+entry; background preparation never gates a ready frame. Scene changes abort old
+requests, and a failed speculative load is retried/diagnosed when actually needed.
+An immediate recruit can still wait if its image has not finished loading.
+Trace image events identify the asset and required/prefetch purpose; atlas-upload
+events distinguish decoded images from artwork ready to draw.
+
+Native terrain, lighting and fog caches keep their original resolution and pixel
+scale. The final canvas instead follows the displayed size and device pixel ratio,
+with antialiasing for geometric overlays. Its display buffer is bounded to
+4,194,304 pixels and the device's renderbuffer/viewport limits. Resize/zoom can
+refresh that buffer without rebuilding the native caches. Texture sampling remains
+nearest for pixel artwork. Hex strokes use analytic edge coverage in a separate cached GPU vertex buffer,
+with upstream widths, opacity, colors,
+continuous dash lengths and miter joins; there is no added gold hover outline.

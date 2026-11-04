@@ -78,6 +78,9 @@ export class MapRendererGpu {
   private fogKey?: string;
   private hasFog = false;
   private scale = 1;
+  private width = 1;
+  private height = 1;
+  private presentationSize?: { width: number; height: number };
   private overlays?: BattlefieldOverlayGpu;
   private battlefieldKey?: string;
 
@@ -85,7 +88,7 @@ export class MapRendererGpu {
     const gl = this.canvas.getContext("webgl2", {
       alpha: true,
       premultipliedAlpha: true,
-      antialias: false,
+      antialias: true,
       depth: false,
       stencil: false,
       // This canvas renders on demand, so its visible pixels must survive idle
@@ -113,6 +116,30 @@ export class MapRendererGpu {
     this.check();
   }
 
+  setPresentationSize(size: { width: number; height: number }) {
+    this.presentationSize = size;
+    this.resizePresentation();
+  }
+  private resizePresentation() {
+    const gl = this.gl;
+    const requested = this.presentationSize ?? { width: this.width, height: this.height };
+    const viewport = gl.getParameter(gl.MAX_VIEWPORT_DIMS) as Int32Array;
+    const limit = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) as number;
+    // Bound the multisampled display buffer; native lighting/fog textures do not grow.
+    const factor = Math.min(
+      1,
+      Math.sqrt(4_194_304 / (requested.width * requested.height)),
+      Math.min(limit, viewport[0]!) / requested.width,
+      Math.min(limit, viewport[1]!) / requested.height,
+    );
+    const width = Math.max(1, Math.floor(requested.width * factor)),
+      height = Math.max(1, Math.floor(requested.height * factor));
+    if (this.canvas.width === width && this.canvas.height === height) return;
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.compositionInvalid = true;
+  }
+
   get context() {
     return this.gl;
   }
@@ -120,14 +147,20 @@ export class MapRendererGpu {
   hasSprite(url: string, key: string) {
     return key === this.battlefieldKey && (this.overlays?.hasImage(url) ?? false);
   }
-  setBattlefield(scene: BattlefieldScene, images: ReadonlyMap<string, ImageBitmap>) {
+  prepareBattlefield(key: string) {
     this.overlays ??= new BattlefieldOverlayGpu(this.gl);
-    if (scene.key !== this.battlefieldKey) {
+    if (key !== this.battlefieldKey) {
       if (this.battlefieldKey !== undefined) this.overlays.resetImages();
-      this.battlefieldKey = scene.key;
+      this.battlefieldKey = key;
     }
-    for (const [url, image] of images) this.overlays.addImage(url, image);
-    this.overlays.setScene(scene, performance.now());
+  }
+  uploadSprite(url: string, key: string, image: ImageBitmap) {
+    if (this.battlefieldKey === key) this.overlays!.addImage(url, image);
+  }
+  setBattlefield(scene: BattlefieldScene, images: ReadonlyMap<string, ImageBitmap>) {
+    this.prepareBattlefield(scene.key);
+    for (const [url, image] of images) this.overlays!.addImage(url, image);
+    this.overlays!.setScene(scene, performance.now());
   }
   pulse(tile: string, kind: MotionKind) {
     this.overlays?.pulse(tile, kind, performance.now());
@@ -282,7 +315,7 @@ export class MapRendererGpu {
 
   private quad(uniforms: Program["uniforms"], x: number, y: number, width: number, height: number) {
     const gl = this.gl;
-    gl.uniform2f(uniforms.size!, this.canvas.width, this.canvas.height);
+    gl.uniform2f(uniforms.size!, this.width, this.height);
     gl.uniform4f(uniforms.rect!, x, y, width, height);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
@@ -302,19 +335,20 @@ export class MapRendererGpu {
       height > Math.min(this.maxTextureSize, viewport[1]!)
     )
       throw new Error("Map exceeds this GPU's texture or viewport limits");
-    if (!this.terrain || this.canvas.width !== width || this.canvas.height !== height) {
+    if (!this.terrain || this.width !== width || this.height !== height) {
       for (const target of [this.terrain, this.lit, this.fogMask, this.fogScratch, this.fog]) {
         if (target) {
           gl.deleteTexture(target.texture);
           gl.deleteFramebuffer(target.framebuffer);
         }
       }
-      this.canvas.width = width;
-      this.canvas.height = height;
+      this.width = width;
+      this.height = height;
       this.terrain = this.target(width, height);
       this.lit = this.target(width, height);
       this.fogMask = this.fogScratch = this.fog = undefined;
     }
+    this.resizePresentation();
     this.tileCenters = new Map(plan.tiles.map((tile) => [tile.id, { x: tile.x, y: tile.y }]));
     this.straightTerrain = !!prebuilt;
     this.scale = plan.pixelScale;
@@ -369,7 +403,7 @@ export class MapRendererGpu {
   }
 
   private fullRegion(): Region {
-    return { left: 0, top: 0, right: this.canvas.width, bottom: this.canvas.height };
+    return { left: 0, top: 0, right: this.width, bottom: this.height };
   }
 
   private union(a: Region | null, b: Region | null): Region | null {
@@ -395,8 +429,8 @@ export class MapRendererGpu {
   /** Region coordinates are native map pixels, independent of render-target size. */
   private scissor(region: Region, target: Pick<Target, "width" | "height">) {
     const gl = this.gl,
-      sx = target.width / this.canvas.width,
-      sy = target.height / this.canvas.height;
+      sx = target.width / this.width,
+      sy = target.height / this.height;
     const left = Math.max(0, Math.floor(region.left * sx)),
       top = Math.max(0, Math.floor(region.top * sy));
     const right = Math.min(target.width, Math.ceil(region.right * sx)),
@@ -488,7 +522,7 @@ export class MapRendererGpu {
       gl.FLOAT,
       table,
     );
-    const grid = lightGrid(lighting, this.canvas.width, this.canvas.height, this.scale);
+    const grid = lightGrid(lighting, this.width, this.height, this.scale);
     this.sample(this.lightCells, 2);
     gl.texImage2D(
       gl.TEXTURE_2D,
@@ -553,7 +587,7 @@ export class MapRendererGpu {
     this.sample(this.terrain.texture, 0);
     gl.uniform1i(u.terrain!, 0);
     gl.uniform1i(u.straight!, Number(this.straightTerrain));
-    gl.uniform2f(u.size!, this.canvas.width, this.canvas.height);
+    gl.uniform2f(u.size!, this.width, this.height);
     this.configureLighting(u, lighting);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     gl.enable(gl.BLEND);
@@ -612,8 +646,8 @@ export class MapRendererGpu {
       return previous?.size ? this.fullRegion() : null;
     }
     if (!this.fog) {
-      const width = Math.ceil(this.canvas.width / 2),
-        height = Math.ceil(this.canvas.height / 2);
+      const width = Math.ceil(this.width / 2),
+        height = Math.ceil(this.height / 2);
       this.fogMask = this.target(width, height, true);
       this.fogScratch = this.target(width, height, true);
       this.fog = this.target(width, height, true);
@@ -672,7 +706,7 @@ export class MapRendererGpu {
     this.scissor(changed, maskTarget);
     this.clear();
     const mask = this.use("mask");
-    gl.uniform2f(mask.size!, this.canvas.width / this.scale, this.canvas.height / this.scale);
+    gl.uniform2f(mask.size!, this.width / this.scale, this.height / this.scale);
     gl.bindVertexArray(this.fogVao);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.fogBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.DYNAMIC_DRAW);
@@ -682,13 +716,13 @@ export class MapRendererGpu {
     gl.uniform1i(u.image!, 0);
     gl.uniform2f(u.size!, fogTarget.width, fogTarget.height);
     // Each paired Gaussian kernel reaches at most 13 half-resolution texels.
-    const horizontal = this.expand(changed, (13 * this.canvas.width) / fogTarget.width, 0);
+    const horizontal = this.expand(changed, (13 * this.width) / fogTarget.width, 0);
     this.bind(scratchTarget);
     this.scissor(horizontal, scratchTarget);
     this.sample(maskTarget.texture, 0);
     gl.uniform2f(u.stepSize!, 1 / fogTarget.width, 0);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-    const vertical = this.expand(horizontal, 0, (13 * this.canvas.height) / fogTarget.height);
+    const vertical = this.expand(horizontal, 0, (13 * this.height) / fogTarget.height);
     this.bind(fogTarget);
     this.scissor(vertical, fogTarget);
     this.sample(scratchTarget.texture, 0);
@@ -757,7 +791,7 @@ export class MapRendererGpu {
     const now = performance.now();
     dirty = this.union(
       dirty,
-      this.overlays?.dirty(now, this.scale, this.canvas.width, this.canvas.height) ?? null,
+      this.overlays?.dirty(now, this.scale, this.width, this.height) ?? null,
     );
     if (dirty) {
       const composeStarted = workerTraceStart();
@@ -766,11 +800,8 @@ export class MapRendererGpu {
       if (this.overlays) {
         this.scissor(dirty, this.canvas);
         const overlayStarted = workerTraceStart();
-        this.overlays.draw(
-          now,
-          this.canvas.width / this.scale,
-          this.canvas.height / this.scale,
-          (u) => this.configureLighting(u, lighting),
+        this.overlays.draw(now, this.width / this.scale, this.height / this.scale, (u) =>
+          this.configureLighting(u, lighting),
         );
         workerTraceEnd("Live overlay draw", overlayStarted);
         gl.disable(gl.SCISSOR_TEST);
@@ -783,6 +814,10 @@ export class MapRendererGpu {
       dirty: !!dirty,
       animating: this.animating,
       ...this.overlays?.statistics,
+      nativeWidth: this.width,
+      nativeHeight: this.height,
+      displayWidth: this.canvas.width,
+      displayHeight: this.canvas.height,
     });
     this.compositionInvalid = false;
     return this.present();

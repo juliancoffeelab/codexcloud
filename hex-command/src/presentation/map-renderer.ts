@@ -19,6 +19,7 @@ export interface MapFrameRequest {
   battlefield?: BattlefieldScene;
 }
 export interface MapRenderRequest {
+  resize?: { width: number; height: number };
   traceControl?: { config?: TraceConfig; stop?: number };
   preparePrograms?: { lighting: TerrainMapPlan["lighting"]; fog: boolean; prebuilt: boolean };
   revision: number;
@@ -53,6 +54,28 @@ export class MapRenderer {
   private battlefield?: BattlefieldScene;
   private unregisterTrace?: () => void;
   private traceStop?: { id: number; resolve: () => void; timer: ReturnType<typeof setTimeout> };
+  private resizeObserver?: ResizeObserver;
+  private host?: HTMLElement;
+  private displaySize?: { width: number; height: number };
+  private refreshSize = () => {
+    if (this.failed || !this.host) return;
+    const bounds = this.host.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const size = {
+      width: Math.ceil(bounds.width * devicePixelRatio),
+      height: Math.ceil(bounds.height * devicePixelRatio),
+    };
+    if (this.displaySize?.width === size.width && this.displaySize?.height === size.height) return;
+    this.displaySize = size;
+    this.worker.postMessage({ resize: size });
+  };
+  private observeSize(host: HTMLElement) {
+    this.resizeObserver?.disconnect();
+    this.host = host;
+    this.refreshSize();
+    this.resizeObserver = new ResizeObserver(this.refreshSize);
+    this.resizeObserver.observe(host);
+  }
   private frameStarted = new Map<number, { time: number; trace?: TraceConfig }>();
 
   get hasFrame() {
@@ -79,6 +102,8 @@ export class MapRenderer {
       this.worker.terminate();
       throw error;
     }
+    this.observeSize(host);
+    window.addEventListener("resize", this.refreshSize);
     renderers.add(this);
     this.worker.onerror = (event) =>
       this.fail(`Map worker failed: ${event.message || "script could not load"}`);
@@ -152,6 +177,7 @@ export class MapRenderer {
     this.displayed = false;
     this.canvas.style.visibility = "hidden";
     host.append(this.canvas);
+    this.observeSize(host);
   }
 
   preparePrograms(frame: MapFrameRequest) {
@@ -224,6 +250,7 @@ export class MapRenderer {
         scene,
         battlefield: battlefield && {
           ...battlefield,
+          prefetch: battlefield.prefetch?.map(absolute),
           units: battlefield.units.map((unit) => ({
             ...unit,
             url: unit.url && absolute(unit.url),
@@ -255,6 +282,8 @@ export class MapRenderer {
   }
 
   destroy() {
+    this.resizeObserver?.disconnect();
+    window.removeEventListener("resize", this.refreshSize);
     this.unregisterTrace?.();
     this.frameStarted.clear();
     if (this.traceStop) {

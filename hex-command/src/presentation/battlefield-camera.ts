@@ -1,6 +1,7 @@
 import { traceInstant } from "./performance-trace";
 /** DOM camera transforms the single GPU canvas and its transparent input surface
- * together. Panning/zooming never rebuilds terrain or sends a worker frame. */
+ * together. Camera changes retain native terrain/light/fog caches; resizing the
+ * surface can refresh the display-resolution framebuffer. */
 export function battlefieldCamera(viewport: HTMLDivElement) {
   let zoom = 1;
   let drag: { id: number; x: number; y: number; left: number; top: number } | undefined;
