@@ -10,47 +10,44 @@ use crate::ai::{
 use crate::sort::SharedSort;
 use crate::{data::*, logic::Game};
 use rustc_hash::FxHashSet as HashSet;
-// Visibility can change when an otherwise unrelated unit disappears.
-fn observes_visibility(when: &When) -> bool {
-    match when {
-        When::VisibleUnits(_) => true,
-        When::All(v) | When::Any(v) => v.iter().any(observes_visibility),
-        When::Not(v) => observes_visibility(v),
-        When::Held(v) => v.when.as_deref().is_some_and(observes_visibility),
-        When::Own(v) => v.when.as_deref().is_some_and(observes_visibility),
+fn is_spawn(action: &EventAction) -> bool {
+    if let EventAction::Spawn(_) = action {
+        true
+    } else {
+        false
+    }
+}
+// Read event-owned duties through the same cheap completion facts as upstream.
+fn authored_goal_done(game: &Game<'_>, event: &ScriptEvent) -> bool {
+    let Some(objective) = &event.objective else {
+        return true;
+    };
+    if objective.optional {
+        return true;
+    }
+    let Some(state) = game.campaign.as_ref().and_then(|c| c.scripts.as_ref()) else {
+        return false;
+    };
+    if !state.active.contains(&event.id) {
+        return true;
+    }
+    match &objective.intent {
+        EventIntent::Capture(tiles) => tiles
+            .iter()
+            .all(|tile| game.owners[game.site(tile)].as_deref() == Some("player")),
+        EventIntent::Escort(value) => game.units.iter().any(|unit| {
+            unit.side == Side::Player
+                && unit.role.is_some_and(Role::is_escort)
+                && game.script_unit_matches(&value.units, unit)
+                && game.board.ids[unit.tile] == value.tile
+        }),
+        EventIntent::Escape(value) => game.units.iter().any(|unit| {
+            unit.side == Side::Player
+                && unit.is_leader()
+                && game.script_unit_matches(&value.units, unit)
+                && game.board.ids[unit.tile] == value.tile
+        }),
         _ => false,
-    }
-}
-fn affects_battle(action: &EventAction) -> bool {
-    match action {
-        EventAction::Say(_) | EventAction::Sound(_) | EventAction::Log(_) => false,
-        EventAction::ForEachUnit(group) => group.actions.iter().any(affects_battle),
-        EventAction::ForEachMark(group) => group.actions.iter().any(affects_battle),
-        _ => true,
-    }
-}
-fn is_spawn(a: &EventAction) -> bool {
-    match a {
-        EventAction::Spawn(_) => true,
-        EventAction::Give(_)
-        | EventAction::PlaceItem(_)
-        | EventAction::ChangeAllegiance(_)
-        | EventAction::DeleteUnit(_)
-        | EventAction::SetFlag(_)
-        | EventAction::Say(_)
-        | EventAction::Sound(_)
-        | EventAction::CreateMark(_)
-        | EventAction::RemoveMark(_)
-        | EventAction::ForEachUnit(_)
-        | EventAction::ForEachMark(_)
-        | EventAction::SetTerrain(_)
-        | EventAction::Gold(_)
-        | EventAction::UnlockRecruits(_)
-        | EventAction::Victory(_)
-        | EventAction::Defeat(_)
-        | EventAction::Log(_)
-        | EventAction::FailObjective(_)
-        | EventAction::Recruits(_) => false,
     }
 }
 impl CampaignBlock {
@@ -186,166 +183,79 @@ impl CampaignBlock {
             ..TacticalOrders::default()
         };
         if let Some(mission) = &game.mission {
-            if let Some(state) = game.campaign.as_ref().and_then(|c| c.scripts.as_ref()) {
-                // Moving a unit only changes an arrival forecast when it affects
-                // the trigger or blocks one of the possible placement tiles.
-                let mut arrival_sites: HashSet<usize> = state
-                    .pending
-                    .iter()
-                    .flat_map(|p| p.area.iter().map(|id| game.site(id)))
-                    .collect();
-                let boundary_events: Vec<_> = mission
-                    .scripted_events
-                    .iter()
-                    .filter(|e| {
-                        state.active.contains(&e.id)
-                            && game.event_may_fire_next_turn(&e.when)
-                            && e.actions.iter().any(affects_battle)
-                    })
-                    .collect();
-                let mut future = state.pending.clone();
-                for event in &boundary_events {
-                    for action in event.actions_recursive() {
-                        if let EventAction::Spawn(spec) = action {
-                            future.push(PendingEventSpawn {
-                                area: vec![],
-                                faction: spec.faction.clone(),
-                                ai_group: spec.ai_group.clone(),
-                                units: spec.units.iter().map(SpawnEntry::member).collect(),
-                            });
-                        }
-                    }
-                }
-                let mut has_position_effects = !future.is_empty();
-                let mut bound_actors = HashSet::default();
-                let creates_marks = boundary_events
-                    .iter()
-                    .flat_map(|e| e.actions_recursive())
-                    .any(|a| {
-                        if let EventAction::CreateMark(_) = a {
-                            true
-                        } else {
-                            false
-                        }
-                    });
-                for event in &boundary_events {
-                    if !event.actions_recursive().iter().any(|a| is_spawn(a)) {
-                        continue;
-                    }
-                    let (sites, actors, unresolved) =
-                        game.event_spawn_dependencies(&event.actions, &future);
-                    arrival_sites.extend(sites);
-                    bound_actors.extend(actors);
-                    tactics.pending_arrivals |= unresolved
-                        || (creates_marks
-                            && event.actions_recursive().iter().any(|a| {
-                                if let EventAction::ForEachMark(_) = a {
-                                    true
-                                } else {
-                                    false
-                                }
-                            }));
-                }
-                // Earlier events may enable a spawn through flags or other effects.
-                // Include their dependencies rather than inspecting only the spawn owner.
-                let mut selectors = vec![];
-                for event in &boundary_events {
-                    selectors.extend(event.when.position_selectors());
-                    for action in event.actions_recursive() {
-                        let bound = match action {
-                            EventAction::ForEachUnit(group) => {
-                                if let Some(tile) = &group.select.tile {
-                                    has_position_effects = true;
-                                    selectors.push(&group.select.units);
-                                    tile.starts_with('$')
-                                } else {
-                                    false
-                                }
+            // Preserve the upstream player-side, due-enemy-wave forecast horizon.
+            // The event system supplies committed pending requests and scheduled waves.
+            if game.turn == Side::Player {
+                if let Some(state) = game.campaign.as_ref().and_then(|c| c.scripts.as_ref()) {
+                    tactics.pending_arrivals = state.pending.iter().any(|pending| {
+                        game.faction(&pending.faction)
+                            .is_some_and(|f| f.phase == Side::Enemy)
+                    }) || mission.scripted_events.iter().any(|event| {
+                        let due = match &event.when {
+                            When::Turn(TurnSelection::Faction { number, faction }) => {
+                                *number <= game.round
+                                    && game
+                                        .faction(faction)
+                                        .is_some_and(|f| f.phase == Side::Enemy)
                             }
-                            EventAction::Give(grant) => {
-                                if let Some(tile) = &grant.tile {
-                                    selectors.push(&grant.units);
-                                    has_position_effects = true;
-                                    tile.starts_with('$')
-                                } else {
-                                    false
-                                }
-                            }
-                            EventAction::PlaceItem(item) => {
-                                has_position_effects = true;
-                                if item.tile.starts_with('$') {
-                                    true
-                                } else {
-                                    arrival_sites.insert(game.site(&item.tile));
-                                    false
-                                }
-                            }
-                            EventAction::CreateMark(mark) => mark.tile.starts_with('$'),
-                            EventAction::SetTerrain(change) => change.tile.starts_with('$'),
                             _ => false,
                         };
-                        tactics.pending_arrivals |= bound;
-                    }
-                }
-                let arrival_actors: HashSet<_> = if has_position_effects {
-                    tactics.pending_arrivals |=
-                        boundary_events.iter().any(|e| observes_visibility(&e.when))
-                            || game.factions.iter().any(|f| f.transfer.is_some());
-                    game.units
-                        .iter()
-                        .filter(|u| {
-                            game.belongs_to_phase(u, game.turn)
-                                && selectors
-                                    .iter()
-                                    .any(|selector| game.script_unit_matches(selector, u))
-                        })
-                        .map(|u| u.id)
-                        .collect()
-                } else {
-                    HashSet::default()
-                };
-                let mut arrival_actors = arrival_actors;
-                arrival_actors.extend(bound_actors);
-                let mut sites: Vec<_> = arrival_sites.into_iter().collect();
-                sites.sort_unstable();
-                for unit in game
-                    .units
-                    .iter()
-                    .filter(|u| game.belongs_to_phase(u, game.turn))
-                {
-                    let locations = if arrival_actors.contains(&unit.id) {
-                        vec![TileId(game.board.ids[unit.tile].clone())]
-                    } else {
-                        sites
-                            .iter()
-                            .map(|&t| TileId(game.board.ids[t].clone()))
-                            .collect()
-                    };
-                    if !locations.is_empty() {
-                        tactics
-                            .transition_sensitive
-                            .push((UnitId(unit.id), locations));
-                    }
+                        due && state.active.contains(&event.id)
+                            && event
+                                .actions_recursive()
+                                .iter()
+                                .any(|action| is_spawn(action))
+                    });
                 }
             }
-            // Only authored event objectives can change the chapter at these sites.
-            // Policy-generated goals (such as rebuilding at a keep) are not events.
-            let event_targets = if game.turn == Side::Player {
-                game.scripted_policy_objectives(Side::Player)
-            } else {
-                vec![]
-            };
-            for target in event_targets {
-                if let Some(id) = target
-                    .actor
-                    .as_deref()
-                    .and_then(|v| v.strip_prefix('u'))
-                    .and_then(|v| v.parse().ok())
-                {
-                    tactics.transition_sensitive.push((
-                        UnitId(id),
-                        target.tiles.iter().cloned().map(TileId).collect(),
-                    ));
+            // Read authored intent, never policy-generated rebuild/group goals.
+            for unit in game
+                .units
+                .iter()
+                .filter(|u| game.belongs_to_phase(u, game.turn))
+            {
+                let mut sites = vec![];
+                for event in &mission.scripted_events {
+                    let Some(objective) = &event.objective else {
+                        continue;
+                    };
+                    if objective.optional {
+                        continue;
+                    }
+                    let site = match &objective.intent {
+                        EventIntent::Escort(value)
+                            if unit.role.is_some_and(Role::is_escort)
+                                && game.script_unit_matches(&value.units, unit) =>
+                        {
+                            Some(&value.tile)
+                        }
+                        EventIntent::Escape(value)
+                            if unit.is_leader() && game.script_unit_matches(&value.units, unit) =>
+                        {
+                            Some(&value.tile)
+                        }
+                        EventIntent::Hold(value)
+                            if value
+                                .units
+                                .character
+                                .as_ref()
+                                .is_some_and(|id| unit.character.as_ref() == Some(id)) =>
+                        {
+                            Some(&value.tile)
+                        }
+                        EventIntent::GoTo(value)
+                            if game.script_unit_matches(&value.units, unit) =>
+                        {
+                            Some(&value.tile)
+                        }
+                        _ => None,
+                    };
+                    if let Some(site) = site {
+                        sites.push(TileId(site.clone()));
+                    }
+                }
+                if !sites.is_empty() {
+                    tactics.transition_sensitive.push((UnitId(unit.id), sites));
                 }
             }
         }
@@ -448,35 +358,11 @@ impl CampaignBlock {
             .iter()
             .find(|u| game.belongs_to_phase(u, game.turn))
         {
-            let active: Vec<_> = game
-                .mission
-                .as_ref()
-                .into_iter()
-                .flat_map(|m| &m.scripted_events)
-                .filter(|event| {
-                    game.campaign
-                        .as_ref()
-                        .and_then(|c| c.scripts.as_ref())
-                        .is_some_and(|s| s.active.contains(&event.id))
-                })
-                .collect();
-            let indirect = game.campaign.is_none()
-                || game
-                    .campaign
-                    .as_ref()
-                    .and_then(|c| c.scripts.as_ref())
-                    .is_some_and(|s| !s.pending.is_empty())
-                || game.factions.iter().any(|f| f.transfer.is_some())
-                || active.iter().any(|e| observes_visibility(&e.when));
-            let selectors: Vec<_> = active.iter().flat_map(|e| e.selectors()).collect();
             tactics.terminal_targets = game
                 .units
                 .iter()
                 .filter(|enemy| {
-                    game.hostile_to_phase(enemy, game.turn)
-                        && (indirect
-                            || selectors.iter().any(|s| game.script_unit_matches(s, enemy)))
-                        && terminal_attack(game, unit, enemy)
+                    game.hostile_to_phase(enemy, game.turn) && terminal_attack(game, unit, enemy)
                 })
                 .map(|enemy| UnitId(enemy.id))
                 .collect();
@@ -738,31 +624,42 @@ impl Game<'_> {
         goals.retain(|g| !g.tiles.is_empty());
         goals
     }
-    pub fn finishes_objective(&self, u: &Unit, tile: usize, goals: &[Objective]) -> bool {
-        if self.campaign.is_none()
-            || self.turn != Side::Player
-            || u.side != Side::Player
-            || tile == u.tile
-            || !goals
-                .iter()
-                .any(|g| actor_matches(&g.actor, u.id) && g.tiles.contains(&self.board.ids[tile]))
-            || !self.reachable(u).iter().any(|&(site, _)| site == tile)
-        {
+    pub fn finishes_objective(&self, unit: &Unit, tile: usize, goals: &[Objective]) -> bool {
+        if self.campaign.is_none() || unit.side != Side::Player {
             return false;
         }
-        // Follow the real route, scripted events and victory rules on an isolated copy.
-        let mut preview = self.fork();
-        #[cfg(not(target_arch = "wasm32"))]
-        {
-            preview.recordings = None;
-        }
-        preview
-            .execute(Command::Move {
-                unit: UnitId(u.id),
-                tile: TileId(self.board.ids[tile].clone()),
+        let arrival = goals.iter().any(|goal| {
+            let arrival_kind = match goal.kind {
+                ObjectiveKind::Escort | ObjectiveKind::Escape => true,
+                _ => false,
+            };
+            actor_matches(&goal.actor, unit.id)
+                && arrival_kind
+                && goal.tiles.contains(&self.board.ids[tile])
+        });
+        let Some(mission) = self.mission.as_ref() else {
+            return false;
+        };
+        arrival
+            && mission.scripted_events.iter().all(|event| {
+                if authored_goal_done(self, event) {
+                    return true;
+                }
+                let objective = event.objective.as_ref().unwrap();
+                match &objective.intent {
+                    EventIntent::Escort(value) => {
+                        unit.role.is_some_and(Role::is_escort)
+                            && self.script_unit_matches(&value.units, unit)
+                            && value.tile == self.board.ids[tile]
+                    }
+                    EventIntent::Escape(value) => {
+                        unit.is_leader()
+                            && self.script_unit_matches(&value.units, unit)
+                            && value.tile == self.board.ids[tile]
+                    }
+                    _ => false,
+                }
             })
-            .is_ok()
-            && preview.winner == Some(Side::Player)
     }
     pub fn territory(&self) -> Vec<usize> {
         self.mission.as_ref().map_or_else(Vec::new, |m| {
@@ -871,33 +768,73 @@ pub(in crate::ai) fn policy_goals(
     game: &Game<'_>,
     provided: Option<&[Objective]>,
 ) -> Vec<Objective> {
-    individual(game.policy_objectives(provided))
+    let mut goals = game.policy_objectives(provided);
+    let is_arrival = |event: &ScriptEvent| {
+        event
+            .objective
+            .as_ref()
+            .is_some_and(|objective| match &objective.intent {
+                EventIntent::Escort(_) | EventIntent::Escape(_) => true,
+                EventIntent::Hold(_)
+                | EventIntent::Own(_)
+                | EventIntent::GoTo(_)
+                | EventIntent::Approach(_)
+                | EventIntent::Capture(_)
+                | EventIntent::Defeat(_) => false,
+            })
+    };
+    let escort_finish = provided.is_none()
+        && game.turn == Side::Player
+        && game.mission.as_ref().is_some_and(|mission| {
+            mission
+                .scripted_events
+                .iter()
+                .any(|event| !authored_goal_done(game, event) && is_arrival(event))
+                && mission
+                    .scripted_events
+                    .iter()
+                    .all(|event| authored_goal_done(game, event) || is_arrival(event))
+        });
+    if escort_finish {
+        for goal in goals.iter_mut().filter(|goal| goal.id == "opposing-leader") {
+            goal.weight = 48.0;
+        }
+    }
+    individual(goals)
 }
 pub(in crate::ai) fn restrained(_game: &Game<'_>, workspace: &PlanningWorkspace) -> bool {
     workspace.diplomacy == crate::ai::Diplomacy::Diplomatic
 }
 pub(in crate::ai) fn terminal_attack(game: &Game<'_>, unit: &Unit, target: &Unit) -> bool {
+    if !target.is_leader() {
+        return false;
+    }
     if game.campaign.is_none() {
-        return target.is_leader();
+        return true;
     }
     if unit.side != Side::Player {
         return false;
     }
-    let mut preview = game.fork();
-    let mut dead = target.clone();
-    dead.hp = 0;
-    preview.units.retain(|u| u.id != target.id);
-    preview.roster_changed();
-    preview
-        .event_deaths
-        .push(crate::logic::events::DeathOccurrence {
-            unit: dead,
-            initiated_by: game.unit_faction(unit).into(),
-            killed_by: Some(game.unit_faction(unit).into()),
-            defending: true,
-        });
-    preview.evaluate_campaign(false, None);
-    preview.winner == Some(Side::Player)
+    let Some(mission) = game.mission.as_ref() else {
+        return false;
+    };
+    mission.scripted_events.iter().all(|event| {
+        if authored_goal_done(game, event) {
+            return true;
+        }
+        if let EventIntent::Defeat(selector) = &event.objective.as_ref().unwrap().intent {
+            game.units
+                .iter()
+                .filter(|u| game.script_unit_matches(selector, u))
+                .all(|u| u.id == target.id)
+        } else {
+            false
+        }
+    }) && game
+        .units
+        .iter()
+        .filter(|u| game.hostile(unit, u) && u.is_leader())
+        .all(|u| u.id == target.id)
 }
 
 pub(super) struct Mission;
