@@ -45,11 +45,14 @@ export class PhaserBattlefield {
     this.terrain = new MapRendererGpu(canvas);
   }
   static async create(canvas: OffscreenCanvas) {
+    const started = workerTraceStart();
     const decorate = installPhaserWorkerPlatform();
     const P = (await import("phaser")).default;
     decorate(canvas);
     const result = new PhaserBattlefield(P, canvas);
     await result.boot();
+    result.game.loop.stop();
+    workerTraceEnd("Phaser worker boot", started, { version: P.VERSION });
     return result;
   }
   private boot() {
@@ -336,9 +339,11 @@ export class PhaserBattlefield {
     if (snapshot.reducedMotion) {
       this.scene.tweens.killAll();
       this.particles.killAll();
+      this.effects.clear();
       for (const actor of this.actors.values()) {
         actor.body.setPosition(actor.unit.x, actor.unit.y).setAlpha(1);
         actor.bars.setPosition(actor.unit.x, actor.unit.y).setAlpha(1);
+        actor.sprite?.setX(0);
       }
     }
   }
@@ -569,6 +574,15 @@ export class PhaserBattlefield {
       units: this.snapshot?.units.length ?? 0,
       tiles: this.snapshot?.tiles.length ?? 0,
       animating: this.animating,
+      dirty: !!region,
+      items: this.snapshot?.items.length ?? 0,
+      dirtyPixels: region
+        ? Math.max(0, this.clip.right - this.clip.left) *
+          Math.max(0, this.clip.bottom - this.clip.top)
+        : 0,
+      tweens: this.scene.tweens.getTweens().length,
+      particles: this.particles.getAliveParticleCount(),
+      textures: this.game.textures.getTextureKeys().length,
       ...this.terrain.statistics,
     });
   }

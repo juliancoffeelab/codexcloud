@@ -1,6 +1,7 @@
 /** Benchmark-only stage timings. Normal mode never waits for a GPU fence. */
 import "../src/presentation/map-renderer.worker";
 import { MapRendererGpu } from "../src/presentation/map-renderer-gpu";
+import { PhaserBattlefield } from "../src/presentation/phaser-battlefield";
 import type { MapRenderRequest, MapRenderResponse } from "../src/presentation/map-renderer";
 
 type Timer = { TIME_ELAPSED_EXT: number; GPU_DISJOINT_EXT: number };
@@ -79,27 +80,32 @@ const prototype = MapRendererGpu.prototype as unknown as Record<
   string,
   (...args: unknown[]) => unknown
 >;
-for (const name of ["setTerrain", "shade", "paintFog", "compose", "present", "render"]) {
-  const original = prototype[name]!;
-  prototype[name] = function (...args: unknown[]) {
-    if (!frame) return Reflect.apply(original, this, args);
-    const start = performance.now(),
-      previous = phase;
-    if (name === "render") frame.renderStartedAt = start;
-    else phase = name;
-    if (timer && gl && name !== "render" && name !== "setTerrain") {
-      active = { stage: name, query: gl.createQuery()! };
-      gl.beginQuery(timer.TIME_ELAPSED_EXT, active.query);
-    }
-    try {
-      return Reflect.apply(original, this, args);
-    } finally {
-      if (name !== "render") endQuery();
-      frame.cpu[name + "ApiMs"] = (frame.cpu[name + "ApiMs"] ?? 0) + performance.now() - start;
-      phase = previous;
-    }
-  };
-}
+const owners: [Record<string, (...args: unknown[]) => unknown>, string[]][] = [
+  [prototype, ["setTerrain", "shade", "paintFog", "compose", "update"]],
+  [PhaserBattlefield.prototype as unknown as typeof prototype, ["render"]],
+];
+for (const [owner, names] of owners)
+  for (const name of names) {
+    const original = owner[name]!;
+    owner[name] = function (...args: unknown[]) {
+      if (!frame) return Reflect.apply(original, this, args);
+      const start = performance.now(),
+        previous = phase;
+      if (name === "render") frame.renderStartedAt = start;
+      else phase = name;
+      if (timer && gl && name !== "render" && name !== "update" && name !== "setTerrain") {
+        active = { stage: name, query: gl.createQuery()! };
+        gl.beginQuery(timer.TIME_ELAPSED_EXT, active.query);
+      }
+      try {
+        return Reflect.apply(original, this, args);
+      } finally {
+        if (name !== "render" && name !== "update") endQuery();
+        frame.cpu[name + "ApiMs"] = (frame.cpu[name + "ApiMs"] ?? 0) + performance.now() - start;
+        phase = previous;
+      }
+    };
+  }
 const prepare = prototype.prepare!;
 prototype.prepare = function (...args: unknown[]) {
   const measurement = frame,

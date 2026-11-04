@@ -460,6 +460,14 @@
         {
           "type": "skeletal-hound",
           "tile": "hex-0001-7256137ec1"
+        },
+        {
+          "type": "debug-dragon",
+          "tile": "hex-0186-b8833b1da2"
+        },
+        {
+          "type": "debug-wisp",
+          "tile": "hex-0154-6865c22baa"
         }
       ],
       "relations": {
@@ -926,6 +934,14 @@
         {
           "type": "skeletal-hound",
           "tile": "hex-0897-9650de66eb"
+        },
+        {
+          "type": "debug-dragon",
+          "tile": "hex-0122-d2e04cc7a5"
+        },
+        {
+          "type": "debug-wisp",
+          "tile": "hex-0090-634649c783"
         }
       ],
       "relations": {

@@ -66,7 +66,7 @@ function ensureSprite(url: string, key: string, background = false): Promise<voi
         if (controller.signal.aborted) throw controller.signal.reason;
         const started = workerTraceStart();
         gpu!.uploadSprite(url, key, image);
-        workerTraceEnd("Sprite atlas upload", started, {
+        workerTraceEnd("Sprite texture upload", started, {
           asset: new URL(url, self.location.href).pathname,
           purpose: background ? "prefetch" : "required",
         });
@@ -145,7 +145,7 @@ async function preparePrograms(request: RenderJob) {
 async function render(request: RenderJob) {
   const { plan, terrainKey, prebuilt, fog } = request;
   if (!gpu) throw new Error("Map worker received no visible canvas");
-  if (pending) return false;
+  if (request.revision !== latestRevision) return false;
   if (baseKey !== terrainKey) {
     const load = { terrainKey, controller: new AbortController() };
     activeLoad = load;

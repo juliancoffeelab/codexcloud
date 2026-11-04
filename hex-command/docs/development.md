@@ -227,55 +227,55 @@ traversable tile within that radius. Blocked members stay pending at the same
 source through save/restore; completed members never respawn. Empty marks produce
 no group. Saved charge and group source references are validated on restoration.
 
-All runtime map painting happens in one persistent module Worker using WebGL 2.
-The main thread creates a visible canvas, transfers it once with
-`transferControlToOffscreen`, and sends scene/lighting/fog updates. The worker
-selects complete authored tile frames and renders terrain, lighting and fog into
-that canvas. The browser composites the worker-owned canvas directly; runtime
-never exports, transports or swaps an
-ImageBitmap per update. Main-thread replies are small revision acknowledgements.
-The same GPU context draws units, items, health bars, ownership badges and tile
-outlines from a presentation-only snapshot. Complete native 64×64 unit/item images
-are packed into nearest-sampled GPU atlas pages; batches share one vertex format.
-Unit sprites sample the same colored lighting function as terrain, replacing
-per-tile SVG color filters. Transparent SVG hexes retain click targets, keyboard
-navigation and accessible labels. Drag panning and Control/Command-wheel or
-plus/minus zoom transform this shared canvas/input surface while retaining native
-terrain, lighting and fog caches.
-Zero resets zoom.
+All runtime map painting happens in one persistent module Worker using Phaser
+3.90 and WebGL 2. The main thread creates a visible canvas, transfers it once
+with `transferControlToOffscreen`, and sends published scene/lighting/fog data.
+Phaser owns the scene, textures, retained units/items/indicators, tweens and action
+particles. Svelte owns the surrounding interface and transparent SVG hexes retain
+click targets, keyboard navigation and accessible labels. Battlefield rendering stays off the main thread; the controller and Rust engine
+retain their existing execution boundary. Pan/zoom transforms canvas and input together.
 
-Production prebuilds unlit terrain PNGs, independent of light state. The worker
-uploads a prebuilt image directly to WebGL 2. Changed/custom maps draw complete
-frames into a GPU target in authored order, retaining offline anchors, native
-scale and forest brightness. Terrain textures are decoded with createImageBitmap;
-no runtime Canvas 2D context or CPU pixel readback participates in map painting.
+The pinned Phaser package is lazy-loaded inside the worker after installing the
+small `customEnvironment` adapter in `phaser-worker-platform.ts`. DOM input,
+audio, automatic focus and DOM parent sizing are disabled. Only Phaser's built-in
+startup images use the adapter's tiny OffscreenCanvas 2D image loader. Application
+sprites use fetch/ImageBitmap and direct GPU uploads. Revalidate this adapter
+when upgrading Phaser; it is not a general DOM implementation.
 
-Separate GPU targets retain unlit terrain, the lit background and blurred fog.
-Changed regions are composed directly into the visible, retained drawing buffer
-(`preserveDrawingBuffer: true`). This on-demand canvas keeps its pixels between
-updates, idle tasks and scrolling; there is no final full-map framebuffer copy.
-Changed lights update their old/new influence bounds and intersecting fixtures.
-Fog edits update the affected mask region, expanding each
-Gaussian pass by its kernel reach. Geometry is cached, and reordered identical fog
-sets skip painting. Terrain and day/night changes still require full updates.
-Terrain lighting uses integer spatial cell lists, so each fragment checks only
-lights whose influence reaches its cell. This preserves overlapping light colors
-without requiring floating-point blending extensions. Selection, health and unit
-updates redraw GPU overlays while retaining terrain, lighting and fog caches.
-Replaced terrain loads are aborted; pending requests for identical terrain reuse
-the existing load. Superseded jobs cannot draw after a replacement
-request is known to the worker.
+`map-renderer-gpu.ts` retains native terrain/light/fog caches and spatial light
+lists. It runs alongside Phaser on the same context, through an Extern background
+object. Native image assembly explicitly resets scissor/stencil/depth state.
+Returning to Phaser restores float textures to every sprite sampler slot before
+pipeline rebinding: integer lighting tables must never remain in unused float
+sampler-array slots. The batched `BattlefieldLights` pipeline reserves units
+13–15 for those tables and samples the same falloff/color function per sprite
+pixel, rather than shading the whole sprite at its ground position.
 
-The worker animates movement, hit recoil, appearance/disappearance and action
-feedback only while transitions are active. Animation frames restore their dirty
-region from cached terrain/fog before drawing live visuals, then stop when idle.
-Reduced-motion preferences disable transitions. Atlas pages reset on scene/session
-changes; sprite fetch/decode failures use the existing diagnostic/retry surface.
-Stationary units, indicators and ownership badges retain their geometry and GPU
-buffers during animation. Contiguous stationary runs stay in painter order around
-moving units; only animated runs rebuild/upload vertices each frame. Scene,
-inspection, pulse and transition-membership changes invalidate these caches.
-New fog coverage removes existing disappearance fades, including fog-only updates.
+Complete native 64×64 artwork retains nearest sampling and a shared terrain/unit
+scale. Production prebuilds complete unlit terrain PNGs. Development composes
+complete authored frames on the GPU, retaining anchors, depth and forest brightness.
+There is no runtime terrain assembly from neighboring tiles, artwork rescaling,
+main-thread map canvas or per-frame bitmap transfer/readback.
+
+Phaser's automatic loop stops after boot. The worker steps it on publication and
+while tweens/particles/feedback remain active, then stops scheduling frames.
+Native light/fog caches update only when their inputs change. The retained visible
+buffer is repainted through a clipped camera: native cache damage and animated
+bounds are unioned, the cached background is restored, then Phaser redraws its
+display list in that region. Camera scrolling compensates viewport offsets, so
+clipping does not move objects. Static hex strokes are cached in a display-size
+Phaser RenderTexture. Unit objects survive ordinary updates; Phaser owns their
+quad batching, so this is not the previous bespoke stationary-VBO implementation.
+
+Movement tweens interpolate published positions, not backend paths. Hits recoil;
+appearances/disappearances fade; attack feedback emits bounded presentation-only
+sparks. These effects do not invent gameplay events or authoritative combat
+sequences. Fog coverage removes existing disappearance fades immediately, including
+fog-only updates. Reduced-motion preferences disable tweens and particles.
+Scene replacement destroys old display objects/textures and cancels old asset
+requests. Any newer frame releases a superseded sprite wait immediately, even
+while decode is unresolved; still-needed URLs share in-flight work. Failures retain
+the diagnostic/retry surface. No automatic fallback renderer is kept.
 
 Workers, transferable OffscreenCanvas, worker WebGL 2 and createImageBitmap are
 required browser capabilities. There is no main-thread map painter, separate fog
@@ -465,6 +465,24 @@ Every death creates its own persistent red-light mark, including repeated deaths
 on one hex. The usual commander victory/loss conditions end the battle. No test
 scenario conditions are implemented in frontend rendering.
 
+### Debug Ferry
+
+Settings → Debug tools → Start Debug Ferry launches an open-ended single-battle
+campaign on the 23×15 ferry geometry. Debug Flight starts with a leader and four
+fliers; its keep recruits Debug Dragons and Wisps for zero gold. Both have 9,999
+HP, 1,000 movement, passability/cost-one movement over every terrain, and 999-damage
+attacks. Normal once-per-turn attack rules still apply. Artwork reuses existing
+dragon/ghost matrices at native scale. These units are not added to ordinary
+recruitment pools or simulation rosters.
+
+The 52 passive enemy targets neither move nor recruit. Three village lamps turn
+on under player ownership; the western keep has a fixed lamp. Fog remembers
+exploration within two hexes. Every death creates a separate durable red light
+through the existing campaign event machinery. There is no automatic victory
+objective: restart from Debug tools when finished, or download the trace first.
+Only loss of the debug captain ends the test. The authored catalog/settings remain
+Rust-owned; no Rust source changes or debug command bypasses are required.
+
 ### Sprite preparation and outline resolution
 
 After the first battlefield frame, the worker fetches, decodes and uploads the
@@ -474,14 +492,14 @@ promotion choices are also included. Breadth-first traversal prepares base types
 before deeper tiers, deduplicates shared artwork and stops at 128 unique URLs per
 prefetch list. This prepares images only; Rust still decides legal choices and
 concealed actors are not queried. Three speculative requests run at once.
-Actual use shares an in-flight request or an uploaded atlas
+Actual use shares an in-flight request or a cached texture
 entry; background preparation never gates a ready frame. Scene changes abort old
 requests, and a failed speculative load is retried/diagnosed when actually needed.
 Every newer frame releases the superseded frame's sprite wait immediately, even
 if a decoder has not settled. Requests no longer needed by the latest scene or
 its prefetch pool are aborted; still-needed URLs share their existing request.
 An immediate recruit can still wait if its image has not finished loading.
-Trace image events identify the asset and required/prefetch purpose; atlas-upload
+Trace image events identify the asset and required/prefetch purpose; texture-upload
 events distinguish decoded images from artwork ready to draw.
 Objective outlines preserve the upstream opaque gold dashed foreground over a
 dark backing, blue selected/reachable variants and green recruitment variant.
