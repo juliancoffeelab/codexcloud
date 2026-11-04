@@ -1,3 +1,4 @@
+import { renderErrorReport } from "./render-error";
 import {
   registerTraceSource,
   receiveTrace,
@@ -115,7 +116,13 @@ export class MapRenderer {
     document.addEventListener("visibilitychange", this.restoreDisplay);
     renderers.add(this);
     this.worker.onerror = (event) =>
-      this.fail(`Map worker failed: ${event.message || "script could not load"}`);
+      this.fail(
+        renderErrorReport(
+          "Map worker failed",
+          event.error ?? event.message ?? "script could not load",
+          { filename: event.filename, line: event.lineno, column: event.colno },
+        ),
+      );
     this.worker.onmessageerror = () =>
       this.fail("Map worker returned an unreadable acknowledgement");
     this.worker.onmessage = (event: MessageEvent<MapRenderResponse | TraceBatch>) => {

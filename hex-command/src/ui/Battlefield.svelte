@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { renderErrorReport } from "../presentation/render-error";
   import { battlefieldCamera } from "../presentation/battlefield-camera";
   import { battlefieldScene } from "../presentation/battlefield-scene";
   import type { MotionKind } from "../presentation/motion";
@@ -143,6 +144,34 @@
     };
   });
 
+  let errorDialog: HTMLDialogElement | undefined;
+  function showError(node: HTMLDialogElement) {
+    errorDialog = node;
+    node.showModal();
+    return {
+      destroy() {
+        if (errorDialog === node) errorDialog = undefined;
+      },
+    };
+  }
+  let reportStatus = $state("");
+  async function copyReport() {
+    try {
+      await navigator.clipboard.writeText(renderError ?? "");
+      reportStatus = "Copied";
+    } catch {
+      reportStatus = "Copy unavailable; download the report instead.";
+    }
+  }
+  function downloadReport() {
+    const url = URL.createObjectURL(new Blob([renderError ?? ""], { type: "text/plain" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "hex-render-error.txt";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
   function listenMotion(node: SVGSVGElement) {
     const handle = (event: Event) => {
       const { tile, kind } = (event as CustomEvent<{ tile: string; kind: MotionKind }>).detail;
@@ -171,7 +200,7 @@
         activeRenderer = renderer;
         renderer!.update(next.frame);
       } catch (error) {
-        renderError = String(error);
+        renderError = renderErrorReport("Map setup failed", error);
       }
     };
     update(request);
@@ -221,8 +250,32 @@
 
 <section class="map-section" aria-label="Battlefield">
   {#if renderError}
-    <div role="alert" class="map-render-error">
-      <p>{renderError}</p>
+    <button class="render-error-reopen" onclick={() => errorDialog?.showModal()}>
+      Map unavailable · Show error
+    </button>
+    <dialog
+      use:showError
+      class="render-error-dialog"
+      aria-labelledby="render-error-title"
+      aria-describedby="render-error-description"
+    >
+      <div class="render-error-heading">
+        <h2 id="render-error-title">The map couldn’t render</h2>
+        <button aria-label="Dismiss rendering error" onclick={() => errorDialog?.close()}>×</button>
+      </div>
+      <p id="render-error-description">
+        Try restarting the map renderer. If it fails again, download the error report and share it
+        with us.
+      </p>
+      <p class="render-error-message">{renderError.split("\n")[0]}</p>
+      <details>
+        <summary>Error details</summary>
+        <pre
+          style="white-space: pre-wrap; overflow-wrap: anywhere; max-height: 24rem; overflow: auto;">{renderError}</pre>
+        <button onclick={copyReport}>Copy report</button>
+        <button onclick={downloadReport}>Download report</button>
+        <span aria-live="polite">{reportStatus}</span>
+      </details>
       <button
         onclick={() => {
           renderError = undefined;
@@ -231,7 +284,7 @@
       >
         Retry map rendering
       </button>
-    </div>
+    </dialog>
   {/if}
   <div class="map-scroll" bind:this={viewport} use:battlefieldCamera>
     <svg
@@ -290,6 +343,56 @@
 </section>
 
 <style>
+  .render-error-dialog {
+    width: min(34rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 1.25rem;
+    color: #e9e4d3;
+    background: #18251c;
+    border: 1px solid #82734d;
+    border-radius: 0.75rem;
+    box-shadow: 0 1rem 4rem #0009;
+  }
+  .render-error-dialog::backdrop {
+    background: #060c08b8;
+  }
+  .render-error-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .render-error-heading h2 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+  .render-error-heading button {
+    font-size: 1.5rem;
+    padding: 0.1rem 0.65rem;
+  }
+  .render-error-message {
+    overflow-wrap: anywhere;
+    color: #f3c5a0;
+  }
+  .render-error-dialog details {
+    margin-block: 1rem;
+  }
+  .render-error-dialog summary {
+    cursor: pointer;
+  }
+  .render-error-dialog pre {
+    font-size: 0.75rem;
+    background: #0d1711;
+    padding: 0.75rem;
+  }
+  .render-error-reopen {
+    position: absolute;
+    z-index: 3;
+    margin: 1rem;
+  }
+
   .terrain-bitmap {
     width: 100%;
     height: 100%;

@@ -36,6 +36,25 @@ export class PhaserBattlefield {
   private previousTime = performance.now();
   private invalid = true;
   private backgroundDrawn = false;
+  private stage = "initialization";
+  diagnostics() {
+    const gl = this.context;
+    return {
+      stage: this.stage,
+      display: { width: this.canvas.width, height: this.canvas.height },
+      ...this.terrain.statistics,
+      contextLost: gl.isContextLost(),
+      attributes: gl.getContextAttributes(),
+      vendor: gl.getParameter(gl.VENDOR),
+      renderer: gl.getParameter(gl.RENDERER),
+      version: gl.getParameter(gl.VERSION),
+      maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+      maxRenderbufferSize: gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),
+      units: this.snapshot?.units.length,
+      lights: this.lighting.lights?.length,
+      fog: this.fog.length,
+    };
+  }
   private clip: Region = { left: 0, top: 0, right: 1, bottom: 1 };
   private effects = new Map<string, number>();
 
@@ -520,9 +539,11 @@ export class PhaserBattlefield {
     const verify = this.invalid;
     this.backgroundDrawn = false;
     beginGpuTrace(this.context);
+    this.stage = "outline cache";
     this.drawOutlines();
     const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
     renderer.pipelines.clear();
+    this.stage = "terrain/light/fog cache update";
     const changed = this.terrain.update(lighting, fog);
     // All active sampler-array entries must reference float textures, including
     // unused slots. Native passes bind integer light tables on units 2 and 3.
@@ -594,6 +615,7 @@ export class PhaserBattlefield {
           .setViewport(left, top, right - left, bottom - top)
           .setScroll(left / sx, top / sy)
           .setZoom(sx, sy);
+        this.stage = "Phaser scene draw";
         this.game.step(now, Math.min(100, now - this.previousTime));
         if (!this.backgroundDrawn) {
           endGpuTrace();
@@ -602,6 +624,7 @@ export class PhaserBattlefield {
         }
         // Phaser.flush submits its batches; it does not call WebGL.flush.
         // Explicitly submit on-demand worker frames before acknowledging them.
+        this.stage = "WebGL submission / frame verification";
         this.context.flush();
         if (verify) {
           const error = this.context.getError();

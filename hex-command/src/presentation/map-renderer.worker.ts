@@ -1,3 +1,4 @@
+import { renderErrorReport } from "./render-error";
 import {
   configureWorkerTrace,
   stopWorkerTrace,
@@ -8,6 +9,19 @@ import type { TraceConfig } from "./performance-trace";
 import { PhaserBattlefield } from "./phaser-battlefield";
 import type { MapFrameRequest, MapRenderRequest, MapRenderResponse } from "./map-renderer";
 
+function failureContext() {
+  try {
+    return {
+      revision: latestRevision,
+      displaySize,
+      renderer: gpu?.diagnostics(),
+      userAgent: navigator.userAgent,
+      time: new Date().toISOString(),
+    };
+  } catch (error) {
+    return { diagnosticsError: String(error) };
+  }
+}
 let gpu: PhaserBattlefield | undefined;
 let initializing: Promise<PhaserBattlefield> | undefined;
 let traceConfig: TraceConfig | undefined;
@@ -325,7 +339,7 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
     } catch (error) {
       self.postMessage({
         revision: latestRevision,
-        error: `Map GPU initialization failed: ${String(error)}`,
+        error: renderErrorReport("Map GPU initialization failed", error, failureContext()),
       } satisfies MapRenderResponse);
       return;
     }
@@ -384,7 +398,7 @@ async function drain() {
       displayedJob = undefined;
       self.postMessage({
         revision: request.revision,
-        error: `Map rendering failed: ${String(error)}`,
+        error: renderErrorReport("Map rendering failed", error, failureContext()),
       } satisfies MapRenderResponse);
     }
   }
@@ -410,7 +424,7 @@ function scheduleAnimation() {
     } catch (error) {
       self.postMessage({
         revision: latestRevision,
-        error: `Battlefield animation failed: ${String(error)}`,
+        error: renderErrorReport("Battlefield animation failed", error, failureContext()),
       } satisfies MapRenderResponse);
     }
   });
