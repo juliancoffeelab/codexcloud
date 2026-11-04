@@ -32,7 +32,7 @@ pub(in crate::ai) struct ClassicRules<'game, 'catalog> {
     lanes: HashSet<usize>,
     important: bool,
     threats: Option<Threats<'game, 'catalog>>,
-    recruitment: HashMap<usize, (i32, i32)>,
+    recruitment: HashMap<usize, i32>,
     holding: bool,
     orders: &'game crate::ai::orders::TacticalOrders,
     escort: &'game escort::Workspace,
@@ -49,7 +49,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
     ) -> Self {
         let important = orders.important(g, u);
         let threats = important.then(|| Threats::protected(g, u.side, orders));
-        // Classic owns its movement penalties; only legal command execution is shared.
+        // Classic owns this budget estimate and its movement penalties; no recruit previews.
         let mut recruitment = HashMap::default();
         if let Some(opportunity) = opportunity.filter(|r| r.budget != Some(0)) {
             if u.is_leader() && !u.moved && !u.attacked {
@@ -62,28 +62,44 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
                     .into_iter()
                     .filter(|&tile| tile != u.tile && g.is_keep(tile) && g.owns(tile, u.side))
                 {
-                    let mut draft = g.fork();
-                    if draft
-                        .execute(crate::ai::move_command(g, u.id, tile))
-                        .is_err()
-                    {
-                        continue;
-                    }
-                    let Ok((_, report)) = draft.recruit(opportunity) else {
-                        continue;
-                    };
-                    if report.recruited.is_empty() {
-                        continue;
-                    }
-                    let value: i32 = report
-                        .recruited
+                    let gold = g.gold_for_unit(u).max(0);
+                    let requirement = opportunity
+                        .orders
+                        .requirements
                         .iter()
-                        .filter_map(|id| draft.unit(id.0))
-                        .map(|unit| draft.recruit_cost(unit, unit.kind))
-                        .sum();
-                    if let Some(actor) = draft.unit(u.id) {
-                        let mut forecast = Threats::protected(&draft, u.side, orders);
-                        recruitment.insert(tile, (forecast.at(actor, tile, None), value));
+                        .find(|requirement| requirement.deficit(g) > 0);
+                    let mut slots = 0;
+                    let mut costs = Vec::new();
+                    for kind in g.recruitment_options_for(u) {
+                        if requirement.is_some_and(|requirement| !requirement.accepts(g, kind)) {
+                            continue;
+                        }
+                        let cost = g.recruit_cost(u, kind);
+                        if cost > gold {
+                            continue;
+                        }
+                        let available = g.board().adjacent[tile]
+                            .iter()
+                            .filter(|&&site| {
+                                (site == u.tile || g.at(site).is_none())
+                                    && g.cost(kind, site) != u16::MAX
+                                    && !opportunity
+                                        .orders
+                                        .reserved
+                                        .iter()
+                                        .any(|reserved| g.site(&reserved.0) == site)
+                            })
+                            .count();
+                        if available > 0 {
+                            slots = slots.max(available);
+                            costs.push(cost);
+                        }
+                    }
+                    if !costs.is_empty() {
+                        let average = costs.iter().sum::<i32>() / costs.len() as i32;
+                        let capacity = slots.min(opportunity.budget.unwrap_or(usize::MAX));
+                        recruitment
+                            .insert(tile, gold.min((capacity as i32).saturating_mul(average)));
                     }
                 }
             }
@@ -110,16 +126,10 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         }
     }
     fn risk(&mut self, tile: usize, eliminated: Option<u32>) -> i32 {
-        let risk = if eliminated.is_none() {
-            self.recruitment.get(&tile).map(|&(risk, _)| risk)
-        } else {
-            None
-        }
-        .unwrap_or_else(|| {
-            self.threats
-                .as_mut()
-                .map_or(0, |t| t.at(&self.unit, tile, eliminated))
-        });
+        let risk = self
+            .threats
+            .as_mut()
+            .map_or(0, |threats| threats.at(&self.unit, tile, eliminated));
         risk.min(self.unit.hp.max(1))
     }
     fn penalty(&mut self, g: &BattleView, tile: usize) -> f64 {
@@ -127,7 +137,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         -self
             .recruitment
             .get(&tile)
-            .map_or(0.0, |&(_, value)| value as f64)
+            .map_or(0.0, |&value| value as f64)
             - self.escort.position(self.unit.id, tile)
             + (if self.reserved.contains(&tile) {
                 160.0
