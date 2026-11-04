@@ -114,3 +114,14 @@ impl<T: Freeze> Freeze for std::sync::Arc<T> {
         std::sync::Arc::new(T::thaw(value))
     }
 }
+
+impl<T: Freeze> Freeze for Box<T> {
+    type Frozen = &'static T::Frozen;
+    #[cfg(feature = "bake")]
+    fn freeze(&self) -> Self::Frozen {
+        Box::leak(Box::new(T::freeze(self)))
+    }
+    fn thaw(value: &Self::Frozen) -> Self {
+        Box::new(T::thaw(value))
+    }
+}

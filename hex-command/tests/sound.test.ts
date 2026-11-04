@@ -128,6 +128,7 @@ test("Fords use water sounds and empty interactions use selection", async () => 
 test("Shuffle bags avoid repeats, reuse preload and stop voices when muted", async () => {
   const sound = createSound();
   await sound.unlockSound();
+  const warmed = fetched.length;
   const variants: string[] = [];
   for (let i = 0; i < 9; i++) {
     assert.equal(await sound.playSound("unit-soldier"), true);
@@ -137,7 +138,7 @@ test("Shuffle bags avoid repeats, reuse preload and stop voices when muted", asy
   }
   for (let i = 0; i < 9; i += 3) assert.equal(new Set(variants.slice(i, i + 3)).size, 3);
   assert.ok(variants.every((value, i) => i === 0 || value !== variants[i - 1]));
-  assert.equal(fetched.length, 51, "all variations warm after the first gesture and are reused");
+  assert.equal(fetched.length, warmed, "preloaded variations are reused");
   assert.ok(
     required(audio)
       .sources.filter((source) => !source.buffer.silent)
@@ -173,7 +174,7 @@ async function delayedSound() {
 }
 test("Delayed fetches cannot revive superseded, muted or suspended cues", async () => {
   const { pending, cold } = await delayedSound();
-  assert.equal(pending.length, 51);
+  assert.equal(pending.filter((sample) => sample.name.includes("/attack-bow-")).length, 3);
   const old = cold.playSound("terrain-forest");
   const latest = cold.playInteraction({
     attackType: "archer",

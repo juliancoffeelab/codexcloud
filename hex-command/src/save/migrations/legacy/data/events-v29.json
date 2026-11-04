@@ -1,0 +1,1092 @@
+{
+  "tide-nets": {
+    "active": [
+      "edda-death",
+      "harl-death",
+      "mira-death",
+      "nets",
+      "goal-0",
+      "goal-1-lost",
+      "goal-1",
+      "chapter-victory"
+    ],
+    "oldEvents": ["nets"],
+    "waves": [],
+    "timers": [],
+    "seals": {},
+    "required": ["goal-0", "goal-1"],
+    "objectives": {
+      "nets": "nets",
+      "goal-0": "goal-0",
+      "goal-1": "goal-1"
+    },
+    "retireOnRestore": [],
+    "repeat": [],
+    "failureUnits": {
+      "edda": ["goal-1"]
+    },
+    "named": ["mira", "edda", "harl"],
+    "branch": null,
+    "firstSeen": {
+      "mira": 0,
+      "edda": 0,
+      "harl": 0,
+      "tomas": 1,
+      "cale": 1,
+      "vale": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "swordsman"
+        }
+      ]
+    },
+    "previousEventIds": [],
+    "defeatOnMissing": [
+      {
+        "character": "edda",
+        "message": "The escort cannot continue without its protected traveller."
+      }
+    ],
+    "departedWhenFlag": {}
+  },
+  "tide-wreck": {
+    "active": [
+      "edda-lost",
+      "cale-death",
+      "edda-death",
+      "mira-death",
+      "tomas-death",
+      "ledger",
+      "await-tide",
+      "rescue",
+      "tide-arrived",
+      "senns-guards",
+      "goal-1",
+      "chapter-victory"
+    ],
+    "oldEvents": ["ledger", "await-tide", "rescue", "tide-arrived"],
+    "waves": ["senns-guards"],
+    "timers": [
+      {
+        "event": "goal-1",
+        "source": "holds",
+        "tile": "hex-0891-b20a50ef8c",
+        "turns": 3
+      }
+    ],
+    "seals": {},
+    "required": ["ledger", "goal-1"],
+    "objectives": {
+      "ledger": "ledger",
+      "goal-1": "goal-1"
+    },
+    "retireOnRestore": [],
+    "repeat": [],
+    "failureUnits": {},
+    "named": ["mira", "edda", "tomas", "cale"],
+    "branch": null,
+    "firstSeen": {
+      "mira": 0,
+      "edda": 0,
+      "harl": 0,
+      "tomas": 1,
+      "cale": 1,
+      "vale": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        }
+      ]
+    },
+    "previousEventIds": [],
+    "defeatOnMissing": [
+      {
+        "character": "edda",
+        "message": "A protected companion fell. The company cannot continue."
+      }
+    ],
+    "departedWhenFlag": {}
+  },
+  "tide-sluice": {
+    "active": [
+      "edda-death",
+      "mira-death",
+      "tomas-death",
+      "vale-death",
+      "boat",
+      "goal-0",
+      "goal-1-lost",
+      "goal-1",
+      "chapter-victory"
+    ],
+    "oldEvents": ["boat"],
+    "waves": [],
+    "timers": [],
+    "seals": {},
+    "required": ["goal-0", "goal-1"],
+    "objectives": {
+      "boat": "boat",
+      "goal-0": "goal-0",
+      "goal-1": "goal-1"
+    },
+    "retireOnRestore": [],
+    "repeat": [],
+    "failureUnits": {
+      "edda": ["goal-1"]
+    },
+    "named": ["mira", "edda", "tomas", "vale"],
+    "branch": null,
+    "firstSeen": {
+      "mira": 0,
+      "edda": 0,
+      "harl": 0,
+      "tomas": 1,
+      "cale": 1,
+      "vale": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        }
+      ]
+    },
+    "previousEventIds": [],
+    "defeatOnMissing": [
+      {
+        "character": "edda",
+        "message": "The escort cannot continue without its protected traveller."
+      }
+    ],
+    "departedWhenFlag": {}
+  },
+  "lantern-ferry": {
+    "oldEvents": [],
+    "waves": [],
+    "timers": [],
+    "seals": {},
+    "required": ["house-visit", "villages-secured", "spiders-cleared"],
+    "active": [
+      "ferryman-death",
+      "contact-route-scout",
+      "contact-western-scout",
+      "contact-northern-scout",
+      "quarry-bear",
+      "western-ford",
+      "eastern-ford",
+      "house-visit",
+      "ford-shout",
+      "ford-silence",
+      "ferryman-alive",
+      "ferryman-letter",
+      "village-1",
+      "village-2",
+      "first-spiders",
+      "villages-secured",
+      "quarry-tools",
+      "chapter-victory",
+      "spiders-cleared"
+    ],
+    "objectives": {
+      "contact-route-scout": "contact-route-scout",
+      "contact-western-scout": "contact-western-scout",
+      "contact-northern-scout": "contact-northern-scout",
+      "quarry-bear": "quarry-bear",
+      "house-visit": "house-visit",
+      "ford-shout": "ford-shout",
+      "villages-secured": "villages-secured",
+      "spiders-cleared": "spiders-cleared"
+    },
+    "retireOnRestore": [],
+    "repeat": [],
+    "failureUnits": {},
+    "named": ["nera", "ivo", "oren"],
+    "branch": null,
+    "firstSeen": {
+      "nera": 0,
+      "ivo": 0,
+      "oren": 0,
+      "tollkeeper": 1,
+      "villagers": 1,
+      "edrin": 1,
+      "bellwarden": 2,
+      "northern-captives": 2,
+      "eastern-captives": 2,
+      "southern-captives": 2
+    },
+    "baseRecruitment": {
+      "player": [],
+      "enemy": [],
+      "wildlife": []
+    },
+    "previousEventIds": [
+      "ferryman-death",
+      "contact-route-scout",
+      "contact-western-scout",
+      "contact-northern-scout",
+      "quarry-bear",
+      "western-ford",
+      "eastern-ford",
+      "house-visit",
+      "ford-shout",
+      "ford-silence",
+      "ferryman-alive",
+      "ferryman-letter",
+      "village-1",
+      "village-2",
+      "first-spiders",
+      "villages-secured",
+      "quarry-tools",
+      "chapter-victory",
+      "spiders-cleared"
+    ],
+    "defeatOnMissing": [],
+    "departedWhenFlag": {}
+  },
+  "lantern-villages": {
+    "oldEvents": [],
+    "waves": [],
+    "timers": [],
+    "seals": {},
+    "required": [
+      "village-contact",
+      "foothold-established",
+      "prisoners-freed",
+      "village-safe",
+      "eastern-departure"
+    ],
+    "active": [
+      "deadline-0",
+      "village-contact",
+      "foothold-established",
+      "oren-lessons",
+      "ferry-supplies",
+      "ferry-letter",
+      "prisoners-found",
+      "prisoners-found-guarded",
+      "prisoners-found-unguarded",
+      "prisoners-freed",
+      "road-urgency",
+      "tollkeeper-provoked",
+      "swamp-sighting",
+      "oren-swamp",
+      "village-safe",
+      "tollkeeper-fallen",
+      "eastern-departure",
+      "oren-healer-fallen",
+      "mire-balm-found",
+      "road-cleared",
+      "first-bell-toll",
+      "road-bell-warning",
+      "captives-lost",
+      "chapter-victory"
+    ],
+    "objectives": {
+      "village-contact": "village-contact",
+      "foothold-established": "foothold-established",
+      "prisoners-freed": "prisoners-freed",
+      "village-safe": "village-safe",
+      "eastern-departure": "eastern-departure",
+      "road-cleared": "road-cleared"
+    },
+    "retireOnRestore": [],
+    "repeat": [],
+    "failureUnits": {
+      "villagers": ["prisoners-freed", "village-safe", "eastern-departure"]
+    },
+    "named": ["nera", "ivo", "oren", "tollkeeper", "villagers", "edrin"],
+    "branch": null,
+    "firstSeen": {
+      "nera": 0,
+      "ivo": 0,
+      "oren": 0,
+      "tollkeeper": 1,
+      "villagers": 1,
+      "edrin": 1,
+      "bellwarden": 2,
+      "northern-captives": 2,
+      "eastern-captives": 2,
+      "southern-captives": 2
+    },
+    "baseRecruitment": {
+      "player": [],
+      "enemy": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "prisoners": [],
+      "swamp-dead": [
+        {
+          "unit": "zombie-walker",
+          "cost": 6
+        },
+        {
+          "unit": "zombie-decay-caster",
+          "cost": 10
+        }
+      ]
+    },
+    "previousEventIds": [
+      "deadline-0",
+      "village-contact",
+      "foothold-established",
+      "oren-lessons",
+      "ferry-supplies",
+      "ferry-letter",
+      "prisoners-found",
+      "prisoners-found-guarded",
+      "prisoners-found-unguarded",
+      "prisoners-freed",
+      "road-urgency",
+      "tollkeeper-provoked",
+      "swamp-sighting",
+      "oren-swamp",
+      "village-safe",
+      "tollkeeper-fallen",
+      "eastern-departure",
+      "oren-healer-fallen",
+      "mire-balm-found",
+      "road-cleared",
+      "first-bell-toll",
+      "road-bell-warning",
+      "captives-lost",
+      "chapter-victory"
+    ],
+    "defeatOnMissing": [
+      {
+        "character": "villagers",
+        "message": "The captives were killed before reaching safety."
+      }
+    ],
+    "departedWhenFlag": {
+      "villagers": "village-safe"
+    }
+  },
+  "lantern-bell": {
+    "oldEvents": [],
+    "waves": [],
+    "timers": [],
+    "seals": {},
+    "required": ["bell-silenced"],
+    "active": [
+      "captive-death",
+      "lost-southern-captives",
+      "lost-eastern-captives",
+      "lost-northern-captives",
+      "rescue-southern-captives",
+      "rescue-eastern-captives",
+      "rescue-northern-captives",
+      "monastery-lead",
+      "monastery-start",
+      "fog-cleared",
+      "bell-sighted",
+      "toll-warning",
+      "church-sighted",
+      "church-armor",
+      "northern-sighted",
+      "northern-freed",
+      "eastern-sighted",
+      "eastern-freed",
+      "southern-sighted",
+      "southern-freed",
+      "bellwarden-demands-captives",
+      "tollkeeper-pursuit",
+      "opened-graveyard-sighted",
+      "first-toll",
+      "second-toll",
+      "third-toll",
+      "bell-silenced",
+      "chapter-victory",
+      "western-reinforcements",
+      "monastery-interrupted"
+    ],
+    "objectives": {
+      "fog-cleared": "fog-cleared",
+      "northern-freed": "northern-freed",
+      "eastern-freed": "eastern-freed",
+      "southern-freed": "southern-freed",
+      "bell-silenced": "bell-silenced"
+    },
+    "retireOnRestore": ["first-toll"],
+    "repeat": ["captive-death", "monastery-interrupted"],
+    "failureUnits": {
+      "southern-captives": ["southern-freed"],
+      "eastern-captives": ["eastern-freed"],
+      "northern-captives": ["northern-freed"]
+    },
+    "named": [
+      "nera",
+      "ivo",
+      "bellwarden",
+      "northern-captives",
+      "eastern-captives",
+      "southern-captives"
+    ],
+    "branch": null,
+    "firstSeen": {
+      "nera": 0,
+      "ivo": 0,
+      "oren": 0,
+      "tollkeeper": 1,
+      "villagers": 1,
+      "edrin": 1,
+      "bellwarden": 2,
+      "northern-captives": 2,
+      "eastern-captives": 2,
+      "southern-captives": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "adept"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        },
+        {
+          "unit": "skeleton-axeman"
+        },
+        {
+          "unit": "skeleton-rider"
+        }
+      ],
+      "prisoners": []
+    },
+    "previousEventIds": [
+      "captive-death",
+      "rescue-southern-captives",
+      "rescue-eastern-captives",
+      "rescue-northern-captives",
+      "monastery-lead",
+      "monastery-start",
+      "fog-cleared",
+      "bell-sighted",
+      "toll-warning",
+      "church-sighted",
+      "church-armor",
+      "northern-sighted",
+      "northern-freed",
+      "eastern-sighted",
+      "eastern-freed",
+      "southern-sighted",
+      "southern-freed",
+      "bellwarden-demands-captives",
+      "tollkeeper-pursuit",
+      "opened-graveyard-sighted",
+      "first-toll",
+      "second-toll",
+      "third-toll",
+      "bell-silenced",
+      "chapter-victory",
+      "western-reinforcements",
+      "monastery-interrupted"
+    ],
+    "defeatOnMissing": [],
+    "departedWhenFlag": {}
+  },
+  "green-border": {
+    "active": [
+      "lark-lost",
+      "alder-death",
+      "dain-death",
+      "lark-death",
+      "alternate-company",
+      "lost-tools",
+      "goal-0",
+      "chapter-victory"
+    ],
+    "oldEvents": ["lost-tools"],
+    "waves": [],
+    "timers": [],
+    "seals": {},
+    "required": ["lost-tools", "goal-0"],
+    "objectives": {
+      "lost-tools": "lost-tools",
+      "goal-0": "goal-0"
+    },
+    "retireOnRestore": ["alternate-company"],
+    "repeat": [],
+    "failureUnits": {},
+    "named": ["alder", "lark", "dain"],
+    "branch": {
+      "flag": "dain-dead",
+      "recruitment": {
+        "player": [
+          {
+            "unit": "wolf"
+          },
+          {
+            "unit": "boar"
+          },
+          {
+            "unit": "thorncaller"
+          }
+        ]
+      }
+    },
+    "firstSeen": {
+      "alder": 0,
+      "lark": 0,
+      "dain": 0,
+      "overseer": 1,
+      "tamsin": 2,
+      "rootbinder": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "spearman"
+        }
+      ]
+    },
+    "previousEventIds": [],
+    "defeatOnMissing": [
+      {
+        "character": "lark",
+        "message": "A protected companion fell. The company cannot continue."
+      }
+    ],
+    "departedWhenFlag": {}
+  },
+  "green-vigil": {
+    "active": [
+      "lark-lost",
+      "alder-death",
+      "dain-death",
+      "lark-death",
+      "overseer-death",
+      "alternate-company",
+      "owl-cache",
+      "eastern-patrol",
+      "eastern-support",
+      "goal-0",
+      "chapter-victory"
+    ],
+    "oldEvents": ["owl-cache"],
+    "waves": ["eastern-patrol", "eastern-support"],
+    "timers": [
+      {
+        "event": "goal-0",
+        "source": "vigil",
+        "tile": "hex-0923-ec307e92cf",
+        "turns": 3
+      }
+    ],
+    "seals": {},
+    "required": ["goal-0"],
+    "objectives": {
+      "owl-cache": "owl-cache",
+      "goal-0": "goal-0"
+    },
+    "retireOnRestore": ["alternate-company"],
+    "repeat": [],
+    "failureUnits": {
+      "lark": ["goal-0"]
+    },
+    "named": ["alder", "lark", "dain", "overseer"],
+    "branch": {
+      "flag": "dain-dead",
+      "recruitment": {
+        "player": [
+          {
+            "unit": "wolf"
+          },
+          {
+            "unit": "boar"
+          },
+          {
+            "unit": "thorncaller"
+          }
+        ]
+      }
+    },
+    "firstSeen": {
+      "alder": 0,
+      "lark": 0,
+      "dain": 0,
+      "overseer": 1,
+      "tamsin": 2,
+      "rootbinder": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "soldier"
+        },
+        {
+          "unit": "archer"
+        }
+      ]
+    },
+    "previousEventIds": [],
+    "defeatOnMissing": [
+      {
+        "character": "lark",
+        "message": "A protected companion fell. The company cannot continue."
+      }
+    ],
+    "departedWhenFlag": {}
+  },
+  "green-pact": {
+    "active": [
+      "lark-lost",
+      "alder-death",
+      "dain-death",
+      "lark-death",
+      "rootbinder-death",
+      "tamsin-death",
+      "alternate-company",
+      "old-trail",
+      "goal-0",
+      "goal-1-lost",
+      "goal-1",
+      "chapter-victory"
+    ],
+    "oldEvents": ["old-trail"],
+    "waves": [],
+    "timers": [],
+    "seals": {},
+    "required": ["goal-0", "goal-1"],
+    "objectives": {
+      "old-trail": "old-trail",
+      "goal-0": "goal-0",
+      "goal-1": "goal-1"
+    },
+    "retireOnRestore": ["alternate-company"],
+    "repeat": [],
+    "failureUnits": {
+      "lark": ["goal-1", "goal-1"]
+    },
+    "named": ["alder", "lark", "dain", "tamsin", "rootbinder"],
+    "branch": {
+      "flag": "dain-dead",
+      "recruitment": {
+        "player": [
+          {
+            "unit": "wolf"
+          },
+          {
+            "unit": "boar"
+          },
+          {
+            "unit": "thorncaller"
+          },
+          {
+            "unit": "spearman"
+          },
+          {
+            "unit": "adept"
+          }
+        ]
+      }
+    },
+    "firstSeen": {
+      "alder": 0,
+      "lark": 0,
+      "dain": 0,
+      "overseer": 1,
+      "tamsin": 2,
+      "rootbinder": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "adept"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ]
+    },
+    "previousEventIds": [],
+    "defeatOnMissing": [
+      {
+        "character": "lark",
+        "message": "A protected companion fell. The company cannot continue."
+      },
+      {
+        "character": "lark",
+        "message": "The escort cannot continue without its protected traveller."
+      }
+    ],
+    "departedWhenFlag": {}
+  },
+  "ashen-quarry": {
+    "active": [
+      "ledgerkeeper-death",
+      "orin-death",
+      "ledger",
+      "southern-capture-party",
+      "goal-0",
+      "chapter-victory"
+    ],
+    "oldEvents": ["ledger"],
+    "waves": ["southern-capture-party"],
+    "timers": [],
+    "seals": {},
+    "required": ["goal-0"],
+    "objectives": {
+      "ledger": "ledger",
+      "goal-0": "goal-0"
+    },
+    "retireOnRestore": [],
+    "repeat": [],
+    "failureUnits": {},
+    "named": ["orin", "ledgerkeeper"],
+    "branch": null,
+    "firstSeen": {
+      "orin": 0,
+      "ledgerkeeper": 0,
+      "dain": 1,
+      "master": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "archer"
+        }
+      ]
+    },
+    "previousEventIds": [],
+    "defeatOnMissing": [],
+    "departedWhenFlag": {}
+  },
+  "ashen-refuge": {
+    "active": [
+      "peace-lost",
+      "dain-death",
+      "orin-death",
+      "medicine",
+      "eastern-patrol",
+      "eastern-adept",
+      "refuge-six-turns",
+      "refuge-war",
+      "refuge-peace",
+      "medicine-peace-speech",
+      "medicine-war-speech"
+    ],
+    "oldEvents": ["medicine"],
+    "waves": ["eastern-patrol", "eastern-adept"],
+    "timers": [
+      {
+        "event": "refuge-six-turns",
+        "source": "refuge",
+        "tile": "hex-0891-b20a50ef8c",
+        "turns": 6
+      },
+      {
+        "event": "refuge-peace",
+        "source": "refuge",
+        "tile": "hex-0891-b20a50ef8c",
+        "turns": 5
+      }
+    ],
+    "seals": {},
+    "required": ["refuge-war", "refuge-peace"],
+    "objectives": {
+      "medicine": "medicine",
+      "refuge-war": "refuge-war",
+      "refuge-peace": "refuge-peace"
+    },
+    "retireOnRestore": [],
+    "repeat": [],
+    "failureUnits": {},
+    "named": ["orin", "dain"],
+    "branch": null,
+    "firstSeen": {
+      "orin": 0,
+      "ledgerkeeper": 0,
+      "dain": 1,
+      "master": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "archer"
+        }
+      ]
+    },
+    "previousEventIds": [],
+    "defeatOnMissing": [],
+    "departedWhenFlag": {}
+  },
+  "ashen-dawn": {
+    "active": [
+      "dain-death",
+      "master-death",
+      "orin-death",
+      "alternate-company",
+      "names",
+      "north-binding-rise",
+      "south-binding-rise",
+      "masters-boar",
+      "sealed-hex-0941-278b487380",
+      "sealed-hex-0957-c94afbbfa1",
+      "goal-0",
+      "goal-1",
+      "chapter-victory"
+    ],
+    "oldEvents": ["names"],
+    "waves": ["north-binding-rise", "south-binding-rise", "masters-boar"],
+    "timers": [],
+    "seals": {
+      "hex-0941-278b487380": "sealed-hex-0941-278b487380",
+      "hex-0957-c94afbbfa1": "sealed-hex-0957-c94afbbfa1"
+    },
+    "required": ["goal-0", "goal-1"],
+    "objectives": {
+      "names": "names",
+      "sealed-hex-0941-278b487380": "sealed-hex-0941-278b487380",
+      "sealed-hex-0957-c94afbbfa1": "sealed-hex-0957-c94afbbfa1",
+      "goal-0": "goal-0",
+      "goal-1": "goal-1"
+    },
+    "retireOnRestore": ["alternate-company"],
+    "repeat": [],
+    "failureUnits": {},
+    "named": ["orin", "dain", "master"],
+    "branch": {
+      "flag": "peace-lost",
+      "recruitment": {
+        "player": [
+          {
+            "unit": "skeleton"
+          },
+          {
+            "unit": "bonearcher"
+          },
+          {
+            "unit": "skeleton-impact-caster"
+          }
+        ]
+      }
+    },
+    "firstSeen": {
+      "orin": 0,
+      "ledgerkeeper": 0,
+      "dain": 1,
+      "master": 2
+    },
+    "baseRecruitment": {
+      "player": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "enemy": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ]
+    },
+    "previousEventIds": [],
+    "defeatOnMissing": [],
+    "departedWhenFlag": {}
+  }
+}

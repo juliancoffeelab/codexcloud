@@ -5,6 +5,8 @@ description: Use to generate or regenerate native pixel artwork from reference m
 
 # Pinkbox generation
 
+Apply the [battlefield contract](../battlefield-contract/SKILL.md) for native scale, canvas and grounding.
+
 This is the shared generation step for units, terrain tiles and foreground props.
 Use [design-unit](../design-unit/SKILL.md) or
 [design-terrain](../design-terrain/SKILL.md) for subject-specific design and

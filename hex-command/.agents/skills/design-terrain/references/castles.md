@@ -1,7 +1,7 @@
 # Multi-hex structures
 
 Read before authoring or repairing paving, walls or towers. The
-[permanent terrain contract](../../../../AGENTS.md#permanent-prohibition-on-map-post-processing)
+[permanent terrain contract](../../battlefield-contract/SKILL.md#permanent-prohibition-on-map-post-processing)
 applies throughout.
 
 Define reusable tiles before laying out a map. Castle tile data declares

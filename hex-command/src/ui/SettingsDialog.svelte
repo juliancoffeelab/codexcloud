@@ -121,4 +121,27 @@
       {#each view.game.log as text}<li>{text}</li>{/each}
     </ol>
   </details>
+  <details class="panel" id="opponent-difficulty">
+    <summary>Opponent difficulty · {view.opponent.difficulty}</summary>
+    <p>
+      {#if view.opponent.planner && view.opponent.recruiter}
+        Planner: {view.opponent.planner}
+        <br />
+        Recruiter: {view.opponent.recruiter}
+      {:else}
+        Policy: {view.opponent.policy}
+      {/if}
+    </p>
+  </details>
+  <details class="panel" id="battle-debug">
+    <summary>Debug tools</summary>
+    <p>
+      Download the current battle and the last five enemy turns to help investigate AI behavior.
+    </p>
+    <p>
+      Turn history starts when you open the game and clears when you reload or change missions. The
+      report includes enemies hidden by fog.
+    </p>
+    <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
+  </details>
 </dialog>

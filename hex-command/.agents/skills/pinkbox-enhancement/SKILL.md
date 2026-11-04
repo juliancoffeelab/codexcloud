@@ -5,6 +5,8 @@ description: Use to revise approved pixel artwork manually or through another pi
 
 # Pinkbox enhancement
 
+Apply the [battlefield contract](../battlefield-contract/SKILL.md) for native scale, canvas and grounding.
+
 Work from the game root with Python 3 and Pillow. Save the approved matrix and
 palette as an exact baseline in `tmp/`.
 Identify the requested shape, pose, equipment, material or composition changes.

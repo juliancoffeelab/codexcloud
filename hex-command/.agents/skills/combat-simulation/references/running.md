@@ -29,3 +29,39 @@ npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytic
 
 Use the [metrics reference](metrics.md) to choose required telemetry and the
 [reporting reference](reporting.md) to deliver the requested comparison.
+
+## Campaign objective routes
+
+`--diplomacy unrestricted,diplomatic` filters the modes declared by each campaign's
+`playerDiplomacy`. `--objectives flight,fight` likewise filters that campaign's
+named simulation routes. The scheduler takes their cross product with seeds,
+player tactics and enemy tactics. Reports keep both dimensions separate.
+`--objectives authored` runs the unchanged authored objectives as a control.
+
+Declare routes under `objectives.<campaign-id>.<route-name>.stages` in
+`rust/data/simulation/campaign.json`. Stage keys are authored map identifiers;
+route names are arbitrary identifiers, not Rust enum variants. Campaigns without
+routes retain one `authored` configuration. Adding a campaign or route needs data
+and its normal campaign-list registration, not simulator code.
+
+Each stage can declare:
+
+- `scriptEvents`: additional general events, including their objective metadata.
+- `scriptConditions`: existing script event IDs mapped to replacement `when`
+  expressions. Use these to express route prerequisites and ordering.
+- Legacy `goals`, `optionalGoals`, `events` and `eventConditions` overrides are
+  rejected; author route objectives through general events.
+- `ignoreOptionalWhen`: a condition after which the simulation player omits
+  incidental optional-event targets. This changes its goals, not combat legality.
+
+Definitions are explicit: the runner never infers exits, enemy factions, goal
+positions or a campaign's intended branches. Selecting a simulation route validates its
+name, stages, scripted objectives, events and conditions with the normal campaign validators.
+Playable catalog loading does not validate simulation route references.
+Simulation setup prepares each selected campaign/route once and shares its immutable
+definition across trials and streamed phase requests. Routes that only filter AI
+targets borrow the authored definition. Changed definitions copy only the selected
+campaign; the rest of the catalog remains shared. Each game reads one supplied
+campaign definition throughout restore, retry, combat and mission progression.
+Routes add no playable menus, choices, commands or save fields. The browser retains
+its authored goals.

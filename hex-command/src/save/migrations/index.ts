@@ -1,3 +1,15 @@
+import { migrateV29ToV30 } from "./v29-to-v30";
+import { migrateV28ToV29 } from "./v28-to-v29";
+import { migrateV27ToV28 } from "./v27-to-v28";
+import { migrateV26ToV27 } from "./v26-to-v27";
+import { migrateV25ToV26 } from "./v25-to-v26";
+import { migrateV24ToV25 } from "./v24-to-v25";
+import { migrateV23ToV24 } from "./v23-to-v24";
+import { migrateV22ToV23 } from "./v22-to-v23";
+import { migrateV21ToV22 } from "./v21-to-v22";
+import { migrateV20ToV21 } from "./v20-to-v21";
+import { migrateV19ToV20 } from "./v19-to-v20";
+import { migrateV18ToV19 } from "./v18-to-v19";
 import { migrateV17ToV18 } from "./v17-to-v18";
 import { migrateV16ToV17 } from "./v16-to-v17";
 import { migrateV15ToV16 } from "./v15-to-v16";
@@ -36,6 +48,42 @@ export function migrateSave(input: unknown): MigrationResult {
   const originalVersion = value.version;
   while (value.version !== SAVE_VERSION) {
     switch (value.version) {
+      case 29:
+        value = migrateV29ToV30(value);
+        break;
+      case 28:
+        value = migrateV28ToV29(value);
+        break;
+      case 27:
+        value = migrateV27ToV28(value);
+        break;
+      case 26:
+        value = migrateV26ToV27(value);
+        break;
+      case 25:
+        value = migrateV25ToV26(value);
+        break;
+      case 24:
+        value = migrateV24ToV25(value);
+        break;
+      case 23:
+        value = migrateV23ToV24(value);
+        break;
+      case 22:
+        value = migrateV22ToV23(value);
+        break;
+      case 21:
+        value = migrateV21ToV22(value);
+        break;
+      case 20:
+        value = migrateV20ToV21(value);
+        break;
+      case 19:
+        value = migrateV19ToV20(value);
+        break;
+      case 18:
+        value = migrateV18ToV19(value);
+        break;
       case 1:
         value = migrateV1ToV2(value) as unknown as Record<string, unknown>;
         break;

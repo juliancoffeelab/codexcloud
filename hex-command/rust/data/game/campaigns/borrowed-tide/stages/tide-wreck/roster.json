@@ -1,150 +1,110 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "tidekeeper",
-        "side": "player",
-        "col": 1,
-        "row": 2,
-        "name": "Mira",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "reefguard",
-        "side": "player",
-        "col": 2,
-        "row": 2
-      },
-      {
-        "type": "harpooner",
-        "side": "player",
-        "col": 1,
-        "row": 3
-      },
-      {
-        "type": "wavemender",
-        "side": "player",
-        "col": 2,
-        "row": 3
-      },
-      {
-        "type": "harpooner",
-        "side": "player",
-        "col": 3,
-        "row": 3,
-        "name": "Edda",
-        "role": "courier"
-      },
-      {
-        "type": "spearman",
-        "side": "player",
-        "col": 4,
-        "row": 2,
-        "name": "Tomas"
-      },
-      {
-        "type": "commander",
-        "side": "enemy",
-        "col": 10,
-        "row": 2,
-        "name": "Foreman Cale",
-        "role": "leader"
-      },
-      {
-        "type": "soldier",
-        "side": "enemy",
-        "col": 8,
-        "row": 4
-      },
-      {
-        "type": "archer",
-        "side": "enemy",
-        "col": 8,
-        "row": 5
-      },
-      {
-        "type": "spearman",
-        "side": "enemy",
-        "col": 7,
-        "row": 2
+      "palette": "player",
+      "gold": 14,
+      "recruits": [
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "role": "leader",
+          "character": "mira",
+          "tile": "hex-0045-b0e58b1f93"
+        },
+        {
+          "type": "reefguard",
+          "tile": "hex-0397-b042f4a1af"
+        },
+        {
+          "type": "harpooner",
+          "tile": "hex-0056-2e6c8414fc"
+        },
+        {
+          "type": "wavemender",
+          "tile": "hex-0408-edbae05560"
+        },
+        {
+          "type": "harpooner",
+          "role": "courier",
+          "character": "edda",
+          "tile": "hex-0760-150b2b6a75"
+        },
+        {
+          "type": "spearman",
+          "character": "tomas",
+          "tile": "hex-0845-9e38fcb018"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "tidekeeper",
-      "side": "player",
-      "col": 1,
-      "row": 2,
-      "name": "Mira",
-      "role": "leader"
     },
     {
-      "type": "reefguard",
-      "side": "player",
-      "col": 2,
-      "row": 2
-    },
-    {
-      "type": "harpooner",
-      "side": "player",
-      "col": 1,
-      "row": 3
-    },
-    {
-      "type": "wavemender",
-      "side": "player",
-      "col": 2,
-      "row": 3
-    },
-    {
-      "type": "harpooner",
-      "side": "player",
-      "col": 3,
-      "row": 3,
-      "name": "Edda",
-      "role": "courier"
-    },
-    {
-      "type": "spearman",
-      "side": "player",
-      "col": 4,
-      "row": 2,
-      "name": "Tomas"
-    },
-    {
-      "type": "commander",
-      "side": "enemy",
-      "col": 10,
-      "row": 2,
-      "name": "Foreman Cale",
-      "role": "leader"
-    },
-    {
-      "type": "soldier",
-      "side": "enemy",
-      "col": 8,
-      "row": 4
-    },
-    {
-      "type": "archer",
-      "side": "enemy",
-      "col": 8,
-      "row": 5
-    },
-    {
-      "type": "spearman",
-      "side": "enemy",
-      "col": 7,
-      "row": 2
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 10,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "character": "cale",
+          "tile": "hex-0077-1134d4f5cb"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0987-a19805d204"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0988-17596734c1"
+        },
+        {
+          "type": "spearman",
+          "tile": "hex-0941-278b487380"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
-  ],
-  "recruits": ["reefguard", "harpooner", "wavemender", "spearman", "adept", "merfolk-maceguard"],
-  "enemyRecruits": ["swordsman", "spearman", "archer"],
-  "gold": 14,
-  "enemyGold": 10
+  ]
 }

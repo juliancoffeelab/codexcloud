@@ -165,7 +165,7 @@ export type HexDirection = "e" | "se" | "sw" | "w" | "nw" | "ne";
 export interface Tile extends Coordinates {
   id: string;
   terrain: TerrainType;
-  owner: Side | null;
+  owner: string | null;
   /** Artwork only: road/village exits or opposite bridge/ford edges. */
   connections?: HexDirection[];
   deadEnds?: HexDirection[];
@@ -174,6 +174,7 @@ export interface Tile extends Coordinates {
   /** Artwork only: reusable floor palette, independent of terrain rules. */
   floor?: string;
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
+  light?: import("../../rust/pkg/hex_command").TileLight;
 }
 export interface Unit {
   faction?: string;
@@ -190,8 +191,10 @@ export interface Unit {
   hp: number;
   moved: boolean;
   attacked: boolean;
+  character?: string;
+  /** Resolved by Rust inspection for display; absent from native checkpoints. */
   name?: string;
-  role?: "leader" | "courier";
+  role?: "leader" | "courier" | "captive";
   /** Set by the enemy AI when withdrawing; visible before the player chooses to pursue. */
   retreating?: boolean;
   /** AI reinforcement hysteresis; saved so reloading does not release a rebuilding leader. */
@@ -266,13 +269,15 @@ export interface TerrainOverride extends Coordinates {
   walls?: HexDirection[];
   floor?: string;
   fog?: import("../../rust/pkg/hex_command").ConditionRule;
+  light?: import("../../rust/pkg/hex_command").TileLight;
 }
-export interface StartingUnit extends Coordinates {
+export interface StartingUnit {
+  tile: string;
   aiGroup?: string;
   type: UnitType;
   side: Side;
-  name?: string;
-  role?: "leader" | "courier";
+  character?: string;
+  role?: "leader" | "courier" | "captive";
 }
 export interface MapDefinition {
   id: MapId;
@@ -284,7 +289,7 @@ export interface MapDefinition {
   rows: number;
   terrain: TerrainOverride[];
   units: StartingUnit[];
-  lighting?: import("../../rust/pkg/hex_command").BattlefieldLighting;
+  lighting?: import("../../rust/pkg/hex_command").MapLighting;
   presentation: import("../../rust/pkg/hex_command").BattlefieldPresentation;
 }
 export interface DamageBreakdown {
@@ -336,14 +341,14 @@ export interface CombatAnimation {
 }
 export interface VillageState {
   id: string;
-  owner: Side | null;
+  owner: string | null;
 }
 export interface GameSnapshot {
   mapId: MapId;
   mapRevision: number;
   round: number;
   turn: Side;
-  gold: Record<Side, number>;
+  gold: Record<string, number> & Record<Side, number>;
   winner: Side | null;
   units: Unit[];
   villages: VillageState[];
@@ -363,7 +368,7 @@ export interface GameState {
   rows: number;
   round: number;
   turn: Side;
-  gold: Record<Side, number>;
+  gold: Record<string, number> & Record<Side, number>;
   winner: Side | null;
   nextId: number;
   log: string[];
@@ -375,7 +380,9 @@ export interface GameState {
 
 export type DialoguePortrait = UnitType | "worker";
 export interface DialogueLine {
+  sound?: string;
   speaker: string;
+  character?: string;
   portrait: DialoguePortrait;
   text: string;
 }
@@ -402,6 +409,7 @@ export type MissionGoal = (
 ) & { visibleWhen?: import("../../rust/pkg/hex_command").Condition };
 export interface MissionEvent {
   id: string;
+  recruitment?: Record<string, import("../../rust/pkg/hex_command").FactionRecruit[]>;
   spawn?: import("../../rust/pkg/hex_command").SpawnGroup;
   trigger:
     | { kind: "condition"; condition: import("../../rust/pkg/hex_command").Condition }
@@ -418,6 +426,7 @@ export interface MissionEvent {
   warDialogue?: DialogueLine[];
 }
 export interface ReinforcementWave {
+  dialogue?: DialogueLine[];
   /** Stable within its mission; saved deployment must never depend on array order. */
   id: string;
   round: number;
@@ -426,31 +435,36 @@ export interface ReinforcementWave {
   requiresUnsealed?: string;
 }
 export interface MissionDefinition {
+  itemIds?: string[];
+  scriptedEvents?: import("../../rust/pkg/hex_command").ScriptEvent[];
   map: MapDefinition;
   subtitle: string;
-  briefing: string;
-  debrief?: string;
+  briefing: import("../../rust/pkg/hex_command").ConditionalText;
+  debrief?: import("../../rust/pkg/hex_command").ConditionalText;
   requiredCompanions?: string[];
-  arrivals?: { name: string; col: number; row: number }[];
-  hints: string[];
+  arrivals?: { character: string; tile: string }[];
+  hints: import("../../rust/pkg/hex_command").ConditionalHint[];
   goals: MissionGoal[];
   optionalGoals?: MissionGoal[];
-  recruits: RecruitType[];
-  enemyRecruits: RecruitType[];
-  gold: number;
-  enemyGold: number;
+  recruitment: Record<string, import("../../rust/pkg/hex_command").FactionRecruit[]>;
+  gold: import("../../rust/pkg/hex_command").Gold;
   /** Occupying guards patrol their control objectives instead of raiding the starting camp. */
   defendObjectives?: boolean;
   /** An enemy leader guards this post and its immediate approaches; retreat remains free. */
   enemyLeaderPost?: string;
-  intro: DialogueLine[];
-  victory: DialogueLine[];
+  intro: import("../../rust/pkg/hex_command").Speech[];
+  victory: import("../../rust/pkg/hex_command").Speech[];
   events: MissionEvent[];
   waves: ReinforcementWave[];
   /** Authored story changes when a named ally has fallen, without resurrecting them. */
   companionLosses?: Record<
     string,
-    Partial<Pick<MissionDefinition, "briefing" | "debrief" | "hints" | "intro" | "victory">>
+    Partial<
+      Pick<
+        MissionDefinition,
+        "briefing" | "debrief" | "hints" | "intro" | "victory" | "recruitment"
+      >
+    >
   >;
   refuge?: {
     medicineEvent: string;
@@ -461,17 +475,18 @@ export interface MissionDefinition {
     warHints: string[];
   };
   withoutDain?: {
-    briefing: string;
-    hints: string[];
-    intro: DialogueLine[];
-    recruits: RecruitType[];
+    briefing: import("../../rust/pkg/hex_command").ConditionalText;
+    hints: import("../../rust/pkg/hex_command").ConditionalHint[];
+    intro: import("../../rust/pkg/hex_command").Speech[];
+    recruitment: Record<string, import("../../rust/pkg/hex_command").FactionRecruit[]>;
     reinforcements: StartingUnit[];
     victory?: DialogueLine[];
-    debrief?: string;
+    debrief?: import("../../rust/pkg/hex_command").ConditionalText;
   };
 }
 export interface CampaignDefinition {
-  playerDiplomacy: ("pragmatic" | "restrained")[];
+  characters: { id: string; name: string }[];
+  playerDiplomacy: ("unrestricted" | "diplomatic")[];
   id: CampaignId;
   name: string;
   tagline: string;
@@ -480,9 +495,10 @@ export interface CampaignDefinition {
   race: Race;
   leader: UnitType;
   missions: MissionDefinition[];
-  ending: DialogueLine[];
+  ending: import("../../rust/pkg/hex_command").Speech[];
 }
 export interface CampaignState {
+  scripts?: import("../../rust/pkg/hex_command").EventState;
   evacuated?: { event: string; unit: Unit }[];
   id: CampaignId;
   mission: number;
@@ -501,7 +517,7 @@ export interface CampaignState {
   refuge?: { heldTurns: number; lastCountedRound: number; escalated: boolean };
   vigil?: { heldTurns: number; lastCountedRound: number };
   holds?: Record<string, { heldTurns: number; lastCountedRound: number }>;
-  choices?: ("refuge-peace" | "refuge-war" | "green-dain-dead")[];
+  flags: Record<string, import("../../rust/pkg/hex_command").FlagChange[]>;
 }
 export interface CampaignVeteran {
   type: UnitType;

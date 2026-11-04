@@ -1,0 +1,18 @@
+{
+  "id": "quarry-hammer",
+  "name": "Quarry hammer",
+  "description": "Recovered from the old quarry. Its heavy head delivers a single crushing blow.",
+  "attacks": [
+    {
+      "id": "quarry-hammer",
+      "name": "Quarry hammer",
+      "damage": 8,
+      "spread": 2,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    }
+  ]
+}

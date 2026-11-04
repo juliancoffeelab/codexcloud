@@ -3,13 +3,104 @@ use super::CampaignerKind as CampaignBlock;
 use crate::ai::context::BattleView;
 use crate::ai::orders::UnitSelector;
 use crate::ai::{
-    Diplomacy, PlanningWorkspace,
-    objectives::{actor_matches, objective},
+    Diplomacy,
     orders::*,
+    policies::objectives::{actor_matches, objective},
 };
+use crate::data::*;
 use crate::sort::SharedSort;
-use crate::{data::*, logic::Game};
+use hex_command_battle::{CampaignView as AuthoredView, PhaseForecasts};
 use rustc_hash::FxHashSet as HashSet;
+#[derive(Clone, Copy)]
+pub(crate) struct CampaignInput<'a> {
+    pub goals: Option<&'a [Objective]>,
+    pub diplomacy: Diplomacy,
+}
+
+/// Mission decision inputs. The authored read model cannot obtain live execution.
+pub(crate) struct MissionPolicy<'a, 'catalog> {
+    pub(crate) battle: &'a BattleView<'a, 'catalog>,
+    authored: AuthoredView<'a, 'catalog>,
+    phases: PhaseForecasts<'a, 'catalog>,
+}
+impl<'a, 'catalog> MissionPolicy<'a, 'catalog> {
+    pub(crate) fn new(
+        authored: AuthoredView<'a, 'catalog>,
+        phases: PhaseForecasts<'a, 'catalog>,
+    ) -> Self {
+        let battle = authored.battle();
+        Self {
+            battle,
+            authored,
+            phases,
+        }
+    }
+    fn script_unit_matches(&self, selector: &UnitMatch, unit: &Unit) -> bool {
+        self.authored.script_unit_matches(selector, unit)
+    }
+    fn script_condition(&self, condition: &When) -> bool {
+        self.authored.script_condition(condition)
+    }
+    fn event_condition_met(&self, condition: &Condition) -> bool {
+        self.authored.event_condition_met(condition)
+    }
+    fn mediation_at_risk(&self, unit: &Unit) -> bool {
+        self.authored.mediation_at_risk(unit)
+    }
+    fn group_active(&self, group: &EnemyGroup) -> bool {
+        self.authored.group_active(group)
+    }
+    fn approach_tiles(&self, selection: &ProximitySelection) -> Vec<String> {
+        self.authored.approach_tiles(selection)
+    }
+}
+impl<'a, 'catalog> std::ops::Deref for MissionPolicy<'a, 'catalog> {
+    type Target = BattleView<'a, 'catalog>;
+    fn deref(&self) -> &Self::Target {
+        self.battle
+    }
+}
+
+fn is_spawn(action: &EventAction) -> bool {
+    if let EventAction::Spawn(_) = action {
+        true
+    } else {
+        false
+    }
+}
+// Read event-owned duties through the same cheap completion facts as upstream.
+fn authored_goal_done(game: &MissionPolicy<'_, '_>, event: &ScriptEvent) -> bool {
+    let Some(objective) = &event.objective else {
+        return true;
+    };
+    if objective.optional {
+        return true;
+    }
+    let Some(state) = game.authored.scripts() else {
+        return false;
+    };
+    if !state.active.contains(&event.id) {
+        return true;
+    }
+    match &objective.intent {
+        EventIntent::Capture(tiles) => tiles
+            .iter()
+            .all(|tile| game.owners()[game.site(tile)].as_deref() == Some("player")),
+        EventIntent::Escort(value) => game.units().iter().any(|unit| {
+            unit.side == Side::Player
+                && unit.role.is_some_and(Role::is_escort)
+                && game.script_unit_matches(&value.units, unit)
+                && game.board().ids[unit.tile] == value.tile
+        }),
+        EventIntent::Escape(value) => game.units().iter().any(|unit| {
+            unit.side == Side::Player
+                && unit.is_leader()
+                && game.script_unit_matches(&value.units, unit)
+                && game.board().ids[unit.tile] == value.tile
+        }),
+        _ => false,
+    }
+}
 impl CampaignBlock {
     pub const fn supports_campaign(self) -> bool {
         match self {
@@ -17,15 +108,19 @@ impl CampaignBlock {
             Self::Arena => false,
         }
     }
-    pub(in crate::ai) fn restrained(self, game: &Game<'_>, workspace: &PlanningWorkspace) -> bool {
+    pub(in crate::ai) fn restrained(
+        self,
+        game: &MissionPolicy<'_, '_>,
+        input: CampaignInput<'_>,
+    ) -> bool {
         match self {
-            Self::Arena => workspace.diplomacy == Diplomacy::Restrained,
-            Self::Mission => restrained(game, workspace),
+            Self::Arena => input.diplomacy == Diplomacy::Diplomatic,
+            Self::Mission => restrained(game, input),
         }
     }
     pub(in crate::ai) fn goals(
         self,
-        game: &Game<'_>,
+        game: &MissionPolicy<'_, '_>,
         provided: Option<&[Objective]>,
     ) -> Vec<Objective> {
         match self {
@@ -36,34 +131,35 @@ impl CampaignBlock {
 
     pub(in crate::ai) fn campaign_orders(
         self,
-        game: &Game<'_>,
-        workspace: &PlanningWorkspace,
+        game: &MissionPolicy<'_, '_>,
+        input: CampaignInput<'_>,
     ) -> CampaignOrders {
-        let restrained = self.restrained(game, workspace);
-        let campaign = game.campaign.is_some();
+        let restrained = self.restrained(game, input);
+        let campaign = game.authored.campaign().is_some();
         let mut authored_targets = match self {
-            Self::Mission => self.goals(game, workspace.goals.as_deref()),
-            Self::Arena => individual(game.policy_objectives(workspace.goals.as_deref())),
+            Self::Mission => self.goals(game, input.goals),
+            Self::Arena => individual(game.policy_objectives(input.goals)),
         };
         let mut scoped = Vec::new();
         let mut inactive: Vec<_> = game
-            .units
+            .units()
             .iter()
-            .filter(|unit| game.belongs_to_phase(unit, game.turn) && !game.may_act(unit))
+            .filter(|unit| game.belongs_to_phase(unit, game.turn()) && !game.may_act(unit))
             .map(|unit| UnitId(unit.id))
             .collect();
-        if game.turn == Side::Enemy
+        if game.turn() == Side::Enemy
             && game
-                .mission
+                .authored
+                .mission()
                 .as_ref()
                 .is_some_and(|m| !m.enemy_groups.is_empty())
         {
-            let mission = game.mission.as_ref().unwrap();
+            let mission = game.authored.mission().unwrap();
             let ordinary = std::mem::take(&mut authored_targets);
             for unit in game
-                .units
+                .units()
                 .iter()
-                .filter(|unit| game.belongs_to_phase(unit, game.turn))
+                .filter(|unit| game.belongs_to_phase(unit, game.turn()))
             {
                 let group = unit
                     .ai_group
@@ -103,10 +199,10 @@ impl CampaignBlock {
                         }
                     }
                     let tiles = game
-                        .units
+                        .units()
                         .iter()
                         .filter(|foe| game.hostile(unit, foe))
-                        .map(|foe| game.board.ids[foe.tile].clone())
+                        .map(|foe| game.board().ids[foe.tile].clone())
                         .collect();
                     let mut target = objective(
                         &format!("group:{}:{}", group.id, unit.id),
@@ -134,57 +230,84 @@ impl CampaignBlock {
             targets: authored_targets.iter().cloned().map(Target::from).collect(),
             restrained,
             campaign,
-            protect_withdrawal: game.protects_withdrawal(game.turn, restrained),
+            protect_withdrawal: game.protects_withdrawal(game.turn(), restrained),
             withdrawal_tiles: game
-                .withdrawal_lanes(game.turn, restrained)
+                .withdrawal_lanes(game.turn(), restrained)
                 .into_iter()
-                .map(|tile| TileId(game.board.ids[tile].clone()))
+                .map(|tile| TileId(game.board().ids[tile].clone()))
                 .collect(),
             ..TacticalOrders::default()
         };
-        if let Some(mission) = &game.mission {
-            tactics.pending_arrivals = game.turn == Side::Player
-                && mission.waves.iter().any(|wave| {
-                    game.round >= wave.round
-                        && !game
-                            .campaign
-                            .as_ref()
-                            .unwrap()
-                            .marked(&format!("wave:{}", wave.id))
-                });
+        if let Some(mission) = &game.authored.mission() {
+            // Preserve the upstream player-side, due-enemy-wave forecast horizon.
+            // The event system supplies committed pending requests and scheduled waves.
+            if game.turn() == Side::Player {
+                if let Some(state) = game.authored.scripts() {
+                    tactics.pending_arrivals = state.pending.iter().any(|pending| {
+                        game.faction(&pending.faction)
+                            .is_some_and(|f| f.phase == Side::Enemy)
+                    }) || mission.scripted_events.iter().any(|event| {
+                        let due = match &event.when {
+                            When::Turn(TurnSelection::Faction { number, faction }) => {
+                                *number <= game.round()
+                                    && game
+                                        .faction(faction)
+                                        .is_some_and(|f| f.phase == Side::Enemy)
+                            }
+                            _ => false,
+                        };
+                        due && state.active.contains(&event.id)
+                            && event
+                                .actions_recursive()
+                                .iter()
+                                .any(|action| is_spawn(action))
+                    });
+                }
+            }
+            // Read authored intent, never policy-generated rebuild/group goals.
             for unit in game
-                .units
+                .units()
                 .iter()
-                .filter(|unit| game.belongs_to_phase(unit, game.turn))
+                .filter(|u| game.belongs_to_phase(u, game.turn()))
             {
-                let mut sites = Vec::new();
-                for goal in &mission.goals {
-                    let eligible = match goal {
-                        Goal::Escort { .. } => unit.role == Some(Role::Courier),
-                        Goal::Escape { .. } => unit.role == Some(Role::Leader),
-                        Goal::Vigil { .. }
-                        | Goal::Hold {
-                            companion: Some(_), ..
-                        } => unit.name.as_ref() == goal.companion(),
-                        Goal::Seal { .. } => goal.unit_type().is_none_or(|kind| {
-                            game.rules.units[game.kind(kind)].family
-                                == game.rules.units[unit.kind].family
-                        }),
-                        Goal::Defeat { .. }
-                        | Goal::Control { .. }
-                        | Goal::Event { .. }
-                        | Goal::Hold {
-                            companion: None, ..
-                        }
-                        | Goal::Refuge { .. } => false,
+                let mut sites = vec![];
+                for event in &mission.scripted_events {
+                    let Some(objective) = &event.objective else {
+                        continue;
                     };
-                    if eligible {
-                        sites.extend(
-                            goal.tile()
-                                .into_iter()
-                                .chain(goal.tiles())
-                                .map(|tile| TileId(tile.clone())),
-                        );
+                    if objective.optional {
+                        continue;
+                    }
+                    let site = match &objective.intent {
+                        EventIntent::Escort(value)
+                            if unit.role.is_some_and(Role::is_escort)
+                                && game.script_unit_matches(&value.units, unit) =>
+                        {
+                            Some(&value.tile)
+                        }
+                        EventIntent::Escape(value)
+                            if unit.is_leader() && game.script_unit_matches(&value.units, unit) =>
+                        {
+                            Some(&value.tile)
+                        }
+                        EventIntent::Hold(value)
+                            if value
+                                .units
+                                .character
+                                .as_ref()
+                                .is_some_and(|id| unit.character.as_ref() == Some(id)) =>
+                        {
+                            Some(&value.tile)
+                        }
+                        EventIntent::GoTo(value)
+                            if game.script_unit_matches(&value.units, unit) =>
+                        {
+                            Some(&value.tile)
+                        }
+                        _ => None,
+                    };
+                    if let Some(site) = site {
+                        sites.push(TileId(site.clone()));
                     }
                 }
                 if !sites.is_empty() {
@@ -193,9 +316,9 @@ impl CampaignBlock {
             }
         }
         for unit in game
-            .units
+            .units()
             .iter()
-            .filter(|unit| game.belongs_to_phase(unit, game.turn) && unit.is_leader())
+            .filter(|unit| game.belongs_to_phase(unit, game.turn()) && unit.is_leader())
         {
             let escaping = tactics.targets.iter().any(|target| {
                 authored_targets.iter().any(|authored| {
@@ -206,73 +329,76 @@ impl CampaignBlock {
             tactics.leader_intents.push((UnitId(unit.id), intent));
         }
         let mut recruitment = RecruitmentOrders::default();
-        recruitment.rotate_pool = campaign || game.pools.is_some();
-        if game.turn == Side::Player {
-            if let Some(mission) = &game.mission {
-                for goal in &mission.goals {
-                    let specialist = match goal {
-                        Goal::Seal { unit_type, .. } => {
-                            unit_type.as_ref().filter(|_| !game.goal_done(goal))
-                        }
-                        Goal::Defeat { .. }
-                        | Goal::Escort { .. }
-                        | Goal::Escape { .. }
-                        | Goal::Control { .. }
-                        | Goal::Event { .. }
-                        | Goal::Hold { .. }
-                        | Goal::Vigil { .. }
-                        | Goal::Refuge { .. } => None,
+        recruitment.rotate_pool = campaign || game.has_pools();
+        if game.turn() == Side::Player {
+            if let Some(mission) = &game.authored.mission() {
+                for event in &mission.scripted_events {
+                    let Some(objective) = &event.objective else {
+                        continue;
                     };
-                    if let Some(kind) = specialist {
-                        let selector =
-                            UnitSelector::Family(game.rules.units[game.kind(kind)].family);
-                        if !recruitment
+                    let EventIntent::Hold(hold) = &objective.intent else {
+                        continue;
+                    };
+                    if !game
+                        .authored
+                        .scripts()
+                        .as_deref()
+                        .is_some_and(|s| s.active.contains(&event.id))
+                        || objective
+                            .visible_when
+                            .as_ref()
+                            .is_some_and(|c| !game.script_condition(c))
+                    {
+                        continue;
+                    }
+                    let kinds: Vec<_> = hold
+                        .units
+                        .unit_type
+                        .iter()
+                        .chain(hold.units.unit_types.iter())
+                        .cloned()
+                        .map(UnitTypeId)
+                        .collect();
+                    if !kinds.is_empty() {
+                        recruitment
                             .requirements
-                            .iter()
-                            .any(|requirement| match requirement {
-                                RecruitRequirement::EnsureUnits {
-                                    selector: existing,
-                                    count: _,
-                                } => *existing == selector,
-                            })
-                        {
-                            recruitment
-                                .requirements
-                                .push(RecruitRequirement::EnsureUnits { selector, count: 1 });
-                        }
+                            .push(RecruitRequirement::EnsureUnits {
+                                selector: UnitSelector::AnyOf(kinds),
+                                count: 1,
+                            });
                     }
                 }
             }
-        } else if let Some(mission) = &game.mission {
+        } else if let Some(mission) = &game.authored.mission() {
             tactics.leader_post = mission.enemy_leader_post.clone().map(TileId);
             tactics.movement_tiles = game
                 .territory()
                 .into_iter()
-                .map(|tile| TileId(game.board.ids[tile].clone()))
+                .map(|tile| TileId(game.board().ids[tile].clone()))
                 .collect();
             if mission.defend_objectives {
                 tactics.defensive_tiles = game
                     .territory()
                     .into_iter()
-                    .map(|tile| TileId(game.board.ids[tile].clone()))
+                    .map(|tile| TileId(game.board().ids[tile].clone()))
                     .collect();
             }
         }
         for unit in game
-            .units
+            .units()
             .iter()
-            .filter(|u| game.belongs_to_phase(u, game.turn))
+            .filter(|u| game.belongs_to_phase(u, game.turn()))
         {
             let leader = unit.is_leader();
             let needs_protection = campaign
-                && game.turn == Side::Player
-                && unit.name.is_some()
+                && game.turn() == Side::Player
+                && unit.character.is_some()
                 && game.essential(unit)
                 && (!leader
-                    || unit.hp * 2 <= game.rules.units[unit.kind].hp
-                    || crate::ai::threats::Threats::protected(
-                        &BattleView::new(game),
-                        game.turn,
+                    || unit.hp * 2 <= game.authored.catalogue().units[unit.kind].hp
+                    || crate::ai::policies::threat::Threats::protected(
+                        game.phases,
+                        game.turn(),
                         &tactics,
                     )
                     .at(unit, unit.tile, None)
@@ -284,24 +410,24 @@ impl CampaignBlock {
             }
         }
         if let Some(unit) = game
-            .units
+            .units()
             .iter()
-            .find(|u| game.belongs_to_phase(u, game.turn))
+            .find(|u| game.belongs_to_phase(u, game.turn()))
         {
             tactics.terminal_targets = game
-                .units
+                .units()
                 .iter()
                 .filter(|enemy| {
-                    game.hostile_to_phase(enemy, game.turn) && terminal_attack(game, unit, enemy)
+                    game.hostile_to_phase(enemy, game.turn()) && terminal_attack(game, unit, enemy)
                 })
                 .map(|enemy| UnitId(enemy.id))
                 .collect();
         }
         if tactics.protect_withdrawal {
             tactics.mediated = game
-                .units
+                .units()
                 .iter()
-                .filter(|u| game.hostile_to_phase(u, game.turn) && game.mediation_at_risk(u))
+                .filter(|u| game.hostile_to_phase(u, game.turn()) && game.mediation_at_risk(u))
                 .map(|u| UnitId(u.id))
                 .collect();
         }
@@ -310,17 +436,21 @@ impl CampaignBlock {
                 continue;
             }
             let Some(actor) = game
-                .units
+                .units()
                 .iter()
                 .filter(|u| {
-                    game.belongs_to_phase(u, game.turn)
-                        && BattleView::new(game).can_pursue(u, &Target::from(target.clone()))
+                    game.belongs_to_phase(u, game.turn())
+                        && crate::ai::policies::objectives::can_pursue(
+                            &game.battle,
+                            u,
+                            &Target::from(target.clone()),
+                        )
                 })
                 .min_by_key(|u| {
                     target
                         .tiles
                         .iter()
-                        .map(|tile| game.board.distance(u.tile, game.site(tile)))
+                        .map(|tile| game.board().distance(u.tile, game.site(tile)))
                         .min()
                         .unwrap_or(u16::MAX)
                 })
@@ -330,21 +460,21 @@ impl CampaignBlock {
             let Some(destination) = target
                 .tiles
                 .iter()
-                .min_by_key(|tile| game.board.distance(actor.tile, game.site(tile)))
+                .min_by_key(|tile| game.board().distance(actor.tile, game.site(tile)))
             else {
                 continue;
             };
             let actor_id = UnitId(actor.id);
             if campaign
-                && game.turn == Side::Player
-                && actor.name.is_some()
+                && game.turn() == Side::Player
+                && actor.character.is_some()
                 && !tactics.protects(actor.id)
             {
                 tactics
                     .constraints
                     .push(TacticalConstraint::Survive { actor: actor_id });
             }
-            let priority = if game.turn == Side::Player {
+            let priority = if game.turn() == Side::Player {
                 ObjectivePriority::Critical
             } else {
                 ObjectivePriority::Normal
@@ -374,8 +504,39 @@ impl CampaignBlock {
                 },
             });
             recruitment.reserved.push(TileId(destination.clone()));
-            if game.turn == Side::Player
-                && crate::ai::threats::Threats::unshielded(&BattleView::new(game), actor) > 0
+            let travelling = game.turn() == Side::Player
+                && actor.is_leader()
+                && !occupy
+                && !authored_targets.iter().any(|goal| {
+                    goal.id.starts_with("required:") && goal.kind == ObjectiveKind::Defeat
+                });
+            if travelling {
+                // Travel is a company duty, even before the leader is threatened.
+                for role in UnitRole::ALL {
+                    let guards = game
+                        .units()
+                        .iter()
+                        .filter(|unit| {
+                            game.belongs_to_phase(unit, game.turn())
+                                && !unit.is_leader()
+                                && !unit.role.is_some_and(Role::is_escort)
+                                && game.authored.catalogue().units[unit.kind].role == role
+                        })
+                        .count();
+                    if guards > 0 {
+                        tactics.objectives.push(ObjectiveOrder {
+                            id: format!("{}:{role:?}:escort", target.id),
+                            priority: ObjectivePriority::Important,
+                            objective: TacticalObjective::Escort {
+                                actor: actor_id,
+                                guards,
+                                selector: UnitSelector::Role(role),
+                            },
+                        });
+                    }
+                }
+            } else if game.turn() == Side::Player
+                && crate::ai::policies::threat::Threats::unshielded(game.phases, actor) > 0
             {
                 tactics.objectives.push(ObjectiveOrder {
                     id: format!("{}:escort", target.id),
@@ -398,37 +559,156 @@ impl CampaignBlock {
         recruitment
             .reserved
             .extend(tactics.withdrawal_tiles.iter().cloned());
-        let mut lanes: Vec<_> = BattleView::new(game)
-            .actor_lanes(&tactics.targets)
-            .into_values()
-            .flatten()
-            .map(|tile| TileId(game.board.ids[tile].clone()))
-            .collect();
-        lanes.order_by(|a, b| a.0.cmp(&b.0));
+        let mut lanes: Vec<_> =
+            crate::ai::policies::objectives::actor_lanes(&game.battle, &tactics.targets)
+                .into_values()
+                .flatten()
+                .map(|tile| TileId(game.board().ids[tile].clone()))
+                .collect();
+        lanes.order_by_key(|tile| game.board().positions[game.site(&tile.0)]);
         lanes.dedup();
         recruitment.reserved.extend(lanes);
         tactics.required_units = recruitment.requirements.clone();
         tactics
             .objectives
-            .order_by(|a, b| b.priority.cmp(&a.priority).then(a.id.cmp(&b.id)));
+            .order_by(|a, b| b.priority.cmp(&a.priority));
         CampaignOrders {
             recruitment,
             tactics,
         }
     }
 }
-impl Game<'_> {
+impl MissionPolicy<'_, '_> {
+    pub(crate) fn scripted_policy_objectives(&self, side: Side) -> Vec<Objective> {
+        let Some(state) = self.authored.scripts() else {
+            return vec![];
+        };
+        let mut goals = vec![];
+        for event in &self.authored.mission().unwrap().scripted_events {
+            let Some(objective) = &event.objective else {
+                continue;
+            };
+            if !state.active.contains(&event.id)
+                || objective
+                    .visible_when
+                    .as_ref()
+                    .is_some_and(|c| !self.script_condition(c))
+            {
+                continue;
+            }
+            let (kind, tiles, selector, hold) = match &objective.intent {
+                EventIntent::Hold(v) => (
+                    ObjectiveKind::Vigil,
+                    vec![v.tile.clone()],
+                    Some(&v.units),
+                    true,
+                ),
+                EventIntent::Escort(v) => (
+                    ObjectiveKind::Escort,
+                    vec![v.tile.clone()],
+                    Some(&v.units),
+                    false,
+                ),
+                EventIntent::GoTo(v) => (
+                    ObjectiveKind::Visit,
+                    vec![v.tile.clone()],
+                    Some(&v.units),
+                    false,
+                ),
+                EventIntent::Escape(v) => (
+                    ObjectiveKind::Escape,
+                    vec![v.tile.clone()],
+                    Some(&v.units),
+                    false,
+                ),
+                EventIntent::Approach(v) => (
+                    ObjectiveKind::Visit,
+                    self.approach_tiles(v),
+                    Some(&v.units),
+                    false,
+                ),
+                EventIntent::Own(v) => (ObjectiveKind::Capture, vec![v.tile.clone()], None, true),
+                EventIntent::Capture(v) => (
+                    ObjectiveKind::Capture,
+                    v.iter()
+                        .filter(|t| self.owners()[self.site(t)].as_deref() != Some("player"))
+                        .cloned()
+                        .collect(),
+                    None,
+                    true,
+                ),
+                EventIntent::Defeat(v) => (
+                    ObjectiveKind::Defeat,
+                    self.units()
+                        .iter()
+                        .filter(|u| self.script_unit_matches(v, u))
+                        .map(|u| self.board().ids[u.tile].clone())
+                        .collect(),
+                    None,
+                    false,
+                ),
+            };
+            if tiles.is_empty() {
+                continue;
+            }
+            let actor = selector
+                .filter(|s| {
+                    s.character.is_some()
+                        || s.role.is_some()
+                        || s.unit_type.is_some()
+                        || !s.unit_types.is_empty()
+                })
+                .and_then(|s| {
+                    self.units()
+                        .iter()
+                        .filter(|u| {
+                            self.belongs_to_phase(u, side) && self.script_unit_matches(s, u)
+                        })
+                        .min_by_key(|u| {
+                            tiles
+                                .iter()
+                                .map(|t| self.board().distance(u.tile, self.site(t)))
+                                .min()
+                                .unwrap_or(0)
+                        })
+                });
+            if selector.is_some_and(|s| {
+                s.character.is_some()
+                    || s.role.is_some()
+                    || s.unit_type.is_some()
+                    || !s.unit_types.is_empty()
+            }) && actor.is_none()
+            {
+                continue;
+            }
+            goals.push(Objective {
+                id: if objective.optional {
+                    format!("optional:{}", event.objective_id())
+                } else {
+                    format!("required:{}", event.objective_id())
+                },
+                kind,
+                tiles,
+                weight: if objective.optional { 4.0 } else { 24.0 },
+                actor: actor.map(|u| format!("u{}", u.id)),
+                family: None,
+                hold: Some(hold),
+            });
+        }
+        goals
+    }
+
     pub(in crate::ai) fn policy_objectives(&self, goals: Option<&[Objective]>) -> Vec<Objective> {
-        let mut goals = goals.map_or_else(|| self.objectives(self.turn), |g| g.to_vec());
+        let mut goals = goals.map_or_else(|| self.objectives(self.turn()), |g| g.to_vec());
         goals.extend(self.rebuild_objectives(&goals));
         goals
     }
     pub(in crate::ai) fn rebuild_objectives(&self, goals: &[Objective]) -> Vec<Objective> {
         let mut rebuilding = vec![];
         let leaders: Vec<_> = self
-            .units
+            .units()
             .iter()
-            .filter(|u| self.belongs_to_phase(u, self.turn) && u.is_leader())
+            .filter(|u| self.belongs_to_phase(u, self.turn()) && u.is_leader())
             .map(|u| u.id)
             .collect();
         for id in leaders {
@@ -437,10 +717,13 @@ impl Game<'_> {
                 .any(|g| g.kind == ObjectiveKind::Escape && actor_matches(&g.actor, id));
             let (targets, _) = self.leader_rebuild_plan(id, required);
             if !targets.is_empty() {
-                let mut o = crate::ai::objectives::objective(
+                let mut o = crate::ai::policies::objectives::objective(
                     &format!("rebuild:u{id}"),
                     ObjectiveKind::Capture,
-                    targets.iter().map(|&t| self.board.ids[t].clone()).collect(),
+                    targets
+                        .iter()
+                        .map(|&t| self.board().ids[t].clone())
+                        .collect(),
                     80.0,
                 );
                 o.actor = Some(format!("u{id}"));
@@ -450,566 +733,60 @@ impl Game<'_> {
         }
         rebuilding
     }
-    /// Mission tools are required independently of the combat recruitment style.
     pub(in crate::ai) fn required_recruit(&self, side: Side) -> Option<Family> {
-        fn specialist(goal: &Goal) -> Option<&str> {
-            match goal {
-                Goal::Seal { unit_type, .. } => unit_type.as_deref(),
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Escape { .. }
-                | Goal::Control { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => None,
-            }
-        }
         if side != Side::Player {
             return None;
         }
-        let mission = self.mission.as_ref()?;
-        let pool = self.recruitment_options(side);
+        let mission = self.authored.mission()?;
+        let state = self.authored.scripts()?;
         mission
-            .goals
+            .scripted_events
             .iter()
-            .filter(|g| !self.goal_done(g))
-            .find_map(|goal| {
-                let family = self.rules.units[self.kind(specialist(goal)?)].family;
-                (!self.units.iter().any(|u| {
-                    self.belongs_to_phase(u, side) && self.rules.units[u.kind].family == family
-                }) && pool
-                    .iter()
-                    .any(|&kind| self.rules.units[kind].family == family))
-                .then_some(family)
+            .filter(|e| state.active.contains(&e.id))
+            .filter_map(|e| e.objective.as_ref())
+            .filter(|o| {
+                o.visible_when
+                    .as_ref()
+                    .is_none_or(|w| self.script_condition(w))
             })
-    }
-    fn event_objectives(
-        &self,
-        id: &str,
-        prefix: &str,
-        weight: f64,
-        visiting: &mut HashSet<String>,
-    ) -> Vec<Objective> {
-        if self
-            .campaign
-            .as_ref()
-            .is_some_and(|state| state.marked(&format!("event:{id}")))
-            || !visiting.insert(id.into())
-        {
-            return vec![];
-        }
-        let Some(event) = self
-            .mission
-            .as_ref()
-            .and_then(|m| m.events.iter().find(|event| event.id == id))
-        else {
-            return vec![];
-        };
-        if event.unless_event.as_ref().is_some_and(|id| {
-            self.campaign
-                .as_ref()
-                .unwrap()
-                .marked(&format!("event:{id}"))
-        }) || event.before_round.is_some_and(|round| self.round >= round)
-        {
-            return vec![];
-        }
-        if let Some(required) = &event.requires_event {
-            if !self
-                .campaign
-                .as_ref()
-                .unwrap()
-                .marked(&format!("event:{required}"))
-            {
-                return self.event_objectives(required, prefix, weight, visiting);
-            }
-        }
-        let result = match &event.trigger {
-            Trigger::Condition { condition } => {
-                self.condition_objectives(condition, prefix, weight, visiting)
-            }
-            Trigger::Visit { tile } | Trigger::Control { tile, .. } => vec![objective(
-                prefix,
-                ObjectiveKind::Visit,
-                vec![tile.clone()],
-                weight,
-            )],
-            Trigger::Round { .. } | Trigger::Held { .. } => vec![],
-        };
-        visiting.remove(id);
-        result
-    }
-    fn condition_objectives(
-        &self,
-        condition: &Condition,
-        prefix: &str,
-        weight: f64,
-        visiting: &mut HashSet<String>,
-    ) -> Vec<Objective> {
-        if crate::logic::conditions::matches(condition, &self.condition_context(), None) {
-            return vec![];
-        }
-        match condition {
-            Condition::Event { event } => self.event_objectives(event, prefix, weight, visiting),
-            Condition::All { conditions } => conditions
-                .iter()
-                .enumerate()
-                .flat_map(|(i, c)| {
-                    self.condition_objectives(c, &format!("{prefix}:{i}"), weight, visiting)
-                })
-                .collect(),
-            Condition::Any { conditions } => conditions
-                .iter()
-                .enumerate()
-                .map(|(i, c)| {
-                    self.condition_objectives(
-                        c,
-                        &format!("{prefix}:{i}"),
-                        weight,
-                        &mut visiting.clone(),
-                    )
-                })
-                .filter(|goals| !goals.is_empty())
-                .min_by_key(|goals| {
-                    goals
+            .find_map(|o| match &o.intent {
+                EventIntent::Hold(v)
+                    if !self
+                        .units()
                         .iter()
-                        .flat_map(|g| g.tiles.iter())
-                        .flat_map(|t| {
-                            self.units
-                                .iter()
-                                .filter(|u| self.belongs_to_phase(u, self.turn))
-                                .map(move |u| self.board.distance(u.tile, self.site(t)))
-                        })
-                        .min()
-                        .unwrap_or(u16::MAX)
-                })
-                .unwrap_or_default(),
-            Condition::Proximity {
-                tile: Some(tile),
-                radius,
-                side,
-                unit_type,
-                name,
-                unit_types,
-            } if *side == ConditionSide::from(self.turn) => {
-                let center = self.site(tile);
-                let tiles = self
-                    .board
-                    .ids
-                    .iter()
-                    .enumerate()
-                    .filter(|(i, _)| self.board.distance(*i, center) <= *radius)
-                    .map(|(_, id)| id.clone())
-                    .collect();
-                let mut target = objective(prefix, ObjectiveKind::Visit, tiles, weight);
-                if let Some(name) = name {
-                    let Some(unit) = self.units.iter().find(|u| {
-                        self.belongs_to_phase(u, self.turn) && u.name.as_ref() == Some(name)
-                    }) else {
-                        return vec![];
-                    };
-                    target.actor = Some(format!("u{}", unit.id));
+                        .any(|u| u.side == side && self.script_unit_matches(&v.units, u)) =>
+                {
+                    v.units
+                        .unit_type
+                        .as_ref()
+                        .or(v.units.unit_types.first())
+                        .map(|k| self.authored.catalogue().units[self.kind(k)].family)
                 }
-                if !unit_types.is_empty() && target.actor.is_none() {
-                    if let Some(unit) = self
-                        .units
-                        .iter()
-                        .filter(|u| {
-                            self.belongs_to_phase(u, self.turn)
-                                && unit_types.contains(&self.rules.units[u.kind].id)
-                        })
-                        .min_by_key(|u| self.board.distance(u.tile, center))
-                    {
-                        target.actor = Some(format!("u{}", unit.id));
-                    } else {
-                        return vec![];
-                    }
-                }
-                if let Some(kind) = unit_type {
-                    target.family = Some(self.rules.units[self.kind(kind)].family);
-                }
-                vec![target]
-            }
-            Condition::Owner {
-                tile: Some(tile),
-                side,
-            } if *side == self.turn => vec![objective(
-                prefix,
-                ObjectiveKind::Capture,
-                vec![tile.clone()],
-                weight,
-            )],
-            Condition::NoUnits {
-                side,
-                unit_type,
-                name,
-            } if *side == ConditionSide::from(self.turn.other()) => {
-                let tiles: Vec<_> = self
-                    .units
-                    .iter()
-                    .filter(|u| {
-                        faction_matches_side(&self.factions, u.faction.as_deref(), u.side, *side)
-                            && name
-                                .as_ref()
-                                .is_none_or(|name| u.name.as_ref() == Some(name))
-                            && unit_type
-                                .as_ref()
-                                .is_none_or(|kind| self.rules.units[u.kind].id == *kind)
-                    })
-                    .map(|u| self.board.ids[u.tile].clone())
-                    .collect();
-                if tiles.is_empty() {
-                    vec![]
-                } else {
-                    vec![objective(prefix, ObjectiveKind::Defeat, tiles, weight)]
-                }
-            }
-            _ => vec![],
-        }
+                _ => None,
+            })
     }
     pub fn essential(&self, u: &Unit) -> bool {
         u.is_leader()
-            || u.role == Some(Role::Courier)
+            || u.role.is_some_and(Role::is_escort)
             || (u.side == Side::Player
-                && self.mission.as_ref().is_some_and(|m| {
-                    u.name
+                && self.authored.mission().is_some_and(|m| {
+                    u.character
                         .as_ref()
                         .is_some_and(|n| m.required_companions.contains(n))
                 }))
     }
     pub fn objectives(&self, side: Side) -> Vec<Objective> {
-        fn is_condition(value: &Trigger) -> bool {
-            match value {
-                Trigger::Condition { .. } => true,
-                Trigger::Visit { .. }
-                | Trigger::Round { .. }
-                | Trigger::Held { .. }
-                | Trigger::Control { .. } => false,
-            }
-        }
-        fn is_trigger_visit(value: &Trigger) -> bool {
-            match value {
-                Trigger::Visit { .. } => true,
-                Trigger::Condition { .. }
-                | Trigger::Round { .. }
-                | Trigger::Held { .. }
-                | Trigger::Control { .. } => false,
-            }
-        }
-        fn is_goal_event(value: &Goal) -> bool {
-            match value {
-                Goal::Event { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Escape { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-        fn is_goal_control_hold_refuge_vigil(value: &Goal) -> bool {
-            match value {
-                Goal::Control { .. }
-                | Goal::Hold { .. }
-                | Goal::Refuge { .. }
-                | Goal::Vigil { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Escape { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. } => false,
-            }
-        }
-
-        fn describe(
-            game: &Game<'_>,
-            goal: &Goal,
-            side: Side,
-        ) -> (ObjectiveKind, Option<String>, Option<Family>, bool, bool) {
-            fn actor(game: &Game<'_>, side: Side, role: Role) -> Option<String> {
-                game.units
-                    .iter()
-                    .find(|u| game.belongs_to_phase(u, side) && u.role == Some(role))
-                    .map(|u| format!("u{}", u.id))
-            }
-            match goal {
-                Goal::Escort { .. } => (
-                    ObjectiveKind::Escort,
-                    actor(game, side, Role::Courier),
-                    None,
-                    false,
-                    false,
-                ),
-                Goal::Escape { .. } => (
-                    ObjectiveKind::Escape,
-                    actor(game, side, Role::Leader),
-                    None,
-                    false,
-                    false,
-                ),
-                Goal::Vigil { companion, .. } => (
-                    ObjectiveKind::Vigil,
-                    game.units
-                        .iter()
-                        .find(|u| u.side == side && u.name.as_ref() == Some(companion))
-                        .map(|u| format!("u{}", u.id)),
-                    None,
-                    false,
-                    false,
-                ),
-                Goal::Seal { unit_type, .. } => (
-                    ObjectiveKind::Seal,
-                    None,
-                    unit_type
-                        .as_ref()
-                        .map(|k| game.rules.units[game.kind(k)].family),
-                    false,
-                    false,
-                ),
-                Goal::Event { .. } => (ObjectiveKind::Visit, None, None, false, false),
-                Goal::Defeat { .. } => (ObjectiveKind::Defeat, None, None, false, false),
-                Goal::Control { .. } => (ObjectiveKind::Capture, None, None, false, false),
-                Goal::Hold {
-                    companion,
-                    unit_types,
-                    ..
-                } => (
-                    ObjectiveKind::Capture,
-                    game.units
-                        .iter()
-                        .filter(|unit| {
-                            unit.side == side
-                                && companion
-                                    .as_ref()
-                                    .is_none_or(|name| unit.name.as_ref() == Some(name))
-                                && (unit_types.is_empty()
-                                    || unit_types.contains(&game.rules.units[unit.kind].id))
-                        })
-                        .filter(|_| companion.is_some() || !unit_types.is_empty())
-                        .min_by_key(|unit| {
-                            goal.tile()
-                                .map(|tile| game.board.distance(unit.tile, game.site(tile)))
-                                .unwrap_or(0)
-                        })
-                        .map(|unit| format!("u{}", unit.id)),
-                    None,
-                    true,
-                    false,
-                ),
-                Goal::Refuge { .. } => {
-                    let escalated = game.campaign.as_ref().unwrap().escalated();
-                    (
-                        if escalated {
-                            ObjectiveKind::Defeat
-                        } else {
-                            ObjectiveKind::Capture
-                        },
-                        None,
-                        None,
-                        true,
-                        escalated,
-                    )
-                }
-            }
-        }
-        fn discard_completed(goal: &Goal) -> bool {
-            match goal {
-                Goal::Seal { .. } | Goal::Event { .. } | Goal::Defeat { .. } => true,
-                Goal::Escort { .. }
-                | Goal::Escape { .. }
-                | Goal::Vigil { .. }
-                | Goal::Control { .. }
-                | Goal::Hold { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-
-        let mut goals = vec![];
-        if let Some(mission) = &self.mission {
-            let state = self.campaign.as_ref().unwrap();
-            if side == Side::Player {
-                for (index, g) in mission.goals.iter().enumerate() {
-                    if !self.goal_visible(g) {
-                        continue;
-                    }
-                    let evacuated = g.kind() == GoalKind::Escort
-                        && state.evacuated.iter().any(|record| {
-                            record.unit.role == Some(Role::Courier)
-                                && record.unit.side == Side::Player
-                                && Some(&record.unit.tile) == g.tile()
-                        });
-                    if self.goal_done(g) && (discard_completed(g) || evacuated) {
-                        continue;
-                    }
-                    if let Goal::Escort { .. } = g {
-                        let human_courier = self.units.iter().any(|unit| {
-                            unit.role == Some(Role::Courier)
-                                && self
-                                    .faction(self.unit_faction(unit))
-                                    .map_or(unit.side == Side::Player, |faction| {
-                                        faction.controller == Controller::Human
-                                    })
-                        });
-                        if !human_courier {
-                            for courier in self.units.iter().filter(|unit| {
-                                unit.role == Some(Role::Courier)
-                                    && !self.hostile_to_phase(unit, Side::Player)
-                            }) {
-                                let Some(transfer) = self
-                                    .faction(self.unit_faction(courier))
-                                    .and_then(|faction| faction.transfer.as_ref())
-                                else {
-                                    continue;
-                                };
-                                let destination_human = self
-                                    .faction(&transfer.to)
-                                    .map_or(transfer.to == "player", |faction| {
-                                        faction.controller == Controller::Human
-                                    });
-                                if !destination_human {
-                                    continue;
-                                }
-                                let condition = transfer
-                                    .when
-                                    .condition
-                                    .contextualized(&self.board.ids[courier.tile]);
-                                goals.extend(self.condition_objectives(
-                                    &condition,
-                                    &format!("transfer:u{}", courier.id),
-                                    32.0,
-                                    &mut HashSet::default(),
-                                ));
-                            }
-                            continue;
-                        }
-                    }
-                    if let Goal::Event { event, .. } = g {
-                        if self
-                            .mission
-                            .as_ref()
-                            .unwrap()
-                            .events
-                            .iter()
-                            .any(|e| e.id == *event && is_condition(&e.trigger))
-                        {
-                            goals.extend(self.event_objectives(
-                                event,
-                                &format!("required:{index}"),
-                                24.0,
-                                &mut HashSet::default(),
-                            ));
-                            continue;
-                        }
-                    }
-                    let mut tiles = self.active_goal_tiles(g);
-                    let (kind, actor, family, hold, all_enemies) = describe(self, g, side);
-                    fn defeat(kind: ObjectiveKind) -> bool {
-                        match kind {
-                            ObjectiveKind::Defeat => true,
-                            ObjectiveKind::Capture
-                            | ObjectiveKind::Visit
-                            | ObjectiveKind::Seal
-                            | ObjectiveKind::Escort
-                            | ObjectiveKind::Escape
-                            | ObjectiveKind::Vigil => false,
-                        }
-                    }
-                    if defeat(kind) {
-                        // An escalated refuge is no longer a location to hold.
-                        // Defeat duties target opponents, never the former shelter.
-                        tiles.clear();
-                        tiles.extend(
-                            self.units
-                                .iter()
-                                .filter(|u| {
-                                    self.hostile_to_phase(u, side) && (all_enemies || u.is_leader())
-                                })
-                                .map(|u| self.board.ids[u.tile].clone()),
-                        );
-                    }
-                    if !tiles.is_empty() {
-                        let mut result = objective(&format!("required:{index}"), kind, tiles, 24.0);
-                        result.actor = actor;
-                        result.family = family;
-                        result.hold = Some(hold);
-                        goals.push(result);
-                    }
-                }
-                for e in &mission.events {
-                    if is_condition(&e.trigger)
-                        && !mission.goals.iter().any(|g| g.event() == Some(&e.id))
-                    {
-                        goals.extend(self.event_objectives(
-                            &e.id,
-                            &format!("optional:{}", e.id),
-                            4.0,
-                            &mut HashSet::default(),
-                        ));
-                    }
-                }
-                for e in &mission.events {
-                    if is_trigger_visit(&e.trigger)
-                        && !state.marked(&format!("event:{}", e.id))
-                        && !mission
-                            .goals
-                            .iter()
-                            .any(|g| is_goal_event(g) && g.event() == Some(&e.id))
-                    {
-                        goals.push(objective(
-                            &format!("optional:{}", e.id),
-                            ObjectiveKind::Visit,
-                            vec![match &e.trigger {
-                                Trigger::Visit { tile } => tile.clone(),
-                                Trigger::Condition { .. }
-                                | Trigger::Held { .. }
-                                | Trigger::Round { .. }
-                                | Trigger::Control { .. } => {
-                                    unreachable!("visit event classification")
-                                }
-                            }],
-                            4.0,
-                        ));
-                    }
-                }
-            } else {
-                if let (Some(post), Some(leader)) = (
-                    &mission.enemy_leader_post,
-                    self.units
-                        .iter()
-                        .find(|u| self.belongs_to_phase(u, side) && u.is_leader()),
-                ) {
-                    let mut o = objective(
-                        "authored-post",
-                        ObjectiveKind::Capture,
-                        vec![post.clone()],
-                        80.0,
-                    );
-                    o.actor = Some(format!("u{}", leader.id));
-                    goals.push(o);
-                }
-                for (i, g) in mission.goals.iter().enumerate() {
-                    if is_goal_control_hold_refuge_vigil(g) {
-                        let mut o = objective(
-                            &format!("deny:{i}"),
-                            ObjectiveKind::Capture,
-                            self.active_goal_tiles(g),
-                            24.0,
-                        );
-                        o.hold = Some(true);
-                        goals.push(o);
-                    }
-                }
-            }
-        }
-        for tile in 0..self.terrain.len() {
-            if self.role_is(tile, TerrainRole::Village) && self.owners[tile] != Some(side) {
+        let mut goals = if side == Side::Player {
+            self.scripted_policy_objectives(side)
+        } else {
+            vec![]
+        };
+        for tile in 0..self.terrain().len() {
+            if self.role_is(tile, TerrainRole::Village) && self.captures(tile, side) {
                 goals.push(objective(
-                    &format!("village:{}", self.board.ids[tile]),
+                    &format!("village:{}", self.board().ids[tile]),
                     ObjectiveKind::Capture,
-                    vec![self.board.ids[tile].clone()],
+                    vec![self.board().ids[tile].clone()],
                     8.0,
                 ));
             }
@@ -1018,10 +795,10 @@ impl Game<'_> {
             goals.push(objective(
                 "opposing-leader",
                 ObjectiveKind::Defeat,
-                self.units
+                self.units()
                     .iter()
                     .filter(|u| self.hostile_to_phase(u, side) && u.is_leader())
-                    .map(|u| self.board.ids[u.tile].clone())
+                    .map(|u| self.board().ids[u.tile].clone())
                     .collect(),
                 12.0,
             ));
@@ -1029,122 +806,60 @@ impl Game<'_> {
         goals.retain(|g| !g.tiles.is_empty());
         goals
     }
-    pub fn finishes_objective(&self, u: &Unit, tile: usize, goals: &[Objective]) -> bool {
-        fn is_objective_kind_escort_escape(value: &ObjectiveKind) -> bool {
-            match value {
+    pub fn finishes_objective(&self, unit: &Unit, tile: usize, goals: &[Objective]) -> bool {
+        if self.authored.campaign().is_none() || unit.side != Side::Player {
+            return false;
+        }
+        let arrival = goals.iter().any(|goal| {
+            let arrival_kind = match goal.kind {
                 ObjectiveKind::Escort | ObjectiveKind::Escape => true,
-                ObjectiveKind::Capture
-                | ObjectiveKind::Defeat
-                | ObjectiveKind::Visit
-                | ObjectiveKind::Seal
-                | ObjectiveKind::Vigil => false,
-            }
-        }
-        fn is_goal_escort(value: &Goal) -> bool {
-            match value {
-                Goal::Escort { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escape { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-        fn is_goal_escape(value: &Goal) -> bool {
-            match value {
-                Goal::Escape { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-
-        self.campaign.is_some()
-            && u.side == Side::Player
-            && goals.iter().any(|g| {
-                actor_matches(&g.actor, u.id)
-                    && is_objective_kind_escort_escape(&g.kind)
-                    && g.tiles.contains(&self.board.ids[tile])
-            })
-            && self.mission.as_ref().unwrap().goals.iter().all(|g| {
-                self.goal_done(g)
-                    || ((is_goal_escort(g) && u.role == Some(Role::Courier)
-                        || is_goal_escape(g) && u.role == Some(Role::Leader))
-                        && g.tile() == Some(&self.board.ids[tile]))
+                _ => false,
+            };
+            actor_matches(&goal.actor, unit.id)
+                && arrival_kind
+                && goal.tiles.contains(&self.board().ids[tile])
+        });
+        let Some(mission) = self.authored.mission() else {
+            return false;
+        };
+        arrival
+            && mission.scripted_events.iter().all(|event| {
+                if authored_goal_done(self, event) {
+                    return true;
+                }
+                let objective = event.objective.as_ref().unwrap();
+                match &objective.intent {
+                    EventIntent::Escort(value) => {
+                        unit.role.is_some_and(Role::is_escort)
+                            && self.script_unit_matches(&value.units, unit)
+                            && value.tile == self.board().ids[tile]
+                    }
+                    EventIntent::Escape(value) => {
+                        unit.is_leader()
+                            && self.script_unit_matches(&value.units, unit)
+                            && value.tile == self.board().ids[tile]
+                    }
+                    _ => false,
+                }
             })
     }
     pub fn territory(&self) -> Vec<usize> {
-        fn is_goal_control(value: &Goal) -> bool {
-            match value {
-                Goal::Control { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Escape { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-        fn is_goal_hold(value: &Goal) -> bool {
-            match value {
-                Goal::Hold { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Escape { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Vigil { .. }
-                | Goal::Refuge { .. } => false,
-            }
-        }
-        fn is_goal_refuge(value: &Goal) -> bool {
-            match value {
-                Goal::Refuge { .. } => true,
-                Goal::Defeat { .. }
-                | Goal::Escort { .. }
-                | Goal::Escape { .. }
-                | Goal::Control { .. }
-                | Goal::Seal { .. }
-                | Goal::Event { .. }
-                | Goal::Hold { .. }
-                | Goal::Vigil { .. } => false,
-            }
-        }
-
-        self.mission.as_ref().map_or(vec![], |m| {
-            m.goals
+        self.authored.mission().map_or_else(Vec::new, |m| {
+            m.scripted_events
                 .iter()
-                .flat_map(|g| {
-                    if is_goal_control(g) {
-                        g.tiles().to_vec()
-                    } else if is_goal_hold(g)
-                        || (is_goal_refuge(g) && !self.campaign.as_ref().unwrap().escalated())
-                    {
-                        vec![g.tile().unwrap().clone()]
-                    } else {
-                        vec![]
-                    }
+                .filter_map(|e| e.objective.as_ref())
+                .flat_map(|o| match &o.intent {
+                    EventIntent::Capture(v) => v.clone(),
+                    EventIntent::Own(v) => vec![v.tile.clone()],
+                    EventIntent::Hold(v) => vec![v.tile.clone()],
+                    _ => vec![],
                 })
                 .map(|t| self.site(&t))
                 .collect()
         })
     }
-    pub fn protects_withdrawal(&self, side: Side, restrained: bool) -> bool {
-        restrained
-            && side == Side::Player
-            && self.mission.as_ref().is_some_and(|m| m.refuge.is_some())
-            && !self.campaign.as_ref().unwrap().escalated()
+    pub fn protects_withdrawal(&self, side: Side, diplomatic: bool) -> bool {
+        diplomatic && side == Side::Player && self.authored.campaign().is_some()
     }
     pub fn withdrawal_lanes(&self, side: Side, restrained: bool) -> HashSet<usize> {
         let mut lanes = HashSet::default();
@@ -1152,23 +867,23 @@ impl Game<'_> {
             return lanes;
         }
         for u in self
-            .units
+            .units()
             .iter()
             .filter(|u| self.hostile_to_phase(u, side) && u.retreating == Some(true))
         {
-            let mut homes: Vec<_> = (0..self.terrain.len())
+            let mut homes: Vec<_> = (0..self.terrain().len())
                 .filter(|&t| {
-                    self.owners[t] == Some(u.side)
+                    self.owns(t, u.side)
                         && (self.is_keep(t) || self.role_is(t, TerrainRole::Village))
                 })
                 .collect();
             if homes.is_empty() {
-                homes = (0..self.terrain.len())
-                    .filter(|&t| self.board.positions[t].0 == self.cols - 1)
+                homes = (0..self.terrain().len())
+                    .filter(|&t| self.board().positions[t].0 == self.cols() - 1)
                     .collect();
             }
             let routes = self.routes(u.kind, &homes);
-            for &t in &self.board.adjacent[u.tile] {
+            for &t in &self.board().adjacent[u.tile] {
                 if routes[t] < routes[u.tile] && self.cost(u.kind, t) != u16::MAX {
                     lanes.insert(t);
                 }
@@ -1187,14 +902,14 @@ impl Game<'_> {
         if !u.is_leader() || required {
             return (vec![], u.rebuilding);
         }
-        let keeps: Vec<_> = (0..self.terrain.len())
-            .filter(|&t| self.is_keep(t) && self.owners[t] == Some(u.side))
+        let keeps: Vec<_> = (0..self.terrain().len())
+            .filter(|&t| self.is_keep(t) && self.owns(t, u.side))
             .collect();
-        let options = self.recruitment_options(u.side);
+        let options = self.recruitment_options_for(u);
         if keeps.is_empty() || options.is_empty() {
             return (vec![], None);
         }
-        let count = BattleView::new(self).ordinary(&u).count();
+        let count = crate::ai::policies::objectives::ordinary(&self.battle, &u).count();
         let rebuilding = if self.required_recruit(u.side).is_some() {
             true
         } else if count >= 5 {
@@ -1209,20 +924,20 @@ impl Game<'_> {
         } else if self.income(u.side) > 0
             || options
                 .iter()
-                .any(|&k| self.rules.units[k].cost <= self.gold[u.side.index()])
+                .any(|&k| self.recruit_cost(u, k) <= self.gold_for_unit(u))
         {
             keeps
         } else if self
-            .units
+            .units()
             .iter()
             .filter(|unit| self.allied(u, unit) && !unit.is_leader())
             .count()
             < 2
         {
             // Only a nearly wiped-out army sends its leader to recover income.
-            (0..self.terrain.len())
+            (0..self.terrain().len())
                 .filter(|&tile| {
-                    self.role_is(tile, TerrainRole::Village) && self.owners[tile] != Some(u.side)
+                    self.role_is(tile, TerrainRole::Village) && self.captures(tile, u.side)
                 })
                 .collect()
         } else {
@@ -1232,130 +947,80 @@ impl Game<'_> {
     }
 }
 pub(in crate::ai) fn policy_goals(
-    game: &Game<'_>,
+    game: &MissionPolicy<'_, '_>,
     provided: Option<&[Objective]>,
 ) -> Vec<Objective> {
-    fn is_goal_escort_escape(value: &Goal) -> bool {
-        match value {
-            Goal::Escort { .. } | Goal::Escape { .. } => true,
-            Goal::Defeat { .. }
-            | Goal::Control { .. }
-            | Goal::Seal { .. }
-            | Goal::Event { .. }
-            | Goal::Hold { .. }
-            | Goal::Vigil { .. }
-            | Goal::Refuge { .. } => false,
-        }
-    }
-
     let mut goals = game.policy_objectives(provided);
+    let is_arrival = |event: &ScriptEvent| {
+        event
+            .objective
+            .as_ref()
+            .is_some_and(|objective| match &objective.intent {
+                EventIntent::Escort(_) | EventIntent::Escape(_) => true,
+                EventIntent::Hold(_)
+                | EventIntent::Own(_)
+                | EventIntent::GoTo(_)
+                | EventIntent::Approach(_)
+                | EventIntent::Capture(_)
+                | EventIntent::Defeat(_) => false,
+            })
+    };
     let escort_finish = provided.is_none()
-        && game.turn == Side::Player
-        && game.mission.as_ref().is_some_and(|mission| {
-            (mission.refuge.is_none() || game.campaign.as_ref().is_some_and(|c| c.escalated()))
+        && game.turn() == Side::Player
+        && game.authored.mission().is_some_and(|mission| {
+            mission
+                .scripted_events
+                .iter()
+                .any(|event| !authored_goal_done(game, event) && is_arrival(event))
                 && mission
-                    .goals
+                    .scripted_events
                     .iter()
-                    .any(|g| !game.goal_done(g) && is_goal_escort_escape(g))
-                && mission
-                    .goals
-                    .iter()
-                    .all(|g| game.goal_done(g) || is_goal_escort_escape(g))
+                    .all(|event| authored_goal_done(game, event) || is_arrival(event))
         });
     if escort_finish {
-        for goal in goals.iter_mut().filter(|g| g.id == "opposing-leader") {
+        for goal in goals.iter_mut().filter(|goal| goal.id == "opposing-leader") {
             goal.weight = 48.0;
         }
     }
     individual(goals)
 }
-pub(in crate::ai) fn heavy_campaign(game: &Game<'_>) -> bool {
-    fn is_goal_defeat(value: &Goal) -> bool {
-        match value {
-            Goal::Defeat { .. } => true,
-            Goal::Escort { .. }
-            | Goal::Escape { .. }
-            | Goal::Control { .. }
-            | Goal::Seal { .. }
-            | Goal::Event { .. }
-            | Goal::Hold { .. }
-            | Goal::Vigil { .. }
-            | Goal::Refuge { .. } => false,
-        }
-    }
-    fn is_goal_seal(value: &Goal) -> bool {
-        match value {
-            Goal::Seal { .. } => true,
-            Goal::Defeat { .. }
-            | Goal::Escort { .. }
-            | Goal::Escape { .. }
-            | Goal::Control { .. }
-            | Goal::Event { .. }
-            | Goal::Hold { .. }
-            | Goal::Vigil { .. }
-            | Goal::Refuge { .. } => false,
-        }
-    }
-
-    game.campaign.as_ref().is_some_and(|state| {
-        game.rules.campaigns[&state.id]
-            .missions
-            .iter()
-            .any(|mission| {
-                mission.goals.iter().any(|g| is_goal_defeat(g))
-                    && mission
-                        .goals
-                        .iter()
-                        .any(|g| is_goal_seal(g) && g.unit_type().is_none())
-            })
-    })
+pub(in crate::ai) fn restrained(_game: &MissionPolicy<'_, '_>, input: CampaignInput<'_>) -> bool {
+    input.diplomacy == crate::ai::Diplomacy::Diplomatic
 }
-pub(in crate::ai) fn restrained(game: &Game<'_>, workspace: &PlanningWorkspace) -> bool {
-    workspace.diplomacy == crate::ai::Diplomacy::Restrained
-        || !heavy_campaign(game)
-            && game.turn == Side::Player
-            && game.mission.as_ref().is_some_and(|m| m.refuge.is_some())
-            && game.campaign.as_ref().is_some_and(|c| !c.escalated())
-}
-pub(in crate::ai) fn terminal_attack(game: &Game<'_>, unit: &Unit, target: &Unit) -> bool {
-    fn kill_goal(game: &Game<'_>, goal: &Goal) -> Option<bool> {
-        match goal {
-            Goal::Defeat { .. } => Some(false),
-            Goal::Refuge { .. } => game.campaign.as_ref().unwrap().escalated().then_some(true),
-            Goal::Escort { .. }
-            | Goal::Escape { .. }
-            | Goal::Control { .. }
-            | Goal::Seal { .. }
-            | Goal::Event { .. }
-            | Goal::Hold { .. }
-            | Goal::Vigil { .. } => None,
-        }
-    }
+pub(in crate::ai) fn terminal_attack(
+    game: &MissionPolicy<'_, '_>,
+    unit: &Unit,
+    target: &Unit,
+) -> bool {
     if !target.is_leader() {
         return false;
     }
-    if game.campaign.is_none() {
+    if game.authored.campaign().is_none() {
         return true;
     }
-    unit.side == Side::Player
-        && game.mission.as_ref().is_some_and(|mission| {
-            mission
-                .goals
+    if unit.side != Side::Player {
+        return false;
+    }
+    let Some(mission) = game.authored.mission() else {
+        return false;
+    };
+    mission.scripted_events.iter().all(|event| {
+        if authored_goal_done(game, event) {
+            return true;
+        }
+        if let EventIntent::Defeat(selector) = &event.objective.as_ref().unwrap().intent {
+            game.units()
                 .iter()
-                .all(|g| game.goal_done(g) || kill_goal(game, g).is_some())
-                && game
-                    .units
-                    .iter()
-                    .filter(|u| {
-                        game.hostile(unit, u)
-                            && (u.is_leader()
-                                || mission
-                                    .goals
-                                    .iter()
-                                    .any(|g| kill_goal(game, g) == Some(true)))
-                    })
-                    .all(|u| u.id == target.id)
-        })
+                .filter(|u| game.script_unit_matches(selector, u))
+                .all(|u| u.id == target.id)
+        } else {
+            false
+        }
+    }) && game
+        .units()
+        .iter()
+        .filter(|u| game.hostile(unit, u) && u.is_leader())
+        .all(|u| u.id == target.id)
 }
 
 pub(super) struct Mission;

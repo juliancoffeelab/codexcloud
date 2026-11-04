@@ -1,0 +1,11 @@
+{
+  "id": "church-mail",
+  "name": "Enchanted mail",
+  "description": "Silver wards are worked into the links. Incoming blade and piercing damage reduced by 1 per strike. Drops when its carrier dies.",
+  "attacks": [],
+  "armor": {
+    "blade": -1,
+    "pierce": -1,
+    "impact": 0
+  }
+}

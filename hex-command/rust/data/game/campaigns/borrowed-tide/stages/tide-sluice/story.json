@@ -9,46 +9,95 @@
   ],
   "intro": [
     {
-      "speaker": "Tomas",
-      "portrait": "spearman",
-      "text": "The high gate is reached through the woods. I can take that path. Your swimmers can reach the lower wheel through the reeds."
-    },
-    {
-      "speaker": "Captain Vale",
-      "portrait": "commander",
-      "text": "You have taken a company's books and attacked its guards. Senn says the council will hang deserters first."
-    },
-    {
-      "speaker": "Mira",
-      "portrait": "tidekeeper",
-      "text": "He forged the council's order. The clerk will testify. Stand aside and hear her, or answer for keeping this flood above the village."
-    },
-    {
-      "speaker": "Edda",
-      "portrait": "harpooner",
-      "text": "They are staying. Bring me to the beacon. I will not signal until both wheels are ours."
+      "with": "tomas",
+      "dialogue": [
+        {
+          "portrait": "spearman",
+          "text": "The high gate is reached through the woods. I can take that path. Your swimmers can reach the lower wheel through the reeds.",
+          "character": "tomas"
+        },
+        {
+          "portrait": "commander",
+          "text": "You have taken a company's books and attacked its guards. Senn says the council will hang deserters first.",
+          "character": "vale"
+        },
+        {
+          "portrait": "tidekeeper",
+          "text": "He forged the council's order. The clerk will testify. Stand aside and hear her, or answer for keeping this flood above the village.",
+          "character": "mira"
+        },
+        {
+          "portrait": "harpooner",
+          "text": "They are staying. Bring me to the beacon. I will not signal until both wheels are ours.",
+          "character": "edda"
+        }
+      ],
+      "alternative": [
+        {
+          "portrait": "tidekeeper",
+          "text": "Tomas's companions showed us the high bank through the woods. They will lead our land fighters. We take the lower wheel through the reeds.",
+          "character": "mira"
+        },
+        {
+          "portrait": "commander",
+          "text": "Senn says the council will hang deserters first. Your testimony will not save you.",
+          "character": "vale"
+        },
+        {
+          "portrait": "tidekeeper",
+          "text": "He forged the council's order. Hear the clerk, or answer for holding this flood above the village.",
+          "character": "mira"
+        },
+        {
+          "portrait": "harpooner",
+          "text": "Bring me to the beacon. I will signal only when both wheels are ours.",
+          "character": "edda"
+        }
+      ]
     }
   ],
   "victory": [
     {
-      "speaker": "Edda",
-      "portrait": "harpooner",
-      "text": "Both flags up. Open together—now."
-    },
-    {
-      "speaker": "Mira",
-      "portrait": "tidekeeper",
-      "text": "Watch the mudflats. There. The tide is home."
-    },
-    {
-      "speaker": "Tomas",
-      "portrait": "spearman",
-      "text": "And tomorrow?"
-    },
-    {
-      "speaker": "Mira",
-      "portrait": "tidekeeper",
-      "text": "Tomorrow we put someone from each shore beside each wheel."
+      "with": "tomas",
+      "dialogue": [
+        {
+          "portrait": "harpooner",
+          "text": "Both flags up. Open together—now.",
+          "character": "edda"
+        },
+        {
+          "portrait": "tidekeeper",
+          "text": "Watch the mudflats. There. The tide is home.",
+          "character": "mira"
+        },
+        {
+          "portrait": "spearman",
+          "text": "And tomorrow?",
+          "character": "tomas"
+        },
+        {
+          "portrait": "tidekeeper",
+          "text": "Tomorrow we put someone from each shore beside each wheel.",
+          "character": "mira"
+        }
+      ],
+      "alternative": [
+        {
+          "portrait": "harpooner",
+          "text": "Both flags up. Open together—now.",
+          "character": "edda"
+        },
+        {
+          "portrait": "tidekeeper",
+          "text": "The tide is home. Tomas should have seen it.",
+          "character": "mira"
+        },
+        {
+          "portrait": "harpooner",
+          "text": "Put someone from each shore beside each wheel. Keep this from happening again.",
+          "character": "edda"
+        }
+      ]
     }
   ]
 }

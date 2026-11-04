@@ -68,10 +68,47 @@ pub struct ArenaDefaults {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct CampaignDefaults {
+    #[serde(default)]
+    pub escalation_flags: BTreeMap<String, String>,
     pub default_max_rounds: u32,
     pub diplomacy: Vec<String>,
+    #[serde(default)]
+    pub objectives: BTreeMap<String, BTreeMap<String, SimulationObjective>>,
     pub policies: Vec<String>,
     pub campaigns: Vec<String>,
+}
+
+/// Named simulator-only routes. Keys are authored stage map identifiers.
+#[derive(Clone, Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct SimulationObjective {
+    pub stages: std::collections::BTreeMap<String, SimulationStageObjective>,
+}
+#[derive(Clone, Debug, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct SimulationStageObjective {
+    #[serde(default)]
+    pub script_conditions: BTreeMap<String, When>,
+    #[serde(default)]
+    pub script_events: Vec<ScriptEvent>,
+    #[serde(default)]
+    pub goals: Option<Vec<Goal>>,
+    #[serde(default)]
+    pub optional_goals: Option<Vec<Goal>>,
+    #[serde(default)]
+    pub events: Vec<Event>,
+    #[serde(default)]
+    pub event_conditions: std::collections::BTreeMap<String, Condition>,
+    #[serde(default)]
+    pub ignore_optional_when: Option<Condition>,
 }
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]

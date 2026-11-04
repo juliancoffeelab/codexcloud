@@ -1,6 +1,9 @@
 //! Existing Balanced recruitment behavior, isolated behind the Recruiter contract.
 pub(super) struct Balanced;
 impl super::Recruiter for Balanced {
+    fn kind(&self) -> Option<super::RecruiterKind> {
+        Some(super::RecruiterKind::Balanced)
+    }
     fn recruit(
         &mut self,
         context: &mut crate::ai::context::RecruitmentContext<'_, '_>,

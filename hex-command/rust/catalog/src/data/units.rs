@@ -358,7 +358,7 @@ pub struct PublicUnit {
     pub experience: Option<u32>,
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
+    pub character: Option<String>,
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
@@ -386,7 +386,7 @@ pub struct Unit {
     pub moved: bool,
     pub attacked: bool,
     pub experience: Option<u32>,
-    pub name: Option<String>,
+    pub character: Option<String>,
     pub role: Option<Role>,
     pub retreating: Option<bool>,
     pub rebuilding: Option<bool>,
@@ -428,7 +428,7 @@ pub struct Veteran {
     pub experience: u32,
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
+    pub character: Option<String>,
     #[cfg_attr(feature = "wasm", tsify(optional))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,

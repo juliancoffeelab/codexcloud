@@ -159,6 +159,10 @@ class UsageTests(unittest.TestCase):
                     list(usage.journals([path]))
 
     def run_record(self,profiles,result,**options):
+        tiles = {u['tile'] for u in result['initial']['units']}
+        for phase in result['phases']:
+            tiles.update(u['tile'] for key in ('before', 'units', 'losses') for u in phase.get(key, []))
+        result['initial']['tiles'] = [dict(id=t, col=int(t.split(',')[0]), row=int(t.split(',')[1])) for t in tiles]
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)
             raw=(json.dumps(result)+'\n').encode()

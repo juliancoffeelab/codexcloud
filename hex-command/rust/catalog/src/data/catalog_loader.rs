@@ -17,6 +17,7 @@ struct Manifest {
     terrain: String,
     races: Vec<String>,
     units: Vec<String>,
+    items: Vec<String>,
     scenarios: Vec<String>,
     #[serde(default)]
     arena_scenarios: Vec<String>,
@@ -77,7 +78,8 @@ struct CampaignFile {
     race: Race,
     leader: String,
     stages: Vec<String>,
-    ending: Vec<Dialogue>,
+    characters: Vec<Character>,
+    ending: Vec<Speech>,
 }
 #[derive(Deserialize)]
 struct StageFile {
@@ -88,7 +90,7 @@ struct StageFile {
 }
 
 /// Authored initial placements derive omitted runtime defaults from unit rules.
-#[derive(Deserialize)]
+#[derive(Clone, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialUnit {
     #[serde(default)]
@@ -97,11 +99,10 @@ struct InitialUnit {
     ai_group: Option<String>,
     id: Option<String>,
     r#type: String,
-    side: Side,
-    col: i32,
-    row: i32,
+    side: Option<Side>,
+    tile: String,
     hp: Option<i32>,
-    name: Option<String>,
+    character: Option<String>,
     role: Option<Role>,
 }
 fn initial_round() -> u32 {
@@ -156,26 +157,33 @@ impl InitialState {
                     .ok_or_else(|| ContentError::new(path, "initial unit identifier overflow"))?,
             );
             validate_equipment(&unit.items, &rule.attacks, path)?;
-            let tile = format!("{},{}", unit.col, unit.row);
+            let tile = unit.tile;
+            if !self.tiles.iter().any(|t| t.id == tile) {
+                return Err(ContentError::new(path, "initial unit is outside its board"));
+            }
             units.push(PublicUnit {
                 faction: unit.faction,
                 items: unit.items,
                 ai_group: unit.ai_group,
                 id,
                 r#type: unit.r#type,
-                side: unit.side,
+                side: unit
+                    .side
+                    .ok_or_else(|| ContentError::new(path, "initial unit requires a phase"))?,
                 tile,
                 hp,
                 moved: false,
                 attacked: false,
                 experience: Some(0),
-                name: unit.name,
+                character: unit.character,
                 role: unit.role,
                 retreating: None,
                 rebuilding: None,
             });
         }
         validate_factions(&self.factions, &units)
+            .map_err(|message| ContentError::new(path, message))?;
+        validate_economy(&self.factions, &self.gold, &self.tiles, types)
             .map_err(|message| ContentError::new(path, message))?;
         Ok(State {
             factions: self.factions,
@@ -278,6 +286,16 @@ impl Rules {
             ));
         }
         let terrain: Vec<TerrainDefinition> = parse(bundle, &manifest.terrain)?;
+        unique(manifest.items.iter().map(String::as_str), "manifest.json")?;
+        let mut items = HashMap::new();
+        for path in &manifest.items {
+            let item: Item = parse(bundle, path)?;
+            item.validate(path)?;
+            if items.insert(item.id.clone(), item).is_some() {
+                return Err(ContentError::new(path, "duplicate item ID"));
+            }
+        }
+
         unique(manifest.races.iter().map(String::as_str), "manifest.json")?;
         let races: Vec<(String, RaceDefinition)> = manifest
             .races
@@ -454,7 +472,7 @@ impl Rules {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let (initial, roster_path) = documents::scenario(bundle, path)?;
+            let (initial, roster_path) = documents::scenario(bundle, path, &items)?;
             let state = initial.resolve(&units, &types, &roster_path)?;
             map_definitions.push(documents::map_metadata(bundle, path, &state, None)?);
             insert_map(&mut maps, state, &terrains, &types, path)?;
@@ -463,7 +481,7 @@ impl Rules {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let (initial, roster_path) = documents::scenario(bundle, path)?;
+            let (initial, roster_path) = documents::scenario(bundle, path, &items)?;
             let state = initial.resolve(&units, &types, &roster_path)?;
             insert_map(&mut arena_maps, state, &terrains, &types, path)?;
         }
@@ -479,7 +497,7 @@ impl Rules {
                 || source
                     .player_diplomacy
                     .iter()
-                    .any(|mode| !["pragmatic", "restrained"].contains(&mode.as_str()))
+                    .any(|mode| !["unrestricted", "diplomatic"].contains(&mode.as_str()))
             {
                 return Err(ContentError::new(
                     path,
@@ -496,6 +514,8 @@ impl Rules {
                     "campaign name and stages are required",
                 ));
             }
+            validate_characters(&source.characters, path)?;
+            validate_speech(&source.ending, &source.characters, path)?;
             let mut missions = Vec::new();
             let mut stage_ids = HashSet::new();
             for stage_path in source.stages {
@@ -503,7 +523,7 @@ impl Rules {
                 if !used_paths.insert(stage_path.clone()) {
                     return Err(ContentError::new(&stage_path, "duplicate catalog path"));
                 }
-                let stage = documents::stage(bundle, &stage_path)?;
+                let mut stage = documents::stage(bundle, &stage_path, &items)?;
                 let state = stage.state.resolve(&units, &types, &stage_path)?;
                 identifier(&stage.id, &stage_path)?;
                 if !stage_ids.insert(stage.id.clone())
@@ -515,6 +535,12 @@ impl Rules {
                         "duplicate or mismatched stage/map identifier",
                     ));
                 }
+                validate_character_references(
+                    &mut stage.mission,
+                    &state,
+                    &source.characters,
+                    &stage_path,
+                )?;
                 validate_mission(
                     &stage.mission,
                     &state,
@@ -539,6 +565,7 @@ impl Rules {
                     Campaign {
                         id: source.id,
                         name: source.name,
+                        characters: source.characters,
                         tagline: source.tagline,
                         description: source.description,
                         short_description: source.short_description,
@@ -606,26 +633,57 @@ impl Rules {
                     .unwrap()
             })
             .collect();
+        for state in maps.values().chain(arena_maps.values()) {
+            let characters = campaigns
+                .values()
+                .find(|c| c.missions.iter().any(|m| m.map.id == state.map_id))
+                .map_or(&[][..], |c| c.characters.as_slice());
+            for unit in &state.units {
+                if let Some(id) = &unit.character {
+                    character_ref(id, characters, &state.map_id)?;
+                }
+            }
+            for faction in &state.factions {
+                if let Some(transfer) = &faction.transfer {
+                    transfer
+                        .when
+                        .condition
+                        .validate_characters(characters)
+                        .map_err(|e| ContentError::new(&state.map_id, e))?;
+                }
+            }
+        }
         for map in &map_definitions {
+            let state = maps
+                .get(&(map.id.clone(), map.revision))
+                .expect("authored map");
+            let characters = campaigns
+                .values()
+                .find(|c| c.missions.iter().any(|m| m.map.id == map.id))
+                .map_or(&[][..], |c| c.characters.as_slice());
             for rule in map
                 .terrain
                 .iter()
                 .filter_map(|tile| tile.fog.as_deref())
                 .chain(
-                    map.lighting
-                        .lights
+                    map.terrain
                         .iter()
+                        .filter_map(|tile| tile.light.as_ref())
                         .filter_map(|light| light.when.as_ref()),
                 )
             {
                 rule.condition
-                    .validate_units(&types)
+                    .validate_characters(characters)
+                    .map_err(|e| ContentError::new(&map.id, e))?;
+                rule.condition
+                    .validate_references(&types, &state.factions)
                     .map_err(|message| ContentError::new(&map.id, message))?;
             }
         }
         Ok(Self {
             content_fingerprint: content_fingerprint(bundle),
             recruitment,
+            items,
             terrain_types: terrain.iter().map(|t| t.id).collect(),
             terrain_roles: terrain.iter().map(|t| t.role).collect(),
             terrain_names,
@@ -695,8 +753,8 @@ fn insert_map(
                 format!("unknown terrain {}", tile.terrain),
             ));
         }
-        if tile.id != format!("{},{}", tile.col, tile.row)
-            || tile.col < 0
+        identifier(&tile.id, path)?;
+        if tile.col < 0
             || tile.col >= state.cols
             || tile.row < 0
             || tile.row >= state.rows
@@ -726,6 +784,198 @@ fn insert_map(
     }
     Ok(())
 }
+fn validate_characters(characters: &[Character], path: &str) -> Result<(), ContentError> {
+    unique(characters.iter().map(|c| c.id.as_str()), path)?;
+    for character in characters {
+        identifier(&character.id, path)?;
+        if character.name.trim().is_empty() {
+            return Err(ContentError::new(
+                path,
+                "character display name must not be empty",
+            ));
+        }
+    }
+    Ok(())
+}
+fn character_ref(id: &str, characters: &[Character], path: &str) -> Result<(), ContentError> {
+    if characters.iter().any(|c| c.id == id) {
+        Ok(())
+    } else {
+        Err(ContentError::new(path, format!("unknown character {id}")))
+    }
+}
+fn resolve_dialogues(
+    lines: &mut [Dialogue],
+    characters: &[Character],
+    path: &str,
+) -> Result<(), ContentError> {
+    for line in lines {
+        if let Some(id) = &line.character {
+            character_ref(id, characters, path)?;
+            line.speaker.clear();
+        } else if line.speaker.trim().is_empty() {
+            return Err(ContentError::new(
+                path,
+                "dialogue requires a character ID or a narrator label",
+            ));
+        } else if characters.iter().any(|c| c.name == line.speaker) {
+            return Err(ContentError::new(
+                path,
+                "named dialogue speakers must reference a character ID",
+            ));
+        }
+    }
+    Ok(())
+}
+fn validate_speech(
+    lines: &[Speech],
+    characters: &[Character],
+    path: &str,
+) -> Result<(), ContentError> {
+    ScriptEvent {
+        id: "speech-validation".into(),
+        when: When::ChapterStarted(true),
+        notice: None,
+        remembers: true,
+        priority: 0,
+        objective: None,
+        actions: vec![EventAction::Say(lines.to_vec())],
+    }
+    .validate_characters(characters, path)
+}
+fn validate_character_references(
+    mission: &mut Mission,
+    state: &State,
+    characters: &[Character],
+    path: &str,
+) -> Result<(), ContentError> {
+    let check = |id: &str| character_ref(id, characters, path);
+    let condition = |c: &Condition| {
+        c.validate_characters(characters)
+            .map_err(|e| ContentError::new(path, e))
+    };
+    let placements = |units: &[StartingUnit]| -> Result<(), ContentError> {
+        for unit in units {
+            if let Some(id) = &unit.character {
+                check(id)?;
+            }
+        }
+        Ok(())
+    };
+    placements(&mission.map.units)?;
+    for w in mission.story_conditions() {
+        let e = ScriptEvent {
+            id: "story-condition".into(),
+            when: w.clone(),
+            notice: None,
+            remembers: true,
+            priority: 0,
+            objective: None,
+            actions: vec![],
+        };
+        e.validate_characters(characters, path)?;
+    }
+    for event in &mission.scripted_events {
+        event.validate_characters(characters, path)?;
+    }
+    for id in &mission.required_companions {
+        check(id)?;
+    }
+    for arrival in &mission.arrivals {
+        check(&arrival.character)?;
+    }
+    for goal in mission.all_goals() {
+        if let Some(id) = goal.companion() {
+            check(id)?;
+        }
+        if let Some(c) = goal.visible_when() {
+            condition(c)?;
+        }
+    }
+    for loss in &mission.lose_conditions {
+        condition(&loss.condition)?;
+    }
+    for group in &mission.enemy_groups {
+        if let Some(rule) = &group.when {
+            condition(&rule.condition)?;
+        }
+        if let Some(GroupOrder::Hold { when: Some(c), .. }) = &group.order {
+            condition(c)?;
+        }
+    }
+    for tile in &state.tiles {
+        if let Some(rule) = &tile.fog {
+            condition(&rule.condition)?;
+        }
+        if let Some(rule) = tile.light.as_ref().and_then(|l| l.when.as_ref()) {
+            condition(&rule.condition)?;
+        }
+    }
+    for faction in &state.factions {
+        if let Some(rule) = &faction.transfer {
+            condition(&rule.when.condition)?;
+        }
+    }
+    validate_speech(&mission.intro, characters, path)?;
+    validate_speech(&mission.victory, characters, path)?;
+    for event in &mut mission.events {
+        if let Trigger::Condition { condition: c } = &event.trigger {
+            condition(c)?;
+        }
+        if let Some(effect) = &event.evacuate {
+            if let Some(id) = &effect.units.character {
+                check(id)?;
+            }
+        }
+        for reward in &event.items {
+            if let Some(id) = &reward.recipient.character {
+                check(id)?;
+            }
+        }
+        if let Some(spawn) = &event.spawn {
+            for unit in &spawn.units {
+                if let Some(id) = &unit.character {
+                    check(id)?;
+                }
+            }
+        }
+        resolve_dialogues(&mut event.dialogue, characters, path)?;
+        if let Some(lines) = &mut event.war_dialogue {
+            resolve_dialogues(lines, characters, path)?;
+        }
+    }
+    for wave in &mut mission.waves {
+        placements(&wave.units)?;
+        resolve_dialogues(&mut wave.dialogue, characters, path)?;
+    }
+    if let Some(refuge) = &mut mission.refuge {
+        resolve_dialogues(&mut refuge.escalation, characters, path)?;
+        resolve_dialogues(&mut refuge.war_victory, characters, path)?;
+    }
+    let patch = |p: &mut MissionPatch| -> Result<(), ContentError> {
+        if let Some(units) = &p.reinforcements {
+            placements(units)?;
+        }
+        if let Some(lines) = &mut p.intro {
+            resolve_dialogues(lines, characters, path)?;
+        }
+        if let Some(lines) = &mut p.victory {
+            resolve_dialogues(lines, characters, path)?;
+        }
+        Ok(())
+    };
+    if let Some(p) = &mut mission.without_dain {
+        patch(p)?;
+    }
+    if let Some(patches) = &mut mission.companion_losses {
+        for (id, p) in patches {
+            check(id)?;
+            patch(p)?;
+        }
+    }
+    Ok(())
+}
+
 fn validate_mission(
     mission: &Mission,
     state: &State,
@@ -741,6 +991,134 @@ fn validate_mission(
         }
         Ok(())
     };
+    unique(
+        mission
+            .scripted_events
+            .iter()
+            .filter(|e| e.objective.is_some())
+            .map(ScriptEvent::objective_id),
+        path,
+    )?;
+    let ids: HashSet<_> = mission
+        .scripted_events
+        .iter()
+        .filter(|e| e.objective.is_some())
+        .map(ScriptEvent::objective_id)
+        .collect();
+    for action in mission
+        .scripted_events
+        .iter()
+        .flat_map(ScriptEvent::actions_recursive)
+    {
+        if let EventAction::FailObjective(id) = action {
+            if !ids.contains(id.as_str()) {
+                return Err(ContentError::new(path, format!("unknown objective {id}")));
+            }
+        }
+    }
+    for condition in mission.story_conditions() {
+        if !condition.state_only() {
+            return Err(ContentError::new(
+                path,
+                "story text conditions must be state predicates",
+            ));
+        }
+        let check = ScriptEvent {
+            id: "story-condition".into(),
+            when: condition.clone(),
+            notice: None,
+            remembers: true,
+            priority: 0,
+            objective: None,
+            actions: vec![],
+        };
+        check.validate(
+            &state.tiles,
+            &state.factions,
+            &std::collections::HashMap::new(),
+            path,
+        )?;
+        for selector in check.selectors() {
+            for id in selector.unit_type.iter().chain(&selector.unit_types) {
+                reference(id, types, path)?;
+            }
+        }
+    }
+    for event in &mission.scripted_events {
+        for selector in event.selectors() {
+            for id in selector.unit_type.iter().chain(&selector.unit_types) {
+                reference(id, types, path)?;
+            }
+            if let Some(id) = &selector.faction {
+                if !state.factions.iter().any(|f| &f.id == id) {
+                    return Err(ContentError::new(
+                        path,
+                        format!("unknown selector faction {id}"),
+                    ));
+                }
+            }
+        }
+        for action in event.actions_recursive() {
+            match action {
+                EventAction::Spawn(spec) => {
+                    if let Some(group) = &spec.ai_group {
+                        if !mission.enemy_groups.iter().any(|g| &g.id == group) {
+                            return Err(ContentError::new(
+                                path,
+                                format!("unknown spawn AI group {group}"),
+                            ));
+                        }
+                    }
+                    for member in &spec.units {
+                        reference(&member.member().unit_type, types, path)?;
+                    }
+                }
+                EventAction::CreateMark(spec) => {
+                    if let Some(light) = &spec.light {
+                        light
+                            .validate(&state.tiles, &mission.events)
+                            .map_err(|e| ContentError::new(path, e))?;
+                        if let Some(rule) = &light.when {
+                            rule.condition
+                                .validate_references(types, &state.factions)
+                                .map_err(|e| ContentError::new(path, e))?;
+                        }
+                    }
+                }
+                EventAction::SetTerrain(spec) => {
+                    reference(&spec.terrain, terrains, path)?;
+                    let mut tile = state.tiles[0].clone();
+                    tile.terrain = spec.terrain.clone();
+                    tile.connections = None;
+                    tile.walls = None;
+                    tile.dead_ends = None;
+                    if !tile.valid_connections() {
+                        return Err(ContentError::new(
+                            path,
+                            "setTerrain requires complete authored geometry for connected terrain",
+                        ));
+                    }
+                }
+                EventAction::UnlockRecruits(spec) | EventAction::Recruits(spec) => {
+                    for unit in &spec.units {
+                        reference(&unit.unit, types, path)?;
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+    for loss in &mission.lose_conditions {
+        if loss.label.trim().is_empty() || loss.message.trim().is_empty() {
+            return Err(ContentError::new(path, "empty defeat condition text"));
+        }
+        loss.condition
+            .validate(&state.tiles, &mission.events, false)
+            .map_err(|message| ContentError::new(path, message))?;
+        loss.condition
+            .validate_references(types, &state.factions)
+            .map_err(|message| ContentError::new(path, message))?;
+    }
     validate_faction_conditions(&state.factions, &state.tiles, &mission.events, types)
         .map_err(|message| ContentError::new(path, message))?;
     unique(mission.events.iter().map(|e| e.id.as_str()), path)?;
@@ -766,7 +1144,7 @@ fn validate_mission(
                             .validate(&state.tiles, &mission.events, false)
                             .map_err(|message| ContentError::new(path, message))?;
                         condition
-                            .validate_units(types)
+                            .validate_references(types, &state.factions)
                             .map_err(|message| ContentError::new(path, message))?;
                     }
                     if area.is_empty() {
@@ -784,7 +1162,7 @@ fn validate_mission(
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|message| ContentError::new(path, message))?;
             rule.condition
-                .validate_units(types)
+                .validate_references(types, &state.factions)
                 .map_err(|message| ContentError::new(path, message))?;
         }
     }
@@ -811,18 +1189,37 @@ fn validate_mission(
             }
             reference(&unit.r#type, types, path)?;
             validate_equipment(&unit.items, &units[types[&unit.r#type]].attacks, path)?;
-            tile_ref(&format!("{},{}", unit.col, unit.row))?;
+            tile_ref(&unit.tile)?;
         }
         Ok(())
     };
     starting(&mission.map.units)?;
-    for id in mission.recruits.iter().chain(&mission.enemy_recruits) {
-        reference(id, types, path)?;
-    }
+    let validate_recruitment =
+        |pools: &BTreeMap<String, Vec<FactionRecruit>>| -> Result<(), ContentError> {
+            for (id, recruits) in pools {
+                if !state.factions.iter().any(|f| &f.id == id) {
+                    return Err(ContentError::new(
+                        path,
+                        format!("unknown recruitment faction {id}"),
+                    ));
+                }
+                unique(recruits.iter().map(|r| r.unit.as_str()), path)?;
+                for recruit in recruits {
+                    reference(&recruit.unit, types, path)?;
+                    if recruit.cost.is_some_and(|cost| cost < 0) {
+                        return Err(ContentError::new(path, "negative recruitment price"));
+                    }
+                }
+            }
+            Ok(())
+        };
+    validate_recruitment(&mission.recruitment)?;
     if let Some(id) = &mission.enemy_leader_post {
         tile_ref(id)?;
     }
-    if mission.briefing.is_empty() || mission.goals.is_empty() {
+    if mission.briefing.is_empty()
+        || (mission.goals.is_empty() && mission.scripted_events.is_empty())
+    {
         return Err(ContentError::new(
             path,
             "mission briefing and goals are required",
@@ -834,7 +1231,7 @@ fn validate_mission(
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|e| ContentError::new(path, e))?;
             condition
-                .validate_units(types)
+                .validate_references(types, &state.factions)
                 .map_err(|e| ContentError::new(path, e))?;
         }
         for site in goal.sites() {
@@ -854,7 +1251,7 @@ fn validate_mission(
                 .map
                 .units
                 .iter()
-                .any(|unit| unit.side == Side::Player && unit.name.as_ref() == Some(name))
+                .any(|unit| unit.side == Side::Player && unit.character.as_ref() == Some(name))
             {
                 return Err(ContentError::new(
                     path,
@@ -867,17 +1264,12 @@ fn validate_mission(
         }
     }
     for event in &mission.events {
-        unique(event.recruits.iter().map(String::as_str), path)?;
-        for recruit in &event.recruits {
-            if !types.contains_key(recruit) {
-                return Err(ContentError::new(path, "unknown event recruit"));
-            }
-        }
+        validate_recruitment(&event.recruitment)?;
         if let Some(effect) = &event.evacuate {
             tile_ref(&effect.tile)?;
             if effect
                 .units
-                .name
+                .character
                 .as_ref()
                 .is_some_and(|name| name.is_empty())
             {
@@ -898,7 +1290,7 @@ fn validate_mission(
             }
             if reward
                 .recipient
-                .name
+                .character
                 .as_ref()
                 .is_some_and(|name| name.is_empty())
             {
@@ -941,7 +1333,7 @@ fn validate_mission(
         }
         if let Trigger::Condition { condition } = &event.trigger {
             condition
-                .validate_units(types)
+                .validate_references(types, &state.factions)
                 .map_err(|message| ContentError::new(path, message))?;
         }
         match &event.trigger {
@@ -962,67 +1354,17 @@ fn validate_mission(
         }
     }
     unique(
-        mission.arrivals.iter().map(|arrival| arrival.name.as_str()),
+        mission
+            .arrivals
+            .iter()
+            .map(|arrival| arrival.character.as_str()),
         path,
     )?;
     for arrival in &mission.arrivals {
-        if arrival.name.is_empty() {
+        if arrival.character.is_empty() {
             return Err(ContentError::new(path, "empty automatic companion name"));
         }
-        tile_ref(&format!("{},{}", arrival.col, arrival.row))?;
-    }
-    unique(
-        mission.rituals.iter().map(|ritual| ritual.id.as_str()),
-        path,
-    )?;
-    for ritual in &mission.rituals {
-        identifier(&ritual.id, path)?;
-        if ritual.interval == 0
-            || ritual.first_round == 0
-            || ritual.unit_types.is_empty()
-            || ritual.spawn.units.is_empty()
-            || ritual.spawn.radius == 0
-        {
-            return Err(ContentError::new(path, "invalid periodic ritual"));
-        }
-        for kind in &ritual.unit_types {
-            reference(kind, types, path)?;
-        }
-        if !terrains.contains_key(&ritual.source_terrain)
-            || !terrains.contains_key(&ritual.spent_terrain)
-        {
-            return Err(ContentError::new(path, "unknown ritual terrain"));
-        }
-        ritual
-            .when
-            .validate(&state.tiles, &mission.events, false)
-            .map_err(|message| ContentError::new(path, message))?;
-        ritual
-            .when
-            .validate_units(types)
-            .map_err(|message| ContentError::new(path, message))?;
-        if let Some(condition) = &ritual.notice_when {
-            condition
-                .validate(&state.tiles, &mission.events, false)
-                .map_err(|message| ContentError::new(path, message))?;
-            condition
-                .validate_units(types)
-                .map_err(|message| ContentError::new(path, message))?;
-        }
-        for unit in &ritual.spawn.units {
-            reference(&unit.r#type, types, path)?;
-            identifier(&unit.id, path)?;
-        }
-        unique(ritual.spawn.units.iter().map(|unit| unit.id.as_str()), path)?;
-        if let Some(group) = &ritual.spawn.ai_group {
-            group_ref(group, Side::Enemy)?;
-        }
-        BattlefieldLighting {
-            time: TimeOfDay::Night,
-            lights: vec![ritual.death_light.clone()],
-        }
-        .validate(&state.tiles, &mission.events)
-        .map_err(|message| ContentError::new(path, message))?;
+        tile_ref(&arrival.tile)?;
     }
     for goal in mission.all_goals() {
         if let Goal::Hold { unit_types, .. } = goal {
@@ -1053,10 +1395,8 @@ fn validate_mission(
         event_ref(&refuge.medicine_event)?;
     }
     let validate_patch = |patch: &MissionPatch| -> Result<(), ContentError> {
-        if let Some(recruits) = &patch.recruits {
-            for id in recruits {
-                reference(id, types, path)?;
-            }
+        if let Some(recruitment) = &patch.recruitment {
+            validate_recruitment(recruitment)?;
         }
         if let Some(units) = &patch.reinforcements {
             starting(units)?;
@@ -1147,7 +1487,7 @@ fn validate_simulation(
                         terrain.iter().any(|definition| {
                             definition.id.as_str() == t.terrain
                                 && definition.role == TerrainRole::Keep
-                        }) && t.owner == Some(side)
+                        }) && t.owner.as_deref() == Some(side.faction_id())
                     })
                     .count()
                     != 1
@@ -1160,16 +1500,17 @@ fn validate_simulation(
             }
         }
     }
+    let template = arena_maps
+        .iter()
+        .filter(|((id, _), _)| id == "arena-template")
+        .max_by_key(|((_, revision), _)| revision)
+        .map(|(_, state)| state)
+        .ok_or_else(|| ContentError::new(path, "missing arena template"))?;
     for tile in &arena.territory {
-        let parts: Vec<_> = tile.split(',').collect();
-        if parts.len() != 2
-            || parts
-                .iter()
-                .any(|p| p.parse::<u8>().map_or(true, |n| n > 8))
-        {
+        if !template.tiles.iter().any(|t| &t.id == tile) {
             return Err(ContentError::new(
                 path,
-                format!("invalid arena territory tile {tile}"),
+                format!("unknown arena territory tile {tile}"),
             ));
         }
     }
@@ -1186,7 +1527,7 @@ fn validate_simulation(
         ),
         (
             &campaign.diplomacy,
-            ["pragmatic", "restrained"].as_slice(),
+            ["unrestricted", "diplomatic"].as_slice(),
             "simulation/campaign.json",
         ),
     ] {
@@ -1411,11 +1752,11 @@ mod tests {
         let mut bundle = test_bundle();
         let path = "game/scenario/mirror-v1/roster.json";
         let mut roster: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
-        roster["units"][0]["col"] = serde_json::json!(999);
+        roster["factions"][0]["units"][0]["tile"] = serde_json::json!("missing-tile");
         bundle.insert(path.to_owned(), serde_json::to_string(&roster).unwrap());
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
-        assert_eq!(error.path, "game/scenario/mirror-v1/scenario.json");
-        assert!(error.message.contains("invalid unit placement u1"));
+        assert_eq!(error.path, "game/scenario/mirror-v1/roster.json");
+        assert!(error.message.contains("initial unit is outside its board"));
     }
 
     #[test]
@@ -1449,7 +1790,7 @@ mod tests {
     #[test]
     fn component_references_report_missing_files_and_reject_traversal() {
         let mut bundle = test_bundle();
-        let path = "game/campaigns/borrowed-tide/stages/tide-wreck/objectives.json";
+        let path = "game/campaigns/borrowed-tide/stages/tide-wreck/story.json";
         bundle.remove(path);
         assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
         let mut bundle = test_bundle();
@@ -1507,5 +1848,189 @@ mod tests {
             bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
             assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
         }
+    }
+}
+
+fn apply_objective_route(
+    campaign: &mut Campaign,
+    route: &SimulationObjective,
+    path: &str,
+) -> Result<(), ContentError> {
+    for (stage, plan) in &route.stages {
+        if plan.goals.is_some()
+            || plan.optional_goals.is_some()
+            || !plan.events.is_empty()
+            || !plan.event_conditions.is_empty()
+        {
+            return Err(ContentError::new(
+                path,
+                "legacy route goals/events are unsupported; use scriptEvents and scriptConditions",
+            ));
+        }
+        let mission = campaign
+            .missions
+            .iter_mut()
+            .find(|m| &m.map.id == stage)
+            .ok_or_else(|| {
+                ContentError::new(
+                    path,
+                    format!("objective route references unknown stage {stage}"),
+                )
+            })?;
+        if let Some(goals) = &plan.goals {
+            mission.goals = goals.clone();
+        }
+        if let Some(goals) = &plan.optional_goals {
+            mission.optional_goals = goals.clone();
+        }
+        mission.events.extend(plan.events.clone());
+        mission.scripted_events.extend(plan.script_events.clone());
+        for (id, condition) in &plan.script_conditions {
+            let event = mission
+                .scripted_events
+                .iter_mut()
+                .find(|e| &e.id == id)
+                .ok_or_else(|| ContentError::new(path, format!("unknown script event {id}")))?;
+            event.when = condition.clone();
+        }
+        for (id, condition) in &plan.event_conditions {
+            let event = mission
+                .events
+                .iter_mut()
+                .find(|e| &e.id == id)
+                .ok_or_else(|| {
+                    ContentError::new(
+                        path,
+                        format!("objective route references unknown event {id}"),
+                    )
+                })?;
+            let Trigger::Condition { condition: current } = &mut event.trigger else {
+                return Err(ContentError::new(
+                    path,
+                    "eventConditions requires a condition-triggered event",
+                ));
+            };
+            *current = condition.clone();
+        }
+        mission
+            .scripted_events
+            .sort_by_key(|event| std::cmp::Reverse(event.priority));
+        for event in &mut mission.scripted_events {
+            event.when.index_holds();
+        }
+    }
+    Ok(())
+}
+impl Rules {
+    /// Resolve a simulation-only campaign while sharing the rest of the catalog.
+    pub fn prepare_simulation_campaign(
+        &self,
+        campaign: &str,
+        route: &str,
+    ) -> Result<std::borrow::Cow<'_, Campaign>, ContentError> {
+        let authored = self.campaigns.get(campaign).ok_or_else(|| {
+            ContentError::new(
+                "simulation/campaign.json",
+                format!("unknown campaign {campaign}"),
+            )
+        })?;
+        if route == "authored" {
+            return Ok(std::borrow::Cow::Borrowed(authored));
+        }
+        let plan = self
+            .campaign_defaults
+            .objectives
+            .get(campaign)
+            .and_then(|routes| routes.get(route))
+            .ok_or_else(|| {
+                ContentError::new(
+                    "simulation/campaign.json",
+                    format!("unknown objective route {route} for {campaign}"),
+                )
+            })?;
+        identifier(route, "simulation/campaign.json")?;
+        if plan.stages.is_empty() {
+            return Err(ContentError::new(
+                "simulation/campaign.json",
+                "objective routes need stages",
+            ));
+        }
+        for stage in plan.stages.keys() {
+            if !authored
+                .missions
+                .iter()
+                .any(|mission| &mission.map.id == stage)
+            {
+                return Err(ContentError::new(
+                    "simulation/campaign.json",
+                    format!("objective route references unknown stage {stage}"),
+                ));
+            }
+        }
+        let changes_definition = plan.stages.values().any(|stage| {
+            stage.goals.is_some()
+                || stage.optional_goals.is_some()
+                || !stage.script_events.is_empty()
+                || !stage.script_conditions.is_empty()
+                || !stage.events.is_empty()
+                || !stage.event_conditions.is_empty()
+        });
+        let mut selected = std::borrow::Cow::Borrowed(authored);
+        if changes_definition {
+            apply_objective_route(selected.to_mut(), plan, "simulation/campaign.json")?;
+        }
+        if changes_definition {
+            let characters = selected.characters.clone();
+            for mission in &mut selected.to_mut().missions {
+                let state = self
+                    .maps
+                    .iter()
+                    .find(|((id, _), _)| id == &mission.map.id)
+                    .map(|(_, state)| state)
+                    .ok_or_else(|| {
+                        ContentError::new("simulation/campaign.json", "unknown route stage map")
+                    })?;
+                validate_character_references(
+                    mission,
+                    state,
+                    &characters,
+                    "simulation/campaign.json",
+                )?;
+            }
+        }
+        for mission in &selected.missions {
+            let state = self
+                .maps
+                .iter()
+                .find(|((id, _), _)| id == &mission.map.id)
+                .map(|(_, state)| state)
+                .ok_or_else(|| {
+                    ContentError::new("simulation/campaign.json", "unknown route stage map")
+                })?;
+            if changes_definition {
+                validate_mission(
+                    mission,
+                    state,
+                    &self.types,
+                    &self.units,
+                    &self.terrains,
+                    "simulation/campaign.json",
+                )?;
+            }
+            if let Some(stage) = plan.stages.get(&mission.map.id) {
+                if let Some(condition) = &stage.ignore_optional_when {
+                    condition
+                        .validate(&state.tiles, &mission.events, false)
+                        .map_err(|e| ContentError::new("simulation/campaign.json", e))?;
+                    condition
+                        .validate_characters(&selected.characters)
+                        .map_err(|e| ContentError::new("simulation/campaign.json", e))?;
+                    condition
+                        .validate_references(&self.types, &state.factions)
+                        .map_err(|e| ContentError::new("simulation/campaign.json", e))?;
+                }
+            }
+        }
+        Ok(selected)
     }
 }

@@ -41,7 +41,7 @@ class CompleteDataTests(unittest.TestCase):
                     for u, race, level in [('foot', 'a', 1), ('unused', 'a', 2), ('foe', 'b', 1)]}
         roster = [dict(id='f', type='foot', side='player', tile='0,0', hp=10),
                   dict(id='e', type='foe', side='enemy', tile='1,0', hp=10)]
-        initial = dict(units=roster, tiles=[dict(id=u['tile'], terrain='plains') for u in roster])
+        initial = dict(units=roster, tiles=[dict(id=u['tile'], col=int(u['tile'].split(',')[0]), row=int(u['tile'].split(',')[1]), terrain='plains') for u in roster])
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             paths = []
@@ -413,7 +413,7 @@ class CompleteDataTests(unittest.TestCase):
                                    report=dict(candidates=7, duties=[dict(id='survive:u2', status='Unmet', reason='UnsafeFallback')])))
         diagnostic = report.chapter_diagnostics(dict(winner=None, goals=[], phases=[phase], final=dict(units=[])))
         self.assertEqual(diagnostic['unmetOrders'], {'UnsafeFallback': 1})
-        self.assertEqual((diagnostic['protectedRetaliationViolations'], diagnostic['rescueCandidates']), (1, 7))
+        self.assertEqual((diagnostic['protectedRetaliationExchanges'], diagnostic['rescueCandidates']), (1, 7))
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)/'report.json'
             path.write_text(json.dumps(dict(outcomes=[match(1)], turnTiming=dict(clock='thread_cpu', policies=[dict(policy='mixed', turns=10, meanDecisionMicrosPerTurn=12, meanTurnMicros=15)]))))

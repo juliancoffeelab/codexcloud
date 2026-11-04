@@ -10,6 +10,8 @@ mod factions;
 pub use factions::*;
 mod units;
 pub use units::*;
+mod events;
+pub use events::*;
 mod campaign;
 pub use campaign::*;
 mod state;
@@ -24,7 +26,7 @@ mod records;
 pub use records::*;
 pub mod catalog;
 pub use catalog::*;
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 /// Loaded, validated content with inheritance resolved into runtime tables.
 ///
 /// A host owns this value and lends it to battle operations. Authored array order
@@ -37,6 +39,7 @@ pub struct Rules {
     /// SHA-256 of relative document paths and their exact JSON bytes.
     pub content_fingerprint: String,
     pub recruitment: RecruitmentProfiles,
+    pub items: HashMap<String, Item>,
     /// Ordered simulation recruitment rosters, independent of campaign rosters.
     pub rosters: Vec<ArmyRoster>,
     /// Native arena defaults and landscape definitions.
@@ -85,3 +88,11 @@ pub use conditions::*;
 mod policy;
 pub use policy::*;
 pub mod presentation;
+
+impl Rules {
+    pub fn campaign_for_map(&self, map: &str) -> Option<&Campaign> {
+        self.campaigns
+            .values()
+            .find(|c| c.missions.iter().any(|m| m.map.id == map))
+    }
+}

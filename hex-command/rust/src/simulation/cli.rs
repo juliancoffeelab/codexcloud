@@ -1,5 +1,6 @@
 //! Native schedule, bounded scoped worker pool, reporting and replay.
 use super::{
+    CampaignDefinitions,
     checkpoint::{IndexedOutcome, Progress},
     error::SimulationError,
     matches,
@@ -75,6 +76,9 @@ struct SimulationArgs {
     /// Filter the campaign's authored diplomacy modes.
     #[arg(group = "batch", long, value_enum, value_delimiter = ',', action = clap::ArgAction::Set)]
     diplomacy: Option<Vec<Diplomacy>>,
+    /// Filter the campaign's simulation objective routes.
+    #[arg(group = "batch", long, value_delimiter = ',')]
+    objectives: Option<Vec<String>>,
     /// Worker count, defaulting to the available CPU quota.
     #[arg(group = "batch", long, default_value_t = default_workers() as u32, value_parser = clap::value_parser!(u32).range(1..=8))]
     workers: u32,
@@ -285,6 +289,14 @@ impl SimulationArgs {
                 .get_or_insert_with(|| vec![Policy::Classic]);
         }
         options.diplomacy = selection(self.diplomacy, "--diplomacy", &options.diplomacy)?;
+        if let Some(objectives) = self.objectives {
+            let known: Vec<_> = std::iter::once("authored".to_owned())
+                .chain(options.campaign_objectives.values().flatten().cloned())
+                .collect::<std::collections::BTreeSet<_>>()
+                .into_iter()
+                .collect();
+            options.objectives = Some(selection(Some(objectives), "--objectives", &known)?);
+        }
         let mut out = self.out.unwrap_or_else(|| {
             let timestamp = SystemTime::now()
                 .duration_since(UNIX_EPOCH)
@@ -340,13 +352,15 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
     let stdin = io::stdin();
     let stdout = io::stdout();
     let mut output = io::BufWriter::new(stdout.lock());
+    let mut definitions = CampaignDefinitions::new(rules);
     for line in stdin.lock().lines() {
         let line = line?;
         if line.trim().is_empty() {
             continue;
         }
         let config: MatchConfig = serde_json::from_str(&line)?;
-        let result = matches::run(rules, config)?;
+        definitions.prepare_match(&config)?;
+        let result = matches::run(rules, config, &definitions)?;
         serde_json::to_writer(&mut output, &result)?;
         writeln!(output)?;
         output.flush()?;
@@ -359,6 +373,8 @@ struct PhaseRequest {
     /// Include selected adaptive recruiter score components before running this phase.
     #[serde(default)]
     inspect_recruitment: bool,
+    #[serde(default = "super::types::authored_objective")]
+    objective: String,
     #[serde(default)]
     blocks: Option<crate::ai::Blocks>,
     state: crate::data::State,
@@ -380,19 +396,30 @@ struct PhaseRequest {
 /// Replay one own phase from a saved position, for fixed-input policy profiling.
 fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
     let mut output = io::BufWriter::new(io::stdout().lock());
+    let mut definitions = CampaignDefinitions::new(rules);
     for line in io::stdin().lock().lines() {
         let line = line?;
         if line.trim().is_empty() {
             continue;
         }
         let request: PhaseRequest = serde_json::from_str(&line)?;
-        serde_json::to_writer(&mut output, &saved_phase(rules, request)?)?;
+        serde_json::to_writer(&mut output, &saved_phase(rules, &mut definitions, request)?)?;
         writeln!(output)?;
         output.flush()?;
     }
     Ok(())
 }
-fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, SimulationError> {
+fn saved_phase(
+    rules: &Rules,
+    definitions: &mut CampaignDefinitions<'_>,
+    request: PhaseRequest,
+) -> Result<Value, SimulationError> {
+    let definition = if let Some(campaign) = &request.state.campaign {
+        definitions.prepare(&campaign.id, &request.objective)?;
+        Some(definitions.get(&campaign.id, &request.objective)?)
+    } else {
+        None
+    };
     let arena = request
         .arena
         .as_ref()
@@ -407,13 +434,21 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
         crate::logic::validate_state_geometry(rules, &request.state, &arena.state())
             .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     } else {
-        crate::logic::validate_state(rules, &request.state)
-            .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
+        let authored = rules
+            .maps
+            .get(&(request.state.map_id.clone(), request.state.map_revision))
+            .ok_or_else(|| SimulationError::InvalidConfig("unknown map revision".into()))?;
+        crate::logic::validate_state_geometry_with_campaign(
+            rules,
+            &request.state,
+            authored,
+            definition,
+        )
+        .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     }
-    let mut game = crate::logic::Game::from_state(rules, request.state);
+    let mut game = crate::logic::Game::from_state_with_campaign(rules, request.state, definition);
     if let Some(arena) = arena {
-        game.pools = arena.pools;
-        game.arena_first = arena.arena_first;
+        game.configure_arena(arena.pools().cloned(), arena.arena_first());
     }
     if request.advance_turn && request.begin_turn {
         return Err(SimulationError::InvalidConfig(
@@ -421,7 +456,7 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
         ));
     }
     if request.begin_turn {
-        game.begin_turn(game.turn);
+        game.begin_turn(game.turn());
     } else if request.advance_turn {
         game.end_turn();
     }
@@ -429,12 +464,15 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
         || request.goals.iter().flatten().any(|goal| {
             !goal.weight.is_finite()
                 || goal.weight <= 0.0
-                || goal.tiles.iter().any(|tile| !game.board.ids.contains(tile))
+                || goal
+                    .tiles
+                    .iter()
+                    .any(|tile| !game.board().ids.contains(tile))
                 || goal.actor.as_ref().is_some_and(|actor| {
                     actor
                         .strip_prefix('u')
                         .and_then(|id| id.parse::<u32>().ok())
-                        .is_none_or(|id| id == 0 || id >= game.next_id)
+                        .is_none_or(|id| id == 0 || id >= game.next_id())
                 })
         })
     {
@@ -444,20 +482,24 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
     }
     let scores = request.inspect_recruitment.then(|| {
         crate::ai::recruiter::diagnostics(
-            &game,
+            game.view(),
             request.blocks.unwrap_or(request.policy.blocks()).recruiter,
         )
     });
-    game.recordings = Some(crate::data::Records::default());
-    game.play_blocks(
+    game.start_recording();
+    let goals = request
+        .goals
+        .or_else(|| super::objectives::player_goals(&game, &request.objective));
+    crate::ai::play_blocks(
+        &mut game,
         request.policy,
         request.blocks,
         request.seed,
         request.recruitment_limit,
-        request.goals.as_deref(),
+        goals.as_deref(),
         request.diplomacy,
     )?;
-    let mut response = json!({"final":game.state(),"records":game.recordings});
+    let mut response = json!({"final":game.state(),"records":game.take_recordings()});
     if let Some(scores) = scores {
         response["recruitmentScores"] = serde_json::to_value(scores)?;
     }
@@ -482,6 +524,7 @@ fn replay(rules: &Rules, path: &Path, fingerprint: &str) -> Result<(), Simulatio
     let outcomes = saved["outcomes"]
         .as_array()
         .ok_or("Replay report outcomes missing")?;
+    let mut definitions = CampaignDefinitions::new(rules);
     for (index, outcome) in outcomes.iter().enumerate() {
         let expected = if let Some(reference) = outcome.get("detail") {
             let reference: DetailRecord = serde_json::from_value(reference.clone())?;
@@ -490,7 +533,8 @@ fn replay(rules: &Rules, path: &Path, fingerprint: &str) -> Result<(), Simulatio
             outcome.clone()
         };
         let config: MatchConfig = serde_json::from_value(expected["config"].clone())?;
-        let actual = report::detailed_summary(&matches::run(rules, config)?)?;
+        definitions.prepare_match(&config)?;
+        let actual = report::detailed_summary(&matches::run(rules, config, &definitions)?)?;
         if actual != expected {
             return Err(SimulationError::Replay(format!(
                 "Replay mismatch at game {}: {}",
@@ -529,6 +573,10 @@ fn execute_schedule<F>(
 where
     F: FnMut(usize, PreparedMatch, f64) -> Result<(), SimulationError>,
 {
+    let mut definitions = CampaignDefinitions::new(rules);
+    for config in configs {
+        definitions.prepare_match(config)?;
+    }
     let prepare = |result: MatchResult, elapsed: f64| {
         let summary = report::borrowed_summary(&result, true)?;
         let details = if arrow {
@@ -563,7 +611,7 @@ where
         workers,
         &|config| {
             let start = Instant::now();
-            let result = matches::run(rules, config.clone())?;
+            let result = matches::run(rules, config.clone(), &definitions)?;
             prepare(result, start.elapsed().as_secs_f64() * 1000.0)
         },
         |index, result, elapsed| append(index, result, elapsed),
@@ -978,6 +1026,7 @@ mod tests {
     #[test]
     fn saved_phase_restores_generated_arenas_and_validates_geometry() {
         let rules = Rules::load().unwrap();
+        let mut definitions = CampaignDefinitions::new(&rules);
         let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
             "seed": 7, "maxRounds": 30, "recruitLimit": 0, "landscape": "open",
             "first": "player", "player": "balanced", "enemy": "balanced",
@@ -993,25 +1042,26 @@ mod tests {
             }))
             .unwrap()
         };
-        expected.begin_turn(expected.turn);
-        expected.recordings = Some(crate::data::Records::default());
-        expected
-            .play_blocks(
-                crate::ai::Policy::Balanced,
-                None,
-                7,
-                1,
-                None,
-                crate::ai::Diplomacy::Pragmatic,
-            )
-            .unwrap();
+        expected.begin_turn(expected.turn());
+        expected.start_recording();
+        crate::ai::play_blocks(
+            &mut expected,
+            crate::ai::Policy::Balanced,
+            None,
+            7,
+            1,
+            None,
+            crate::ai::Diplomacy::Unrestricted,
+        )
+        .unwrap();
+        let expected_records = expected.take_recordings();
         assert_eq!(
-            saved_phase(&rules, request(state.clone())).unwrap(),
-            json!({"final": expected.state(), "records": expected.recordings})
+            saved_phase(&rules, &mut definitions, request(state.clone())).unwrap(),
+            json!({"final": expected.state(), "records": expected_records})
         );
         let mut inspected = request(state.clone());
         inspected.inspect_recruitment = true;
-        let mut diagnostic = saved_phase(&rules, inspected).unwrap();
+        let mut diagnostic = saved_phase(&rules, &mut definitions, inspected).unwrap();
         assert!(
             !diagnostic
                 .as_object_mut()
@@ -1024,14 +1074,14 @@ mod tests {
         );
         assert_eq!(
             diagnostic,
-            json!({"final":expected.state(),"records":expected.recordings})
+            json!({"final":expected.state(),"records":expected_records})
         );
         let mut invalid = state.clone();
         invalid.tiles[0].col = -1;
-        assert!(saved_phase(&rules, request(invalid)).is_err());
+        assert!(saved_phase(&rules, &mut definitions, request(invalid)).is_err());
         let mut invalid = request(state);
         invalid.advance_turn = true;
-        assert!(saved_phase(&rules, invalid).is_err());
+        assert!(saved_phase(&rules, &mut definitions, invalid).is_err());
     }
     #[test]
     fn append_failure_drains_in_flight_workers() {

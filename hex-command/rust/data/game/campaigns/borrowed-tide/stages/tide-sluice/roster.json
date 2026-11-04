@@ -1,170 +1,117 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "tidekeeper",
-        "side": "player",
-        "col": 1,
-        "row": 2,
-        "name": "Mira",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "reefguard",
-        "side": "player",
-        "col": 2,
-        "row": 2
-      },
-      {
-        "type": "harpooner",
-        "side": "player",
-        "col": 1,
-        "row": 3
-      },
-      {
-        "type": "wavemender",
-        "side": "player",
-        "col": 2,
-        "row": 3
-      },
-      {
-        "type": "harpooner",
-        "side": "player",
-        "col": 3,
-        "row": 3,
-        "name": "Edda",
-        "role": "courier"
-      },
-      {
-        "type": "spearman",
-        "side": "player",
-        "col": 4,
-        "row": 1,
-        "name": "Tomas"
-      },
-      {
-        "type": "commander",
-        "side": "enemy",
-        "col": 11,
-        "row": 1,
-        "name": "Captain Vale",
-        "role": "leader"
-      },
-      {
-        "type": "soldier",
-        "side": "enemy",
-        "col": 8,
-        "row": 2
-      },
-      {
-        "type": "warden",
-        "side": "enemy",
-        "col": 8,
-        "row": 5
-      },
-      {
-        "type": "archer",
-        "side": "enemy",
-        "col": 9,
-        "row": 3
-      },
-      {
-        "type": "scout",
-        "side": "enemy",
-        "col": 8,
-        "row": 6
+      "palette": "player",
+      "gold": 16,
+      "recruits": [
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "role": "leader",
+          "character": "mira",
+          "tile": "hex-0045-b0e58b1f93"
+        },
+        {
+          "type": "reefguard",
+          "tile": "hex-0397-b042f4a1af"
+        },
+        {
+          "type": "harpooner",
+          "tile": "hex-0056-2e6c8414fc"
+        },
+        {
+          "type": "wavemender",
+          "tile": "hex-0408-edbae05560"
+        },
+        {
+          "type": "harpooner",
+          "role": "courier",
+          "character": "edda",
+          "tile": "hex-0760-150b2b6a75"
+        },
+        {
+          "type": "spearman",
+          "character": "tomas",
+          "tile": "hex-0834-6c48b28b5d"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "tidekeeper",
-      "side": "player",
-      "col": 1,
-      "row": 2,
-      "name": "Mira",
-      "role": "leader"
     },
     {
-      "type": "reefguard",
-      "side": "player",
-      "col": 2,
-      "row": 2
-    },
-    {
-      "type": "harpooner",
-      "side": "player",
-      "col": 1,
-      "row": 3
-    },
-    {
-      "type": "wavemender",
-      "side": "player",
-      "col": 2,
-      "row": 3
-    },
-    {
-      "type": "harpooner",
-      "side": "player",
-      "col": 3,
-      "row": 3,
-      "name": "Edda",
-      "role": "courier"
-    },
-    {
-      "type": "spearman",
-      "side": "player",
-      "col": 4,
-      "row": 1,
-      "name": "Tomas"
-    },
-    {
-      "type": "commander",
-      "side": "enemy",
-      "col": 11,
-      "row": 1,
-      "name": "Captain Vale",
-      "role": "leader"
-    },
-    {
-      "type": "soldier",
-      "side": "enemy",
-      "col": 8,
-      "row": 2
-    },
-    {
-      "type": "warden",
-      "side": "enemy",
-      "col": 8,
-      "row": 5
-    },
-    {
-      "type": "archer",
-      "side": "enemy",
-      "col": 9,
-      "row": 3
-    },
-    {
-      "type": "scout",
-      "side": "enemy",
-      "col": 8,
-      "row": 6
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 12,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "character": "vale",
+          "tile": "hex-0098-b1326129be"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0973-079cfc7b3c"
+        },
+        {
+          "type": "warden",
+          "tile": "hex-0988-17596734c1"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-1016-9e0db09d3e"
+        },
+        {
+          "type": "scout",
+          "tile": "hex-0989-f27f4a3764"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
-  ],
-  "recruits": [
-    "reefguard",
-    "harpooner",
-    "wavemender",
-    "swordsman",
-    "spearman",
-    "adept",
-    "merfolk-maceguard"
-  ],
-  "enemyRecruits": ["swordsman", "spearman", "archer"],
-  "gold": 16,
-  "enemyGold": 12
+  ]
 }

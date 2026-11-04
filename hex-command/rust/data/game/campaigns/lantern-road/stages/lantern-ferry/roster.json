@@ -1,100 +1,79 @@
 {
-  "initial": {
-    "gold": {
-      "player": 0,
-      "enemy": 0
-    },
-    "units": [
-      {
-        "type": "swordsman",
-        "side": "player",
-        "col": 3,
-        "row": 8,
-        "name": "Captain Nera",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "scout",
-        "side": "player",
-        "col": 3,
-        "row": 9,
-        "name": "Ivo"
-      },
-      {
-        "type": "archer",
-        "side": "player",
-        "col": 4,
-        "row": 8
-      },
-      {
-        "type": "adept",
-        "side": "player",
-        "col": 4,
-        "row": 9,
-        "name": "Oren"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 18,
-        "row": 9,
-        "aiGroup": "skeletons"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 19,
-        "row": 10,
-        "aiGroup": "skeletons"
+      "palette": "player",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "swordsman",
+          "role": "leader",
+          "character": "nera",
+          "tile": "hex-0767-3b53c1c4da"
+        },
+        {
+          "type": "scout",
+          "character": "ivo",
+          "tile": "hex-0768-7e23d46daa"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0863-f5faa8d578"
+        },
+        {
+          "type": "adept",
+          "character": "oren",
+          "tile": "hex-0864-a20aeacbbc"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "swordsman",
-      "side": "player",
-      "col": 3,
-      "row": 8,
-      "name": "Captain Nera",
-      "role": "leader"
     },
     {
-      "type": "scout",
-      "side": "player",
-      "col": 3,
-      "row": 9,
-      "name": "Ivo"
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "skeleton",
+          "aiGroup": "skeletons",
+          "tile": "hex-0352-1f3e270f14"
+        },
+        {
+          "type": "skeleton",
+          "aiGroup": "skeletons",
+          "tile": "hex-0355-3f598bb97a"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     },
     {
-      "type": "archer",
-      "side": "player",
-      "col": 4,
-      "row": 8
-    },
-    {
-      "type": "adept",
-      "side": "player",
-      "col": 4,
-      "row": 9,
-      "name": "Oren"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 18,
-      "row": 9,
-      "aiGroup": "skeletons"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 19,
-      "row": 10,
-      "aiGroup": "skeletons"
+      "id": "wildlife",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai",
+        "policy": "classic"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile"
+      },
+      "gold": 0,
+      "recruits": [],
+      "units": []
     }
-  ],
-  "recruits": [],
-  "enemyRecruits": [],
-  "gold": 0,
-  "enemyGold": 0
+  ]
 }

@@ -1,9 +1,12 @@
+import type { LegacyCampaignState } from "./campaign-state";
 import { MAPS, TYPES, TERRAIN_ORDER } from "./frozen";
 import type { GameState, MapId, Tile, Unit } from "../../../game/types";
 import { LEGACY_ASHEN_REFUGE } from "./layouts";
 
 /** Reconstructed data plus lookup helpers; deliberately has no gameplay commands. */
-export type LegacyState = Omit<GameState, "groundItems">;
+export type LegacyState = Omit<GameState, "groundItems" | "campaign"> & {
+  campaign?: LegacyCampaignState;
+};
 export interface LegacyBoard extends LegacyState {
   tile(id: string): Tile | undefined;
   at(id: string): Unit | undefined;

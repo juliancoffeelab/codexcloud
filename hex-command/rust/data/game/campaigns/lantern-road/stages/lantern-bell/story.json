@@ -10,14 +10,14 @@
       "text": "The Bellwarden falls. The sound above the courtyard breaks into a thin, wavering note, then dies."
     },
     {
-      "speaker": "Ivo",
       "portrait": "scout",
-      "text": "Listen. Just the reeds."
+      "text": "Listen. Just the reeds.",
+      "character": "ivo"
     },
     {
-      "speaker": "Captain Nera",
       "portrait": "swordsman",
-      "text": "Gather anyone still alive. We’re leaving."
+      "text": "Gather anyone still alive. We’re leaving.",
+      "character": "nera"
     }
   ],
   "debrief": "The bell is silent. The company withdraws from the valley with the survivors."

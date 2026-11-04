@@ -1,75 +1,20 @@
+use super::proposal::Plan;
 use crate::ai::TacticalRole;
-use crate::ai::objectives::actor_matches;
 use crate::ai::orders::target as objective;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::ai::policies::objectives::actor_matches;
+use crate::ai::policies::tie_breaking::action_jitter;
 use crate::ai::roles::role;
+use crate::ai::{advance_command, intent_command, move_command};
 use crate::sort::SharedSort;
 use crate::{
     ai::context::BattleView,
-    ai::objectives::{TileOrder, individual},
-    ai::planner::safety::Threats,
+    ai::policies::objectives::{TileOrder, individual},
+    ai::policies::threat::Threats,
     data::*,
 };
 use rustc_hash::FxHashMap as HashMap;
 use std::borrow::Cow;
-pub struct Random(pub u32);
-impl Random {
-    pub fn next(&mut self) -> f64 {
-        self.0 = self.0.wrapping_add(0x6d2b79f5);
-        let mut v = (self.0 ^ (self.0 >> 15)).wrapping_mul(1 | self.0);
-        v ^= v.wrapping_add((v ^ (v >> 7)).wrapping_mul(61 | v));
-        (v ^ (v >> 14)) as f64 / 4294967296.0
-    }
-}
-pub(in crate::ai) fn jitter(seed: u32, key: &str) -> f64 {
-    let mut h = seed;
-    for c in key.encode_utf16() {
-        h = (h ^ c as u32).wrapping_mul(16777619);
-    }
-    h as f64 / 4294967296.0 * 0.05
-}
-fn hash_number(mut hash: u32, mut number: u32) -> u32 {
-    let mut digits = [0; 10];
-    let mut start = digits.len();
-    loop {
-        start -= 1;
-        digits[start] = b'0' + (number % 10) as u8;
-        number /= 10;
-        if number == 0 {
-            break;
-        }
-    }
-    for &byte in &digits[start..] {
-        hash = (hash ^ byte as u32).wrapping_mul(16777619);
-    }
-    hash
-}
-/// Hash the action key without allocating formatted strings.
-pub(in crate::ai) fn action_jitter(
-    seed: u32,
-    round: u32,
-    unit: u32,
-    tile: &str,
-    target: Option<u32>,
-) -> f64 {
-    let byte = |hash: u32, byte: u8| (hash ^ byte as u32).wrapping_mul(16777619);
-    let mut hash = hash_number(seed, round);
-    hash = byte(byte(hash, b':'), b'u');
-    hash = hash_number(hash, unit);
-    hash = byte(hash, b':');
-    for character in tile.encode_utf16() {
-        hash = (hash ^ character as u32).wrapping_mul(16777619);
-    }
-    hash = byte(hash, b':');
-    if let Some(target) = target {
-        hash = hash_number(byte(hash, b'u'), target);
-    } else {
-        for character in b"move" {
-            hash = byte(hash, *character);
-        }
-    }
-    hash as f64 / 4294967296.0 * 0.05
-}
 /// Exact zero operations need no outward adjustment. Avoid introducing the
 /// smallest subnormal into otherwise ordinary score arithmetic: those operands
 /// are particularly expensive on the native CPUs used for full simulations.
@@ -87,29 +32,57 @@ impl ScoreBound for f64 {
         if self == 0.0 { self } else { self.next_down() }
     }
 }
-#[derive(Clone, Debug, PartialEq)]
-pub(in crate::ai) struct Plan {
-    pub(in crate::ai) unit: u32,
-    pub(in crate::ai) tile: usize,
-    pub(in crate::ai) score: f64,
-    pub(in crate::ai) target: Option<u32>,
-    pub(in crate::ai) weapon: Option<usize>,
-    pub(in crate::ai) advance: Option<usize>,
-    pub(in crate::ai) withdrawing: bool,
+pub(super) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
+    game: &BattleView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    orders: &crate::ai::orders::TacticalOrders,
+    escort: &crate::ai::policies::escort::travel::Workspace,
+    seed: u32,
+    prepared_goals: Option<&[Objective]>,
+    routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
+    commitments: &mut Commitments,
+    intents: &mut Vec<(u32, Option<bool>)>,
+    threat_workspace: &mut crate::ai::policies::threat::ArenaThreatWorkspace,
+    focus: Option<u32>,
+    recruitment: Option<crate::ai::policies::recruitment::EstimateInput<'_>>,
+) -> Option<Plan> {
+    Evaluation(game, phases).best_plan::<BOUNDED, FOCUSED>(
+        orders,
+        escort,
+        seed,
+        prepared_goals,
+        routes,
+        commitments,
+        intents,
+        threat_workspace,
+        focus,
+        recruitment,
+    )
 }
-impl BattleView<'_, '_> {
+struct Evaluation<'view, 'game, 'catalog>(
+    &'view BattleView<'game, 'catalog>,
+    hex_command_battle::PhaseForecasts<'game, 'catalog>,
+);
+impl<'view, 'game, 'catalog> std::ops::Deref for Evaluation<'view, 'game, 'catalog> {
+    type Target = BattleView<'game, 'catalog>;
+    fn deref(&self) -> &Self::Target {
+        self.0
+    }
+}
+impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
     #[inline(always)]
-    pub(in crate::ai) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
+    pub(super) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
         orders: &crate::ai::orders::TacticalOrders,
-        escort: &crate::ai::escort::Workspace,
+        escort: &crate::ai::policies::escort::travel::Workspace,
         seed: u32,
         prepared_goals: Option<&[Objective]>,
         routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
-        commitments: &mut HashMap<u32, String>,
+        commitments: &mut Commitments,
         intents: &mut Vec<(u32, Option<bool>)>,
-        threat_workspace: &mut crate::ai::threats::ArenaThreatWorkspace,
+        threat_workspace: &mut crate::ai::policies::threat::ArenaThreatWorkspace,
         focus: Option<u32>,
+        recruitment: Option<crate::ai::policies::recruitment::EstimateInput<'_>>,
     ) -> Option<Plan> {
         #[cfg(target_arch = "wasm32")]
         {
@@ -123,6 +96,7 @@ impl BattleView<'_, '_> {
                 intents,
                 threat_workspace,
                 focus,
+                recruitment,
                 FOCUSED,
             )
         }
@@ -138,6 +112,7 @@ impl BattleView<'_, '_> {
                 intents,
                 threat_workspace,
                 focus,
+                recruitment,
                 false,
             )
         }
@@ -146,14 +121,15 @@ impl BattleView<'_, '_> {
     fn best_plan_impl<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
         orders: &crate::ai::orders::TacticalOrders,
-        escort: &crate::ai::escort::Workspace,
+        escort: &crate::ai::policies::escort::travel::Workspace,
         seed: u32,
         prepared_goals: Option<&[Objective]>,
         routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
-        commitments: &mut HashMap<u32, String>,
+        commitments: &mut Commitments,
         intents: &mut Vec<(u32, Option<bool>)>,
-        threat_workspace: &mut crate::ai::threats::ArenaThreatWorkspace,
+        threat_workspace: &mut crate::ai::policies::threat::ArenaThreatWorkspace,
         focus: Option<u32>,
+        recruitment: Option<crate::ai::policies::recruitment::EstimateInput<'_>>,
         _focused: bool,
     ) -> Option<Plan> {
         #[cfg(target_arch = "wasm32")]
@@ -212,7 +188,8 @@ impl BattleView<'_, '_> {
             .filter(|u| self.hostile_to_phase(u, side))
             .collect();
         let lanes = orders.lanes(self);
-        let mut threats = Threats::with_workspace(self, side, threat_workspace).with_orders(orders);
+        let mut threats =
+            Threats::with_workspace(self.1, side, threat_workspace).with_orders(orders);
         let screens: Vec<_> = allies
             .iter()
             .filter(|u| role(self, u.kind) == TacticalRole::Frontline && !u.is_leader())
@@ -271,7 +248,11 @@ impl BattleView<'_, '_> {
             .enumerate()
             .filter(|(_, u)| !u.attacked && (!focused || Some(u.id) == focus))
             .map(|(index, &unit)| {
-                let before_risk = threats.at(unit, unit.tile, None);
+                let before_risk = crate::ai::policies::threat::cap_exposure(
+                    unit,
+                    threats.at(unit, unit.tile, None),
+                    orders.important(self, unit),
+                );
                 let important = orders.important(self, unit);
                 let category = role(self, unit.kind);
                 let danger = if important {
@@ -306,7 +287,7 @@ impl BattleView<'_, '_> {
                         let kill_chance = self.potential_kill_chance(unit, target, weapon);
                         let killed = kill_chance == 1.0;
                         let kill_value = kill_chance
-                            * (12.0 + self.rules().units[target.kind].cost as f64 * 0.3);
+                            * (12.0 + self.recruit_cost(target, target.kind) as f64 * 0.3);
                         let essential_value = if orders.important(self, target) {
                             4.0 + 14.0 * kill_chance
                         } else {
@@ -321,7 +302,7 @@ impl BattleView<'_, '_> {
                                 value + 100.0
                             } else if important {
                                 value
-                                    * if unit.role == Some(Role::Courier) {
+                                    * if unit.role.is_some_and(Role::is_escort) {
                                         0.1
                                     } else {
                                         0.5
@@ -344,7 +325,7 @@ impl BattleView<'_, '_> {
                                 bound = (bound + 100.0).upper();
                             } else if important && !terminal_objective {
                                 bound = (bound
-                                    * if unit.role == Some(Role::Courier) {
+                                    * if unit.role.is_some_and(Role::is_escort) {
                                         0.1
                                     } else {
                                         0.5
@@ -390,7 +371,8 @@ impl BattleView<'_, '_> {
                     });
                 }
             }
-            let reserved = self.reserved(original_unit, &objectives);
+            let reserved =
+                crate::ai::policies::objectives::reserved(self, original_unit, &objectives);
             let required = orders.moving_actor(original_unit.id)
                 || escort_lanes.contains_key(&original_unit.id);
             let unchanged = (Vec::new(), original_unit.rebuilding);
@@ -398,8 +380,6 @@ impl BattleView<'_, '_> {
             let mut planned_unit = (*original_unit).clone();
             planned_unit.rebuilding = *intent;
             let unit = &planned_unit;
-            // Only a lethal essential-actor candidate needs the full minimum.
-            let mut minimum_risk = None;
             let recruiting = unit.is_leader()
                 && self
                     .recruitment_options(side)
@@ -440,7 +420,7 @@ impl BattleView<'_, '_> {
                     && original.actor.is_none()
                     && original.tiles.iter().all(|t| {
                         let tile = self.site(t);
-                        self.owners()[tile] == Some(side)
+                        self.owns(tile, side)
                             && (original.hold != Some(true)
                                 || self.at(tile).is_some_and(|o| {
                                     self.belongs_to_phase(o, side) && o.id != unit.id
@@ -452,21 +432,23 @@ impl BattleView<'_, '_> {
                 if original.id.starts_with("rebuild:") && !actor_matches(&original.actor, unit.id) {
                     continue;
                 }
-                let pursuing = self.can_pursue(&unit, original);
+                let pursuing = crate::ai::policies::objectives::can_pursue(self, &unit, original);
                 let assisting =
                     !pursuing && (original.actor.is_some() || original.family.is_some());
                 if !pursuing && !assisting {
                     continue;
                 }
                 let goal = if assisting {
-                    Cow::Owned(self.support_objective(&unit, original))
+                    Cow::Owned(crate::ai::policies::objectives::support_objective(
+                        self, &unit, original,
+                    ))
                 } else {
                     Cow::Borrowed(original)
                 };
                 let tiles: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
                 let route = if pursuing
                     && (original.actor.is_some() || original.family.is_some())
-                    && crate::ai::objectives::actor_route(original)
+                    && crate::ai::policies::objectives::actor_route(original)
                 {
                     let occupied = self.occupied_routes(unit, &tiles, false);
                     if occupied[unit.tile] == u16::MAX {
@@ -486,7 +468,7 @@ impl BattleView<'_, '_> {
                 }
                 duties.push(Duty {
                     priority: (before as f64 + 3.0) / goal.weight,
-                    assigned: self.assigned_duty(&unit, original),
+                    assigned: crate::ai::policies::objectives::assigned_duty(self, &unit, original),
                     goal,
                     route,
                     before,
@@ -526,7 +508,10 @@ impl BattleView<'_, '_> {
             } else {
                 commitments.remove(&unit.id);
             }
-            let danger_weight = if important {
+            let danger_weight = if orders.protects(unit.id) {
+                // A finite cost for the fraction of remaining life at risk.
+                40.0 / unit.hp.max(1) as f64
+            } else if important {
                 6.0
             } else if category == TacticalRole::Frontline {
                 0.55
@@ -715,11 +700,11 @@ impl BattleView<'_, '_> {
                 }
                 let healing_tile = (self.role_is(tile, TerrainRole::Village)
                     || self.role_is(tile, TerrainRole::Grove))
-                    && (self.owners()[tile] == Some(side) || self.at(tile).is_none());
+                    && (self.owns(tile, side) || self.at(tile).is_none());
                 if healing_tile {
                     positioning += (self.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
                 }
-                if self.role_is(tile, TerrainRole::Village) && self.owners()[tile] != Some(side) {
+                if self.role_is(tile, TerrainRole::Village) && self.captures(tile, side) {
                     positioning += 3.0;
                 }
                 {
@@ -823,18 +808,13 @@ impl BattleView<'_, '_> {
                         } else {
                             response
                         };
-                        if orders.protects(unit.id)
-                            && self.maximum_retaliation(unit, target, weapon, tile) > 0
-                        {
-                            continue;
-                        }
                         let kill_chance = forecast.death[1];
                         let killed = kill_chance == 1.0;
                         eliminated = killed.then_some(target.id);
                         finishes_battle = killed && orders.terminal_attack(target);
                         combat = forecast.effective[0] * 2.0
                             + kill_chance
-                                * (12.0 + self.rules().units[target.kind].cost as f64 * 0.3)
+                                * (12.0 + self.recruit_cost(target, target.kind) as f64 * 0.3)
                             - retaliation as f64 * 1.8
                             + escort.attack(unit.id, target, damage, kill_chance);
                         if orders.important(self, target) {
@@ -852,7 +832,7 @@ impl BattleView<'_, '_> {
                             combat += 3.0;
                         }
                         if retaliation >= unit.hp {
-                            if important {
+                            if important && !orders.protects(unit.id) {
                                 continue;
                             }
                             combat -= 18.0;
@@ -863,7 +843,7 @@ impl BattleView<'_, '_> {
                     // this bound. Keep strict winner/tie ordering unchanged.
                     let weighted_combat = if important && !finishing && !finishes_battle {
                         combat
-                            * if unit.role == Some(Role::Courier) {
+                            * if unit.role.is_some_and(Role::is_escort) {
                                 0.1
                             } else {
                                 0.5
@@ -896,7 +876,9 @@ impl BattleView<'_, '_> {
                         && !finishing
                         && !finishes_battle
                         && rebuilding.is_empty()
-                        && !self.leader_may_advance(&unit, tile, recruiting, required)
+                        && !crate::ai::policies::objectives::leader_may_advance(
+                            self, &unit, tile, recruiting, required,
+                        )
                     {
                         continue;
                     }
@@ -905,22 +887,11 @@ impl BattleView<'_, '_> {
                     } else {
                         threats.at(&unit, tile, eliminated)
                     };
+                    let incoming =
+                        crate::ai::policies::threat::cap_exposure(&unit, incoming, important);
                     let lethal = incoming >= unit.hp - retaliation;
-                    if orders.protects(unit.id) && lethal {
-                        continue;
-                    }
-                    if important && lethal && incoming > 0 && !finishing && !finishes_battle && {
-                        let minimum_risk = *minimum_risk.get_or_insert_with(|| {
-                            threats.minimum(&unit, destinations.iter().copied())
-                        });
-                        minimum_risk < unit.hp
-                            || incoming + retaliation > minimum_risk
-                            || incoming >= before_risk
-                    } {
-                        continue;
-                    }
                     if important && !finishing && !finishes_battle {
-                        combat *= if unit.role == Some(Role::Courier) {
+                        combat *= if unit.role.is_some_and(Role::is_escort) {
                             0.1
                         } else {
                             0.5
@@ -955,7 +926,7 @@ impl BattleView<'_, '_> {
                             seed,
                             self.round(),
                             unit.id,
-                            &self.board().ids[tile],
+                            self.board().positions[tile],
                             target.map(|target| target.id),
                         );
                     let withdrawing = unit.side == Side::Enemy
@@ -987,6 +958,20 @@ impl BattleView<'_, '_> {
                 }
             }
         }
+        for unit in self
+            .units()
+            .iter()
+            .filter(|u| self.belongs_to_phase(u, side) && focus.is_none_or(|id| id == u.id))
+        {
+            if let Some(recruiting) =
+                super::recruitment::plan(self, self.1, unit, orders, recruitment)
+            {
+                if best.as_ref().is_none_or(|p| recruiting.score > p.score) {
+                    best = Some(recruiting);
+                }
+            }
+        }
+
         best
     }
 }
@@ -1029,7 +1014,7 @@ mod tests {
             ),
         ] {
             let workspace = || {
-                crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Pragmatic)
+                crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted)
                     .with_blocks(crate::ai::Blocks {
                         planner: crate::ai::Planner::Full,
                         ..crate::ai::Policy::Balanced.blocks()
@@ -1038,27 +1023,28 @@ mod tests {
             let mut actual = workspace();
             let mut left_routes = HashMap::default();
             let mut right_routes = HashMap::default();
-            let mut left_commitments = HashMap::default();
-            let mut right_commitments = HashMap::default();
-            let mut left_threats = crate::ai::threats::ArenaThreatWorkspace::default();
-            let mut right_threats = crate::ai::threats::ArenaThreatWorkspace::default();
+            let mut left_commitments = Commitments::default();
+            let mut right_commitments = Commitments::default();
+            let mut left_threats = crate::ai::policies::threat::ArenaThreatWorkspace::default();
+            let mut right_threats = crate::ai::policies::threat::ArenaThreatWorkspace::default();
             for _ in 0..24 {
                 for _ in [()] {
+                    let mission = crate::ai::campaigner::mission::MissionPolicy::new(
+                        game.campaign_view(),
+                        game.phase_forecasts(),
+                    );
+                    let input = crate::ai::campaigner::mission::CampaignInput {
+                        goals: None,
+                        diplomacy: crate::ai::Diplomacy::Unrestricted,
+                    };
+                    let orders = crate::ai::CampaignBlock::Mission.campaign_orders(&mission, input);
                     let mut left_intents = vec![];
                     let mut right_intents = vec![];
-                    let left = crate::ai::context::BattleView::new(&game).best_plan::<true, false>(
-                        &crate::ai::CampaignBlock::Mission
-                            .campaign_orders(
-                                &game,
-                                &crate::ai::PlanningWorkspace::new(
-                                    7,
-                                    1,
-                                    None,
-                                    crate::ai::Diplomacy::Pragmatic,
-                                ),
-                            )
-                            .tactics,
-                        &crate::ai::escort::Workspace::default(),
+                    let left = best_plan::<true, false>(
+                        &game.view(),
+                        game.phase_forecasts(),
+                        &orders.tactics,
+                        &crate::ai::policies::escort::travel::Workspace::default(),
                         7,
                         None,
                         &mut left_routes,
@@ -1066,29 +1052,22 @@ mod tests {
                         &mut left_intents,
                         &mut left_threats,
                         None,
+                        None,
                     );
-                    let right = crate::ai::context::BattleView::new(&game)
-                        .best_plan::<false, false>(
-                            &crate::ai::CampaignBlock::Mission
-                                .campaign_orders(
-                                    &game,
-                                    &crate::ai::PlanningWorkspace::new(
-                                        7,
-                                        1,
-                                        None,
-                                        crate::ai::Diplomacy::Pragmatic,
-                                    ),
-                                )
-                                .tactics,
-                            &crate::ai::escort::Workspace::default(),
-                            7,
-                            None,
-                            &mut right_routes,
-                            &mut right_commitments,
-                            &mut right_intents,
-                            &mut right_threats,
-                            None,
-                        );
+                    let right = best_plan::<false, false>(
+                        &game.view(),
+                        game.phase_forecasts(),
+                        &orders.tactics,
+                        &crate::ai::policies::escort::travel::Workspace::default(),
+                        7,
+                        None,
+                        &mut right_routes,
+                        &mut right_commitments,
+                        &mut right_intents,
+                        &mut right_threats,
+                        None,
+                        None,
+                    );
                     assert_eq!(left, right);
                     assert_eq!(left_intents, right_intents);
                     assert_eq!(left_commitments, right_commitments);
@@ -1097,10 +1076,10 @@ mod tests {
                     crate::ai::choose_game_command(&game, crate::ai::Policy::Balanced, &mut actual)
                         .unwrap();
                 if is_command_endturn(&command) {
-                    if game.winner.is_some() {
+                    if game.winner().is_some() {
                         break;
                     }
-                    game.end_turn();
+                    game.execute(Command::EndTurn).unwrap();
                     actual = workspace();
                 } else {
                     game.execute(command).unwrap();
@@ -1108,36 +1087,196 @@ mod tests {
             }
         }
     }
-    use super::{Random, action_jitter, jitter};
-    #[test]
-    fn action_jitter_matches_formatted_utf16_keys() {
-        for seed in [0, 19, u32::MAX] {
-            for (round, unit) in [(0, 0), (30, 12), (u32::MAX, u32::MAX)] {
-                for tile in ["3,2", "😀", "-10,100"] {
-                    for target in [None, Some(0), Some(u32::MAX)] {
-                        let key = format!(
-                            "{round}:u{unit}:{tile}:{}",
-                            target.map_or("move".into(), |id| format!("u{id}"))
-                        );
-                        assert_eq!(
-                            action_jitter(seed, round, unit, tile, target),
-                            jitter(seed, &key)
-                        );
-                    }
+}
+
+#[derive(Default, Debug, PartialEq)]
+pub(in crate::ai::planner) struct Commitments(HashMap<u32, String>);
+impl Commitments {
+    pub(super) fn get(&self, actor: &u32) -> Option<&String> {
+        self.0.get(actor)
+    }
+    pub(super) fn insert(&mut self, actor: u32, target: String) {
+        self.0.insert(actor, target);
+    }
+    pub(super) fn remove(&mut self, actor: &u32) {
+        self.0.remove(actor);
+    }
+}
+pub(super) struct CandidateShared<'a> {
+    pub escort: &'a crate::ai::policies::escort::travel::Workspace,
+    pub commitments: &'a mut Commitments,
+    pub threats: &'a mut crate::ai::policies::threat::ArenaThreatWorkspace,
+}
+/// Search state is shared deliberately by Full evaluation and Queued's focused fallback.
+#[derive(Default)]
+pub(in crate::ai) struct Session {
+    prepared_goals: Option<Vec<Objective>>,
+    routes: HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
+    commitments: Commitments,
+    threats: crate::ai::policies::threat::ArenaThreatWorkspace,
+    escort: crate::ai::policies::escort::travel::Workspace,
+    remaining: Option<usize>,
+}
+impl Session {
+    pub(in crate::ai) fn replace_goals(&mut self, goals: Vec<Objective>) {
+        self.prepared_goals = Some(goals);
+    }
+    pub(super) fn exhausted(&self) -> bool {
+        self.remaining == Some(0)
+    }
+    pub(super) fn add_actions(&mut self, count: usize) {
+        *self.remaining.as_mut().expect("prepared action budget") += count;
+    }
+    pub(super) fn spend_action(&mut self) {
+        *self.remaining.as_mut().expect("prepared action budget") -= 1;
+    }
+    pub(super) fn candidate_shared(&mut self) -> CandidateShared<'_> {
+        CandidateShared {
+            escort: &self.escort,
+            commitments: &mut self.commitments,
+            threats: &mut self.threats,
+        }
+    }
+    pub(super) fn escort(&self) -> &crate::ai::policies::escort::travel::Workspace {
+        &self.escort
+    }
+    pub(super) fn focused(
+        &mut self,
+        game: &BattleView<'_, '_>,
+        phases: hex_command_battle::PhaseForecasts<'_, '_>,
+        turn: &crate::ai::runtime::PlannerTurn<'_>,
+        id: u32,
+    ) -> Option<Plan> {
+        best_plan::<true, true>(
+            game,
+            phases,
+            &turn.orders.tactics,
+            &self.escort,
+            turn.seed,
+            self.prepared_goals.as_deref(),
+            &mut self.routes,
+            &mut self.commitments,
+            &mut Vec::new(),
+            &mut self.threats,
+            Some(id),
+            turn.recruitment,
+        )
+    }
+}
+
+pub(super) fn prepare(
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    session: &mut Session,
+    turn: &crate::ai::runtime::PlannerTurn<'_>,
+) {
+    session
+        .escort
+        .prepare(phases, turn.report, &turn.orders.tactics);
+}
+
+pub(super) fn initialize(
+    game: &BattleView<'_, '_>,
+    session: &mut Session,
+    turn: &crate::ai::runtime::PlannerTurn<'_>,
+) {
+    session.remaining.get_or_insert_with(|| {
+        game.units()
+            .iter()
+            .filter(|unit| game.belongs_to_phase(unit, game.turn()) && game.can_act(unit.id))
+            .count()
+            * 3
+    });
+    if session.prepared_goals.is_none() {
+        session.prepared_goals = Some(individual(
+            turn.orders
+                .tactics
+                .targets
+                .iter()
+                .filter(|target| !target.id.starts_with("rebuild:"))
+                .cloned()
+                .collect(),
+        ));
+    }
+}
+
+pub(super) fn choose(
+    game: &BattleView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    session: &mut Session,
+    turn: &mut crate::ai::runtime::PlannerTurn<'_>,
+) -> Result<(), CommandError> {
+    initialize(game, session, turn);
+    if session.exhausted() {
+        *turn.finished = true;
+        return Ok(());
+    }
+    session.spend_action();
+    let mut intents = Vec::new();
+    let plan = best_plan::<true, false>(
+        game,
+        phases,
+        &turn.orders.tactics,
+        &session.escort,
+        turn.seed,
+        session.prepared_goals.as_deref(),
+        &mut session.routes,
+        &mut session.commitments,
+        &mut intents,
+        &mut session.threats,
+        None,
+        turn.recruitment,
+    );
+    publish_plan(game, turn, plan, &intents)
+}
+
+pub(super) fn publish_plan(
+    game: &BattleView<'_, '_>,
+    turn: &mut crate::ai::runtime::PlannerTurn<'_>,
+    plan: Option<Plan>,
+    intents: &[(u32, Option<bool>)],
+) -> Result<(), CommandError> {
+    for (id, intent) in intents {
+        let actor = game.unit(*id).unwrap();
+        turn.commands.push_back(intent_command(
+            actor,
+            actor.retreating,
+            *intent,
+            actor.attacked,
+        ));
+    }
+    if let Some(plan) = plan {
+        let actor = game.unit(plan.unit).unwrap();
+        let rebuilding = intents
+            .iter()
+            .find(|(id, _)| *id == plan.unit)
+            .map_or(actor.rebuilding, |(_, intent)| *intent);
+        if let Some(kind) = plan.advance {
+            turn.commands
+                .push_back(advance_command(game, plan.unit, kind));
+        } else {
+            if actor.tile != plan.tile {
+                turn.commands
+                    .push_back(move_command(game, plan.unit, plan.tile));
+                let retreating = plan.withdrawing.then_some(true);
+                if actor.retreating != retreating {
+                    turn.commands.push_back(intent_command(
+                        actor,
+                        retreating,
+                        rebuilding,
+                        actor.attacked,
+                    ));
                 }
             }
-        }
-    }
-    #[test]
-    fn seeded_random_is_reproducible_and_bounded() {
-        for seed in [0, 1, u32::MAX] {
-            let mut left = Random(seed);
-            let mut right = Random(seed);
-            for _ in 0..32 {
-                let value = left.next();
-                assert_eq!(value, right.next());
-                assert!((0.0..1.0).contains(&value));
+            if let (Some(target), Some(weapon)) = (plan.target, plan.weapon) {
+                *turn.attack_continuation = Some((
+                    UnitId(plan.unit),
+                    UnitId(target),
+                    WeaponId(game.weapon(actor, weapon).id.clone()),
+                ));
             }
         }
+    } else {
+        *turn.finished = true;
     }
+    Ok(())
 }

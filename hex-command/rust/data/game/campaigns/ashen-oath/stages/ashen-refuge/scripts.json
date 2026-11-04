@@ -1,94 +1,370 @@
 {
   "events": [
     {
-      "id": "medicine",
-      "trigger": {
-        "kind": "visit",
-        "tile": "3,0"
+      "id": "peace-lost",
+      "when": {
+        "killed": {}
       },
-      "label": "Bring medicine to the villagers",
-      "gold": 6,
-      "warDialogue": [
+      "actions": [
         {
-          "speaker": "Village elder",
-          "portrait": "worker",
-          "text": "The herbs will still save lives. Take these six coins. But after the bloodshed, medicine alone cannot stop the patrol’s battle with you."
-        }
-      ],
-      "dialogue": [
-        {
-          "speaker": "Village elder",
-          "portrait": "worker",
-          "text": "The fever is easing. We will send word with the families you helped; the households will gather a day sooner. Take these six coins for your shelter."
+          "setFlag": "peace-lost"
         },
         {
-          "speaker": "Orin",
-          "portrait": "necromancer",
-          "text": "We did not need the herbs ourselves. I am glad someone did."
+          "failObjective": "refuge-peace"
+        },
+        {
+          "say": [
+            {
+              "speaker": "Village elder",
+              "portrait": "worker",
+              "text": "There has been too much bloodshed for the patrol to accept our mediation. We cannot stop this battle for you."
+            },
+            {
+              "portrait": "necromancer",
+              "text": "Then there is no agreement left to make. We must break the patrol before we can leave.",
+              "character": "orin"
+            }
+          ]
         }
       ]
-    }
-  ],
-  "waves": [
+    },
     {
-      "round": 3,
-      "label": "An archer and swordsman arrive on turn 3",
-      "id": "eastern-patrol",
-      "units": [
+      "id": "dain-death",
+      "when": {
+        "killed": {
+          "character": "dain"
+        }
+      },
+      "actions": [
         {
-          "type": "archer",
-          "side": "enemy",
-          "col": 9,
-          "row": 1
+          "setFlag": "dain-dead"
+        }
+      ]
+    },
+    {
+      "id": "orin-death",
+      "when": {
+        "killed": {
+          "character": "orin"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "orin-dead"
+        }
+      ]
+    },
+    {
+      "id": "medicine",
+      "when": {
+        "stand": {
+          "tile": "hex-0737-cb60354473",
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 6
+          }
         },
         {
-          "type": "swordsman",
-          "side": "enemy",
-          "col": 9,
-          "row": 7
+          "setFlag": "medicine"
+        }
+      ],
+      "objective": {
+        "label": "Bring medicine to the villagers",
+        "intent": {
+          "goTo": {
+            "tile": "hex-0737-cb60354473",
+            "side": "player"
+          }
+        },
+        "optional": true
+      }
+    },
+    {
+      "id": "eastern-patrol",
+      "when": {
+        "turn": {
+          "number": 3,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-0994-37e28411df",
+            "radius": 2,
+            "units": [
+              {
+                "type": "archer"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-1022-0164b0319d",
+            "radius": 2,
+            "units": [
+              {
+                "type": "swordsman"
+              }
+            ]
+          }
+        },
+        {
+          "log": "An archer and swordsman arrive on turn 3"
         }
       ]
     },
     {
       "id": "eastern-adept",
-      "round": 5,
-      "label": "An adept arrives on turn 5",
-      "units": [
+      "when": {
+        "turn": {
+          "number": 5,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
         {
-          "type": "adept",
-          "side": "enemy",
-          "col": 9,
-          "row": 3
+          "spawn": {
+            "faction": "enemy",
+            "tile": "hex-1016-9e0db09d3e",
+            "radius": 2,
+            "units": [
+              {
+                "type": "adept"
+              }
+            ]
+          }
+        },
+        {
+          "log": "An adept arrives on turn 5"
+        }
+      ]
+    },
+    {
+      "id": "refuge-six-turns",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": "hex-0891-b20a50ef8c",
+              "faction": "player",
+              "turns": 6
+            }
+          },
+          {
+            "not": {
+              "flag": "peace-lost"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "refuge-ready"
+        }
+      ]
+    },
+    {
+      "id": "refuge-war",
+      "when": {
+        "all": [
+          {
+            "flag": "peace-lost"
+          },
+          {
+            "noUnits": {
+              "side": "enemy"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "necromancer",
+              "text": "The patrol is broken. But we have lost the chance to leave here with friends. We face the Master with our own company.",
+              "character": "orin"
+            }
+          ]
+        },
+        {
+          "victory": "The patrol is broken."
+        }
+      ],
+      "objective": {
+        "label": "Defeat the remaining patrol",
+        "intent": {
+          "defeat": {
+            "side": "enemy"
+          }
+        },
+        "visibleWhen": {
+          "flag": "peace-lost"
+        }
+      }
+    },
+    {
+      "id": "refuge-peace",
+      "when": {
+        "any": [
+          {
+            "all": [
+              {
+                "own": {
+                  "tile": "hex-0891-b20a50ef8c",
+                  "faction": "player",
+                  "turns": 5
+                }
+              },
+              {
+                "flag": "medicine"
+              },
+              {
+                "not": {
+                  "flag": "peace-lost"
+                }
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "flag": "refuge-ready"
+              },
+              {
+                "not": {
+                  "flag": "peace-lost"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "peace-kept"
+        },
+        {
+          "say": [
+            {
+              "speaker": "Village elder",
+              "portrait": "worker",
+              "text": "Enough, Captain. They held their shelter and let your wounded leave. These houses are ours to offer. The dead may stay as our neighbors."
+            },
+            {
+              "portrait": "warden",
+              "text": "My orders did not mention people who would ask the dead to stay. Perhaps the man who wrote them left other things out.",
+              "character": "dain"
+            },
+            {
+              "portrait": "necromancer",
+              "text": "He used to write my orders too. Come with us, and see what he has been hiding.",
+              "character": "orin"
+            },
+            {
+              "portrait": "warden",
+              "text": "I will. My soldiers can rest here. I know which road we take next.",
+              "character": "dain"
+            }
+          ]
+        },
+        {
+          "victory": "The villagers secure a peaceful agreement."
+        }
+      ],
+      "objective": {
+        "label": "Defend the refuge until the villagers intervene",
+        "intent": {
+          "own": {
+            "tile": "hex-0891-b20a50ef8c",
+            "faction": "player",
+            "turns": 6
+          }
+        },
+        "preserveLives": {}
+      }
+    },
+    {
+      "id": "medicine-peace-speech",
+      "when": {
+        "all": [
+          {
+            "flag": "medicine"
+          },
+          {
+            "not": {
+              "flag": "medicine-explained"
+            }
+          },
+          {
+            "not": {
+              "flag": "peace-lost"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Village elder",
+              "portrait": "worker",
+              "text": "The fever is easing. We will send word with the families you helped; the households will gather a day sooner. Take these six coins for your shelter."
+            },
+            {
+              "portrait": "necromancer",
+              "text": "We did not need the herbs ourselves. I am glad someone did.",
+              "character": "orin"
+            }
+          ]
+        },
+        {
+          "setFlag": "medicine-explained"
+        }
+      ]
+    },
+    {
+      "id": "medicine-war-speech",
+      "when": {
+        "all": [
+          {
+            "flag": "medicine"
+          },
+          {
+            "not": {
+              "flag": "medicine-explained"
+            }
+          },
+          {
+            "flag": "peace-lost"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Village elder",
+              "portrait": "worker",
+              "text": "The herbs will still save lives. Take these six coins. But after the bloodshed, medicine alone cannot stop the patrol’s battle with you."
+            }
+          ]
+        },
+        {
+          "setFlag": "medicine-explained"
         }
       ]
     }
   ],
-  "refuge": {
-    "medicineEvent": "medicine",
-    "medicineTurns": 5,
-    "warBriefing": "The attempt to live beside the villages has become an open battle. After the bloodshed, the households can no longer persuade the patrol to stand down. Orin’s company must break the remaining patrol to leave, and will face the Master without Dain’s help.",
-    "warHints": [
-      "The patrol still has somewhere to run.",
-      "The empty houses remain, even after peace is lost."
-    ],
-    "escalation": [
-      {
-        "speaker": "Village elder",
-        "portrait": "worker",
-        "text": "There has been too much bloodshed for the patrol to accept our mediation. We cannot stop this battle for you."
-      },
-      {
-        "speaker": "Orin",
-        "portrait": "necromancer",
-        "text": "Then there is no agreement left to make. We must break the patrol before we can leave."
-      }
-    ],
-    "warVictory": [
-      {
-        "speaker": "Orin",
-        "portrait": "necromancer",
-        "text": "The patrol is broken. But we have lost the chance to leave here with friends. We face the Master with our own company."
-      }
-    ]
-  }
+  "requiredCompanions": []
 }

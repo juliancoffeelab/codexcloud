@@ -26,13 +26,13 @@ function fixture() {
     winner: null,
     nextId: 2,
     log: ["Ready"],
-    tiles: [{ id: "0,0", col: 0, row: 0, terrain: "keep", owner: "player" }],
+    tiles: [{ id: "hex-0001-7256137ec1", col: 0, row: 0, terrain: "keep", owner: "player" }],
     units: [
       {
         id: "u1",
         type: "commander",
         side: "player",
-        tile: "0,0",
+        tile: "hex-0001-7256137ec1",
         hp: 30,
         moved: false,
         attacked: false,
@@ -53,7 +53,7 @@ function fixture() {
   const bridge: NativeBridge = {
     catalog: () => ({
       ok: true,
-      value: { maps: [], campaigns: [], units: [], terrain: [], races: [] },
+      value: { maps: [], campaigns: [], units: [], items: [], terrain: [], races: [] },
     }),
     create: () => ({ ok: true, value: { id: nextId++, view: nextView } }),
     restore: (input) => {
@@ -76,7 +76,10 @@ function fixture() {
         revision: nextView.revision,
         units: [],
         objectives: null,
+        story: null,
+        speakers: [],
         recruitment: {},
+        recruitment_prices: {},
         income: { player: 0, enemy: 0 },
       },
     }),
@@ -163,7 +166,7 @@ test("Native adapter forwards revisions and keeps old publications after a stale
   const decision = value(
     engine.chooseAiCommand({
       policy: "balanced",
-      diplomacy: "restrained",
+      diplomacy: "diplomatic",
       recruitmentLimit: 2,
     }),
   );

@@ -62,6 +62,7 @@ export class LiveGame {
     return this.resolvedPresentation;
   }
   private inspection!: BattleInspection;
+  private displayedCampaign?: Immutable<NonNullable<GameState["campaign"]>>;
   private geometry!: Immutable<BoardInspection>;
   private tilesById!: Map<string, Tile>;
   private visibleUnits!: Unit[];
@@ -131,6 +132,15 @@ export class LiveGame {
     this.inspection = nativeValue(this.engine.inspect()) as BattleInspection;
     if (view.revision !== this.inspection.revision)
       throw new Error("Incoherent native publication");
+    this.displayedCampaign = this.state.campaign
+      ? immutable({
+          ...this.state.campaign,
+          dialogue: this.state.campaign.dialogue.map((line, index) => ({
+            ...line,
+            speaker: this.inspection.speakers[index] ?? line.speaker,
+          })),
+        })
+      : undefined;
     const previousInspections = this.inspectedUnits;
     this.inspectedUnits = new Map(
       this.inspection.units.map((unit) => {
@@ -147,7 +157,9 @@ export class LiveGame {
     const previousUnits = this.unitsById;
     this.visibleUnits = this.state.units
       .filter((unit) => this.choices(unit.id)?.faction.controllable || !fog.has(unit.tile))
-      .map((unit) => {
+      .map((source) => {
+        const name = this.choices(source.id)?.name;
+        const unit = name ? { ...source, name } : source;
         const previous = previousUnits?.get(unit.id);
         return previous && sameData(previous, unit) ? previous : unit;
       });
@@ -180,6 +192,9 @@ export class LiveGame {
   get rows() {
     return this.state.rows;
   }
+  get story() {
+    return this.inspection.story;
+  }
   get objectives() {
     return this.inspection.objectives;
   }
@@ -188,6 +203,10 @@ export class LiveGame {
   }
   get turn() {
     return this.state.turn;
+  }
+  get factions() {
+    if (!this.state.factions) throw new Error("Native faction metadata is missing.");
+    return this.state.factions;
   }
   get gold() {
     return this.state.gold;
@@ -208,7 +227,7 @@ export class LiveGame {
     return [...this.visibleUnits];
   }
   get campaign() {
-    return this.state.campaign;
+    return this.displayedCampaign;
   }
   get lastCombat() {
     return this.state.lastCombat;
@@ -270,14 +289,19 @@ export class LiveGame {
   promotionOptions(id: string): UnitType[] {
     return (this.choices(id)?.promotions ?? []) as UnitType[];
   }
-  recruitmentOptions(side: Side): RecruitType[] {
-    return this.inspection.recruitment[side] as RecruitType[];
+  recruitmentOptions(faction: string): RecruitType[] {
+    return (this.inspection.recruitment[faction] ?? []) as RecruitType[];
   }
   recruitTiles(id: string, type: UnitType): Tile[] {
     return (this.choices(id)?.recruitment[type] ?? []).map((tile) => this.tile(tile)!);
   }
-  income(side: Side): number {
-    return this.inspection.income[side];
+  recruitPrice(faction: string, type: UnitType): number {
+    const price = this.inspection.recruitment_prices[faction]?.[type];
+    if (price === undefined) throw new Error("Unknown faction recruit.");
+    return price;
+  }
+  income(faction: string): number {
+    return this.inspection.income[faction] ?? 0;
   }
   move(id: string, tile: string): Unit {
     this.dispatch({ kind: "move", unit: this.id(id), tile });
@@ -305,9 +329,10 @@ export class LiveGame {
     nativeValue(this.engine.chooseAiCommand(this.setup.enemy));
   }
   /** One staged enemy action; the controller owns pacing and cancellation. */
-  enemyStep(): void {
+  enemyStep(): Immutable<Command> {
     const decision = nativeValue(this.engine.chooseAiCommand(this.setup.enemy));
     this.dispatch(decision.command, decision.revision);
+    return decision.command;
   }
   advanceDialogue(skip = false): void {
     this.dispatch({ kind: skip ? "skipDialogue" : "dismissDialogue" });
@@ -383,6 +408,7 @@ export class LiveGame {
     const inspection = this.inspection;
     const detached = Object.create(LiveGame.prototype) as LiveGame;
     detached.state = state;
+    detached.displayedCampaign = this.displayedCampaign;
     detached.inspection = inspection;
     detached.snapshotView = this.snapshotView;
     detached.geometry = this.geometry;
@@ -396,7 +422,8 @@ export class LiveGame {
     return immutable({
       presentation: this.resolvedPresentation,
       objectives: this.objectives,
-      campaign: state.campaign,
+      story: this.story,
+      campaign: this.displayedCampaign,
       mapId: state.mapId,
       mapRevision: state.mapRevision,
       cols: state.cols,
@@ -404,6 +431,7 @@ export class LiveGame {
       round: state.round,
       turn: state.turn,
       gold: state.gold,
+      factions: detached.factions,
       winner: state.winner,
       log: state.log,
       tiles: state.tiles,
@@ -421,6 +449,7 @@ export class LiveGame {
       canAttack: detached.canAttack.bind(detached),
       previewDetails: detached.previewDetails.bind(detached),
       recruitmentOptions: detached.recruitmentOptions.bind(detached),
+      recruitPrice: detached.recruitPrice.bind(detached),
       promotionOptions: (id: string) => immutable(detached.promotionOptions(id)),
       income: detached.income.bind(detached),
       snapshot: () => detached.publishedSnapshot(),

@@ -8,12 +8,12 @@ import { required, TestStorage } from "./helpers";
 const storage = new TestStorage();
 
 const companion = (game: Game) =>
-  required(game.units.find((unit) => unit.side === "player" && unit.name === "Lark"));
+  required(game.units.find((unit) => unit.side === "player" && unit.character === "lark"));
 
 // Dain's death changes this debrief and future missions, but retry rewinds current-stage deaths.
 test("Companion deaths persist but retry restores incoming companions", () => {
   const game = Game.startCampaign("green-accord", 1);
-  game.units = game.units.filter((unit) => unit.name !== "Captain Dain");
+  game.units = game.units.filter((unit) => unit.character !== "dain");
   game.round = 4;
   game.gold.player = 23;
   saveBattle(game);
@@ -22,11 +22,8 @@ test("Companion deaths persist but retry restores incoming companions", () => {
   assert.equal(restored.round, 4);
   assert.equal(restored.gold.player, 23);
   assert.deepEqual(restored.units, game.units);
-  assert(restored.campaign?.marks.includes("dain-fell"));
-  assert(
-    !campaignMission(restored.campaign!).victory.some((line) => line.speaker.includes("Dain")),
-  );
-  assert(restored.retryCampaignMission().units.some((unit) => unit.name === "Captain Dain"));
+  assert(restored.campaign?.flags["dain-dead"]?.at(-1)?.state);
+  assert(restored.retryCampaignMission().units.some((unit) => unit.character === "dain"));
   saveBattle(restored);
   assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
 });
@@ -42,7 +39,7 @@ for (const mission of [0, 2]) {
     game.gold.player = 31;
     saveBattle(game);
     assert.equal(loadBattle().game.winner, "player");
-    game.units = game.units.filter((unit) => unit.name !== "Lark");
+    game.units = game.units.filter((unit) => unit.character !== "lark");
     saveBattle(game);
     const restored = loadBattle().game;
     assert.equal(restored.mapId, game.mapId);
@@ -60,7 +57,7 @@ for (const mission of [0, 2]) {
       restored.campaign?.outcome,
     );
     assert.throws(() => restored.nextCampaignMission([]), /NoNextMission/);
-    assert.equal(companion(restored.retryCampaignMission()).name, "Lark");
+    assert.equal(companion(restored.retryCampaignMission()).character, "lark");
     saveBattle(restored);
     assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
   });

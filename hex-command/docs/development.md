@@ -1,6 +1,7 @@
 # Development and publication
 
-Development rules live in [AGENTS.md](../AGENTS.md).
+Standing project instructions live in [AGENTS.md](../AGENTS.md), which also
+indexes the task-specific skills. This document provides setup and command references.
 
 ## Setup
 
@@ -45,6 +46,47 @@ diagnostic names. Development builds retain names. Compare the WASM module and
 its referenced JavaScript loader/helpers together when measuring download size.
 The native simulation profile is independent of these browser build settings.
 
+## AI and battle ownership
+
+`rust/battle` owns mechanical battle state and command execution. The host owns
+its opaque `BattleSession` and borrows one catalog. Evaluators receive a borrowed
+`BattleView` for mechanical queries. They cannot turn that view into mutable
+state or execution access. Authored campaign observations use `CampaignView`.
+
+Forecasting is explicit: `ActionForecastSource` grants mechanical command
+simulation; `PhaseForecasts` grants named phase projections and its matching
+source view. A `PhaseSnapshot` grants observation only. Automatic recruitment is
+runtime orchestration, including recruitment after an accepted keep move;
+recruitment capacity forecasts use the shared estimate and never run a recruiter.
+
+Each planner owns its algorithm and mutable session. Common runtime code handles
+commands, budgets, boundaries and continuation. Strategic preparation is an
+explicit adapter subscription. Shared decisions live in `ai/policies` under
+named domains with explicit inputs. Any planners may deliberately share a policy;
+changing one should make its consumers apparent at call sites. Add new strategic
+behavior to a domain or adapter rather than extending the mechanical facade or
+adding a silent common-driver default.
+
+## Event runtime
+
+The engine prepares an immutable mission together with its clock descriptors.
+Each battle's private event progress binds that plan to numeric counter indices;
+queries cannot assemble a counter layout separately. Clock updates run before
+boolean condition evaluation and independently of short-circuiting. Missing
+counters initialize on their first observation without counting that observation.
+
+Evaluation takes ownership of shared progress, then returns it once all cascade
+passes finish. A quiet forecast keeps its progress shared; mutation detaches only
+when another battle still shares it. Active-index scans borrow immutable shared
+lists, retirement changes mask bits, and compaction follows the scan. Predicate
+and visibility contexts contain explicit facts, not a game back-reference;
+current event progress is supplied separately to event predicates.
+
+Saved event IDs, predicate numbers and progress remain the durable contract.
+Prepared descriptors, numeric slots and index lists are runtime data, rebuilt
+when entering or restoring a chapter. Restore prepares the mission before
+resolving active-event and counter indices, including when no cache exists.
+
 ## Content and artwork
 
 A lineup is a faction. A faction can have sprites before its gameplay roster is
@@ -77,14 +119,18 @@ variants. Native layer composition uses source-over blending without resizing.
 
 ## Publication
 
-Completed game implementation deploys by default through the
-[deploy skill](../.agents/skills/deploy/SKILL.md), unless the user requests
-local-only work, an unpublished release, or a deployment hold. Complete the
-implementation's appropriate validation and commit/push required changes first, then invoke
-`node scripts/site-operation.mjs deploy` through its documented transport and
-return the production URL. Do not stop at a saved version awaiting another
-instruction. Reviews, documentation/instruction-only changes, drafts, renders,
-simulations and standalone Git pushes do not trigger publication.
+Commit and push completed requested repository changes by default through the
+feature branch and pull request, regardless of duration, unless the user requests
+local-only work or a push hold.
+
+Deploy only for an explicit request to update the live game or a task explicitly
+intended to provide a live build for a human to playtest. Editing playable content,
+running simulations, and pushing changes alone do not establish that intent.
+Otherwise, finish with the pushed changes. Honor unpublished-release requests and
+deployment holds. For an intended human playtest, finish appropriate validation
+and commit/push first, then use the [deploy skill](../.agents/skills/deploy/SKILL.md)
+and return the production URL. Reviews, documentation, tooling-only work, drafts,
+renders, and simulations do not trigger deployment on their own.
 
 An explicit deploy request invokes that operation immediately. Do not run
 separate tests, formatting, inspections, Git commands, builds or previews. The
@@ -125,28 +171,27 @@ unpublished release is requested. Its `prepare` operation saves without deployin
 ## Battlefield presentation
 
 An optional `lighting` object in a scenario's `map.json` selects `time` (`day`
-or `night`) and `lights`. Rust loads and validates this object with the map,
-includes it in the content fingerprint, and exports it through the WASM catalog.
-Runtime obtains these definitions from `MAPS`; generated terrain modules contain
-only opaque image keys, URLs and image dimensions. Devtools may read source JSON
-to bake images, but must not export scenario definitions into runtime modules.
+or `night`). Terrain emitters are authored on the owning tile as `light`, beside
+its optional `fog` rule. A light inherits the tile's coordinates; it has optional
+`dx`/`dy` offsets, positive `radius`, nonnegative `power`, optional RGB `color`,
+and an optional `fixture` flag. Do not duplicate tile coordinates or keep a
+separate map-level emitter list.
 
-Each light has integer `col`/`row`, optional `dx`/`dy`, positive `radius` and
-nonnegative `power`. Its optional `when` rule contains a `condition` and a
-`remember` boolean. Conditions include `owner`, `proximity`, `event`, `round`,
-`noUnits`, `all` and `any`. Owner/proximity conditions can omit `tile` to use the
-light or fog tile. Proximity uses hex distance (`radius: 0` means occupying the
-tile), side, and optional `unitType` and `name` filters. Conditions are evaluated
-by Rust. `remember: false` follows current state; `true` retains satisfaction as a
-durable fact. Event completion is already remembered by campaign state.
+A light's optional `when` contains a shared `condition` and `remember` boolean.
+A tile's `fog` uses that same condition wrapper and specifies what clears it.
+Owner/proximity conditions can omit `tile` to use the owning tile ID. Proximity
+uses hex distance (`radius: 0` means occupying the tile). `remember: false`
+follows current state; `true` retains satisfaction under the stable `light:<tile>`
+or `fog:<tile>` identity. Event completion is already remembered by campaign state.
+Visibility queries cannot define lighting or fog conditions recursively.
 
-A tile's optional `fog` uses the same rule format and specifies what clears it.
-Rust exports the resolved lights and fogged tile IDs in each engine view and the
-initial presentation in the catalog. The rendering worker paints soft fog; the UI hides
-covered enemies; Rust rejects attacks on covered enemies. Remembered condition
-facts persist in `conditionMemory`; resolved masks and rendered images do not.
-Missing lighting defaults to daylight. Color transforms, palette colors and glow
-rendering remain frontend presentation details.
+Rust validates these definitions and resolves active lights to positioned render
+sources, shared by initial catalog previews, devtools and live engine views.
+The rendering worker paints soft fog; the UI hides covered enemies and Rust
+rejects attacks on covered enemies. Remembered facts persist in `conditionMemory`;
+resolved masks and rendered images do not. Missing lighting defaults to daylight.
+Dynamic ritual death lights remain positioned runtime sources, separate from
+terrain emitters. Color transforms and glow rendering remain presentation details.
 
 Scenario events can use `trigger: {kind: "condition", condition: ...}`. An
 optional `spawn` contains an ordered tile-ID `area` and units with stable `id`,
@@ -325,6 +370,14 @@ objectives with a dash, completed objectives with a green check, and failed
 objectives with a red cross and an accessible failure label. These are derived
 query results, not additional save fields.
 
+Mission objective documents may also declare `loseConditions`, each with a
+`label`, shared `condition` and defeat `message`. These conditions are evaluated
+after actions and at turn boundaries and appear in the survival objectives.
+For a chapter playable through round 30, use `{"kind":"round","round":31}`:
+the loss occurs when round 31 begins, while an already completed victory remains
+final. These rules are independent of the simulator's unresolved-round cap and
+do not supply deadline hints or urgency scoring to AI planners.
+
 Objectives may use `visibleWhen` with the shared Rust condition format. Hidden
 objectives remain victory requirements, but are omitted from the briefing and map
 markers until revealed; campaign planning also respects that discovery gate.
@@ -332,3 +385,21 @@ markers until revealed; campaign planning also respects that discovery gate.
 requiring a separate proximity visit. Encounter events can share their durable
 marker across dialogue, pending spawns, lights, group activation and objective
 visibility. Keep terrain can be claimed by moving onto it.
+
+Rituals can declare a conditional `opening: {when, sites}`. At chapter entry, the
+normal ritual effects consume only those source tiles, preserving their spent
+terrain, losses and raised-unit identities in the generated state. Later regular
+tolls act on the remaining sources. Opening conditions use persistent campaign
+choices; no historical gameplay is reconstructed during save loading.
+
+An optional positive `sourcesPerToll` limits source activations on a regular toll.
+Active source tiles resolve in native map order, followed by queued death charges
+within the remaining budget. Empty sites still spend their scheduled activation;
+rescued captives do not cause the next site to fire early. Unprocessed charges
+remain queued. Conditional openings use their explicit site list. Spent terrain
+and existing activation/spawn marks preserve progress across saves; omitting the
+limit retains simultaneous resolution.
+
+Dialogue lines may declare an optional `sound` family. The dialogue view plays
+that cue when the line is first presented through the gesture-unlocked sound
+player; ordinary sound preferences still apply.

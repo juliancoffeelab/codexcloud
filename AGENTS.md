@@ -1,4 +1,4 @@
-# Agent instructions
+# Repository instructions
 
 This repository is a playground for experimenting with the Codex cloud feature.
 
@@ -8,11 +8,17 @@ repository's default branch. Requests to push or publish do not authorize bypass
 the pull request workflow. Merge a pull request only when the user explicitly
 asks to merge it.
 
-Each project folder is an independent project. Keep its code, dependencies,
-configuration, and documentation self-contained. Projects must not depend on
-each other; do not introduce shared code or cross-project imports.
+Each project folder is independent. Keep its code, dependencies, configuration
+and documentation self-contained; do not introduce cross-project imports or
+shared code.
 
-Keep the top-level README short and focused on the repository's purpose. Do not
-fill it with project-specific setup instructions, implementation details, or
-progress notes. New documentation will usually belong in the relevant project's
-own README.md; create one there when needed.
+Keep the top-level README short and focused on the repository's purpose. Put
+project-specific setup and implementation documentation in the project folder.
+For Hex Command work, follow [its AGENTS.md](hex-command/AGENTS.md).
+
+Keep always-applicable instructions in `AGENTS.md`. Put task-specific workflows
+and their procedures in skills; list their invocation conditions below.
+
+# Skills
+
+- [writing-for-agents](.agents/skills/writing-for-agents/SKILL.md): Use when creating or editing skills, modifying agent instructions, or diagnosing agent failures.

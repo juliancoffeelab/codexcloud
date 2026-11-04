@@ -9,36 +9,36 @@
   ],
   "intro": [
     {
-      "speaker": "Mira",
       "portrait": "tidekeeper",
-      "text": "The tide should have returned by dawn. Our nets are dry; their boats are on the mud. This is no quarrel either shore can afford."
+      "text": "The tide should have returned by dawn. Our nets are dry; their boats are on the mud. This is no quarrel either shore can afford.",
+      "character": "mira"
     },
     {
-      "speaker": "Edda",
       "portrait": "harpooner",
-      "text": "Vale's men took the sounding posts. I saw a sluice order bearing the council seal, but the date was cut from an older sheet."
+      "text": "Vale's men took the sounding posts. I saw a sluice order bearing the council seal, but the date was cut from an older sheet.",
+      "character": "edda"
     },
     {
-      "speaker": "Postmaster Harl",
       "portrait": "commander",
-      "text": "Captain Vale sent us to hold these posts for the factor's salvage crew. Bring your accusation to the council; you will not cross here."
+      "text": "Captain Vale sent us to hold these posts for the factor's salvage crew. Bring your accusation to the council; you will not cross here.",
+      "character": "harl"
     },
     {
-      "speaker": "Mira",
       "portrait": "tidekeeper",
-      "text": "Then we take the posts and bring the pilot. Leave the fishing houses standing."
+      "text": "Then we take the posts and bring the pilot. Leave the fishing houses standing.",
+      "character": "mira"
     }
   ],
   "victory": [
     {
-      "speaker": "Edda",
       "portrait": "harpooner",
-      "text": "Here are my soundings, and his order. The quarry gate is open. The water did not disappear; someone moved it."
+      "text": "Here are my soundings, and his order. The quarry gate is open. The water did not disappear; someone moved it.",
+      "character": "edda"
     },
     {
-      "speaker": "Mira",
       "portrait": "tidekeeper",
-      "text": "We cannot just close that gate. There are workers inside the wreck, below the next high tide."
+      "text": "We cannot just close that gate. There are workers inside the wreck, below the next high tide.",
+      "character": "mira"
     }
   ]
 }

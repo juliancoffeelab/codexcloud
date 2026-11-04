@@ -1,21 +1,213 @@
 {
   "events": [
     {
-      "id": "nets",
-      "trigger": {
-        "kind": "visit",
-        "tile": "5,7"
+      "id": "edda-death",
+      "when": {
+        "killed": {
+          "character": "edda"
+        }
       },
-      "label": "Recover provisions from the southern fishing hamlet",
-      "gold": 4,
-      "dialogue": [
+      "actions": [
         {
-          "speaker": "Fisher",
-          "portrait": "worker",
-          "text": "The factor bought our food on credit too. Take these nets and rations. Bring back the people he sent into that ship."
+          "setFlag": "edda-dead"
+        }
+      ]
+    },
+    {
+      "id": "harl-death",
+      "when": {
+        "killed": {
+          "character": "harl"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "harl-dead"
+        }
+      ]
+    },
+    {
+      "id": "mira-death",
+      "when": {
+        "killed": {
+          "character": "mira"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "mira-dead"
+        }
+      ]
+    },
+    {
+      "id": "nets",
+      "when": {
+        "stand": {
+          "tile": "hex-0894-59c2dceed8",
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 4
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Fisher",
+              "portrait": "worker",
+              "text": "The factor bought our food on credit too. Take these nets and rations. Bring back the people he sent into that ship."
+            }
+          ]
+        },
+        {
+          "setFlag": "nets"
+        },
+        {
+          "log": "Recover provisions from the southern fishing hamlet"
+        }
+      ],
+      "objective": {
+        "label": "Recover provisions from the southern fishing hamlet",
+        "intent": {
+          "goTo": {
+            "tile": "hex-0894-59c2dceed8",
+            "side": "player"
+          }
+        },
+        "optional": true
+      }
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "own": {
+                  "tile": "hex-0909-61c988dee7",
+                  "faction": "player"
+                }
+              },
+              {
+                "own": {
+                  "tile": "hex-0988-17596734c1",
+                  "faction": "player"
+                }
+              }
+            ]
+          },
+          {
+            "stand": {
+              "tile": "hex-1016-9e0db09d3e",
+              "character": "edda",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "tide-nets-goal-0"
+        }
+      ],
+      "objective": {
+        "label": "Open both sounding outworks",
+        "intent": {
+          "capture": ["hex-0909-61c988dee7", "hex-0988-17596734c1"]
+        }
+      }
+    },
+    {
+      "id": "goal-1-lost",
+      "when": {
+        "killed": {
+          "character": "edda"
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "goal-1"
+        },
+        {
+          "defeat": "The escort cannot continue without its protected traveller."
+        }
+      ]
+    },
+    {
+      "id": "goal-1",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "own": {
+                  "tile": "hex-0909-61c988dee7",
+                  "faction": "player"
+                }
+              },
+              {
+                "own": {
+                  "tile": "hex-0988-17596734c1",
+                  "faction": "player"
+                }
+              }
+            ]
+          },
+          {
+            "stand": {
+              "tile": "hex-1016-9e0db09d3e",
+              "character": "edda",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "tide-nets-goal-1"
+        }
+      ],
+      "objective": {
+        "label": "Bring pilot Edda to the fishing village",
+        "intent": {
+          "escort": {
+            "tile": "hex-1016-9e0db09d3e",
+            "character": "edda",
+            "side": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "tide-nets-goal-0"
+          },
+          {
+            "flag": "tide-nets-goal-1"
+          },
+          {
+            "hasUnits": {
+              "role": "leader",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "waves": []
+  "requiredCompanions": []
 }

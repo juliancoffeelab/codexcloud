@@ -5,6 +5,8 @@ description: Use to design or revise campaigns and scenarios, including their wr
 
 # Design campaign
 
+For runtime mechanics and rendering changes, apply the [battlefield contract](../battlefield-contract/SKILL.md).
+
 Design the situation, player decisions and supporting systems together. Writing
 and objectives matter as much as the map. Make one scenario work well before
 expanding the campaign or increasing its scale.

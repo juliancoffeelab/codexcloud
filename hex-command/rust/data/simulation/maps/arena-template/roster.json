@@ -1,0 +1,32 @@
+{
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 0,
+      "recruits": [],
+      "units": [],
+      "relations": {
+        "enemy": "hostile"
+      }
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [],
+      "units": [],
+      "relations": {
+        "player": "hostile"
+      }
+    }
+  ]
+}

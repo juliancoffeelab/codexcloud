@@ -27,7 +27,7 @@ through equipment, pose and silhouette at the shared battlefield scale.
    faction, otherwise the last used faction or enemy.
 
 Apply the project’s native canvas and grounding rules in
-[AGENTS.md](../../../AGENTS.md). Compare bodies with approved peers at battlefield
+[battlefield contract](../battlefield-contract/SKILL.md). Compare bodies with approved peers at battlefield
 scale; raised equipment does not establish body height. Judge body contact
 anatomically—a staff touching the ground line does not establish standing feet.
 Preserve declared hovering/swimming poses through upgrades. Faction symbols belong to intended

@@ -1,72 +1,289 @@
 {
   "events": [
     {
-      "id": "old-trail",
-      "trigger": {
-        "kind": "visit",
-        "tile": "6,0"
+      "id": "lark-lost",
+      "when": {
+        "killed": {
+          "character": "lark"
+        }
       },
-      "label": "Recover provisions from the old crossing post",
-      "gold": 6,
-      "dialogue": [
+      "actions": [
         {
-          "speaker": "Lark",
-          "portrait": "thorncaller",
-          "text": "The old crossing post has provisions for a stranded escort. Bring another shield to the road; the families are waiting on the other bank."
+          "failObjective": "goal-1"
+        },
+        {
+          "defeat": "A protected companion fell. The company cannot continue."
+        }
+      ]
+    },
+    {
+      "id": "alder-death",
+      "when": {
+        "killed": {
+          "character": "alder"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "alder-dead"
+        }
+      ]
+    },
+    {
+      "id": "dain-death",
+      "when": {
+        "killed": {
+          "character": "dain"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "dain-dead"
+        }
+      ]
+    },
+    {
+      "id": "lark-death",
+      "when": {
+        "killed": {
+          "character": "lark"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "lark-dead"
+        }
+      ]
+    },
+    {
+      "id": "rootbinder-death",
+      "when": {
+        "killed": {
+          "character": "rootbinder"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "rootbinder-dead"
+        }
+      ]
+    },
+    {
+      "id": "tamsin-death",
+      "when": {
+        "killed": {
+          "character": "tamsin"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "tamsin-dead"
+        }
+      ]
+    },
+    {
+      "id": "alternate-company",
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "flag": "dain-dead"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "deleteUnit": {
+            "character": "dain"
+          }
+        },
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": "hex-0763-c9e627d16e",
+            "radius": 0,
+            "units": [
+              {
+                "type": "boar"
+              }
+            ]
+          }
+        },
+        {
+          "recruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "wolf"
+              },
+              {
+                "unit": "boar"
+              },
+              {
+                "unit": "thorncaller"
+              },
+              {
+                "unit": "spearman"
+              },
+              {
+                "unit": "adept"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "old-trail",
+      "when": {
+        "stand": {
+          "tile": "hex-0897-9650de66eb",
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 6
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "thorncaller",
+              "text": "The old crossing post has provisions for a stranded escort. Bring another shield to the road; the families are waiting on the other bank.",
+              "character": "lark"
+            }
+          ]
+        },
+        {
+          "setFlag": "old-trail"
+        },
+        {
+          "log": "Recover provisions from the old crossing post"
+        }
+      ],
+      "objective": {
+        "label": "Recover provisions from the old crossing post",
+        "intent": {
+          "goTo": {
+            "tile": "hex-0897-9650de66eb",
+            "side": "player"
+          }
+        },
+        "optional": true
+      }
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": "hex-0955-5859c768ff",
+              "faction": "player"
+            }
+          },
+          {
+            "stand": {
+              "tile": "hex-0130-cb5c0e2a48",
+              "character": "lark",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "green-pact-goal-0"
+        }
+      ],
+      "objective": {
+        "label": "Secure the fort beside the bridge",
+        "intent": {
+          "capture": ["hex-0955-5859c768ff"]
+        }
+      }
+    },
+    {
+      "id": "goal-1-lost",
+      "when": {
+        "killed": {
+          "character": "lark"
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "goal-1"
+        },
+        {
+          "defeat": "The escort cannot continue without its protected traveller."
+        }
+      ]
+    },
+    {
+      "id": "goal-1",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": "hex-0955-5859c768ff",
+              "faction": "player"
+            }
+          },
+          {
+            "stand": {
+              "tile": "hex-0130-cb5c0e2a48",
+              "character": "lark",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "green-pact-goal-1"
+        }
+      ],
+      "objective": {
+        "label": "Bring Lark to the northern village",
+        "intent": {
+          "escort": {
+            "tile": "hex-0130-cb5c0e2a48",
+            "character": "lark",
+            "side": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "green-pact-goal-0"
+          },
+          {
+            "flag": "green-pact-goal-1"
+          },
+          {
+            "hasUnits": {
+              "role": "leader",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "waves": [],
-  "withoutDain": {
-    "briefing": "Dain is dead, but Lark’s living branch carries the workers’ memories and the ledger records their last orders. Tamsin, an adept from the villages, has joined the escort to help bring that evidence to the council. The Rootbinder bars the river to protect his supply of bodies. Capture the bridge fort and bring Lark to the northern meeting alive.",
-    "hints": [
-      "The northern trees may offer a gentler journey.",
-      "A witness need not stand in the front rank."
-    ],
-    "intro": [
-      {
-        "speaker": "Tamsin",
-        "portrait": "adept",
-        "text": "I came from the villages to help you reach the council. The workers were our neighbors. Dain cannot speak; their families must hear this branch."
-      },
-      {
-        "speaker": "Lark",
-        "portrait": "thorncaller",
-        "text": "The Rootbinder wants his bargain kept hidden. The branch and the ledger must reach the northern village."
-      },
-      {
-        "speaker": "Alder",
-        "portrait": "wildkeeper",
-        "text": "Take the bridge fort and protect Lark. We owe the families an open road and an honest account, including Dain’s death."
-      }
-    ],
-    "victory": [
-      {
-        "speaker": "Lark",
-        "portrait": "thorncaller",
-        "text": "The families heard the workers’ memories. We told them about Dain too. The council has revoked the Overseer’s charter."
-      },
-      {
-        "speaker": "Alder",
-        "portrait": "wildkeeper",
-        "text": "The fort is ours. The households will help us guard the crossing and keep the sacred groves outside their timber cutting."
-      },
-      {
-        "speaker": "Lark",
-        "portrait": "thorncaller",
-        "text": "Then let the first travelers cross. We have enough graves; we need neighbors."
-      }
-    ],
-    "debrief": "The council heard the branch, examined the ledger and learned of Dain’s death. It revoked the Overseer’s charter and agreed to protect the road with the pack. The Rootbinder remains a danger, but the workers’ murder is exposed and the crossing is held.",
-    "recruits": ["wolf", "boar", "thorncaller", "spearman", "adept"],
-    "reinforcements": [
-      {
-        "type": "boar",
-        "side": "player",
-        "col": 3,
-        "row": 4
-      }
-    ]
-  }
+  "requiredCompanions": ["lark"]
 }

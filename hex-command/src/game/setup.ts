@@ -24,8 +24,36 @@ export const DIFFICULTIES = [
 ] as const;
 export const DEFAULT_SETUP: SessionSetup = {
   first: "player",
-  enemy: { policy: "classic", diplomacy: "restrained" },
+  enemy: { policy: "classic", diplomacy: "diplomatic" },
 };
+
+export interface OpponentSummary {
+  readonly difficulty: string;
+  readonly policy: string;
+  readonly planner?: string;
+  readonly recruiter?: string;
+}
+
+/** Describe the active saved configuration, including advanced overrides. */
+export function opponentSummary(enemy: AiOptions): OpponentSummary {
+  const preset = DIFFICULTIES.find((difficulty) => difficulty.id === enemy.policy);
+  const planner = enemy.blocks?.planner ?? preset?.planner;
+  const recruiter = enemy.blocks?.recruiter ?? preset?.recruiter;
+  const title = (value: string) =>
+    value
+      .split("-")
+      .map((word) => word[0]!.toUpperCase() + word.slice(1))
+      .join(" ");
+  return Object.freeze({
+    difficulty:
+      preset && planner === preset.planner && recruiter === preset.recruiter
+        ? preset.name
+        : "Custom",
+    policy: title(enemy.policy),
+    planner: planner === undefined ? undefined : title(planner),
+    recruiter: recruiter === undefined ? undefined : title(recruiter),
+  });
+}
 
 /** Validate browser-owned preferences before resuming a native checkpoint. */
 export function validSetup(value: unknown): value is SessionSetup {
@@ -40,7 +68,7 @@ export function validSetup(value: unknown): value is SessionSetup {
   if (
     Object.keys(ai).some((k) => !["policy", "diplomacy", "blocks"].includes(k)) ||
     !DIFFICULTIES.some((d) => d.id === ai.policy) ||
-    ai.diplomacy !== "restrained"
+    !["diplomatic", "unrestricted"].includes(String(ai.diplomacy))
   )
     return false;
   return (

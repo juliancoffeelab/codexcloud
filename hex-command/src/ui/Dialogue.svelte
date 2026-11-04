@@ -1,5 +1,6 @@
 <script lang="ts">
   import { tick } from "svelte";
+  import { playSound } from "../presentation/sound";
   import type { BattleView, BattleCommands } from "../controller/view";
   import { campaignMission, dialoguePending } from "../game/campaign-progress";
   import { dialoguePortrait } from "../presentation/art";
@@ -8,7 +9,8 @@
   let nextButton = $state<HTMLButtonElement>();
   const campaign = $derived(view.game.campaign);
   const line = $derived(campaign?.dialogue[campaign.dialogueIndex]);
-  const pending = $derived(dialoguePending(campaign));
+  const queued = $derived(dialoguePending(campaign));
+  const pending = $derived(queued && !!line?.text);
   const mission = $derived(campaign ? campaignMission(campaign) : null);
   const forwardLabel = $derived(
     campaign && campaign.dialogueIndex + 1 === campaign.dialogue.length
@@ -17,6 +19,20 @@
         : "Return to battle"
       : "Next line",
   );
+  let lastSoundKey = "";
+  $effect(() => {
+    if (!queued || !campaign || !line?.sound) return;
+    const key = `${view.sessionVersion}:${campaign.id}:${campaign.mission}:${campaign.dialogueIndex}:${line.sound}`;
+    if (key !== lastSoundKey) {
+      lastSoundKey = key;
+      playSound(line.sound);
+    }
+  });
+
+  $effect(() => {
+    if (queued && line && !line.text) actions.advanceDialogue();
+  });
+
   $effect(() => {
     if (pending && !dialog.open) {
       dialog.showModal();

@@ -2,6 +2,7 @@ import type { FrameImage } from "./art";
 import type { BattlefieldLighting } from "./battlefield-lighting";
 
 export interface TerrainMapTile {
+  readonly id: string;
   readonly points: string;
   readonly x: number;
   readonly y: number;

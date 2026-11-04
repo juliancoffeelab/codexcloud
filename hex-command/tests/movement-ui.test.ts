@@ -6,6 +6,7 @@ import type { BattleView } from "../src/controller/view";
 import { unitPanelView } from "../src/ui/unit-panel-view";
 import { terrainPanelView } from "../src/ui/terrain-view";
 import { required } from "./helpers";
+import { DEFAULT_SETUP, opponentSummary } from "../src/game/setup";
 
 function published(game: Game, selected: string): BattleView {
   return {
@@ -13,11 +14,13 @@ function published(game: Game, selected: string): BattleView {
     selected,
     target: null,
     inspectedTile: required(game.unit(selected)).tile,
-    focusedTile: "0,0",
+    focusedTile: "hex-0001-7256137ec1",
     renderRevision: 0,
+    sessionVersion: 0,
     status: "",
     artwork: currentArtwork(),
     sound: false,
+    opponent: opponentSummary(DEFAULT_SETUP.enemy),
     canUndo: false,
     completedTurns: 0,
     recruitment: null,
@@ -27,7 +30,7 @@ function published(game: Game, selected: string): BattleView {
 test("Terrain rows show native movement costs without mutating the view", () => {
   const game = new Game();
   game.units = [];
-  const unit = game.addUnit("soldier", "player", "0,0");
+  const unit = game.addUnit("soldier", "player", "hex-0001-7256137ec1");
   const view = published(game, unit.id);
   const before = view.game.snapshot();
   const panel = unitPanelView(view);

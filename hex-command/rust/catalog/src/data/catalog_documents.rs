@@ -13,22 +13,20 @@ struct StageDocuments {
     id: String,
     map: String,
     roster: String,
-    objectives: String,
+    objectives: Option<String>,
     story: String,
     scripts: String,
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct MapDocument {
-    #[serde(default)]
-    factions: Vec<Faction>,
     map_id: String,
     map_revision: u32,
     cols: i32,
     rows: i32,
     tiles: Vec<Tile>,
     #[serde(default)]
-    lighting: BattlefieldLighting,
+    lighting: MapLighting,
     #[serde(default)]
     hidden: bool,
     #[serde(rename = "name")]
@@ -41,7 +39,7 @@ struct MapDocument {
 impl MapDocument {
     fn initial(self, roster: InitialRoster) -> InitialState {
         InitialState {
-            factions: self.factions,
+            factions: roster.factions,
             map_id: self.map_id,
             map_revision: self.map_revision,
             cols: self.cols,
@@ -52,27 +50,107 @@ impl MapDocument {
         }
     }
 }
+/// One authored army owns its controller, economy, recruitment and placements.
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
+struct RosterDocument {
+    factions: Vec<RosterFaction>,
+    #[serde(default)]
+    arrivals: Vec<CompanionArrival>,
+}
+#[derive(Deserialize)]
+struct RosterFaction {
+    #[serde(flatten)]
+    faction: Faction,
+    gold: i32,
+    units: Vec<RosterUnit>,
+}
+#[derive(Deserialize)]
+struct RosterUnit {
+    #[serde(default)]
+    items: Vec<String>,
+    #[serde(flatten)]
+    unit: InitialUnit,
+}
 struct InitialRoster {
+    factions: Vec<Faction>,
     gold: Gold,
     units: Vec<InitialUnit>,
 }
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct StageRoster {
-    initial: InitialRoster,
-    #[serde(default)]
-    arrivals: Vec<CompanionArrival>,
-    units: Vec<StartingUnit>,
-    recruits: Vec<String>,
-    enemy_recruits: Vec<String>,
-    gold: i32,
-    enemy_gold: i32,
+impl RosterDocument {
+    fn resolve(
+        self,
+        path: &str,
+        items: &HashMap<String, Item>,
+    ) -> Result<(InitialRoster, Vec<StartingUnit>, Vec<CompanionArrival>), ContentError> {
+        unique(
+            self.factions.iter().map(|entry| entry.faction.id.as_str()),
+            path,
+        )?;
+        let mut factions = Vec::new();
+        let mut gold = BTreeMap::new();
+        let mut initial = Vec::new();
+        let mut placements = Vec::new();
+        for entry in self.factions {
+            let faction = entry.faction;
+            if entry.gold < 0 || faction.recruits.is_none() {
+                return Err(ContentError::new(
+                    path,
+                    "each faction requires nonnegative gold and a recruit list",
+                ));
+            }
+            gold.insert(faction.id.clone(), entry.gold);
+            for source in entry.units {
+                let mut unit = source.unit;
+                unit.items = source
+                    .items
+                    .iter()
+                    .map(|id| {
+                        items
+                            .get(id)
+                            .cloned()
+                            .ok_or_else(|| ContentError::new(path, format!("unknown item {id}")))
+                    })
+                    .collect::<Result<_, _>>()?;
+                if unit.side.is_some() || unit.faction.is_some() {
+                    return Err(ContentError::new(
+                        path,
+                        "roster units inherit side and faction from their army",
+                    ));
+                }
+                unit.side = Some(faction.phase);
+                unit.faction = (!matches!(faction.id.as_str(), "player" | "enemy"))
+                    .then(|| faction.id.clone());
+                placements.push(StartingUnit {
+                    items: unit.items.clone(),
+                    faction: unit.faction.clone(),
+                    tile: unit.tile.clone(),
+                    r#type: unit.r#type.clone(),
+                    side: faction.phase,
+                    ai_group: unit.ai_group.clone(),
+                    character: unit.character.clone(),
+                    role: unit.role,
+                });
+                initial.push(unit);
+            }
+            factions.push(faction);
+        }
+        Ok((
+            InitialRoster {
+                factions,
+                gold: Gold(std::sync::Arc::new(gold)),
+                units: initial,
+            },
+            placements,
+            self.arrivals,
+        ))
+    }
 }
-#[derive(Deserialize)]
+#[derive(Default, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageObjectives {
+    #[serde(default)]
+    lose_conditions: Vec<LossCondition>,
     goals: Vec<Goal>,
     #[serde(default)]
     optional_goals: Vec<Goal>,
@@ -87,24 +165,24 @@ struct StageObjectives {
 struct StageStory {
     #[serde(rename = "subtitle")]
     subtitle: Option<String>,
-    briefing: String,
-    debrief: Option<String>,
-    hints: Vec<String>,
-    intro: Vec<Dialogue>,
-    victory: Vec<Dialogue>,
+    briefing: ConditionalText,
+    debrief: Option<ConditionalText>,
+    hints: Vec<ConditionalHint>,
+    intro: Vec<Speech>,
+    victory: Vec<Speech>,
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct StageScripts {
     #[serde(default)]
-    rituals: Vec<Ritual>,
-    #[serde(default)]
     enemy_groups: Vec<EnemyGroup>,
-    events: Vec<Event>,
-    waves: Vec<Wave>,
-    companion_losses: Option<BTreeMap<String, MissionPatch>>,
-    refuge: Option<Refuge>,
-    without_dain: Option<MissionPatch>,
+    events: Vec<ScriptEvent>,
+    #[serde(default)]
+    required_companions: Vec<String>,
+    #[serde(default)]
+    defend_objectives: bool,
+    #[serde(default)]
+    enemy_leader_post: Option<String>,
 }
 
 /// Component references are local to their descriptor, with traversal rejected.
@@ -160,6 +238,7 @@ pub fn collect_bundle(
     .chain(manifest.recruitment.iter())
     .chain(&manifest.races)
     .chain(&manifest.units)
+    .chain(&manifest.items)
     .chain(&manifest.scenarios)
     .chain(&manifest.arena_scenarios)
     .chain(&manifest.campaigns)
@@ -178,10 +257,12 @@ pub fn collect_bundle(
             let path = stage_path(campaign_path, &stage)?;
             read(&mut bundle, &mut source, &path)?;
             let documents: StageDocuments = parse(&bundle, &path)?;
+            if let Some(component) = &documents.objectives {
+                read(&mut bundle, &mut source, &sibling(&path, component)?)?;
+            }
             for component in [
                 &documents.map,
                 &documents.roster,
-                &documents.objectives,
                 &documents.story,
                 &documents.scripts,
             ] {
@@ -191,50 +272,128 @@ pub fn collect_bundle(
     }
     Ok(bundle)
 }
-pub fn scenario(bundle: &JsonBundle, path: &str) -> Result<(InitialState, String), ContentError> {
+pub fn scenario(
+    bundle: &JsonBundle,
+    path: &str,
+    items: &HashMap<String, Item>,
+) -> Result<(InitialState, String), ContentError> {
     let documents: ScenarioDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
-    map.lighting
-        .validate(&map.tiles, &[])
-        .map_err(|message| ContentError::new(&map_path, message))?;
     for tile in &map.tiles {
+        if let Some(light) = &tile.light {
+            light
+                .validate(&map.tiles, &[])
+                .map_err(|message| ContentError::new(&map_path, message))?;
+        }
         if let Some(rule) = &tile.fog {
+            rule.condition
+                .validate_presentation()
+                .map_err(|message| ContentError::new(&map_path, message))?;
             rule.condition
                 .validate(&map.tiles, &[], true)
                 .map_err(|message| ContentError::new(&map_path, message))?;
         }
     }
     let roster_path = sibling(path, &documents.roster)?;
-    let roster: InitialRoster = parse(bundle, &roster_path)?;
+    let roster: RosterDocument = parse(bundle, &roster_path)?;
+    let (roster, _, _) = roster.resolve(&roster_path, items)?;
     Ok((map.initial(roster), roster_path))
 }
-pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError> {
+pub fn stage(
+    bundle: &JsonBundle,
+    path: &str,
+    items: &HashMap<String, Item>,
+) -> Result<StageFile, ContentError> {
     let documents: StageDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
-    let roster: StageRoster = parse(bundle, &sibling(path, &documents.roster)?)?;
-    let objectives: StageObjectives = parse(bundle, &sibling(path, &documents.objectives)?)?;
+    let roster_path = sibling(path, &documents.roster)?;
+    let document: RosterDocument = parse(bundle, &roster_path)?;
+    let (roster, placements, arrivals) = document.resolve(&roster_path, items)?;
+    let gold = roster.gold.clone();
+    let recruitment = roster
+        .factions
+        .iter()
+        .map(|f| (f.id.clone(), f.recruits.clone().unwrap()))
+        .collect();
+    let objectives: StageObjectives = match &documents.objectives {
+        Some(component) => parse(bundle, &sibling(path, component)?)?,
+        None => StageObjectives::default(),
+    };
+    if !objectives.goals.is_empty()
+        || !objectives.optional_goals.is_empty()
+        || !objectives.required_companions.is_empty()
+        || objectives.defend_objectives
+        || objectives.enemy_leader_post.is_some()
+    {
+        return Err(ContentError::new(
+            path,
+            "legacy objective fields are unsupported; author objectives and protection in scripts",
+        ));
+    }
     let story: StageStory = parse(bundle, &sibling(path, &documents.story)?)?;
     let scripts: StageScripts = parse(bundle, &sibling(path, &documents.scripts)?)?;
-    map.lighting
-        .validate(&map.tiles, &scripts.events)
-        .map_err(|message| ContentError::new(&map_path, message))?;
+    let events = vec![];
+    let mut scripted_events = scripts.events;
+    if scripted_events.is_empty() {
+        return Err(ContentError::new(
+            path,
+            "chapters require scripted events; legacy execution is unsupported",
+        ));
+    }
+    unique(scripted_events.iter().map(|e| e.id.as_str()), &map_path)?;
+    scripted_events.sort_by_key(|e| std::cmp::Reverse(e.priority));
+    for e in &mut scripted_events {
+        e.when.index_holds();
+        e.validate(&map.tiles, &roster.factions, items, &map_path)?;
+    }
     for tile in &map.tiles {
+        if let Some(light) = &tile.light {
+            light
+                .validate(&map.tiles, &events)
+                .map_err(|message| ContentError::new(&map_path, message))?;
+        }
         if let Some(rule) = &tile.fog {
             rule.condition
-                .validate(&map.tiles, &scripts.events, true)
+                .validate_presentation()
+                .map_err(|message| ContentError::new(&map_path, message))?;
+            rule.condition
+                .validate(&map.tiles, &events, true)
                 .map_err(|message| ContentError::new(&map_path, message))?;
         }
     }
+    let mut item_ids: Vec<String> = placements
+        .iter()
+        .flat_map(|u| u.items.iter().map(|i| i.id.clone()))
+        .collect();
+    for event in &scripted_events {
+        for action in event.actions_recursive() {
+            match action {
+                EventAction::Give(v) => item_ids.push(v.item.clone()),
+                EventAction::PlaceItem(v) => item_ids.push(v.item.clone()),
+                EventAction::Spawn(v) => {
+                    for u in &v.units {
+                        item_ids.extend(u.member().items);
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+    item_ids.sort();
+    item_ids.dedup();
     let layout = Layout {
         id: map.map_id.clone(),
-        units: roster.units,
+        units: placements,
     };
     Ok(StageFile {
         id: documents.id,
-        state: map.initial(roster.initial),
+        state: map.initial(roster),
         mission: Mission {
+            item_ids,
+            scripted_events,
+            lose_conditions: objectives.lose_conditions,
             map: layout,
             subtitle: story.subtitle.unwrap_or_default(),
             briefing: story.briefing,
@@ -242,23 +401,20 @@ pub fn stage(bundle: &JsonBundle, path: &str) -> Result<StageFile, ContentError>
             hints: story.hints,
             intro: story.intro,
             victory: story.victory,
-            required_companions: objectives.required_companions,
-            arrivals: roster.arrivals,
-            rituals: scripts.rituals,
+            required_companions: scripts.required_companions,
+            arrivals,
             goals: objectives.goals,
             optional_goals: objectives.optional_goals,
-            defend_objectives: objectives.defend_objectives,
-            enemy_leader_post: objectives.enemy_leader_post,
-            recruits: roster.recruits,
-            enemy_recruits: roster.enemy_recruits,
-            gold: roster.gold,
-            enemy_gold: roster.enemy_gold,
-            events: scripts.events,
+            defend_objectives: scripts.defend_objectives,
+            enemy_leader_post: scripts.enemy_leader_post,
+            recruitment,
+            gold,
+            events,
             enemy_groups: scripts.enemy_groups,
-            waves: scripts.waves,
-            companion_losses: scripts.companion_losses,
-            refuge: scripts.refuge,
-            without_dain: scripts.without_dain,
+            waves: vec![],
+            companion_losses: None,
+            refuge: None,
+            without_dain: None,
         },
     })
 }
@@ -293,11 +449,10 @@ pub fn map_metadata(
                     items: unit.items.clone(),
                     ai_group: unit.ai_group.clone(),
                     faction: unit.faction.clone(),
-                    col: tile.col,
-                    row: tile.row,
+                    tile: tile.id.clone(),
                     r#type: unit.r#type.clone(),
                     side: unit.side,
-                    name: unit.name.clone(),
+                    character: unit.character.clone(),
                     role: unit.role,
                 })
             })

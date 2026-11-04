@@ -5,10 +5,11 @@ description: Use when the user requests preparation and saving of an unpublished
 
 # Release preparation
 
-This is the save-only workflow. Ordinary completed game implementation uses
-the [deploy skill](../deploy/SKILL.md) by default; it must not stop here awaiting
-another deployment request. Use this workflow when the user requests an
-unpublished release.
+This is the save-only workflow. Use it when the user requests an unpublished
+release. Completed repository work is committed and pushed by default; it does
+not trigger release preparation or deployment. For an intended live human
+playtest or an explicit deployment request, use the
+[deploy skill](../deploy/SKILL.md).
 
 Invoke `node scripts/site-operation.mjs prepare` through the exact
 [operation transport](operations.md#code-mode-invocation). Preparation owns

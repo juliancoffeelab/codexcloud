@@ -1,200 +1,129 @@
 {
-  "initial": {
-    "gold": {
-      "player": 14,
-      "enemy": 6
-    },
-    "units": [
-      {
-        "type": "swordsman",
-        "side": "player",
-        "col": 0,
-        "row": 5,
-        "name": "Captain Nera",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "scout",
-        "side": "player",
-        "col": 0,
-        "row": 4,
-        "name": "Ivo"
-      },
-      {
-        "type": "adept",
-        "side": "player",
-        "col": 0,
-        "row": 6,
-        "name": "Oren"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 7,
-        "row": 6,
-        "aiGroup": "captive-guard"
-      },
-      {
-        "type": "captives",
-        "side": "enemy",
-        "col": 8,
-        "row": 6,
-        "name": "The villagers",
-        "role": "courier",
-        "faction": "prisoners"
-      },
-      {
-        "type": "necromancer",
-        "side": "enemy",
-        "col": 16,
-        "row": 4,
-        "name": "The Tollkeeper",
-        "role": "leader",
-        "aiGroup": "tollkeeper"
-      },
-      {
-        "type": "zombie-walker",
-        "side": "enemy",
-        "col": 8,
-        "row": 11,
-        "faction": "swamp-dead",
-        "aiGroup": "swamp-dead"
-      },
-      {
-        "type": "zombie-walker",
-        "side": "enemy",
-        "col": 11,
-        "row": 10,
-        "faction": "swamp-dead",
-        "aiGroup": "swamp-dead"
-      },
-      {
-        "type": "zombie-walker",
-        "side": "enemy",
-        "col": 15,
-        "row": 11,
-        "faction": "swamp-dead",
-        "aiGroup": "swamp-dead"
-      },
-      {
-        "type": "zombie-decay-caster",
-        "side": "enemy",
-        "col": 12,
-        "row": 12,
-        "faction": "swamp-dead",
-        "aiGroup": "swamp-dead",
-        "items": [
-          {
-            "id": "healing-bottle",
-            "name": "Healing bottle",
-            "description": "A stoppered bottle of green balm. Restores 2 HP to its carrier and adjacent allies at the start of their turn. Move onto a dropped item to collect it.",
-            "attacks": [],
-            "healing": {
-              "amount": 2,
-              "radius": 1
-            }
-          }
-        ],
-        "name": "Edrin"
-      }
-    ]
-  },
-  "units": [
-    {
-      "type": "swordsman",
-      "side": "player",
-      "col": 0,
-      "row": 5,
-      "name": "Captain Nera",
-      "role": "leader"
-    },
-    {
-      "type": "scout",
-      "side": "player",
-      "col": 0,
-      "row": 4,
-      "name": "Ivo"
-    },
-    {
-      "type": "adept",
-      "side": "player",
-      "col": 0,
-      "row": 6,
-      "name": "Oren"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 7,
-      "row": 6,
-      "aiGroup": "captive-guard"
-    },
-    {
-      "type": "captives",
-      "side": "enemy",
-      "col": 8,
-      "row": 6,
-      "name": "The villagers",
-      "role": "courier",
-      "faction": "prisoners"
-    },
-    {
-      "type": "necromancer",
-      "side": "enemy",
-      "col": 16,
-      "row": 4,
-      "name": "The Tollkeeper",
-      "role": "leader",
-      "aiGroup": "tollkeeper"
-    },
-    {
-      "type": "zombie-walker",
-      "side": "enemy",
-      "col": 8,
-      "row": 11,
-      "faction": "swamp-dead",
-      "aiGroup": "swamp-dead"
-    },
-    {
-      "type": "zombie-walker",
-      "side": "enemy",
-      "col": 11,
-      "row": 10,
-      "faction": "swamp-dead",
-      "aiGroup": "swamp-dead"
-    },
-    {
-      "type": "zombie-walker",
-      "side": "enemy",
-      "col": 15,
-      "row": 11,
-      "faction": "swamp-dead",
-      "aiGroup": "swamp-dead"
-    },
-    {
-      "type": "zombie-decay-caster",
-      "side": "enemy",
-      "col": 12,
-      "row": 12,
-      "faction": "swamp-dead",
-      "aiGroup": "swamp-dead",
-      "items": [
+      "palette": "player",
+      "gold": 14,
+      "recruits": [],
+      "units": [
         {
-          "id": "healing-bottle",
-          "name": "Healing bottle",
-          "description": "A stoppered bottle of green balm. Restores 2 HP to its carrier and adjacent allies at the start of their turn. Move onto a dropped item to collect it.",
-          "attacks": [],
-          "healing": {
-            "amount": 2,
-            "radius": 1
-          }
+          "type": "swordsman",
+          "role": "leader",
+          "character": "nera",
+          "tile": "hex-0028-a81ab6c878"
+        },
+        {
+          "type": "scout",
+          "character": "ivo",
+          "tile": "hex-0027-5828930a2c"
+        },
+        {
+          "type": "adept",
+          "character": "oren",
+          "tile": "hex-0029-15d660627f"
         }
       ],
-      "name": "Edrin"
+      "relations": {
+        "enemy": "hostile"
+      }
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 6,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "units": [
+        {
+          "type": "skeleton",
+          "aiGroup": "captive-guard",
+          "tile": "hex-0957-c94afbbfa1"
+        },
+        {
+          "type": "necromancer",
+          "role": "leader",
+          "aiGroup": "tollkeeper",
+          "character": "tollkeeper",
+          "tile": "hex-0254-415f24444c"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
+    },
+    {
+      "id": "prisoners",
+      "phase": "enemy",
+      "controller": {
+        "kind": "passive"
+      },
+      "palette": "passive",
+      "relations": {
+        "player": "neutral",
+        "enemy": "allied",
+        "swamp-dead": "neutral"
+      },
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "captives",
+          "role": "captive",
+          "character": "villagers",
+          "tile": "hex-0989-f27f4a3764"
+        }
+      ]
+    },
+    {
+      "id": "swamp-dead",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "green",
+      "relations": {
+        "player": "hostile",
+        "enemy": "neutral"
+      },
+      "name": "Marsh dead",
+      "recruits": [
+        {
+          "unit": "zombie-walker",
+          "cost": 6
+        },
+        {
+          "unit": "zombie-decay-caster",
+          "cost": 10
+        }
+      ],
+      "gold": 0,
+      "units": [
+        {
+          "type": "zombie-decay-caster",
+          "aiGroup": "swamp-commander",
+          "items": ["healing-bottle"],
+          "role": "leader",
+          "character": "edrin",
+          "tile": "hex-0133-99da47f9af"
+        }
+      ]
     }
-  ],
-  "recruits": [],
-  "enemyRecruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
-  "gold": 14,
-  "enemyGold": 6
+  ]
 }

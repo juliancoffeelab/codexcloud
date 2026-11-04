@@ -1,9 +1,22 @@
 ---
 name: combat-simulation
-description: Use for AI policy work, combat simulations, roster balance or campaign competence analysis.
+description: Use for AI policy work, simulation harness or analyzer changes, combat simulations, roster balance or campaign competence analysis.
 ---
 
 # Combat simulation
+
+- Keep planner orchestration and mutable search state owned by the selected
+  planner. Put deliberately shared AI decisions in named policy domains with
+  explicit inputs and consumers; any planners may share a policy when their
+  intended behavior matches. Keep mechanical queries separate from policy and
+  make strategic preparation an explicit subscription rather than a driver
+  default. Actual automatic recruitment belongs to runtime orchestration;
+  tactical forecasts use the shared capacity estimate instead of invoking it.
+
+Run combat simulations when needed to explore or validate balance without waiting
+for separate permission. Experiments stay separate from the playable catalog;
+use ignored data copies and `--data-dir`. Requests to prototype, render, simulate
+or evaluate content do not authorize promoting it into the playable catalog.
 
 Work from the game root. For policy or balance work, read
 [purpose](purpose.md) for comparison goals and [army design](design.md) for
@@ -19,14 +32,21 @@ faction roles. For coefficient tuning, read [recruitment](recruitment.md).
 3. Run the selected scope. After changing the harness, analyzer or AI behavior,
    run fresh simulations of the affected workload; use the full panel when the
    affected scope is unclear. Use [rust-toolchain](../rust-toolchain/SKILL.md)
-   for build problems.
+   for build problems. For maintenance and bug fixes, use a matching baseline to
+   check for unintended outcome changes. Investigate differences and distinguish
+   expected effects of the fix from regressions; disclose missing comparisons.
 4. Read the printed findings. If output is truncated, consult the run’s
    analytics/findings.md and summary.md. Separate observations from proposed
    causes, and use recorded terminal reasons, goal progress and casualties.
-5. Present the results using [reporting](references/reporting.md), covering every
-   requested workload. State completed/expected coverage and limits, including
-   failures, caps and missing telemetry. Report files remain internal unless asked for.
+5. Match delivery to the task using [reporting](references/reporting.md).
+   For maintenance and bug fixes, keep unchanged simulation results internal and
+   briefly confirm validation passed. Report meaningful differences, regressions
+   or validation gaps; give counts and details only when they help assess those
+   findings. Do not automatically include balance tables or analysis.
+   Requested comparisons need their results, denominators and limitations for
+   every requested workload. Report files remain internal unless asked for.
 
-The task is complete when the requested comparisons are reported with their
-actual denominators, evidence scope and limitations. A successful test or run
-alone is not delivery. Missing evidence bounds the claim or requires a new run.
+For maintenance, complete the requested fix and report its validation; a full
+simulation report is not an additional deliverable. For requested comparisons,
+a successful run alone is not delivery: report the actual comparison and its
+limitations. Missing evidence bounds the claim or requires a new run.

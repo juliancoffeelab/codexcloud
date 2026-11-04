@@ -36,6 +36,8 @@ pub struct Armies {
 pub struct CampaignConfig {
     pub seed: u32,
     pub diplomacy: Diplomacy,
+    #[serde(default = "authored_objective")]
+    pub objective: String,
     pub campaign: String,
     pub player: Policy,
     pub enemy: Policy,
@@ -64,13 +66,13 @@ pub struct Sides<T> {
 /// Capturable tile ownership at a phase boundary.
 pub struct Ownership {
     pub tile: String,
-    pub owner: Option<Side>,
+    pub owner: Option<String>,
 }
 /// Tile identities are shared once per chapter; boundary snapshots copy only owners.
 #[derive(Clone, Debug)]
 pub struct OwnershipSnapshot {
     pub tiles: Arc<Vec<String>>,
-    pub owners: Vec<Option<Side>>,
+    pub owners: Vec<Option<String>>,
 }
 impl Serialize for OwnershipSnapshot {
     fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -78,11 +80,14 @@ impl Serialize for OwnershipSnapshot {
         #[derive(Serialize)]
         struct Entry<'a> {
             tile: &'a str,
-            owner: Option<Side>,
+            owner: Option<&'a str>,
         }
         let mut sequence = serializer.serialize_seq(Some(self.owners.len()))?;
-        for (tile, &owner) in self.tiles.iter().zip(&self.owners) {
-            sequence.serialize_element(&Entry { tile, owner })?;
+        for (tile, owner) in self.tiles.iter().zip(&self.owners) {
+            sequence.serialize_element(&Entry {
+                tile,
+                owner: owner.as_deref(),
+            })?;
         }
         sequence.end()
     }
@@ -90,7 +95,7 @@ impl Serialize for OwnershipSnapshot {
 impl<'de> Deserialize<'de> for OwnershipSnapshot {
     fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         let values = Vec::<Ownership>::deserialize(deserializer)?;
-        let owners = values.iter().map(|entry| entry.owner).collect();
+        let owners = values.iter().map(|entry| entry.owner.clone()).collect();
         let tiles = Arc::new(values.into_iter().map(|entry| entry.tile).collect());
         Ok(Self { tiles, owners })
     }
@@ -140,6 +145,8 @@ pub struct ArenaResult {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Complete trace for one reached chapter of a campaign attempt.
 pub struct MissionResult {
+    #[serde(default)]
+    pub escalated: bool,
     pub id: String,
     pub winner: Option<Side>,
     pub round: u32,
@@ -161,4 +168,8 @@ pub struct CampaignResult {
 pub enum MatchResult {
     Arena(ArenaResult),
     Campaign(CampaignResult),
+}
+
+pub fn authored_objective() -> String {
+    "authored".into()
 }

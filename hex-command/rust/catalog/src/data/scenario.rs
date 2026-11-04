@@ -11,6 +11,7 @@ use std::collections::BTreeMap;
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
+#[serde(deny_unknown_fields)]
 pub struct StartingUnit {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -18,15 +19,14 @@ pub struct StartingUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub faction: Option<String>,
-    pub col: i32,
-    pub row: i32,
+    pub tile: String,
     pub r#type: String,
     pub side: Side,
     #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub ai_group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
+    pub character: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
 }
@@ -45,7 +45,7 @@ pub struct UnitFilter {
     pub role: Option<Role>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub name: Option<String>,
+    pub character: Option<String>,
 }
 impl UnitFilter {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
@@ -56,9 +56,9 @@ impl UnitFilter {
                 .as_ref()
                 .is_none_or(|role| unit.role.as_ref() == Some(role))
             && self
-                .name
+                .character
                 .as_ref()
-                .is_none_or(|name| unit.name.as_ref() == Some(name))
+                .is_none_or(|name| unit.character.as_ref() == Some(name))
     }
 }
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -368,7 +368,7 @@ pub struct SpawnUnit {
     pub r#type: String,
     pub side: Side,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
+    pub character: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
 }
@@ -393,16 +393,16 @@ pub struct SpawnGroup {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Event {
     /// Recruitment unlocked by this event, derived from its durable marker.
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub recruits: Vec<String>,
+    pub recruitment: BTreeMap<String, Vec<FactionRecruit>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub evacuate: Option<Evacuation>,
@@ -455,6 +455,10 @@ pub struct Event {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Wave {
+    /// Shown only when at least one reinforcement actually arrives.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub dialogue: Vec<Dialogue>,
     pub id: String,
     pub round: u32,
     pub label: String,
@@ -472,52 +476,8 @@ pub struct Wave {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct CompanionArrival {
-    pub name: String,
-    pub col: i32,
-    pub row: i32,
-}
-
-/// Periodic consumption of occupied source terrain and lights left by matching deaths.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-#[cfg_attr(
-    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
-    derive(hex_catalog_freeze_derive::Freeze)
-)]
-pub struct Ritual {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub notice_when: Option<Condition>,
-    pub when: Condition,
-    pub id: String,
-    pub source_terrain: String,
-    pub spent_terrain: String,
-    pub unit_types: Vec<String>,
-    pub first_round: u32,
-    pub interval: u32,
-    pub spawn: RitualSpawn,
-    pub death_light: super::BattlefieldLight,
-    pub label: String,
-}
-
-/// Each consumed ritual source supplies its own origin; placement never uses a fixed map area.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-#[cfg_attr(
-    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
-    derive(hex_catalog_freeze_derive::Freeze)
-)]
-pub struct RitualSpawn {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub faction: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub ai_group: Option<String>,
-    pub radius: u16,
-    pub units: Vec<SpawnUnit>,
+    pub character: String,
+    pub tile: String,
 }
 
 /// The peaceful and escalated outcomes of a refuge-defense mission.
@@ -541,7 +501,7 @@ pub struct Refuge {
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
@@ -561,7 +521,7 @@ pub struct MissionPatch {
     pub intro: Option<Vec<Dialogue>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub recruits: Option<Vec<String>>,
+    pub recruitment: Option<BTreeMap<String, Vec<FactionRecruit>>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub reinforcements: Option<Vec<StartingUnit>>,
@@ -616,6 +576,20 @@ pub struct EnemyGroup {
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub when: Option<ConditionRule>,
 }
+/// A scenario-authored defeat rule evaluated through the shared condition vocabulary.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct LossCondition {
+    pub label: String,
+    pub condition: Condition,
+    pub message: String,
+}
+
 /// An authored chapter defining objectives, recruits, events and story feedback.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
@@ -626,38 +600,40 @@ pub struct EnemyGroup {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Mission {
+    #[serde(default)]
+    pub item_ids: Vec<String>,
+    #[serde(default)]
+    pub scripted_events: Vec<ScriptEvent>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub lose_conditions: Vec<LossCondition>,
     pub map: Layout,
     #[serde(default)]
     pub subtitle: String,
-    pub briefing: String,
+    pub briefing: ConditionalText,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub debrief: Option<String>,
-    pub hints: Vec<String>,
+    pub debrief: Option<ConditionalText>,
+    pub hints: Vec<ConditionalHint>,
     #[serde(default)]
     pub required_companions: Vec<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub arrivals: Vec<CompanionArrival>,
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub rituals: Vec<Ritual>,
     pub goals: Vec<Goal>,
     /// Authored side objectives, displayed separately and never required for victory.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub optional_goals: Vec<Goal>,
-    pub recruits: Vec<String>,
-    pub enemy_recruits: Vec<String>,
-    pub gold: i32,
-    pub enemy_gold: i32,
+    pub recruitment: BTreeMap<String, Vec<FactionRecruit>>,
+    pub gold: Gold,
     #[serde(default)]
     pub defend_objectives: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub enemy_leader_post: Option<String>,
-    pub intro: Vec<Dialogue>,
-    pub victory: Vec<Dialogue>,
+    pub intro: Vec<Speech>,
+    pub victory: Vec<Speech>,
     pub events: Vec<Event>,
     #[serde(default)]
     pub enemy_groups: Vec<EnemyGroup>,
@@ -675,47 +651,40 @@ pub struct Mission {
 impl Mission {
     /// Named companions may arrive through encounters as well as the opening roster.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn companion_names(&self) -> impl Iterator<Item = &str> {
+    pub fn companion_ids(&self) -> impl Iterator<Item = &str> {
         self.map
             .units
             .iter()
             .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
-            .filter_map(|u| u.name.as_deref())
+            .filter_map(|u| u.character.as_deref())
             .chain(
                 self.events
                     .iter()
                     .filter_map(|e| e.spawn.as_ref())
                     .flat_map(|group| &group.units)
                     .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
-                    .filter_map(|u| u.name.as_deref()),
+                    .filter_map(|u| u.character.as_deref()),
+            )
+            .chain(self.arrivals.iter().map(|a| a.character.as_str()))
+            .chain(
+                self.scripted_events
+                    .iter()
+                    .flat_map(|e| e.actions_recursive())
+                    .filter_map(|a| match a {
+                        EventAction::Spawn(s) if s.faction == "player" => Some(&s.units),
+                        _ => None,
+                    })
+                    .flatten()
+                    .filter_map(|u| match u {
+                        SpawnEntry::Member(m) => m.character.as_deref(),
+                        _ => None,
+                    }),
             )
     }
     /// Shared progress rules apply to required and optional goals alike.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn all_goals(&self) -> impl Iterator<Item = &Goal> {
         self.goals.iter().chain(&self.optional_goals)
-    }
-    /// Apply the authored fields of a story-dependent mission override.
-    #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn apply(&mut self, patch: &MissionPatch) {
-        if let Some(value) = &patch.briefing {
-            self.briefing = value.clone();
-        }
-        if let Some(value) = &patch.debrief {
-            self.debrief = Some(value.clone());
-        }
-        if let Some(value) = &patch.hints {
-            self.hints = value.clone();
-        }
-        if let Some(value) = &patch.intro {
-            self.intro = value.clone();
-        }
-        if let Some(value) = &patch.victory {
-            self.victory = value.clone();
-        }
-        if let Some(value) = &patch.recruits {
-            self.recruits = value.clone();
-        }
     }
 }
 /// An ordered set of authored chapters and their final dialogue.
@@ -737,8 +706,14 @@ pub struct Campaign {
     pub id: String,
     pub name: String,
     pub leader: String,
+    pub characters: Vec<Character>,
     pub missions: Vec<Mission>,
-    pub ending: Vec<Dialogue>,
+    pub ending: Vec<Speech>,
+}
+impl Campaign {
+    pub fn character(&self, id: &str) -> Option<&Character> {
+        self.characters.iter().find(|c| c.id == id)
+    }
 }
 impl Trigger {
     /// Return the structural category without interpreting a string tag.
@@ -783,6 +758,6 @@ pub struct MapDefinition {
     pub rows: i32,
     pub terrain: Vec<Tile>,
     pub units: Vec<StartingUnit>,
-    pub lighting: BattlefieldLighting,
+    pub lighting: MapLighting,
     pub presentation: BattlefieldPresentation,
 }

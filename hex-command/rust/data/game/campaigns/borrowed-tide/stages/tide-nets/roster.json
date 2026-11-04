@@ -1,136 +1,99 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "tidekeeper",
-        "side": "player",
-        "col": 2,
-        "row": 2,
-        "name": "Mira",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "reefguard",
-        "side": "player",
-        "col": 3,
-        "row": 2
-      },
-      {
-        "type": "harpooner",
-        "side": "player",
-        "col": 2,
-        "row": 3
-      },
-      {
-        "type": "wavemender",
-        "side": "player",
-        "col": 3,
-        "row": 3
-      },
-      {
-        "type": "harpooner",
-        "side": "player",
-        "col": 4,
-        "row": 4,
-        "name": "Edda",
-        "role": "courier"
-      },
-      {
-        "type": "commander",
-        "side": "enemy",
-        "col": 10,
-        "row": 5,
-        "name": "Postmaster Harl",
-        "role": "leader"
-      },
-      {
-        "type": "spearman",
-        "side": "enemy",
-        "col": 6,
-        "row": 2
-      },
-      {
-        "type": "swordsman",
-        "side": "enemy",
-        "col": 8,
-        "row": 5
-      },
-      {
-        "type": "archer",
-        "side": "enemy",
-        "col": 9,
-        "row": 4
+      "palette": "player",
+      "gold": 18,
+      "recruits": [
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "role": "leader",
+          "character": "mira",
+          "tile": "hex-0397-b042f4a1af"
+        },
+        {
+          "type": "reefguard",
+          "tile": "hex-0749-0fa856724a"
+        },
+        {
+          "type": "harpooner",
+          "tile": "hex-0408-edbae05560"
+        },
+        {
+          "type": "wavemender",
+          "tile": "hex-0760-150b2b6a75"
+        },
+        {
+          "type": "harpooner",
+          "role": "courier",
+          "character": "edda",
+          "tile": "hex-0859-8a12839c45"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "tidekeeper",
-      "side": "player",
-      "col": 2,
-      "row": 2,
-      "name": "Mira",
-      "role": "leader"
     },
     {
-      "type": "reefguard",
-      "side": "player",
-      "col": 3,
-      "row": 2
-    },
-    {
-      "type": "harpooner",
-      "side": "player",
-      "col": 2,
-      "row": 3
-    },
-    {
-      "type": "wavemender",
-      "side": "player",
-      "col": 3,
-      "row": 3
-    },
-    {
-      "type": "harpooner",
-      "side": "player",
-      "col": 4,
-      "row": 4,
-      "name": "Edda",
-      "role": "courier"
-    },
-    {
-      "type": "commander",
-      "side": "enemy",
-      "col": 10,
-      "row": 5,
-      "name": "Postmaster Harl",
-      "role": "leader"
-    },
-    {
-      "type": "spearman",
-      "side": "enemy",
-      "col": 6,
-      "row": 2
-    },
-    {
-      "type": "swordsman",
-      "side": "enemy",
-      "col": 8,
-      "row": 5
-    },
-    {
-      "type": "archer",
-      "side": "enemy",
-      "col": 9,
-      "row": 4
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 8,
+      "recruits": [
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "swordsman"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "character": "harl",
+          "tile": "hex-0092-2cbe4dcb7c"
+        },
+        {
+          "type": "spearman",
+          "tile": "hex-0909-61c988dee7"
+        },
+        {
+          "type": "swordsman",
+          "tile": "hex-0988-17596734c1"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-1019-90a76d4969"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
-  ],
-  "recruits": ["reefguard", "harpooner", "wavemender", "merfolk-maceguard"],
-  "enemyRecruits": ["spearman", "archer", "swordsman"],
-  "gold": 18,
-  "enemyGold": 8
+  ]
 }

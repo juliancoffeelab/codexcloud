@@ -1,124 +1,89 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "wildkeeper",
-        "side": "player",
-        "col": 2,
-        "row": 4,
-        "name": "Alder",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "thorncaller",
-        "side": "player",
-        "col": 2,
-        "row": 3,
-        "name": "Lark"
-      },
-      {
-        "type": "boar",
-        "side": "player",
-        "col": 6,
-        "row": 4
-      },
-      {
-        "type": "warden",
-        "side": "player",
-        "col": 5,
-        "row": 5,
-        "name": "Captain Dain"
-      },
-      {
-        "type": "commander",
-        "side": "enemy",
-        "col": 11,
-        "row": 4,
-        "name": "The Overseer",
-        "role": "leader"
-      },
-      {
-        "type": "warden",
-        "side": "enemy",
-        "col": 9,
-        "row": 2
-      },
-      {
-        "type": "archer",
-        "side": "enemy",
-        "col": 8,
-        "row": 4
-      },
-      {
-        "type": "soldier",
-        "side": "enemy",
-        "col": 10,
-        "row": 6
+      "palette": "player",
+      "gold": 16,
+      "recruits": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        }
+      ],
+      "units": [
+        {
+          "type": "wildkeeper",
+          "role": "leader",
+          "character": "alder",
+          "tile": "hex-0411-28541665a4"
+        },
+        {
+          "type": "thorncaller",
+          "character": "lark",
+          "tile": "hex-0408-edbae05560"
+        },
+        {
+          "type": "boar",
+          "tile": "hex-0923-ec307e92cf"
+        },
+        {
+          "type": "warden",
+          "character": "dain",
+          "tile": "hex-0892-f4d2ec09d8"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "wildkeeper",
-      "side": "player",
-      "col": 2,
-      "row": 4,
-      "name": "Alder",
-      "role": "leader"
     },
     {
-      "type": "thorncaller",
-      "side": "player",
-      "col": 2,
-      "row": 3,
-      "name": "Lark"
-    },
-    {
-      "type": "boar",
-      "side": "player",
-      "col": 6,
-      "row": 4
-    },
-    {
-      "type": "warden",
-      "side": "player",
-      "col": 5,
-      "row": 5,
-      "name": "Captain Dain"
-    },
-    {
-      "type": "commander",
-      "side": "enemy",
-      "col": 11,
-      "row": 4,
-      "name": "The Overseer",
-      "role": "leader"
-    },
-    {
-      "type": "warden",
-      "side": "enemy",
-      "col": 9,
-      "row": 2
-    },
-    {
-      "type": "archer",
-      "side": "enemy",
-      "col": 8,
-      "row": 4
-    },
-    {
-      "type": "soldier",
-      "side": "enemy",
-      "col": 10,
-      "row": 6
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [
+        {
+          "unit": "soldier"
+        },
+        {
+          "unit": "archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "character": "overseer",
+          "tile": "hex-0123-676aacd816"
+        },
+        {
+          "type": "warden",
+          "tile": "hex-1005-f091a76e9d"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0987-a19805d204"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0093-9d334ed661"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
-  ],
-  "recruits": ["wolf", "boar", "thorncaller"],
-  "enemyRecruits": ["soldier", "archer"],
-  "gold": 16,
-  "enemyGold": 0
+  ]
 }

@@ -59,6 +59,9 @@ impl Objective {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct ObjectiveStatus {
+    /// Resolved battlefield marker destinations, including partial completion.
+    #[serde(rename = "activeTiles")]
+    pub active_tiles: Vec<String>,
     pub visible: bool,
     pub progress: Progress,
     pub failed: bool,

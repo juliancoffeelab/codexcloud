@@ -21,7 +21,9 @@ export function arsenalView(unit: UnitView) {
   }));
   const damageTypes = Object.entries(DAMAGE_TYPES) as [DamageType, string][];
   const modifiers = damageTypes.map(([damageType, name]) => {
-    const modifier = definition.damageModifiers[damageType];
+    const modifier =
+      definition.damageModifiers[damageType] +
+      (unit.items?.reduce((sum, item) => sum + (item.armor?.[damageType] ?? 0), 0) ?? 0);
     const label = modifier < 0 ? `−${-modifier}` : modifier > 0 ? `+${modifier}` : "0";
     return { name, label, className: modifierClass(modifier) };
   });

@@ -1,0 +1,64 @@
+[
+  {
+    "id": "player",
+    "phase": "player",
+    "controller": {
+      "kind": "human"
+    },
+    "palette": "player",
+    "recruits": [
+      {
+        "unit": "swordsman"
+      },
+      {
+        "unit": "spearman"
+      },
+      {
+        "unit": "archer"
+      },
+      {
+        "unit": "scout"
+      },
+      {
+        "unit": "adept"
+      },
+      {
+        "unit": "rider"
+      },
+      {
+        "unit": "horse-archer"
+      }
+    ]
+  },
+  {
+    "id": "enemy",
+    "phase": "enemy",
+    "controller": {
+      "kind": "ai"
+    },
+    "palette": "enemy",
+    "recruits": [
+      {
+        "unit": "swordsman"
+      },
+      {
+        "unit": "spearman"
+      },
+      {
+        "unit": "archer"
+      },
+      {
+        "unit": "scout"
+      },
+      {
+        "unit": "adept"
+      },
+      {
+        "unit": "rider"
+      },
+      {
+        "unit": "horse-archer"
+      }
+    ]
+  }
+]

@@ -4,7 +4,10 @@
   import { onMount } from "svelte";
   import { BattleController } from "./controller/battle";
   import { registerBattleTools } from "./controller/tools";
-  import { unlockSound, playSound } from "./presentation/sound";
+  import { unlockSound, playSound, prepareSounds } from "./presentation/sound";
+  import { preloadItemAssets } from "./presentation/item-assets";
+  import { missionSounds } from "./presentation/campaign-sound";
+  import { CAMPAIGNS } from "./game/campaign-data";
   import NewGameDialog from "./ui/NewGameDialog.svelte";
   import CampaignPanel from "./ui/CampaignPanel.svelte";
   import Dialogue from "./ui/Dialogue.svelte";
@@ -17,6 +20,29 @@
   let { controller }: { controller: BattleController } = $props();
   const view = $derived(controller.view);
   const actions = $derived(controller.commands);
+  const soundCampaign = $derived(
+    $view.game.campaign ? CAMPAIGNS[$view.game.campaign.id] : undefined,
+  );
+  const soundMission = $derived(soundCampaign?.missions[$view.game.campaign?.mission ?? 0]);
+  $effect(() => {
+    $view.game.mapId;
+    const itemSounds = preloadItemAssets([
+      ...(soundMission?.itemIds ?? []),
+      ...$view.game.units.flatMap((unit) => unit.items?.map((item) => item.id) ?? []),
+      ...$view.game.groundItems.map((entry) => entry.item.id),
+    ]);
+    prepareSounds([
+      ...(soundMission
+        ? missionSounds(
+            soundMission,
+            soundCampaign && soundMission === soundCampaign.missions.at(-1)
+              ? soundCampaign.ending
+              : [],
+          )
+        : []),
+      ...itemSounds,
+    ]);
+  });
   const inspectionOpen = $derived(
     !!($view.selected || $view.inspectedTile || ($view.game.winner && !$view.game.campaign)),
   );
@@ -82,6 +108,7 @@
     return () => {
       previews.dispose();
       controller.dispose();
+      prepareSounds([]);
       unregisterTools();
       document.removeEventListener("error", artworkFailed, true);
       for (const event of [...passiveGestures, ...otherGestures])

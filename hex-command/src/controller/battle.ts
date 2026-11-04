@@ -1,14 +1,14 @@
-import { DEFAULT_SETUP, type SessionSetup } from "../game/setup";
+import { DEFAULT_SETUP, opponentSummary, type SessionSetup } from "../game/setup";
 import { BATTLE_MAPS } from "../game/maps";
 import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { TYPES, TERRAIN, isLeader, type Tile, type Unit } from "../game/catalog";
+import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle } from "../save/load";
 import { saveBattle } from "../save/write";
-import { LiveGame } from "../game/live-game";
+import { LiveGame, nativeValue } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { currentArtwork } from "../presentation/art";
 import {
@@ -48,6 +48,13 @@ interface SessionState {
   sound: boolean;
 }
 
+interface EnemyTurnRecording {
+  checkpoint: string;
+  setup: SessionSetup;
+  commands: ReturnType<LiveGame["enemyStep"]>[];
+  completed: boolean;
+}
+
 const initialMessage = "Select a unit. Capture villages. Defeat the red commander.";
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 const enemyThinkingDelay = 350;
@@ -56,6 +63,7 @@ const enemyActionDelay = 230;
 export class BattleController {
   #game: LiveGame;
   private pendingEnemyReplay: boolean;
+  private enemyRecordings: EnemyTurnRecording[] = [];
   private initialized = false;
   private soundRequestVersion = 0;
   private readonly history = createMoveUndo();
@@ -129,6 +137,8 @@ export class BattleController {
     return Object.freeze({
       ...this.state,
       game: this.gameView,
+      sessionVersion: this.sessionVersion,
+      opponent: opponentSummary(this.#game.setup.enemy),
       combat: this.#game.combat,
       artwork: currentArtwork(),
       completedTurns: Math.max(
@@ -144,6 +154,36 @@ export class BattleController {
 
   snapshot() {
     return this.#game.snapshot();
+  }
+
+  downloadDebugReport(): void {
+    try {
+      this.requireSession();
+      const report = {
+        format: "hex-command-debug",
+        version: 1,
+        createdAt: new Date().toISOString(),
+        setup: this.#game.setup,
+        checkpoint: nativeValue(this.#game.checkpoint()),
+        enemyTurns: this.enemyRecordings.map(({ checkpoint, ...turn }) => ({
+          ...turn,
+          checkpoint: JSON.parse(checkpoint),
+        })),
+      };
+      const url = URL.createObjectURL(
+        new Blob([JSON.stringify(report)], { type: "application/json" }),
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `hex-command-debug-${this.#game.mapId}-turn-${this.#game.round}.json`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+      this.message("Debug report downloaded. You can attach it to the chat.");
+    } catch (error) {
+      this.error(error);
+    }
   }
 
   message(status: string) {
@@ -436,7 +476,7 @@ export class BattleController {
 
   recruitHere(type: RecruitType, tileId: string) {
     try {
-      const commander = this.#game.units.find((unit) => unit.side === "player" && isLeader(unit));
+      const commander = recruitmentContext(this.gameView, null, tileId)?.commander;
       if (!commander) {
         throw new Error("This unit cannot act now.");
       }
@@ -518,8 +558,16 @@ export class BattleController {
     if (turnSessionVersion !== this.sessionVersion) {
       return;
     }
+    const recording: EnemyTurnRecording = {
+      checkpoint: nativeValue(this.#game.serializedCheckpoint()),
+      setup: structuredClone(this.#game.setup),
+      commands: [],
+      completed: false,
+    };
+    this.enemyRecordings.push(recording);
+    this.enemyRecordings = this.enemyRecordings.slice(-5);
     while (this.#game.turn === "enemy" && !this.#game.winner) {
-      this.#game.enemyStep();
+      recording.commands.push(this.#game.enemyStep());
       if (this.#game.turn !== "enemy" || this.#game.winner) {
         this.publish();
         break;
@@ -527,6 +575,7 @@ export class BattleController {
       await this.prepareDuringPause(enemyActionDelay, turnSessionVersion, true);
       if (turnSessionVersion !== this.sessionVersion) return;
     }
+    recording.completed = true;
     if (!this.#game.winner)
       this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
     saveBattle(this.#game);
@@ -589,6 +638,7 @@ export class BattleController {
     if (this.#game !== replacement) this.#game.dispose();
     this.#game = replacement;
     this.pendingEnemyReplay = false;
+    this.enemyRecordings = [];
     this.previousFeedbackState = null;
     this.state.selected = null;
     this.state.target = null;

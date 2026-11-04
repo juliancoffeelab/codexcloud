@@ -1,6 +1,25 @@
 # Present simulation results
 
-## Arena and campaign summaries
+## Choose the report for the task
+
+For maintenance, tooling and bug fixes, still run the required simulations and
+compare relevant outcomes with a matching baseline. Keep unchanged results
+internal; a brief statement that simulation validation passed is sufficient.
+Do not print unchanged counts, win rates, matchup matrices or campaign tables.
+
+Investigate differences and report meaningful changes, regressions or validation
+gaps with the affected scope, evidence and limits. Expected effects of the fix
+are not automatically regressions. Distinguish execution errors from in-game
+defeats. Disclose when a baseline comparison was unavailable; completing a run
+alone does not establish unchanged behavior. Include detailed results only when
+requested or needed to explain a task-relevant finding.
+
+Use the tables below for requested simulation reports, comparisons and balance
+investigations. Scope them to the user's question. A maintenance smoke run does
+not establish balance or performance improvement. For small smoke samples, prefer
+counts such as `3/4` over percentages that obscure the sample size.
+
+## Arena and campaign summaries for requested analysis
 
 1. State completed coverage, seeds, round/recruit limits and pooled dimensions.
 2. For an arena workload, default to **one faction-versus-faction matrix per map**, with row factions
@@ -32,7 +51,8 @@
    tactics as columns. Cells are completion counts such as `16/20`, without
    percentages. Split campaigns with multiple player diplomacy modes into
    separate labeled rows, such as Ashen Oath (pragmatic) and Ashen Oath
-   (restrained); never pool these modes. Name the fixed Classic opponent.
+   (restrained); never pool these modes. Also split named objective routes such as flight and fight
+   into separate labeled rows. Name the fixed Classic opponent.
 4. Add important findings and limitations. For scoped requests, show that scope.
 
 Keep caps in arena win-rate denominators. Campaign completion covers the whole

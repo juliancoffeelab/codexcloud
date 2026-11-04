@@ -1,6 +1,7 @@
+import type { MissionDefinition } from "./mission-types";
 /** Historical save metadata stays private to migration; live definitions come from WASM. */
 import { FROZEN_CAMPAIGNS } from "./frozen";
-import type { CampaignId, DialogueLine, MissionDefinition } from "../../../game/types";
+import type { CampaignId, DialogueLine } from "../../../game/types";
 import stages from "./data/stages.json";
 import type { Immutable } from "../../../game/immutable";
 
@@ -13,7 +14,8 @@ interface StageHistory {
   dialogue: DialogueLine[];
   waves: WaveHistory[];
 }
-type MigrationMission = Omit<Immutable<MissionDefinition>, "waves"> & {
+type MigrationMission = Omit<Immutable<MissionDefinition>, "waves" | "map"> & {
+  map: Immutable<(typeof FROZEN_CAMPAIGNS)[CampaignId]["missions"][number]["map"]>;
   waves: (Immutable<MissionDefinition["waves"][number]> & Partial<WaveHistory>)[];
   legacyDialogue: DialogueLine[];
 };

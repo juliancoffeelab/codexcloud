@@ -27,8 +27,10 @@ pub enum Controller {
     Human,
     Passive,
     Ai {
-        #[serde(default)]
-        policy: FactionPolicy,
+        /// Omitted policies inherit the selected enemy/session policy.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        policy: Option<FactionPolicy>,
     },
 }
 /// Transfer the same unit when a shared authored condition is satisfied.
@@ -51,12 +53,34 @@ pub struct FactionTransfer {
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
+pub struct FactionRecruit {
+    pub unit: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub cost: Option<i32>,
+}
+
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
 pub struct Faction {
     pub id: String,
     /// Phase in which this controller acts; this is not its diplomatic relation.
     pub phase: Side,
     pub controller: Controller,
     pub palette: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub name: Option<String>,
+    /// Named factions author their own pool. Prices are recruitment economics,
+    /// not modifications to a unit's combat profile.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    pub recruits: Option<Vec<FactionRecruit>>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub relations: BTreeMap<String, Relation>,
@@ -74,12 +98,53 @@ impl Side {
     }
 }
 
-#[cfg_attr(not(target_arch = "wasm32"), inline)]
+pub fn validate_economy(
+    factions: &[Faction],
+    gold: &super::Gold,
+    tiles: &[super::Tile],
+    types: &std::collections::HashMap<String, usize>,
+) -> Result<(), String> {
+    let known = |id: &str| matches!(id, "player" | "enemy") || factions.iter().any(|f| f.id == id);
+    if gold.iter().any(|(id, amount)| !known(id) || *amount < 0)
+        || !gold.contains_key("player")
+        || !gold.contains_key("enemy")
+        || factions.iter().any(|f| !gold.contains_key(&f.id))
+    {
+        return Err("invalid or missing faction treasury".into());
+    }
+    if tiles
+        .iter()
+        .any(|tile| tile.owner.as_deref().is_some_and(|id| !known(id)))
+    {
+        return Err("unknown settlement owner faction".into());
+    }
+    for faction in factions {
+        if faction
+            .recruits
+            .as_ref()
+            .is_some_and(|pool| pool.iter().any(|r| !types.contains_key(&r.unit)))
+        {
+            return Err("unknown faction recruit".into());
+        }
+    }
+    Ok(())
+}
 
 pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> Result<(), String> {
     let known = |id: &str| matches!(id, "player" | "enemy") || factions.iter().any(|f| f.id == id);
     let mut ids = std::collections::HashSet::new();
     for faction in factions {
+        if let Some(pool) = &faction.recruits {
+            let mut seen = std::collections::HashSet::new();
+            for recruit in pool {
+                if recruit.cost.is_some_and(|cost| cost < 0)
+                    || recruit.unit.is_empty()
+                    || !seen.insert(&recruit.unit)
+                {
+                    return Err("invalid faction recruitment pool".into());
+                }
+            }
+        }
         if faction.palette.is_empty()
             || !faction
                 .palette
@@ -186,11 +251,7 @@ pub fn faction_relation(factions: &[Faction], first: &str, second: &str) -> Rela
     {
         return *relation;
     }
-    if matches!((first, second), ("player", "enemy") | ("enemy", "player")) {
-        Relation::Hostile
-    } else {
-        Relation::Neutral
-    }
+    Relation::Neutral
 }
 /// Match an explicit unit selector, not the phase in which it happens to act.
 /// Keep this exhaustive: new allegiance selectors must define their semantics.
@@ -222,9 +283,17 @@ pub fn validate_faction_conditions(
     types: &std::collections::HashMap<String, usize>,
 ) -> Result<(), String> {
     for faction in factions {
+        if let Some(pool) = &faction.recruits {
+            if pool.iter().any(|entry| !types.contains_key(&entry.unit)) {
+                return Err("unknown faction recruit".into());
+            }
+        }
         if let Some(transfer) = &faction.transfer {
             transfer.when.condition.validate(tiles, events, true)?;
-            transfer.when.condition.validate_units(types)?;
+            transfer
+                .when
+                .condition
+                .validate_references(types, factions)?;
         }
     }
     Ok(())

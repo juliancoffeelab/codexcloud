@@ -37,7 +37,8 @@ pub enum Condition {
     Owner {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         tile: Option<String>,
-        side: Side,
+        /// Exact faction identifier (the authoring key predates faction economies).
+        side: String,
     },
     Proximity {
         #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
@@ -50,24 +51,37 @@ pub enum Condition {
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        name: Option<String>,
+        character: Option<String>,
+    },
+    /// A matching unit stands on a tile currently visible through authored fog.
+    VisibleUnits {
+        side: ConditionSide,
+        #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        unit_types: Vec<String>,
     },
     HasUnits {
+        #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
+        #[cfg_attr(feature = "wasm", tsify(optional))]
+        ai_group: Option<String>,
         side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        name: Option<String>,
+        character: Option<String>,
     },
     NoUnits {
         side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
         unit_type: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        name: Option<String>,
+        character: Option<String>,
     },
     Choice {
         choice: String,
+    },
+    Flag {
+        flag: String,
     },
     Event {
         event: String,
@@ -112,9 +126,11 @@ impl Condition {
                     .map(|condition| condition.contextualized(target))
                     .collect();
             }
-            Self::HasUnits { .. }
+            Self::VisibleUnits { .. }
+            | Self::HasUnits { .. }
             | Self::NoUnits { .. }
             | Self::Choice { .. }
+            | Self::Flag { .. }
             | Self::Event { .. }
             | Self::Round { .. } => {}
         }
@@ -125,7 +141,7 @@ impl Condition {
 
     pub fn uses_proximity(&self) -> bool {
         match self {
-            Self::Proximity { .. } => true,
+            Self::Proximity { .. } | Self::VisibleUnits { .. } => true,
             Self::All { conditions } | Self::Any { conditions } => {
                 conditions.iter().any(Self::uses_proximity)
             }
@@ -133,14 +149,61 @@ impl Condition {
         }
     }
 
-    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    pub fn validate_characters(&self, characters: &[super::Character]) -> Result<(), String> {
+        match self {
+            Self::Proximity {
+                character: Some(id),
+                ..
+            }
+            | Self::HasUnits {
+                character: Some(id),
+                ..
+            }
+            | Self::NoUnits {
+                character: Some(id),
+                ..
+            } => {
+                if !characters.iter().any(|c| &c.id == id) {
+                    return Err(format!("unknown character {id}"));
+                }
+            }
+            Self::All { conditions } | Self::Any { conditions } => {
+                for c in conditions {
+                    c.validate_characters(characters)?;
+                }
+            }
+            _ => {}
+        }
+        Ok(())
+    }
+    pub fn validate_presentation(&self) -> Result<(), String> {
+        match self {
+            Self::VisibleUnits { .. } => {
+                Err("visibility queries cannot define fog or lighting conditions".into())
+            }
+            Self::All { conditions } | Self::Any { conditions } => {
+                for condition in conditions {
+                    condition.validate_presentation()?;
+                }
+                Ok(())
+            }
+            _ => Ok(()),
+        }
+    }
 
-    pub fn validate_units(
+    pub fn validate_references(
         &self,
         types: &std::collections::HashMap<String, usize>,
+        factions: &[super::Faction],
     ) -> Result<(), String> {
         match self {
-            Self::Proximity { unit_types, .. }
+            Self::Owner { side, .. }
+                if !matches!(side.as_str(), "player" | "enemy")
+                    && !factions.iter().any(|f| f.id == *side) =>
+            {
+                Err("condition references unknown owner faction".into())
+            }
+            Self::Proximity { unit_types, .. } | Self::VisibleUnits { unit_types, .. }
                 if unit_types.iter().any(|kind| !types.contains_key(kind)) =>
             {
                 Err("condition references unknown unit types".into())
@@ -161,7 +224,7 @@ impl Condition {
             }
             Self::All { conditions } | Self::Any { conditions } => {
                 for condition in conditions {
-                    condition.validate_units(types)?;
+                    condition.validate_references(types, factions)?;
                 }
                 Ok(())
             }

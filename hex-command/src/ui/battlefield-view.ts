@@ -1,4 +1,3 @@
-import { activeGoalTiles, campaignMission, goalProgress } from "../game/campaign-progress";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { Artwork } from "../presentation/art";
 import type { FrameImage } from "../presentation/art";
@@ -91,7 +90,10 @@ function tileLabel(
   faction?: import("../../rust/pkg/hex_command").UnitFaction,
 ): string {
   const parts = [TERRAIN[tile.terrain].name, `column ${tile.col + 1}`, `row ${tile.row + 1}`];
-  if (tile.owner) parts.push(tile.owner === "player" ? "your territory" : "enemy territory");
+  if (tile.owner)
+    parts.push(
+      tile.owner === "player" ? "your territory" : `${tile.owner.replaceAll("-", " ")} territory`,
+    );
   if (occupant) {
     const team =
       faction?.relation === "neutral"
@@ -132,15 +134,12 @@ export function battlefieldTiles(
   const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
 
   const objectiveTiles = new Map<string, string[]>();
-  if (game.campaign) {
-    for (const [index, goal] of campaignMission(game.campaign).goals.entries()) {
-      if (game.objectives && !game.objectives.goals[index]?.visible) continue;
-      const progress = goalProgress(game, goal);
-      for (const tile of activeGoalTiles(game, goal)) {
-        const labels = objectiveTiles.get(tile) ?? [];
-        labels.push(progress.label);
-        objectiveTiles.set(tile, labels);
-      }
+  for (const status of game.objectives?.goals ?? []) {
+    if (!status.visible) continue;
+    for (const tile of status.activeTiles) {
+      const labels = objectiveTiles.get(tile) ?? [];
+      labels.push(status.progress.label);
+      objectiveTiles.set(tile, labels);
     }
   }
   const occupants = new Map(game.units.map((unit) => [unit.tile, unit]));
@@ -202,7 +201,12 @@ export function battlefieldTiles(
       classes,
       label: tileLabel(tile, unit, reachable, target, objectives ?? [], occupant?.faction),
       occupant,
-      ownerColor: tile.owner === "player" ? "#6fdec0" : "#ff9590",
+      ownerColor:
+        tile.owner === "player"
+          ? "#6fdec0"
+          : (({ green: "#83b765", passive: "#efecdc", enemy: "#ff9590" } as Record<string, string>)[
+              game.factions.find((f) => f.id === tile.owner)?.palette ?? "enemy"
+            ] ?? "#ff9590"),
     };
     reuse?.next.push({ source: tile, objectives, view });
     return view;

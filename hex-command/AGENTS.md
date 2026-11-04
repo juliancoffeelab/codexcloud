@@ -1,153 +1,50 @@
-# Hex Command development rules
+# Hex Command instructions
 
-- Use [docs/development.md](docs/development.md) for setup and technical references.
-  The README is user-owned; modify it only when explicitly asked.
-- Keep simulation experiments separate from the playable game. Requests to
-  prototype, render, simulate or evaluate a map or balance change do not authorize
-  adding it to the playable catalog. Use an ignored copy of the data and
-  `--data-dir`; promote experimental content only when the user requests it.
-- Completed game implementation batches deploy by default unless the user asks
-  to keep them local, save an unpublished release, or hold deployment. Finish
-  appropriate implementation validation and commit/push required changes, then use
-  the [deploy skill](.agents/skills/deploy/SKILL.md) and return the live URL.
-  Do not stop at an unpublished release or ask for deployment permission again.
-  Reviews, documentation/instruction-only changes, drafts, renders and simulations
-  do not trigger deployment; neither does a Git push by itself.
-- An explicit deploy request is an immediate execution request, not a request
-  for more development or validation. Invoke the deploy operation directly;
-  run no separate tests, inspections, Git commands, builds or previews. The
-  operation owns any necessary preparation and build. Use the
-  [publish skill](.agents/skills/publish/SKILL.md) only for a requested unpublished
-  release. Deployment sequencing belongs to the deploy skill.
-  Deployment uses the current committed snapshot (`HEAD`); uncommitted changes
-  are left alone, not checked as a prerequisite or automatically committed.
-- A real deployment failure authorizes fixing its cause and retrying, without
-  another permission request. Before any investigation or repair tool call,
-  announce the failed stage/error, the next repair action and why deployment is
-  delayed. Fix only the deployment blocker, commit/push required source changes,
-  then rerun the deploy operation and deliver its successful URL. This is recovery
-  after an observed failure, never permission to add preflight checks or a general
-  test/review cycle. Follow the deploy skill for recovery and external blockers.
+The README is user-owned; modify it only when explicitly asked.
 
-- **Permanent character canvas rule: every character/unit sprite and portrait is
-  exactly 64×64 native pixels. This rule must never be changed; do not reintroduce
-  alternate sizes, automatic cropping or resizing.** New generation, extraction,
-  cleaning and generated frames must use 64×64. Most characters should be below
-  40 painted pixels tall; cavalry and giants may go slightly above this. Compare
-  mounted artwork with existing mounted units before setting scale. Distinguish
-  body/mount height from raised weapons or staffs. Terrain uses a 64×64 logical hex at the same native pixel scale. Explicit
-  terrain overflow may add transparent canvas padding with an authored anchor
-  and drawing depth; it must never resize the hex or artwork.
-  Terrain, troops and commanders share one battlefield pixel scale; do not add
-  per-unit scaling to emphasize leaders.
-- **Native row 63 is the ground line. Grounded units must stand on it with no
-  transparent rows beneath their ground-contacting body.** Preserve every painted
-  pixel when aligning existing units: translate within the canvas, never resize
-  or crop. Intentionally suspended animal poses must declare `"flying": true` in
-  `palette.json`; this artwork-only flag covers hovering and swimming poses.
-  Missing or false means grounded.
-- Keep changes quick to make and review. Tests must be small, fast, and lightweight.
-- Data-only changes do not justify new behavioral tests or extra named-content
-  cases in existing test matrices.
-- Validate content through generic schema and consistency checks. Measure
-  balance through simulations.
-- Do not add permanent tests unless you can guarantee that they will fail in
-  the future. A reproduced bug alone does not justify a permanent regression test.
-- For bug fixes, use a disposable test or probe: reproduce the failure, fix the
-  code, verify that the probe passes, then delete it. Run the relevant existing
-  suites and remove obsolete expectations rather than preserving incorrect behavior.
-- Use a small, fixed set of representative fixtures. Do not freeze current
-  unit stats, promotion choices, recruitment lists or roster sizes.
-- Do not duplicate existing coverage merely because new content uses it.
-  Remove redundant cases when found.
-- Keep temporary data, experiments and diagnostics in ignored `tmp/`, outside
-  tracked content.
-- No tracked markdown file is allowed to contain information that is only relevant
-  for the current work. Markdown files whose sole purpose is to track current work
-  are not allowed to be in tracked places. Docs must contain permanent information.
-- Run `npm run format` to apply project formatting automatically.
-- Target 20 seconds for all test suites together, including Rust, Python
-  and Vitest. Use the shared `npm test` runner; exceeding the target warns
-  without terminating the run or failing successful tests. Use
-  controlled promises or an injected clock instead of real delays.
-- Keep browser automation out of the default test suite. Playwright is available
-  for explicitly requested browser spot checks; keep scratch probes in ignored
-  `tmp/`. Do not add mandatory browser installs, extra services, large migration
-  suites, or Git-history fixtures. Use focused checks for meaningful rules,
-  state transitions, publication, and cancellation behavior.
-- Startup should be fast. Lazy-load what is possible. Loading failures must
-  provide a way to diagnose the error and restart cleanly.
-- Run combat simulations when needed to explore or validate balance. Do not wait
-  for separate permission to use them during balance work.
-- After changing the simulation harness, analyzer or AI behavior, run fresh
-  simulations and include the report directly in the final reply without waiting
-  for another request. A successful run or test status alone is not delivery.
-  Report the affected workload; use the full panel when scope is unclear.
-- Continue on the current feature branch and pull request unless the user asks
-  to change branches. New branches must start from the freshly fetched upstream
-  default branch (`main` here), never a stale local copy. Never push directly to
-  `main` or bypass the repository's PR workflow.
-- Finish completed game implementation batches by committing and pushing required
-  changes before their default deployment, regardless of duration. For other tasks, commit and
-  push before returning only if the task took more than 10 minutes, even if
-  unfinished or checks fail; otherwise keep changes local. Report check status
-  and remaining work. An explicit deploy request follows the operation-only
-  rule above, including for source synchronization.
+**Cornerstone rule: never resolve merge or rebase conflicts autonomously.**
+Resolve conflicts only in response to an explicit user request for conflict
+resolution. Do not initiate a merge, rebase, cherry-pick or branch synchronization
+to address known conflicts without that explicit request. Requests to implement,
+integrate, push, publish or prepare a PR do not imply permission to resolve
+conflicts. If conflicts block requested work, report them and stop the affected
+operation.
 
-## Interruptions
+Commit and push completed requested changes by default through the current
+feature branch and pull request. Honor explicit requests to keep changes local
+or hold a push. For unfinished work, commit and push after more than 10 minutes
+unless the user requests otherwise; report check status and remaining work.
+Continue on the current branch and PR unless asked to change branches. New
+branches start from the freshly fetched upstream default branch (`main`), never
+a stale local copy.
+
+Diagnose the underlying cause and fix the general rule or mechanism instead of
+special-casing the current scenario. Keep changes quick to make and review.
+
+Keep temporary data, experiments and diagnostics in ignored `tmp/`, outside
+tracked content. Tracked Markdown must contain permanent information; keep
+current-work tracking and diagnostics out of tracked Markdown files.
+
+Startup should be fast. Lazy-load what is possible. Loading failures must
+provide a way to diagnose the error and restart cleanly.
 
 When the user interrupts ongoing work, stop that work and keep it paused. Address
-only the interruption and any explicitly requested follow-up. Do not resume the
-earlier implementation, checks, commits or deployment until the user asks you to
-continue.
+only the interruption and explicitly requested follow-up. Resume the earlier
+implementation, checks, commits or deployment only when the user asks to continue.
 
-## Permanent prohibition on map post-processing
+# Skills
 
-Map post-processing is absolutely forbidden except for weather and atmospheric effects such as fog and lighting. Under no circumstances may this rule be changed, weakened, bypassed or given an exception. Runtime must select complete, prebuilt terrain frames from each tile’s explicit data. It must never assemble structures across the map, inspect neighboring geometry to inject artwork, distribute fragments, or paint terrain features onto other tiles. All terrain geometry and composition must be finished offline and baked into the selected tile frames.
-
-## Connected terrain
-
-Connected terrain must declare explicit geometry: castles use `walls`;
-other connected terrain uses `connections`. Use numbered
-`<mask>.txt` sources for every supported combination. Implicit orientation
-defaults, special filename aliases such as `tile.txt` for one connected mask,
-and unsuffixed connected frames are explicitly forbidden. Missing or invalid
-geometry must fail; do not silently substitute, infer or backfill it in
-runtime rendering or validation. This applies to all connected terrain,
-including roads, crossings, settlements and castles. Unconnected terrain and
-individual prop sources may use `tile.txt`.
-
-## Runtime data ownership
-
-Runtime code must obtain current authored game data, including scenarios and their
-settings, through Rust. Do not bypass Rust by importing JSON or injecting game
-data through generated frontend modules. Pure rendering details such as terrain
-colors and shading may live in the frontend. Devtool scripts may read source data
-directly.
-
-## Failures
-
-When a user asks to diagnose agent failure, you need to diagnose it. Failed
-instruction is a failure of instruction, never the agent. Gaps or ambiguity in
-instructions are instruction failures too. Prefer finding ways to fix code or
-architecture to prevent recurrence, unless the cause is clearly a bad instruction.
-For instruction failures, identify how the instruction should be edited or removed,
-or, in rarer cases, extended.
-
-## Skills
-
-Read the linked `SKILL.md` before starting work that matches its trigger.
-
+- [testing](.agents/skills/testing/SKILL.md): Use for bug fixes, test changes and implementation validation.
+- [battlefield-contract](.agents/skills/battlefield-contract/SKILL.md): Use when changing unit artwork, terrain authoring, battlefield rendering or runtime game-data ownership.
 - [save-migrations](.agents/skills/save-migrations/SKILL.md): Use when changing or
   auditing save loading, save formats, migrations, or their data and dependencies.
 - [publish](.agents/skills/publish/SKILL.md): Use when the user requests an
   unpublished release.
-- [deploy](.agents/skills/deploy/SKILL.md): Use to finish completed game
-  implementation batches by default, or when the user asks to deploy, publish
-  or update the live game.
+- [deploy](.agents/skills/deploy/SKILL.md): Use for an intended live human playtest, or when
+  the user asks to deploy, publish or update the live game.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
-  simulations; or assess balance, campaign competence or simulation performance.
+  simulations; change simulation harnesses or analyzers; or assess balance, campaign competence or simulation performance.
 - [design-campaign](.agents/skills/design-campaign/SKILL.md): Use to design or
   revise campaigns and scenarios, including writing, objectives, maps, encounters,
   progression, and supporting mechanics.

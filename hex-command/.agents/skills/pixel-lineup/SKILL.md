@@ -5,6 +5,8 @@ description: Use for previewing or comparing Hex Command faction lineups and uni
 
 # Pixel lineup
 
+Apply the [battlefield contract](../battlefield-contract/SKILL.md) for native scale, canvas and grounding.
+
 A lineup is a faction. This skill previews its units and progression tree.
 
 Run from the game root with Python 3 and Pillow. Read the requested tree in

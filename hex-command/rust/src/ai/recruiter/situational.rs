@@ -5,6 +5,9 @@ use crate::data::*;
 
 pub(super) struct Situational;
 impl Recruiter for Situational {
+    fn kind(&self) -> Option<super::RecruiterKind> {
+        Some(super::RecruiterKind::Situational)
+    }
     fn recruit(
         &mut self,
         context: &mut crate::ai::context::RecruitmentContext<'_, '_>,
@@ -45,77 +48,80 @@ pub(super) fn choose_with_weights(
     weights: RecruitmentWeights,
 ) -> Option<Command> {
     let side = game.turn();
-    let leader = game
-        .units()
-        .iter()
-        .find(|u| game.belongs_to_phase(u, side) && u.is_leader())?;
     let required = orders.requirements.iter().find(|r| r.deficit(game) > 0);
     let reserved: rustc_hash::FxHashSet<_> =
         orders.reserved.iter().map(|t| game.site(&t.0)).collect();
     let mut choices = Vec::new();
-    for kind in game.recruitment_options(side) {
-        if required.is_some_and(|r| !r.accepts(game, kind)) {
-            continue;
-        }
-        let tiles: Vec<_> = game
-            .placement_tiles(leader, kind, false)
-            .into_iter()
-            .filter(|t| !reserved.contains(t))
-            .collect();
-        let Some(&tile) = tiles.first() else {
-            continue;
-        };
-        let rule = &game.rules().units[kind];
-        let mut recruit = Unit {
-            faction: leader.faction.clone(),
-            items: vec![],
-            ai_group: None,
-            id: 0,
-            kind,
-            side,
-            tile,
-            hp: rule.hp,
-            moved: true,
-            attacked: true,
-            experience: None,
-            name: None,
-            role: None,
-            retreating: None,
-            rebuilding: None,
-        };
-        let assessment =
-            super::evaluation::Assessment::with_weights(game, &recruit, predict, weights);
-        let copies = game
-            .units()
-            .iter()
-            .filter(|u| {
-                game.belongs_to_phase(u, side)
-                    && !u.is_leader()
-                    && game.rules().units[u.kind].family == rule.family
-            })
-            .count();
-        if rule.cost > game.gold()[side.index()] && game.income(side) == 0 {
-            continue;
-        }
-        // An unaffordable unit must justify the income spent waiting rather
-        // than fielding an available alternative now.
-        let wait = f64::from((rule.cost - game.gold()[side.index()]).max(0))
-            / f64::from(game.income(side).max(1));
-        for tile in tiles {
-            recruit.tile = tile;
-            let score = assessment.recruitment_breakdown(game, &recruit).total
-                / rule.cost.max(1) as f64
-                / (1.0 + copies as f64 * weights.duplicate_penalty)
-                / (1.0 + wait * weights.wait_penalty)
-                + super::random(
-                    seed,
-                    &format!("situational:{}:{}:{tile}", game.round(), rule.id),
-                ) * 0.0005;
-            choices.push((score, kind, tile));
+    for leader in game
+        .units()
+        .iter()
+        .filter(|u| game.belongs_to_phase(u, side) && u.is_leader())
+    {
+        for kind in game.recruitment_options_for(leader) {
+            if required.is_some_and(|r| !r.accepts(game, kind)) {
+                continue;
+            }
+            let tiles: Vec<_> = game
+                .placement_tiles(leader, kind, false)
+                .into_iter()
+                .filter(|t| !reserved.contains(t))
+                .collect();
+            let Some(&tile) = tiles.first() else {
+                continue;
+            };
+            let rule = &game.rules().units[kind];
+            let price = game.recruit_cost(leader, kind);
+            let mut recruit = Unit {
+                faction: leader.faction.clone(),
+                items: vec![],
+                ai_group: None,
+                id: 0,
+                kind,
+                side,
+                tile,
+                hp: rule.hp,
+                moved: true,
+                attacked: true,
+                experience: None,
+                character: None,
+                role: None,
+                retreating: None,
+                rebuilding: None,
+            };
+            let assessment =
+                super::evaluation::Assessment::with_weights(game, &recruit, predict, weights);
+            let copies = game
+                .units()
+                .iter()
+                .filter(|u| {
+                    game.belongs_to_phase(u, side)
+                        && !u.is_leader()
+                        && game.rules().units[u.kind].family == rule.family
+                })
+                .count();
+            if price > game.gold_for_unit(leader) && game.income(side) == 0 {
+                continue;
+            }
+            // An unaffordable unit must justify the income spent waiting rather
+            // than fielding an available alternative now.
+            let wait = f64::from((price - game.gold_for_unit(leader)).max(0))
+                / f64::from(game.income(side).max(1));
+            for tile in tiles {
+                recruit.tile = tile;
+                let score = assessment.recruitment_breakdown(game, &recruit).total
+                    / price.max(1) as f64
+                    / (1.0 + copies as f64 * weights.duplicate_penalty)
+                    / (1.0 + wait * weights.wait_penalty)
+                    + super::random(
+                        seed,
+                        &format!("situational:{}:{}:{tile}", game.round(), rule.id),
+                    ) * 0.0005;
+                choices.push((score, leader, kind, tile));
+            }
         }
     }
-    let (_, kind, tile) = choices.into_iter().max_by(|a, b| a.0.total_cmp(&b.0))?;
-    if game.rules().units[kind].cost > game.gold()[side.index()] {
+    let (_, leader, kind, tile) = choices.into_iter().max_by(|a, b| a.0.total_cmp(&b.0))?;
+    if game.recruit_cost(leader, kind) > game.gold_for_unit(leader) {
         return None;
     }
     Some(crate::ai::recruit_command(game, leader.id, kind, tile))
@@ -124,6 +130,7 @@ pub(super) fn choose_with_weights(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ai::recruiter::fixtures;
     use crate::logic::Game;
 
     // Controlled alternatives test the decision, independent of authored balance.
@@ -159,10 +166,11 @@ mod tests {
 
     fn battle(rules: &Rules, a: usize, b: usize) -> Game<'_> {
         let mut game = Game::new(rules, "mirror");
-        game.units.retain(|u| u.is_leader());
-        game.roster_changed();
-        game.pools = Some([vec![a, b], vec![a, b]]);
-        game.gold[0] = 10;
+        fixtures::units(&mut game, |units| {
+            units.retain(|u| u.is_leader());
+        });
+        game.configure_arena(Some([vec![a, b], vec![a, b]]), None);
+        fixtures::edit(&mut game, |state| state.gold["player"] = 10);
         game
     }
 
@@ -182,7 +190,7 @@ mod tests {
         rules.units[a].attacks[0].count = 3;
         rules.units[b].attacks[0].damage = 18;
         let enemy = battle(&rules, a, b)
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Enemy)
             .unwrap()
@@ -205,7 +213,7 @@ mod tests {
                 rules.units[b].thorns = 12;
             }
             let enemy = battle(&rules, a, b)
-                .units
+                .units()
                 .iter()
                 .find(|u| u.side == Side::Enemy)
                 .unwrap()
@@ -231,20 +239,23 @@ mod tests {
         rules.units[b].attacks[0].damage = 20;
         let mut game = battle(&rules, a, b);
         let village = game
-            .terrain
+            .terrain()
             .iter()
             .enumerate()
             .find(|(_, t)| **t == rules.terrains["village"])
             .unwrap()
             .0;
-        game.owners[village] = Some(Side::Player);
-        game.gold[0] = 10;
+        fixtures::edit(&mut game, |state| {
+            state.tiles[village].owner = Some("player".into())
+        });
+        fixtures::edit(&mut game, |state| state.gold["player"] = 10);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), None);
-        game.round += 1;
-        game.gold[0] += game.income(Side::Player);
+        fixtures::edit(&mut game, |state| state.round += 1);
+        let income = game.income(Side::Player);
+        fixtures::edit(&mut game, |state| state.gold["player"] += income);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
-        game.gold[0] = 10;
-        game.owners[village] = None;
+        fixtures::edit(&mut game, |state| state.gold["player"] = 10);
+        fixtures::edit(&mut game, |state| state.tiles[village].owner = None);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
     }
 
@@ -255,15 +266,17 @@ mod tests {
         rules.units[b].hp = 54;
         let mut game = battle(&rules, a, b);
         let village = game
-            .terrain
+            .terrain()
             .iter()
             .enumerate()
             .find(|(_, t)| **t == rules.terrains["village"])
             .unwrap()
             .0;
-        game.owners[village] = Some(Side::Player);
+        fixtures::edit(&mut game, |state| {
+            state.tiles[village].owner = Some("player".into())
+        });
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
-        game.gold[0] = 12;
+        fixtures::edit(&mut game, |state| state.gold["player"] = 12);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
     }
 
@@ -280,7 +293,7 @@ mod tests {
         rules.units[a].attacks[0].count = 3;
         rules.units[b].attacks[0].damage = 18;
         let enemy = battle(&rules, a, b)
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Enemy)
             .unwrap()
@@ -304,7 +317,7 @@ mod tests {
         rules.units[a].attacks[0].damage_type = DamageType::Blade;
         rules.units[b].attacks[0].damage_type = DamageType::Pierce;
         let enemy = battle(&rules, a, b)
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Enemy)
             .unwrap()
@@ -330,24 +343,26 @@ mod tests {
         rules.units[b].costs[water] = Some(1);
         let mut game = battle(&rules, a, b);
         let leader = game
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Player)
             .unwrap()
             .clone();
         let enemy = game
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Enemy)
             .unwrap()
             .clone();
-        for tile in 0..game.terrain.len() {
-            game.set_terrain(tile, water);
-        }
-        game.set_terrain(leader.tile, rules.terrains["keep"]);
-        game.set_terrain(enemy.tile, rules.terrains["keep"]);
-        for tile in game.board.adjacent[leader.tile].clone() {
-            game.set_terrain(tile, rules.terrains["plains"]);
+        fixtures::edit(&mut game, |state| {
+            for tile in &mut state.tiles {
+                tile.terrain = rules.terrain_names[water].clone();
+            }
+        });
+        fixtures::terrain(&mut game, leader.tile, rules.terrains["keep"]);
+        fixtures::terrain(&mut game, enemy.tile, rules.terrains["keep"]);
+        for tile in game.board().adjacent[leader.tile].clone() {
+            fixtures::terrain(&mut game, tile, rules.terrains["plains"]);
         }
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
         let mut orders = RecruitmentOrders {
@@ -361,11 +376,11 @@ mod tests {
         orders.reserved = game
             .placement_tiles(&leader, a, true)
             .iter()
-            .map(|&t| game.board.ids[t].as_str().into())
+            .map(|&t| game.board().ids[t].as_str().into())
             .collect();
         assert_eq!(selected(&game, &orders), None);
         orders.reserved.clear();
-        game.gold[0] = 0;
+        fixtures::edit(&mut game, |state| state.gold["player"] = 0);
         assert_eq!(selected(&game, &orders), None);
     }
 
@@ -376,13 +391,13 @@ mod tests {
         rules.units[b].attacks[0].damage = 0;
         let mut game = battle(&rules, a, b);
         let leader = game
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, a, true)[0];
-        let id = game.add(a, Side::Player, tile);
+        let id = fixtures::add(&mut game, a, Side::Player, tile);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
         let mut healer = leader.clone();
         healer.id = 0;
@@ -396,7 +411,9 @@ mod tests {
         };
         let healthy = assess(&game);
         let index = game.index(id).unwrap();
-        game.units[index].hp = 1;
+        fixtures::units(&mut game, |units| {
+            units[index].hp = 1;
+        });
         let wounded = assess(&game);
         // Wounds create healing value; they do not guarantee that buying a
         // healer beats every alternative under every combat valuation.

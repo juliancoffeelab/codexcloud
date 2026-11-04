@@ -13,7 +13,7 @@ pub struct PresentationInput {
     pub units: Vec<StartingUnit>,
     #[serde(default)]
     pub pending: Vec<SpawnUnit>,
-    pub lighting: BattlefieldLighting,
+    pub lighting: MapLighting,
     #[serde(default)]
     pub marks: Vec<String>,
     #[serde(default)]
@@ -28,17 +28,19 @@ pub struct ConditionUnit<'a> {
     pub faction: Option<&'a str>,
     pub side: Side,
     pub kind: &'a str,
-    pub name: Option<&'a str>,
+    pub character: Option<&'a str>,
+    pub ai_group: Option<&'a str>,
     pub position: Option<(i32, i32)>,
 }
 /// Conditions query current facts without materializing a serializable battlefield.
 pub trait ConditionContext {
     fn factions(&self) -> &[Faction];
-    fn owns(&self, id: &str, side: Side) -> bool;
+    fn owns(&self, id: &str, side: &str) -> bool;
     fn position(&self, id: &str) -> Option<(i32, i32)>;
+    fn visible_at(&self, position: (i32, i32)) -> bool;
     fn any_unit(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
     fn any_pending(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
-    fn choices(&self) -> &[String];
+    fn flag(&self, id: &str) -> bool;
     fn marks(&self) -> &[String];
     fn round(&self) -> u32;
 }
@@ -46,16 +48,31 @@ impl ConditionContext for PresentationInput {
     fn factions(&self) -> &[Faction] {
         &self.factions
     }
-    fn owns(&self, id: &str, side: Side) -> bool {
+    fn owns(&self, id: &str, side: &str) -> bool {
         self.tiles
             .iter()
-            .any(|t| t.id == id && t.owner == Some(side))
+            .any(|t| t.id == id && t.owner.as_deref() == Some(side))
     }
     fn position(&self, id: &str) -> Option<(i32, i32)> {
         self.tiles
             .iter()
             .find(|t| t.id == id)
             .map(|t| (t.col, t.row))
+    }
+    fn visible_at(&self, position: (i32, i32)) -> bool {
+        self.tiles
+            .iter()
+            .find(|tile| (tile.col, tile.row) == position)
+            .is_some_and(|tile| {
+                tile.fog.as_ref().is_none_or(|rule| {
+                    (rule.remember
+                        && self
+                            .memory
+                            .iter()
+                            .any(|key| key.strip_prefix("fog:") == Some(tile.id.as_str())))
+                        || matches_fog(&rule.condition, self, Some(&tile.id))
+                })
+            })
     }
     #[inline(always)]
     fn any_unit(&self, mut predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool {
@@ -64,8 +81,9 @@ impl ConditionContext for PresentationInput {
                 faction: u.faction.as_deref(),
                 side: u.side,
                 kind: &u.r#type,
-                name: u.name.as_deref(),
-                position: Some((u.col, u.row)),
+                character: u.character.as_deref(),
+                ai_group: u.ai_group.as_deref(),
+                position: self.position(&u.tile),
             })
         })
     }
@@ -76,13 +94,14 @@ impl ConditionContext for PresentationInput {
                 faction: u.faction.as_deref(),
                 side: u.side,
                 kind: &u.r#type,
-                name: u.name.as_deref(),
+                character: u.character.as_deref(),
+                ai_group: None,
                 position: None,
             })
         })
     }
-    fn choices(&self) -> &[String] {
-        &self.choices
+    fn flag(&self, id: &str) -> bool {
+        self.choices.iter().any(|v| v == id)
     }
     fn marks(&self) -> &[String] {
         &self.marks
@@ -93,133 +112,122 @@ impl ConditionContext for PresentationInput {
 }
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
 pub fn matches(condition: &Condition, input: &impl ConditionContext, target: Option<&str>) -> bool {
+    evaluate(condition, input, target, true)
+}
+/// Visibility predicates cannot recursively query their own fog rules.
+pub fn matches_fog(
+    condition: &Condition,
+    input: &impl ConditionContext,
+    target: Option<&str>,
+) -> bool {
+    evaluate(condition, input, target, false)
+}
+fn evaluate(
+    condition: &Condition,
+    input: &impl ConditionContext,
+    target: Option<&str>,
+    allow_visibility: bool,
+) -> bool {
     let unit_matches =
-        |unit: ConditionUnit<'_>, side, kind: &Option<String>, name: &Option<String>| {
+        |unit: ConditionUnit<'_>, side, kind: &Option<String>, character: &Option<String>| {
             faction_matches_side(input.factions(), unit.faction, unit.side, side)
                 && kind.as_deref().is_none_or(|kind| unit.kind == kind)
-                && name.as_deref().is_none_or(|name| unit.name == Some(name))
+                && character
+                    .as_deref()
+                    .is_none_or(|character| unit.character == Some(character))
         };
     match condition {
         Condition::Owner { tile, side } => tile
             .as_deref()
             .or(target)
-            .is_some_and(|id| input.owns(id, *side)),
+            .is_some_and(|id| input.owns(id, side)),
         Condition::Proximity {
             tile,
             radius,
             side,
             unit_type,
             unit_types,
-            name,
+            character,
         } => {
             let Some(position) = tile.as_deref().or(target).and_then(|id| input.position(id))
             else {
                 return false;
             };
             input.any_unit(|unit| {
-                unit_matches(unit, *side, unit_type, name)
+                unit_matches(unit, *side, unit_type, character)
                     && (unit_types.is_empty() || unit_types.iter().any(|kind| kind == unit.kind))
                     && unit
                         .position
                         .is_some_and(|p| hex_distance(position, p) <= *radius)
             })
         }
+        Condition::VisibleUnits { side, unit_types } => {
+            allow_visibility
+                && input.any_unit(|unit| {
+                    faction_matches_side(input.factions(), unit.faction, unit.side, *side)
+                        && (unit_types.is_empty()
+                            || unit_types.iter().any(|kind| kind == unit.kind))
+                        && unit
+                            .position
+                            .is_some_and(|position| input.visible_at(position))
+                })
+        }
         Condition::HasUnits {
+            ai_group,
             side,
             unit_type,
-            name,
-        } => input.any_unit(|unit| unit_matches(unit, *side, unit_type, name)),
+            character,
+        } => input.any_unit(|unit| {
+            unit_matches(unit, *side, unit_type, character)
+                && ai_group
+                    .as_deref()
+                    .is_none_or(|group| unit.ai_group == Some(group))
+        }),
         Condition::NoUnits {
             side,
             unit_type,
-            name,
+            character,
         } => {
-            !input.any_unit(|unit| unit_matches(unit, *side, unit_type, name))
-                && !input.any_pending(|unit| unit_matches(unit, *side, unit_type, name))
+            !input.any_unit(|unit| unit_matches(unit, *side, unit_type, character))
+                && !input.any_pending(|unit| unit_matches(unit, *side, unit_type, character))
         }
-        Condition::Choice { choice } => input.choices().contains(choice),
+        Condition::Choice { choice } => input.flag(choice),
+        Condition::Flag { flag } => input.flag(flag),
         Condition::Event { event } => input
             .marks()
             .iter()
             .any(|mark| mark.strip_prefix("event:") == Some(event)),
         Condition::Round { round } => input.round() >= *round,
-        Condition::All { conditions } => conditions.iter().all(|c| matches(c, input, target)),
-        Condition::Any { conditions } => conditions.iter().any(|c| matches(c, input, target)),
+        Condition::All { conditions } => conditions
+            .iter()
+            .all(|c| evaluate(c, input, target, allow_visibility)),
+        Condition::Any { conditions } => conditions
+            .iter()
+            .any(|c| evaluate(c, input, target, allow_visibility)),
     }
 }
 
 /// Presentation rules read the same borrowed context as gameplay conditions.
 pub trait PresentationContext: ConditionContext {
-    fn lighting(&self) -> &BattlefieldLighting;
+    fn lighting(&self) -> &MapLighting;
+    fn visit_lights(&self, visitor: impl FnMut(&str, i32, i32, &TileLight));
     fn visit_fog(&self, visitor: impl FnMut(&str, &ConditionRule));
     fn fog_index(&self, id: &str) -> usize;
     fn fog_remembered(&self, id: &str) -> bool;
 }
-// Numeric light identities fit in a small stack buffer; durable keys are allocated
-// only when a fact first becomes remembered.
-struct Key {
-    bytes: [u8; 64],
-    len: usize,
-}
-impl Key {
-    fn new(args: std::fmt::Arguments<'_>) -> Self {
-        use std::fmt::Write;
-        let mut key = Self {
-            bytes: [0; 64],
-            len: 0,
-        };
-        key.write_fmt(args).expect("numeric condition key");
-        key
-    }
-    fn text(&self) -> &str {
-        std::str::from_utf8(&self.bytes[..self.len]).expect("numeric condition key")
-    }
-}
-impl std::fmt::Write for Key {
-    fn write_str(&mut self, value: &str) -> std::fmt::Result {
-        let end = self.len + value.len();
-        if end > self.bytes.len() {
-            return Err(std::fmt::Error);
-        }
-        self.bytes[self.len..end].copy_from_slice(value.as_bytes());
-        self.len = end;
-        Ok(())
-    }
-}
-fn resolved_light(light: &BattlefieldLight) -> BattlefieldLight {
-    BattlefieldLight {
-        color: light.color,
-        fixture: light.fixture,
-        col: light.col,
-        row: light.row,
-        dx: light.dx,
-        dy: light.dy,
-        radius: light.radius,
-        power: light.power,
-        when: None,
-    }
-}
 /// Render current facts without cloning or updating durable condition memory.
 pub fn render(input: &impl PresentationContext, memory: &[String]) -> BattlefieldPresentation {
     let lighting = input.lighting();
-    let lights = lighting
-        .lights
-        .iter()
-        .enumerate()
-        .filter(|(i, light)| {
-            light.when.as_ref().is_none_or(|rule| {
-                let key = Key::new(format_args!("light:{i}:{},{}", light.col, light.row));
-                let remembered = rule.remember && memory.iter().any(|m| m == key.text());
-                remembered
-                    || matches(
-                        &rule.condition,
-                        input,
-                        Some(Key::new(format_args!("{},{}", light.col, light.row)).text()),
-                    )
-            })
-        })
-        .map(|(_, light)| resolved_light(light))
-        .collect();
+    let mut lights = Vec::new();
+    input.visit_lights(|id, col, row, light| {
+        let active = light.when.as_ref().is_none_or(|rule| {
+            (rule.remember && memory.iter().any(|m| m.strip_prefix("light:") == Some(id)))
+                || matches(&rule.condition, input, Some(id))
+        });
+        if active {
+            lights.push(light.at(col, row));
+        }
+    });
     let mut fog = Vec::new();
     input.visit_fog(|id, rule| {
         let remembered = rule.remember && input.fog_remembered(id);
@@ -242,20 +250,15 @@ pub fn discover(
     known: &mut [u64],
 ) -> Vec<String> {
     let mut added = Vec::new();
-    for (i, light) in input.lighting().lights.iter().enumerate() {
+    input.visit_lights(|id, _, _, light| {
         if let Some(rule) = light.when.as_ref().filter(|r| r.remember) {
-            let key = Key::new(format_args!("light:{i}:{},{}", light.col, light.row));
-            if !memory.iter().any(|m| m == key.text())
-                && matches(
-                    &rule.condition,
-                    input,
-                    Some(Key::new(format_args!("{},{}", light.col, light.row)).text()),
-                )
+            if !memory.iter().any(|m| m.strip_prefix("light:") == Some(id))
+                && matches(&rule.condition, input, Some(id))
             {
-                added.push(key.text().to_owned());
+                added.push(format!("light:{id}"));
             }
         }
-    }
+    });
     input.visit_fog(|id, rule| {
         if rule.remember {
             let i = input.fog_index(id);
@@ -288,23 +291,15 @@ pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<Strin
     let lighting = BattlefieldLighting {
         time: input.lighting.time,
         lights: input
-            .lighting
-            .lights
+            .tiles
             .iter()
-            .enumerate()
-            .filter(|(i, light)| {
-                light.when.as_ref().is_none_or(|rule| {
-                    rule_met(
-                        rule,
-                        format!("light:{i}:{},{}", light.col, light.row),
-                        &format!("{},{}", light.col, light.row),
-                    )
-                })
-            })
-            .map(|(_, light)| {
-                let mut light = light.clone();
-                light.when = None;
+            .filter_map(|tile| {
+                let light = tile.light.as_ref()?;
                 light
+                    .when
+                    .as_ref()
+                    .is_none_or(|rule| rule_met(rule, format!("light:{}", tile.id), &tile.id))
+                    .then(|| light.at(tile.col, tile.row))
             })
             .collect(),
     };

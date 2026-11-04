@@ -4,46 +4,46 @@
   "hints": ["Find the scouts in the western woods to reinforce your patrol."],
   "intro": [
     {
-      "speaker": "Ivo",
       "portrait": "scout",
-      "text": "That landing lamp has burned every night since I was a boy. Last night it went out. So did every window on the other bank."
+      "text": "That landing lamp has burned every night since I was a boy. Last night it went out. So did every window on the other bank.",
+      "character": "ivo"
     },
     {
-      "speaker": "Nera",
       "portrait": "swordsman",
-      "text": "And the ferry?"
+      "text": "And the ferry?",
+      "character": "nera"
     },
     {
-      "speaker": "Ivo",
       "portrait": "scout",
-      "text": "Still tied up over there. We’ll have to take the fords round the island."
+      "text": "Still tied up over there. We’ll have to take the fords round the island.",
+      "character": "ivo"
     },
     {
-      "speaker": "Oren",
       "portrait": "adept",
-      "text": "The wind’s coming down the valley. That mist is creeping the other way."
+      "text": "The wind’s coming down the valley. That mist is creeping the other way.",
+      "character": "oren"
     },
     {
-      "speaker": "Ivo",
       "portrait": "scout",
-      "text": "You studied fog?"
+      "text": "You studied fog?",
+      "character": "ivo"
     },
     {
-      "speaker": "Oren",
       "portrait": "adept",
-      "text": "A whole winter at the Collegium. This wasn’t in the lessons."
+      "text": "A whole winter at the Collegium. This wasn’t in the lessons.",
+      "character": "oren"
     },
     {
-      "speaker": "Nera",
       "portrait": "swordsman",
-      "text": "Find the ferryman. Quickly. Whatever happened, he’s alone over there."
+      "text": "Find the ferryman. Quickly. Whatever happened, he’s alone over there.",
+      "character": "nera"
     }
   ],
   "victory": [
     {
-      "speaker": "Nera",
       "portrait": "swordsman",
-      "text": "Both lanterns are burning. Leave someone watching the crossing; the rest of us take the eastern road. We still have people to find."
+      "text": "Both lanterns are burning. Leave someone watching the crossing; the rest of us take the eastern road. We still have people to find.",
+      "character": "nera"
     }
   ],
   "debrief": "The patrol reached the ferryman and secured the eastern villages."

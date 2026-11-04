@@ -1,6 +1,9 @@
 //! Existing Rotation recruitment behavior, isolated behind the Recruiter contract.
 pub(super) struct Rotation;
 impl super::Recruiter for Rotation {
+    fn kind(&self) -> Option<super::RecruiterKind> {
+        Some(super::RecruiterKind::Rotation)
+    }
     fn recruit(
         &mut self,
         context: &mut crate::ai::context::RecruitmentContext<'_, '_>,

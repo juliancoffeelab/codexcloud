@@ -178,7 +178,10 @@ impl NativeEngineFactory {
     pub fn catalog(&self) -> Result<Ts<CatalogResponse>, JsError> {
         let mut campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
         campaigns.order_by(|a, b| a.id.cmp(&b.id));
+        let mut items: Vec<_> = self.rules.items.values().cloned().collect();
+        items.order_by(|a, b| a.id.cmp(&b.id));
         encode(Ok(CatalogView {
+            items,
             units: self.rules.units.clone(),
             terrain: self.rules.terrain_definitions.clone(),
             races: self.rules.race_definitions.clone(),
@@ -216,10 +219,10 @@ impl NativeEngineFactory {
     }
     /// Publish legal actions and display forecasts without exposing mutable state.
     pub fn inspect(&self, id: u32, revision: u32) -> Result<Ts<InspectionResponse>, JsError> {
-        encode(
-            self.battle(id, revision)
-                .map(|battle| battle.game(&self.rules).inspect(revision)),
-        )
+        encode(self.battle(id, revision).map(|battle| {
+            let game = battle.game(&self.rules);
+            crate::ai::policies::combat::inspect(game.view(), game.inspect(revision))
+        }))
     }
     /// Board topology and rule costs do not belong to each unit-action refresh.
     pub fn geometry(&self, id: u32, revision: u32) -> Result<Ts<BoardResponse>, JsError> {
@@ -394,7 +397,7 @@ impl NativeEngineFactory {
             };
             (std::mem::take(&mut battle.state.tiles), terrain)
         };
-        battle.board = game.board.clone();
+        battle.board = game.board_handle();
         battle.revision = battle
             .revision
             .checked_add(1)
@@ -407,12 +410,15 @@ impl NativeEngineFactory {
         let presentation = game.presentation();
         let inspection = if include_inspection {
             game.refresh_mission();
-            Some(game.inspect(battle.revision))
+            Some(crate::ai::policies::combat::inspect(
+                game.view(),
+                game.inspect(battle.revision),
+            ))
         } else {
             None
         };
         *battle.runtime_cache.borrow_mut() = game.runtime_cache();
-        let combat = game.combat_animation.take();
+        let combat = game.take_combat_animation();
         battle.state = game.into_state(tiles);
         Ok(Applied {
             terrain,
@@ -488,7 +494,7 @@ impl NativeEngineFactory {
             }
         })?;
         let cache = game.runtime_cache();
-        let board = game.board.clone();
+        let board = game.board_handle();
         let tiles = game.tiles();
         Ok(self.insert(game.into_state(tiles), saved.seed, board, cache))
     }
@@ -621,7 +627,7 @@ mod tests {
         let options = AiOptions {
             blocks: None,
             policy: AiPolicy::Balanced,
-            diplomacy: AiDiplomacy::Restrained,
+            diplomacy: AiDiplomacy::Diplomatic,
             recruitment_limit: Some(2),
         };
         factory.decision(original.id, 0, options).unwrap();
@@ -657,15 +663,15 @@ pub fn preview_presentation(
 }
 
 fn terrain_replaced(old: &State, board: &Rc<Board>, game: &Game<'_>) -> bool {
-    old.map_id != game.map_id
-        || old.map_revision != game.map_revision
-        || old.cols != game.cols
-        || old.rows != game.rows
-        || old.tiles.len() != game.board.ids.len()
-        || (!Rc::ptr_eq(board, &game.board)
+    old.map_id != game.map_id()
+        || old.map_revision != game.map_revision()
+        || old.cols != game.cols()
+        || old.rows != game.rows()
+        || old.tiles.len() != game.board().ids.len()
+        || (!Rc::ptr_eq(board, &game.board_handle())
             && old
                 .tiles
                 .iter()
-                .zip(&game.board.ids)
+                .zip(&game.board().ids)
                 .any(|(a, b)| a.id != *b))
 }

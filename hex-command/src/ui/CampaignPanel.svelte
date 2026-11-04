@@ -39,7 +39,7 @@
         unit.side === "player" &&
         !isLeader(unit) &&
         unit.role !== "courier" &&
-        !mission?.requiredCompanions?.includes(unit.name ?? "") &&
+        !mission?.requiredCompanions?.includes(unit.character ?? "") &&
         !(campaign && returnsWithStory(campaign, unit)),
     ),
   );
@@ -90,11 +90,11 @@
       {campaign.mission + 1}/{definition.missions.length}
     </p>
     <h3>Briefing</h3>
-    <p>{mission.briefing}</p>
-    {#if mission.hints.length}
+    <p>{view.game.story?.briefing ?? ""}</p>
+    {#if view.game.story?.hints.length}
       <h3>Hints</h3>
       <ul class="mission-items">
-        {#each mission.hints as hint}<li><span>{hint}</span></li>{/each}
+        {#each view.game.story?.hints ?? [] as hint}<li><span>{hint}</span></li>{/each}
       </ul>
     {/if}
     <h3>Objectives</h3>
@@ -151,7 +151,9 @@
               : "The company regroups"}
         </h3>
         <p>
-          {view.game.winner === "player" ? (mission.debrief ?? campaign.outcome) : campaign.outcome}
+          {view.game.winner === "player"
+            ? (view.game.story?.debrief ?? campaign.outcome)
+            : campaign.outcome}
         </p>
         {#if view.game.winner === "player" && !campaign.completed}
           <p>

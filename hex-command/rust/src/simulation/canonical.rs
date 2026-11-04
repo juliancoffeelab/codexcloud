@@ -23,6 +23,9 @@ impl Serialize for Canonical<'_, State> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let s = self.0;
         let mut map = serializer.serialize_map(None)?;
+        if let Some(armies) = &s.armies {
+            map.serialize_entry("armies", armies)?;
+        }
         if let Some(campaign) = &s.campaign {
             let value = serde_json::to_value(campaign).map_err(serde::ser::Error::custom)?;
             map.serialize_entry("campaign", &value)?;
@@ -76,9 +79,18 @@ impl Serialize for Canonical<'_, Tile> {
             )?;
         }
         map.serialize_entry("id", &t.id)?;
+        if let Some(light) = &t.light {
+            map.serialize_entry(
+                "light",
+                &serde_json::to_value(light).map_err(serde::ser::Error::custom)?,
+            )?;
+        }
         map.serialize_entry("owner", &t.owner)?;
         map.serialize_entry("row", &t.row)?;
         map.serialize_entry("terrain", &t.terrain)?;
+        if let Some(walls) = &t.walls {
+            map.serialize_entry("walls", walls)?;
+        }
         map.end()
     }
 }
@@ -90,6 +102,10 @@ impl Serialize for Canonical<'_, PublicUnit> {
             map.serialize_entry("aiGroup", group)?;
         }
         map.serialize_entry("attacked", &u.attacked)?;
+        if let Some(value) = &u.character {
+            map.serialize_entry("character", value)?;
+        }
+
         if let Some(value) = &u.experience {
             map.serialize_entry("experience", value)?;
         }
@@ -105,9 +121,6 @@ impl Serialize for Canonical<'_, PublicUnit> {
             )?;
         }
         map.serialize_entry("moved", &u.moved)?;
-        if let Some(value) = &u.name {
-            map.serialize_entry("name", value)?;
-        }
         if let Some(value) = &u.rebuilding {
             map.serialize_entry("rebuilding", value)?;
         }
@@ -125,9 +138,10 @@ impl Serialize for Canonical<'_, PublicUnit> {
 }
 impl Serialize for Canonical<'_, Gold> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        let mut map = serializer.serialize_map(Some(2))?;
-        map.serialize_entry("enemy", &self.0.enemy)?;
-        map.serialize_entry("player", &self.0.player)?;
+        let mut map = serializer.serialize_map(Some(self.0.len()))?;
+        for (id, amount) in self.0.iter() {
+            map.serialize_entry(id, amount)?;
+        }
         map.end()
     }
 }
@@ -163,7 +177,7 @@ mod tests {
             s.tiles[0].connections = Some(vec![HexDirection::E]);
             s.tiles[0].dead_ends = Some(vec![HexDirection::E]);
             s.tiles[0].floor = Some("河😀".into());
-            s.units[0].name = Some("name\\\"\n".into());
+            s.units[0].character = Some("name\\\"\n".into());
             s.units[0].retreating = Some(false);
             s.units[0].rebuilding = Some(true);
             s.units[0].experience = None;

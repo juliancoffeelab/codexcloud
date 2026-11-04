@@ -24,3 +24,13 @@ impl Campaigner for CampaignerKind {
         }
     }
 }
+
+/// Authored campaign goals for host diagnostics and route evaluation.
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn authored_goals(
+    authored: hex_command_battle::CampaignView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    side: crate::data::Side,
+) -> Vec<crate::data::Objective> {
+    mission::MissionPolicy::new(authored, phases).objectives(side)
+}

@@ -1,120 +1,87 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "necromancer",
-        "side": "player",
-        "col": 1,
-        "row": 4,
-        "name": "Orin",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "skeleton",
-        "side": "player",
-        "col": 5,
-        "row": 4
-      },
-      {
-        "type": "skeleton",
-        "side": "player",
-        "col": 2,
-        "row": 5
-      },
-      {
-        "type": "bonearcher",
-        "side": "player",
-        "col": 2,
-        "row": 3
-      },
-      {
-        "type": "commander",
-        "side": "enemy",
-        "col": 9,
-        "row": 4,
-        "name": "Captain Dain",
-        "role": "leader"
-      },
-      {
-        "type": "soldier",
-        "side": "enemy",
-        "col": 7,
-        "row": 3
-      },
-      {
-        "type": "warden",
-        "side": "enemy",
-        "col": 7,
-        "row": 5
-      },
-      {
-        "type": "adept",
-        "side": "enemy",
-        "col": 8,
-        "row": 4
+      "palette": "player",
+      "gold": 16,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "role": "leader",
+          "character": "orin",
+          "tile": "hex-0059-de5770129b"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0891-b20a50ef8c"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0412-0c9247ea66"
+        },
+        {
+          "type": "bonearcher",
+          "tile": "hex-0408-edbae05560"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "necromancer",
-      "side": "player",
-      "col": 1,
-      "row": 4,
-      "name": "Orin",
-      "role": "leader"
     },
     {
-      "type": "skeleton",
-      "side": "player",
-      "col": 5,
-      "row": 4
-    },
-    {
-      "type": "skeleton",
-      "side": "player",
-      "col": 2,
-      "row": 5
-    },
-    {
-      "type": "bonearcher",
-      "side": "player",
-      "col": 2,
-      "row": 3
-    },
-    {
-      "type": "commander",
-      "side": "enemy",
-      "col": 9,
-      "row": 4,
-      "name": "Captain Dain",
-      "role": "leader"
-    },
-    {
-      "type": "soldier",
-      "side": "enemy",
-      "col": 7,
-      "row": 3
-    },
-    {
-      "type": "warden",
-      "side": "enemy",
-      "col": 7,
-      "row": 5
-    },
-    {
-      "type": "adept",
-      "side": "enemy",
-      "col": 8,
-      "row": 4
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "character": "dain",
+          "tile": "hex-1019-90a76d4969"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0952-a980626eda"
+        },
+        {
+          "type": "warden",
+          "tile": "hex-0956-1372406dd4"
+        },
+        {
+          "type": "adept",
+          "tile": "hex-0987-a19805d204"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
-  ],
-  "recruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
-  "enemyRecruits": ["swordsman", "archer"],
-  "gold": 16,
-  "enemyGold": 0
+  ]
 }

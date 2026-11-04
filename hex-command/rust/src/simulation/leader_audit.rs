@@ -65,46 +65,50 @@ pub(crate) struct Pending {
     audit: LeaderAudit,
     alternatives: Vec<(usize, i32)>,
 }
-fn strength(game: &Game<'_>, side: Side) -> ArmyStrength {
+fn strength(game: &Game<'_>, leader: &Unit, opponent: bool) -> ArmyStrength {
     let mut total = ArmyStrength::default();
-    for unit in game
-        .units
-        .iter()
-        .filter(|u| u.side == side && !u.is_leader())
-    {
-        let rule = &game.rules.units[unit.kind];
+    for unit in game.units().iter().filter(|u| {
+        !u.is_leader()
+            && game.available_combatant(u)
+            && if opponent {
+                game.hostile(leader, u)
+            } else {
+                game.allied(leader, u)
+            }
+    }) {
+        let rule = &game.catalogue().units[unit.kind];
         total.units += 1;
-        total.cost += rule.cost;
+        let price = game.recruit_cost(unit, unit.kind);
+        total.cost += price;
         total.hp += unit.hp.max(0);
         total.max_hp += rule.hp;
-        total.hp_value +=
-            f64::from(rule.cost) * f64::from(unit.hp.max(0)) / f64::from(rule.hp.max(1));
+        total.hp_value += f64::from(price) * f64::from(unit.hp.max(0)) / f64::from(rule.hp.max(1));
     }
     total
 }
 fn state(game: &Game<'_>, unit: &Unit) -> LeaderState {
     LeaderState {
-        tile: game.board.ids[unit.tile].clone(),
+        tile: game.board().ids[unit.tile].clone(),
         hp: unit.hp,
-        max_hp: game.rules.units[unit.kind].hp,
+        max_hp: game.catalogue().units[unit.kind].hp,
     }
 }
 pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
-    game.units
+    game.units()
         .iter()
         .filter(|u| u.is_leader())
         .map(|leader| {
-            let own_phase = leader.side == game.turn;
+            let own_phase = leader.side == game.turn();
             let alternatives = if own_phase {
                 let mut tiles = vec![leader.tile];
                 tiles.extend(game.reachable(leader).iter().map(|&(tile, _)| tile));
                 tiles.sort_unstable();
                 tiles.dedup();
-                audit_leader_exposure(game, leader, tiles)
+                audit_leader_exposure(game.phase_forecasts(), leader, tiles)
             } else {
                 vec![]
             };
-            let options = game.recruitment_options(leader.side);
+            let options = game.recruitment_options_for(leader);
             let legal_options = options
                 .iter()
                 .filter(|&&kind| !game.placement_tiles(leader, kind, false).is_empty())
@@ -121,14 +125,15 @@ pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
                     side: leader.side,
                     before: state(game, leader),
                     after: None,
-                    army_before: strength(game, leader.side),
+                    army_before: strength(game, leader, false),
                     army_after: ArmyStrength::default(),
-                    opponent_before: strength(game, leader.side.other()),
+                    opponent_before: strength(game, leader, true),
                     opponent_after: ArmyStrength::default(),
                     recruitment_before: RecruitmentAvailability {
-                        gold: game.gold[leader.side.index()],
+                        gold: game.gold_for_unit(leader),
                         on_owned_keep: game.is_keep(leader.tile)
-                            && game.owners[leader.tile] == Some(leader.side),
+                            && game.owners()[leader.tile].as_deref()
+                                == Some(game.unit_faction(leader)),
                         legal_options,
                         affordable_options,
                     },
@@ -144,8 +149,8 @@ pub(crate) fn finish(game: &Game<'_>, pending: Vec<Pending>) -> Vec<LeaderAudit>
         .map(|mut p| {
             let after = game.unit(p.leader.id);
             p.audit.after = after.map(|leader| state(game, leader));
-            p.audit.army_after = strength(game, p.leader.side);
-            p.audit.opponent_after = strength(game, p.leader.side.other());
+            p.audit.army_after = strength(game, &p.leader, false);
+            p.audit.opponent_after = strength(game, &p.leader, true);
             if let Some(&(min_tile, min_damage)) = p
                 .alternatives
                 .iter()
@@ -165,7 +170,7 @@ pub(crate) fn finish(game: &Game<'_>, pending: Vec<Pending>) -> Vec<LeaderAudit>
                         .1,
                     chosen_tile_damage: chosen.map(|&(_, damage)| damage),
                     min_damage,
-                    min_tile: game.board.ids[min_tile].clone(),
+                    min_tile: game.board().ids[min_tile].clone(),
                     reachable_tiles: p.alternatives.len(),
                     safe_tiles: p
                         .alternatives
@@ -173,8 +178,9 @@ pub(crate) fn finish(game: &Game<'_>, pending: Vec<Pending>) -> Vec<LeaderAudit>
                         .filter(|&&(_, damage)| damage < p.leader.hp)
                         .count(),
                     chosen_tile_reachable: chosen.is_some(),
-                    after_damage: after
-                        .map(|leader| audit_leader_exposure(game, leader, [leader.tile])[0].1),
+                    after_damage: after.map(|leader| {
+                        audit_leader_exposure(game.phase_forecasts(), leader, [leader.tile])[0].1
+                    }),
                 });
             }
             p.audit
@@ -190,13 +196,13 @@ mod tests {
         let mut rules = Catalog::load().unwrap();
         let original = Game::new(&rules, "mirror");
         let leader = original
-            .units
+            .units()
             .iter()
-            .find(|u| u.side == original.turn && u.is_leader())
+            .find(|u| u.side == original.turn() && u.is_leader())
             .unwrap()
             .clone();
         let enemy = original
-            .units
+            .units()
             .iter()
             .find(|u| u.side != leader.side)
             .unwrap()
@@ -210,14 +216,18 @@ mod tests {
             attack.range = 1;
         }
         let mut game = Game::new(&rules, "mirror");
-        game.units = vec![leader.clone(), enemy.clone()];
+        crate::tests::edit(&mut game, |state| {
+            state
+                .units
+                .retain(|u| u.id == format!("u{}", leader.id) || u.id == format!("u{}", enemy.id))
+        });
         let mut fixture = None;
-        for tile in 0..game.board.ids.len() {
+        for tile in 0..game.board().ids.len() {
             if tile == leader.tile || game.cost(enemy.kind, tile) == u16::MAX {
                 continue;
             }
-            game.units[1].tile = tile;
-            game.roster_changed();
+            let target = game.board().ids[tile].clone();
+            crate::tests::edit(&mut game, |state| state.units[1].tile = target);
             let pending = begin(&game);
             let own = pending.iter().find(|p| p.leader.id == leader.id).unwrap();
             if own
@@ -237,8 +247,8 @@ mod tests {
         }
         let (pending, chosen) =
             fixture.expect("fixture has a safe alternative and an exposed destination");
-        game.units[0].tile = chosen;
-        game.roster_changed();
+        let target = game.board().ids[chosen].clone();
+        crate::tests::edit(&mut game, |state| state.units[0].tile = target);
         let audit = finish(&game, pending);
         let own = audit.iter().find(|a| a.side == leader.side).unwrap();
         let exposure = own.exposure.as_ref().unwrap();
@@ -254,9 +264,9 @@ mod tests {
         let rules = Catalog::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
         let leader = game
-            .units
+            .units()
             .iter()
-            .find(|u| u.side == game.turn && u.is_leader())
+            .find(|u| u.side == game.turn() && u.is_leader())
             .unwrap()
             .clone();
         let pending = begin(&game);
@@ -266,15 +276,17 @@ mod tests {
             serde_json::to_value(game.state()).unwrap(),
             serde_json::to_value(unchanged).unwrap()
         );
-        let own = audit.iter().find(|a| a.side == game.turn).unwrap();
+        let own = audit.iter().find(|a| a.side == game.turn()).unwrap();
         let exposure = own.exposure.as_ref().unwrap();
         assert!(exposure.reachable_tiles >= 1);
         assert!(exposure.min_damage <= exposure.before_damage);
         assert!(exposure.chosen_tile_reachable);
         let pending = begin(&game);
-        game.units
-            .retain(|u| u.id != leader.id && u.side != leader.side);
-        game.roster_changed();
+        crate::tests::edit(&mut game, |state| {
+            state
+                .units
+                .retain(|u| u.id != format!("u{}", leader.id) && u.side != leader.side)
+        });
         let audit = finish(&game, pending);
         let dead = audit
             .iter()

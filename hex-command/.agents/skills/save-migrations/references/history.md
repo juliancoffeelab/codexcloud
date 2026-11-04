@@ -180,3 +180,110 @@ Gate cells become ordinary castle courtyards with their existing wall directions
 the former gate edge stays open. All castle cells lose the obsolete gates array.
 Ownership, fog, units, equipment, turns, victory and other battle progress remain
 unchanged. The conversion uses only frozen version-seventeen field contracts.
+
+## Version-eighteen migration
+
+The v18-to-v19 step installs the northern hills and relocated Tollkeeper keep in
+revision-four Villages saves, using a frozen tile delta. It advances that map to
+revision five and preserves unit positions, health, equipment, gold, turns,
+completed events and outcomes. Keep ownership transfers from the former keep,
+unless a unit already occupies the new keep. Other maps pass through unchanged.
+
+## Version-nineteen migration
+
+The v19-to-v20 step bends the eastern Villages road northeast and moves its
+departure from the sign at (18,5) to the northern pass at (17,0), advancing map
+revision five to six. Frozen tile deltas widen and ease the approach to the pass
+while preserving ownership, units, positions, health, gold, fog, completed events
+and outcomes. Other maps pass through unchanged. Departure objectives and script
+conditions use the northern pass through the current scenario definitions.
+
+## Version-twenty migration
+
+The v20-to-v21 step converts phase economies to faction economies. Existing
+player/enemy balances and settlement owners remain unchanged; declared factions
+receive empty independent treasuries. A frozen Villages revision-six tile delta
+adds the marsh keep and funding villages and advances the map to revision seven.
+Existing owners take precedence, followed by occupants on newly owned tiles.
+A living Edrin gains the leader role and keep order; his faction receives its
+explicit recruitment quotes. No units are spawned, revived or relocated, and no
+gold is invented. The obsolete `group:swamp-dead` activation marker is retired
+because that encounter is now unconditional. Health, items, progress, turns and
+outcomes remain intact.
+
+## Version-twenty-one migration
+
+The v21-to-v22 step removes two added Villages settlements, restoring forest at
+(13,7) and marsh at (16,10), and advances revision seven to eight. The conversion
+uses frozen coordinates and terrain values. It preserves ownership, units, gold,
+turns, equipment and campaign progress; existing armies are not disbanded and
+treasuries are not reset to the new opening budgets. Other maps pass through.
+
+## Version 23: tile-owned terrain lighting
+
+Version 22 map emitters move onto their owning tiles using frozen light definitions
+under `legacy/data/tile-lights-v22.json`. Remembered light keys change from list
+index/coordinates to tile identity. Gameplay state and fog discovery are preserved;
+rendered light positions are derived from tile coordinates.
+
+## Version 24: explicit base factions
+
+Faction rosters replace implicit player/enemy armies. The conversion appends frozen
+base controller definitions only where absent, preserving saved units, treasuries,
+existing faction definitions and campaign progress. Campaign recruitment continues
+to use its resolved authored pools and completed recruitment events.
+
+## Version 25: explicit diplomacy
+
+The old engine treated player/enemy as hostile when neither faction declared
+their relation. This conversion records that historical hostility on the existing
+faction definitions. Explicit neutral, allied or hostile declarations on either
+side remain unchanged. Units, gold and campaign progress are preserved.
+
+## Version 26: campaign character identities
+
+Frozen campaign registries map historical unit names and dialogue aliases to
+character IDs. Units, veterans, evacuated units, companion-loss markers and saved
+selector conditions retain their identity through conversion. Named dialogue
+uses character IDs; current captions come from Rust inspection. Generic narrator
+labels and existing prose/history remain unchanged. No gameplay commands run.
+
+## Version 27: stable tile identities
+
+Version 26 addressed board cells by coordinate strings. Version 27 gives each
+current authored cell a stable ID independent of its position. The frozen
+`legacy/data/tiles-v26.json` table converts saved tiles, unit positions, dropped
+items, faction-transfer and atmospheric conditions, defended
+site counters, remembered conditions, evacuated units and ritual/event markers.
+It preserves coordinates, ownership, health and progress; conversion never reads
+the current catalog.
+
+## Version 28: general authored events
+
+Frozen `legacy/data/events-v27.json` recipes convert Lantern Road's remembered
+events, choices, holds, partial spawns and captive death charges into explicit
+flags and active event state. Each death charge becomes its own structured mark.
+Pending spawn members retain their placement area and item IDs; completed
+members do not replay. Captive roles and obsolete faction transfer rules are
+converted with the same frozen recipe. Other campaigns keep their old event
+representation. Units, health, treasury and positions remain unchanged.
+
+## Version 29: stage-stamped flag history
+
+Flat campaign choices become per-flag histories of `{state, stage, turn}`. Frozen
+`legacy/data/flags-v28.json` identifies known producing stages. The conversion
+preserves current truth values, timestamps flags attributed to the current stage
+at the saved round, and uses turn zero for older/unknown incoming facts. Previous
+values and exact historical write turns were not stored and cannot be recovered.
+Retry discards the current stage's positive-turn changes while retaining incoming
+facts. Units, treasury, event state and positions remain unchanged.
+
+## Version 30: unified campaign events and story
+
+Frozen `legacy/data/events-v29.json` recipes convert the remaining campaigns'
+remembered events, waves, ownership counters, vigil/refuge progress, named deaths
+and recruitment unlocks into active events and explicit flags. Legacy diplomacy
+mode names become `diplomatic` and `unrestricted`. Current-stage deaths are
+removed from the incoming companion checkpoint so retry restores that chapter's
+starting company. Completed objectives stay complete; impossible active objectives
+receive explicit failure state. Units, health, positions and treasury are preserved.

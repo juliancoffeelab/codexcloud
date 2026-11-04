@@ -60,7 +60,7 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
         let keep = source
             .tiles
             .iter()
-            .find(|t| t.terrain == "keep" && t.owner == Some(unit.side))
+            .find(|t| t.terrain == "keep" && t.owner.as_deref() == Some(unit.side.faction_id()))
             .unwrap();
         assert_eq!(unit.tile, keep.id);
     }
@@ -94,7 +94,11 @@ fn arena_only_scenarios_are_loaded_without_playable_metadata() {
 #[test]
 fn invalid_authored_layout_and_capture_references_are_rejected() {
     for (map, targets, message) in [
-        ("missing-layout", vec!["0,0"], "unknown arena map"),
+        (
+            "missing-layout",
+            vec!["hex-0001-7256137ec1"],
+            "unknown arena map",
+        ),
         ("mirror", vec!["999,999"], "outside its authored map"),
     ] {
         let mut bundle = hex_command_core::data::catalog::embedded_bundle();
