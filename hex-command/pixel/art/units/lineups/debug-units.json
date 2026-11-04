@@ -1,0 +1,25 @@
+{
+  "race": "debug-units",
+  "trees": [
+    {
+      "base": {
+        "id": "debug-dragon",
+        "gameplayId": "debug-dragon",
+        "name": "Debug Dragon",
+        "level": 1,
+        "source": "debug-dragon"
+      },
+      "branches": []
+    },
+    {
+      "base": {
+        "id": "debug-wisp",
+        "gameplayId": "debug-wisp",
+        "name": "Debug Wisp",
+        "level": 1,
+        "source": "debug-wisp"
+      },
+      "branches": []
+    }
+  ]
+}

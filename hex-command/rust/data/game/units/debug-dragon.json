@@ -1,0 +1,150 @@
+{
+  "id": "debug-dragon",
+  "name": "Debug Dragon",
+  "role": "flank",
+  "race": "beast",
+  "hp": 9999,
+  "move": 1000,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "debug-blast",
+      "name": "Debug blast",
+      "damage": 999,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 6,
+      "sound": "attack-bow",
+      "spread": 0
+    },
+    {
+      "id": "debug-touch",
+      "name": "Debug touch",
+      "damage": 999,
+      "count": 1,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 0
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Debug flight",
+  "description": "Free rendering-test unit. Flies across every terrain, moves across the map in one turn and defeats ordinary targets in one hit. Reuses existing native artwork.",
+  "level": 1,
+  "family": "giant-bat",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "terrainModifiers": {
+    "road": {
+      "passable": true,
+      "cost": -100
+    },
+    "plains": {
+      "passable": true,
+      "cost": -100
+    },
+    "forest": {
+      "passable": true,
+      "cost": -100
+    },
+    "hill": {
+      "passable": true,
+      "cost": -100
+    },
+    "water": {
+      "passable": true,
+      "cost": -100
+    },
+    "bridge": {
+      "passable": true,
+      "cost": -100
+    },
+    "ford": {
+      "passable": true,
+      "cost": -100
+    },
+    "village": {
+      "passable": true,
+      "cost": -100
+    },
+    "keep": {
+      "passable": true,
+      "cost": -100
+    },
+    "marsh": {
+      "passable": true,
+      "cost": -100
+    },
+    "ruins": {
+      "passable": true,
+      "cost": -100
+    },
+    "fort": {
+      "passable": true,
+      "cost": -100
+    },
+    "grove": {
+      "passable": true,
+      "cost": -100
+    },
+    "landing": {
+      "passable": true,
+      "cost": -100
+    },
+    "ferry": {
+      "passable": true,
+      "cost": -100
+    },
+    "house": {
+      "passable": true,
+      "cost": -100
+    },
+    "mountain": {
+      "passable": true,
+      "cost": -100
+    },
+    "cave": {
+      "passable": true,
+      "cost": -100
+    },
+    "burned-village": {
+      "passable": true,
+      "cost": -100
+    },
+    "signpost": {
+      "passable": true,
+      "cost": -100
+    },
+    "fortification": {
+      "passable": true,
+      "cost": -100
+    },
+    "monastery": {
+      "passable": true,
+      "cost": -100
+    },
+    "church": {
+      "passable": true,
+      "cost": -100
+    },
+    "graveyard": {
+      "passable": true,
+      "cost": -100
+    },
+    "ritual-star": {
+      "passable": true,
+      "cost": -100
+    },
+    "ritual-spent": {
+      "passable": true,
+      "cost": -100
+    }
+  }
+}

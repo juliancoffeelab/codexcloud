@@ -1,0 +1,12 @@
+{
+  "subtitle": "Fly. Capture. Blast. Record.",
+  "briefing": "Recruit free Debug Dragons and Debug Wisps at the western keep. Fly across water and mountains, capture villages to switch on their lamps, and destroy the passive practice targets. Every death leaves a permanent red light. Fog clears within two hexes and stays explored. End the turn to refresh movement and attacks; targets stay put. Start a ten-minute trace in Settings \u2192 Debug tools. Restart Debug Ferry there for a clean map.",
+  "hints": [
+    "The captain recruits from the lit keep; each debug unit costs zero gold.",
+    "Dragons and wisps have 1,000 movement and lethal ranged attacks. Each still attacks once per turn.",
+    "This is an open-ended rendering playground; download your trace whenever you are done."
+  ],
+  "intro": [],
+  "victory": [],
+  "debrief": ""
+}

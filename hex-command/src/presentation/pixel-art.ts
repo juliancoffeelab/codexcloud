@@ -27,6 +27,8 @@ export const pixelSprites: Readonly<Record<string, string>> = {
   "enemy_crocodile-l3": "assets/sprites/56354bc560de09e8178ddf97.png",
   enemy_crossbowman: "assets/sprites/57b1d797c5db2afe0a141a35.png",
   enemy_deatharcher: "assets/sprites/03ec26b3e41742e14f84dc5e.png",
+  "enemy_debug-dragon": "assets/sprites/76a3700e83f4594839bf3947.png",
+  "enemy_debug-wisp": "assets/sprites/09da337b1ce4e8c0e3e906bc.png",
   enemy_direwolf: "assets/sprites/20e300d1182e93f564fdeff5.png",
   enemy_dragon: "assets/sprites/76a3700e83f4594839bf3947.png",
   "enemy_dragon-l2": "assets/sprites/9e295b8febf4af1a52629d05.png",
@@ -276,6 +278,8 @@ export const pixelSprites: Readonly<Record<string, string>> = {
   "player_crocodile-l3": "assets/sprites/f9a1e03d182925f165df06d4.png",
   player_crossbowman: "assets/sprites/aa9de9e60d8afa2db739c27b.png",
   player_deatharcher: "assets/sprites/9d9032fb54f383b7937ccdf3.png",
+  "player_debug-dragon": "assets/sprites/c6bede30fae6f16d202c3575.png",
+  "player_debug-wisp": "assets/sprites/d225a8d29722a2db3233c236.png",
   player_direwolf: "assets/sprites/c9b1c4d29fdf8fdcbaf3c2d9.png",
   player_dragon: "assets/sprites/c6bede30fae6f16d202c3575.png",
   "player_dragon-l2": "assets/sprites/a96f8c119b1faa5b1b48eb6d.png",
@@ -4880,6 +4884,8 @@ export const pixelTerrainLayouts: Readonly<
 export const pixelTerrainGeometry: Readonly<Record<string, { width: number; height: number; anchorX: number; anchorY: number; z: number }>> = {"castle-bell": {"width": 80, "height": 96, "anchorX": 40, "anchorY": 48, "z": 2}, "castle-wall": {"width": 80, "height": 96, "anchorX": 40, "anchorY": 48, "z": 1}};
 
 export const pixelUnitModels: Readonly<Record<string, string>> = {
+  "debug-dragon": "debug-dragon",
+  "debug-wisp": "debug-wisp",
   lich: "lich-commander-l2",
   mage: "storm-mage",
   necromancer: "lich-commander-l1",

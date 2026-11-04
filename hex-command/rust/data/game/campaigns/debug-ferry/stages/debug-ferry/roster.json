@@ -1,0 +1,275 @@
+{
+  "factions": [
+    {
+      "id": "player",
+      "name": "Debug Flight",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 0,
+      "recruits": [
+        {
+          "unit": "debug-dragon",
+          "cost": 0
+        },
+        {
+          "unit": "debug-wisp",
+          "cost": 0
+        }
+      ],
+      "units": [
+        {
+          "type": "debug-dragon",
+          "role": "leader",
+          "character": "debug-captain",
+          "tile": "hex-0766-4907292e1d"
+        },
+        {
+          "type": "debug-dragon",
+          "tile": "hex-0414-7d6a56c9b3"
+        },
+        {
+          "type": "debug-dragon",
+          "tile": "hex-0862-3ea2b77194"
+        },
+        {
+          "type": "debug-wisp",
+          "tile": "hex-0765-3a0bcc5d48"
+        },
+        {
+          "type": "debug-wisp",
+          "tile": "hex-0767-3b53c1c4da"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
+    },
+    {
+      "id": "enemy",
+      "name": "Practice targets",
+      "phase": "enemy",
+      "controller": {
+        "kind": "passive"
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "skeleton",
+          "tile": "hex-0930-69fa019ca8"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0162-beb4690177"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0258-2862bbdfdc"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0354-a86203c1c6"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0482-3cdf4edd99"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0973-079cfc7b3c"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0205-020a5ceb25"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0301-0e466e2256"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0429-a7aefddb8b"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0920-dffef5f471"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0152-5fa472486b"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0248-d63aa418aa"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0344-484f72bf97"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0472-a96d3ae453"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0091-76683d32ca"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0187-8d8ab817b0"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0283-5270ee2fe5"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0379-fe6753e749"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0507-58cb41ca51"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0988-17596734c1"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0124-7838ad1797"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0220-71856b5fe2"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0316-e66cc1373e"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0444-7f9879166b"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0476-aa57f89866"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0925-815fb4de6a"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-1021-41d4e1cc9b"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0157-85cb4b44b0"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0349-81ea4642c3"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0477-0b5144e7b1"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0094-9cab0ab0d2"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0190-2e619349a3"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0382-b14d136f5e"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0510-a8d9467b46"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0127-849459c3b2"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0223-33a9629ed8"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0447-7c44ee2e5d"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0160-1ee1cb508b"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0352-1f3e270f14"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0480-fd9239f7cf"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0355-3f598bb97a"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0483-8ac4d9c206"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0420-64e5601fe8"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0901-ec48d5047f"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0325-2c51359da3"
+        },
+        {
+          "type": "soldier",
+          "tile": "hex-0453-5d76a2bb0b"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0934-12d62c5dc5"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0358-7f78f7b6ca"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0486-e4f11eae93"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0967-2cdc707183"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0295-e54b3b8a27"
+        },
+        {
+          "type": "archer",
+          "tile": "hex-0423-42e3736ffa"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import type Phaser from "phaser";
 import { installPhaserWorkerPlatform } from "./phaser-worker-platform";
-import { MapRendererGpu } from "./map-renderer-gpu";
+import { MapRendererGpu, type Region } from "./map-renderer-gpu";
 import { lightPipeline } from "./phaser-light-pipeline";
 import { daylight, type BattlefieldLighting } from "./battlefield-lighting";
 import type { BattlefieldScene, BattlefieldUnit } from "./battlefield-scene";
@@ -34,6 +34,9 @@ export class PhaserBattlefield {
   private focused: string | null = null;
   private particles!: Phaser.GameObjects.Particles.ParticleEmitter;
   private previousTime = performance.now();
+  private invalid = true;
+  private clip: Region = { left: 0, top: 0, right: 1, bottom: 1 };
+  private effects = new Map<string, number>();
 
   private constructor(
     private P: typeof Phaser,
@@ -57,7 +60,22 @@ export class PhaserBattlefield {
       (this.scene as Phaser.Scene & { create(): void }).create = function (this: Phaser.Scene) {
         const terrain = this.add.extern().setDepth(-10000);
         (terrain as Phaser.GameObjects.Extern & { render(): void }).render = () => {
-          if (owner.terrainReady) owner.terrain.render(owner.lighting, owner.fog);
+          if (!owner.terrainReady) return;
+          const { nativeWidth, nativeHeight } = owner.terrain.statistics;
+          const clip = owner.clip;
+          owner.terrain.compose({
+            left: (clip.left * nativeWidth) / owner.canvas.width,
+            top: (clip.top * nativeHeight) / owner.canvas.height,
+            right: (clip.right * nativeWidth) / owner.canvas.width,
+            bottom: (clip.bottom * nativeHeight) / owner.canvas.height,
+          });
+          owner.context.enable(owner.context.SCISSOR_TEST);
+          owner.context.scissor(
+            clip.left,
+            owner.canvas.height - clip.bottom,
+            clip.right - clip.left,
+            clip.bottom - clip.top,
+          );
         };
         const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
         renderer.pipelines.add(
@@ -101,6 +119,7 @@ export class PhaserBattlefield {
           },
           render: {
             antialias: true,
+            clearBeforeRender: false,
             transparent: true,
             preserveDrawingBuffer: true,
             maxTextures: 8,
@@ -138,6 +157,7 @@ export class PhaserBattlefield {
       .setScroll(0, 0)
       .setZoom(width / size.width, height / size.height);
     this.outlineKey = undefined;
+    this.invalid = true;
   }
   hasSprite(url: string, key: string) {
     return key === this.key && this.game.textures.exists(url);
@@ -154,6 +174,7 @@ export class PhaserBattlefield {
     this.outlines?.destroy();
     this.outlines = undefined;
     this.particles.killAll();
+    this.effects.clear();
     for (const texture of this.game.textures.getTextureKeys()) this.game.textures.remove(texture);
     this.snapshot = undefined;
     this.focused = null;
@@ -209,8 +230,15 @@ export class PhaserBattlefield {
   }
   setBattlefield(snapshot: BattlefieldScene, _images: ReadonlyMap<string, ImageBitmap>) {
     this.prepareBattlefield(snapshot.key);
+    this.invalid = true;
     const previous = this.snapshot;
     this.snapshot = snapshot;
+    if (snapshot.reducedMotion)
+      for (const [id, actor] of this.actors)
+        if (actor.dying) {
+          this.destroyActor(actor);
+          this.actors.delete(id);
+        }
     const present = new Set(snapshot.units.map((unit) => unit.id));
     snapshot.units.forEach((unit, index) => {
       let actor = this.actors.get(unit.id);
@@ -229,6 +257,8 @@ export class PhaserBattlefield {
         }
       } else if (actor.unit.x !== unit.x || actor.unit.y !== unit.y) {
         this.scene.tweens.killTweensOf([actor.body, actor.bars]);
+        actor.body.setAlpha(1);
+        actor.bars.setAlpha(1);
         if (snapshot.reducedMotion) {
           actor.body.setPosition(unit.x, unit.y);
           actor.bars.setPosition(unit.x, unit.y);
@@ -316,6 +346,7 @@ export class PhaserBattlefield {
     if (focused !== this.focused) {
       this.focused = focused;
       this.outlineKey = undefined;
+      this.invalid = true;
     }
   }
   pulse(tile: string, kind: MotionKind) {
@@ -323,11 +354,14 @@ export class PhaserBattlefield {
     const center = this.snapshot?.tiles.find((t) => t.id === tile);
     if (!center) return;
     if (kind === "attack") this.particles.explode(12, center.x, center.y - 10);
+    this.effects.set(tile, performance.now() + 400);
     const actor = [...this.actors.values()].find((a) => a.unit.tile === tile && !a.dying);
     if (actor && kind === "select")
       this.scene.tweens.add({ targets: actor.body, alpha: 0.55, duration: 90, yoyo: true });
-    if (kind === "capture" && this.owners)
-      this.scene.tweens.add({ targets: this.owners, alpha: 0.5, duration: 150, yoyo: true });
+    if (kind === "capture" && this.owners) {
+      const badge = this.owners.getByName(tile);
+      if (badge) this.scene.tweens.add({ targets: badge, alpha: 0.5, duration: 150, yoyo: true });
+    }
   }
   private drawOutlines() {
     const snapshot = this.snapshot;
@@ -431,7 +465,11 @@ export class PhaserBattlefield {
     g.destroy();
   }
   get animating() {
-    return this.scene.tweens.getTweens().length > 0 || this.particles.getAliveParticleCount() > 0;
+    return (
+      this.scene.tweens.getTweens().length > 0 ||
+      this.particles.getAliveParticleCount() > 0 ||
+      this.effects.size > 0
+    );
   }
   render(lighting: BattlefieldLighting = daylight, fog: readonly string[]) {
     this.lighting = lighting;
@@ -441,11 +479,87 @@ export class PhaserBattlefield {
         this.destroyActor(actor);
         this.actors.delete(id);
       }
-    this.drawOutlines();
     const now = performance.now(),
       started = workerTraceStart();
     beginGpuTrace(this.context);
-    this.game.step(now, Math.min(100, now - this.previousTime));
+    this.drawOutlines();
+    const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+    renderer.pipelines.clear();
+    const changed = this.terrain.update(lighting, fog);
+    // All active sampler-array entries must reference float textures, including
+    // unused slots. Native passes bind integer light tables on units 2 and 3.
+    for (let unit = 0; unit < 8; unit++) {
+      this.context.activeTexture(this.context.TEXTURE0 + unit);
+      this.context.bindTexture(this.context.TEXTURE_2D, renderer.whiteTexture.webGLTexture);
+    }
+    renderer.pipelines.rebind();
+    const size = this.terrain.dimensions;
+    let region: Region | null = this.invalid
+      ? { left: 0, top: 0, right: size.width, bottom: size.height }
+      : null;
+    const include = (next: Region) => {
+      region = region
+        ? {
+            left: Math.min(region.left, next.left),
+            top: Math.min(region.top, next.top),
+            right: Math.max(region.right, next.right),
+            bottom: Math.max(region.bottom, next.bottom),
+          }
+        : next;
+    };
+    if (changed) {
+      const native = this.terrain.statistics;
+      include({
+        left: (changed.left * size.width) / native.nativeWidth,
+        top: (changed.top * size.height) / native.nativeHeight,
+        right: (changed.right * size.width) / native.nativeWidth,
+        bottom: (changed.bottom * size.height) / native.nativeHeight,
+      });
+    }
+    for (const actor of this.actors.values())
+      if (
+        actor.dying ||
+        this.scene.tweens.isTweening(actor.body) ||
+        (actor.sprite && this.scene.tweens.isTweening(actor.sprite))
+      ) {
+        include({
+          left: Math.min(actor.body.x, actor.unit.x) - 65,
+          top: Math.min(actor.body.y, actor.unit.y) - 90,
+          right: Math.max(actor.body.x, actor.unit.x) + 65,
+          bottom: Math.max(actor.body.y, actor.unit.y) + 65,
+        });
+      }
+    for (const [tile, expires] of this.effects) {
+      const center = this.snapshot?.tiles.find((t) => t.id === tile);
+      if (center)
+        include({
+          left: center.x - 110,
+          top: center.y - 110,
+          right: center.x + 110,
+          bottom: center.y + 110,
+        });
+      if (now >= expires) this.effects.delete(tile);
+    }
+    if (region) {
+      const sx = this.canvas.width / size.width,
+        sy = this.canvas.height / size.height;
+      const bounds = region as Region;
+      this.clip = {
+        left: Math.max(0, Math.floor(bounds.left * sx)),
+        top: Math.max(0, Math.floor(bounds.top * sy)),
+        right: Math.min(this.canvas.width, Math.ceil(bounds.right * sx)),
+        bottom: Math.min(this.canvas.height, Math.ceil(bounds.bottom * sy)),
+      };
+      const { left, top, right, bottom } = this.clip;
+      if (right > left && bottom > top) {
+        this.scene.cameras.main
+          .setViewport(left, top, right - left, bottom - top)
+          .setScroll(left / sx, top / sy)
+          .setZoom(sx, sy);
+        this.game.step(now, Math.min(100, now - this.previousTime));
+      }
+    }
+    this.invalid = false;
     this.previousTime = now;
     endGpuTrace();
     workerTraceEnd("Map render CPU submission", started, {

@@ -146,6 +146,24 @@
     <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
     <h3>Performance trace</h3>
     <TraceControls {view} onStart={() => dialog?.close()} />
+    <h3>Debug Ferry</h3>
+    <p>
+      Fly across the ferry map with free Debug Dragons and Wisps. Capture village lamps, explore fog
+      and one-shot passive targets to accumulate death lights. Recruit at the western keep; end the
+      turn to refresh attacks. This replaces the current battle.
+    </p>
+    <button
+      onclick={() => {
+        try {
+          actions.startCampaign("debug-ferry");
+          dialog?.close();
+        } catch (error) {
+          actions.error(error);
+        }
+      }}
+    >
+      Start Debug Ferry
+    </button>
     <h3>Mirror Night</h3>
     <p>
       Start a new Mirror battle at night: explore fog, capture villages to light their lamps, and

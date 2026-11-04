@@ -1,0 +1,18 @@
+{
+  "id": "debug-ferry",
+  "name": "Debug Ferry",
+  "tagline": "Free flying units. Fog, lamps and death lights.",
+  "description": "A rendering playground on the ferry battlefield with a free godlike faction and passive targets. Explore, capture villages and accumulate death lights without combat pressure.",
+  "shortDescription": "Fly across the ferry map and one-shot targets to stress rendering.",
+  "race": "beast",
+  "leader": "debug-dragon",
+  "ending": [],
+  "stages": ["stages/debug-ferry/stage.json"],
+  "playerDiplomacy": ["unrestricted"],
+  "characters": [
+    {
+      "id": "debug-captain",
+      "name": "Debug captain"
+    }
+  ]
+}

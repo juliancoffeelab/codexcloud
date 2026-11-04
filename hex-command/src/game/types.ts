@@ -69,6 +69,8 @@ export type AdvancedTroop =
   | "merfolk-tidecrusher-l3"
   | "merfolk-maceguard-l3";
 export type UnitType =
+  | "debug-dragon"
+  | "debug-wisp"
   | "skeletal-hound"
   | "captives"
   | "zombie-walker"
@@ -144,8 +146,9 @@ export type TerrainType =
 export type DamageType = "blade" | "pierce" | "impact";
 export type AttackCategory = "melee" | "ranged";
 export type CampaignId =
-  "lantern-road" | "green-accord" | "ashen-oath" | "borrowed-tide" | "mirror-night";
+  "lantern-road" | "green-accord" | "ashen-oath" | "borrowed-tide" | "mirror-night" | "debug-ferry";
 export type CampaignMapId =
+  | "debug-ferry"
   | "mirror-night"
   | CoastalMapId
   | "lantern-ferry"

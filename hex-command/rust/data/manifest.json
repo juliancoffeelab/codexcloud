@@ -116,7 +116,9 @@
     "game/units/captives.json",
     "game/units/zombie-walker.json",
     "game/units/zombie-decay-caster.json",
-    "game/units/skeletal-hound.json"
+    "game/units/skeletal-hound.json",
+    "game/units/debug-dragon.json",
+    "game/units/debug-wisp.json"
   ],
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",
@@ -129,7 +131,8 @@
     "game/campaigns/green-accord/campaign.json",
     "game/campaigns/ashen-oath/campaign.json",
     "game/campaigns/borrowed-tide/campaign.json",
-    "game/campaigns/mirror-night/campaign.json"
+    "game/campaigns/mirror-night/campaign.json",
+    "game/campaigns/debug-ferry/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",

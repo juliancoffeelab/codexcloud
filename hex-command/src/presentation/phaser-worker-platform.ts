@@ -1,10 +1,11 @@
-/** Phaser 3.90 customEnvironment host for a module worker.
- * Input, audio, DOM UI and browser scale management are disabled in game config.
- * Canvas/Image support is deliberately limited to native OffscreenCanvas and
- * Phaser's built-in textures; application artwork still uses fetch/ImageBitmap.
+/** Phaser 3.90 customEnvironment host for a dedicated module worker.
+ * DOM input/audio/scale features are disabled in the game configuration. The
+ * adapter supplies only startup canvas/Image support, never main-thread work.
+ * Revalidate this boundary when upgrading the pinned Phaser version.
  */
 export function installPhaserWorkerPlatform() {
-  const scope = globalThis as any;
+  const scope = globalThis as unknown as Record<string, unknown>;
+  if (scope.document) throw new Error("Phaser battlefield requires a dedicated worker");
   const box = () => ({ x: 0, y: 0, left: 0, top: 0, right: 1, bottom: 1, width: 1, height: 1 });
   const node = () => ({
     nodeType: 1,
@@ -17,7 +18,7 @@ export function installPhaserWorkerPlatform() {
     removeEventListener() {},
     getBoundingClientRect: box,
   });
-  const decorate = (canvas: any) =>
+  const decorate = (canvas: OffscreenCanvas) =>
     Object.assign(canvas, {
       style: {},
       getBoundingClientRect: () => ({
@@ -31,7 +32,7 @@ export function installPhaserWorkerPlatform() {
       parentNode: null,
       ownerDocument: scope.document,
     });
-  scope.window = scope;
+  scope.window = globalThis;
   scope.screen = { orientation: { addEventListener() {}, removeEventListener() {} } };
   scope.HTMLCanvasElement = OffscreenCanvas;
   scope.HTMLVideoElement = class {};
@@ -46,21 +47,33 @@ export function installPhaserWorkerPlatform() {
       tag === "canvas" ? decorate(new OffscreenCanvas(1, 1)) : node(),
     getElementById: () => null,
   };
+  // Phaser boots its built-in default/white textures through Image.src. The
+  // application sprite path remains fetch -> ImageBitmap -> direct GPU upload.
   scope.Image = function () {
-    const canvas: any = decorate(new OffscreenCanvas(1, 1));
+    const canvas = decorate(new OffscreenCanvas(1, 1)) as ReturnType<typeof decorate> & {
+      onload?: () => void;
+      onerror?: (error: unknown) => void;
+    };
     Object.defineProperty(canvas, "src", {
       set(url: string) {
-        fetch(url)
-          .then((r) => r.blob())
-          .then((b) => createImageBitmap(b))
+        void fetch(url)
+          .then((response) => {
+            if (!response.ok)
+              throw new Error(`Phaser built-in texture failed (${response.status})`);
+            return response.blob();
+          })
+          .then((blob) => createImageBitmap(blob))
           .then((image) => {
-            canvas.width = image.width;
-            canvas.height = image.height;
-            canvas.getContext("2d").drawImage(image, 0, 0);
-            image.close();
+            try {
+              canvas.width = image.width;
+              canvas.height = image.height;
+              canvas.getContext("2d")!.drawImage(image, 0, 0);
+            } finally {
+              image.close();
+            }
             canvas.onload?.();
           })
-          .catch((e) => canvas.onerror?.(e));
+          .catch((error) => canvas.onerror?.(error));
       },
     });
     return canvas;

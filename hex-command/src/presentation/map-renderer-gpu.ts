@@ -16,7 +16,7 @@ type Target = {
   width: number;
   height: number;
 };
-type Region = { left: number; top: number; right: number; bottom: number };
+export type Region = { left: number; top: number; right: number; bottom: number };
 
 type Program = { program: WebGLProgram; uniforms: Record<string, WebGLUniformLocation | null> };
 
@@ -307,6 +307,11 @@ export class MapRendererGpu {
   ) {
     const gl = this.gl,
       { width, height } = terrainMapDimensions(plan);
+    // Phaser's previous camera viewport must not clip native target assembly.
+    gl.bindVertexArray(null);
+    gl.disable(gl.SCISSOR_TEST);
+    gl.disable(gl.STENCIL_TEST);
+    gl.disable(gl.DEPTH_TEST);
     if (gl.isContextLost()) throw new Error("Map GPU context was lost. Retry map rendering.");
     const viewport = gl.getParameter(gl.MAX_VIEWPORT_DIMS) as Int32Array;
     if (
@@ -711,8 +716,9 @@ export class MapRendererGpu {
     return vertical;
   }
 
-  private compose(region: Region) {
+  compose(region: Region) {
     const gl = this.gl;
+    gl.disable(gl.BLEND);
     // Compose changed pixels straight into the retained visible drawing buffer.
     this.bind(null);
     this.scissor(region, this.canvas);
@@ -727,12 +733,9 @@ export class MapRendererGpu {
     gl.disable(gl.SCISSOR_TEST);
   }
 
-  private present() {
-    // Automatic worker-canvas presentation: no full-map blit or bitmap export.
-    this.gl.flush();
-  }
-
-  render(lighting: BattlefieldLighting = daylight, fog: readonly string[]) {
+  update(lighting: BattlefieldLighting = daylight, fog: readonly string[]) {
+    this.gl.bindVertexArray(null);
+    this.gl.disable(this.gl.BLEND);
     const gl = this.gl;
     if (gl.isContextLost()) throw new Error("Map GPU context was lost. Retry map rendering.");
     const lightKey = lightingKey(lighting),
@@ -760,14 +763,9 @@ export class MapRendererGpu {
       workerTraceEnd("Fog mask and blur", started, { tiles: fog.length });
       this.fogKey = fogKey;
     }
-    // Phaser owns presentation. This Extern pass composites cached terrain/fog
-    // behind its display list; light/fog caches above update only when changed.
-    const composeStarted = workerTraceStart();
-    this.compose(this.fullRegion());
-    workerTraceEnd("Compose cached terrain", composeStarted, { cachesChanged: !!dirty });
-    gl.bindVertexArray(null);
     this.compositionInvalid = false;
-    return this.present();
+    gl.bindVertexArray(null);
+    return dirty;
   }
 
   private check() {
