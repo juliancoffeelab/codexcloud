@@ -468,8 +468,13 @@ scenario conditions are implemented in frontend rendering.
 ### Sprite preparation and outline resolution
 
 After the first battlefield frame, the worker fetches, decodes and uploads the
-published factions' recruitment-pool artwork in the background. Three speculative
-requests run at once. Actual use shares an in-flight request or an uploaded atlas
+published factions' recruitment pools, visible archetypes in each active palette,
+and their Rust-catalog advancement branches in the background. Currently published
+promotion choices are also included. Breadth-first traversal prepares base types
+before deeper tiers, deduplicates shared artwork and stops at 128 unique URLs per
+prefetch list. This prepares images only; Rust still decides legal choices and
+concealed actors are not queried. Three speculative requests run at once.
+Actual use shares an in-flight request or an uploaded atlas
 entry; background preparation never gates a ready frame. Scene changes abort old
 requests, and a failed speculative load is retried/diagnosed when actually needed.
 Every newer frame releases the superseded frame's sprite wait immediately, even
