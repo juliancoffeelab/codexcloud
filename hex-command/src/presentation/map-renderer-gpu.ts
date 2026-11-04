@@ -1,4 +1,4 @@
-import { workerTraceStart, workerTraceEnd, beginGpuTrace, endGpuTrace } from "./worker-trace";
+import { workerTraceStart, workerTraceEnd } from "./worker-trace";
 import {
   daylight,
   lightingKey,
@@ -9,9 +9,6 @@ import { terrainDrawingOrder, terrainMapDimensions, type TerrainMapPlan } from "
 import { battlefieldSpriteSize, hexColumnSpacing } from "../ui/geometry";
 import * as shaders from "./map-shaders";
 import { lightGrid } from "./light-grid";
-import { BattlefieldOverlayGpu } from "./battlefield-overlay-gpu";
-import type { BattlefieldScene } from "./battlefield-scene";
-import type { MotionKind } from "./motion";
 
 type Target = {
   texture: WebGLTexture;
@@ -48,7 +45,7 @@ const programDefinitions = {
 type ProgramName = keyof typeof programDefinitions;
 type PendingProgram = { program: WebGLProgram; fragment: WebGLShader };
 
-/** Worker-only GPU pipeline. No canvas copies or pixel readbacks between passes. */
+/** Native terrain/light/fog passes invoked by the Phaser scene on the same worker/context. */
 export class MapRendererGpu {
   private gl: WebGL2RenderingContext;
   private programs: Partial<Record<ProgramName, Program>> = {};
@@ -81,8 +78,6 @@ export class MapRendererGpu {
   private width = 1;
   private height = 1;
   private presentationSize?: { width: number; height: number };
-  private overlays?: BattlefieldOverlayGpu;
-  private battlefieldKey?: string;
 
   constructor(readonly canvas: OffscreenCanvas = new OffscreenCanvas(1, 1)) {
     const gl = this.canvas.getContext("webgl2", {
@@ -144,32 +139,16 @@ export class MapRendererGpu {
     return this.gl;
   }
 
-  hasSprite(url: string, key: string) {
-    return key === this.battlefieldKey && (this.overlays?.hasImage(url) ?? false);
+  get dimensions() {
+    return { width: this.width / this.scale, height: this.height / this.scale };
   }
-  prepareBattlefield(key: string) {
-    this.overlays ??= new BattlefieldOverlayGpu(this.gl);
-    if (key !== this.battlefieldKey) {
-      if (this.battlefieldKey !== undefined) this.overlays.resetImages();
-      this.battlefieldKey = key;
-    }
-  }
-  uploadSprite(url: string, key: string, image: ImageBitmap) {
-    if (this.battlefieldKey === key) this.overlays!.addImage(url, image);
-  }
-  setBattlefield(scene: BattlefieldScene, images: ReadonlyMap<string, ImageBitmap>) {
-    this.prepareBattlefield(scene.key);
-    for (const [url, image] of images) this.overlays!.addImage(url, image);
-    this.overlays!.setScene(scene, performance.now());
-  }
-  pulse(tile: string, kind: MotionKind) {
-    this.overlays?.pulse(tile, kind, performance.now());
-  }
-  inspect(hovered: string | null, focused: string | null) {
-    this.overlays?.inspect(hovered, focused);
-  }
-  get animating() {
-    return this.overlays?.animating ?? false;
+  get statistics() {
+    return {
+      nativeWidth: this.width,
+      nativeHeight: this.height,
+      displayWidth: this.canvas.width,
+      displayHeight: this.canvas.height,
+    };
   }
 
   private requestProgram(name: ProgramName) {
@@ -555,16 +534,16 @@ export class MapRendererGpu {
     );
   }
 
-  configureLighting(u: Program["uniforms"], lighting: BattlefieldLighting) {
+  configureLighting(u: Program["uniforms"], lighting: BattlefieldLighting, unit = 1) {
     const gl = this.gl;
     gl.uniform1i(u.night!, Number(lighting.time === "night"));
     gl.uniform1f(u.scale!, this.scale);
-    this.sample(this.lights, 1);
-    this.sample(this.lightCells, 2);
-    this.sample(this.lightIndices, 3);
-    gl.uniform1i(u.lights!, 1);
-    gl.uniform1i(u.lightCells!, 2);
-    gl.uniform1i(u.lightIndices!, 3);
+    this.sample(this.lights, unit);
+    this.sample(this.lightCells, unit + 1);
+    this.sample(this.lightIndices, unit + 2);
+    gl.uniform1i(u.lights!, unit);
+    gl.uniform1i(u.lightCells!, unit + 1);
+    gl.uniform1i(u.lightIndices!, unit + 2);
   }
 
   private shade(lighting: BattlefieldLighting, region: Region) {
@@ -756,8 +735,6 @@ export class MapRendererGpu {
   render(lighting: BattlefieldLighting = daylight, fog: readonly string[]) {
     const gl = this.gl;
     if (gl.isContextLost()) throw new Error("Map GPU context was lost. Retry map rendering.");
-    const renderStarted = workerTraceStart();
-    beginGpuTrace(gl);
     const lightKey = lightingKey(lighting),
       fogKey = JSON.stringify(fog);
     let dirty = this.compositionInvalid ? this.fullRegion() : null;
@@ -773,53 +750,22 @@ export class MapRendererGpu {
         this.shade(lighting, region);
         workerTraceEnd("Terrain lighting", started, { ...region });
       }
-      // Live sprites sample light at their ground position; redraw the entire
-      // sprite even when its pixels extend beyond a changed light's radius.
-      dirty = this.union(
-        dirty,
-        region && this.overlays ? this.expand(region, 70 * this.scale) : region,
-      );
+      dirty = this.union(dirty, region);
       this.previousLighting = lighting;
       this.lightKey = lightKey;
     }
     if (this.fogKey !== fogKey) {
-      this.overlays?.conceal(fog);
       const started = workerTraceStart();
       dirty = this.union(dirty, this.paintFog(fog));
       workerTraceEnd("Fog mask and blur", started, { tiles: fog.length });
       this.fogKey = fogKey;
     }
-    const now = performance.now();
-    dirty = this.union(
-      dirty,
-      this.overlays?.dirty(now, this.scale, this.width, this.height) ?? null,
-    );
-    if (dirty) {
-      const composeStarted = workerTraceStart();
-      this.compose(dirty);
-      workerTraceEnd("Restore cached background", composeStarted, { ...dirty });
-      if (this.overlays) {
-        this.scissor(dirty, this.canvas);
-        const overlayStarted = workerTraceStart();
-        this.overlays.draw(now, this.width / this.scale, this.height / this.scale, (u) =>
-          this.configureLighting(u, lighting),
-        );
-        workerTraceEnd("Live overlay draw", overlayStarted);
-        gl.disable(gl.SCISSOR_TEST);
-      }
-    }
-    endGpuTrace();
-    workerTraceEnd("Map render CPU submission", renderStarted, {
-      lights: lighting.lights?.length ?? 0,
-      fog: fog.length,
-      dirty: !!dirty,
-      animating: this.animating,
-      ...this.overlays?.statistics,
-      nativeWidth: this.width,
-      nativeHeight: this.height,
-      displayWidth: this.canvas.width,
-      displayHeight: this.canvas.height,
-    });
+    // Phaser owns presentation. This Extern pass composites cached terrain/fog
+    // behind its display list; light/fog caches above update only when changed.
+    const composeStarted = workerTraceStart();
+    this.compose(this.fullRegion());
+    workerTraceEnd("Compose cached terrain", composeStarted, { cachesChanged: !!dirty });
+    gl.bindVertexArray(null);
     this.compositionInvalid = false;
     return this.present();
   }

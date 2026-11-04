@@ -5,10 +5,11 @@ import {
   workerTraceEnd,
 } from "./worker-trace";
 import type { TraceConfig } from "./performance-trace";
-import { MapRendererGpu } from "./map-renderer-gpu";
+import { PhaserBattlefield } from "./phaser-battlefield";
 import type { MapFrameRequest, MapRenderRequest, MapRenderResponse } from "./map-renderer";
 
-let gpu: MapRendererGpu | undefined;
+let gpu: PhaserBattlefield | undefined;
+let initializing: Promise<PhaserBattlefield> | undefined;
 let traceConfig: TraceConfig | undefined;
 let displaySize: { width: number; height: number } | undefined;
 let baseKey: string | undefined;
@@ -29,7 +30,9 @@ async function loadImage(url: string, signal: AbortSignal, purpose = "terrain") 
   const started = workerTraceStart();
   const response = await fetch(url, { signal });
   if (!response.ok) throw new Error(`Map image failed to load (${response.status}): ${url}`);
-  const image = await createImageBitmap(await response.blob(), { premultiplyAlpha: "none" });
+  const image = await createImageBitmap(await response.blob(), {
+    premultiplyAlpha: purpose === "terrain" ? "none" : "premultiply",
+  });
   workerTraceEnd("Sprite fetch and decode", started, {
     width: image.width,
     height: image.height,
@@ -275,7 +278,7 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
   }
   latestRevision = event.data.revision;
   if (event.data.canvas) {
-    if (gpu) {
+    if (gpu || initializing) {
       self.postMessage({
         revision: latestRevision,
         error: "Map worker canvas was already initialized",
@@ -290,9 +293,12 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
       } satisfies MapRenderResponse),
     );
     try {
-      gpu = new MapRendererGpu(canvas);
-      if (displaySize) gpu.setPresentationSize(displaySize);
-      if (traceConfig) configureWorkerTrace(traceConfig, gpu.context);
+      initializing = PhaserBattlefield.create(canvas).then((renderer) => {
+        gpu = renderer;
+        if (displaySize) gpu.setPresentationSize(displaySize);
+        if (traceConfig) configureWorkerTrace(traceConfig, gpu.context);
+        return renderer;
+      });
     } catch (error) {
       self.postMessage({
         revision: latestRevision,
@@ -342,6 +348,7 @@ async function drain() {
     const request = pending;
     pending = undefined;
     try {
+      if (initializing) await initializing;
       if (!(await render(request)) || pending) continue;
       self.postMessage({
         revision: request.revision,
