@@ -28,8 +28,9 @@ pub(in crate::ai) fn estimate_capacity(
         .iter()
         .find(|r| r.deficit(game) > 0);
     let mut slots = 0;
-    let mut costs = Vec::new();
-    for kind in game.recruitment_options_for(actor) {
+    let mut cost_sum = 0;
+    let mut cost_count = 0;
+    for kind in game.recruitment_pool_for(actor) {
         if requirement.is_some_and(|r| !r.accepts(game, kind)) {
             continue;
         }
@@ -51,13 +52,14 @@ pub(in crate::ai) fn estimate_capacity(
             .count();
         if available > 0 {
             slots = slots.max(available);
-            costs.push(cost);
+            cost_sum += cost;
+            cost_count += 1;
         }
     }
-    if costs.is_empty() {
+    if cost_count == 0 {
         return None;
     }
-    let average = costs.iter().sum::<i32>() / costs.len() as i32;
+    let average = cost_sum / cost_count;
     let capacity = slots.min(input.remaining_budget.unwrap_or(usize::MAX));
     Some(gold.min((capacity as i32).saturating_mul(average)))
 }

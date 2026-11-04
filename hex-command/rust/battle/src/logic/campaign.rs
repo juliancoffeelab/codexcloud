@@ -110,8 +110,14 @@ impl<'catalog> Game<'catalog> {
             }
             .into(),
         );
-        game.scripts = Some(EventState::new(&original.scripted_events).into());
         game.refresh_mission();
+        game.scripts = Some(
+            super::event_state::EventProgress::restore(
+                game.mission.as_ref().unwrap().clone(),
+                EventState::new(&original.scripted_events),
+            )
+            .into(),
+        );
         game.units.retain(|u| {
             u.side != Side::Player
                 || u.role == Some(Role::Leader)

@@ -1,4 +1,5 @@
 //! Compact battle sessions borrowing catalog rules and indexing the live roster.
+use super::event_state::{CompiledMission, EventProgress};
 
 use crate::{data::*, model::StateFrame};
 use rustc_hash::FxHashMap as HashMap;
@@ -114,7 +115,7 @@ pub struct RuntimeCache {
     #[cfg(feature = "wasm")]
     geometry: Option<TileGeometry>,
     key: Option<MissionKey>,
-    mission: Option<Rc<Mission>>,
+    mission: Option<Rc<CompiledMission>>,
 }
 /// Immutable planning facts are shared; a mutation detaches only its branch.
 #[derive(Clone, Debug)]
@@ -184,7 +185,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) combat_rng: u32,
     pub(crate) log: Vec<String>,
     pub(crate) campaign: Option<Shared<CampaignState>>,
-    pub(crate) scripts: Option<Shared<EventState>>,
+    pub(crate) scripts: Option<Shared<EventProgress>>,
     pub(crate) last_combat: Option<LastCombat>,
     #[cfg(feature = "wasm")]
     pub(crate) combat_animation: Option<crate::model::CombatAnimation>,
@@ -192,7 +193,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) armies: Option<[String; 2]>,
     pub(crate) pools: Option<[Vec<usize>; 2]>,
     pub(crate) arena_first: Option<Side>,
-    pub(crate) mission: Option<Rc<Mission>>,
+    pub(crate) mission: Option<Rc<CompiledMission>>,
     /// The selected immutable definition; absent only for a non-campaign game.
     campaign_definition: Option<&'catalog Campaign>,
     mission_key: Option<MissionKey>,
@@ -371,11 +372,10 @@ impl<'catalog> Game<'catalog> {
         owners: Vec<Option<String>>,
         geometry: TileGeometry,
     ) -> Self {
-        let scripts = state
+        let saved_scripts = state
             .campaign
             .as_mut()
-            .and_then(|campaign| campaign.scripts.take())
-            .map(Into::into);
+            .and_then(|campaign| campaign.scripts.take());
         let mut fog_memory = if geometry
             .fog
             .iter()
@@ -451,7 +451,7 @@ impl<'catalog> Game<'catalog> {
             combat_rng: state.combat_rng.unwrap_or(0x6d2b79f5),
             log: state.log,
             campaign: state.campaign.map(Into::into),
-            scripts,
+            scripts: None,
             last_combat,
             #[cfg(feature = "wasm")]
             combat_animation: None,
@@ -478,8 +478,14 @@ impl<'catalog> Game<'catalog> {
         };
         game.roster_changed();
         game.refresh_mission();
-        if let (Some(mission), Some(scripts)) = (&game.mission, &mut game.scripts) {
-            scripts.index_active(&mission.scripted_events);
+        if let Some(saved) = saved_scripts {
+            game.scripts = Some(
+                EventProgress::restore(
+                    game.mission.as_ref().expect("restored mission").clone(),
+                    saved,
+                )
+                .into(),
+            );
         }
         game.remember_conditions();
         game
@@ -505,7 +511,7 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn campaign_snapshot(&self) -> Option<CampaignState> {
         self.campaign.as_deref().cloned().map(|mut campaign| {
-            campaign.scripts = self.scripts.as_deref().cloned();
+            campaign.scripts = self.scripts.as_deref().map(|state| state.saved().clone());
             campaign
         })
     }
@@ -576,7 +582,10 @@ impl<'catalog> Game<'catalog> {
             tiles,
             units,
             campaign: self.campaign.map(Shared::into_owned).map(|mut campaign| {
-                campaign.scripts = self.scripts.map(Shared::into_owned);
+                campaign.scripts = self
+                    .scripts
+                    .map(Shared::into_owned)
+                    .map(EventProgress::into_saved);
                 campaign
             }),
             last_combat: self.combat_present.then_some(self.last_combat),
@@ -823,9 +832,9 @@ impl<'catalog> Game<'catalog> {
             return;
         }
         self.mission_key = Some(key);
-        self.mission = Some(Rc::new(
+        self.mission = Some(Rc::new(CompiledMission::new(
             self.campaign_definition().missions[state.mission].clone(),
-        ));
+        )));
     }
 }
 
@@ -950,44 +959,57 @@ impl<'catalog> Game<'catalog> {
         self.recruitment_options_for_faction(self.faction_for_phase(side))
     }
     pub(crate) fn recruitment_options_for_faction(&self, id: &str) -> Vec<usize> {
-        if let Some(pool) = self.scripts.as_deref().and_then(|s| s.recruitment.get(id)) {
-            return pool.iter().map(|r| self.kind(&r.unit)).collect();
+        self.recruitment_pool_for_faction(id).collect()
+    }
+    #[inline]
+    pub(crate) fn recruitment_pool_for(
+        &self,
+        leader: &Unit,
+    ) -> super::recruit_pool::RecruitPool<'_> {
+        self.recruitment_pool_for_faction(self.unit_faction(leader))
+    }
+    fn recruitment_pool_for_faction(&self, id: &str) -> super::recruit_pool::RecruitPool<'_> {
+        use super::recruit_pool::{PoolEntries, RecruitPool};
+        let entries =
+            if let Some(pool) = self.scripts.as_deref().and_then(|s| s.recruitment.get(id)) {
+                PoolEntries::Recruits(pool.iter())
+            } else if let Some(mission) = &self.mission {
+                PoolEntries::Recruits(
+                    mission
+                        .recruitment
+                        .get(id)
+                        .map(Vec::as_slice)
+                        .unwrap_or(&[])
+                        .iter(),
+                )
+            } else if let Some(pools) = &self.pools
+                && matches!(id, "player" | "enemy")
+            {
+                PoolEntries::Kinds(pools[if id == "player" { 0 } else { 1 }].iter())
+            } else if let Some(armies) = &self.armies
+                && matches!(id, "player" | "enemy")
+            {
+                PoolEntries::Names(
+                    self.rules
+                        .rosters
+                        .iter()
+                        .find(|r| r.id == armies[if id == "player" { 0 } else { 1 }])
+                        .expect("validated skirmish faction")
+                        .pool
+                        .iter(),
+                )
+            } else {
+                PoolEntries::Recruits(
+                    self.faction(id)
+                        .and_then(|f| f.recruits.as_deref())
+                        .unwrap_or(&[])
+                        .iter(),
+                )
+            };
+        RecruitPool {
+            rules: self.rules,
+            entries,
         }
-        if let Some(mission) = &self.mission {
-            return mission
-                .recruitment
-                .get(id)
-                .into_iter()
-                .flatten()
-                .map(|entry| self.kind(&entry.unit))
-                .collect();
-        }
-
-        if let Some(pools) = &self.pools
-            && matches!(id, "player" | "enemy")
-        {
-            return pools[if id == "player" { 0 } else { 1 }].clone();
-        }
-        if let Some(armies) = &self.armies
-            && matches!(id, "player" | "enemy")
-        {
-            return self
-                .rules
-                .rosters
-                .iter()
-                .find(|roster| roster.id == armies[if id == "player" { 0 } else { 1 }])
-                .expect("validated skirmish faction")
-                .pool
-                .iter()
-                .map(|name| self.kind(name))
-                .collect();
-        }
-        self.faction(id)
-            .and_then(|f| f.recruits.as_ref())
-            .into_iter()
-            .flatten()
-            .map(|entry| self.kind(&entry.unit))
-            .collect()
     }
     pub(crate) fn recruitment_options_for(&self, leader: &Unit) -> Vec<usize> {
         self.recruitment_options_for_faction(self.unit_faction(leader))

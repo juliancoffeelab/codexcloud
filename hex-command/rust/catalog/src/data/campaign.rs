@@ -148,10 +148,7 @@ impl CampaignState {
     /// The last change is authoritative; a missing history means false.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn chosen(&self, id: &str) -> bool {
-        self.flags
-            .get(id)
-            .and_then(|h| h.last())
-            .is_some_and(|v| v.state)
+        flag_is_set(&self.flags, id)
     }
     pub fn set_flag(&mut self, id: &str, state: bool, turn: u32) {
         if self.chosen(id) == state {
@@ -189,4 +186,13 @@ impl CampaignState {
     pub fn say(&mut self, lines: impl IntoIterator<Item = Dialogue>) {
         self.dialogue.extend(lines);
     }
+}
+
+/// Read campaign outcomes without borrowing unrelated saved event progress.
+#[inline]
+pub fn flag_is_set(flags: &FlagHistory, id: &str) -> bool {
+    flags
+        .get(id)
+        .and_then(|h| h.last())
+        .is_some_and(|v| v.state)
 }

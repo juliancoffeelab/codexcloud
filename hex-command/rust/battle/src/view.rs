@@ -174,6 +174,10 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         self.engine().captures(tile, side)
     }
     #[inline]
+    pub fn recruitment_pool_for(&self, unit: &Unit) -> impl ExactSizeIterator<Item = usize> + '_ {
+        self.engine().recruitment_pool_for(unit)
+    }
+    #[inline]
     pub fn recruitment_options_for(&self, unit: &Unit) -> Vec<usize> {
         self.engine().recruitment_options_for(unit)
     }
@@ -599,7 +603,7 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
     }
     #[inline]
     pub fn mission(&self) -> Option<&Mission> {
-        self.view.engine().mission.as_deref()
+        self.view.engine().mission.as_deref().map(|m| &**m)
     }
     #[inline]
     pub fn campaign(&self) -> Option<&CampaignState> {
@@ -607,7 +611,7 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
     }
     #[inline]
     pub fn scripts(&self) -> Option<&EventState> {
-        self.view.engine().scripts.as_deref()
+        self.view.engine().scripts.as_deref().map(|s| s.saved())
     }
     #[inline]
     pub fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {

@@ -67,6 +67,26 @@ changing one should make its consumers apparent at call sites. Add new strategic
 behavior to a domain or adapter rather than extending the mechanical facade or
 adding a silent common-driver default.
 
+## Event runtime
+
+The engine prepares an immutable mission together with its clock descriptors.
+Each battle's private event progress binds that plan to numeric counter indices;
+queries cannot assemble a counter layout separately. Clock updates run before
+boolean condition evaluation and independently of short-circuiting. Missing
+counters initialize on their first observation without counting that observation.
+
+Evaluation takes ownership of shared progress, then returns it once all cascade
+passes finish. A quiet forecast keeps its progress shared; mutation detaches only
+when another battle still shares it. Active-index scans borrow immutable shared
+lists, retirement changes mask bits, and compaction follows the scan. Predicate
+and visibility contexts contain explicit facts, not a game back-reference;
+current event progress is supplied separately to event predicates.
+
+Saved event IDs, predicate numbers and progress remain the durable contract.
+Prepared descriptors, numeric slots and index lists are runtime data, rebuilt
+when entering or restoring a chapter. Restore prepares the mission before
+resolving active-event and counter indices, including when no cache exists.
+
 ## Content and artwork
 
 A lineup is a faction. A faction can have sprites before its gameplay roster is

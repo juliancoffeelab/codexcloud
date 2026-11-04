@@ -1,6 +1,5 @@
 //! Ordered, general event execution. Conditions inspect facts; actions create durable facts.
-use super::{Game, battle::Shared};
-use crate::data::presentation::ConditionContext;
+use super::{Game, battle::Shared, event_queries::EventFacts, event_state::EventProgress};
 use crate::data::*;
 use std::collections::HashSet;
 
@@ -20,233 +19,17 @@ struct Bindings {
 }
 
 impl Game<'_> {
+    #[inline]
     pub(crate) fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
-        select
-            .character
-            .as_ref()
-            .is_none_or(|id| unit.character.as_ref() == Some(id))
-            && select
-                .retreating
-                .is_none_or(|value| unit.retreating.unwrap_or(false) == value)
-            && select.role.is_none_or(|r| unit.role == Some(r))
-            && select
-                .faction
-                .as_ref()
-                .is_none_or(|id| self.unit_faction(unit) == id)
-            && select.side.is_none_or(|side| {
-                faction_matches_side(&self.factions, unit.faction.as_deref(), unit.side, side)
-            })
-            && select
-                .unit_type
-                .as_ref()
-                .is_none_or(|id| &self.rules.units[unit.kind].id == id)
-            && (select.unit_types.is_empty()
-                || select.unit_types.contains(&self.rules.units[unit.kind].id))
-            && select
-                .ai_group
-                .as_ref()
-                .is_none_or(|id| unit.ai_group.as_ref() == Some(id))
-    }
-    fn pending_unit_matches(
-        &self,
-        s: &UnitMatch,
-        group: &PendingEventSpawn,
-        u: &SpawnMember,
-    ) -> bool {
-        let faction = self
-            .faction(&group.faction)
-            .expect("validated pending faction");
-        s.retreating.is_none_or(|v| !v)
-            && s.character
-                .as_ref()
-                .is_none_or(|id| u.character.as_ref() == Some(id))
-            && s.role.is_none_or(|r| u.role == Some(r))
-            && s.faction.as_ref().is_none_or(|id| id == &group.faction)
-            && s.unit_type.as_ref().is_none_or(|id| id == &u.unit_type)
-            && (s.unit_types.is_empty() || s.unit_types.contains(&u.unit_type))
-            && s.ai_group
-                .as_ref()
-                .is_none_or(|id| group.ai_group.as_ref() == Some(id))
-            && s.side.is_none_or(|side| {
-                faction_matches_side(&self.factions, Some(&group.faction), faction.phase, side)
-            })
-    }
-    fn script_positions<'a>(&'a self, unit: &'a Unit, through: bool) -> &'a [usize] {
-        if through {
-            if let Some((actor, path)) = &self.traversal {
-                if *actor == unit.id {
-                    return path;
-                }
-            }
-        }
-        std::slice::from_ref(&unit.tile)
-    }
-    fn stands(&self, select: &UnitMatch, tile: &str, through: bool) -> bool {
-        let target = self.site(tile);
-        self.units.iter().any(|u| {
-            self.script_unit_matches(select, u)
-                && self.script_positions(u, through).contains(&target)
-        })
-    }
-    fn when_matches(
-        &self,
-        when: &When,
-        state: &EventState,
-        event: &str,
-        tick: bool,
-        death: Option<&DeathOccurrence>,
-    ) -> bool {
-        match when {
-            When::All(values) => values
-                .iter()
-                .all(|value| self.when_matches(value, state, event, tick, death)),
-            When::Any(values) => values
-                .iter()
-                .any(|value| self.when_matches(value, state, event, tick, death)),
-            When::Not(c) => !self.when_matches(c, state, event, tick, death),
-            When::Stand(v) => self.stands(&v.units, &v.tile, v.through),
-            When::Proximity(v) => {
-                let targets: Vec<_> = if let Some(tile) = &v.tile {
-                    vec![self.site(tile)]
-                } else {
-                    self.units
-                        .iter()
-                        .filter(|u| self.script_unit_matches(v.target.as_ref().unwrap(), u))
-                        .map(|u| u.tile)
-                        .collect()
-                };
-                self.units
-                    .iter()
-                    .filter(|u| self.script_unit_matches(&v.units, u))
-                    .any(|u| {
-                        self.script_positions(u, v.through).iter().any(|&p| {
-                            targets
-                                .iter()
-                                .any(|&t| self.board.distance(p, t) <= v.radius)
-                        })
-                    })
-            }
-            When::Killed(v) => death.is_some_and(|d| {
-                self.script_unit_matches(&v.units, &d.unit)
-                    && v.initiated_by.as_ref().is_none_or(|f| f == &d.initiated_by)
-                    && v.killed_by
-                        .as_ref()
-                        .is_none_or(|f| Some(f) == d.killed_by.as_ref())
-                    && v.defending.is_none_or(|value| value == d.defending)
-            }),
-            When::Left(v) => self.event_departure.as_ref().is_some_and(|u| {
-                self.board.ids[u.tile] == v.tile && self.script_unit_matches(&v.units, u)
-            }),
-            When::Turn(turn) => {
-                tick && self.round == turn.number()
-                    && match turn {
-                        TurnSelection::Number(_) => self.turn == Side::Player,
-                        TurnSelection::Faction { faction, .. } => {
-                            self.faction(faction).is_some_and(|f| f.phase == self.turn)
-                        }
-                    }
-            }
-            When::TurnAtLeast(turn) => self.round >= *turn,
-            When::ChapterStarted(value) => self.event_opening == *value,
-            When::Flag(id) => self.campaign.as_ref().is_some_and(|c| c.chosen(id)),
-            When::HasUnits(v) => self.units.iter().any(|u| self.script_unit_matches(v, u)),
-            When::NoUnits(v) => {
-                !self.units.iter().any(|u| self.script_unit_matches(v, u))
-                    && !state
-                        .pending
-                        .iter()
-                        .any(|g| g.units.iter().any(|u| self.pending_unit_matches(v, g, u)))
-            }
-            When::VisibleUnits(v) => self.units.iter().any(|u| {
-                self.script_unit_matches(v, u)
-                    && self
-                        .condition_context()
-                        .visible_at(self.board.positions[u.tile])
-            }),
-            When::Owner(v) => self.owners[self.site(&v.tile)].as_deref() == Some(&v.faction),
-            When::Own(v) if v.turns.is_none() => {
-                self.owners[self.site(&v.tile)].as_deref() == Some(&v.faction)
-                    && v.when
-                        .as_ref()
-                        .is_none_or(|w| self.when_matches(w, state, event, false, None))
-            }
-            When::Own(_) | When::Held(_) => {
-                let index = match when {
-                    When::Held(value) => value.predicate,
-                    When::Own(value) => value.predicate,
-                    _ => unreachable!(),
-                };
-                state
-                    .holds
-                    .iter()
-                    .find(|h| h.event == event && h.predicate == index)
-                    .is_some_and(|h| {
-                        h.turns
-                            >= match when {
-                                When::Held(v) => v.turns,
-                                When::Own(v) => v.turns.unwrap(),
-                                _ => unreachable!(),
-                            }
-                    })
-            }
-        }
+        super::event_queries::unit_matches(self.rules, &self.factions, select, unit)
     }
     pub(crate) fn script_condition(&self, when: &When) -> bool {
-        let empty = EventState::new(&[]);
-        self.when_matches(
-            when,
-            self.scripts.as_deref().unwrap_or(&empty),
-            "",
-            false,
-            None,
-        )
-    }
-    fn update_event_holds(
-        &self,
-        state: &mut Shared<EventState>,
-        events: &[ScriptEvent],
-        tick: bool,
-    ) {
-        for event_index in state.active_indices.clone() {
-            if !state.active_mask[event_index] {
-                continue;
-            }
-            let event = &events[event_index];
-            for hold in event.when.holds() {
-                let standing = hold.units.is_none_or(|u| self.stands(u, hold.tile, false))
-                    && hold
-                        .faction
-                        .is_none_or(|f| self.owners[self.site(hold.tile)].as_deref() == Some(f))
-                    && hold
-                        .when
-                        .is_none_or(|w| self.when_matches(w, state, &event.id, false, None));
-                let slot = state
-                    .holds
-                    .iter()
-                    .position(|h| h.event == event.id && h.predicate == hold.predicate);
-                let Some(index) = slot else {
-                    state.holds.push(EventHold {
-                        event: event.id.clone(),
-                        predicate: hold.predicate,
-                        turns: 0,
-                        last_round: self.round,
-                    });
-                    continue;
-                };
-                let counter = &state.holds[index];
-                let (turns, last_round) = if !standing {
-                    (0, self.round)
-                } else if tick && self.turn == Side::Player && self.round > counter.last_round {
-                    ((counter.turns + 1).min(hold.turns), self.round)
-                } else {
-                    (counter.turns, counter.last_round)
-                };
-                if (turns, last_round) != (counter.turns, counter.last_round) {
-                    state.holds[index].turns = turns;
-                    state.holds[index].last_round = last_round;
-                }
-            }
-        }
+        let state = self.scripts.as_deref();
+        assert!(
+            state.is_some() || self.campaign.is_none(),
+            "event evaluation requires explicit current progress"
+        );
+        EventFacts::new(self).when_matches(when, state, None, false, None)
     }
     pub(crate) fn resolve_text(&self, text: &ConditionalText) -> Option<String> {
         match text {
@@ -345,7 +128,7 @@ impl Game<'_> {
             }
         }
     }
-    fn release_event_spawns(&mut self, state: &mut Shared<EventState>) {
+    fn release_event_spawns(&mut self, state: &mut Shared<EventProgress>) {
         if !state.pending.iter().any(|group| {
             group.units.iter().any(|member| {
                 let kind = self.kind(&member.unit_type);
@@ -357,7 +140,7 @@ impl Game<'_> {
         }) {
             return;
         }
-        for group in &mut state.pending {
+        for group in state.pending_mut() {
             let mut pending = vec![];
             for member in std::mem::take(&mut group.units) {
                 let kind = self.kind(&member.unit_type);
@@ -389,12 +172,12 @@ impl Game<'_> {
             }
             group.units = pending;
         }
-        state.pending.retain(|p| !p.units.is_empty());
+        state.pending_mut().retain(|p| !p.units.is_empty());
     }
     fn event_actions(
         &mut self,
         actions: &[EventAction],
-        state: &mut Shared<EventState>,
+        state: &mut Shared<EventProgress>,
         bindings: &Bindings,
     ) {
         for action in actions {
@@ -436,7 +219,7 @@ impl Game<'_> {
                             .map(|v| self.bound_tile(v, bindings))
                             .collect()
                     };
-                    state.pending.push(PendingEventSpawn {
+                    state.pending_mut().push(PendingEventSpawn {
                         area,
                         faction: spec.faction.clone(),
                         ai_group: spec.ai_group.clone(),
@@ -523,12 +306,8 @@ impl Game<'_> {
                     self.roster_changed();
                 }
                 EventAction::CreateMark(spec) => {
-                    let id = state.next_mark;
-                    state.next_mark = state
-                        .next_mark
-                        .checked_add(1)
-                        .expect("mark identity exhausted");
-                    state.marks.push(MapMark {
+                    let id = state.allocate_mark();
+                    state.marks_mut().push(MapMark {
                         id,
                         kind: spec.kind.clone(),
                         light_remembered: false,
@@ -538,7 +317,7 @@ impl Game<'_> {
                 }
                 EventAction::RemoveMark(_) => {
                     let id = bindings.mark.as_ref().expect("validated mark").id;
-                    state.marks.retain(|m| m.id != id);
+                    state.marks_mut().retain(|m| m.id != id);
                 }
                 EventAction::ForEachUnit(spec) => {
                     let tile = spec
@@ -581,7 +360,7 @@ impl Game<'_> {
                 EventAction::Gold(spec) => self.gold[&spec.faction] += spec.amount,
                 EventAction::Recruits(spec) => {
                     state
-                        .recruitment
+                        .recruitment_mut()
                         .insert(spec.faction.clone(), spec.units.clone());
                 }
                 EventAction::FailObjective(id) => {
@@ -595,7 +374,7 @@ impl Game<'_> {
                         .find(|(_, e)| e.objective.is_some() && e.objective_id() == id)
                         .expect("validated objective ID");
                     if state.active_mask[index] && !state.failed.contains(id) {
-                        state.failed.push(id.clone());
+                        state.fail(id.clone());
                         state.retire(index);
                     }
                 }
@@ -605,7 +384,7 @@ impl Game<'_> {
                         .and_then(|f| f.recruits.clone())
                         .unwrap_or_default();
                     let pool = state
-                        .recruitment
+                        .recruitment_mut()
                         .entry(spec.faction.clone())
                         .or_insert(base);
                     for unit in &spec.units {
@@ -669,32 +448,44 @@ impl Game<'_> {
         self.record(message.into());
     }
     pub(crate) fn evaluate_scripted_events(&mut self, tick: bool) {
-        let mission = self.mission.as_ref().unwrap().clone();
-        let events = &mission.scripted_events;
         let mut state = self
             .scripts
-            .as_ref()
-            .expect("scripted chapter has event state")
-            .clone();
+            .take()
+            .expect("scripted chapter has event state");
+        let mission = state.plan();
+        let events = &mission.scripted_events;
         let deaths = std::mem::take(&mut self.event_deaths);
         self.release_event_spawns(&mut state);
-        self.update_event_holds(&mut state, &events, tick);
+        EventProgress::update_holds(&mut state, &EventFacts::new(self), tick);
         let mut fired = HashSet::new();
         loop {
             let mut changed = false;
-            for index in state.active_indices.clone() {
+            let active = state.scan_indices();
+            for &index in active.iter() {
                 if !state.active_mask[index] {
                     continue;
                 }
                 let event = &events[index];
-                let ordinary = self.when_matches(&event.when, &state, &event.id, tick, None);
+                let ordinary = EventFacts::new(self).when_matches(
+                    &event.when,
+                    Some(&state),
+                    Some(index),
+                    tick,
+                    None,
+                );
                 let contexts: Vec<_> = if ordinary {
                     vec![None]
                 } else if event.when.has_death() {
                     deaths
                         .iter()
                         .filter(|u| {
-                            self.when_matches(&event.when, &state, &event.id, tick, Some(u))
+                            EventFacts::new(self).when_matches(
+                                &event.when,
+                                Some(&state),
+                                Some(index),
+                                tick,
+                                Some(u),
+                            )
                         })
                         .map(|u| Some(u.clone()))
                         .collect()
@@ -725,11 +516,11 @@ impl Game<'_> {
                     break;
                 }
             }
-            if changed {
-                state.compact(events);
-                self.scripts = Some(state.clone());
+            drop(active);
+            if changed && state.needs_compaction() {
+                state.compact();
             }
-            self.update_event_holds(&mut state, &events, false);
+            EventProgress::update_holds(&mut state, &EventFacts::new(self), false);
             if !changed || self.winner.is_some() {
                 break;
             }
@@ -757,7 +548,7 @@ impl Game<'_> {
             })
             .collect();
         for index in remembered {
-            state.marks[index].light_remembered = true;
+            state.marks_mut()[index].light_remembered = true;
         }
         self.scripts = Some(state);
         self.event_departure = None;

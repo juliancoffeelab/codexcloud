@@ -7,47 +7,77 @@ use crate::data::{
 };
 
 pub(crate) struct LiveContext<'a, 'catalog> {
-    game: &'a Game<'catalog>,
+    rules: &'catalog Rules,
+    board: &'a super::battle::Board,
+    units: &'a [Unit],
+    factions: &'a [Faction],
+    owners: &'a [Option<String>],
+    mission: Option<&'a Mission>,
+    flags: Option<&'a FlagHistory>,
+    marks: &'a [String],
+    fog: &'a [Option<std::sync::Arc<ConditionRule>>],
+    light: &'a [Option<std::sync::Arc<TileLight>>],
+    fog_memory: &'a [u64],
+    map_id: &'a str,
+    round: u32,
     position: Option<(u32, usize)>,
+}
+impl<'a, 'catalog> LiveContext<'a, 'catalog> {
+    fn new(game: &'a Game<'catalog>, position: Option<(u32, usize)>) -> Self {
+        Self {
+            rules: game.rules,
+            board: &game.board,
+            units: &game.units,
+            factions: &game.factions,
+            owners: &game.owners,
+            mission: game.mission.as_deref().map(|m| &**m),
+            flags: game.campaign.as_deref().map(|s| &s.flags),
+            marks: game
+                .campaign
+                .as_deref()
+                .map(|s| s.marks.as_slice())
+                .unwrap_or_default(),
+            fog: &game.fog,
+            light: &game.light,
+            fog_memory: &game.fog_memory,
+            map_id: &game.map_id,
+            round: game.round,
+            position,
+        }
+    }
 }
 impl ConditionContext for LiveContext<'_, '_> {
     fn factions(&self) -> &[Faction] {
-        &self.game.factions
+        self.factions
     }
     fn owns(&self, id: &str, side: &str) -> bool {
-        self.game
-            .board
+        self.board
             .indices
             .get(id)
-            .is_some_and(|&i| self.game.owners[i].as_deref() == Some(side))
+            .is_some_and(|&i| self.owners[i].as_deref() == Some(side))
     }
     fn position(&self, id: &str) -> Option<(i32, i32)> {
-        self.game
-            .board
-            .indices
-            .get(id)
-            .map(|&i| self.game.board.positions[i])
+        self.board.indices.get(id).map(|&i| self.board.positions[i])
     }
     fn visible_at(&self, position: (i32, i32)) -> bool {
-        self.game
-            .board
+        self.board
             .positions
             .iter()
             .position(|&p| p == position)
             .is_some_and(|tile| {
-                self.game.fog[tile].as_ref().is_none_or(|rule| {
-                    (rule.remember && self.fog_remembered(&self.game.board.ids[tile]))
+                self.fog[tile].as_ref().is_none_or(|rule| {
+                    (rule.remember && self.fog_remembered(&self.board.ids[tile]))
                         || crate::data::presentation::matches_fog(
                             &rule.condition,
                             self,
-                            Some(&self.game.board.ids[tile]),
+                            Some(&self.board.ids[tile]),
                         )
                 })
             })
     }
     #[inline(always)]
     fn any_unit(&self, mut predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool {
-        self.game.units.iter().any(|unit| {
+        self.units.iter().any(|unit| {
             let tile = self
                 .position
                 .filter(|(actor, _)| *actor == unit.id)
@@ -56,26 +86,30 @@ impl ConditionContext for LiveContext<'_, '_> {
             predicate(ConditionUnit {
                 faction: unit.faction.as_deref(),
                 side: unit.side,
-                kind: &self.game.rules.units[unit.kind].id,
+                kind: &self.rules.units[unit.kind].id,
                 character: unit.character.as_deref(),
                 ai_group: unit.ai_group.as_deref(),
-                position: Some(self.game.board.positions[tile]),
+                position: Some(self.board.positions[tile]),
             })
         })
     }
     #[inline(always)]
     fn any_pending(&self, mut predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool {
-        let (Some(mission), Some(state)) = (&self.game.mission, &self.game.campaign) else {
+        let Some(mission) = self.mission.filter(|_| self.flags.is_some()) else {
             return false;
         };
         mission
             .events
             .iter()
-            .filter(|event| state.marked_prefixed("event:", &event.id))
+            .filter(|event| {
+                self.marks
+                    .iter()
+                    .any(|m| m.strip_prefix("event:") == Some(event.id.as_str()))
+            })
             .any(|event| {
                 event.spawn.iter().any(|group| {
                     group.units.iter().any(|unit| {
-                        let spawned = state.marks.iter().any(|m| {
+                        let spawned = self.marks.iter().any(|m| {
                             m.strip_prefix("spawn:")
                                 .and_then(|s| s.strip_prefix(event.id.as_str()))
                                 .and_then(|s| s.strip_prefix(':'))
@@ -95,27 +129,22 @@ impl ConditionContext for LiveContext<'_, '_> {
             })
     }
     fn flag(&self, id: &str) -> bool {
-        self.game.campaign.as_ref().is_some_and(|s| s.chosen(id))
+        self.flags.is_some_and(|f| flag_is_set(f, id))
     }
     fn marks(&self) -> &[String] {
-        self.game
-            .campaign
-            .as_ref()
-            .map(|s| s.marks.as_slice())
-            .unwrap_or_default()
+        self.marks
     }
     fn round(&self) -> u32 {
-        self.game.round
+        self.round
     }
 }
 impl PresentationContext for LiveContext<'_, '_> {
     fn fog_index(&self, id: &str) -> usize {
-        self.game.board.indices[id]
+        self.board.indices[id]
     }
     fn fog_remembered(&self, id: &str) -> bool {
         let i = self.fog_index(id);
-        self.game
-            .fog_memory
+        self.fog_memory
             .get(i / 64)
             .is_some_and(|word| word & (1u64 << (i % 64)) != 0)
     }
@@ -123,36 +152,32 @@ impl PresentationContext for LiveContext<'_, '_> {
         static DEFAULT: MapLighting = MapLighting {
             time: TimeOfDay::Day,
         };
-        self.game
-            .rules
+        self.rules
             .map_definitions
             .iter()
-            .find(|map| map.id == self.game.map_id)
+            .find(|map| map.id == self.map_id)
             .map(|m| &m.lighting)
             .unwrap_or(&DEFAULT)
     }
     fn visit_lights(&self, mut visitor: impl FnMut(&str, i32, i32, &TileLight)) {
-        for (i, light) in self.game.light.iter().enumerate() {
+        for (i, light) in self.light.iter().enumerate() {
             if let Some(light) = light {
-                let (col, row) = self.game.board.positions[i];
-                visitor(&self.game.board.ids[i], col, row, light);
+                let (col, row) = self.board.positions[i];
+                visitor(&self.board.ids[i], col, row, light);
             }
         }
     }
     fn visit_fog(&self, mut visitor: impl FnMut(&str, &ConditionRule)) {
-        for (i, rule) in self.game.fog.iter().enumerate() {
+        for (i, rule) in self.fog.iter().enumerate() {
             if let Some(rule) = rule {
-                visitor(&self.game.board.ids[i], rule);
+                visitor(&self.board.ids[i], rule);
             }
         }
     }
 }
-impl Game<'_> {
-    pub(crate) fn condition_context(&self) -> LiveContext<'_, '_> {
-        LiveContext {
-            game: self,
-            position: None,
-        }
+impl<'catalog> Game<'catalog> {
+    pub(crate) fn condition_context(&self) -> LiveContext<'_, 'catalog> {
+        LiveContext::new(self, None)
     }
     pub(crate) fn event_condition_met(&self, condition: &Condition) -> bool {
         if matches(condition, &self.condition_context(), None) {
@@ -163,10 +188,7 @@ impl Game<'_> {
                 return path.iter().any(|&tile| {
                     matches(
                         condition,
-                        &LiveContext {
-                            game: self,
-                            position: Some((*actor, tile)),
-                        },
+                        &LiveContext::new(self, Some((*actor, tile))),
                         None,
                     )
                 });
@@ -212,10 +234,7 @@ impl Game<'_> {
         let mut memory = std::mem::take(&mut self.condition_memory);
         let mut known = std::mem::take(&mut self.fog_memory);
         let mut visit = |position| {
-            let input = LiveContext {
-                game: self,
-                position,
-            };
+            let input = LiveContext::new(self, position);
             let added = presentation::discover(&input, &memory, &mut known);
             if !added.is_empty() {
                 std::rc::Rc::make_mut(&mut memory).extend(added);
