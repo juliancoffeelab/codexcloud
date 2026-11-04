@@ -375,12 +375,7 @@ impl<'catalog> Game<'catalog> {
             .campaign
             .as_mut()
             .and_then(|campaign| campaign.scripts.take())
-            .map(|mut state| {
-                if let Some(mission) = cache.mission.as_ref() {
-                    state.index_active(&mission.scripted_events);
-                }
-                state.into()
-            });
+            .map(Into::into);
         let mut fog_memory = if geometry
             .fog
             .iter()
@@ -483,6 +478,9 @@ impl<'catalog> Game<'catalog> {
         };
         game.roster_changed();
         game.refresh_mission();
+        if let (Some(mission), Some(scripts)) = (&game.mission, &mut game.scripts) {
+            scripts.index_active(&mission.scripted_events);
+        }
         game.remember_conditions();
         game
     }
