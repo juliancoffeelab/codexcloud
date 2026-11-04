@@ -3,10 +3,18 @@ import { chromium } from "playwright";
 import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { createServer } from "vite";
+import type { BattlefieldScene } from "../src/presentation/battlefield-scene";
 import type { MapFrameRequest } from "../src/presentation/map-renderer";
 
 const args = process.argv.slice(2);
 const software = args.includes("--software");
+const count = (name: string) => {
+  const value = Number(args.find((arg) => arg.startsWith(`--${name}=`))?.split("=")[1] ?? 0);
+  if (!Number.isSafeInteger(value) || value < 0 || value > 1024)
+    throw new Error(`--${name} must be an integer from 0 to 1024`);
+  return value;
+};
+const workload = { lights: count("lights"), units: count("units") };
 const server = await createServer({
   root: fileURLToPath(new URL("../", import.meta.url)),
   server: { host: "127.0.0.1", port: 0, open: false },
@@ -38,15 +46,15 @@ try {
   // the callback without its surrounding module scope.
   await page.addInitScript("globalThis.__name = (target) => target;");
   await page.goto(server.resolvedUrls!.local[0]! + "__map-benchmark");
-  const result = await page.evaluate(async () => {
+  const result = await page.evaluate(async (workload) => {
     const load = (path: string) => import(/* @vite-ignore */ path);
     const [
       { MapRenderer },
       { MAPS },
       { TERRAIN },
-      { currentArtwork },
+      { currentArtwork, artFrame },
       { terrainMapTiles, terrainMapKey },
-      { mapDimensions, battlefieldSpriteSize },
+      { mapDimensions, battlefieldSpriteSize, tileCenter },
     ] = await Promise.all([
       load("/src/presentation/map-renderer.ts"),
       load("/src/game/maps.ts"),
@@ -72,11 +80,55 @@ try {
         (definition as { role: string }).role,
       ]),
     );
+    const lighting = {
+      ...map.presentation.lighting,
+      lights: [
+        ...map.presentation.lighting.lights,
+        ...Array.from({ length: workload.lights }, (_, i) => ({
+          col: (i * 7) % map.cols,
+          row: (i * 11) % map.rows,
+          radius: 90 + (i % 3) * 40,
+          power: 0.6,
+          color: [255, (i * 13) % 256, 30],
+          fixture: false,
+        })),
+      ],
+    };
+    const artwork = currentArtwork();
+    const battlefield: BattlefieldScene | undefined = workload.units
+      ? {
+          key: "benchmark",
+          reducedMotion: true,
+          fog: map.presentation.fog,
+          tiles: map.terrain.map((tile: { id: string; col: number; row: number }) => ({
+            id: tile.id,
+            ...tileCenter(tile),
+            classes: "hex",
+          })),
+          units: Array.from({ length: workload.units }, (_, i) => {
+            const source = map.units[i % map.units.length],
+              tile = map.terrain[i % map.terrain.length];
+            return {
+              id: `benchmark-${i}`,
+              tile: tile.id,
+              ...tileCenter(tile),
+              url: artFrame(artwork, "units", source.type, source.side)?.url,
+              size: battlefieldSpriteSize,
+              color: "#6fdec0",
+              health: 38,
+              hp: 30,
+              spent: false,
+              retreating: false,
+            };
+          }),
+          items: [],
+        }
+      : undefined;
     const plan = {
       ...mapDimensions(map),
       pixelScale: 64 / battlefieldSpriteSize,
       tiles: terrainMapTiles(map.terrain, map.id, currentArtwork(), roles),
-      lighting: map.presentation.lighting,
+      lighting,
     };
     const NativeWorker = window.Worker;
     let gpuMs: number | null = null;
@@ -133,6 +185,7 @@ try {
         ]),
         plan,
         fog: [...map.presentation.fog],
+        battlefield,
       };
       const cold = await measure(initial);
       const blood = {
@@ -148,7 +201,7 @@ try {
         plan: { ...plan, lighting: { ...plan.lighting, lights: [...plan.lighting.lights, blood] } },
       };
       const fogIds = new Set<string>(initial.fog);
-      for (const id of ["10,10", "11,10", "10,11"]) {
+      for (const id of map.terrain.slice(0, 3).map((tile: { id: string }) => tile.id)) {
         if (fogIds.has(id)) fogIds.delete(id);
         else fogIds.add(id);
       }
@@ -174,6 +227,7 @@ try {
         values.sort((a, b) => a - b)[Math.ceil(values.length * fraction) - 1]!;
       return {
         gpu,
+        workload,
         softwareRenderer: /swiftshader|llvmpipe|software/i.test(gpu),
         dimensions: [
           Math.ceil(plan.width * plan.pixelScale),
@@ -211,7 +265,7 @@ try {
       renderer.destroy();
       window.Worker = NativeWorker;
     }
-  });
+  }, workload);
   console.log(JSON.stringify(result, null, 2));
   console.log(
     "Completed acknowledgement includes main-thread preparation, worker messaging, direct canvas rendering and a benchmark-only GPU fence. No bitmap export or main-thread canvas swap is performed. The fence deliberately waits for completed GPU work; its polling overhead is included. GPU timer results are reported when supported. Next animation frame is a scheduling opportunity, not proof of physical display scanout. No pixel readback is used. Cold time includes image loading and shader compilation.",

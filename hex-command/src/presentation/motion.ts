@@ -34,15 +34,13 @@ function pulse(element: Element | null, kind: MotionKind | "turn") {
 
 export function animateTile(tileId: string, kind: MotionKind) {
   if (!tileKinds.has(kind) || typeof document === "undefined") return;
-  // Interactive ground nodes stay independent from the visual unit/HUD layers.
-  const attribute =
-    kind === "select" ? "data-tile" : kind === "capture" ? "data-indicator-tile" : "data-unit-tile";
-  const tile = [...document.querySelectorAll<SVGElement>(`#map [${attribute}]`)].find(
-    (node) => node.getAttribute(attribute) === String(tileId),
-  );
-  if (!tile) return;
-  if (["move", "attack", "recruit"].includes(kind) && !tile.querySelector(".unit-art")) return;
-  pulse(tile, kind);
+  const battlefield = document.querySelector("#map[data-gpu-battlefield]");
+  if (battlefield) {
+    battlefield.dispatchEvent(
+      new CustomEvent("battlefieldmotion", { detail: { tile: tileId, kind } }),
+    );
+    return;
+  }
 }
 
 export function animateTurn() {

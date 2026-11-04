@@ -1,0 +1,60 @@
+{
+  "events": [
+    {
+      "id": "death-light",
+      "priority": 100,
+      "when": {
+        "killed": {}
+      },
+      "remembers": false,
+      "actions": [
+        {
+          "createMark": {
+            "type": "death-light",
+            "tile": "$event.deathTile",
+            "light": {
+              "radius": 62,
+              "power": 0.75,
+              "color": [255, 32, 32],
+              "fixture": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "killed": {
+          "character": "mirror-captain"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Your commander fell. Start Mirror Night again to keep testing."
+        }
+      ]
+    },
+    {
+      "id": "rival-defeated",
+      "when": {
+        "killed": {
+          "character": "mirror-rival"
+        }
+      },
+      "objective": {
+        "label": "Defeat the opposing commander",
+        "intent": {
+          "defeat": {
+            "character": "mirror-rival"
+          }
+        }
+      },
+      "actions": [
+        {
+          "victory": "Mirror Night complete. Your trace is available in Debug tools."
+        }
+      ]
+    }
+  ]
+}

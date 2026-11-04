@@ -143,8 +143,10 @@ export type TerrainType =
   | "grove";
 export type DamageType = "blade" | "pierce" | "impact";
 export type AttackCategory = "melee" | "ranged";
-export type CampaignId = "lantern-road" | "green-accord" | "ashen-oath" | "borrowed-tide";
+export type CampaignId =
+  "lantern-road" | "green-accord" | "ashen-oath" | "borrowed-tide" | "mirror-night";
 export type CampaignMapId =
+  | "mirror-night"
   | CoastalMapId
   | "lantern-ferry"
   | "lantern-villages"

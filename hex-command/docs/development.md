@@ -234,7 +234,15 @@ selects complete authored tile frames and renders terrain, lighting and fog into
 that canvas. The browser composites the worker-owned canvas directly; runtime
 never exports, transports or swaps an
 ImageBitmap per update. Main-thread replies are small revision acknowledgements.
-Units, items, health, selection and interaction remain independent overlays.
+The same GPU context draws units, items, health bars, ownership badges and tile
+outlines from a presentation-only snapshot. Complete native 64×64 unit/item images
+are packed into nearest-sampled GPU atlas pages; batches share one vertex format.
+Unit sprites sample the same colored lighting function as terrain, replacing
+per-tile SVG color filters. Transparent SVG hexes retain click targets, keyboard
+navigation and accessible labels. Drag panning and Control/Command-wheel or
+plus/minus zoom transform this shared canvas/input surface while retaining native
+terrain, lighting and fog caches.
+Zero resets zoom.
 
 Production prebuilds unlit terrain PNGs, independent of light state. The worker
 uploads a prebuilt image directly to WebGL 2. Changed/custom maps draw complete
@@ -250,10 +258,24 @@ Changed lights update their old/new influence bounds and intersecting fixtures.
 Fog edits update the affected mask region, expanding each
 Gaussian pass by its kernel reach. Geometry is cached, and reordered identical fog
 sets skip painting. Terrain and day/night changes still require full updates.
-Selection and ordinary moves with unchanged terrain, lighting and fog request no
-new frame. Replaced terrain loads are aborted; pending requests for identical
-terrain reuse the existing load. Superseded jobs cannot draw after a replacement
+Terrain lighting uses integer spatial cell lists, so each fragment checks only
+lights whose influence reaches its cell. This preserves overlapping light colors
+without requiring floating-point blending extensions. Selection, health and unit
+updates redraw GPU overlays while retaining terrain, lighting and fog caches.
+Replaced terrain loads are aborted; pending requests for identical terrain reuse
+the existing load. Superseded jobs cannot draw after a replacement
 request is known to the worker.
+
+The worker animates movement, hit recoil, appearance/disappearance and action
+feedback only while transitions are active. Animation frames restore their dirty
+region from cached terrain/fog before drawing live visuals, then stop when idle.
+Reduced-motion preferences disable transitions. Atlas pages reset on scene/session
+changes; sprite fetch/decode failures use the existing diagnostic/retry surface.
+Stationary units, indicators and ownership badges retain their geometry and GPU
+buffers during animation. Contiguous stationary runs stay in painter order around
+moving units; only animated runs rebuild/upload vertices each frame. Scene,
+inspection, pulse and transition-membership changes invalidate these caches.
+New fog coverage removes existing disappearance fades, including fog-only updates.
 
 Workers, transferable OffscreenCanvas, worker WebGL 2 and createImageBitmap are
 required browser capabilities. There is no main-thread map painter, separate fog
@@ -295,8 +317,8 @@ timer queries are asynchronous and optional. API wall times can include driver
 synchronization, are nested, and are not GPU execution times. Normal readiness,
 completed GPU work, a main-thread animation-frame opportunity and physical display
 scanout are distinct events. Browser benchmarks stay outside the default tests.
-Game logic, unit overlays and physical display scanout are outside renderer timing;
-no timed run reads CPU pixels. Software timings do not establish a hardware budget.
+Game logic and physical display scanout are outside renderer timing. Unit overlays
+are included when `--units` is supplied; no timed run reads CPU pixels. Software timings do not establish a hardware budget.
 
 Terrain inspection portraits use one explicitly registered image per terrain
 type, shared across all floors, orientations, junctions, maps and cells. These
@@ -325,6 +347,18 @@ repeated with every action inspection. Undo retains immutable revisions.
 Persistence still stores the full canonical checkpoint in the existing save
 format; Rust serializes it directly instead of constructing another JavaScript
 map solely for JSON serialization. Transport patches are never save data.
+
+Optional GPU benchmark (outside the default tests):
+
+```sh
+npm run map:benchmark -- --lights=128 --units=64
+# Diagnostic software GPU when hardware acceleration is unavailable:
+npm run map:benchmark -- --software --lights=128 --units=64
+```
+
+The light/unit counts add a synthetic presentation workload on the Bell map;
+they never change playable content. Completed acknowledgements include a GPU
+fence; software results do not establish hardware frame rates.
 
 ## Leadership and campaign groups
 
@@ -403,3 +437,60 @@ limit retains simultaneous resolution.
 Dialogue lines may declare an optional `sound` family. The dialogue view plays
 that cue when the line is first presented through the gesture-unlocked sound
 player; ordinary sound preferences still apply.
+
+## Live performance traces
+
+Settings → Debug tools provides **Start recording trace**, **Stop recording**
+and **Download trace**. Starting closes Settings so the battle can be exercised;
+reopen Settings to stop/download. Downloading during capture first stops and
+flushes worker data. Recordings stay in memory until reload; starting another
+recording replaces the previous one. Nothing is uploaded automatically.
+
+The bounded Chrome/Perfetto JSON trace includes action and engine timings,
+browser callback intervals and long tasks, map-worker stages, render workload
+counts, optional asynchronous GPU timer queries, renderer information and the
+start/end battle state. Worker clock origins are normalized to the recording.
+Recording stops after ten minutes or 250,000 events; the export reports dropped
+events and worker flush failures. GPU disjoint/incomplete samples are identified;
+GPU duration tracks use CPU submission timestamps for approximate placement.
+Recording never inserts completion fences. Callback intervals are not physical
+display frame rates, and API submission time is not GPU execution time.
+
+**Start Mirror Night** in the same debug panel starts a single-battle test
+scenario using Classic Mirror's terrain and armies. It also appears in the
+campaign picker because the shared campaign event system owns persistent death
+marks. Player proximity clears fog permanently within two hexes. Player-owned
+villages emit light until ownership changes; both keeps have fixed lamps.
+Every death creates its own persistent red-light mark, including repeated deaths
+on one hex. The usual commander victory/loss conditions end the battle. No test
+scenario conditions are implemented in frontend rendering.
+
+### Sprite preparation and outline resolution
+
+After the first battlefield frame, the worker fetches, decodes and uploads the
+published factions' recruitment pools, visible archetypes in each active palette,
+and their Rust-catalog advancement branches in the background. Currently published
+promotion choices are also included. Breadth-first traversal prepares base types
+before deeper tiers, deduplicates shared artwork and stops at 128 unique URLs per
+prefetch list. This prepares images only; Rust still decides legal choices and
+concealed actors are not queried. Three speculative requests run at once.
+Actual use shares an in-flight request or an uploaded atlas
+entry; background preparation never gates a ready frame. Scene changes abort old
+requests, and a failed speculative load is retried/diagnosed when actually needed.
+Every newer frame releases the superseded frame's sprite wait immediately, even
+if a decoder has not settled. Requests no longer needed by the latest scene or
+its prefetch pool are aborted; still-needed URLs share their existing request.
+An immediate recruit can still wait if its image has not finished loading.
+Trace image events identify the asset and required/prefetch purpose; atlas-upload
+events distinguish decoded images from artwork ready to draw.
+Objective outlines preserve the upstream opaque gold dashed foreground over a
+dark backing, blue selected/reachable variants and green recruitment variant.
+
+Native terrain, lighting and fog caches keep their original resolution and pixel
+scale. The final canvas instead follows the displayed size and device pixel ratio,
+with antialiasing for geometric overlays. Its display buffer is bounded to
+4,194,304 pixels and the device's renderbuffer/viewport limits. Resize/zoom can
+refresh that buffer without rebuilding the native caches. Texture sampling remains
+nearest for pixel artwork. Hex strokes use analytic edge coverage in a separate cached GPU vertex buffer,
+with upstream widths, opacity, colors,
+continuous dash lengths and miter joins; there is no added gold hover outline.

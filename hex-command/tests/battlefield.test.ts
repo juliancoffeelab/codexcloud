@@ -34,7 +34,7 @@ test("Recruitment highlights only legal destinations", async () => {
   assert(!recruited.some((tile) => /selected|reachable|target/.test(tile.classes)));
 });
 
-test("Moving units preserves stable terrain and SVG layers", async () => {
+test("Moving units preserves stable terrain and interaction geometry", async () => {
   const game = new Game();
   game.addUnit("archer", "enemy", "hex-0408-edbae05560");
   const opening = game.publishedView();
@@ -112,64 +112,33 @@ test("Completed seal markers disappear while territory remains visible", async (
   );
 });
 
-// The three paint layers retain separate feedback targets; overlays never need
-// the keyboard-focusable ground node to contain the unit artwork.
+// Controller feedback crosses the presentation boundary as data; unit visuals
+// no longer need a corresponding DOM element.
 const { animateTile } = await import("../src/presentation/motion");
-function feedbackNode(attribute: string, tileId: string, occupied = false) {
-  const classes = new Set<string>();
-  return {
-    classes,
-    classList: {
-      add: (name: string) => classes.add(name),
-      remove: (name: string) => classes.delete(name),
-    },
-    getAttribute: (name: string) => (name === attribute ? tileId : null),
-    getBoundingClientRect: () => ({}),
-    querySelector: (selector: string) => (occupied && selector === ".unit-art" ? {} : null),
-  };
-}
-test("Selection, unit motion and capture target independent paint layers", async () => {
-  const groundNode = feedbackNode("data-tile", "hex-0056-2e6c8414fc");
-  const unitNode = feedbackNode("data-unit-tile", "hex-0056-2e6c8414fc", true);
-  const indicatorNode = feedbackNode("data-indicator-tile", "hex-0056-2e6c8414fc");
-  const emptyNode = feedbackNode("data-unit-tile", "hex-0397-b042f4a1af");
-  const feedbackLayers = new Map([
-    ["#map [data-tile]", [groundNode]],
-    ["#map [data-unit-tile]", [unitNode, emptyNode]],
-    ["#map [data-indicator-tile]", [indicatorNode]],
-  ]);
+test("Battlefield feedback sends tile effects to the GPU surface", () => {
   const originalDocument = Object.getOwnPropertyDescriptor(globalThis, "document");
-  const originalTimeout = globalThis.setTimeout;
-  const originalClearTimeout = globalThis.clearTimeout;
-  const cleanup: (() => void)[] = [];
+  const events: CustomEvent[] = [];
   try {
     Object.defineProperty(globalThis, "document", {
       configurable: true,
-      value: { querySelectorAll: (selector: string) => feedbackLayers.get(selector) ?? [] },
+      value: {
+        querySelector: (selector: string) =>
+          selector === "#map[data-gpu-battlefield]"
+            ? { dispatchEvent: (event: CustomEvent) => events.push(event) }
+            : null,
+      },
     });
-    globalThis.setTimeout = ((callback: () => void) => {
-      cleanup.push(callback);
-      return cleanup.length;
-    }) as unknown as typeof setTimeout;
-    globalThis.clearTimeout = (() => undefined) as typeof clearTimeout;
-
-    animateTile("hex-0056-2e6c8414fc", "select");
-    assert(groundNode.classes.has("motion-select"));
-    assert.equal(unitNode.classes.size, 0);
-    for (const kind of ["move", "recruit", "attack"] as const) {
+    for (const kind of ["select", "move", "recruit", "attack", "capture"] as const)
       animateTile("hex-0056-2e6c8414fc", kind);
-      assert.deepEqual([...unitNode.classes], [`motion-${kind}`]);
-    }
-    animateTile("hex-0056-2e6c8414fc", "capture");
-    assert(indicatorNode.classes.has("motion-capture"));
-    animateTile("hex-0397-b042f4a1af", "move");
-    assert.equal(emptyNode.classes.size, 0);
-    for (const finish of cleanup) finish();
-    assert.equal(groundNode.classes.size + unitNode.classes.size + indicatorNode.classes.size, 0);
+    assert.deepEqual(
+      events.map((event) => [event.type, event.detail]),
+      ["select", "move", "recruit", "attack", "capture"].map((kind) => [
+        "battlefieldmotion",
+        { tile: "hex-0056-2e6c8414fc", kind },
+      ]),
+    );
   } finally {
     if (originalDocument) Object.defineProperty(globalThis, "document", originalDocument);
     else Reflect.deleteProperty(globalThis, "document");
-    globalThis.setTimeout = originalTimeout;
-    globalThis.clearTimeout = originalClearTimeout;
   }
 });

@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { pixelSprites } from "../presentation/pixel-art";
+  import { battlefieldCamera } from "../presentation/battlefield-camera";
+  import { battlefieldScene } from "../presentation/battlefield-scene";
+  import type { MotionKind } from "../presentation/motion";
   import { tick, untrack } from "svelte";
   import type { TileView } from "../game/view";
   import type { BattleCommands, BattleView } from "../controller/view";
@@ -8,7 +10,6 @@
   import { BattlefieldViewCache } from "./battlefield-view";
   import { battlefieldSpriteSize, mapDimensions } from "./geometry";
   import { TerrainViewCache, terrainAssetKey } from "../presentation/terrain-map";
-  import { lightingMatrix } from "../presentation/battlefield-lighting";
   import {
     MapRenderer,
     acquireMapRenderer,
@@ -27,6 +28,21 @@
   const battlefieldViewCache = new BattlefieldViewCache();
   let renderError = $state<string>();
   let renderAttempt = $state(0);
+  let activeRenderer = $state.raw<MapRenderer>();
+  let keyboardTile = $state<string | null>(null);
+  let reducedMotion = $state(false);
+  $effect(() => {
+    const preference = matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      reducedMotion = preference.matches;
+    };
+    update();
+    preference.addEventListener("change", update);
+    return () => preference.removeEventListener("change", update);
+  });
+  $effect(() => {
+    activeRenderer?.inspect(null, keyboardTile);
+  });
 
   const game = $derived(view.game);
   const selected = $derived(view.selected);
@@ -40,7 +56,10 @@
   const tiles = $derived(
     battlefieldViewCache.prepare(game, selected, artwork, recruitTileId, terrainScene.tiles),
   );
-  const occupiedTiles = $derived(tiles.filter((tile) => tile.occupant));
+  const sessionVersion = $derived(view.sessionVersion);
+  const liveScene = $derived(
+    battlefieldScene(game, tiles, reducedMotion, `${sessionVersion}:${game.mapId}`, artwork),
+  );
   const size = $derived(mapDimensions(game));
   const mapWidth = $derived(size.width);
   const mapHeight = $derived(size.height);
@@ -53,34 +72,24 @@
   const renderTerrainKey = $derived(
     JSON.stringify([terrainKey, [...terrainScene.tiles.values()].map((tile) => tile.terrainFrame)]),
   );
-  const mapFrame: MapFrameRequest = $derived({
-    terrainKey: renderTerrainKey,
-    plan: {
+  const staticPlan = $derived.by(() => {
+    const current = untrack(() => game);
+    return {
       width: mapWidth,
       height: mapHeight,
       pixelScale: 64 / battlefieldSpriteSize,
       tiles: [...terrainScene.tiles].map(([id, tile]) => ({
         ...tile,
-        role: TERRAIN[game.tile(id)!.terrain].role,
+        role: TERRAIN[current.tile(id)!.terrain].role,
       })),
-      lighting,
-    },
+    };
+  });
+  const mapFrame: MapFrameRequest = $derived({
+    terrainKey: renderTerrainKey,
+    plan: { ...staticPlan, lighting },
     prebuilt: terrainSprites[terrainAssetKey(terrainKey)],
     fog: fogTiles,
-  });
-  // Map lighting is baked by the worker. These filters affect live unit/item overlays only.
-  const nightFilters = $derived.by(() => {
-    if (lighting.time !== "night") return [];
-    const liveTiles = new Set([
-      ...game.units.map((unit) => unit.tile),
-      ...game.groundItems.map((item) => item.tile),
-    ]);
-    return [...terrainScene.tiles]
-      .filter(([id]) => liveTiles.has(id))
-      .map(([, tile]) => ({
-        id: `night-tile-${tile.col}-${tile.row}`,
-        values: lightingMatrix(tile.x, tile.y, lighting).join(" "),
-      }));
+    battlefield: liveScene,
   });
   const inspectionTiles = $derived(
     [game.unit(selected)?.tile, game.unit(view.target)?.tile, view.inspectedTile]
@@ -97,10 +106,15 @@
     const reveal = () => {
       if (!current) return;
       const bounds = ids.flatMap((id) => {
-        const nodes = board.querySelectorAll<SVGGElement>(
-          `[data-tile="${id}"], [data-unit-tile="${id}"]`,
-        );
-        return [...nodes].map((node) => node.getBoundingClientRect());
+        const node = board.querySelector<SVGGElement>(`[data-tile="${id}"]`);
+        if (!node) return [];
+        const rect = node.getBoundingClientRect();
+        // GPU sprites extend above the transparent hex; reveal their heads too.
+        const pixelScale = board.getBoundingClientRect().width / mapWidth;
+        const headroom = game.at(id) ? (battlefieldSpriteSize / 2 - 20) * pixelScale : 0;
+        return [
+          { left: rect.left, right: rect.right, top: rect.top - headroom, bottom: rect.bottom },
+        ];
       });
       if (!bounds.length) return;
       const area = scroller.getBoundingClientRect();
@@ -129,6 +143,15 @@
     };
   });
 
+  function listenMotion(node: SVGSVGElement) {
+    const handle = (event: Event) => {
+      const { tile, kind } = (event as CustomEvent<{ tile: string; kind: MotionKind }>).detail;
+      activeRenderer?.pulse(tile, kind);
+    };
+    node.addEventListener("battlefieldmotion", handle);
+    return { destroy: () => node.removeEventListener("battlefieldmotion", handle) };
+  }
+
   function mountMap(node: HTMLDivElement, request: { frame: MapFrameRequest; attempt: number }) {
     let renderer: MapRenderer | undefined;
     let retired: MapRenderer[] = [];
@@ -153,6 +176,7 @@
             },
           );
         }
+        activeRenderer = renderer;
         renderer!.update(next.frame);
       } catch (error) {
         renderError = String(error);
@@ -162,6 +186,7 @@
     return {
       update,
       destroy() {
+        if (activeRenderer === renderer) activeRenderer = undefined;
         renderer?.destroy();
         for (const previous of retired) previous.destroy();
       },
@@ -217,23 +242,22 @@
       </button>
     </div>
   {/if}
-  <div class="map-scroll" bind:this={viewport}>
+  <div class="map-scroll" bind:this={viewport} use:battlefieldCamera>
     <svg
       bind:this={map}
       id="map"
+      data-gpu-battlefield
+      use:listenMotion
       {viewBox}
       style={`--map-scale: ${game.cols / 11};`}
       role="group"
       aria-label={`${MAPS[game.mapId].name} battlefield`}
+      aria-describedby="battlefield-controls"
     >
-      <defs>
-        {#each nightFilters as filter (filter.id)}
-          <filter id={filter.id} color-interpolation-filters="sRGB">
-            <feColorMatrix type="matrix" values={filter.values} />
-          </filter>
-        {/each}
-      </defs>
-
+      <desc id="battlefield-controls">
+        Drag to pan. Control or Command plus wheel to zoom. Keyboard: arrows to navigate, Enter to
+        choose, plus and minus to zoom, zero to reset zoom.
+      </desc>
       <g class="terrain-layer">
         <foreignObject
           x="0"
@@ -259,117 +283,14 @@
             data-tile={tile.id}
             onclick={() => actions.choose(tile.id)}
             onkeydown={(event) => handleTileKey(event, tile)}
+            onfocus={(event) => {
+              keyboardTile = event.currentTarget.matches(":focus-visible") ? tile.id : null;
+            }}
+            onblur={() => {
+              keyboardTile = null;
+            }}
           >
             <polygon points={tile.points} fill="transparent" pointer-events="all" />
-            {#if tile.classes.includes("objective") || tile.classes.includes("recruitable")}
-              <polygon class="tile-highlight-outline" points={tile.points} fill="none" />
-            {/if}
-            <polygon class="tile-outline" points={tile.points} fill="none" />
-          </g>
-        {/each}
-      </g>
-
-      <g class="ground-items pixel-art" pointer-events="none" aria-hidden="true">
-        {#each game.groundItems.filter((item) => !fogSet.has(item.tile)) as ground, index (`${ground.tile}-${index}`)}
-          {@const site = tiles.find((tile) => tile.id === ground.tile)!}
-          {@const pile = game.groundItems.filter((item) => item.tile === ground.tile)}
-          {@const offset = (pile.indexOf(ground) - (pile.length - 1) / 2) * 12}
-          <g
-            transform={`translate(${site.x + offset} ${site.y})`}
-            filter={lighting.time === "night"
-              ? `url(#night-tile-${site.col}-${site.row})`
-              : undefined}
-          >
-            <ellipse cx="0" cy="14" rx="12" ry="5" fill="#d5bc68" opacity="0.4" />
-            {#if pixelSprites[`terrain_prop_items_${ground.item.id}`]}
-              <image
-                href={pixelSprites[`terrain_prop_items_${ground.item.id}`]}
-                x="-32"
-                y="-32"
-                width="64"
-                height="64"
-              />
-            {:else}
-              <path d="M0,-6 8,2 0,10 -8,2Z" fill="#e2c778" stroke="#302c28" stroke-width="2" />
-            {/if}
-          </g>
-        {/each}
-      </g>
-      <!-- Paint every terrain first; adjacent hexes must not hide units or bars. -->
-      <g class="unit-layer" pointer-events="none" aria-hidden="true">
-        {#each occupiedTiles as tile (tile.occupant!.unit.id)}
-          {@const occupant = tile.occupant!}
-          <g
-            data-unit-tile={tile.id}
-            data-unit={occupant.unit.id}
-            transform={`translate(${tile.x} ${tile.y})`}
-          >
-            <ellipse
-              class="team-base"
-              cx="0"
-              cy="19"
-              rx="19"
-              ry="7"
-              fill={occupant.teamColor}
-              stroke={occupant.teamColor}
-            />
-            {#if occupant.frame}
-              <svg
-                filter={lighting.time === "night"
-                  ? `url(#night-tile-${tile.col}-${tile.row})`
-                  : undefined}
-                class="art-sprite pixel-art unit-art"
-                class:enemy-unit={occupant.faction.relation === "hostile"}
-                class:spent-unit={occupant.unit.attacked}
-                data-faction={occupant.faction.id}
-                x={-occupant.spriteSize / 2}
-                y={20 - occupant.spriteSize}
-                width={occupant.spriteSize}
-                height={occupant.spriteSize}
-                viewBox={`0 0 ${occupant.frame.width} ${occupant.frame.height}`}
-                aria-hidden="true"
-                focusable="false"
-              >
-                <image
-                  href={occupant.frame.url}
-                  x="0"
-                  y="0"
-                  width={occupant.frame.width}
-                  height={occupant.frame.height}
-                  preserveAspectRatio="none"
-                />
-              </svg>
-            {/if}
-          </g>
-        {/each}
-      </g>
-
-      <!-- Health and state indicators remain above every terrain and sprite. -->
-      <g class="indicator-layer" pointer-events="none" aria-hidden="true">
-        {#each occupiedTiles as tile (tile.occupant!.unit.id)}
-          {@const occupant = tile.occupant!}
-          <g data-health-unit={occupant.unit.id} transform={`translate(${tile.x} ${tile.y})`}>
-            <rect class="hp-bg" x="-19" y="27" width="38" height="4" rx="2" />
-            <rect class="hp" x="-19" y="27" width={occupant.healthWidth} height="4" rx="2" />
-            {#if occupant.unit.attacked}
-              <text class="acted" x="21" y="-17">✓</text>
-            {/if}
-            {#if occupant.unit.retreating}
-              <text class="retreat-marker" x="-28" y="-14">↶</text>
-            {/if}
-          </g>
-        {/each}
-        {#each tiles as tile (tile.id)}
-          <g data-indicator-tile={tile.id}>
-            {#if tile.owner && !fogSet.has(tile.id)}
-              <circle
-                class="territory-badge"
-                cx={tile.x + 23}
-                cy={tile.y + 17}
-                r="5"
-                fill={tile.ownerColor}
-              />
-            {/if}
           </g>
         {/each}
       </g>

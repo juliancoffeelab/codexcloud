@@ -1,3 +1,13 @@
+import {
+  registerTraceSource,
+  receiveTrace,
+  traceInstant,
+  traceConfiguration,
+  type TraceConfig,
+} from "./performance-trace";
+import type { TraceBatch } from "./worker-trace";
+import type { BattlefieldScene } from "./battlefield-scene";
+import type { MotionKind } from "./motion";
 import { lightingKey, daylight } from "./battlefield-lighting";
 import type { TerrainMapPlan, TerrainMapSprite } from "./terrain-map";
 
@@ -6,13 +16,19 @@ export interface MapFrameRequest {
   plan: TerrainMapPlan;
   prebuilt?: TerrainMapSprite;
   fog: readonly string[];
+  battlefield?: BattlefieldScene;
 }
 export interface MapRenderRequest {
+  resize?: { width: number; height: number };
+  traceControl?: { config?: TraceConfig; stop?: number };
   preparePrograms?: { lighting: TerrainMapPlan["lighting"]; fog: boolean; prebuilt: boolean };
   revision: number;
   fog: readonly string[];
   lighting: TerrainMapPlan["lighting"];
-  scene?: Omit<MapFrameRequest, "fog">;
+  scene?: Omit<MapFrameRequest, "fog" | "battlefield">;
+  battlefield?: BattlefieldScene;
+  motion?: { tile: string; kind: MotionKind };
+  interaction?: { hovered: string | null; focused: string | null };
   /** Transferred exactly once, with this renderer's first scene. */
   canvas?: OffscreenCanvas;
 }
@@ -21,10 +37,12 @@ export type MapRenderResponse =
   | { revision: number; error: string };
 
 const renderers = new Set<MapRenderer>();
+let rendererSerial = 0;
 
 /** The worker owns the visible canvas. Messages contain scene changes and acknowledgements only. */
 export class MapRenderer {
   private worker: Worker;
+  private workerId = ++rendererSerial;
   private canvas = document.createElement("canvas");
   private offscreen?: OffscreenCanvas;
   private revision = 0;
@@ -33,6 +51,32 @@ export class MapRenderer {
   private timeout?: ReturnType<typeof setTimeout>;
   private failed = false;
   private displayed = false;
+  private battlefield?: BattlefieldScene;
+  private unregisterTrace?: () => void;
+  private traceStop?: { id: number; resolve: () => void; timer: ReturnType<typeof setTimeout> };
+  private resizeObserver?: ResizeObserver;
+  private host?: HTMLElement;
+  private displaySize?: { width: number; height: number };
+  private refreshSize = () => {
+    if (this.failed || !this.host) return;
+    const bounds = this.host.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const size = {
+      width: Math.ceil(bounds.width * devicePixelRatio),
+      height: Math.ceil(bounds.height * devicePixelRatio),
+    };
+    if (this.displaySize?.width === size.width && this.displaySize?.height === size.height) return;
+    this.displaySize = size;
+    this.worker.postMessage({ resize: size });
+  };
+  private observeSize(host: HTMLElement) {
+    this.resizeObserver?.disconnect();
+    this.host = host;
+    this.refreshSize();
+    this.resizeObserver = new ResizeObserver(this.refreshSize);
+    this.resizeObserver.observe(host);
+  }
+  private frameStarted = new Map<number, { time: number; trace?: TraceConfig }>();
 
   get hasFrame() {
     return this.displayed;
@@ -58,13 +102,41 @@ export class MapRenderer {
       this.worker.terminate();
       throw error;
     }
+    this.observeSize(host);
+    window.addEventListener("resize", this.refreshSize);
     renderers.add(this);
     this.worker.onerror = (event) =>
       this.fail(`Map worker failed: ${event.message || "script could not load"}`);
     this.worker.onmessageerror = () =>
       this.fail("Map worker returned an unreadable acknowledgement");
-    this.worker.onmessage = (event: MessageEvent<MapRenderResponse>) => {
+    this.worker.onmessage = (event: MessageEvent<MapRenderResponse | TraceBatch>) => {
+      if ("trace" in event.data) {
+        const { id, events, stopped } = event.data.trace;
+        receiveTrace(id, events);
+        if (stopped && this.traceStop?.id === id) {
+          clearTimeout(this.traceStop.timer);
+          this.traceStop.resolve();
+          this.traceStop = undefined;
+        }
+        return;
+      }
       const frame = event.data;
+      const submission = this.frameStarted.get(frame.revision);
+      if (submission?.trace)
+        receiveTrace(submission.trace.id, [
+          {
+            name: "Map request to acknowledgement",
+            cat: "latency",
+            ph: "X",
+            pid: 1,
+            tid: 1,
+            ts: (submission.time - submission.trace.origin) * 1000,
+            dur: (performance.timeOrigin + performance.now() - submission.time) * 1000,
+            args: { revision: frame.revision, error: "error" in frame ? frame.error : undefined },
+          },
+        ]);
+      for (const revision of this.frameStarted.keys())
+        if (revision <= frame.revision) this.frameStarted.delete(revision);
       if (this.failed || frame.revision !== this.revision) return;
       clearTimeout(this.timeout);
       if ("error" in frame) {
@@ -75,6 +147,21 @@ export class MapRenderer {
       this.displayed = true;
       this.onFrame?.(frame.revision);
     };
+    this.unregisterTrace = registerTraceSource({
+      start: (config) =>
+        this.worker.postMessage({
+          traceControl: { config: { ...config, workerId: this.workerId } },
+        }),
+      stop: (id) =>
+        new Promise<void>((resolve, reject) => {
+          const timer = setTimeout(() => {
+            this.traceStop = undefined;
+            reject(new Error("Map worker trace flush timed out"));
+          }, 1500);
+          this.traceStop = { id, resolve, timer };
+          this.worker.postMessage({ traceControl: { stop: id } });
+        }),
+    });
   }
 
   /** Adopt a pre-rendered canvas without recreating its worker or GPU context. */
@@ -90,6 +177,7 @@ export class MapRenderer {
     this.displayed = false;
     this.canvas.style.visibility = "hidden";
     host.append(this.canvas);
+    this.observeSize(host);
   }
 
   preparePrograms(frame: MapFrameRequest) {
@@ -108,6 +196,7 @@ export class MapRenderer {
 
   private fail(message: string) {
     if (this.failed) return;
+    traceInstant("Map renderer error", { message });
     this.failed = true;
     clearTimeout(this.timeout);
     // Keep the context alive until replacement/disposal so recoverable image or
@@ -118,7 +207,14 @@ export class MapRenderer {
   update(frame: MapFrameRequest) {
     if (this.failed) return;
     const key = JSON.stringify([lightingKey(frame.plan.lighting ?? daylight), frame.fog]);
-    if (frame.terrainKey === this.terrainKey && key === this.key) return;
+    if (
+      frame.terrainKey === this.terrainKey &&
+      key === this.key &&
+      frame.battlefield === this.battlefield
+    )
+      return;
+    const battlefield = frame.battlefield === this.battlefield ? undefined : frame.battlefield;
+    this.battlefield = frame.battlefield;
     this.key = key;
     const absolute = (url: string) => new URL(url, document.baseURI).href;
     const scene =
@@ -139,12 +235,31 @@ export class MapRenderer {
             },
           };
     const canvas = this.offscreen;
+    const revision = ++this.revision;
+    const trace = traceConfiguration();
+    if (trace) {
+      this.frameStarted.set(revision, { time: performance.timeOrigin + performance.now(), trace });
+      if (this.frameStarted.size > 128)
+        this.frameStarted.delete(this.frameStarted.keys().next().value!);
+    }
     this.worker.postMessage(
       {
-        revision: ++this.revision,
+        revision,
         fog: frame.fog,
         lighting: frame.plan.lighting,
         scene,
+        battlefield: battlefield && {
+          ...battlefield,
+          prefetch: battlefield.prefetch?.map(absolute),
+          units: battlefield.units.map((unit) => ({
+            ...unit,
+            url: unit.url && absolute(unit.url),
+          })),
+          items: battlefield.items.map((item) => ({
+            ...item,
+            url: item.url && absolute(item.url),
+          })),
+        },
         canvas,
       } satisfies MapRenderRequest,
       canvas ? [canvas] : [],
@@ -158,7 +273,24 @@ export class MapRenderer {
     );
   }
 
+  pulse(tile: string, kind: MotionKind) {
+    if (!this.failed) this.worker.postMessage({ motion: { tile, kind } });
+  }
+
+  inspect(hovered: string | null, focused: string | null) {
+    if (!this.failed) this.worker.postMessage({ interaction: { hovered, focused } });
+  }
+
   destroy() {
+    this.resizeObserver?.disconnect();
+    window.removeEventListener("resize", this.refreshSize);
+    this.unregisterTrace?.();
+    this.frameStarted.clear();
+    if (this.traceStop) {
+      clearTimeout(this.traceStop.timer);
+      this.traceStop.resolve();
+      this.traceStop = undefined;
+    }
     clearTimeout(this.timeout);
     ++this.revision;
     this.worker.terminate();

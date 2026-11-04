@@ -1,4 +1,5 @@
 <script lang="ts">
+  import TraceControls from "./TraceControls.svelte";
   import type { BattleView, BattleCommands } from "../controller/view";
   interface Props {
     view: BattleView;
@@ -143,5 +144,24 @@
       report includes enemies hidden by fog.
     </p>
     <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
+    <h3>Performance trace</h3>
+    <TraceControls {view} onStart={() => dialog?.close()} />
+    <h3>Mirror Night</h3>
+    <p>
+      Start a new Mirror battle at night: explore fog, capture villages to light their lamps, and
+      leave a red light at every death. This replaces the current battle.
+    </p>
+    <button
+      onclick={() => {
+        try {
+          actions.startCampaign("mirror-night");
+          dialog?.close();
+        } catch (error) {
+          actions.error(error);
+        }
+      }}
+    >
+      Start Mirror Night
+    </button>
   </details>
 </dialog>
