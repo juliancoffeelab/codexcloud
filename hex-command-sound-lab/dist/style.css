@@ -1231,3 +1231,18 @@ button.is-playing {
     font-size: 10px;
   }
 }
+.sound-choice {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 11px;
+  padding: 9px;
+}
+.show-all-recordings {
+  padding: 10px 16px;
+  border-radius: 4px;
+  margin: 0 0 18px;
+  color: var(--accent);
+  font-size: 12px;
+}

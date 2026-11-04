@@ -29,11 +29,15 @@ repository projects, an execution environment, or external downloads.
 
 - Unit buttons are quick picks; the roster dropdown includes every snapshotted
   unit. Each named attack has a separate row. Numbered buttons play suggested
-  takes; All plays that row's picks. These are proposed assignments, not game
+  takes. Each row has an explicit sound selector; All plays every take in the
+  selected group. Long groups have a Show all control. Blade effects, legacy
+  knife slices, sabre, katana, dagger and seax stay separate choices. These are
+  proposed assignments, not game
   changes or claims of authentic species-specific recordings.
 - Full library includes every recording, including the Kenney pack preview.
   Filter by source, category, name or recording type. Results load in batches.
-  Tap a title to expose all detected takes and the complete recording.
+  Tap a title to expose all detected takes and the complete recording. Show
+  every recording removes the initial result-page limit in one tap.
 - Multi-take weapon recordings have approximate silence-based boundaries. Full
   recordings always preserve the entire session. A detected take may contain
   multiple contacts, quiet sounds or room noise; audition before final selection.

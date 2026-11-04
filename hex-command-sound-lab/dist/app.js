@@ -66,7 +66,7 @@ async function start() {
     if (text !== undefined) result.textContent = text;
     return result;
   }
-  const refs = (pack, pattern, limit = 5) =>
+  const refs = (pack, pattern) =>
     catalog
       .filter((x) => x.pack === pack && pattern.test(x.name))
       .flatMap((x) =>
@@ -74,10 +74,9 @@ async function start() {
           id: x.id,
           take,
         })),
-      )
-      .slice(0, limit);
-  const weapons = (pattern, limit = 5) =>
-    refs("still-north-media/weapon-textures", pattern, limit);
+      );
+  const weapons = (pattern) =>
+    refs("still-north-media/weapon-textures", pattern);
   const impacts = (pattern) =>
     refs("still-north-media/weapon-impacts", pattern);
   const kenney = (pattern) => refs("impact-sounds", pattern);
@@ -129,16 +128,41 @@ async function start() {
         refs: refs("jaggedstone/magic-spell-sfx", /magical/),
         note: "Designed spellcasting candidates",
       };
-    if (/knife/.test(name))
-      return {
-        refs: weapons(/^Dagger Swing$/),
-        note: "Actual dagger swing takes",
-      };
-    if (/sword|rustblade/.test(name))
-      return {
-        refs: weapons(/^Sabre Swing$|^Katana Swing$/),
-        note: "Actual blade swing takes",
-      };
+    if (/knife|sword|rustblade/.test(name)) {
+      const choices = [
+        {
+          label: "Blade effects · RPG",
+          refs: spells(/^blade_/),
+          note: "Three RPG blade effects · all original variations",
+        },
+        {
+          label: "Knife slices · Kenney",
+          refs: rpg(/^knifeSlice/),
+          note: "The two knife-slice effects from the earlier soundboard",
+        },
+        {
+          label: "Sabre · recorded swings",
+          refs: weapons(/^Sabre Swing$/),
+          note: "Recorded sabre swings · every detected take",
+        },
+        {
+          label: "Katana · recorded swings",
+          refs: weapons(/^Katana Swing$/),
+          note: "Recorded katana swings · every detected take",
+        },
+        {
+          label: "Dagger · recorded swings",
+          refs: weapons(/^Dagger Swing$/),
+          note: "Recorded dagger swings · every detected take",
+        },
+        {
+          label: "Seax · recorded swings",
+          refs: weapons(/^Seax Swing$/),
+          note: "Recorded seax swings · every detected take",
+        },
+      ].filter((choice) => choice.refs.length);
+      return { choices, refs: choices[0].refs, note: choices[0].note };
+    }
     if (/spear|lance|trident|harpoon|halberd/.test(name))
       return {
         refs: weapons(/^Spear Swing$/),
@@ -240,6 +264,7 @@ async function start() {
         icon: "⚔",
         note: picks.note,
         refs: picks.refs,
+        choices: picks.choices,
       });
     }
     rows.push({
@@ -313,6 +338,32 @@ async function start() {
       refs: gear,
     });
     return rows;
+  }
+  const actionChoices = new Map(),
+    expandedActions = new Set();
+  function selectedRows() {
+    return actionRows().map((action) => {
+      if (mode === "current") return action;
+      let choices = action.choices;
+      if (!choices) {
+        const ids = [...new Set(action.refs.map((ref) => ref.id))];
+        choices = [
+          {
+            label: "All suggested recordings",
+            refs: action.refs,
+            note: action.note,
+          },
+          ...ids.map((id) => ({
+            label: pretty(byId.get(id).name),
+            refs: action.refs.filter((ref) => ref.id === id),
+            note: `${byId.get(id).packLabel} · ${pretty(byId.get(id).name)}`,
+          })),
+        ];
+      }
+      const key = `${unit.id}/${action.key}`;
+      const chosen = Math.min(actionChoices.get(key) || 0, choices.length - 1);
+      return { ...action, ...choices[chosen], choices, chosen, choiceKey: key };
+    });
   }
   function drawWave(buffer) {
     const c = $("#wave"),
@@ -526,7 +577,7 @@ async function start() {
     });
     const root = $("#action-cards");
     root.replaceChildren();
-    for (const action of actionRows()) {
+    for (const action of selectedRows()) {
       const card = el("article", "sound-card");
       card.dataset.action = action.key;
       const info = el("div");
@@ -536,9 +587,32 @@ async function start() {
         el(
           "span",
           mode === "current" ? "tag neutral" : "tag",
-          `${mode === "current" ? "ORIGINAL GAME" : "CC0"} · ${action.refs.length} PICKS`,
+          `${mode === "current" ? "ORIGINAL GAME" : "CC0"} · ${action.refs.length} TAKES`,
         ),
       );
+      if (action.choices?.length > 1) {
+        const chooser = el("select", "sound-choice");
+        chooser.setAttribute(
+          "aria-label",
+          `${unit.name} ${action.title} sound`,
+        );
+        action.choices.forEach((choice, index) => {
+          const option = el(
+            "option",
+            "",
+            `${choice.label} (${choice.refs.length} takes)`,
+          );
+          option.value = index;
+          chooser.append(option);
+        });
+        chooser.value = action.chosen;
+        chooser.onchange = () => {
+          halt();
+          actionChoices.set(action.choiceKey, Number(chooser.value));
+          renderUnit();
+        };
+        info.append(chooser);
+      }
       card.append(el("span", "action-icon", action.icon), info);
       const controls = el("div", "sound-controls");
       if (action.refs.length) {
@@ -550,17 +624,36 @@ async function start() {
         button.onclick = () =>
           play([action.refs[Math.floor(Math.random() * action.refs.length)]]);
         controls.append(button);
-        action.refs.forEach((ref, i) => {
-          const b = el("button", "variant", String(i + 1));
-          b.title = `${byId.get(ref.id)?.name} · take ${(ref.take || 0) + 1}`;
-          b.setAttribute(
-            "aria-label",
-            `${unit.name} ${action.title}, variation ${i + 1}`,
+        const expanded = expandedActions.has(
+          `${action.choiceKey}/${action.chosen}`,
+        );
+        action.refs
+          .slice(0, expanded ? action.refs.length : 6)
+          .forEach((ref, i) => {
+            const b = el("button", "variant", String(i + 1));
+            b.title = `${byId.get(ref.id)?.name} · take ${(ref.take || 0) + 1}`;
+            b.setAttribute(
+              "aria-label",
+              `${unit.name} ${action.title}, variation ${i + 1}`,
+            );
+            b.onclick = () => play([ref]);
+            controls.append(b);
+          });
+        if (action.refs.length > 6) {
+          const more = el(
+            "button",
+            "all",
+            expanded ? "Show fewer" : `Show all ${action.refs.length} takes`,
           );
-          b.onclick = () => play([ref]);
-          controls.append(b);
-        });
-        const all = el("button", "all", "All →");
+          more.onclick = () => {
+            const key = `${action.choiceKey}/${action.chosen}`;
+            if (expanded) expandedActions.delete(key);
+            else expandedActions.add(key);
+            renderUnit();
+          };
+          controls.append(more);
+        }
+        const all = el("button", "all", `All ${action.refs.length} →`);
         all.setAttribute("aria-label", `Play all ${action.title} picks`);
         all.onclick = () => play(action.refs);
         controls.append(all);
@@ -618,7 +711,7 @@ async function start() {
   $("#current-mode").textContent = "Original game";
   $("#sequence").onclick = () =>
     play(
-      actionRows()
+      selectedRows()
         .filter(
           (a) =>
             a.key === "move" || a.key.startsWith("attack-") || a.key === "hit",
@@ -661,7 +754,7 @@ async function start() {
           .includes(q),
     );
     $("#results").textContent =
-      `${items.length} RECORDINGS · ${items.reduce((sum, x) => sum + (x.takes?.length || 1), 0)} TAKES${only ? " · FAVORITES" : ""}`;
+      `Showing ${Math.min(visibleCount, items.length)} of ${items.length} RECORDINGS · ${items.reduce((sum, x) => sum + (x.takes?.length || 1), 0)} TAKES${only ? " · FAVORITES" : ""}`;
     const root = $("#library-list");
     root.replaceChildren();
     if (!items.length)
@@ -759,6 +852,10 @@ async function start() {
       root.append(more);
     }
   }
+  $("#show-all-recordings").onclick = () => {
+    visibleCount = catalog.length;
+    renderLibrary();
+  };
   $("#search").oninput = () => renderLibrary(true);
   $("#pack").onchange = () => renderLibrary(true);
   $("#category").onchange = () => renderLibrary(true);
