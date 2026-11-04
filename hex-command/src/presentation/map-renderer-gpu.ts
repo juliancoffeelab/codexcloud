@@ -7,6 +7,10 @@ import {
 import { terrainDrawingOrder, terrainMapDimensions, type TerrainMapPlan } from "./terrain-painter";
 import { battlefieldSpriteSize, hexColumnSpacing } from "../ui/geometry";
 import * as shaders from "./map-shaders";
+import { lightGrid } from "./light-grid";
+import { BattlefieldOverlayGpu } from "./battlefield-overlay-gpu";
+import type { BattlefieldScene } from "./battlefield-scene";
+import type { MotionKind } from "./motion";
 
 type Target = {
   texture: WebGLTexture;
@@ -24,7 +28,7 @@ const programDefinitions = {
   lighting: [
     shaders.fullscreenVertex,
     shaders.lightingFragment,
-    ["size", "terrain", "lights", "straight", "scale", "count", "night"],
+    ["size", "terrain", "lights", "straight", "scale", "lightCells", "lightIndices", "night"],
   ],
   solid: [shaders.solidVertex, shaders.solidFragment, ["size", "rect", "ink"]],
   halo: [shaders.quadVertex, shaders.haloFragment, ["size", "rect", "glow", "fixture"]],
@@ -63,6 +67,8 @@ export class MapRendererGpu {
   private fogScratch?: Target;
   private fog?: Target;
   private lights: WebGLTexture;
+  private lightCells: WebGLTexture;
+  private lightIndices: WebGLTexture;
   private emptyFog: WebGLTexture;
   private fogBuffer: WebGLBuffer;
   private fogVao: WebGLVertexArrayObject;
@@ -71,6 +77,8 @@ export class MapRendererGpu {
   private fogKey?: string;
   private hasFog = false;
   private scale = 1;
+  private overlays?: BattlefieldOverlayGpu;
+  private battlefieldKey?: string;
 
   constructor(readonly canvas: OffscreenCanvas = new OffscreenCanvas(1, 1)) {
     const gl = this.canvas.getContext("webgl2", {
@@ -90,6 +98,8 @@ export class MapRendererGpu {
     gl.disable(gl.DITHER);
     this.parallelCompile = gl.getExtension("KHR_parallel_shader_compile");
     this.lights = this.texture();
+    this.lightCells = this.texture();
+    this.lightIndices = this.texture();
     this.emptyFog = this.texture(true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, 1, 1, 0, gl.RED, gl.UNSIGNED_BYTE, new Uint8Array(1));
     this.fogBuffer = gl.createBuffer()!;
@@ -100,6 +110,28 @@ export class MapRendererGpu {
     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
     gl.bindVertexArray(null);
     this.check();
+  }
+
+  hasSprite(url: string, key: string) {
+    return key === this.battlefieldKey && (this.overlays?.hasImage(url) ?? false);
+  }
+  setBattlefield(scene: BattlefieldScene, images: ReadonlyMap<string, ImageBitmap>) {
+    this.overlays ??= new BattlefieldOverlayGpu(this.gl);
+    if (scene.key !== this.battlefieldKey) {
+      if (this.battlefieldKey !== undefined) this.overlays.resetImages();
+      this.battlefieldKey = scene.key;
+    }
+    for (const [url, image] of images) this.overlays.addImage(url, image);
+    this.overlays.setScene(scene, performance.now());
+  }
+  pulse(tile: string, kind: MotionKind) {
+    this.overlays?.pulse(tile, kind, performance.now());
+  }
+  inspect(hovered: string | null, focused: string | null) {
+    this.overlays?.inspect(hovered, focused);
+  }
+  get animating() {
+    return this.overlays?.animating ?? false;
   }
 
   private requestProgram(name: ProgramName) {
@@ -399,20 +431,9 @@ export class MapRendererGpu {
     return region;
   }
 
-  private shade(lighting: BattlefieldLighting, region: Region) {
+  private uploadLights(lighting: BattlefieldLighting) {
     const gl = this.gl,
       lights = lighting.lights ?? [];
-    if (lighting.time === "day") {
-      this.bind(this.lit);
-      this.scissor(region, this.lit);
-      const u = this.use("copy");
-      this.sample(this.terrain.texture, 0);
-      gl.uniform1i(u.terrain!, 0);
-      gl.uniform1i(u.straight!, Number(this.straightTerrain));
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      gl.disable(gl.SCISSOR_TEST);
-      return;
-    }
     if (lights.length > this.maxTextureSize)
       throw new Error("Map has too many lights for this GPU");
     const table = new Float32Array(Math.max(1, lights.length) * 12);
@@ -433,10 +454,6 @@ export class MapRendererGpu {
         index * 12,
       );
     });
-    this.bind(this.lit);
-    this.scissor(region, this.lit);
-    const u = this.use("lighting");
-    this.sample(this.terrain.texture, 0);
     this.sample(this.lights, 1);
     if (Math.max(1, lights.length) > this.lightCapacity) {
       this.lightCapacity = Math.min(
@@ -466,13 +483,73 @@ export class MapRendererGpu {
       gl.FLOAT,
       table,
     );
+    const grid = lightGrid(lighting, this.canvas.width, this.canvas.height, this.scale);
+    this.sample(this.lightCells, 2);
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RG32UI,
+      grid.cols,
+      grid.rows,
+      0,
+      gl.RG_INTEGER,
+      gl.UNSIGNED_INT,
+      grid.ranges,
+    );
+    const width = Math.min(this.maxTextureSize, grid.indices.length);
+    const height = Math.ceil(grid.indices.length / width);
+    if (height > this.maxTextureSize)
+      throw new Error("Map light index exceeds this GPU's texture limit");
+    const indices = new Uint32Array(width * height);
+    indices.set(grid.indices);
+    this.sample(this.lightIndices, 3);
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.R32UI,
+      width,
+      height,
+      0,
+      gl.RED_INTEGER,
+      gl.UNSIGNED_INT,
+      indices,
+    );
+  }
+
+  configureLighting(u: Program["uniforms"], lighting: BattlefieldLighting) {
+    const gl = this.gl;
+    gl.uniform1i(u.night!, Number(lighting.time === "night"));
+    gl.uniform1f(u.scale!, this.scale);
+    this.sample(this.lights, 1);
+    this.sample(this.lightCells, 2);
+    this.sample(this.lightIndices, 3);
+    gl.uniform1i(u.lights!, 1);
+    gl.uniform1i(u.lightCells!, 2);
+    gl.uniform1i(u.lightIndices!, 3);
+  }
+
+  private shade(lighting: BattlefieldLighting, region: Region) {
+    const gl = this.gl,
+      lights = lighting.lights ?? [];
+    if (lighting.time === "day") {
+      this.bind(this.lit);
+      this.scissor(region, this.lit);
+      const u = this.use("copy");
+      this.sample(this.terrain.texture, 0);
+      gl.uniform1i(u.terrain!, 0);
+      gl.uniform1i(u.straight!, Number(this.straightTerrain));
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      gl.disable(gl.SCISSOR_TEST);
+      return;
+    }
+    this.bind(this.lit);
+    this.scissor(region, this.lit);
+    const u = this.use("lighting");
+    this.sample(this.terrain.texture, 0);
     gl.uniform1i(u.terrain!, 0);
     gl.uniform1i(u.straight!, Number(this.straightTerrain));
-    gl.uniform1i(u.lights!, 1);
     gl.uniform2f(u.size!, this.canvas.width, this.canvas.height);
-    gl.uniform1f(u.scale!, this.scale);
-    gl.uniform1i(u.count!, lights.length);
-    gl.uniform1i(u.night!, Number(lighting.time === "night"));
+    this.configureLighting(u, lighting);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     gl.enable(gl.BLEND);
     for (const light of lights) {
@@ -644,9 +721,15 @@ export class MapRendererGpu {
       fogKey = JSON.stringify(fog);
     let dirty = this.compositionInvalid ? this.fullRegion() : null;
     if (this.lightKey !== lightKey) {
+      this.uploadLights(lighting);
       const region = this.lightingRegion(lighting);
       if (region) this.shade(lighting, region);
-      dirty = this.union(dirty, region);
+      // Live sprites sample light at their ground position; redraw the entire
+      // sprite even when its pixels extend beyond a changed light's radius.
+      dirty = this.union(
+        dirty,
+        region && this.overlays ? this.expand(region, 70 * this.scale) : region,
+      );
       this.previousLighting = lighting;
       this.lightKey = lightKey;
     }
@@ -654,7 +737,24 @@ export class MapRendererGpu {
       dirty = this.union(dirty, this.paintFog(fog));
       this.fogKey = fogKey;
     }
-    if (dirty) this.compose(dirty);
+    const now = performance.now();
+    dirty = this.union(
+      dirty,
+      this.overlays?.dirty(now, this.scale, this.canvas.width, this.canvas.height) ?? null,
+    );
+    if (dirty) {
+      this.compose(dirty);
+      if (this.overlays) {
+        this.scissor(dirty, this.canvas);
+        this.overlays.draw(
+          now,
+          this.canvas.width / this.scale,
+          this.canvas.height / this.scale,
+          (u) => this.configureLighting(u, lighting),
+        );
+        gl.disable(gl.SCISSOR_TEST);
+      }
+    }
     this.compositionInvalid = false;
     return this.present();
   }

@@ -4,7 +4,12 @@ import type { MapFrameRequest, MapRenderRequest, MapRenderResponse } from "./map
 let gpu: MapRendererGpu | undefined;
 let baseKey: string | undefined;
 type RenderJob = MapFrameRequest & { revision: number };
-let scene: Omit<MapFrameRequest, "fog"> | undefined;
+let scene: Omit<MapFrameRequest, "fog" | "battlefield"> | undefined;
+let battlefield: MapFrameRequest["battlefield"];
+let displayedBattlefield: MapFrameRequest["battlefield"];
+let displayedJob: RenderJob | undefined;
+let animation: number | undefined;
+let interaction = { hovered: null as string | null, focused: null as string | null };
 let pending: RenderJob | undefined;
 let running = false;
 let latestRevision = 0;
@@ -118,7 +123,37 @@ async function render(request: RenderJob) {
   }
   await preparePrograms(request);
   if (pending) return false;
+  if (request.battlefield && request.battlefield !== displayedBattlefield) {
+    const images = new Map<string, ImageBitmap>();
+    const controller = new AbortController();
+    const timer = setTimeout(
+      () => controller.abort(new Error("Battlefield sprites did not load within 15 seconds")),
+      15000,
+    );
+    try {
+      const urls = [
+        ...new Set(
+          [...request.battlefield.units, ...request.battlefield.items].flatMap((sprite) =>
+            sprite.url && !gpu!.hasSprite(sprite.url, request.battlefield!.key) ? [sprite.url] : [],
+          ),
+        ),
+      ];
+      const loaded = await Promise.allSettled(
+        urls.map(async (url) => images.set(url, await loadImage(url, controller.signal))),
+      );
+      const failed = loaded.find((result) => result.status === "rejected");
+      if (failed?.status === "rejected") throw failed.reason;
+      if (pending) return false;
+      gpu.setBattlefield(request.battlefield, images);
+      gpu.inspect(interaction.hovered, interaction.focused);
+      displayedBattlefield = request.battlefield;
+    } finally {
+      clearTimeout(timer);
+      for (const image of images.values()) image.close();
+    }
+  }
   gpu.render(plan.lighting, fog);
+  displayedJob = request;
   return true;
 }
 
@@ -130,6 +165,15 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
         // Background preparation is speculative. Actual entry retries and reports
         // failures through the ordinary renderer diagnostic/retry path.
       });
+    return;
+  }
+  if (event.data.motion || event.data.interaction) {
+    if (event.data.motion) gpu?.pulse(event.data.motion.tile, event.data.motion.kind);
+    if (event.data.interaction) {
+      interaction = event.data.interaction;
+      gpu?.inspect(interaction.hovered, interaction.focused);
+    }
+    scheduleAnimation();
     return;
   }
   latestRevision = event.data.revision;
@@ -159,6 +203,7 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
     }
   }
   if (event.data.scene) scene = event.data.scene;
+  if (event.data.battlefield) battlefield = event.data.battlefield;
   if (activeLoad && scene && activeLoad.terrainKey !== scene.terrainKey)
     activeLoad.controller.abort(new Error("Map scene was replaced"));
   if (!scene) {
@@ -173,6 +218,7 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
     plan: { ...scene.plan, lighting: event.data.lighting },
     revision: event.data.revision,
     fog: event.data.fog,
+    battlefield,
   };
   if (!running) void drain();
 };
@@ -191,6 +237,7 @@ async function drain() {
       } satisfies MapRenderResponse);
     } catch (error) {
       if (pending) continue;
+      displayedJob = undefined;
       self.postMessage({
         revision: request.revision,
         error: `Map rendering failed: ${String(error)}`,
@@ -198,4 +245,24 @@ async function drain() {
     }
   }
   running = false;
+  if (gpu?.animating) scheduleAnimation();
+}
+
+// Worker animation runs only while feedback is active. Terrain/light/fog caches
+// survive every tween frame; idle maps have no continuous render loop.
+function scheduleAnimation() {
+  if (animation !== undefined || !displayedJob || running) return;
+  animation = requestAnimationFrame(() => {
+    animation = undefined;
+    if (running || !gpu || !displayedJob) return;
+    try {
+      gpu.render(displayedJob.plan.lighting, displayedJob.fog);
+      if (gpu.animating) scheduleAnimation();
+    } catch (error) {
+      self.postMessage({
+        revision: latestRevision,
+        error: `Battlefield animation failed: ${String(error)}`,
+      } satisfies MapRenderResponse);
+    }
+  });
 }

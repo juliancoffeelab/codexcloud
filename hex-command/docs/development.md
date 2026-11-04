@@ -234,7 +234,14 @@ selects complete authored tile frames and renders terrain, lighting and fog into
 that canvas. The browser composites the worker-owned canvas directly; runtime
 never exports, transports or swaps an
 ImageBitmap per update. Main-thread replies are small revision acknowledgements.
-Units, items, health, selection and interaction remain independent overlays.
+The same GPU context draws units, items, health bars, ownership badges and tile
+outlines from a presentation-only snapshot. Complete native 64×64 unit/item images
+are packed into nearest-sampled GPU atlas pages; batches share one vertex format.
+Unit sprites sample the same colored lighting function as terrain, replacing
+per-tile SVG color filters. Transparent SVG hexes retain click targets, keyboard
+navigation and accessible labels. Drag panning and Control/Command-wheel or
+plus/minus zoom transform this shared canvas/input surface without repainting.
+Zero resets zoom.
 
 Production prebuilds unlit terrain PNGs, independent of light state. The worker
 uploads a prebuilt image directly to WebGL 2. Changed/custom maps draw complete
@@ -250,10 +257,19 @@ Changed lights update their old/new influence bounds and intersecting fixtures.
 Fog edits update the affected mask region, expanding each
 Gaussian pass by its kernel reach. Geometry is cached, and reordered identical fog
 sets skip painting. Terrain and day/night changes still require full updates.
-Selection and ordinary moves with unchanged terrain, lighting and fog request no
-new frame. Replaced terrain loads are aborted; pending requests for identical
-terrain reuse the existing load. Superseded jobs cannot draw after a replacement
+Terrain lighting uses integer spatial cell lists, so each fragment checks only
+lights whose influence reaches its cell. This preserves overlapping light colors
+without requiring floating-point blending extensions. Selection, health and unit
+updates redraw GPU overlays while retaining terrain, lighting and fog caches.
+Replaced terrain loads are aborted; pending requests for identical terrain reuse
+the existing load. Superseded jobs cannot draw after a replacement
 request is known to the worker.
+
+The worker animates movement, hit recoil, appearance/disappearance and action
+feedback only while transitions are active. Animation frames restore their dirty
+region from cached terrain/fog before drawing live visuals, then stop when idle.
+Reduced-motion preferences disable transitions. Atlas pages reset on scene/session
+changes; sprite fetch/decode failures use the existing diagnostic/retry surface.
 
 Workers, transferable OffscreenCanvas, worker WebGL 2 and createImageBitmap are
 required browser capabilities. There is no main-thread map painter, separate fog
@@ -295,8 +311,8 @@ timer queries are asynchronous and optional. API wall times can include driver
 synchronization, are nested, and are not GPU execution times. Normal readiness,
 completed GPU work, a main-thread animation-frame opportunity and physical display
 scanout are distinct events. Browser benchmarks stay outside the default tests.
-Game logic, unit overlays and physical display scanout are outside renderer timing;
-no timed run reads CPU pixels. Software timings do not establish a hardware budget.
+Game logic and physical display scanout are outside renderer timing. Unit overlays
+are included when `--units` is supplied; no timed run reads CPU pixels. Software timings do not establish a hardware budget.
 
 Terrain inspection portraits use one explicitly registered image per terrain
 type, shared across all floors, orientations, junctions, maps and cells. These
@@ -325,6 +341,18 @@ repeated with every action inspection. Undo retains immutable revisions.
 Persistence still stores the full canonical checkpoint in the existing save
 format; Rust serializes it directly instead of constructing another JavaScript
 map solely for JSON serialization. Transport patches are never save data.
+
+Optional GPU benchmark (outside the default tests):
+
+```sh
+npm run map:benchmark -- --lights=128 --units=64
+# Diagnostic software GPU when hardware acceleration is unavailable:
+npm run map:benchmark -- --software --lights=128 --units=64
+```
+
+The light/unit counts add a synthetic presentation workload on the Bell map;
+they never change playable content. Completed acknowledgements include a GPU
+fence; software results do not establish hardware frame rates.
 
 ## Leadership and campaign groups
 

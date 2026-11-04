@@ -39,27 +39,24 @@ void main() {
   if (straight) color.rgb *= color.a;
 }`;
 
-export const lightingFragment = `#version 300 es
-precision highp float;
-precision highp sampler2D;
-uniform sampler2D terrain;
+// Shared by terrain and live sprites. Integer cell lists keep distant lights
+// out of the per-fragment loop without limiting overlapping lights or colors.
+export const lightSampling = `
 uniform sampler2D lights;
-uniform bool straight;
-uniform vec2 size;
+uniform highp usampler2D lightCells;
+uniform highp usampler2D lightIndices;
 uniform float scale;
-uniform int count;
 uniform bool night;
-out vec4 color;
-void main() {
-  ivec2 pixel = ivec2(gl_FragCoord.xy);
-  if (straight) pixel.y = textureSize(terrain, 0).y - 1 - pixel.y;
-  vec4 source = texelFetch(terrain, pixel, 0);
-  if (straight) source.rgb *= source.a;
-  if (!night || source.a == 0.0) { color = source; return; }
-  vec2 point = vec2(floor(gl_FragCoord.x), size.y - ceil(gl_FragCoord.y)) / scale;
+vec3 shadeColor(vec3 rgb, vec2 point) {
+  if (!night) return rgb;
+  ivec2 cell = clamp(ivec2(floor(point * scale / 64.0)), ivec2(0), textureSize(lightCells, 0) - 1);
+  uvec2 range = texelFetch(lightCells, cell, 0).rg;
+  uint tableWidth = uint(textureSize(lightIndices, 0).x);
   float total = 0.0;
   vec3 warm = vec3(0.0), offset = vec3(0.0);
-  for (int i = 0; i < count; i++) {
+  for (uint j = 0u; j < range.y; j++) {
+    uint entry = range.x + j;
+    int i = int(texelFetch(lightIndices, ivec2(int(entry % tableWidth), int(entry / tableWidth)), 0).r);
     vec4 light = texelFetch(lights, ivec2(0, i), 0);
     vec2 delta = (point - light.xy) * vec2(1.0, 1.12);
     float distance2 = dot(delta, delta) / (light.z * light.z);
@@ -72,10 +69,28 @@ void main() {
   if (total > 0.0) { warm /= total; offset /= total; }
   else { warm = vec3(1.02, .78, .49); offset = vec3(22.0, 14.0, 7.0); }
   float amount = min(1.0, total) * .88;
-  vec3 rgb = source.rgb / source.a * 255.0;
+  rgb *= 255.0;
   float lum = dot(rgb, vec3(.2126, .7152, .0722));
   vec3 dark = (rgb * .8 + lum * .2) * vec3(.28, .41, .63) + vec3(4.0, 8.0, 17.0);
-  color = vec4(clamp(mix(dark, rgb * warm + offset, amount) / 255.0, 0.0, 1.0) * source.a, source.a);
+  return clamp(mix(dark, rgb * warm + offset, amount) / 255.0, 0.0, 1.0);
+}`;
+
+export const lightingFragment = `#version 300 es
+precision highp float;
+precision highp sampler2D;
+uniform sampler2D terrain;
+uniform bool straight;
+uniform vec2 size;
+${lightSampling}
+out vec4 color;
+void main() {
+  ivec2 pixel = ivec2(gl_FragCoord.xy);
+  if (straight) pixel.y = textureSize(terrain, 0).y - 1 - pixel.y;
+  vec4 source = texelFetch(terrain, pixel, 0);
+  if (straight) source.rgb *= source.a;
+  if (source.a == 0.0) { color = source; return; }
+  vec2 point = vec2(floor(gl_FragCoord.x), size.y - ceil(gl_FragCoord.y)) / scale;
+  color = vec4(shadeColor(source.rgb / source.a, point) * source.a, source.a);
 }`;
 
 // Analytic pixel coverage preserves Canvas fillRect edges at fractional native positions.

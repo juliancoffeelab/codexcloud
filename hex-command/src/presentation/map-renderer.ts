@@ -1,3 +1,5 @@
+import type { BattlefieldScene } from "./battlefield-scene";
+import type { MotionKind } from "./motion";
 import { lightingKey, daylight } from "./battlefield-lighting";
 import type { TerrainMapPlan, TerrainMapSprite } from "./terrain-map";
 
@@ -6,13 +8,17 @@ export interface MapFrameRequest {
   plan: TerrainMapPlan;
   prebuilt?: TerrainMapSprite;
   fog: readonly string[];
+  battlefield?: BattlefieldScene;
 }
 export interface MapRenderRequest {
   preparePrograms?: { lighting: TerrainMapPlan["lighting"]; fog: boolean; prebuilt: boolean };
   revision: number;
   fog: readonly string[];
   lighting: TerrainMapPlan["lighting"];
-  scene?: Omit<MapFrameRequest, "fog">;
+  scene?: Omit<MapFrameRequest, "fog" | "battlefield">;
+  battlefield?: BattlefieldScene;
+  motion?: { tile: string; kind: MotionKind };
+  interaction?: { hovered: string | null; focused: string | null };
   /** Transferred exactly once, with this renderer's first scene. */
   canvas?: OffscreenCanvas;
 }
@@ -33,6 +39,7 @@ export class MapRenderer {
   private timeout?: ReturnType<typeof setTimeout>;
   private failed = false;
   private displayed = false;
+  private battlefield?: BattlefieldScene;
 
   get hasFrame() {
     return this.displayed;
@@ -118,7 +125,14 @@ export class MapRenderer {
   update(frame: MapFrameRequest) {
     if (this.failed) return;
     const key = JSON.stringify([lightingKey(frame.plan.lighting ?? daylight), frame.fog]);
-    if (frame.terrainKey === this.terrainKey && key === this.key) return;
+    if (
+      frame.terrainKey === this.terrainKey &&
+      key === this.key &&
+      frame.battlefield === this.battlefield
+    )
+      return;
+    const battlefield = frame.battlefield === this.battlefield ? undefined : frame.battlefield;
+    this.battlefield = frame.battlefield;
     this.key = key;
     const absolute = (url: string) => new URL(url, document.baseURI).href;
     const scene =
@@ -145,6 +159,17 @@ export class MapRenderer {
         fog: frame.fog,
         lighting: frame.plan.lighting,
         scene,
+        battlefield: battlefield && {
+          ...battlefield,
+          units: battlefield.units.map((unit) => ({
+            ...unit,
+            url: unit.url && absolute(unit.url),
+          })),
+          items: battlefield.items.map((item) => ({
+            ...item,
+            url: item.url && absolute(item.url),
+          })),
+        },
         canvas,
       } satisfies MapRenderRequest,
       canvas ? [canvas] : [],
@@ -156,6 +181,14 @@ export class MapRenderer {
       () => this.fail("Map worker did not finish within 30 seconds. Retry map rendering."),
       30000,
     );
+  }
+
+  pulse(tile: string, kind: MotionKind) {
+    if (!this.failed) this.worker.postMessage({ motion: { tile, kind } });
+  }
+
+  inspect(hovered: string | null, focused: string | null) {
+    if (!this.failed) this.worker.postMessage({ interaction: { hovered, focused } });
   }
 
   destroy() {
