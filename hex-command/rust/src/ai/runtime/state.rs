@@ -1,5 +1,7 @@
 //! Runtime owns turn execution and lends specific state to selected algorithms.
-use crate::ai::{Blocks, Diplomacy, Policy, orders::*, planner, policies};
+#[cfg(any(feature = "wasm", test))]
+use crate::ai::{Blocks, Policy};
+use crate::ai::{Diplomacy, orders::*, planner, policies};
 use crate::data::*;
 use std::collections::VecDeque;
 
@@ -40,7 +42,6 @@ pub(super) struct TurnState {
 
 #[derive(Clone, Copy)]
 pub(crate) struct TurnConfig<'a> {
-    pub seed: u32,
     pub goals: Option<&'a [Objective]>,
     pub diplomacy: Diplomacy,
 }
@@ -127,21 +128,15 @@ impl PlanningWorkspace {
     pub(in crate::ai::runtime) fn state_mut(&mut self) -> &mut TurnState {
         &mut self.state
     }
-    pub(in crate::ai::runtime) fn state(&self) -> &TurnState {
-        &self.state
-    }
     pub(crate) fn config(&self) -> TurnConfig<'_> {
         TurnConfig {
-            seed: self.state.seed,
             goals: self.state.goals.as_deref(),
             diplomacy: self.state.diplomacy,
         }
     }
+    #[cfg(test)]
     pub(crate) fn orders(&self) -> Option<&CampaignOrders> {
         self.state.orders.as_ref()
-    }
-    pub(crate) fn report(&self) -> &PlanningReport {
-        &self.state.report
     }
     pub(crate) fn finished(&self) -> bool {
         self.state.finished

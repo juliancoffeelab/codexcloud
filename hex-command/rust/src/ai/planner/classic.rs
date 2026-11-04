@@ -811,7 +811,6 @@ impl super::Planner for Classic {
 }
 
 pub(super) fn prepare(
-    game: &BattleView<'_, '_>,
     phases: hex_command_battle::PhaseForecasts<'_, '_>,
     session: &mut Session,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
@@ -1045,7 +1044,7 @@ fn coordinated_step<'view, 'catalog>(
     parts: &mut crate::ai::runtime::PlannerParts<'_, Session>,
 ) -> Result<(), crate::data::CommandError> {
     let _ = super::prepare_coordination(game, &mut parts.turn);
-    prepare(game, phases, parts.session, &parts.turn);
+    prepare(phases, parts.session, &parts.turn);
     if super::rescue_coordination(game, phases, actions, &mut parts.turn)? {
         return Ok(());
     }
@@ -1060,14 +1059,14 @@ struct Recorder {
     commands: std::collections::VecDeque<Command>,
     intents: HashMap<u32, (Option<bool>, Option<bool>, bool)>,
     error: Option<CommandError>,
-    retreat_logs: HashSet<u32>,
+    retreat_logs: std::collections::HashSet<u32>,
 }
 impl Recorder {
     fn new(game: &BattleView<'_, '_>) -> Self {
         Self {
             commands: std::collections::VecDeque::new(),
             error: None,
-            retreat_logs: HashSet::new(),
+            retreat_logs: std::collections::HashSet::new(),
             intents: game
                 .units()
                 .iter()

@@ -387,12 +387,11 @@ impl super::Planner for Queued {
 }
 
 pub(super) fn prepare(
-    game: &BattleView<'_, '_>,
     phases: hex_command_battle::PhaseForecasts<'_, '_>,
     session: &mut Session,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
 ) {
-    super::search::prepare(game, phases, &mut session.search, turn);
+    super::search::prepare(phases, &mut session.search, turn);
 }
 pub(super) fn choose(
     game: &BattleView<'_, '_>,
@@ -415,7 +414,7 @@ fn coordinated_step<'view, 'catalog>(
     if let Some(goals) = super::prepare_coordination(game, &mut parts.turn) {
         parts.session.replace_goals(goals);
     }
-    prepare(game, phases, parts.session, &parts.turn);
+    prepare(phases, parts.session, &parts.turn);
     if super::rescue_coordination(game, phases, actions, &mut parts.turn)? {
         return Ok(());
     }

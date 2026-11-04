@@ -12,10 +12,7 @@ pub mod profiling;
 pub mod recruiter;
 mod roles;
 pub(crate) mod tactic;
-use crate::{
-    data::*,
-    logic::{Command, CommandError},
-};
+use crate::{data::*, logic::Command};
 pub use campaigner::CampaignerKind as CampaignBlock;
 pub use planner::PlannerKind as Planner;
 pub use policies::tie_breaking::Random;

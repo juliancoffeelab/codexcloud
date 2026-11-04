@@ -1165,7 +1165,6 @@ impl Session {
 }
 
 pub(super) fn prepare(
-    game: &BattleView<'_, '_>,
     phases: hex_command_battle::PhaseForecasts<'_, '_>,
     session: &mut Session,
     turn: &crate::ai::runtime::PlannerTurn<'_>,

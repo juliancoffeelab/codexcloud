@@ -132,10 +132,6 @@ impl RecruitmentContext<'_, '_> {
     pub(in crate::ai) fn budget(&self) -> Option<usize> {
         self.budget
     }
-    pub(in crate::ai) fn phase_forecasts(&self) -> PhaseForecasts<'_, '_> {
-        self.draft.phase_forecasts()
-    }
-
     pub(in crate::ai) fn battle(&self) -> &BattleView<'_, '_> {
         self.draft
     }

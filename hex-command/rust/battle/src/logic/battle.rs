@@ -124,6 +124,7 @@ impl<T: Clone> From<T> for Shared<T> {
         Self(Rc::new(value))
     }
 }
+#[cfg(feature = "wasm")]
 impl<T: Clone> Shared<T> {
     fn into_owned(self) -> T {
         Rc::unwrap_or_clone(self.0)
@@ -268,6 +269,7 @@ impl<'catalog> Game<'catalog> {
         }
         game
     }
+    #[cfg(feature = "wasm")]
     pub(crate) fn from_state_with_board(
         rules: &'catalog Rules,
         state: State,

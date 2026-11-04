@@ -19,12 +19,11 @@ impl super::Planner for Full {
 }
 
 pub(super) fn prepare(
-    game: &crate::ai::context::BattleView<'_, '_>,
     phases: hex_command_battle::PhaseForecasts<'_, '_>,
     session: &mut super::search::Session,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
 ) {
-    super::search::prepare(game, phases, session, turn);
+    super::search::prepare(phases, session, turn);
 }
 pub(super) fn choose(
     game: &crate::ai::context::BattleView<'_, '_>,
@@ -44,7 +43,7 @@ fn coordinated_step<'view, 'catalog>(
     if let Some(goals) = super::prepare_coordination(game, &mut parts.turn) {
         parts.session.replace_goals(goals);
     }
-    prepare(game, phases, parts.session, &parts.turn);
+    prepare(phases, parts.session, &parts.turn);
     if super::rescue_coordination(game, phases, actions, &mut parts.turn)? {
         return Ok(());
     }
