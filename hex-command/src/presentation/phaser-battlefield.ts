@@ -62,6 +62,15 @@ export class PhaserBattlefield {
       lights: this.lighting.lights?.length,
       fog: this.fog.length,
       phaserTargets: this.targetDetails(),
+      unpack: {
+        premultiplyAlpha: gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL),
+        flipY: gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL),
+        alignment: gl.getParameter(gl.UNPACK_ALIGNMENT),
+        rowLength: gl.getParameter(gl.UNPACK_ROW_LENGTH),
+        skipRows: gl.getParameter(gl.UNPACK_SKIP_ROWS),
+        skipPixels: gl.getParameter(gl.UNPACK_SKIP_PIXELS),
+        bufferBound: !!gl.getParameter(gl.PIXEL_UNPACK_BUFFER_BINDING),
+      },
     };
   }
   private clip: Region = { left: 0, top: 0, right: 1, bottom: 1 };

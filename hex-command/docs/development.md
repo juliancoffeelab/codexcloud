@@ -235,7 +235,7 @@ Runtime map painting uses Phaser 3.90 on a normal DOM HTMLCanvasElement on the b
 lists. It runs alongside Phaser on the same context, through an Extern background
 object. Native image assembly explicitly resets scissor/stencil/depth state.
 Returning to Phaser restores float textures to every sprite sampler slot before
-pipeline rebinding: integer lighting tables must never remain in unused float
+pipeline rebinding. Native texture uploads also establish their own pixel-unpack state: no premultiplication, vertical flip, color conversion, pixel-unpack buffer or inherited row/skip offsets, with byte alignment. Phaser sets image transforms for its own uploads but leaves those context flags set; float and integer light tables must never inherit them. Predecoded native ImageBitmaps retain their existing alpha/orientation handling. Integer lighting tables must never remain in unused float
 sampler-array slots. The batched `BattlefieldLights` pipeline reserves units
 13–15 for those tables and samples the same falloff/color function per sprite
 pixel, rather than shading the whole sprite at its ground position.

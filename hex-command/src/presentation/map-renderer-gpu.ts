@@ -97,6 +97,7 @@ export class MapRendererGpu {
     if (!gl)
       throw new Error("Map rendering requires WebGL 2. Enable browser graphics acceleration.");
     this.gl = gl;
+    this.resetUnpackState();
     this.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE) as number;
     gl.disable(gl.DITHER);
     this.parallelCompile = gl.getExtension("KHR_parallel_shader_compile");
@@ -250,6 +251,21 @@ export class MapRendererGpu {
     return program.uniforms;
   }
 
+  /** Numeric tables and predecoded bitmaps must not inherit Phaser image transforms. */
+  private resetUnpackState() {
+    const gl = this.gl;
+    gl.bindBuffer(gl.PIXEL_UNPACK_BUFFER, null);
+    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+    gl.pixelStorei(gl.UNPACK_ROW_LENGTH, 0);
+    gl.pixelStorei(gl.UNPACK_IMAGE_HEIGHT, 0);
+    gl.pixelStorei(gl.UNPACK_SKIP_PIXELS, 0);
+    gl.pixelStorei(gl.UNPACK_SKIP_ROWS, 0);
+    gl.pixelStorei(gl.UNPACK_SKIP_IMAGES, 0);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
+  }
+
   private texture(linear = false) {
     const gl = this.gl,
       texture = gl.createTexture()!;
@@ -315,6 +331,7 @@ export class MapRendererGpu {
   ) {
     const gl = this.gl,
       { width, height } = terrainMapDimensions(plan);
+    this.resetUnpackState();
     // Phaser's previous camera viewport must not clip native target assembly.
     gl.bindVertexArray(null);
     gl.disable(gl.SCISSOR_TEST);
@@ -463,6 +480,7 @@ export class MapRendererGpu {
   }
 
   private uploadLights(lighting: BattlefieldLighting) {
+    this.resetUnpackState();
     const gl = this.gl,
       lights = lighting.lights ?? [];
     if (lights.length > this.maxTextureSize)
@@ -503,6 +521,7 @@ export class MapRendererGpu {
         null,
       );
     }
+    this.check("light parameter allocation");
     gl.texSubImage2D(
       gl.TEXTURE_2D,
       0,
@@ -514,6 +533,7 @@ export class MapRendererGpu {
       gl.FLOAT,
       table,
     );
+    this.check("light parameter upload");
     const grid = lightGrid(lighting, this.width, this.height, this.scale);
     this.sample(this.lightCells, 2);
     gl.texImage2D(
@@ -527,6 +547,7 @@ export class MapRendererGpu {
       gl.UNSIGNED_INT,
       grid.ranges,
     );
+    this.check("light cell range upload");
     const width = Math.min(this.maxTextureSize, grid.indices.length);
     const height = Math.ceil(grid.indices.length / width);
     if (height > this.maxTextureSize)
@@ -545,6 +566,7 @@ export class MapRendererGpu {
       gl.UNSIGNED_INT,
       indices,
     );
+    this.check("light index upload");
   }
 
   configureLighting(u: Program["uniforms"], lighting: BattlefieldLighting, unit = 1) {
