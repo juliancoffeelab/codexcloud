@@ -783,6 +783,7 @@ export class MapRendererGpu {
       this.lightKey = lightKey;
     }
     if (this.fogKey !== fogKey) {
+      this.overlays?.conceal(fog);
       const started = workerTraceStart();
       dirty = this.union(dirty, this.paintFog(fog));
       workerTraceEnd("Fog mask and blur", started, { tiles: fog.length });

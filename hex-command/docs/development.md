@@ -271,6 +271,11 @@ feedback only while transitions are active. Animation frames restore their dirty
 region from cached terrain/fog before drawing live visuals, then stop when idle.
 Reduced-motion preferences disable transitions. Atlas pages reset on scene/session
 changes; sprite fetch/decode failures use the existing diagnostic/retry surface.
+Stationary units, indicators and ownership badges retain their geometry and GPU
+buffers during animation. Contiguous stationary runs stay in painter order around
+moving units; only animated runs rebuild/upload vertices each frame. Scene,
+inspection, pulse and transition-membership changes invalidate these caches.
+New fog coverage removes existing disappearance fades, including fog-only updates.
 
 Workers, transferable OffscreenCanvas, worker WebGL 2 and createImageBitmap are
 required browser capabilities. There is no main-thread map painter, separate fog
@@ -467,9 +472,14 @@ published factions' recruitment-pool artwork in the background. Three speculativ
 requests run at once. Actual use shares an in-flight request or an uploaded atlas
 entry; background preparation never gates a ready frame. Scene changes abort old
 requests, and a failed speculative load is retried/diagnosed when actually needed.
+Every newer frame releases the superseded frame's sprite wait immediately, even
+if a decoder has not settled. Requests no longer needed by the latest scene or
+its prefetch pool are aborted; still-needed URLs share their existing request.
 An immediate recruit can still wait if its image has not finished loading.
 Trace image events identify the asset and required/prefetch purpose; atlas-upload
 events distinguish decoded images from artwork ready to draw.
+Objective outlines preserve the upstream opaque gold dashed foreground over a
+dark backing, blue selected/reachable variants and green recruitment variant.
 
 Native terrain, lighting and fog caches keep their original resolution and pixel
 scale. The final canvas instead follows the displayed size and device pixel ratio,

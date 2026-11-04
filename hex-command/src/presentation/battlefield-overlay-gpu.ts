@@ -5,7 +5,13 @@ import { lightSampling } from "./map-shaders";
 
 type Region = { left: number; top: number; right: number; bottom: number };
 type Color = readonly [number, number, number, number];
-type Batch = { page: number; values: number[]; data?: Float32Array };
+type Batch = {
+  page: number;
+  values: number[];
+  data?: Float32Array;
+  retained?: boolean;
+  buffer?: WebGLBuffer;
+};
 type Sprite = { page: number; u: number; v: number };
 type Transition = {
   from: BattlefieldUnit;
@@ -109,6 +115,8 @@ export class BattlefieldOverlayGpu {
   private changedInspection = new Set<string>();
   private batches: Batch[] = [];
   private staticBatches?: Batch[];
+  private stationary = new Map<string, Batch[]>();
+  private retainedBuffers = new Set<WebGLBuffer>();
   private light: readonly number[] = [0, 0, 0];
   private atlas = 0;
   private outlineProgram: WebGLProgram;
@@ -188,11 +196,48 @@ export class BattlefieldOverlayGpu {
     this.pages.push(texture);
   }
 
+  private invalidateGeometry() {
+    this.staticBatches = undefined;
+    this.stationary.clear();
+    for (const buffer of this.retainedBuffers) this.gl.deleteBuffer(buffer);
+    this.retainedBuffers.clear();
+  }
+
+  // Cache contiguous stationary runs, preserving the original painter order
+  // around moving units and keeping indicators above all sprites.
+  private runs<T>(
+    layer: string,
+    entries: readonly T[],
+    dynamic: (entry: T) => boolean,
+    draw: (entry: T) => void,
+  ) {
+    const output = this.batches;
+    for (let start = 0; start < entries.length;) {
+      const moving = dynamic(entries[start]!);
+      let end = start + 1;
+      while (end < entries.length && dynamic(entries[end]!) === moving) end++;
+      const key = `${layer}:${start}:${end}`;
+      let batches = moving ? undefined : this.stationary.get(key);
+      if (!batches) {
+        this.batches = [];
+        for (let i = start; i < end; i++) draw(entries[i]!);
+        batches = this.batches;
+        if (!moving) {
+          for (const batch of batches) batch.retained = true;
+          this.stationary.set(key, batches);
+        }
+      }
+      output.push(...batches);
+      start = end;
+    }
+    this.batches = output;
+  }
+
   resetImages() {
     for (const texture of this.pages) this.gl.deleteTexture(texture);
     this.pages = [];
     this.sprites.clear();
-    this.staticBatches = undefined;
+    this.invalidateGeometry();
     this.addPage();
   }
 
@@ -267,25 +312,35 @@ export class BattlefieldOverlayGpu {
         else this.transitions.delete(unit.id);
       }
     }
+    this.conceal(scene.fog);
     if (scene.reducedMotion) {
       this.transitions.clear();
       this.pulses.clear();
     }
-    this.staticBatches = undefined;
+    this.invalidateGeometry();
     this.scene = scene;
     this.invalid = true;
   }
 
+  conceal(fog: readonly string[]) {
+    for (const [id, transition] of this.transitions)
+      if (transition.kind === "death" && fog.includes(transition.from.tile)) {
+        this.transitions.delete(id);
+        this.invalidateGeometry();
+        this.invalid = true;
+      }
+  }
+
   pulse(tile: string, kind: MotionKind, now: number) {
     if (this.scene?.reducedMotion) return;
-    this.staticBatches = undefined;
+    this.invalidateGeometry();
     this.pulses.set(tile, { kind, start: now });
     this.invalid = true;
   }
   inspect(_hovered: string | null, focused: string | null) {
     if (focused === this.focused) return;
     for (const id of [this.focused, focused]) if (id) this.changedInspection.add(id);
-    this.staticBatches = undefined;
+    this.invalidateGeometry();
     this.focused = focused;
   }
   get statistics() {
@@ -329,12 +384,18 @@ export class BattlefieldOverlayGpu {
     for (const [id, transition] of this.transitions) {
       include(transition.from.x, transition.from.y);
       include(transition.to.x, transition.to.y);
-      if (now >= transition.start + transition.duration) this.transitions.delete(id);
+      if (now >= transition.start + transition.duration) {
+        this.transitions.delete(id);
+        this.invalidateGeometry();
+      }
     }
     for (const [tile, pulse] of this.pulses) {
       const center = this.scene.tiles.find((t) => t.id === tile);
       if (center) include(center.x, center.y);
-      if (now >= pulse.start + (pulse.kind === "select" ? 180 : 300)) this.pulses.delete(tile);
+      if (now >= pulse.start + (pulse.kind === "select" ? 180 : 300)) {
+        this.pulses.delete(tile);
+        this.invalidateGeometry();
+      }
     }
     this.invalid = false;
     return result;
@@ -507,6 +568,49 @@ export class BattlefieldOverlayGpu {
       );
   }
 
+  private unit(unit: BattlefieldUnit, now: number, indicators: boolean) {
+    const transition = this.transitions.get(unit.id),
+      t = transition ? Math.max(0, Math.min(1, (now - transition.start) / transition.duration)) : 1;
+    let { x, y } = this.position(unit, now),
+      alpha = 1;
+    if (transition?.kind === "death") {
+      alpha = 1 - t;
+      y += t * 10;
+    }
+    if (transition?.kind === "spawn") {
+      alpha = t;
+      y -= (1 - t) * 10;
+    }
+    if (transition?.kind === "hit") x += Math.sin(t * Math.PI * 6) * (1 - t) * 4;
+    const pulse = this.pulses.get(unit.tile);
+    if (pulse?.kind === "attack") x += Math.sin(((now - pulse.start) / 300) * Math.PI) * 7;
+    if (!indicators) {
+      this.light = [0, 0, 0];
+      this.ellipse(x, y + 19, 19, 7, rgba(unit.color, 0.5 * alpha));
+      this.light = [x, y, 1];
+      const flash = transition?.kind === "hit" ? Math.sin(t * Math.PI) * 0.5 : 0;
+      this.image(unit.url, x - unit.size / 2, y + 20 - unit.size, unit.size, [
+        1,
+        1 - flash,
+        1 - flash,
+        (unit.spent ? 0.65 : 1) * alpha,
+      ]);
+    } else if (transition?.kind !== "death") {
+      this.light = [0, 0, 0];
+      this.rect(x - 19, y + 27, 38, 4, rgba("#18211b", alpha));
+      this.rect(x - 19, y + 27, Math.max(0, Math.min(38, unit.health)), 4, rgba("#a9d0a5", alpha));
+      if (unit.spent) {
+        this.line(x + 21, y - 20, x + 24, y - 17, 2, rgba("#dbe8d7", alpha));
+        this.line(x + 24, y - 17, x + 30, y - 24, 2, rgba("#dbe8d7", alpha));
+      }
+      if (unit.retreating) {
+        this.line(x - 22, y - 21, x - 30, y - 21, 2, rgba("#fff1c1", alpha));
+        this.line(x - 30, y - 21, x - 26, y - 25, 2, rgba("#fff1c1", alpha));
+        this.line(x - 30, y - 21, x - 26, y - 17, 2, rgba("#fff1c1", alpha));
+      }
+    }
+  }
+
   draw(
     now: number,
     width: number,
@@ -518,7 +622,7 @@ export class BattlefieldOverlayGpu {
     const fringe =
       Math.max(width / this.gl.drawingBufferWidth, height / this.gl.drawingBufferHeight) * 1.5;
     if (fringe !== this.fringe) {
-      this.staticBatches = undefined;
+      this.invalidateGeometry();
       this.fringe = fringe;
     }
     this.batches = [];
@@ -552,6 +656,18 @@ export class BattlefieldOverlayGpu {
           alpha = 1;
           thickness = 3;
         }
+        const objective = classes.has("objective");
+        if (objective) {
+          color = classes.has("selected") || classes.has("reachable") ? "#99c8ec" : "#ffe5a1";
+          if (recruitable) color = "#6fdec0";
+          alpha = 1;
+          thickness = 3.5;
+        }
+        const dash: readonly [number, number] | undefined = objective
+          ? [9, 5]
+          : recruitable
+            ? [4, 3]
+            : undefined;
         const pulse = this.pulses.get(tile.id);
         if (pulse?.kind === "select" && now - pulse.start < 180) {
           const t = Math.max(0, (now - pulse.start) / 180);
@@ -564,9 +680,8 @@ export class BattlefieldOverlayGpu {
             tile.y + (battlefieldSpriteSize / 2) * Math.sin(angle),
           ] as const;
         });
-        if (classes.has("objective") || recruitable)
-          this.outline(points, 7, rgba("#172015"), recruitable ? [4, 3] : [9, 5]);
-        this.outline(points, thickness, rgba(color, alpha), recruitable ? [4, 3] : undefined);
+        if (objective || recruitable) this.outline(points, 7, rgba("#172015"), dash);
+        this.outline(points, thickness, rgba(color, alpha), dash);
       }
       for (const item of scene.items) {
         this.light = [item.x, item.y, 1];
@@ -584,66 +699,31 @@ export class BattlefieldOverlayGpu {
         }
       }
       this.outlineData = new Float32Array(this.outlineValues);
-      if (![...this.pulses.values()].some((pulse) => pulse.kind === "select"))
+      if (![...this.pulses.values()].some((pulse) => pulse.kind === "select")) {
+        for (const batch of this.batches) batch.retained = true;
         this.staticBatches = [...this.batches];
+      }
     }
-    // Never append dynamic vertices to cached static arrays.
-    this.batches.push({ page: 0, values: [] });
     const units = [...scene.units];
     for (const transition of this.transitions.values())
       if (transition.kind === "death") units.push(transition.from);
-    const indicators: { unit: BattlefieldUnit; x: number; y: number; alpha: number }[] = [];
-    for (const unit of units) {
-      const transition = this.transitions.get(unit.id),
-        t = transition
-          ? Math.max(0, Math.min(1, (now - transition.start) / transition.duration))
-          : 1;
-      let { x, y } = this.position(unit, now),
-        alpha = 1;
-      if (transition?.kind === "death") {
-        alpha = 1 - t;
-        y += t * 10;
-      }
-      if (transition?.kind === "spawn") {
-        alpha = t;
-        y -= (1 - t) * 10;
-      }
-      if (transition?.kind === "hit") x += Math.sin(t * Math.PI * 6) * (1 - t) * 4;
-      const pulse = this.pulses.get(unit.tile);
-      if (pulse?.kind === "attack") x += Math.sin(((now - pulse.start) / 300) * Math.PI) * 7;
-      this.light = [0, 0, 0];
-      this.ellipse(x, y + 19, 19, 7, rgba(unit.color, 0.5 * alpha));
-      this.light = [x, y, 1];
-      const flash = transition?.kind === "hit" ? Math.sin(t * Math.PI) * 0.5 : 0;
-      this.image(unit.url, x - unit.size / 2, y + 20 - unit.size, unit.size, [
-        1,
-        1 - flash,
-        1 - flash,
-        (unit.spent ? 0.65 : 1) * alpha,
-      ]);
-      if (transition?.kind !== "death") indicators.push({ unit, x, y, alpha });
-    }
+    const moving = (unit: BattlefieldUnit) =>
+      this.transitions.has(unit.id) || this.pulses.get(unit.tile)?.kind === "attack";
+    this.runs("units", units, moving, (unit) => this.unit(unit, now, false));
+    this.runs("indicators", units, moving, (unit) => this.unit(unit, now, true));
     this.light = [0, 0, 0];
-    for (const { unit, x, y, alpha } of indicators) {
-      this.rect(x - 19, y + 27, 38, 4, rgba("#18211b", alpha));
-      this.rect(x - 19, y + 27, Math.max(0, Math.min(38, unit.health)), 4, rgba("#a9d0a5", alpha));
-      if (unit.spent) {
-        this.line(x + 21, y - 20, x + 24, y - 17, 2, rgba("#dbe8d7", alpha));
-        this.line(x + 24, y - 17, x + 30, y - 24, 2, rgba("#dbe8d7", alpha));
-      }
-      if (unit.retreating) {
-        this.line(x - 22, y - 21, x - 30, y - 21, 2, rgba("#fff1c1", alpha));
-        this.line(x - 30, y - 21, x - 26, y - 25, 2, rgba("#fff1c1", alpha));
-        this.line(x - 30, y - 21, x - 26, y - 17, 2, rgba("#fff1c1", alpha));
-      }
-    }
-    for (const tile of scene.tiles)
-      if (tile.owner) {
-        const pulse = this.pulses.get(tile.id),
-          radius =
-            pulse?.kind === "capture" ? 5 + Math.sin(((now - pulse.start) / 300) * Math.PI) * 3 : 5;
+    this.runs(
+      "owners",
+      scene.tiles,
+      (tile) => this.pulses.get(tile.id)?.kind === "capture",
+      (tile) => {
+        if (!tile.owner) return;
+        const pulse = this.pulses.get(tile.id);
+        const radius =
+          pulse?.kind === "capture" ? 5 + Math.sin(((now - pulse.start) / 300) * Math.PI) * 3 : 5;
         this.ellipse(tile.x + 23, tile.y + 17, radius, radius, rgba(tile.owner));
-      }
+      },
+    );
     const gl = this.gl;
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
@@ -665,15 +745,34 @@ export class BattlefieldOverlayGpu {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.bindVertexArray(this.vao);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     for (const batch of this.batches) {
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, this.pages[batch.page]!);
-      gl.bufferData(
-        gl.ARRAY_BUFFER,
-        (batch.data ??= new Float32Array(batch.values)),
-        gl.DYNAMIC_DRAW,
-      );
+      if (batch.retained) {
+        if (!batch.buffer) {
+          batch.buffer = gl.createBuffer()!;
+          this.retainedBuffers.add(batch.buffer);
+          gl.bindBuffer(gl.ARRAY_BUFFER, batch.buffer);
+          gl.bufferData(
+            gl.ARRAY_BUFFER,
+            (batch.data ??= new Float32Array(batch.values)),
+            gl.STATIC_DRAW,
+          );
+        } else gl.bindBuffer(gl.ARRAY_BUFFER, batch.buffer);
+      } else {
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+        gl.bufferData(
+          gl.ARRAY_BUFFER,
+          (batch.data ??= new Float32Array(batch.values)),
+          gl.DYNAMIC_DRAW,
+        );
+      }
+      // Vertex attribute bindings belong to the VAO, not the current buffer binding.
+      let offset = 0;
+      for (const [index, count] of [2, 2, 4, 3].entries()) {
+        gl.vertexAttribPointer(index, count, gl.FLOAT, false, stride * 4, offset * 4);
+        offset += count;
+      }
       gl.drawArrays(gl.TRIANGLES, 0, batch.values.length / stride);
     }
     gl.bindVertexArray(null);

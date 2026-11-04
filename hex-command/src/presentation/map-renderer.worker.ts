@@ -23,6 +23,7 @@ let pending: RenderJob | undefined;
 let running = false;
 let latestRevision = 0;
 let activeLoad: { terrainKey: string; controller: AbortController } | undefined;
+let cancelSpriteWait: (() => void) | undefined;
 
 async function loadImage(url: string, signal: AbortSignal, purpose = "terrain") {
   const started = workerTraceStart();
@@ -42,7 +43,7 @@ async function loadImage(url: string, signal: AbortSignal, purpose = "terrain") 
 // Only three background requests run at a time; gameplay requests bypass that queue.
 const spriteLoads = new Map<
   string,
-  { key: string; controller: AbortController; promise: Promise<void> }
+  { key: string; url: string; controller: AbortController; promise: Promise<void> }
 >();
 let warmQueue: { url: string; key: string }[] = [];
 let warming = 0;
@@ -59,23 +60,22 @@ function ensureSprite(url: string, key: string, background = false): Promise<voi
   const promise = loadImage(url, controller.signal, background ? "prefetch" : "required")
     .then((image) => {
       try {
-        if (!controller.signal.aborted) {
-          const started = workerTraceStart();
-          gpu!.uploadSprite(url, key, image);
-          workerTraceEnd("Sprite atlas upload", started, {
-            asset: new URL(url, self.location.href).pathname,
-            purpose: background ? "prefetch" : "required",
-          });
-        }
+        if (controller.signal.aborted) throw controller.signal.reason;
+        const started = workerTraceStart();
+        gpu!.uploadSprite(url, key, image);
+        workerTraceEnd("Sprite atlas upload", started, {
+          asset: new URL(url, self.location.href).pathname,
+          purpose: background ? "prefetch" : "required",
+        });
       } finally {
         image.close();
       }
     })
     .finally(() => {
       clearTimeout(timeout);
-      spriteLoads.delete(identity);
+      if (spriteLoads.get(identity)?.controller === controller) spriteLoads.delete(identity);
     });
-  spriteLoads.set(identity, { key, controller, promise });
+  spriteLoads.set(identity, { key, url, controller, promise });
   return promise;
 }
 function warmSprites() {
@@ -207,9 +207,20 @@ async function render(request: RenderJob) {
         ),
       ),
     ];
-    const loaded = await Promise.allSettled(
-      urls.map((url) => ensureSprite(url, request.battlefield!.key)),
-    );
+    // A newer revision must not wait for this revision's assets, even if decode
+    // cannot be aborted. Still-needed URLs keep sharing their in-flight load.
+    let cancel!: () => void;
+    const superseded = new Promise<undefined>((resolve) => {
+      cancel = () => resolve(undefined);
+    });
+    cancelSpriteWait = cancel;
+    const loaded = await Promise.race([
+      Promise.allSettled(urls.map((url) => ensureSprite(url, request.battlefield!.key))),
+      superseded,
+    ]).finally(() => {
+      if (cancelSpriteWait === cancel) cancelSpriteWait = undefined;
+    });
+    if (!loaded || pending) return false;
     const failed = loaded.find((result) => result.status === "rejected");
     if (failed?.status === "rejected") throw failed.reason;
     if (pending) return false;
@@ -293,9 +304,17 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
   if (event.data.scene) scene = event.data.scene;
   if (event.data.battlefield) {
     battlefield = event.data.battlefield;
-    for (const load of spriteLoads.values())
-      if (load.key !== battlefield.key)
+    const wanted = new Set([
+      ...[...battlefield.units, ...battlefield.items].flatMap((sprite) =>
+        sprite.url ? [sprite.url] : [],
+      ),
+      ...(battlefield.prefetch ?? []),
+    ]);
+    for (const [identity, load] of spriteLoads)
+      if (load.key !== battlefield.key || !wanted.has(load.url)) {
+        spriteLoads.delete(identity);
         load.controller.abort(new Error("Battlefield scene replaced"));
+      }
     warmQueue = [];
   }
   if (activeLoad && scene && activeLoad.terrainKey !== scene.terrainKey)
@@ -314,6 +333,7 @@ self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
     fog: event.data.fog,
     battlefield,
   };
+  cancelSpriteWait?.();
   if (!running) void drain();
 };
 async function drain() {
