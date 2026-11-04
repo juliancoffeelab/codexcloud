@@ -264,7 +264,14 @@ buffer is repainted through a clipped camera: native cache damage and animated
 bounds are unioned, the cached background is restored, then Phaser redraws its
 display list in that region. Camera scrolling compensates viewport offsets, so
 clipping does not move objects. Static hex strokes are cached in a display-size
-Phaser RenderTexture. Unit objects survive ordinary updates; Phaser owns their
+Phaser RenderTexture. Built-in pre/post FX are disabled. Unused mask and utility
+render targets stay at their boot size; the capture target grows only when the
+outline cache is drawn, instead of every auxiliary buffer following the canvas.
+Canvas MSAA is disabled and presentation is capped at 2,097,152 pixels. Phaser owns
+canvas resizing so the native passes do not allocate the drawing buffer twice.
+Retry destroys the failed renderer before creating its replacement, releasing its
+GPU resources. These limits affect presentation resolution, not native artwork or
+terrain/light/fog resolution. Unit objects survive ordinary updates; Phaser owns their
 quad batching, so this is not the previous bespoke stationary-VBO implementation.
 
 Movement tweens interpolate published positions, not backend paths. Hits recoil;
@@ -281,10 +288,9 @@ Workers, transferable OffscreenCanvas, worker WebGL 2 and createImageBitmap are
 required browser capabilities. There is no main-thread map painter, separate fog
 canvas, SVG terrain substitute, bitmap export path or compatibility renderer.
 Image/script/worker/GPU failures show diagnostics and retry. Retry transfers a
-fresh canvas because a canvas cannot be transferred twice. The previous display
-and its worker remain until replacement is ready; unrecoverable GPU/context loss
-can invalidate that display. Disposal terminates active and retired workers and
-removes their canvases. Offline builders may use their own canvas implementation.
+fresh canvas because a canvas cannot be transferred twice. The failed worker
+and canvas are destroyed before replacement starts, so retry does not retain a
+second set of GPU allocations. Disposal terminates the worker and removes its canvas. Offline builders may use their own canvas implementation.
 
 Startup queues required shader compilations together and overlaps them with image
 fetch/decode. Shared vertex shaders are compiled once per context. Daylight uses a
@@ -506,8 +512,8 @@ dark backing, blue selected/reachable variants and green recruitment variant.
 
 Native terrain, lighting and fog caches keep their original resolution and pixel
 scale. The final canvas instead follows the displayed size and device pixel ratio,
-with antialiasing for geometric overlays. Its display buffer is bounded to
-4,194,304 pixels and the device's renderbuffer/viewport limits. Resize/zoom can
+with a display-resolution cache for geometric overlays. Its display buffer is bounded to
+2,097,152 pixels and the device's renderbuffer/viewport limits. Resize/zoom can
 refresh that buffer without rebuilding the native caches. Texture sampling remains
 nearest for pixel artwork. Hex strokes use analytic edge coverage in a separate cached GPU vertex buffer,
 with upstream widths, opacity, colors,

@@ -154,27 +154,19 @@
 
   function mountMap(node: HTMLDivElement, request: { frame: MapFrameRequest; attempt: number }) {
     let renderer: MapRenderer | undefined;
-    let retired: MapRenderer[] = [];
     let attempt = -1;
     const update = (next: typeof request) => {
       try {
         if (attempt !== next.attempt) {
-          if (renderer?.hasFrame) retired.push(renderer);
-          else renderer?.destroy();
+          // Release the failed GPU context before retrying. Keeping its buffers
+          // alive can make an out-of-memory failure repeat in the replacement.
+          renderer?.destroy();
           renderer = undefined;
           attempt = next.attempt;
           const currentAttempt = attempt;
-          renderer = acquireMapRenderer(
-            node,
-            (message) => {
-              if (attempt === currentAttempt) renderError = message;
-            },
-            () => {
-              if (attempt !== currentAttempt) return;
-              for (const previous of retired) previous.destroy();
-              retired = [];
-            },
-          );
+          renderer = acquireMapRenderer(node, (message) => {
+            if (attempt === currentAttempt) renderError = message;
+          });
         }
         activeRenderer = renderer;
         renderer!.update(next.frame);
@@ -188,7 +180,6 @@
       destroy() {
         if (activeRenderer === renderer) activeRenderer = undefined;
         renderer?.destroy();
-        for (const previous of retired) previous.destroy();
       },
     };
   }

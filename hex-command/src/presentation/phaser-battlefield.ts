@@ -42,7 +42,9 @@ export class PhaserBattlefield {
     private P: typeof Phaser,
     readonly canvas: OffscreenCanvas,
   ) {
-    this.terrain = new MapRendererGpu(canvas);
+    this.terrain = new MapRendererGpu(canvas, (width, height) =>
+      this.game.scale.resize(width, height),
+    );
   }
   static async create(canvas: OffscreenCanvas) {
     const started = workerTraceStart();
@@ -81,6 +83,15 @@ export class PhaserBattlefield {
           );
         };
         const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+        // None of this scene's custom lighting, tweens or particles uses built-in
+        // FX or masks. Keep their otherwise full-screen scratch buffers at 1×1.
+        for (const target of [
+          renderer.renderTarget,
+          renderer.maskTarget,
+          renderer.maskSource,
+          ...renderer.pipelines.UTILITY_PIPELINE.renderTargets,
+        ])
+          target.setAutoResize(false);
         renderer.pipelines.add(
           "BattlefieldLights",
           lightPipeline(owner.P, this.game, owner.terrain, () => owner.lighting),
@@ -112,6 +123,8 @@ export class PhaserBattlefield {
           parent: null,
           banner: false,
           autoFocus: false,
+          disablePreFX: true,
+          disablePostFX: true,
           audio: { noAudio: true },
           input: {
             keyboard: false,
@@ -142,6 +155,9 @@ export class PhaserBattlefield {
     return this.terrain.prepare(...args);
   }
   setPresentationSize(size: { width: number; height: number }) {
+    this.outlines?.destroy();
+    this.outlines = undefined;
+    this.outlineKey = undefined;
     this.terrain.setPresentationSize(size);
     this.resize();
   }
@@ -152,7 +168,11 @@ export class PhaserBattlefield {
   }
   private resize() {
     const { width, height } = this.canvas;
-    this.game.scale.resize(width, height);
+    if (this.game.scale.width !== width || this.game.scale.height !== height)
+      this.game.scale.resize(width, height);
+    const error = this.context.getError();
+    if (error !== this.context.NO_ERROR)
+      throw new Error(`Phaser GPU resize failed (${error}) at ${width}×${height}`);
     const size = this.terrain.dimensions;
     this.scene.cameras.main
       .setOrigin(0, 0)
@@ -466,6 +486,10 @@ export class PhaserBattlefield {
       .setOrigin(0)
       .setDisplaySize(size.width, size.height)
       .setDepth(-100);
+    // DynamicTexture.draw uses Phaser's capture target. Grow that one on demand,
+    // without subscribing it (or unused FX/mask buffers) to display resizes.
+    const capture = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).renderTarget;
+    capture.setAutoResize(true).resize(this.canvas.width, this.canvas.height).setAutoResize(false);
     this.outlines.draw(g);
     g.destroy();
   }
@@ -583,7 +607,19 @@ export class PhaserBattlefield {
       tweens: this.scene.tweens.getTweens().length,
       particles: this.particles.getAliveParticleCount(),
       textures: this.game.textures.getTextureKeys().length,
+      phaserScratchPixels: this.scratchPixels(),
       ...this.terrain.statistics,
     });
+  }
+
+  private scratchPixels() {
+    const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+    return [
+      renderer.renderTarget,
+      renderer.maskTarget,
+      renderer.maskSource,
+      ...renderer.pipelines.renderTargets,
+      ...renderer.pipelines.UTILITY_PIPELINE.renderTargets,
+    ].reduce((sum, target) => sum + target.width * target.height, 0);
   }
 }

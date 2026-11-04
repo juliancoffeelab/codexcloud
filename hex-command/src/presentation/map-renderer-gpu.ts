@@ -44,6 +44,7 @@ const programDefinitions = {
 } as const;
 type ProgramName = keyof typeof programDefinitions;
 type PendingProgram = { program: WebGLProgram; fragment: WebGLShader };
+const displayPixelBudget = 2_097_152;
 
 /** Native terrain/light/fog passes invoked by the Phaser scene on the same worker/context. */
 export class MapRendererGpu {
@@ -79,11 +80,14 @@ export class MapRendererGpu {
   private height = 1;
   private presentationSize?: { width: number; height: number };
 
-  constructor(readonly canvas: OffscreenCanvas = new OffscreenCanvas(1, 1)) {
+  constructor(
+    readonly canvas: OffscreenCanvas = new OffscreenCanvas(1, 1),
+    private resizeCanvas?: (width: number, height: number) => void,
+  ) {
     const gl = this.canvas.getContext("webgl2", {
       alpha: true,
       premultipliedAlpha: true,
-      antialias: true,
+      antialias: false,
       depth: false,
       stencil: false,
       // This canvas renders on demand, so its visible pixels must survive idle
@@ -120,18 +124,21 @@ export class MapRendererGpu {
     const requested = this.presentationSize ?? { width: this.width, height: this.height };
     const viewport = gl.getParameter(gl.MAX_VIEWPORT_DIMS) as Int32Array;
     const limit = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE) as number;
-    // Bound the multisampled display buffer; native lighting/fog textures do not grow.
+    // Bound presentation and its outline/capture targets. Native caches do not grow.
     const factor = Math.min(
       1,
-      Math.sqrt(4_194_304 / (requested.width * requested.height)),
+      Math.sqrt(displayPixelBudget / (requested.width * requested.height)),
       Math.min(limit, viewport[0]!) / requested.width,
       Math.min(limit, viewport[1]!) / requested.height,
     );
     const width = Math.max(1, Math.floor(requested.width * factor)),
       height = Math.max(1, Math.floor(requested.height * factor));
     if (this.canvas.width === width && this.canvas.height === height) return;
-    this.canvas.width = width;
-    this.canvas.height = height;
+    if (this.resizeCanvas) this.resizeCanvas(width, height);
+    else {
+      this.canvas.width = width;
+      this.canvas.height = height;
+    }
     this.compositionInvalid = true;
   }
 
@@ -148,6 +155,7 @@ export class MapRendererGpu {
       nativeHeight: this.height,
       displayWidth: this.canvas.width,
       displayHeight: this.canvas.height,
+      displayPixelBudget,
     };
   }
 
@@ -348,7 +356,7 @@ export class MapRendererGpu {
         throw new Error("Prebuilt map dimensions do not match the native scene");
       gl.bindTexture(gl.TEXTURE_2D, this.terrain.texture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, prebuilt);
-      this.check();
+      this.check("prebuilt terrain upload");
       return;
     }
     const textures = new Map<string | ImageBitmap, WebGLTexture>();
@@ -380,7 +388,7 @@ export class MapRendererGpu {
         );
       }
       gl.disable(gl.BLEND);
-      this.check();
+      this.check("terrain assembly");
     } finally {
       for (const texture of textures.values()) gl.deleteTexture(texture);
     }
@@ -768,8 +776,11 @@ export class MapRendererGpu {
     return dirty;
   }
 
-  private check() {
+  private check(stage = "initialization") {
     const error = this.gl.getError();
-    if (error !== this.gl.NO_ERROR) throw new Error(`Map GPU operation failed (${error})`);
+    if (error !== this.gl.NO_ERROR)
+      throw new Error(
+        `Map GPU operation failed (${error}) during ${stage}; native ${this.width}×${this.height}, display ${this.canvas.width}×${this.canvas.height}`,
+      );
   }
 }
