@@ -3,7 +3,7 @@ use super::{error::SimulationError, types::*};
 use crate::{
     ai::{
         Diplomacy, PlanningWorkspace, Policy, Random, policies::objectives::objective,
-        tactic::PresetTactic,
+        runtime::tactic::PresetTactic,
     },
     data::*,
     logic::Game,

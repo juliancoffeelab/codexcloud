@@ -9,7 +9,7 @@ pub(crate) fn best_attack(
 ) -> Option<usize> {
     let mut best = None;
     let mut score = f64::NEG_INFINITY;
-    for attack in view.attack_options(unit, target, from) {
+    for attack in view.forecast_attack_options(unit, target, from) {
         let result = view.exchange(unit, target, attack, from);
         let value = result.effective[0] + result.healing[0] + result.death[1] * 18.0
             - result.damage[1] * 0.7
@@ -54,7 +54,7 @@ pub(crate) fn inspect(
                 let recommended = best_attack(view, actor, target, actor.tile);
                 for (detail, index) in actions.attacks[offset..offset + count]
                     .iter_mut()
-                    .zip(view.attack_options(actor, target, actor.tile))
+                    .zip(view.forecast_attack_options(actor, target, actor.tile))
                 {
                     detail.recommended = recommended == Some(index);
                 }

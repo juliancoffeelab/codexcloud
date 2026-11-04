@@ -5,14 +5,11 @@ use crate::ai::{attack_command, move_command, orders::*, policies::threat::Threa
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
 use hex_command_battle::{ActionForecastSource, PhaseForecasts};
-use serde::{Deserialize, Serialize};
 
 const PER_ACTOR: usize = 32;
 const PER_TURN: usize = 128;
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[derive(Clone, Debug, Default, Serialize, Deserialize)]
-#[serde(default)]
+#[derive(Clone, Debug, Default)]
 pub(in crate::ai) struct State {
     assigned: bool,
     attempted: Vec<UnitId>,

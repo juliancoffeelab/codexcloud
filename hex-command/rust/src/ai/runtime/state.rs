@@ -138,6 +138,7 @@ impl PlanningWorkspace {
     pub(crate) fn orders(&self) -> Option<&CampaignOrders> {
         self.state.orders.as_ref()
     }
+    #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn finished(&self) -> bool {
         self.state.finished
     }

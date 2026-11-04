@@ -6,11 +6,9 @@ pub(crate) use state::TurnConfig;
 pub(in crate::ai) use state::{PlannerParts, PlannerTurn};
 
 pub(crate) mod tactic;
-use crate::{
-    ai::{Blocks, Diplomacy, Policy},
-    data::*,
-    logic::Game,
-};
+#[cfg(not(target_arch = "wasm32"))]
+use crate::ai::{Blocks, Diplomacy};
+use crate::{ai::Policy, data::*, logic::Game};
 
 #[cfg(any(feature = "wasm", test))]
 pub(crate) fn choose_game_command(

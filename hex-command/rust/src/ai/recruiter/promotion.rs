@@ -348,7 +348,7 @@ mod tests {
     fn every_planner_executes_the_recruiters_selected_branch() {
         use crate::ai::{
             Diplomacy, PlanningWorkspace, campaigner::CampaignerKind, planner::PlannerKind,
-            recruiter::Recruiter, tactic::Tactic,
+            recruiter::Recruiter, runtime::tactic::Tactic,
         };
         struct Fixed(usize);
         impl Recruiter for Fixed {
