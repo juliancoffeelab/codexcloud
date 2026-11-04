@@ -187,7 +187,7 @@ Visibility queries cannot define lighting or fog conditions recursively.
 
 Rust validates these definitions and resolves active lights to positioned render
 sources, shared by initial catalog previews, devtools and live engine views.
-The rendering worker paints soft fog; the UI hides covered enemies and Rust
+The renderer paints soft fog; the UI hides covered enemies and Rust
 rejects attacks on covered enemies. Remembered facts persist in `conditionMemory`;
 resolved masks and rendered images do not. Missing lighting defaults to daylight.
 Dynamic ritual death lights remain positioned runtime sources, separate from
@@ -227,20 +227,9 @@ traversable tile within that radius. Blocked members stay pending at the same
 source through save/restore; completed members never respawn. Empty marks produce
 no group. Saved charge and group source references are validated on restoration.
 
-All runtime map painting happens in one persistent module Worker using Phaser
-3.90 and WebGL 2. The main thread creates a visible canvas, transfers it once
-with `transferControlToOffscreen`, and sends published scene/lighting/fog data.
-Phaser owns the scene, textures, retained units/items/indicators, tweens and action
-particles. Svelte owns the surrounding interface and transparent SVG hexes retain
-click targets, keyboard navigation and accessible labels. Battlefield rendering stays off the main thread; the controller and Rust engine
-retain their existing execution boundary. Pan/zoom transforms canvas and input together.
+Runtime map painting uses Phaser 3.90 on a normal DOM HTMLCanvasElement on the browser main thread. Phaser uses the browser's real document, Image loading, scale manager and page visibility lifecycle. There is no customEnvironment shim, canvas transfer or rendering Worker. The pinned package stays lazy-loaded. Svelte retains surrounding UI, transparent SVG click targets, keyboard navigation and accessible labels; pan/zoom transforms the canvas and input together. DOM input/audio remain disabled in Phaser because those responsibilities already belong to the application. Rust rules and controller ownership are unchanged.
 
-The pinned Phaser package is lazy-loaded inside the worker after installing the
-small `customEnvironment` adapter in `phaser-worker-platform.ts`. DOM input,
-audio, automatic focus and DOM parent sizing are disabled. Only Phaser's built-in
-startup images use the adapter's tiny OffscreenCanvas 2D image loader. Application
-sprites use fetch/ImageBitmap and direct GPU uploads. Revalidate this adapter
-when upgrading Phaser; it is not a general DOM implementation.
+`map-render-runtime.ts` owns asynchronous assets, revision cancellation, presentation scheduling and disposal through direct function calls. Browser fetch/ImageBitmap decoding remains asynchronous, but scene updates and GPU command submission now share the UI thread. This removes the worker-specific compatibility requirements; it does not make CPU rendering work free or guarantee real-device frame times.
 
 `map-renderer-gpu.ts` retains native terrain/light/fog caches and spatial light
 lists. It runs alongside Phaser on the same context, through an Extern background
@@ -255,11 +244,11 @@ Complete native 64×64 artwork retains nearest sampling and a shared terrain/uni
 scale. Production prebuilds complete unlit terrain PNGs. Development composes
 complete authored frames on the GPU, retaining anchors, depth and forest brightness.
 There is no runtime terrain assembly from neighboring tiles, artwork rescaling,
-main-thread map canvas or per-frame bitmap transfer/readback.
+per-frame bitmap transfer/readback.
 
-Phaser's automatic loop stops after boot. The worker steps it on publication and
+Phaser's automatic loop stops after boot. The runtime steps it on publication and
 while tweens/particles/feedback remain active, then stops scheduling frames.
-Publication draws run inside worker animation frames and explicitly flush WebGL commands before acknowledgement. The first visible canvas, page restoration and visibility return request a full presentation repaint without rebuilding native caches. A missing Phaser background draw or initial GPU error fails visibly instead of acknowledging a blank frame. Hidden pages defer the rendering timeout until they return.
+Publication draws run inside browser animation frames and explicitly flush WebGL commands before acknowledgement. The first visible canvas, page restoration and visibility return request a full presentation repaint without rebuilding native caches. A missing Phaser background draw or initial GPU error fails visibly instead of acknowledging a blank frame. Hidden pages defer the rendering timeout until they return.
 
 Native light/fog caches update only when their inputs change. The retained visible
 buffer is repainted through a clipped camera: native cache damage and animated
@@ -286,13 +275,7 @@ requests. Any newer frame releases a superseded sprite wait immediately, even
 while decode is unresolved; still-needed URLs share in-flight work. Failures retain
 the diagnostic/retry surface. No automatic fallback renderer is kept.
 
-Workers, transferable OffscreenCanvas, worker WebGL 2 and createImageBitmap are
-required browser capabilities. There is no main-thread map painter, separate fog
-canvas, SVG terrain substitute, bitmap export path or compatibility renderer.
-Image/script/worker/GPU failures show diagnostics and retry. Retry transfers a
-fresh canvas because a canvas cannot be transferred twice. The failed worker
-and canvas are destroyed before replacement starts, so retry does not retain a
-second set of GPU allocations. Disposal terminates the worker and removes its canvas. Offline builders may use their own canvas implementation.
+WebGL 2 and createImageBitmap are required browser capabilities. Rendering does not require Workers or transferControlToOffscreen. Image/script/GPU failures open a dismissible dialog with full JavaScript stacks/causes, renderer context, local Copy/Download and Retry. GPU drivers expose no native backtrace; recorded stages do not prove the precise failing GL call. Production source maps allow bundle stack locations to be resolved to TypeScript. Retry destroys Phaser, cancels asset work and releases the old context before constructing a fresh canvas. Disposal also cancels scheduling and closes retained bitmaps. No alternate compatibility renderer is kept.
 
 Startup queues required shader compilations together and overlaps them with image
 fetch/decode. Shared vertex shaders are compiled once per context. Daylight uses a
@@ -302,14 +285,14 @@ Prebuilt PNGs upload directly into the terrain texture, with straight alpha
 normalized by the lighting/copy shader rather than a separate sprite pass. Those
 shaders also convert top-first image rows to framebuffer coordinates.
 
-The worker retains up to two decoded prebuilt images within a 4,194,304-pixel
+The runtime retains up to two decoded prebuilt images within a 4,194,304-pixel
 budget. Larger images are used without retention. Eviction closes image bitmaps;
-GPU textures and buffers remain scoped to the worker. Tile-frame decoding still
+GPU textures and buffers remain scoped to the renderer. Tile-frame decoding still
 closes its temporary images after upload.
 
-Before entry, map preparation can render into one detached, worker-owned canvas.
+Before entry, map preparation can render into one detached DOM canvas.
 Acquisition moves that same canvas into the battlefield and rebinds callbacks;
-it does not create another worker, context or texture upload. This spare renderer
+it does not create another Phaser instance, context or texture upload. This spare renderer
 expires after two minutes and is discarded on page hide. Existing live renderers
 only prepare future shader programs, preserving the current display. Initial
 application setup prepares the actual Rust-published view; map pickers prepare
@@ -319,20 +302,13 @@ performed before the user enters a map.
 
 Use `npm run map:benchmark -- --headed` on a GPU-enabled machine to measure the
 Stage 3 renderer; `--software` explicitly selects SwiftShader for diagnostics.
-Normal diagnostic mode acknowledges drawing without a forced completion fence.
-Completed mode waits for a GPU fence, including polling overhead. Per-pass GPU
-timer queries are asynchronous and optional. API wall times can include driver
-synchronization, are nested, and are not GPU execution times. Normal readiness,
-completed GPU work, a main-thread animation-frame opportunity and physical display
-scanout are distinct events. Browser benchmarks stay outside the default tests.
-Game logic and physical display scanout are outside renderer timing. Unit overlays
-are included when `--units` is supplied; no timed run reads CPU pixels. Software timings do not establish a hardware budget.
+The browser harness measures the current DOM renderer. Completed acknowledgement waits for a benchmark-only GPU fence and includes polling overhead. Optional GPU timers cover the complete Phaser frame; historical per-pass worker instrumentation is no longer used. Normal game readiness, completed GPU work, a main-thread animation-frame opportunity and physical display scanout are distinct events. Browser benchmarks stay outside the default tests. Game logic and physical display scanout are outside renderer timing. Unit overlays are included when `--units` is supplied; no timed run reads CPU pixels. Software timings do not establish a hardware budget.
 
 Terrain inspection portraits use one explicitly registered image per terrain
 type, shared across all floors, orientations, junctions, maps and cells. These
 portrait choices never supply defaults for map rendering. On application entry,
 `TerrainPreviewCache` preloads and decodes these frames; panels reuse the decoded
-image nodes. This UI cache is separate from the worker's map textures and must
+image nodes. This UI cache is separate from the renderer’s map textures and must
 remain when map rendering changes. Pending or failed image loads show a loading
 or retry state rather than an empty portrait.
 
@@ -451,15 +427,15 @@ player; ordinary sound preferences still apply.
 Settings → Debug tools provides **Start recording trace**, **Stop recording**
 and **Download trace**. Starting closes Settings so the battle can be exercised;
 reopen Settings to stop/download. Downloading during capture first stops and
-flushes worker data. Recordings stay in memory until reload; starting another
+flushes renderer data. Recordings stay in memory until reload; starting another
 recording replaces the previous one. Nothing is uploaded automatically.
 
 The bounded Chrome/Perfetto JSON trace includes action and engine timings,
-browser callback intervals and long tasks, map-worker stages, render workload
+browser callback intervals and long tasks, map-renderer stages, render workload
 counts, optional asynchronous GPU timer queries, renderer information and the
-start/end battle state. Worker clock origins are normalized to the recording.
+start/end battle state. Renderer timestamps use the recording clock.
 Recording stops after ten minutes or 250,000 events; the export reports dropped
-events and worker flush failures. GPU disjoint/incomplete samples are identified;
+events and renderer flush failures (the export retains the legacy `workerFlushFailures` field). GPU disjoint/incomplete samples are identified;
 GPU duration tracks use CPU submission timestamps for approximate placement.
 Recording never inserts completion fences. Callback intervals are not physical
 display frame rates, and API submission time is not GPU execution time.
@@ -493,7 +469,7 @@ Rust-owned; no Rust source changes or debug command bypasses are required.
 
 ### Sprite preparation and outline resolution
 
-After the first battlefield frame, the worker fetches, decodes and uploads the
+After the first battlefield frame, the runtime fetches, decodes and uploads the
 published factions' recruitment pools, visible archetypes in each active palette,
 and their Rust-catalog advancement branches in the background. Currently published
 promotion choices are also included. Breadth-first traversal prepares base types

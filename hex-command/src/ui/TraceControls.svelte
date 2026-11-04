@@ -69,7 +69,7 @@
   {trace.status === "recording"
     ? "Recording"
     : trace.status === "stopping"
-      ? "Finishing worker data…"
+      ? "Finishing renderer data…"
       : trace.status === "ready"
         ? "Trace ready"
         : "Not recording"} · {trace.events.toLocaleString()} events{trace.reason
@@ -78,7 +78,7 @@
 </p>
 {#if error}<p role="alert">{error}</p>{/if}
 <p>
-  Includes action/engine timings, browser frame intervals, map-worker stages and optional GPU
+  Includes action/engine timings, browser frame intervals, map-renderer stages and optional GPU
   timers. GPU timers depend on browser support; frame intervals are not physical display FPS.
 </p>
 

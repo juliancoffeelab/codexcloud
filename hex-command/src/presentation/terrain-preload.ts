@@ -36,7 +36,7 @@ export function terrainPreloadFrame(
 }
 
 function preload(frame: MapFrameRequest) {
-  // A hidden, worker-owned canvas can be adopted at entry. Existing live
+  // A hidden, renderer-owned canvas can be adopted at entry. Existing live
   // renderers only prepare future shaders; they never display speculative maps.
   void prewarmMapRenderer(frame).catch(() => {
     // Actual entry creates a fresh renderer and reports failures with retry.

@@ -1,4 +1,4 @@
-/** Preserve worker exceptions as text; Error objects lose useful fields in messages. */
+/** Preserve exception stacks and causes for on-screen reports and downloads. */
 export function renderErrorReport(label: string, error: unknown, context?: unknown): string {
   const seen = new Set<unknown>();
   const describe = (value: unknown, depth = 0): string => {

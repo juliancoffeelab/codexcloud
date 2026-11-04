@@ -1,11 +1,10 @@
 import type Phaser from "phaser";
-import { installPhaserWorkerPlatform } from "./phaser-worker-platform";
 import { MapRendererGpu, type Region } from "./map-renderer-gpu";
 import { lightPipeline } from "./phaser-light-pipeline";
 import { daylight, type BattlefieldLighting } from "./battlefield-lighting";
 import type { BattlefieldScene, BattlefieldUnit } from "./battlefield-scene";
 import type { MotionKind } from "./motion";
-import { workerTraceStart, workerTraceEnd, beginGpuTrace, endGpuTrace } from "./worker-trace";
+import { rendererTraceStart, rendererTraceEnd, beginGpuTrace, endGpuTrace } from "./render-trace";
 import { hexColumnSpacing, battlefieldSpriteSize } from "../ui/geometry";
 
 type Actor = {
@@ -16,7 +15,7 @@ type Actor = {
   dying: boolean;
 };
 
-/** One Phaser scene/context on the transferred worker canvas. */
+/** One Phaser scene/context on the transferred browser canvas. */
 export class PhaserBattlefield {
   private game!: Phaser.Game;
   private scene!: Phaser.Scene;
@@ -60,26 +59,24 @@ export class PhaserBattlefield {
 
   private constructor(
     private P: typeof Phaser,
-    readonly canvas: OffscreenCanvas,
+    readonly canvas: HTMLCanvasElement,
   ) {
     this.terrain = new MapRendererGpu(canvas, (width, height) =>
       this.game.scale.resize(width, height),
     );
   }
-  static async create(canvas: OffscreenCanvas) {
-    const started = workerTraceStart();
-    const decorate = installPhaserWorkerPlatform();
+  static async create(canvas: HTMLCanvasElement) {
+    const started = rendererTraceStart();
     const P = (await import("phaser")).default;
-    decorate(canvas);
     const result = new PhaserBattlefield(P, canvas);
     await result.boot();
     result.game.loop.stop();
-    workerTraceEnd("Phaser worker boot", started, { version: P.VERSION });
+    rendererTraceEnd("Phaser browser boot", started, { version: P.VERSION });
     return result;
   }
   private boot() {
     return new Promise<void>((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error("Phaser worker startup timed out")), 15000);
+      const timer = setTimeout(() => reject(new Error("Phaser browser startup timed out")), 15000);
       const owner = this;
       this.scene = new this.P.Scene("battlefield");
       (this.scene as Phaser.Scene & { create(): void }).create = function (this: Phaser.Scene) {
@@ -136,12 +133,11 @@ export class PhaserBattlefield {
       try {
         this.game = new this.P.Game({
           type: this.P.WEBGL,
-          customEnvironment: true,
-          canvas: this.canvas as unknown as HTMLCanvasElement,
+          canvas: this.canvas,
           context: this.terrain.context as unknown as CanvasRenderingContext2D,
           width: 1,
           height: 1,
-          parent: null,
+          parent: this.canvas.parentElement ?? undefined,
           banner: false,
           autoFocus: false,
           disablePreFX: true,
@@ -168,6 +164,20 @@ export class PhaserBattlefield {
         reject(error);
       }
     });
+  }
+  attachParent() {
+    const parent = this.canvas.parentElement;
+    if (parent) {
+      this.game.scale.parent = parent;
+      this.game.scale.refresh();
+    }
+  }
+  destroy() {
+    const context = this.context;
+    this.game.destroy(false);
+    // On-demand stepping must finish Phaser's deferred destruction explicitly.
+    this.game.step(performance.now(), 0);
+    context.getExtension("WEBGL_lose_context")?.loseContext();
   }
   get context() {
     return this.terrain.context;
@@ -535,7 +545,7 @@ export class PhaserBattlefield {
         this.actors.delete(id);
       }
     const now = performance.now(),
-      started = workerTraceStart();
+      started = rendererTraceStart();
     const verify = this.invalid;
     this.backgroundDrawn = false;
     beginGpuTrace(this.context);
@@ -623,7 +633,7 @@ export class PhaserBattlefield {
           throw new Error("Phaser did not draw the battlefield. Retry map rendering.");
         }
         // Phaser.flush submits its batches; it does not call WebGL.flush.
-        // Explicitly submit on-demand worker frames before acknowledging them.
+        // Explicitly submit on-demand browser frames before acknowledging them.
         this.stage = "WebGL submission / frame verification";
         this.context.flush();
         if (verify) {
@@ -641,8 +651,8 @@ export class PhaserBattlefield {
     this.invalid = false;
     this.previousTime = now;
     endGpuTrace();
-    workerTraceEnd("Map render CPU submission", started, {
-      renderer: "Phaser 3.90 / worker",
+    rendererTraceEnd("Map render CPU submission", started, {
+      renderer: "Phaser 3.90 / browser",
       lights: lighting.lights?.length ?? 0,
       fog: fog.length,
       units: this.snapshot?.units.length ?? 0,

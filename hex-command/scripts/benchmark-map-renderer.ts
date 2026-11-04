@@ -63,7 +63,7 @@ try {
       load("/src/presentation/terrain-map.ts"),
       load("/src/ui/geometry.ts"),
     ]);
-    const infoCanvas = new OffscreenCanvas(1, 1),
+    const infoCanvas = document.createElement("canvas"),
       gl = infoCanvas.getContext("webgl2");
     if (!gl)
       throw new Error(
@@ -130,25 +130,9 @@ try {
       tiles: terrainMapTiles(map.terrain, map.id, currentArtwork(), roles),
       lighting,
     };
-    const NativeWorker = window.Worker;
+    const { installMapBenchmark } = await load("/scripts/map-benchmark-instrumentation.ts");
+    const instrumentation = installMapBenchmark();
     let gpuMs: number | null = null;
-    window.Worker = class extends NativeWorker {
-      constructor(url: string | URL, options?: WorkerOptions) {
-        const instrumented = String(url).includes("map-renderer.worker.ts");
-        super(
-          instrumented ? new URL("/scripts/map-benchmark-worker.ts", location.href) : url,
-          options,
-        );
-        if (instrumented)
-          this.addEventListener("message", (event) => {
-            if (event.data.type === "benchmark-metrics") {
-              event.stopImmediatePropagation();
-              return;
-            }
-            gpuMs = event.data.benchmark?.gpuMs ?? null;
-          });
-      }
-    };
     const host = document.createElement("div");
     host.style.cssText = "position:relative;width:1366px;height:1278px";
     document.body.append(host);
@@ -167,8 +151,11 @@ try {
           reject(error);
         };
         complete = () => {
-          clearTimeout(timeout);
-          resolve(performance.now() - started);
+          void instrumentation.completed().then((duration: number | null) => {
+            gpuMs = duration;
+            clearTimeout(timeout);
+            resolve(performance.now() - started);
+          }, fail);
         };
         renderer.update(frame);
       });
@@ -262,13 +249,13 @@ try {
         ),
       };
     } finally {
+      instrumentation.dispose();
       renderer.destroy();
-      window.Worker = NativeWorker;
     }
   }, workload);
   console.log(JSON.stringify(result, null, 2));
   console.log(
-    "Completed acknowledgement includes main-thread preparation, worker messaging, direct canvas rendering and a benchmark-only GPU fence. No bitmap export or main-thread canvas swap is performed. The fence deliberately waits for completed GPU work; its polling overhead is included. GPU timer results are reported when supported. Next animation frame is a scheduling opportunity, not proof of physical display scanout. No pixel readback is used. Cold time includes image loading and shader compilation.",
+    "Completed acknowledgement includes main-thread preparation and DOM canvas rendering and a benchmark-only GPU fence. No bitmap export or main-thread canvas swap is performed. The fence deliberately waits for completed GPU work; its polling overhead is included. GPU timer results are reported when supported. Next animation frame is a scheduling opportunity, not proof of physical display scanout. No pixel readback is used. Cold time includes image loading and shader compilation.",
   );
   if (result.softwareRenderer || software)
     console.log("SOFTWARE RENDERER: these timings do not establish the hardware GPU budget.");

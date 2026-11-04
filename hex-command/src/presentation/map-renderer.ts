@@ -1,4 +1,4 @@
-import { renderErrorReport } from "./render-error";
+import { createMapRenderRuntime } from "./map-render-runtime";
 import {
   registerTraceSource,
   receiveTrace,
@@ -6,7 +6,7 @@ import {
   traceConfiguration,
   type TraceConfig,
 } from "./performance-trace";
-import type { TraceBatch } from "./worker-trace";
+import type { TraceBatch } from "./render-trace";
 import type { BattlefieldScene } from "./battlefield-scene";
 import type { MotionKind } from "./motion";
 import { lightingKey, daylight } from "./battlefield-lighting";
@@ -31,8 +31,6 @@ export interface MapRenderRequest {
   battlefield?: BattlefieldScene;
   motion?: { tile: string; kind: MotionKind };
   interaction?: { hovered: string | null; focused: string | null };
-  /** Transferred exactly once, with this renderer's first scene. */
-  canvas?: OffscreenCanvas;
 }
 export type MapRenderResponse =
   | { revision: number; ready: true; width: number; height: number }
@@ -41,12 +39,12 @@ export type MapRenderResponse =
 const renderers = new Set<MapRenderer>();
 let rendererSerial = 0;
 
-/** The worker owns the visible canvas. Messages contain scene changes and acknowledgements only. */
+/** DOM canvas and Phaser lifecycle; rendering uses the browser main thread. */
 export class MapRenderer {
-  private worker: Worker;
-  private workerId = ++rendererSerial;
+  private runtime: ReturnType<typeof createMapRenderRuntime>;
+  private handleResponse?: (event: { data: MapRenderResponse | TraceBatch }) => void;
+  private rendererId = ++rendererSerial;
   private canvas = document.createElement("canvas");
-  private offscreen?: OffscreenCanvas;
   private revision = 0;
   private key?: string;
   private terrainKey?: string;
@@ -63,7 +61,7 @@ export class MapRenderer {
     if (this.failed || document.visibilityState !== "visible") return;
     if (this.timeout !== undefined) this.armTimeout();
     this.refreshSize();
-    this.worker.postMessage({ repaint: true });
+    this.runtime.send({ repaint: true });
   };
   private refreshSize = () => {
     if (this.failed || !this.host) return;
@@ -75,7 +73,7 @@ export class MapRenderer {
     };
     if (this.displaySize?.width === size.width && this.displaySize?.height === size.height) return;
     this.displaySize = size;
-    this.worker.postMessage({ resize: size });
+    this.runtime.send({ resize: size });
   };
   private observeSize(host: HTMLElement) {
     this.resizeObserver?.disconnect();
@@ -95,37 +93,17 @@ export class MapRenderer {
     private onError: (message: string) => void,
     private onFrame?: (revision: number) => void,
   ) {
-    if (!this.canvas.transferControlToOffscreen)
-      throw new Error("Map rendering requires transferControlToOffscreen");
     this.canvas.style.cssText =
       "position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;visibility:hidden";
     this.canvas.setAttribute("aria-hidden", "true");
-    this.worker = new Worker(new URL("./map-renderer.worker.ts", import.meta.url), {
-      type: "module",
-    });
-    try {
-      this.offscreen = this.canvas.transferControlToOffscreen();
-      host.append(this.canvas);
-    } catch (error) {
-      this.worker.terminate();
-      throw error;
-    }
+    host.append(this.canvas);
+    this.runtime = createMapRenderRuntime(this.canvas, (data) => this.handleResponse?.({ data }));
     this.observeSize(host);
     window.addEventListener("resize", this.refreshSize);
     window.addEventListener("pageshow", this.restoreDisplay);
     document.addEventListener("visibilitychange", this.restoreDisplay);
     renderers.add(this);
-    this.worker.onerror = (event) =>
-      this.fail(
-        renderErrorReport(
-          "Map worker failed",
-          event.error ?? event.message ?? "script could not load",
-          { filename: event.filename, line: event.lineno, column: event.colno },
-        ),
-      );
-    this.worker.onmessageerror = () =>
-      this.fail("Map worker returned an unreadable acknowledgement");
-    this.worker.onmessage = (event: MessageEvent<MapRenderResponse | TraceBatch>) => {
+    this.handleResponse = (event) => {
       if ("trace" in event.data) {
         const { id, events, stopped } = event.data.trace;
         receiveTrace(id, events);
@@ -163,29 +141,28 @@ export class MapRenderer {
       const firstDisplay = !this.displayed;
       this.canvas.style.visibility = "visible";
       this.displayed = true;
-      // Some compositors defer hidden OffscreenCanvas updates. Repaint once the
-      // placeholder is visible rather than depending on its hidden first draw.
-      if (firstDisplay) this.worker.postMessage({ repaint: true });
+      // Repaint once the placeholder becomes visible.
+      if (firstDisplay) this.runtime.send({ repaint: true });
       this.onFrame?.(frame.revision);
     };
     this.unregisterTrace = registerTraceSource({
       start: (config) =>
-        this.worker.postMessage({
-          traceControl: { config: { ...config, workerId: this.workerId } },
+        this.runtime.send({
+          traceControl: { config: { ...config, workerId: this.rendererId } },
         }),
       stop: (id) =>
         new Promise<void>((resolve, reject) => {
           const timer = setTimeout(() => {
             this.traceStop = undefined;
-            reject(new Error("Map worker trace flush timed out"));
+            reject(new Error("Map renderer trace flush timed out"));
           }, 1500);
           this.traceStop = { id, resolve, timer };
-          this.worker.postMessage({ traceControl: { stop: id } });
+          this.runtime.send({ traceControl: { stop: id } });
         }),
     });
   }
 
-  /** Adopt a pre-rendered canvas without recreating its worker or GPU context. */
+  /** Adopt a pre-rendered canvas without recreating its Phaser instance or GPU context. */
   attach(
     host: HTMLElement,
     onError: (message: string) => void,
@@ -198,12 +175,13 @@ export class MapRenderer {
     this.displayed = false;
     this.canvas.style.visibility = "hidden";
     host.append(this.canvas);
+    this.runtime.attachParent();
     this.observeSize(host);
   }
 
   preparePrograms(frame: MapFrameRequest) {
     if (this.failed) return;
-    this.worker.postMessage({
+    this.runtime.send({
       revision: 0,
       fog: [],
       lighting: frame.plan.lighting,
@@ -256,7 +234,6 @@ export class MapRenderer {
               })),
             },
           };
-    const canvas = this.offscreen;
     const revision = ++this.revision;
     const trace = traceConfiguration();
     if (trace) {
@@ -264,29 +241,24 @@ export class MapRenderer {
       if (this.frameStarted.size > 128)
         this.frameStarted.delete(this.frameStarted.keys().next().value!);
     }
-    this.worker.postMessage(
-      {
-        revision,
-        fog: frame.fog,
-        lighting: frame.plan.lighting,
-        scene,
-        battlefield: battlefield && {
-          ...battlefield,
-          prefetch: battlefield.prefetch?.map(absolute),
-          units: battlefield.units.map((unit) => ({
-            ...unit,
-            url: unit.url && absolute(unit.url),
-          })),
-          items: battlefield.items.map((item) => ({
-            ...item,
-            url: item.url && absolute(item.url),
-          })),
-        },
-        canvas,
-      } satisfies MapRenderRequest,
-      canvas ? [canvas] : [],
-    );
-    this.offscreen = undefined;
+    this.runtime.send({
+      revision,
+      fog: frame.fog,
+      lighting: frame.plan.lighting,
+      scene,
+      battlefield: battlefield && {
+        ...battlefield,
+        prefetch: battlefield.prefetch?.map(absolute),
+        units: battlefield.units.map((unit) => ({
+          ...unit,
+          url: unit.url && absolute(unit.url),
+        })),
+        items: battlefield.items.map((item) => ({
+          ...item,
+          url: item.url && absolute(item.url),
+        })),
+      },
+    } satisfies MapRenderRequest);
     this.terrainKey = frame.terrainKey;
     this.armTimeout();
   }
@@ -294,18 +266,18 @@ export class MapRenderer {
   private armTimeout() {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
-      // Worker animation-frame callbacks can be suspended while the page is hidden.
+      // Browser animation-frame callbacks can be suspended while the page is hidden.
       if (document.visibilityState === "hidden") this.armTimeout();
-      else this.fail("Map worker did not finish within 30 seconds. Retry map rendering.");
+      else this.fail("Map renderer did not finish within 30 seconds. Retry map rendering.");
     }, 30000);
   }
 
   pulse(tile: string, kind: MotionKind) {
-    if (!this.failed) this.worker.postMessage({ motion: { tile, kind } });
+    if (!this.failed) this.runtime.send({ motion: { tile, kind } });
   }
 
   inspect(hovered: string | null, focused: string | null) {
-    if (!this.failed) this.worker.postMessage({ interaction: { hovered, focused } });
+    if (!this.failed) this.runtime.send({ interaction: { hovered, focused } });
   }
 
   destroy() {
@@ -322,7 +294,7 @@ export class MapRenderer {
     }
     clearTimeout(this.timeout);
     ++this.revision;
-    this.worker.terminate();
+    this.runtime.destroy();
     renderers.delete(this);
     this.canvas.remove();
   }

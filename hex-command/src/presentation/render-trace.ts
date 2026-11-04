@@ -2,6 +2,19 @@ import type { TraceConfig, TraceEvent } from "./performance-trace";
 export interface TraceBatch {
   trace: { id: number; events: TraceEvent[]; stopped?: boolean };
 }
+let sink: ((batch: TraceBatch) => void) | undefined;
+export function setRenderTraceSink(next: (batch: TraceBatch) => void) {
+  sink = next;
+  return () => {
+    if (sink === next) {
+      configureRendererTrace(undefined);
+      sink = undefined;
+    }
+  };
+}
+function emit(batch: TraceBatch) {
+  if (sink) sink(batch);
+}
 let config: TraceConfig | undefined,
   events: TraceEvent[] = [];
 let accepting = false;
@@ -16,10 +29,10 @@ type Stamp = { time: number; id: number };
 function stamp(): Stamp | undefined {
   return config ? { time: clock(), id: config.id } : undefined;
 }
-export function workerTraceStart() {
+export function rendererTraceStart() {
   return accepting ? stamp() : undefined;
 }
-export function workerTraceEnd(
+export function rendererTraceEnd(
   name: string,
   started: Stamp | undefined,
   args?: Record<string, unknown>,
@@ -30,7 +43,7 @@ export function workerTraceEnd(
     cat: "render",
     ph: "X",
     pid: 1,
-    tid: 2 + (config.workerId ?? 0) * 2,
+    tid: 1,
     ts: (started.time - config.origin) * 1000,
     dur: (clock() - started.time) * 1000,
     args,
@@ -43,13 +56,18 @@ function flush(stopped = false) {
   timer = undefined;
   if (!config) return;
   if (events.length || stopped)
-    self.postMessage({ trace: { id: config.id, events: events, stopped } } satisfies TraceBatch);
+    emit({ trace: { id: config.id, events: events, stopped } } satisfies TraceBatch);
   events = [];
 }
-export function configureWorkerTrace(
+export function configureRendererTrace(
   next: TraceConfig | undefined,
   context?: WebGL2RenderingContext,
 ) {
+  if (frameQuery && gl) {
+    if (!gl.isContextLost() && extension) gl.endQuery(extension.TIME_ELAPSED_EXT);
+    gl.deleteQuery(frameQuery.query);
+    frameQuery = undefined;
+  }
   for (const pending of queries) gl?.deleteQuery(pending.query);
   queries = [];
   flush();
@@ -58,12 +76,13 @@ export function configureWorkerTrace(
   events = [];
   clearTimeout(pollTimer);
   pollTimer = undefined;
-  if (!next) return;
+  if (!next) {
+    gl = undefined;
+    extension = null;
+    return;
+  }
   gl = context;
-  for (const [offset, name] of [
-    [2, "Map worker"],
-    [3, "GPU duration"],
-  ] as const)
+  for (const [offset, name] of [[3, "GPU duration"]] as const)
     events.push({
       name: "thread_name",
       cat: "metadata",
@@ -76,7 +95,7 @@ export function configureWorkerTrace(
   if (gl) {
     extension = gl.getExtension("EXT_disjoint_timer_query_webgl2");
     const debug = gl.getExtension("WEBGL_debug_renderer_info");
-    workerTraceEnd("GPU capabilities", stamp(), {
+    rendererTraceEnd("GPU capabilities", stamp(), {
       renderer: debug
         ? gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)
         : gl.getParameter(gl.RENDERER),
@@ -123,13 +142,13 @@ function poll() {
     gl!.deleteQuery(pending.query);
     return false;
   });
-  if (disjoint) workerTraceEnd("GPU timer disjoint; samples discarded", stamp());
+  if (disjoint) rendererTraceEnd("GPU timer disjoint; samples discarded", stamp());
   flush();
   if (queries.length) pollTimer = setTimeout(poll, 16);
 }
-export async function stopWorkerTrace(id: number) {
+export async function stopRendererTrace(id: number) {
   if (config?.id !== id) {
-    self.postMessage({ trace: { id, events: [], stopped: true } } satisfies TraceBatch);
+    emit({ trace: { id, events: [], stopped: true } } satisfies TraceBatch);
     return;
   }
   accepting = false;
@@ -139,7 +158,7 @@ export async function stopWorkerTrace(id: number) {
     if (queries.length) await new Promise((resolve) => setTimeout(resolve, 16));
   }
   if (queries.length)
-    workerTraceEnd("GPU queries incomplete at stop", stamp(), { count: queries.length });
+    rendererTraceEnd("GPU queries incomplete at stop", stamp(), { count: queries.length });
   flush(true);
-  configureWorkerTrace(undefined);
+  configureRendererTrace(undefined);
 }

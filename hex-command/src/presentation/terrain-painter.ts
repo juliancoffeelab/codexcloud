@@ -45,7 +45,7 @@ export function terrainDrawingOrder<T extends TerrainMapTile>(tiles: readonly T[
   );
 }
 
-/** Identical pixel scale, floors and clipping in offline assets and the rendering worker. */
+/** Identical pixel scale, floors and clipping in offline assets and the renderer. */
 export function paintTerrainTiles<Image>(
   context: TerrainContext<Image>,
   tiles: readonly TerrainMapTile[],

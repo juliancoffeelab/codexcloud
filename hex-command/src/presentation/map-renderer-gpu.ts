@@ -1,4 +1,4 @@
-import { workerTraceStart, workerTraceEnd } from "./worker-trace";
+import { rendererTraceStart, rendererTraceEnd } from "./render-trace";
 import {
   daylight,
   lightingKey,
@@ -46,7 +46,7 @@ type ProgramName = keyof typeof programDefinitions;
 type PendingProgram = { program: WebGLProgram; fragment: WebGLShader };
 const displayPixelBudget = 2_097_152;
 
-/** Native terrain/light/fog passes invoked by the Phaser scene on the same worker/context. */
+/** Native terrain/light/fog passes invoked by the Phaser scene on the same browser context. */
 export class MapRendererGpu {
   private gl: WebGL2RenderingContext;
   private programs: Partial<Record<ProgramName, Program>> = {};
@@ -81,7 +81,7 @@ export class MapRendererGpu {
   private presentationSize?: { width: number; height: number };
 
   constructor(
-    readonly canvas: OffscreenCanvas = new OffscreenCanvas(1, 1),
+    readonly canvas: HTMLCanvasElement | OffscreenCanvas = new OffscreenCanvas(1, 1),
     private resizeCanvas?: (width: number, height: number) => void,
   ) {
     const gl = this.canvas.getContext("webgl2", {
@@ -93,7 +93,7 @@ export class MapRendererGpu {
       // This canvas renders on demand, so its visible pixels must survive idle
       // tasks, scrolling and recoverable load failures between updates.
       preserveDrawingBuffer: true,
-    });
+    }) as WebGL2RenderingContext | null;
     if (!gl)
       throw new Error("Map rendering requires WebGL 2. Enable browser graphics acceleration.");
     this.gl = gl;
@@ -750,25 +750,25 @@ export class MapRendererGpu {
       fogKey = JSON.stringify(fog);
     let dirty = this.compositionInvalid ? this.fullRegion() : null;
     if (this.lightKey !== lightKey) {
-      const uploadStarted = workerTraceStart();
+      const uploadStarted = rendererTraceStart();
       this.uploadLights(lighting);
-      workerTraceEnd("Light spatial index upload", uploadStarted, {
+      rendererTraceEnd("Light spatial index upload", uploadStarted, {
         lights: lighting.lights?.length ?? 0,
       });
       const region = this.lightingRegion(lighting);
       if (region) {
-        const started = workerTraceStart();
+        const started = rendererTraceStart();
         this.shade(lighting, region);
-        workerTraceEnd("Terrain lighting", started, { ...region });
+        rendererTraceEnd("Terrain lighting", started, { ...region });
       }
       dirty = this.union(dirty, region);
       this.previousLighting = lighting;
       this.lightKey = lightKey;
     }
     if (this.fogKey !== fogKey) {
-      const started = workerTraceStart();
+      const started = rendererTraceStart();
       dirty = this.union(dirty, this.paintFog(fog));
-      workerTraceEnd("Fog mask and blur", started, { tiles: fog.length });
+      rendererTraceEnd("Fog mask and blur", started, { tiles: fog.length });
       this.fogKey = fogKey;
     }
     this.compositionInvalid = false;

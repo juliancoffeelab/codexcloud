@@ -90,7 +90,7 @@ export function lightingMatrix(x: number, y: number, lighting: BattlefieldLighti
     .concat([0, 0, 0, 1, 0]);
 }
 
-/** Apply lighting to a row range in the rendering worker or offline asset builder. */
+/** Apply lighting to a row range in the renderer or offline asset builder. */
 export function shadePixels(
   data: Uint8ClampedArray,
   width: number,
