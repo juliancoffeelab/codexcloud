@@ -13,6 +13,9 @@ type Actor = {
   bars: Phaser.GameObjects.Container;
   sprite?: Phaser.GameObjects.Image;
   dying: boolean;
+  base: Phaser.GameObjects.Ellipse;
+  healthFill: Phaser.GameObjects.Rectangle;
+  state: Phaser.GameObjects.Graphics;
 };
 
 /** One Phaser scene/context on the transferred browser canvas. */
@@ -28,6 +31,12 @@ export class PhaserBattlefield {
   private actors = new Map<string, Actor>();
   private items?: Phaser.GameObjects.Container;
   private owners?: Phaser.GameObjects.Container;
+  private itemNodes = new Map<
+    string,
+    { node: Phaser.GameObjects.Container; sprite?: Phaser.GameObjects.Image; url?: string }
+  >();
+  private ownerNodes = new Map<string, Phaser.GameObjects.Arc>();
+  private disposed = false;
   private outlines?: Phaser.GameObjects.RenderTexture;
   private outlineKey?: string;
   private focused: string | null = null;
@@ -52,6 +61,7 @@ export class PhaserBattlefield {
       units: this.snapshot?.units.length,
       lights: this.lighting.lights?.length,
       fog: this.fog.length,
+      phaserTargets: this.targetDetails(),
     };
   }
   private clip: Region = { left: 0, top: 0, right: 1, bottom: 1 };
@@ -61,74 +71,118 @@ export class PhaserBattlefield {
     private P: typeof Phaser,
     readonly canvas: HTMLCanvasElement,
   ) {
-    this.terrain = new MapRendererGpu(canvas, (width, height) =>
-      this.game.scale.resize(width, height),
-    );
+    try {
+      this.terrain = new MapRendererGpu(canvas, (width, height) =>
+        this.game.scale.resize(width, height),
+      );
+    } catch (error) {
+      canvas.getContext("webgl2")?.getExtension("WEBGL_lose_context")?.loseContext();
+      throw error;
+    }
   }
-  static async create(canvas: HTMLCanvasElement) {
+  static async create(canvas: HTMLCanvasElement, signal?: AbortSignal) {
     const started = rendererTraceStart();
     const P = (await import("phaser")).default;
+    signal?.throwIfAborted();
     const result = new PhaserBattlefield(P, canvas);
-    await result.boot();
+    try {
+      await result.boot(signal);
+    } catch (error) {
+      result.destroy();
+      throw error;
+    }
     result.game.loop.stop();
     rendererTraceEnd("Phaser browser boot", started, { version: P.VERSION });
     return result;
   }
-  private boot() {
+  private boot(signal?: AbortSignal) {
     return new Promise<void>((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error("Phaser browser startup timed out")), 15000);
+      const cleanup = () => {
+        clearTimeout(timer);
+        signal?.removeEventListener("abort", abort);
+      };
+      const fail = (error: unknown) => {
+        cleanup();
+        reject(error);
+      };
+      const abort = () => fail(signal?.reason ?? new Error("Phaser startup cancelled"));
+      const timer = setTimeout(() => fail(new Error("Phaser browser startup timed out")), 15000);
+      signal?.addEventListener("abort", abort, { once: true });
       const owner = this;
       this.scene = new this.P.Scene("battlefield");
       (this.scene as Phaser.Scene & { create(): void }).create = function (this: Phaser.Scene) {
-        const terrain = this.add.extern().setDepth(-10000);
-        (terrain as Phaser.GameObjects.Extern & { render(): void }).render = () => {
-          if (!owner.terrainReady) return;
-          const { nativeWidth, nativeHeight } = owner.terrain.statistics;
-          const clip = owner.clip;
-          owner.terrain.compose({
-            left: (clip.left * nativeWidth) / owner.canvas.width,
-            top: (clip.top * nativeHeight) / owner.canvas.height,
-            right: (clip.right * nativeWidth) / owner.canvas.width,
-            bottom: (clip.bottom * nativeHeight) / owner.canvas.height,
-          });
-          owner.backgroundDrawn = true;
-          owner.context.enable(owner.context.SCISSOR_TEST);
-          owner.context.scissor(
-            clip.left,
-            owner.canvas.height - clip.bottom,
-            clip.right - clip.left,
-            clip.bottom - clip.top,
+        if (owner.disposed) {
+          this.game.loop.stop();
+          return;
+        }
+        try {
+          const terrain = this.add.extern().setDepth(-10000);
+          (terrain as Phaser.GameObjects.Extern & { render(): void }).render = () => {
+            if (!owner.terrainReady) return;
+            const { nativeWidth, nativeHeight } = owner.terrain.statistics;
+            const clip = owner.clip;
+            owner.stage = "background composition";
+            owner.terrain.compose({
+              left: (clip.left * nativeWidth) / owner.canvas.width,
+              top: (clip.top * nativeHeight) / owner.canvas.height,
+              right: (clip.right * nativeWidth) / owner.canvas.width,
+              bottom: (clip.bottom * nativeHeight) / owner.canvas.height,
+            });
+            owner.checkStage();
+            owner.stage = "Phaser sprites and indicators";
+            owner.backgroundDrawn = true;
+            owner.context.enable(owner.context.SCISSOR_TEST);
+            owner.context.scissor(
+              clip.left,
+              owner.canvas.height - clip.bottom,
+              clip.right - clip.left,
+              clip.bottom - clip.top,
+            );
+          };
+          const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+          // None of this scene's custom lighting, tweens or particles uses built-in
+          // FX or masks. Keep their otherwise full-screen scratch buffers at 1×1.
+          for (const target of [
+            renderer.renderTarget,
+            renderer.maskTarget,
+            renderer.maskSource,
+            ...renderer.pipelines.UTILITY_PIPELINE.renderTargets,
+          ]) {
+            target.setAutoResize(false);
+          }
+          renderer.renderTarget.destroy();
+          renderer.renderTarget = new owner.P.Renderer.WebGL.RenderTarget(
+            renderer,
+            1,
+            1,
+            1,
+            0,
+            true,
+            false,
+            false,
           );
-        };
-        const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
-        // None of this scene's custom lighting, tweens or particles uses built-in
-        // FX or masks. Keep their otherwise full-screen scratch buffers at 1×1.
-        for (const target of [
-          renderer.renderTarget,
-          renderer.maskTarget,
-          renderer.maskSource,
-          ...renderer.pipelines.UTILITY_PIPELINE.renderTargets,
-        ])
-          target.setAutoResize(false);
-        renderer.pipelines.add(
-          "BattlefieldLights",
-          lightPipeline(owner.P, this.game, owner.terrain, () => owner.lighting),
-        );
-        owner.particles = this.add
-          .particles(0, 0, "__WHITE", {
-            lifespan: 350,
-            speed: { min: 20, max: 90 },
-            angle: { min: 0, max: 360 },
-            scale: { start: 0.3, end: 0 },
-            alpha: { start: 0.9, end: 0 },
-            tint: [0xffe5a1, 0xff7438],
-            frequency: -1,
-            maxAliveParticles: 96,
-          })
-          .setDepth(30000);
-        this.game.loop.stop();
-        clearTimeout(timer);
-        resolve();
+          renderer.pipelines.add(
+            "BattlefieldLights",
+            lightPipeline(owner.P, this.game, owner.terrain, () => owner.lighting),
+          );
+          owner.particles = this.add
+            .particles(0, 0, "__WHITE", {
+              lifespan: 350,
+              speed: { min: 20, max: 90 },
+              angle: { min: 0, max: 360 },
+              scale: { start: 0.3, end: 0 },
+              alpha: { start: 0.9, end: 0 },
+              tint: [0xffe5a1, 0xff7438],
+              frequency: -1,
+              maxAliveParticles: 96,
+            })
+            .setDepth(30000);
+          this.game.loop.stop();
+          cleanup();
+          resolve();
+        } catch (error) {
+          fail(error);
+        }
       };
       try {
         this.game = new this.P.Game({
@@ -139,6 +193,11 @@ export class PhaserBattlefield {
           height: 1,
           parent: this.canvas.parentElement ?? undefined,
           banner: false,
+          callbacks: {
+            preBoot: (game) => {
+              this.game = game;
+            },
+          },
           autoFocus: false,
           disablePreFX: true,
           disablePostFX: true,
@@ -160,8 +219,7 @@ export class PhaserBattlefield {
           scene: this.scene,
         });
       } catch (error) {
-        clearTimeout(timer);
-        reject(error);
+        fail(error);
       }
     });
   }
@@ -173,12 +231,42 @@ export class PhaserBattlefield {
     }
   }
   destroy() {
+    if (this.disposed) return;
+    this.disposed = true;
     const context = this.context;
-    this.game.destroy(false);
-    // On-demand stepping must finish Phaser's deferred destruction explicitly.
-    this.game.step(performance.now(), 0);
-    context.getExtension("WEBGL_lose_context")?.loseContext();
+    try {
+      if (this.game) {
+        this.game.loop.stop();
+        this.game.destroy(false);
+        if (this.game.scene.systemScene) {
+          // Phaser defers destruction to a step, even with a stopped loop.
+          this.game.step(performance.now(), 0);
+        } else {
+          // Phaser's runDestroy assumes systemScene exists. Before READY there
+          // are no scene objects or visibility/input handlers to tear down.
+          // Remove pending texture-ready callbacks so late images cannot start it.
+          this.game.textures.removeAllListeners();
+          this.game.events.removeAllListeners();
+          const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer | null;
+          if (renderer) {
+            this.canvas.removeEventListener(
+              "webglcontextlost",
+              renderer.contextLostHandler as EventListener,
+            );
+            this.canvas.removeEventListener(
+              "webglcontextrestored",
+              renderer.contextRestoredHandler as EventListener,
+            );
+            renderer.removeAllListeners();
+          }
+        }
+      }
+    } finally {
+      if (this.game?.loop.raf) this.game.loop.destroy();
+      context.getExtension("WEBGL_lose_context")?.loseContext();
+    }
   }
+
   get context() {
     return this.terrain.context;
   }
@@ -245,8 +333,10 @@ export class PhaserBattlefield {
     this.actors.clear();
     this.items?.destroy();
     this.items = undefined;
+    this.itemNodes.clear();
     this.owners?.destroy();
     this.owners = undefined;
+    this.ownerNodes.clear();
     this.outlines?.destroy();
     this.outlines = undefined;
     this.particles.killAll();
@@ -272,37 +362,43 @@ export class PhaserBattlefield {
   }
   private createActor(unit: BattlefieldUnit, index: number) {
     const body = this.scene.add.container(unit.x, unit.y).setDepth(100 + index);
-    body.add(this.scene.add.ellipse(0, 19, 38, 14, parseInt(unit.color.slice(1), 16), 0.5));
+    const base = this.scene.add.ellipse(0, 19, 38, 14, parseInt(unit.color.slice(1), 16), 0.5);
+    body.add(base);
     const sprite = unit.url
-      ? this.scene.add.image(0, 20 - unit.size / 2, unit.url).setPipeline("BattlefieldLights")
+      ? this.scene.add
+          .image(0, 20 - unit.size / 2, unit.url)
+          .setDisplaySize(unit.size, unit.size)
+          .setPipeline("BattlefieldLights")
       : undefined;
     if (sprite) body.add(sprite);
     const bars = this.scene.add.container(unit.x, unit.y).setDepth(10000 + index);
-    return { unit, body, bars, sprite, dying: false };
-  }
-  private updateBars(actor: Actor) {
-    const { unit, bars } = actor;
-    bars.removeAll(true);
     bars.add(this.scene.add.rectangle(-19, 27, 38, 4, 0x18211b).setOrigin(0));
-    bars.add(
-      this.scene.add
-        .rectangle(-19, 27, Math.max(0, Math.min(38, unit.health)), 4, 0xa9d0a5)
-        .setOrigin(0),
-    );
+    const healthFill = this.scene.add.rectangle(-19, 27, 38, 4, 0xa9d0a5).setOrigin(0);
     const state = this.scene.add.graphics();
-    state.lineStyle(2, 0xdbe8d7);
-    if (unit.spent) state.beginPath().moveTo(21, -20).lineTo(24, -17).lineTo(30, -24).strokePath();
-    if (unit.retreating)
-      state
-        .beginPath()
-        .moveTo(-22, -21)
-        .lineTo(-30, -21)
-        .lineTo(-26, -25)
-        .moveTo(-30, -21)
-        .lineTo(-26, -17)
-        .strokePath();
-    bars.add(state);
-    actor.sprite?.setAlpha(unit.spent ? 0.65 : 1);
+    bars.add([healthFill, state]);
+    const actor = { unit, body, bars, sprite, base, healthFill, state, dying: false };
+    this.updateBars(actor);
+    return actor;
+  }
+  private updateBars(actor: Actor, previous?: BattlefieldUnit) {
+    const { unit, state } = actor;
+    if (!previous || previous.health !== unit.health)
+      actor.healthFill.setSize(Math.max(0, Math.min(38, unit.health)), 4);
+    if (!previous || previous.spent !== unit.spent || previous.retreating !== unit.retreating) {
+      state.clear().lineStyle(2, 0xdbe8d7);
+      if (unit.spent)
+        state.beginPath().moveTo(21, -20).lineTo(24, -17).lineTo(30, -24).strokePath();
+      if (unit.retreating)
+        state
+          .beginPath()
+          .moveTo(-22, -21)
+          .lineTo(-30, -21)
+          .lineTo(-26, -25)
+          .moveTo(-30, -21)
+          .lineTo(-26, -17)
+          .strokePath();
+      actor.sprite?.setAlpha(unit.spent ? 0.65 : 1);
+    }
   }
   setBattlefield(snapshot: BattlefieldScene, _images: ReadonlyMap<string, ImageBitmap>) {
     this.prepareBattlefield(snapshot.key);
@@ -347,8 +443,27 @@ export class PhaserBattlefield {
             ease: "Sine.easeInOut",
           });
       }
-      if (actor.sprite && actor.unit.url !== unit.url && unit.url)
-        actor.sprite.setTexture(unit.url);
+      const old = actor.unit;
+      if (old.url !== unit.url) {
+        if (unit.url) {
+          if (actor.sprite) actor.sprite.setTexture(unit.url);
+          else {
+            actor.sprite = this.scene.add
+              .image(0, 20 - unit.size / 2, unit.url)
+              .setPipeline("BattlefieldLights");
+            actor.body.add(actor.sprite);
+          }
+        } else {
+          actor.sprite?.destroy();
+          actor.sprite = undefined;
+        }
+      }
+      if (actor.sprite && (old.url !== unit.url || old.size !== unit.size))
+        actor.sprite
+          .setDisplaySize(unit.size, unit.size)
+          .setY(20 - unit.size / 2)
+          .setAlpha(unit.spent ? 0.65 : 1);
+      if (old.color !== unit.color) actor.base.setFillStyle(parseInt(unit.color.slice(1), 16), 0.5);
       if (actor.sprite && unit.hp < actor.unit.hp && !snapshot.reducedMotion) {
         this.scene.tweens.add({
           targets: actor.sprite,
@@ -362,7 +477,7 @@ export class PhaserBattlefield {
       actor.unit = unit;
       actor.body.setDepth(100 + index);
       actor.bars.setDepth(10000 + index);
-      this.updateBars(actor);
+      this.updateBars(actor, old);
     });
     for (const [id, actor] of this.actors) {
       if (present.has(id) || actor.dying) continue;
@@ -385,30 +500,60 @@ export class PhaserBattlefield {
         });
       }
     }
-    this.items?.destroy();
-    this.items = this.scene.add.container(0, 0).setDepth(0);
+    this.items ??= this.scene.add.container(0, 0).setDepth(0);
+    const itemKeys = new Set<string>();
     for (const item of snapshot.items) {
-      this.items.add(this.scene.add.ellipse(item.x, item.y + 14, 24, 10, 0xd5bc68, 0.4));
-      if (item.url)
-        this.items.add(
-          this.scene.add.image(item.x, item.y, item.url).setPipeline("BattlefieldLights"),
-        );
+      const key = `${item.x},${item.y}`;
+      itemKeys.add(key);
+      let entry = this.itemNodes.get(key);
+      if (!entry) {
+        const node = this.scene.add.container(item.x, item.y);
+        node.add(this.scene.add.ellipse(0, 14, 24, 10, 0xd5bc68, 0.4));
+        this.items.add(node);
+        entry = { node };
+        this.itemNodes.set(key, entry);
+      }
+      if (entry.url !== item.url) {
+        if (item.url) {
+          if (entry.sprite) entry.sprite.setTexture(item.url);
+          else {
+            entry.sprite = this.scene.add.image(0, 0, item.url).setPipeline("BattlefieldLights");
+            entry.node.add(entry.sprite);
+          }
+        } else {
+          entry.sprite?.destroy();
+          entry.sprite = undefined;
+        }
+        entry.url = item.url;
+      }
     }
-    this.owners?.destroy();
-    this.owners = this.scene.add.container(0, 0).setDepth(20000);
+    for (const [key, entry] of this.itemNodes)
+      if (!itemKeys.has(key)) {
+        entry.node.destroy();
+        this.itemNodes.delete(key);
+      }
+    this.owners ??= this.scene.add.container(0, 0).setDepth(20000);
+    const ownerKeys = new Set<string>();
     for (const tile of snapshot.tiles)
-      if (tile.owner)
-        this.owners.add(
-          this.scene.add.arc(
-            tile.x + 23,
-            tile.y + 17,
-            5,
-            0,
-            360,
-            false,
-            parseInt(tile.owner.slice(1), 16),
-          ),
-        );
+      if (tile.owner) {
+        ownerKeys.add(tile.id);
+        let badge = this.ownerNodes.get(tile.id);
+        if (!badge) {
+          badge = this.scene.add
+            .arc(tile.x + 23, tile.y + 17, 5, 0, 360, false, parseInt(tile.owner.slice(1), 16))
+            .setName(tile.id);
+          this.owners.add(badge);
+          this.ownerNodes.set(tile.id, badge);
+        } else
+          badge
+            .setPosition(tile.x + 23, tile.y + 17)
+            .setFillStyle(parseInt(tile.owner.slice(1), 16));
+      }
+    for (const [key, badge] of this.ownerNodes)
+      if (!ownerKeys.has(key)) {
+        badge.destroy();
+        this.ownerNodes.delete(key);
+      }
     if (snapshot.reducedMotion) {
       this.scene.tweens.killAll();
       this.particles.killAll();
@@ -535,14 +680,36 @@ export class PhaserBattlefield {
     const size = this.terrain.dimensions;
     g.setScale(this.canvas.width / size.width, this.canvas.height / size.height);
     this.outlines = this.scene.add
-      .renderTexture(0, 0, this.canvas.width, this.canvas.height)
+      .renderTexture(0, 0, 1, 1)
       .setOrigin(0)
       .setDisplaySize(size.width, size.height)
       .setDepth(-100);
+    const texture = this.outlines.texture as Phaser.Textures.DynamicTexture;
+    const previousTarget = texture.renderTarget;
+    const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+    texture.renderTarget = new this.P.Renderer.WebGL.RenderTarget(
+      renderer,
+      this.canvas.width,
+      this.canvas.height,
+      1,
+      0,
+      false,
+      false,
+      false,
+      false,
+    );
+    texture.setFromRenderTarget();
+    previousTarget.destroy();
+    this.outlines
+      .resize(this.canvas.width, this.canvas.height)
+      .setDisplaySize(size.width, size.height);
     // DynamicTexture.draw uses Phaser's capture target. Grow that one on demand,
     // without subscribing it (or unused FX/mask buffers) to display resizes.
     const capture = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).renderTarget;
     capture.setAutoResize(true).resize(this.canvas.width, this.canvas.height).setAutoResize(false);
+    this.stage = "outline target allocation";
+    this.checkStage();
+    this.stage = "outline cache draw";
     this.outlines.draw(g);
     g.destroy();
   }
@@ -568,134 +735,168 @@ export class PhaserBattlefield {
       }
     const now = performance.now(),
       started = rendererTraceStart();
-    const verify = this.invalid;
     this.backgroundDrawn = false;
-    beginGpuTrace(this.context);
-    this.stage = "outline cache";
-    this.drawOutlines();
-    const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
-    renderer.pipelines.clear();
-    this.stage = "terrain/light/fog cache update";
-    const changed = this.terrain.update(lighting, fog);
-    this.restorePhaser();
-    const size = this.terrain.dimensions;
-    let region: Region | null = this.invalid
-      ? { left: 0, top: 0, right: size.width, bottom: size.height }
-      : null;
-    const include = (next: Region) => {
-      region = region
-        ? {
-            left: Math.min(region.left, next.left),
-            top: Math.min(region.top, next.top),
-            right: Math.max(region.right, next.right),
-            bottom: Math.max(region.bottom, next.bottom),
-          }
-        : next;
-    };
-    if (changed) {
-      const native = this.terrain.statistics;
-      include({
-        left: (changed.left * size.width) / native.nativeWidth,
-        top: (changed.top * size.height) / native.nativeHeight,
-        right: (changed.right * size.width) / native.nativeWidth,
-        bottom: (changed.bottom * size.height) / native.nativeHeight,
-      });
-    }
-    for (const actor of this.actors.values())
-      if (
-        actor.dying ||
-        this.scene.tweens.isTweening(actor.body) ||
-        (actor.sprite && this.scene.tweens.isTweening(actor.sprite))
-      ) {
+    try {
+      this.stage = "GPU trace query";
+      beginGpuTrace(this.context);
+      this.checkStage();
+      this.stage = "outline cache";
+      this.drawOutlines();
+      this.checkStage();
+      const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+      renderer.pipelines.clear();
+      this.stage = "terrain/light/fog cache update";
+      const changed = this.terrain.update(lighting, fog);
+      this.checkStage();
+      this.restorePhaser();
+      const size = this.terrain.dimensions;
+      let region: Region | null = this.invalid
+        ? { left: 0, top: 0, right: size.width, bottom: size.height }
+        : null;
+      const include = (next: Region) => {
+        region = region
+          ? {
+              left: Math.min(region.left, next.left),
+              top: Math.min(region.top, next.top),
+              right: Math.max(region.right, next.right),
+              bottom: Math.max(region.bottom, next.bottom),
+            }
+          : next;
+      };
+      if (changed) {
+        const native = this.terrain.statistics;
         include({
-          left: Math.min(actor.body.x, actor.unit.x) - 65,
-          top: Math.min(actor.body.y, actor.unit.y) - 90,
-          right: Math.max(actor.body.x, actor.unit.x) + 65,
-          bottom: Math.max(actor.body.y, actor.unit.y) + 65,
+          left: (changed.left * size.width) / native.nativeWidth,
+          top: (changed.top * size.height) / native.nativeHeight,
+          right: (changed.right * size.width) / native.nativeWidth,
+          bottom: (changed.bottom * size.height) / native.nativeHeight,
         });
       }
-    for (const [tile, expires] of this.effects) {
-      const center = this.snapshot?.tiles.find((t) => t.id === tile);
-      if (center)
-        include({
-          left: center.x - 110,
-          top: center.y - 110,
-          right: center.x + 110,
-          bottom: center.y + 110,
-        });
-      if (now >= expires) this.effects.delete(tile);
-    }
-    if (region) {
-      const sx = this.canvas.width / size.width,
-        sy = this.canvas.height / size.height;
-      const bounds = region as Region;
-      this.clip = {
-        left: Math.max(0, Math.floor(bounds.left * sx)),
-        top: Math.max(0, Math.floor(bounds.top * sy)),
-        right: Math.min(this.canvas.width, Math.ceil(bounds.right * sx)),
-        bottom: Math.min(this.canvas.height, Math.ceil(bounds.bottom * sy)),
-      };
-      const { left, top, right, bottom } = this.clip;
-      if (right > left && bottom > top) {
-        this.scene.cameras.main
-          .setViewport(left, top, right - left, bottom - top)
-          .setScroll(left / sx, top / sy)
-          .setZoom(sx, sy);
-        this.stage = "Phaser scene draw";
-        this.game.step(now, Math.min(100, now - this.previousTime));
-        if (!this.backgroundDrawn) {
-          endGpuTrace();
-          this.invalid = true;
-          throw new Error("Phaser did not draw the battlefield. Retry map rendering.");
+      for (const actor of this.actors.values())
+        if (
+          actor.dying ||
+          this.scene.tweens.isTweening(actor.body) ||
+          (actor.sprite && this.scene.tweens.isTweening(actor.sprite))
+        ) {
+          include({
+            left: Math.min(actor.body.x, actor.unit.x) - 65,
+            top: Math.min(actor.body.y, actor.unit.y) - 90,
+            right: Math.max(actor.body.x, actor.unit.x) + 65,
+            bottom: Math.max(actor.body.y, actor.unit.y) + 65,
+          });
         }
-        // Phaser.flush submits its batches; it does not call WebGL.flush.
-        // Explicitly submit on-demand browser frames before acknowledging them.
-        this.stage = "WebGL submission / frame verification";
-        this.context.flush();
-        if (verify) {
-          const error = this.context.getError();
-          if (error !== this.context.NO_ERROR) {
+      for (const [tile, expires] of this.effects) {
+        const center = this.snapshot?.tiles.find((t) => t.id === tile);
+        if (center)
+          include({
+            left: center.x - 110,
+            top: center.y - 110,
+            right: center.x + 110,
+            bottom: center.y + 110,
+          });
+        if (now >= expires) this.effects.delete(tile);
+      }
+      if (region) {
+        const sx = this.canvas.width / size.width,
+          sy = this.canvas.height / size.height;
+        const bounds = region as Region;
+        this.clip = {
+          left: Math.max(0, Math.floor(bounds.left * sx)),
+          top: Math.max(0, Math.floor(bounds.top * sy)),
+          right: Math.min(this.canvas.width, Math.ceil(bounds.right * sx)),
+          bottom: Math.min(this.canvas.height, Math.ceil(bounds.bottom * sy)),
+        };
+        const { left, top, right, bottom } = this.clip;
+        if (right > left && bottom > top) {
+          this.scene.cameras.main
+            .setViewport(left, top, right - left, bottom - top)
+            .setScroll(left / sx, top / sy)
+            .setZoom(sx, sy);
+          this.stage = "Phaser scene draw";
+          this.game.step(now, Math.min(100, now - this.previousTime));
+          this.checkStage();
+          if (!this.backgroundDrawn) {
             endGpuTrace();
             this.invalid = true;
-            throw new Error(
-              `Phaser GPU frame failed (${error}) at ${this.canvas.width}×${this.canvas.height}`,
-            );
+            throw new Error("Phaser did not draw the battlefield. Retry map rendering.");
           }
+          // Phaser.flush submits its batches; it does not call WebGL.flush.
+          // Explicitly submit on-demand browser frames before acknowledging them.
+          this.stage = "WebGL submission / frame verification";
+          this.context.flush();
+          this.checkStage();
         }
       }
+      this.invalid = false;
+      this.previousTime = now;
+      endGpuTrace();
+      rendererTraceEnd("Map render CPU submission", started, {
+        renderer: "Phaser 3.90 / browser",
+        lights: lighting.lights?.length ?? 0,
+        fog: fog.length,
+        units: this.snapshot?.units.length ?? 0,
+        tiles: this.snapshot?.tiles.length ?? 0,
+        animating: this.animating,
+        dirty: !!region,
+        items: this.snapshot?.items.length ?? 0,
+        dirtyPixels: region
+          ? Math.max(0, this.clip.right - this.clip.left) *
+            Math.max(0, this.clip.bottom - this.clip.top)
+          : 0,
+        tweens: this.scene.tweens.getTweens().length,
+        particles: this.particles.getAliveParticleCount(),
+        textures: this.game.textures.getTextureKeys().length,
+        phaserScratchPixels: this.scratchPixels(),
+        ...this.terrain.statistics,
+      });
+    } finally {
+      endGpuTrace();
     }
-    this.invalid = false;
-    this.previousTime = now;
-    endGpuTrace();
-    rendererTraceEnd("Map render CPU submission", started, {
-      renderer: "Phaser 3.90 / browser",
-      lights: lighting.lights?.length ?? 0,
-      fog: fog.length,
-      units: this.snapshot?.units.length ?? 0,
-      tiles: this.snapshot?.tiles.length ?? 0,
-      animating: this.animating,
-      dirty: !!region,
-      items: this.snapshot?.items.length ?? 0,
-      dirtyPixels: region
-        ? Math.max(0, this.clip.right - this.clip.left) *
-          Math.max(0, this.clip.bottom - this.clip.top)
-        : 0,
-      tweens: this.scene.tweens.getTweens().length,
-      particles: this.particles.getAliveParticleCount(),
-      textures: this.game.textures.getTextureKeys().length,
-      phaserScratchPixels: this.scratchPixels(),
-      ...this.terrain.statistics,
-    });
   }
 
-  private scratchPixels() {
-    const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+  private checkStage() {
+    const error = this.context.getError();
+    if (error !== this.context.NO_ERROR) {
+      this.invalid = true;
+      endGpuTrace();
+      throw new Error(
+        `Map GPU stage failed (${error}): ${this.stage} at ${this.canvas.width}×${this.canvas.height}`,
+      );
+    }
+  }
+  private targetDetails() {
+    const renderer = this.game?.renderer as Phaser.Renderer.WebGL.WebGLRenderer | undefined;
+    if (!renderer?.renderTarget) return [];
     return [
-      renderer.renderTarget,
-      renderer.maskTarget,
-      renderer.maskSource,
-      ...renderer.pipelines.renderTargets,
-      ...renderer.pipelines.UTILITY_PIPELINE.renderTargets,
-    ].reduce((sum, target) => sum + target.width * target.height, 0);
+      { name: "capture", target: renderer.renderTarget },
+      { name: "mask", target: renderer.maskTarget },
+      { name: "mask source", target: renderer.maskSource },
+      ...renderer.pipelines.renderTargets.map((target, i) => ({ name: `pipeline ${i}`, target })),
+      ...renderer.pipelines.UTILITY_PIPELINE.renderTargets.map((target, i) => ({
+        name: `utility ${i}`,
+        target,
+      })),
+      {
+        name: "outlines",
+        target: (this.outlines?.texture as Phaser.Textures.DynamicTexture | undefined)
+          ?.renderTarget,
+      },
+    ].flatMap(({ name, target }) =>
+      target
+        ? [
+            {
+              name,
+              width: target.width,
+              height: target.height,
+              depthStencil: target.hasDepthBuffer,
+            },
+          ]
+        : [],
+    );
+  }
+  private scratchPixels() {
+    return this.targetDetails()
+      .filter((target) => target.name !== "outlines")
+      .reduce((sum, target) => sum + target.width * target.height, 0);
   }
 }

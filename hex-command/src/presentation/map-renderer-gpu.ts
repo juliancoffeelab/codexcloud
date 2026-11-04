@@ -643,6 +643,7 @@ export class MapRendererGpu {
       this.fogMask = this.target(width, height, true);
       this.fogScratch = this.target(width, height, true);
       this.fog = this.target(width, height, true);
+      this.check("fog target allocation");
     }
     const maskTarget = this.fogMask!,
       scratchTarget = this.fogScratch!,
@@ -752,6 +753,7 @@ export class MapRendererGpu {
     if (this.lightKey !== lightKey) {
       const uploadStarted = rendererTraceStart();
       this.uploadLights(lighting);
+      this.check("light spatial index upload");
       rendererTraceEnd("Light spatial index upload", uploadStarted, {
         lights: lighting.lights?.length ?? 0,
       });
@@ -759,6 +761,7 @@ export class MapRendererGpu {
       if (region) {
         const started = rendererTraceStart();
         this.shade(lighting, region);
+        this.check("terrain lighting");
         rendererTraceEnd("Terrain lighting", started, { ...region });
       }
       dirty = this.union(dirty, region);
@@ -768,6 +771,7 @@ export class MapRendererGpu {
     if (this.fogKey !== fogKey) {
       const started = rendererTraceStart();
       dirty = this.union(dirty, this.paintFog(fog));
+      this.check("fog mask and blur");
       rendererTraceEnd("Fog mask and blur", started, { tiles: fog.length });
       this.fogKey = fogKey;
     }

@@ -264,6 +264,9 @@ Retry destroys the failed renderer before creating its replacement, releasing it
 GPU resources. These limits affect presentation resolution, not native artwork or
 terrain/light/fog resolution. Unit objects survive ordinary updates; Phaser owns their
 quad batching, so this is not the previous bespoke stationary-VBO implementation.
+Unit images use the published shared world size while source artwork stays 64×64. Health bars/state graphics, item piles and ownership badges retain their objects across publications; only changed values and added/removed entries update. Selection-only publications do not recreate indicators.
+
+Startup owns the partial Phaser instance until boot succeeds. Rejection, timeout and lifecycle cancellation stop its loop and release the context; cleanup handles a timeout before Phaser creates its system scene and disables pending texture-ready callbacks. Outline and capture targets are color-only, including after resize. GL checks distinguish outline allocation/drawing, light upload, terrain lighting, fog allocation/blur, background composition and scene drawing. Reports include Phaser target dimensions and depth/stencil flags; these are allocation descriptions, not a driver heap measurement.
 
 Movement tweens interpolate published positions, not backend paths. Hits recoil;
 appearances/disappearances fade; attack feedback emits bounded presentation-only

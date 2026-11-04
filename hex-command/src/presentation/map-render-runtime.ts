@@ -16,6 +16,7 @@ export function createMapRenderRuntime(
   respond: (response: MapRenderResponse | TraceBatch) => void,
 ) {
   let disposed = false;
+  const lifetime = new AbortController();
   const emit = (response: MapRenderResponse | TraceBatch) => {
     if (!disposed) respond(response);
   };
@@ -333,7 +334,7 @@ export function createMapRenderRuntime(
     if (!gpu && !initializing) {
       canvas.addEventListener("webglcontextlost", contextLost);
       try {
-        initializing = PhaserBattlefield.create(canvas).then((renderer) => {
+        initializing = PhaserBattlefield.create(canvas, lifetime.signal).then((renderer) => {
           if (disposed) {
             renderer.destroy();
             throw new Error("Map renderer disposed during startup");
@@ -449,6 +450,7 @@ export function createMapRenderRuntime(
   }
   function destroy() {
     disposed = true;
+    lifetime.abort(new Error("Map renderer disposed"));
     pending = undefined;
     latestRevision++;
     warmQueue = [];
