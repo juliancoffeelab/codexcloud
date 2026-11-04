@@ -1,0 +1,148 @@
+Source: https://opengameart.org/content/medieval-sound-effects-weapon-textures
+Retrieved: 2026-11-04
+Text extracted from source HTML; scripts/styles excluded.
+
+Author:
+Ben Jaszczak & Brian Nelson
+(Submitted by
+MedicineStorm
+)
+Monday, January 23, 2023 - 13:45
+Art Type:
+Sound Effect
+Tags:
+against
+approach
+arrow
+axe
+bolt
+click
+crossbow
+dagger
+draw
+english
+fast
+fletching
+heavy
+katana
+lever
+longbow
+nock
+nut
+pass
+passby
+place
+recurve
+sabre
+scythian
+sear
+seax
+set
+sheath
+shoot
+slow
+spear
+swing
+swoosh
+trigger
+weapon
+woosh
+License(s):
+CC0
+Collections:
+Lore's Adventure assets
+possible baced assets
+SFX - ok for commercial use
+Favorites:
+8
+Preview:
+From
+StillNorthMedia
+site:
+"You may use any of our sounds freely, with no royalties, and no credit needs to be given (although it is always appreciated)."
+And from
+FreeFirearmsSFX
+, the project that prompted Still North Media's inception:
+"Our team holds CC0 NO RIGHTS RESERVED for this library. It may be used without royalty or credit (though we would love to hear how you've used our sounds) for any application, personal or professional. Have at it!"
+See also these related submissions by the same team:
+https://opengameart.org/content/the-free-firearm-sound-library
+https://opengameart.org/content/medieval-sound-effects-weapon-impacts
+Please note that OGA is not affiliated with this project. We would encourage you to visit their site, but it is no longer available except via Archive.org (Thanks,
+Internet Archive
+!)
+Big thanks to their
+team
+and all of their
+Kickstarter supporters
+for kicking off all that lead to this amazing content!
+Sound effects in this package include:
+Arrow Fletching
+Axe Swing
+Crossbow Bolt Approach
+Crossbow Bolt Pass
+Crossbow Bolt Passby
+Crossbow Lever Trigger
+Crossbow Place Bolt
+Crossbow Set Nut Against Sear
+Crossbow Shoot
+Dagger Draw Fast
+Dagger Draw Slow
+Dagger Sheath Fast
+Dagger Sheath Slow
+Dagger Swing
+English Longbow Draw
+English Longbow Nock Arrow
+English Longbow Set Arrow
+English Longbow Shoot
+Katana Draw Fast
+Katana Draw Slow
+Katana Sheath Fast
+Katana Sheath Slow
+Katana Swing
+Sabre Draw Fast
+Sabre Draw Slow
+Sabre Sheath Fast
+Sabre Sheath Slow
+Sabre Swing
+Scythian Recurve Arrow Approach
+Scythian Recurve Arrow Pass
+Scythian Recurve Arrow Passby
+Scythian Recurve Draw
+Scythian Recurve Heavy Arrow Approach
+Scythian Recurve Heavy Arrow Pass
+Scythian Recurve Heavy Arrow Passby
+Scythian Recurve Nock Arrow
+Scythian Recurve Set Arrow
+Scythian Recurve Shoot
+Seax Draw Fast
+Seax Draw Slow
+Seax Sheath Fast
+Seax Sheath Slow
+Seax Swing
+Spear Swing
+Copyright/Attribution Notice:
+These sounds were created and recorded by Ben Jaszczak and Brian Nelson
+File(s):
+medieval_sfx_textures_1_of_2.7z
+89.9 Mb
+[
+1275
+download(s)]
+medieval_sfx_textures_2_of_2.7z
+86.1 Mb
+[
+942
+download(s)]
+Log in
+or
+register
+to post comments
+Comments
+PFNienow
+joined 11 years 2 months ago
+07/25/2024 - 06:31
+Thanks for sharing this. I used it in my game. Visit my profile page for a link to it.
+Log in
+or
+register
+to post comments

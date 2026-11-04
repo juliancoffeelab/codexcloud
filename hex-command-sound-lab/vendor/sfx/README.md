@@ -3,9 +3,9 @@
 All original audio is tracked here in ordinary Git, organized by creator and
 source pack. A normal clone contains the assets: no archive import, network
 request, Git LFS, external storage, or other project is needed to use them.
-The existing soundboard in `dist/` is preserved; its browser-import controls do
-not automatically discover this collection. This folder is for future offline
-sound work, not a soundboard or game integration.
+The soundboard in `dist/` indexes every original through smaller listening
+copies. Run `python3 scripts/build-soundboard.py` from the project directory to
+rebuild those copies. Source originals in this folder remain unmodified.
 
 ## Use and verify
 
@@ -23,7 +23,8 @@ references. No installation or download is needed to access the vendored audio.
 Play originals directly in an audio editor/player. Some medieval WAVs contain
 multiple takes and silence; keep those originals intact. Put edited audition
 copies in a separate directory and record the processing command and input hash.
-No processed copies were made for this collection.
+The soundboard builder writes processed listening copies separately in
+`dist/audio/listening/`, with original hashes and processing metadata.
 
 To repair missing originals or reproduce acquisition into a separate directory:
 
@@ -110,4 +111,4 @@ Kenney supplies recorded foley/material impacts; Still North supplies weapon mov
 
 Natural animal recordings are qubodup's domestic dog at play and DenisChardonnet's outdoor horse neigh/snort. The horse trot is explicitly jacket/water-bottle/hand foley. Generic soft impacts and designed growls/eating are candidates for bites, claws, paws and trampling, not authentic species recordings. Authentic wolf, boar, bear, fox and bat recordings are not included or claimed. Unit-specific sound design and subjective suitability still require auditioning; `coverage.json` records those limits.
 
-The 51 existing synthesized game samples in `dist/audio/current/` remain separate and are not counted or relicensed as CC0 here. No new synthesis or substitute recordings were generated. No playable-game, soundboard, hosting or deployment files are changed by acquisition.
+The 51 existing synthesized game samples in `dist/audio/current/` remain separate and are not counted or relicensed as CC0 here. No new synthesis or substitute recordings were generated. The acquisition command changes no playable-game, soundboard, hosting or deployment files.

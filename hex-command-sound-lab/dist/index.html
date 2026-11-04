@@ -1,11 +1,242 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#151a18"><meta name="description" content="Audition and compare Hexcommand unit movement, attacks and sound variations."><title>Hexcommand — Sound Lab</title><link rel="stylesheet" href="style.css"></head>
-<body><header><a class="brand" href="#"><span class="hex">⬡</span> HEXCOMMAND <span class="divider">/</span><span class="light">SOUND LAB</span></a><span class="badge">AUDITION ROOM <i></i></span></header>
-<main><section class="intro"><div><p class="eyebrow">THE SOUND OF A BATTLEFIELD</p><h1>Give every move<br>a little more <em>weight.</em></h1><p class="lede">Boots on grass. Steel against steel. Pick a unit and listen.<br>Compare the current sounds with a new library of CC0 candidates.</p></div><div class="intro-right"><div class="signal" aria-hidden="true"></div><p><strong id="total">232</strong> sounds on the workbench<br><span>Click to listen · Nothing plays automatically</span></p></div></section>
-<nav class="tabs" aria-label="Workbench views"><button class="active" data-view="units" aria-selected="true">01 <span>Unit workbench</span></button><button data-view="library" aria-selected="false">02 <span>Full library</span> <small id="library-count">232</small></button><button data-view="sources" aria-selected="false">03 <span>Sources & downloads</span></button></nav>
-<section id="units-view"><details class="import-box"><summary>↓ Add medieval recordings from your browser <span>Fetch directly or import .7z files</span></summary><p>The browser can reach sources the build workspace cannot. Try fetching a pack below. If the host blocks browser reads (CORS), download it and choose the archive here. Imported audio stays on this device for this tab; nothing is uploaded.</p><div id="remote-packs"></div><div class="import-controls"><label class="primary" for="import-files">＋ Import downloaded archives / audio</label><input id="import-files" type="file" accept=".7z,.zip,.wav,.ogg,.mp3,.flac,.m4a" multiple><button id="cancel-import" hidden>Cancel import</button></div><p id="import-status" role="status" aria-live="polite">Four source archives · about 332 MB total. Import one at a time on devices with limited memory.</p></details><div class="section-line"><p>CHOOSE YOUR UNIT</p><span>Core roster · proposed sound assignments</span></div><div id="roster" class="roster" role="group" aria-label="Choose unit"></div>
-<div class="workbench"><aside class="unit-panel"><div class="unit-top"><span id="unit-role" class="eyebrow"></span><span class="badge">LEVEL I</span></div><div class="stage"><div class="stage-hex"></div><img id="unit-image" width="64" height="64" alt=""></div><h2 id="unit-name"></h2><p id="unit-description"></p><div class="unit-note"><i></i> A listening prototype<br><span>Candidate mappings are for comparison. The live game is unchanged.</span></div><button id="sequence" class="primary">▶ &nbsp; Play action sequence</button><small class="sequence-help">Movement → attack → impact</small></aside>
-<div class="auditions"><div class="audition-header"><div><p class="eyebrow">LISTEN & COMPARE</p><h2>A sound for every action.</h2></div><div class="segmented" role="group" aria-label="Sound version"><button id="candidate-mode" class="selected" aria-pressed="true">CC0 candidates</button><button id="current-mode" aria-pressed="false">Current game</button></div></div><div id="action-cards"></div><p class="help">Numbered buttons play individual recordings. “All” plays every variation in order.</p></div></div></section>
-<section id="library-view" hidden><div class="library-heading"><div><p class="eyebrow">EVERY RECORDING, ONE PLACE</p><h2>The full library.</h2></div><a class="text-link" href="sound-library.zip" download>↓ Download all fetched audio</a></div><div class="filters"><label class="search"><span>Search sounds</span><input id="search" type="search" placeholder="Try grass, metal, cloth, bow…"></label><label>Source<select id="pack"><option value="all">All sources</option><option value="impact-sounds">Kenney · Impact Sounds</option><option value="rpg-audio">Kenney · RPG Audio</option><option value="current">Current Hexcommand</option><option value="imported">Browser imports</option></select></label><label class="check"><input type="checkbox" id="favorites-only"> Favorites only</label></div><p id="results" class="eyebrow"></p><div id="library-list"></div></section>
-<section id="sources-view" hidden><div class="library-heading"><div><p class="eyebrow">A CLEAN PAPER TRAIL</p><h2>Sources & downloads.</h2></div><a class="primary" href="sound-library.zip" download>↓ Download fetched library</a></div><div class="source-grid"><article><span class="tag">FETCHED · CC0</span><h3>Impact Sounds</h3><p>130 original Kenney recordings. Five variations each for footsteps and material impacts.</p><a href="https://kenney.nl/assets/impact-sounds" target="_blank" rel="noopener">Original source ↗</a><a href="licenses/impact-sounds.txt">Original license ↗</a></article><article><span class="tag">FETCHED · CC0</span><h3>RPG Audio</h3><p>51 original Kenney effects for cloth, leather, footsteps, coins, books and weapon handling. Pack preview excluded.</p><a href="https://kenney.nl/assets/rpg-audio" target="_blank" rel="noopener">Original source ↗</a><a href="licenses/rpg-audio.txt">Original license ↗</a></article><article><span class="tag neutral">BASELINE · 51 FILES</span><h3>Current Hexcommand</h3><p>The existing synthesized game audio. Three variations in each of 17 families. Included to compare against the candidates.</p><p class="muted">Generated by the game's Python sound script. These are labeled separately from the CC0 packs.</p></article><article class="pending"><span class="tag warning">BROWSER IMPORT AVAILABLE</span><h3>Medieval weapon textures</h3><p>Ben Jaszczak & Brian Nelson · CC0. Bow draw, weapon handling and other textures. Use the browser fetch / import controls in the Unit workbench to add these recordings.</p><a href="https://opengameart.org/content/medieval-sound-effects-weapon-textures" target="_blank" rel="noopener">Open source & download ↗</a></article><article class="pending"><span class="tag warning">BROWSER IMPORT AVAILABLE</span><h3>Medieval weapon impacts</h3><p>Ben Jaszczak & Brian Nelson · CC0. Weapon-on-weapon recordings. Fetch or import both archive parts from the Unit workbench.</p><a href="https://opengameart.org/node/146863" target="_blank" rel="noopener">Open source & download ↗</a></article><article><span class="tag neutral">PROVENANCE</span><h3>Use, remix, redistribute.</h3><p>The fetched Kenney packs carry CC0 licenses. Files were obtained from a GitHub mirror with original license texts preserved. No audio processing is applied to these recordings.</p><a href="https://github.com/GeorgeQLe/assets-sfx-combat" target="_blank" rel="noopener">Download mirror ↗</a><a href="catalog.json" download>File manifest & SHA-256 hashes ↓</a><a href="licenses/libarchive-js-MIT.txt">Archive reader · MIT license ↗</a></article></div><p class="help">Unit assignments are suggestions, not claims that a recording was made with that unit's weapon. Magic and bow candidates are explicitly marked where a suitable recording is unavailable.</p></section>
-</main><footer><span>HEXCOMMAND <span class="muted">/ Sound exploration</span></span><button id="export">↓ Export favorites</button><span>HEADPHONES RECOMMENDED</span></footer><div class="player"><button id="stop" aria-label="Stop all audio">■</button><div class="now"><span class="eyebrow">NOW PLAYING</span><span id="playing" role="status" aria-live="polite">Ready when you are.</span></div><canvas id="wave" width="420" height="44" aria-label="Waveform of the playing sound"></canvas><label class="volume">Volume <input id="volume" aria-label="Volume" type="range" min="0" max="100" value="55"><output id="volume-value">55%</output></label></div><script type="module" src="app.js"></script></body></html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#151a18" />
+    <meta
+      name="description"
+      content="Audition and compare Hexcommand unit movement, attacks and sound variations."
+    />
+    <title>Hexcommand — Sound Lab</title>
+    <link rel="stylesheet" href="style.css?v=full-collection-1" />
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="#"
+        ><span class="hex">⬡</span> HEXCOMMAND <span class="divider">/</span
+        ><span class="light">SOUND LAB</span></a
+      ><span class="badge">AUDITION ROOM <i></i></span>
+    </header>
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">THE SOUND OF A BATTLEFIELD</p>
+          <h1>Give every move<br />a little more <em>weight.</em></h1>
+          <p class="lede">
+            Boots on grass. Steel against steel. Pick a unit and listen.<br />Compare
+            the current sounds with a new library of CC0 candidates.
+          </p>
+        </div>
+        <div class="intro-right">
+          <div class="signal" aria-hidden="true"></div>
+          <p>
+            <strong id="total">518</strong> recordings on the workbench<br /><span
+              >Click to listen · Nothing plays automatically</span
+            >
+          </p>
+        </div>
+      </section>
+      <nav class="tabs" aria-label="Workbench views">
+        <button class="active" data-view="units" aria-selected="true">
+          01 <span>Unit workbench</span></button
+        ><button data-view="library" aria-selected="false">
+          02 <span>Full library</span>
+          <small id="library-count">518</small></button
+        ><button data-view="sources" aria-selected="false">
+          03 <span>Sources & downloads</span>
+        </button>
+      </nav>
+      <section id="units-view">
+        <p class="collection-note">
+          All 467 vendored CC0 recordings are ready to play here. No imports or
+          external downloads needed.
+          <a href="#library" id="browse-new">Browse the collection →</a>
+        </p>
+        <div class="section-line">
+          <p>CHOOSE YOUR UNIT</p>
+          <span>Quick picks · or choose any of 107 units</span>
+        </div>
+        <div
+          id="roster"
+          class="roster"
+          role="group"
+          aria-label="Choose unit"
+        ></div>
+        <label class="unit-picker"
+          >Full unit roster
+          <select id="unit-select" aria-label="Full unit roster"></select
+        ></label>
+        <div class="workbench">
+          <aside class="unit-panel">
+            <div class="unit-top">
+              <span id="unit-role" class="eyebrow"></span
+              ><span class="badge">AUDITION</span>
+            </div>
+            <div class="stage">
+              <div class="stage-hex"></div>
+              <img id="unit-image" width="64" height="64" alt="" />
+            </div>
+            <h2 id="unit-name"></h2>
+            <p id="unit-description"></p>
+            <div class="unit-note">
+              <i></i> A listening prototype<br /><span
+                >Candidate mappings are for comparison. The live game is
+                unchanged.</span
+              >
+            </div>
+            <button id="sequence" class="primary">
+              ▶ &nbsp; Play action sequence</button
+            ><small class="sequence-help">Movement → attack → impact</small>
+          </aside>
+          <div class="auditions">
+            <div class="audition-header">
+              <div>
+                <p class="eyebrow">LISTEN & COMPARE</p>
+                <h2>A sound for every action.</h2>
+              </div>
+              <div class="segmented" role="group" aria-label="Sound version">
+                <button
+                  id="candidate-mode"
+                  class="selected"
+                  aria-pressed="true"
+                >
+                  CC0 candidates</button
+                ><button id="current-mode" aria-pressed="false">
+                  Current game
+                </button>
+              </div>
+            </div>
+            <div id="action-cards"></div>
+            <p class="help">
+              Numbered buttons play suggested takes. “All” plays these picks in
+              order. The full library contains every recording and all detected
+              takes.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="library-view" hidden>
+        <div class="library-heading">
+          <div>
+            <p class="eyebrow">EVERY RECORDING, ONE PLACE</p>
+            <h2>The full library.</h2>
+          </div>
+          <a
+            class="text-link"
+            href="sound-library.zip?v=full-collection-1"
+            download
+            >↓ Download listening library</a
+          >
+        </div>
+        <div class="filters">
+          <label class="search"
+            ><span>Search sounds</span
+            ><input
+              id="search"
+              type="search"
+              placeholder="Try grass, metal, cloth, bow…" /></label
+          ><label
+            >Source<select id="pack">
+              <option value="all">All sources</option>
+            </select></label
+          ><label
+            >Category<select id="category">
+              <option value="all">All categories</option>
+              <option value="movement">Movement</option>
+              <option value="attack">Attacks & weapons</option>
+              <option value="impact">Impacts</option>
+              <option value="magic">Magic & fire</option>
+              <option value="voice">Animals & voices</option>
+              <option value="equipment">Equipment</option>
+              <option value="baseline">Current game</option>
+            </select></label
+          ><label class="check"
+            ><input type="checkbox" id="favorites-only" /> Favorites only</label
+          >
+        </div>
+        <p id="results" class="eyebrow"></p>
+        <div id="library-list"></div>
+      </section>
+      <section id="sources-view" hidden>
+        <div class="library-heading">
+          <div>
+            <p class="eyebrow">A CLEAN PAPER TRAIL</p>
+            <h2>Sources & downloads.</h2>
+          </div>
+          <a
+            class="primary"
+            href="sound-library.zip?v=full-collection-1"
+            download
+            >↓ Download listening library</a
+          >
+        </div>
+        <p class="help">
+          All 467 CC0 originals have local MP3 listening copies. The 51 existing
+          game samples are also included for comparison. Listening copies are
+          mono 44.1 kHz / 96 kbps; level matching is optional during playback.
+          Source recordings and their hashes remain unchanged in the repository.
+        </p>
+        <div id="source-cards" class="source-grid"></div>
+        <p class="help">
+          Weapon files often contain several takes. Detected boundaries are
+          approximate; open a recording to hear every take or the entire
+          session. Domestic dog recordings are canine references, not authentic
+          wolf calls. Creature effects and performed voices are labeled
+          separately from natural recordings.
+        </p>
+        <a href="catalog.json" download
+          >Catalog, original hashes & take boundaries ↓</a
+        >
+        · <a href="sources.json" download>Complete provenance ↓</a> ·
+        <a href="coverage.json" download>Coverage notes ↓</a>
+      </section>
+    </main>
+    <footer>
+      <span>HEXCOMMAND <span class="muted">/ Sound exploration</span></span
+      ><button id="export">↓ Export favorites</button
+      ><span>HEADPHONES RECOMMENDED</span>
+    </footer>
+    <div class="player">
+      <button id="stop" aria-label="Stop all audio">■</button>
+      <div class="now">
+        <span class="eyebrow">NOW PLAYING</span
+        ><span id="playing" role="status" aria-live="polite"
+          >Ready when you are.</span
+        >
+      </div>
+      <label class="normalize"
+        ><input id="normalize" type="checkbox" checked /> Match levels</label
+      ><canvas
+        id="wave"
+        width="420"
+        height="44"
+        aria-label="Waveform of the playing sound"
+      ></canvas>
+      <div class="transport">
+        <input
+          id="seek"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0"
+          aria-label="Playback position"
+          disabled
+        /><output id="time">0:00 / 0:00</output>
+      </div>
+      <label class="volume"
+        >Volume
+        <input
+          id="volume"
+          aria-label="Volume"
+          type="range"
+          min="0"
+          max="100"
+          value="55"
+        /><output id="volume-value">55%</output></label
+      >
+    </div>
+    <script type="module" src="app.js?v=full-collection-1"></script>
+  </body>
+</html>

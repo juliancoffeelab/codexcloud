@@ -1,34 +1,8 @@
 {
-  "bundled": {
-    "impact-sounds": {
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "source": "https://kenney.nl/assets/impact-sounds",
-      "mirror": "https://github.com/GeorgeQLe/assets-sfx-combat"
-    },
-    "rpg-audio": {
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "source": "https://kenney.nl/assets/rpg-audio",
-      "mirror": "https://github.com/GeorgeQLe/assets-sfx-combat"
-    },
-    "current": {
-      "source": "Hexcommand scripts/generate-sfx.py",
-      "license": "Existing project asset; not represented as CC0"
-    }
-  },
-  "browser_imports": {
-    "creator": "Ben Jaszczak & Brian Nelson",
-    "license": "CC0-1.0",
-    "sources": [
-      "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
-      "https://opengameart.org/node/146863"
-    ]
-  },
-  "archive_reader": {
-    "name": "libarchive.js",
-    "version": "2.0.2",
-    "license": "MIT",
-    "source": "https://github.com/nika-begiashvili/libarchivejs"
-  }
+  "originals": "vendor/sfx/ in the repository; all originals unchanged",
+  "processing": "mp3-mono-44100-96k-v1",
+  "takeDetection": "silencedetect -42 dB, 0.25 s; fallback -30 dB if no silence; approximate boundaries only",
+  "playbackGain": "Optional per-recording peak gain toward -3 dBFS, capped at +18/-12 dB",
+  "sourceManifest": "sources.json",
+  "sourceHashes": "catalog.json sourceHash"
 }
