@@ -21,6 +21,14 @@ fn observes_visibility(when: &When) -> bool {
         _ => false,
     }
 }
+fn affects_battle(action: &EventAction) -> bool {
+    match action {
+        EventAction::Say(_) | EventAction::Sound(_) | EventAction::Log(_) => false,
+        EventAction::ForEachUnit(group) => group.actions.iter().any(affects_battle),
+        EventAction::ForEachMark(group) => group.actions.iter().any(affects_battle),
+        _ => true,
+    }
+}
 fn is_spawn(a: &EventAction) -> bool {
     match a {
         EventAction::Spawn(_) => true,
@@ -190,44 +198,96 @@ impl CampaignBlock {
                     .scripted_events
                     .iter()
                     .filter(|e| {
-                        state.active.contains(&e.id) && game.event_may_fire_next_turn(&e.when)
+                        state.active.contains(&e.id)
+                            && game.event_may_fire_next_turn(&e.when)
+                            && e.actions.iter().any(affects_battle)
                     })
                     .collect();
-                let mut has_arrivals = !state.pending.is_empty();
+                let mut future = state.pending.clone();
                 for event in &boundary_events {
-                    let actions = event.actions_recursive();
-                    if !actions.iter().any(|a| is_spawn(a)) {
-                        continue;
-                    }
-                    has_arrivals = true;
-                    for action in actions {
-                        if let EventAction::Spawn(spawn) = action {
-                            if let Some(origin) = &spawn.tile {
-                                if origin.starts_with('$') {
-                                    tactics.pending_arrivals = true;
-                                } else {
-                                    let origin = game.site(origin);
-                                    arrival_sites.extend((0..game.terrain.len()).filter(|&t| {
-                                        game.board.distance(origin, t) <= spawn.radius
-                                    }));
-                                }
-                            } else {
-                                for tile in &spawn.area {
-                                    if tile.starts_with('$') {
-                                        tactics.pending_arrivals = true;
-                                    } else {
-                                        arrival_sites.insert(game.site(tile));
-                                    }
-                                }
-                            }
+                    for action in event.actions_recursive() {
+                        if let EventAction::Spawn(spec) = action {
+                            future.push(PendingEventSpawn {
+                                area: vec![],
+                                faction: spec.faction.clone(),
+                                ai_group: spec.ai_group.clone(),
+                                units: spec.units.iter().map(SpawnEntry::member).collect(),
+                            });
                         }
                     }
                 }
+                let mut has_position_effects = !future.is_empty();
+                let mut bound_actors = HashSet::default();
+                let creates_marks = boundary_events
+                    .iter()
+                    .flat_map(|e| e.actions_recursive())
+                    .any(|a| {
+                        if let EventAction::CreateMark(_) = a {
+                            true
+                        } else {
+                            false
+                        }
+                    });
+                for event in &boundary_events {
+                    if !event.actions_recursive().iter().any(|a| is_spawn(a)) {
+                        continue;
+                    }
+                    let (sites, actors, unresolved) =
+                        game.event_spawn_dependencies(&event.actions, &future);
+                    arrival_sites.extend(sites);
+                    bound_actors.extend(actors);
+                    tactics.pending_arrivals |= unresolved
+                        || (creates_marks
+                            && event.actions_recursive().iter().any(|a| {
+                                if let EventAction::ForEachMark(_) = a {
+                                    true
+                                } else {
+                                    false
+                                }
+                            }));
+                }
                 // Earlier events may enable a spawn through flags or other effects.
                 // Include their dependencies rather than inspecting only the spawn owner.
-                let selectors: Vec<_> =
-                    boundary_events.iter().flat_map(|e| e.selectors()).collect();
-                let arrival_actors: HashSet<_> = if has_arrivals {
+                let mut selectors = vec![];
+                for event in &boundary_events {
+                    selectors.extend(event.when.position_selectors());
+                    for action in event.actions_recursive() {
+                        let bound = match action {
+                            EventAction::ForEachUnit(group) => {
+                                if let Some(tile) = &group.select.tile {
+                                    has_position_effects = true;
+                                    selectors.push(&group.select.units);
+                                    tile.starts_with('$')
+                                } else {
+                                    false
+                                }
+                            }
+                            EventAction::Give(grant) => {
+                                if let Some(tile) = &grant.tile {
+                                    selectors.push(&grant.units);
+                                    has_position_effects = true;
+                                    tile.starts_with('$')
+                                } else {
+                                    false
+                                }
+                            }
+                            EventAction::PlaceItem(item) => {
+                                has_position_effects = true;
+                                if item.tile.starts_with('$') {
+                                    true
+                                } else {
+                                    arrival_sites.insert(game.site(&item.tile));
+                                    false
+                                }
+                            }
+                            EventAction::CreateMark(mark) => mark.tile.starts_with('$'),
+                            EventAction::SetTerrain(change) => change.tile.starts_with('$'),
+                            _ => false,
+                        };
+                        tactics.pending_arrivals |= bound;
+                    }
+                }
+                let arrival_actors: HashSet<_> = if has_position_effects {
                     tactics.pending_arrivals |=
                         boundary_events.iter().any(|e| observes_visibility(&e.when))
                             || game.factions.iter().any(|f| f.transfer.is_some());
@@ -244,6 +304,8 @@ impl CampaignBlock {
                 } else {
                     HashSet::default()
                 };
+                let mut arrival_actors = arrival_actors;
+                arrival_actors.extend(bound_actors);
                 let mut sites: Vec<_> = arrival_sites.into_iter().collect();
                 sites.sort_unstable();
                 for unit in game
@@ -266,7 +328,14 @@ impl CampaignBlock {
                     }
                 }
             }
-            for target in &authored_targets {
+            // Only authored event objectives can change the chapter at these sites.
+            // Policy-generated goals (such as rebuilding at a keep) are not events.
+            let event_targets = if game.turn == Side::Player {
+                game.scripted_policy_objectives(Side::Player)
+            } else {
+                vec![]
+            };
+            for target in event_targets {
                 if let Some(id) = target
                     .actor
                     .as_deref()

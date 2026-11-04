@@ -368,6 +368,124 @@ impl Game<'_> {
             }
         }
     }
+    fn event_spawn_area(&self, spec: &ScriptSpawn, bindings: &Bindings) -> Vec<String> {
+        if let Some(value) = &spec.tile {
+            let origin = self.site(&self.bound_tile(value, bindings));
+            let mut slots: Vec<_> = (0..self.terrain.len())
+                .filter(|&tile| self.board.distance(origin, tile) <= spec.radius)
+                .collect();
+            slots.sort_by_key(|&tile| (self.board.distance(origin, tile), tile));
+            slots
+                .into_iter()
+                .map(|tile| self.board.ids[tile].clone())
+                .collect()
+        } else {
+            spec.area
+                .iter()
+                .map(|tile| self.bound_tile(tile, bindings))
+                .collect()
+        }
+    }
+    /// Resolve existing loop bindings without running actions. Actors include units
+    /// that could move into a tile filter; placement areas use currently matching
+    /// bindings. New matching arrivals retain the full forecast fallback.
+    pub(crate) fn event_spawn_dependencies(
+        &self,
+        actions: &[EventAction],
+        future: &[PendingEventSpawn],
+    ) -> (Vec<usize>, Vec<u32>, bool) {
+        fn visit(
+            game: &Game<'_>,
+            actions: &[EventAction],
+            bindings: &Bindings,
+            future: &[PendingEventSpawn],
+            sites: &mut Vec<usize>,
+            actors: &mut Vec<u32>,
+            unresolved: &mut bool,
+        ) {
+            for action in actions {
+                match action {
+                    EventAction::Spawn(spec) => sites.extend(
+                        game.event_spawn_area(spec, bindings)
+                            .iter()
+                            .map(|id| game.site(id)),
+                    ),
+                    EventAction::ForEachUnit(group) => {
+                        let mut selector = group.select.units.clone();
+                        // Allegiance events can change these fields before this loop.
+                        selector.side = None;
+                        selector.faction = None;
+                        selector.ai_group = None;
+                        selector.retreating = None;
+                        *unresolved |= future.iter().any(|g| {
+                            g.units
+                                .iter()
+                                .any(|u| game.pending_unit_matches(&selector, g, u))
+                        });
+                        let tile = group
+                            .select
+                            .tile
+                            .as_ref()
+                            .map(|id| game.bound_tile(id, bindings));
+                        for unit in game
+                            .units
+                            .iter()
+                            .filter(|u| game.script_unit_matches(&selector, u))
+                        {
+                            actors.push(unit.id);
+                            if tile
+                                .as_ref()
+                                .is_some_and(|id| id != &game.board.ids[unit.tile])
+                            {
+                                continue;
+                            }
+                            let mut bound = bindings.clone();
+                            bound.unit = Some(unit.clone());
+                            visit(
+                                game,
+                                &group.actions,
+                                &bound,
+                                future,
+                                sites,
+                                actors,
+                                unresolved,
+                            );
+                        }
+                    }
+                    EventAction::ForEachMark(group) => {
+                        if let Some(state) = game.campaign.as_ref().and_then(|c| c.scripts.as_ref())
+                        {
+                            for mark in state.marks.iter().filter(|m| m.kind == group.select.kind) {
+                                let mut bound = bindings.clone();
+                                bound.mark = Some(mark.clone());
+                                visit(
+                                    game,
+                                    &group.actions,
+                                    &bound,
+                                    future,
+                                    sites,
+                                    actors,
+                                    unresolved,
+                                );
+                            }
+                        }
+                    }
+                    _ => {}
+                }
+            }
+        }
+        let (mut sites, mut actors, mut unresolved) = (vec![], vec![], false);
+        visit(
+            self,
+            actions,
+            &Bindings::default(),
+            future,
+            &mut sites,
+            &mut actors,
+            &mut unresolved,
+        );
+        (sites, actors, unresolved)
+    }
     fn release_event_spawns(&mut self, state: &mut EventState) {
         for group in &mut state.pending {
             let mut pending = vec![];
@@ -431,23 +549,7 @@ impl Game<'_> {
                     sound: Some(sound.clone()),
                 }]),
                 EventAction::Spawn(spec) => {
-                    let area = if let Some(value) = &spec.tile {
-                        let tile = self.bound_tile(value, bindings);
-                        let origin = self.site(&tile);
-                        let mut slots: Vec<_> = (0..self.terrain.len())
-                            .filter(|&t| self.board.distance(origin, t) <= spec.radius)
-                            .collect();
-                        slots.sort_by_key(|&t| (self.board.distance(origin, t), t));
-                        slots
-                            .into_iter()
-                            .map(|t| self.board.ids[t].clone())
-                            .collect()
-                    } else {
-                        spec.area
-                            .iter()
-                            .map(|v| self.bound_tile(v, bindings))
-                            .collect()
-                    };
+                    let area = self.event_spawn_area(spec, bindings);
                     state.pending.push(PendingEventSpawn {
                         area,
                         faction: spec.faction.clone(),

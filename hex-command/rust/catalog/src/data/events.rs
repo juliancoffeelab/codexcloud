@@ -644,6 +644,32 @@ pub struct EventClock<'a> {
     pub when: Option<&'a When>,
 }
 impl When {
+    /// Unit positions that can change this condition. Presence checks and
+    /// objective metadata do not depend on where a surviving unit stands.
+    pub fn position_selectors(&self) -> Vec<&UnitMatch> {
+        match self {
+            Self::All(values) | Self::Any(values) => {
+                values.iter().flat_map(Self::position_selectors).collect()
+            }
+            Self::Not(value) => value.position_selectors(),
+            Self::Stand(value) => vec![&value.units],
+            Self::Proximity(value) => std::iter::once(&value.units)
+                .chain(value.target.iter())
+                .collect(),
+            Self::Held(value) => {
+                let mut selectors = vec![&value.units];
+                if let Some(guard) = &value.when {
+                    selectors.extend(guard.position_selectors());
+                }
+                selectors
+            }
+            Self::Own(value) => value
+                .when
+                .as_ref()
+                .map_or_else(Vec::new, |guard| guard.position_selectors()),
+            _ => vec![],
+        }
+    }
     /// Partial evaluation at a future turn boundary. None means state-dependent:
     /// movement, deaths or earlier events may change the answer before then.
     pub fn at_turn_boundary(&self, round: u32, phase: Side, faction: Option<&str>) -> Option<bool> {
