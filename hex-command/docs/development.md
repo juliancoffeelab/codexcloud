@@ -259,6 +259,8 @@ main-thread map canvas or per-frame bitmap transfer/readback.
 
 Phaser's automatic loop stops after boot. The worker steps it on publication and
 while tweens/particles/feedback remain active, then stops scheduling frames.
+Publication draws run inside worker animation frames and explicitly flush WebGL commands before acknowledgement. The first visible canvas, page restoration and visibility return request a full presentation repaint without rebuilding native caches. A missing Phaser background draw or initial GPU error fails visibly instead of acknowledging a blank frame. Hidden pages defer the rendering timeout until they return.
+
 Native light/fog caches update only when their inputs change. The retained visible
 buffer is repainted through a clipped camera: native cache damage and animated
 bounds are unioned, the cached background is restored, then Phaser redraws its

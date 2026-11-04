@@ -35,6 +35,7 @@ export class PhaserBattlefield {
   private particles!: Phaser.GameObjects.Particles.ParticleEmitter;
   private previousTime = performance.now();
   private invalid = true;
+  private backgroundDrawn = false;
   private clip: Region = { left: 0, top: 0, right: 1, bottom: 1 };
   private effects = new Map<string, number>();
 
@@ -74,6 +75,7 @@ export class PhaserBattlefield {
             right: (clip.right * nativeWidth) / owner.canvas.width,
             bottom: (clip.bottom * nativeHeight) / owner.canvas.height,
           });
+          owner.backgroundDrawn = true;
           owner.context.enable(owner.context.SCISSOR_TEST);
           owner.context.scissor(
             clip.left,
@@ -500,6 +502,11 @@ export class PhaserBattlefield {
       this.effects.size > 0
     );
   }
+  invalidatePresentation() {
+    this.invalid = true;
+    this.previousTime = performance.now();
+    this.game.resume();
+  }
   render(lighting: BattlefieldLighting = daylight, fog: readonly string[]) {
     this.lighting = lighting;
     this.fog = fog;
@@ -510,6 +517,8 @@ export class PhaserBattlefield {
       }
     const now = performance.now(),
       started = workerTraceStart();
+    const verify = this.invalid;
+    this.backgroundDrawn = false;
     beginGpuTrace(this.context);
     this.drawOutlines();
     const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
@@ -586,6 +595,24 @@ export class PhaserBattlefield {
           .setScroll(left / sx, top / sy)
           .setZoom(sx, sy);
         this.game.step(now, Math.min(100, now - this.previousTime));
+        if (!this.backgroundDrawn) {
+          endGpuTrace();
+          this.invalid = true;
+          throw new Error("Phaser did not draw the battlefield. Retry map rendering.");
+        }
+        // Phaser.flush submits its batches; it does not call WebGL.flush.
+        // Explicitly submit on-demand worker frames before acknowledging them.
+        this.context.flush();
+        if (verify) {
+          const error = this.context.getError();
+          if (error !== this.context.NO_ERROR) {
+            endGpuTrace();
+            this.invalid = true;
+            throw new Error(
+              `Phaser GPU frame failed (${error}) at ${this.canvas.width}×${this.canvas.height}`,
+            );
+          }
+        }
       }
     }
     this.invalid = false;

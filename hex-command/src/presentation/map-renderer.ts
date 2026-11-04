@@ -19,6 +19,7 @@ export interface MapFrameRequest {
   battlefield?: BattlefieldScene;
 }
 export interface MapRenderRequest {
+  repaint?: boolean;
   resize?: { width: number; height: number };
   traceControl?: { config?: TraceConfig; stop?: number };
   preparePrograms?: { lighting: TerrainMapPlan["lighting"]; fog: boolean; prebuilt: boolean };
@@ -57,6 +58,12 @@ export class MapRenderer {
   private resizeObserver?: ResizeObserver;
   private host?: HTMLElement;
   private displaySize?: { width: number; height: number };
+  private restoreDisplay = () => {
+    if (this.failed || document.visibilityState !== "visible") return;
+    if (this.timeout !== undefined) this.armTimeout();
+    this.refreshSize();
+    this.worker.postMessage({ repaint: true });
+  };
   private refreshSize = () => {
     if (this.failed || !this.host) return;
     const bounds = this.host.getBoundingClientRect();
@@ -104,6 +111,8 @@ export class MapRenderer {
     }
     this.observeSize(host);
     window.addEventListener("resize", this.refreshSize);
+    window.addEventListener("pageshow", this.restoreDisplay);
+    document.addEventListener("visibilitychange", this.restoreDisplay);
     renderers.add(this);
     this.worker.onerror = (event) =>
       this.fail(`Map worker failed: ${event.message || "script could not load"}`);
@@ -139,12 +148,17 @@ export class MapRenderer {
         if (revision <= frame.revision) this.frameStarted.delete(revision);
       if (this.failed || frame.revision !== this.revision) return;
       clearTimeout(this.timeout);
+      this.timeout = undefined;
       if ("error" in frame) {
         this.fail(frame.error);
         return;
       }
+      const firstDisplay = !this.displayed;
       this.canvas.style.visibility = "visible";
       this.displayed = true;
+      // Some compositors defer hidden OffscreenCanvas updates. Repaint once the
+      // placeholder is visible rather than depending on its hidden first draw.
+      if (firstDisplay) this.worker.postMessage({ repaint: true });
       this.onFrame?.(frame.revision);
     };
     this.unregisterTrace = registerTraceSource({
@@ -199,6 +213,7 @@ export class MapRenderer {
     traceInstant("Map renderer error", { message });
     this.failed = true;
     clearTimeout(this.timeout);
+    this.timeout = undefined;
     // Keep the context alive until replacement/disposal so recoverable image or
     // script errors do not intentionally clear the previous completed display.
     this.onError(message);
@@ -266,11 +281,16 @@ export class MapRenderer {
     );
     this.offscreen = undefined;
     this.terrainKey = frame.terrainKey;
+    this.armTimeout();
+  }
+
+  private armTimeout() {
     clearTimeout(this.timeout);
-    this.timeout = setTimeout(
-      () => this.fail("Map worker did not finish within 30 seconds. Retry map rendering."),
-      30000,
-    );
+    this.timeout = setTimeout(() => {
+      // Worker animation-frame callbacks can be suspended while the page is hidden.
+      if (document.visibilityState === "hidden") this.armTimeout();
+      else this.fail("Map worker did not finish within 30 seconds. Retry map rendering.");
+    }, 30000);
   }
 
   pulse(tile: string, kind: MotionKind) {
@@ -284,6 +304,8 @@ export class MapRenderer {
   destroy() {
     this.resizeObserver?.disconnect();
     window.removeEventListener("resize", this.refreshSize);
+    window.removeEventListener("pageshow", this.restoreDisplay);
+    document.removeEventListener("visibilitychange", this.restoreDisplay);
     this.unregisterTrace?.();
     this.frameStarted.clear();
     if (this.traceStop) {

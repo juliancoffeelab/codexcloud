@@ -19,6 +19,7 @@ let battlefield: MapFrameRequest["battlefield"];
 let displayedBattlefield: MapFrameRequest["battlefield"];
 let displayedJob: RenderJob | undefined;
 let animation: number | undefined;
+let repaintRequested = false;
 let interaction = { hovered: null as string | null, focused: null as string | null };
 let pending: RenderJob | undefined;
 let running = false;
@@ -236,15 +237,36 @@ async function render(request: RenderJob) {
       key: request.battlefield!.key,
     }));
   }
-  gpu.render(plan.lighting, fog);
+  const painted = await new Promise<boolean>((resolve, reject) => {
+    requestAnimationFrame(() => {
+      if (request.revision !== latestRevision) {
+        resolve(false);
+        return;
+      }
+      try {
+        gpu!.render(plan.lighting, fog);
+        resolve(true);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+  if (!painted) return false;
   displayedJob = request;
   return true;
 }
 
 self.onmessage = (event: MessageEvent<MapRenderRequest>) => {
+  if (event.data.repaint) {
+    repaintRequested = true;
+    gpu?.invalidatePresentation();
+    scheduleAnimation();
+    return;
+  }
   if (event.data.resize) {
     displaySize = event.data.resize;
     gpu?.setPresentationSize(displaySize);
+    repaintRequested = true;
     scheduleAnimation();
     return;
   }
@@ -367,7 +389,7 @@ async function drain() {
     }
   }
   running = false;
-  if (gpu?.animating) scheduleAnimation();
+  if (gpu?.animating || repaintRequested) scheduleAnimation();
   warmSprites();
 }
 
@@ -379,6 +401,10 @@ function scheduleAnimation() {
     animation = undefined;
     if (running || !gpu || !displayedJob) return;
     try {
+      if (repaintRequested) {
+        gpu.invalidatePresentation();
+        repaintRequested = false;
+      }
       gpu.render(displayedJob.plan.lighting, displayedJob.fog);
       if (gpu.animating) scheduleAnimation();
     } catch (error) {
