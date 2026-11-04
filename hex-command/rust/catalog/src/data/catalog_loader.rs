@@ -1912,6 +1912,12 @@ fn apply_objective_route(
             };
             *current = condition.clone();
         }
+        mission
+            .scripted_events
+            .sort_by_key(|event| std::cmp::Reverse(event.priority));
+        for event in &mut mission.scripted_events {
+            event.when.index_holds();
+        }
     }
     Ok(())
 }
