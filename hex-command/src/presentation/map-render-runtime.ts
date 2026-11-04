@@ -284,7 +284,7 @@ export function createMapRenderRuntime(
     return true;
   }
 
-  function send(request: Partial<MapRenderRequest>) {
+  function receive(request: Partial<MapRenderRequest>) {
     if (disposed) return;
     const data = request as MapRenderRequest;
     if (data.repaint) {
@@ -462,6 +462,16 @@ export function createMapRenderRuntime(
     canvas.removeEventListener("webglcontextlost", contextLost);
     releaseTrace();
     gpu?.destroy();
+  }
+  function send(request: Partial<MapRenderRequest>) {
+    try {
+      receive(request);
+    } catch (error) {
+      emit({
+        revision: latestRevision,
+        error: renderErrorReport("Map renderer update failed", error, failureContext()),
+      });
+    }
   }
   return { send, destroy, attachParent: () => gpu?.attachParent() };
 }

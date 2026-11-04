@@ -189,13 +189,35 @@ export class PhaserBattlefield {
     this.outlines?.destroy();
     this.outlines = undefined;
     this.outlineKey = undefined;
-    this.terrain.setPresentationSize(size);
-    this.resize();
+    const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+    renderer.pipelines.clear();
+    try {
+      this.terrain.setPresentationSize(size);
+      this.resize();
+    } finally {
+      this.restorePhaser();
+    }
   }
   setTerrain(...args: Parameters<MapRendererGpu["setTerrain"]>) {
-    this.terrain.setTerrain(...args);
-    this.terrainReady = true;
-    this.resize();
+    const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+    renderer.pipelines.clear();
+    try {
+      this.terrain.setTerrain(...args);
+      this.terrainReady = true;
+      this.resize();
+    } finally {
+      this.restorePhaser();
+    }
+  }
+  private restorePhaser() {
+    const renderer = this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+    // Native passes bypass Phaser's binding caches. Restore all sampler slots
+    // and its program cache before DOM scale events can update shader uniforms.
+    for (let unit = 0; unit < 8; unit++) {
+      this.context.activeTexture(this.context.TEXTURE0 + unit);
+      this.context.bindTexture(this.context.TEXTURE_2D, renderer.whiteTexture.webGLTexture);
+    }
+    renderer.pipelines.rebind();
   }
   private resize() {
     const { width, height } = this.canvas;
@@ -555,13 +577,7 @@ export class PhaserBattlefield {
     renderer.pipelines.clear();
     this.stage = "terrain/light/fog cache update";
     const changed = this.terrain.update(lighting, fog);
-    // All active sampler-array entries must reference float textures, including
-    // unused slots. Native passes bind integer light tables on units 2 and 3.
-    for (let unit = 0; unit < 8; unit++) {
-      this.context.activeTexture(this.context.TEXTURE0 + unit);
-      this.context.bindTexture(this.context.TEXTURE_2D, renderer.whiteTexture.webGLTexture);
-    }
-    renderer.pipelines.rebind();
+    this.restorePhaser();
     const size = this.terrain.dimensions;
     let region: Region | null = this.invalid
       ? { left: 0, top: 0, right: size.width, bottom: size.height }
