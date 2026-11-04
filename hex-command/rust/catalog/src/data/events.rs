@@ -644,6 +644,48 @@ pub struct EventClock<'a> {
     pub when: Option<&'a When>,
 }
 impl When {
+    /// Partial evaluation at a future turn boundary. None means state-dependent:
+    /// movement, deaths or earlier events may change the answer before then.
+    pub fn at_turn_boundary(&self, round: u32, phase: Side, faction: Option<&str>) -> Option<bool> {
+        match self {
+            Self::All(values) => {
+                let mut result = Some(true);
+                for value in values {
+                    match value.at_turn_boundary(round, phase, faction) {
+                        Some(false) => return Some(false),
+                        None => result = None,
+                        Some(true) => {}
+                    }
+                }
+                result
+            }
+            Self::Any(values) => {
+                let mut result = Some(false);
+                for value in values {
+                    match value.at_turn_boundary(round, phase, faction) {
+                        Some(true) => return Some(true),
+                        None => result = None,
+                        Some(false) => {}
+                    }
+                }
+                result
+            }
+            Self::Not(value) => value.at_turn_boundary(round, phase, faction).map(|v| !v),
+            Self::Turn(turn) => Some(
+                round == turn.number()
+                    && match turn {
+                        TurnSelection::Number(_) => phase == Side::Player && faction.is_none(),
+                        TurnSelection::Faction {
+                            faction: selected, ..
+                        } => faction == Some(selected.as_str()),
+                    },
+            ),
+            Self::TurnAtLeast(turn) => Some(round >= *turn),
+            Self::ChapterStarted(value) => Some(!value),
+            Self::Killed(_) | Self::Left(_) => Some(false),
+            _ => None,
+        }
+    }
     pub fn state_only(&self) -> bool {
         match self {
             Self::All(v) | Self::Any(v) => v.iter().all(Self::state_only),

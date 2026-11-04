@@ -178,17 +178,94 @@ impl CampaignBlock {
             ..TacticalOrders::default()
         };
         if let Some(mission) = &game.mission {
-            tactics.pending_arrivals = game
-                .campaign
-                .as_ref()
-                .and_then(|c| c.scripts.as_ref())
-                .is_some_and(|state| {
-                    !state.pending.is_empty()
-                        || mission.scripted_events.iter().any(|e| {
-                            state.active.contains(&e.id)
-                                && e.actions_recursive().iter().any(|a| is_spawn(a))
+            if let Some(state) = game.campaign.as_ref().and_then(|c| c.scripts.as_ref()) {
+                // Moving a unit only changes an arrival forecast when it affects
+                // the trigger or blocks one of the possible placement tiles.
+                let mut arrival_sites: HashSet<usize> = state
+                    .pending
+                    .iter()
+                    .flat_map(|p| p.area.iter().map(|id| game.site(id)))
+                    .collect();
+                let boundary_events: Vec<_> = mission
+                    .scripted_events
+                    .iter()
+                    .filter(|e| {
+                        state.active.contains(&e.id) && game.event_may_fire_next_turn(&e.when)
+                    })
+                    .collect();
+                let mut has_arrivals = !state.pending.is_empty();
+                for event in &boundary_events {
+                    let actions = event.actions_recursive();
+                    if !actions.iter().any(|a| is_spawn(a)) {
+                        continue;
+                    }
+                    has_arrivals = true;
+                    for action in actions {
+                        if let EventAction::Spawn(spawn) = action {
+                            if let Some(origin) = &spawn.tile {
+                                if origin.starts_with('$') {
+                                    tactics.pending_arrivals = true;
+                                } else {
+                                    let origin = game.site(origin);
+                                    arrival_sites.extend((0..game.terrain.len()).filter(|&t| {
+                                        game.board.distance(origin, t) <= spawn.radius
+                                    }));
+                                }
+                            } else {
+                                for tile in &spawn.area {
+                                    if tile.starts_with('$') {
+                                        tactics.pending_arrivals = true;
+                                    } else {
+                                        arrival_sites.insert(game.site(tile));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                // Earlier events may enable a spawn through flags or other effects.
+                // Include their dependencies rather than inspecting only the spawn owner.
+                let selectors: Vec<_> =
+                    boundary_events.iter().flat_map(|e| e.selectors()).collect();
+                let arrival_actors: HashSet<_> = if has_arrivals {
+                    tactics.pending_arrivals |=
+                        boundary_events.iter().any(|e| observes_visibility(&e.when))
+                            || game.factions.iter().any(|f| f.transfer.is_some());
+                    game.units
+                        .iter()
+                        .filter(|u| {
+                            game.belongs_to_phase(u, game.turn)
+                                && selectors
+                                    .iter()
+                                    .any(|selector| game.script_unit_matches(selector, u))
                         })
-                });
+                        .map(|u| u.id)
+                        .collect()
+                } else {
+                    HashSet::default()
+                };
+                let mut sites: Vec<_> = arrival_sites.into_iter().collect();
+                sites.sort_unstable();
+                for unit in game
+                    .units
+                    .iter()
+                    .filter(|u| game.belongs_to_phase(u, game.turn))
+                {
+                    let locations = if arrival_actors.contains(&unit.id) {
+                        vec![TileId(game.board.ids[unit.tile].clone())]
+                    } else {
+                        sites
+                            .iter()
+                            .map(|&t| TileId(game.board.ids[t].clone()))
+                            .collect()
+                    };
+                    if !locations.is_empty() {
+                        tactics
+                            .transition_sensitive
+                            .push((UnitId(unit.id), locations));
+                    }
+                }
+            }
             for target in &authored_targets {
                 if let Some(id) = target
                     .actor

@@ -20,6 +20,16 @@ struct Bindings {
 }
 
 impl Game<'_> {
+    pub(crate) fn event_may_fire_next_turn(&self, when: &When) -> bool {
+        let phase = self.turn.other();
+        let round = self.round + u32::from(self.turn == Side::Enemy);
+        when.at_turn_boundary(round, phase, None) != Some(false)
+            || self
+                .factions
+                .iter()
+                .filter(|f| f.phase == phase)
+                .any(|f| when.at_turn_boundary(round, phase, Some(&f.id)) != Some(false))
+    }
     pub(crate) fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
         select
             .character
