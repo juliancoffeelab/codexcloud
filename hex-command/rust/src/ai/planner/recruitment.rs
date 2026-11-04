@@ -60,30 +60,47 @@ pub(super) fn plan(
         .into_iter()
         .filter(|tile| keeps.contains(tile) && *tile != unit.tile)
     {
-        let mut draft = game.fork();
-        if draft
-            .execute(crate::ai::move_command(game, unit.id, tile))
-            .is_err()
-        {
-            continue;
-        }
-        let first_id = draft.next_id();
-        let Ok((_, report)) = draft.recruit(opportunity) else {
-            continue;
-        };
-        if report.recruited.is_empty() {
-            continue;
-        }
-        let value: i32 = draft
-            .units()
+        let gold = game.gold_for_unit(unit).max(0);
+        let requirement = opportunity
+            .orders
+            .requirements
             .iter()
-            .filter(|u| u.id >= first_id)
-            .map(|u| draft.recruit_cost(u, u.kind))
-            .sum();
-        let actor = draft.unit(unit.id)?;
-        let mut after_threats = Threats::protected(&draft, actor.side, orders);
-        let after = exposure(actor, after_threats.at(actor, tile, None), true);
-        // Reaching the existing rebuilding objective, plus actual purchased army value.
+            .find(|r| r.deficit(game) > 0);
+        let mut slots = 0;
+        let mut costs = Vec::new();
+        for kind in game.recruitment_options_for(unit) {
+            if requirement.is_some_and(|r| !r.accepts(game, kind)) {
+                continue;
+            }
+            let cost = game.recruit_cost(unit, kind);
+            if cost > gold {
+                continue;
+            }
+            let available = game.board().adjacent[tile]
+                .iter()
+                .filter(|&&site| {
+                    (site == unit.tile || game.at(site).is_none())
+                        && game.cost(kind, site) != u16::MAX
+                        && !opportunity
+                            .orders
+                            .reserved
+                            .iter()
+                            .any(|reserved| game.site(&reserved.0) == site)
+                })
+                .count();
+            if available > 0 {
+                slots = slots.max(available);
+                costs.push(cost);
+            }
+        }
+        if costs.is_empty() {
+            continue;
+        }
+        let average = costs.iter().sum::<i32>() / costs.len() as i32;
+        let capacity = slots.min(opportunity.budget.unwrap_or(usize::MAX));
+        let value = gold.min((capacity as i32).saturating_mul(average));
+        let after = exposure(unit, threats.at(unit, tile, None), true);
+        // Reaching the existing rebuilding objective, plus a budget/placement estimate of new army value.
         let score = route[unit.tile] as f64 * goal.weight / 4.0
             + goal.weight * 0.6
             + value as f64

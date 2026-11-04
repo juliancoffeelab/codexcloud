@@ -315,9 +315,8 @@ impl<'catalog> Game<'catalog> {
                     .as_ref()
                     .and_then(|o| o.preserve_lives.as_ref())
                     .is_some_and(|s| {
-                        self.campaign
-                            .as_ref()
-                            .and_then(|c| c.scripts.as_ref())
+                        self.scripts
+                            .as_deref()
                             .is_some_and(|state| state.active.contains(&e.id))
                             && self.script_unit_matches(s, target)
                     })

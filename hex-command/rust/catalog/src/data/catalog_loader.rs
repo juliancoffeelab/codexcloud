@@ -1857,6 +1857,16 @@ fn apply_objective_route(
     path: &str,
 ) -> Result<(), ContentError> {
     for (stage, plan) in &route.stages {
+        if plan.goals.is_some()
+            || plan.optional_goals.is_some()
+            || !plan.events.is_empty()
+            || !plan.event_conditions.is_empty()
+        {
+            return Err(ContentError::new(
+                path,
+                "legacy route goals/events are unsupported; use scriptEvents and scriptConditions",
+            ));
+        }
         let mission = campaign
             .missions
             .iter_mut()

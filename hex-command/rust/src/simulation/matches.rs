@@ -437,7 +437,7 @@ fn phase(
         ownership: recording.ownership(game)?,
         goals: game.event_goal_progress(),
         objectives: goals.unwrap_or(&[]).to_vec(),
-        campaign: game.campaign.as_deref().cloned(),
+        campaign: game.campaign_snapshot(),
     };
     if let Some(timing) = timing {
         timing.finish();

@@ -89,8 +89,7 @@ impl<'catalog> Game<'catalog> {
         let mut game = Game::new_with_campaign(rules, &original.map.id, Some(definition));
         game.campaign = Some(
             CampaignState {
-                scripts: (!original.scripted_events.is_empty())
-                    .then(|| EventState::new(&original.scripted_events)),
+                scripts: None,
                 evacuated: vec![],
                 id: id.into(),
                 mission: index,
@@ -111,6 +110,7 @@ impl<'catalog> Game<'catalog> {
             }
             .into(),
         );
+        game.scripts = Some(EventState::new(&original.scripted_events).into());
         game.refresh_mission();
         game.units.retain(|u| {
             u.side != Side::Player
@@ -195,7 +195,7 @@ impl<'catalog> Game<'catalog> {
         game.log.clear();
 
         game.event_opening = true;
-        game.evaluate_campaign(false, None);
+        game.evaluate_campaign(true, None);
         let mut intro = vec![];
         game.script_speech(&game.mission.as_ref().unwrap().intro, &mut intro);
         intro.extend(std::mem::take(

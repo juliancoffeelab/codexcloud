@@ -611,6 +611,10 @@ pub struct PendingEventSpawn {
 )]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct EventState {
+    #[serde(skip)]
+    pub active_indices: Vec<usize>,
+    #[serde(skip)]
+    pub active_mask: Vec<bool>,
     #[serde(default)]
     pub failed: Vec<String>,
     pub recruitment: std::collections::BTreeMap<String, Vec<FactionRecruit>>,
@@ -727,8 +731,35 @@ impl When {
     }
 }
 impl EventState {
+    pub fn index_active(&mut self, events: &[ScriptEvent]) {
+        let active: std::collections::HashSet<_> = self.active.iter().map(String::as_str).collect();
+        self.active_indices = events
+            .iter()
+            .enumerate()
+            .filter(|(_, event)| active.contains(event.id.as_str()))
+            .map(|(index, _)| index)
+            .collect();
+        self.active_mask = vec![false; events.len()];
+        for &index in &self.active_indices {
+            self.active_mask[index] = true;
+        }
+    }
+    pub fn retire(&mut self, index: usize) {
+        self.active_mask[index] = false;
+    }
+    pub fn compact(&mut self, events: &[ScriptEvent]) {
+        self.active_indices.retain(|&index| self.active_mask[index]);
+        let active: std::collections::HashSet<_> = self
+            .active_indices
+            .iter()
+            .map(|&index| events[index].id.as_str())
+            .collect();
+        self.active.retain(|id| active.contains(id.as_str()));
+    }
     pub fn new(events: &[ScriptEvent]) -> Self {
         Self {
+            active_indices: (0..events.len()).collect(),
+            active_mask: vec![true; events.len()],
             failed: vec![],
             recruitment: Default::default(),
             active: events.iter().map(|e| e.id.clone()).collect(),

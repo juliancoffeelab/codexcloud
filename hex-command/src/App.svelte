@@ -25,23 +25,22 @@
   );
   const soundMission = $derived(soundCampaign?.missions[$view.game.campaign?.mission ?? 0]);
   $effect(() => {
-    prepareSounds(
-      soundMission
+    $view.game.mapId;
+    const itemSounds = preloadItemAssets([
+      ...(soundMission?.itemIds ?? []),
+      ...$view.game.units.flatMap((unit) => unit.items?.map((item) => item.id) ?? []),
+      ...$view.game.groundItems.map((entry) => entry.item.id),
+    ]);
+    prepareSounds([
+      ...(soundMission
         ? missionSounds(
             soundMission,
             soundCampaign && soundMission === soundCampaign.missions.at(-1)
               ? soundCampaign.ending
               : [],
           )
-        : [],
-    );
-  });
-  $effect(() => {
-    $view.game.mapId;
-    preloadItemAssets([
-      ...(soundMission?.itemIds ?? []),
-      ...$view.game.units.flatMap((unit) => unit.items?.map((item) => item.id) ?? []),
-      ...$view.game.groundItems.map((entry) => entry.item.id),
+        : []),
+      ...itemSounds,
     ]);
   });
   const inspectionOpen = $derived(

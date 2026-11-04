@@ -25,7 +25,7 @@ fn authored_goal_done(game: &Game<'_>, event: &ScriptEvent) -> bool {
     if objective.optional {
         return true;
     }
-    let Some(state) = game.campaign.as_ref().and_then(|c| c.scripts.as_ref()) else {
+    let Some(state) = game.scripts.as_deref() else {
         return false;
     };
     if !state.active.contains(&event.id) {
@@ -186,7 +186,7 @@ impl CampaignBlock {
             // Preserve the upstream player-side, due-enemy-wave forecast horizon.
             // The event system supplies committed pending requests and scheduled waves.
             if game.turn == Side::Player {
-                if let Some(state) = game.campaign.as_ref().and_then(|c| c.scripts.as_ref()) {
+                if let Some(state) = game.scripts.as_deref() {
                     tactics.pending_arrivals = state.pending.iter().any(|pending| {
                         game.faction(&pending.faction)
                             .is_some_and(|f| f.phase == Side::Enemy)
@@ -284,9 +284,8 @@ impl CampaignBlock {
                         continue;
                     };
                     if !game
-                        .campaign
-                        .as_ref()
-                        .and_then(|c| c.scripts.as_ref())
+                        .scripts
+                        .as_deref()
                         .is_some_and(|s| s.active.contains(&event.id))
                         || objective
                             .visible_when
@@ -556,7 +555,7 @@ impl Game<'_> {
             return None;
         }
         let mission = self.mission.as_ref()?;
-        let state = self.campaign.as_ref()?.scripts.as_ref()?;
+        let state = self.scripts.as_deref()?;
         mission
             .scripted_events
             .iter()

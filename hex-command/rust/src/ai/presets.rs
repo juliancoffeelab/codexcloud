@@ -149,9 +149,10 @@ mod tests {
             Game::start_campaign(&rules, "ashen-oath", 1, vec![], 0, vec![], vec![], vec![]);
         let state = game.campaign.as_mut().unwrap();
         state.set_flag("peace-lost", true, 1);
-        let scripts = state.scripts.as_mut().unwrap();
+        let scripts = game.scripts.as_mut().unwrap();
         scripts.active.retain(|id| id != "refuge-peace");
         scripts.failed.push("refuge-peace".into());
+        scripts.index_active(&game.mission.as_ref().unwrap().scripted_events);
         let required = game
             .objectives(Side::Player)
             .into_iter()

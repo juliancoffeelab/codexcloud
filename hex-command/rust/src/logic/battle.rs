@@ -183,6 +183,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) combat_rng: u32,
     pub(crate) log: Vec<String>,
     pub(crate) campaign: Option<Shared<CampaignState>>,
+    pub(crate) scripts: Option<Shared<EventState>>,
     pub(crate) last_combat: Option<LastCombat>,
     #[cfg(feature = "wasm")]
     pub(crate) combat_animation: Option<crate::protocol::CombatAnimation>,
@@ -360,7 +361,7 @@ impl<'catalog> Game<'catalog> {
     }
     fn from_parts(
         rules: &'catalog Rules,
-        state: StateFrame,
+        mut state: StateFrame,
         board: Rc<Board>,
         cache: RuntimeCache,
         campaign_definition: Option<&'catalog Campaign>,
@@ -368,6 +369,16 @@ impl<'catalog> Game<'catalog> {
         owners: Vec<Option<String>>,
         geometry: TileGeometry,
     ) -> Self {
+        let scripts = state
+            .campaign
+            .as_mut()
+            .and_then(|campaign| campaign.scripts.take())
+            .map(|mut state| {
+                if let Some(mission) = cache.mission.as_ref() {
+                    state.index_active(&mission.scripted_events);
+                }
+                state.into()
+            });
         let mut fog_memory = if geometry
             .fog
             .iter()
@@ -443,6 +454,7 @@ impl<'catalog> Game<'catalog> {
             combat_rng: state.combat_rng.unwrap_or(0x6d2b79f5),
             log: state.log,
             campaign: state.campaign.map(Into::into),
+            scripts,
             last_combat,
             #[cfg(feature = "wasm")]
             combat_animation: None,
@@ -491,6 +503,12 @@ impl<'catalog> Game<'catalog> {
             .clone();
         Self::from_state_with_campaign(rules, state, definition)
     }
+    pub(crate) fn campaign_snapshot(&self) -> Option<CampaignState> {
+        self.campaign.as_deref().cloned().map(|mut campaign| {
+            campaign.scripts = self.scripts.as_deref().cloned();
+            campaign
+        })
+    }
     /// Materialize the protocol snapshot without changing battle state.
     pub(crate) fn state(&self) -> State {
         State {
@@ -511,7 +529,7 @@ impl<'catalog> Game<'catalog> {
             log: self.log.clone(),
             tiles: self.tiles(),
             units: self.public_units(),
-            campaign: self.campaign.as_deref().cloned(),
+            campaign: self.campaign_snapshot(),
             last_combat: self.combat_present.then(|| self.last_combat.clone()),
         }
     }
@@ -557,7 +575,10 @@ impl<'catalog> Game<'catalog> {
             log: self.log,
             tiles,
             units,
-            campaign: self.campaign.map(Shared::into_owned),
+            campaign: self.campaign.map(Shared::into_owned).map(|mut campaign| {
+                campaign.scripts = self.scripts.map(Shared::into_owned);
+                campaign
+            }),
             last_combat: self.combat_present.then_some(self.last_combat),
         }
     }
@@ -840,6 +861,7 @@ impl<'catalog> Game<'catalog> {
             combat_rng: self.combat_rng,
             log: self.log.clone(),
             campaign: self.campaign.clone(),
+            scripts: self.scripts.clone(),
             last_combat: self.last_combat.clone(),
             #[cfg(feature = "wasm")]
             combat_animation: None,
@@ -920,12 +942,7 @@ impl<'catalog> Game<'catalog> {
         self.recruitment_options_for_faction(self.faction_for_phase(side))
     }
     pub(crate) fn recruitment_options_for_faction(&self, id: &str) -> Vec<usize> {
-        if let Some(pool) = self
-            .campaign
-            .as_ref()
-            .and_then(|c| c.scripts.as_ref())
-            .and_then(|s| s.recruitment.get(id))
-        {
+        if let Some(pool) = self.scripts.as_deref().and_then(|s| s.recruitment.get(id)) {
             return pool.iter().map(|r| self.kind(&r.unit)).collect();
         }
         if let Some(mission) = &self.mission {
@@ -974,9 +991,8 @@ impl<'catalog> Game<'catalog> {
         let unit = &self.rules.units[kind].id;
         if let Some(mission) = &self.mission {
             if let Some(entry) = self
-                .campaign
-                .as_ref()
-                .and_then(|c| c.scripts.as_ref())
+                .scripts
+                .as_deref()
                 .and_then(|s| s.recruitment.get(id))
                 .and_then(|v| v.iter().find(|r| &r.unit == unit))
             {

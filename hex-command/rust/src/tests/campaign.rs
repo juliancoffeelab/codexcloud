@@ -47,10 +47,7 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
         game.end_turn();
         if !before_tide {
             assert_eq!(
-                game.campaign
-                    .as_ref()
-                    .unwrap()
-                    .scripts
+                game.scripts
                     .as_ref()
                     .unwrap()
                     .holds
@@ -73,10 +70,7 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
         game.move_unit(raider, game.site("hex-0891-b20a50ef8c"));
         game.end_turn();
         assert_eq!(
-            game.campaign
-                .as_ref()
-                .unwrap()
-                .scripts
+            game.scripts
                 .as_ref()
                 .unwrap()
                 .holds

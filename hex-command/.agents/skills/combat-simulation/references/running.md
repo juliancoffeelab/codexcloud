@@ -32,7 +32,7 @@ Use the [metrics reference](metrics.md) to choose required telemetry and the
 
 ## Campaign objective routes
 
-`--diplomacy pragmatic,restrained` filters the modes declared by each campaign's
+`--diplomacy unrestricted,diplomatic` filters the modes declared by each campaign's
 `playerDiplomacy`. `--objectives flight,fight` likewise filters that campaign's
 named simulation routes. The scheduler takes their cross product with seeds,
 player tactics and enemy tactics. Reports keep both dimensions separate.
@@ -46,17 +46,17 @@ and its normal campaign-list registration, not simulator code.
 
 Each stage can declare:
 
-- `goals` and `optionalGoals`: complete replacement arrays using the existing
-  campaign Goal schema. Omitted arrays keep the authored objectives.
-- `events`: additional events using the existing campaign Event schema.
-- `eventConditions`: existing condition-event IDs mapped to explicit replacement
-  conditions. Use these to express route prerequisites and ordering.
+- `scriptEvents`: additional general events, including their objective metadata.
+- `scriptConditions`: existing script event IDs mapped to replacement `when`
+  expressions. Use these to express route prerequisites and ordering.
+- Legacy `goals`, `optionalGoals`, `events` and `eventConditions` overrides are
+  rejected; author route objectives through general events.
 - `ignoreOptionalWhen`: a condition after which the simulation player omits
   incidental optional-event targets. This changes its goals, not combat legality.
 
 Definitions are explicit: the runner never infers exits, enemy factions, goal
 positions or a campaign's intended branches. Selecting a simulation route validates its
-name, stages, goals, events and conditions with the normal campaign validators.
+name, stages, scripted objectives, events and conditions with the normal campaign validators.
 Playable catalog loading does not validate simulation route references.
 Simulation setup prepares each selected campaign/route once and shares its immutable
 definition across trials and streamed phase requests. Routes that only filter AI

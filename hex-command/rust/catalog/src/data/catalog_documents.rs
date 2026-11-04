@@ -321,10 +321,27 @@ pub fn stage(
         Some(component) => parse(bundle, &sibling(path, component)?)?,
         None => StageObjectives::default(),
     };
+    if !objectives.goals.is_empty()
+        || !objectives.optional_goals.is_empty()
+        || !objectives.required_companions.is_empty()
+        || objectives.defend_objectives
+        || objectives.enemy_leader_post.is_some()
+    {
+        return Err(ContentError::new(
+            path,
+            "legacy objective fields are unsupported; author objectives and protection in scripts",
+        ));
+    }
     let story: StageStory = parse(bundle, &sibling(path, &documents.story)?)?;
     let scripts: StageScripts = parse(bundle, &sibling(path, &documents.scripts)?)?;
     let events = vec![];
     let mut scripted_events = scripts.events;
+    if scripted_events.is_empty() {
+        return Err(ContentError::new(
+            path,
+            "chapters require scripted events; legacy execution is unsupported",
+        ));
+    }
     unique(scripted_events.iter().map(|e| e.id.as_str()), &map_path)?;
     scripted_events.sort_by_key(|e| std::cmp::Reverse(e.priority));
     for e in &mut scripted_events {

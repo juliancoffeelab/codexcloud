@@ -1,5 +1,5 @@
 //! Ordered, general event execution. Conditions inspect facts; actions create durable facts.
-use super::Game;
+use super::{Game, battle::Shared};
 use crate::data::presentation::ConditionContext;
 use crate::data::*;
 use std::collections::HashSet;
@@ -33,13 +33,8 @@ impl Game<'_> {
                 .faction
                 .as_ref()
                 .is_none_or(|id| self.unit_faction(unit) == id)
-            && select.side.is_none_or(|s| match s {
-                ConditionSide::Any => true,
-                ConditionSide::Player => unit.side == Side::Player,
-                ConditionSide::Enemy => self.hostile_to_phase(unit, Side::Player),
-                ConditionSide::Neutral => self
-                    .faction(self.unit_faction(unit))
-                    .is_some_and(|f| f.controller == Controller::Passive),
+            && select.side.is_none_or(|side| {
+                faction_matches_side(&self.factions, unit.faction.as_deref(), unit.side, side)
             })
             && select
                 .unit_type
@@ -72,13 +67,8 @@ impl Game<'_> {
             && s.ai_group
                 .as_ref()
                 .is_none_or(|id| group.ai_group.as_ref() == Some(id))
-            && s.side.is_none_or(|side| match side {
-                ConditionSide::Any => true,
-                ConditionSide::Player => faction.phase == Side::Player,
-                ConditionSide::Enemy => {
-                    self.faction_relation("player", &group.faction) == Relation::Hostile
-                }
-                ConditionSide::Neutral => faction.controller == Controller::Passive,
+            && s.side.is_none_or(|side| {
+                faction_matches_side(&self.factions, Some(&group.faction), faction.phase, side)
             })
     }
     fn script_positions<'a>(&'a self, unit: &'a Unit, through: bool) -> &'a [usize] {
@@ -205,17 +195,23 @@ impl Game<'_> {
         let empty = EventState::new(&[]);
         self.when_matches(
             when,
-            self.campaign
-                .as_ref()
-                .and_then(|c| c.scripts.as_ref())
-                .unwrap_or(&empty),
+            self.scripts.as_deref().unwrap_or(&empty),
             "",
             false,
             None,
         )
     }
-    fn update_event_holds(&self, state: &mut EventState, events: &[ScriptEvent], tick: bool) {
-        for event in events.iter().filter(|e| state.active.contains(&e.id)) {
+    fn update_event_holds(
+        &self,
+        state: &mut Shared<EventState>,
+        events: &[ScriptEvent],
+        tick: bool,
+    ) {
+        for event_index in state.active_indices.clone() {
+            if !state.active_mask[event_index] {
+                continue;
+            }
+            let event = &events[event_index];
             for hold in event.when.holds() {
                 let standing = hold.units.is_none_or(|u| self.stands(u, hold.tile, false))
                     && hold
@@ -228,22 +224,26 @@ impl Game<'_> {
                     .holds
                     .iter()
                     .position(|h| h.event == event.id && h.predicate == hold.predicate);
-                let index = slot.unwrap_or_else(|| {
+                let Some(index) = slot else {
                     state.holds.push(EventHold {
                         event: event.id.clone(),
                         predicate: hold.predicate,
                         turns: 0,
                         last_round: self.round,
                     });
-                    state.holds.len() - 1
-                });
-                let counter = &mut state.holds[index];
-                if !standing {
-                    counter.turns = 0;
-                    counter.last_round = self.round;
+                    continue;
+                };
+                let counter = &state.holds[index];
+                let (turns, last_round) = if !standing {
+                    (0, self.round)
                 } else if tick && self.turn == Side::Player && self.round > counter.last_round {
-                    counter.turns = (counter.turns + 1).min(hold.turns);
-                    counter.last_round = self.round;
+                    ((counter.turns + 1).min(hold.turns), self.round)
+                } else {
+                    (counter.turns, counter.last_round)
+                };
+                if (turns, last_round) != (counter.turns, counter.last_round) {
+                    state.holds[index].turns = turns;
+                    state.holds[index].last_round = last_round;
                 }
             }
         }
@@ -345,7 +345,18 @@ impl Game<'_> {
             }
         }
     }
-    fn release_event_spawns(&mut self, state: &mut EventState) {
+    fn release_event_spawns(&mut self, state: &mut Shared<EventState>) {
+        if !state.pending.iter().any(|group| {
+            group.units.iter().any(|member| {
+                let kind = self.kind(&member.unit_type);
+                group.area.iter().any(|id| {
+                    let tile = self.site(id);
+                    self.at(tile).is_none() && self.cost(kind, tile) != u16::MAX
+                })
+            })
+        }) {
+            return;
+        }
         for group in &mut state.pending {
             let mut pending = vec![];
             for member in std::mem::take(&mut group.units) {
@@ -383,7 +394,7 @@ impl Game<'_> {
     fn event_actions(
         &mut self,
         actions: &[EventAction],
-        state: &mut EventState,
+        state: &mut Shared<EventState>,
         bindings: &Bindings,
     ) {
         for action in actions {
@@ -574,17 +585,18 @@ impl Game<'_> {
                         .insert(spec.faction.clone(), spec.units.clone());
                 }
                 EventAction::FailObjective(id) => {
-                    let event = self
+                    let (index, _) = self
                         .mission
                         .as_ref()
                         .unwrap()
                         .scripted_events
                         .iter()
-                        .find(|e| e.objective.is_some() && e.objective_id() == id)
+                        .enumerate()
+                        .find(|(_, e)| e.objective.is_some() && e.objective_id() == id)
                         .expect("validated objective ID");
-                    if state.active.contains(&event.id) && !state.failed.contains(id) {
+                    if state.active_mask[index] && !state.failed.contains(id) {
                         state.failed.push(id.clone());
-                        state.active.retain(|v| v != &event.id);
+                        state.retire(index);
                     }
                 }
                 EventAction::UnlockRecruits(spec) => {
@@ -660,22 +672,21 @@ impl Game<'_> {
         let mission = self.mission.as_ref().unwrap().clone();
         let events = &mission.scripted_events;
         let mut state = self
-            .campaign
-            .as_mut()
-            .unwrap()
             .scripts
-            .take()
-            .expect("scripted chapter has event state");
+            .as_ref()
+            .expect("scripted chapter has event state")
+            .clone();
         let deaths = std::mem::take(&mut self.event_deaths);
         self.release_event_spawns(&mut state);
         self.update_event_holds(&mut state, &events, tick);
         let mut fired = HashSet::new();
         loop {
             let mut changed = false;
-            for event in events {
-                if !state.active.contains(&event.id) {
+            for index in state.active_indices.clone() {
+                if !state.active_mask[index] {
                     continue;
                 }
+                let event = &events[index];
                 let ordinary = self.when_matches(&event.when, &state, &event.id, tick, None);
                 let contexts: Vec<_> = if ordinary {
                     vec![None]
@@ -691,11 +702,11 @@ impl Game<'_> {
                     vec![]
                 };
                 for death in contexts {
-                    if !fired.insert((event.id.clone(), death.as_ref().map(|u| u.unit.id))) {
+                    if !fired.insert((index, death.as_ref().map(|u| u.unit.id))) {
                         continue;
                     }
                     if event.remembers {
-                        state.active.retain(|id| id != &event.id);
+                        state.retire(index);
                     }
                     self.event_actions(
                         &event.actions,
@@ -714,33 +725,47 @@ impl Game<'_> {
                     break;
                 }
             }
+            if changed {
+                state.compact(events);
+                self.scripts = Some(state.clone());
+            }
             self.update_event_holds(&mut state, &events, false);
             if !changed || self.winner.is_some() {
                 break;
             }
         }
         self.release_event_spawns(&mut state);
-        for mark in &mut state.marks {
-            if let Some(rule) = mark.light.as_ref().and_then(|l| l.when.as_ref()) {
-                if rule.remember
-                    && crate::data::presentation::matches(
-                        &rule.condition,
-                        &self.condition_context(),
-                        Some(&mark.tile),
-                    )
-                {
-                    mark.light_remembered = true;
-                }
-            }
+        let remembered: Vec<_> = state
+            .marks
+            .iter()
+            .enumerate()
+            .filter_map(|(index, mark)| {
+                (!mark.light_remembered
+                    && mark
+                        .light
+                        .as_ref()
+                        .and_then(|light| light.when.as_ref())
+                        .is_some_and(|rule| {
+                            rule.remember
+                                && crate::data::presentation::matches(
+                                    &rule.condition,
+                                    &self.condition_context(),
+                                    Some(&mark.tile),
+                                )
+                        }))
+                .then_some(index)
+            })
+            .collect();
+        for index in remembered {
+            state.marks[index].light_remembered = true;
         }
-        self.campaign.as_mut().unwrap().scripts = Some(state);
+        self.scripts = Some(state);
         self.event_departure = None;
         self.event_opening = false;
     }
     pub(crate) fn script_mark_lights(&self) -> Vec<BattlefieldLight> {
-        self.campaign
-            .as_ref()
-            .and_then(|c| c.scripts.as_ref())
+        self.scripts
+            .as_deref()
             .into_iter()
             .flat_map(|s| &s.marks)
             .filter_map(|m| {
@@ -794,7 +819,7 @@ impl Game<'_> {
     }
 
     pub(crate) fn scripted_policy_objectives(&self, side: Side) -> Vec<Objective> {
-        let Some(state) = self.campaign.as_ref().and_then(|c| c.scripts.as_ref()) else {
+        let Some(state) = self.scripts.as_deref() else {
             return vec![];
         };
         let mut goals = vec![];
@@ -913,7 +938,7 @@ impl Game<'_> {
     }
     pub(crate) fn scripted_objective_status(&self, event: &ScriptEvent) -> ObjectiveStatus {
         let objective = event.objective.as_ref().unwrap();
-        let state = self.campaign.as_ref().unwrap().scripts.as_ref().unwrap();
+        let state = self.scripts.as_deref().unwrap();
         let failed = state.failed.iter().any(|id| id == event.objective_id());
         let done = !failed && !state.active.contains(&event.id);
         let (tiles, total) = match &objective.intent {
@@ -994,7 +1019,7 @@ impl Game<'_> {
     }
     #[cfg(any(test, feature = "wasm"))]
     pub(crate) fn script_notices(&self) -> Vec<String> {
-        let Some(state) = self.campaign.as_ref().and_then(|c| c.scripts.as_ref()) else {
+        let Some(state) = self.scripts.as_deref() else {
             return vec![];
         };
         let mut upcoming = vec![];
