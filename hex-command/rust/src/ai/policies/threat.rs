@@ -43,12 +43,9 @@ pub(in crate::ai) struct Threats<'game, 'catalog> {
 impl<'game, 'catalog> Threats<'game, 'catalog> {
     /// Potential exposure without an allied screen, so a successful screen does
     /// not cause Campaigner to release its escort on the following turn.
-    pub(in crate::ai) fn unshielded(
-        game: &BattleView<'_, 'catalog>,
-        phases: PhaseForecasts<'_, 'catalog>,
-        unit: &Unit,
-    ) -> i32 {
-        let board = phases.project(None, None, false);
+    pub(in crate::ai) fn unshielded(phases: PhaseForecasts<'_, 'catalog>, unit: &Unit) -> i32 {
+        let game = phases.view();
+        let board = phases.next_phase();
         if board.winner().is_some() {
             return 0;
         }
@@ -68,14 +65,10 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             .collect();
         Self::pressure(&board, target, &enemies, None, true)
     }
-    pub fn new(
-        g: &'game BattleView<'game, 'catalog>,
-        phases: PhaseForecasts<'game, 'catalog>,
-        side: Side,
-    ) -> Self {
+    pub fn new(phases: PhaseForecasts<'game, 'catalog>, side: Side) -> Self {
         Self {
             orders: None,
-            source: g,
+            source: phases.view(),
             phases,
             side,
             normal: None,
@@ -86,12 +79,11 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         }
     }
     pub(in crate::ai) fn protected(
-        g: &'game BattleView<'game, 'catalog>,
         phases: PhaseForecasts<'game, 'catalog>,
         side: Side,
         orders: &'game crate::ai::orders::TacticalOrders,
     ) -> Self {
-        let mut threats = Self::new(g, phases, side);
+        let mut threats = Self::new(phases, side);
         threats.orders = Some(orders);
         threats
     }
@@ -103,12 +95,12 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         self
     }
     pub fn with_workspace(
-        g: &'game BattleView<'game, 'catalog>,
         phases: PhaseForecasts<'game, 'catalog>,
         side: Side,
         workspace: &'game mut ArenaThreatWorkspace,
     ) -> Self {
-        let mut threats = Self::new(g, phases, side);
+        let g = phases.view();
+        let mut threats = Self::new(phases, side);
         if !g.is_campaign() {
             let same = workspace.side == Some(side)
                 && workspace.terrain == *g.terrain()
@@ -310,7 +302,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             Self::pressure(self.source, &target, enemies, eliminated, important)
         } else if !important {
             let (shadow, enemies) = self.normal.get_or_insert_with(|| {
-                let shadow = self.phases.project(None, None, false);
+                let shadow = self.phases.next_phase();
                 let enemies = shadow
                     .units()
                     .iter()
@@ -336,7 +328,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     })
             });
             if sensitive {
-                let board = self.phases.project(Some((u.id, tile)), eliminated, true);
+                let board = self.phases.next_phase_with_actor(u.id, tile, eliminated);
                 if board.winner().is_some() {
                     0
                 } else {
@@ -348,7 +340,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             } else {
                 let fkey = (u.id, eliminated);
                 let (board, enemies) = self.forecasts.entry(fkey).or_insert_with(|| {
-                    let board = self.phases.project(None, eliminated, true);
+                    let board = self.phases.next_phase_without(eliminated);
                     let enemies = if board.winner().is_some() {
                         vec![]
                     } else {
@@ -399,10 +391,8 @@ mod tests {
                 }
                 game = Game::try_from_state(&rules, state).unwrap();
             }
-            let view = game.view();
-            let mut cached =
-                Threats::with_workspace(view, game.phase_forecasts(), side, &mut workspace);
-            let mut fresh = Threats::new(view, game.phase_forecasts(), side);
+            let mut cached = Threats::with_workspace(game.phase_forecasts(), side, &mut workspace);
+            let mut fresh = Threats::new(game.phase_forecasts(), side);
             for unit in game.units().iter().filter(|u| u.side == side) {
                 for eliminated in [None, Some(enemy)] {
                     for tile in 0..game.terrain().len() {
@@ -434,13 +424,13 @@ mod tests {
                 .unwrap();
             for unit in [ordinary, essential] {
                 let important = unit.is_leader();
-                let mut threats = Threats::new(game.view(), game.phase_forecasts(), side);
+                let mut threats = Threats::new(game.phase_forecasts(), side);
                 for eliminated in [None, Some(enemy)] {
-                    let shadow = game.phase_forecasts().project(
-                        None,
-                        if important { eliminated } else { None },
-                        important,
-                    );
+                    let shadow = if important {
+                        game.phase_forecasts().next_phase_without(eliminated)
+                    } else {
+                        game.phase_forecasts().next_phase()
+                    };
                     let enemies: Vec<_> = if important {
                         Threats::independent_enemies(&shadow, side, Some(unit.id))
                     } else {

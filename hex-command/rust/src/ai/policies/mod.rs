@@ -6,3 +6,5 @@ pub(crate) mod recruitment;
 pub(crate) mod threat;
 
 pub(crate) mod combat;
+
+pub(crate) mod tie_breaking;

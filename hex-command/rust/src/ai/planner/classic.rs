@@ -1,11 +1,10 @@
-use crate::ai::policies::escort::defensive as escort;
-use crate::ai::Recorder;
 use crate::ai::intent_command;
-use crate::ai::policies::objectives::actor_matches;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::ai::policies::escort::defensive as escort;
+use crate::ai::policies::objectives::actor_matches;
 use crate::sort::SharedSort;
 use crate::{
-    ai::context::{BattleDraft, BattleView, ActionForecastSource},
+    ai::context::{ActionForecastSource, BattleView},
     ai::policies::objectives::{TileOrder, individual},
     ai::policies::threat::Threats,
     data::*,
@@ -49,7 +48,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         opportunity: Option<crate::ai::policies::recruitment::EstimateInput<'_>>,
     ) -> Self {
         let important = orders.important(g, u);
-        let threats = important.then(|| Threats::protected(g, phases, u.side, orders));
+        let threats = important.then(|| Threats::protected(phases, u.side, orders));
         // Classic owns this budget estimate and its movement penalties; no recruit previews.
         let mut recruitment = HashMap::default();
         if let Some(opportunity) = opportunity.filter(|r| r.remaining_budget != Some(0)) {
@@ -63,16 +62,17 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
                     .into_iter()
                     .filter(|&tile| tile != u.tile && g.is_keep(tile) && g.owns(tile, u.side))
                 {
-                    if let Some(value) = crate::ai::policies::recruitment::estimate_capacity(
-                        g, u, tile,
-                        opportunity,
-                    ) {
+                    if let Some(value) =
+                        crate::ai::policies::recruitment::estimate_capacity(g, u, tile, opportunity)
+                    {
                         recruitment.insert(tile, value);
                     }
                 }
             }
         }
-        let yielding = orders.classic_clearing(g).remove(&u.id).unwrap_or_default();
+        let yielding = classic_clearing(orders, g)
+            .remove(&u.id)
+            .unwrap_or_default();
         let holding = !yielding.contains(&u.tile)
             && goals.iter().any(|o| {
                 o.hold == Some(true)
@@ -199,7 +199,9 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
 struct ClassicEvaluation<'view, 'game, 'catalog>(&'view BattleView<'game, 'catalog>);
 impl<'view, 'game, 'catalog> std::ops::Deref for ClassicEvaluation<'view, 'game, 'catalog> {
     type Target = BattleView<'game, 'catalog>;
-    fn deref(&self) -> &Self::Target { self.0 }
+    fn deref(&self) -> &Self::Target {
+        self.0
+    }
 }
 impl ClassicEvaluation<'_, '_, '_> {
     pub fn enemy_danger(&self, u: &Unit, tile: usize) -> i32 {
@@ -224,7 +226,9 @@ impl ClassicEvaluation<'_, '_, '_> {
         first + second
     }
     fn attack_score(&self, u: &Unit, target: &Unit, from: usize, weapon: Option<usize>) -> f64 {
-        let Some(w) = weapon.or_else(|| crate::ai::policies::combat::best_attack(self, u, target, from)) else {
+        let Some(w) =
+            weapon.or_else(|| crate::ai::policies::combat::best_attack(self, u, target, from))
+        else {
             return -100.0;
         };
         let forecast = self.exchange(u, target, w, from);
@@ -340,28 +344,41 @@ impl ClassicEvaluation<'_, '_, '_> {
         ids.order_by_key(|&id| order(self.unit(id).unwrap()));
         ids.order_by_key(|&id| {
             let u = self.unit(id).unwrap();
-            !crate::ai::policies::objectives::reserved(self, u, &objectives).contains(&u.tile) && !clearing.contains_key(&id)
+            !crate::ai::policies::objectives::reserved(self, u, &objectives).contains(&u.tile)
+                && !clearing.contains_key(&id)
         });
         ids
     }
 }
 
-struct ClassicProjection<'projection, 'game, 'catalog>(&'projection mut BattleDraft<'game, 'catalog>);
-impl<'projection, 'game, 'catalog> std::ops::Deref for ClassicProjection<'projection, 'game, 'catalog> {
-    type Target = BattleDraft<'game, 'catalog>;
-    fn deref(&self) -> &Self::Target { self.0 }
+struct ClassicProjection<'projection, 'catalog>(
+    &'projection mut hex_command_battle::ActionForecast<'catalog>,
+);
+impl<'projection, 'catalog> std::ops::Deref for ClassicProjection<'projection, 'catalog> {
+    type Target = hex_command_battle::ActionForecast<'catalog>;
+    fn deref(&self) -> &Self::Target {
+        self.0
+    }
 }
-impl std::ops::DerefMut for ClassicProjection<'_, '_, '_> {
-    fn deref_mut(&mut self) -> &mut Self::Target { self.0 }
+impl std::ops::DerefMut for ClassicProjection<'_, '_> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.0
+    }
 }
-impl ClassicProjection<'_, '_, '_> {
+impl ClassicProjection<'_, '_> {
     fn clear_projection_retreat(&mut self, id: u32) {
-        let actor = self.unit(id).unwrap();
-        self.project_intent(id, None, actor.rebuilding, actor.attacked);
+        let (rebuilding, attacked) = {
+            let actor = self.unit(id).unwrap();
+            (actor.rebuilding, actor.attacked)
+        };
+        self.project_intent(id, None, rebuilding, attacked);
     }
     fn mark_projection_attacked(&mut self, id: u32) {
-        let actor = self.unit(id).unwrap();
-        self.project_intent(id, actor.retreating, actor.rebuilding, true);
+        let (retreating, rebuilding) = {
+            let actor = self.unit(id).unwrap();
+            (actor.retreating, actor.rebuilding)
+        };
+        self.project_intent(id, retreating, rebuilding, true);
     }
 
     fn try_attack(
@@ -400,7 +417,8 @@ impl ClassicProjection<'_, '_, '_> {
             }
         }
         if let Some((target, weapon, _)) = best {
-            recorder.attack(self, id, target.id, weapon);
+            let target_id = target.id;
+            recorder.attack(self, id, target_id, weapon);
             true
         } else {
             false
@@ -482,10 +500,11 @@ impl ClassicProjection<'_, '_, '_> {
         if let Some(&t) = destinations.first() {
             if t != u.tile && scores[u.tile] != f64::NEG_INFINITY && scores[t] > scores[u.tile] {
                 recorder.move_unit(self, id, t);
-                let actor = self.unit(id).unwrap();
-                self.project_intent(id, Some(true), actor.rebuilding, true);
+                let rebuilding = self.unit(id).unwrap().rebuilding;
+                self.project_intent(id, Some(true), rebuilding, true);
                 recorder.mark_retreat(id);
-                self.record(format!("{} is retreating.", self.unit_name(&u)));
+                let message = format!("{} is retreating.", self.unit_name(&u));
+                self.record(message);
                 return Retreat::Retreated;
             }
         }
@@ -518,8 +537,11 @@ impl ClassicProjection<'_, '_, '_> {
             return;
         }
         let (rebuild, intent) = rules.orders.rebuild_plan(self, id, required);
-        let actor = self.unit(id).unwrap();
-        self.project_intent(id, actor.retreating, intent, actor.attacked);
+        let (retreating, attacked) = {
+            let actor = self.unit(id).unwrap();
+            (actor.retreating, actor.attacked)
+        };
+        self.project_intent(id, retreating, intent, attacked);
         u = self.unit(id).unwrap().clone();
         let retreat = self.retreat(id, &mut rules, recorder);
         if retreat == Retreat::Retreated {
@@ -540,7 +562,8 @@ impl ClassicProjection<'_, '_, '_> {
             return;
         }
         let assigned = rules.goals.iter().any(|g| {
-            (actor_matches(&g.actor, id) || g.family.is_some() && crate::ai::policies::objectives::can_pursue(self, &u, g))
+            (actor_matches(&g.actor, id)
+                || g.family.is_some() && crate::ai::policies::objectives::can_pursue(self, &u, g))
                 && crate::ai::policies::objectives::actor_route(g)
         });
         let routes = if assigned {
@@ -559,7 +582,9 @@ impl ClassicProjection<'_, '_, '_> {
             .filter(|&t| {
                 !u.is_leader()
                     || !rebuild.is_empty()
-                    || crate::ai::policies::objectives::leader_may_advance(self, &u, t, recruiting, required)
+                    || crate::ai::policies::objectives::leader_may_advance(
+                        self, &u, t, recruiting, required,
+                    )
                     || (!campaign
                         && self.units().iter().any(|target| {
                             self.hostile(&u, target)
@@ -597,7 +622,9 @@ impl ClassicProjection<'_, '_, '_> {
                     .into_iter()
                     .any(|w| rules.attack(self, &u, target, w, t))
                 {
-                    if let Some(weapon) = crate::ai::policies::combat::best_attack(self, &u, target, t) {
+                    if let Some(weapon) =
+                        crate::ai::policies::combat::best_attack(self, &u, target, t)
+                    {
                         opportunity = opportunity
                             .max(5.0 + rules.attack_value(self, target, weapon, t) / 5.0);
                     }
@@ -691,7 +718,10 @@ impl ClassicProjection<'_, '_, '_> {
                         || g.tiles.iter().any(|t| self.captures(self.site(t), u.side)))
             })
             .collect();
-        if eligible.iter().any(|g| crate::ai::policies::objectives::assigned_duty(self, &u, g)) {
+        if eligible
+            .iter()
+            .any(|g| crate::ai::policies::objectives::assigned_duty(self, &u, g))
+        {
             eligible.retain(|g| crate::ai::policies::objectives::assigned_duty(self, &u, g));
         }
         eligible.order_by(|a, b| {
@@ -709,7 +739,7 @@ impl ClassicProjection<'_, '_, '_> {
         });
         let best = eligible.first().copied();
         let reserved = crate::ai::policies::objectives::reserved(self, &u, objectives);
-        let clearing = orders.classic_clearing(self).remove(&u.id);
+        let clearing = classic_clearing(orders, self).remove(&u.id);
         let yielding = clearing.is_some();
         let movement = if let Some(lane) = clearing {
             let available: Vec<_> = self
@@ -772,12 +802,21 @@ impl super::Planner for Classic {
         context: &mut crate::ai::context::TacticalContext<'_, '_>,
         orders: &crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, crate::data::CommandError> {
-        super::drive(super::PlannerKind::Classic, context, orders)
+        super::prepare_priorities_and_recovery(context, orders)?;
+        super::drive(context, |context| {
+            let (game, phases, actions, mut parts) = context.classic_parts();
+            coordinated_step(game, phases, actions, &mut parts)
+        })
     }
 }
 
-pub(super) fn prepare(game: &BattleView<'_, '_>, phases:hex_command_battle::PhaseForecasts<'_, '_>, session:&mut Session, turn:&crate::ai::runtime::PlannerTurn<'_>) {
-    session.escort.prepare(game, phases, turn.report);
+pub(super) fn prepare(
+    game: &BattleView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    session: &mut Session,
+    turn: &crate::ai::runtime::PlannerTurn<'_>,
+) {
+    session.escort.prepare(phases, turn.report);
 }
 
 pub(super) fn choose(
@@ -789,18 +828,14 @@ pub(super) fn choose(
 ) -> Result<(), CommandError> {
     let orders = &turn.orders.tactics;
     let restrained = orders.restrained;
-    if session.revision != turn.coordination.revision()
-        && session.remaining.is_some()
-    {
+    if session.revision != turn.coordination.revision() && session.remaining.is_some() {
         session.objectives = orders
             .targets
             .iter()
             .filter(|g| !g.id.starts_with("rebuild:"))
             .cloned()
             .collect();
-        session
-            .objectives
-            .extend(orders.rebuild_objectives(game));
+        session.objectives.extend(orders.rebuild_objectives(game));
         session.revision = turn.coordination.revision();
     }
     if session.remaining.is_none() {
@@ -810,16 +845,16 @@ pub(super) fn choose(
             .filter(|g| !g.id.starts_with("rebuild:"))
             .cloned()
             .collect();
-        session
-            .objectives
-            .extend(orders.rebuild_objectives(game));
+        session.objectives.extend(orders.rebuild_objectives(game));
         session.revision = turn.coordination.revision();
         if turn.goals.is_none() && (!orders.campaign || game.turn() == Side::Enemy) {
             session
                 .objectives
                 .retain(|g| g.id.starts_with("rebuild:") || g.id.starts_with("group:"));
         }
-        session.ids = ClassicEvaluation(game).classic_order(&session.objectives).into();
+        session.ids = ClassicEvaluation(game)
+            .classic_order(&session.objectives)
+            .into();
         session
             .ids
             .make_contiguous()
@@ -879,11 +914,12 @@ impl ClassicEvaluation<'_, '_, '_> {
                 ObjectiveKind::Defeat => false,
             }
         }
-        let assigned = goals.iter().any(crate::ai::policies::objectives::actor_route);
-        for goal in goals
+        let assigned = goals
             .iter()
-            .filter(|g| crate::ai::policies::objectives::actor_route(g) || !assigned && required_corridor(g))
-        {
+            .any(crate::ai::policies::objectives::actor_route);
+        for goal in goals.iter().filter(|g| {
+            crate::ai::policies::objectives::actor_route(g) || !assigned && required_corridor(g)
+        }) {
             let Some(actor) = self
                 .units()
                 .iter()
@@ -995,8 +1031,105 @@ impl ClassicEvaluation<'_, '_, '_> {
     }
 }
 
-impl crate::ai::orders::TacticalOrders {
-    fn classic_clearing(&self, game: &BattleView<'_, '_>) -> HashMap<u32, HashSet<usize>> {
-        ClassicEvaluation(game).classic_lanes(&self.passage_targets())
+fn classic_clearing(
+    orders: &crate::ai::orders::TacticalOrders,
+    game: &BattleView<'_, '_>,
+) -> HashMap<u32, HashSet<usize>> {
+    ClassicEvaluation(game).classic_lanes(&orders.passage_targets())
+}
+
+fn coordinated_step<'view, 'catalog>(
+    game: &'view crate::ai::context::BattleView<'view, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'view, 'catalog>,
+    actions: hex_command_battle::ActionForecastSource<'view, 'catalog>,
+    parts: &mut crate::ai::runtime::PlannerParts<'_, Session>,
+) -> Result<(), crate::data::CommandError> {
+    let _ = super::prepare_coordination(game, &mut parts.turn);
+    prepare(game, phases, parts.session, &parts.turn);
+    if super::rescue_coordination(game, phases, actions, &mut parts.turn)? {
+        return Ok(());
+    }
+    choose(game, phases, parts.session, &mut parts.turn, &actions)?;
+    super::finish_coordination(game, phases, &mut parts.turn)
+}
+
+/// Records the continuation of one planned unit action on an isolated battle.
+/// This lets classic evaluate its attack after the selected move without ever
+/// mutating the caller's battle. Intent changes commit through engine commands.
+struct Recorder {
+    commands: std::collections::VecDeque<Command>,
+    intents: HashMap<u32, (Option<bool>, Option<bool>, bool)>,
+    error: Option<CommandError>,
+    retreat_logs: HashSet<u32>,
+}
+impl Recorder {
+    fn new(game: &BattleView<'_, '_>) -> Self {
+        Self {
+            commands: std::collections::VecDeque::new(),
+            error: None,
+            retreat_logs: HashSet::new(),
+            intents: game
+                .units()
+                .iter()
+                .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
+                .collect(),
+        }
+    }
+    fn flush_intents(&mut self, game: &BattleView<'_, '_>) {
+        for u in game.units() {
+            let intent = (u.retreating, u.rebuilding, u.attacked);
+            let record_retreat = self.retreat_logs.remove(&u.id);
+            if record_retreat || self.intents.get(&u.id).is_some_and(|old| *old != intent) {
+                self.commands.push_back(Command::SetUnitIntent {
+                    unit: UnitId(u.id),
+                    retreating: u.retreating,
+                    rebuilding: u.rebuilding,
+                    attacked: u.attacked,
+                    record_retreat,
+                });
+            }
+            self.intents.insert(u.id, intent);
+        }
+    }
+    fn mark_retreat(&mut self, unit: u32) {
+        self.retreat_logs.insert(unit);
+    }
+    fn emit(&mut self, game: &mut hex_command_battle::ActionForecast<'_>, command: Command) {
+        self.flush_intents(game);
+        if let Err(error) = game.execute(command.clone()) {
+            self.error = Some(error);
+            return;
+        }
+        self.commands.push_back(command);
+        self.intents = game
+            .units()
+            .iter()
+            .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
+            .collect();
+    }
+    fn move_unit(
+        &mut self,
+        game: &mut hex_command_battle::ActionForecast<'_>,
+        unit: u32,
+        tile: usize,
+    ) {
+        self.emit(game, crate::ai::move_command(game, unit, tile));
+    }
+    fn attack(
+        &mut self,
+        game: &mut hex_command_battle::ActionForecast<'_>,
+        unit: u32,
+        target: u32,
+        weapon: usize,
+    ) {
+        self.emit(game, crate::ai::attack_command(game, unit, target, weapon));
+    }
+    fn advance(
+        &mut self,
+        game: &mut hex_command_battle::ActionForecast<'_>,
+        unit: u32,
+        kind: usize,
+    ) {
+        self.emit(game, crate::ai::advance_command(game, unit, kind));
     }
 }

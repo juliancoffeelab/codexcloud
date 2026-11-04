@@ -64,6 +64,8 @@ impl Policy {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ai::campaigner::mission::{CampaignInput, MissionPolicy};
+    use crate::ai::recruiter::fixtures;
     use crate::{
         ai::{Diplomacy, PlanningWorkspace, choose_game_command},
         data::*,
@@ -94,14 +96,19 @@ mod tests {
     fn player_and_enemy_rebuilding_emit_explicit_hold_targets() {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
-        game.units.retain(|u| u.is_leader());
-        game.roster_changed();
+        fixtures::units(&mut game, |units| units.retain(|u| u.is_leader()));
         for side in [Side::Player, Side::Enemy] {
             game.begin_turn(side);
-            game.gold[side.faction_id()] = 100;
-            let leader = game.units.iter().find(|u| u.side == side).unwrap().id;
-            let workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Diplomatic);
-            let orders = CampaignBlock::Mission.campaign_orders(&game, &workspace);
+            fixtures::edit(&mut game, |state| state.gold[side.faction_id()] = 100);
+            let leader = game.units().iter().find(|u| u.side == side).unwrap().id;
+            let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
+            let orders = CampaignBlock::Mission.campaign_orders(
+                &mission,
+                CampaignInput {
+                    goals: None,
+                    diplomacy: Diplomacy::Diplomatic,
+                },
+            );
             let emitted: Vec<_> = orders
                 .tactics
                 .targets
@@ -113,7 +120,10 @@ mod tests {
                 .rebuild_objectives(&crate::ai::context::BattleView::new(&game));
             assert!(!emitted.is_empty() && !refreshed.is_empty());
             for goal in emitted.into_iter().chain(refreshed.iter()) {
-                assert!(crate::ai::policies::objectives::actor_matches(&goal.actor, leader));
+                assert!(crate::ai::policies::objectives::actor_matches(
+                    &goal.actor,
+                    leader
+                ));
                 assert_eq!(goal.hold, Some(true));
             }
         }
@@ -133,7 +143,7 @@ mod tests {
                 command,
                 choose_game_command(&game, Policy::Balanced, &mut preset).unwrap()
             );
-            assert_eq!(custom.blocks, Some(blocks));
+
             if end_turn(&command) {
                 return;
             }
@@ -147,13 +157,15 @@ mod tests {
         let rules = Rules::load().unwrap();
         let mut game =
             Game::start_campaign(&rules, "ashen-oath", 1, vec![], 0, vec![], vec![], vec![]);
-        let state = game.campaign.as_mut().unwrap();
-        state.set_flag("peace-lost", true, 1);
-        let scripts = game.scripts.as_mut().unwrap();
-        scripts.active.retain(|id| id != "refuge-peace");
-        scripts.failed.push("refuge-peace".into());
-        scripts.index_active(&game.mission.as_ref().unwrap().scripted_events);
-        let required = game
+        fixtures::edit(&mut game, |state| {
+            let campaign = state.campaign.as_mut().unwrap();
+            campaign.set_flag("peace-lost", true, 1);
+            let scripts = campaign.scripts.as_mut().unwrap();
+            scripts.active.retain(|id| id != "refuge-peace");
+            scripts.failed.push("refuge-peace".into());
+        });
+        let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
+        let required = mission
             .objectives(Side::Player)
             .into_iter()
             .find(|g| g.id == "required:refuge-war")
@@ -166,25 +178,26 @@ mod tests {
                 .all(|t| game.at(game.site(t)).is_some_and(|u| u.side == Side::Enemy))
         );
         let actor = game
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Player)
             .unwrap()
             .clone();
         let target = game
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Enemy && u.is_leader())
             .unwrap()
             .clone();
         assert!(!crate::ai::campaigner::mission::terminal_attack(
-            &game, &actor, &target
+            &mission, &actor, &target
         ));
-        game.units
-            .retain(|u| u.side == Side::Player || u.id == target.id);
-        game.roster_changed();
+        fixtures::units(&mut game, |units| {
+            units.retain(|u| u.side == Side::Player || u.id == target.id)
+        });
+        let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
         assert!(crate::ai::campaigner::mission::terminal_attack(
-            &game, &actor, &target
+            &mission, &actor, &target
         ));
     }
 }

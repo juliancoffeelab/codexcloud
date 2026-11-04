@@ -46,6 +46,27 @@ diagnostic names. Development builds retain names. Compare the WASM module and
 its referenced JavaScript loader/helpers together when measuring download size.
 The native simulation profile is independent of these browser build settings.
 
+## AI and battle ownership
+
+`rust/battle` owns mechanical battle state and command execution. The host owns
+its opaque `BattleSession` and borrows one catalog. Evaluators receive a borrowed
+`BattleView` for mechanical queries. They cannot turn that view into mutable
+state or execution access. Authored campaign observations use `CampaignView`.
+
+Forecasting is explicit: `ActionForecastSource` grants mechanical command
+simulation; `PhaseForecasts` grants named phase projections and its matching
+source view. A `PhaseSnapshot` grants observation only. Automatic recruitment is
+runtime orchestration, including recruitment after an accepted keep move;
+recruitment capacity forecasts use the shared estimate and never run a recruiter.
+
+Each planner owns its algorithm and mutable session. Common runtime code handles
+commands, budgets, boundaries and continuation. Strategic preparation is an
+explicit adapter subscription. Shared decisions live in `ai/policies` under
+named domains with explicit inputs. Any planners may deliberately share a policy;
+changing one should make its consumers apparent at call sites. Add new strategic
+behavior to a domain or adapter rather than extending the mechanical facade or
+adding a silent common-driver default.
+
 ## Content and artwork
 
 A lineup is a faction. A faction can have sprites before its gameplay roster is

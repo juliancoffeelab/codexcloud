@@ -899,7 +899,6 @@ impl Game<'_> {
             other => self.script_condition(other).then_some(self.round),
         }
     }
-    #[cfg(any(test, feature = "wasm"))]
     pub(crate) fn script_notices(&self) -> Vec<String> {
         let Some(state) = self.scripts.as_deref() else {
             return vec![];

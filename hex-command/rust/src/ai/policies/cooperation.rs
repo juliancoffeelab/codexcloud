@@ -209,14 +209,14 @@ fn destination(game: &BattleView<'_, '_>, orders: &TacticalOrders, actor: u32) -
 }
 
 fn safest(
-    game: &BattleView<'_, '_>,
     phases: PhaseForecasts<'_, '_>,
     orders: &TacticalOrders,
     id: u32,
 ) -> Option<(usize, i32)> {
+    let game = phases.view();
     let unit = game.unit(id)?;
     let target = destination(game, orders, id);
-    let mut threats = Threats::protected(game, phases, unit.side, orders);
+    let mut threats = Threats::protected(phases, unit.side, orders);
     std::iter::once(unit.tile)
         .chain(game.reachable(unit).iter().map(|&(tile, _)| tile))
         .map(|tile| (tile, threats.at(unit, tile, None)))
@@ -252,7 +252,7 @@ pub(in crate::ai) fn rescue(
             continue;
         };
         state.attempted.push(*actor);
-        let Some((_, exposure)) = safest(game, phases, orders, actor.0) else {
+        let Some((_, exposure)) = safest(phases, orders, actor.0) else {
             continue;
         };
         if exposure < unit.hp {
@@ -285,9 +285,7 @@ pub(in crate::ai) fn rescue(
         let mut actor_candidates = 0;
         while let Some((board, commands, used)) = pending.pop_front() {
             if !commands.is_empty() {
-                if let Some((tile, incoming)) =
-                    safest(&board, board.phase_forecasts(), orders, actor.0)
-                {
+                if let Some((tile, incoming)) = safest(board.phase_forecasts(), orders, actor.0) {
                     if board.winner() == Some(game.turn())
                         || incoming < board.unit(actor.0).unwrap().hp
                     {
@@ -397,7 +395,7 @@ pub(in crate::ai) fn fallback(
         let Some(unit) = game.unit(actor.0) else {
             continue;
         };
-        if let Some((tile, incoming)) = safest(game, phases, orders, actor.0) {
+        if let Some((tile, incoming)) = safest(phases, orders, actor.0) {
             if tile != unit.tile && !unit.moved && !unit.attacked {
                 queued.push_back(move_command(game, actor.0, tile));
                 // Drain before choosing another fallback so legality uses updated occupancy.
@@ -440,7 +438,7 @@ fn passage_clear(
     if route[unit.tile] == u16::MAX {
         return false;
     }
-    let mut threats = Threats::protected(game, phases, unit.side, orders);
+    let mut threats = Threats::protected(phases, unit.side, orders);
     let mut visited = vec![false; game.terrain().len()];
     visited[unit.tile] = true;
     let mut pending =
@@ -482,7 +480,7 @@ pub(in crate::ai) fn report(
     for constraint in &orders.tactics.constraints {
         let TacticalConstraint::Survive { actor } = constraint;
         let (status, reason, incoming) = if let Some(unit) = game.unit(actor.0) {
-            let mut threats = Threats::protected(game, phases, game.turn(), &orders.tactics);
+            let mut threats = Threats::protected(phases, game.turn(), &orders.tactics);
             let incoming = threats.at(unit, unit.tile, None);
             (
                 if incoming < unit.hp {
@@ -650,9 +648,7 @@ mod tests {
             .id;
         let orders = &workspace.orders.tactics;
         assert!(
-            safest(game.view(), game.phase_forecasts(), orders, actor)
-                .unwrap()
-                .1
+            safest(game.phase_forecasts(), orders, actor).unwrap().1
                 >= game.unit(actor).unwrap().hp
         );
         assert!(
@@ -672,14 +668,10 @@ mod tests {
             game.execute(command).unwrap();
         }
         assert!(
-            safest(
-                game.view(),
-                game.phase_forecasts(),
-                &workspace.orders.tactics,
-                actor
-            )
-            .unwrap()
-            .1 < game.unit(actor).unwrap().hp
+            safest(game.phase_forecasts(), &workspace.orders.tactics, actor)
+                .unwrap()
+                .1
+                < game.unit(actor).unwrap().hp
         );
     }
     #[test]

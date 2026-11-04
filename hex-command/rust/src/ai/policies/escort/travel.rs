@@ -34,11 +34,11 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
 impl Workspace {
     pub(in crate::ai) fn prepare(
         &mut self,
-        game: &BattleView<'_, '_>,
         phases: PhaseForecasts<'_, '_>,
         report: &PlanningReport,
         orders: &TacticalOrders,
     ) {
+        let game = phases.view();
         let assignments: Vec<_> = report
             .duties
             .iter()
@@ -303,44 +303,47 @@ mod tests {
     #[test]
     fn escorts_reward_threat_removal_and_real_screens_without_adjacency_goals() {
         let rules = Rules::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
-        game.units.retain(|u| u.is_leader());
-        let actor = game
+        let mut state = Game::new(&rules, "mirror").state();
+        state.units.retain(|u| u.role == Some(Role::Leader));
+        let actor = state
             .units
-            .iter()
+            .iter_mut()
             .find(|u| u.side == Side::Player)
-            .unwrap()
-            .id;
-        let actor_tile = game.site("hex-0056-2e6c8414fc");
-        game.units.iter_mut().find(|u| u.id == actor).unwrap().tile = actor_tile;
-        let mut guard = game.unit(actor).unwrap().clone();
-        guard.id = game.next_id;
-        game.next_id += 1;
-        guard.kind = game.kind("archer");
-        guard.tile = game.site("hex-0760-150b2b6a75");
-        guard.hp = rules.units[guard.kind].hp;
+            .unwrap();
+        let actor_id = actor.id.strip_prefix('u').unwrap().parse::<u32>().unwrap();
+        actor.tile = "hex-0056-2e6c8414fc".into();
+        let mut guard = actor.clone();
+        let guard_id = state.next_id;
+        guard.id = format!("u{guard_id}");
+        state.next_id += 1;
+        guard.r#type = "archer".into();
+        guard.tile = "hex-0760-150b2b6a75".into();
+        guard.hp = rules.units[rules.types["archer"]].hp;
         guard.character = None;
         guard.role = None;
-        let guard_id = guard.id;
         let mut enemy = guard.clone();
-        enemy.id = game.next_id;
-        game.next_id += 1;
-        enemy.kind = game.kind("swordsman");
-        enemy.hp = rules.units[enemy.kind].hp;
+        let enemy_id = state.next_id;
+        enemy.id = format!("u{enemy_id}");
+        state.next_id += 1;
+        enemy.r#type = "swordsman".into();
+        enemy.hp = rules.units[rules.types["swordsman"]].hp;
         enemy.side = Side::Enemy;
-        enemy.tile = game.site("hex-0888-a99d723b63");
-        let enemy_id = enemy.id;
-        game.units.extend([guard, enemy]);
-        for tile in 0..game.terrain.len() {
-            game.set_terrain(tile, rules.terrains["water"]);
+        enemy.tile = "hex-0888-a99d723b63".into();
+        state.units.extend([guard, enemy]);
+        for tile in &mut state.tiles {
+            tile.connections = None;
+            tile.dead_ends = None;
+            tile.walls = None;
+            tile.terrain = if tile.row == 3 || tile.id == "hex-0749-0fa856724a" {
+                "plains".into()
+            } else {
+                "water".into()
+            };
         }
-        for col in 0..game.cols {
-            let tile = game.site_at(col, 3);
-            game.set_terrain(tile, rules.terrains["plains"]);
-        }
+        let game = Game::try_from_state(&rules, state).unwrap();
+        let actor = actor_id;
+        let actor_tile = game.site("hex-0056-2e6c8414fc");
         let branch = game.site("hex-0749-0fa856724a");
-        game.set_terrain(branch, rules.terrains["plains"]);
-        game.roster_changed();
         let report = PlanningReport {
             duties: vec![DutyReport {
                 id: "protect:escort".into(),
@@ -353,30 +356,21 @@ mod tests {
             ..PlanningReport::default()
         };
         let mut escort = Workspace::default();
-        escort.prepare(
-            &crate::ai::context::BattleView::new(&game),
-            &report,
-            &TacticalOrders::default(),
-        );
+        escort.prepare(game.phase_forecasts(), &report, &TacticalOrders::default());
         let screen = game.site("hex-0856-a2b6e60ea7");
-        assert!(game.board.distance(screen, actor_tile) > 1);
+        assert!(game.board().distance(screen, actor_tile) > 1);
         assert!(escort.position(guard_id, screen) > escort.position(guard_id, branch));
         let enemy = game.unit(enemy_id).unwrap();
         assert!(escort.attack(guard_id, enemy, enemy.hp, 1.0) > 0.0);
         let distant = game
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Enemy && u.is_leader())
             .unwrap();
         assert_eq!(escort.attack(guard_id, distant, distant.hp, 1.0), 0.0);
-        assert!(
-            Threats::unshielded(
-                &crate::ai::context::BattleView::new(&game),
-                game.unit(actor).unwrap()
-            ) > 0
-        );
+        assert!(Threats::unshielded(game.phase_forecasts(), game.unit(actor).unwrap()) > 0);
         assert_eq!(
-            Threats::new(&crate::ai::context::BattleView::new(&game), Side::Player).at(
+            Threats::new(game.phase_forecasts(), Side::Player).at(
                 game.unit(actor).unwrap(),
                 actor_tile,
                 None

@@ -1,5 +1,5 @@
 //! A bounded duty queue replaces the global unit search after every command.
-use crate::ai::{TacticalRole, planner::QueueMode, roles::role, tactics::Plan};
+use crate::ai::{TacticalRole, planner::QueueMode, planner::proposal::Plan, roles::role};
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
 
@@ -14,15 +14,20 @@ pub struct UnitQueue {
     dirty: bool,
     attempts: Vec<UnitId>,
 }
-fn priority_order(game: &BattleView<'_, '_>, mode: QueueMode,
+fn priority_order(
+    game: &BattleView<'_, '_>,
+    mode: QueueMode,
     candidates: &super::candidates::Workspace,
-    escort: &crate::ai::policies::escort::travel::Workspace) -> Vec<UnitId> {
+    escort: &crate::ai::policies::escort::travel::Workspace,
+) -> Vec<UnitId> {
     PriorityEvaluation(game).priority_order(mode, candidates, escort)
 }
 struct PriorityEvaluation<'view, 'game, 'catalog>(&'view BattleView<'game, 'catalog>);
 impl<'view, 'game, 'catalog> std::ops::Deref for PriorityEvaluation<'view, 'game, 'catalog> {
     type Target = BattleView<'game, 'catalog>;
-    fn deref(&self) -> &Self::Target { self.0 }
+    fn deref(&self) -> &Self::Target {
+        self.0
+    }
 }
 impl PriorityEvaluation<'_, '_, '_> {
     fn priority_order(
@@ -95,7 +100,7 @@ impl PriorityEvaluation<'_, '_, '_> {
                         let killed = kill_chance == 1.0;
                         let value = forecast.effective[0] * 2.0 - response * 1.8
                             + kill_chance * (12.0 + self.recruit_cost(foe, foe.kind) as f64 * 0.3)
-                            + if killed && cache.orders.terminal_attack(foe) {
+                            + if killed && cache.orders().terminal_attack(foe) {
                                 100.0
                             } else {
                                 0.0
@@ -110,7 +115,10 @@ impl PriorityEvaluation<'_, '_, '_> {
                 });
                 let urgency = goals
                     .iter()
-                    .filter(|g| !g.id.starts_with("rebuild:") && crate::ai::policies::objectives::can_pursue(self, unit, g))
+                    .filter(|g| {
+                        !g.id.starts_with("rebuild:")
+                            && crate::ai::policies::objectives::can_pursue(self, unit, g)
+                    })
                     .map(|g| {
                         let distance = g
                             .tiles
@@ -148,7 +156,7 @@ impl PriorityEvaluation<'_, '_, '_> {
                             .min(self.rules().units[ally.kind].hp - ally.hp)
                             .max(0) as f64;
                         score += heal
-                            * if cache.orders.important(self, ally) {
+                            * if cache.orders().important(self, ally) {
                                 3.0
                             } else {
                                 0.5
@@ -158,9 +166,9 @@ impl PriorityEvaluation<'_, '_, '_> {
                 if unit.is_leader() && !personal {
                     score -= 8.0;
                 }
-                if cache.orders.campaign
+                if cache.orders().campaign
                     && unit.side == Side::Player
-                    && cache.orders.important(self, unit)
+                    && cache.orders().important(self, unit)
                     && !personal
                 {
                     score -= 4.0;
@@ -179,17 +187,24 @@ pub(in crate::ai) struct Session {
     search: super::search::Session,
 }
 impl Session {
-    pub(in crate::ai) fn replace_goals(&mut self, goals: Vec<crate::ai::orders::Target>) { self.search.replace_goals(goals); }
+    pub(in crate::ai) fn replace_goals(&mut self, goals: Vec<crate::ai::orders::Target>) {
+        self.search.replace_goals(goals);
+    }
 }
 
 pub(in crate::ai) fn next_plan(
     game: &BattleView<'_, '_>,
-    phases:hex_command_battle::PhaseForecasts<'_, '_>,
-    session:&mut Session,
-    turn:&crate::ai::runtime::PlannerTurn<'_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    session: &mut Session,
+    turn: &crate::ai::runtime::PlannerTurn<'_>,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
-    super::candidates::prepare(game,&mut session.candidates,&turn.orders.tactics,turn.coordination.revision());
+    super::candidates::prepare(
+        game,
+        &mut session.candidates,
+        &turn.orders.tactics,
+        turn.coordination.revision(),
+    );
     let policy = if turn.orders.tactics.campaign {
         QueueMode::CampaignBlock
     } else {
@@ -197,7 +212,7 @@ pub(in crate::ai) fn next_plan(
     };
     if session.queue.is_none() {
         session.queue = Some(UnitQueue {
-            pending: priority_order(game,policy, &session.candidates, &session.search.escort()),
+            pending: priority_order(game, policy, &session.candidates, &session.search.escort()),
             cursor: 0,
             retry: vec![],
             second_pass: false,
@@ -214,24 +229,25 @@ pub(in crate::ai) fn next_plan(
 }
 fn next_plan_inner(
     game: &BattleView<'_, '_>,
-    phases:hex_command_battle::PhaseForecasts<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
     policy: QueueMode,
-    session:&mut Session,
-    turn:&crate::ai::runtime::PlannerTurn<'_>,
+    session: &mut Session,
+    turn: &crate::ai::runtime::PlannerTurn<'_>,
     queue: &mut UnitQueue,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
     if queue.known_next_id != game.next_id() {
-        let born: Vec<_> = priority_order(game,policy, &session.candidates, &session.search.escort())
-            .into_iter()
-            .filter(|id| id.0 >= queue.known_next_id)
-            .collect();
-        session.search.add_actions(born.len()*3);
+        let born: Vec<_> =
+            priority_order(game, policy, &session.candidates, &session.search.escort())
+                .into_iter()
+                .filter(|id| id.0 >= queue.known_next_id)
+                .collect();
+        session.search.add_actions(born.len() * 3);
         queue.pending.splice(queue.cursor..queue.cursor, born);
         queue.known_next_id = game.next_id();
     }
     if queue.dirty {
-        queue.pending = priority_order(game,policy, &session.candidates, &session.search.escort())
+        queue.pending = priority_order(game, policy, &session.candidates, &session.search.escort())
             .into_iter()
             .filter(|id| queue.attempts.iter().filter(|tried| *tried == id).count() < 3)
             .collect();
@@ -283,13 +299,24 @@ fn next_plan_inner(
         session.search.spend_action();
         queue.attempts.push(id);
         finish_intents(&session.candidates, intents);
-        let mut plan = super::candidates::plan(game,phases,id.0,&mut session.candidates,session.search.candidate_shared(),super::candidates::EvaluationInput{seed:turn.seed,orders:&turn.orders.tactics,recruitment:turn.recruitment});
+        let mut plan = super::candidates::plan(
+            game,
+            phases,
+            id.0,
+            &mut session.candidates,
+            session.search.candidate_shared(),
+            super::candidates::EvaluationInput {
+                seed: turn.seed,
+                orders: &turn.orders.tactics,
+                recruitment: turn.recruitment,
+            },
+        );
         if plan.is_none()
-            && turn.orders.tactics
-                .important(game, unit)
-            && (policy == QueueMode::CampaignBlock || crate::ai::policies::objectives::proximity(game, unit.side, unit.tile) <= 6)
+            && turn.orders.tactics.important(game, unit)
+            && (policy == QueueMode::CampaignBlock
+                || crate::ai::policies::objectives::proximity(game, unit.side, unit.tile) <= 6)
         {
-            plan=session.search.focused(game,phases,turn,id.0);
+            plan = session.search.focused(game, phases, turn, id.0);
         }
         if plan.is_some() {
             queue.active = Some(id);
@@ -303,11 +330,11 @@ fn next_plan_inner(
 }
 
 fn finish_intents(
-    cache:&super::candidates::Workspace,
+    cache: &super::candidates::Workspace,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
     if intents.is_empty() {
-        intents.extend_from_slice(&session.candidates.rebuild_intents);
+        intents.extend_from_slice(cache.rebuild_intents());
     }
     None
 }
@@ -315,7 +342,7 @@ fn finish_intents(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ai::Policy;
+    use crate::ai::{PlanningWorkspace, Policy};
     use crate::logic::Game;
     #[test]
     fn campaign_rejects_arena_campaigner() {
@@ -351,16 +378,47 @@ impl super::Planner for Queued {
         context: &mut crate::ai::context::TacticalContext<'_, '_>,
         orders: &crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, crate::data::CommandError> {
-        super::drive(super::PlannerKind::Queued, context, orders)
+        super::prepare_priorities_and_recovery(context, orders)?;
+        super::drive(context, |context| {
+            let (game, phases, actions, mut parts) = context.queued_parts();
+            coordinated_step(game, phases, actions, &mut parts)
+        })
     }
 }
 
-pub(super) fn prepare(game:&BattleView<'_, '_>, phases:hex_command_battle::PhaseForecasts<'_, '_>, session:&mut Session, turn:&crate::ai::runtime::PlannerTurn<'_>) {
-    super::search::prepare(game,phases,&mut session.search,turn);
+pub(super) fn prepare(
+    game: &BattleView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    session: &mut Session,
+    turn: &crate::ai::runtime::PlannerTurn<'_>,
+) {
+    super::search::prepare(game, phases, &mut session.search, turn);
 }
-pub(super) fn choose(game:&BattleView<'_, '_>, phases:hex_command_battle::PhaseForecasts<'_, '_>, session:&mut Session, turn:&mut crate::ai::runtime::PlannerTurn<'_>) -> Result<(),CommandError> {
-    super::search::initialize(game,&mut session.search,turn);
-    let mut intents=Vec::new();
-    let plan=next_plan(game,phases,session,turn,&mut intents);
-    super::search::publish_plan(game,turn,plan,&intents)
+pub(super) fn choose(
+    game: &BattleView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    session: &mut Session,
+    turn: &mut crate::ai::runtime::PlannerTurn<'_>,
+) -> Result<(), CommandError> {
+    super::search::initialize(game, &mut session.search, turn);
+    let mut intents = Vec::new();
+    let plan = next_plan(game, phases, session, turn, &mut intents);
+    super::search::publish_plan(game, turn, plan, &intents)
+}
+
+fn coordinated_step<'view, 'catalog>(
+    game: &'view crate::ai::context::BattleView<'view, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'view, 'catalog>,
+    actions: hex_command_battle::ActionForecastSource<'view, 'catalog>,
+    parts: &mut crate::ai::runtime::PlannerParts<'_, Session>,
+) -> Result<(), crate::data::CommandError> {
+    if let Some(goals) = super::prepare_coordination(game, &mut parts.turn) {
+        parts.session.replace_goals(goals);
+    }
+    prepare(game, phases, parts.session, &parts.turn);
+    if super::rescue_coordination(game, phases, actions, &mut parts.turn)? {
+        return Ok(());
+    }
+    choose(game, phases, parts.session, &mut parts.turn)?;
+    super::finish_coordination(game, phases, &mut parts.turn)
 }

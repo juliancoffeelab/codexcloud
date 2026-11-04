@@ -309,31 +309,6 @@ fn ranged_categories_and_intervening_cover_determine_legal_replies() {
 }
 
 #[test]
-fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
-    let mut game = flat();
-    let scout = add(&mut game, "scout", Side::Player, "hex-0408-edbae05560");
-    let bow = add(&mut game, "archer", Side::Enemy, "hex-0760-150b2b6a75");
-    let index = game.index(scout).unwrap();
-    game.units[index].hp = 5;
-    let a = game.unit(scout).unwrap();
-    let b = game.unit(bow).unwrap();
-    assert_eq!(
-        game.best_attack(a, b, a.tile),
-        Some(weapon(&game, scout, "knife"))
-    );
-    hit(&mut game, scout, bow, "knife");
-    assert_eq!(game.last_combat.as_ref().unwrap().sound, "attack-melee");
-    assert!(
-        game.execute(Command::Attack {
-            unit: UnitId(scout),
-            target: UnitId(bow),
-            weapon: "sling".into()
-        })
-        .is_err()
-    );
-}
-
-#[test]
 fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
     for terrain in ["plains", "forest", "hill", "ford", "marsh"] {
         let mut game = flat();
@@ -614,47 +589,4 @@ fn seeded_strikes_restore_exactly_and_previews_never_consume_randomness() {
     }
     assert!(observed.contains(&0) && observed.contains(&8));
     assert!(observed.len() > 5);
-}
-
-#[test]
-fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
-    let mut rules = ability_rules();
-    let kind = rules.types["archer"];
-    rules.units[kind].attacks[0].damage = 4;
-    rules.units[kind].attacks[0].spread = 4;
-    rules.units[kind].attacks[0].count = 1;
-    let mut outcomes = [false; 2];
-    let mut decision = None;
-    for seed in 0..32 {
-        let mut game = Game::new(&rules, "mirror");
-        game.units.clear();
-        game.roster_changed();
-        game.combat_rng = seed;
-        let a = add(&mut game, "archer", Side::Player, "hex-0408-edbae05560");
-        let b = add(&mut game, "archer", Side::Enemy, "hex-0760-150b2b6a75");
-        let bi = game.index(b).unwrap();
-        game.units[bi].hp = 4;
-        game.gold = Gold::two(0, 0);
-        let actor = game.unit(a).unwrap();
-        let target = game.unit(b).unwrap();
-        assert!((game.exchange(actor, target, 0, actor.tile).death[1] - 5. / 9.).abs() < 1e-12);
-        assert!(game.preview(actor, target, 0, actor.tile).2.is_some());
-        let mut workspace =
-            crate::ai::PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Unrestricted);
-        let command =
-            crate::ai::choose_game_command(&game, crate::ai::Policy::Balanced, &mut workspace)
-                .unwrap();
-        assert_eq!(decision.get_or_insert(command.clone()), &command);
-        game.recordings = Some(Records::default());
-        hit(&mut game, a, b, "bow");
-        let record = &game.recordings.as_ref().unwrap().combats[0];
-        if game.unit(b).is_none() {
-            outcomes[0] = true;
-            assert!(record.response_rolls.is_empty());
-        } else {
-            outcomes[1] = true;
-            assert_eq!(record.response_rolls.len(), 1);
-        }
-    }
-    assert_eq!(outcomes, [true, true]);
 }

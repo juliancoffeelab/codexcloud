@@ -1,9 +1,11 @@
 //! Recruitment selection and placement, independent of tactical planning.
+#[cfg(test)]
+pub(in crate::ai) mod fixtures;
 use super::{
     TacticalRole,
     policies::objectives::TileOrder,
+    policies::tie_breaking::jitter,
     roles::{recruit_role, role},
-    tactics::jitter,
 };
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
@@ -62,7 +64,6 @@ impl Recruiter for RecruiterKind {
     }
 }
 
-
 fn drive(
     kind: RecruiterKind,
     context: &mut crate::ai::context::RecruitmentContext<'_, '_>,
@@ -71,7 +72,7 @@ fn drive(
     use crate::ai::orders::*;
     let mut report = RecruitmentReport::default();
     while context
-        .budget
+        .budget()
         .is_none_or(|limit| report.recruited.len() < limit)
     {
         let mandatory = orders
@@ -120,328 +121,323 @@ impl RecruiterKind {
         seed: u32,
         orders: &super::orders::RecruitmentOrders,
     ) -> Option<Command> {
-        game.recruit_from_orders(self, seed, orders)
+        recruit_from_orders(game, self, seed, orders)
     }
 }
-impl BattleView<'_, '_> {
-    fn recruit_from_orders(
-        &self,
-        recruiter: RecruiterKind,
-        seed: u32,
-        orders: &super::orders::RecruitmentOrders,
-    ) -> Option<Command> {
-        match recruiter {
-            RecruiterKind::Situational => return situational::choose(self, seed, orders),
-            RecruiterKind::Predictor => {
-                return situational::choose_with_forecast(self, seed, orders, true);
-            }
-            RecruiterKind::AggressivePredictor => {
-                return situational::choose_with_weights(
-                    self,
-                    seed,
-                    orders,
-                    true,
-                    self.rules().recruitment.aggressive_predictor,
-                );
-            }
-            RecruiterKind::Classic
-            | RecruiterKind::Rotation
-            | RecruiterKind::Frontline
-            | RecruiterKind::Balanced => {}
+
+fn recruit_from_orders(
+    game: &BattleView<'_, '_>,
+    recruiter: RecruiterKind,
+    seed: u32,
+    orders: &super::orders::RecruitmentOrders,
+) -> Option<Command> {
+    match recruiter {
+        RecruiterKind::Situational => return situational::choose(game, seed, orders),
+        RecruiterKind::Predictor => {
+            return situational::choose_with_forecast(game, seed, orders, true);
         }
-        self.units()
-            .iter()
-            .filter(|u| self.belongs_to_phase(u, self.turn()) && u.is_leader())
-            .find_map(|leader| self.recruit_for_leader(recruiter, seed, orders, leader))
+        RecruiterKind::AggressivePredictor => {
+            return situational::choose_with_weights(
+                game,
+                seed,
+                orders,
+                true,
+                game.rules().recruitment.aggressive_predictor,
+            );
+        }
+        RecruiterKind::Classic
+        | RecruiterKind::Rotation
+        | RecruiterKind::Frontline
+        | RecruiterKind::Balanced => {}
     }
-    fn recruit_for_leader(
-        &self,
-        recruiter: RecruiterKind,
-        seed: u32,
-        orders: &super::orders::RecruitmentOrders,
-        leader: &Unit,
-    ) -> Option<Command> {
-        let (rotation, frontline_only, balanced) = match recruiter {
-            RecruiterKind::Classic | RecruiterKind::Rotation => (true, false, false),
-            RecruiterKind::Frontline => (false, true, false),
-            RecruiterKind::Balanced => (false, false, true),
-            RecruiterKind::Situational
-            | RecruiterKind::Predictor
-            | RecruiterKind::AggressivePredictor => {
-                unreachable!("adaptive recruiters evaluate all commanders together")
-            }
-        };
-        let side = self.turn();
-        let required = orders
-            .requirements
-            .iter()
-            .find(|requirement| requirement.deficit(self) > 0);
-        let pool: Vec<_> = self
-            .recruitment_options_for(&leader)
-            .into_iter()
-            .filter(|&kind| required.is_none_or(|requirement| requirement.accepts(self, kind)))
-            .collect();
-        let reserved: rustc_hash::FxHashSet<_> = orders
-            .reserved
-            .iter()
-            .map(|tile| self.site(&tile.0))
-            .collect();
-        let placement_allowed = |_: usize, tile: usize| !reserved.contains(&tile);
-        if rotation && required.is_none() {
-            if pool.is_empty() {
-                return None;
-            }
-            let archer = self.kind("archer");
-            let swordsman = self.kind("swordsman");
-            let kind = if recruiter != RecruiterKind::Classic
-                || orders.rotate_pool
-                || !pool.contains(&archer)
-                || !pool.contains(&swordsman)
-            {
-                pool[if recruiter == RecruiterKind::Classic {
-                    (self.round() as usize - 1) % pool.len()
-                } else {
-                    // Fill the least represented role, then its least
-                    // represented family. Ties give an opening cycle of flank,
-                    // infantry, ranged, healer, skipping unavailable roles.
-                    let cycle = [
-                        UnitRole::Flank,
-                        UnitRole::Warrior,
-                        UnitRole::Ranger,
-                        UnitRole::Healer,
-                    ];
-                    let allies: Vec<_> = self
-                        .units()
-                        .iter()
-                        .filter(|u| self.belongs_to_phase(u, side) && !u.is_leader())
-                        .collect();
-                    pool.iter()
-                        .enumerate()
-                        .min_by_key(|(_, kind)| {
-                            let role = recruit_role(self, **kind);
-                            (
-                                allies
-                                    .iter()
-                                    .filter(|u| recruit_role(self, u.kind) == role)
-                                    .count(),
-                                cycle.iter().position(|&r| r == role).unwrap(),
-                                allies
-                                    .iter()
-                                    .filter(|u| {
-                                        self.rules().units[u.kind].family
-                                            == self.rules().units[**kind].family
-                                    })
-                                    .count(),
-                            )
-                        })
-                        .map(|(index, _)| index)
-                        .unwrap_or(0)
-                }]
-            } else if self.units().iter().any(|u| {
-                self.belongs_to_phase(u, side)
-                    && self.rules().units[u.kind].family == Family::Archer
-            }) {
-                swordsman
-            } else {
-                archer
-            };
-            let mut tiles: Vec<_> = self
-                .placement_tiles(&leader, kind, true)
-                .into_iter()
-                .filter(|&t| placement_allowed(kind, t))
-                .collect();
-            let order = TileOrder::new(self, &leader, false);
-            tiles.order_by(|&a, &b| order.compare(self, a, b));
-            if let Some(&tile) = tiles.first() {
-                return Some(super::recruit_command(self, leader.id, kind, tile));
-            }
+    game.units()
+        .iter()
+        .filter(|u| game.belongs_to_phase(u, game.turn()) && u.is_leader())
+        .find_map(|leader| recruit_for_leader(game, recruiter, seed, orders, leader))
+}
+fn recruit_for_leader(
+    game: &BattleView<'_, '_>,
+    recruiter: RecruiterKind,
+    seed: u32,
+    orders: &super::orders::RecruitmentOrders,
+    leader: &Unit,
+) -> Option<Command> {
+    let (rotation, frontline_only, balanced) = match recruiter {
+        RecruiterKind::Classic | RecruiterKind::Rotation => (true, false, false),
+        RecruiterKind::Frontline => (false, true, false),
+        RecruiterKind::Balanced => (false, false, true),
+        RecruiterKind::Situational
+        | RecruiterKind::Predictor
+        | RecruiterKind::AggressivePredictor => {
+            unreachable!("adaptive recruiters evaluate all commanders together")
+        }
+    };
+    let side = game.turn();
+    let required = orders
+        .requirements
+        .iter()
+        .find(|requirement| requirement.deficit(game) > 0);
+    let pool: Vec<_> = game
+        .recruitment_options_for(&leader)
+        .into_iter()
+        .filter(|&kind| required.is_none_or(|requirement| requirement.accepts(game, kind)))
+        .collect();
+    let reserved: rustc_hash::FxHashSet<_> = orders
+        .reserved
+        .iter()
+        .map(|tile| game.site(&tile.0))
+        .collect();
+    let placement_allowed = |_: usize, tile: usize| !reserved.contains(&tile);
+    if rotation && required.is_none() {
+        if pool.is_empty() {
             return None;
         }
-        let allies: Vec<_> = self
-            .units()
-            .iter()
-            .filter(|u| self.belongs_to_phase(u, side) && !u.is_leader())
-            .collect();
-        let opponents: Vec<_> = self
-            .units()
-            .iter()
-            .filter(|u| self.hostile_to_phase(u, side))
-            .collect();
-        let mut counts = [0; 4];
-        for ally in &allies {
-            counts[recruit_role(self, ally.kind).index()] += 1;
-        }
-        let shares = mixed_shares(pool.iter().map(|&k| recruit_role(self, k)));
-        let represented: usize = UnitRole::ALL
-            .into_iter()
-            .filter(|&r| shares[r.index()] > 0.0)
-            .map(|r| counts[r.index()])
-            .sum();
-        let mut choices: Vec<(usize, f64, f64)> = vec![];
-        for kind in pool {
-            if frontline_only && required.is_none() && role(self, kind) != TacticalRole::Frontline {
-                continue;
-            }
-            if !self
-                .placement_tiles(&leader, kind, recruiter == RecruiterKind::Classic)
-                .iter()
-                .any(|&t| placement_allowed(kind, t))
-            {
-                continue;
-            }
-            let r = &self.rules().units[kind];
-            let category = recruit_role(self, kind);
-            let deficiency = shares[category.index()] * (represented + 1) as f64
-                - counts[category.index()] as f64;
-            if balanced {
-                choices.push((
-                    kind,
-                    if deficiency > 0.0 { 1.0 } else { 0.0 },
-                    random(
-                        seed,
-                        &format!("balanced:{:?}:{}:{}", side, represented, r.id),
-                    ),
-                ));
-                continue;
-            }
-            let recruit = Unit {
-                faction: leader.faction.clone(),
-                items: vec![],
-                ai_group: None,
-                id: 0,
-                kind,
-                side,
-                tile: leader.tile,
-                hp: r.hp,
-                moved: true,
-                attacked: true,
-                experience: None,
-                character: None,
-                role: None,
-                retreating: None,
-                rebuilding: None,
-            };
-            let effectiveness = if opponents.is_empty() {
-                r.attacks
+        let archer = game.kind("archer");
+        let swordsman = game.kind("swordsman");
+        let kind = if recruiter != RecruiterKind::Classic
+            || orders.rotate_pool
+            || !pool.contains(&archer)
+            || !pool.contains(&swordsman)
+        {
+            pool[if recruiter == RecruiterKind::Classic {
+                (game.round() as usize - 1) % pool.len()
+            } else {
+                // Fill the least represented role, then its least
+                // represented family. Ties give an opening cycle of flank,
+                // infantry, ranged, healer, skipping unavailable roles.
+                let cycle = [
+                    UnitRole::Flank,
+                    UnitRole::Warrior,
+                    UnitRole::Ranger,
+                    UnitRole::Healer,
+                ];
+                let allies: Vec<_> = game
+                    .units()
                     .iter()
-                    .filter(|a| {
-                        a.category
-                            == if category.is_ranged() {
-                                Category::Ranged
-                            } else {
-                                Category::Melee
-                            }
+                    .filter(|u| game.belongs_to_phase(u, side) && !u.is_leader())
+                    .collect();
+                pool.iter()
+                    .enumerate()
+                    .min_by_key(|(_, kind)| {
+                        let role = recruit_role(game, **kind);
+                        (
+                            allies
+                                .iter()
+                                .filter(|u| recruit_role(game, u.kind) == role)
+                                .count(),
+                            cycle.iter().position(|&r| r == role).unwrap(),
+                            allies
+                                .iter()
+                                .filter(|u| {
+                                    game.rules().units[u.kind].family
+                                        == game.rules().units[**kind].family
+                                })
+                                .count(),
+                        )
                     })
-                    .map(|a| a.damage * i32::from(a.count))
-                    .max()
-                    .unwrap_or(0) as f64
-            } else {
-                opponents
-                    .iter()
-                    .map(|target| {
-                        r.attacks
-                            .iter()
-                            .enumerate()
-                            .filter(|(_, w)| {
-                                w.category
-                                    == if category.is_ranged() {
-                                        Category::Ranged
-                                    } else {
-                                        Category::Melee
-                                    }
-                            })
-                            .map(|(w, _)| self.damage(&recruit, target, w))
-                            .max()
-                            .unwrap_or(0) as f64
-                    })
-                    .sum::<f64>()
-                    / opponents.len() as f64
-            };
-            let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5)
-                / self.recruit_cost(&leader, kind).max(1) as f64;
-            let score = if frontline_only {
-                efficiency * 5.0 + r.hp as f64 * 0.15
-            } else {
-                efficiency * 2.0
-            };
-            choices.push((
-                kind,
-                0.0,
-                score + jitter(seed, &format!("recruit:{}:{}", self.round(), r.id)),
-            ));
-        }
-        choices.order_by(|a, b| {
-            b.1.total_cmp(&a.1)
-                .then_with(|| {
-                    if balanced {
-                        // Draw roles equally, independently of how many unit
-                        // variants each role offers; then draw within the role.
-                        let draw = |kind| {
-                            random(
-                                seed,
-                                &format!(
-                                    "balanced-role:{:?}:{}:{}",
-                                    side,
-                                    represented,
-                                    recruit_role(self, kind).index()
-                                ),
-                            )
-                        };
-                        draw(b.0).total_cmp(&draw(a.0))
-                    } else {
-                        std::cmp::Ordering::Equal
-                    }
-                })
-                .then_with(|| b.2.total_cmp(&a.2))
-        });
-        let Some(&(preferred, _, _)) = choices.first() else {
-            return None;
-        };
-        // Choose the desired unit before checking the purse. With income, keep
-        // its gold instead of continuously replacing it with cheap recruits.
-        let kind = if self.recruit_cost(&leader, preferred) <= self.gold_for_unit(&leader) {
-            preferred
-        } else if self.income(side) > 0 {
-            return None;
+                    .map(|(index, _)| index)
+                    .unwrap_or(0)
+            }]
+        } else if game.units().iter().any(|u| {
+            game.belongs_to_phase(u, side) && game.rules().units[u.kind].family == Family::Archer
+        }) {
+            swordsman
         } else {
-            choices
-                .iter()
-                .find(|&&(kind, _, _)| {
-                    self.recruit_cost(&leader, kind) <= self.gold_for_unit(&leader)
-                })?
-                .0
+            archer
         };
-        let mut tiles: Vec<_> = self
+        let mut tiles: Vec<_> = game
             .placement_tiles(&leader, kind, true)
             .into_iter()
             .filter(|&t| placement_allowed(kind, t))
             .collect();
-        let proximity = |t| {
+        let order = TileOrder::new(game, &leader, false);
+        tiles.order_by(|&a, &b| order.compare(game, a, b));
+        if let Some(&tile) = tiles.first() {
+            return Some(super::recruit_command(game, leader.id, kind, tile));
+        }
+        return None;
+    }
+    let allies: Vec<_> = game
+        .units()
+        .iter()
+        .filter(|u| game.belongs_to_phase(u, side) && !u.is_leader())
+        .collect();
+    let opponents: Vec<_> = game
+        .units()
+        .iter()
+        .filter(|u| game.hostile_to_phase(u, side))
+        .collect();
+    let mut counts = [0; 4];
+    for ally in &allies {
+        counts[recruit_role(game, ally.kind).index()] += 1;
+    }
+    let shares = mixed_shares(pool.iter().map(|&k| recruit_role(game, k)));
+    let represented: usize = UnitRole::ALL
+        .into_iter()
+        .filter(|&r| shares[r.index()] > 0.0)
+        .map(|r| counts[r.index()])
+        .sum();
+    let mut choices: Vec<(usize, f64, f64)> = vec![];
+    for kind in pool {
+        if frontline_only && required.is_none() && role(game, kind) != TacticalRole::Frontline {
+            continue;
+        }
+        if !game
+            .placement_tiles(&leader, kind, recruiter == RecruiterKind::Classic)
+            .iter()
+            .any(|&t| placement_allowed(kind, t))
+        {
+            continue;
+        }
+        let r = &game.rules().units[kind];
+        let category = recruit_role(game, kind);
+        let deficiency =
+            shares[category.index()] * (represented + 1) as f64 - counts[category.index()] as f64;
+        if balanced {
+            choices.push((
+                kind,
+                if deficiency > 0.0 { 1.0 } else { 0.0 },
+                random(
+                    seed,
+                    &format!("balanced:{:?}:{}:{}", side, represented, r.id),
+                ),
+            ));
+            continue;
+        }
+        let recruit = Unit {
+            faction: leader.faction.clone(),
+            items: vec![],
+            ai_group: None,
+            id: 0,
+            kind,
+            side,
+            tile: leader.tile,
+            hp: r.hp,
+            moved: true,
+            attacked: true,
+            experience: None,
+            character: None,
+            role: None,
+            retreating: None,
+            rebuilding: None,
+        };
+        let effectiveness = if opponents.is_empty() {
+            r.attacks
+                .iter()
+                .filter(|a| {
+                    a.category
+                        == if category.is_ranged() {
+                            Category::Ranged
+                        } else {
+                            Category::Melee
+                        }
+                })
+                .map(|a| a.damage * i32::from(a.count))
+                .max()
+                .unwrap_or(0) as f64
+        } else {
             opponents
                 .iter()
-                .map(|u| self.board().distance(t, u.tile))
-                .min()
-                .unwrap_or(0)
+                .map(|target| {
+                    r.attacks
+                        .iter()
+                        .enumerate()
+                        .filter(|(_, w)| {
+                            w.category
+                                == if category.is_ranged() {
+                                    Category::Ranged
+                                } else {
+                                    Category::Melee
+                                }
+                        })
+                        .map(|(w, _)| game.damage(&recruit, target, w))
+                        .max()
+                        .unwrap_or(0) as f64
+                })
+                .sum::<f64>()
+                / opponents.len() as f64
         };
-        tiles.order_by(|&a, &b| {
-            if role(self, kind) == TacticalRole::Frontline {
-                proximity(a).cmp(&proximity(b))
-            } else {
-                proximity(b).cmp(&proximity(a))
-            }
-        });
-        Some(super::recruit_command(self, leader.id, kind, tiles[0]))
+        let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5)
+            / game.recruit_cost(&leader, kind).max(1) as f64;
+        let score = if frontline_only {
+            efficiency * 5.0 + r.hp as f64 * 0.15
+        } else {
+            efficiency * 2.0
+        };
+        choices.push((
+            kind,
+            0.0,
+            score + jitter(seed, &format!("recruit:{}:{}", game.round(), r.id)),
+        ));
     }
+    choices.order_by(|a, b| {
+        b.1.total_cmp(&a.1)
+            .then_with(|| {
+                if balanced {
+                    // Draw roles equally, independently of how many unit
+                    // variants each role offers; then draw within the role.
+                    let draw = |kind| {
+                        random(
+                            seed,
+                            &format!(
+                                "balanced-role:{:?}:{}:{}",
+                                side,
+                                represented,
+                                recruit_role(game, kind).index()
+                            ),
+                        )
+                    };
+                    draw(b.0).total_cmp(&draw(a.0))
+                } else {
+                    std::cmp::Ordering::Equal
+                }
+            })
+            .then_with(|| b.2.total_cmp(&a.2))
+    });
+    let Some(&(preferred, _, _)) = choices.first() else {
+        return None;
+    };
+    // Choose the desired unit before checking the purse. With income, keep
+    // its gold instead of continuously replacing it with cheap recruits.
+    let kind = if game.recruit_cost(&leader, preferred) <= game.gold_for_unit(&leader) {
+        preferred
+    } else if game.income(side) > 0 {
+        return None;
+    } else {
+        choices
+            .iter()
+            .find(|&&(kind, _, _)| game.recruit_cost(&leader, kind) <= game.gold_for_unit(&leader))?
+            .0
+    };
+    let mut tiles: Vec<_> = game
+        .placement_tiles(&leader, kind, true)
+        .into_iter()
+        .filter(|&t| placement_allowed(kind, t))
+        .collect();
+    let proximity = |t| {
+        opponents
+            .iter()
+            .map(|u| game.board().distance(t, u.tile))
+            .min()
+            .unwrap_or(0)
+    };
+    tiles.order_by(|&a, &b| {
+        if role(game, kind) == TacticalRole::Frontline {
+            proximity(a).cmp(&proximity(b))
+        } else {
+            proximity(b).cmp(&proximity(a))
+        }
+    });
+    Some(super::recruit_command(game, leader.id, kind, tiles[0]))
 }
 
 /// Native fixed-position diagnostics. These are the same mechanical components
 /// used by Situational, before the seeded tie-break. They never mutate the game.
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn diagnostics(
-    game: &crate::logic::Game<'_>,
+    view: &BattleView<'_, '_>,
     recruiter: RecruiterKind,
 ) -> Vec<serde_json::Value> {
-    let view = BattleView::new(game);
     let mut rows = Vec::new();
     for unit in view
         .units()
@@ -485,7 +481,7 @@ pub(crate) fn diagnostics(
                 view.rules().recruitment.standard
             };
             let assessment = evaluation::Assessment::with_weights(
-                &view,
+                view,
                 &candidate,
                 recruiter.predicts(),
                 if recruit {
@@ -522,9 +518,9 @@ pub(crate) fn diagnostics(
             for tile in tiles {
                 candidate.tile = tile;
                 let score = if recruit {
-                    assessment.recruitment_breakdown(&view, &candidate)
+                    assessment.recruitment_breakdown(view, &candidate)
                 } else {
-                    assessment.breakdown(&view, &candidate)
+                    assessment.breakdown(view, &candidate)
                 };
                 if best
                     .as_ref()
@@ -547,7 +543,7 @@ pub(crate) fn diagnostics(
 /// unsuitable for choosing uniformly between adjacent content identifiers.
 fn random(seed: u32, key: &str) -> f64 {
     let hash = (jitter(seed, key) / 0.05 * u32::MAX as f64) as u32;
-    crate::ai::planner::search::Random(hash).next()
+    crate::ai::policies::tie_breaking::Random(hash).next()
 }
 
 /// Redistribute the authored role proportions over the current roster only.
@@ -568,6 +564,7 @@ fn mixed_shares(roles: impl Iterator<Item = UnitRole>) -> [f64; 4] {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ai::recruiter::fixtures;
 
     #[test]
     fn balanced_draws_both_kinds_but_only_within_the_needed_role() {
@@ -577,10 +574,11 @@ mod tests {
         rules.units[a].role = UnitRole::Warrior;
         rules.units[b].role = UnitRole::Warrior;
         let mut game = crate::logic::Game::new(&rules, "mirror");
-        game.units.retain(|u| u.is_leader());
-        game.roster_changed();
-        game.pools = Some([vec![a, b], vec![a, b]]);
-        game.gold["player"] = 100;
+        fixtures::units(&mut game, |units| {
+            units.retain(|u| u.is_leader());
+        });
+        game.configure_arena(Some([vec![a, b], vec![a, b]]), None);
+        fixtures::edit(&mut game, |state| state.gold["player"] = 100);
         let orders = crate::ai::orders::RecruitmentOrders::default();
         let draw = |game: &crate::logic::Game<'_>, seed| {
             let result =
@@ -600,24 +598,25 @@ mod tests {
         drop(game);
         rules.units[b].role = UnitRole::Flank;
         let mut game = crate::logic::Game::new(&rules, "mirror");
-        game.units.retain(|u| u.is_leader());
-        game.roster_changed();
-        game.pools = Some([vec![a, b], vec![a, b]]);
-        game.gold["player"] = 100;
+        fixtures::units(&mut game, |units| {
+            units.retain(|u| u.is_leader());
+        });
+        game.configure_arena(Some([vec![a, b], vec![a, b]]), None);
+        fixtures::edit(&mut game, |state| state.gold["player"] = 100);
         let leader = game
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, a, false)[0];
-        game.add(a, Side::Player, tile);
+        fixtures::add(&mut game, a, Side::Player, tile);
         // Both roles are under target, even though their deficits differ.
         let outcomes: std::collections::BTreeSet<_> =
             (0..64).map(|seed| draw(&game, seed)).collect();
         assert_eq!(outcomes.len(), 2);
         let tile = game.placement_tiles(&leader, a, false)[0];
-        game.add(a, Side::Player, tile);
+        fixtures::add(&mut game, a, Side::Player, tile);
         // Infantry is now over target, so every draw must be a flanker.
         for seed in 0..16 {
             assert_eq!(draw(&game, seed), rules.units[b].id);
@@ -639,12 +638,13 @@ mod tests {
         }
         for available in [kinds.to_vec(), vec![kinds[1], kinds[2]]] {
             let mut game = crate::logic::Game::new(&rules, "mirror");
-            game.units.retain(|u| u.is_leader());
-            game.roster_changed();
+            fixtures::units(&mut game, |units| {
+                units.retain(|u| u.is_leader());
+            });
             let mut reversed = available.clone();
             reversed.reverse();
-            game.pools = Some([reversed.clone(), reversed]);
-            game.gold["player"] = 1000;
+            game.configure_arena(Some([reversed.clone(), reversed]), None);
+            fixtures::edit(&mut game, |state| state.gold["player"] = 1000);
             for &expected in available.iter().cycle().take(available.len() * 2) {
                 let command = RecruiterKind::Rotation
                     .choose_orders(
@@ -661,19 +661,20 @@ mod tests {
                 // Clear the keep so the next choice measures composition,
                 // rather than running out of deployment tiles.
                 let leader = game
-                    .units
+                    .units()
                     .iter()
                     .find(|u| u.side == Side::Player && u.is_leader())
                     .unwrap()
                     .clone();
                 let deployment = game.placement_tiles(&leader, expected, false);
-                let tile = (0..game.terrain.len())
+                let tile = (0..game.terrain().len())
                     .find(|tile| {
-                        !deployment.contains(tile) && !game.units.iter().any(|u| u.tile == *tile)
+                        !deployment.contains(tile) && !game.units().iter().any(|u| u.tile == *tile)
                     })
                     .unwrap();
-                game.units.last_mut().unwrap().tile = tile;
-                game.roster_changed();
+                fixtures::units(&mut game, |units| {
+                    units.last_mut().unwrap().tile = tile;
+                });
             }
         }
     }
@@ -682,39 +683,50 @@ mod tests {
     fn explicit_arena_pool_rotates_through_expensive_units_instead_of_legacy_two_unit_mix() {
         let rules = Rules::load().unwrap();
         let mut game = crate::logic::Game::new(&rules, "mirror");
-        game.units.retain(|u| u.is_leader());
-        game.roster_changed();
+        fixtures::units(&mut game, |units| {
+            units.retain(|u| u.is_leader());
+        });
         let pool = vec![
             rules.types["swordsman"],
             rules.types["archer"],
             rules.types["rider"],
         ];
-        game.pools = Some([pool.clone(), pool]);
+        game.configure_arena(Some([pool.clone(), pool]), None);
         let leader = game
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Player)
             .unwrap()
             .clone();
         let sites = game.placement_tiles(&leader, rules.types["swordsman"], false);
-        game.add(rules.types["swordsman"], Side::Player, sites[0]);
-        game.add(rules.types["archer"], Side::Player, sites[1]);
-        game.round = 3;
-        game.gold["player"] = rules.units[rules.types["rider"]].cost;
-        let workspace =
-            crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted);
-        let orders = crate::ai::CampaignBlock::Arena.campaign_orders(&game, &workspace);
+        fixtures::add(&mut game, rules.types["swordsman"], Side::Player, sites[0]);
+        fixtures::add(&mut game, rules.types["archer"], Side::Player, sites[1]);
+        fixtures::edit(&mut game, |state| state.round = 3);
+        fixtures::edit(&mut game, |state| {
+            state.gold["player"] = rules.units[rules.types["rider"]].cost
+        });
+        use crate::ai::campaigner::mission::{CampaignInput, MissionPolicy};
+        let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
+        let orders = crate::ai::CampaignBlock::Arena.campaign_orders(
+            &mission,
+            CampaignInput {
+                goals: None,
+                diplomacy: crate::ai::Diplomacy::Unrestricted,
+            },
+        );
         assert!(orders.recruitment.rotate_pool);
         // A selected mount survives a round boundary while saving, rather
         // than being skipped when the next roster entry comes around.
-        game.gold["player"] = 0;
+        fixtures::edit(&mut game, |state| state.gold["player"] = 0);
         assert!(
             RecruiterKind::Rotation
                 .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
                 .is_none()
         );
-        game.round += 1;
-        game.gold["player"] = rules.units[rules.types["rider"]].cost;
+        fixtures::edit(&mut game, |state| state.round += 1);
+        fixtures::edit(&mut game, |state| {
+            state.gold["player"] = rules.units[rules.types["rider"]].cost
+        });
         let selected = RecruiterKind::Rotation
             .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
             .unwrap();

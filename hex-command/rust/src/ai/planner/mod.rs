@@ -1,5 +1,4 @@
 //! Tactical dispatch and search styles, independent of recruitment choices.
-use super::PlanningWorkspace;
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
@@ -43,26 +42,19 @@ impl Planner for PlannerKind {
         }
     }
 }
-fn drive(
-    kind: PlannerKind,
+/// Shared preparation deliberately selected by the current adapters.
+fn prepare_priorities_and_recovery(
     context: &mut crate::ai::context::TacticalContext<'_, '_>,
     orders: &crate::ai::orders::TacticalOrders,
-) -> Result<crate::ai::orders::PlanningReport, CommandError> {
-    context
-        .workspace
-        .orders
-        .as_mut()
-        .expect("turn orders")
-        .tactics = orders.clone();
-    // Equal priorities retain the Campaigner’s authored order, independent of ID spelling.
-    context
-        .workspace
-        .orders
-        .as_mut()
-        .unwrap()
-        .tactics
-        .objectives
-        .order_by(|a, b| b.priority.cmp(&a.priority));
+) -> Result<(), CommandError> {
+    {
+        let turn = context.turn_parts();
+        turn.orders.tactics = orders.clone();
+        turn.orders
+            .tactics
+            .objectives
+            .order_by(|a, b| b.priority.cmp(&a.priority));
+    }
     let recovered: Vec<_> = context
         .battle()
         .units()
@@ -85,25 +77,102 @@ fn drive(
             unit.attacked,
         ))?;
     }
-    while !context.workspace.finished
-        || !context.workspace.commands.is_empty()
-        || context.workspace.attack_continuation.is_some()
-    {
-        context.flush()?;
-        if context.combat_boundary {
-            break;
-        }
-        if context.workspace.finished || context.battle().winner().is_some() {
-            break;
-        }
-        kind.choose(context.draft, context.workspace)?;
-    }
-    if !context.combat_boundary {
-        context.flush()?;
-    }
-    Ok(context.workspace.report.clone())
+    Ok(())
 }
 
+/// Mechanical command/boundary loop. The adapter supplies its selected-session step.
+fn drive<'game, 'catalog>(
+    context: &mut crate::ai::context::TacticalContext<'game, 'catalog>,
+    mut step: impl FnMut(
+        &mut crate::ai::context::TacticalContext<'game, 'catalog>,
+    ) -> Result<(), CommandError>,
+) -> Result<crate::ai::orders::PlanningReport, CommandError> {
+    loop {
+        let work = {
+            let turn = context.turn_parts();
+            !*turn.finished || !turn.commands.is_empty() || turn.attack_continuation.is_some()
+        };
+        if !work {
+            break;
+        }
+        context.flush()?;
+        if context.is_boundary() {
+            break;
+        }
+        let finished = *context.turn_parts().finished;
+        if finished || context.battle().winner().is_some() {
+            break;
+        }
+        step(context)?;
+    }
+    if !context.is_boundary() {
+        context.flush()?;
+    }
+    Ok(context.turn_parts().report.clone())
+}
+
+/// Explicit coordination subscription used by the three current planner adapters.
+fn prepare_coordination(
+    game: &BattleView<'_, '_>,
+    turn: &mut crate::ai::runtime::PlannerTurn<'_>,
+) -> Option<Vec<crate::ai::orders::Target>> {
+    let update = crate::ai::policies::cooperation::assign(
+        game,
+        turn.coordination,
+        &mut turn.orders.tactics,
+        turn.report,
+    );
+    crate::ai::policies::cooperation::refresh_assignments(
+        game,
+        turn.coordination,
+        &mut turn.orders.tactics,
+        turn.report,
+    )
+    .or(update)
+}
+fn rescue_coordination(
+    game: &BattleView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    actions: hex_command_battle::ActionForecastSource<'_, '_>,
+    turn: &mut crate::ai::runtime::PlannerTurn<'_>,
+) -> Result<bool, CommandError> {
+    crate::ai::policies::cooperation::rescue(
+        game,
+        phases,
+        actions,
+        turn.coordination,
+        &turn.orders.tactics,
+        turn.report,
+        turn.commands,
+    )
+}
+fn finish_coordination(
+    game: &BattleView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    turn: &mut crate::ai::runtime::PlannerTurn<'_>,
+) -> Result<(), CommandError> {
+    if *turn.finished {
+        if crate::ai::policies::cooperation::fallback(
+            game,
+            phases,
+            turn.coordination,
+            &turn.orders.tactics,
+            turn.report,
+            turn.commands,
+        )? {
+            *turn.finished = false;
+        }
+        crate::ai::policies::cooperation::report(
+            game,
+            phases,
+            turn.coordination,
+            turn.orders,
+            turn.report,
+            *turn.finished,
+        );
+    }
+    Ok(())
+}
 impl PlannerKind {
     pub const fn queued(self) -> bool {
         match self {
@@ -111,39 +180,14 @@ impl PlannerKind {
             Self::Classic | Self::Full => false,
         }
     }
-    pub(super) fn choose(
-        self,
-        game: &BattleView<'_, '_>,
-        workspace: &mut PlanningWorkspace,
-    ) -> Result<(), CommandError> {
-        crate::ai::policies::cooperation::assign(game, workspace);
-        crate::ai::policies::cooperation::refresh_assignments(game, workspace);
-        match self {
-            Self::Classic => classic::prepare(game, workspace),
-            Self::Full => full::prepare(game, workspace),
-            Self::Queued => queued::prepare(game, workspace),
-        }
-        if crate::ai::policies::cooperation::rescue(game, workspace)? {
-            return Ok(());
-        }
-        match self {
-            Self::Classic => classic::choose(game, workspace)?,
-            Self::Full => full::choose(game, workspace)?,
-            Self::Queued => queued::choose(game, workspace)?,
-        }
-        if workspace.finished {
-            crate::ai::policies::cooperation::fallback(game, workspace)?;
-            crate::ai::policies::cooperation::report(game, workspace);
-        }
-        Ok(())
-    }
 }
 
 pub(in crate::ai) mod candidates;
 pub(in crate::ai) mod classic;
 mod full;
 pub(in crate::ai) mod queued;
-pub(in crate::ai) mod safety;
 pub(in crate::ai) mod search;
 
 mod recruitment;
+
+mod proposal;

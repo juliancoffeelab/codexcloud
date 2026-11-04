@@ -278,7 +278,8 @@ impl TacticalOrders {
             .targets
             .iter()
             .filter(|goal| {
-                goal.id.starts_with("rebuild:") && crate::ai::policies::objectives::actor_matches(&goal.actor, id)
+                goal.id.starts_with("rebuild:")
+                    && crate::ai::policies::objectives::actor_matches(&goal.actor, id)
             })
             .flat_map(|goal| goal.tiles.iter().map(|tile| game.site(tile)))
             .collect();

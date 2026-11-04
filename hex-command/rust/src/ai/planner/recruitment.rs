@@ -1,10 +1,7 @@
 //! Compound rebuild-move decisions combine the shared estimate with route and risk policies.
 use crate::ai::policies::threat::{Threats, cap_exposure};
 use crate::{
-    ai::{
-        context::BattleView, orders::TacticalOrders, planner::search::Plan,
-        recruiter::RecruitmentOpportunity,
-    },
+    ai::{context::BattleView, orders::TacticalOrders, planner::proposal::Plan},
     data::*,
 };
 
@@ -33,7 +30,7 @@ pub(super) fn plan(
         unit,
         game.reachable(unit).iter().map(|&(tile, _)| tile).collect(),
     );
-    let mut threats = Threats::protected(game, phases, unit.side, orders);
+    let mut threats = Threats::protected(phases, unit.side, orders);
     let before = cap_exposure(unit, threats.at(unit, unit.tile, None), true);
     let danger = if orders.protects(unit.id) {
         40.0 / unit.hp.max(1) as f64
@@ -52,12 +49,9 @@ pub(super) fn plan(
         .into_iter()
         .filter(|tile| keeps.contains(tile) && *tile != unit.tile)
     {
-        let Some(value) = crate::ai::policies::recruitment::estimate_capacity(
-            game,
-            unit,
-            tile,
-            opportunity,
-        ) else {
+        let Some(value) =
+            crate::ai::policies::recruitment::estimate_capacity(game, unit, tile, opportunity)
+        else {
             continue;
         };
         let after = cap_exposure(unit, threats.at(unit, tile, None), true);

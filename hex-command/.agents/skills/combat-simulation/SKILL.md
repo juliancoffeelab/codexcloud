@@ -5,10 +5,13 @@ description: Use for AI policy work, simulation harness or analyzer changes, com
 
 # Combat simulation
 
-- Keep Classic's decision flow, escort evaluation, and route-selection heuristics
-  owned by Classic. Queued/Full search heuristics must not be applied to Classic
-  through shared preparation or mode flags. Share mechanical facts and explicit
-  order/command handling rather than implicit heuristic weights.
+- Keep planner orchestration and mutable search state owned by the selected
+  planner. Put deliberately shared AI decisions in named policy domains with
+  explicit inputs and consumers; any planners may share a policy when their
+  intended behavior matches. Keep mechanical queries separate from policy and
+  make strategic preparation an explicit subscription rather than a driver
+  default. Actual automatic recruitment belongs to runtime orchestration;
+  tactical forecasts use the shared capacity estimate instead of invoking it.
 
 Run combat simulations when needed to explore or validate balance without waiting
 for separate permission. Experiments stay separate from the playable catalog;

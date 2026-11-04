@@ -1,11 +1,7 @@
 //! Borrowed rule queries and explicitly granted mechanical projections.
-use crate::{
-    data::*,
-    logic::Game,
-    logic::battle::{Board, RuntimeCache},
-    logic::geometry::TileSet,
-    model::*,
-};
+#[cfg(feature = "wasm")]
+use crate::logic::battle::RuntimeCache;
+use crate::{data::*, logic::Game, logic::battle::Board, logic::geometry::TileSet, model::*};
 use std::rc::Rc;
 
 pub struct BattleRules<'a> {
@@ -626,7 +622,11 @@ impl<'catalog> ActionForecast<'catalog> {
 pub struct PhaseForecasts<'a, 'catalog> {
     view: &'a BattleView<'a, 'catalog>,
 }
-impl<'catalog> PhaseForecasts<'_, 'catalog> {
+impl<'a, 'catalog> PhaseForecasts<'a, 'catalog> {
+    /// The immutable source used by every projection from this capability.
+    pub fn view(&self) -> &'a BattleView<'a, 'catalog> {
+        self.view
+    }
     /// Escort projection uses the planning fork RNG reset before transitioning.
     pub fn planning_next_phase(&self) -> PhaseSnapshot<'catalog> {
         let mut game = self.view.engine().planning_fork();
@@ -656,7 +656,7 @@ impl<'catalog> PhaseForecasts<'_, 'catalog> {
     }
 
     /// Ordinary engine fork: preserve source RNG and apply one phase transition.
-    pub fn project(
+    fn project(
         &self,
         relocated: Option<(u32, usize)>,
         eliminated: Option<u32>,
@@ -742,24 +742,6 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub fn has_pools(&self) -> bool {
         self.engine().pools.is_some()
     }
-    pub fn log(&self) -> &[String] {
-        &self.engine().log
-    }
-    pub fn fog(&self) -> &[Option<std::sync::Arc<ConditionRule>>] {
-        &self.engine().fog
-    }
-    pub fn condition_memory(&self) -> &[String] {
-        &self.engine().condition_memory
-    }
-    pub fn public_units(&self) -> Vec<PublicUnit> {
-        self.engine().public_units()
-    }
-    pub fn public_unit(&self, unit: &Unit) -> PublicUnit {
-        self.engine().public_unit(unit)
-    }
-    pub fn tiles(&self) -> Vec<Tile> {
-        self.engine().tiles()
-    }
     pub fn site_at(&self, col: i32, row: i32) -> usize {
         self.engine()
             .board
@@ -786,18 +768,6 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     }
     pub fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<Side>]>) -> TileSet {
         self.engine().threat_reach(unit, occupancy)
-    }
-    #[cfg(feature = "wasm")]
-    pub fn inspect(&self, revision: u32) -> BattleInspection {
-        self.engine().inspect(revision)
-    }
-    #[cfg(feature = "wasm")]
-    pub fn inspect_board(&self) -> BoardInspection {
-        self.engine().inspect_board()
-    }
-    #[cfg(feature = "wasm")]
-    pub fn patch_tiles(&self, tiles: &mut [Tile]) -> Vec<usize> {
-        self.engine().patch_tiles(tiles)
     }
 }
 impl<'a, 'catalog> CampaignView<'a, 'catalog> {
@@ -832,9 +802,6 @@ impl<'catalog> BattleSession<'catalog> {
 }
 
 impl BattleView<'_, '_> {
-    pub fn presentation(&self) -> BattlefieldPresentation {
-        self.engine().presentation()
-    }
     pub fn last_combat(&self) -> Option<&LastCombat> {
         self.engine().last_combat.as_ref()
     }
@@ -853,14 +820,87 @@ impl BattleView<'_, '_> {
     pub fn combat_rng(&self) -> u32 {
         self.engine().combat_rng
     }
-    #[cfg(not(target_arch = "wasm32"))]
-    pub fn event_goal_progress(&self) -> Vec<Progress> {
-        self.engine().event_goal_progress()
-    }
 }
 
 impl<'catalog> BattleSession<'catalog> {
     pub fn continue_campaign(&self, selected: Option<&[UnitId]>) -> Result<Self, CommandError> {
         self.0.engine().continue_campaign(selected).map(Self::owned)
+    }
+}
+
+impl<'catalog> BattleSession<'catalog> {
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn ensure_recording(&mut self) {
+        if self.0.engine().recordings.is_none() {
+            self.0.engine_mut().recordings = Some(Records::default());
+        }
+    }
+    pub fn declare_outcome(&mut self, side: Side) {
+        self.0.engine_mut().winner = Some(side);
+    }
+    pub fn refresh_mission(&mut self) {
+        self.0.engine_mut().refresh_mission();
+    }
+}
+impl<'catalog> ActionForecast<'catalog> {
+    pub fn action_forecasts(&self) -> ActionForecastSource<'_, 'catalog> {
+        ActionForecastSource { view: &self.view }
+    }
+}
+impl BattleView<'_, '_> {
+    pub fn board_handle(&self) -> Rc<Board> {
+        self.engine().board.clone()
+    }
+}
+
+// Host presentation is intentionally available only from the actual owner.
+impl BattleSession<'_> {
+    pub fn log(&self) -> &[String] {
+        &self.0.engine().log
+    }
+    pub fn fog(&self) -> &[Option<std::sync::Arc<ConditionRule>>] {
+        &self.0.engine().fog
+    }
+    pub fn public_units(&self) -> Vec<PublicUnit> {
+        self.0.engine().public_units()
+    }
+    pub fn public_unit(&self, unit: &Unit) -> PublicUnit {
+        self.0.engine().public_unit(unit)
+    }
+    pub fn tiles(&self) -> Vec<Tile> {
+        self.0.engine().tiles()
+    }
+    pub fn inspect(&self, revision: u32) -> BattleInspection {
+        self.0.engine().inspect(revision)
+    }
+    pub fn inspect_board(&self) -> BoardInspection {
+        self.0.engine().inspect_board()
+    }
+    #[cfg(feature = "wasm")]
+    pub fn patch_tiles(&self, tiles: &mut [Tile]) -> Vec<usize> {
+        self.0.engine().patch_tiles(tiles)
+    }
+    pub fn presentation(&self) -> BattlefieldPresentation {
+        self.0.engine().presentation()
+    }
+}
+
+impl CampaignView<'_, '_> {
+    pub fn condition_memory(&self) -> &[String] {
+        &self.view.engine().condition_memory
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn event_goal_progress(&self) -> Vec<Progress> {
+        self.view.engine().event_goal_progress()
+    }
+}
+
+impl BattleSession<'_> {
+    pub fn condition_memory(&self) -> &[String] {
+        &self.0.engine().condition_memory
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn event_goal_progress(&self) -> Vec<Progress> {
+        self.0.engine().event_goal_progress()
     }
 }

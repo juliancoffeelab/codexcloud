@@ -448,8 +448,7 @@ fn saved_phase(
     }
     let mut game = crate::logic::Game::from_state_with_campaign(rules, request.state, definition);
     if let Some(arena) = arena {
-        game.pools = arena.pools;
-        game.arena_first = arena.arena_first;
+        game.configure_arena(arena.pools().cloned(), arena.arena_first());
     }
     if request.advance_turn && request.begin_turn {
         return Err(SimulationError::InvalidConfig(
@@ -457,7 +456,7 @@ fn saved_phase(
         ));
     }
     if request.begin_turn {
-        game.begin_turn(game.turn);
+        game.begin_turn(game.turn());
     } else if request.advance_turn {
         game.end_turn();
     }
@@ -465,12 +464,15 @@ fn saved_phase(
         || request.goals.iter().flatten().any(|goal| {
             !goal.weight.is_finite()
                 || goal.weight <= 0.0
-                || goal.tiles.iter().any(|tile| !game.board.ids.contains(tile))
+                || goal
+                    .tiles
+                    .iter()
+                    .any(|tile| !game.board().ids.contains(tile))
                 || goal.actor.as_ref().is_some_and(|actor| {
                     actor
                         .strip_prefix('u')
                         .and_then(|id| id.parse::<u32>().ok())
-                        .is_none_or(|id| id == 0 || id >= game.next_id)
+                        .is_none_or(|id| id == 0 || id >= game.next_id())
                 })
         })
     {
@@ -480,15 +482,16 @@ fn saved_phase(
     }
     let scores = request.inspect_recruitment.then(|| {
         crate::ai::recruiter::diagnostics(
-            &game,
+            game.view(),
             request.blocks.unwrap_or(request.policy.blocks()).recruiter,
         )
     });
-    game.recordings = Some(crate::data::Records::default());
+    game.start_recording();
     let goals = request
         .goals
         .or_else(|| super::objectives::player_goals(&game, &request.objective));
-    game.play_blocks(
+    crate::ai::play_blocks(
+        &mut game,
         request.policy,
         request.blocks,
         request.seed,
@@ -496,7 +499,7 @@ fn saved_phase(
         goals.as_deref(),
         request.diplomacy,
     )?;
-    let mut response = json!({"final":game.state(),"records":game.recordings});
+    let mut response = json!({"final":game.state(),"records":game.take_recordings()});
     if let Some(scores) = scores {
         response["recruitmentScores"] = serde_json::to_value(scores)?;
     }
@@ -1039,21 +1042,22 @@ mod tests {
             }))
             .unwrap()
         };
-        expected.begin_turn(expected.turn);
-        expected.recordings = Some(crate::data::Records::default());
-        expected
-            .play_blocks(
-                crate::ai::Policy::Balanced,
-                None,
-                7,
-                1,
-                None,
-                crate::ai::Diplomacy::Unrestricted,
-            )
-            .unwrap();
+        expected.begin_turn(expected.turn());
+        expected.start_recording();
+        crate::ai::play_blocks(
+            &mut expected,
+            crate::ai::Policy::Balanced,
+            None,
+            7,
+            1,
+            None,
+            crate::ai::Diplomacy::Unrestricted,
+        )
+        .unwrap();
+        let expected_records = expected.take_recordings();
         assert_eq!(
             saved_phase(&rules, &mut definitions, request(state.clone())).unwrap(),
-            json!({"final": expected.state(), "records": expected.recordings})
+            json!({"final": expected.state(), "records": expected_records})
         );
         let mut inspected = request(state.clone());
         inspected.inspect_recruitment = true;
@@ -1070,7 +1074,7 @@ mod tests {
         );
         assert_eq!(
             diagnostic,
-            json!({"final":expected.state(),"records":expected.recordings})
+            json!({"final":expected.state(),"records":expected_records})
         );
         let mut invalid = state.clone();
         invalid.tiles[0].col = -1;

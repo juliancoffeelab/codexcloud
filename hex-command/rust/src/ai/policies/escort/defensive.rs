@@ -31,10 +31,10 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
 impl Workspace {
     pub(in crate::ai) fn prepare(
         &mut self,
-        game: &BattleView<'_, '_>,
         phases: PhaseForecasts<'_, '_>,
         report: &PlanningReport,
     ) {
+        let game = phases.view();
         let assignments: Vec<_> = report
             .duties
             .iter()

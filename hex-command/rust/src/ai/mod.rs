@@ -3,41 +3,35 @@
 #![deny(clippy::wildcard_enum_match_arm)]
 pub mod campaigner;
 pub mod context;
-mod presets;
-pub(crate) mod tactic;
-pub mod policies;
 pub mod orders;
 pub mod planner;
+pub mod policies;
+mod presets;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod profiling;
 pub mod recruiter;
 mod roles;
+pub(crate) mod tactic;
 use crate::{
     data::*,
-    logic::{Command, CommandError, Game},
+    logic::{Command, CommandError},
 };
 pub use campaigner::CampaignerKind as CampaignBlock;
 pub use planner::PlannerKind as Planner;
+pub use policies::tie_breaking::Random;
 pub use presets::Blocks;
 pub use recruiter::RecruiterKind as Recruiter;
-use rustc_hash::FxHashMap as HashMap;
 use serde::{Deserialize, Serialize};
-use std::{
-    collections::{HashSet, VecDeque},
-    rc::Rc,
-};
-pub use planner::search::Random;
 
 /// Native diagnostics reuse the planner's conservative, independent-enemy
 /// forecast without executing a plan or changing the battle.
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn audit_leader_exposure(
-    game: &Game<'_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
     leader: &Unit,
     tiles: impl IntoIterator<Item = usize>,
 ) -> Vec<(usize, i32)> {
-    let view = context::BattleView::new(game);
-    let mut forecast = policies::threat::Threats::new(&view, leader.side);
+    let mut forecast = policies::threat::Threats::new(phases, leader.side);
     tiles
         .into_iter()
         .map(|tile| (tile, forecast.at(leader, tile, None)))
@@ -133,77 +127,6 @@ pub(crate) use runtime::choose_game_command;
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) use runtime::play_blocks;
 
-/// Records the continuation of one planned unit action on an isolated battle.
-/// This lets classic evaluate its attack after the selected move without ever
-/// mutating the caller's battle. Intent changes commit through engine commands.
-struct Recorder {
-    commands: VecDeque<Command>,
-    intents: HashMap<u32, (Option<bool>, Option<bool>, bool)>,
-    error: Option<CommandError>,
-    retreat_logs: HashSet<u32>,
-}
-impl Recorder {
-    fn new(game: &context::BattleView<'_, '_>) -> Self {
-        Self {
-            commands: VecDeque::new(),
-            error: None,
-            retreat_logs: HashSet::new(),
-            intents: game
-                .units()
-                .iter()
-                .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
-                .collect(),
-        }
-    }
-    fn flush_intents(&mut self, game: &context::BattleView<'_, '_>) {
-        for u in game.units() {
-            let intent = (u.retreating, u.rebuilding, u.attacked);
-            let record_retreat = self.retreat_logs.remove(&u.id);
-            if record_retreat || self.intents.get(&u.id).is_some_and(|old| *old != intent) {
-                self.commands.push_back(Command::SetUnitIntent {
-                    unit: UnitId(u.id),
-                    retreating: u.retreating,
-                    rebuilding: u.rebuilding,
-                    attacked: u.attacked,
-                    record_retreat,
-                });
-            }
-            self.intents.insert(u.id, intent);
-        }
-    }
-    fn mark_retreat(&mut self, unit: u32) {
-        self.retreat_logs.insert(unit);
-    }
-    fn emit(&mut self, game: &mut context::BattleDraft<'_, '_>, command: Command) {
-        self.flush_intents(game);
-        if let Err(error) = game.execute(command.clone()) {
-            self.error = Some(error);
-            return;
-        }
-        self.commands.push_back(command);
-        self.intents = game
-            .units()
-            .iter()
-            .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
-            .collect();
-    }
-    fn move_unit(&mut self, game: &mut context::BattleDraft<'_, '_>, unit: u32, tile: usize) {
-        self.emit(game, move_command(game, unit, tile));
-    }
-    fn attack(
-        &mut self,
-        game: &mut context::BattleDraft<'_, '_>,
-        unit: u32,
-        target: u32,
-        weapon: usize,
-    ) {
-        self.emit(game, attack_command(game, unit, target, weapon));
-    }
-    fn advance(&mut self, game: &mut context::BattleDraft<'_, '_>, unit: u32, kind: usize) {
-        self.emit(game, advance_command(game, unit, kind));
-    }
-}
-
 fn intent_command(
     unit: &Unit,
     retreating: Option<bool>,
@@ -259,6 +182,7 @@ fn advance_command(game: &context::BattleView<'_, '_>, unit: u32, kind: usize) -
 #[cfg(test)]
 mod courier_tests {
     use super::*;
+    use crate::{ai::recruiter::fixtures, logic::Game};
 
     #[test]
     fn required_courier_can_detour_around_stationary_allies() {
@@ -309,42 +233,51 @@ mod courier_tests {
             vec![],
             vec![],
         );
-        game.units.retain(|u| [1, 2, 4, 5].contains(&u.id));
-        for (id, tile) in [
-            (1, "hex-0988-17596734c1"),
-            (2, "hex-0952-a980626eda"),
-            (4, "hex-0984-954a3b23d6"),
-            (5, "hex-0987-a19805d204"),
-        ] {
-            let tile = game.site(tile);
-            game.units.iter_mut().find(|u| u.id == id).unwrap().tile = tile;
-        }
-        // Keep allies stationary for this turn: the courier must take a detour.
-        for ally in game.units.iter_mut().filter(|u| u.id != 5) {
-            ally.moved = true;
-            ally.attacked = true;
-        }
-        game.roster_changed();
+        let sites: std::collections::HashMap<_, _> = game
+            .board()
+            .ids
+            .iter()
+            .enumerate()
+            .map(|(i, id)| (id.clone(), i))
+            .collect();
         let target = game.site("hex-1016-9e0db09d3e");
-        // Block the other direct approach as well.
-        game.units.push(Unit {
-            faction: None,
-            items: vec![],
-            ai_group: None,
-            id: 100,
-            kind: rules.types["reefguard"],
-            tile: game.site("hex-1019-90a76d4969"),
-            side: Side::Player,
-            hp: rules.units[rules.types["reefguard"]].hp,
-            moved: true,
-            attacked: true,
-            experience: None,
-            character: None,
-            role: None,
-            retreating: None,
-            rebuilding: None,
+        let blocker_tile = game.site("hex-1019-90a76d4969");
+        fixtures::units(&mut game, |units| {
+            units.retain(|u| [1, 2, 4, 5].contains(&u.id));
+            for (id, tile) in [
+                (1, "hex-0988-17596734c1"),
+                (2, "hex-0952-a980626eda"),
+                (4, "hex-0984-954a3b23d6"),
+                (5, "hex-0987-a19805d204"),
+            ] {
+                let tile = *sites.get(tile).unwrap();
+                units.iter_mut().find(|u| u.id == id).unwrap().tile = tile;
+            }
+            // Keep allies stationary for this turn: the courier must take a detour.
+            for ally in units.iter_mut().filter(|u| u.id != 5) {
+                ally.moved = true;
+                ally.attacked = true;
+            }
+
+            // Block the other direct approach as well.
+            units.push(Unit {
+                faction: None,
+                items: vec![],
+                ai_group: None,
+                id: 100,
+                kind: rules.types["reefguard"],
+                tile: blocker_tile,
+                side: Side::Player,
+                hp: rules.units[rules.types["reefguard"]].hp,
+                moved: true,
+                attacked: true,
+                experience: None,
+                character: None,
+                role: None,
+                retreating: None,
+                rebuilding: None,
+            });
         });
-        game.roster_changed();
         let courier = game.unit(5).unwrap();
         let static_route = game.routes(courier.kind, &[target]);
         assert!(
@@ -364,7 +297,7 @@ mod courier_tests {
         assert!(is_command_move(&command), "{command:?}");
         game.execute(command).unwrap();
         assert_ne!(
-            game.board.ids[game.unit(5).unwrap().tile],
+            game.board().ids[game.unit(5).unwrap().tile],
             "hex-0987-a19805d204"
         );
     }
@@ -400,22 +333,29 @@ mod courier_tests {
                 vec![],
                 vec![],
             );
-            game.units.retain(|u| u.side == Side::Player);
-            for (id, tile) in [
-                (1, "hex-0988-17596734c1"),
-                (2, "hex-0952-a980626eda"),
-                (3, "hex-1019-90a76d4969"),
-                (4, "hex-0984-954a3b23d6"),
-                (5, "hex-0987-a19805d204"),
-            ] {
-                let tile = game.site(tile);
-                game.units.iter_mut().find(|u| u.id == id).unwrap().tile = tile;
-            }
-            for tile in ["hex-0909-61c988dee7", "hex-0988-17596734c1"] {
-                let tile = game.site(tile);
-                game.owners[tile] = Some("player".into());
-            }
-            game.roster_changed();
+            fixtures::edit(&mut game, |state| {
+                state.units.retain(|u| u.side == Side::Player);
+                for (id, tile) in [
+                    (1, "hex-0988-17596734c1"),
+                    (2, "hex-0952-a980626eda"),
+                    (3, "hex-1019-90a76d4969"),
+                    (4, "hex-0984-954a3b23d6"),
+                    (5, "hex-0987-a19805d204"),
+                ] {
+                    let tile = tile.to_owned();
+                    state
+                        .units
+                        .iter_mut()
+                        .find(|u| u.id == format!("u{id}"))
+                        .unwrap()
+                        .tile = tile;
+                }
+                for tile in ["hex-0909-61c988dee7", "hex-0988-17596734c1"] {
+                    let tile = tile.to_owned();
+                    state.tiles.iter_mut().find(|t| t.id == tile).unwrap().owner =
+                        Some("player".into());
+                }
+            });
             let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Diplomatic);
             for _ in 0..40 {
                 let command = choose_game_command(&game, policy, &mut workspace).unwrap();
@@ -423,18 +363,18 @@ mod courier_tests {
                     break;
                 }
                 game.execute(command).unwrap();
-                if game.winner.is_some() {
+                if game.winner().is_some() {
                     break;
                 }
             }
             assert_eq!(
-                game.winner,
+                game.winner(),
                 Some(Side::Player),
                 "{policy:?}: {:?}",
                 game.public_units()
             );
             assert_eq!(
-                game.board.ids[game.unit(5).unwrap().tile],
+                game.board().ids[game.unit(5).unwrap().tile],
                 "hex-1016-9e0db09d3e"
             );
         }

@@ -31,7 +31,6 @@ impl Game<'_> {
     pub(crate) fn unit_faction<'a>(&self, unit: &'a Unit) -> &'a str {
         unit.faction.as_deref().unwrap_or(unit.side.faction_id())
     }
-    #[cfg(any(feature = "wasm", test))]
     pub(crate) fn unit_faction_view(&self, unit: &Unit) -> UnitFaction {
         let id = self.unit_faction(unit);
         let faction = self.faction(id);

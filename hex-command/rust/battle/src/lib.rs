@@ -14,3 +14,6 @@ pub use logic::{conditions, damage, exchange, geometry};
 pub use logic::{validate_state_geometry, validate_state_geometry_with_campaign};
 pub use sort::SharedSort;
 pub use view::*;
+
+#[cfg(test)]
+mod tests;

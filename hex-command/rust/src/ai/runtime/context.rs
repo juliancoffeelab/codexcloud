@@ -1,7 +1,15 @@
 //! Runtime-owned execution contexts; evaluation cannot construct these capabilities.
-use crate::{ai::{PlanningWorkspace, orders::*, recruiter::{RecruiterKind, Recruiter}}, data::*, logic::Game};
-use hex_command_battle::{BattleView, ActionForecast, PhaseForecasts, ActionForecastSource};
 use crate::ai::campaigner::mission::{CampaignInput, MissionPolicy};
+use crate::{
+    ai::{
+        PlanningWorkspace,
+        orders::*,
+        recruiter::{Recruiter, RecruiterKind},
+    },
+    data::*,
+    logic::Game,
+};
+use hex_command_battle::{ActionForecast, ActionForecastSource, BattleView, PhaseForecasts};
 
 /// Execution-only recruiter information. Evaluators receive EstimateInput instead.
 #[derive(Clone)]
@@ -11,22 +19,44 @@ pub(super) struct RecruitmentOpportunity {
     pub(super) budget: Option<usize>,
     pub(super) orders: RecruitmentOrders,
 }
-fn recruit(draft: &mut ActionForecast<'_>, opportunity: &RecruitmentOpportunity) -> Result<(Vec<Command>,RecruitmentReport),CommandError> {
-    let mut commands=Vec::new();
+fn recruit(
+    draft: &mut ActionForecast<'_>,
+    opportunity: &RecruitmentOpportunity,
+) -> Result<(Vec<Command>, RecruitmentReport), CommandError> {
+    let mut commands = Vec::new();
     let mut kind = opportunity.kind;
-    let report=kind.recruit(&mut RecruitmentContext { draft, commands:&mut commands, seed:opportunity.seed, budget:opportunity.budget }, &opportunity.orders)?;
-    Ok((commands,report))
+    let report = kind.recruit(
+        &mut RecruitmentContext {
+            draft,
+            commands: &mut commands,
+            seed: opportunity.seed,
+            budget: opportunity.budget,
+        },
+        &opportunity.orders,
+    )?;
+    Ok((commands, report))
 }
 
-pub(crate) struct CampaignView<'a,'catalog> {
-    mission: MissionPolicy<'a,'catalog>,
+pub(crate) struct CampaignView<'a, 'catalog> {
+    mission: MissionPolicy<'a, 'catalog>,
     input: CampaignInput<'a>,
 }
-impl<'a,'catalog> CampaignView<'a,'catalog> {
-    pub(in crate::ai) fn new(game:&'a Game<'catalog>, config:super::TurnConfig<'a>) -> Self {
-        Self { mission:MissionPolicy::new(game.campaign_view(), game.phase_forecasts()), input:CampaignInput {goals:config.goals,diplomacy:config.diplomacy} }
+impl<'a, 'catalog> CampaignView<'a, 'catalog> {
+    pub(in crate::ai) fn new(game: &'a Game<'catalog>, config: super::TurnConfig<'a>) -> Self {
+        Self {
+            mission: MissionPolicy::new(game.campaign_view(), game.phase_forecasts()),
+            input: CampaignInput {
+                goals: config.goals,
+                diplomacy: config.diplomacy,
+            },
+        }
     }
-    pub(in crate::ai) fn orders(&self, kind:crate::ai::campaigner::CampaignerKind) -> CampaignOrders {kind.campaign_orders(&self.mission,self.input)}
+    pub(in crate::ai) fn orders(
+        &self,
+        kind: crate::ai::campaigner::CampaignerKind,
+    ) -> CampaignOrders {
+        kind.campaign_orders(&self.mission, self.input)
+    }
 }
 /// Exactly one isolated engine state for recruitment and tactical execution.
 pub(super) struct PlanningContext<'catalog> {
@@ -96,9 +126,15 @@ pub(crate) struct RecruitmentContext<'a, 'catalog> {
     budget: Option<usize>,
 }
 impl RecruitmentContext<'_, '_> {
-    pub(in crate::ai) fn seed(&self) -> u32 { self.seed }
-    pub(in crate::ai) fn budget(&self) -> Option<usize> { self.budget }
-    pub(in crate::ai) fn phase_forecasts(&self) -> PhaseForecasts<'_, '_> { self.draft.phase_forecasts() }
+    pub(in crate::ai) fn seed(&self) -> u32 {
+        self.seed
+    }
+    pub(in crate::ai) fn budget(&self) -> Option<usize> {
+        self.budget
+    }
+    pub(in crate::ai) fn phase_forecasts(&self) -> PhaseForecasts<'_, '_> {
+        self.draft.phase_forecasts()
+    }
 
     pub(in crate::ai) fn battle(&self) -> &BattleView<'_, '_> {
         self.draft
@@ -120,12 +156,58 @@ pub(crate) struct TacticalContext<'a, 'catalog> {
     workspace: &'a mut PlanningWorkspace,
 }
 impl TacticalContext<'_, '_> {
-    pub(in crate::ai) fn is_boundary(&self) -> bool { self.combat_boundary }
-
-    pub(in crate::ai) fn planner_parts(&mut self) -> (&BattleView<'_, '_>, PhaseForecasts<'_, '_>, ActionForecastSource<'_, '_>, super::PlannerParts<'_>) {
-        (&*self.draft, self.draft.phase_forecasts(), self.draft.action_forecasts(), self.workspace.planner_parts())
+    pub(in crate::ai) fn is_boundary(&self) -> bool {
+        self.combat_boundary
     }
 
+    pub(in crate::ai) fn turn_parts(&mut self) -> super::PlannerTurn<'_> {
+        self.workspace.turn_parts()
+    }
+    pub(in crate::ai) fn classic_parts(
+        &mut self,
+    ) -> (
+        &BattleView<'_, '_>,
+        PhaseForecasts<'_, '_>,
+        ActionForecastSource<'_, '_>,
+        super::PlannerParts<'_, crate::ai::planner::classic::Session>,
+    ) {
+        (
+            &*self.draft,
+            self.draft.phase_forecasts(),
+            self.draft.action_forecasts(),
+            self.workspace.classic_parts(),
+        )
+    }
+    pub(in crate::ai) fn full_parts(
+        &mut self,
+    ) -> (
+        &BattleView<'_, '_>,
+        PhaseForecasts<'_, '_>,
+        ActionForecastSource<'_, '_>,
+        super::PlannerParts<'_, crate::ai::planner::search::Session>,
+    ) {
+        (
+            &*self.draft,
+            self.draft.phase_forecasts(),
+            self.draft.action_forecasts(),
+            self.workspace.full_parts(),
+        )
+    }
+    pub(in crate::ai) fn queued_parts(
+        &mut self,
+    ) -> (
+        &BattleView<'_, '_>,
+        PhaseForecasts<'_, '_>,
+        ActionForecastSource<'_, '_>,
+        super::PlannerParts<'_, crate::ai::planner::queued::Session>,
+    ) {
+        (
+            &*self.draft,
+            self.draft.phase_forecasts(),
+            self.draft.action_forecasts(),
+            self.workspace.queued_parts(),
+        )
+    }
     pub(in crate::ai) fn battle(&self) -> &BattleView<'_, '_> {
         self.draft
     }
@@ -151,13 +233,20 @@ impl TacticalContext<'_, '_> {
         if moved {
             if let Some(opportunity) = &self.workspace.state_mut().recruitment_opportunity {
                 let (commands, report) = recruit(self.draft, opportunity)?;
-                self.workspace.state_mut().recruitment_remaining = self.workspace.state_mut().recruitment_remaining
+                self.workspace.state_mut().recruitment_remaining = self
+                    .workspace
+                    .state_mut()
+                    .recruitment_remaining
                     .map(|left| left.saturating_sub(report.recruited.len()));
-                self.workspace.state_mut().recruitment_opportunity
+                self.workspace
+                    .state_mut()
+                    .recruitment_opportunity
                     .as_mut()
                     .unwrap()
                     .budget = self.workspace.state_mut().recruitment_remaining;
-                self.workspace.state_mut().report
+                self.workspace
+                    .state_mut()
+                    .report
                     .mandatory_recruits
                     .extend(report.mandatory.iter().copied());
                 self.recruitment.recruited.extend(report.recruited);
@@ -187,7 +276,8 @@ impl TacticalContext<'_, '_> {
             self.workspace.state_mut().finished = true;
             return Ok(());
         }
-        if let Some((unit, target, weapon)) = self.workspace.state_mut().attack_continuation.take() {
+        if let Some((unit, target, weapon)) = self.workspace.state_mut().attack_continuation.take()
+        {
             let actor = self
                 .draft
                 .unit(unit.0)

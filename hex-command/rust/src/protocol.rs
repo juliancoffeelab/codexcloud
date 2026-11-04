@@ -1,10 +1,7 @@
 //! Canonical transfer contract shared by native/WASM hosts and generated TypeScript.
 /// Transport options reuse the core policy and diplomacy vocabularies.
 pub use crate::ai::{Diplomacy as AiDiplomacy, Policy as AiPolicy};
-use crate::data::{
-    CampaignState, Command, CommandError, Faction, Gold, GroundItem, LastCombat, PublicUnit, Side,
-    State, Tile, TileId, Weapon,
-};
+use crate::data::{Command, CommandError, State};
 use serde::{Deserialize, Serialize};
 
 /// Select a scenario or the first mission of an authored campaign.
@@ -136,7 +133,10 @@ pub struct DispatchResult {
     pub combat: Option<CombatAnimation>,
 }
 
-pub use hex_command_battle::model::{StateFrame, TerrainUpdate, DispatchUpdate, BoardInspection, CombatAnimation, CombatStrike, ReachableTile, DamageDetail, HpForecast, AttackDetails, UnitActions, BattleInspection};
+pub use hex_command_battle::model::{
+    AttackDetails, BattleInspection, BoardInspection, CombatAnimation, CombatStrike, DamageDetail,
+    DispatchUpdate, HpForecast, ReachableTile, StateFrame, TerrainUpdate, UnitActions,
+};
 
 /// Policy configuration retained for the current planning phase.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

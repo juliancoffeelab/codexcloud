@@ -32,7 +32,9 @@ fn main() {
     sources(&root, &root.join("src"), &mut files);
     sources(&root, &root.join("battle/src"), &mut files);
     files.push(PathBuf::from("battle/Cargo.toml"));
-    if root.join("battle/build.rs").exists() { files.push(PathBuf::from("battle/build.rs")); }
+    if root.join("battle/build.rs").exists() {
+        files.push(PathBuf::from("battle/build.rs"));
+    }
     println!("cargo:rerun-if-changed=battle/src");
     println!("cargo:rerun-if-changed=battle/build.rs");
     sources(&root, &root.join("catalog/src"), &mut files);
