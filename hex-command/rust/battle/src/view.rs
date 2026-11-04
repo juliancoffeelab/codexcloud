@@ -1,4 +1,6 @@
 //! Borrowed rule queries and explicitly granted mechanical projections.
+//! Query delegates are inlineable across the crate boundary, including native
+//! simulation builds without LTO. Large engine algorithms retain their own bodies.
 #[cfg(feature = "wasm")]
 use crate::logic::battle::RuntimeCache;
 use crate::{data::*, logic::Game, logic::battle::Board, logic::geometry::TileSet, model::*};
@@ -23,6 +25,7 @@ pub struct BattleView<'a, 'catalog> {
 }
 impl<'a, 'catalog> BattleView<'a, 'catalog> {
     /// Borrow from an existing owner; this cannot manufacture an owner from a view.
+    #[inline]
     pub fn new(session: &'a BattleSession<'catalog>) -> Self {
         Self {
             engine: EngineAccess::Borrowed(session.0.engine()),
@@ -30,33 +33,40 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             scoped: session.0.scoped.clone(),
         }
     }
+    #[inline]
     pub(crate) fn engine(&self) -> &Game<'catalog> {
         match &self.engine {
             EngineAccess::Borrowed(game) => game,
             EngineAccess::Draft(game) => game,
         }
     }
+    #[inline]
     fn engine_mut(&mut self) -> &mut Game<'catalog> {
         match &mut self.engine {
             EngineAccess::Draft(game) => game,
             EngineAccess::Borrowed(_) => panic!("read-only battle view"),
         }
     }
+    #[inline]
     pub fn rules(&self) -> BattleRules<'_> {
         BattleRules {
             units: &self.engine().rules.units,
             recruitment: &self.engine().rules.recruitment,
         }
     }
+    #[inline]
     pub fn weapons<'b>(&'b self, unit: &'b Unit) -> impl Iterator<Item = &'b Weapon> {
         self.engine().weapons(unit)
     }
+    #[inline]
     pub fn weapon<'b>(&'b self, unit: &'b Unit, index: usize) -> &'b Weapon {
         self.engine().weapon(unit, index)
     }
+    #[inline]
     pub fn board(&self) -> &Board {
         &self.engine().board
     }
+    #[inline]
     pub fn can_act(&self, id: u32) -> bool {
         !self.inactive.contains(&id)
             && self
@@ -64,6 +74,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
                 .unit(id)
                 .is_some_and(|u| self.engine().may_act(u))
     }
+    #[inline]
     pub fn permits(&self, command: &Command) -> bool {
         match command {
             Command::Move { unit, tile } => {
@@ -93,77 +104,101 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             _ => true,
         }
     }
+    #[inline]
     pub fn available_combatant(&self, unit: &Unit) -> bool {
         self.engine().available_combatant(unit)
     }
+    #[inline]
     pub fn hostile(&self, first: &Unit, second: &Unit) -> bool {
         self.engine().hostile(first, second)
     }
+    #[inline]
     pub fn same_faction(&self, first: &Unit, second: &Unit) -> bool {
         self.engine().unit_faction(first) == self.engine().unit_faction(second)
     }
+    #[inline]
     pub fn allied(&self, first: &Unit, second: &Unit) -> bool {
         self.engine().allied(first, second)
     }
+    #[inline]
     pub fn hostile_to_phase(&self, unit: &Unit, side: Side) -> bool {
         self.engine().hostile_to_phase(unit, side)
     }
+    #[inline]
     pub fn belongs_to_phase(&self, unit: &Unit, side: Side) -> bool {
         self.engine().belongs_to_phase(unit, side)
     }
+    #[inline]
     pub fn control_roster(&self) -> Vec<(u32, Side, Option<String>, Option<Role>)> {
         self.engine().control_roster()
     }
+    #[inline]
     pub fn units(&self) -> &Vec<Unit> {
         &self.engine().units
     }
 
+    #[inline]
     pub fn terrain(&self) -> &Vec<usize> {
         &self.engine().terrain
     }
+    #[inline]
     pub fn owners(&self) -> &Vec<Option<String>> {
         &self.engine().owners
     }
+    #[inline]
     pub fn map_id(&self) -> &str {
         &self.engine().map_id
     }
+    #[inline]
     pub fn turn(&self) -> Side {
         self.engine().turn
     }
+    #[inline]
     pub fn round(&self) -> u32 {
         self.engine().round
     }
+    #[inline]
     pub fn gold_for_phase(&self, side: Side) -> i32 {
         self.engine().gold_for_phase(side)
     }
+    #[inline]
     pub fn gold_for_unit(&self, unit: &Unit) -> i32 {
         self.engine().gold_for_unit(unit)
     }
+    #[inline]
     pub fn owns(&self, tile: usize, side: Side) -> bool {
         self.engine().owns(tile, side)
     }
+    #[inline]
     pub fn captures(&self, tile: usize, side: Side) -> bool {
         self.engine().captures(tile, side)
     }
+    #[inline]
     pub fn recruitment_options_for(&self, unit: &Unit) -> Vec<usize> {
         self.engine().recruitment_options_for(unit)
     }
+    #[inline]
     pub fn recruit_cost(&self, unit: &Unit, kind: usize) -> i32 {
         self.engine().recruit_cost(unit, kind)
     }
+    #[inline]
     pub fn winner(&self) -> Option<Side> {
         self.engine().winner
     }
+    #[inline]
     pub fn next_id(&self) -> u32 {
         self.engine().next_id
     }
+    #[inline]
     pub fn occupied_tiles(&self) -> &TileSet {
         &self.engine().occupied_tiles
     }
 
+    #[inline]
     pub fn attack_origins(&self, category: Category, range: u8) -> Rc<Vec<TileSet>> {
         self.engine().attack_origins(category, range)
     }
+    #[inline]
     pub fn can_attack(&self, unit: &Unit, from: usize, target: &Unit, weapon: usize) -> bool {
         self.can_act(unit.id)
             && self
@@ -173,6 +208,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
                 .all(|order| order.allows_attack(self, from, target.tile))
             && self.engine().can_attack(unit, from, target, weapon)
     }
+    #[inline]
     pub fn attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
         if !self.can_act(unit.id)
             || !self
@@ -187,12 +223,15 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     }
     /// Hypothetical capability, independent of whose turn it is or which actors
     /// the planner controls. Command authorization stays in permits/can_act.
+    #[inline]
     pub fn forecast_attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
         self.engine().attack_options(unit, target, from)
     }
+    #[inline]
     pub fn damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> i32 {
         self.engine().damage(attacker, target, weapon)
     }
+    #[inline]
     pub fn exchange(
         &self,
         attacker: &Unit,
@@ -202,6 +241,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     ) -> Rc<crate::logic::exchange::ExchangeForecast> {
         self.engine().exchange(attacker, target, weapon, from)
     }
+    #[inline]
     pub fn exchange_with_thorns(
         &self,
         attacker: &Unit,
@@ -214,6 +254,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             .exchange_with_thorns(attacker, target, weapon, from, reflection)
     }
     /// Optimistic full-weapon values bound searches before an attack origin is chosen.
+    #[inline]
     pub fn potential_damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> f64 {
         let distribution = self
             .engine()
@@ -225,11 +266,13 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             distribution.effective(target.hp)
         }
     }
+    #[inline]
     pub fn potential_kill_chance(&self, attacker: &Unit, target: &Unit, weapon: usize) -> f64 {
         self.engine()
             .damage_distribution(attacker, target, weapon, target.tile)
             .chance(target.hp)
     }
+    #[inline]
     pub fn maximum_retaliation(
         &self,
         attacker: &Unit,
@@ -240,9 +283,11 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         self.engine()
             .maximum_retaliation(attacker, target, weapon, from)
     }
+    #[inline]
     pub fn death_chance(&self, attacker: &Unit, target: &Unit, weapon: usize, from: usize) -> f64 {
         self.engine().death_chance(attacker, target, weapon, from)
     }
+    #[inline]
     pub fn preview(
         &self,
         unit: &Unit,
@@ -252,51 +297,65 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     ) -> (i32, i32, Option<usize>) {
         self.engine().preview(unit, target, weapon, from)
     }
+    #[inline]
     pub fn unit(&self, id: u32) -> Option<&Unit> {
         self.engine().unit(id)
     }
+    #[inline]
     pub fn at(&self, tile: usize) -> Option<&Unit> {
         self.engine().at(tile)
     }
+    #[inline]
     pub fn index(&self, id: u32) -> Option<usize> {
         self.engine().index(id)
     }
+    #[inline]
     pub fn site(&self, id: &str) -> usize {
         self.engine().site(id)
     }
+    #[inline]
     pub fn unit_name(&self, unit: &Unit) -> String {
         self.engine().unit_name(unit).to_owned()
     }
+    #[inline]
     pub fn kind(&self, name: &str) -> usize {
         self.engine().kind(name)
     }
+    #[inline]
     pub fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
         self.engine().role_is(tile, role)
     }
+    #[inline]
     pub fn is_keep(&self, tile: usize) -> bool {
         self.engine().is_keep(tile)
     }
+    #[inline]
     pub fn promotion_options(&self, unit: &Unit) -> Vec<usize> {
         if !self.can_act(unit.id) {
             return vec![];
         }
         self.engine().promotion_options(unit)
     }
+    #[inline]
     pub fn recruitment_options(&self, side: Side) -> Vec<usize> {
         self.engine().recruitment_options(side)
     }
+    #[inline]
     pub fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
         if !self.can_act(leader.id) {
             return vec![];
         }
         self.engine().placement_tiles(leader, kind, price)
     }
+    #[inline]
     pub fn threat_reach_blocked(&self, unit: &Unit, occupied: TileSet) -> TileSet {
         self.engine().threat_reach_blocked(unit, occupied)
     }
+    #[inline]
     pub fn cost(&self, kind: usize, tile: usize) -> u16 {
         self.engine().cost(kind, tile)
     }
+    #[inline]
     pub fn reachable(&self, unit: &Unit) -> Rc<Vec<(usize, u16)>> {
         if !self.can_act(unit.id) {
             return Rc::new(vec![]);
@@ -318,15 +377,19 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
                 .collect(),
         )
     }
+    #[inline]
     pub fn routes(&self, kind: usize, goals: &[usize]) -> Rc<Vec<u16>> {
         self.engine().routes(kind, goals)
     }
+    #[inline]
     pub fn routes_from(&self, kind: usize, start: usize) -> Rc<Vec<u16>> {
         self.engine().routes_from(kind, start)
     }
+    #[inline]
     pub fn occupied_routes(&self, unit: &Unit, goals: &[usize], yielding: bool) -> Vec<u16> {
         self.engine().occupied_routes(unit, goals, yielding)
     }
+    #[inline]
     pub fn occupied_routes_with_penalty(
         &self,
         unit: &Unit,
@@ -336,6 +399,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         self.engine()
             .occupied_routes_with_penalty(unit, goals, friendly_penalty)
     }
+    #[inline]
     pub fn income(&self, side: Side) -> i32 {
         self.engine().income(side)
     }
@@ -345,6 +409,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
 pub struct BattleSession<'catalog>(BattleView<'catalog, 'catalog>);
 impl<'catalog> std::ops::Deref for BattleSession<'catalog> {
     type Target = BattleView<'catalog, 'catalog>;
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.0
     }
@@ -405,9 +470,11 @@ impl<'catalog> BattleSession<'catalog> {
             rules, definition, index, veterans, carry, flags, story, fallen,
         ))
     }
+    #[inline]
     pub fn view(&self) -> &BattleView<'catalog, 'catalog> {
         &self.0
     }
+    #[inline]
     pub fn campaign_view(&self) -> CampaignView<'_, 'catalog> {
         CampaignView { view: &self.0 }
     }
@@ -417,6 +484,7 @@ impl<'catalog> BattleSession<'catalog> {
     pub fn campaign_snapshot(&self) -> Option<CampaignState> {
         self.0.engine().campaign_snapshot()
     }
+    #[inline]
     pub fn execute(&mut self, command: Command) -> Result<(), CommandError> {
         self.0.engine_mut().execute(command)
     }
@@ -435,9 +503,11 @@ impl<'catalog> BattleSession<'catalog> {
     pub fn planning_fork(&self) -> Self {
         Self::owned(self.0.engine().planning_fork())
     }
+    #[inline]
     pub fn action_forecasts(&self) -> ActionForecastSource<'_, 'catalog> {
         ActionForecastSource { view: &self.0 }
     }
+    #[inline]
     pub fn phase_forecasts(&self) -> PhaseForecasts<'_, 'catalog> {
         PhaseForecasts { view: &self.0 }
     }
@@ -513,35 +583,45 @@ pub struct CampaignView<'a, 'catalog> {
 }
 impl<'a, 'catalog> std::ops::Deref for CampaignView<'a, 'catalog> {
     type Target = BattleView<'a, 'catalog>;
+    #[inline]
     fn deref(&self) -> &Self::Target {
         self.view
     }
 }
 impl<'a, 'catalog> CampaignView<'a, 'catalog> {
+    #[inline]
     pub fn catalogue(&self) -> &'catalog Rules {
         self.view.engine().rules
     }
+    #[inline]
     pub fn definition(&self) -> &'catalog Campaign {
         self.view.engine().campaign_definition()
     }
+    #[inline]
     pub fn mission(&self) -> Option<&Mission> {
         self.view.engine().mission.as_deref()
     }
+    #[inline]
     pub fn campaign(&self) -> Option<&CampaignState> {
         self.view.engine().campaign.as_deref()
     }
+    #[inline]
     pub fn scripts(&self) -> Option<&EventState> {
         self.view.engine().scripts.as_deref()
     }
+    #[inline]
     pub fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
         self.view.engine().script_unit_matches(select, unit)
     }
+    #[inline]
     pub fn script_condition(&self, when: &When) -> bool {
         self.view.engine().script_condition(when)
     }
+    #[inline]
     pub fn event_condition_met(&self, condition: &Condition) -> bool {
         self.view.engine().event_condition_met(condition)
     }
+    #[inline]
     pub fn group_active(&self, group: &EnemyGroup) -> bool {
         self.view.engine().group_active(group)
     }
@@ -553,6 +633,7 @@ pub struct ActionForecastSource<'a, 'catalog> {
     view: &'a BattleView<'a, 'catalog>,
 }
 impl<'catalog> ActionForecastSource<'_, 'catalog> {
+    #[inline]
     pub fn fork(&self) -> ActionForecast<'catalog> {
         ActionForecast::from_view(self.view, true)
     }
@@ -563,6 +644,7 @@ pub struct ActionForecast<'catalog> {
 }
 impl<'catalog> std::ops::Deref for ActionForecast<'catalog> {
     type Target = BattleView<'catalog, 'catalog>;
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.view
     }
@@ -586,6 +668,7 @@ impl<'catalog> ActionForecast<'catalog> {
     pub fn fork(&self) -> Self {
         Self::from_view(&self.view, true)
     }
+    #[inline]
     pub fn execute(&mut self, command: Command) -> Result<(), CommandError> {
         self.view.engine_mut().execute(command)
     }
@@ -609,9 +692,11 @@ impl<'catalog> ActionForecast<'catalog> {
     pub fn restrict_actors(&mut self, inactive: &[UnitId]) {
         self.view.inactive = Rc::new(inactive.iter().map(|id| id.0).collect());
     }
+    #[inline]
     pub fn record(&mut self, message: String) {
         self.view.engine_mut().record(message);
     }
+    #[inline]
     pub fn phase_forecasts(&self) -> PhaseForecasts<'_, 'catalog> {
         PhaseForecasts { view: &self.view }
     }
@@ -624,6 +709,7 @@ pub struct PhaseForecasts<'a, 'catalog> {
 }
 impl<'a, 'catalog> PhaseForecasts<'a, 'catalog> {
     /// The immutable source used by every projection from this capability.
+    #[inline]
     pub fn view(&self) -> &'a BattleView<'a, 'catalog> {
         self.view
     }
@@ -640,12 +726,15 @@ impl<'a, 'catalog> PhaseForecasts<'a, 'catalog> {
             },
         }
     }
+    #[inline]
     pub fn next_phase(&self) -> PhaseSnapshot<'catalog> {
         self.project(None, None, false)
     }
+    #[inline]
     pub fn next_phase_without(&self, eliminated: Option<u32>) -> PhaseSnapshot<'catalog> {
         self.project(None, eliminated, true)
     }
+    #[inline]
     pub fn next_phase_with_actor(
         &self,
         actor: u32,
@@ -691,57 +780,74 @@ pub struct PhaseSnapshot<'catalog> {
 }
 impl<'catalog> std::ops::Deref for PhaseSnapshot<'catalog> {
     type Target = BattleView<'catalog, 'catalog>;
+    #[inline]
     fn deref(&self) -> &Self::Target {
         &self.view
     }
 }
 
 impl<'a, 'catalog> BattleView<'a, 'catalog> {
+    #[inline]
     pub fn factions(&self) -> &[Faction] {
         &self.engine().factions
     }
+    #[inline]
     pub fn faction(&self, id: &str) -> Option<&Faction> {
         self.engine().faction(id)
     }
+    #[inline]
     pub fn faction_relation(&self, first: &str, second: &str) -> Relation {
         self.engine().faction_relation(first, second)
     }
+    #[inline]
     pub fn faction_for_phase(&self, side: Side) -> &str {
         self.engine().faction_for_phase(side)
     }
+    #[inline]
     pub fn unit_faction<'u>(&self, unit: &'u Unit) -> &'u str {
         self.engine().unit_faction(unit)
     }
+    #[inline]
     pub fn may_act(&self, unit: &Unit) -> bool {
         self.engine().may_act(unit)
     }
+    #[inline]
     pub fn active_faction(&self) -> Option<&str> {
         self.engine().active_faction.as_deref()
     }
+    #[inline]
     pub fn automatic_factions(&self) -> Vec<(String, Option<FactionPolicy>)> {
         self.engine().automatic_factions()
     }
+    #[inline]
     pub fn gold(&self) -> &Gold {
         &self.engine().gold
     }
+    #[inline]
     pub fn ground_items(&self) -> &[GroundItem] {
         &self.engine().ground_items
     }
+    #[inline]
     pub fn map_revision(&self) -> u32 {
         self.engine().map_revision
     }
+    #[inline]
     pub fn cols(&self) -> i32 {
         self.engine().cols
     }
+    #[inline]
     pub fn rows(&self) -> i32 {
         self.engine().rows
     }
+    #[inline]
     pub fn is_campaign(&self) -> bool {
         self.engine().campaign.is_some()
     }
+    #[inline]
     pub fn has_pools(&self) -> bool {
         self.engine().pools.is_some()
     }
+    #[inline]
     pub fn site_at(&self, col: i32, row: i32) -> usize {
         self.engine()
             .board
@@ -750,12 +856,15 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             .position(|position| *position == (col, row))
             .unwrap()
     }
+    #[inline]
     pub fn terrain_role(&self, tile: usize) -> TerrainRole {
         self.engine().terrain_role(tile)
     }
+    #[inline]
     pub fn faction_income(&self, id: &str) -> i32 {
         self.engine().faction_income(id)
     }
+    #[inline]
     pub fn damage_distribution(
         &self,
         attacker: &Unit,
@@ -766,28 +875,34 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         self.engine()
             .damage_distribution(attacker, target, weapon, tile)
     }
+    #[inline]
     pub fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<Side>]>) -> TileSet {
         self.engine().threat_reach(unit, occupancy)
     }
 }
 impl<'a, 'catalog> CampaignView<'a, 'catalog> {
+    #[inline]
     pub fn battle(&self) -> &'a BattleView<'a, 'catalog> {
         self.view
     }
+    #[inline]
     pub fn approach_tiles(&self, selection: &ProximitySelection) -> Vec<String> {
         self.view.engine().approach_tiles(selection)
     }
+    #[inline]
     pub fn mediation_at_risk(&self, target: &Unit) -> bool {
         self.view.engine().mediation_at_risk(target)
     }
 }
 
 impl BattleView<'_, '_> {
+    #[inline]
     pub fn attack_masks(&self, category: Category, range: u8) -> Rc<Vec<u128>> {
         self.engine().attack_masks(category, range)
     }
 }
 impl<'catalog> BattleSession<'catalog> {
+    #[inline]
     pub fn catalogue(&self) -> &'catalog Rules {
         self.0.engine().rules
     }
@@ -802,21 +917,27 @@ impl<'catalog> BattleSession<'catalog> {
 }
 
 impl BattleView<'_, '_> {
+    #[inline]
     pub fn last_combat(&self) -> Option<&LastCombat> {
         self.engine().last_combat.as_ref()
     }
+    #[inline]
     pub fn combat_present(&self) -> bool {
         self.engine().combat_present
     }
+    #[inline]
     pub fn armies(&self) -> Option<&[String; 2]> {
         self.engine().armies.as_ref()
     }
+    #[inline]
     pub fn pools(&self) -> Option<&[Vec<usize>; 2]> {
         self.engine().pools.as_ref()
     }
+    #[inline]
     pub fn arena_first(&self) -> Option<Side> {
         self.engine().arena_first
     }
+    #[inline]
     pub fn combat_rng(&self) -> u32 {
         self.engine().combat_rng
     }
@@ -843,11 +964,13 @@ impl<'catalog> BattleSession<'catalog> {
     }
 }
 impl<'catalog> ActionForecast<'catalog> {
+    #[inline]
     pub fn action_forecasts(&self) -> ActionForecastSource<'_, 'catalog> {
         ActionForecastSource { view: &self.view }
     }
 }
 impl BattleView<'_, '_> {
+    #[inline]
     pub fn board_handle(&self) -> Rc<Board> {
         self.engine().board.clone()
     }
@@ -886,10 +1009,12 @@ impl BattleSession<'_> {
 }
 
 impl CampaignView<'_, '_> {
+    #[inline]
     pub fn condition_memory(&self) -> &[String] {
         &self.view.engine().condition_memory
     }
     #[cfg(not(target_arch = "wasm32"))]
+    #[inline]
     pub fn event_goal_progress(&self) -> Vec<Progress> {
         self.view.engine().event_goal_progress()
     }

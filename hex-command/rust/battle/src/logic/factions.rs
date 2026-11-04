@@ -2,21 +2,26 @@
 use super::Game;
 use crate::data::*;
 impl Game<'_> {
+    #[inline]
     pub(crate) fn faction_for_phase(&self, side: Side) -> &str {
         self.active_faction
             .as_deref()
             .filter(|_| self.scoped_phase() == Some(side))
             .unwrap_or(side.faction_id())
     }
+    #[inline]
     pub(crate) fn gold_for_phase(&self, side: Side) -> i32 {
         self.gold[self.faction_for_phase(side)]
     }
+    #[inline]
     pub(crate) fn gold_for_unit(&self, unit: &Unit) -> i32 {
         self.gold[self.unit_faction(unit)]
     }
+    #[inline]
     pub(crate) fn owns(&self, tile: usize, side: Side) -> bool {
         self.owners[tile].as_deref() == Some(self.faction_for_phase(side))
     }
+    #[inline]
     pub(crate) fn captures(&self, tile: usize, side: Side) -> bool {
         self.owners[tile].as_deref().is_none_or(|owner| {
             self.faction_relation(self.faction_for_phase(side), owner) == Relation::Hostile
@@ -28,6 +33,7 @@ impl Game<'_> {
             .map(|unit| (unit.id, unit.side, unit.faction.clone(), unit.role))
             .collect()
     }
+    #[inline]
     pub(crate) fn unit_faction<'a>(&self, unit: &'a Unit) -> &'a str {
         unit.faction.as_deref().unwrap_or(unit.side.faction_id())
     }
@@ -45,20 +51,25 @@ impl Game<'_> {
             }),
         }
     }
+    #[inline]
     pub(crate) fn faction(&self, id: &str) -> Option<&Faction> {
         self.factions.iter().find(|faction| faction.id == id)
     }
+    #[inline]
     pub(crate) fn faction_relation(&self, first: &str, second: &str) -> Relation {
         crate::data::faction_relation(&self.factions, first, second)
     }
+    #[inline]
     pub(crate) fn hostile(&self, first: &Unit, second: &Unit) -> bool {
         self.faction_relation(self.unit_faction(first), self.unit_faction(second))
             == Relation::Hostile
     }
+    #[inline]
     pub(crate) fn allied(&self, first: &Unit, second: &Unit) -> bool {
         self.faction_relation(self.unit_faction(first), self.unit_faction(second))
             == Relation::Allied
     }
+    #[inline]
     fn scoped_phase(&self) -> Option<Side> {
         self.active_faction.as_deref().map(|id| {
             self.faction(id)
@@ -70,6 +81,7 @@ impl Game<'_> {
                 })
         })
     }
+    #[inline]
     pub(crate) fn hostile_to_phase(&self, unit: &Unit, phase: Side) -> bool {
         let faction = self
             .active_faction
@@ -78,6 +90,7 @@ impl Game<'_> {
             .unwrap_or(phase.faction_id());
         self.faction_relation(faction, self.unit_faction(unit)) == Relation::Hostile
     }
+    #[inline]
     pub(crate) fn belongs_to_phase(&self, unit: &Unit, phase: Side) -> bool {
         unit.side == phase
             && (self.scoped_phase() != Some(phase)
@@ -86,6 +99,7 @@ impl Game<'_> {
                     .as_deref()
                     .is_none_or(|faction| self.unit_faction(unit) == faction))
     }
+    #[inline]
     pub(crate) fn may_act(&self, unit: &Unit) -> bool {
         self.belongs_to_phase(unit, self.turn)
             && !self

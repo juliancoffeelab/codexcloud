@@ -676,9 +676,11 @@ impl<'catalog> Game<'catalog> {
             .map(|unit| self.public_unit(unit))
             .collect()
     }
+    #[inline]
     pub(crate) fn unit(&self, id: u32) -> Option<&Unit> {
         self.index(id).map(|index| &self.units[index])
     }
+    #[inline]
     pub(crate) fn at(&self, tile: usize) -> Option<&Unit> {
         self.occupancy
             .get(tile)
@@ -687,6 +689,7 @@ impl<'catalog> Game<'catalog> {
             .and_then(|index| self.units.get(index))
             .filter(|unit| unit.tile == tile)
     }
+    #[inline]
     pub(crate) fn index(&self, id: u32) -> Option<usize> {
         self.unit_indices
             .get(&id)
@@ -701,6 +704,7 @@ impl<'catalog> Game<'catalog> {
             .position(|p| *p == (col, row))
             .unwrap()
     }
+    #[inline]
     pub(crate) fn site(&self, id: &str) -> usize {
         self.board.indices[id]
     }
@@ -716,16 +720,20 @@ impl<'catalog> Game<'catalog> {
             .and_then(|id| self.character_name(id))
             .unwrap_or(&self.rules.units[unit.kind].name)
     }
+    #[inline]
     pub(crate) fn kind(&self, name: &str) -> usize {
         self.rules.types[name]
     }
+    #[inline]
     pub(crate) fn terrain_role(&self, tile: usize) -> TerrainRole {
         self.rules.terrain_roles[self.terrain[tile]]
     }
+    #[inline]
     pub(crate) fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
         self.terrain_role(tile) == role
     }
     /// Capability is authored once and exported through the catalog for UI discovery too.
+    #[inline]
     pub(crate) fn is_keep(&self, tile: usize) -> bool {
         self.role_is(tile, TerrainRole::Keep)
     }

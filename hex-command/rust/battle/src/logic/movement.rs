@@ -109,6 +109,7 @@ impl<'catalog> Game<'catalog> {
         cache.insert(key, reached);
         TileSet::Small(reached)
     }
+    #[inline]
     pub(crate) fn cost(&self, kind: usize, tile: usize) -> u16 {
         self.rules.units[kind].costs[self.terrain[tile]].unwrap_or(u16::MAX)
     }

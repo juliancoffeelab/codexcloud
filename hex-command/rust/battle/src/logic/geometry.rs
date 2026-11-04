@@ -9,6 +9,7 @@ pub enum TileSet {
     Large(Box<[u64]>),
 }
 impl TileSet {
+    #[inline]
     pub fn first_intersection(&self, other: &Self) -> Option<usize> {
         match (self, other) {
             (Self::Small(a), Self::Small(b)) => {
@@ -27,6 +28,7 @@ impl TileSet {
             _ => None,
         }
     }
+    #[inline]
     pub fn new(tiles: usize) -> Self {
         if tiles <= 128 {
             Self::Small(0)
@@ -34,18 +36,21 @@ impl TileSet {
             Self::Large(vec![0; tiles.div_ceil(64)].into_boxed_slice())
         }
     }
+    #[inline]
     pub fn insert(&mut self, tile: usize) {
         match self {
             Self::Small(bits) => *bits |= 1u128 << tile,
             Self::Large(bits) => bits[tile / 64] |= 1 << (tile % 64),
         }
     }
+    #[inline]
     pub fn remove(&mut self, tile: usize) {
         match self {
             Self::Small(bits) => *bits &= !(1u128 << tile),
             Self::Large(bits) => bits[tile / 64] &= !(1 << (tile % 64)),
         }
     }
+    #[inline]
     pub fn contains(&self, tile: usize) -> bool {
         match self {
             Self::Small(bits) => bits & (1u128 << tile) != 0,
@@ -53,6 +58,7 @@ impl TileSet {
         }
     }
     #[cfg(test)]
+    #[inline]
     pub fn intersects(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Small(a), Self::Small(b)) => a & b != 0,
@@ -63,6 +69,7 @@ impl TileSet {
             _ => unreachable!("same-map threat masks"),
         }
     }
+    #[inline]
     pub fn union_with(&mut self, other: &Self) {
         match (self, other) {
             (Self::Small(a), Self::Small(b)) => *a |= b,
@@ -75,6 +82,7 @@ impl TileSet {
             _ => unreachable!("same-map threat masks"),
         }
     }
+    #[inline]
     pub fn for_each(&self, mut visit: impl FnMut(usize)) {
         let mut word = |mut bits: u64, offset: usize| {
             while bits != 0 {

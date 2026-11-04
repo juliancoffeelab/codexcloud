@@ -11,6 +11,7 @@ pub struct DamageDistribution {
     pub probabilities: Vec<f64>,
 }
 impl DamageDistribution {
+    #[inline]
     pub fn chance(&self, hp: i32) -> f64 {
         if hp <= self.min {
             return 1.0;
@@ -23,11 +24,13 @@ impl DamageDistribution {
             .sum::<f64>()
             .clamp(0.0, 1.0)
     }
+    #[inline]
     pub fn effective(&self, hp: i32) -> f64 {
         self.outcomes()
             .map(|(damage, p)| f64::from(damage.min(hp.max(0))) * p)
             .sum()
     }
+    #[inline]
     pub fn outcomes(&self) -> impl Iterator<Item = (i32, f64)> + '_ {
         self.probabilities
             .iter()
