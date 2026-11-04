@@ -1,0 +1,2986 @@
+{
+  "source_revision": "8d4d50c50888ed347a0f427c1eef16c5252b57a2",
+  "source_directory": "hex-command/rust/data/game/units",
+  "note": "Read-only roster snapshot; collection has no runtime dependency on the game project.",
+  "units": [
+    {
+      "id": "adept",
+      "name": "Adept",
+      "race": "human",
+      "family": "adept",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spark",
+          "name": "Spark",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 2,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "arbalester",
+      "name": "Arbalester",
+      "race": "human",
+      "family": "archer",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "arbalest",
+          "name": "Arbalest",
+          "damage": 14,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 14
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 7,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "archer",
+      "name": "Archer",
+      "race": "human",
+      "family": "archer",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bow",
+          "name": "Bow",
+          "damage": 3,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 2,
+          "spread": 3
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 4,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "archmage",
+      "name": "Archmage",
+      "race": "human",
+      "family": "adept",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spark",
+          "name": "Spark",
+          "damage": 13,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 6,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "bear",
+      "name": "Bear",
+      "race": "beast",
+      "family": "bear",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "claws",
+          "name": "Claws",
+          "damage": 7,
+          "count": 2,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "boar",
+      "name": "Boar",
+      "race": "beast",
+      "family": "boar",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "trample",
+          "name": "Trample",
+          "damage": 8,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        },
+        {
+          "id": "tusks",
+          "name": "Tusks",
+          "damage": 4,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "bonearcher",
+      "name": "Bone archer",
+      "race": "skeletons",
+      "family": "bonearcher",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bonebow",
+          "name": "Bone bow",
+          "damage": 3,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 2,
+          "spread": 3
+        },
+        {
+          "id": "shard",
+          "name": "Shard",
+          "damage": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "briarweaver",
+      "name": "Beekeeper",
+      "race": "beast",
+      "family": "thorncaller",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "thorns",
+          "name": "Thorns",
+          "damage": 5,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 1
+        },
+        {
+          "id": "rootstaff",
+          "name": "Rootstaff",
+          "damage": 4,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        },
+        {
+          "id": "root-crush",
+          "name": "Crushing roots",
+          "damage": 8,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "captives",
+      "name": "Captive villagers",
+      "race": "human",
+      "family": "captives",
+      "move": 3,
+      "attacks": []
+    },
+    {
+      "id": "champion",
+      "name": "Champion",
+      "race": "human",
+      "family": "swordsman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "sword",
+          "name": "Sword",
+          "damage": 5,
+          "count": 3,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        },
+        {
+          "id": "mace",
+          "name": "Mace",
+          "damage": 9,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "commander",
+      "name": "Commander",
+      "race": "human",
+      "family": "commander",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "sword",
+          "name": "Sword",
+          "damage": 4,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "mace",
+          "name": "Mace",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "crossbowman",
+      "name": "Crossbowman",
+      "race": "human",
+      "family": "archer",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "crossbow",
+          "name": "Crossbow",
+          "damage": 10,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 10
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 5,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "deatharcher",
+      "name": "Death archer",
+      "race": "skeletons",
+      "family": "bonearcher",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bonebow",
+          "name": "Bone bow",
+          "damage": 4,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 3,
+          "spread": 4
+        },
+        {
+          "id": "shard",
+          "name": "Shard",
+          "damage": 4,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "direwolf",
+      "name": "Dire wolf",
+      "race": "beast",
+      "family": "wolf",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "fangs",
+          "name": "Fangs",
+          "damage": 5,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "fireslinger",
+      "name": "Fireslinger",
+      "race": "human",
+      "family": "scout",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "firepot",
+          "name": "Firepot",
+          "damage": 6,
+          "count": 3,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 6
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 4,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "fox-spearguard-l2",
+      "name": "Thornshield L2",
+      "race": "beast",
+      "family": "fox-spearguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 4,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "fox-spearguard-l3",
+      "name": "Thornshield L3",
+      "race": "beast",
+      "family": "fox-spearguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 5,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "fox-spearguard",
+      "name": "Thornshield",
+      "race": "beast",
+      "family": "fox-spearguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 3,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "ghost",
+      "name": "Ghost",
+      "race": "spirit",
+      "family": "ghost",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "spectral-touch",
+          "name": "Spectral touch",
+          "damage": 3,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "spectral-orb",
+          "name": "Spectral orb",
+          "damage": 3,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "giant-bat",
+      "name": "Giant Bat",
+      "race": "beast",
+      "family": "giant-bat",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "damage": 2,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "giant-spider",
+      "name": "Giant Spider",
+      "race": "beast",
+      "family": "giant-spider",
+      "move": 4,
+      "attacks": [
+        {
+          "id": "bite",
+          "name": "Bite",
+          "damage": 3,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "grand-marshal",
+      "name": "Grand Marshal",
+      "race": "human",
+      "family": "commander",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "sword",
+          "name": "Sword",
+          "damage": 6,
+          "count": 3,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        },
+        {
+          "id": "mace",
+          "name": "Mace",
+          "damage": 9,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "greatboar",
+      "name": "Great boar",
+      "race": "beast",
+      "family": "boar",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "trample",
+          "name": "Trample",
+          "damage": 12,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 3
+        },
+        {
+          "id": "tusks",
+          "name": "Tusks",
+          "damage": 6,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "grovewarden",
+      "name": "Grovewarden",
+      "race": "beast",
+      "family": "wildkeeper",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bough",
+          "name": "Bough",
+          "damage": 8,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 2
+        },
+        {
+          "id": "stones",
+          "name": "Stones",
+          "damage": 4,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 4
+        }
+      ]
+    },
+    {
+      "id": "halberd-master",
+      "name": "Halberd master",
+      "race": "human",
+      "family": "spearman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "halberd",
+          "name": "Halberd",
+          "damage": 21,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 5
+        },
+        {
+          "id": "axe",
+          "name": "Axe",
+          "damage": 19,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 5
+        }
+      ]
+    },
+    {
+      "id": "halberdier",
+      "name": "Halberdier",
+      "race": "human",
+      "family": "spearman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "halberd",
+          "name": "Halberd",
+          "damage": 15,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 4
+        },
+        {
+          "id": "axe",
+          "name": "Axe",
+          "damage": 13,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 3
+        }
+      ]
+    },
+    {
+      "id": "hammerman",
+      "name": "Hammerman",
+      "race": "human",
+      "family": "swordsman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "hammer",
+          "name": "Hammer",
+          "damage": 14,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 4
+        }
+      ]
+    },
+    {
+      "id": "harpooner",
+      "name": "Harpooner",
+      "race": "merfolk",
+      "family": "harpooner",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "harpoon",
+          "name": "Harpoon",
+          "damage": 6,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 6
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "healer",
+      "name": "Healer",
+      "race": "human",
+      "family": "adept",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "light",
+          "name": "Light",
+          "damage": 4,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 3,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "high-healer",
+      "name": "High healer",
+      "race": "human",
+      "family": "adept",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "light",
+          "name": "Light",
+          "damage": 6,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 5,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "horse-archer",
+      "name": "Horse archer",
+      "race": "human",
+      "family": "horse-archer",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "bow",
+          "name": "Bow",
+          "damage": 3,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 3
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 4,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "horse-bowman",
+      "name": "Horse bowman",
+      "race": "human",
+      "family": "horse-archer",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "bow",
+          "name": "Bow",
+          "damage": 4,
+          "count": 3,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 4
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 6,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "horse-marksman",
+      "name": "Horse marksman",
+      "race": "human",
+      "family": "horse-archer",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "bow",
+          "name": "Bow",
+          "damage": 5,
+          "count": 3,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 5
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 8,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "knight",
+      "name": "Knight",
+      "race": "human",
+      "family": "rider",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "lance",
+          "name": "Lance",
+          "damage": 21,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 5
+        },
+        {
+          "id": "sword",
+          "name": "Sword",
+          "damage": 5,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "lancer",
+      "name": "Lancer",
+      "race": "human",
+      "family": "rider",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "lance",
+          "name": "Lance",
+          "damage": 17,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 4
+        }
+      ]
+    },
+    {
+      "id": "lich-commander-l3",
+      "name": "Lich Sovereign",
+      "race": "skeletons",
+      "family": "necromancer",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "gravebolt",
+          "name": "Gravebolt",
+          "damage": 12,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        },
+        {
+          "id": "bonestaff",
+          "name": "Bonestaff",
+          "damage": 8,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "lich",
+      "name": "Lich",
+      "race": "skeletons",
+      "family": "necromancer",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "gravebolt",
+          "name": "Grave bolt",
+          "damage": 8,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        },
+        {
+          "id": "bonestaff",
+          "name": "Bone staff",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "mage",
+      "name": "Storm mage",
+      "race": "human",
+      "family": "adept",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spark",
+          "name": "Spark",
+          "damage": 9,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 4,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "marksman",
+      "name": "Marksman",
+      "race": "human",
+      "family": "archer",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bow",
+          "name": "Bow",
+          "damage": 4,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 3,
+          "spread": 4
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 4,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "marshal",
+      "name": "Marshal",
+      "race": "human",
+      "family": "commander",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "sword",
+          "name": "Sword",
+          "damage": 5,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "mace",
+          "name": "Mace",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "merfolk-harpoon-master",
+      "name": "Harpoon master",
+      "race": "merfolk",
+      "family": "harpooner",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "harpoon",
+          "name": "Harpoon",
+          "damage": 12,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 12
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 4,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "merfolk-maceguard-l2",
+      "name": "Macer",
+      "race": "merfolk",
+      "family": "merfolk-maceguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "mace",
+          "name": "Shell mace",
+          "damage": 7,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "merfolk-maceguard-l3",
+      "name": "Macer veteran",
+      "race": "merfolk",
+      "family": "merfolk-maceguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "mace",
+          "name": "Mace",
+          "damage": 8,
+          "count": 3,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "merfolk-maceguard",
+      "name": "Macer",
+      "race": "merfolk",
+      "family": "merfolk-maceguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "mace",
+          "name": "Shell mace",
+          "damage": 5,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "merfolk-netter-l2",
+      "name": "Netter",
+      "race": "merfolk",
+      "family": "harpooner",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "weighted-net",
+          "name": "Weighted Net",
+          "damage": 5,
+          "count": 2,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 5
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 3,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "merfolk-netter-l3",
+      "name": "Netter veteran",
+      "race": "merfolk",
+      "family": "harpooner",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "weighted-net",
+          "name": "Weighted Net",
+          "damage": 6,
+          "count": 3,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 6
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 4,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "merfolk-reef-champion",
+      "name": "Reef champion",
+      "race": "merfolk",
+      "family": "reefguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 5,
+          "count": 3,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        },
+        {
+          "id": "shellclub",
+          "name": "Shellclub",
+          "damage": 7,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "merfolk-tide-oracle",
+      "name": "Tide oracle",
+      "race": "merfolk",
+      "family": "wavemender",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "surge",
+          "name": "Surge",
+          "damage": 6,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 4,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "merfolk-tide-sovereign",
+      "name": "Tide sovereign",
+      "race": "merfolk",
+      "family": "tidekeeper",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "trident",
+          "name": "Trident",
+          "damage": 5,
+          "count": 3,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        },
+        {
+          "id": "tidebolt",
+          "name": "Tidebolt",
+          "damage": 11,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "merfolk-tidecrusher-l2",
+      "name": "Tide crusher",
+      "race": "merfolk",
+      "family": "wavemender",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "crushing-wave",
+          "name": "Crushing Wave",
+          "damage": 12,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 4,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "merfolk-tidecrusher-l3",
+      "name": "Tide breaker",
+      "race": "merfolk",
+      "family": "wavemender",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "crushing-wave",
+          "name": "Crushing Wave",
+          "damage": 16,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 6,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "merfolk-trident-l2",
+      "name": "Two handed trident",
+      "race": "merfolk",
+      "family": "reefguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "trident",
+          "name": "Trident",
+          "damage": 16,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 4
+        }
+      ]
+    },
+    {
+      "id": "merfolk-trident-l3",
+      "name": "Trident veteran",
+      "race": "merfolk",
+      "family": "reefguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "trident",
+          "name": "Trident",
+          "damage": 22,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 6
+        }
+      ]
+    },
+    {
+      "id": "necromancer",
+      "name": "Grave Adept",
+      "race": "skeletons",
+      "family": "necromancer",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "gravebolt",
+          "name": "Grave bolt",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        },
+        {
+          "id": "bonestaff",
+          "name": "Bone staff",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "ranger",
+      "name": "Ranger",
+      "race": "human",
+      "family": "scout",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 3,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "sling",
+          "name": "Sling",
+          "damage": 2,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 2,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "reefguard",
+      "name": "Reef guard",
+      "race": "merfolk",
+      "family": "reefguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Reef spear",
+          "damage": 4,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "tail",
+          "name": "Tail strike",
+          "damage": 5,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "revenant",
+      "name": "Revenant",
+      "race": "skeletons",
+      "family": "skeleton",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "rustblade",
+          "name": "Rustblade",
+          "damage": 5,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        },
+        {
+          "id": "boneclub",
+          "name": "Boneclub",
+          "damage": 10,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 3
+        }
+      ]
+    },
+    {
+      "id": "rider",
+      "name": "Mounted spearman",
+      "race": "human",
+      "family": "rider",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 12,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 3
+        }
+      ]
+    },
+    {
+      "id": "scout",
+      "name": "Scout",
+      "race": "human",
+      "family": "scout",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "sling",
+          "name": "Sling",
+          "damage": 2,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "unit-archer",
+          "count": 1,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "sentinel",
+      "name": "Sentinel",
+      "race": "human",
+      "family": "spearman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 5,
+          "count": 3,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        },
+        {
+          "id": "shieldbash",
+          "name": "Shieldbash",
+          "damage": 8,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "shadowblade",
+      "name": "Shadowblade",
+      "race": "human",
+      "family": "scout",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 3,
+          "count": 3,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        },
+        {
+          "id": "sling",
+          "name": "Sling",
+          "damage": 3,
+          "count": 2,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 3
+        }
+      ]
+    },
+    {
+      "id": "sharpshooter",
+      "name": "Sharpshooter",
+      "race": "human",
+      "family": "archer",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bow",
+          "name": "Bow",
+          "damage": 5,
+          "count": 3,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 5
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 6,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "skeletal-hound",
+      "name": "Skeletal hound",
+      "race": "skeletons",
+      "family": "wolf",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "fangs",
+          "name": "Fangs",
+          "damage": 4,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "skeleton-axeman-l2",
+      "name": "Death axeman",
+      "race": "skeletons",
+      "family": "skeleton-axeman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "axe",
+          "name": "Axe",
+          "damage": 15,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 4
+        }
+      ]
+    },
+    {
+      "id": "skeleton-axeman-l3",
+      "name": "Hollow axeman",
+      "race": "skeletons",
+      "family": "skeleton-axeman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "axe",
+          "name": "Axe",
+          "damage": 18,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 5
+        }
+      ]
+    },
+    {
+      "id": "skeleton-axeman",
+      "name": "Grave axeman",
+      "race": "skeletons",
+      "family": "skeleton-axeman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "axe",
+          "name": "Axe",
+          "damage": 10,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 3
+        }
+      ]
+    },
+    {
+      "id": "skeleton-bow-master",
+      "name": "Hollow archer",
+      "race": "skeletons",
+      "family": "bonearcher",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bonebow",
+          "name": "Bonebow",
+          "damage": 5,
+          "count": 3,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 5
+        },
+        {
+          "id": "shard",
+          "name": "Shard",
+          "damage": 6,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "skeleton-dreadguard",
+      "name": "Dreadguard",
+      "race": "skeletons",
+      "family": "skeleton",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "rustblade",
+          "name": "Rustblade",
+          "damage": 5,
+          "count": 3,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        },
+        {
+          "id": "boneclub",
+          "name": "Boneclub",
+          "damage": 13,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 3
+        }
+      ]
+    },
+    {
+      "id": "skeleton-flanker-l2",
+      "name": "Knife servant",
+      "race": "skeletons",
+      "family": "skeleton",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 4,
+          "count": 3,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "skeleton-flanker-l3",
+      "name": "Knife shade",
+      "race": "skeletons",
+      "family": "skeleton",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 5,
+          "count": 4,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "skeleton-impact-caster-l2",
+      "name": "Staff servant",
+      "race": "skeletons",
+      "family": "skeleton-impact-caster",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "boneburst",
+          "name": "Bone burst",
+          "damage": 11,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Bone staff",
+          "damage": 4,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "skeleton-impact-caster-l3",
+      "name": "Staff shade",
+      "race": "skeletons",
+      "family": "skeleton-impact-caster",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "boneburst",
+          "name": "Boneburst",
+          "damage": 15,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 6,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "skeleton-impact-caster",
+      "name": "Caster",
+      "race": "skeletons",
+      "family": "skeleton-impact-caster",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "boneburst",
+          "name": "Bone burst",
+          "damage": 7,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Bone staff",
+          "damage": 2,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "skeleton-rider-l2",
+      "name": "Death rider",
+      "race": "skeletons",
+      "family": "skeleton-rider",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 15,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 4
+        }
+      ]
+    },
+    {
+      "id": "skeleton-rider-l3",
+      "name": "Hollow rider",
+      "race": "skeletons",
+      "family": "skeleton-rider",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 19,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 5
+        }
+      ]
+    },
+    {
+      "id": "skeleton-rider",
+      "name": "Grave rider",
+      "race": "skeletons",
+      "family": "skeleton-rider",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 11,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 3
+        }
+      ]
+    },
+    {
+      "id": "skeleton-scythe-caster-l2",
+      "name": "Scythe servant",
+      "race": "skeletons",
+      "family": "skeleton-impact-caster",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "soul-drain",
+          "name": "Soul Drain",
+          "damage": 8,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "drain": 50,
+          "spread": 1
+        },
+        {
+          "id": "scythe",
+          "name": "Scythe",
+          "damage": 10,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "drain": 50,
+          "spread": 3
+        }
+      ]
+    },
+    {
+      "id": "skeleton-scythe-caster-l3",
+      "name": "Scythe shade",
+      "race": "skeletons",
+      "family": "skeleton-impact-caster",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "soul-drain",
+          "name": "Soul Drain",
+          "damage": 12,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "drain": 50,
+          "spread": 1
+        },
+        {
+          "id": "scythe",
+          "name": "Scythe",
+          "damage": 18,
+          "count": 1,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "drain": 50,
+          "spread": 5
+        }
+      ]
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "race": "skeletons",
+      "family": "skeleton",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "rustblade",
+          "name": "Rustblade",
+          "damage": 4,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        },
+        {
+          "id": "shieldbash",
+          "name": "Shield bash",
+          "damage": 6,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "slinger",
+      "name": "Slinger",
+      "race": "human",
+      "family": "scout",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "sling",
+          "name": "Sling",
+          "damage": 4,
+          "count": 3,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 4
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 3,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "soldier",
+      "name": "Swordsman",
+      "race": "human",
+      "family": "swordsman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "sword",
+          "name": "Sword",
+          "damage": 4,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "mace",
+          "name": "Mace",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "spearman",
+      "name": "Leather spearman",
+      "race": "human",
+      "family": "spearman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 3,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "spectre",
+      "name": "Spectre",
+      "race": "spirit",
+      "family": "ghost",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "spectral-touch",
+          "name": "Spectral touch",
+          "damage": 4,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 3,
+          "spread": 1
+        },
+        {
+          "id": "spectral-orb",
+          "name": "Spectral orb",
+          "damage": 4,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 2,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "swordsman",
+      "name": "Leather swordsman",
+      "race": "human",
+      "family": "swordsman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "sword",
+          "name": "Sword",
+          "damage": 3,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "thorncaller",
+      "name": "Thorncaller",
+      "race": "beast",
+      "family": "thorncaller",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "thorns",
+          "name": "Thorns",
+          "damage": 6,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        },
+        {
+          "id": "rootstaff",
+          "name": "Root staff",
+          "damage": 4,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "tidehunter",
+      "name": "Tide hunter",
+      "race": "merfolk",
+      "family": "harpooner",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "harpoon",
+          "name": "Harpoon",
+          "damage": 9,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 9
+        },
+        {
+          "id": "knife",
+          "name": "Knife",
+          "damage": 3,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "tidekeeper",
+      "name": "Tidekeeper",
+      "race": "merfolk",
+      "family": "tidekeeper",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "trident",
+          "name": "Trident",
+          "damage": 3,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "tidebolt",
+          "name": "Tide bolt",
+          "damage": 5,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "tidesage",
+      "name": "Tide sage",
+      "race": "merfolk",
+      "family": "wavemender",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "surge",
+          "name": "Surge",
+          "damage": 4,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 2,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "tideseer",
+      "name": "Tide seer",
+      "race": "merfolk",
+      "family": "tidekeeper",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "trident",
+          "name": "Trident",
+          "damage": 4,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "tidebolt",
+          "name": "Tide bolt",
+          "damage": 8,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "treant-l2",
+      "name": "Treant L2",
+      "race": "beast",
+      "family": "treant",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bough",
+          "name": "Bough",
+          "damage": 14,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 4
+        },
+        {
+          "id": "spikes",
+          "name": "Spikes",
+          "damage": 7,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "treant-l3",
+      "name": "Treant L3",
+      "race": "beast",
+      "family": "treant",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bough",
+          "name": "Bough",
+          "damage": 18,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 5
+        },
+        {
+          "id": "spikes",
+          "name": "Spikes",
+          "damage": 9,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "treant",
+      "name": "Treant",
+      "race": "beast",
+      "family": "treant",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bough",
+          "name": "Bough",
+          "damage": 10,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 3
+        },
+        {
+          "id": "spikes",
+          "name": "Spikes",
+          "damage": 5,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "tridentguard",
+      "name": "Trident guard",
+      "race": "merfolk",
+      "family": "reefguard",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Trident",
+          "damage": 5,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "shellclub",
+          "name": "Shell club",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "warden",
+      "name": "Spearman",
+      "race": "human",
+      "family": "spearman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "spear",
+          "name": "Spear",
+          "damage": 4,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "shieldbash",
+          "name": "Shield bash",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "warhammer",
+      "name": "Warhammer",
+      "race": "human",
+      "family": "swordsman",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "hammer",
+          "name": "Hammer",
+          "damage": 22,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 6
+        }
+      ]
+    },
+    {
+      "id": "wavemender",
+      "name": "Wavemender",
+      "race": "merfolk",
+      "family": "wavemender",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "surge",
+          "name": "Surge",
+          "damage": 3,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 1
+        },
+        {
+          "id": "staff",
+          "name": "Staff",
+          "damage": 2,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "wildkeeper",
+      "name": "Wildkeeper",
+      "race": "beast",
+      "family": "wildkeeper",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bough",
+          "name": "Bough",
+          "damage": 6,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 1,
+          "spread": 2
+        },
+        {
+          "id": "stones",
+          "name": "Stones",
+          "damage": 4,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 1,
+          "spread": 4
+        }
+      ]
+    },
+    {
+      "id": "wolf",
+      "name": "Wolf",
+      "race": "beast",
+      "family": "wolf",
+      "move": 5,
+      "attacks": [
+        {
+          "id": "fangs",
+          "name": "Fangs",
+          "damage": 4,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "woodland-alpha-wolf",
+      "name": "Alpha wolf",
+      "race": "beast",
+      "family": "wolf",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "fangs",
+          "name": "Fangs",
+          "damage": 7,
+          "count": 2,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "woodland-ancient-boar",
+      "name": "Ancient boar",
+      "race": "beast",
+      "family": "boar",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "trample",
+          "name": "Trample",
+          "damage": 16,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 4
+        },
+        {
+          "id": "tusks",
+          "name": "Tusks",
+          "damage": 8,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "woodland-bramble-warden",
+      "name": "Bramble warden",
+      "race": "beast",
+      "family": "thorncaller",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "thorns",
+          "name": "Thorns",
+          "damage": 4,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 1
+        },
+        {
+          "id": "rootstaff",
+          "name": "Rootstaff",
+          "damage": 4,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "woodland-grove-oracle",
+      "name": "Grove oracle",
+      "race": "beast",
+      "family": "wildkeeper",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "bough",
+          "name": "Bough",
+          "damage": 11,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 3
+        },
+        {
+          "id": "stones",
+          "name": "Stones",
+          "damage": 7,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 7
+        }
+      ]
+    },
+    {
+      "id": "woodland-thorn-oracle",
+      "name": "Bloomweaver",
+      "race": "beast",
+      "family": "thorncaller",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "thorns",
+          "name": "Thorns",
+          "damage": 6,
+          "count": 2,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 1
+        },
+        {
+          "id": "rootstaff",
+          "name": "Rootstaff",
+          "damage": 6,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        },
+        {
+          "id": "root-crush",
+          "name": "Crushing roots",
+          "damage": 12,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-magic",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "woodland-thornbinder",
+      "name": "Thornbinder",
+      "race": "beast",
+      "family": "thorncaller",
+      "move": 3,
+      "attacks": [
+        {
+          "id": "thorns",
+          "name": "Thorns",
+          "damage": 6,
+          "count": 1,
+          "damageType": "pierce",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 1
+        },
+        {
+          "id": "rootstaff",
+          "name": "Rootstaff",
+          "damage": 6,
+          "count": 1,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 2
+        }
+      ]
+    },
+    {
+      "id": "wraith",
+      "name": "Wraith",
+      "race": "spirit",
+      "family": "ghost",
+      "move": 6,
+      "attacks": [
+        {
+          "id": "spectral-touch",
+          "name": "Spectral touch",
+          "damage": 4,
+          "damageType": "blade",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "count": 2,
+          "spread": 1
+        },
+        {
+          "id": "spectral-orb",
+          "name": "Spectral orb",
+          "damage": 3,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "count": 2,
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "zombie-decay-caster",
+      "name": "Mire caster",
+      "race": "zombies",
+      "family": "zombie-decay-caster",
+      "move": 2,
+      "attacks": [
+        {
+          "id": "mire-bolt",
+          "name": "Mire bolt",
+          "damage": 5,
+          "count": 1,
+          "damageType": "impact",
+          "category": "ranged",
+          "range": 2,
+          "sound": "attack-bow",
+          "spread": 1
+        }
+      ]
+    },
+    {
+      "id": "zombie-walker",
+      "name": "Restless corpse",
+      "race": "zombies",
+      "family": "zombie-walker",
+      "move": 2,
+      "attacks": [
+        {
+          "id": "grasp",
+          "name": "Grasping hands",
+          "damage": 4,
+          "count": 2,
+          "damageType": "impact",
+          "category": "melee",
+          "range": 1,
+          "sound": "attack-melee",
+          "spread": 1
+        }
+      ]
+    }
+  ]
+}

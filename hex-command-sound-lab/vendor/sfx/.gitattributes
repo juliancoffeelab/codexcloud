@@ -1,0 +1,6 @@
+# Preserve upstream bytes on checkouts with core.autocrlf enabled.
+*.wav -text
+*.ogg -text
+*.mp3 -text
+*.flac -text
+kenney/*/License.txt -text -diff

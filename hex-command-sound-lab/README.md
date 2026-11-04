@@ -28,6 +28,14 @@ All application source and bundled assets are tracked in `dist/`; that directory
 is authored source, despite its name. Nothing depends on another project in this
 repository or on files left in an execution environment.
 
+## Offline source collection
+
+The complete source packs and supplemental CC0 audio are now tracked in
+[`vendor/sfx/`](vendor/sfx/README.md), with licenses, acquisition script,
+SHA-256 inventory and validation. A normal clone contains all 467 originals;
+future asset work needs no browser import or external audio URLs. The existing
+`dist/` soundboard remains unchanged and uses its original catalog.
+
 ## Included sounds and provenance
 
 - 130 Kenney Impact Sounds recordings, licensed CC0.
@@ -49,40 +57,17 @@ Unit assignments are audition suggestions, not changes to the playable game.
 Material substitutes and missing bow/magic candidates are labeled explicitly.
 The live game remains unchanged.
 
-## Medieval packs: what is still needed
+## Medieval source packs and legacy imports
 
-The four OpenGameArt archives are not bundled. The build environment's network
-policy blocked their host. Browser fetch buttons request these original files
-directly, without a server proxy:
+Both archive parts of Still North Media's weapon textures and weapon impacts
+are fully extracted in `vendor/sfx/still-north-media/`. See the vendored
+collection's README for offline access, licensing, counts and provenance.
 
-| Pack | Archive | Approximate size |
-| --- | --- | --- |
-| [Weapon textures](https://opengameart.org/content/medieval-sound-effects-weapon-textures) | `medieval_sfx_textures_1_of_2.7z` | 89.9 MB |
-| Weapon textures | `medieval_sfx_textures_2_of_2.7z` | 86.1 MB |
-| [Weapon impacts](https://opengameart.org/node/146863) | `medieval_sfx_weapon_on_weapon_1_of_2.7z` | 82.1 MB |
-| Weapon impacts | `medieval_sfx_weapon_on_weapon_2_of_2.7z` | 73.8 MB |
-
-These packs are credited to Ben Jaszczak and Brian Nelson and listed as CC0 by
-OpenGameArt. Their download URLs use
-`https://opengameart.org/sites/default/files/<archive>`.
-
-Browser fetching needs the host to permit cross-origin reads (CORS). If that
-fails, use the download link, then import the `.7z` file. `.zip` archives and
-loose WAV, OGG, MP3, FLAC, or M4A files can also be imported. Audio decoding
-support depends on the browser. Extracting these large archives is easier on a
-desktop; import one archive at a time on devices with limited memory.
-
-Imports stay in memory for the current tab; reloading closes that session.
-Nothing is uploaded. Matching imported filenames automatically supply weapon
-candidates to unit buttons, and all imported recordings appear in Full library.
-Imported arbitrary local files require their own license verification.
-
-To bundle medieval recordings permanently, a maintainer needs copies of these
-archives (or direct download access to OpenGameArt), their source/license
-records, and a reviewed selection of useful takes. Add those recordings to the
-tracked audio and catalog, update unit mappings and the downloadable ZIP, then
-publish an updated site. A CORS bypass or environment reset is not required for
-local auditioning.
+The preserved soundboard's fetch/import buttons are legacy audition controls.
+They still import files into tab memory and are not needed to obtain the
+vendored collection. The source collection is not automatically indexed by
+`dist/catalog.json`; future integration is separate work. Arbitrary user imports
+still require their own license verification.
 
 Favorites persist in browser storage on that device. Export JSON to keep a
 portable shortlist; importing audio itself is not persistent storage.

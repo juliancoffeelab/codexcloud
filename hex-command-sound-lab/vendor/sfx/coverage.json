@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "roster": "roster.json",
+  "groups": [
+    {
+      "name": "Infantry and terrain movement",
+      "categories": [
+        "movement"
+      ],
+      "examples": [
+        "kenney/impact-sounds/Audio/footstep_grass_000.ogg",
+        "kenney/impact-sounds/Audio/footstep_concrete_000.ogg",
+        "kenney/impact-sounds/Audio/footstep_wood_000.ogg"
+      ],
+      "application": "Human, skeleton and beast infantry surface/weight references.",
+      "caveat": "Recorded foley, not species-specific paw movement."
+    },
+    {
+      "name": "Blades, polearms, blunt weapons and armor",
+      "categories": [
+        "attack",
+        "impact"
+      ],
+      "examples": [
+        "still-north-media/weapon-textures/part-1/Katana Swing.wav",
+        "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav",
+        "kenney/impact-sounds/Audio/impactPlate_heavy_000.ogg"
+      ],
+      "application": "Swords, knives, axes, scythes, spear/halberd/lance/trident, mace/hammer/staff and shields.",
+      "caveat": "Material candidates; fictional weapon variants require audition."
+    },
+    {
+      "name": "Bows and projectiles",
+      "categories": [
+        "attack",
+        "impact"
+      ],
+      "examples": [
+        "still-north-media/weapon-textures/part-1/Crossbow Shoot.wav",
+        "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav",
+        "still-north-media/weapon-textures/part-1/Scythian Recurve Nock Arrow.wav",
+        "kenney/impact-sounds/Audio/impactWood_light_000.ogg"
+      ],
+      "application": "Bows, crossbows, bone bows, harpoons, thorns and stones.",
+      "caveat": "Actual bow/crossbow recordings; harpoons, thorns and stones use texture candidates."
+    },
+    {
+      "name": "Magic casting and impacts",
+      "categories": [
+        "attack",
+        "impact"
+      ],
+      "examples": [
+        "jaggedstone/magic-spell-sfx/magical_2.ogg",
+        "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
+        "rubberduck/80-cc0-rpg-sfx/spell_02.ogg"
+      ],
+      "application": "Spark, light, spectral orb, gravebolt, boneburst, soul drain, root crush and tide magic.",
+      "caveat": "Designed effects; role suggestions rather than final assignments."
+    },
+    {
+      "name": "Fire",
+      "categories": [
+        "attack",
+        "impact"
+      ],
+      "examples": [
+        "rubberduck/80-cc0-rpg-sfx/spell_fire_01.ogg",
+        "antumdeluge/fire-crackling/fire-1.wav"
+      ],
+      "application": "Fireslinger firepot layers and sustained flame.",
+      "caveat": "Fire spell is designed; fireplace source does not specify recording method."
+    },
+    {
+      "name": "Undead and ghosts",
+      "categories": [
+        "attack",
+        "vocalization"
+      ],
+      "examples": [
+        "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (1).wav",
+        "qubodup/3-dark-magic-spells/dark_magic/fout-01.flac"
+      ],
+      "application": "Ghost, spectre, wraith, lich, necromancer and skeleton casters.",
+      "caveat": "Performed human voices and upstream Audacity synthesis."
+    },
+    {
+      "name": "Animal movement and attacks",
+      "categories": [
+        "movement",
+        "attack",
+        "impact"
+      ],
+      "examples": [
+        "ezduzziteh/horse-trotting/Trot.ogg",
+        "kenney/impact-sounds/Audio/impactSoft_medium_000.ogg",
+        "rubberduck/80-cc0-creature-sfx/eat_01.ogg"
+      ],
+      "application": "Mounted humans/grave riders; wolf fangs, boar trample/tusks, bear claws, giant bat bite.",
+      "caveat": "Trot is jacket/water-bottle foley. Soft impacts and mouth performances are designed action candidates, not authentic recordings of paws, bites or claws."
+    },
+    {
+      "name": "Natural canine and equine vocals",
+      "categories": [
+        "vocalization"
+      ],
+      "examples": [
+        "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
+        "denischardonnet/horse-vocals/0284.mp3",
+        "denischardonnet/horse-vocals/0286.mp3"
+      ],
+      "application": "Horse cavalry and canine reference for wolf/direwolf/werewolf.",
+      "caveat": "Domestic dog at play is not a wolf recording. Neigh/snort are outdoor horse recordings."
+    },
+    {
+      "name": "Fantasy animal vocals",
+      "categories": [
+        "attack",
+        "vocalization"
+      ],
+      "examples": [
+        "rubberduck/80-cc0-creature-sfx/roar_01.ogg",
+        "rubberduck/80-cc0-creature-sfx/howl.ogg"
+      ],
+      "application": "Boar, bear, bat, wolf and transformed creatures: designed references.",
+      "caveat": "Processed mouth performances, not authentic species recordings."
+    }
+  ],
+  "limitations": [
+    "Natural species recordings provided only for domestic dog and horse. No authentic wolf, boar, bear, fox or bat recording is claimed.",
+    "No final per-unit sound design, trimming, gain matching or game/soundboard integration is included. All originals remain unmodified.",
+    "Current game synthesis remains in dist/audio/current and is excluded from this CC0 collection."
+  ]
+}

@@ -1,2 +1,4 @@
 node_modules/
 *.tar.gz
+tmp/
+__pycache__/
