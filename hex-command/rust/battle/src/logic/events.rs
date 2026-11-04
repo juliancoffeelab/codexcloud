@@ -788,7 +788,7 @@ impl Game<'_> {
             })
             .collect()
     }
-    fn approach_tiles(&self, selection: &ProximitySelection) -> Vec<String> {
+    pub(crate) fn approach_tiles(&self, selection: &ProximitySelection) -> Vec<String> {
         let origins: Vec<_> = if let Some(t) = &selection.tile {
             vec![self.site(t)]
         } else {
@@ -818,124 +818,6 @@ impl Game<'_> {
         })
     }
 
-    pub(crate) fn scripted_policy_objectives(&self, side: Side) -> Vec<Objective> {
-        let Some(state) = self.scripts.as_deref() else {
-            return vec![];
-        };
-        let mut goals = vec![];
-        for event in &self.mission.as_ref().unwrap().scripted_events {
-            let Some(objective) = &event.objective else {
-                continue;
-            };
-            if !state.active.contains(&event.id)
-                || objective
-                    .visible_when
-                    .as_ref()
-                    .is_some_and(|c| !self.script_condition(c))
-            {
-                continue;
-            }
-            let (kind, tiles, selector, hold) = match &objective.intent {
-                EventIntent::Hold(v) => (
-                    ObjectiveKind::Vigil,
-                    vec![v.tile.clone()],
-                    Some(&v.units),
-                    true,
-                ),
-                EventIntent::Escort(v) => (
-                    ObjectiveKind::Escort,
-                    vec![v.tile.clone()],
-                    Some(&v.units),
-                    false,
-                ),
-                EventIntent::GoTo(v) => (
-                    ObjectiveKind::Visit,
-                    vec![v.tile.clone()],
-                    Some(&v.units),
-                    false,
-                ),
-                EventIntent::Escape(v) => (
-                    ObjectiveKind::Escape,
-                    vec![v.tile.clone()],
-                    Some(&v.units),
-                    false,
-                ),
-                EventIntent::Approach(v) => (
-                    ObjectiveKind::Visit,
-                    self.approach_tiles(v),
-                    Some(&v.units),
-                    false,
-                ),
-                EventIntent::Own(v) => (ObjectiveKind::Capture, vec![v.tile.clone()], None, true),
-                EventIntent::Capture(v) => (
-                    ObjectiveKind::Capture,
-                    v.iter()
-                        .filter(|t| self.owners[self.site(t)].as_deref() != Some("player"))
-                        .cloned()
-                        .collect(),
-                    None,
-                    true,
-                ),
-                EventIntent::Defeat(v) => (
-                    ObjectiveKind::Defeat,
-                    self.units
-                        .iter()
-                        .filter(|u| self.script_unit_matches(v, u))
-                        .map(|u| self.board.ids[u.tile].clone())
-                        .collect(),
-                    None,
-                    false,
-                ),
-            };
-            if tiles.is_empty() {
-                continue;
-            }
-            let actor = selector
-                .filter(|s| {
-                    s.character.is_some()
-                        || s.role.is_some()
-                        || s.unit_type.is_some()
-                        || !s.unit_types.is_empty()
-                })
-                .and_then(|s| {
-                    self.units
-                        .iter()
-                        .filter(|u| {
-                            self.belongs_to_phase(u, side) && self.script_unit_matches(s, u)
-                        })
-                        .min_by_key(|u| {
-                            tiles
-                                .iter()
-                                .map(|t| self.board.distance(u.tile, self.site(t)))
-                                .min()
-                                .unwrap_or(0)
-                        })
-                });
-            if selector.is_some_and(|s| {
-                s.character.is_some()
-                    || s.role.is_some()
-                    || s.unit_type.is_some()
-                    || !s.unit_types.is_empty()
-            }) && actor.is_none()
-            {
-                continue;
-            }
-            goals.push(Objective {
-                id: if objective.optional {
-                    format!("optional:{}", event.objective_id())
-                } else {
-                    format!("required:{}", event.objective_id())
-                },
-                kind,
-                tiles,
-                weight: if objective.optional { 4.0 } else { 24.0 },
-                actor: actor.map(|u| format!("u{}", u.id)),
-                family: None,
-                hold: Some(hold),
-            });
-        }
-        goals
-    }
     pub(crate) fn scripted_objective_status(&self, event: &ScriptEvent) -> ObjectiveStatus {
         let objective = event.objective.as_ref().unwrap();
         let state = self.scripts.as_deref().unwrap();

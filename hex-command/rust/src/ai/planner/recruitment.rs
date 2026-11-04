@@ -1,34 +1,26 @@
-//! Compound move-and-recruit alternatives for search planners.
-use super::safety::Threats;
+//! Compound rebuild-move decisions combine the shared estimate with route and risk policies.
+use crate::ai::policies::threat::{Threats, cap_exposure};
 use crate::{
     ai::{
-        context::BattleView, orders::TacticalOrders, recruiter::RecruitmentOpportunity,
-        tactics::Plan,
+        context::BattleView, orders::TacticalOrders, planner::search::Plan,
+        recruiter::RecruitmentOpportunity,
     },
     data::*,
 };
 
-/// Exposure beyond the actor's remaining life cannot represent an additional loss.
-pub(super) fn exposure(unit: &Unit, incoming: i32, important: bool) -> i32 {
-    if important {
-        incoming.min(unit.hp.max(1))
-    } else {
-        incoming
-    }
-}
-
 pub(super) fn plan(
     game: &BattleView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
     unit: &Unit,
     orders: &TacticalOrders,
-    opportunity: Option<&RecruitmentOpportunity>,
+    opportunity: Option<crate::ai::policies::recruitment::EstimateInput<'_>>,
 ) -> Option<Plan> {
     let opportunity = opportunity?;
     if !unit.is_leader()
         || unit.moved
         || unit.attacked
         || !game.can_act(unit.id)
-        || opportunity.budget == Some(0)
+        || opportunity.remaining_budget == Some(0)
     {
         return None;
     }
@@ -41,8 +33,8 @@ pub(super) fn plan(
         unit,
         game.reachable(unit).iter().map(|&(tile, _)| tile).collect(),
     );
-    let mut threats = Threats::protected(game, unit.side, orders);
-    let before = exposure(unit, threats.at(unit, unit.tile, None), true);
+    let mut threats = Threats::protected(game, phases, unit.side, orders);
+    let before = cap_exposure(unit, threats.at(unit, unit.tile, None), true);
     let danger = if orders.protects(unit.id) {
         40.0 / unit.hp.max(1) as f64
     } else {
@@ -53,53 +45,22 @@ pub(super) fn plan(
     let rebuilding = orders.rebuild_objectives(game);
     let goal = rebuilding
         .iter()
-        .find(|g| crate::ai::objectives::actor_matches(&g.actor, unit.id))?;
+        .find(|g| crate::ai::policies::objectives::actor_matches(&g.actor, unit.id))?;
     let route = game.routes(unit.kind, &keeps);
     let mut best: Option<Plan> = None;
     for tile in destinations
         .into_iter()
         .filter(|tile| keeps.contains(tile) && *tile != unit.tile)
     {
-        let gold = game.gold_for_unit(unit).max(0);
-        let requirement = opportunity
-            .orders
-            .requirements
-            .iter()
-            .find(|r| r.deficit(game) > 0);
-        let mut slots = 0;
-        let mut costs = Vec::new();
-        for kind in game.recruitment_options_for(unit) {
-            if requirement.is_some_and(|r| !r.accepts(game, kind)) {
-                continue;
-            }
-            let cost = game.recruit_cost(unit, kind);
-            if cost > gold {
-                continue;
-            }
-            let available = game.board().adjacent[tile]
-                .iter()
-                .filter(|&&site| {
-                    (site == unit.tile || game.at(site).is_none())
-                        && game.cost(kind, site) != u16::MAX
-                        && !opportunity
-                            .orders
-                            .reserved
-                            .iter()
-                            .any(|reserved| game.site(&reserved.0) == site)
-                })
-                .count();
-            if available > 0 {
-                slots = slots.max(available);
-                costs.push(cost);
-            }
-        }
-        if costs.is_empty() {
+        let Some(value) = crate::ai::policies::recruitment::estimate_capacity(
+            game,
+            unit,
+            tile,
+            opportunity,
+        ) else {
             continue;
-        }
-        let average = costs.iter().sum::<i32>() / costs.len() as i32;
-        let capacity = slots.min(opportunity.budget.unwrap_or(usize::MAX));
-        let value = gold.min((capacity as i32).saturating_mul(average));
-        let after = exposure(unit, threats.at(unit, tile, None), true);
+        };
+        let after = cap_exposure(unit, threats.at(unit, tile, None), true);
         // Reaching the existing rebuilding objective, plus a budget/placement estimate of new army value.
         let score = route[unit.tile] as f64 * goal.weight / 4.0
             + goal.weight * 0.6

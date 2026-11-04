@@ -192,6 +192,7 @@ pub fn borrow_fields(input: TokenStream) -> TokenStream {
             ));
         };
         let borrowed = format_ident!("Borrowed{}", input.ident);
+        let visibility = &input.vis;
         let attrs = input.attrs.iter().filter(|a| a.path().is_ident("serde"));
         let declarations = fields.named.iter().map(|field| {
             let id = &field.ident;
@@ -216,7 +217,7 @@ pub fn borrow_fields(input: TokenStream) -> TokenStream {
         Ok(quote! {
             #[derive(serde::Serialize)]
             #(#attrs)*
-            pub(crate) struct #borrowed<'a> { #(#declarations,)* }
+            #visibility struct #borrowed<'a> { #(#declarations,)* }
             impl From<&#source> for #name {
                 fn from(state: &#source) -> Self { Self { #(#cloned,)* } }
             }

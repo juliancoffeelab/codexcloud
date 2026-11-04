@@ -117,7 +117,7 @@ impl Game<'_> {
                 }
         })
     }
-    pub(crate) fn automatic_factions(&self) -> Vec<(String, Option<crate::ai::Policy>)> {
+    pub(crate) fn automatic_factions(&self) -> Vec<(String, Option<crate::data::FactionPolicy>)> {
         let mut controllers = Vec::new();
         // The implicit legacy army remains an independent controller when authored
         // factions coexist with old, unassigned units or ordinary recruitment.
@@ -131,9 +131,7 @@ impl Game<'_> {
         }
         for faction in self.factions.iter().filter(|f| f.phase == self.turn) {
             match faction.controller {
-                Controller::Ai { policy } => {
-                    controllers.push((faction.id.clone(), policy.map(Into::into)))
-                }
+                Controller::Ai { policy } => controllers.push((faction.id.clone(), policy)),
                 Controller::Human => controllers.push((faction.id.clone(), None)),
                 Controller::Passive => {}
             }

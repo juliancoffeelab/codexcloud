@@ -42,7 +42,7 @@ impl Strikes {
 }
 
 #[derive(Default, Debug)]
-pub(crate) struct ExchangeForecast {
+pub struct ExchangeForecast {
     /// Initiating weapon damage, and incoming weapon damage plus reflection.
     pub damage: [f64; 2],
     pub minimum: [i32; 2],

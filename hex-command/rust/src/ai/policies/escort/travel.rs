@@ -1,10 +1,11 @@
 //! Escort scoring rewards actual threat removal and reduced enemy access.
 use crate::ai::{
     orders::{PlanningReport, TacticalObjective, TacticalOrders},
-    threats::Threats,
+    policies::threat::Threats,
 };
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*, logic::geometry::TileSet};
+use hex_command_battle::PhaseForecasts;
 use rustc_hash::FxHashMap;
 
 #[derive(Default)]
@@ -34,6 +35,7 @@ impl Workspace {
     pub(in crate::ai) fn prepare(
         &mut self,
         game: &BattleView<'_, '_>,
+        phases: PhaseForecasts<'_, '_>,
         report: &PlanningReport,
         orders: &TacticalOrders,
     ) {
@@ -109,8 +111,7 @@ impl Workspace {
         self.terrain.clone_from(&game.terrain());
         self.owners.clone_from(&game.owners());
         self.fields.clear();
-        let mut forecast = game.fork();
-        forecast.end_turn();
+        let forecast = phases.planning_next_phase();
         if forecast.winner().is_some() {
             return;
         }

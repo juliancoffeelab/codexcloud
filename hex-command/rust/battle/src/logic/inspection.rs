@@ -1,6 +1,6 @@
 //! Immutable browser query publication; no work is added to simulation turns.
 use super::battle::Game;
-use crate::{data::*, protocol::*};
+use crate::{data::*, model::*};
 
 impl Game<'_> {
     fn damage_detail(&self, attack: &Weapon, defender: &Unit, tile: usize) -> DamageDetail {
@@ -127,7 +127,6 @@ impl Game<'_> {
             .map(|unit| {
                 let mut attacks = Vec::new();
                 for target in &self.units {
-                    let recommended = self.best_attack(unit, target, unit.tile);
                     for weapon in self.attack_options(unit, target, unit.tile) {
                         let attack = self.weapon(unit, weapon).clone();
                         let (damage, retaliation, response) =
@@ -152,7 +151,7 @@ impl Game<'_> {
                             healing: forecast.healing[0].round() as i32,
                             retaliation_healing: forecast.healing[1].round() as i32,
                             thorn_damage: forecast.reflection.round() as i32,
-                            recommended: recommended == Some(weapon),
+                            recommended: false,
                             target: format!("u{}", target.id),
                             damage,
                             retaliation,

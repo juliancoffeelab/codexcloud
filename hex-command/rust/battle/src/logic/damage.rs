@@ -3,7 +3,7 @@ use crate::data::Weapon;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 #[derive(Debug)]
-pub(crate) struct DamageDistribution {
+pub struct DamageDistribution {
     pub min: i32,
     pub max: i32,
     pub mean: f64,
@@ -39,7 +39,7 @@ type Key = (i32, i32, u8, i32);
 thread_local! {
     static CACHE: RefCell<HashMap<Key, Rc<DamageDistribution>>> = RefCell::new(HashMap::new());
 }
-pub(crate) fn distribution(attack: &Weapon, modifier: i32) -> Rc<DamageDistribution> {
+pub fn distribution(attack: &Weapon, modifier: i32) -> Rc<DamageDistribution> {
     rolls(attack.damage, attack.spread, attack.count, modifier)
 }
 pub(super) fn rolls(damage: i32, spread: i32, count: u8, modifier: i32) -> Rc<DamageDistribution> {

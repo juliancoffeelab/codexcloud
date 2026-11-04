@@ -1,22 +1,22 @@
 //! Compact battle sessions borrowing catalog rules and indexing the live roster.
 
-use crate::{data::*, protocol::StateFrame};
+use crate::{data::*, model::StateFrame};
 use rustc_hash::FxHashMap as HashMap;
 use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::rc::Rc;
 
 #[derive(Debug)]
-pub(crate) struct Board {
-    pub(crate) ids: Vec<String>,
-    pub(crate) positions: Vec<(i32, i32)>,
-    pub(crate) indices: HashMap<String, usize>,
-    pub(crate) adjacent: Vec<Vec<usize>>,
-    pub(crate) adjacent_bits: Vec<u128>,
-    pub(crate) distances: Vec<u16>,
+pub struct Board {
+    pub ids: Vec<String>,
+    pub positions: Vec<(i32, i32)>,
+    pub indices: HashMap<String, usize>,
+    pub adjacent: Vec<Vec<usize>>,
+    pub adjacent_bits: Vec<u128>,
+    pub distances: Vec<u16>,
 }
 impl Board {
-    pub(crate) fn new(tiles: &[Tile]) -> Rc<Self> {
+    pub fn new(tiles: &[Tile]) -> Rc<Self> {
         let ids: Vec<String> = tiles.iter().map(|tile| tile.id.clone()).collect();
         let positions: Vec<_> = tiles.iter().map(|tile| (tile.col, tile.row)).collect();
         let indices = ids
@@ -59,11 +59,11 @@ impl Board {
             distances,
         })
     }
-    pub(crate) fn distance(&self, first: usize, second: usize) -> u16 {
+    pub fn distance(&self, first: usize, second: usize) -> u16 {
         self.distances[first * self.ids.len() + second]
     }
 }
-pub(crate) fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
+pub fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
     let q = first.0 - first.1.div_euclid(2) - second.0 + second.1.div_euclid(2);
     let r = first.1 - second.1;
     ((q.abs() + r.abs() + (q + r).abs()) / 2) as u16
@@ -110,7 +110,7 @@ impl TileGeometry {
     }
 }
 #[derive(Clone, Default)]
-pub(crate) struct RuntimeCache {
+pub struct RuntimeCache {
     #[cfg(feature = "wasm")]
     geometry: Option<TileGeometry>,
     key: Option<MissionKey>,
@@ -186,7 +186,7 @@ pub(crate) struct Game<'catalog> {
     pub(crate) scripts: Option<Shared<EventState>>,
     pub(crate) last_combat: Option<LastCombat>,
     #[cfg(feature = "wasm")]
-    pub(crate) combat_animation: Option<crate::protocol::CombatAnimation>,
+    pub(crate) combat_animation: Option<crate::model::CombatAnimation>,
     pub(crate) combat_present: bool,
     pub(crate) armies: Option<[String; 2]>,
     pub(crate) pools: Option<[Vec<usize>; 2]>,
@@ -488,7 +488,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn new(rules: &'catalog Rules, map: &str) -> Self {
         Self::new_with_campaign(rules, map, None)
     }
-    pub(super) fn new_with_campaign(
+    pub(crate) fn new_with_campaign(
         rules: &'catalog Rules,
         map: &str,
         definition: Option<&'catalog Campaign>,

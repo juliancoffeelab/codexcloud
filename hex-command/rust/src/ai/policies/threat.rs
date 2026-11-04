@@ -1,4 +1,6 @@
-use crate::{data::*, logic::Game};
+//! Exposure policy, actor isolation and signature-owned threat caches.
+use crate::{ai::context::BattleView, data::*};
+use hex_command_battle::{PhaseForecasts, PhaseSnapshot};
 use rustc_hash::FxHashMap as HashMap;
 // Dense reachability sets intersect attack origins a machine word at a time.
 use crate::logic::geometry::TileSet;
@@ -29,34 +31,36 @@ pub(in crate::ai) struct ArenaThreatWorkspace {
 }
 pub(in crate::ai) struct Threats<'game, 'catalog> {
     orders: Option<&'game crate::ai::orders::TacticalOrders>,
-    source: &'game Game<'catalog>,
+    source: &'game BattleView<'game, 'catalog>,
+    phases: PhaseForecasts<'game, 'catalog>,
     side: Side,
-    normal: Option<(Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
+    normal: Option<(PhaseSnapshot<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
     cache: HashMap<RiskKey, i32>,
-    forecasts: HashMap<(u32, Option<u32>), (Game<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
+    forecasts: HashMap<(u32, Option<u32>), (PhaseSnapshot<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
     arena: ArenaEnemies,
     workspace: Option<&'game mut ArenaThreatWorkspace>,
 }
 impl<'game, 'catalog> Threats<'game, 'catalog> {
     /// Potential exposure without an allied screen, so a successful screen does
     /// not cause Campaigner to release its escort on the following turn.
-    pub(in crate::ai) fn unshielded(game: &super::BattleView<'_, 'catalog>, unit: &Unit) -> i32 {
-        let game = game.engine();
-        let mut board = game.fork();
-        board.arena_first = None;
-        board.end_turn();
-        if board.winner.is_some() {
+    pub(in crate::ai) fn unshielded(
+        game: &BattleView<'_, 'catalog>,
+        phases: PhaseForecasts<'_, 'catalog>,
+        unit: &Unit,
+    ) -> i32 {
+        let board = phases.project(None, None, false);
+        if board.winner().is_some() {
             return 0;
         }
         let Some(target) = board.unit(unit.id) else {
             return 0;
         };
         let enemies: Vec<_> = board
-            .units
+            .units()
             .iter()
             .filter(|u| game.hostile(unit, u))
             .map(|enemy| {
-                let mut blocked = TileSet::new(board.terrain.len());
+                let mut blocked = TileSet::new(board.terrain().len());
                 blocked.insert(enemy.tile);
                 let reach = board.threat_reach_blocked(enemy, blocked);
                 (enemy.clone(), Self::coverage_engine(&board, enemy, &reach))
@@ -64,11 +68,15 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             .collect();
         Self::pressure(&board, target, &enemies, None, true)
     }
-    pub fn new(g: &'game super::BattleView<'_, 'catalog>, side: Side) -> Self {
-        let g = g.engine();
+    pub fn new(
+        g: &'game BattleView<'game, 'catalog>,
+        phases: PhaseForecasts<'game, 'catalog>,
+        side: Side,
+    ) -> Self {
         Self {
             orders: None,
             source: g,
+            phases,
             side,
             normal: None,
             cache: HashMap::default(),
@@ -78,11 +86,12 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         }
     }
     pub(in crate::ai) fn protected(
-        g: &'game super::BattleView<'_, 'catalog>,
+        g: &'game BattleView<'game, 'catalog>,
+        phases: PhaseForecasts<'game, 'catalog>,
         side: Side,
         orders: &'game crate::ai::orders::TacticalOrders,
     ) -> Self {
-        let mut threats = Self::new(g, side);
+        let mut threats = Self::new(g, phases, side);
         threats.orders = Some(orders);
         threats
     }
@@ -94,17 +103,17 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         self
     }
     pub fn with_workspace(
-        g: &'game super::BattleView<'_, 'catalog>,
+        g: &'game BattleView<'game, 'catalog>,
+        phases: PhaseForecasts<'game, 'catalog>,
         side: Side,
         workspace: &'game mut ArenaThreatWorkspace,
     ) -> Self {
-        let mut threats = Self::new(g, side);
-        let g = g.engine();
-        if g.campaign.is_none() {
+        let mut threats = Self::new(g, phases, side);
+        if !g.is_campaign() {
             let same = workspace.side == Some(side)
-                && workspace.terrain == g.terrain
-                && workspace.roster.len() == g.units.len()
-                && workspace.roster.iter().zip(&g.units).all(
+                && workspace.terrain == *g.terrain()
+                && workspace.roster.len() == g.units().len()
+                && workspace.roster.iter().zip(g.units()).all(
                     |((id, kind, tile, side, faction, role, items), u)| {
                         (*id, *kind, *tile, *side) == (u.id, u.kind, u.tile, u.side)
                             && *faction == u.faction
@@ -114,9 +123,9 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 );
             if !same {
                 workspace.side = Some(side);
-                workspace.terrain.clone_from(&g.terrain);
+                workspace.terrain.clone_from(g.terrain());
                 workspace.roster.clear();
-                workspace.roster.extend(g.units.iter().map(|u| {
+                workspace.roster.extend(g.units().iter().map(|u| {
                     (
                         u.id,
                         u.kind,
@@ -136,15 +145,19 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         }
         threats
     }
-    fn arena_enemies(source: &Game, side: Side, actor: Option<u32>) -> Vec<(Unit, Vec<TileSet>)> {
+    fn arena_enemies(
+        source: &BattleView<'_, '_>,
+        side: Side,
+        actor: Option<u32>,
+    ) -> Vec<(Unit, Vec<TileSet>)> {
         let mut occupied = if actor.is_some() {
-            TileSet::new(source.terrain.len())
+            TileSet::new(source.terrain().len())
         } else {
-            source.occupied_tiles.clone()
+            source.occupied_tiles().clone()
         };
         if let Some(actor) = actor {
             for ally in source
-                .units
+                .units()
                 .iter()
                 .filter(|u| u.side == side && u.id != actor)
             {
@@ -152,7 +165,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             }
         }
         source
-            .units
+            .units()
             .iter()
             .filter(|u| source.hostile_to_phase(u, side))
             .map(|enemy| {
@@ -173,20 +186,20 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     // remain, while competing opponents and the hypothetical moving actor can
     // be excluded without cloning or replacing the forecast roster.
     fn independent_enemies(
-        board: &Game<'catalog>,
+        board: &BattleView<'_, 'catalog>,
         side: Side,
         excluded: Option<u32>,
     ) -> Vec<(Unit, Vec<TileSet>)> {
-        let mut occupied = TileSet::new(board.terrain.len());
+        let mut occupied = TileSet::new(board.terrain().len());
         for ally in board
-            .units
+            .units()
             .iter()
             .filter(|u| u.side == side && Some(u.id) != excluded)
         {
             occupied.insert(ally.tile);
         }
         board
-            .units
+            .units()
             .iter()
             .filter(|u| board.hostile_to_phase(u, side))
             .map(|enemy| {
@@ -201,14 +214,14 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             .collect()
     }
     pub(in crate::ai) fn coverage(
-        board: &super::BattleView<'_, '_>,
+        board: &BattleView<'_, '_>,
         unit: &Unit,
         positions: &TileSet,
     ) -> Vec<TileSet> {
-        Self::coverage_engine(board.engine(), unit, positions)
+        Self::coverage_engine(board, unit, positions)
     }
     pub(in crate::ai) fn coverage_engine(
-        board: &Game,
+        board: &BattleView<'_, '_>,
         unit: &Unit,
         positions: &TileSet,
     ) -> Vec<TileSet> {
@@ -226,7 +239,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     return TileSet::Small(covered);
                 }
                 let geometry = board.attack_origins(attack.category, attack.range);
-                let mut covered = TileSet::new(board.terrain.len());
+                let mut covered = TileSet::new(board.terrain().len());
                 // Range and intervening-terrain legality are reciprocal. Union
                 // targets from reachable origins instead of testing every tile.
                 positions.for_each(|origin| covered.union_with(&geometry[origin]));
@@ -235,7 +248,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             .collect()
     }
     fn pressure(
-        board: &Game,
+        board: &BattleView<'_, '_>,
         target: &Unit,
         enemies: &[(Unit, Vec<TileSet>)],
         eliminated: Option<u32>,
@@ -271,20 +284,19 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         if sum { total } else { first + second }
     }
     pub fn at(&mut self, u: &Unit, tile: usize, eliminated: Option<u32>) -> i32 {
-        if self.source.winner.is_some() {
+        if self.source.winner().is_some() {
             return 0;
         }
-        let important = self.orders.map_or_else(
-            || u.is_leader(),
-            |orders| orders.important(&super::BattleView::new(self.source), u),
-        );
+        let important = self
+            .orders
+            .map_or_else(|| u.is_leader(), |orders| orders.important(self.source, u));
         let key = (u.id, important, tile, eliminated);
         if let Some(&risk) = self.cache.get(&key) {
             return risk;
         }
         let mut target = u.clone();
         target.tile = tile;
-        let risk = if self.source.campaign.is_none() {
+        let risk = if !self.source.is_campaign() {
             // Arena turn-start only resets enemy actions and heals HP. Neither
             // healing nor income changes damage or movement coverage. Essential
             // forecasts ignore competing enemies, so a killed enemy can be
@@ -298,15 +310,14 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             Self::pressure(self.source, &target, enemies, eliminated, important)
         } else if !important {
             let (shadow, enemies) = self.normal.get_or_insert_with(|| {
-                let mut shadow = self.source.fork();
-                shadow.arena_first = None;
-                shadow.end_turn();
+                let shadow = self.phases.project(None, None, false);
                 let enemies = shadow
-                    .units
+                    .units()
                     .iter()
                     .filter(|u| self.source.hostile_to_phase(u, self.side))
                     .map(|u| {
-                        let positions = shadow.threat_reach(u, None);
+                        let positions =
+                            shadow.threat_reach_blocked(u, shadow.occupied_tiles().clone());
                         (u.clone(), Self::coverage_engine(&shadow, u, &positions))
                     })
                     .collect();
@@ -319,21 +330,14 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     || orders.transition_sensitive.iter().any(|(actor, sites)| {
                         actor.0 == u.id
                             && sites.iter().any(|site| {
-                                site.0 == self.source.board.ids[u.tile]
-                                    || site.0 == self.source.board.ids[tile]
+                                site.0 == self.source.board().ids[u.tile]
+                                    || site.0 == self.source.board().ids[tile]
                             })
                     })
             });
             if sensitive {
-                let mut board = self.source.fork();
-                board.arena_first = None;
-                if let Some(index) = board.index(u.id) {
-                    board.units[index].tile = tile;
-                }
-                board.units.retain(|o| Some(o.id) != eliminated);
-                board.roster_changed();
-                board.end_turn();
-                if board.winner.is_some() {
+                let board = self.phases.project(Some((u.id, tile)), eliminated, true);
+                if board.winner().is_some() {
                     0
                 } else {
                     board.unit(u.id).map_or(0, |target| {
@@ -344,12 +348,8 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             } else {
                 let fkey = (u.id, eliminated);
                 let (board, enemies) = self.forecasts.entry(fkey).or_insert_with(|| {
-                    let mut board = self.source.fork();
-                    board.arena_first = None;
-                    board.units.retain(|o| Some(o.id) != eliminated);
-                    board.roster_changed();
-                    board.end_turn();
-                    let enemies = if board.winner.is_some() {
+                    let board = self.phases.project(None, eliminated, true);
+                    let enemies = if board.winner().is_some() {
                         vec![]
                     } else {
                         Self::independent_enemies(&board, u.side, Some(u.id))
@@ -375,29 +375,37 @@ impl Drop for Threats<'_, '_> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::logic::Game;
     #[test]
     fn arena_workspace_reuses_hp_only_changes_and_invalidates_roster_changes() {
         let rules = Catalog::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
-        let side = game.turn;
+        let side = game.turn();
         let mut workspace = ArenaThreatWorkspace::default();
-        let enemy = game.units.iter().find(|u| u.side != side).unwrap().id;
+        let enemy = game.units().iter().find(|u| u.side != side).unwrap().id;
         for change in 0..3 {
-            if change == 1 {
-                let target = game.units.iter_mut().find(|u| u.id == enemy).unwrap();
-                target.hp -= 1;
-                target.attacked = true;
-            } else if change == 2 {
-                game.units.retain(|u| u.id != enemy);
-                game.roster_changed();
+            if change != 0 {
+                let mut state = game.state();
+                if change == 1 {
+                    let target = state
+                        .units
+                        .iter_mut()
+                        .find(|u| u.id == format!("u{enemy}"))
+                        .unwrap();
+                    target.hp -= 1;
+                    target.attacked = true;
+                } else {
+                    state.units.retain(|u| u.id != format!("u{enemy}"));
+                }
+                game = Game::try_from_state(&rules, state).unwrap();
             }
-            let view = crate::ai::context::BattleView::new(&game);
-            let mut cached = Threats::with_workspace(&view, side, &mut workspace);
-            let view = crate::ai::context::BattleView::new(&game);
-            let mut fresh = Threats::new(&view, side);
-            for unit in game.units.iter().filter(|u| u.side == side) {
+            let view = game.view();
+            let mut cached =
+                Threats::with_workspace(view, game.phase_forecasts(), side, &mut workspace);
+            let mut fresh = Threats::new(view, game.phase_forecasts(), side);
+            for unit in game.units().iter().filter(|u| u.side == side) {
                 for eliminated in [None, Some(enemy)] {
-                    for tile in 0..game.terrain.len() {
+                    for tile in 0..game.terrain().len() {
                         assert_eq!(
                             cached.at(unit, tile, eliminated),
                             fresh.at(unit, tile, eliminated)
@@ -413,50 +421,41 @@ mod tests {
         for side in [Side::Player, Side::Enemy] {
             let mut game = Game::new(&rules, "mirror");
             game.begin_turn(side);
-            let enemy = game.units.iter().find(|u| u.side != side).unwrap().id;
+            let enemy = game.units().iter().find(|u| u.side != side).unwrap().id;
             let ordinary = game
-                .units
+                .units()
                 .iter()
-                .find(|u| u.side == side && !game.essential(u))
+                .find(|u| u.side == side && !u.is_leader())
                 .unwrap();
             let essential = game
-                .units
+                .units()
                 .iter()
-                .find(|u| u.side == side && game.essential(u))
+                .find(|u| u.side == side && u.is_leader())
                 .unwrap();
             for unit in [ordinary, essential] {
-                let important = game.essential(unit);
-                let view = crate::ai::context::BattleView::new(&game);
-                let mut threats = Threats::new(&view, side);
+                let important = unit.is_leader();
+                let mut threats = Threats::new(game.view(), game.phase_forecasts(), side);
                 for eliminated in [None, Some(enemy)] {
-                    let mut shadow = game.fork();
-                    shadow.arena_first = None;
-                    if important {
-                        shadow.units.retain(|u| Some(u.id) != eliminated);
-                        shadow.roster_changed();
-                    }
-                    shadow.end_turn();
+                    let shadow = game.phase_forecasts().project(
+                        None,
+                        if important { eliminated } else { None },
+                        important,
+                    );
                     let enemies: Vec<_> = if important {
                         Threats::independent_enemies(&shadow, side, Some(unit.id))
                     } else {
                         shadow
-                            .units
+                            .units()
                             .iter()
                             .filter(|u| u.side != side)
                             .map(|u| {
-                                let positions = shadow.threat_reach(u, None);
-                                (
-                                    u.clone(),
-                                    Threats::coverage(
-                                        &crate::ai::context::BattleView::new(&shadow),
-                                        u,
-                                        &positions,
-                                    ),
-                                )
+                                let positions =
+                                    shadow.threat_reach_blocked(u, shadow.occupied_tiles().clone());
+                                (u.clone(), Threats::coverage(&shadow, u, &positions))
                             })
                             .collect()
                     };
-                    for tile in 0..game.terrain.len() {
+                    for tile in 0..game.terrain().len() {
                         let mut target = unit.clone();
                         target.tile = tile;
                         let expected = Threats::pressure(
@@ -471,5 +470,14 @@ mod tests {
                 }
             }
         }
+    }
+}
+
+/// Exposure beyond the actor's remaining life cannot represent an additional loss.
+pub(in crate::ai) fn cap_exposure(unit: &Unit, incoming: i32, important: bool) -> i32 {
+    if important {
+        incoming.min(unit.hp.max(1))
+    } else {
+        incoming
     }
 }

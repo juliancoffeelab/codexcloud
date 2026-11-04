@@ -1,9 +1,9 @@
 //! Bounded detailed evaluation: inexpensive candidates first, full safety second.
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
 use crate::ai::{
-    PlanningWorkspace, TacticalRole,
-    objectives::{TileOrder, TileOrderContext, actor_matches},
-    planner::safety::Threats,
+    TacticalRole,
+    policies::objectives::{TileOrder, TileOrderContext, actor_matches},
+    policies::threat::Threats,
     roles::role,
     tactics::{Plan, action_jitter},
 };
@@ -29,11 +29,11 @@ type GoalUnit = (
 #[derive(Default)]
 pub(in crate::ai) struct Workspace {
     revision: u32,
-    pub(in crate::ai) goals: Vec<Objective>,
-    pub(in crate::ai) orders: crate::ai::orders::TacticalOrders,
-    pub(in crate::ai) rebuild_intents: Vec<(u32, Option<bool>)>,
+    goals: Vec<Objective>,
+    orders: crate::ai::orders::TacticalOrders,
+    rebuild_intents: Vec<(u32, Option<bool>)>,
     blockers: Vec<bool>,
-    pub(in crate::ai) proximity: Vec<u16>,
+    proximity: Vec<u16>,
     proximity_roster: Vec<(u32, usize)>,
     frontline_support: Vec<f64>,
     front: u16,
@@ -44,18 +44,27 @@ pub(in crate::ai) struct Workspace {
     gold: i32,
     side: Option<Side>,
     positions: Vec<(u32, usize, Option<bool>)>,
-    pub(in crate::ai) clearing: FxHashMap<u32, FxHashSet<usize>>,
+    clearing: FxHashMap<u32, FxHashSet<usize>>,
     lanes: FxHashSet<usize>,
     order: Option<TileOrderContext>,
     reserved: FxHashMap<u32, FxHashSet<usize>>,
     fields: FxHashMap<(usize, usize, bool), Rc<Field>>,
 }
-pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut PlanningWorkspace) {
-    let orders = &workspace.orders.as_ref().unwrap().tactics;
-    let cache = &mut workspace.cheap;
+impl Workspace {
+    pub(super) fn goals(&self)->&[Objective]{&self.goals}
+    pub(super) fn proximity(&self)->&[u16]{&self.proximity}
+    pub(super) fn clearing(&self)->&FxHashMap<u32,FxHashSet<usize>>{&self.clearing}
+    pub(super) fn rebuild_intents(&self)->&[(u32,Option<bool>)]{&self.rebuild_intents}
+}
+pub(super) struct EvaluationInput<'a> {
+    pub seed:u32,
+    pub orders:&'a crate::ai::orders::TacticalOrders,
+    pub recruitment:Option<crate::ai::policies::recruitment::EstimateInput<'a>>,
+}
+pub(in crate::ai) fn prepare(game:&BattleView<'_, '_>, cache:&mut Workspace, orders:&crate::ai::orders::TacticalOrders, revision:u32) {
 
     let same = cache.side == Some(game.turn())
-        && cache.revision == workspace.cooperation.revision
+        && cache.revision == revision
         && cache.gold == game.gold_for_phase(game.turn())
         && cache.owners == *game.owners()
         && cache.terrain == *game.terrain()
@@ -76,7 +85,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
             .zip(game.units())
             .all(|(key, u)| *key == (u.id, u.tile, u.retreating));
     if !same {
-        cache.revision = workspace.cooperation.revision;
+        cache.revision = revision;
         cache.side = Some(game.turn());
         cache.gold = game.gold_for_phase(game.turn());
         cache.owners.clone_from(&game.owners());
@@ -97,7 +106,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
 
         cache.goals = orders.targets.clone();
         cache.goals.retain(|g| !g.id.starts_with("rebuild:"));
-        cache.goals.extend(crate::ai::objectives::individual(
+        cache.goals.extend(crate::ai::policies::objectives::individual(
             orders.rebuild_objectives(game),
         ));
         cache.blockers.clear();
@@ -141,7 +150,7 @@ pub(in crate::ai) fn prepare(game: &BattleView<'_, '_>, workspace: &mut Planning
             .map(|u| (u.id, u.tile))
             .collect();
         cache.proximity = (0..game.terrain().len())
-            .map(|t| game.proximity(game.turn(), t))
+            .map(|t| crate::ai::policies::objectives::proximity(game, game.turn(), t))
             .collect();
     }
     if !same || !spatial_same {
@@ -200,8 +209,7 @@ fn leader_may_advance(
     if after >= before {
         return true;
     }
-    let (count, front) = game
-        .ordinary(unit)
+    let (count, front) = crate::ai::policies::objectives::ordinary(game, unit)
         .filter(|u| {
             u.hp as f64 >= game.rules().units[u.kind].hp as f64 / 2.0
                 && game.board().distance(tile, u.tile) <= 2
@@ -224,28 +232,29 @@ struct Candidate {
 }
 pub(in crate::ai) fn plan(
     game: &BattleView<'_, '_>,
+    phases:hex_command_battle::PhaseForecasts<'_, '_>,
     id: u32,
-    workspace: &mut PlanningWorkspace,
+    cache:&mut Workspace,
+    shared:super::search::CandidateShared<'_>,
+    input:EvaluationInput<'_>,
 ) -> Option<Plan> {
     let original = game.unit(id)?;
-    let objectives = &workspace.cheap.goals;
-    let orders = &workspace.orders.as_ref().unwrap().tactics;
-    let required = orders.moving_actor(id) || workspace.cheap.clearing.contains_key(&id);
+    let objectives = &cache.goals;
+    let orders = input.orders;
+    let required = orders.moving_actor(id) || cache.clearing.contains_key(&id);
     let (rebuilding, intent) = orders.rebuild_plan(game, id, required);
     let mut unit = original.clone();
     unit.rebuilding = intent;
     let important = orders.important(game, &unit);
     let category = role(game, unit.kind);
     let battle = !orders.campaign;
-    let reserved = workspace
-        .cheap
+    let reserved = cache
         .reserved
         .entry(id)
-        .or_insert_with(|| game.reserved(&unit, objectives));
-    let lanes = &workspace.cheap.lanes;
-    let clearing = workspace.cheap.clearing.get(&id);
-    let order = workspace
-        .cheap
+        .or_insert_with(|| crate::ai::policies::objectives::reserved(game, &unit, objectives));
+    let lanes = &cache.lanes;
+    let clearing = cache.clearing.get(&id);
+    let order = cache
         .order
         .as_ref()
         .unwrap()
@@ -271,22 +280,21 @@ pub(in crate::ai) fn plan(
         {
             continue;
         }
-        let pursuing = game.can_pursue(&unit, original);
+        let pursuing = crate::ai::policies::objectives::can_pursue(game, &unit, original);
         if !pursuing && original.actor.is_none() && original.family.is_none() {
             continue;
         }
         let dynamic = pursuing
             && (original.actor.is_some() || original.family.is_some())
-            && crate::ai::objectives::actor_route(original);
-        let field = workspace
-            .cheap
+            && crate::ai::policies::objectives::actor_route(original);
+        let field = cache
             .fields
             .entry((unit.kind, goal_index, pursuing))
             .or_insert_with(|| {
                 let goal = if pursuing {
                     original.clone()
                 } else {
-                    game.support_objective(&unit, original)
+                    crate::ai::policies::objectives::support_objective(game, &unit, original)
                 };
                 let tiles: Vec<_> = goal.tiles.iter().map(|t| game.site(t)).collect();
                 let route = (!dynamic && !tiles.is_empty()).then(|| game.routes(unit.kind, &tiles));
@@ -309,7 +317,7 @@ pub(in crate::ai) fn plan(
         if route[unit.tile] == u16::MAX {
             continue;
         }
-        let assigned = game.assigned_duty(&unit, original);
+        let assigned = crate::ai::policies::objectives::assigned_duty(game, &unit, original);
         let priority = (route[unit.tile] as f64 + 3.0) / field.goal.weight;
         duties.push((field, route, assigned, priority));
     }
@@ -318,7 +326,7 @@ pub(in crate::ai) fn plan(
     }
     let committed = duties
         .iter()
-        .position(|d| workspace.commitments.get(&id) == Some(&d.0.goal.id));
+        .position(|d| shared.commitments.get(&id) == Some(&d.0.goal.id));
     let duty = if let Some(index) = committed {
         Some(duties.swap_remove(index))
     } else {
@@ -334,9 +342,9 @@ pub(in crate::ai) fn plan(
         duties.into_iter().next()
     };
     if let Some(d) = &duty {
-        workspace.commitments.insert(id, d.0.goal.id.clone());
+        shared.commitments.insert(id, d.0.goal.id.clone());
     } else {
-        workspace.commitments.remove(&id);
+        shared.commitments.remove(&id);
     }
     let allies: Vec<_> = game
         .units()
@@ -367,16 +375,16 @@ pub(in crate::ai) fn plan(
                         <= movement + maximum_range)
         })
         .collect();
-    let proximity_grid = &workspace.cheap.proximity;
-    let front = workspace.cheap.front;
-    let has_screens = workspace.cheap.screens > 0;
+    let proximity_grid = &cache.proximity;
+    let front = cache.front;
+    let has_screens = cache.screens > 0;
     let holding = objectives.iter().any(|g| {
         g.hold == Some(true)
             && actor_matches(&g.actor, id)
             && g.tiles.contains(&game.board().ids[unit.tile])
     });
     let mut support = if category == TacticalRole::Frontline {
-        workspace.cheap.frontline_support.clone()
+        cache.frontline_support.clone()
     } else {
         vec![0.0; game.terrain().len()]
     };
@@ -508,7 +516,7 @@ pub(in crate::ai) fn plan(
         if category != TacticalRole::Frontline && has_screens && proximity <= 4 {
             value += if proximity > front { 2.0 } else { -3.0 };
         }
-        value += support[tile] + workspace.search_escort.position(id, tile);
+        value += support[tile] + shared.escort.position(id, tile);
         value
     };
     let mut destinations = vec![unit.tile];
@@ -611,7 +619,7 @@ pub(in crate::ai) fn plan(
                 combat += 3.0;
             }
             // Coordinate damage against an enemy blocking a required site.
-            if !battle && workspace.cheap.blockers[target.tile] {
+            if !battle && cache.blockers[target.tile] {
                 combat += 16.0;
             }
             if response >= unit.hp {
@@ -640,7 +648,7 @@ pub(in crate::ai) fn plan(
         let score = positioning + combat + if finishing || terminal { 100.0 } else { 0.0 }
             - wait_position
             + action_jitter(
-                workspace.seed,
+                input.seed,
                 game.round(),
                 id,
                 game.board().positions[tile],
@@ -758,8 +766,8 @@ pub(in crate::ai) fn plan(
         return None;
     }
     let mut threats =
-        Threats::with_workspace(game, unit.side, &mut workspace.threats).with_orders(orders);
-    let before = super::recruitment::exposure(&unit, threats.at(&unit, unit.tile, None), important);
+        Threats::with_workspace(game, phases, unit.side, shared.threats).with_orders(orders);
+    let before = crate::ai::policies::threat::cap_exposure(&unit, threats.at(&unit, unit.tile, None), important);
     let danger = if orders.protects(unit.id) {
         // A finite cost for the fraction of remaining life at risk.
         40.0 / unit.hp.max(1) as f64
@@ -807,7 +815,7 @@ pub(in crate::ai) fn plan(
         } else {
             threats.at(&unit, c.tile, c.eliminated)
         };
-        let incoming = super::recruitment::exposure(&unit, incoming, important);
+        let incoming = crate::ai::policies::threat::cap_exposure(&unit, incoming, important);
         let lethal = incoming >= unit.hp - c.response;
         let score = c.score + wait_risk
             - incoming as f64 * danger
@@ -852,7 +860,7 @@ pub(in crate::ai) fn plan(
                 continue;
             }
             let incoming =
-                super::recruitment::exposure(&unit, threats.at(&unit, tile, None), important);
+                crate::ai::policies::threat::cap_exposure(&unit, threats.at(&unit, tile, None), important);
             if !may_advance[index]
                 && incoming >= before
                 && !healing
@@ -862,7 +870,7 @@ pub(in crate::ai) fn plan(
             }
             let score = positioning - wait_position
                 + action_jitter(
-                    workspace.seed,
+                    input.seed,
                     game.round(),
                     id,
                     game.board().positions[tile],
@@ -891,9 +899,10 @@ pub(in crate::ai) fn plan(
     }
     if let Some(recruiting) = super::recruitment::plan(
         game,
+        phases,
         &unit,
         orders,
-        workspace.recruitment_opportunity.as_ref(),
+        input.recruitment,
     ) {
         if best.as_ref().is_none_or(|p| recruiting.score > p.score) {
             best = Some(recruiting);
@@ -943,7 +952,7 @@ mod tests {
                 prepare(&crate::ai::context::BattleView::new(game), &mut workspace);
                 let mut expected_goals = workspace.orders.as_ref().unwrap().tactics.targets.clone();
                 expected_goals.retain(|g| !g.id.starts_with("rebuild:"));
-                expected_goals.extend(crate::ai::objectives::individual(
+                expected_goals.extend(crate::ai::policies::objectives::individual(
                     workspace
                         .orders
                         .as_ref()
@@ -958,13 +967,12 @@ mod tests {
                 assert_eq!(
                     workspace.cheap.proximity,
                     (0..game.terrain.len())
-                        .map(|tile| crate::ai::context::BattleView::new(&game)
-                            .proximity(game.turn, tile))
+                        .map(|tile| crate::ai::policies::objectives::proximity(&crate::ai::context::BattleView::new(&game), game.turn, tile))
                         .collect::<Vec<_>>()
                 );
                 assert_eq!(
                     workspace.cheap.clearing,
-                    crate::ai::context::BattleView::new(&game).actor_lanes(&workspace.cheap.goals)
+                    crate::ai::policies::objectives::actor_lanes(&crate::ai::context::BattleView::new(&game), &workspace.cheap.goals)
                 );
                 assert_eq!(
                     workspace.cheap.lanes,
@@ -985,8 +993,7 @@ mod tests {
                                 false,
                                 &workspace.cheap.proximity
                             ),
-                            crate::ai::context::BattleView::new(&game)
-                                .leader_may_advance(unit, tile, true, false)
+                            crate::ai::policies::objectives::leader_may_advance(&crate::ai::context::BattleView::new(&game), unit, tile, true, false)
                         );
                     }
                 }

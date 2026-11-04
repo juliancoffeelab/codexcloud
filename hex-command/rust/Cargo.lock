@@ -475,6 +475,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "hex-command-battle"
+version = "0.1.0"
+dependencies = [
+ "hex-catalog-freeze-derive",
+ "hex-command-catalog",
+ "rustc-hash",
+ "serde",
+ "serde_json",
+ "tsify",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "hex-command-catalog"
 version = "0.1.0"
 dependencies = [
@@ -500,6 +513,7 @@ dependencies = [
  "clap",
  "flate2",
  "hex-catalog-freeze-derive",
+ "hex-command-battle",
  "hex-command-catalog",
  "mimalloc",
  "rustc-hash",

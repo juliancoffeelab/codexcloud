@@ -113,7 +113,7 @@ mod tests {
                 .rebuild_objectives(&crate::ai::context::BattleView::new(&game));
             assert!(!emitted.is_empty() && !refreshed.is_empty());
             for goal in emitted.into_iter().chain(refreshed.iter()) {
-                assert!(crate::ai::objectives::actor_matches(&goal.actor, leader));
+                assert!(crate::ai::policies::objectives::actor_matches(&goal.actor, leader));
                 assert_eq!(goal.hold, Some(true));
             }
         }

@@ -116,14 +116,14 @@ impl PlannerKind {
         game: &BattleView<'_, '_>,
         workspace: &mut PlanningWorkspace,
     ) -> Result<(), CommandError> {
-        super::cooperation::assign(game, workspace);
-        super::cooperation::refresh_assignments(game, workspace);
+        crate::ai::policies::cooperation::assign(game, workspace);
+        crate::ai::policies::cooperation::refresh_assignments(game, workspace);
         match self {
             Self::Classic => classic::prepare(game, workspace),
             Self::Full => full::prepare(game, workspace),
             Self::Queued => queued::prepare(game, workspace),
         }
-        if super::cooperation::rescue(game, workspace)? {
+        if crate::ai::policies::cooperation::rescue(game, workspace)? {
             return Ok(());
         }
         match self {
@@ -132,14 +132,13 @@ impl PlannerKind {
             Self::Queued => queued::choose(game, workspace)?,
         }
         if workspace.finished {
-            super::cooperation::fallback(game, workspace)?;
-            super::cooperation::report(game, workspace);
+            crate::ai::policies::cooperation::fallback(game, workspace)?;
+            crate::ai::policies::cooperation::report(game, workspace);
         }
         Ok(())
     }
 }
 
-pub(in crate::ai) mod assignments;
 pub(in crate::ai) mod candidates;
 pub(in crate::ai) mod classic;
 mod full;

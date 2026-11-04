@@ -163,41 +163,7 @@ pub struct ObjectiveOrder {
     pub objective: TacticalObjective,
 }
 
-/// Mechanical local bounds for an individual actor; never an army-wide duty.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ScopedOrder {
-    pub actor: UnitId,
-    pub area: Vec<TileId>,
-    pub attack_radius: u16,
-}
-
-impl ScopedOrder {
-    pub(super) fn allows_move(&self, game: &BattleView<'_, '_>, unit: &Unit, to: usize) -> bool {
-        let area: Vec<_> = self.area.iter().map(|tile| game.site(&tile.0)).collect();
-        if area.contains(&to) {
-            return true;
-        }
-        if area.contains(&unit.tile) {
-            return false;
-        }
-        let routes = game.routes(unit.kind, &area);
-        routes[to] < routes[unit.tile]
-    }
-    pub(super) fn allows_attack(
-        &self,
-        game: &BattleView<'_, '_>,
-        from: usize,
-        target: usize,
-    ) -> bool {
-        self.area.iter().any(|tile| game.site(&tile.0) == from)
-            && self
-                .area
-                .iter()
-                .any(|tile| game.board().distance(game.site(&tile.0), target) <= self.attack_radius)
-    }
-}
+pub use hex_command_battle::model::ScopedOrder;
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -256,7 +222,7 @@ impl TacticalOrders {
         &self,
         game: &BattleView<'_, '_>,
     ) -> rustc_hash::FxHashMap<u32, rustc_hash::FxHashSet<usize>> {
-        game.actor_lanes(&self.passage_targets())
+        crate::ai::policies::objectives::actor_lanes(game, &self.passage_targets())
     }
     /// Complete the explicit passage contract without choosing planner heuristics.
     pub(crate) fn passage_targets(&self) -> std::borrow::Cow<'_, [Target]> {
@@ -276,7 +242,7 @@ impl TacticalOrders {
             .filter_map(passage)
             .filter(|(actor, destination)| {
                 !self.targets.iter().any(|goal| {
-                    super::objectives::actor_matches(&goal.actor, actor.0)
+                    crate::ai::policies::objectives::actor_matches(&goal.actor, actor.0)
                         && goal.tiles.contains(&destination.0)
                 })
             })
@@ -286,7 +252,7 @@ impl TacticalOrders {
         }
         let mut goals = self.targets.clone();
         for (actor, destination) in missing {
-            let mut goal = super::objectives::objective(
+            let mut goal = crate::ai::policies::objectives::objective(
                 "passage",
                 ObjectiveKind::Visit,
                 vec![destination.0.clone()],
@@ -312,7 +278,7 @@ impl TacticalOrders {
             .targets
             .iter()
             .filter(|goal| {
-                goal.id.starts_with("rebuild:") && super::objectives::actor_matches(&goal.actor, id)
+                goal.id.starts_with("rebuild:") && crate::ai::policies::objectives::actor_matches(&goal.actor, id)
             })
             .flat_map(|goal| goal.tiles.iter().map(|tile| game.site(tile)))
             .collect();
@@ -340,7 +306,7 @@ impl TacticalOrders {
                 goal.id.starts_with("rebuild:")
                     && game.units().iter().any(|unit| {
                         game.belongs_to_phase(unit, game.turn())
-                            && super::objectives::actor_matches(&goal.actor, unit.id)
+                            && crate::ai::policies::objectives::actor_matches(&goal.actor, unit.id)
                     })
             })
             .cloned()

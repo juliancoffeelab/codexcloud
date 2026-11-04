@@ -1,7 +1,8 @@
-//! Classic's defensive escort evaluation; travel heuristics belong to search planners.
-use crate::ai::{orders::PlanningReport, threats::Threats};
+//! Defensive escort policy: screening and threat removal without travel-position rewards.
+use crate::ai::{orders::PlanningReport, policies::threat::Threats};
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*, logic::geometry::TileSet};
+use hex_command_battle::PhaseForecasts;
 use rustc_hash::FxHashMap;
 
 #[derive(Default)]
@@ -28,7 +29,12 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
         .unwrap_or(0)
 }
 impl Workspace {
-    pub(in crate::ai) fn prepare(&mut self, game: &BattleView<'_, '_>, report: &PlanningReport) {
+    pub(in crate::ai) fn prepare(
+        &mut self,
+        game: &BattleView<'_, '_>,
+        phases: PhaseForecasts<'_, '_>,
+        report: &PlanningReport,
+    ) {
         let assignments: Vec<_> = report
             .duties
             .iter()
@@ -66,8 +72,7 @@ impl Workspace {
         self.terrain.clone_from(&game.terrain());
         self.owners.clone_from(&game.owners());
         self.fields.clear();
-        let mut forecast = game.fork();
-        forecast.end_turn();
+        let forecast = phases.planning_next_phase();
         if forecast.winner().is_some() {
             return;
         }

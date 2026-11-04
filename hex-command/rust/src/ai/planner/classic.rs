@@ -1,13 +1,13 @@
-pub(in crate::ai) mod escort;
+use crate::ai::policies::escort::defensive as escort;
 use crate::ai::Recorder;
 use crate::ai::intent_command;
-use crate::ai::objectives::actor_matches;
+use crate::ai::policies::objectives::actor_matches;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
 use crate::sort::SharedSort;
 use crate::{
-    ai::context::{BattleDraft, BattleView},
-    ai::objectives::{TileOrder, individual},
-    ai::planner::safety::Threats,
+    ai::context::{BattleDraft, BattleView, ActionForecastSource},
+    ai::policies::objectives::{TileOrder, individual},
+    ai::policies::threat::Threats,
     data::*,
 };
 use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
@@ -40,18 +40,19 @@ pub(in crate::ai) struct ClassicRules<'game, 'catalog> {
 impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
     pub fn new(
         g: &'game BattleView<'game, 'catalog>,
+        phases: hex_command_battle::PhaseForecasts<'game, 'catalog>,
         u: &Unit,
         goals: &[Objective],
         _restrained: bool,
         orders: &'game crate::ai::orders::TacticalOrders,
         escort: &'game escort::Workspace,
-        opportunity: Option<&crate::ai::recruiter::RecruitmentOpportunity>,
+        opportunity: Option<crate::ai::policies::recruitment::EstimateInput<'_>>,
     ) -> Self {
         let important = orders.important(g, u);
-        let threats = important.then(|| Threats::protected(g, u.side, orders));
+        let threats = important.then(|| Threats::protected(g, phases, u.side, orders));
         // Classic owns this budget estimate and its movement penalties; no recruit previews.
         let mut recruitment = HashMap::default();
-        if let Some(opportunity) = opportunity.filter(|r| r.budget != Some(0)) {
+        if let Some(opportunity) = opportunity.filter(|r| r.remaining_budget != Some(0)) {
             if u.is_leader() && !u.moved && !u.attacked {
                 let destinations = orders.authored_destinations(
                     g,
@@ -62,44 +63,11 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
                     .into_iter()
                     .filter(|&tile| tile != u.tile && g.is_keep(tile) && g.owns(tile, u.side))
                 {
-                    let gold = g.gold_for_unit(u).max(0);
-                    let requirement = opportunity
-                        .orders
-                        .requirements
-                        .iter()
-                        .find(|requirement| requirement.deficit(g) > 0);
-                    let mut slots = 0;
-                    let mut costs = Vec::new();
-                    for kind in g.recruitment_options_for(u) {
-                        if requirement.is_some_and(|requirement| !requirement.accepts(g, kind)) {
-                            continue;
-                        }
-                        let cost = g.recruit_cost(u, kind);
-                        if cost > gold {
-                            continue;
-                        }
-                        let available = g.board().adjacent[tile]
-                            .iter()
-                            .filter(|&&site| {
-                                (site == u.tile || g.at(site).is_none())
-                                    && g.cost(kind, site) != u16::MAX
-                                    && !opportunity
-                                        .orders
-                                        .reserved
-                                        .iter()
-                                        .any(|reserved| g.site(&reserved.0) == site)
-                            })
-                            .count();
-                        if available > 0 {
-                            slots = slots.max(available);
-                            costs.push(cost);
-                        }
-                    }
-                    if !costs.is_empty() {
-                        let average = costs.iter().sum::<i32>() / costs.len() as i32;
-                        let capacity = slots.min(opportunity.budget.unwrap_or(usize::MAX));
-                        recruitment
-                            .insert(tile, gold.min((capacity as i32).saturating_mul(average)));
+                    if let Some(value) = crate::ai::policies::recruitment::estimate_capacity(
+                        g, u, tile,
+                        opportunity,
+                    ) {
+                        recruitment.insert(tile, value);
                     }
                 }
             }
@@ -114,7 +82,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         Self {
             unit: u.clone(),
             goals: goals.to_vec(),
-            reserved: g.reserved(u, goals),
+            reserved: crate::ai::policies::objectives::reserved(g, u, goals),
             yielding,
             lanes: orders.lanes(g),
             important,
@@ -208,7 +176,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
     fn attack_value(&mut self, g: &BattleView, target: &Unit, weapon: usize, from: usize) -> f64 {
         let u = &self.unit;
         let exchange = g.exchange(u, target, weapon, from);
-        let mut value = g.attack_score(u, target, from, Some(weapon))
+        let mut value = ClassicEvaluation(g).attack_score(u, target, from, Some(weapon))
             + self.escort.attack(
                 u.id,
                 target,
@@ -228,7 +196,12 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         value
     }
 }
-impl BattleView<'_, '_> {
+struct ClassicEvaluation<'view, 'game, 'catalog>(&'view BattleView<'game, 'catalog>);
+impl<'view, 'game, 'catalog> std::ops::Deref for ClassicEvaluation<'view, 'game, 'catalog> {
+    type Target = BattleView<'game, 'catalog>;
+    fn deref(&self) -> &Self::Target { self.0 }
+}
+impl ClassicEvaluation<'_, '_, '_> {
     pub fn enemy_danger(&self, u: &Unit, tile: usize) -> i32 {
         let mut target = u.clone();
         target.tile = tile;
@@ -251,7 +224,7 @@ impl BattleView<'_, '_> {
         first + second
     }
     fn attack_score(&self, u: &Unit, target: &Unit, from: usize, weapon: Option<usize>) -> f64 {
-        let Some(w) = weapon.or_else(|| self.best_attack(u, target, from)) else {
+        let Some(w) = weapon.or_else(|| crate::ai::policies::combat::best_attack(self, u, target, from)) else {
             return -100.0;
         };
         let forecast = self.exchange(u, target, w, from);
@@ -367,13 +340,30 @@ impl BattleView<'_, '_> {
         ids.order_by_key(|&id| order(self.unit(id).unwrap()));
         ids.order_by_key(|&id| {
             let u = self.unit(id).unwrap();
-            !self.reserved(u, &objectives).contains(&u.tile) && !clearing.contains_key(&id)
+            !crate::ai::policies::objectives::reserved(self, u, &objectives).contains(&u.tile) && !clearing.contains_key(&id)
         });
         ids
     }
 }
 
-impl BattleDraft<'_, '_> {
+struct ClassicProjection<'projection, 'game, 'catalog>(&'projection mut BattleDraft<'game, 'catalog>);
+impl<'projection, 'game, 'catalog> std::ops::Deref for ClassicProjection<'projection, 'game, 'catalog> {
+    type Target = BattleDraft<'game, 'catalog>;
+    fn deref(&self) -> &Self::Target { self.0 }
+}
+impl std::ops::DerefMut for ClassicProjection<'_, '_, '_> {
+    fn deref_mut(&mut self) -> &mut Self::Target { self.0 }
+}
+impl ClassicProjection<'_, '_, '_> {
+    fn clear_projection_retreat(&mut self, id: u32) {
+        let actor = self.unit(id).unwrap();
+        self.project_intent(id, None, actor.rebuilding, actor.attacked);
+    }
+    fn mark_projection_attacked(&mut self, id: u32) {
+        let actor = self.unit(id).unwrap();
+        self.project_intent(id, actor.retreating, actor.rebuilding, true);
+    }
+
     fn try_attack(
         &mut self,
         id: u32,
@@ -437,11 +427,7 @@ impl BattleDraft<'_, '_> {
             })
             .collect();
         if enemies.is_empty() || retaliations.iter().any(|&d| d < u.hp) {
-            self.units_mut()
-                .iter_mut()
-                .find(|unit| unit.id == id)
-                .unwrap()
-                .retreating = None;
+            self.clear_projection_retreat(id);
             return Retreat::Idle;
         }
         let trapped = !retaliations.is_empty();
@@ -450,7 +436,7 @@ impl BattleDraft<'_, '_> {
                 self.role_is(t, TerrainRole::Village)
                     && self.owns(t, u.side)
                     && self.at(t).is_none_or(|o| o.id == id)
-                    && self.enemy_danger(&u, t) == 0
+                    && ClassicEvaluation(self).enemy_danger(&u, t) == 0
             })
             .collect();
         let routes = (!villages.is_empty()).then(|| self.routes(u.kind, &villages));
@@ -459,20 +445,12 @@ impl BattleDraft<'_, '_> {
             && routes.as_ref().is_some_and(|r| r[u.tile] != u16::MAX);
         if !trapped && !recovering {
             drop(routes);
-            self.units_mut()
-                .iter_mut()
-                .find(|unit| unit.id == id)
-                .unwrap()
-                .retreating = None;
+            self.clear_projection_retreat(id);
             return Retreat::Idle;
         }
         if recovering && villages.contains(&u.tile) {
             drop(routes);
-            self.units_mut()
-                .iter_mut()
-                .find(|unit| unit.id == id)
-                .unwrap()
-                .attacked = true;
+            self.mark_projection_attacked(id);
             return Retreat::Retreated;
         }
         let mut destinations: Vec<_> = std::iter::once(u.tile)
@@ -486,7 +464,7 @@ impl BattleDraft<'_, '_> {
                 .min()
                 .unwrap()
                 .min(8);
-            scores[t] = -self.enemy_danger(&u, t) as f64 * 20.0
+            scores[t] = -ClassicEvaluation(self).enemy_danger(&u, t) as f64 * 20.0
                 + separation as f64 * 2.0
                 + if villages.contains(&t) { 20.0 } else { 0.0 }
                 - routes
@@ -504,19 +482,14 @@ impl BattleDraft<'_, '_> {
         if let Some(&t) = destinations.first() {
             if t != u.tile && scores[u.tile] != f64::NEG_INFINITY && scores[t] > scores[u.tile] {
                 recorder.move_unit(self, id, t);
-                let index = self.index(id).unwrap();
-                self.units_mut()[index].retreating = Some(true);
-                self.units_mut()[index].attacked = true;
+                let actor = self.unit(id).unwrap();
+                self.project_intent(id, Some(true), actor.rebuilding, true);
                 recorder.mark_retreat(id);
                 self.record(format!("{} is retreating.", self.unit_name(&u)));
                 return Retreat::Retreated;
             }
         }
-        self.units_mut()
-            .iter_mut()
-            .find(|unit| unit.id == id)
-            .unwrap()
-            .retreating = None;
+        self.clear_projection_retreat(id);
         if trapped {
             Retreat::Trapped
         } else {
@@ -545,8 +518,8 @@ impl BattleDraft<'_, '_> {
             return;
         }
         let (rebuild, intent) = rules.orders.rebuild_plan(self, id, required);
-        let index = self.index(id).unwrap();
-        self.units_mut()[index].rebuilding = intent;
+        let actor = self.unit(id).unwrap();
+        self.project_intent(id, actor.retreating, intent, actor.attacked);
         u = self.unit(id).unwrap().clone();
         let retreat = self.retreat(id, &mut rules, recorder);
         if retreat == Retreat::Retreated {
@@ -561,14 +534,14 @@ impl BattleDraft<'_, '_> {
         let goals = if !rebuild.is_empty() {
             rebuild.clone()
         } else {
-            movement.unwrap_or_else(|| self.movement_goals(&u, rules.orders))
+            movement.unwrap_or_else(|| ClassicEvaluation(self).movement_goals(&u, rules.orders))
         };
         if goals.is_empty() {
             return;
         }
         let assigned = rules.goals.iter().any(|g| {
-            (actor_matches(&g.actor, id) || g.family.is_some() && self.can_pursue(&u, g))
-                && crate::ai::objectives::actor_route(g)
+            (actor_matches(&g.actor, id) || g.family.is_some() && crate::ai::policies::objectives::can_pursue(self, &u, g))
+                && crate::ai::policies::objectives::actor_route(g)
         });
         let routes = if assigned {
             Some(std::rc::Rc::new(self.occupied_routes(&u, &goals, false)))
@@ -586,7 +559,7 @@ impl BattleDraft<'_, '_> {
             .filter(|&t| {
                 !u.is_leader()
                     || !rebuild.is_empty()
-                    || self.leader_may_advance(&u, t, recruiting, required)
+                    || crate::ai::policies::objectives::leader_may_advance(self, &u, t, recruiting, required)
                     || (!campaign
                         && self.units().iter().any(|target| {
                             self.hostile(&u, target)
@@ -624,7 +597,7 @@ impl BattleDraft<'_, '_> {
                     .into_iter()
                     .any(|w| rules.attack(self, &u, target, w, t))
                 {
-                    if let Some(weapon) = self.best_attack(&u, target, t) {
+                    if let Some(weapon) = crate::ai::policies::combat::best_attack(self, &u, target, t) {
                         opportunity = opportunity
                             .max(5.0 + rules.attack_value(self, target, weapon, t) / 5.0);
                     }
@@ -654,7 +627,7 @@ impl BattleDraft<'_, '_> {
                 } else {
                     0.0
                 }
-                - self.enemy_danger(&u, t) as f64 * 0.5
+                - ClassicEvaluation(self).enemy_danger(&u, t) as f64 * 0.5
                 + if rebuild.contains(&t) { 40.0 } else { 0.0 }
                 - rules.penalty(self, t);
         }
@@ -677,12 +650,13 @@ impl BattleDraft<'_, '_> {
     pub(in crate::ai) fn classic_choose(
         &mut self,
         source: &BattleView<'_, '_>,
+        phases: hex_command_battle::PhaseForecasts<'_, '_>,
         id: u32,
         objectives: &[Objective],
         orders: &crate::ai::orders::TacticalOrders,
         escort: &escort::Workspace,
         restrained: bool,
-        opportunity: Option<&crate::ai::recruiter::RecruitmentOpportunity>,
+        opportunity: Option<crate::ai::policies::recruitment::EstimateInput<'_>>,
         recorder: &mut Recorder,
     ) {
         if self.winner().is_some() {
@@ -711,14 +685,14 @@ impl BattleDraft<'_, '_> {
         let mut eligible: Vec<_> = individual
             .iter()
             .filter(|g| {
-                self.can_pursue(&u, g)
+                crate::ai::policies::objectives::can_pursue(self, &u, g)
                     && (g.kind != ObjectiveKind::Capture
                         || g.hold == Some(true)
                         || g.tiles.iter().any(|t| self.captures(self.site(t), u.side)))
             })
             .collect();
-        if eligible.iter().any(|g| self.assigned_duty(&u, g)) {
-            eligible.retain(|g| self.assigned_duty(&u, g));
+        if eligible.iter().any(|g| crate::ai::policies::objectives::assigned_duty(self, &u, g)) {
+            eligible.retain(|g| crate::ai::policies::objectives::assigned_duty(self, &u, g));
         }
         eligible.order_by(|a, b| {
             let score = |g: &Objective| {
@@ -734,7 +708,7 @@ impl BattleDraft<'_, '_> {
                 .then_with(|| tile_order.compare(self, nearest(a), nearest(b)))
         });
         let best = eligible.first().copied();
-        let reserved = self.reserved(&u, objectives);
+        let reserved = crate::ai::policies::objectives::reserved(self, &u, objectives);
         let clearing = orders.classic_clearing(self).remove(&u.id);
         let yielding = clearing.is_some();
         let movement = if let Some(lane) = clearing {
@@ -767,6 +741,7 @@ impl BattleDraft<'_, '_> {
         let required = orders.moving_actor(id) || yielding;
         let rules = ClassicRules::new(
             source,
+            phases,
             &u,
             objectives,
             restrained,
@@ -776,6 +751,15 @@ impl BattleDraft<'_, '_> {
         );
         self.classic_act(id, movement, required, rules, recorder);
     }
+}
+
+#[derive(Default)]
+pub(in crate::ai) struct Session {
+    objectives: Vec<Objective>,
+    ids: std::collections::VecDeque<u32>,
+    revision: u32,
+    remaining: Option<usize>,
+    escort: crate::ai::policies::escort::defensive::Workspace,
 }
 
 pub(super) struct Classic;
@@ -792,59 +776,62 @@ impl super::Planner for Classic {
     }
 }
 
-pub(super) fn prepare(game: &BattleView<'_, '_>, workspace: &mut crate::ai::PlanningWorkspace) {
-    workspace.classic_escort.prepare(game, &workspace.report);
+pub(super) fn prepare(game: &BattleView<'_, '_>, phases:hex_command_battle::PhaseForecasts<'_, '_>, session:&mut Session, turn:&crate::ai::runtime::PlannerTurn<'_>) {
+    session.escort.prepare(game, phases, turn.report);
 }
 
 pub(super) fn choose(
     game: &BattleView<'_, '_>,
-    workspace: &mut crate::ai::PlanningWorkspace,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    session: &mut Session,
+    turn: &mut crate::ai::runtime::PlannerTurn<'_>,
+    source: &ActionForecastSource<'_, '_>,
 ) -> Result<(), CommandError> {
-    let orders = &workspace.orders.as_ref().expect("campaign orders").tactics;
+    let orders = &turn.orders.tactics;
     let restrained = orders.restrained;
-    if workspace.classic_revision != workspace.cooperation.revision
-        && workspace.tactical_remaining.is_some()
+    if session.revision != turn.coordination.revision()
+        && session.remaining.is_some()
     {
-        workspace.classic_objectives = orders
+        session.objectives = orders
             .targets
             .iter()
             .filter(|g| !g.id.starts_with("rebuild:"))
             .cloned()
             .collect();
-        workspace
-            .classic_objectives
+        session
+            .objectives
             .extend(orders.rebuild_objectives(game));
-        workspace.classic_revision = workspace.cooperation.revision;
+        session.revision = turn.coordination.revision();
     }
-    if workspace.tactical_remaining.is_none() {
-        workspace.classic_objectives = orders
+    if session.remaining.is_none() {
+        session.objectives = orders
             .targets
             .iter()
             .filter(|g| !g.id.starts_with("rebuild:"))
             .cloned()
             .collect();
-        workspace
-            .classic_objectives
+        session
+            .objectives
             .extend(orders.rebuild_objectives(game));
-        workspace.classic_revision = workspace.cooperation.revision;
-        if workspace.goals.is_none() && (!orders.campaign || game.turn() == Side::Enemy) {
-            workspace
-                .classic_objectives
+        session.revision = turn.coordination.revision();
+        if turn.goals.is_none() && (!orders.campaign || game.turn() == Side::Enemy) {
+            session
+                .objectives
                 .retain(|g| g.id.starts_with("rebuild:") || g.id.starts_with("group:"));
         }
-        workspace.classic_ids = game.classic_order(&workspace.classic_objectives).into();
-        workspace
-            .classic_ids
+        session.ids = ClassicEvaluation(game).classic_order(&session.objectives).into();
+        session
+            .ids
             .make_contiguous()
-            .order_by_key(|id| workspace.classic_escort.bound(*id) == 0.0);
-        workspace.tactical_remaining = Some(workspace.classic_ids.len());
+            .order_by_key(|id| session.escort.bound(*id) == 0.0);
+        session.remaining = Some(session.ids.len());
         for unit in game.units().iter().filter(|u| {
             game.belongs_to_phase(u, game.turn()) && game.can_act(u.id) && u.is_leader()
         }) {
             let required = orders.moving_actor(unit.id);
             let (_, intent) = orders.rebuild_plan(game, unit.id, required);
             if unit.rebuilding != intent {
-                workspace.commands.push_back(intent_command(
+                turn.commands.push_back(intent_command(
                     unit,
                     unit.retreating,
                     intent,
@@ -852,35 +839,36 @@ pub(super) fn choose(
                 ));
             }
         }
-        if !workspace.commands.is_empty() {
+        if !turn.commands.is_empty() {
             return Ok(());
         }
     }
-    if let Some(id) = workspace.classic_ids.pop_front() {
-        let mut virtual_game = game.fork();
+    if let Some(id) = session.ids.pop_front() {
+        let mut virtual_game = source.fork();
         let mut recorder = Recorder::new(game);
-        virtual_game.classic_choose(
+        ClassicProjection(&mut virtual_game).classic_choose(
             game,
+            phases,
             id,
-            &workspace.classic_objectives,
+            &session.objectives,
             orders,
-            &workspace.classic_escort,
+            &session.escort,
             restrained,
-            workspace.recruitment_opportunity.as_ref(),
+            turn.recruitment,
             &mut recorder,
         );
         recorder.flush_intents(&virtual_game);
         if let Some(error) = recorder.error {
             return Err(error);
         }
-        workspace.commands.extend(recorder.commands);
+        turn.commands.extend(recorder.commands);
     } else {
-        workspace.finished = true;
+        *turn.finished = true;
     }
     Ok(())
 }
 
-impl BattleView<'_, '_> {
+impl ClassicEvaluation<'_, '_, '_> {
     fn classic_lanes(&self, goals: &[Objective]) -> HashMap<u32, HashSet<usize>> {
         let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::default();
         fn required_corridor(goal: &Objective) -> bool {
@@ -891,10 +879,10 @@ impl BattleView<'_, '_> {
                 ObjectiveKind::Defeat => false,
             }
         }
-        let assigned = goals.iter().any(crate::ai::objectives::actor_route);
+        let assigned = goals.iter().any(crate::ai::policies::objectives::actor_route);
         for goal in goals
             .iter()
-            .filter(|g| crate::ai::objectives::actor_route(g) || !assigned && required_corridor(g))
+            .filter(|g| crate::ai::policies::objectives::actor_route(g) || !assigned && required_corridor(g))
         {
             let Some(actor) = self
                 .units()
@@ -907,7 +895,7 @@ impl BattleView<'_, '_> {
                         && if goal.actor.is_some() {
                             actor_matches(&goal.actor, u.id)
                         } else {
-                            self.can_pursue(u, goal)
+                            crate::ai::policies::objectives::can_pursue(self, u, goal)
                         }
                 })
                 .min_by_key(|u| {
@@ -1009,6 +997,6 @@ impl BattleView<'_, '_> {
 
 impl crate::ai::orders::TacticalOrders {
     fn classic_clearing(&self, game: &BattleView<'_, '_>) -> HashMap<u32, HashSet<usize>> {
-        game.classic_lanes(&self.passage_targets())
+        ClassicEvaluation(game).classic_lanes(&self.passage_targets())
     }
 }

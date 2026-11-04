@@ -1,7 +1,7 @@
 //! Recruitment selection and placement, independent of tactical planning.
 use super::{
     TacticalRole,
-    objectives::TileOrder,
+    policies::objectives::TileOrder,
     roles::{recruit_role, role},
     tactics::jitter,
 };
@@ -62,14 +62,6 @@ impl Recruiter for RecruiterKind {
     }
 }
 
-/// The same recruiter, orders and remaining phase budget used by execution and lookahead.
-#[derive(Clone)]
-pub(super) struct RecruitmentOpportunity {
-    pub kind: RecruiterKind,
-    pub seed: u32,
-    pub budget: Option<usize>,
-    pub orders: super::orders::RecruitmentOrders,
-}
 
 fn drive(
     kind: RecruiterKind,
@@ -86,7 +78,7 @@ fn drive(
             .requirements
             .iter()
             .any(|requirement| requirement.deficit(context.battle()) > 0);
-        let Some(command) = kind.choose_orders(context.battle(), context.seed, orders) else {
+        let Some(command) = kind.choose_orders(context.battle(), context.seed(), orders) else {
             break;
         };
         let id = UnitId(context.battle().next_id());
@@ -122,7 +114,7 @@ impl RecruiterKind {
             | Self::Situational => false,
         }
     }
-    pub(super) fn choose_orders(
+    fn choose_orders(
         self,
         game: &BattleView<'_, '_>,
         seed: u32,

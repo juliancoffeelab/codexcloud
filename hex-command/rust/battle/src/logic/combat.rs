@@ -292,22 +292,6 @@ impl<'catalog> Game<'catalog> {
             response,
         )
     }
-    pub(crate) fn best_attack(&self, unit: &Unit, target: &Unit, from: usize) -> Option<usize> {
-        let mut best = None;
-        let mut score = f64::NEG_INFINITY;
-        for attack in self.attack_options(unit, target, from) {
-            let result = self.exchange(unit, target, attack, from);
-            let value = result.effective[0] + result.healing[0] + result.death[1] * 18.0
-                - result.damage[1] * 0.7
-                - result.death[0] * 40.0;
-            if value > score {
-                score = value;
-                best = Some(attack);
-            }
-        }
-        best
-    }
-
     pub(crate) fn mediation_at_risk(&self, target: &Unit) -> bool {
         self.mission.as_ref().is_some_and(|m| {
             m.scripted_events.iter().any(|e| {
@@ -399,7 +383,7 @@ impl<'catalog> Game<'catalog> {
                 {
                     let attack = self.weapon(&actor, selected);
                     let rule = &self.rules.units[defender.kind];
-                    playback.push(crate::protocol::CombatStrike {
+                    playback.push(crate::model::CombatStrike {
                         side: actor.side,
                         weapon: attack.name.clone(),
                         roll_min: attack.damage - attack.spread,
@@ -504,7 +488,7 @@ impl<'catalog> Game<'catalog> {
             let animation_units = before;
             #[cfg(not(target_arch = "wasm32"))]
             let animation_units = before.clone();
-            self.combat_animation = Some(crate::protocol::CombatAnimation {
+            self.combat_animation = Some(crate::model::CombatAnimation {
                 units: animation_units,
                 strikes: playback,
             });

@@ -1,0 +1,866 @@
+//! Borrowed rule queries and explicitly granted mechanical projections.
+use crate::{
+    data::*,
+    logic::Game,
+    logic::battle::{Board, RuntimeCache},
+    logic::geometry::TileSet,
+    model::*,
+};
+use std::rc::Rc;
+
+pub struct BattleRules<'a> {
+    pub units: &'a [UnitRule],
+    pub recruitment: &'a RecruitmentProfiles,
+}
+
+enum EngineAccess<'a, 'catalog> {
+    Borrowed(&'a Game<'catalog>),
+    Draft(Game<'catalog>),
+}
+
+/// Read-only mechanical view. It exposes neither authored goals nor campaign
+/// counters, and has no Deref or raw-engine accessor outside this module.
+pub struct BattleView<'a, 'catalog> {
+    engine: EngineAccess<'a, 'catalog>,
+    inactive: Rc<rustc_hash::FxHashSet<u32>>,
+    scoped: Rc<Vec<crate::model::ScopedOrder>>,
+}
+impl<'a, 'catalog> BattleView<'a, 'catalog> {
+    /// Borrow from an existing owner; this cannot manufacture an owner from a view.
+    pub fn new(session: &'a BattleSession<'catalog>) -> Self {
+        Self {
+            engine: EngineAccess::Borrowed(session.0.engine()),
+            inactive: session.0.inactive.clone(),
+            scoped: session.0.scoped.clone(),
+        }
+    }
+    pub(crate) fn engine(&self) -> &Game<'catalog> {
+        match &self.engine {
+            EngineAccess::Borrowed(game) => game,
+            EngineAccess::Draft(game) => game,
+        }
+    }
+    fn engine_mut(&mut self) -> &mut Game<'catalog> {
+        match &mut self.engine {
+            EngineAccess::Draft(game) => game,
+            EngineAccess::Borrowed(_) => panic!("read-only battle view"),
+        }
+    }
+    pub fn rules(&self) -> BattleRules<'_> {
+        BattleRules {
+            units: &self.engine().rules.units,
+            recruitment: &self.engine().rules.recruitment,
+        }
+    }
+    pub fn weapons<'b>(&'b self, unit: &'b Unit) -> impl Iterator<Item = &'b Weapon> {
+        self.engine().weapons(unit)
+    }
+    pub fn weapon<'b>(&'b self, unit: &'b Unit, index: usize) -> &'b Weapon {
+        self.engine().weapon(unit, index)
+    }
+    pub fn board(&self) -> &Board {
+        &self.engine().board
+    }
+    pub fn can_act(&self, id: u32) -> bool {
+        !self.inactive.contains(&id)
+            && self
+                .engine()
+                .unit(id)
+                .is_some_and(|u| self.engine().may_act(u))
+    }
+    pub fn permits(&self, command: &Command) -> bool {
+        match command {
+            Command::Move { unit, tile } => {
+                self.can_act(unit.0)
+                    && self.unit(unit.0).is_some_and(|actor| {
+                        self.scoped
+                            .iter()
+                            .filter(|order| order.actor == *unit)
+                            .all(|order| order.allows_move(self, actor, self.site(&tile.0)))
+                    })
+            }
+            Command::Attack { unit, target, .. } => {
+                self.can_act(unit.0)
+                    && self
+                        .unit(unit.0)
+                        .zip(self.unit(target.0))
+                        .is_some_and(|(actor, target)| {
+                            self.scoped
+                                .iter()
+                                .filter(|order| order.actor == *unit)
+                                .all(|order| order.allows_attack(self, actor.tile, target.tile))
+                        })
+            }
+            Command::Recruit { unit, .. }
+            | Command::Advance { unit, .. }
+            | Command::SetUnitIntent { unit, .. } => self.can_act(unit.0),
+            _ => true,
+        }
+    }
+    pub fn available_combatant(&self, unit: &Unit) -> bool {
+        self.engine().available_combatant(unit)
+    }
+    pub fn hostile(&self, first: &Unit, second: &Unit) -> bool {
+        self.engine().hostile(first, second)
+    }
+    pub fn same_faction(&self, first: &Unit, second: &Unit) -> bool {
+        self.engine().unit_faction(first) == self.engine().unit_faction(second)
+    }
+    pub fn allied(&self, first: &Unit, second: &Unit) -> bool {
+        self.engine().allied(first, second)
+    }
+    pub fn hostile_to_phase(&self, unit: &Unit, side: Side) -> bool {
+        self.engine().hostile_to_phase(unit, side)
+    }
+    pub fn belongs_to_phase(&self, unit: &Unit, side: Side) -> bool {
+        self.engine().belongs_to_phase(unit, side)
+    }
+    pub fn control_roster(&self) -> Vec<(u32, Side, Option<String>, Option<Role>)> {
+        self.engine().control_roster()
+    }
+    pub fn units(&self) -> &Vec<Unit> {
+        &self.engine().units
+    }
+
+    pub fn terrain(&self) -> &Vec<usize> {
+        &self.engine().terrain
+    }
+    pub fn owners(&self) -> &Vec<Option<String>> {
+        &self.engine().owners
+    }
+    pub fn map_id(&self) -> &str {
+        &self.engine().map_id
+    }
+    pub fn turn(&self) -> Side {
+        self.engine().turn
+    }
+    pub fn round(&self) -> u32 {
+        self.engine().round
+    }
+    pub fn gold_for_phase(&self, side: Side) -> i32 {
+        self.engine().gold_for_phase(side)
+    }
+    pub fn gold_for_unit(&self, unit: &Unit) -> i32 {
+        self.engine().gold_for_unit(unit)
+    }
+    pub fn owns(&self, tile: usize, side: Side) -> bool {
+        self.engine().owns(tile, side)
+    }
+    pub fn captures(&self, tile: usize, side: Side) -> bool {
+        self.engine().captures(tile, side)
+    }
+    pub fn recruitment_options_for(&self, unit: &Unit) -> Vec<usize> {
+        self.engine().recruitment_options_for(unit)
+    }
+    pub fn recruit_cost(&self, unit: &Unit, kind: usize) -> i32 {
+        self.engine().recruit_cost(unit, kind)
+    }
+    pub fn winner(&self) -> Option<Side> {
+        self.engine().winner
+    }
+    pub fn next_id(&self) -> u32 {
+        self.engine().next_id
+    }
+    pub fn occupied_tiles(&self) -> &TileSet {
+        &self.engine().occupied_tiles
+    }
+
+    pub fn attack_origins(&self, category: Category, range: u8) -> Rc<Vec<TileSet>> {
+        self.engine().attack_origins(category, range)
+    }
+    pub fn can_attack(&self, unit: &Unit, from: usize, target: &Unit, weapon: usize) -> bool {
+        self.can_act(unit.id)
+            && self
+                .scoped
+                .iter()
+                .filter(|order| order.actor.0 == unit.id)
+                .all(|order| order.allows_attack(self, from, target.tile))
+            && self.engine().can_attack(unit, from, target, weapon)
+    }
+    pub fn attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
+        if !self.can_act(unit.id)
+            || !self
+                .scoped
+                .iter()
+                .filter(|order| order.actor.0 == unit.id)
+                .all(|order| order.allows_attack(self, from, target.tile))
+        {
+            return vec![];
+        }
+        self.engine().attack_options(unit, target, from)
+    }
+    /// Hypothetical capability, independent of whose turn it is or which actors
+    /// the planner controls. Command authorization stays in permits/can_act.
+    pub fn forecast_attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
+        self.engine().attack_options(unit, target, from)
+    }
+    pub fn damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> i32 {
+        self.engine().damage(attacker, target, weapon)
+    }
+    pub fn exchange(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+    ) -> Rc<crate::logic::exchange::ExchangeForecast> {
+        self.engine().exchange(attacker, target, weapon, from)
+    }
+    pub fn exchange_with_thorns(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+        reflection: i32,
+    ) -> Rc<crate::logic::exchange::ExchangeForecast> {
+        self.engine()
+            .exchange_with_thorns(attacker, target, weapon, from, reflection)
+    }
+    /// Optimistic full-weapon values bound searches before an attack origin is chosen.
+    pub fn potential_damage(&self, attacker: &Unit, target: &Unit, weapon: usize) -> f64 {
+        let distribution = self
+            .engine()
+            .damage_distribution(attacker, target, weapon, target.tile);
+        // Drain can replace HP between strikes, so damage may exceed starting HP.
+        if self.weapons(target).any(|attack| attack.drain > 0) {
+            distribution.mean
+        } else {
+            distribution.effective(target.hp)
+        }
+    }
+    pub fn potential_kill_chance(&self, attacker: &Unit, target: &Unit, weapon: usize) -> f64 {
+        self.engine()
+            .damage_distribution(attacker, target, weapon, target.tile)
+            .chance(target.hp)
+    }
+    pub fn maximum_retaliation(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+    ) -> i32 {
+        self.engine()
+            .maximum_retaliation(attacker, target, weapon, from)
+    }
+    pub fn death_chance(&self, attacker: &Unit, target: &Unit, weapon: usize, from: usize) -> f64 {
+        self.engine().death_chance(attacker, target, weapon, from)
+    }
+    pub fn preview(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+    ) -> (i32, i32, Option<usize>) {
+        self.engine().preview(unit, target, weapon, from)
+    }
+    pub fn unit(&self, id: u32) -> Option<&Unit> {
+        self.engine().unit(id)
+    }
+    pub fn at(&self, tile: usize) -> Option<&Unit> {
+        self.engine().at(tile)
+    }
+    pub fn index(&self, id: u32) -> Option<usize> {
+        self.engine().index(id)
+    }
+    pub fn site(&self, id: &str) -> usize {
+        self.engine().site(id)
+    }
+    pub fn unit_name(&self, unit: &Unit) -> String {
+        self.engine().unit_name(unit).to_owned()
+    }
+    pub fn kind(&self, name: &str) -> usize {
+        self.engine().kind(name)
+    }
+    pub fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
+        self.engine().role_is(tile, role)
+    }
+    pub fn is_keep(&self, tile: usize) -> bool {
+        self.engine().is_keep(tile)
+    }
+    pub fn promotion_options(&self, unit: &Unit) -> Vec<usize> {
+        if !self.can_act(unit.id) {
+            return vec![];
+        }
+        self.engine().promotion_options(unit)
+    }
+    pub fn recruitment_options(&self, side: Side) -> Vec<usize> {
+        self.engine().recruitment_options(side)
+    }
+    pub fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
+        if !self.can_act(leader.id) {
+            return vec![];
+        }
+        self.engine().placement_tiles(leader, kind, price)
+    }
+    pub fn threat_reach_blocked(&self, unit: &Unit, occupied: TileSet) -> TileSet {
+        self.engine().threat_reach_blocked(unit, occupied)
+    }
+    pub fn cost(&self, kind: usize, tile: usize) -> u16 {
+        self.engine().cost(kind, tile)
+    }
+    pub fn reachable(&self, unit: &Unit) -> Rc<Vec<(usize, u16)>> {
+        if !self.can_act(unit.id) {
+            return Rc::new(vec![]);
+        }
+        let reachable = self.engine().reachable(unit);
+        if self.scoped.is_empty() {
+            return reachable;
+        }
+        Rc::new(
+            reachable
+                .iter()
+                .copied()
+                .filter(|(to, _)| {
+                    self.scoped
+                        .iter()
+                        .filter(|order| order.actor.0 == unit.id)
+                        .all(|order| order.allows_move(self, unit, *to))
+                })
+                .collect(),
+        )
+    }
+    pub fn routes(&self, kind: usize, goals: &[usize]) -> Rc<Vec<u16>> {
+        self.engine().routes(kind, goals)
+    }
+    pub fn routes_from(&self, kind: usize, start: usize) -> Rc<Vec<u16>> {
+        self.engine().routes_from(kind, start)
+    }
+    pub fn occupied_routes(&self, unit: &Unit, goals: &[usize], yielding: bool) -> Vec<u16> {
+        self.engine().occupied_routes(unit, goals, yielding)
+    }
+    pub fn occupied_routes_with_penalty(
+        &self,
+        unit: &Unit,
+        goals: &[usize],
+        friendly_penalty: Option<u16>,
+    ) -> Vec<u16> {
+        self.engine()
+            .occupied_routes_with_penalty(unit, goals, friendly_penalty)
+    }
+    pub fn income(&self, side: Side) -> i32 {
+        self.engine().income(side)
+    }
+}
+
+/// An opaque live battle. Only its owner can mint mechanical forecast sources.
+pub struct BattleSession<'catalog>(BattleView<'catalog, 'catalog>);
+impl<'catalog> std::ops::Deref for BattleSession<'catalog> {
+    type Target = BattleView<'catalog, 'catalog>;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+impl<'catalog> BattleSession<'catalog> {
+    fn owned(game: Game<'catalog>) -> Self {
+        Self(BattleView {
+            engine: EngineAccess::Draft(game),
+            inactive: Rc::default(),
+            scoped: Rc::default(),
+        })
+    }
+    pub fn from_state(rules: &'catalog Rules, state: State) -> Self {
+        Self::owned(Game::from_state(rules, state))
+    }
+    pub fn from_state_with_campaign(
+        rules: &'catalog Rules,
+        state: State,
+        definition: Option<&'catalog Campaign>,
+    ) -> Self {
+        Self::owned(Game::from_state_with_campaign(rules, state, definition))
+    }
+    pub fn new(rules: &'catalog Rules, map: &str) -> Self {
+        Self::owned(Game::new_with_campaign(rules, map, None))
+    }
+    pub fn new_with_campaign(
+        rules: &'catalog Rules,
+        map: &str,
+        definition: Option<&'catalog Campaign>,
+    ) -> Self {
+        Self::owned(Game::new_with_campaign(rules, map, definition))
+    }
+    pub fn start_campaign(
+        rules: &'catalog Rules,
+        id: &str,
+        index: usize,
+        veterans: Vec<Veteran>,
+        carry: i32,
+        choices: Vec<String>,
+        story: Vec<Veteran>,
+        fallen: Vec<String>,
+    ) -> Self {
+        Self::owned(Game::start_campaign(
+            rules, id, index, veterans, carry, choices, story, fallen,
+        ))
+    }
+    pub fn start_campaign_from_definition(
+        rules: &'catalog Rules,
+        definition: &'catalog Campaign,
+        index: usize,
+        veterans: Vec<Veteran>,
+        carry: i32,
+        flags: FlagHistory,
+        story: Vec<Veteran>,
+        fallen: Vec<String>,
+    ) -> Self {
+        Self::owned(Game::start_campaign_from_definition(
+            rules, definition, index, veterans, carry, flags, story, fallen,
+        ))
+    }
+    pub fn view(&self) -> &BattleView<'catalog, 'catalog> {
+        &self.0
+    }
+    pub fn campaign_view(&self) -> CampaignView<'_, 'catalog> {
+        CampaignView { view: &self.0 }
+    }
+    pub fn state(&self) -> State {
+        self.0.engine().state()
+    }
+    pub fn campaign_snapshot(&self) -> Option<CampaignState> {
+        self.0.engine().campaign_snapshot()
+    }
+    pub fn execute(&mut self, command: Command) -> Result<(), CommandError> {
+        self.0.engine_mut().execute(command)
+    }
+    pub fn begin_turn(&mut self, side: Side) {
+        self.0.engine_mut().begin_turn(side);
+    }
+    pub fn end_turn(&mut self) {
+        self.0.engine_mut().end_turn();
+    }
+    pub fn record(&mut self, message: String) {
+        self.0.engine_mut().record(message);
+    }
+    pub fn fork(&self) -> Self {
+        Self::owned(self.0.engine().fork())
+    }
+    pub fn planning_fork(&self) -> Self {
+        Self::owned(self.0.engine().planning_fork())
+    }
+    pub fn action_forecasts(&self) -> ActionForecastSource<'_, 'catalog> {
+        ActionForecastSource { view: &self.0 }
+    }
+    pub fn phase_forecasts(&self) -> PhaseForecasts<'_, 'catalog> {
+        PhaseForecasts { view: &self.0 }
+    }
+    pub fn restrict_positions(&mut self, scoped: &[ScopedOrder]) {
+        self.0.scoped = Rc::new(scoped.to_vec());
+    }
+    pub fn restrict_actors(&mut self, inactive: &[UnitId]) {
+        self.0.inactive = Rc::new(inactive.iter().map(|id| id.0).collect());
+    }
+    pub fn set_active_faction(&mut self, faction: Option<String>) {
+        self.0.engine_mut().active_faction = faction;
+    }
+    pub fn set_combat_rng(&mut self, seed: u32) {
+        self.0.engine_mut().combat_rng = seed;
+    }
+    pub fn configure_arena(&mut self, pools: Option<[Vec<usize>; 2]>, first: Option<Side>) {
+        self.0.engine_mut().pools = pools;
+        self.0.engine_mut().arena_first = first;
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn start_recording(&mut self) {
+        self.0.engine_mut().recordings = Some(Records::default());
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn take_recordings(&mut self) -> Option<Records> {
+        self.0.engine_mut().recordings.take()
+    }
+    pub fn clear_log(&mut self) {
+        self.0.engine_mut().log.clear();
+    }
+    pub fn dismiss_all_dialogue(&mut self) {
+        if let Some(campaign) = self.0.engine_mut().campaign.as_mut() {
+            campaign.dialogue_index = campaign.dialogue.len();
+        }
+    }
+    #[cfg(feature = "wasm")]
+    pub fn take_combat_animation(&mut self) -> Option<CombatAnimation> {
+        self.0.engine_mut().combat_animation.take()
+    }
+    #[cfg(feature = "wasm")]
+    pub fn runtime_cache(&self) -> RuntimeCache {
+        self.0.engine().runtime_cache()
+    }
+    #[cfg(feature = "wasm")]
+    pub fn into_state(self, tiles: Vec<Tile>) -> State {
+        match self.0.engine {
+            EngineAccess::Draft(game) => game.into_state(tiles),
+            EngineAccess::Borrowed(_) => unreachable!(),
+        }
+    }
+    #[cfg(feature = "wasm")]
+    pub fn from_state_with_board(rules: &'catalog Rules, state: State, board: Rc<Board>) -> Self {
+        Self::owned(Game::from_state_with_board(rules, state, board))
+    }
+    #[cfg(feature = "wasm")]
+    pub fn from_borrowed_state(
+        rules: &'catalog Rules,
+        state: &State,
+        board: Rc<Board>,
+        cache: RuntimeCache,
+    ) -> Self {
+        Self::owned(Game::from_borrowed_state(rules, state, board, cache))
+    }
+    pub fn try_from_state(rules: &'catalog Rules, state: State) -> Result<Self, crate::StateError> {
+        Game::try_from_state(rules, state).map(Self::owned)
+    }
+}
+
+/// Authored battle/campaign observations, without AI decisions or mutable state.
+#[derive(Clone, Copy)]
+pub struct CampaignView<'a, 'catalog> {
+    view: &'a BattleView<'a, 'catalog>,
+}
+impl<'a, 'catalog> std::ops::Deref for CampaignView<'a, 'catalog> {
+    type Target = BattleView<'a, 'catalog>;
+    fn deref(&self) -> &Self::Target {
+        self.view
+    }
+}
+impl<'a, 'catalog> CampaignView<'a, 'catalog> {
+    pub fn catalogue(&self) -> &'catalog Rules {
+        self.view.engine().rules
+    }
+    pub fn definition(&self) -> &'catalog Campaign {
+        self.view.engine().campaign_definition()
+    }
+    pub fn mission(&self) -> Option<&Mission> {
+        self.view.engine().mission.as_deref()
+    }
+    pub fn campaign(&self) -> Option<&CampaignState> {
+        self.view.engine().campaign.as_deref()
+    }
+    pub fn scripts(&self) -> Option<&EventState> {
+        self.view.engine().scripts.as_deref()
+    }
+    pub fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
+        self.view.engine().script_unit_matches(select, unit)
+    }
+    pub fn script_condition(&self, when: &When) -> bool {
+        self.view.engine().script_condition(when)
+    }
+    pub fn event_condition_met(&self, condition: &Condition) -> bool {
+        self.view.engine().event_condition_met(condition)
+    }
+    pub fn group_active(&self, group: &EnemyGroup) -> bool {
+        self.view.engine().group_active(group)
+    }
+}
+
+/// Capability granted by a live owner, not recoverable from a read-only view.
+#[derive(Clone, Copy)]
+pub struct ActionForecastSource<'a, 'catalog> {
+    view: &'a BattleView<'a, 'catalog>,
+}
+impl<'catalog> ActionForecastSource<'_, 'catalog> {
+    pub fn fork(&self) -> ActionForecast<'catalog> {
+        ActionForecast::from_view(self.view, true)
+    }
+}
+/// A mechanical projection. It cannot invoke any AI selector or return a live owner.
+pub struct ActionForecast<'catalog> {
+    view: BattleView<'catalog, 'catalog>,
+}
+impl<'catalog> std::ops::Deref for ActionForecast<'catalog> {
+    type Target = BattleView<'catalog, 'catalog>;
+    fn deref(&self) -> &Self::Target {
+        &self.view
+    }
+}
+impl<'catalog> ActionForecast<'catalog> {
+    fn from_view(view: &BattleView<'_, 'catalog>, planning: bool) -> Self {
+        let game = if planning {
+            view.engine().planning_fork()
+        } else {
+            view.engine().fork()
+        };
+        Self {
+            view: BattleView {
+                engine: EngineAccess::Draft(game),
+                inactive: view.inactive.clone(),
+                scoped: view.scoped.clone(),
+            },
+        }
+    }
+    /// Match the planner projection contract: each nested fork resets combat RNG.
+    pub fn fork(&self) -> Self {
+        Self::from_view(&self.view, true)
+    }
+    pub fn execute(&mut self, command: Command) -> Result<(), CommandError> {
+        self.view.engine_mut().execute(command)
+    }
+    pub fn project_intent(
+        &mut self,
+        id: u32,
+        retreating: Option<bool>,
+        rebuilding: Option<bool>,
+        attacked: bool,
+    ) {
+        if let Some(index) = self.view.engine().index(id) {
+            let unit = &mut self.view.engine_mut().units[index];
+            unit.retreating = retreating;
+            unit.rebuilding = rebuilding;
+            unit.attacked = attacked;
+        }
+    }
+    pub fn restrict_positions(&mut self, scoped: &[ScopedOrder]) {
+        self.view.scoped = Rc::new(scoped.to_vec());
+    }
+    pub fn restrict_actors(&mut self, inactive: &[UnitId]) {
+        self.view.inactive = Rc::new(inactive.iter().map(|id| id.0).collect());
+    }
+    pub fn record(&mut self, message: String) {
+        self.view.engine_mut().record(message);
+    }
+    pub fn phase_forecasts(&self) -> PhaseForecasts<'_, 'catalog> {
+        PhaseForecasts { view: &self.view }
+    }
+}
+
+/// Mechanical next-phase requests; decision policies choose which requests to make.
+#[derive(Clone, Copy)]
+pub struct PhaseForecasts<'a, 'catalog> {
+    view: &'a BattleView<'a, 'catalog>,
+}
+impl<'catalog> PhaseForecasts<'_, 'catalog> {
+    /// Escort projection uses the planning fork RNG reset before transitioning.
+    pub fn planning_next_phase(&self) -> PhaseSnapshot<'catalog> {
+        let mut game = self.view.engine().planning_fork();
+        game.arena_first = None;
+        game.end_turn();
+        PhaseSnapshot {
+            view: BattleView {
+                engine: EngineAccess::Draft(game),
+                inactive: self.view.inactive.clone(),
+                scoped: self.view.scoped.clone(),
+            },
+        }
+    }
+    pub fn next_phase(&self) -> PhaseSnapshot<'catalog> {
+        self.project(None, None, false)
+    }
+    pub fn next_phase_without(&self, eliminated: Option<u32>) -> PhaseSnapshot<'catalog> {
+        self.project(None, eliminated, true)
+    }
+    pub fn next_phase_with_actor(
+        &self,
+        actor: u32,
+        tile: usize,
+        eliminated: Option<u32>,
+    ) -> PhaseSnapshot<'catalog> {
+        self.project(Some((actor, tile)), eliminated, true)
+    }
+
+    /// Ordinary engine fork: preserve source RNG and apply one phase transition.
+    pub fn project(
+        &self,
+        relocated: Option<(u32, usize)>,
+        eliminated: Option<u32>,
+        refresh_roster: bool,
+    ) -> PhaseSnapshot<'catalog> {
+        let mut game = self.view.engine().fork();
+        game.arena_first = None;
+        if let Some((actor, tile)) = relocated {
+            if let Some(index) = game.index(actor) {
+                game.units[index].tile = tile;
+            }
+        }
+        if eliminated.is_some() {
+            game.units.retain(|unit| Some(unit.id) != eliminated);
+        }
+        if refresh_roster {
+            game.roster_changed();
+        }
+        game.end_turn();
+        PhaseSnapshot {
+            view: BattleView {
+                engine: EngineAccess::Draft(game),
+                inactive: self.view.inactive.clone(),
+                scoped: self.view.scoped.clone(),
+            },
+        }
+    }
+}
+/// Immutable result of a mechanical phase request. It has no projection factory.
+pub struct PhaseSnapshot<'catalog> {
+    view: BattleView<'catalog, 'catalog>,
+}
+impl<'catalog> std::ops::Deref for PhaseSnapshot<'catalog> {
+    type Target = BattleView<'catalog, 'catalog>;
+    fn deref(&self) -> &Self::Target {
+        &self.view
+    }
+}
+
+impl<'a, 'catalog> BattleView<'a, 'catalog> {
+    pub fn factions(&self) -> &[Faction] {
+        &self.engine().factions
+    }
+    pub fn faction(&self, id: &str) -> Option<&Faction> {
+        self.engine().faction(id)
+    }
+    pub fn faction_relation(&self, first: &str, second: &str) -> Relation {
+        self.engine().faction_relation(first, second)
+    }
+    pub fn faction_for_phase(&self, side: Side) -> &str {
+        self.engine().faction_for_phase(side)
+    }
+    pub fn unit_faction<'u>(&self, unit: &'u Unit) -> &'u str {
+        self.engine().unit_faction(unit)
+    }
+    pub fn may_act(&self, unit: &Unit) -> bool {
+        self.engine().may_act(unit)
+    }
+    pub fn active_faction(&self) -> Option<&str> {
+        self.engine().active_faction.as_deref()
+    }
+    pub fn automatic_factions(&self) -> Vec<(String, Option<FactionPolicy>)> {
+        self.engine().automatic_factions()
+    }
+    pub fn gold(&self) -> &Gold {
+        &self.engine().gold
+    }
+    pub fn ground_items(&self) -> &[GroundItem] {
+        &self.engine().ground_items
+    }
+    pub fn map_revision(&self) -> u32 {
+        self.engine().map_revision
+    }
+    pub fn cols(&self) -> i32 {
+        self.engine().cols
+    }
+    pub fn rows(&self) -> i32 {
+        self.engine().rows
+    }
+    pub fn is_campaign(&self) -> bool {
+        self.engine().campaign.is_some()
+    }
+    pub fn has_pools(&self) -> bool {
+        self.engine().pools.is_some()
+    }
+    pub fn log(&self) -> &[String] {
+        &self.engine().log
+    }
+    pub fn fog(&self) -> &[Option<std::sync::Arc<ConditionRule>>] {
+        &self.engine().fog
+    }
+    pub fn condition_memory(&self) -> &[String] {
+        &self.engine().condition_memory
+    }
+    pub fn public_units(&self) -> Vec<PublicUnit> {
+        self.engine().public_units()
+    }
+    pub fn public_unit(&self, unit: &Unit) -> PublicUnit {
+        self.engine().public_unit(unit)
+    }
+    pub fn tiles(&self) -> Vec<Tile> {
+        self.engine().tiles()
+    }
+    pub fn site_at(&self, col: i32, row: i32) -> usize {
+        self.engine()
+            .board
+            .positions
+            .iter()
+            .position(|position| *position == (col, row))
+            .unwrap()
+    }
+    pub fn terrain_role(&self, tile: usize) -> TerrainRole {
+        self.engine().terrain_role(tile)
+    }
+    pub fn faction_income(&self, id: &str) -> i32 {
+        self.engine().faction_income(id)
+    }
+    pub fn damage_distribution(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        tile: usize,
+    ) -> Rc<crate::logic::damage::DamageDistribution> {
+        self.engine()
+            .damage_distribution(attacker, target, weapon, tile)
+    }
+    pub fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<Side>]>) -> TileSet {
+        self.engine().threat_reach(unit, occupancy)
+    }
+    #[cfg(feature = "wasm")]
+    pub fn inspect(&self, revision: u32) -> BattleInspection {
+        self.engine().inspect(revision)
+    }
+    #[cfg(feature = "wasm")]
+    pub fn inspect_board(&self) -> BoardInspection {
+        self.engine().inspect_board()
+    }
+    #[cfg(feature = "wasm")]
+    pub fn patch_tiles(&self, tiles: &mut [Tile]) -> Vec<usize> {
+        self.engine().patch_tiles(tiles)
+    }
+}
+impl<'a, 'catalog> CampaignView<'a, 'catalog> {
+    pub fn battle(&self) -> &'a BattleView<'a, 'catalog> {
+        self.view
+    }
+    pub fn approach_tiles(&self, selection: &ProximitySelection) -> Vec<String> {
+        self.view.engine().approach_tiles(selection)
+    }
+    pub fn mediation_at_risk(&self, target: &Unit) -> bool {
+        self.view.engine().mediation_at_risk(target)
+    }
+}
+
+impl BattleView<'_, '_> {
+    pub fn attack_masks(&self, category: Category, range: u8) -> Rc<Vec<u128>> {
+        self.engine().attack_masks(category, range)
+    }
+}
+impl<'catalog> BattleSession<'catalog> {
+    pub fn catalogue(&self) -> &'catalog Rules {
+        self.0.engine().rules
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn next_campaign(&self) -> Self {
+        Self::owned(self.0.engine().next_campaign())
+    }
+    #[cfg(feature = "wasm")]
+    pub fn take_last_combat(&mut self) -> Option<LastCombat> {
+        self.0.engine_mut().last_combat.take()
+    }
+}
+
+impl BattleView<'_, '_> {
+    pub fn presentation(&self) -> BattlefieldPresentation {
+        self.engine().presentation()
+    }
+    pub fn last_combat(&self) -> Option<&LastCombat> {
+        self.engine().last_combat.as_ref()
+    }
+    pub fn combat_present(&self) -> bool {
+        self.engine().combat_present
+    }
+    pub fn armies(&self) -> Option<&[String; 2]> {
+        self.engine().armies.as_ref()
+    }
+    pub fn pools(&self) -> Option<&[Vec<usize>; 2]> {
+        self.engine().pools.as_ref()
+    }
+    pub fn arena_first(&self) -> Option<Side> {
+        self.engine().arena_first
+    }
+    pub fn combat_rng(&self) -> u32 {
+        self.engine().combat_rng
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn event_goal_progress(&self) -> Vec<Progress> {
+        self.engine().event_goal_progress()
+    }
+}
+
+impl<'catalog> BattleSession<'catalog> {
+    pub fn continue_campaign(&self, selected: Option<&[UnitId]>) -> Result<Self, CommandError> {
+        self.0.engine().continue_campaign(selected).map(Self::owned)
+    }
+}

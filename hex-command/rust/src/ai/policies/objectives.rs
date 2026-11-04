@@ -4,7 +4,7 @@ use crate::{ai::context::BattleView, data::*};
 use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 use std::cmp::Ordering;
 /// Compare canonical actor identities without formatting in candidate loops.
-pub(super) fn actor_matches(actor: &Option<String>, id: u32) -> bool {
+pub(in crate::ai) fn actor_matches(actor: &Option<String>, id: u32) -> bool {
     actor.as_deref().is_some_and(|actor| {
         actor.strip_prefix('u').is_some_and(|number| {
             !number.is_empty()
@@ -175,204 +175,216 @@ impl TileOrder {
     }
 }
 
-impl BattleView<'_, '_> {
-    pub fn can_pursue(&self, u: &Unit, g: &Objective) -> bool {
-        (g.actor.is_none() || actor_matches(&g.actor, u.id))
-            && g.family
-                .as_ref()
-                .is_none_or(|family| self.rules().units[u.kind].family == *family)
-    }
+pub fn can_pursue(game: &BattleView<'_, '_>, u: &Unit, g: &Objective) -> bool {
+    (g.actor.is_none() || actor_matches(&g.actor, u.id))
+        && g.family
+            .as_ref()
+            .is_none_or(|family| game.rules().units[u.kind].family == *family)
+}
 
-    /// Personal duties take precedence over incidental nearby resources.
-    pub(super) fn assigned_duty(&self, unit: &Unit, goal: &Objective) -> bool {
-        self.can_pursue(unit, goal) && (goal.actor.is_some() || goal.family.is_some())
-    }
-    pub fn reserved(&self, u: &Unit, goals: &[Objective]) -> HashSet<usize> {
-        goals
-            .iter()
-            .filter(|g| (g.actor.is_some() || g.family.is_some()) && !self.can_pursue(u, g))
-            .flat_map(|g| g.tiles.iter().map(|t| self.site(t)))
-            .collect()
-    }
-    pub fn support_objective(&self, u: &Unit, g: &Objective) -> Objective {
-        let mut result = g.clone();
-        if self.can_pursue(u, g) {
-            return result;
-        }
-        let reserved = self.reserved(u, std::slice::from_ref(g));
-        let mut seen = HashSet::default();
-        result.tiles = g
-            .tiles
-            .iter()
-            .flat_map(|t| self.board().adjacent[self.site(t)].iter().copied())
-            .filter(|&t| {
-                seen.insert(t) && !reserved.contains(&t) && self.cost(u.kind, t) != u16::MAX
-            })
-            .map(|t| self.board().ids[t].clone())
-            .collect();
-        result.weight *= 0.35;
-        result
-    }
-    /// Identify friendly blockers on an explicitly assigned actor corridor.
-    pub(super) fn actor_lanes(&self, goals: &[Objective]) -> HashMap<u32, HashSet<usize>> {
-        let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::default();
-        for goal in goals.iter().filter(|g| actor_route(g)) {
-            let Some(actor) = self
-                .units()
-                .iter()
-                .filter(|u| {
-                    self.belongs_to_phase(u, self.turn())
-                        && if goal.actor.is_some() {
-                            actor_matches(&goal.actor, u.id)
-                        } else {
-                            self.can_pursue(u, goal)
-                        }
-                })
-                .min_by_key(|u| {
-                    let targets: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
-                    self.routes(u.kind, &targets)[u.tile]
-                })
-            else {
-                continue;
-            };
-            let targets: Vec<_> = goal.tiles.iter().map(|t| self.site(t)).collect();
-            if targets.contains(&actor.tile) {
-                continue;
-            }
-            let mut penalty = 2;
-            let mut route = self.occupied_routes(actor, &targets, true);
-            let available = if actor.moved {
-                0
-            } else {
-                self.rules().units[actor.kind].r#move as u16
-            };
-            if route[actor.tile] > available {
-                let short = self.occupied_routes_with_penalty(actor, &targets, Some(0));
-                let arrival_cost = targets
-                    .iter()
-                    .map(|&tile| self.cost(actor.kind, tile))
-                    .min()
-                    .unwrap_or(0);
-                if short[actor.tile] <= available.saturating_add(arrival_cost) {
-                    route = short;
-                    penalty = 0;
-                }
-            }
-            if route[actor.tile] == u16::MAX {
-                continue;
-            }
-            // Equal route values are valid on zero-cost terrain. Search admissible
-            // edges with visited parents, rather than requiring strict descent.
-            let mut parents = vec![usize::MAX; self.terrain().len()];
-            parents[actor.tile] = actor.tile;
-            let mut pending = std::collections::VecDeque::from([actor.tile]);
-            let mut endpoint = None;
-            while let Some(current) = pending.pop_front() {
-                if targets.contains(&current) {
-                    endpoint = Some(current);
-                    break;
-                }
-                let mut next: Vec<_> =
-                    self.board().adjacent[current]
-                        .iter()
-                        .copied()
-                        .filter(|&tile| {
-                            if parents[tile] != usize::MAX || route[tile] == u16::MAX {
-                                return false;
-                            }
-                            let occupied = self
-                                .at(tile)
-                                .is_some_and(|u| u.id != actor.id && self.allied(actor, u));
-                            let entering = self
-                                .cost(actor.kind, tile)
-                                .saturating_add(if occupied { penalty } else { 0 });
-                            route[tile].saturating_add(entering) <= route[current]
-                        })
-                        .collect();
-                next.order_by_key(|&tile| route[tile].saturating_add(self.cost(actor.kind, tile)));
-                for tile in next {
-                    parents[tile] = current;
-                    pending.push_back(tile);
-                }
-            }
-            let Some(mut current) = endpoint else {
-                continue;
-            };
-            let mut path = vec![current];
-            while current != actor.tile {
-                current = parents[current];
-                path.push(current);
-            }
-            path.reverse();
-            let mut spent = 0;
-            for &tile in path.iter().skip(1) {
-                spent += self.cost(actor.kind, tile) as usize;
-                if spent > self.rules().units[actor.kind].r#move {
-                    break;
-                }
-                if let Some(blocker) = self
-                    .at(tile)
-                    .filter(|u| self.allied(actor, u) && u.id != actor.id)
-                {
-                    lanes
-                        .entry(blocker.id)
-                        .or_default()
-                        .extend(path.iter().copied());
-                }
-            }
-        }
-        lanes
-    }
-    pub(super) fn ordinary(&self, u: &Unit) -> impl Iterator<Item = &Unit> {
-        self.units().iter().filter(move |o| {
-            self.allied(u, o)
-                && self.available_combatant(o)
-                && !o.is_leader()
-                && !o.role.is_some_and(Role::is_escort)
-                && self.rules().units[o.kind].healing == 0
+/// Personal duties take precedence over incidental nearby resources.
+pub(in crate::ai) fn assigned_duty(
+    game: &BattleView<'_, '_>,
+    unit: &Unit,
+    goal: &Objective,
+) -> bool {
+    crate::ai::policies::objectives::can_pursue(game, unit, goal)
+        && (goal.actor.is_some() || goal.family.is_some())
+}
+pub fn reserved(game: &BattleView<'_, '_>, u: &Unit, goals: &[Objective]) -> HashSet<usize> {
+    goals
+        .iter()
+        .filter(|g| {
+            (g.actor.is_some() || g.family.is_some())
+                && !crate::ai::policies::objectives::can_pursue(game, u, g)
         })
+        .flat_map(|g| g.tiles.iter().map(|t| game.site(t)))
+        .collect()
+}
+pub fn support_objective(game: &BattleView<'_, '_>, u: &Unit, g: &Objective) -> Objective {
+    let mut result = g.clone();
+    if crate::ai::policies::objectives::can_pursue(game, u, g) {
+        return result;
     }
-    pub fn proximity(&self, side: Side, tile: usize) -> u16 {
-        self.units()
+    let reserved = crate::ai::policies::objectives::reserved(game, u, std::slice::from_ref(g));
+    let mut seen = HashSet::default();
+    result.tiles = g
+        .tiles
+        .iter()
+        .flat_map(|t| game.board().adjacent[game.site(t)].iter().copied())
+        .filter(|&t| seen.insert(t) && !reserved.contains(&t) && game.cost(u.kind, t) != u16::MAX)
+        .map(|t| game.board().ids[t].clone())
+        .collect();
+    result.weight *= 0.35;
+    result
+}
+/// Identify friendly blockers on an explicitly assigned actor corridor.
+pub(in crate::ai) fn actor_lanes(
+    game: &BattleView<'_, '_>,
+    goals: &[Objective],
+) -> HashMap<u32, HashSet<usize>> {
+    let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::default();
+    for goal in goals.iter().filter(|g| actor_route(g)) {
+        let Some(actor) = game
+            .units()
             .iter()
-            .filter(|o| self.hostile_to_phase(o, side))
-            .map(|o| self.board().distance(tile, o.tile))
-            .min()
-            .unwrap_or(20)
+            .filter(|u| {
+                game.belongs_to_phase(u, game.turn())
+                    && if goal.actor.is_some() {
+                        actor_matches(&goal.actor, u.id)
+                    } else {
+                        crate::ai::policies::objectives::can_pursue(game, u, goal)
+                    }
+            })
+            .min_by_key(|u| {
+                let targets: Vec<_> = goal.tiles.iter().map(|t| game.site(t)).collect();
+                game.routes(u.kind, &targets)[u.tile]
+            })
+        else {
+            continue;
+        };
+        let targets: Vec<_> = goal.tiles.iter().map(|t| game.site(t)).collect();
+        if targets.contains(&actor.tile) {
+            continue;
+        }
+        let mut penalty = 2;
+        let mut route = game.occupied_routes(actor, &targets, true);
+        let available = if actor.moved {
+            0
+        } else {
+            game.rules().units[actor.kind].r#move as u16
+        };
+        if route[actor.tile] > available {
+            let short = game.occupied_routes_with_penalty(actor, &targets, Some(0));
+            let arrival_cost = targets
+                .iter()
+                .map(|&tile| game.cost(actor.kind, tile))
+                .min()
+                .unwrap_or(0);
+            if short[actor.tile] <= available.saturating_add(arrival_cost) {
+                route = short;
+                penalty = 0;
+            }
+        }
+        if route[actor.tile] == u16::MAX {
+            continue;
+        }
+        // Equal route values are valid on zero-cost terrain. Search admissible
+        // edges with visited parents, rather than requiring strict descent.
+        let mut parents = vec![usize::MAX; game.terrain().len()];
+        parents[actor.tile] = actor.tile;
+        let mut pending = std::collections::VecDeque::from([actor.tile]);
+        let mut endpoint = None;
+        while let Some(current) = pending.pop_front() {
+            if targets.contains(&current) {
+                endpoint = Some(current);
+                break;
+            }
+            let mut next: Vec<_> = game.board().adjacent[current]
+                .iter()
+                .copied()
+                .filter(|&tile| {
+                    if parents[tile] != usize::MAX || route[tile] == u16::MAX {
+                        return false;
+                    }
+                    let occupied = game
+                        .at(tile)
+                        .is_some_and(|u| u.id != actor.id && game.allied(actor, u));
+                    let entering = game.cost(actor.kind, tile).saturating_add(if occupied {
+                        penalty
+                    } else {
+                        0
+                    });
+                    route[tile].saturating_add(entering) <= route[current]
+                })
+                .collect();
+            next.order_by_key(|&tile| route[tile].saturating_add(game.cost(actor.kind, tile)));
+            for tile in next {
+                parents[tile] = current;
+                pending.push_back(tile);
+            }
+        }
+        let Some(mut current) = endpoint else {
+            continue;
+        };
+        let mut path = vec![current];
+        while current != actor.tile {
+            current = parents[current];
+            path.push(current);
+        }
+        path.reverse();
+        let mut spent = 0;
+        for &tile in path.iter().skip(1) {
+            spent += game.cost(actor.kind, tile) as usize;
+            if spent > game.rules().units[actor.kind].r#move {
+                break;
+            }
+            if let Some(blocker) = game
+                .at(tile)
+                .filter(|u| game.allied(actor, u) && u.id != actor.id)
+            {
+                lanes
+                    .entry(blocker.id)
+                    .or_default()
+                    .extend(path.iter().copied());
+            }
+        }
     }
-    pub fn leader_may_advance(
-        &self,
-        u: &Unit,
-        tile: usize,
-        recruiting: bool,
-        required: bool,
-    ) -> bool {
-        if tile == u.tile || required || !self.units().iter().any(|o| self.hostile(u, o)) {
-            return true;
-        }
-        let before = self.proximity(u.side, u.tile);
-        let after = self.proximity(u.side, tile);
-        if u.rebuilding == Some(true) && recruiting && before > 2 {
-            return false;
-        }
-        if after >= before {
-            return true;
-        }
-        let escorts = self.ordinary(u).filter(|o| {
-            o.hp as f64 >= self.rules().units[o.kind].hp as f64 / 2.0
-                && self.board().distance(tile, o.tile) <= 2
-        });
-        let (count, at_front) = escorts.fold((0, false), |(count, front), unit| {
-            (
-                count + 1,
-                front || self.proximity(u.side, unit.tile) <= after,
-            )
-        });
-        count >= 2 && at_front
+    lanes
+}
+/// Available nonleader, noncourier, nonhealer units eligible to screen an advancing leader.
+pub(in crate::ai) fn ordinary<'a>(
+    game: &'a BattleView<'_, '_>,
+    u: &'a Unit,
+) -> impl Iterator<Item = &'a Unit> {
+    game.units().iter().filter(move |o| {
+        game.allied(u, o)
+            && game.available_combatant(o)
+            && !o.is_leader()
+            && !o.role.is_some_and(Role::is_escort)
+            && game.rules().units[o.kind].healing == 0
+    })
+}
+pub fn proximity(game: &BattleView<'_, '_>, side: Side, tile: usize) -> u16 {
+    game.units()
+        .iter()
+        .filter(|o| game.hostile_to_phase(o, side))
+        .map(|o| game.board().distance(tile, o.tile))
+        .min()
+        .unwrap_or(20)
+}
+pub fn leader_may_advance(
+    game: &BattleView<'_, '_>,
+    u: &Unit,
+    tile: usize,
+    recruiting: bool,
+    required: bool,
+) -> bool {
+    if tile == u.tile || required || !game.units().iter().any(|o| game.hostile(u, o)) {
+        return true;
     }
+    let before = crate::ai::policies::objectives::proximity(game, u.side, u.tile);
+    let after = crate::ai::policies::objectives::proximity(game, u.side, tile);
+    if u.rebuilding == Some(true) && recruiting && before > 2 {
+        return false;
+    }
+    if after >= before {
+        return true;
+    }
+    let escorts = crate::ai::policies::objectives::ordinary(game, u).filter(|o| {
+        o.hp as f64 >= game.rules().units[o.kind].hp as f64 / 2.0
+            && game.board().distance(tile, o.tile) <= 2
+    });
+    let (count, at_front) = escorts.fold((0, false), |(count, front), unit| {
+        (
+            count + 1,
+            front || crate::ai::policies::objectives::proximity(game, u.side, unit.tile) <= after,
+        )
+    });
+    count >= 2 && at_front
 }
 /// Whether an actor must be routed through current occupancy and allies must yield.
-pub(super) fn actor_route(goal: &Objective) -> bool {
+pub(in crate::ai) fn actor_route(goal: &Objective) -> bool {
     (goal.actor.is_some() || goal.family.is_some()) && goal.kind != ObjectiveKind::Defeat
 }
 

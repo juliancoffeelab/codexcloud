@@ -4,12 +4,12 @@ use crate::data::Category;
 use rustc_hash::FxHashMap as HashMap;
 use std::{cell::RefCell, rc::Rc};
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub(crate) enum TileSet {
+pub enum TileSet {
     Small(u128),
     Large(Box<[u64]>),
 }
 impl TileSet {
-    pub(crate) fn first_intersection(&self, other: &Self) -> Option<usize> {
+    pub fn first_intersection(&self, other: &Self) -> Option<usize> {
         match (self, other) {
             (Self::Small(a), Self::Small(b)) => {
                 let bits = a & b;
@@ -27,33 +27,33 @@ impl TileSet {
             _ => None,
         }
     }
-    pub(crate) fn new(tiles: usize) -> Self {
+    pub fn new(tiles: usize) -> Self {
         if tiles <= 128 {
             Self::Small(0)
         } else {
             Self::Large(vec![0; tiles.div_ceil(64)].into_boxed_slice())
         }
     }
-    pub(crate) fn insert(&mut self, tile: usize) {
+    pub fn insert(&mut self, tile: usize) {
         match self {
             Self::Small(bits) => *bits |= 1u128 << tile,
             Self::Large(bits) => bits[tile / 64] |= 1 << (tile % 64),
         }
     }
-    pub(crate) fn remove(&mut self, tile: usize) {
+    pub fn remove(&mut self, tile: usize) {
         match self {
             Self::Small(bits) => *bits &= !(1u128 << tile),
             Self::Large(bits) => bits[tile / 64] &= !(1 << (tile % 64)),
         }
     }
-    pub(crate) fn contains(&self, tile: usize) -> bool {
+    pub fn contains(&self, tile: usize) -> bool {
         match self {
             Self::Small(bits) => bits & (1u128 << tile) != 0,
             Self::Large(bits) => bits[tile / 64] & (1 << (tile % 64)) != 0,
         }
     }
     #[cfg(test)]
-    pub(crate) fn intersects(&self, other: &Self) -> bool {
+    pub fn intersects(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Small(a), Self::Small(b)) => a & b != 0,
             (Self::Large(a), Self::Large(b)) => {
@@ -63,7 +63,7 @@ impl TileSet {
             _ => unreachable!("same-map threat masks"),
         }
     }
-    pub(crate) fn union_with(&mut self, other: &Self) {
+    pub fn union_with(&mut self, other: &Self) {
         match (self, other) {
             (Self::Small(a), Self::Small(b)) => *a |= b,
             (Self::Large(a), Self::Large(b)) => {
@@ -75,7 +75,7 @@ impl TileSet {
             _ => unreachable!("same-map threat masks"),
         }
     }
-    pub(crate) fn for_each(&self, mut visit: impl FnMut(usize)) {
+    pub fn for_each(&self, mut visit: impl FnMut(usize)) {
         let mut word = |mut bits: u64, offset: usize| {
             while bits != 0 {
                 visit(offset + bits.trailing_zeros() as usize);
@@ -98,7 +98,7 @@ impl TileSet {
 pub(super) type AttackGeometry = Rc<RefCell<HashMap<(usize, u8), Rc<Vec<TileSet>>>>>;
 pub(super) type AttackMasks = Rc<RefCell<HashMap<(usize, u8), Rc<Vec<u128>>>>>;
 impl Game<'_> {
-    pub(crate) fn attack_masks(&self, category: Category, range: u8) -> Rc<Vec<u128>> {
+    pub fn attack_masks(&self, category: Category, range: u8) -> Rc<Vec<u128>> {
         let key = (category.index(), range);
         if let Some(masks) = self.attack_masks.borrow().get(&key) {
             return masks.clone();
@@ -117,7 +117,7 @@ impl Game<'_> {
         self.attack_masks.borrow_mut().insert(key, masks.clone());
         masks
     }
-    pub(crate) fn in_attack_range(
+    pub fn in_attack_range(
         &self,
         from: usize,
         target: usize,
@@ -135,7 +135,7 @@ impl Game<'_> {
                     && !self.terrain_role(between).blocks_shots()
             })
     }
-    pub(crate) fn attack_origins(&self, category: Category, range: u8) -> Rc<Vec<TileSet>> {
+    pub fn attack_origins(&self, category: Category, range: u8) -> Rc<Vec<TileSet>> {
         let key = (category.index(), range);
         if let Some(fields) = self.attack_geometry.borrow().get(&key) {
             return fields.clone();

@@ -1,6 +1,5 @@
 //! Validation of saved states before runtime indexes are constructed.
 
-#[cfg(any(feature = "wasm", test))]
 use super::battle::Game;
 use crate::data::*;
 use serde::{Deserialize, Serialize};
@@ -14,7 +13,6 @@ impl std::fmt::Display for StateError {
     }
 }
 impl std::error::Error for StateError {}
-#[cfg(any(feature = "wasm", test))]
 impl<'catalog> Game<'catalog> {
     /// Restore against current unit limits, then validate the roster and references.
     pub(crate) fn try_from_state(
@@ -45,7 +43,7 @@ pub fn validate_state(rules: &Rules, state: &State) -> Result<(), StateError> {
     validate_state_geometry(rules, state, authored)
 }
 /// Native generated arenas use a validated generated layout instead of an authored map.
-pub(crate) fn validate_state_geometry(
+pub fn validate_state_geometry(
     rules: &Rules,
     state: &State,
     authored: &State,
@@ -56,7 +54,7 @@ pub(crate) fn validate_state_geometry(
         .and_then(|state| rules.campaigns.get(&state.id));
     validate_state_geometry_with_campaign(rules, state, authored, definition)
 }
-pub(crate) fn validate_state_geometry_with_campaign(
+pub fn validate_state_geometry_with_campaign(
     rules: &Rules,
     state: &State,
     authored: &State,
