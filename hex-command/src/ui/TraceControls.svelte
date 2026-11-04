@@ -48,7 +48,7 @@
 
 <p>
   Record timings while you play, then download the JSON trace to attach here. Recording stops after
-  two minutes or 50,000 events. Recordings stay in memory until reload. No recording is uploaded
+  ten minutes or 250,000 events. Recordings stay in memory until reload. No recording is uploaded
   automatically.
 </p>
 <div class="trace-buttons">

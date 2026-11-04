@@ -450,7 +450,7 @@ The bounded Chrome/Perfetto JSON trace includes action and engine timings,
 browser callback intervals and long tasks, map-worker stages, render workload
 counts, optional asynchronous GPU timer queries, renderer information and the
 start/end battle state. Worker clock origins are normalized to the recording.
-Recording stops after two minutes or 50,000 events; the export reports dropped
+Recording stops after ten minutes or 250,000 events; the export reports dropped
 events and worker flush failures. GPU disjoint/incomplete samples are identified;
 GPU duration tracks use CPU submission timestamps for approximate placement.
 Recording never inserts completion fences. Callback intervals are not physical

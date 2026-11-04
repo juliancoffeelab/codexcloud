@@ -27,8 +27,8 @@ interface Source {
 }
 const sources = new Set<Source>(),
   listeners = new Set<(state: TraceState) => void>();
-const maxEvents = 50_000,
-  maxDuration = 120_000;
+const maxEvents = 250_000,
+  maxDuration = 600_000;
 let state: TraceState = { status: "empty", events: 0, dropped: 0 };
 let config: TraceConfig | undefined,
   serial = 0;
@@ -226,7 +226,7 @@ export function startPerformanceTrace(getContext: () => unknown) {
   window.addEventListener("unhandledrejection", onRejection);
   for (const source of sources) source.start(config);
   timer = setTimeout(() => {
-    void stopPerformanceTrace("Two-minute limit reached");
+    void stopPerformanceTrace("Ten-minute limit reached");
   }, maxDuration);
   notify();
 }
