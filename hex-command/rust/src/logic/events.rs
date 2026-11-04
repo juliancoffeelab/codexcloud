@@ -105,24 +105,15 @@ impl Game<'_> {
         event: &str,
         tick: bool,
         death: Option<&DeathOccurrence>,
-        hold_index: &mut u32,
     ) -> bool {
         match when {
-            When::All(values) | When::Any(values) => {
-                // Visit every predicate, including short-circuited holds, to retain stable clock slots.
-                let all = matches!(when, When::All(_));
-                let mut result = all;
-                for value in values {
-                    let matches = self.when_matches(value, state, event, tick, death, hold_index);
-                    if all {
-                        result &= matches;
-                    } else {
-                        result |= matches;
-                    }
-                }
-                result
-            }
-            When::Not(c) => !self.when_matches(c, state, event, tick, death, hold_index),
+            When::All(values) => values
+                .iter()
+                .all(|value| self.when_matches(value, state, event, tick, death)),
+            When::Any(values) => values
+                .iter()
+                .any(|value| self.when_matches(value, state, event, tick, death)),
+            When::Not(c) => !self.when_matches(c, state, event, tick, death),
             When::Stand(v) => self.stands(&v.units, &v.tile, v.through),
             When::Proximity(v) => {
                 let targets: Vec<_> = if let Some(tile) = &v.tile {
@@ -187,11 +178,14 @@ impl Game<'_> {
                 self.owners[self.site(&v.tile)].as_deref() == Some(&v.faction)
                     && v.when
                         .as_ref()
-                        .is_none_or(|w| self.when_matches(w, state, event, false, None, &mut 0))
+                        .is_none_or(|w| self.when_matches(w, state, event, false, None))
             }
             When::Own(_) | When::Held(_) => {
-                let index = *hold_index;
-                *hold_index += 1;
+                let index = match when {
+                    When::Held(value) => value.predicate,
+                    When::Own(value) => value.predicate,
+                    _ => unreachable!(),
+                };
                 state
                     .holds
                     .iter()
@@ -218,27 +212,26 @@ impl Game<'_> {
             "",
             false,
             None,
-            &mut 0,
         )
     }
     fn update_event_holds(&self, state: &mut EventState, events: &[ScriptEvent], tick: bool) {
         for event in events.iter().filter(|e| state.active.contains(&e.id)) {
-            for (index, hold) in event.when.holds().iter().enumerate() {
+            for hold in event.when.holds() {
                 let standing = hold.units.is_none_or(|u| self.stands(u, hold.tile, false))
                     && hold
                         .faction
                         .is_none_or(|f| self.owners[self.site(hold.tile)].as_deref() == Some(f))
-                    && hold.when.is_none_or(|w| {
-                        self.when_matches(w, state, &event.id, false, None, &mut 0)
-                    });
+                    && hold
+                        .when
+                        .is_none_or(|w| self.when_matches(w, state, &event.id, false, None));
                 let slot = state
                     .holds
                     .iter()
-                    .position(|h| h.event == event.id && h.predicate == index as u32);
+                    .position(|h| h.event == event.id && h.predicate == hold.predicate);
                 let index = slot.unwrap_or_else(|| {
                     state.holds.push(EventHold {
                         event: event.id.clone(),
-                        predicate: index as u32,
+                        predicate: hold.predicate,
                         turns: 0,
                         last_round: self.round,
                     });
@@ -683,15 +676,14 @@ impl Game<'_> {
                 if !state.active.contains(&event.id) {
                     continue;
                 }
-                let ordinary =
-                    self.when_matches(&event.when, &state, &event.id, tick, None, &mut 0);
+                let ordinary = self.when_matches(&event.when, &state, &event.id, tick, None);
                 let contexts: Vec<_> = if ordinary {
                     vec![None]
                 } else if event.when.has_death() {
                     deaths
                         .iter()
                         .filter(|u| {
-                            self.when_matches(&event.when, &state, &event.id, tick, Some(u), &mut 0)
+                            self.when_matches(&event.when, &state, &event.id, tick, Some(u))
                         })
                         .map(|u| Some(u.clone()))
                         .collect()
@@ -1088,7 +1080,10 @@ pub(super) fn validate_event_state(
             return Err("unknown held event".into());
         };
         let predicates = event.when.holds();
-        let Some(hold) = predicates.get(clock.predicate as usize) else {
+        let Some(hold) = predicates
+            .iter()
+            .find(|hold| hold.predicate == clock.predicate)
+        else {
             return Err("unknown held predicate".into());
         };
         if clock.turns > hold.turns

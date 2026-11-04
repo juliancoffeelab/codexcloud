@@ -66,6 +66,8 @@ pub struct ProximitySelection {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct HoldSelection {
+    #[serde(skip)]
+    pub predicate: u32,
     pub tile: String,
     pub turns: u32,
     #[serde(default)]
@@ -94,6 +96,8 @@ pub struct OwnerSelection {
 )]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct OwnSelection {
+    #[serde(skip)]
+    pub predicate: u32,
     pub tile: String,
     pub faction: String,
     #[serde(default)]
@@ -637,6 +641,7 @@ impl SpawnEntry {
     }
 }
 pub struct EventClock<'a> {
+    pub predicate: u32,
     pub tile: &'a str,
     pub turns: u32,
     pub units: Option<&'a UnitMatch>,
@@ -674,9 +679,33 @@ impl When {
             _ => false,
         }
     }
+    // Match the durable counter numbering without depending on evaluation order.
+    pub fn index_holds(&mut self) {
+        fn visit(when: &mut When, next: &mut u32) {
+            match when {
+                When::Held(value) => {
+                    value.predicate = *next;
+                    *next += 1;
+                }
+                When::Own(value) if value.turns.is_some() => {
+                    value.predicate = *next;
+                    *next += 1;
+                }
+                When::All(values) | When::Any(values) => {
+                    for value in values {
+                        visit(value, next);
+                    }
+                }
+                When::Not(value) => visit(value, next),
+                _ => {}
+            }
+        }
+        visit(self, &mut 0);
+    }
     pub fn holds(&self) -> Vec<EventClock<'_>> {
         match self {
             Self::Held(v) => vec![EventClock {
+                predicate: v.predicate,
                 tile: &v.tile,
                 turns: v.turns,
                 units: Some(&v.units),
@@ -684,6 +713,7 @@ impl When {
                 when: v.when.as_deref(),
             }],
             Self::Own(v) if v.turns.is_some() => vec![EventClock {
+                predicate: v.predicate,
                 tile: &v.tile,
                 turns: v.turns.unwrap(),
                 units: None,

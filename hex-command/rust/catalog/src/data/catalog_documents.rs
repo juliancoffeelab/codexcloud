@@ -327,7 +327,8 @@ pub fn stage(
     let mut scripted_events = scripts.events;
     unique(scripted_events.iter().map(|e| e.id.as_str()), &map_path)?;
     scripted_events.sort_by_key(|e| std::cmp::Reverse(e.priority));
-    for e in &scripted_events {
+    for e in &mut scripted_events {
+        e.when.index_holds();
         e.validate(&map.tiles, &roster.factions, items, &map_path)?;
     }
     for tile in &map.tiles {
