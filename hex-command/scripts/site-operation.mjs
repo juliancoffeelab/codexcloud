@@ -43,14 +43,17 @@ export async function runSiteOperation(tools, options, operations = { prepareSit
 }
 
 async function main() {
-  const mode = process.argv[2];
+  const [mode, ...flags] = process.argv.slice(2);
   if (mode === "--help") {
     process.stdout.write(
-      "Usage: node scripts/site-operation.mjs prepare|deploy\nJSON-lines tool transport on stdin/stdout; see .agents/skills/publish/operations.md.\n",
+      "Usage: node scripts/site-operation.mjs prepare|deploy [--preview]\nJSON-lines tool transport on stdin/stdout; see .agents/skills/publish/operations.md.\n",
     );
     return;
   }
   if (!["prepare", "deploy"].includes(mode)) throw new Error("Expected prepare or deploy");
+  if (flags.some((flag) => flag !== "--preview") || flags.length > 1)
+    throw new Error("Expected only optional --preview");
+  const preview = flags.includes("--preview");
   // Serialize the complete save/deploy sequence, not just the build: another
   // invocation must not advance the Site branch between our push and save.
   if (process.env.HEX_COMMAND_SITE_LOCKED !== "1") {
@@ -63,6 +66,7 @@ async function main() {
         process.execPath,
         process.argv[1],
         mode,
+        ...flags,
       ],
       {
         stdio: "inherit",
@@ -111,7 +115,7 @@ async function main() {
     },
   );
   try {
-    const result = await runSiteOperation(tools, { mode, cwd: process.cwd() });
+    const result = await runSiteOperation(tools, { mode, cwd: process.cwd(), preview });
     send({ type: "result", result });
   } catch (error) {
     send({ type: "error", error: error.message });

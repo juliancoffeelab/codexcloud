@@ -8,7 +8,12 @@ game root. This document owns the calling convention; the skill selects the mode
 - `deploy` resolves the exact `HEAD` release, reusing an exact saved version or
   preparing it when necessary, then deploys that version and returns the result.
 
-The module API is `runSiteOperation(tools, {mode, cwd, message?})`.
+The module API is `runSiteOperation(tools, {mode, cwd, message?, preview?})`.
+`preview: true` (CLI `--preview`) selects the committed `.openai/hosting.preview.json`
+manifest and a separate release cache. The preview Site must differ from the main
+Site; missing or identical preview configuration fails without falling back to main.
+Plain `prepare`/`deploy` continues to use `.openai/hosting.json`.
+
 `tools` supplies the enabled execution and native Sites functions by name. Internally,
 `prepareSite(tools, {cwd, message?})` returns a receipt with `project_id`,
 `version_id`, `source_commit`, `site_commit` and `owner_private` (plus
@@ -46,8 +51,9 @@ is distinct from deciding or polling deployment status, which the operation owns
 ```js
 const mode = "deploy"; // "prepare" for an unpublished release
 const cwd = "/workspace/codexcloud/hex-command";
+const preview = false; // true only for an explicitly requested preview deployment
 let cell = await tools.exec_command({
-  cmd: `node scripts/site-operation.mjs ${mode}`,
+  cmd: `node scripts/site-operation.mjs ${mode}${preview ? " --preview" : ""}`,
   workdir: cwd,
   tty: true,
   yield_time_ms: 1000,

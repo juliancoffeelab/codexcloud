@@ -26,11 +26,18 @@ function cachedReceipt(path) {
   }
 }
 
-function buildSource(cwd, sourceCommit, credential, message) {
+function buildSource(cwd, sourceCommit, credential, message, preview) {
   return new Promise((resolve, reject) => {
     const child = spawn(
       "python3",
-      ["scripts/prepare-site.py", "--source-commit", sourceCommit, "--message", message],
+      [
+        "scripts/prepare-site.py",
+        "--source-commit",
+        sourceCommit,
+        "--message",
+        message,
+        ...(preview ? ["--preview"] : []),
+      ],
       { cwd, stdio: ["pipe", "pipe", "pipe"] },
     );
     let output = "";
@@ -93,8 +100,17 @@ export async function prepareSite(tools, options, progress = () => {}) {
   const cwd = options.cwd;
   const git = (...args) => execFileSync("git", args, { cwd, encoding: "utf8" }).trim();
   const source_commit = options.source_commit ?? git("rev-parse", "HEAD");
-  const { project_id } = JSON.parse(git("show", `${source_commit}:./.openai/hosting.json`));
-  const cachePath = join(cwd, ".cache", "site-release.json");
+  const primary = JSON.parse(git("show", `${source_commit}:./.openai/hosting.json`));
+  const { project_id } = options.preview
+    ? JSON.parse(git("show", `${source_commit}:./.openai/hosting.preview.json`))
+    : primary;
+  if (options.preview && project_id === primary.project_id)
+    throw new Error("Preview must use a different Site from the main deployment");
+  const cachePath = join(
+    cwd,
+    ".cache",
+    options.preview ? "site-release-preview.json" : "site-release.json",
+  );
   const stored = cachedReceipt(cachePath);
   const cached = stored?.project_id === project_id ? stored : undefined;
   const exact =
@@ -136,7 +152,9 @@ export async function prepareSite(tools, options, progress = () => {}) {
       cwd,
       source_commit,
       credential,
-      options.message ?? "Prepare Hex Command release",
+      options.message ??
+        (options.preview ? "Prepare Hex Command preview" : "Prepare Hex Command release"),
+      options.preview,
     );
     if (prepared.project_id !== project_id || prepared.source_commit !== source_commit)
       throw new Error("Preparation returned a different source or Site");

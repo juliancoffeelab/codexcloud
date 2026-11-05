@@ -38,14 +38,19 @@ def read_credential():
     return credential
 
 
-def prepare(credential, message, source_commit=None):
+def prepare(credential, message, source_commit=None, preview=False):
     repo = Path(command(["git", "rev-parse", "--show-toplevel"]))
     prefix = ROOT.relative_to(repo).as_posix()
     # Implementation owns committing/pushing required changes. Publish HEAD;
     # unrelated staged, unstaged and untracked work is neither a blocker nor
     # input to this release. Never stage or commit it as a deployment side effect.
     source_commit = source_commit or command(["git", "rev-parse", "HEAD"])
-    hosting = json.loads(command(["git", "show", f"{source_commit}:./.openai/hosting.json"]))
+    manifest = "hosting.preview.json" if preview else "hosting.json"
+    hosting = json.loads(command(["git", "show", f"{source_commit}:./.openai/{manifest}"]))
+    if preview:
+        primary = json.loads(command(["git", "show", f"{source_commit}:./.openai/hosting.json"]))
+        if hosting["project_id"] == primary["project_id"]:
+            raise ValueError("Preview must use a different Site from the main deployment")
 
     # The credential never enters an argument, file or log.
     environment = os.environ.copy()
@@ -151,8 +156,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--message", default="Prepare Hex Command release")
     parser.add_argument("--source-commit", help="Exact implementation commit pinned by the operation")
+    parser.add_argument("--preview", action="store_true", help="Use the independent preview Site")
     args = parser.parse_args()
-    result = prepare(read_credential(), args.message, args.source_commit)
+    result = prepare(read_credential(), args.message, args.source_commit, args.preview)
     print("SITE_PACKAGE: " + json.dumps(result), flush=True)
 
 
