@@ -167,7 +167,7 @@ export async function openHarness(options = {}) {
     try {
       if (!page.isClosed()) {
         await bounded(page.content(), "capture document")
-          .then((content) => writeFile(`${directory}/page.html`, content))
+          .then((content) => writeFile(`${directory}/document.txt`, content))
           .catch(() => {});
         await page
           .screenshot({ path: `${directory}/browser-final.png`, fullPage: true, timeout: 5000 })
