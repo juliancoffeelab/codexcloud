@@ -56,6 +56,7 @@ function fixture() {
       value: { maps: [], campaigns: [], units: [], items: [], terrain: [], races: [] },
     }),
     create: () => ({ ok: true, value: { id: nextId++, view: nextView } }),
+    validateUndo: () => ({ ok: true, value: null }),
     restore: (input) => {
       saved = input;
       return {

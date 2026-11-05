@@ -15,6 +15,9 @@ import type {
   NativeEngineFactory as WasmEngineFactory,
   SavedGame,
   Start,
+  State,
+  UndoStep,
+  UndoValidation,
 } from "../../rust/pkg/hex_command";
 
 export type NativeResponse<T> = EngineResult<Immutable<T>>;
@@ -35,6 +38,7 @@ export interface GameEngineFactory {
   catalog(): NativeResponse<CatalogView>;
   create(start: Start, seed: number): EngineResult<GameEngine>;
   restore(saved: Immutable<SavedGame>): EngineResult<GameEngine>;
+  validateUndo(state: Immutable<State>, history: UndoStep[]): EngineResult<null>;
   dispose(): EngineResult<null>;
 }
 
@@ -44,6 +48,7 @@ export type NativeBridge = Pick<
   | "catalog"
   | "create"
   | "restore"
+  | "validateUndo"
   | "view"
   | "inspect"
   | "geometry"
@@ -214,6 +219,8 @@ export function createNativeEngineFactory(
       }
       return accept(alive(() => bridge.create(structuredClone(start), seed)));
     },
+    validateUndo: (state: Immutable<State>, history: UndoStep[]) =>
+      alive(() => bridge.validateUndo(structuredClone({ state, history }) as UndoValidation)),
     restore: (saved: Immutable<SavedGame>): EngineResult<GameEngine> => {
       if (!validSeed(saved.seed)) {
         return failure({ code: "invalidSave", message: "saved seed must be a uint32" });

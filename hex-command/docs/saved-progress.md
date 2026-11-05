@@ -13,8 +13,9 @@ Storage refusal is never reported as a successful save.
 ## Recovery and history
 
 `hex-command-battle` is the atomic current recovery envelope. Completed player
-actions write the complete native checkpoint together with the available move
-undo states. Combat, recruitment, promotion, item drops and turn changes retain
+actions write the complete native checkpoint together with compact backward
+changes for the available move undo. Unchanged terrain and rosters are stored
+once. Combat, recruitment, promotion, item drops and turn changes retain
 their existing undo barriers. UI selection and AI planner workspaces are not
 saved. An enemy turn retains the pre-turn recovery with `pendingEnemy: true`
 throughout its actions, then writes the fully resolved result. Enemy-first games
@@ -57,12 +58,25 @@ state or network-dependent code is part of local persistence today.
 
 ## Compatibility
 
-The battle envelope is version 31. The pure v30-to-v31 conversion adds support for
-optional progress metadata and move undo without changing native game state.
+The battle envelope is version 32. The v30-to-v31 conversion added optional
+progress metadata and move undo. The pure v31-to-v32 conversion preserves the
+battle and progress metadata while discarding the older full-world undo copies.
+Version 32 stores backward data changes for each available move.
 Earlier versions continue through the existing migration chain. Current recovery
 and selected historical payloads pass through that same loading entry point:
 parse, migrate, validate in Rust, then atomically commit the validated conversion
 before using it. Migration code remains isolated under `src/save/migrations/`.
+
+
+Undo validation transfers the current state and compact changes to Rust once.
+Rust reconstructs and validates every earlier state against the native rules
+without creating battle handles, AI workspaces, geometry publications, combat
+forecasts or presentation views. JavaScript reconstructs immutable undo states
+with structural sharing, retaining unchanged terrain/roster records. Saving caches
+the changes between older undo entries and refreshes only the latest backward
+changes against current play, including any intervening dialogue changes. Undo
+uses native restoration before applying a prior state, preserving validation at
+both loading and execution.
 
 ## Offline reopening
 

@@ -210,6 +210,14 @@ impl NativeEngineFactory {
     pub fn restore(&mut self, saved: Ts<SavedGame>) -> Result<Ts<BattleResponse>, JsError> {
         encode(decode::<SavedGame>(saved).and_then(|saved| self.restore_saved(saved)))
     }
+    /// Validate compact recovery history without constructing battles or presentation views.
+    #[wasm_bindgen(js_name = validateUndo)]
+    pub fn validate_undo(&self, request: Ts<UndoValidation>) -> Result<Ts<UnitResponse>, JsError> {
+        encode(
+            decode::<UndoValidation>(request)
+                .and_then(|request| crate::undo::validate(&self.rules, request)),
+        )
+    }
     /// Return a detached [`EngineView`] when the handle and expected revision are current.
     pub fn view(&self, id: u32, revision: u32) -> Result<Ts<ViewResponse>, JsError> {
         encode(

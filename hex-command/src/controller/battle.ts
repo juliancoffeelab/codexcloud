@@ -109,7 +109,7 @@ export class BattleController {
     this.pendingEnemyReplay = restored.pendingEnemy;
     this.progress = restored.save?.progress?.entry ?? newRun();
     this.initialCheckpoint = !restored.save;
-    this.history.restore(game, restored.save?.undo ?? []);
+    this.history.restore(game, restored.undo ?? []);
     this.preserveStoredRecovery = !!restored.storageFailure;
     if (restored.storageFailure) {
       this.saveError = restored.storageFailure;
@@ -353,7 +353,7 @@ export class BattleController {
       restored.game.dispose();
       throw error;
     }
-    this.installRestored(restored.game, restored.save.undo ?? [], restored.pendingEnemy);
+    this.installRestored(restored.game, restored.undo ?? [], restored.pendingEnemy);
   }
 
   private installRestored(

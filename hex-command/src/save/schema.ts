@@ -1,14 +1,15 @@
+import { validUndoStep } from "./undo";
 import { validSetup, type SessionSetup } from "../game/setup";
 import type { SavedGame } from "../../rust/pkg/hex_command";
 
 /** Single version for browser persistence; native checkpoints are current data only. */
-export const SAVE_VERSION = 31;
+export const SAVE_VERSION = 32;
 export interface BattleSave {
   version: typeof SAVE_VERSION;
   checkpoint: SavedGame;
   pendingEnemy: boolean;
   setup?: SessionSetup;
-  undo?: import("../game/undo").SavedUndoEntry[];
+  undo?: import("../../rust/pkg/hex_command").UndoStep[];
   progress?: { entry: import("./progress").ProgressEntry };
 }
 export const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -24,14 +25,7 @@ export function currentSave(value: unknown): BattleSave {
         !["version", "checkpoint", "pendingEnemy", "setup", "undo", "progress"].includes(key),
     ) ||
     (value.undo !== undefined &&
-      (!Array.isArray(value.undo) ||
-        value.undo.some(
-          (entry) =>
-            !isRecord(entry) ||
-            !isRecord(entry.state) ||
-            typeof entry.unitId !== "string" ||
-            !Number.isInteger(entry.round),
-        ))) ||
+      (!Array.isArray(value.undo) || value.undo.some((entry) => !validUndoStep(entry)))) ||
     (value.progress !== undefined &&
       (!isRecord(value.progress) ||
         !isRecord(value.progress.entry) ||
