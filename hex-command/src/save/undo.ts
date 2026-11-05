@@ -66,6 +66,7 @@ export function decodeUndo(state: Immutable<State>, history: UndoStep[]): SavedU
   for (const step of [...history].reverse()) {
     for (const change of step.changes) current = applyAt(current, change, 0);
     entries.push({
+      changes: step.changes,
       round: step.round,
       unitId: step.unitId,
       state: immutable(current) as Immutable<GameState>,

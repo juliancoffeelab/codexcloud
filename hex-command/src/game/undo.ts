@@ -8,6 +8,7 @@ type UndoGame = Pick<
   "round" | "turn" | "winner" | "captureUndoState" | "restoreState" | "move" | "unit"
 >;
 export interface SavedUndoEntry {
+  changes?: UndoChange[];
   round: number;
   state: Immutable<GameState>;
   unitId: string;
