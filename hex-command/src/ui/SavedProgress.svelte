@@ -28,7 +28,7 @@
       action();
       refresh();
     } catch (error) {
-      failure = error instanceof Error ? error.message : String(error);
+      failure = error instanceof Error ? (error.stack ?? error.message) : String(error);
     }
   }
 </script>

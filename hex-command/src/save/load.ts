@@ -22,6 +22,9 @@ export function restoreBattleText(
     if (migrated) delete save.undo;
     for (const entry of save.undo ?? []) {
       if (
+        save.pendingEnemy ||
+        entry.state.mapId !== game.mapId ||
+        entry.state.winner !== null ||
         entry.round !== game.round ||
         entry.state.round !== game.round ||
         entry.state.turn !== "player" ||
@@ -71,12 +74,12 @@ export function loadBattle(factory: GameEngineFactory): LoadedBattle {
         }
       }
       return restored;
-    } catch {
+    } catch (error) {
       wipeSave();
       return {
         game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
         pendingEnemy: false,
-        notice: "The saved battle could not be loaded and was cleared. A new battle is ready.",
+        notice: `The saved battle could not be loaded and was cleared. A new battle is ready.\n${error instanceof Error ? (error.stack ?? error.message) : String(error)}`,
       };
     }
   }

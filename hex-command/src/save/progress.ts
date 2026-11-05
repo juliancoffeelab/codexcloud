@@ -113,28 +113,35 @@ export function progressText(id: string): string {
   if (!text) throw new Error("This saved checkpoint is no longer available.");
   return text;
 }
-function removeWhere(predicate: (entry: ProgressEntry) => boolean): void {
+function removeWhere(
+  predicate: (entry: ProgressEntry) => boolean,
+  protectedIds: string[] = [],
+): void {
   const value = index();
   const current = currentProgress();
   const removed = value.entries.filter(
-    (entry) => entry.id !== current?.id && entry.id !== current?.checkpointId && predicate(entry),
+    (entry) =>
+      entry.id !== current?.id &&
+      entry.id !== current?.checkpointId &&
+      !protectedIds.includes(entry.id) &&
+      predicate(entry),
   );
   const ids = new Set(removed.map((entry) => entry.id));
   commit({ version: 1, entries: value.entries.filter((entry) => !ids.has(entry.id)) });
   // Interrupted cleanup can leave unreferenced bytes, never a dangling index entry.
   for (const entry of removed) localStorage.removeItem(payloadKey(entry.id));
 }
-export function deleteProgress(id: string): void {
+export function deleteProgress(id: string, protectedIds: string[] = []): void {
   const current = currentProgress();
-  if (id === current?.id || id === current?.checkpointId)
+  if (id === current?.id || id === current?.checkpointId || protectedIds.includes(id))
     throw new Error("The currently played checkpoint cannot be deleted.");
-  removeWhere((entry) => entry.id === id);
+  removeWhere((entry) => entry.id === id, protectedIds);
 }
-export function deleteRun(runId: string): void {
-  removeWhere((entry) => entry.runId === runId);
+export function deleteRun(runId: string, protectedIds: string[] = []): void {
+  removeWhere((entry) => entry.runId === runId, protectedIds);
 }
 /** Dense recent history, then one checkpoint per exponentially wider age bucket, per continuation. */
-export function pruneProgress(runId?: string): void {
+export function pruneProgress(runId?: string, protectedIds: string[] = []): void {
   const entries = index().entries;
   const keep = new Set<string>();
   const branches = new Map<string, ProgressEntry[]>();
@@ -145,8 +152,7 @@ export function pruneProgress(runId?: string): void {
     branches.set(entry.branchId, branch);
   }
   for (const branch of branches.values()) {
-    branch.sort((a, b) => b.savedAt - a.savedAt || b.id.localeCompare(a.id));
-    const newest = Math.max(...branch.map((entry) => entry.ordinal));
+    const newest = branch.reduce((maximum, entry) => Math.max(maximum, entry.ordinal), 0);
     for (const entry of branch) {
       const age = newest - entry.ordinal;
       const interval = age < 24 ? 1 : 2 ** (1 + Math.floor(Math.log2(age / 24)));
@@ -155,5 +161,13 @@ export function pruneProgress(runId?: string): void {
   }
   removeWhere(
     (entry) => entry.kind === "turn" && (!runId || entry.runId === runId) && !keep.has(entry.id),
+    protectedIds,
   );
+}
+
+/** Loading is the sole entry point for a validated migration of a historical payload. */
+export function updateProgressText(id: string, text: string): void {
+  if (!index().entries.some((entry) => entry.id === id))
+    throw new Error("Saved checkpoint is unavailable.");
+  localStorage.setItem(payloadKey(id), text);
 }
