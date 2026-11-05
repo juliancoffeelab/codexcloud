@@ -104,20 +104,7 @@
     {
       "id": "complete-goal-0",
       "when": {
-        "all": [
-          {
-            "own": {
-              "tile": "hex-0973-079cfc7b3c",
-              "faction": "player"
-            }
-          },
-          {
-            "own": {
-              "tile": "hex-0988-17596734c1",
-              "faction": "player"
-            }
-          }
-        ]
+        "objectiveSatisfied": "goal-0"
       },
       "actions": [
         {
@@ -130,27 +117,10 @@
       "when": {
         "all": [
           {
-            "all": [
-              {
-                "own": {
-                  "tile": "hex-0973-079cfc7b3c",
-                  "faction": "player"
-                }
-              },
-              {
-                "own": {
-                  "tile": "hex-0988-17596734c1",
-                  "faction": "player"
-                }
-              }
-            ]
+            "objectiveSatisfied": "goal-0"
           },
           {
-            "stand": {
-              "tile": "hex-1019-90a76d4969",
-              "character": "edda",
-              "side": "player"
-            }
+            "objectiveSatisfied": "goal-1"
           }
         ]
       },
@@ -169,6 +139,22 @@
         },
         "playerMarker": {
           "tiles": ["hex-0973-079cfc7b3c", "hex-0988-17596734c1"]
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "own": {
+                "tile": "hex-0973-079cfc7b3c",
+                "faction": "player"
+              }
+            },
+            {
+              "own": {
+                "tile": "hex-0988-17596734c1",
+                "faction": "player"
+              }
+            }
+          ]
         }
       }
     },
@@ -191,11 +177,7 @@
     {
       "id": "complete-goal-1",
       "when": {
-        "stand": {
-          "tile": "hex-1019-90a76d4969",
-          "character": "edda",
-          "side": "player"
-        }
+        "objectiveSatisfied": "goal-1"
       },
       "actions": [
         {
@@ -208,27 +190,10 @@
       "when": {
         "all": [
           {
-            "all": [
-              {
-                "own": {
-                  "tile": "hex-0973-079cfc7b3c",
-                  "faction": "player"
-                }
-              },
-              {
-                "own": {
-                  "tile": "hex-0988-17596734c1",
-                  "faction": "player"
-                }
-              }
-            ]
+            "objectiveSatisfied": "goal-0"
           },
           {
-            "stand": {
-              "tile": "hex-1019-90a76d4969",
-              "character": "edda",
-              "side": "player"
-            }
+            "objectiveSatisfied": "goal-1"
           }
         ]
       },
@@ -251,6 +216,13 @@
         },
         "playerMarker": {
           "tiles": ["hex-1019-90a76d4969"]
+        },
+        "satisfiedWhen": {
+          "stand": {
+            "tile": "hex-1019-90a76d4969",
+            "character": "edda",
+            "side": "player"
+          }
         }
       }
     },
@@ -259,16 +231,26 @@
       "when": {
         "all": [
           {
-            "flag": "tide-sluice-goal-0"
+            "all": [
+              {
+                "flag": "tide-sluice-goal-0"
+              },
+              {
+                "flag": "tide-sluice-goal-1"
+              },
+              {
+                "hasUnits": {
+                  "role": "leader",
+                  "side": "player"
+                }
+              }
+            ]
           },
           {
-            "flag": "tide-sluice-goal-1"
+            "objectiveSatisfied": "goal-0"
           },
           {
-            "hasUnits": {
-              "role": "leader",
-              "side": "player"
-            }
+            "objectiveSatisfied": "goal-1"
           }
         ]
       },

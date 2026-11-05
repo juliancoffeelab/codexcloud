@@ -63,6 +63,8 @@ pub struct ObjectiveStatus {
     #[serde(rename = "activeTiles")]
     pub active_tiles: Vec<String>,
     pub visible: bool,
+    pub available: bool,
+    pub achieved: bool,
     pub progress: Progress,
     pub failed: bool,
 }

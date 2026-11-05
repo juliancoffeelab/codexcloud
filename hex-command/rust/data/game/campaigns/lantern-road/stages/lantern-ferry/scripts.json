@@ -713,35 +713,7 @@
     {
       "id": "villages-secured",
       "when": {
-        "all": [
-          {
-            "flag": "house-visit"
-          },
-          {
-            "flag": "village-1"
-          },
-          {
-            "flag": "village-2"
-          },
-          {
-            "owner": {
-              "tile": "hex-0476-aa57f89866",
-              "faction": "player"
-            }
-          },
-          {
-            "owner": {
-              "tile": "hex-0453-5d76a2bb0b",
-              "faction": "player"
-            }
-          },
-          {
-            "noUnits": {
-              "side": "enemy",
-              "unitType": "giant-spider"
-            }
-          }
-        ]
+        "objectiveSatisfied": "villages-secured"
       },
       "actions": [
         {
@@ -762,6 +734,37 @@
         },
         "playerMarker": {
           "tiles": ["hex-0476-aa57f89866", "hex-0453-5d76a2bb0b"]
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "flag": "house-visit"
+            },
+            {
+              "flag": "village-1"
+            },
+            {
+              "flag": "village-2"
+            },
+            {
+              "owner": {
+                "tile": "hex-0476-aa57f89866",
+                "faction": "player"
+              }
+            },
+            {
+              "owner": {
+                "tile": "hex-0453-5d76a2bb0b",
+                "faction": "player"
+              }
+            },
+            {
+              "noUnits": {
+                "side": "enemy",
+                "unitType": "giant-spider"
+              }
+            }
+          ]
         }
       }
     },
@@ -802,10 +805,17 @@
       "when": {
         "all": [
           {
-            "flag": "house-visit"
+            "all": [
+              {
+                "flag": "house-visit"
+              },
+              {
+                "flag": "villages-secured"
+              }
+            ]
           },
           {
-            "flag": "villages-secured"
+            "objectiveSatisfied": "villages-secured"
           }
         ]
       },

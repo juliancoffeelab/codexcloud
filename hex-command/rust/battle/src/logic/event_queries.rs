@@ -97,6 +97,22 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
                 && self.script_positions(u, through).contains(&target)
         })
     }
+    /// One current-satisfaction rule for victory, inspection and permitted planning.
+    pub(super) fn objective_satisfied(&self, state: &EventProgress, id: &str) -> bool {
+        if state.failed.iter().any(|value| value == id) {
+            return false;
+        }
+        let objective = state
+            .objective(id)
+            .expect("validated objective reference")
+            .objective
+            .as_ref()
+            .unwrap();
+        objective.satisfied_when.as_ref().map_or_else(
+            || state.completed.iter().any(|value| value == id),
+            |when| self.when_matches(when, Some(state), None, false, None),
+        )
+    }
     pub(super) fn when_matches(
         &self,
         when: &When,
@@ -158,6 +174,9 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
             When::TurnAtLeast(turn) => self.round >= *turn,
             When::ChapterStarted(value) => self.event_opening == *value,
             When::Always(value) => *value,
+            When::ObjectiveSatisfied(id) => {
+                state.is_some_and(|state| self.objective_satisfied(state, id))
+            }
             When::Flag(id) => self.flags.is_some_and(|f| flag_is_set(f, id)),
             When::HasUnits(v) => self.units.iter().any(|u| self.script_unit_matches(v, u)),
             When::NoUnits(v) => {

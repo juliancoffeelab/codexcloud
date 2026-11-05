@@ -21,6 +21,7 @@ pub(crate) struct CompiledMission {
     clocks: Vec<Vec<ClockDescriptor>>,
     clock_count: usize,
     event_indices: rustc_hash::FxHashMap<String, usize>,
+    objective_indices: rustc_hash::FxHashMap<String, usize>,
 }
 impl CompiledMission {
     pub(super) fn new(mut mission: Mission) -> Self {
@@ -58,11 +59,19 @@ impl CompiledMission {
             .enumerate()
             .map(|(i, e)| (e.id.clone(), i))
             .collect();
+        let objective_indices = mission
+            .scripted_events
+            .iter()
+            .enumerate()
+            .filter(|(_, e)| e.objective.is_some())
+            .map(|(i, e)| (e.objective_id().to_owned(), i))
+            .collect();
         Self {
             mission,
             clocks,
             clock_count: count,
             event_indices,
+            objective_indices,
         }
     }
     fn clocks(&self, event: usize) -> &[ClockDescriptor] {
@@ -157,6 +166,12 @@ impl EventProgress {
             active_indices,
             unrevealed,
         }
+    }
+    pub(super) fn objective(&self, id: &str) -> Option<&ScriptEvent> {
+        self.plan
+            .objective_indices
+            .get(id)
+            .map(|&index| &self.plan.scripted_events[index])
     }
     pub(crate) fn saved(&self) -> &EventState {
         &self.saved

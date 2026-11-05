@@ -187,14 +187,7 @@
     {
       "id": "complete-goal-0",
       "when": {
-        "all": [
-          {
-            "own": {
-              "tile": "hex-0955-5859c768ff",
-              "faction": "player"
-            }
-          }
-        ]
+        "objectiveSatisfied": "goal-0"
       },
       "actions": [
         {
@@ -207,17 +200,10 @@
       "when": {
         "all": [
           {
-            "own": {
-              "tile": "hex-0955-5859c768ff",
-              "faction": "player"
-            }
+            "objectiveSatisfied": "goal-0"
           },
           {
-            "stand": {
-              "tile": "hex-0130-cb5c0e2a48",
-              "character": "lark",
-              "side": "player"
-            }
+            "objectiveSatisfied": "goal-1"
           }
         ]
       },
@@ -236,6 +222,16 @@
         },
         "playerMarker": {
           "tiles": ["hex-0955-5859c768ff"]
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "own": {
+                "tile": "hex-0955-5859c768ff",
+                "faction": "player"
+              }
+            }
+          ]
         }
       }
     },
@@ -258,11 +254,7 @@
     {
       "id": "complete-goal-1",
       "when": {
-        "stand": {
-          "tile": "hex-0130-cb5c0e2a48",
-          "character": "lark",
-          "side": "player"
-        }
+        "objectiveSatisfied": "goal-1"
       },
       "actions": [
         {
@@ -275,17 +267,10 @@
       "when": {
         "all": [
           {
-            "own": {
-              "tile": "hex-0955-5859c768ff",
-              "faction": "player"
-            }
+            "objectiveSatisfied": "goal-0"
           },
           {
-            "stand": {
-              "tile": "hex-0130-cb5c0e2a48",
-              "character": "lark",
-              "side": "player"
-            }
+            "objectiveSatisfied": "goal-1"
           }
         ]
       },
@@ -308,6 +293,13 @@
         },
         "playerMarker": {
           "tiles": ["hex-0130-cb5c0e2a48"]
+        },
+        "satisfiedWhen": {
+          "stand": {
+            "tile": "hex-0130-cb5c0e2a48",
+            "character": "lark",
+            "side": "player"
+          }
         }
       }
     },
@@ -316,16 +308,26 @@
       "when": {
         "all": [
           {
-            "flag": "green-pact-goal-0"
+            "all": [
+              {
+                "flag": "green-pact-goal-0"
+              },
+              {
+                "flag": "green-pact-goal-1"
+              },
+              {
+                "hasUnits": {
+                  "role": "leader",
+                  "side": "player"
+                }
+              }
+            ]
           },
           {
-            "flag": "green-pact-goal-1"
+            "objectiveSatisfied": "goal-0"
           },
           {
-            "hasUnits": {
-              "role": "leader",
-              "side": "player"
-            }
+            "objectiveSatisfied": "goal-1"
           }
         ]
       },

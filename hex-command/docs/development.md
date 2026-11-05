@@ -394,24 +394,47 @@ Rust owns item effects and pickup/drop rules.
 
 ## Objective display
 
-Rust inspection publishes required, optional and survival objective status. Objective
-completion and failure are durable facts, independent of whether an event remains
-eligible for evaluation. A remembered event with an objective completes that task
-when it fires; `completeObjective` and `failObjective` can address another task by
-ID. Each independently described task needs its own completion condition. Explicit
-completion does not retire another event: its victory checks and AI duties can
-remain active independently of the player-facing checkmark.
+Rust inspection publishes required, optional and survival objective status. Saved
+`completed` IDs record permanent achievement history, published as `achieved`.
+By default this history also completes an achievement objective. An ongoing
+requirement instead authors `satisfiedWhen`, a pure current-state predicate;
+`progress.done`, progress counts and markers then reflect current satisfaction,
+not past achievement. Losing ownership or leaving a required destination can make
+it unmet again without erasing history. Events use `{"objectiveSatisfied":"id"}`
+to reference that exact rule for victory and completion. Unknown or cyclic
+references fail catalog loading. Satisfaction is recomputed from the resolved
+checkpoint, not saved as another cache or reconstructed from event retirement.
 
-Every objective explicitly authors `visibleWhen`. Once revealed, it stays in the
-briefing, including after completion or failure. `availableWhen` separately gates
-Campaigner availability; changing player presentation must not change AI intent.
-These fields use the event condition language. Reveal conditions must be state
-predicates, not occurrences such as a command or a particular turn boundary.
+A remembered event with an objective records achievement when it fires;
+`completeObjective` and `failObjective` can address another task by ID. Explicit
+completion does not retire another event or weaken its victory requirements.
+An ongoing task may subsequently fail while retaining its achievement history;
+a completed permanent achievement cannot be downgraded by a later failure.
+
+Every objective explicitly authors `visibleWhen`. Revelation persists even if
+its original predicate ceases to match. `availableWhen` additionally controls
+current availability; completed achievements and failed tasks have no remaining
+planning work. Ongoing requirements remain available while satisfied so guard
+duties can continue and lost ownership can become actionable again.
+Both availability and `satisfiedWhen` accept state predicates
+only: use flags, ownership, occupancy or `turnAtLeast`, not tick-only `turn`,
+`killed`, `left`, chapter-entry signals, timed counters, or path traversal.
+Proximity/occupancy state queries must use `through: false`.
+
+Campaign runtime alone evaluates those conditions. Campaigner's capability exposes
+only revealed, available objectives as resolved intent, selectors, destinations
+and current satisfaction. Recruitment, transition-sensitive orders, territory,
+terminal heuristics and ordinary targets consume this same permitted view.
+It exposes no raw mission, scripts, predicates or full campaign catalog. Runtime
+also resolves enemy-group activation/hold orders and arrival facts. An aggregate
+readiness flag prevents terminal shortcuts when requirements are still undisclosed.
 
 `playerMarker` is optional and defaults to no outline. Use `{"tiles":["tile-id"]}`
-for deliberately known destinations or `{"units":{"character":"character-id"}}`
-for currently visible matching units. AI intent and approach radii never generate
-markers. Both required and optional tasks use the same explicit marker policy.
+or `{"units":{"character":"character-id"}}`. Runtime filters both kinds through
+current fog; `visibleInFog: true` is an explicit opt-in for a deliberately revealed
+marker. Markers are suppressed for unavailable, failed or currently satisfied
+objectives. AI intent and approach radii never generate markers. Both required
+and optional tasks use the same policy.
 
 Deadlines remain authored defeat events. Rust does not infer public schedules or
 format countdowns from event conditions. Dialogue, briefing and hints disclose

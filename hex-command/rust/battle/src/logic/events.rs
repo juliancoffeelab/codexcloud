@@ -378,7 +378,7 @@ impl Game<'_> {
                         .insert(spec.faction.clone(), spec.units.clone());
                 }
                 EventAction::FailObjective(id) | EventAction::CompleteObjective(id) => {
-                    let (index, _) = self
+                    let (index, event) = self
                         .mission
                         .as_ref()
                         .unwrap()
@@ -387,14 +387,25 @@ impl Game<'_> {
                         .enumerate()
                         .find(|(_, e)| e.objective.is_some() && e.objective_id() == id)
                         .expect("validated objective ID");
-                    if !state.completed.contains(id) && !state.failed.contains(id) {
-                        if matches!(action, EventAction::FailObjective(_)) {
-                            state.fail(id.clone());
-                        } else {
-                            state.complete(id.clone());
-                        }
-                        if matches!(action, EventAction::FailObjective(_)) {
-                            state.retire(index);
+                    let achieved = state.completed.contains(id);
+                    if !state.failed.contains(id) {
+                        match action {
+                            EventAction::FailObjective(_)
+                                if !achieved
+                                    || event
+                                        .objective
+                                        .as_ref()
+                                        .unwrap()
+                                        .satisfied_when
+                                        .is_some() =>
+                            {
+                                state.fail(id.clone());
+                                state.retire(index);
+                            }
+                            EventAction::CompleteObjective(_) if !achieved => {
+                                state.complete(id.clone())
+                            }
+                            _ => {}
                         }
                     }
                 }
@@ -626,6 +637,121 @@ impl Game<'_> {
             .map(|t| self.board.ids[t].clone())
             .collect()
     }
+    fn objective_available(&self, event: &ScriptEvent) -> bool {
+        let state = self.scripts.as_deref().unwrap();
+        let objective = event.objective.as_ref().unwrap();
+        !state.failed.iter().any(|id| id == event.objective_id())
+            && (objective.satisfied_when.is_some()
+                || !state.completed.iter().any(|id| id == event.objective_id()))
+            && objective
+                .available_when
+                .as_ref()
+                .is_none_or(|when| self.script_condition(when))
+    }
+    pub(crate) fn planning_objectives(&self) -> Vec<crate::view::CampaignObjective<'_>> {
+        use crate::view::{CampaignIntent as Kind, CampaignObjective};
+        let Some(state) = self.scripts.as_deref() else {
+            return vec![];
+        };
+        let facts = EventFacts::new(self);
+        self.mission
+            .as_ref()
+            .into_iter()
+            .flat_map(|m| &m.scripted_events)
+            .filter_map(|event| {
+                let objective = event.objective.as_ref()?;
+                let id = event.objective_id();
+                if !state.revealed.iter().any(|known| known == id)
+                    || !self.objective_available(event)
+                {
+                    return None;
+                }
+                let satisfied = facts.objective_satisfied(state, id);
+                let (intent, selector, tiles) = match &objective.intent {
+                    EventIntent::Hold(v) => (Kind::Hold, Some(&v.units), vec![v.tile.clone()]),
+                    EventIntent::Escort(v) => (Kind::Escort, Some(&v.units), vec![v.tile.clone()]),
+                    EventIntent::GoTo(v) => (Kind::GoTo, Some(&v.units), vec![v.tile.clone()]),
+                    EventIntent::Escape(v) => (Kind::Escape, Some(&v.units), vec![v.tile.clone()]),
+                    EventIntent::Approach(v) => {
+                        (Kind::Approach, Some(&v.units), self.approach_tiles(v))
+                    }
+                    EventIntent::Own(v) => (Kind::Own, None, vec![v.tile.clone()]),
+                    EventIntent::Capture(v) => (Kind::Capture, None, v.clone()),
+                    EventIntent::Defeat(v) => (
+                        Kind::Defeat,
+                        Some(v),
+                        self.units
+                            .iter()
+                            .filter(|unit| self.script_unit_matches(v, unit))
+                            .map(|unit| self.board.ids[unit.tile].clone())
+                            .collect(),
+                    ),
+                };
+                Some(CampaignObjective {
+                    id,
+                    optional: objective.optional,
+                    satisfied,
+                    intent,
+                    selector,
+                    tiles,
+                })
+            })
+            .collect()
+    }
+    /// Aggregate readiness blocks terminal shortcuts without revealing hidden requirements.
+    pub(crate) fn requirements_disclosed(&self) -> bool {
+        let Some(state) = self.scripts.as_deref() else {
+            return true;
+        };
+        let facts = EventFacts::new(self);
+        self.mission
+            .as_ref()
+            .into_iter()
+            .flat_map(|m| &m.scripted_events)
+            .all(|event| {
+                event.objective.as_ref().is_none_or(|objective| {
+                    objective.optional
+                        || facts.objective_satisfied(state, event.objective_id())
+                        || (state.revealed.iter().any(|id| id == event.objective_id())
+                            && objective
+                                .available_when
+                                .as_ref()
+                                .is_none_or(|when| self.script_condition(when)))
+                })
+            })
+    }
+    pub(crate) fn script_pending_arrivals(&self) -> bool {
+        if self.turn != Side::Player {
+            return false;
+        }
+        let Some(state) = self.scripts.as_deref() else {
+            return false;
+        };
+        state.pending.iter().any(|pending| {
+            self.faction(&pending.faction)
+                .is_some_and(|f| f.phase == Side::Enemy)
+        }) || self
+            .mission
+            .as_ref()
+            .into_iter()
+            .flat_map(|m| &m.scripted_events)
+            .any(|event| {
+                let due = match &event.when {
+                    When::Turn(TurnSelection::Faction { number, faction }) => {
+                        *number <= self.round
+                            && self
+                                .faction(faction)
+                                .is_some_and(|f| f.phase == Side::Enemy)
+                    }
+                    _ => false,
+                };
+                due && state.active.iter().any(|id| id == &event.id)
+                    && event
+                        .actions_recursive()
+                        .iter()
+                        .any(|a| matches!(a, EventAction::Spawn(_)))
+            })
+    }
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn event_goal_progress(&self) -> Vec<Progress> {
         self.mission.as_ref().map_or_else(Vec::new, |m| {
@@ -641,7 +767,9 @@ impl Game<'_> {
         let objective = event.objective.as_ref().unwrap();
         let state = self.scripts.as_deref().unwrap();
         let failed = state.failed.iter().any(|id| id == event.objective_id());
-        let done = state.completed.iter().any(|id| id == event.objective_id());
+        let achieved = state.completed.iter().any(|id| id == event.objective_id());
+        let done = EventFacts::new(self).objective_satisfied(state, event.objective_id());
+        let available = self.objective_available(event);
         let (tiles, total) = match &objective.intent {
             EventIntent::Hold(v) => (vec![v.tile.clone()], v.turns),
             EventIntent::Escort(v) | EventIntent::GoTo(v) | EventIntent::Escape(v) => {
@@ -683,28 +811,38 @@ impl Game<'_> {
         };
         let visible = state.revealed.iter().any(|id| id == event.objective_id());
         // Markers are authored UI data, never inferred from AI movement or completion regions.
-        let markers = match &objective.player_marker {
-            Some(PlayerMarker::Tiles(tiles)) => tiles.clone(),
-            Some(PlayerMarker::Units(select)) => self
-                .units
-                .iter()
-                .filter(|unit| {
-                    self.script_unit_matches(select, unit)
-                        && self
-                            .condition_context()
-                            .visible_at(self.board.positions[unit.tile])
-                })
-                .map(|unit| self.board.ids[unit.tile].clone())
-                .collect(),
-            None => vec![],
-        };
+        let markers = objective
+            .player_marker
+            .as_ref()
+            .map_or_else(Vec::new, |marker| {
+                let destinations = if let Some(select) = &marker.units {
+                    self.units
+                        .iter()
+                        .filter(|unit| self.script_unit_matches(select, unit))
+                        .map(|unit| self.board.ids[unit.tile].clone())
+                        .collect()
+                } else {
+                    marker.tiles.clone()
+                };
+                destinations
+                    .into_iter()
+                    .filter(|tile| {
+                        marker.visible_in_fog
+                            || self
+                                .condition_context()
+                                .visible_at(self.board.positions[self.site(tile)])
+                    })
+                    .collect()
+            });
         ObjectiveStatus {
-            active_tiles: if !done && !failed && visible && self.winner.is_none() {
+            active_tiles: if !done && !failed && visible && available && self.winner.is_none() {
                 markers
             } else {
                 vec![]
             },
             visible,
+            available,
+            achieved,
             failed,
             progress: Progress {
                 label: objective.label.clone(),
@@ -775,8 +913,15 @@ pub(super) fn validate_event_state(
             }
         }
     }
-    if state.completed.iter().any(|id| state.failed.contains(id)) {
-        return Err("objective cannot be completed and failed".into());
+    if state.completed.iter().any(|id| {
+        state.failed.contains(id)
+            && mission
+                .scripted_events
+                .iter()
+                .find(|event| event.objective.is_some() && event.objective_id() == id)
+                .is_some_and(|event| event.objective.as_ref().unwrap().satisfied_when.is_none())
+    }) {
+        return Err("permanent achievement cannot be completed and failed".into());
     }
     let tiles: HashSet<_> = battle.tiles.iter().map(|t| t.id.as_str()).collect();
     let mut counters = HashSet::new();

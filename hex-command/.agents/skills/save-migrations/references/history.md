@@ -294,3 +294,9 @@ Version 30 derived objective completion from event retirement and visibility fro
 live conditions. The frozen chapter recipes in `objectives-v30.json` convert those
 facts once into completed and revealed objective IDs. Existing failed IDs remain
 unchanged. Current runtime saves own these facts independently of event activity.
+
+Version 31 completed IDs retain achievement history. Ongoing objective satisfaction
+is a runtime query over the restored world, shared with victory predicates; it is
+not another saved field and does not require a format conversion. Restoring a
+previously captured but currently lost fort preserves history without satisfying
+the ownership requirement.

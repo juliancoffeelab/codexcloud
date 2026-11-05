@@ -202,6 +202,7 @@ pub enum When {
     TurnAtLeast(u32),
     ChapterStarted(bool),
     Flag(String),
+    ObjectiveSatisfied(String),
     HasUnits(UnitMatch),
     NoUnits(UnitMatch),
     VisibleUnits(UnitMatch),
@@ -525,9 +526,13 @@ pub enum EventIntent {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub enum PlayerMarker {
-    Tiles(Vec<String>),
-    Units(UnitMatch),
+pub struct PlayerMarker {
+    #[serde(default)]
+    pub tiles: Vec<String>,
+    #[serde(default)]
+    pub units: Option<UnitMatch>,
+    #[serde(default)]
+    pub visible_in_fog: bool,
 }
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -549,6 +554,9 @@ pub struct EventObjective {
     pub visible_when: Option<When>,
     #[serde(default, rename = "availableWhen")]
     pub available_when: Option<When>,
+    /// None is a permanent achievement; Some is a live requirement until victory.
+    #[serde(default, rename = "satisfiedWhen")]
+    pub satisfied_when: Option<When>,
     pub intent: EventIntent,
     #[serde(default, rename = "playerMarker")]
     pub player_marker: Option<PlayerMarker>,
@@ -676,6 +684,8 @@ impl When {
         match self {
             Self::All(v) | Self::Any(v) => v.iter().all(Self::state_only),
             Self::Not(v) => v.state_only(),
+            Self::Stand(v) => !v.through,
+            Self::Proximity(v) => !v.through,
             Self::Own(v) => v.turns.is_none() && v.when.as_ref().is_none_or(|w| w.state_only()),
             Self::Held(_)
             | Self::Killed(_)
@@ -683,6 +693,29 @@ impl When {
             | Self::Turn(_)
             | Self::ChapterStarted(_) => false,
             _ => true,
+        }
+    }
+
+    pub fn visit_objective_refs(&self, visit: &mut impl FnMut(&str)) {
+        match self {
+            Self::ObjectiveSatisfied(id) => visit(id),
+            Self::All(values) | Self::Any(values) => {
+                for value in values {
+                    value.visit_objective_refs(visit);
+                }
+            }
+            Self::Not(value) => value.visit_objective_refs(visit),
+            Self::Own(value) => {
+                if let Some(when) = &value.when {
+                    when.visit_objective_refs(visit);
+                }
+            }
+            Self::Held(value) => {
+                if let Some(when) = &value.when {
+                    when.visit_objective_refs(visit);
+                }
+            }
+            _ => {}
         }
     }
 
@@ -902,7 +935,7 @@ impl ScriptEvent {
                         faction(id)?;
                     }
                 }
-                When::Flag(id) => identifier(id, path)?,
+                When::Flag(id) | When::ObjectiveSatisfied(id) => identifier(id, path)?,
                 When::ChapterStarted(false) => {
                     return Err(ContentError::new(
                         path,
@@ -1051,6 +1084,11 @@ impl ScriptEvent {
                 return Err(fail("objectives require an explicit visibleWhen".into()));
             }
             if let Some(c) = &o.available_when {
+                if !c.state_only() {
+                    return Err(fail(
+                        "objective availability requires state predicates".into(),
+                    ));
+                }
                 when(c, &tile, &faction, path)?;
             }
             if let Some(c) = &o.visible_when {
@@ -1059,11 +1097,19 @@ impl ScriptEvent {
                 }
                 when(c, &tile, &faction, path)?;
             }
-            if let Some(PlayerMarker::Tiles(tiles)) = &o.player_marker {
-                if tiles.is_empty() {
-                    return Err(fail("player marker needs tiles".into()));
+            if let Some(c) = &o.satisfied_when {
+                if !c.state_only() {
+                    return Err(fail(
+                        "objective satisfaction requires state predicates".into(),
+                    ));
                 }
-                for id in tiles {
+                when(c, &tile, &faction, path)?;
+            }
+            if let Some(marker) = &o.player_marker {
+                if marker.tiles.is_empty() == marker.units.is_none() {
+                    return Err(fail("player marker needs either tiles or units".into()));
+                }
+                for id in &marker.tiles {
                     tile(id)?;
                 }
             }
@@ -1158,8 +1204,11 @@ impl ScriptEvent {
             if let Some(w) = &o.visible_when {
                 conditions(w, &mut out);
             }
-            if let Some(PlayerMarker::Units(v)) = &o.player_marker {
+            if let Some(v) = o.player_marker.as_ref().and_then(|m| m.units.as_ref()) {
                 out.push(v);
+            }
+            if let Some(w) = &o.satisfied_when {
+                conditions(w, &mut out);
             }
             if let Some(v) = &o.preserve_lives {
                 out.push(v);

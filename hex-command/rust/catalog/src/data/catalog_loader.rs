@@ -1003,6 +1003,68 @@ fn validate_mission(
         .filter(|e| e.objective.is_some())
         .map(ScriptEvent::objective_id)
         .collect();
+    // Objective predicates are shared by victory and queries; reject unknown and
+    // cyclic references at load time, even in a short-circuited boolean branch.
+    let mut conditions = mission.story_conditions();
+    for event in &mission.scripted_events {
+        conditions.push(&event.when);
+        if let Some(objective) = &event.objective {
+            conditions.extend(objective.visible_when.iter());
+            conditions.extend(objective.available_when.iter());
+            conditions.extend(objective.satisfied_when.iter());
+        }
+    }
+    for condition in conditions {
+        let mut unknown = None;
+        condition.visit_objective_refs(&mut |id| {
+            if !ids.contains(id) {
+                unknown = Some(id.to_owned());
+            }
+        });
+        if let Some(id) = unknown {
+            return Err(ContentError::new(path, format!("unknown objective {id}")));
+        }
+    }
+    let objectives: HashMap<_, _> = mission
+        .scripted_events
+        .iter()
+        .filter_map(|e| e.objective.as_ref().map(|o| (e.objective_id(), o)))
+        .collect();
+    fn check_dependencies<'a>(
+        id: &'a str,
+        objectives: &HashMap<&'a str, &'a EventObjective>,
+        visiting: &mut HashSet<String>,
+        checked: &mut HashSet<String>,
+        path: &str,
+    ) -> Result<(), ContentError> {
+        if checked.contains(id) {
+            return Ok(());
+        }
+        if !visiting.insert(id.into()) {
+            return Err(ContentError::new(
+                path,
+                format!("cyclic objective satisfaction: {id}"),
+            ));
+        }
+        if let Some(condition) = &objectives[id].satisfied_when {
+            let mut dependencies = vec![];
+            condition.visit_objective_refs(&mut |other| dependencies.push(other.to_owned()));
+            for other in dependencies {
+                let (id, _) = objectives
+                    .get_key_value(other.as_str())
+                    .expect("validated objective reference");
+                check_dependencies(id, objectives, visiting, checked, path)?;
+            }
+        }
+        visiting.remove(id);
+        checked.insert(id.into());
+        Ok(())
+    }
+    let mut visiting = HashSet::new();
+    let mut checked = HashSet::new();
+    for id in objectives.keys() {
+        check_dependencies(id, &objectives, &mut visiting, &mut checked, path)?;
+    }
     for action in mission
         .scripted_events
         .iter()
