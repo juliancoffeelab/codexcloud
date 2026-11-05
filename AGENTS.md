@@ -19,6 +19,16 @@ For Hex Command work, follow [its AGENTS.md](hex-command/AGENTS.md).
 Keep always-applicable instructions in `AGENTS.md`. Put task-specific workflows
 and their procedures in skills; list their invocation conditions below.
 
+## Failures
+
+When a user asks to diagnose agent failure, you need to diagnose it. Failed
+instruction is a failure of instruction, never the agent. Gaps or ambiguity in
+instructions are instruction failures too. Prefer finding ways to fix code or
+architecture to prevent recurrence, unless the cause is clearly a bad instruction.
+For instruction failures, identify how the instruction should be edited or removed,
+or, in rarer cases, extended.
+
+
 # Skills
 
-- [writing-for-agents](.agents/skills/writing-for-agents/SKILL.md): Use when creating or editing skills, modifying agent instructions, or diagnosing agent failures.
+- [writing-for-agents](.agents/skills/writing-for-agents/SKILL.md): Use when creating or editing skills or modifying agent instructions.
