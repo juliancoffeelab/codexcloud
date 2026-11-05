@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { offlineStatus, prepareOffline } from "./offline";
   import { TerrainPreviewCache } from "./presentation/terrain-preview";
   import { preloadTerrainMap } from "./presentation/terrain-preload";
   import { onMount } from "svelte";
@@ -132,10 +131,6 @@
   <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
   <div class="persistence-status" role="status">
     <span>{$view.persistence}</span>
-    <span>{$offlineStatus.message}</span>
-    {#if $offlineStatus.phase === "failed"}<button onclick={() => void prepareOffline()}>
-        Retry offline preparation
-      </button>{/if}
     <button onclick={() => savedProgress.open()}>Saved progress</button>
     {#if $view.saveError}<span role="alert">{$view.saveError}</span>{/if}
   </div>

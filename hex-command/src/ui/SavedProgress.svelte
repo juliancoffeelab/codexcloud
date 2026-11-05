@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { offlineStatus, prepareOffline } from "../offline";
   import type { BattleView, BattleCommands } from "../controller/view";
   import type { ProgressEntry } from "../save/progress";
   let { view, actions }: { view: BattleView; actions: BattleCommands } = $props();
@@ -42,21 +41,9 @@
     </button>
   </div>
   <p role="status">{view.persistence}</p>
-  <p role="status">{$offlineStatus.message}</p>
-  {#if $offlineStatus.phase === "failed"}
-    <button onclick={() => void prepareOffline()}>Retry offline preparation</button>
-    <details>
-      <summary>Offline preparation error details</summary>
-      <pre>{$offlineStatus.detail}</pre>
-    </details>
-  {/if}
   {#if view.saveError}<p role="alert">{view.saveError}</p>{/if}
   {#if failure}<p role="alert">{failure}</p>{/if}
-  <p>
-    Progress is stored in this browser. After “Ready for offline play” appears, you can reopen the
-    game and load saved runs without a connection. Clearing browser data removes it. Cloud sync is
-    postponed.
-  </p>
+  <p>Progress is stored in this browser. Clearing browser data removes it.</p>
   <p>
     Turn starts form your history. Each continuation also keeps its latest recovery with available
     move undo. Loading a save keeps your previous continuation.

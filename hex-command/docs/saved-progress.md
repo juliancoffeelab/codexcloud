@@ -1,9 +1,8 @@
 # Local saved progress
 
-Saved progress is local to a browser profile. After the initial online visit
-finishes preparing offline play, reopening and playing saved runs requires no
-account, network request, or cloud service. Clearing site data removes it. Cloud synchronization
-and backup/export tools are postponed.
+Saved progress is local to a browser profile. Saving and loading use browser
+storage directly and do not require a network service. Clearing site data removes
+saved progress.
 
 The game exposes the result of the latest recovery write alongside the Saved
 progress button. A failed write leaves the previous committed recovery available;
@@ -67,7 +66,6 @@ and selected historical payloads pass through that same loading entry point:
 parse, migrate, validate in Rust, then atomically commit the validated conversion
 before using it. Migration code remains isolated under `src/save/migrations/`.
 
-
 Undo validation transfers the current state and compact changes to Rust once.
 Rust reconstructs and validates every earlier state against the native rules
 without creating battle handles, AI workspaces, geometry publications, combat
@@ -77,27 +75,3 @@ the changes between older undo entries and refreshes only the latest backward
 changes against current play, including any intervening dialogue changes. Undo
 uses native restoration before applying a prior state, preserving validation at
 both loading and execution.
-
-## Offline reopening
-
-Production builds generate a content-versioned service worker manifest from the
-complete built release, including the HTML shell, dynamic JavaScript chunks,
-styles, map-rendering worker, WASM, all unit/terrain artwork, and audio. Hosting
-configuration files are excluded. The release downloads in the background with
-bounded concurrency; it does not delay mounting or gameplay.
-
-The UI shows preparation, readiness, unsupported-browser and failure states.
-Wait for **Ready for offline play** before disconnecting or closing the first
-online visit. Failed preparation provides error details and a retry button.
-An incomplete release never becomes active. An installed worker can repair a
-missing cache after reconnecting. Once ready, navigations reopen the cached shell
-and local saves remain available without a connection, including other maps and
-campaigns that were not opened during the initial visit.
-
-Each worker serves one coherent release. A downloaded update waits until the
-previous release's tabs close; activation then removes obsolete release caches.
-Static release files ignore cache-busting query parameters and HTTP `Vary`
-headers when matching locally cached files. Offline installation needs HTTPS
-(or localhost), service-worker support, and enough browser cache storage.
-Browsers can evict site data; local saves and offline app files have separate
-storage status, and neither survives an explicit clearing of site data.
