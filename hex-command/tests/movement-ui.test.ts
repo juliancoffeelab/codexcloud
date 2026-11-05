@@ -18,6 +18,8 @@ function published(game: Game, selected: string): BattleView {
     renderRevision: 0,
     sessionVersion: 0,
     status: "",
+    persistence: "Saved locally",
+    saveError: null,
     artwork: currentArtwork(),
     sound: false,
     opponent: opponentSummary(DEFAULT_SETUP.enemy),

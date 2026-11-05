@@ -155,6 +155,12 @@ test("Command facade forwards calls without exposing reads", async () => {
     previousDialogue: () => {},
     setSound: async () => {},
     downloadDebugReport: () => {},
+    savedProgress: () => [],
+    restoreProgress: () => {},
+    deleteSavedProgress: () => {},
+    deleteSavedRun: () => {},
+    pruneSavedRun: () => {},
+    retrySave: () => {},
     error: () => {},
   };
   const commands = createBattleCommands(controller);

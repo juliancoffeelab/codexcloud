@@ -9,11 +9,7 @@ export function readSave(): string | null {
   }
 }
 export function storeSave(text: string): void {
-  try {
-    localStorage.setItem(SAVE_KEY, text);
-  } catch {
-    /* Full or disabled storage. */
-  }
+  localStorage.setItem(SAVE_KEY, text);
 }
 /** Failed migration or validation discards the save; historical backups are obsolete. */
 export function wipeSave(): void {

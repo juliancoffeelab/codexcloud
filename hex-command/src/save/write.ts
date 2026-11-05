@@ -4,7 +4,11 @@ import { validSetup } from "../game/setup";
 import { storeSave } from "./storage";
 
 /** All writes use the latest envelope; this path contains no compatibility handling. */
-export function saveBattle(game: LiveGame, pendingEnemy = false): void {
+export function serializeBattle(
+  game: LiveGame,
+  pendingEnemy = false,
+  extra: Pick<import("./schema").BattleSave, "undo" | "progress"> = {},
+): string | undefined {
   if (game.turn === "enemy" && !game.winner && !(game.round === 1 && game.setup.first === "enemy"))
     return;
   if (
@@ -16,6 +20,23 @@ export function saveBattle(game: LiveGame, pendingEnemy = false): void {
   // Rust serializes its complete canonical SavedGame. Do not materialize,
   // clone/freeze and stringify the full map again just to write those bytes.
   const checkpoint = nativeValue(game.serializedCheckpoint());
-  const metadata = JSON.stringify({ version: SAVE_VERSION, pendingEnemy, setup: game.setup });
-  storeSave(`${metadata.slice(0, -1)},"checkpoint":${checkpoint}}`);
+  const metadata = JSON.stringify({
+    version: SAVE_VERSION,
+    pendingEnemy,
+    setup: game.setup,
+    ...extra,
+  });
+  return `${metadata.slice(0, -1)},"checkpoint":${checkpoint}}`;
+}
+
+/** Compatibility writer; gameplay exposes failures through its persistence status. */
+export function saveBattle(game: LiveGame, pendingEnemy = false): void {
+  const text = serializeBattle(game, pendingEnemy);
+  if (text) {
+    try {
+      storeSave(text);
+    } catch {
+      /* Direct consumers may play without storage. */
+    }
+  }
 }

@@ -5,7 +5,12 @@ type UndoGame = Pick<
   LiveGame,
   "round" | "turn" | "winner" | "captureUndoState" | "restoreState" | "move" | "unit"
 >;
-interface UndoEntry {
+export interface SavedUndoEntry {
+  round: number;
+  state: Immutable<GameState>;
+  unitId: string;
+}
+interface UndoEntry extends SavedUndoEntry {
   game: UndoGame;
   round: number;
   state: Immutable<GameState>;
@@ -20,6 +25,8 @@ export interface MoveUndo {
   undo(game: UndoGame): UndoResult | null;
   clear(): void;
   canUndo(game: UndoGame): boolean;
+  saved(game: UndoGame): SavedUndoEntry[];
+  restore(game: UndoGame, entries: SavedUndoEntry[]): void;
 }
 // History belongs to this play session; combat and turn changes are barriers.
 export function createMoveUndo(): MoveUndo {
@@ -65,5 +72,16 @@ export function createMoveUndo(): MoveUndo {
     };
   }
 
-  return { move, undo, clear, canUndo };
+  return {
+    move,
+    undo,
+    clear,
+    canUndo,
+    saved: (game) => (canUndo(game) ? history.map(({ game: _game, ...entry }) => entry) : []),
+    restore: (game, entries) => {
+      clear();
+      for (const entry of entries) history.push({ ...entry, game });
+      canUndo(game);
+    },
+  };
 }

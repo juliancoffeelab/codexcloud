@@ -28,6 +28,8 @@ export interface BattleView {
   readonly renderRevision: number;
   readonly sessionVersion: number;
   readonly status: string;
+  readonly persistence: string;
+  readonly saveError: string | null;
   readonly artwork: Artwork;
   readonly sound: boolean;
   readonly opponent: OpponentSummary;
@@ -56,11 +58,23 @@ export interface BattleCommands {
   reset(mapId?: string, options?: { armies?: [string, string]; setup: SessionSetup }): GameSnapshot;
   setSound(enabled: boolean): Promise<void>;
   downloadDebugReport(): void;
+  savedProgress(): import("../save/progress").ProgressEntry[];
+  restoreProgress(id: string): void;
+  deleteSavedProgress(id: string): void;
+  deleteSavedRun(id: string): void;
+  pruneSavedRun(id: string): void;
+  retrySave(): void;
   error(error: unknown): void;
 }
 
 export function createBattleCommands(controller: BattleCommands): BattleCommands {
   return Object.freeze({
+    savedProgress: controller.savedProgress.bind(controller),
+    restoreProgress: controller.restoreProgress.bind(controller),
+    deleteSavedProgress: controller.deleteSavedProgress.bind(controller),
+    deleteSavedRun: controller.deleteSavedRun.bind(controller),
+    pruneSavedRun: controller.pruneSavedRun.bind(controller),
+    retrySave: controller.retrySave.bind(controller),
     startCampaign: traceCommand("action.startCampaign", controller.startCampaign.bind(controller)),
     nextMission: traceCommand("action.nextMission", controller.nextMission.bind(controller)),
     retryMission: traceCommand("action.retryMission", controller.retryMission.bind(controller)),
