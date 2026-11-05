@@ -17,7 +17,7 @@ export interface ProgressEntry extends ProgressIdentity {
   mission: string;
   round: number;
   side: string;
-  kind: "turn" | "recovery";
+  kind: "turn" | "recovery" | "resume";
   missionStart: boolean;
   current?: boolean;
   protected?: boolean;
@@ -29,6 +29,14 @@ interface Index {
 const INDEX_KEY = "hex-command-progress-index";
 const payloadKey = (id: string) => `hex-command-progress:${id}`;
 export const progressId = (): string => crypto.randomUUID();
+export function progressIdentity(entry: ProgressIdentity): ProgressIdentity {
+  return {
+    runId: entry.runId,
+    branchId: entry.branchId,
+    checkpointId: entry.checkpointId,
+    ordinal: entry.ordinal,
+  };
+}
 export function newRun(): ProgressIdentity {
   return { runId: progressId(), branchId: progressId(), checkpointId: progressId(), ordinal: 0 };
 }
@@ -36,7 +44,26 @@ function index(): Index {
   const text = localStorage.getItem(INDEX_KEY);
   if (!text) return { version: 1, entries: [] };
   const value = JSON.parse(text) as Index;
-  if (value.version !== 1 || !Array.isArray(value.entries))
+  if (
+    !value ||
+    value.version !== 1 ||
+    !Array.isArray(value.entries) ||
+    value.entries.some(
+      (entry) =>
+        !entry ||
+        typeof entry.id !== "string" ||
+        typeof entry.runId !== "string" ||
+        typeof entry.branchId !== "string" ||
+        typeof entry.checkpointId !== "string" ||
+        typeof entry.run !== "string" ||
+        typeof entry.mission !== "string" ||
+        !Number.isFinite(entry.savedAt) ||
+        !Number.isFinite(entry.round) ||
+        !Number.isSafeInteger(entry.ordinal) ||
+        !["turn", "recovery", "resume"].includes(entry.kind) ||
+        typeof entry.missionStart !== "boolean",
+    )
+  )
     throw new Error(
       "Saved progress index could not be read. Browser storage has not been changed.",
     );
@@ -52,7 +79,7 @@ export function describeProgress(
   missionStart = false,
 ): ProgressEntry {
   return {
-    ...identity,
+    ...progressIdentity(identity),
     id: kind === "recovery" ? identity.branchId : identity.checkpointId,
     savedAt: Date.now(),
     run: game.campaign?.id ?? game.mapId,
@@ -76,7 +103,7 @@ export function listProgress(): ProgressEntry[] {
     .map((entry) => ({
       ...entry,
       current: entry.id === current?.id,
-      protected: entry.id === current?.id || entry.id === current?.checkpointId,
+      protected: entry.id === current?.id,
     }))
     .sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id));
 }
@@ -120,11 +147,7 @@ function removeWhere(
   const value = index();
   const current = currentProgress();
   const removed = value.entries.filter(
-    (entry) =>
-      entry.id !== current?.id &&
-      entry.id !== current?.checkpointId &&
-      !protectedIds.includes(entry.id) &&
-      predicate(entry),
+    (entry) => entry.id !== current?.id && !protectedIds.includes(entry.id) && predicate(entry),
   );
   const ids = new Set(removed.map((entry) => entry.id));
   commit({ version: 1, entries: value.entries.filter((entry) => !ids.has(entry.id)) });
@@ -133,7 +156,7 @@ function removeWhere(
 }
 export function deleteProgress(id: string, protectedIds: string[] = []): void {
   const current = currentProgress();
-  if (id === current?.id || id === current?.checkpointId || protectedIds.includes(id))
+  if (id === current?.id || protectedIds.includes(id))
     throw new Error("The currently played checkpoint cannot be deleted.");
   removeWhere((entry) => entry.id === id, protectedIds);
 }

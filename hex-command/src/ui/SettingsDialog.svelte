@@ -6,8 +6,9 @@
     actions: BattleCommands;
     dialog?: HTMLDialogElement;
     onNewBattle: () => void;
+    onSavedGames: () => void;
   }
-  let { view, actions, dialog = $bindable(), onNewBattle }: Props = $props();
+  let { view, actions, dialog = $bindable(), onNewBattle, onSavedGames }: Props = $props();
   function closeOnBackdropClick(event: MouseEvent) {
     if (!dialog || event.target !== dialog) return;
     const bounds = dialog.getBoundingClientRect();
@@ -41,6 +42,7 @@
       onchange={(event) => void actions.setSound(event.currentTarget.checked)}
     />
   </label>
+  <button class="saved-games-entry" onclick={onSavedGames}>Saved games</button>
   <button id="new-game" class="primary" onclick={onNewBattle}>New game</button>
   <details class="panel">
     <summary>Field manual</summary>

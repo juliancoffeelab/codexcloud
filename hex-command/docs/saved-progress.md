@@ -4,10 +4,17 @@ Saved progress is local to a browser profile. Saving and loading use browser
 storage directly and do not require a network service. Clearing site data removes
 saved progress.
 
-The game exposes the result of the latest recovery write alongside the Saved
-progress button. A failed write leaves the previous committed recovery available;
-play can continue, and Saved progress provides deletion, thinning, and retry tools.
-Storage refusal is never reported as a successful save.
+Saved games are opened from Settings. They use authored campaign and map names,
+chapter groups and compact rows whose load/delete actions appear locally when
+selected. Current recovery is not listed as a second historical checkpoint.
+Deletes require confirmation.
+
+A failed write leaves the previous committed recovery available. A dialog explains
+whether storage is full, access is blocked, or an internal error occurred. Capacity
+failures offer save management; cleanup automatically saves pending progress when
+possible. The player may acknowledge a failure and continue without repeated
+interruptions for the same condition. There is no manual retry control. Other
+failures provide appropriate browser guidance or access to the debug report.
 
 ## Recovery and history
 
@@ -26,6 +33,15 @@ mission dialogue and campaign progress. Completed battles remain recoverable as
 the current continuation; they do not create a mid-turn historical checkpoint.
 Each inactive continuation also retains its latest recovery, including undo. This
 is one recovery per continuation, not an automatic history of mid-turn actions.
+On startup, history initialization distinguishes a fresh game, a known saved run,
+and an autosave without history identity. The last case records the available
+position as a distinct `resume` checkpoint before gameplay can overwrite recovery.
+It preserves the actual native checkpoint, seed, setup, and available undo; it does
+not reconstruct or label an unavailable historical opening. Migration to envelope
+version 33 adds this record kind without running historical gameplay. Already lost
+checkpoints cannot be recovered from a later save. Adoption points are retained by
+automatic pruning and remain manually deletable.
+
 Starting another run or loading earlier progress parks the outgoing recovery
 before replacing the current one. Loading creates a distinct continuation, so
 playing differently cannot overwrite a previously reached continuation.
@@ -41,13 +57,15 @@ remove index entries before removing payloads. Interrupted operations can leave
 unreferenced bytes but never publish an absent payload. Each payload replacement
 and current recovery replacement is an atomic browser storage write.
 
-Automatic thinning runs at turn boundaries. It retains every one of the latest
+Automatic thinning runs at turn boundaries. It is optional maintenance: a failure
+does not invalidate an already committed checkpoint, and its error is included in
+the debug report. It retains every one of the latest
 24 turn checkpoints in each continuation. Older checkpoints are selected by a
 stable turn ordinal at intervals of 2, 4, 8 and so on in progressively older age
-bands. Mission starts are always exempt from automatic thinning. Both automatic
-and manual whole-run operations protect the currently played checkpoint and its
-recovery. Other individual checkpoints and inactive continuation recoveries can
-be deleted explicitly. Retained payloads are complete native snapshots, so a
+bands. Mission starts are always exempt from automatic thinning. Whole-run cleanup protects only the currently played recovery. Historical turn
+starts, including the current turn’s start and mission starts, can be deleted
+manually. Automatic thinning preserves mission starts. Inactive continuation
+recoveries can also be deleted explicitly. Retained payloads are complete native snapshots, so a
 missing ancestor does not prevent loading them.
 
 Each record carries stable run, continuation, checkpoint and parent identities.
@@ -57,7 +75,8 @@ state or network-dependent code is part of local persistence today.
 
 ## Compatibility
 
-The battle envelope is version 32. The v30-to-v31 conversion added optional
+The battle envelope is version 33. The pure v32-to-v33 conversion extends the
+envelope for adopted positions without changing native game state. The v30-to-v31 conversion added optional
 progress metadata and move undo. The pure v31-to-v32 conversion preserves the
 battle and progress metadata while discarding the older full-world undo copies.
 Version 32 stores backward data changes for each available move.

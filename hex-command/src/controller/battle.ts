@@ -9,6 +9,7 @@ import { createMoveUndo } from "../game/undo";
 import { loadBattle, restoreBattleText } from "../save/load";
 import { serializeBattle } from "../save/write";
 import { storeSave } from "../save/storage";
+import { saveFailure, type SaveFailure } from "../save/failure";
 import { captureBrowserSaves } from "../save/debug";
 import {
   addTurn,
@@ -17,6 +18,7 @@ import {
   newRun,
   parkRecovery,
   progressId,
+  progressIdentity,
   progressText,
   updateProgressText,
   deleteProgress,
@@ -83,10 +85,12 @@ export class BattleController {
   private progress: ProgressIdentity;
   private persistence = "Not saved yet";
   private saveError: string | null = null;
+  private saveFailure: SaveFailure | null = null;
   private historyError: string | null = null;
+  private historyMaintenanceError: string | null = null;
   private pendingCheckpoint?: { entry: ProgressEntry; text: string };
   private preserveStoredRecovery = false;
-  private initialCheckpoint = false;
+  private historyStart: "fresh" | "adopt" | null;
   private enemyRecordings: EnemyTurnRecording[] = [];
   private initialized = false;
   private soundRequestVersion = 0;
@@ -108,13 +112,14 @@ export class BattleController {
     const game = restored.game;
     this.#game = game;
     this.pendingEnemyReplay = restored.pendingEnemy;
-    this.progress = restored.save?.progress?.entry ?? newRun();
-    this.initialCheckpoint = !restored.save;
+    this.progress = restored.save?.progress
+      ? progressIdentity(restored.save.progress.entry)
+      : newRun();
+    this.historyStart = !restored.save ? "fresh" : !restored.save.progress ? "adopt" : null;
     this.history.restore(game, restored.undo ?? []);
     this.preserveStoredRecovery = !!restored.storageFailure;
     if (restored.storageFailure) {
-      this.saveError = restored.storageFailure;
-      this.persistence = "Local save failed";
+      this.failedSave(restored.storageFailure);
     } else if (restored.save) this.persistence = "Saved locally";
     this.state = {
       selected: null,
@@ -171,6 +176,7 @@ export class BattleController {
       game: this.gameView,
       persistence: this.persistence,
       saveError: this.saveError,
+      saveFailure: this.saveFailure,
       sessionVersion: this.sessionVersion,
       opponent: opponentSummary(this.#game.setup.enemy),
       combat: this.#game.combat,
@@ -209,13 +215,16 @@ export class BattleController {
           progress: this.progress,
           persistence: this.persistence,
           saveError: this.saveError,
+          saveFailure: this.saveFailure,
           historyError: this.historyError,
+          historyMaintenanceError: this.historyMaintenanceError,
           pendingEnemy:
             this.pendingEnemyReplay || (this.#game.turn === "enemy" && !this.#game.winner),
           pendingEnemyReplay: this.pendingEnemyReplay,
           pendingCheckpoint: this.pendingCheckpoint ?? null,
           preserveStoredRecovery: this.preserveStoredRecovery,
-          initialCheckpoint: this.initialCheckpoint,
+          initialCheckpoint: this.historyStart === "fresh",
+          adoptRecovery: this.historyStart === "adopt",
           initialized: this.initialized,
           sessionVersion: this.sessionVersion,
         },
@@ -276,7 +285,10 @@ export class BattleController {
 
   private failedSave(error: unknown): void {
     this.persistence = "Local save failed";
-    this.saveError = `${error instanceof Error ? error.message : String(error)}. Open Saved progress to free storage, then retry saving.`;
+    const failure = saveFailure(error);
+    this.saveError = failure.detail;
+    // A dismissed failure stays quiet while the same condition persists.
+    if (!this.saveFailure || this.saveFailure.kind !== failure.kind) this.saveFailure = failure;
   }
 
   private persist(pendingEnemy = false): void {
@@ -289,9 +301,30 @@ export class BattleController {
       });
       if (!text) return;
       storeSave(text);
-      this.persistence = "Saved locally";
+      this.persistence = this.historyError ? "History not saved" : "Saved locally";
       this.saveError = this.historyError;
+      if (!this.historyError) this.saveFailure = null;
     } catch (error) {
+      this.failedSave(error);
+    }
+  }
+
+  /** Preserve the available imported position; never invent a historical turn start. */
+  private adoptCheckpoint(): void {
+    try {
+      const entry = describeProgress(this.#game, this.progress, "resume");
+      const text = serializeBattle(this.#game, this.pendingEnemyReplay, {
+        progress: { entry },
+        undo: this.history.saved(this.#game),
+      });
+      if (!text) return;
+      this.pendingCheckpoint = { entry, text };
+      addTurn(entry, text);
+      this.pendingCheckpoint = undefined;
+      this.historyError = null;
+      this.historyStart = null;
+    } catch (error) {
+      this.historyError = String(error);
       this.failedSave(error);
     }
   }
@@ -299,7 +332,11 @@ export class BattleController {
   private turnCheckpoint(missionStart = false): void {
     if (this.preserveStoredRecovery) return;
     const previous = this.progress;
-    const next = { ...previous, checkpointId: progressId(), ordinal: previous.ordinal + 1 };
+    const next = {
+      ...progressIdentity(previous),
+      checkpointId: progressId(),
+      ordinal: previous.ordinal + 1,
+    };
     try {
       const entry = {
         ...describeProgress(this.#game, next, "turn", missionStart),
@@ -307,28 +344,37 @@ export class BattleController {
       };
       const text = serializeBattle(this.#game, false, { progress: { entry } });
       if (!text) return;
+      // Keep an unsaved adoption point available until cleanup can commit it.
+      if (this.pendingCheckpoint?.entry.kind === "resume") return;
       this.pendingCheckpoint = { entry, text };
       addTurn(entry, text);
       this.pendingCheckpoint = undefined;
       this.historyError = null;
       this.progress = next;
-      // Advance the protected pointer before pruning; failed recovery leaves both checkpoints intact.
+      this.historyStart = null;
+      // Recovery is independent of the historical point; pruning follows a complete turn write.
       this.persist();
-      if (!this.saveError) pruneProgress();
     } catch (error) {
       this.historyError = `Turn history could not be saved: ${String(error)}. Free storage in Saved progress.`;
       this.failedSave(error);
+      return;
+    }
+    // Optional thinning cannot turn a committed checkpoint into a failed save.
+    if (!this.saveError) {
+      try {
+        pruneProgress();
+        this.historyMaintenanceError = null;
+      } catch (error) {
+        this.historyMaintenanceError = String(error);
+      }
     }
   }
 
   savedProgress(): ProgressEntry[] {
     return listProgress().map((entry) => ({
       ...entry,
-      current: entry.id === this.progress.branchId,
-      protected:
-        entry.protected ||
-        entry.id === this.progress.branchId ||
-        entry.id === this.progress.checkpointId,
+      current: entry.current || entry.id === this.progress.branchId,
+      protected: entry.protected || entry.id === this.progress.branchId,
     }));
   }
 
@@ -338,6 +384,17 @@ export class BattleController {
         "Free storage and reload to finish updating saved progress before switching runs.",
       );
     if (this.#game.turn === "player" || this.#game.winner) {
+      this.persist(this.pendingEnemyReplay);
+      if (this.persistence === "Local save failed")
+        throw new Error(this.saveError ?? "Local saving failed.");
+    }
+    if (this.pendingCheckpoint) {
+      const pending = this.pendingCheckpoint;
+      addTurn(pending.entry, pending.text);
+      this.progress = progressIdentity(pending.entry);
+      this.pendingCheckpoint = undefined;
+      this.historyStart = null;
+      this.historyError = null;
       this.persist(this.pendingEnemyReplay);
       if (this.persistence === "Local save failed")
         throw new Error(this.saveError ?? "Local saving failed.");
@@ -368,6 +425,8 @@ export class BattleController {
       this.preserveStoredRecovery = false;
     } catch (error) {
       restored.game.dispose();
+      this.failedSave(error);
+      this.publish({ renderBattle: false });
       throw error;
     }
     this.installRestored(restored.game, restored.undo ?? [], restored.pendingEnemy);
@@ -392,6 +451,8 @@ export class BattleController {
     this.state.status = "Saved progress restored. Previous continuations remain in Saved progress.";
     this.persistence = "Saved locally";
     this.saveError = null;
+    this.saveFailure = null;
+    if (this.historyStart === "adopt") this.adoptCheckpoint();
     this.publish();
     if (pendingEnemy) {
       this.pendingEnemyReplay = false;
@@ -401,27 +462,51 @@ export class BattleController {
   }
 
   deleteSavedProgress(id: string): void {
-    deleteProgress(id, [this.progress.branchId, this.progress.checkpointId]);
+    this.cleanupSaves(() => deleteProgress(id, [this.progress.branchId]));
   }
   deleteSavedRun(id: string): void {
-    deleteRun(id, [this.progress.branchId, this.progress.checkpointId]);
+    this.cleanupSaves(() => deleteRun(id, [this.progress.branchId]));
   }
   pruneSavedRun(id: string): void {
-    pruneProgress(id, [this.progress.branchId, this.progress.checkpointId]);
+    this.cleanupSaves(() => pruneProgress(id, [this.progress.branchId]));
   }
-  retrySave(): void {
-    if (this.preserveStoredRecovery)
-      throw new Error("Reload after freeing storage to finish updating saved progress.");
+  private cleanupSaves(cleanup: () => void): void {
+    try {
+      cleanup();
+      this.saveAfterCleanup();
+    } catch (error) {
+      this.failedSave(error);
+      this.publish({ renderBattle: false });
+      throw error;
+    }
+  }
+
+  private saveAfterCleanup(): void {
+    if (this.preserveStoredRecovery) {
+      const restored = loadBattle(this.nativeFactory);
+      if (restored.storageFailure || !restored.save) {
+        restored.game.dispose();
+        this.failedSave(restored.storageFailure ?? "Saved progress is unavailable.");
+        this.publish({ renderBattle: false });
+        return;
+      }
+      this.preserveStoredRecovery = false;
+      this.progress = restored.save.progress
+        ? progressIdentity(restored.save.progress.entry)
+        : newRun();
+      this.historyStart = restored.save.progress ? null : "adopt";
+      this.installRestored(restored.game, restored.undo ?? [], restored.pendingEnemy);
+    }
     // Never persist an enemy phase in flight.
-    if (this.#game.turn === "enemy" && !this.#game.winner)
-      throw new Error("Wait for the enemy turn to finish before retrying the save.");
+    if (this.#game.turn === "enemy" && !this.#game.winner) return;
     if (
       this.pendingCheckpoint &&
       this.pendingCheckpoint.entry.branchId === this.progress.branchId
     ) {
       try {
         addTurn(this.pendingCheckpoint.entry, this.pendingCheckpoint.text);
-        this.progress = this.pendingCheckpoint.entry;
+        this.progress = progressIdentity(this.pendingCheckpoint.entry);
+        this.historyStart = null;
         this.pendingCheckpoint = undefined;
         this.historyError = null;
       } catch (error) {
@@ -430,6 +515,7 @@ export class BattleController {
         return;
       }
     }
+    this.historyError = null;
     this.persist();
     this.publish({ renderBattle: false });
   }
@@ -864,6 +950,7 @@ export class BattleController {
     this.#game = replacement;
     this.pendingCheckpoint = undefined;
     this.historyError = null;
+    this.historyStart = null;
     this.pendingEnemyReplay = false;
     this.enemyRecordings = [];
     this.previousFeedbackState = null;
@@ -960,8 +1047,10 @@ export class BattleController {
       return;
     }
     this.initialized = true;
-    if (this.initialCheckpoint && !this.preserveStoredRecovery)
-      this.turnCheckpoint(!this.pendingEnemyReplay);
+    if (!this.preserveStoredRecovery) {
+      if (this.historyStart === "adopt") this.adoptCheckpoint();
+      else if (this.historyStart === "fresh") this.turnCheckpoint(!this.pendingEnemyReplay);
+    }
     if (!this.preserveStoredRecovery) this.persist(this.pendingEnemyReplay);
     this.publish({ renderBattle: false });
     if (this.pendingEnemyReplay) {

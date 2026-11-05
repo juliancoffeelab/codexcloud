@@ -17,6 +17,7 @@
   import TerrainPanel from "./ui/TerrainPanel.svelte";
   import GroundItemsPanel from "./ui/GroundItemsPanel.svelte";
   import SavedProgress from "./ui/SavedProgress.svelte";
+  import SaveFailure from "./ui/SaveFailure.svelte";
   let savedProgress: { open(): void };
   import SettingsDialog from "./ui/SettingsDialog.svelte";
   let { controller }: { controller: BattleController } = $props();
@@ -129,11 +130,6 @@
     onBriefing={() => (briefingExpanded = !briefingExpanded)}
   />
   <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
-  <div class="persistence-status" role="status">
-    <span>{$view.persistence}</span>
-    <button onclick={() => savedProgress.open()}>Saved progress</button>
-    {#if $view.saveError}<span role="alert">{$view.saveError}</span>{/if}
-  </div>
   <div class="battle-content">
     <CampaignPanel
       view={$view}
@@ -153,8 +149,25 @@
     </div>
   </div>
 </main>
-<SettingsDialog view={$view} {actions} bind:dialog={settingsDialog} onNewBattle={openMapPicker} />
+<SettingsDialog
+  view={$view}
+  {actions}
+  bind:dialog={settingsDialog}
+  onNewBattle={openMapPicker}
+  onSavedGames={() => {
+    settingsDialog?.close();
+    savedProgress.open();
+  }}
+/>
 <Dialogue view={$view} {actions} />
 <NewGameDialog bind:this={newGame} view={$view} {actions} />
 
 <SavedProgress bind:this={savedProgress} view={$view} {actions} />
+<SaveFailure
+  view={$view}
+  {actions}
+  onManage={() => {
+    settingsDialog?.close();
+    savedProgress.open();
+  }}
+/>

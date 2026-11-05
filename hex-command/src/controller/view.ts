@@ -30,6 +30,7 @@ export interface BattleView {
   readonly status: string;
   readonly persistence: string;
   readonly saveError: string | null;
+  readonly saveFailure?: import("../save/failure").SaveFailure | null;
   readonly artwork: Artwork;
   readonly sound: boolean;
   readonly opponent: OpponentSummary;
@@ -63,7 +64,6 @@ export interface BattleCommands {
   deleteSavedProgress(id: string): void;
   deleteSavedRun(id: string): void;
   pruneSavedRun(id: string): void;
-  retrySave(): void;
   error(error: unknown): void;
 }
 
@@ -74,7 +74,6 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
     deleteSavedProgress: controller.deleteSavedProgress.bind(controller),
     deleteSavedRun: controller.deleteSavedRun.bind(controller),
     pruneSavedRun: controller.pruneSavedRun.bind(controller),
-    retrySave: controller.retrySave.bind(controller),
     startCampaign: traceCommand("action.startCampaign", controller.startCampaign.bind(controller)),
     nextMission: traceCommand("action.nextMission", controller.nextMission.bind(controller)),
     retryMission: traceCommand("action.retryMission", controller.retryMission.bind(controller)),

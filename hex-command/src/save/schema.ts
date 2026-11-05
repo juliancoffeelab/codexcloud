@@ -3,7 +3,7 @@ import { validSetup, type SessionSetup } from "../game/setup";
 import type { SavedGame } from "../../rust/pkg/hex_command";
 
 /** Single version for browser persistence; native checkpoints are current data only. */
-export const SAVE_VERSION = 32;
+export const SAVE_VERSION = 33;
 export interface BattleSave {
   version: typeof SAVE_VERSION;
   checkpoint: SavedGame;
@@ -33,7 +33,7 @@ export function currentSave(value: unknown): BattleSave {
           (key) =>
             typeof (value.progress as { entry: Record<string, unknown> }).entry[key] === "string",
         ) ||
-        !["turn", "recovery"].includes(String(value.progress.entry.kind)) ||
+        !["turn", "recovery", "resume"].includes(String(value.progress.entry.kind)) ||
         typeof value.progress.entry.savedAt !== "number" ||
         typeof value.progress.entry.round !== "number" ||
         !Number.isSafeInteger(value.progress.entry.ordinal) ||

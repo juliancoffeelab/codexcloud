@@ -2168,17 +2168,3 @@ select {
     sans-serif;
   color: var(--muted);
 }
-
-.persistence-status {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-  padding-block: 0.25rem;
-  font-size: 0.85rem;
-}
-.persistence-status [role="alert"] {
-  flex-basis: 100%;
-  color: #f4bd91;
-}
