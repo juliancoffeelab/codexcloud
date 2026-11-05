@@ -21,7 +21,10 @@ An explicit deploy request enters this workflow immediately. Do not add
 implementation validation or repeat previous checks before invoking it.
 
 For an explicitly requested independent preview, use
-`node scripts/site-operation.mjs deploy --preview`. Plain `deploy` targets the main
+`node scripts/site-operation.mjs deploy --preview <PR-number>`. Each PR has its own
+stable Site and release cache; the operation provisions/reuses it automatically.
+The command publishes the current committed HEAD, not a GitHub branch selected by
+the number. Plain `deploy` targets the main
 Site. Preview configuration and saved releases are separate; never substitute the
 main Site when a preview is requested.
 
