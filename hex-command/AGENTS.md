@@ -25,8 +25,10 @@ Keep temporary data, experiments and diagnostics in ignored `tmp/`, outside
 tracked content. Tracked Markdown must contain permanent information; keep
 current-work tracking and diagnostics out of tracked Markdown files.
 
-Startup should be fast. Lazy-load what is possible. Loading failures must
-provide a way to diagnose the error and restart cleanly.
+Startup should be fast and show as much of final UI to the user as possible as
+early as possible, by lazy-loading unnecessary parts.
+The data should be prefetched, user must never wait for the data loading.
+Loading failures must provide a full backtrace and a way to restart cleanly.
 
 When the user interrupts ongoing work, stop that work and keep it paused. Address
 only the interruption and explicitly requested follow-up. Resume the earlier
