@@ -156,7 +156,13 @@
             "side": "player"
           }
         },
-        "optional": true
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0897-9650de66eb"]
+        }
       }
     },
     {
@@ -265,6 +271,12 @@
             "character": "lark",
             "side": "player"
           }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0923-ec307e92cf"]
         }
       }
     },

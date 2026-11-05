@@ -2,6 +2,7 @@
 import { readFileSync, writeFileSync, mkdirSync, renameSync, unlinkSync } from "node:fs";
 import { execFileSync, spawn } from "node:child_process";
 import { join } from "node:path";
+import { createHash } from "node:crypto";
 
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -26,11 +27,84 @@ function cachedReceipt(path) {
   }
 }
 
-function buildSource(cwd, sourceCommit, credential, message) {
+/** Stable, owner-private identity per source Site and PR; independent of branches/checkouts. */
+async function previewTarget(tools, cwd, primary, preview) {
+  const key = createHash("sha256").update(primary.project_id).digest("hex").slice(0, 8);
+  const slug = `hex-command-pr-${preview}-${key}`;
+  const description = `Hex Command preview for PR #${preview}; source Site ${primary.project_id}`;
+  const directory = join(
+    cwd,
+    ".cache",
+    "preview-sites",
+    primary.project_id,
+    `pr-${preview}`,
+    ".openai",
+  );
+  const manifestPath = join(directory, "hosting.json");
+  let manifest = cachedReceipt(manifestPath);
+  if (!manifest?.project_id) {
+    const find = async () => {
+      let cursor;
+      do {
+        const page = await native(tools, "mcp__codex_apps__sites_list_sites", {
+          role: "owner",
+          limit: 50,
+          ...(cursor ? { cursor } : {}),
+        });
+        const site = page.items.find((item) => item.slug === slug);
+        if (site) {
+          if (site.description !== description)
+            throw new Error("Preview slug belongs to a different Site");
+          return site;
+        }
+        cursor = page.cursor;
+      } while (cursor);
+    };
+    let site = await find();
+    mkdirSync(directory, { recursive: true });
+    if (!site) {
+      // This is a new local Site, separate from the main hosting manifest.
+      const { project_id, ...configuration } = primary;
+      writeFileSync(manifestPath, JSON.stringify(configuration));
+      try {
+        // Never blindly retry creation: a timeout/race may already have created it.
+        site = decode(
+          await tools.mcp__codex_apps__sites_create_site({
+            creation_intent: "user_requested",
+            slug,
+            title: `Hex Command · PR #${preview}`,
+            description,
+          }),
+        );
+      } catch (error) {
+        site = await find();
+        if (!site) throw error;
+      }
+    }
+    manifest = { ...primary, project_id: site.id };
+    const temporary = `${manifestPath}.${process.pid}`;
+    writeFileSync(temporary, JSON.stringify(manifest));
+    renameSync(temporary, manifestPath);
+  }
+  if (manifest.project_id === primary.project_id)
+    throw new Error("Preview must use a different Site from main");
+  return { project_id: manifest.project_id, slug };
+}
+
+function buildSource(cwd, sourceCommit, credential, message, preview, projectId) {
   return new Promise((resolve, reject) => {
     const child = spawn(
       "python3",
-      ["scripts/prepare-site.py", "--source-commit", sourceCommit, "--message", message],
+      [
+        "scripts/prepare-site.py",
+        "--source-commit",
+        sourceCommit,
+        "--message",
+        message,
+        ...(preview === undefined
+          ? []
+          : ["--preview", String(preview), "--preview-project-id", projectId]),
+      ],
       { cwd, stdio: ["pipe", "pipe", "pipe"] },
     );
     let output = "";
@@ -93,8 +167,18 @@ export async function prepareSite(tools, options, progress = () => {}) {
   const cwd = options.cwd;
   const git = (...args) => execFileSync("git", args, { cwd, encoding: "utf8" }).trim();
   const source_commit = options.source_commit ?? git("rev-parse", "HEAD");
-  const { project_id } = JSON.parse(git("show", `${source_commit}:./.openai/hosting.json`));
-  const cachePath = join(cwd, ".cache", "site-release.json");
+  const primary = JSON.parse(git("show", `${source_commit}:./.openai/hosting.json`));
+  const preview = options.preview;
+  if (preview !== undefined && (!Number.isSafeInteger(preview) || preview < 1))
+    throw new Error("Preview requires a positive PR number");
+  const target =
+    preview === undefined ? primary : await previewTarget(tools, cwd, primary, preview);
+  const { project_id } = target;
+  const cachePath = join(
+    cwd,
+    ".cache",
+    preview === undefined ? "site-release.json" : `site-release-pr-${preview}.json`,
+  );
   const stored = cachedReceipt(cachePath);
   const cached = stored?.project_id === project_id ? stored : undefined;
   const exact =
@@ -120,6 +204,8 @@ export async function prepareSite(tools, options, progress = () => {}) {
     if (siteResult.status === "fulfilled") site = siteResult.value;
     else throw siteResult.reason;
     if (credentialResult.status === "rejected") throw credentialResult.reason;
+    if (preview !== undefined && site.slug !== target.slug)
+      throw new Error("Cached preview identity does not match the requested PR");
     const live_url = site.current_live_url ?? site.expected_url ?? cached?.live_url;
     if (exact) return { ...cached, owner_private: ownerPrivate(site), live_url, reused: true };
     const credential = await credentialRequest;
@@ -136,7 +222,12 @@ export async function prepareSite(tools, options, progress = () => {}) {
       cwd,
       source_commit,
       credential,
-      options.message ?? "Prepare Hex Command release",
+      options.message ??
+        (preview === undefined
+          ? "Prepare Hex Command release"
+          : `Prepare Hex Command PR #${preview} preview`),
+      preview,
+      project_id,
     );
     if (prepared.project_id !== project_id || prepared.source_commit !== source_commit)
       throw new Error("Preparation returned a different source or Site");

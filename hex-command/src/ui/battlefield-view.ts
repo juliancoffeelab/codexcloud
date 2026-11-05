@@ -134,7 +134,7 @@ export function battlefieldTiles(
   const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
 
   const objectiveTiles = new Map<string, string[]>();
-  for (const status of game.objectives?.goals ?? []) {
+  for (const status of [...(game.objectives?.goals ?? []), ...(game.objectives?.optional ?? [])]) {
     if (!status.visible) continue;
     for (const tile of status.activeTiles) {
       const labels = objectiveTiles.get(tile) ?? [];

@@ -8,7 +8,22 @@ game root. This document owns the calling convention; the skill selects the mode
 - `deploy` resolves the exact `HEAD` release, reusing an exact saved version or
   preparing it when necessary, then deploys that version and returns the result.
 
-The module API is `runSiteOperation(tools, {mode, cwd, message?})`.
+The module API is `runSiteOperation(tools, {mode, cwd, message?, preview?})`.
+`preview` is a positive PR number (CLI `--preview 59`). Bare `--preview`, booleans,
+zero and invalid numbers fail without falling back to main. The selected number
+chooses a destination; the release still uses the current committed HEAD.
+
+Each PR has its own Site, release cache and build checkout. First use provisions
+an owner-private Site and immediately persists its opaque ID in an ignored local
+hosting manifest. A stable slug scoped to the main Site and PR allows another
+checkout to rediscover the same identity. Creation races/timeouts are reconciled
+through discovery rather than blindly creating another Site. Known identities
+are checked against the requested PR before any source push.
+
+Plain `prepare`/`deploy` continues to use the committed `.openai/hosting.json`.
+The old shared preview manifest is no longer used. Neither main nor other PRs'
+previews are updated by a numbered preview operation.
+
 `tools` supplies the enabled execution and native Sites functions by name. Internally,
 `prepareSite(tools, {cwd, message?})` returns a receipt with `project_id`,
 `version_id`, `source_commit`, `site_commit` and `owner_private` (plus
@@ -46,8 +61,9 @@ is distinct from deciding or polling deployment status, which the operation owns
 ```js
 const mode = "deploy"; // "prepare" for an unpublished release
 const cwd = "/workspace/codexcloud/hex-command";
+const preview = undefined; // a positive PR number, e.g. 59, for its independent preview
 let cell = await tools.exec_command({
-  cmd: `node scripts/site-operation.mjs ${mode}`,
+  cmd: `node scripts/site-operation.mjs ${mode}${preview === undefined ? "" : ` --preview ${preview}`}`,
   workdir: cwd,
   tty: true,
   yield_time_ms: 1000,

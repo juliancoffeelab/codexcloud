@@ -34,7 +34,8 @@
                     "defeat": {
                       "side": "enemy"
                     }
-                  }
+                  },
+                  "playerMarker": null
                 },
                 "actions": [
                   {

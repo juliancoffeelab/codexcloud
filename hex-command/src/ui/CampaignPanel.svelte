@@ -72,12 +72,6 @@
 </script>
 
 {#if campaign && definition && mission}
-  {#if !view.game.winner}{#each view.game.objectives?.notices ?? [] as notice}<p
-        class="recruit-hint"
-        role="status"
-      >
-        {notice}
-      </p>{/each}{/if}
   <section
     id="mission-overview"
     class="campaign-panel mission-overview"

@@ -66,7 +66,13 @@
             "side": "player"
           }
         },
-        "optional": true
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0892-f4d2ec09d8"]
+        }
       }
     },
     {
@@ -129,6 +135,12 @@
             "role": "leader",
             "side": "player"
           }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0098-b1326129be"]
         }
       }
     },

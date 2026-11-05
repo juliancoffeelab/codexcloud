@@ -20,7 +20,15 @@ deployment on their own.
 An explicit deploy request enters this workflow immediately. Do not add
 implementation validation or repeat previous checks before invoking it.
 
-Invoke `node scripts/site-operation.mjs deploy` through the exact
+For an explicitly requested independent preview, use
+`node scripts/site-operation.mjs deploy --preview <PR-number>`. Each PR has its own
+stable Site and release cache; the operation provisions/reuses it automatically.
+The command publishes the current committed HEAD, not a GitHub branch selected by
+the number. Plain `deploy` targets the main
+Site. Preview configuration and saved releases are separate; never substitute the
+main Site when a preview is requested.
+
+Invoke the selected command through the exact
 [operation transport](../publish/operations.md#code-mode-invocation).
 It resolves the exact committed release internally, reusing its saved version
 when available and building only when necessary. It passes that receipt directly

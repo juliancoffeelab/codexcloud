@@ -57,8 +57,7 @@
         {
           "defeat": "The Bellwarden's final toll seals the road. The company has run out of time."
         }
-      ],
-      "notice": "Leave the toll road by the end of turn 30."
+      ]
     },
     {
       "id": "village-contact",
@@ -146,14 +145,18 @@
         }
       ],
       "objective": {
-        "label": "Find shelter for the captives",
+        "label": "Find a safe foothold",
         "intent": {
           "approach": {
             "tile": "hex-0386-9dcf2ec127",
             "radius": 1,
             "side": "player"
           }
-        }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": null
       }
     },
     {
@@ -181,7 +184,11 @@
         "optional": false,
         "intent": {
           "capture": ["hex-0045-b0e58b1f93"]
-        }
+        },
+        "visibleWhen": {
+          "flag": "village-contact"
+        },
+        "playerMarker": null
       }
     },
     {
@@ -496,7 +503,11 @@
             "side": "player",
             "radius": 1
           }
-        }
+        },
+        "availableWhen": {
+          "flag": "village-contact"
+        },
+        "playerMarker": null
       }
     },
     {
@@ -512,14 +523,14 @@
               "dialogue": [
                 {
                   "portrait": "adept",
-                  "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it’s too late.",
+                  "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it’s too late. We must leave this road by the end of turn 30.",
                   "character": "oren"
                 }
               ],
               "alternative": [
                 {
                   "portrait": "swordsman",
-                  "text": "They’re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays—we have to reach them while they’re still alive.",
+                  "text": "They’re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays—we have to reach them while they’re still alive. We must leave this road by the end of turn 30.",
                   "character": "nera"
                 }
               ]
@@ -1029,7 +1040,11 @@
         },
         "visibleWhen": {
           "flag": "prisoners-freed"
-        }
+        },
+        "availableWhen": {
+          "flag": "prisoners-freed"
+        },
+        "playerMarker": null
       }
     },
     {
@@ -1107,8 +1122,12 @@
           }
         },
         "visibleWhen": {
+          "flag": "prisoners-freed"
+        },
+        "availableWhen": {
           "flag": "village-safe"
-        }
+        },
+        "playerMarker": null
       }
     },
     {
@@ -1216,7 +1235,11 @@
         },
         "visibleWhen": {
           "flag": "village-safe"
-        }
+        },
+        "availableWhen": {
+          "flag": "village-safe"
+        },
+        "playerMarker": null
       }
     },
     {
@@ -1236,7 +1259,7 @@
           ]
         },
         {
-          "log": "The bell sounds in the valley. Leave the toll road by the end of turn 30."
+          "log": "The bell sounds in the valley."
         },
         {
           "setFlag": "first-bell-toll"

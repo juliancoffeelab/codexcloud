@@ -38,7 +38,7 @@ def read_credential():
     return credential
 
 
-def prepare(credential, message, source_commit=None):
+def prepare(credential, message, source_commit=None, preview=None, preview_project_id=None):
     repo = Path(command(["git", "rev-parse", "--show-toplevel"]))
     prefix = ROOT.relative_to(repo).as_posix()
     # Implementation owns committing/pushing required changes. Publish HEAD;
@@ -46,6 +46,12 @@ def prepare(credential, message, source_commit=None):
     # input to this release. Never stage or commit it as a deployment side effect.
     source_commit = source_commit or command(["git", "rev-parse", "HEAD"])
     hosting = json.loads(command(["git", "show", f"{source_commit}:./.openai/hosting.json"]))
+    if preview is not None:
+        if preview < 1 or not preview_project_id or preview_project_id == hosting["project_id"]:
+            raise ValueError("Preview requires a positive PR number and an independent resolved Site")
+        hosting["project_id"] = preview_project_id
+    elif preview_project_id is not None:
+        raise ValueError("A preview Site cannot override a main deployment")
 
     # The credential never enters an argument, file or log.
     environment = os.environ.copy()
@@ -60,16 +66,26 @@ def prepare(credential, message, source_commit=None):
         })
     checkout = ROOT / ".cache/sites" / hosting["project_id"]
     step("Synchronize Site source")
+    # Newly registered Sites have an empty repository, without a branch to clone.
+    empty_remote = not command(["git", "ls-remote", "--heads", credential["remote_url"]],
+                               env=environment)
     if checkout.exists():
         command(["git", "remote", "set-url", "origin", credential["remote_url"]], cwd=checkout)
-        command(["git", "fetch", "origin", credential["branch"]], cwd=checkout, env=environment)
-        command(["git", "-c", "core.hooksPath=/dev/null", "checkout", "--force", "-B",
-                 credential["branch"], "FETCH_HEAD"], cwd=checkout)
+        if empty_remote:
+            command(["git", "symbolic-ref", "HEAD", "refs/heads/" + credential["branch"]], cwd=checkout)
+        else:
+            command(["git", "fetch", "origin", credential["branch"]], cwd=checkout, env=environment)
+            command(["git", "-c", "core.hooksPath=/dev/null", "checkout", "--force", "-B",
+                     credential["branch"], "FETCH_HEAD"], cwd=checkout)
         command(["git", "clean", "-fd"], cwd=checkout)
     else:
         checkout.parent.mkdir(parents=True, exist_ok=True)
-        command(["git", "-c", "core.hooksPath=/dev/null", "clone", "--single-branch", "--branch", credential["branch"],
-                 credential["remote_url"], str(checkout)], env=environment)
+        if empty_remote:
+            command(["git", "init", "--initial-branch", credential["branch"], str(checkout)])
+            command(["git", "remote", "add", "origin", credential["remote_url"]], cwd=checkout)
+        else:
+            command(["git", "-c", "core.hooksPath=/dev/null", "clone", "--single-branch", "--branch", credential["branch"],
+                     credential["remote_url"], str(checkout)], env=environment)
     manifest_path = checkout / ".openai/hosting.json"
     tree = source_commit if prefix == "." else f"{source_commit}:{prefix}"
     # Copy only changed source; retain ignored build caches and source mtimes.
@@ -151,8 +167,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--message", default="Prepare Hex Command release")
     parser.add_argument("--source-commit", help="Exact implementation commit pinned by the operation")
+    parser.add_argument("--preview", type=int, help="Pull request preview number")
+    parser.add_argument("--preview-project-id", help="Exact Site identity resolved by the operation")
     args = parser.parse_args()
-    result = prepare(read_credential(), args.message, args.source_commit)
+    result = prepare(read_credential(), args.message, args.source_commit, args.preview, args.preview_project_id)
     print("SITE_PACKAGE: " + json.dumps(result), flush=True)
 
 

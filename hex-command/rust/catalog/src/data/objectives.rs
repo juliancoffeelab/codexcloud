@@ -63,6 +63,8 @@ pub struct ObjectiveStatus {
     #[serde(rename = "activeTiles")]
     pub active_tiles: Vec<String>,
     pub visible: bool,
+    pub available: bool,
+    pub achieved: bool,
     pub progress: Progress,
     pub failed: bool,
 }
@@ -73,9 +75,6 @@ pub struct ObjectiveStatus {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct CampaignObjectives {
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub notices: Vec<String>,
     pub goals: Vec<ObjectiveStatus>,
     pub optional: Vec<ObjectiveStatus>,
     pub survival: Vec<ObjectiveStatus>,

@@ -1,0 +1,345 @@
+{
+  "tide-wreck": [
+    {
+      "event": "ledger",
+      "id": "ledger",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-1",
+      "id": "goal-1",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "tide-sluice": [
+    {
+      "event": "boat",
+      "id": "boat",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-0",
+      "id": "goal-0",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-1",
+      "id": "goal-1",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "tide-nets": [
+    {
+      "event": "nets",
+      "id": "nets",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-0",
+      "id": "goal-0",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-1",
+      "id": "goal-1",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "lantern-ferry": [
+    {
+      "event": "contact-route-scout",
+      "id": "contact-route-scout",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "contact-western-scout",
+      "id": "contact-western-scout",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "contact-northern-scout",
+      "id": "contact-northern-scout",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "quarry-bear",
+      "id": "quarry-bear",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "house-visit",
+      "id": "house-visit",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "ford-shout",
+      "id": "ford-shout",
+      "visibleWhen": {
+        "not": {
+          "flag": "ferryman-dead"
+        }
+      }
+    },
+    {
+      "event": "villages-secured",
+      "id": "villages-secured",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "spiders-cleared",
+      "id": "spiders-cleared",
+      "visibleWhen": {
+        "flag": "first-spiders"
+      }
+    }
+  ],
+  "lantern-bell": [
+    {
+      "event": "fog-cleared",
+      "id": "fog-cleared",
+      "visibleWhen": {
+        "any": [
+          {
+            "flag": "monastery-lead"
+          },
+          {
+            "flag": "monastery-start"
+          }
+        ]
+      }
+    },
+    {
+      "event": "northern-freed",
+      "id": "northern-freed",
+      "visibleWhen": {
+        "flag": "northern-sighted"
+      }
+    },
+    {
+      "event": "eastern-freed",
+      "id": "eastern-freed",
+      "visibleWhen": {
+        "flag": "eastern-sighted"
+      }
+    },
+    {
+      "event": "southern-freed",
+      "id": "southern-freed",
+      "visibleWhen": {
+        "flag": "southern-sighted"
+      }
+    },
+    {
+      "event": "bell-silenced",
+      "id": "bell-silenced",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "lantern-villages": [
+    {
+      "event": "village-contact",
+      "id": "village-contact",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "foothold-established",
+      "id": "foothold-established",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "prisoners-freed",
+      "id": "prisoners-freed",
+      "visibleWhen": {
+        "flag": "village-contact"
+      }
+    },
+    {
+      "event": "village-safe",
+      "id": "village-safe",
+      "visibleWhen": {
+        "flag": "prisoners-freed"
+      }
+    },
+    {
+      "event": "eastern-departure",
+      "id": "eastern-departure",
+      "visibleWhen": {
+        "flag": "village-safe"
+      }
+    },
+    {
+      "event": "road-cleared",
+      "id": "road-cleared",
+      "visibleWhen": {
+        "flag": "village-safe"
+      }
+    }
+  ],
+  "green-border": [
+    {
+      "event": "lost-tools",
+      "id": "lost-tools",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-0",
+      "id": "goal-0",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "green-pact": [
+    {
+      "event": "old-trail",
+      "id": "old-trail",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-0",
+      "id": "goal-0",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-1",
+      "id": "goal-1",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "green-vigil": [
+    {
+      "event": "owl-cache",
+      "id": "owl-cache",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-0",
+      "id": "goal-0",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "mirror-night": [
+    {
+      "event": "rival-defeated",
+      "id": "rival-defeated",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "ashen-refuge": [
+    {
+      "event": "medicine",
+      "id": "medicine",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "refuge-war",
+      "id": "refuge-war",
+      "visibleWhen": {
+        "flag": "peace-lost"
+      }
+    },
+    {
+      "event": "refuge-peace",
+      "id": "refuge-peace",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "ashen-quarry": [
+    {
+      "event": "ledger",
+      "id": "ledger",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-0",
+      "id": "goal-0",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ],
+  "ashen-dawn": [
+    {
+      "event": "names",
+      "id": "names",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "sealed-hex-0941-278b487380",
+      "id": "sealed-hex-0941-278b487380",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "sealed-hex-0957-c94afbbfa1",
+      "id": "sealed-hex-0957-c94afbbfa1",
+      "visibleWhen": {
+        "all": []
+      }
+    },
+    {
+      "event": "goal-1",
+      "id": "goal-1",
+      "visibleWhen": {
+        "all": []
+      }
+    }
+  ]
+}

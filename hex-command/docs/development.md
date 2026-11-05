@@ -394,31 +394,52 @@ Rust owns item effects and pickup/drop rules.
 
 ## Objective display
 
-Rust inspection publishes required, optional and survival objective status.
-Completed objectives retain their check marks after their deadlines. An unfinished
-event objective fails when its exclusive round limit has passed, a cancelling
-event has completed, or a required predecessor has become unavailable. Unfinished
-objectives also fail when the chapter ends. Survival objectives distinguish living
-or safely evacuated participants from casualties. The frontend renders pending
-objectives with a dash, completed objectives with a green check, and failed
-objectives with a red cross and an accessible failure label. These are derived
-query results, not additional save fields.
+Rust inspection publishes required, optional and survival objective status. Saved
+`completed` IDs record permanent achievement history, published as `achieved`.
+By default this history also completes an achievement objective. An ongoing
+requirement instead authors `satisfiedWhen`, a pure current-state predicate;
+`progress.done`, progress counts and markers then reflect current satisfaction,
+not past achievement. Losing ownership or leaving a required destination can make
+it unmet again without erasing history. Events use `{"objectiveSatisfied":"id"}`
+to reference that exact rule for victory and completion. Unknown or cyclic
+references fail catalog loading. Satisfaction is recomputed from the resolved
+checkpoint, not saved as another cache or reconstructed from event retirement.
 
-Mission objective documents may also declare `loseConditions`, each with a
-`label`, shared `condition` and defeat `message`. These conditions are evaluated
-after actions and at turn boundaries and appear in the survival objectives.
-For a chapter playable through round 30, use `{"kind":"round","round":31}`:
-the loss occurs when round 31 begins, while an already completed victory remains
-final. These rules are independent of the simulator's unresolved-round cap and
-do not supply deadline hints or urgency scoring to AI planners.
+A remembered event with an objective records achievement when it fires;
+`completeObjective` and `failObjective` can address another task by ID. Explicit
+completion does not retire another event or weaken its victory requirements.
+An ongoing task may subsequently fail while retaining its achievement history;
+a completed permanent achievement cannot be downgraded by a later failure.
 
-Objectives may use `visibleWhen` with the shared Rust condition format. Hidden
-objectives remain victory requirements, but are omitted from the briefing and map
-markers until revealed; campaign planning also respects that discovery gate.
-`hasUnits` tests for an existing live unit by side and optional name/type without
-requiring a separate proximity visit. Encounter events can share their durable
-marker across dialogue, pending spawns, lights, group activation and objective
-visibility. Keep terrain can be claimed by moving onto it.
+Every objective explicitly authors `visibleWhen`. Revelation persists even if
+its original predicate ceases to match. `availableWhen` additionally controls
+current availability; completed achievements and failed tasks have no remaining
+planning work. Ongoing requirements remain available while satisfied so guard
+duties can continue and lost ownership can become actionable again.
+Both availability and `satisfiedWhen` accept state predicates
+only: use flags, ownership, occupancy or `turnAtLeast`, not tick-only `turn`,
+`killed`, `left`, chapter-entry signals, timed counters, or path traversal.
+Proximity/occupancy state queries must use `through: false`.
+
+Campaign runtime alone evaluates those conditions. Campaigner's capability exposes
+only revealed, available objectives as resolved intent, selectors, destinations
+and current satisfaction. Recruitment, transition-sensitive orders, territory,
+terminal heuristics and ordinary targets consume this same permitted view.
+It exposes no raw mission, scripts, predicates or full campaign catalog. Runtime
+also resolves enemy-group activation/hold orders and arrival facts. An aggregate
+readiness flag prevents terminal shortcuts when requirements are still undisclosed.
+
+`playerMarker` is optional and defaults to no outline. Use `{"tiles":["tile-id"]}`
+or `{"units":{"character":"character-id"}}`. Runtime filters both kinds through
+current fog; `visibleInFog: true` is an explicit opt-in for a deliberately revealed
+marker. Markers are suppressed for unavailable, failed or currently satisfied
+objectives. AI intent and approach radii never generate markers. Both required
+and optional tasks use the same policy.
+
+Deadlines remain authored defeat events. Rust does not infer public schedules or
+format countdowns from event conditions. Dialogue, briefing and hints disclose
+urgency only at their authored discovery points. The briefing stays collapsible;
+no separate inferred notice is displayed outside it.
 
 Rituals can declare a conditional `opening: {when, sites}`. At chapter entry, the
 normal ritual effects consume only those source tiles, preserving their spent

@@ -43,6 +43,8 @@ impl Game<'_> {
         let survival = |label: String, alive: bool| ObjectiveStatus {
             active_tiles: vec![],
             visible: true,
+            available: true,
+            achieved: self.winner.is_some() && alive,
             progress: Progress {
                 label,
                 current: u32::from(self.winner.is_some() && alive),
@@ -67,7 +69,6 @@ impl Game<'_> {
                 alive,
             ));
         }
-        let notices = self.script_notices();
         let status = |optional| {
             mission
                 .scripted_events
@@ -77,7 +78,6 @@ impl Game<'_> {
                 .collect()
         };
         Some(CampaignObjectives {
-            notices,
             goals: status(false),
             optional: status(true),
             survival: protected,

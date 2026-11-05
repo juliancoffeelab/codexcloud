@@ -190,6 +190,7 @@ pub enum ConditionalHint {
 )]
 #[serde(rename_all = "camelCase")]
 pub enum When {
+    Always(bool),
     All(Vec<When>),
     Any(Vec<When>),
     Not(Box<When>),
@@ -201,6 +202,7 @@ pub enum When {
     TurnAtLeast(u32),
     ChapterStarted(bool),
     Flag(String),
+    ObjectiveSatisfied(String),
     HasUnits(UnitMatch),
     NoUnits(UnitMatch),
     VisibleUnits(UnitMatch),
@@ -494,6 +496,7 @@ pub enum EventAction {
     Defeat(String),
     Log(String),
     FailObjective(String),
+    CompleteObjective(String),
     Recruits(RecruitmentUnlock),
 }
 
@@ -515,6 +518,23 @@ pub enum EventIntent {
     Defeat(UnitMatch),
 }
 
+/// Explicit player-facing destinations, independent of AI intent and interaction radius.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct PlayerMarker {
+    #[serde(default)]
+    pub tiles: Vec<String>,
+    #[serde(default)]
+    pub units: Option<UnitMatch>,
+    #[serde(default)]
+    pub visible_in_fog: bool,
+}
+
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(
@@ -532,7 +552,14 @@ pub struct EventObjective {
     pub optional: bool,
     #[serde(default, rename = "visibleWhen")]
     pub visible_when: Option<When>,
+    #[serde(default, rename = "availableWhen")]
+    pub available_when: Option<When>,
+    /// None is a permanent achievement; Some is a live requirement until victory.
+    #[serde(default, rename = "satisfiedWhen")]
+    pub satisfied_when: Option<When>,
     pub intent: EventIntent,
+    #[serde(default, rename = "playerMarker")]
+    pub player_marker: Option<PlayerMarker>,
 }
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -545,8 +572,6 @@ pub struct EventObjective {
 pub struct ScriptEvent {
     pub id: String,
     pub when: When,
-    #[serde(default)]
-    pub notice: Option<String>,
     #[serde(default = "yes")]
     pub remembers: bool,
     #[serde(default)]
@@ -617,6 +642,8 @@ pub struct EventState {
     pub active_mask: Vec<bool>,
     #[serde(default)]
     pub failed: Vec<String>,
+    pub completed: Vec<String>,
+    pub revealed: Vec<String>,
     pub recruitment: std::collections::BTreeMap<String, Vec<FactionRecruit>>,
     pub active: Vec<String>,
     pub holds: Vec<EventHold>,
@@ -657,6 +684,8 @@ impl When {
         match self {
             Self::All(v) | Self::Any(v) => v.iter().all(Self::state_only),
             Self::Not(v) => v.state_only(),
+            Self::Stand(v) => !v.through,
+            Self::Proximity(v) => !v.through,
             Self::Own(v) => v.turns.is_none() && v.when.as_ref().is_none_or(|w| w.state_only()),
             Self::Held(_)
             | Self::Killed(_)
@@ -664,6 +693,29 @@ impl When {
             | Self::Turn(_)
             | Self::ChapterStarted(_) => false,
             _ => true,
+        }
+    }
+
+    pub fn visit_objective_refs(&self, visit: &mut impl FnMut(&str)) {
+        match self {
+            Self::ObjectiveSatisfied(id) => visit(id),
+            Self::All(values) | Self::Any(values) => {
+                for value in values {
+                    value.visit_objective_refs(visit);
+                }
+            }
+            Self::Not(value) => value.visit_objective_refs(visit),
+            Self::Own(value) => {
+                if let Some(when) = &value.when {
+                    when.visit_objective_refs(visit);
+                }
+            }
+            Self::Held(value) => {
+                if let Some(when) = &value.when {
+                    when.visit_objective_refs(visit);
+                }
+            }
+            _ => {}
         }
     }
 
@@ -761,6 +813,8 @@ impl EventState {
             active_indices: (0..events.len()).collect(),
             active_mask: vec![true; events.len()],
             failed: vec![],
+            completed: vec![],
+            revealed: vec![],
             recruitment: Default::default(),
             active: events.iter().map(|e| e.id.clone()).collect(),
             holds: vec![],
@@ -881,7 +935,7 @@ impl ScriptEvent {
                         faction(id)?;
                     }
                 }
-                When::Flag(id) => identifier(id, path)?,
+                When::Flag(id) | When::ObjectiveSatisfied(id) => identifier(id, path)?,
                 When::ChapterStarted(false) => {
                     return Err(ContentError::new(
                         path,
@@ -1026,8 +1080,38 @@ impl ScriptEvent {
                     "objectives require a label and a remembered event".into(),
                 ));
             }
-            if let Some(c) = &o.visible_when {
+            if o.visible_when.is_none() {
+                return Err(fail("objectives require an explicit visibleWhen".into()));
+            }
+            if let Some(c) = &o.available_when {
+                if !c.state_only() {
+                    return Err(fail(
+                        "objective availability requires state predicates".into(),
+                    ));
+                }
                 when(c, &tile, &faction, path)?;
+            }
+            if let Some(c) = &o.visible_when {
+                if !c.state_only() {
+                    return Err(fail("objective reveal requires state predicates".into()));
+                }
+                when(c, &tile, &faction, path)?;
+            }
+            if let Some(c) = &o.satisfied_when {
+                if !c.state_only() {
+                    return Err(fail(
+                        "objective satisfaction requires state predicates".into(),
+                    ));
+                }
+                when(c, &tile, &faction, path)?;
+            }
+            if let Some(marker) = &o.player_marker {
+                if marker.tiles.is_empty() == marker.units.is_none() {
+                    return Err(fail("player marker needs either tiles or units".into()));
+                }
+                for id in &marker.tiles {
+                    tile(id)?;
+                }
             }
             match &o.intent {
                 EventIntent::Hold(v) => {
@@ -1114,7 +1198,16 @@ impl ScriptEvent {
         conditions(&self.when, &mut out);
         actions(&self.actions, &mut out);
         if let Some(o) = &self.objective {
+            if let Some(w) = &o.available_when {
+                conditions(w, &mut out);
+            }
             if let Some(w) = &o.visible_when {
+                conditions(w, &mut out);
+            }
+            if let Some(v) = o.player_marker.as_ref().and_then(|m| m.units.as_ref()) {
+                out.push(v);
+            }
+            if let Some(w) = &o.satisfied_when {
                 conditions(w, &mut out);
             }
             if let Some(v) = &o.preserve_lives {

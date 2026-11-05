@@ -164,6 +164,8 @@ mod tests {
             scripts.active.retain(|id| id != "refuge-peace");
             scripts.failed.push("refuge-peace".into());
         });
+        // Let campaign runtime reveal the escalation objective before planning.
+        game.begin_turn(Side::Player);
         let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
         let required = mission
             .objectives(Side::Player)

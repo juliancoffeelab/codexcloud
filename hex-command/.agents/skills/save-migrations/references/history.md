@@ -287,3 +287,16 @@ mode names become `diplomatic` and `unrestricted`. Current-stage deaths are
 removed from the incoming companion checkpoint so retry restores that chapter's
 starting company. Completed objectives stay complete; impossible active objectives
 receive explicit failure state. Units, health, positions and treasury are preserved.
+
+## Version 31: objective history
+
+Version 30 derived objective completion from event retirement and visibility from
+live conditions. The frozen chapter recipes in `objectives-v30.json` convert those
+facts once into completed and revealed objective IDs. Existing failed IDs remain
+unchanged. Current runtime saves own these facts independently of event activity.
+
+Version 31 completed IDs retain achievement history. Ongoing objective satisfaction
+is a runtime query over the restored world, shared with victory predicates; it is
+not another saved field and does not require a format conversion. Restoring a
+previously captured but currently lost fort preserves history without satisfying
+the ownership requirement.

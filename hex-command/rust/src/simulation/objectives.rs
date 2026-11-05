@@ -4,8 +4,7 @@ pub(super) fn player_goals(game: &Game<'_>, route: &str) -> Option<Vec<Objective
     if game.turn() != Side::Player {
         return None;
     }
-    let authored = game.campaign_view();
-    let campaign = authored.campaign()?;
+    let campaign = game.campaign_state()?;
     let plan = game
         .catalogue()
         .campaign_defaults
@@ -17,7 +16,7 @@ pub(super) fn player_goals(game: &Game<'_>, route: &str) -> Option<Vec<Objective
     if !plan
         .ignore_optional_when
         .as_ref()
-        .is_some_and(|condition| authored.event_condition_met(condition))
+        .is_some_and(|condition| game.event_condition_met(condition))
     {
         return None;
     }

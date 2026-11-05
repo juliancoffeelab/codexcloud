@@ -380,7 +380,7 @@ fn phase(
             diplomacy,
         );
         let composition = selected_tactic.composition();
-        if !composition.campaign.supports_campaign() && game.campaign_view().campaign().is_some() {
+        if !composition.campaign.supports_campaign() && game.campaign_state().is_some() {
             return Err(CommandError::BattleOnlyPolicy.into());
         }
         game.set_active_faction(faction);
@@ -658,8 +658,7 @@ pub fn run_campaign(
                 .escalation_flags
                 .get(game.map_id())
                 .is_some_and(|flag| {
-                    game.campaign_view()
-                        .campaign()
+                    game.campaign_state()
                         .as_ref()
                         .is_some_and(|c| c.chosen(flag))
                 }),
@@ -673,8 +672,7 @@ pub fn run_campaign(
         });
         if game.winner() != Some(Side::Player)
             || game
-                .campaign_view()
-                .campaign()
+                .campaign_state()
                 .as_ref()
                 .ok_or("Campaign state missing")?
                 .completed
@@ -686,8 +684,7 @@ pub fn run_campaign(
     Ok(CampaignResult {
         config,
         completed: game
-            .campaign_view()
-            .campaign()
+            .campaign_state()
             .as_ref()
             .ok_or("Campaign state missing")?
             .completed,

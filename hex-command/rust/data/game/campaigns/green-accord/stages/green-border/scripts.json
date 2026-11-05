@@ -126,30 +126,19 @@
             "tile": "hex-0898-eed2a38c9d",
             "side": "player"
           }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0898-eed2a38c9d"]
         }
       }
     },
     {
       "id": "goal-0",
       "when": {
-        "all": [
-          {
-            "all": [
-              {
-                "own": {
-                  "tile": "hex-0952-a980626eda",
-                  "faction": "player"
-                }
-              },
-              {
-                "own": {
-                  "tile": "hex-0956-1372406dd4",
-                  "faction": "player"
-                }
-              }
-            ]
-          }
-        ]
+        "objectiveSatisfied": "goal-0"
       },
       "actions": [
         {
@@ -160,6 +149,28 @@
         "label": "Capture both logging camps",
         "intent": {
           "capture": ["hex-0952-a980626eda", "hex-0956-1372406dd4"]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0952-a980626eda", "hex-0956-1372406dd4"]
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "owner": {
+                "tile": "hex-0952-a980626eda",
+                "faction": "player"
+              }
+            },
+            {
+              "owner": {
+                "tile": "hex-0956-1372406dd4",
+                "faction": "player"
+              }
+            }
+          ]
         }
       }
     },
@@ -168,16 +179,23 @@
       "when": {
         "all": [
           {
-            "flag": "green-border-goal-0"
+            "all": [
+              {
+                "flag": "green-border-goal-0"
+              },
+              {
+                "flag": "lost-tools"
+              },
+              {
+                "hasUnits": {
+                  "role": "leader",
+                  "side": "player"
+                }
+              }
+            ]
           },
           {
-            "flag": "lost-tools"
-          },
-          {
-            "hasUnits": {
-              "role": "leader",
-              "side": "player"
-            }
+            "objectiveSatisfied": "goal-0"
           }
         ]
       },
