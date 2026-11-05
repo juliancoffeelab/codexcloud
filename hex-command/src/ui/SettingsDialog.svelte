@@ -137,11 +137,12 @@
   <details class="panel" id="battle-debug">
     <summary>Debug tools</summary>
     <p>
-      Download the current battle and the last five enemy turns to help investigate AI behavior.
+      Download the current battle, the last five enemy turns, and saved progress from this browser
+      to help investigate issues.
     </p>
     <p>
-      Turn history starts when you open the game and clears when you reload or change missions. The
-      report includes enemies hidden by fog.
+      Enemy-turn recordings start when you open the game and clear when you reload or change
+      missions. The report includes all saved runs and enemies hidden by fog.
     </p>
     <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
     <h3>Performance trace</h3>

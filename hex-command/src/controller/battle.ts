@@ -9,6 +9,7 @@ import { createMoveUndo } from "../game/undo";
 import { loadBattle, restoreBattleText } from "../save/load";
 import { serializeBattle } from "../save/write";
 import { storeSave } from "../save/storage";
+import { captureBrowserSaves } from "../save/debug";
 import {
   addTurn,
   describeProgress,
@@ -194,6 +195,7 @@ export class BattleController {
       this.requireSession();
       const report = {
         format: "hex-command-debug",
+        // Original v1 checkpoint/enemyTurns fields remain compatible; diagnostics are additive.
         version: 1,
         createdAt: new Date().toISOString(),
         setup: this.#game.setup,
@@ -202,6 +204,21 @@ export class BattleController {
           ...turn,
           checkpoint: JSON.parse(checkpoint),
         })),
+        browserSaves: captureBrowserSaves(),
+        controller: {
+          progress: this.progress,
+          persistence: this.persistence,
+          saveError: this.saveError,
+          historyError: this.historyError,
+          pendingEnemy:
+            this.pendingEnemyReplay || (this.#game.turn === "enemy" && !this.#game.winner),
+          pendingEnemyReplay: this.pendingEnemyReplay,
+          pendingCheckpoint: this.pendingCheckpoint ?? null,
+          preserveStoredRecovery: this.preserveStoredRecovery,
+          initialCheckpoint: this.initialCheckpoint,
+          initialized: this.initialized,
+          sessionVersion: this.sessionVersion,
+        },
       };
       const url = URL.createObjectURL(
         new Blob([JSON.stringify(report)], { type: "application/json" }),
