@@ -83,9 +83,7 @@ test("Ordinary skirmish labels have no objective", async () => {
 // Sealed stones leave the map individually; territory that can be lost stays visible.
 test("Completed seal markers disappear while territory remains visible", async () => {
   const game = Game.startCampaign("ashen-oath", 2);
-  game.campaign!.scripts!.active = game.campaign!.scripts!.active.filter(
-    (id) => id !== "sealed-hex-0941-278b487380",
-  );
+  game.campaign!.scripts!.completed.push("sealed-hex-0941-278b487380");
   const tiles = battlefieldTiles(game.publishedView(), null, currentArtwork(), null);
   assert(
     !required(tiles.find((tile) => tile.id === "hex-0941-278b487380")).classes.includes(

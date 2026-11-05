@@ -157,6 +157,7 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
             }
             When::TurnAtLeast(turn) => self.round >= *turn,
             When::ChapterStarted(value) => self.event_opening == *value,
+            When::Always(value) => *value,
             When::Flag(id) => self.flags.is_some_and(|f| flag_is_set(f, id)),
             When::HasUnits(v) => self.units.iter().any(|u| self.script_unit_matches(v, u)),
             When::NoUnits(v) => {

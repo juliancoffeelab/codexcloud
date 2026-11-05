@@ -175,8 +175,32 @@
             "side": "player"
           }
         },
-        "optional": true
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0897-9650de66eb"]
+        }
       }
+    },
+    {
+      "id": "complete-goal-0",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": "hex-0955-5859c768ff",
+              "faction": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "completeObjective": "goal-0"
+        }
+      ]
     },
     {
       "id": "goal-0",
@@ -206,6 +230,12 @@
         "label": "Secure the fort beside the bridge",
         "intent": {
           "capture": ["hex-0955-5859c768ff"]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0955-5859c768ff"]
         }
       }
     },
@@ -222,6 +252,21 @@
         },
         {
           "defeat": "The escort cannot continue without its protected traveller."
+        }
+      ]
+    },
+    {
+      "id": "complete-goal-1",
+      "when": {
+        "stand": {
+          "tile": "hex-0130-cb5c0e2a48",
+          "character": "lark",
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "completeObjective": "goal-1"
         }
       ]
     },
@@ -257,6 +302,12 @@
             "character": "lark",
             "side": "player"
           }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0130-cb5c0e2a48"]
         }
       }
     },

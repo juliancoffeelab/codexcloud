@@ -67,7 +67,6 @@ impl Game<'_> {
                 alive,
             ));
         }
-        let notices = self.script_notices();
         let status = |optional| {
             mission
                 .scripted_events
@@ -77,7 +76,6 @@ impl Game<'_> {
                 .collect()
         };
         Some(CampaignObjectives {
-            notices,
             goals: status(false),
             optional: status(true),
             survival: protected,

@@ -345,7 +345,7 @@ impl CampaignBlock {
                         .as_deref()
                         .is_some_and(|s| s.active.contains(&event.id))
                         || objective
-                            .visible_when
+                            .available_when
                             .as_ref()
                             .is_some_and(|c| !game.script_condition(c))
                     {
@@ -590,7 +590,7 @@ impl MissionPolicy<'_, '_> {
             };
             if !state.active.contains(&event.id)
                 || objective
-                    .visible_when
+                    .available_when
                     .as_ref()
                     .is_some_and(|c| !self.script_condition(c))
             {
@@ -745,7 +745,7 @@ impl MissionPolicy<'_, '_> {
             .filter(|e| state.active.contains(&e.id))
             .filter_map(|e| e.objective.as_ref())
             .filter(|o| {
-                o.visible_when
+                o.available_when
                     .as_ref()
                     .is_none_or(|w| self.script_condition(w))
             })

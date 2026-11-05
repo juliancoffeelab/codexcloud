@@ -1,5 +1,6 @@
 //! Ordered, general event execution. Conditions inspect facts; actions create durable facts.
 use super::{Game, battle::Shared, event_queries::EventFacts, event_state::EventProgress};
+use crate::data::presentation::ConditionContext;
 use crate::data::*;
 use std::collections::HashSet;
 
@@ -128,6 +129,19 @@ impl Game<'_> {
             }
         }
     }
+    fn reveal_objectives(&self, state: &mut Shared<EventProgress>) {
+        let plan = state.plan();
+        let unrevealed = state.unrevealed();
+        for &index in unrevealed.iter() {
+            let objective = plan.scripted_events[index].objective.as_ref().unwrap();
+            if objective.visible_when.as_ref().is_some_and(|when| {
+                EventFacts::new(self).when_matches(when, Some(state), None, false, None)
+            }) {
+                state.reveal(index);
+            }
+        }
+    }
+
     fn release_event_spawns(&mut self, state: &mut Shared<EventProgress>) {
         if !state.pending.iter().any(|group| {
             group.units.iter().any(|member| {
@@ -363,7 +377,7 @@ impl Game<'_> {
                         .recruitment_mut()
                         .insert(spec.faction.clone(), spec.units.clone());
                 }
-                EventAction::FailObjective(id) => {
+                EventAction::FailObjective(id) | EventAction::CompleteObjective(id) => {
                     let (index, _) = self
                         .mission
                         .as_ref()
@@ -373,9 +387,15 @@ impl Game<'_> {
                         .enumerate()
                         .find(|(_, e)| e.objective.is_some() && e.objective_id() == id)
                         .expect("validated objective ID");
-                    if state.active_mask[index] && !state.failed.contains(id) {
-                        state.fail(id.clone());
-                        state.retire(index);
+                    if !state.completed.contains(id) && !state.failed.contains(id) {
+                        if matches!(action, EventAction::FailObjective(_)) {
+                            state.fail(id.clone());
+                        } else {
+                            state.complete(id.clone());
+                        }
+                        if matches!(action, EventAction::FailObjective(_)) {
+                            state.retire(index);
+                        }
                     }
                 }
                 EventAction::UnlockRecruits(spec) => {
@@ -459,6 +479,7 @@ impl Game<'_> {
         EventProgress::update_holds(&mut state, &EventFacts::new(self), tick);
         let mut fired = HashSet::new();
         loop {
+            self.reveal_objectives(&mut state);
             let mut changed = false;
             let active = state.scan_indices();
             for &index in active.iter() {
@@ -507,6 +528,12 @@ impl Game<'_> {
                             ..Default::default()
                         },
                     );
+                    if event.objective.is_some() {
+                        let id = event.objective_id();
+                        if !state.completed.iter().chain(&state.failed).any(|v| v == id) {
+                            state.complete(id.into());
+                        }
+                    }
                     changed = true;
                     if self.winner.is_some() || event.remembers {
                         break;
@@ -550,6 +577,7 @@ impl Game<'_> {
         for index in remembered {
             state.marks_mut()[index].light_remembered = true;
         }
+        self.reveal_objectives(&mut state);
         self.scripts = Some(state);
         self.event_departure = None;
         self.event_opening = false;
@@ -613,7 +641,7 @@ impl Game<'_> {
         let objective = event.objective.as_ref().unwrap();
         let state = self.scripts.as_deref().unwrap();
         let failed = state.failed.iter().any(|id| id == event.objective_id());
-        let done = !failed && !state.active.contains(&event.id);
+        let done = state.completed.iter().any(|id| id == event.objective_id());
         let (tiles, total) = match &objective.intent {
             EventIntent::Hold(v) => (vec![v.tile.clone()], v.turns),
             EventIntent::Escort(v) | EventIntent::GoTo(v) | EventIntent::Escape(v) => {
@@ -653,13 +681,26 @@ impl Game<'_> {
         } else {
             0
         };
-        let visible = objective
-            .visible_when
-            .as_ref()
-            .is_none_or(|c| self.script_condition(c));
+        let visible = state.revealed.iter().any(|id| id == event.objective_id());
+        // Markers are authored UI data, never inferred from AI movement or completion regions.
+        let markers = match &objective.player_marker {
+            Some(PlayerMarker::Tiles(tiles)) => tiles.clone(),
+            Some(PlayerMarker::Units(select)) => self
+                .units
+                .iter()
+                .filter(|unit| {
+                    self.script_unit_matches(select, unit)
+                        && self
+                            .condition_context()
+                            .visible_at(self.board.positions[unit.tile])
+                })
+                .map(|unit| self.board.ids[unit.tile].clone())
+                .collect(),
+            None => vec![],
+        };
         ObjectiveStatus {
             active_tiles: if !done && !failed && visible && self.winner.is_none() {
-                tiles.clone()
+                markers
             } else {
                 vec![]
             },
@@ -673,55 +714,6 @@ impl Game<'_> {
                 tiles,
             },
         }
-    }
-}
-
-impl Game<'_> {
-    fn next_script_turn(&self, condition: &When) -> Option<u32> {
-        match condition {
-            When::Turn(t) => (t.number() >= self.round).then_some(t.number()),
-            When::TurnAtLeast(t) => Some((*t).max(self.round)),
-            When::All(v) => {
-                let parts: Option<Vec<_>> = v.iter().map(|c| self.next_script_turn(c)).collect();
-                parts.and_then(|v| v.into_iter().max())
-            }
-            When::Any(v) => v.iter().filter_map(|c| self.next_script_turn(c)).min(),
-            When::ChapterStarted(_) => None,
-            other => self.script_condition(other).then_some(self.round),
-        }
-    }
-    pub(crate) fn script_notices(&self) -> Vec<String> {
-        let Some(state) = self.scripts.as_deref() else {
-            return vec![];
-        };
-        let mut upcoming = vec![];
-        let mut notices = vec![];
-        for event in &self.mission.as_ref().unwrap().scripted_events {
-            let Some(text) = &event.notice else { continue };
-            if !state.active.contains(&event.id) {
-                continue;
-            }
-            let Some(turn) = self.next_script_turn(&event.when) else {
-                continue;
-            };
-            if event
-                .actions
-                .iter()
-                .any(|a| matches!(a, EventAction::Defeat(_)))
-            {
-                notices.push(format!(
-                    "Turn {}/{} — {text}",
-                    self.round,
-                    turn.saturating_sub(1)
-                ));
-            } else {
-                upcoming.push((turn, text));
-            }
-        }
-        if let Some((turn, text)) = upcoming.into_iter().min_by_key(|v| v.0) {
-            notices.push(format!("Turn {turn}: {text}"));
-        }
-        notices
     }
 }
 
@@ -769,6 +761,22 @@ pub(super) fn validate_event_state(
         if !failed_ids.insert(id) || state.active.contains(&event.id) {
             return Err("invalid failed objective state".into());
         }
+    }
+    for ids in [&state.completed, &state.revealed] {
+        let mut seen = HashSet::new();
+        for id in ids {
+            if !seen.insert(id)
+                || !mission
+                    .scripted_events
+                    .iter()
+                    .any(|e| e.objective.is_some() && e.objective_id() == id)
+            {
+                return Err("invalid objective state".into());
+            }
+        }
+    }
+    if state.completed.iter().any(|id| state.failed.contains(id)) {
+        return Err("objective cannot be completed and failed".into());
     }
     let tiles: HashSet<_> = battle.tiles.iter().map(|t| t.id.as_str()).collect();
     let mut counters = HashSet::new();

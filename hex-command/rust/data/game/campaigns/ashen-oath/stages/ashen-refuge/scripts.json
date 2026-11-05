@@ -82,7 +82,13 @@
             "side": "player"
           }
         },
-        "optional": true
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0737-cb60354473"]
+        }
       }
     },
     {
@@ -210,7 +216,11 @@
         },
         "visibleWhen": {
           "flag": "peace-lost"
-        }
+        },
+        "availableWhen": {
+          "flag": "peace-lost"
+        },
+        "playerMarker": null
       }
     },
     {
@@ -291,7 +301,13 @@
             "turns": 6
           }
         },
-        "preserveLives": {}
+        "preserveLives": {},
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0891-b20a50ef8c"]
+        }
       }
     },
     {

@@ -92,8 +92,38 @@
             "side": "player"
           }
         },
-        "optional": true
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0414-7d6a56c9b3"]
+        }
       }
+    },
+    {
+      "id": "complete-goal-0",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": "hex-0973-079cfc7b3c",
+              "faction": "player"
+            }
+          },
+          {
+            "own": {
+              "tile": "hex-0988-17596734c1",
+              "faction": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "completeObjective": "goal-0"
+        }
+      ]
     },
     {
       "id": "goal-0",
@@ -133,6 +163,12 @@
         "label": "Control both sluice gates",
         "intent": {
           "capture": ["hex-0973-079cfc7b3c", "hex-0988-17596734c1"]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0973-079cfc7b3c", "hex-0988-17596734c1"]
         }
       }
     },
@@ -149,6 +185,21 @@
         },
         {
           "defeat": "The escort cannot continue without its protected traveller."
+        }
+      ]
+    },
+    {
+      "id": "complete-goal-1",
+      "when": {
+        "stand": {
+          "tile": "hex-1019-90a76d4969",
+          "character": "edda",
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "completeObjective": "goal-1"
         }
       ]
     },
@@ -194,6 +245,12 @@
             "character": "edda",
             "side": "player"
           }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-1019-90a76d4969"]
         }
       }
     },

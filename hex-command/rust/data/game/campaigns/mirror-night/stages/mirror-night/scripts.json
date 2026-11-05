@@ -48,7 +48,11 @@
           "defeat": {
             "character": "mirror-rival"
           }
-        }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": null
       },
       "actions": [
         {

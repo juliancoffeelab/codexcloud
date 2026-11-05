@@ -835,7 +835,6 @@ fn validate_speech(
     ScriptEvent {
         id: "speech-validation".into(),
         when: When::ChapterStarted(true),
-        notice: None,
         remembers: true,
         priority: 0,
         objective: None,
@@ -867,7 +866,6 @@ fn validate_character_references(
         let e = ScriptEvent {
             id: "story-condition".into(),
             when: w.clone(),
-            notice: None,
             remembers: true,
             priority: 0,
             objective: None,
@@ -1010,7 +1008,7 @@ fn validate_mission(
         .iter()
         .flat_map(ScriptEvent::actions_recursive)
     {
-        if let EventAction::FailObjective(id) = action {
+        if let EventAction::FailObjective(id) | EventAction::CompleteObjective(id) = action {
             if !ids.contains(id.as_str()) {
                 return Err(ContentError::new(path, format!("unknown objective {id}")));
             }
@@ -1026,7 +1024,6 @@ fn validate_mission(
         let check = ScriptEvent {
             id: "story-condition".into(),
             when: condition.clone(),
-            notice: None,
             remembers: true,
             priority: 0,
             objective: None,

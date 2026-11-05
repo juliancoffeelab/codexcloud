@@ -98,6 +98,12 @@
             "tile": "hex-0891-b20a50ef8c",
             "side": "player"
           }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0891-b20a50ef8c"]
         }
       }
     },
@@ -267,6 +273,12 @@
               "flag": "rescue"
             }
           }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0891-b20a50ef8c"]
         }
       }
     },

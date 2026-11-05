@@ -190,6 +190,7 @@ pub enum ConditionalHint {
 )]
 #[serde(rename_all = "camelCase")]
 pub enum When {
+    Always(bool),
     All(Vec<When>),
     Any(Vec<When>),
     Not(Box<When>),
@@ -494,6 +495,7 @@ pub enum EventAction {
     Defeat(String),
     Log(String),
     FailObjective(String),
+    CompleteObjective(String),
     Recruits(RecruitmentUnlock),
 }
 
@@ -515,6 +517,19 @@ pub enum EventIntent {
     Defeat(UnitMatch),
 }
 
+/// Explicit player-facing destinations, independent of AI intent and interaction radius.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub enum PlayerMarker {
+    Tiles(Vec<String>),
+    Units(UnitMatch),
+}
+
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(
@@ -532,7 +547,11 @@ pub struct EventObjective {
     pub optional: bool,
     #[serde(default, rename = "visibleWhen")]
     pub visible_when: Option<When>,
+    #[serde(default, rename = "availableWhen")]
+    pub available_when: Option<When>,
     pub intent: EventIntent,
+    #[serde(default, rename = "playerMarker")]
+    pub player_marker: Option<PlayerMarker>,
 }
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -545,8 +564,6 @@ pub struct EventObjective {
 pub struct ScriptEvent {
     pub id: String,
     pub when: When,
-    #[serde(default)]
-    pub notice: Option<String>,
     #[serde(default = "yes")]
     pub remembers: bool,
     #[serde(default)]
@@ -617,6 +634,8 @@ pub struct EventState {
     pub active_mask: Vec<bool>,
     #[serde(default)]
     pub failed: Vec<String>,
+    pub completed: Vec<String>,
+    pub revealed: Vec<String>,
     pub recruitment: std::collections::BTreeMap<String, Vec<FactionRecruit>>,
     pub active: Vec<String>,
     pub holds: Vec<EventHold>,
@@ -761,6 +780,8 @@ impl EventState {
             active_indices: (0..events.len()).collect(),
             active_mask: vec![true; events.len()],
             failed: vec![],
+            completed: vec![],
+            revealed: vec![],
             recruitment: Default::default(),
             active: events.iter().map(|e| e.id.clone()).collect(),
             holds: vec![],
@@ -1026,8 +1047,25 @@ impl ScriptEvent {
                     "objectives require a label and a remembered event".into(),
                 ));
             }
-            if let Some(c) = &o.visible_when {
+            if o.visible_when.is_none() {
+                return Err(fail("objectives require an explicit visibleWhen".into()));
+            }
+            if let Some(c) = &o.available_when {
                 when(c, &tile, &faction, path)?;
+            }
+            if let Some(c) = &o.visible_when {
+                if !c.state_only() {
+                    return Err(fail("objective reveal requires state predicates".into()));
+                }
+                when(c, &tile, &faction, path)?;
+            }
+            if let Some(PlayerMarker::Tiles(tiles)) = &o.player_marker {
+                if tiles.is_empty() {
+                    return Err(fail("player marker needs tiles".into()));
+                }
+                for id in tiles {
+                    tile(id)?;
+                }
             }
             match &o.intent {
                 EventIntent::Hold(v) => {
@@ -1114,8 +1152,14 @@ impl ScriptEvent {
         conditions(&self.when, &mut out);
         actions(&self.actions, &mut out);
         if let Some(o) = &self.objective {
+            if let Some(w) = &o.available_when {
+                conditions(w, &mut out);
+            }
             if let Some(w) = &o.visible_when {
                 conditions(w, &mut out);
+            }
+            if let Some(PlayerMarker::Units(v)) = &o.player_marker {
+                out.push(v);
             }
             if let Some(v) = &o.preserve_lives {
                 out.push(v);
