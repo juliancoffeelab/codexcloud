@@ -288,7 +288,7 @@
   bind:this={confirmation}
 >
   <h2 id="replace-title">Leave your current battle?</h2>
-  <p id="replace-description">Your unfinished battle will be lost.</p>
+  <p id="replace-description">Your current battle will remain available in Saved progress.</p>
   <div class="setup-actions">
     <button
       class="quiet"

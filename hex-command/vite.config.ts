@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import { terrainPrebuild } from "./scripts/terrain-prebuild";
+import { offlineBuild } from "./scripts/offline-build";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { fileURLToPath } from "node:url";
 
@@ -20,6 +21,7 @@ export default defineConfig({
     },
     svelte(),
     terrainPrebuild(),
+    offlineBuild(),
   ],
   build: { target: "es2022" },
 });
