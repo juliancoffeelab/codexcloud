@@ -89,7 +89,13 @@ export async function openHarness(options = {}) {
   });
   const evaluate = (fn, arg) => bounded(page.evaluate(fn, arg), "browser evaluation");
   const snapshot = () => evaluate(() => globalThis.__livePlay.controller.snapshot());
-  const entries = () => evaluate(() => globalThis.__livePlay.controller.savedProgress());
+  const entries = () =>
+    evaluate(() => {
+      const { controller } = globalThis.__livePlay;
+      if (typeof controller.savedProgress !== "function")
+        throw new Error("Saved-progress inspection is unavailable in this game revision");
+      return controller.savedProgress();
+    });
   const command = (name, args = []) =>
     evaluate(
       async ({ name, args }) => {
@@ -106,7 +112,8 @@ export async function openHarness(options = {}) {
       return {
         snapshot: controller.snapshot(),
         native: game().checkpoint(),
-        entries: controller.savedProgress(),
+        entries:
+          typeof controller.savedProgress === "function" ? controller.savedProgress() : null,
         storage: Object.fromEntries(
           Object.entries(localStorage).filter(([key]) => key.startsWith("hex-command")),
         ),

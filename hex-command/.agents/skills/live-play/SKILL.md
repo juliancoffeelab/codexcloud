@@ -28,8 +28,9 @@ can authorize this workflow; invoking the name alone still needs a gameplay scop
    captured enough evidence to identify the blocker.
 4. Inspect artifacts and distinguish campaign completion, AI defeat, application
    failure, harness failure and exhausted limits. For loading, compare full native
-   checkpoints (including seed), identities, historical entries and browser UI
-   before and after restoration/reload; a visible turn number alone is inadequate.
+   checkpoints (including seed), browser UI, and identities/historical entries
+   when supported before and after restoration/reload; a visible turn number alone
+   is inadequate.
    Report findings and validation limits. Fix application code only if the user
    authorized fixes. Keep current-run evidence under ignored `tmp/`.
 
@@ -73,7 +74,11 @@ presentation pauses (zero still yields); native planning and action computations
 run unchanged. Operation and total deadlines remain real wall-clock bounds.
 
 The harness exposes `snapshot`, `entries`, `command`, `evaluate`, `checkpoint`,
-`step`, `page` and `log`. Always close it in `finally`. An operation timeout does
+`step`, `page` and `log`. Campaign play works independently of saved-progress
+support. Checkpoint artifacts contain `entries: null` when that API is absent;
+calling `entries()` explicitly fails with an unsupported-feature error, so a
+loading probe cannot mistake unavailable history for an empty successful result.
+Always close it in `finally`. An operation timeout does
 not cancel an in-flight browser evaluation: capture available diagnostics and
 close the browser instead of continuing that session. Keep extensions read-only
 except for normal game commands and explicitly scoped storage fixtures/faults.
@@ -81,8 +86,8 @@ Use UI interactions for UI assertions and controller/engine inspection for state
 assertions. Record modified source adapters and their limits in the probe.
 
 Artifacts contain action decisions and revisions, terminal states, screenshots,
-full native checkpoints, progress metadata, console/page errors and isolated
-browser storage. Give each run a fresh directory so appended logs stay unambiguous.
+full native checkpoints, progress metadata when supported, console/page errors
+and isolated browser storage. Give each run a fresh directory so appended logs stay unambiguous.
 The total deadline closes the browser even if synchronous AI computation hangs;
 renderer failure may prevent a final screenshot. Preserve earlier checkpoints and
 logs in that case. A clean browser console and a returned snapshot alone do not
