@@ -36,6 +36,8 @@ implementation, checks, commits or deployment only when the user asks to continu
 
 # Skills
 
+- [live-play](.agents/skills/live-play/SKILL.md): Use only when the user explicitly authorizes live browser gameplay.
+
 - [testing](.agents/skills/testing/SKILL.md): Use for bug fixes, test changes and implementation validation.
 - [battlefield-contract](.agents/skills/battlefield-contract/SKILL.md): Use when changing unit artwork, terrain authoring, battlefield rendering or runtime game-data ownership.
 - [save-migrations](.agents/skills/save-migrations/SKILL.md): Use when changing or
