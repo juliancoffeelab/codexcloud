@@ -38,7 +38,7 @@ and an autosave without history identity. The last case records the available
 position as a distinct `resume` checkpoint before gameplay can overwrite recovery.
 It preserves the actual native checkpoint, seed, setup, and available undo; it does
 not reconstruct or label an unavailable historical opening. Migration to envelope
-version 33 adds this record kind without running historical gameplay. Already lost
+version 33 added this record kind without running historical gameplay. Already lost
 checkpoints cannot be recovered from a later save. Adoption points are retained by
 automatic pruning and remain manually deletable.
 
@@ -75,7 +75,7 @@ state or network-dependent code is part of local persistence today.
 
 ## Compatibility
 
-The battle envelope is version 33. The pure v32-to-v33 conversion extends the
+The battle envelope is version 34. The pure v32-to-v33 conversion extends the
 envelope for adopted positions without changing native game state. The v30-to-v31 conversion added optional
 progress metadata and move undo. The pure v31-to-v32 conversion preserves the
 battle and progress metadata while discarding the older full-world undo copies.
@@ -94,3 +94,11 @@ the changes between older undo entries and refreshes only the latest backward
 changes against current play, including any intervening dialogue changes. Undo
 uses native restoration before applying a prior state, preserving validation at
 both loading and execution.
+
+
+Version 34 integrates objective history from the independently developed objective
+branch. It preserves that branch’s already-recorded completed/revealed arrays,
+and converts saved-progress versions 31–33 with the frozen historical objective
+recipes. A partial objective-history shape is rejected. Conversion preserves
+progress identities and native facts and discards older undo; it never executes
+historical gameplay. This also applies when selecting an older historical save.

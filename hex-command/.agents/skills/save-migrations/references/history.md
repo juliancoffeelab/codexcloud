@@ -287,3 +287,40 @@ mode names become `diplomatic` and `unrestricted`. Current-stage deaths are
 removed from the incoming companion checkpoint so retry restores that chapter's
 starting company. Completed objectives stay complete; impossible active objectives
 receive explicit failure state. Units, health, positions and treasury are preserved.
+
+## Version 31 on the objective branch: objective history
+
+Version 30 derived objective completion from event retirement and visibility from
+live conditions. The frozen chapter recipes in `objectives-v30.json` convert those
+facts once into completed and revealed objective IDs. Existing failed IDs remain
+unchanged. Current runtime saves own these facts independently of event activity.
+
+Version 31 completed IDs retain achievement history. Ongoing objective satisfaction
+is a runtime query over the restored world, shared with victory predicates; it is
+not another saved field and does not require a format conversion. Restoring a
+previously captured but currently lost fort preserves history without satisfying
+the ownership requirement.
+
+## Versions 31–33 on the saved-progress branch
+
+This separately deployed family used version 31 for optional progress identity
+and full-state undo, version 32 for compact undo changes, and version 33 for
+adopted positions. Its native objective state still used the version-30 shape.
+These numbers overlap the objective branch’s version 31; the envelope number
+alone does not identify whether objective history has already been converted.
+
+## Version 34: combined objective history and saved progress
+
+The saved-progress 30→31→32→33 sequence retains its published meaning. The final
+33→34 conversion recognizes objective history by its complete `completed` and
+`revealed` arrays. Existing arrays are preserved; neither current flags nor event
+retirement can replace already-recorded history. If both fields are absent, the
+frozen `objectives-v30.json` and `objective-events-v31.json` recipes perform the
+objective branch’s conversion once. Partial/malformed history is rejected.
+No current catalog or gameplay commands participate in conversion.
+
+Both version-31 families, later saved-progress checkpoints and earlier versions
+therefore converge on one format. Native validation follows conversion. Run and
+checkpoint identities, setup, seed, units, treasury and flag history are retained.
+Older undo is discarded. Historical payloads migrate through the same loading
+entry point as recovery; the history index remains unchanged.

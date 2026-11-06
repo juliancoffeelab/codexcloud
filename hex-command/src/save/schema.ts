@@ -3,7 +3,7 @@ import { validSetup, type SessionSetup } from "../game/setup";
 import type { SavedGame } from "../../rust/pkg/hex_command";
 
 /** Single version for browser persistence; native checkpoints are current data only. */
-export const SAVE_VERSION = 33;
+export const SAVE_VERSION = 34;
 export interface BattleSave {
   version: typeof SAVE_VERSION;
   checkpoint: SavedGame;

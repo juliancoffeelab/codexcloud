@@ -80,12 +80,10 @@ test("Ordinary skirmish labels have no objective", async () => {
   assert(!target.label.includes("Objective:"), "Ordinary skirmish tiles have no goal label");
 });
 
-// Sealed stones leave the map individually; territory that can be lost stays visible.
-test("Completed seal markers disappear while territory remains visible", async () => {
+// Achievements stay complete; ongoing territory requirements can become unmet again.
+test("Objective markers distinguish achievements from current ownership", async () => {
   const game = Game.startCampaign("ashen-oath", 2);
-  game.campaign!.scripts!.active = game.campaign!.scripts!.active.filter(
-    (id) => id !== "sealed-hex-0941-278b487380",
-  );
+  game.campaign!.scripts!.completed.push("sealed-hex-0941-278b487380");
   const tiles = battlefieldTiles(game.publishedView(), null, currentArtwork(), null);
   assert(
     !required(tiles.find((tile) => tile.id === "hex-0941-278b487380")).classes.includes(
@@ -97,6 +95,14 @@ test("Completed seal markers disappear while territory remains visible", async (
   );
   const escort = Game.startCampaign("green-accord", 2);
   required(escort.tile("hex-0955-5859c768ff")).owner = "player";
+  assert(
+    !required(
+      battlefieldTiles(escort.publishedView(), null, currentArtwork(), null).find(
+        (tile) => tile.id === "hex-0955-5859c768ff",
+      ),
+    ).classes.includes("objective"),
+  );
+  required(escort.tile("hex-0955-5859c768ff")).owner = "enemy";
   assert(
     required(
       battlefieldTiles(escort.publishedView(), null, currentArtwork(), null).find(

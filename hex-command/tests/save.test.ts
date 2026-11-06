@@ -88,7 +88,7 @@ for (const [cols, rows] of [
 }
 
 test("Version-three ordinary battles receive only an envelope update", () => {
-  const current = checkpoint();
+  const current = checkpoint({ kind: "scenario", map: "mirror" });
   const old = { version: 3, checkpoint: historicalTiles(current), pendingEnemy: false };
   assert.deepEqual(migrateSave(old).save, { ...old, checkpoint: current, version: SAVE_VERSION });
 });
@@ -109,9 +109,11 @@ test("Live WASM catalog contains no historical save metadata", () => {
     }
 });
 
-function checkpoint() {
+function checkpoint(
+  start: Parameters<typeof LiveGame.create>[1] = { kind: "campaign", id: "borrowed-tide" },
+) {
   const factory = createTestFactory();
-  const game = LiveGame.create(factory, { kind: "campaign", id: "borrowed-tide" });
+  const game = LiveGame.create(factory, start);
   const saved = structuredClone(
     nativeValue(game.checkpoint()),
   ) as import("../rust/pkg/hex_command").SavedGame;
@@ -169,7 +171,7 @@ test("Version-one TS migration is pure, defaults experience and preserves progre
 });
 
 test("Migration chain distinguishes the original native envelope and rewrites once", () => {
-  const saved = checkpoint();
+  const saved = checkpoint({ kind: "scenario", map: "mirror" });
   saved.seed = 42;
   const old = {
     engine: "rust-wasm",

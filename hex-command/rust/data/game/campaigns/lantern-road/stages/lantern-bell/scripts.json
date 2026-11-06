@@ -318,7 +318,18 @@
               "flag": "monastery-start"
             }
           ]
-        }
+        },
+        "availableWhen": {
+          "any": [
+            {
+              "flag": "monastery-lead"
+            },
+            {
+              "flag": "monastery-start"
+            }
+          ]
+        },
+        "playerMarker": null
       }
     },
     {
@@ -547,7 +558,11 @@
         },
         "visibleWhen": {
           "flag": "northern-sighted"
-        }
+        },
+        "availableWhen": {
+          "flag": "northern-sighted"
+        },
+        "playerMarker": null
       }
     },
     {
@@ -635,7 +650,11 @@
         },
         "visibleWhen": {
           "flag": "eastern-sighted"
-        }
+        },
+        "availableWhen": {
+          "flag": "eastern-sighted"
+        },
+        "playerMarker": null
       }
     },
     {
@@ -723,7 +742,11 @@
         },
         "visibleWhen": {
           "flag": "southern-sighted"
-        }
+        },
+        "availableWhen": {
+          "flag": "southern-sighted"
+        },
+        "playerMarker": null
       }
     },
     {
@@ -957,8 +980,7 @@
         {
           "setFlag": "first-toll"
         }
-      ],
-      "notice": "The bell tolls. Move captives off active marks."
+      ]
     },
     {
       "id": "second-toll",
@@ -1041,8 +1063,7 @@
         {
           "setFlag": "second-toll"
         }
-      ],
-      "notice": "The bell tolls. Move captives off active marks."
+      ]
     },
     {
       "id": "third-toll",
@@ -1120,8 +1141,7 @@
         {
           "setFlag": "third-toll"
         }
-      ],
-      "notice": "The bell tolls. Move captives off active marks."
+      ]
     },
     {
       "id": "bell-silenced",
@@ -1142,7 +1162,11 @@
           "defeat": {
             "character": "bellwarden"
           }
-        }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": null
       }
     },
     {

@@ -580,6 +580,35 @@ impl<'catalog> BattleSession<'catalog> {
     }
 }
 
+/// Runtime-permitted planning intent. No authored predicates, event actions,
+/// hidden objective definitions or unfiltered catalog access cross this boundary.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CampaignIntent {
+    Hold,
+    Escort,
+    GoTo,
+    Escape,
+    Approach,
+    Own,
+    Capture,
+    Defeat,
+}
+/// Completed achievements are omitted. Fulfilled ongoing requirements remain
+/// available because guarding them or recovering them can still be necessary.
+pub struct CampaignObjective<'a> {
+    pub id: &'a str,
+    pub optional: bool,
+    pub satisfied: bool,
+    pub intent: CampaignIntent,
+    pub selector: Option<&'a UnitMatch>,
+    pub tiles: Vec<String>,
+}
+pub struct CampaignGroup<'a> {
+    pub id: &'a str,
+    pub active: bool,
+    pub hold: Option<(&'a [String], u16)>,
+}
+
 /// Authored battle/campaign observations, without AI decisions or mutable state.
 #[derive(Clone, Copy)]
 pub struct CampaignView<'a, 'catalog> {
@@ -594,40 +623,85 @@ impl<'a, 'catalog> std::ops::Deref for CampaignView<'a, 'catalog> {
 }
 impl<'a, 'catalog> CampaignView<'a, 'catalog> {
     #[inline]
-    pub fn catalogue(&self) -> &'catalog Rules {
-        self.view.engine().rules
+    pub fn in_campaign(&self) -> bool {
+        self.view.engine().campaign.is_some()
     }
     #[inline]
-    pub fn definition(&self) -> &'catalog Campaign {
-        self.view.engine().campaign_definition()
+    pub fn planning_objectives(self) -> Vec<CampaignObjective<'a>> {
+        self.view.engine().planning_objectives()
     }
     #[inline]
-    pub fn mission(&self) -> Option<&Mission> {
-        self.view.engine().mission.as_deref().map(|m| &**m)
+    pub fn requirements_disclosed(&self) -> bool {
+        self.view.engine().requirements_disclosed()
     }
     #[inline]
-    pub fn campaign(&self) -> Option<&CampaignState> {
-        self.view.engine().campaign.as_deref()
+    pub fn pending_arrivals(&self) -> bool {
+        self.view.engine().script_pending_arrivals()
     }
     #[inline]
-    pub fn scripts(&self) -> Option<&EventState> {
-        self.view.engine().scripts.as_deref().map(|s| s.saved())
+    pub fn required_companions(&self) -> &[String] {
+        self.view
+            .engine()
+            .mission
+            .as_ref()
+            .map_or(&[], |m| m.required_companions.as_slice())
+    }
+    #[inline]
+    pub fn enemy_leader_post(&self) -> Option<&str> {
+        if self.view.turn() != Side::Enemy {
+            return None;
+        }
+        self.view
+            .engine()
+            .mission
+            .as_ref()
+            .and_then(|m| m.enemy_leader_post.as_deref())
+    }
+    #[inline]
+    pub fn defend_objectives(&self) -> bool {
+        if self.view.turn() != Side::Enemy {
+            return false;
+        }
+        self.view
+            .engine()
+            .mission
+            .as_ref()
+            .is_some_and(|m| m.defend_objectives)
+    }
+    pub fn groups(self) -> Vec<CampaignGroup<'a>> {
+        let game = self.view.engine();
+        if game.turn != Side::Enemy {
+            return vec![];
+        }
+        game.mission
+            .as_ref()
+            .into_iter()
+            .flat_map(|m| &m.enemy_groups)
+            .map(|group| {
+                let hold = match &group.order {
+                    Some(GroupOrder::Hold {
+                        area,
+                        attack_radius,
+                        when,
+                    }) if when
+                        .as_ref()
+                        .is_none_or(|condition| game.event_condition_met(condition)) =>
+                    {
+                        Some((area.as_slice(), *attack_radius))
+                    }
+                    _ => None,
+                };
+                CampaignGroup {
+                    id: &group.id,
+                    active: game.group_active(group),
+                    hold,
+                }
+            })
+            .collect()
     }
     #[inline]
     pub fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
         self.view.engine().script_unit_matches(select, unit)
-    }
-    #[inline]
-    pub fn script_condition(&self, when: &When) -> bool {
-        self.view.engine().script_condition(when)
-    }
-    #[inline]
-    pub fn event_condition_met(&self, condition: &Condition) -> bool {
-        self.view.engine().event_condition_met(condition)
-    }
-    #[inline]
-    pub fn group_active(&self, group: &EnemyGroup) -> bool {
-        self.view.engine().group_active(group)
     }
 }
 
@@ -890,10 +964,6 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
         self.view
     }
     #[inline]
-    pub fn approach_tiles(&self, selection: &ProximitySelection) -> Vec<String> {
-        self.view.engine().approach_tiles(selection)
-    }
-    #[inline]
     pub fn mediation_at_risk(&self, target: &Unit) -> bool {
         self.view.engine().mediation_at_risk(target)
     }
@@ -903,6 +973,14 @@ impl BattleView<'_, '_> {
     #[inline]
     pub fn attack_masks(&self, category: Category, range: u8) -> Rc<Vec<u128>> {
         self.engine().attack_masks(category, range)
+    }
+}
+impl BattleSession<'_> {
+    pub fn campaign_state(&self) -> Option<&CampaignState> {
+        self.0.engine().campaign.as_deref()
+    }
+    pub fn event_condition_met(&self, condition: &Condition) -> bool {
+        self.0.engine().event_condition_met(condition)
     }
 }
 impl<'catalog> BattleSession<'catalog> {
@@ -1009,18 +1087,6 @@ impl BattleSession<'_> {
     }
     pub fn presentation(&self) -> BattlefieldPresentation {
         self.0.engine().presentation()
-    }
-}
-
-impl CampaignView<'_, '_> {
-    #[inline]
-    pub fn condition_memory(&self) -> &[String] {
-        &self.view.engine().condition_memory
-    }
-    #[cfg(not(target_arch = "wasm32"))]
-    #[inline]
-    pub fn event_goal_progress(&self) -> Vec<Progress> {
-        self.view.engine().event_goal_progress()
     }
 }
 

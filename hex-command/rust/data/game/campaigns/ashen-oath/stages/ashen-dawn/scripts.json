@@ -139,7 +139,13 @@
             "side": "player"
           }
         },
-        "optional": true
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0129-7c8659226d"]
+        }
       }
     },
     {
@@ -258,6 +264,12 @@
             "tile": "hex-0941-278b487380",
             "side": "player"
           }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0941-278b487380"]
         }
       }
     },
@@ -281,6 +293,12 @@
             "tile": "hex-0957-c94afbbfa1",
             "side": "player"
           }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": ["hex-0957-c94afbbfa1"]
         }
       }
     },
@@ -322,7 +340,11 @@
             "side": "enemy",
             "role": "leader"
           }
-        }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": null
       }
     },
     {

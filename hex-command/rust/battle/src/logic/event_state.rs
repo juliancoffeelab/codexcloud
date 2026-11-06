@@ -21,6 +21,7 @@ pub(crate) struct CompiledMission {
     clocks: Vec<Vec<ClockDescriptor>>,
     clock_count: usize,
     event_indices: rustc_hash::FxHashMap<String, usize>,
+    objective_indices: rustc_hash::FxHashMap<String, usize>,
 }
 impl CompiledMission {
     pub(super) fn new(mut mission: Mission) -> Self {
@@ -58,11 +59,19 @@ impl CompiledMission {
             .enumerate()
             .map(|(i, e)| (e.id.clone(), i))
             .collect();
+        let objective_indices = mission
+            .scripted_events
+            .iter()
+            .enumerate()
+            .filter(|(_, e)| e.objective.is_some())
+            .map(|(i, e)| (e.objective_id().to_owned(), i))
+            .collect();
         Self {
             mission,
             clocks,
             clock_count: count,
             event_indices,
+            objective_indices,
         }
     }
     fn clocks(&self, event: usize) -> &[ClockDescriptor] {
@@ -84,6 +93,7 @@ pub(crate) struct EventProgress {
     plan: Rc<CompiledMission>,
     counter_indices: Rc<Vec<Option<usize>>>,
     active_indices: Rc<Vec<usize>>,
+    unrevealed: Rc<Vec<usize>>,
 }
 impl Deref for EventProgress {
     type Target = EventState;
@@ -139,12 +149,29 @@ impl EventProgress {
             counter_indices[clock.slot.0] = Some(index);
         }
         let active_indices = Rc::new(std::mem::take(&mut saved.active_indices));
+        let unrevealed = Rc::new(
+            plan.scripted_events
+                .iter()
+                .enumerate()
+                .filter(|(_, e)| {
+                    e.objective.is_some() && !saved.revealed.iter().any(|id| id == e.objective_id())
+                })
+                .map(|(index, _)| index)
+                .collect(),
+        );
         Self {
             saved,
             plan,
             counter_indices: Rc::new(counter_indices),
             active_indices,
+            unrevealed,
         }
+    }
+    pub(super) fn objective(&self, id: &str) -> Option<&ScriptEvent> {
+        self.plan
+            .objective_indices
+            .get(id)
+            .map(|&index| &self.plan.scripted_events[index])
     }
     pub(crate) fn saved(&self) -> &EventState {
         &self.saved
@@ -205,6 +232,18 @@ impl EventProgress {
     }
     pub(super) fn recruitment_mut(&mut self) -> &mut BTreeMap<String, Vec<FactionRecruit>> {
         &mut self.saved.recruitment
+    }
+    pub(super) fn complete(&mut self, id: String) {
+        self.saved.completed.push(id);
+    }
+    pub(super) fn unrevealed(&self) -> Rc<Vec<usize>> {
+        self.unrevealed.clone()
+    }
+    pub(super) fn reveal(&mut self, index: usize) {
+        self.saved
+            .revealed
+            .push(self.plan.scripted_events[index].objective_id().into());
+        Rc::make_mut(&mut self.unrevealed).retain(|&i| i != index);
     }
     pub(super) fn fail(&mut self, id: String) {
         self.saved.failed.push(id);
