@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "de6da02f72586bf3b5eee2d3b852086b96f2e8cb7f3e70ad51ad9b873f5b8918",
+  "catalogSha256": "264a636e2d46bda3dc76799ff301393029f5b4823160d36ac174fb6fe02481a5",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -14711,6 +14711,28 @@
           "full": 5.0,
           "takes": [
             5.0
+          ]
+        }
+      }
+    },
+    "edits/bear-death-long-decay-v1": {
+      "full": 1.48,
+      "takes": [
+        1.48
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": 1.48,
+          "takes": [
+            1.48
+          ]
+        },
+        "terrain": {
+          "full": -1.51,
+          "takes": [
+            -1.51
           ]
         }
       }

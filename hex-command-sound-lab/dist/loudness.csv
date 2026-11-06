@@ -5765,6 +5765,12 @@ edits/spider-fletching-take4-crop-v1,Spider · Arrow Fletching take 4 middle,aud
 edits/spider-fletching-take4-crop-v1,Spider · Arrow Fletching take 4 middle,audition-edits,attack,take-1,0,0.55,-11.84,-32.58,-29.09,2.8,-9.04,-29.78,-26.29,0.3,,False
 edits/spider-fletching-take4-crop-v1,Spider · Arrow Fletching take 4 middle,audition-edits,terrain,full,,0.55,-11.84,-32.58,-29.09,-0.19,-12.03,-32.77,-29.28,0.3,,False
 edits/spider-fletching-take4-crop-v1,Spider · Arrow Fletching take 4 middle,audition-edits,terrain,take-1,0,0.55,-11.84,-32.58,-29.09,-0.19,-12.03,-32.77,-29.28,0.3,,False
+edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,audition-edits,base,full,,0.8246,-10.34,-30.59,-22.58,-3.71,-14.05,-34.3,-26.29,24.7,,False
+edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,audition-edits,base,take-1,0,0.6057,-10.34,-29.25,-22.58,-3.71,-14.05,-32.96,-26.29,24.7,,False
+edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,audition-edits,attack,full,,0.8246,-10.34,-30.59,-22.58,-3.71,-14.05,-34.3,-26.29,24.7,,False
+edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,audition-edits,attack,take-1,0,0.6057,-10.34,-29.25,-22.58,-3.71,-14.05,-32.96,-26.29,24.7,,False
+edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,audition-edits,terrain,full,,0.8246,-10.34,-30.59,-22.58,-6.7,-17.04,-37.29,-29.28,24.7,,False
+edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,audition-edits,terrain,take-1,0,0.6057,-10.34,-29.25,-22.58,-6.7,-17.04,-35.95,-29.28,24.7,,False
 edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1,Beast death · roar_03 · fade,audition-edits,base,full,,0.5474,-6.55,-25.11,-17.82,-8.47,-15.02,-33.58,-26.29,23.8,,False
 edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1,Beast death · roar_03 · fade,audition-edits,base,take-1,0,0.3911,-6.55,-23.65,-17.82,-8.47,-15.02,-32.12,-26.29,23.8,,False
 edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1,Beast death · roar_03 · fade,audition-edits,attack,full,,0.5474,-6.55,-25.11,-17.82,-8.47,-15.02,-33.58,-26.29,23.8,,False

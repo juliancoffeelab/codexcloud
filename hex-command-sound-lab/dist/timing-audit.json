@@ -1,13 +1,13 @@
 {
-  "paletteReferences": 113,
+  "paletteReferences": 114,
   "paletteInternalQuietIssues": [],
   "method": "Conservative edge-silence audit for every playable take; originals stay intact.\n\n5ms RMS frames; gate 45dB below that take's strongest frame (floor -80dBFS).\nRetain 5ms before activity and 12ms after. Only remove >=20ms of edge quiet.\nInternal quiet is reported, never spliced out. Requires Python 3, Node and FFmpeg.",
   "applied": true,
-  "recordings": 565,
-  "takes": 1377,
-  "changedRecordings": 360,
-  "changedTakes": 478,
-  "catalogSha256": "de6da02f72586bf3b5eee2d3b852086b96f2e8cb7f3e70ad51ad9b873f5b8918",
+  "recordings": 566,
+  "takes": 1378,
+  "changedRecordings": 361,
+  "changedTakes": 479,
+  "catalogSha256": "264a636e2d46bda3dc76799ff301393029f5b4823160d36ac174fb6fe02481a5",
   "entries": [
     {
       "id": "antumdeluge/fire-crackling/fire-1.wav",
@@ -44264,6 +44264,49 @@
             {
               "entity": "beasts/giant-spider-l3",
               "action": "tap",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "edits/bear-death-long-decay-v1",
+      "name": "Bear death \u00b7 sustained dying growl \u00b7 compare",
+      "listeningSha256": "15a8c7fe7c91a9779622bd03ca1c3a0bff4df587086cf8b398052bb7198a6dc8",
+      "originalRanges": [
+        {
+          "start": 0,
+          "duration": 0.8246
+        }
+      ],
+      "appliedRanges": [
+        {
+          "start": 0,
+          "duration": 0.6057
+        }
+      ],
+      "takes": [
+        {
+          "take": 1,
+          "leadingQuietMs": 20.0,
+          "trailingQuietMs": 230.9,
+          "trimmedLeadingMs": 0,
+          "trimmedTrailingMs": 218.9,
+          "gateDbFS": -64.9,
+          "internalQuiet": [],
+          "remainingInternalQuiet": [],
+          "reviewedOverride": null
+        }
+      ],
+      "paletteReferences": [
+        {
+          "id": "edits/bear-death-long-decay-v1",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "beasts/bear",
+              "action": "death",
               "levelClass": null
             }
           ]

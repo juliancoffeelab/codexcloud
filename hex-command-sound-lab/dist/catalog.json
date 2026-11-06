@@ -18760,6 +18760,46 @@
     "preserveLevel": false
   },
   {
+    "takeMethod": "authored-edit",
+    "id": "edits/bear-death-long-decay-v1",
+    "name": "Bear death \u00b7 sustained dying growl \u00b7 compare",
+    "path": "audio/listening/5288990564059a094202.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Bear-only comparison: preserve the main growl through 0.22s, then stretch its natural decay without pitch change and add quiet room reflections. Prior short death stays the default for A/B testing. Per-take level matching follows the live-game reference.",
+    "sourcePath": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+    "sourceHash": "983396c808eb658ed3bd223ffaf9ea7f756dba7bc45ecc3fde117083026a4556",
+    "duration": 0.8246,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.6057
+      }
+    ],
+    "originalKind": "designed-effects",
+    "derivedFrom": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+    "processingRecipe": {
+      "id": "edits/bear-death-long-decay-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+      "sourceHash": "983396c808eb658ed3bd223ffaf9ea7f756dba7bc45ecc3fde117083026a4556",
+      "name": "Bear death \u00b7 sustained dying growl \u00b7 compare",
+      "intent": "Bear-only comparison: preserve the main growl through 0.22s, then stretch its natural decay without pitch change and add quiet room reflections. Prior short death stays the default for A/B testing.",
+      "preserveLevel": false,
+      "filters": [
+        "aresample=44100,volume=-12dB,asplit=2[main][tail];[main]atrim=end=0.24,asetpts=PTS-STARTPTS[head];[tail]atrim=start=0.22:end=0.4584,asetpts=PTS-STARTPTS,atempo=0.5,atempo=0.8,afade=t=out:st=0.10:d=0.496[release];[head][release]acrossfade=d=0.02:c1=tri:c2=tri,aecho=in_gain=0.95:out_gain=0.9:delays=43|79:decays=0.09|0.05"
+      ]
+    },
+    "preserveLevel": false
+  },
+  {
     "takeMethod": "selection-fade-room-v1",
     "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1",
     "name": "Beast death \u00b7 roar_03 \u00b7 fade",

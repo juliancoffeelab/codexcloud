@@ -553,7 +553,7 @@ Wildkeeper/Grovewarden remain ordinary living mages, not treants.
 The 0284 edit keeps 0.035–0.535 seconds with a faded release. The ghost edit keeps
 0.14–0.80 seconds of Scream 02, after its opening burst/cough, with onset/release
 fades. Originals remain in Library. Old shared death defaults migrate with local
-backups. All 238 units have death recommendations; spider deaths also follow either approved selection. Catalog: 565 recordings / 1,377 takes; 46 derived auditions.
+backups. All 238 units have death recommendations; spider deaths also follow either approved selection. Catalog: 566 recordings / 1,378 takes; 47 derived auditions.
 
 Axes, poleaxes and halberds use the exact werewolf claw swish
 (`edits/knife-slice-2-no-hit-v1`). Pickaxes remain Mining 001. Old saved Metal 01
@@ -587,3 +587,12 @@ and goat riders get their ordinary cough family's timbre, never the horse cue.
 Humans and ordinary Woodland humanoids keep the original Cough 02. Old saved
 plain cough choices migrate to the applicable processed cough with local backups.
 Ten static death/timbre recordings plus ten shared selection-derived beast clips are active.
+
+### Bear death A/B audition
+
+Only the base bear gets an additional Suggested Death option, “sustained dying
+growl · compare.” Its existing short death remains the default. The comparison
+keeps the main roar through 0.22s, then stretches the original decay by 2.5×
+without lowering pitch, with a brief crossfade, a release fade and light room
+reflections. Other beast defaults remain unchanged. Recipe and original hash live
+in `audio-edits.json`; the original selection and previous death remain available.

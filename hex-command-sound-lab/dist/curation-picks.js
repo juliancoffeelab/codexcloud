@@ -1,4 +1,4 @@
-import { deathPick, beastDeathId } from "./death-picks.js?v=beast-selection-fade-1";
+import { deathPick, beastDeathId } from "./death-picks.js?v=bear-decay-compare-1";
 // Authored audition choices. Death rows are candidates, not live-game events.
 export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   const byId = new Map(catalog.map((sound) => [sound.id, sound]));
@@ -134,6 +134,7 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     ? selections.map(ref => ({ ...ref, deathId: beastDeathId(ref.id, ref.take) })) : [];
   const death = choose("death", selectionDeaths.length ? selectionDeaths.map(ref => ref.deathId) : [deathChoice.sound],
     selectionDeaths.length ? "Current selection sound with a long fade and light room reflections." : `Shared ${deathChoice.group} death audition.`);
+  if (entity.faction === "beasts" && entity.id === "bear" && byId.has("edits/bear-death-long-decay-v1")) death.suggested.push("edits/bear-death-long-decay-v1");
   death.title = "Death";
   death.deathGroup = deathChoice.group;
   death.selectionDeaths = selectionDeaths;

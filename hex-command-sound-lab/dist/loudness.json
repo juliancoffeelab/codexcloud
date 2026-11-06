@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "de6da02f72586bf3b5eee2d3b852086b96f2e8cb7f3e70ad51ad9b873f5b8918",
+  "catalogSha256": "264a636e2d46bda3dc76799ff301393029f5b4823160d36ac174fb6fe02481a5",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -66828,6 +66828,83 @@
               "combinedPlaybackGainDb": -0.19,
               "playbackPeakDbFS": -12.03,
               "playbackRmsDbFS": -32.77,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/bear-death-long-decay-v1",
+      "name": "Bear death \u00b7 sustained dying growl \u00b7 compare",
+      "pack": "audition-edits",
+      "path": "audio/listening/5288990564059a094202.mp3",
+      "listeningSha256": "15a8c7fe7c91a9779622bd03ca1c3a0bff4df587086cf8b398052bb7198a6dc8",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -3.71,
+      "full": {
+        "duration": 0.8246,
+        "peakDbFS": -10.34,
+        "rmsDbFS": -30.59,
+        "strongest50msRmsDbFS": -22.58,
+        "leadingBelow55Ms": 24.7,
+        "playbackPeakDbFS": -14.05,
+        "playbackRmsDbFS": -34.3,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -3.71,
+          "duration": 0.6057,
+          "peakDbFS": -10.34,
+          "rmsDbFS": -29.25,
+          "strongest50msRmsDbFS": -22.58,
+          "leadingBelow55Ms": 24.7,
+          "playbackPeakDbFS": -14.05,
+          "playbackRmsDbFS": -32.96,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -3.71,
+            "playbackPeakDbFS": -14.05,
+            "playbackRmsDbFS": -34.3,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -3.71,
+              "playbackPeakDbFS": -14.05,
+              "playbackRmsDbFS": -32.96,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -6.7,
+            "playbackPeakDbFS": -17.04,
+            "playbackRmsDbFS": -37.29,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -6.7,
+              "playbackPeakDbFS": -17.04,
+              "playbackRmsDbFS": -35.95,
               "playbackStrongest50msRmsDbFS": -29.28,
               "flags": []
             }

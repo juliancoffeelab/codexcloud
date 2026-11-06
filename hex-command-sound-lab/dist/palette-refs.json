@@ -4154,6 +4154,17 @@
       ]
     },
     {
+      "id": "edits/bear-death-long-decay-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/bear",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
       "id": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
       "take": 0,
       "uses": [

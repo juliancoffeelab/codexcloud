@@ -23,7 +23,7 @@
       }
     },
     "death": {
-      "choices": 20,
+      "choices": 21,
       "min": -26.29,
       "average": -26.24,
       "max": -25.29,
@@ -4278,6 +4278,22 @@
           "entity": "undead-animals/bone-dragon-l3",
           "action": "attack-claws",
           "levelClass": "attack"
+        }
+      ]
+    },
+    {
+      "id": "edits/bear-death-long-decay-v1",
+      "name": "Bear death \u00b7 sustained dying growl \u00b7 compare",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -14.05,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/bear",
+          "action": "death",
+          "levelClass": null
         }
       ]
     },
