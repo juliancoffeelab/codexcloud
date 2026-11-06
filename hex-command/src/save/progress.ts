@@ -107,7 +107,7 @@ export function listProgress(): ProgressEntry[] {
     }))
     .sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id));
 }
-/** Payload first, discoverability last. A failed write never replaces a reachable checkpoint. */
+/** Mutations run inside withProgressLock. Payload first, discoverability last. */
 function insert(entry: ProgressEntry, text: string): void {
   const value = index();
   const key = payloadKey(entry.id);
@@ -135,8 +135,11 @@ export function addTurn(entry: ProgressEntry, text: string): void {
   insert(entry, text);
 }
 export function progressText(id: string): string {
-  const current = currentProgress();
-  const text = id === current?.id ? readSave() : localStorage.getItem(payloadKey(id));
+  // Recovery may be overwritten by another tab between reads. Inspect and use
+  // the same complete envelope rather than accidentally loading a different ID.
+  const recovery = readSave();
+  const current = recovery ? (JSON.parse(recovery) as BattleSave).progress?.entry : undefined;
+  const text = id === current?.id ? recovery : localStorage.getItem(payloadKey(id));
   if (!text) throw new Error("This saved checkpoint is no longer available.");
   return text;
 }

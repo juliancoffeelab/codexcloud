@@ -71,7 +71,10 @@
       confirmation.querySelector<HTMLButtonElement>(".quiet")?.focus();
     } else start();
   }
-  function start() {
+  let starting = $state(false);
+  async function start() {
+    if (starting) return;
+    starting = true;
     confirmation.close();
     const policy = (difficulty === "custom" ? "predictor" : difficulty) as AiOptions["policy"];
     const setup: SessionSetup = {
@@ -98,10 +101,10 @@
       },
     };
     try {
-      if (mode === "campaign") actions.startCampaign(campaignId as CampaignId, setup);
+      if (mode === "campaign") await actions.startCampaign(campaignId as CampaignId, setup);
       else {
         preloadTerrainMap(mapId);
-        actions.reset(mapId, {
+        await actions.reset(mapId, {
           armies: mapId === "developer" ? undefined : [player, opponent],
           setup,
         });
@@ -109,6 +112,8 @@
       dialog.close();
     } catch (e) {
       error = e instanceof Error ? e.message : String(e);
+    } finally {
+      starting = false;
     }
   }
 </script>
@@ -277,7 +282,7 @@
   {#if error}<p role="alert">{error}</p>{/if}
   <div class="setup-actions">
     <button class="quiet" onclick={() => dialog.close()}>Keep playing</button>
-    <button class="primary" onclick={requestStart}>Start {mode}</button>
+    <button class="primary" disabled={starting} onclick={requestStart}>Start {mode}</button>
   </div>
 </dialog>
 <dialog
@@ -299,6 +304,6 @@
     >
       Keep playing
     </button>
-    <button class="primary" onclick={start}>Start new game</button>
+    <button class="primary" disabled={starting} onclick={start}>Start new game</button>
   </div>
 </dialog>

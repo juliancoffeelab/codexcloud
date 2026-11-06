@@ -101,7 +101,7 @@ test("Replacing a paused session cancels it and dialogue gates commands", async 
   let latest: BattleView | undefined;
   const unsubscribe = controller.view.subscribe((view) => (latest = view));
   const oldTurn = controller.endTurn();
-  controller.commands.startCampaign("green-accord");
+  await controller.commands.startCampaign("green-accord");
   required(release)();
   await oldTurn;
   assert.equal(latest?.game.mapId, "green-border");

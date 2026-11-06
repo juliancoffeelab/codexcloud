@@ -166,7 +166,7 @@ test("Dialogue navigation persists its cursor without advancing gameplay", async
   storage.clear();
   const controller = createController(immediatePause);
   const observed = observe(controller);
-  controller.commands.startCampaign("green-accord");
+  await controller.commands.startCampaign("green-accord");
   const opening = observed.view;
   const campaign = required(opening.game.campaign);
   assert(campaign.dialogue.length > 1);
@@ -201,7 +201,7 @@ test("Dialogue navigation persists its cursor without advancing gameplay", async
   assert.equal(storage.getItem(SAVE_KEY), finishedSave);
   rewound.commands.previousDialogue();
   assert.deepEqual(rewound.snapshot(), finished, "back cannot reopen a completed conversation");
-  rewound.reset();
+  await rewound.reset();
   const skirmish = rewound.snapshot();
   rewound.commands.previousDialogue();
   assert.deepEqual(rewound.snapshot(), skirmish, "back has no stale campaign to change");
@@ -418,7 +418,7 @@ test("Unmounted sessions cannot overwrite replacements", async () => {
   const pending = previous.endTurn();
   previous.dispose();
   const replacement = createController(immediatePause);
-  replacement.reset("river-valley");
+  await replacement.reset("river-valley");
   const saved = storage.getItem(SAVE_KEY);
   paused.release();
   await pending;
@@ -436,9 +436,9 @@ test("Replay is consumed once and replacement discards pending initialization", 
   saveBattle(new Game(), true);
   const replacement = createController(immediatePause);
   const observed = observe(replacement);
-  replacement.reset("river-valley");
-  replacement.initialize();
-  replacement.initialize();
+  await replacement.reset("river-valley");
+  await replacement.initialize();
+  await replacement.initialize();
   assert.equal(observed.view.game.mapId, "river-valley");
   assert.equal(observed.view.game.turn, "player");
   assert.equal(observed.view.game.round, 1);
@@ -448,8 +448,8 @@ test("Replay is consumed once and replacement discards pending initialization", 
   saveBattle(new Game(), true);
   const paused = pauseTurn();
   const replay = createController(paused.pause);
-  replay.initialize();
-  replay.initialize();
+  await replay.initialize();
+  await replay.initialize();
   assert.equal(replay.snapshot().turn, "enemy");
   const checkpoint = storage.getItem(SAVE_KEY);
   replay.commands.advanceDialogue();
@@ -474,14 +474,14 @@ test("Replay is consumed once and replacement discards pending initialization", 
   replay.dispose();
 });
 
-test("Artwork URLs are published immediately and ignore retired style preferences", () => {
+test("Artwork URLs are published immediately and ignore retired style preferences", async () => {
   storage.setItem("hex-command-art-style", "low-poly");
   const controller = createController(immediatePause);
   const observed = observe(controller);
   assert(Object.isFrozen(observed.view.artwork.frames));
   assert(observed.view.artwork.frames.player_thorncaller?.url.includes("assets/sprites/"));
   const opening = observed.view.artwork;
-  controller.initialize();
+  await controller.initialize();
   assert.equal(observed.view.artwork, opening);
   controller.dispose();
   observed.unsubscribe();

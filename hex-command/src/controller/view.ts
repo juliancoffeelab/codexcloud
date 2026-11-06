@@ -42,9 +42,9 @@ export interface BattleView {
 
 /** Components can issue commands, but cannot read hidden controller state. */
 export interface BattleCommands {
-  startCampaign(id: CampaignId, setup?: SessionSetup): GameSnapshot;
-  nextMission(recallIds: string[]): GameSnapshot;
-  retryMission(): GameSnapshot;
+  startCampaign(id: CampaignId, setup?: SessionSetup): Promise<GameSnapshot>;
+  nextMission(recallIds: string[]): Promise<GameSnapshot>;
+  retryMission(): Promise<GameSnapshot>;
   advanceDialogue(skip?: boolean): void;
   previousDialogue(): void;
   choose(tileId: string): void;
@@ -56,14 +56,17 @@ export interface BattleCommands {
   dropItem(unitId: string, itemId: string): void;
   endTurn(): Promise<GameSnapshot | undefined>;
   undoMove(): GameSnapshot;
-  reset(mapId?: string, options?: { armies?: [string, string]; setup: SessionSetup }): GameSnapshot;
+  reset(
+    mapId?: string,
+    options?: { armies?: [string, string]; setup: SessionSetup },
+  ): Promise<GameSnapshot>;
   setSound(enabled: boolean): Promise<void>;
   downloadDebugReport(): void;
   savedProgress(): import("../save/progress").ProgressEntry[];
-  restoreProgress(id: string): void;
-  deleteSavedProgress(id: string): void;
-  deleteSavedRun(id: string): void;
-  pruneSavedRun(id: string): void;
+  restoreProgress(id: string): Promise<void>;
+  deleteSavedProgress(id: string): Promise<void>;
+  deleteSavedRun(id: string): Promise<void>;
+  pruneSavedRun(id: string): Promise<void>;
   error(error: unknown): void;
 }
 

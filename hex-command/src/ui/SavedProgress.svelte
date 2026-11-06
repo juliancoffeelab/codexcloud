@@ -9,6 +9,7 @@
   }: { view: BattleView; actions: BattleCommands; onLoad?: () => void } = $props();
   let entries = $state<ProgressEntry[]>([]);
   let failure = $state("");
+  let busy = $state(false);
   let run = $state("");
   let selected = $state("");
   let limit = $state(30);
@@ -51,16 +52,20 @@
         "Saved games could not be read. Download a debug report from Settings so we can investigate.";
     }
   }
-  function perform(action: () => void): boolean {
+  async function perform(action: () => Promise<void>): Promise<boolean> {
+    if (busy) return false;
+    busy = true;
     failure = "";
     try {
-      action();
+      await action();
       refresh();
       return true;
     } catch {
       failure =
         "This operation could not be completed. Download a debug report if the problem continues.";
       return false;
+    } finally {
+      busy = false;
     }
   }
   function changeRun(id: string) {
@@ -69,11 +74,11 @@
     limit = 30;
     managing = false;
   }
-  function remove(entry: ProgressEntry) {
+  async function remove(entry: ProgressEntry) {
     if (confirm(`Delete turn ${entry.round} from ${chapter(entry).name}?`))
-      perform(() => actions.deleteSavedProgress(entry.id));
+      await perform(() => actions.deleteSavedProgress(entry.id));
   }
-  function removeRun() {
+  async function removeRun() {
     const current = entries.some((entry) => entry.runId === run && entry.current);
     const name = choices.find((choice) => choice.value === run)?.label ?? "this game";
     if (
@@ -81,13 +86,13 @@
         `${current ? "Delete all other saves" : "Delete all saves"} for ${name}?${current ? " Your current position will be kept." : ""}`,
       )
     ) {
-      perform(() => actions.deleteSavedRun(run));
+      await perform(() => actions.deleteSavedRun(run));
       managing = false;
     }
   }
 </script>
 
-<section class="saved-games-browser" aria-label="Saved games">
+<section class="saved-games-browser" aria-label="Saved games" aria-busy={busy}>
   {#if failure}<p role="alert" class="save-alert">{failure}</p>
     <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>{/if}
   {#if runs.length}
@@ -125,10 +130,10 @@
       <div id={`history-${game.value}`} hidden={run !== game.value}>
         {#if run === game.value}
           {#if managing}<div class="run-management">
-              <button onclick={() => perform(() => actions.pruneSavedRun(run))}>
+              <button disabled={busy} onclick={() => perform(() => actions.pruneSavedRun(run))}>
                 Prune older saves
               </button>
-              <button class="delete-button" onclick={removeRun}>
+              <button class="delete-button" disabled={busy} onclick={removeRun}>
                 {entries.some((entry) => entry.runId === run && entry.current)
                   ? "Delete other saves"
                   : "Delete all saves"}
@@ -164,13 +169,18 @@
                       {#if selected === entry.id}<div class="row-actions">
                           <button
                             class="load-button"
-                            onclick={() => {
-                              if (perform(() => actions.restoreProgress(entry.id))) onLoad();
+                            disabled={busy}
+                            onclick={async () => {
+                              if (await perform(() => actions.restoreProgress(entry.id))) onLoad();
                             }}
                           >
                             Load
                           </button>
-                          <button class="delete-button" onclick={() => remove(entry)}>
+                          <button
+                            class="delete-button"
+                            disabled={busy}
+                            onclick={() => remove(entry)}
+                          >
                             Delete
                           </button>
                         </div>{/if}

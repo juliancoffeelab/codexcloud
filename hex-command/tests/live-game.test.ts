@@ -69,7 +69,7 @@ test("A native enemy turn cancelled by map selection never acts on the new battl
   assert(checkpoint.pendingEnemy);
   assert.deepEqual(checkpoint.game.snapshot(), opening);
   checkpoint.game.dispose();
-  controller.reset("river-valley");
+  await controller.reset("river-valley");
   const replacement = controller.snapshot();
   resume();
   await pending;
@@ -229,8 +229,8 @@ test("Reloading during an enemy turn replays the whole phase from its boundary",
   const unsubscribe = controller.view.subscribe((view) => {
     if (view.game.turn === "player" && view.game.round === 2) completed();
   });
-  controller.initialize();
-  controller.initialize();
+  await controller.initialize();
+  await controller.initialize();
   assert.deepEqual(controller.snapshot(), phaseSnapshot);
   release();
   await completion;

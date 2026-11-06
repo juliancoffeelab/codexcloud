@@ -9,6 +9,7 @@ import { createMoveUndo } from "../game/undo";
 import { loadBattle, restoreBattleText } from "../save/load";
 import { serializeBattle } from "../save/write";
 import { storeSave } from "../save/storage";
+import { withProgressLock } from "../save/transaction";
 import { saveFailure, type SaveFailure } from "../save/failure";
 import { captureBrowserSaves } from "../save/debug";
 import {
@@ -93,6 +94,8 @@ export class BattleController {
   private historyStart: "fresh" | "adopt" | null;
   private enemyRecordings: EnemyTurnRecording[] = [];
   private initialized = false;
+  private initialization?: Promise<void>;
+  private settlingSession?: number;
   private soundRequestVersion = 0;
   private readonly history = createMoveUndo();
   private sessionVersion = 0;
@@ -154,9 +157,35 @@ export class BattleController {
     }
   }
 
+  private settling() {
+    return this.settlingSession === this.sessionVersion;
+  }
+
+  private storageUpdate<T>(update: () => T): Promise<T> {
+    let entered = false;
+    return withProgressLock(() => {
+      entered = true;
+      this.requireSession();
+      return update();
+    }).catch((error) => {
+      if (!entered && !this.disposed) {
+        this.failedSave(error);
+        this.publish({ renderBattle: false });
+      }
+      throw error;
+    });
+  }
+
+  private requireSettled() {
+    if (this.settling()) throw new Error("Wait for the turn to finish saving.");
+  }
+
   private active() {
     return (
-      this.#game.turn === "player" && !this.#game.winner && !dialoguePending(this.#game.campaign)
+      !this.settling() &&
+      this.#game.turn === "player" &&
+      !this.#game.winner &&
+      !dialoguePending(this.#game.campaign)
     );
   }
 
@@ -187,7 +216,10 @@ export class BattleController {
           (this.#game.turn === "enemy" ? 1 : 0) -
           (this.#game.setup.first === "enemy" ? 1 : 0),
       ),
-      canUndo: !dialoguePending(this.#game.campaign) && this.history.canUndo(this.#game),
+      canUndo:
+        !this.settling() &&
+        !dialoguePending(this.#game.campaign) &&
+        this.history.canUndo(this.#game),
       recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),
     });
   }
@@ -402,7 +434,11 @@ export class BattleController {
     parkRecovery();
   }
 
-  restoreProgress(id: string): void {
+  restoreProgress(id: string): Promise<void> {
+    return this.storageUpdate(() => this.restoreCheckpoint(id));
+  }
+
+  private restoreCheckpoint(id: string): void {
     this.requireSession();
     const restored = restoreBattleText(this.nativeFactory, progressText(id));
     try {
@@ -461,14 +497,20 @@ export class BattleController {
       void this.runEnemyTurn(this.sessionVersion).catch((error) => this.error(error));
   }
 
-  deleteSavedProgress(id: string): void {
-    this.cleanupSaves(() => deleteProgress(id, [this.progress.branchId]));
+  deleteSavedProgress(id: string): Promise<void> {
+    return this.storageUpdate(() =>
+      this.cleanupSaves(() => deleteProgress(id, [this.progress.branchId])),
+    );
   }
-  deleteSavedRun(id: string): void {
-    this.cleanupSaves(() => deleteRun(id, [this.progress.branchId]));
+  deleteSavedRun(id: string): Promise<void> {
+    return this.storageUpdate(() =>
+      this.cleanupSaves(() => deleteRun(id, [this.progress.branchId])),
+    );
   }
-  pruneSavedRun(id: string): void {
-    this.cleanupSaves(() => pruneProgress(id, [this.progress.branchId]));
+  pruneSavedRun(id: string): Promise<void> {
+    return this.storageUpdate(() =>
+      this.cleanupSaves(() => pruneProgress(id, [this.progress.branchId])),
+    );
   }
   private cleanupSaves(cleanup: () => void): void {
     try {
@@ -849,35 +891,43 @@ export class BattleController {
 
   /** Resolve the enemy turn before publishing its persistent checkpoint. */
   private async runEnemyTurn(turnSessionVersion: number) {
-    if (!this.#game.winner) this.message("The enemy is planning its moves…");
-    await this.prepareDuringPause(enemyThinkingDelay, turnSessionVersion);
-    if (turnSessionVersion !== this.sessionVersion) {
-      return;
-    }
-    const recording: EnemyTurnRecording = {
-      checkpoint: nativeValue(this.#game.serializedCheckpoint()),
-      setup: structuredClone(this.#game.setup),
-      commands: [],
-      completed: false,
-    };
-    this.enemyRecordings.push(recording);
-    this.enemyRecordings = this.enemyRecordings.slice(-5);
-    while (this.#game.turn === "enemy" && !this.#game.winner) {
-      recording.commands.push(this.#game.enemyStep());
-      if (this.#game.turn !== "enemy" || this.#game.winner) {
-        this.publish();
-        break;
+    this.settlingSession = turnSessionVersion;
+    try {
+      if (!this.#game.winner) this.message("The enemy is planning its moves…");
+      await this.prepareDuringPause(enemyThinkingDelay, turnSessionVersion);
+      if (turnSessionVersion !== this.sessionVersion) {
+        return;
       }
-      await this.prepareDuringPause(enemyActionDelay, turnSessionVersion, true);
+      const recording: EnemyTurnRecording = {
+        checkpoint: nativeValue(this.#game.serializedCheckpoint()),
+        setup: structuredClone(this.#game.setup),
+        commands: [],
+        completed: false,
+      };
+      this.enemyRecordings.push(recording);
+      this.enemyRecordings = this.enemyRecordings.slice(-5);
+      while (this.#game.turn === "enemy" && !this.#game.winner) {
+        recording.commands.push(this.#game.enemyStep());
+        if (this.#game.turn !== "enemy" || this.#game.winner) break;
+        await this.prepareDuringPause(enemyActionDelay, turnSessionVersion, true);
+        if (turnSessionVersion !== this.sessionVersion) return;
+      }
+      recording.completed = true;
+      await this.storageUpdate(() => {
+        if (turnSessionVersion !== this.sessionVersion) return;
+        if (!this.#game.winner) this.turnCheckpoint();
+        this.persist();
+      });
       if (turnSessionVersion !== this.sessionVersion) return;
+      if (!this.#game.winner)
+        this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
+      return this.snapshot();
+    } finally {
+      if (this.settlingSession === turnSessionVersion) {
+        this.settlingSession = undefined;
+        if (!this.disposed && turnSessionVersion === this.sessionVersion) this.publish();
+      }
     }
-    recording.completed = true;
-    if (!this.#game.winner) this.turnCheckpoint();
-    if (!this.#game.winner)
-      this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
-    this.persist();
-    this.publish({ renderBattle: false });
-    return this.snapshot();
   }
 
   reset(mapId = "mirror", options?: { armies?: [string, string]; setup: SessionSetup }) {
@@ -885,37 +935,39 @@ export class BattleController {
     // Validate before changing the current battle, its undo history, or its turn.
     if (!BATTLE_MAPS.some((map) => map.id === mapId))
       throw new Error("Unknown battlefield. Choose a skirmish or start a campaign.");
-    return this.replaceGame(
-      LiveGame.create(
-        this.nativeFactory,
-        { kind: "scenario", map: mapId, armies: options?.armies, first: options?.setup.first },
-        options?.setup,
+    return this.storageUpdate(() =>
+      this.replaceGame(
+        LiveGame.create(
+          this.nativeFactory,
+          { kind: "scenario", map: mapId, armies: options?.armies, first: options?.setup.first },
+          options?.setup,
+        ),
+        true,
       ),
-      true,
     );
   }
 
   startCampaign(id: CampaignId, setup: SessionSetup = DEFAULT_SETUP) {
     this.requireSession();
-    return this.replaceGame(
-      LiveGame.create(this.nativeFactory, { kind: "campaign", id }, setup),
-      true,
+    return this.storageUpdate(() =>
+      this.replaceGame(LiveGame.create(this.nativeFactory, { kind: "campaign", id }, setup), true),
     );
   }
 
   nextMission(recallIds: string[]) {
     this.requireSession();
-    return this.replaceGame(this.#game.nextCampaignMission(recallIds));
+    return this.storageUpdate(() => this.replaceGame(this.#game.nextCampaignMission(recallIds)));
   }
 
   retryMission() {
     this.requireSession();
-    return this.replaceGame(this.#game.retryCampaignMission());
+    return this.storageUpdate(() => this.replaceGame(this.#game.retryCampaignMission()));
   }
 
   advanceDialogue(skip = false) {
     this.requireSession();
     if (!dialoguePending(this.#game.campaign)) return;
+    this.requireSettled();
     this.#game.advanceDialogue(skip);
     this.commitDialogue();
   }
@@ -923,6 +975,7 @@ export class BattleController {
   previousDialogue() {
     this.requireSession();
     if (!dialoguePending(this.#game.campaign) || this.#game.campaign?.dialogueIndex === 0) return;
+    this.requireSettled();
     this.#game.previousDialogue();
     this.commitDialogue();
   }
@@ -971,6 +1024,7 @@ export class BattleController {
 
   undoMove() {
     this.requireSession();
+    this.requireSettled();
     if (dialoguePending(this.#game.campaign))
       throw new Error("Finish the conversation before undoing a move.");
     const restored = this.history.undo(this.#game);
@@ -1041,23 +1095,33 @@ export class BattleController {
     }
   }
 
-  initialize() {
+  initialize(): Promise<void> {
     this.requireSession();
-    if (this.initialized) {
-      return;
-    }
-    this.initialized = true;
-    if (!this.preserveStoredRecovery) {
-      if (this.historyStart === "adopt") this.adoptCheckpoint();
-      else if (this.historyStart === "fresh") this.turnCheckpoint(!this.pendingEnemyReplay);
-    }
-    if (!this.preserveStoredRecovery) this.persist(this.pendingEnemyReplay);
-    this.publish({ renderBattle: false });
-    if (this.pendingEnemyReplay) {
-      this.pendingEnemyReplay = false;
-      void this.endTurn().catch((error) => this.error(error));
-    } else if (this.#game.turn === "enemy" && !this.#game.winner) {
-      void this.runEnemyTurn(this.sessionVersion).catch((error) => this.error(error));
-    }
+    if (this.initialization) return this.initialization;
+    const session = this.sessionVersion;
+    this.settlingSession = session;
+    this.initialization = this.storageUpdate(() => {
+      if (!this.preserveStoredRecovery) {
+        if (this.historyStart === "adopt") this.adoptCheckpoint();
+        else if (this.historyStart === "fresh") this.turnCheckpoint(!this.pendingEnemyReplay);
+        this.persist(this.pendingEnemyReplay);
+      }
+    })
+      .catch((error) => {
+        if (!this.disposed) this.failedSave(error);
+      })
+      .then(() => {
+        if (this.disposed || session !== this.sessionVersion) return;
+        this.settlingSession = undefined;
+        this.initialized = true;
+        this.publish({ renderBattle: false });
+        if (this.pendingEnemyReplay) {
+          this.pendingEnemyReplay = false;
+          void this.endTurn().catch((error) => this.error(error));
+        } else if (this.#game.turn === "enemy" && !this.#game.winner) {
+          void this.runEnemyTurn(this.sessionVersion).catch((error) => this.error(error));
+        }
+      });
+    return this.initialization;
   }
 }
