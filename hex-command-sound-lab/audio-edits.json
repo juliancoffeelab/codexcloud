@@ -614,6 +614,36 @@
       "filters": [
         "aresample=44100,asplit=2[dry][wet];[wet]asetrate=35003,aresample=44100,highpass=f=70,bass=g=4:f=150:w=1,volume=14dB,asoftclip=type=tanh:threshold=0.08:output=0.7,lowpass=f=2800,tremolo=f=32:d=0.45,volume=18dB[growl];[dry][growl]amix=inputs=2:weights='0.55 0.45':normalize=0:duration=longest:dropout_transition=0,volume=-6dB"
       ]
+    },
+    {
+      "id": "edits/spider-fletching-take1-short-v1",
+      "sourceId": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+      "sourceHash": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+      "name": "Spider \u00b7 Arrow Fletching take 1 short",
+      "intent": "Shortened take 1 rustle for spider selection. Keep 0.32\u20130.82s of the original, with brief fades; the original take remains available. A 12dB preparation gain keeps this quiet source within the normal playback matching gain budget.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.32:duration=0.5",
+        "asetpts=PTS-STARTPTS",
+        "volume=12dB",
+        "afade=t=in:d=0.008",
+        "afade=t=out:st=0.450:d=0.05"
+      ]
+    },
+    {
+      "id": "edits/spider-fletching-take4-crop-v1",
+      "sourceId": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+      "sourceHash": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+      "name": "Spider \u00b7 Arrow Fletching take 4 middle",
+      "intent": "Alternative spider selection from 35\u201390% of take 4: 6.45\u20137.00s of the original, with short fades. A 12dB preparation gain keeps this quiet source within the normal playback matching gain budget.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=6.45:duration=0.55",
+        "asetpts=PTS-STARTPTS",
+        "volume=12dB",
+        "afade=t=in:d=0.008",
+        "afade=t=out:st=0.480:d=0.07"
+      ]
     }
   ]
 }

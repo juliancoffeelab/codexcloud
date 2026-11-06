@@ -66,6 +66,27 @@
       ]
     },
     {
+      "id": "edits/beast-death/edits/octopus-gurgle-soft-v1/take-1",
+      "name": "Beast death · Octopus · soft gurgle · fade",
+      "take": 1,
+      "start": 0,
+      "duration": 0.8401,
+      "uses": [
+        {
+          "entity": "beasts/octopus",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/octopus-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/octopus-l3",
+          "action": "death"
+        }
+      ]
+    },
+    {
       "id": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
       "name": "alien_03",
       "take": 1,
@@ -296,23 +317,23 @@
       ]
     },
     {
-      "id": "rubberduck/80-cc0-creature-sfx/alien_04.ogg",
-      "name": "alien_04",
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_03.ogg/take-1",
+      "name": "Beast death · alien_03 · fade",
       "take": 1,
-      "start": 0.0648,
-      "duration": 0.655,
+      "start": 0,
+      "duration": 0.6306,
       "uses": [
         {
-          "entity": "beasts/giant-spider",
-          "action": "tap"
+          "entity": "beasts/giant-wasp",
+          "action": "death"
         },
         {
-          "entity": "beasts/giant-spider-l2",
-          "action": "tap"
+          "entity": "beasts/giant-wasp-l2",
+          "action": "death"
         },
         {
-          "entity": "beasts/giant-spider-l3",
-          "action": "tap"
+          "entity": "beasts/giant-wasp-l3",
+          "action": "death"
         }
       ]
     },
@@ -592,6 +613,39 @@
       ]
     },
     {
+      "id": "edits/beast-death/edits/snake-belt-texture-v2/take-1",
+      "name": "Beast death · Snake · rough belt texture · fade",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5458,
+      "uses": [
+        {
+          "entity": "beasts/giant-snake",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "death"
+        }
+      ]
+    },
+    {
       "id": "rubberduck/80-cc0-creature-sfx/howl.ogg",
       "name": "howl",
       "take": 1,
@@ -706,6 +760,48 @@
         {
           "entity": "dwarves/dwarf-forge-lord-l3",
           "action": "attack-hammer"
+        }
+      ]
+    },
+    {
+      "id": "edits/beast-death/edits/spider-fletching-take1-short-v1/take-1",
+      "name": "Beast death · Spider · Arrow Fletching take 1 short · fade",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5308,
+      "uses": [
+        {
+          "entity": "beasts/giant-spider",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "death"
+        }
+      ]
+    },
+    {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_02.ogg/take-1",
+      "name": "Beast death · alien_02 · fade",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5308,
+      "uses": [
+        {
+          "entity": "beasts/ray",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/ray-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/ray-l3",
+          "action": "death"
         }
       ]
     },

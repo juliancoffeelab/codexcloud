@@ -1,8 +1,8 @@
-import { DEATH_SOUNDS } from "./death-picks.js?v=cough-timbres-1";
+import { DEATH_SOUNDS } from "./death-picks.js?v=beast-selection-fade-1";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=cough-timbres-1";
+import { buildActions } from "./matching.js?v=beast-selection-fade-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -17,10 +17,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=cough-timbres-1"),
+    loadJSON("catalog.json?v=beast-selection-fade-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=cough-timbres-1"),
+    loadJSON("playback-levels.json?v=beast-selection-fade-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -188,10 +188,13 @@ async function start() {
   }
   function chosenFor(action) {
     const saved = assignments[keyFor(action)];
+    const selected = assignments[`${unit.key}/tap`];
+    const matchingDeath = action.selectionDeaths?.find(ref => ref.id === selected?.id && ref.take === selected?.take);
+    const defaultId = matchingDeath?.deathId || action.suggested[0];
     return saved && byId.has(saved.id)
       ? { ...saved, levelClass: levelClassFor(action) }
-      : action.suggested[0]
-        ? { id: action.suggested[0], take: action.preferredTakes?.[action.suggested[0]] ?? 0, levelClass: levelClassFor(action) }
+      : defaultId
+        ? { id: defaultId, take: action.preferredTakes?.[defaultId] ?? 0, levelClass: levelClassFor(action) }
         : null;
   }
   function drawWave(buffer) {
@@ -1636,14 +1639,16 @@ async function start() {
   } catch {}
   try {
     if (!localStorage.getItem("hex-sound-four-deaths-v1")) {
-      const backup = {}, allowed = new Set(Object.values(DEATH_SOUNDS));
+      const backup = {}, allowed = new Set([...Object.values(DEATH_SOUNDS), ...catalog.filter(item => item.id.startsWith("edits/beast-death/")).map(item => item.id)]);
       for (const [key, choice] of Object.entries(assignments)) {
         if (!key.endsWith("/death") || allowed.has(choice.id)) continue;
         const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
         if (entity?.kind !== "unit") continue;
         const death = buildActions(entity, catalog).find(row => row.key === "death");
         backup[key] = choice;
-        assignments[key] = { ...choice, id: death.suggested[0], take: 0 };
+        const selected = assignments[`${entity.key}/tap`];
+        const matched = death.selectionDeaths?.find(ref => ref.id === selected?.id && ref.take === selected?.take);
+        assignments[key] = { ...choice, id: matched?.deathId || death.suggested[0], take: 0 };
       }
       for (const [key, choice] of Object.entries(assignments)) {
         if (!key.includes("/attack-") || choice.id !== "edits/metal-01-soft-onset-v1") continue;
@@ -1675,7 +1680,9 @@ async function start() {
         const death = buildActions(entity, catalog).find(row => row.key === "death");
         if (choice.id === death.suggested[0]) continue;
         backup[key] = choice;
-        assignments[key] = { ...choice, id: death.suggested[0], take: 0 };
+        const selected = assignments[`${entity.key}/tap`];
+        const matched = death.selectionDeaths?.find(ref => ref.id === selected?.id && ref.take === selected?.take);
+        assignments[key] = { ...choice, id: matched?.deathId || death.suggested[0], take: 0 };
       }
       localStorage.setItem("hex-sound-before-death-materials-v2", JSON.stringify(backup));
       saveAssignments();
@@ -1695,7 +1702,7 @@ async function start() {
   } catch {}
   try {
     if (!localStorage.getItem("hex-sound-death-cough-timbres-v1")) {
-      const variants = new Set([DEATH_SOUNDS.dwarf, DEATH_SOUNDS.elf, DEATH_SOUNDS.beast]), backup = {};
+      const variants = new Set([DEATH_SOUNDS.dwarf, DEATH_SOUNDS.elf]), backup = {};
       for (const [key, choice] of Object.entries(assignments)) {
         if (!key.endsWith("/death") || choice.id !== DEATH_SOUNDS.flesh) continue;
         const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
@@ -1703,11 +1710,49 @@ async function start() {
         const death = buildActions(entity, catalog).find(row => row.key === "death");
         if (!variants.has(death.suggested[0])) continue;
         backup[key] = choice;
-        assignments[key] = { ...choice, id: death.suggested[0], take: 0 };
+        const selected = assignments[`${entity.key}/tap`];
+        const matched = death.selectionDeaths?.find(ref => ref.id === selected?.id && ref.take === selected?.take);
+        assignments[key] = { ...choice, id: matched?.deathId || death.suggested[0], take: 0 };
       }
       localStorage.setItem("hex-sound-before-death-cough-timbres-v1", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-death-cough-timbres-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-bat-spider-v1")) {
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        const spider = /^beasts\/giant-spider(?:-l[23])?\/tap$/.test(key)
+          && choice.id === "rubberduck/80-cc0-creature-sfx/alien_04.ogg";
+        const bat = /^beasts\/giant-bat(?:-l[23])?\/attack-bite$/.test(key)
+          && ["rpg-audio/cloth2", "impact-sounds/impactSoft_medium_000", "impact-sounds/impactSoft_medium_001"].includes(choice.id);
+        if (!spider && !bat) continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: spider ? "edits/spider-fletching-take1-short-v1" : "rpg-audio/drawKnife1", take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-bat-spider-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-bat-spider-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-beast-selection-deaths-v1")) {
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!key.endsWith("/death") || !["edits/death-cough-beast-v1", DEATH_SOUNDS.flesh].includes(choice.id)) continue;
+        const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
+        if (entity?.kind !== "unit") continue;
+        const death = buildActions(entity, catalog).find(row => row.key === "death");
+        if (death?.deathGroup !== "beast") continue;
+        backup[key] = choice;
+        const selected = assignments[`${entity.key}/tap`];
+        const matched = death.selectionDeaths?.find(ref => ref.id === selected?.id && ref.take === selected?.take);
+        assignments[key] = { ...choice, id: matched?.deathId || death.suggested[0], take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-beast-selection-deaths-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-beast-selection-deaths-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

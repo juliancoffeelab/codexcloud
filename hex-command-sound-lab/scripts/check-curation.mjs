@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { buildActions } from "../dist/matching.js";
-import { DEATH_SOUNDS } from "../dist/death-picks.js";
+import { DEATH_SOUNDS, beastDeathId } from "../dist/death-picks.js";
 const root = new URL("../dist/", import.meta.url);
 const read = (name) => JSON.parse(fs.readFileSync(new URL(name, root)));
 const catalog = read("catalog.json"),
@@ -95,8 +95,12 @@ for (const faction of workbench.factions)
       assert.equal(tap.suggested[0], "edits/horse-0286-trim-v1");
     if (/^giant-wasp/.test(unit.id))
       assert(tap.suggested[0].includes("alien_03"));
-    if (/^giant-spider/.test(unit.id))
-      assert(tap.suggested[0].includes("alien_04"));
+    if (/^giant-spider/.test(unit.id)) {
+      assert.deepEqual(tap.suggested, ["edits/spider-fletching-take1-short-v1", "edits/spider-fletching-take4-crop-v1"]);
+      assert(tap.alternatives.includes("rubberduck/80-cc0-creature-sfx/alien_04.ogg"));
+    }
+    if (/^giant-bat/.test(unit.id))
+      assert.equal(actions.find(row => row.key === "attack-bite").suggested[0], "rpg-audio/drawKnife1");
     if (/^ray(?:-l[23])?$/.test(unit.id))
       assert(tap.suggested[0].includes("alien_02"));
     if (/^(ghost|spectre|wraith)$/.test(unit.id))
@@ -105,9 +109,14 @@ for (const faction of workbench.factions)
       (row) => row.key === "death",
     );
     assert(death, `${unit.key}: missing shared death`);
-    assert.equal(death.suggested.length, 1);
-    deathIds.add(death.suggested[0]);
-    assert.equal(death.suggested[0], DEATH_SOUNDS[death.deathGroup]);
+    for (const id of death.suggested) deathIds.add(id);
+    if (death.deathGroup === "beast") {
+      assert.deepEqual(death.suggested, tap.suggested.map(id => beastDeathId(id, tap.preferredTakes?.[id] ?? 0)));
+      for (const ref of death.selectionDeaths) assert.equal(byId.get(ref.deathId).derivedFrom, ref.id);
+    } else {
+      assert.equal(death.suggested.length, 1);
+      assert.equal(death.suggested[0], DEATH_SOUNDS[death.deathGroup]);
+    }
     if (/^(wildkeeper|grovewarden)$/.test(unit.id)) assert.equal(death.deathGroup, "flesh");
     if (/^treant(?:-l[23])?$/.test(unit.id)) assert.equal(death.deathGroup, "wood");
     if (/^(ghost|spectre|wraith)$/.test(unit.id)) assert.equal(death.deathGroup, "spirit");
@@ -121,7 +130,7 @@ for (const faction of workbench.factions)
     assert(death.hypothetical, `${unit.key}: death must stay a proposal`);
     units++;
   }
-assert.equal(deathIds.size, 11, "Eight base death groups plus three shared cough variants");
+assert.equal([...deathIds].filter(id => !id.startsWith("edits/beast-death/")).length, Object.keys(DEATH_SOUNDS).length);
 for (const [id, wanted] of [
   ["forest", "edits/forest-book-03-short-v1"],
   ["grove", "edits/grove-short-magic-v2"],

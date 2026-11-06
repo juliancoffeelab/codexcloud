@@ -533,7 +533,8 @@ comparison has no historical death cue. These are soundboard auditions only.
 
 | Group | Shared recording |
 | --- | --- |
-| Ordinary living units | Cough 02, with shared dwarf/elf/beast timbres below |
+| Ordinary living units | Cough 02, with shared dwarf/elf timbres below |
+| Ordinary beasts / Woodland boars | Current selection, long fade and light room reflections |
 | Skeletals | Eat 01 |
 | Ghosts/spirits | Scream 02 body, with opening cough removed |
 | Treants | Creak 1 |
@@ -542,10 +543,9 @@ comparison has no historical death cue. These are soundboard auditions only.
 | Zombies / nonskeletal undead animals | Hurt 05 |
 | Heavy armored foot units | Metal Pot 3 |
 
-`dist/death-picks.js` is the single mapping. There is one recording per group,
-with no layering or random variants. Living horses use an explicit list of human
+`dist/death-picks.js` is the single mapping. Nonbeast groups share one recording per group. Beast deaths follow their suggested selection take, with no random variants. Living horses use an explicit list of human
 horse cavalry IDs, not generic rider/mounted tags or the horse-like selection
-sound. Deer, stags and goat riders use Cough 02. Skeletal horses use Eat 01.
+sound. Deer and goat riders use their faction cough; beast stags use their selection-derived fade. Skeletal horses use Eat 01.
 Horse-mounted knights use the horse group; Metal Pot 3 is for explicitly marked
 heavy foot armor, based on the sprites rather than every shield/helmet wearer.
 Wildkeeper/Grovewarden remain ordinary living mages, not treants.
@@ -553,8 +553,7 @@ Wildkeeper/Grovewarden remain ordinary living mages, not treants.
 The 0284 edit keeps 0.035–0.535 seconds with a faded release. The ghost edit keeps
 0.14–0.80 seconds of Scream 02, after its opening burst/cough, with onset/release
 fades. Originals remain in Library. Old shared death defaults migrate with local
-backups. All 238 units have exactly one recommendation; all death groups are
-checked. Catalog: 553 recordings / 1,365 takes; 34 derived auditions.
+backups. All 238 units have death recommendations; spider deaths also follow either approved selection. Catalog: 565 recordings / 1,377 takes; 46 derived auditions.
 
 Axes, poleaxes and halberds use the exact werewolf claw swish
 (`edits/knife-slice-2-no-hit-v1`). Pickaxes remain Mining 001. Old saved Metal 01
@@ -569,18 +568,22 @@ this unit migrates with a local backup.
 
 ### Cough death timbres
 
-Ordinary cough deaths use three shared processed versions: dwarves are pitched
-down two semitones with a 180Hz bass lift; elves are pitched up one semitone;
-Beasts and Woodland boars use a recognizable dry cough mixed with a pitched-down,
-driven tanh-saturated, low-passed and modulated growl derived from the same source.
-The growl branch has makeup gain before the 55/45 dry/growl blend so both parts
-are audible. All three recipes leave encoding headroom, then participate in normal
-reference-level matching; timbre rather than quieter/louder playback differentiates
-them. These are three fixed shared recordings, not per-unit random variations.
+Ordinary cough deaths use two shared processed versions: dwarves are pitched
+down two semitones with a 180Hz bass lift; elves are pitched up one semitone.
+
+Beasts and Woodland boars now use their current suggested selection recordings
+with a fade over the final 75% and quiet early room reflections. No new pitch,
+saturation or voice modulation is added. The previous robotic cough/growl remains
+archived in Library only. `scripts/build-beast-deaths.py` bakes the listening takes;
+`dist/beast-deaths.json` records the source hashes, ranges and effects. A saved
+approved alternative selection also supplies its matching death by default.
+
+Bat attacks use Draw Knife 1. Spider selection offers trimmed Arrow Fletching
+take 1 (0.32–0.82s) and take 4 (6.45–7.00s, 35–90% of that take).
 
 Specific death groups retain priority: armor (including L2 Shieldguard), living
 horses only, bones, zombies, wolves and treants keep their existing picks. Deer
 and goat riders get their ordinary cough family's timbre, never the horse cue.
 Humans and ordinary Woodland humanoids keep the original Cough 02. Old saved
 plain cough choices migrate to the applicable processed cough with local backups.
-Eight base death categories now use eleven shared recordings in total.
+Ten static death/timbre recordings plus ten shared selection-derived beast clips are active.

@@ -1,4 +1,4 @@
-import { deathPick } from "./death-picks.js?v=cough-timbres-1";
+import { deathPick, beastDeathId } from "./death-picks.js?v=beast-selection-fade-1";
 // Authored audition choices. Death rows are candidates, not live-game events.
 export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   const byId = new Map(catalog.map((sound) => [sound.id, sound]));
@@ -35,13 +35,6 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
       row.caveat = "Trimmed designed creature voice as a ghost proxy.";
     }
   }
-  const deathChoice = deathPick(entity, { bone, spirit });
-  const death = choose("death", [deathChoice.sound], `Shared ${deathChoice.group} death audition.`);
-  death.title = "Death";
-  death.deathGroup = deathChoice.group;
-  death.alternatives = [];
-  death.hypothetical = true;
-  death.caveat = "Shared soundboard death audition; no live-game death integration.";
   if (/^merfolk-maceguard(?:-l[23])?$/.test(entity.id)) {
     const id = "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav";
     const row = choose("attack-mace", [id],
@@ -62,10 +55,16 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     choose("tap", [roar], "Roar 3 for Thornshield and living tree selection.");
   if (/^(wildkeeper|grovewarden)(?:-l[23])?$/.test(entity.id))
     choose("tap", ["rpg-audio/cloth3"], "Cloth 3 for Wildkeeper-line mage selection.");
+  if (/^giant-spider(?:-l[23])?$/.test(entity.id)) {
+    choose("tap", ["edits/spider-fletching-take1-short-v1", "edits/spider-fletching-take4-crop-v1"],
+      "Arrow Fletching: shortened take 1 first, with the middle of take 4 beside it for comparison.");
+  }
   for (const attack of entity.attacks || []) {
     const key = `attack-${attack.id}`;
     const name = attack.name.toLowerCase();
-    if (/tail.*strike/i.test(attack.name)) {
+    if (/^giant-bat(?:-l[23])?$/.test(entity.id) && /bite/i.test(attack.name)) {
+      choose(key, ["rpg-audio/drawKnife1"], "Draw Knife 1 for the bat bite attack.");
+    } else if (/tail.*strike/i.test(attack.name)) {
       choose(key, ["kyles/fish-slap/fish_drop1.ogg"], "Short recorded fish slap for Tail Strike.");
     } else if ((entity.faction === "zombies" || /^zombie-bear/.test(entity.id)) && /grasp|hands/.test(name)) {
       choose(key, [creatureSound("burp_02")], "Burp 2 for the zombie grasping-hands attack.");
@@ -128,6 +127,19 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
       }
     }
   }
+  const selectionRow = actions.find(row => row.key === "tap");
+  const selections = selectionRow.suggested.map(id => ({ id, take: selectionRow.preferredTakes?.[id] ?? 0 }));
+  const deathChoice = deathPick(entity, { bone, spirit }, selections[0]);
+  const selectionDeaths = deathChoice.group === "beast"
+    ? selections.map(ref => ({ ...ref, deathId: beastDeathId(ref.id, ref.take) })) : [];
+  const death = choose("death", selectionDeaths.length ? selectionDeaths.map(ref => ref.deathId) : [deathChoice.sound],
+    selectionDeaths.length ? "Current selection sound with a long fade and light room reflections." : `Shared ${deathChoice.group} death audition.`);
+  death.title = "Death";
+  death.deathGroup = deathChoice.group;
+  death.selectionDeaths = selectionDeaths;
+  death.alternatives = [];
+  death.hypothetical = true;
+  death.caveat = "Shared soundboard death audition; no live-game death integration.";
   const movement = actions.find((row) => row.key === "move");
   if (
     movement &&

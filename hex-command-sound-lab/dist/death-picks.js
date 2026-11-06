@@ -10,7 +10,6 @@ export const DEATH_SOUNDS = Object.freeze({
   armor: "rpg-audio/metalPot3",
   dwarf: "edits/death-cough-dwarf-v1",
   elf: "edits/death-cough-elf-v1",
-  beast: "edits/death-cough-beast-v1",
 });
 // Species-specific, deliberately not a generic mounted/rider/selection-sound test.
 const LIVING_HORSE_UNITS = new Set([
@@ -22,7 +21,10 @@ const HEAVY_ARMOR_UNITS = new Set([
   "dwarf-axeguard-l2", "dwarf-axeguard-l3", "dwarf-axe-pick-l2", "dwarf-axe-pick-l3",
   "dwarf-hammerer-l2", "dwarf-hammerer-l3", "dwarf-poleaxe-l2", "dwarf-poleaxe-l3",
 ]);
-export function deathPick(entity, { bone, spirit }) {
+export function beastDeathId(id, take = 0) {
+  return `edits/beast-death/${id}/take-${take + 1}`;
+}
+export function deathPick(entity, { bone, spirit }, selection) {
   const group = bone ? "bones" : spirit ? "spirit"
     : entity.faction === "zombies" || entity.faction === "undead-animals" ? "zombie"
     : /^treant(?:-l[23])?$/.test(entity.id) ? "wood"
@@ -33,5 +35,5 @@ export function deathPick(entity, { bone, spirit }) {
     : entity.faction === "elves" ? "elf"
     : entity.faction === "beasts" || /^(boar|greatboar|woodland-ancient-boar)$/.test(entity.id) ? "beast"
     : "flesh";
-  return { group, sound: DEATH_SOUNDS[group] };
+  return { group, sound: group === "beast" ? beastDeathId(selection.id, selection.take) : DEATH_SOUNDS[group] };
 }

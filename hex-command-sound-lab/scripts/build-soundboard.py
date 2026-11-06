@@ -83,6 +83,8 @@ shutil.copy(ROOT/'take-boundaries.json',OUT/'take-boundaries.json')
 (OUT/'catalog.json').write_text(json.dumps(result,indent=2)+'\n')
 subprocess.run([sys.executable,str(ROOT/'scripts/build-edits.py')],check=True)
 subprocess.run([sys.executable,str(ROOT/'scripts/audit-timing.py'),'--apply'],check=True)
+subprocess.run([sys.executable,str(ROOT/'scripts/build-beast-deaths.py')],check=True)
+subprocess.run([sys.executable,str(ROOT/'scripts/audit-timing.py'),'--apply'],check=True)
 result=json.loads((OUT/'catalog.json').read_text())
 (OUT/'sources.json').write_text(json.dumps(sources,indent=2)+'\n')
 (OUT/'coverage.json').write_text((VENDOR/'coverage.json').read_text())
@@ -106,6 +108,6 @@ with zipfile.ZipFile(OUT/'sound-library.zip','w',zipfile.ZIP_DEFLATED) as z:
  for path in sorted({item['path'] for item in result}):z.write(OUT/path,path)
  for f in (OUT/'licenses').rglob('*'):
   if f.is_file():z.write(f,f.relative_to(OUT))
- for name in ['palette-levels.json','upstream-levels.json','timing-audit.json','palette-refs.json','cue-duration-review.json','take-boundaries.json','catalog.json','sources.json','coverage.json','roster.json','provenance.json','workbench.json','audio-edits.json','curation-notes.json','playback-levels.json','loudness-reference.json','loudness.json','loudness.csv','workbench/terrain-portraits/provenance.json']:
+ for name in ['beast-deaths.json','palette-levels.json','upstream-levels.json','timing-audit.json','palette-refs.json','cue-duration-review.json','take-boundaries.json','catalog.json','sources.json','coverage.json','roster.json','provenance.json','workbench.json','audio-edits.json','curation-notes.json','playback-levels.json','loudness-reference.json','loudness.json','loudness.csv','workbench/terrain-portraits/provenance.json']:
   if (OUT/name).exists():z.write(OUT/name,name)
 print(json.dumps(dict(recordings=len(result),cc0=len(inventory),takes=sum(len(x.get('takes',[])) or 1 for x in result),listeningMiB=round(sum((OUT/x['path']).stat().st_size for x in result)/1048576,2)),indent=2))

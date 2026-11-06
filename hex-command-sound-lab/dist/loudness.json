@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "7ccb61f745484f4e64331400d5f3afc654ee70f5f08656471b89d6649823253a",
+  "catalogSha256": "de6da02f72586bf3b5eee2d3b852086b96f2e8cb7f3e70ad51ad9b873f5b8918",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -66674,6 +66674,930 @@
               "combinedPlaybackGainDb": -10.19,
               "playbackPeakDbFS": -17.72,
               "playbackRmsDbFS": -34.74,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/spider-fletching-take1-short-v1",
+      "name": "Spider \u00b7 Arrow Fletching take 1 short",
+      "pack": "audition-edits",
+      "path": "audio/listening/69077085ba76f90dd6fa.mp3",
+      "listeningSha256": "f6f1bfcdd3f4fe6a7bc0d395914da17a250d516a8e46c0f00703f8a74749fa42",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": 14.24,
+      "full": {
+        "duration": 0.5,
+        "peakDbFS": -21.01,
+        "rmsDbFS": -44.18,
+        "strongest50msRmsDbFS": -40.53,
+        "leadingBelow55Ms": 2.2,
+        "playbackPeakDbFS": -6.77,
+        "playbackRmsDbFS": -29.94,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": 14.24,
+          "duration": 0.5,
+          "peakDbFS": -21.01,
+          "rmsDbFS": -44.18,
+          "strongest50msRmsDbFS": -40.53,
+          "leadingBelow55Ms": 2.2,
+          "playbackPeakDbFS": -6.77,
+          "playbackRmsDbFS": -29.94,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": 14.24,
+            "playbackPeakDbFS": -6.77,
+            "playbackRmsDbFS": -29.94,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": 14.24,
+              "playbackPeakDbFS": -6.77,
+              "playbackRmsDbFS": -29.94,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": 11.25,
+            "playbackPeakDbFS": -9.76,
+            "playbackRmsDbFS": -32.93,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": 11.25,
+              "playbackPeakDbFS": -9.76,
+              "playbackRmsDbFS": -32.93,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/spider-fletching-take4-crop-v1",
+      "name": "Spider \u00b7 Arrow Fletching take 4 middle",
+      "pack": "audition-edits",
+      "path": "audio/listening/25a9aabc4ebc7cec7f9a.mp3",
+      "listeningSha256": "9a6c63af06a42df2c762df4c6e2075b95d8b305d0e462988f9696c172a2106c9",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": 2.8,
+      "full": {
+        "duration": 0.55,
+        "peakDbFS": -11.84,
+        "rmsDbFS": -32.58,
+        "strongest50msRmsDbFS": -29.09,
+        "leadingBelow55Ms": 0.3,
+        "playbackPeakDbFS": -9.04,
+        "playbackRmsDbFS": -29.78,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": 2.8,
+          "duration": 0.55,
+          "peakDbFS": -11.84,
+          "rmsDbFS": -32.58,
+          "strongest50msRmsDbFS": -29.09,
+          "leadingBelow55Ms": 0.3,
+          "playbackPeakDbFS": -9.04,
+          "playbackRmsDbFS": -29.78,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": 2.8,
+            "playbackPeakDbFS": -9.04,
+            "playbackRmsDbFS": -29.78,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": 2.8,
+              "playbackPeakDbFS": -9.04,
+              "playbackRmsDbFS": -29.78,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -0.19,
+            "playbackPeakDbFS": -12.03,
+            "playbackRmsDbFS": -32.77,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -0.19,
+              "playbackPeakDbFS": -12.03,
+              "playbackRmsDbFS": -32.77,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1",
+      "name": "Beast death \u00b7 roar_03 \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/6f6a3565d4a26719d83a.mp3",
+      "listeningSha256": "08deac372cb1d4afa302fb6869f33c927bdfd31713b928126ea4729387e5a82c",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -8.47,
+      "full": {
+        "duration": 0.5474,
+        "peakDbFS": -6.55,
+        "rmsDbFS": -25.11,
+        "strongest50msRmsDbFS": -17.82,
+        "leadingBelow55Ms": 23.8,
+        "playbackPeakDbFS": -15.02,
+        "playbackRmsDbFS": -33.58,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -8.47,
+          "duration": 0.3911,
+          "peakDbFS": -6.55,
+          "rmsDbFS": -23.65,
+          "strongest50msRmsDbFS": -17.82,
+          "leadingBelow55Ms": 23.8,
+          "playbackPeakDbFS": -15.02,
+          "playbackRmsDbFS": -32.12,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -8.47,
+            "playbackPeakDbFS": -15.02,
+            "playbackRmsDbFS": -33.58,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -8.47,
+              "playbackPeakDbFS": -15.02,
+              "playbackRmsDbFS": -32.12,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -11.46,
+            "playbackPeakDbFS": -18.01,
+            "playbackRmsDbFS": -36.57,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -11.46,
+              "playbackPeakDbFS": -18.01,
+              "playbackRmsDbFS": -35.11,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/rpg-audio/cloth2/take-1",
+      "name": "Beast death \u00b7 cloth2 \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/5758c3da9d1a6e11946c.mp3",
+      "listeningSha256": "abd19e9f2eb5fd58b89a96acb2eeaa08f729b8b7478f8c934d2eace35e66c08b",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -6.78,
+      "full": {
+        "duration": 0.5041,
+        "peakDbFS": -6.34,
+        "rmsDbFS": -28.04,
+        "strongest50msRmsDbFS": -19.51,
+        "leadingBelow55Ms": 37.2,
+        "playbackPeakDbFS": -13.12,
+        "playbackRmsDbFS": -34.82,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -6.78,
+          "duration": 0.3562,
+          "peakDbFS": -6.34,
+          "rmsDbFS": -26.53,
+          "strongest50msRmsDbFS": -19.51,
+          "leadingBelow55Ms": 37.2,
+          "playbackPeakDbFS": -13.12,
+          "playbackRmsDbFS": -33.31,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -6.78,
+            "playbackPeakDbFS": -13.12,
+            "playbackRmsDbFS": -34.82,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -6.78,
+              "playbackPeakDbFS": -13.12,
+              "playbackRmsDbFS": -33.31,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -9.77,
+            "playbackPeakDbFS": -16.11,
+            "playbackRmsDbFS": -37.81,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -9.77,
+              "playbackPeakDbFS": -16.11,
+              "playbackRmsDbFS": -36.3,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/rpg-audio/cloth3/take-1",
+      "name": "Beast death \u00b7 cloth3 \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/187f2175f276ccf637b8.mp3",
+      "listeningSha256": "d86206a0c17f4ecd0d1d97f07c2b9401b3681a13c696c53bfd9df623ee51eebc",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -6.59,
+      "full": {
+        "duration": 0.5656,
+        "peakDbFS": -6.39,
+        "rmsDbFS": -26.34,
+        "strongest50msRmsDbFS": -19.7,
+        "leadingBelow55Ms": 0.0,
+        "playbackPeakDbFS": -12.98,
+        "playbackRmsDbFS": -32.93,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -6.59,
+          "duration": 0.436,
+          "peakDbFS": -6.39,
+          "rmsDbFS": -25.21,
+          "strongest50msRmsDbFS": -19.7,
+          "leadingBelow55Ms": 0.0,
+          "playbackPeakDbFS": -12.98,
+          "playbackRmsDbFS": -31.8,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -6.59,
+            "playbackPeakDbFS": -12.98,
+            "playbackRmsDbFS": -32.93,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -6.59,
+              "playbackPeakDbFS": -12.98,
+              "playbackRmsDbFS": -31.8,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -9.58,
+            "playbackPeakDbFS": -15.97,
+            "playbackRmsDbFS": -35.92,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -9.58,
+              "playbackPeakDbFS": -15.97,
+              "playbackRmsDbFS": -34.79,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/edits/snake-belt-texture-v2/take-1",
+      "name": "Beast death \u00b7 Snake \u00b7 rough belt texture \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/3d414e67b49806f9d5a4.mp3",
+      "listeningSha256": "682f91988e06cfe3d233231abc16d2f8ae713a32284d0c524f6469a672b59fe8",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -8.63,
+      "full": {
+        "duration": 0.6847,
+        "peakDbFS": -6.66,
+        "rmsDbFS": -24.89,
+        "strongest50msRmsDbFS": -17.66,
+        "leadingBelow55Ms": 0.1,
+        "playbackPeakDbFS": -15.29,
+        "playbackRmsDbFS": -33.52,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -8.63,
+          "duration": 0.5458,
+          "peakDbFS": -6.66,
+          "rmsDbFS": -23.9,
+          "strongest50msRmsDbFS": -17.66,
+          "leadingBelow55Ms": 0.1,
+          "playbackPeakDbFS": -15.29,
+          "playbackRmsDbFS": -32.53,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -8.63,
+            "playbackPeakDbFS": -15.29,
+            "playbackRmsDbFS": -33.52,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -8.63,
+              "playbackPeakDbFS": -15.29,
+              "playbackRmsDbFS": -32.53,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -11.62,
+            "playbackPeakDbFS": -18.28,
+            "playbackRmsDbFS": -36.51,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -11.62,
+              "playbackPeakDbFS": -18.28,
+              "playbackRmsDbFS": -35.52,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/edits/spider-fletching-take1-short-v1/take-1",
+      "name": "Beast death \u00b7 Spider \u00b7 Arrow Fletching take 1 short \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/1c4b392d40845d631970.mp3",
+      "listeningSha256": "68facc7379c174efc04b0bdedacab49aeb3ef582cb13d6a16ee48c90d155149c",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -4.63,
+      "full": {
+        "duration": 0.589,
+        "peakDbFS": -6.39,
+        "rmsDbFS": -26.5,
+        "strongest50msRmsDbFS": -21.66,
+        "leadingBelow55Ms": 0.0,
+        "playbackPeakDbFS": -11.02,
+        "playbackRmsDbFS": -31.13,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -4.63,
+          "duration": 0.5308,
+          "peakDbFS": -6.39,
+          "rmsDbFS": -26.05,
+          "strongest50msRmsDbFS": -21.66,
+          "leadingBelow55Ms": 0.0,
+          "playbackPeakDbFS": -11.02,
+          "playbackRmsDbFS": -30.68,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -4.63,
+            "playbackPeakDbFS": -11.02,
+            "playbackRmsDbFS": -31.13,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -4.63,
+              "playbackPeakDbFS": -11.02,
+              "playbackRmsDbFS": -30.68,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -7.62,
+            "playbackPeakDbFS": -14.01,
+            "playbackRmsDbFS": -34.12,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -7.62,
+              "playbackPeakDbFS": -14.01,
+              "playbackRmsDbFS": -33.67,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/edits/spider-fletching-take4-crop-v1/take-1",
+      "name": "Beast death \u00b7 Spider \u00b7 Arrow Fletching take 4 middle \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/ab13a17c3782e062ddc2.mp3",
+      "listeningSha256": "c48b814b5dc59bff8bbe63301c7d4ef4abe8992505541024c8099abf2c29120e",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -2.62,
+      "full": {
+        "duration": 0.639,
+        "peakDbFS": -6.53,
+        "rmsDbFS": -29.6,
+        "strongest50msRmsDbFS": -23.67,
+        "leadingBelow55Ms": 0.0,
+        "playbackPeakDbFS": -9.15,
+        "playbackRmsDbFS": -32.22,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -2.62,
+          "duration": 0.5358,
+          "peakDbFS": -6.53,
+          "rmsDbFS": -28.84,
+          "strongest50msRmsDbFS": -23.67,
+          "leadingBelow55Ms": 0.0,
+          "playbackPeakDbFS": -9.15,
+          "playbackRmsDbFS": -31.46,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -2.62,
+            "playbackPeakDbFS": -9.15,
+            "playbackRmsDbFS": -32.22,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -2.62,
+              "playbackPeakDbFS": -9.15,
+              "playbackRmsDbFS": -31.46,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -5.61,
+            "playbackPeakDbFS": -12.14,
+            "playbackRmsDbFS": -35.21,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -5.61,
+              "playbackPeakDbFS": -12.14,
+              "playbackRmsDbFS": -34.45,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_03.ogg/take-1",
+      "name": "Beast death \u00b7 alien_03 \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/36cca978ffe11b43aaf7.mp3",
+      "listeningSha256": "e88d7110a4c05c0fa6ef4e670ba85050e4e3378a027bafd9d2c19c618c72cb88",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -7.36,
+      "full": {
+        "duration": 0.8144,
+        "peakDbFS": -6.43,
+        "rmsDbFS": -27.35,
+        "strongest50msRmsDbFS": -18.93,
+        "leadingBelow55Ms": 3.6,
+        "playbackPeakDbFS": -13.79,
+        "playbackRmsDbFS": -34.71,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -7.36,
+          "duration": 0.6306,
+          "peakDbFS": -6.43,
+          "rmsDbFS": -26.24,
+          "strongest50msRmsDbFS": -18.93,
+          "leadingBelow55Ms": 3.6,
+          "playbackPeakDbFS": -13.79,
+          "playbackRmsDbFS": -33.6,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -7.36,
+            "playbackPeakDbFS": -13.79,
+            "playbackRmsDbFS": -34.71,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -7.36,
+              "playbackPeakDbFS": -13.79,
+              "playbackRmsDbFS": -33.6,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -10.35,
+            "playbackPeakDbFS": -16.78,
+            "playbackRmsDbFS": -37.7,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -10.35,
+              "playbackPeakDbFS": -16.78,
+              "playbackRmsDbFS": -36.59,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/edits/octopus-gurgle-soft-v1/take-1",
+      "name": "Beast death \u00b7 Octopus \u00b7 soft gurgle \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/0e47acac4d3b61c7877b.mp3",
+      "listeningSha256": "7fc7925d3e4bc139f237659fae55365410ce56510ec6a67fcacbf73e77dfa62d",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -8.48,
+      "full": {
+        "duration": 1.0307,
+        "peakDbFS": -6.46,
+        "rmsDbFS": -25.61,
+        "strongest50msRmsDbFS": -17.81,
+        "leadingBelow55Ms": 3.9,
+        "playbackPeakDbFS": -14.94,
+        "playbackRmsDbFS": -34.09,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -8.48,
+          "duration": 0.8401,
+          "peakDbFS": -6.46,
+          "rmsDbFS": -24.72,
+          "strongest50msRmsDbFS": -17.81,
+          "leadingBelow55Ms": 3.9,
+          "playbackPeakDbFS": -14.94,
+          "playbackRmsDbFS": -33.2,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -8.48,
+            "playbackPeakDbFS": -14.94,
+            "playbackRmsDbFS": -34.09,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -8.48,
+              "playbackPeakDbFS": -14.94,
+              "playbackRmsDbFS": -33.2,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -11.47,
+            "playbackPeakDbFS": -17.93,
+            "playbackRmsDbFS": -37.08,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -11.47,
+              "playbackPeakDbFS": -17.93,
+              "playbackRmsDbFS": -36.19,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_02.ogg/take-1",
+      "name": "Beast death \u00b7 alien_02 \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/6c9287e4a338380ff468.mp3",
+      "listeningSha256": "418048d45d25c610e38649553a4f931effc74e2dc544e83c065185ab77626a3a",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -8.88,
+      "full": {
+        "duration": 0.6597,
+        "peakDbFS": -6.16,
+        "rmsDbFS": -26.65,
+        "strongest50msRmsDbFS": -17.41,
+        "leadingBelow55Ms": 15.9,
+        "playbackPeakDbFS": -15.04,
+        "playbackRmsDbFS": -35.53,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -8.88,
+          "duration": 0.5308,
+          "peakDbFS": -6.16,
+          "rmsDbFS": -25.71,
+          "strongest50msRmsDbFS": -17.41,
+          "leadingBelow55Ms": 15.9,
+          "playbackPeakDbFS": -15.04,
+          "playbackRmsDbFS": -34.59,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -8.88,
+            "playbackPeakDbFS": -15.04,
+            "playbackRmsDbFS": -35.53,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -8.88,
+              "playbackPeakDbFS": -15.04,
+              "playbackRmsDbFS": -34.59,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -11.87,
+            "playbackPeakDbFS": -18.03,
+            "playbackRmsDbFS": -38.52,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -11.87,
+              "playbackPeakDbFS": -18.03,
+              "playbackRmsDbFS": -37.58,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/beast-death/edits/horse-0286-trim-v1/take-1",
+      "name": "Beast death \u00b7 0286 \u00b7 lead-in trimmed \u00b7 fade",
+      "pack": "audition-edits",
+      "path": "audio/listening/ed86d912f64ca1288b88.mp3",
+      "listeningSha256": "d43ca87ec1e98801b978b02540dc9f8878399e0ce79a75d78bd7b997c4483896",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -7.48,
+      "full": {
+        "duration": 0.494,
+        "peakDbFS": -6.55,
+        "rmsDbFS": -25.04,
+        "strongest50msRmsDbFS": -18.81,
+        "leadingBelow55Ms": 0.6,
+        "playbackPeakDbFS": -14.03,
+        "playbackRmsDbFS": -32.52,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -7.48,
+          "duration": 0.3712,
+          "peakDbFS": -6.55,
+          "rmsDbFS": -23.8,
+          "strongest50msRmsDbFS": -18.81,
+          "leadingBelow55Ms": 0.6,
+          "playbackPeakDbFS": -14.03,
+          "playbackRmsDbFS": -31.28,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -7.48,
+            "playbackPeakDbFS": -14.03,
+            "playbackRmsDbFS": -32.52,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -7.48,
+              "playbackPeakDbFS": -14.03,
+              "playbackRmsDbFS": -31.28,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -10.47,
+            "playbackPeakDbFS": -17.02,
+            "playbackRmsDbFS": -35.51,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -10.47,
+              "playbackPeakDbFS": -17.02,
+              "playbackRmsDbFS": -34.27,
               "playbackStrongest50msRmsDbFS": -29.28,
               "flags": []
             }

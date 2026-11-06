@@ -23,9 +23,9 @@
       }
     },
     "death": {
-      "choices": 11,
+      "choices": 20,
       "min": -26.29,
-      "average": -26.2,
+      "average": -26.24,
       "max": -25.29,
       "referenceRange": null
     },
@@ -37,9 +37,9 @@
       "referenceRange": null
     },
     "selection": {
-      "choices": 27,
+      "choices": 28,
       "min": -31.28,
-      "average": -26.49,
+      "average": -26.47,
       "max": -26.29,
       "referenceRange": null
     },
@@ -3965,12 +3965,12 @@
       ]
     },
     {
-      "id": "edits/death-cough-beast-v1",
-      "name": "Beast death \u00b7 cough and growl",
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1",
+      "name": "Beast death \u00b7 roar_03 \u00b7 fade",
       "take": 1,
       "context": "death",
       "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -14.73,
+      "playbackPeakDbFS": -15.02,
       "inRange": true,
       "uses": [
         {
@@ -4019,36 +4019,6 @@
           "levelClass": null
         },
         {
-          "entity": "beasts/dragon",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/dragon-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/dragon-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-bat",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-bat-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-bat-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
           "entity": "beasts/giant-crab",
           "action": "death",
           "levelClass": null
@@ -4060,66 +4030,6 @@
         },
         {
           "entity": "beasts/giant-crab-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-owl",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-owl-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-owl-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-raven",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-raven-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-raven-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-snake",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-snake-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-snake-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-spider",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-spider-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-spider-l3",
           "action": "death",
           "levelClass": null
         },
@@ -4139,36 +4049,6 @@
           "levelClass": null
         },
         {
-          "entity": "beasts/giant-wasp",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-wasp-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/giant-wasp-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/gryphon",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/gryphon-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/gryphon-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
           "entity": "beasts/lynx",
           "action": "death",
           "levelClass": null
@@ -4184,51 +4064,6 @@
           "levelClass": null
         },
         {
-          "entity": "beasts/octopus",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/octopus-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/octopus-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/ray",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/ray-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/ray-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/sea-serpent",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/sea-serpent-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/sea-serpent-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
           "entity": "beasts/shark",
           "action": "death",
           "levelClass": null
@@ -4240,21 +4075,6 @@
         },
         {
           "entity": "beasts/shark-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/stag",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/stag-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "beasts/stag-l3",
           "action": "death",
           "levelClass": null
         },
@@ -4584,32 +4404,6 @@
       ]
     },
     {
-      "id": "rpg-audio/cloth2",
-      "name": "cloth2",
-      "take": 1,
-      "context": "attack",
-      "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -13.45,
-      "inRange": true,
-      "uses": [
-        {
-          "entity": "beasts/giant-bat",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "beasts/giant-bat-l2",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "beasts/giant-bat-l3",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        }
-      ]
-    },
-    {
       "id": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
       "name": "spell_fire_07",
       "take": 1,
@@ -4651,6 +4445,73 @@
         {
           "entity": "undead-animals/bone-dragon-l3",
           "action": "attack-fire-breath",
+          "levelClass": "attack"
+        }
+      ]
+    },
+    {
+      "id": "edits/beast-death/rpg-audio/cloth2/take-1",
+      "name": "Beast death \u00b7 cloth2 \u00b7 fade",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -13.12,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/dragon",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-bat",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-bat-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-bat-l3",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/drawKnife1",
+      "name": "drawKnife1",
+      "take": 1,
+      "context": "attack",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -12.81,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/giant-bat",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "beasts/giant-bat-l2",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "beasts/giant-bat-l3",
+          "action": "attack-bite",
           "levelClass": "attack"
         }
       ]
@@ -4978,6 +4839,62 @@
       ]
     },
     {
+      "id": "edits/beast-death/rpg-audio/cloth3/take-1",
+      "name": "Beast death \u00b7 cloth3 \u00b7 fade",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -12.98,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/giant-owl",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-owl-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-owl-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-raven",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-raven-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-raven-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/gryphon",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/gryphon-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/gryphon-l3",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
       "id": "edits/snake-belt-texture-v2",
       "name": "Snake \u00b7 rough belt texture",
       "take": 1,
@@ -5060,12 +4977,79 @@
       ]
     },
     {
-      "id": "rubberduck/80-cc0-creature-sfx/alien_04.ogg",
-      "name": "alien_04",
+      "id": "edits/beast-death/edits/snake-belt-texture-v2/take-1",
+      "name": "Beast death \u00b7 Snake \u00b7 rough belt texture \u00b7 fade",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -15.29,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/giant-snake",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
+      "id": "edits/spider-fletching-take1-short-v1",
+      "name": "Spider \u00b7 Arrow Fletching take 1 short",
       "take": 1,
       "context": "selection",
-      "playbackStrongest50msRmsDbFS": -26.79,
-      "playbackPeakDbFS": -6.69,
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -6.77,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/giant-spider",
+          "action": "tap",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "tap",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "tap",
+          "levelClass": null
+        }
+      ]
+    },
+    {
+      "id": "edits/spider-fletching-take4-crop-v1",
+      "name": "Spider \u00b7 Arrow Fletching take 4 middle",
+      "take": 1,
+      "context": "selection",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -9.04,
       "inRange": true,
       "uses": [
         {
@@ -5127,6 +5111,58 @@
       ]
     },
     {
+      "id": "edits/beast-death/edits/spider-fletching-take1-short-v1/take-1",
+      "name": "Beast death \u00b7 Spider \u00b7 Arrow Fletching take 1 short \u00b7 fade",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -11.02,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/giant-spider",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
+      "id": "edits/beast-death/edits/spider-fletching-take4-crop-v1/take-1",
+      "name": "Beast death \u00b7 Spider \u00b7 Arrow Fletching take 4 middle \u00b7 fade",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -9.15,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/giant-spider",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
       "id": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
       "name": "alien_03",
       "take": 1,
@@ -5148,6 +5184,32 @@
         {
           "entity": "beasts/giant-wasp-l3",
           "action": "tap",
+          "levelClass": null
+        }
+      ]
+    },
+    {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_03.ogg/take-1",
+      "name": "Beast death \u00b7 alien_03 \u00b7 fade",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -13.79,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/giant-wasp",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-wasp-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-wasp-l3",
+          "action": "death",
           "levelClass": null
         }
       ]
@@ -5205,6 +5267,32 @@
       ]
     },
     {
+      "id": "edits/beast-death/edits/octopus-gurgle-soft-v1/take-1",
+      "name": "Beast death \u00b7 Octopus \u00b7 soft gurgle \u00b7 fade",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -14.94,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/octopus",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/octopus-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/octopus-l3",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
       "id": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
       "name": "alien_02",
       "take": 1,
@@ -5258,6 +5346,32 @@
           "entity": "merfolk/reefguard",
           "action": "attack-tail",
           "levelClass": "attack"
+        }
+      ]
+    },
+    {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_02.ogg/take-1",
+      "name": "Beast death \u00b7 alien_02 \u00b7 fade",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -15.04,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/ray",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/ray-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/ray-l3",
+          "action": "death",
+          "levelClass": null
         }
       ]
     },
@@ -5395,6 +5509,32 @@
           "entity": "beasts/stag-l3",
           "action": "attack-antlers",
           "levelClass": "attack"
+        }
+      ]
+    },
+    {
+      "id": "edits/beast-death/edits/horse-0286-trim-v1/take-1",
+      "name": "Beast death \u00b7 0286 \u00b7 lead-in trimmed \u00b7 fade",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -14.03,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/stag",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/stag-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/stag-l3",
+          "action": "death",
+          "levelClass": null
         }
       ]
     },

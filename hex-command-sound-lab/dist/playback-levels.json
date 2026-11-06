@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "7ccb61f745484f4e64331400d5f3afc654ee70f5f08656471b89d6649823253a",
+  "catalogSha256": "de6da02f72586bf3b5eee2d3b852086b96f2e8cb7f3e70ad51ad9b873f5b8918",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -14667,6 +14667,270 @@
           "full": -5.0,
           "takes": [
             -5.0
+          ]
+        }
+      }
+    },
+    "edits/spider-fletching-take1-short-v1": {
+      "full": 19.43,
+      "takes": [
+        19.43
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": 19.43,
+          "takes": [
+            19.43
+          ]
+        },
+        "terrain": {
+          "full": 16.44,
+          "takes": [
+            16.44
+          ]
+        }
+      }
+    },
+    "edits/spider-fletching-take4-crop-v1": {
+      "full": 7.99,
+      "takes": [
+        7.99
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": 7.99,
+          "takes": [
+            7.99
+          ]
+        },
+        "terrain": {
+          "full": 5.0,
+          "takes": [
+            5.0
+          ]
+        }
+      }
+    },
+    "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1": {
+      "full": -3.28,
+      "takes": [
+        -3.28
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -3.28,
+          "takes": [
+            -3.28
+          ]
+        },
+        "terrain": {
+          "full": -6.27,
+          "takes": [
+            -6.27
+          ]
+        }
+      }
+    },
+    "edits/beast-death/rpg-audio/cloth2/take-1": {
+      "full": -1.59,
+      "takes": [
+        -1.59
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -1.59,
+          "takes": [
+            -1.59
+          ]
+        },
+        "terrain": {
+          "full": -4.58,
+          "takes": [
+            -4.58
+          ]
+        }
+      }
+    },
+    "edits/beast-death/rpg-audio/cloth3/take-1": {
+      "full": -1.4,
+      "takes": [
+        -1.4
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -1.4,
+          "takes": [
+            -1.4
+          ]
+        },
+        "terrain": {
+          "full": -4.39,
+          "takes": [
+            -4.39
+          ]
+        }
+      }
+    },
+    "edits/beast-death/edits/snake-belt-texture-v2/take-1": {
+      "full": -3.44,
+      "takes": [
+        -3.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -3.44,
+          "takes": [
+            -3.44
+          ]
+        },
+        "terrain": {
+          "full": -6.43,
+          "takes": [
+            -6.43
+          ]
+        }
+      }
+    },
+    "edits/beast-death/edits/spider-fletching-take1-short-v1/take-1": {
+      "full": 0.56,
+      "takes": [
+        0.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": 0.56,
+          "takes": [
+            0.56
+          ]
+        },
+        "terrain": {
+          "full": -2.43,
+          "takes": [
+            -2.43
+          ]
+        }
+      }
+    },
+    "edits/beast-death/edits/spider-fletching-take4-crop-v1/take-1": {
+      "full": 2.57,
+      "takes": [
+        2.57
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": 2.57,
+          "takes": [
+            2.57
+          ]
+        },
+        "terrain": {
+          "full": -0.42,
+          "takes": [
+            -0.42
+          ]
+        }
+      }
+    },
+    "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_03.ogg/take-1": {
+      "full": -2.17,
+      "takes": [
+        -2.17
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -2.17,
+          "takes": [
+            -2.17
+          ]
+        },
+        "terrain": {
+          "full": -5.16,
+          "takes": [
+            -5.16
+          ]
+        }
+      }
+    },
+    "edits/beast-death/edits/octopus-gurgle-soft-v1/take-1": {
+      "full": -3.29,
+      "takes": [
+        -3.29
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -3.29,
+          "takes": [
+            -3.29
+          ]
+        },
+        "terrain": {
+          "full": -6.28,
+          "takes": [
+            -6.28
+          ]
+        }
+      }
+    },
+    "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_02.ogg/take-1": {
+      "full": -3.69,
+      "takes": [
+        -3.69
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -3.69,
+          "takes": [
+            -3.69
+          ]
+        },
+        "terrain": {
+          "full": -6.68,
+          "takes": [
+            -6.68
+          ]
+        }
+      }
+    },
+    "edits/beast-death/edits/horse-0286-trim-v1/take-1": {
+      "full": -2.29,
+      "takes": [
+        -2.29
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -2.29,
+          "takes": [
+            -2.29
+          ]
+        },
+        "terrain": {
+          "full": -5.28,
+          "takes": [
+            -5.28
           ]
         }
       }

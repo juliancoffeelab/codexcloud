@@ -1,0 +1,348 @@
+{
+  "method": "Bake selection-derived beast deaths: one shared fade/reflection treatment.\n\nUses the actual decoded listening take, including existing authored processing.\nNo voice pitch, saturation or modulation is added. Requires Python/Node/FFmpeg.",
+  "edits": [
+    {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+      "take": 0,
+      "units": [
+        "beasts/basilisk",
+        "beasts/basilisk-l2",
+        "beasts/basilisk-l3",
+        "beasts/bear",
+        "beasts/bear-l2",
+        "beasts/bear-l3",
+        "beasts/crocodile",
+        "beasts/crocodile-l2",
+        "beasts/crocodile-l3",
+        "beasts/giant-crab",
+        "beasts/giant-crab-l2",
+        "beasts/giant-crab-l3",
+        "beasts/giant-tortoise",
+        "beasts/giant-tortoise-l2",
+        "beasts/giant-tortoise-l3",
+        "beasts/lynx",
+        "beasts/lynx-l2",
+        "beasts/lynx-l3",
+        "beasts/shark",
+        "beasts/shark-l2",
+        "beasts/shark-l3",
+        "woodland/boar",
+        "woodland/greatboar",
+        "woodland/woodland-ancient-boar"
+      ],
+      "sourceListeningSha256": "4171df41ff2afa630bd9fbceb9fd95cdb15ba70c8fb51e68012cb882455d71db",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.4584
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.4584",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.114600:d=0.343800",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=5.50dB"
+      ],
+      "active": true
+    },
+    {
+      "id": "edits/beast-death/rpg-audio/cloth2/take-1",
+      "sourceId": "rpg-audio/cloth2",
+      "take": 0,
+      "units": [
+        "beasts/dragon",
+        "beasts/dragon-l2",
+        "beasts/dragon-l3",
+        "beasts/giant-bat",
+        "beasts/giant-bat-l2",
+        "beasts/giant-bat-l3"
+      ],
+      "sourceListeningSha256": "23c62154263502809b9ac397afc61a7076ffbda4a0a48ca1fd207fe023cc1842",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.4151
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.4151",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.103775:d=0.311325",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=15.40dB"
+      ],
+      "active": true
+    },
+    {
+      "id": "edits/beast-death/rpg-audio/cloth3/take-1",
+      "sourceId": "rpg-audio/cloth3",
+      "take": 0,
+      "units": [
+        "beasts/giant-owl",
+        "beasts/giant-owl-l2",
+        "beasts/giant-owl-l3",
+        "beasts/giant-raven",
+        "beasts/giant-raven-l2",
+        "beasts/giant-raven-l3",
+        "beasts/gryphon",
+        "beasts/gryphon-l2",
+        "beasts/gryphon-l3"
+      ],
+      "sourceListeningSha256": "264d51886aa2dd75f26985655c01236813e22e93b6ae349ca9aac60903ea7ca8",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.4766
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.4766",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.119150:d=0.357450",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=17.80dB"
+      ],
+      "active": true
+    },
+    {
+      "id": "edits/beast-death/edits/snake-belt-texture-v2/take-1",
+      "sourceId": "edits/snake-belt-texture-v2",
+      "take": 0,
+      "units": [
+        "beasts/giant-snake",
+        "beasts/giant-snake-l2",
+        "beasts/giant-snake-l3",
+        "beasts/sea-serpent",
+        "beasts/sea-serpent-l2",
+        "beasts/sea-serpent-l3"
+      ],
+      "sourceListeningSha256": "833a320628eddd560d29bf33ce67c29e7902c18dd8665ae97097f3c4986ebf97",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.5957
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.5957",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.148925:d=0.446775",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=24.10dB"
+      ],
+      "active": true
+    },
+    {
+      "id": "edits/beast-death/edits/spider-fletching-take1-short-v1/take-1",
+      "sourceId": "edits/spider-fletching-take1-short-v1",
+      "take": 0,
+      "units": [
+        "beasts/giant-spider",
+        "beasts/giant-spider-l2",
+        "beasts/giant-spider-l3"
+      ],
+      "sourceListeningSha256": "f6f1bfcdd3f4fe6a7bc0d395914da17a250d516a8e46c0f00703f8a74749fa42",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.5
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.5",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.125000:d=0.375000",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=36.30dB"
+      ],
+      "active": true
+    },
+    {
+      "id": "edits/beast-death/edits/spider-fletching-take4-crop-v1/take-1",
+      "sourceId": "edits/spider-fletching-take4-crop-v1",
+      "take": 0,
+      "units": [
+        "beasts/giant-spider",
+        "beasts/giant-spider-l2",
+        "beasts/giant-spider-l3"
+      ],
+      "sourceListeningSha256": "9a6c63af06a42df2c762df4c6e2075b95d8b305d0e462988f9696c172a2106c9",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.55
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.55",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.137500:d=0.412500",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=19.80dB"
+      ],
+      "active": true
+    },
+    {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_03.ogg/take-1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
+      "take": 0,
+      "units": [
+        "beasts/giant-wasp",
+        "beasts/giant-wasp-l2",
+        "beasts/giant-wasp-l3"
+      ],
+      "sourceListeningSha256": "f26e2bf9b60ed92c61dd615f62a70be2170da0d91b43597b714c69485e57a285",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.7254
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.7254",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.181350:d=0.544050",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=6.10dB"
+      ],
+      "active": true
+    },
+    {
+      "id": "edits/beast-death/edits/octopus-gurgle-soft-v1/take-1",
+      "sourceId": "edits/octopus-gurgle-soft-v1",
+      "take": 0,
+      "units": [
+        "beasts/octopus",
+        "beasts/octopus-l2",
+        "beasts/octopus-l3"
+      ],
+      "sourceListeningSha256": "a211119d64674a33249a4b782c860aca67fb43a7498731c17490e814b519b762",
+      "sourceRange": {
+        "start": 0.0499,
+        "duration": 0.9417
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0.0499:duration=0.9417",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.235425:d=0.706275",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=22.20dB"
+      ],
+      "active": true
+    },
+    {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_02.ogg/take-1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
+      "take": 0,
+      "units": [
+        "beasts/ray",
+        "beasts/ray-l2",
+        "beasts/ray-l3"
+      ],
+      "sourceListeningSha256": "680ed4849491ddda945541ff0748d85d5e6b9a95bfb1649eaad04d68ab5be8c7",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.5707
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.5707",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.142675:d=0.428025",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=8.60dB"
+      ],
+      "active": true
+    },
+    {
+      "id": "edits/beast-death/edits/horse-0286-trim-v1/take-1",
+      "sourceId": "edits/horse-0286-trim-v1",
+      "take": 0,
+      "units": [
+        "beasts/stag",
+        "beasts/stag-l2",
+        "beasts/stag-l3"
+      ],
+      "sourceListeningSha256": "b428a18b3299984f4855ffd4cdc2a04bfae6c2b40fba9f25fe638fb028a47d5d",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.405
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.405",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.101250:d=0.303750",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=10.20dB"
+      ],
+      "active": true
+    }
+  ]
+}

@@ -18618,5 +18618,779 @@
       ]
     },
     "preserveLevel": false
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/spider-fletching-take1-short-v1",
+    "name": "Spider \u00b7 Arrow Fletching take 1 short",
+    "path": "audio/listening/69077085ba76f90dd6fa.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+    "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+    "kind": "processed-foley",
+    "notes": "Shortened take 1 rustle for spider selection. Keep 0.32\u20130.82s of the original, with brief fades; the original take remains available. A 12dB preparation gain keeps this quiet source within the normal playback matching gain budget. Per-take level matching follows the live-game reference.",
+    "sourcePath": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+    "sourceHash": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+    "duration": 0.5,
+    "gainDb": 0,
+    "categories": [
+      "equipment"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.5
+      }
+    ],
+    "previousTakes": [
+      {
+        "start": 0.3886,
+        "duration": 0.5429
+      },
+      {
+        "start": 1.5787,
+        "duration": 1.5856
+      },
+      {
+        "start": 3.4371,
+        "duration": 2.3579
+      },
+      {
+        "start": 6.1355,
+        "duration": 0.9881
+      },
+      {
+        "start": 7.4188,
+        "duration": 8.9129
+      },
+      {
+        "start": 16.5536,
+        "duration": 14.6144
+      }
+    ],
+    "originalKind": "recorded-weapons",
+    "derivedFrom": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+    "processingRecipe": {
+      "id": "edits/spider-fletching-take1-short-v1",
+      "sourceId": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+      "sourceHash": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+      "name": "Spider \u00b7 Arrow Fletching take 1 short",
+      "intent": "Shortened take 1 rustle for spider selection. Keep 0.32\u20130.82s of the original, with brief fades; the original take remains available. A 12dB preparation gain keeps this quiet source within the normal playback matching gain budget.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.32:duration=0.5",
+        "asetpts=PTS-STARTPTS",
+        "volume=12dB",
+        "afade=t=in:d=0.008",
+        "afade=t=out:st=0.450:d=0.05"
+      ]
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/spider-fletching-take4-crop-v1",
+    "name": "Spider \u00b7 Arrow Fletching take 4 middle",
+    "path": "audio/listening/25a9aabc4ebc7cec7f9a.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+    "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+    "kind": "processed-foley",
+    "notes": "Alternative spider selection from 35\u201390% of take 4: 6.45\u20137.00s of the original, with short fades. A 12dB preparation gain keeps this quiet source within the normal playback matching gain budget. Per-take level matching follows the live-game reference.",
+    "sourcePath": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+    "sourceHash": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+    "duration": 0.55,
+    "gainDb": 0,
+    "categories": [
+      "equipment"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.55
+      }
+    ],
+    "previousTakes": [
+      {
+        "start": 0.3886,
+        "duration": 0.5429
+      },
+      {
+        "start": 1.5787,
+        "duration": 1.5856
+      },
+      {
+        "start": 3.4371,
+        "duration": 2.3579
+      },
+      {
+        "start": 6.1355,
+        "duration": 0.9881
+      },
+      {
+        "start": 7.4188,
+        "duration": 8.9129
+      },
+      {
+        "start": 16.5536,
+        "duration": 14.6144
+      }
+    ],
+    "originalKind": "recorded-weapons",
+    "derivedFrom": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+    "processingRecipe": {
+      "id": "edits/spider-fletching-take4-crop-v1",
+      "sourceId": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+      "sourceHash": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+      "name": "Spider \u00b7 Arrow Fletching take 4 middle",
+      "intent": "Alternative spider selection from 35\u201390% of take 4: 6.45\u20137.00s of the original, with short fades. A 12dB preparation gain keeps this quiet source within the normal playback matching gain budget.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=6.45:duration=0.55",
+        "asetpts=PTS-STARTPTS",
+        "volume=12dB",
+        "afade=t=in:d=0.008",
+        "afade=t=out:st=0.480:d=0.07"
+      ]
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1",
+    "name": "Beast death \u00b7 roar_03 \u00b7 fade",
+    "path": "audio/listening/6f6a3565d4a26719d83a.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+    "sourceHash": "983396c808eb658ed3bd223ffaf9ea7f756dba7bc45ecc3fde117083026a4556",
+    "duration": 0.5474,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.3911
+      }
+    ],
+    "originalKind": "designed-effects",
+    "derivedFrom": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+    "processingRecipe": {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+      "take": 0,
+      "units": [
+        "beasts/basilisk",
+        "beasts/basilisk-l2",
+        "beasts/basilisk-l3",
+        "beasts/bear",
+        "beasts/bear-l2",
+        "beasts/bear-l3",
+        "beasts/crocodile",
+        "beasts/crocodile-l2",
+        "beasts/crocodile-l3",
+        "beasts/giant-crab",
+        "beasts/giant-crab-l2",
+        "beasts/giant-crab-l3",
+        "beasts/giant-tortoise",
+        "beasts/giant-tortoise-l2",
+        "beasts/giant-tortoise-l3",
+        "beasts/lynx",
+        "beasts/lynx-l2",
+        "beasts/lynx-l3",
+        "beasts/shark",
+        "beasts/shark-l2",
+        "beasts/shark-l3",
+        "woodland/boar",
+        "woodland/greatboar",
+        "woodland/woodland-ancient-boar"
+      ],
+      "sourceListeningSha256": "4171df41ff2afa630bd9fbceb9fd95cdb15ba70c8fb51e68012cb882455d71db",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.4584
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.4584",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.114600:d=0.343800",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=5.50dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/rpg-audio/cloth2/take-1",
+    "name": "Beast death \u00b7 cloth2 \u00b7 fade",
+    "path": "audio/listening/5758c3da9d1a6e11946c.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/rpg-audio",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "kenney/rpg-audio/Audio/cloth2.ogg",
+    "sourceHash": "8a7451193c38bc05483aec25dd193e163a15d44cf7fff04ac7912573231b0201",
+    "duration": 0.5041,
+    "gainDb": 0,
+    "categories": [
+      "movement"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.3562
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "rpg-audio/cloth2",
+    "processingRecipe": {
+      "id": "edits/beast-death/rpg-audio/cloth2/take-1",
+      "sourceId": "rpg-audio/cloth2",
+      "take": 0,
+      "units": [
+        "beasts/dragon",
+        "beasts/dragon-l2",
+        "beasts/dragon-l3",
+        "beasts/giant-bat",
+        "beasts/giant-bat-l2",
+        "beasts/giant-bat-l3"
+      ],
+      "sourceListeningSha256": "23c62154263502809b9ac397afc61a7076ffbda4a0a48ca1fd207fe023cc1842",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.4151
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.4151",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.103775:d=0.311325",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=15.40dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/rpg-audio/cloth3/take-1",
+    "name": "Beast death \u00b7 cloth3 \u00b7 fade",
+    "path": "audio/listening/187f2175f276ccf637b8.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/rpg-audio",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "kenney/rpg-audio/Audio/cloth3.ogg",
+    "sourceHash": "a48632d17a4f1416541d261a32a31612e01267144c407fa3ecab3ff410f0085b",
+    "duration": 0.5656,
+    "gainDb": 0,
+    "categories": [
+      "movement"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.436
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "rpg-audio/cloth3",
+    "processingRecipe": {
+      "id": "edits/beast-death/rpg-audio/cloth3/take-1",
+      "sourceId": "rpg-audio/cloth3",
+      "take": 0,
+      "units": [
+        "beasts/giant-owl",
+        "beasts/giant-owl-l2",
+        "beasts/giant-owl-l3",
+        "beasts/giant-raven",
+        "beasts/giant-raven-l2",
+        "beasts/giant-raven-l3",
+        "beasts/gryphon",
+        "beasts/gryphon-l2",
+        "beasts/gryphon-l3"
+      ],
+      "sourceListeningSha256": "264d51886aa2dd75f26985655c01236813e22e93b6ae349ca9aac60903ea7ca8",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.4766
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.4766",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.119150:d=0.357450",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=17.80dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/edits/snake-belt-texture-v2/take-1",
+    "name": "Beast death \u00b7 Snake \u00b7 rough belt texture \u00b7 fade",
+    "path": "audio/listening/3d414e67b49806f9d5a4.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/rpg-audio",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "kenney/rpg-audio/Audio/clothBelt2.ogg",
+    "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+    "duration": 0.6847,
+    "gainDb": 0,
+    "categories": [
+      "equipment",
+      "movement"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.5458
+      }
+    ],
+    "originalKind": "processed-foley",
+    "derivedFrom": "edits/snake-belt-texture-v2",
+    "processingRecipe": {
+      "id": "edits/beast-death/edits/snake-belt-texture-v2/take-1",
+      "sourceId": "edits/snake-belt-texture-v2",
+      "take": 0,
+      "units": [
+        "beasts/giant-snake",
+        "beasts/giant-snake-l2",
+        "beasts/giant-snake-l3",
+        "beasts/sea-serpent",
+        "beasts/sea-serpent-l2",
+        "beasts/sea-serpent-l3"
+      ],
+      "sourceListeningSha256": "833a320628eddd560d29bf33ce67c29e7902c18dd8665ae97097f3c4986ebf97",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.5957
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.5957",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.148925:d=0.446775",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=24.10dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/edits/spider-fletching-take1-short-v1/take-1",
+    "name": "Beast death \u00b7 Spider \u00b7 Arrow Fletching take 1 short \u00b7 fade",
+    "path": "audio/listening/1c4b392d40845d631970.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+    "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+    "sourceHash": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+    "duration": 0.589,
+    "gainDb": 0,
+    "categories": [
+      "equipment"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.5308
+      }
+    ],
+    "originalKind": "processed-foley",
+    "derivedFrom": "edits/spider-fletching-take1-short-v1",
+    "processingRecipe": {
+      "id": "edits/beast-death/edits/spider-fletching-take1-short-v1/take-1",
+      "sourceId": "edits/spider-fletching-take1-short-v1",
+      "take": 0,
+      "units": [
+        "beasts/giant-spider",
+        "beasts/giant-spider-l2",
+        "beasts/giant-spider-l3"
+      ],
+      "sourceListeningSha256": "f6f1bfcdd3f4fe6a7bc0d395914da17a250d516a8e46c0f00703f8a74749fa42",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.5
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.5",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.125000:d=0.375000",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=36.30dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/edits/spider-fletching-take4-crop-v1/take-1",
+    "name": "Beast death \u00b7 Spider \u00b7 Arrow Fletching take 4 middle \u00b7 fade",
+    "path": "audio/listening/ab13a17c3782e062ddc2.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+    "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+    "sourceHash": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+    "duration": 0.639,
+    "gainDb": 0,
+    "categories": [
+      "equipment"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.5358
+      }
+    ],
+    "originalKind": "processed-foley",
+    "derivedFrom": "edits/spider-fletching-take4-crop-v1",
+    "processingRecipe": {
+      "id": "edits/beast-death/edits/spider-fletching-take4-crop-v1/take-1",
+      "sourceId": "edits/spider-fletching-take4-crop-v1",
+      "take": 0,
+      "units": [
+        "beasts/giant-spider",
+        "beasts/giant-spider-l2",
+        "beasts/giant-spider-l3"
+      ],
+      "sourceListeningSha256": "9a6c63af06a42df2c762df4c6e2075b95d8b305d0e462988f9696c172a2106c9",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.55
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.55",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.137500:d=0.412500",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=19.80dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_03.ogg/take-1",
+    "name": "Beast death \u00b7 alien_03 \u00b7 fade",
+    "path": "audio/listening/36cca978ffe11b43aaf7.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
+    "sourceHash": "8e417706c6ca3f7eb99d9500d17bf74ef977d16c540dfa9d695db4721cc30003",
+    "duration": 0.8144,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.6306
+      }
+    ],
+    "originalKind": "designed-effects",
+    "derivedFrom": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
+    "processingRecipe": {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_03.ogg/take-1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
+      "take": 0,
+      "units": [
+        "beasts/giant-wasp",
+        "beasts/giant-wasp-l2",
+        "beasts/giant-wasp-l3"
+      ],
+      "sourceListeningSha256": "f26e2bf9b60ed92c61dd615f62a70be2170da0d91b43597b714c69485e57a285",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.7254
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.7254",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.181350:d=0.544050",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=6.10dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/edits/octopus-gurgle-soft-v1/take-1",
+    "name": "Beast death \u00b7 Octopus \u00b7 soft gurgle \u00b7 fade",
+    "path": "audio/listening/0e47acac4d3b61c7877b.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+    "sourceHash": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+    "duration": 1.0307,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.8401
+      }
+    ],
+    "originalKind": "processed-effect",
+    "derivedFrom": "edits/octopus-gurgle-soft-v1",
+    "processingRecipe": {
+      "id": "edits/beast-death/edits/octopus-gurgle-soft-v1/take-1",
+      "sourceId": "edits/octopus-gurgle-soft-v1",
+      "take": 0,
+      "units": [
+        "beasts/octopus",
+        "beasts/octopus-l2",
+        "beasts/octopus-l3"
+      ],
+      "sourceListeningSha256": "a211119d64674a33249a4b782c860aca67fb43a7498731c17490e814b519b762",
+      "sourceRange": {
+        "start": 0.0499,
+        "duration": 0.9417
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0.0499:duration=0.9417",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.235425:d=0.706275",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=22.20dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_02.ogg/take-1",
+    "name": "Beast death \u00b7 alien_02 \u00b7 fade",
+    "path": "audio/listening/6c9287e4a338380ff468.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
+    "sourceHash": "a28c192579824352a0177d71d9f2fe32560d17b00fbc16297488bddd07ddcdc9",
+    "duration": 0.6597,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.5308
+      }
+    ],
+    "originalKind": "designed-effects",
+    "derivedFrom": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
+    "processingRecipe": {
+      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_02.ogg/take-1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
+      "take": 0,
+      "units": [
+        "beasts/ray",
+        "beasts/ray-l2",
+        "beasts/ray-l3"
+      ],
+      "sourceListeningSha256": "680ed4849491ddda945541ff0748d85d5e6b9a95bfb1649eaad04d68ab5be8c7",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.5707
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.5707",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.142675:d=0.428025",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=8.60dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "selection-fade-room-v1",
+    "id": "edits/beast-death/edits/horse-0286-trim-v1/take-1",
+    "name": "Beast death \u00b7 0286 \u00b7 lead-in trimmed \u00b7 fade",
+    "path": "audio/listening/ed86d912f64ca1288b88.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://bigsoundbank.com/neighing-of-a-horse-1-s0284.html",
+    "creator": "DenisChardonnet; distributed by Joseph SARDIN / BigSoundBank",
+    "kind": "processed-effect",
+    "notes": "Current selection take with a 75% release fade and quiet early room reflections; no added voice modulation. Matched to normal reference level.",
+    "sourcePath": "denischardonnet/horse-vocals/0286.mp3",
+    "sourceHash": "9801f871af4f6805842457c4c5578daf42725fe1c1cc5dec40a2a6c1ee2bc12d",
+    "duration": 0.494,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.3712
+      }
+    ],
+    "originalKind": "processed-natural-recording",
+    "derivedFrom": "edits/horse-0286-trim-v1",
+    "processingRecipe": {
+      "id": "edits/beast-death/edits/horse-0286-trim-v1/take-1",
+      "sourceId": "edits/horse-0286-trim-v1",
+      "take": 0,
+      "units": [
+        "beasts/stag",
+        "beasts/stag-l2",
+        "beasts/stag-l3"
+      ],
+      "sourceListeningSha256": "b428a18b3299984f4855ffd4cdc2a04bfae6c2b40fba9f25fe638fb028a47d5d",
+      "sourceRange": {
+        "start": 0,
+        "duration": 0.405
+      },
+      "fadeReleaseFraction": 0.75,
+      "roomReflectionsMs": [
+        19,
+        37,
+        61,
+        89
+      ],
+      "filters": [
+        "atrim=start=0:duration=0.405",
+        "asetpts=PTS-STARTPTS",
+        "volume=-12dB",
+        "afade=t=out:st=0.101250:d=0.303750",
+        "aecho=in_gain=0.95:out_gain=0.90:delays=19|37|61|89:decays=0.08|0.06|0.04|0.02",
+        "volume=10.20dB"
+      ],
+      "active": true
+    },
+    "preserveLevel": false
   }
 ]
