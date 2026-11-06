@@ -540,99 +540,6 @@
       ]
     },
     {
-      "id": "rpg-audio/clothBelt2",
-      "name": "clothBelt2",
-      "take": 1,
-      "start": 0,
-      "duration": 0.5757,
-      "uses": [
-        {
-          "entity": "merfolk/harpooner",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/tidehunter",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-harpoon-master",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-netter-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-netter-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/reefguard",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/tridentguard",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-reef-champion",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-trident-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-trident-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/wavemender",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/tidesage",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-tide-oracle",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-tidecrusher-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-tidecrusher-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-maceguard",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-maceguard-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-maceguard-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/tidekeeper",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/tideseer",
-          "action": "tap"
-        },
-        {
-          "entity": "merfolk/merfolk-tide-sovereign",
-          "action": "tap"
-        }
-      ]
-    },
-    {
       "id": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
       "name": "alien_02",
       "take": 1,
@@ -1049,6 +956,99 @@
         {
           "entity": "undead-animals/bone-dragon-l3",
           "action": "attack-fire-breath"
+        }
+      ]
+    },
+    {
+      "id": "edits/merfolk-selection-underwater-v1",
+      "name": "Merfolk selection · underwater Cloth Belt 2",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5208,
+      "uses": [
+        {
+          "entity": "merfolk/harpooner",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tidehunter",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-harpoon-master",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/reefguard",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tridentguard",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-reef-champion",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/wavemender",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tidesage",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-oracle",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tidekeeper",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tideseer",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-sovereign",
+          "action": "tap"
         }
       ]
     },

@@ -1,9 +1,9 @@
 import { PlaybackVariations } from "./playback-variations.js?v=alterations-2";
-import { DEATH_SOUNDS } from "./death-picks.js?v=beast-family-deaths-2";
+import { DEATH_SOUNDS } from "./death-picks.js?v=merfolk-underwater-1";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=beast-family-deaths-2";
+import { buildActions } from "./matching.js?v=merfolk-underwater-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -18,10 +18,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=beast-family-deaths-2"),
+    loadJSON("catalog.json?v=merfolk-underwater-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=beast-family-deaths-2"),
+    loadJSON("playback-levels.json?v=merfolk-underwater-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1803,6 +1803,23 @@ async function start() {
       localStorage.setItem("hex-sound-before-beast-family-deaths-v2", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-beast-family-deaths-v2", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-merfolk-underwater-v1")) {
+      const backup = {};
+      for (const [key, old] of Object.entries(assignments)) {
+        const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
+        if (entity?.faction !== "merfolk") continue;
+        const id = key.endsWith("/tap") && old.id === "rpg-audio/clothBelt2" ? "edits/merfolk-selection-underwater-v1"
+          : key.endsWith("/death") && old.id === DEATH_SOUNDS.flesh ? "edits/merfolk-death-underwater-v1" : null;
+        if (!id) continue;
+        backup[key] = old;
+        assignments[key] = { ...old, id, take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-merfolk-underwater-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-merfolk-underwater-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

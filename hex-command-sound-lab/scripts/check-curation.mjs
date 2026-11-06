@@ -120,6 +120,12 @@ for (const faction of workbench.factions)
       assert.equal(death.defaultSound, source);
       assert.deepEqual(death.suggested, [...new Set([source, ...(family === "bear" ? ["rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg"] : []), ...tap.suggested.map(id => beastDeathId(id, tap.preferredTakes?.[id] ?? 0))])]);
       for (const ref of death.selectionDeaths) assert.equal(byId.get(ref.deathId).derivedFrom, ref.id);
+    } else if (unit.faction === "merfolk") {
+      assert.equal(death.deathGroup, "merfolk");
+      assert.deepEqual(death.suggested, ["edits/merfolk-death-underwater-v1", DEATH_SOUNDS.flesh]);
+      assert.deepEqual(tap.suggested, ["edits/merfolk-selection-underwater-v1", "rpg-audio/clothBelt2"]);
+      assert.equal(byId.get(tap.suggested[0]).derivedFrom, "rpg-audio/clothBelt2");
+      assert.equal(byId.get(death.suggested[0]).derivedFrom, DEATH_SOUNDS.flesh);
     } else {
       assert.equal(death.suggested.length, 1);
       assert.equal(death.suggested[0], DEATH_SOUNDS[death.deathGroup]);

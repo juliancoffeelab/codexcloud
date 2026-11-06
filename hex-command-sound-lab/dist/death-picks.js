@@ -1,5 +1,6 @@
 // One shared recording per death/timbre group; no runtime layers or random variants.
 export const DEATH_SOUNDS = Object.freeze({
+  merfolk: "edits/merfolk-death-underwater-v1",
   flesh: "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
   bones: "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
   spirit: "edits/ghost-scream-02-no-cough-v1",
@@ -31,6 +32,7 @@ export function deathPick(entity, { bone, spirit }, selection) {
     : /wolf/.test(entity.id) ? "wolf"
     : entity.faction === "humans" && LIVING_HORSE_UNITS.has(entity.id) ? "horse"
     : HEAVY_ARMOR_UNITS.has(entity.id) ? "armor"
+    : entity.faction === "merfolk" ? "merfolk"
     : entity.faction === "dwarves" ? "dwarf"
     : entity.faction === "elves" ? "elf"
     : entity.faction === "beasts" || /^(boar|greatboar|woodland-ancient-boar)$/.test(entity.id) ? "beast"

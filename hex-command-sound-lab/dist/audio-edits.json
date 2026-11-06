@@ -655,6 +655,44 @@
       "filters": [
         "aresample=44100,volume=-12dB,asplit=2[main][tail];[main]atrim=end=0.24,asetpts=PTS-STARTPTS[head];[tail]atrim=start=0.22:end=0.4584,asetpts=PTS-STARTPTS,atempo=0.5,atempo=0.8,afade=t=out:st=0.10:d=0.496[release];[head][release]acrossfade=d=0.02:c1=tri:c2=tri,aecho=in_gain=0.95:out_gain=0.9:delays=43|79:decays=0.09|0.05"
       ]
+    },
+    {
+      "id": "edits/merfolk-selection-underwater-v1",
+      "sourceId": "rpg-audio/clothBelt2",
+      "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2",
+      "intent": "Same chosen recording/take underwater: softened onset, two low-pass stages and broad low-mid resonance; no alternate source, pitch processing, delay or reverb. Original remains beside it for comparison. Normal reference-level matching.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0:duration=0.5757",
+        "asetpts=PTS-STARTPTS",
+        "volume=-6dB",
+        "highpass=f=55",
+        "lowpass=f=950:p=2",
+        "lowpass=f=1500:p=2",
+        "equalizer=f=220:t=q:w=0.8:g=3",
+        "afade=t=in:d=0.014",
+        "afade=t=out:st=0.5577:d=0.018"
+      ]
+    },
+    {
+      "id": "edits/merfolk-death-underwater-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "sourceHash": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+      "name": "Merfolk death \u00b7 underwater Cough 02",
+      "intent": "Same chosen recording/take underwater: softened onset, two low-pass stages and broad low-mid resonance; no alternate source, pitch processing, delay or reverb. Original remains beside it for comparison. Normal reference-level matching.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0:duration=0.3263",
+        "asetpts=PTS-STARTPTS",
+        "volume=-6dB",
+        "highpass=f=55",
+        "lowpass=f=950:p=2",
+        "lowpass=f=1500:p=2",
+        "equalizer=f=220:t=q:w=0.8:g=3",
+        "afade=t=in:d=0.014",
+        "afade=t=out:st=0.3083:d=0.018"
+      ]
     }
   ]
 }

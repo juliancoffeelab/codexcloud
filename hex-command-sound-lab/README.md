@@ -481,8 +481,8 @@ RMS is min -27.23 / mean -25.88 / max -24.13 dBFS (median -26.30). Across all 51
 archived game cues it is -45.78 / -31.73 / -18.77 dBFS. These are arithmetic means
 of per-cue dB values, not acoustic SPL or an energy-weighted mix.
 
-Programmatic variation can use small playback-rate/pitch and gain offsets and/or
-rotate clean takes. Random variation is not enabled during palette acceptance.
+Playback alterations use small pitch/rate offsets of the exact chosen take;
+recordings and take indices never rotate. Exact recording auditions stay unchanged.
 
 Snake / sea-serpent selection and bite now use `edits/snake-belt-texture-v2`:
 300Hz high-pass, 6dB drive into tanh saturation, and a 4200Hz low-pass, with no
@@ -553,7 +553,7 @@ Wildkeeper/Grovewarden remain ordinary living mages, not treants.
 The 0284 edit keeps 0.035–0.535 seconds with a faded release. The ghost edit keeps
 0.14–0.80 seconds of Scream 02, after its opening burst/cough, with onset/release
 fades. Originals remain in Library. Old shared death defaults migrate with local
-backups. All 238 units have death recommendations; spider deaths also follow either approved selection. Catalog: 566 recordings / 1,378 takes; 47 derived auditions.
+backups. All 238 units have death recommendations; spider deaths also follow either approved selection. Catalog: 568 recordings / 1,380 takes; 49 derived auditions.
 
 Axes, poleaxes and halberds use the exact werewolf claw swish
 (`edits/knife-slice-2-no-hit-v1`). Pickaxes remain Mining 001. Old saved Metal 01
@@ -633,3 +633,24 @@ cover bag boundaries, range limits and exact recording/take identity preservatio
 Mobile Chromium checks actual source rates, completed timing, exact auditions,
 rapid retriggers, toggle persistence and the compact 320px player controls.
 These variations are Sound Lab auditions; playable-game integration is separate.
+
+### Merfolk underwater auditions
+
+All 21 merfolk use underwater versions of their same Cloth Belt 2 selection
+and Cough 02 death. Each original sits immediately beside the edit in Suggested
+for a direct comparison. Attacks and other factions retain their current sounds.
+Saved earlier merfolk defaults migrate once with a local backup; custom source
+choices are preserved.
+
+Both edits retain the audited original take, with 55Hz high-pass, 950/1500Hz
+low-pass stages, a broad +3dB resonance at 220Hz, and short onset/release fades.
+There is no added delay, reverb, pitch effect or substituted recording. The
+originals remain unchanged. Edits are rendered ahead, decoded by the existing
+cache and matched with the standard playback-level pipeline, so the effect adds
+no runtime audio processing. Optional pitch alterations still affect the chosen
+processed take only. Exact recording buttons play the labelled wet/dry version.
+
+Recipes and source hashes are in `audio-edits.json`. Spectral checks confirm
+strong high-frequency suppression; touch Chromium verifies all 42 merfolk
+selection/death map taps, dry comparison, default migrations and unaffected
+human choices. This remains a Sound Lab audition, not a game integration.

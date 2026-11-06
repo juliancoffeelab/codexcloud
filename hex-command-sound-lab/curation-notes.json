@@ -6,7 +6,8 @@
     "ray": "alien_02",
     "ghost": "edits/ghost-grunt-02-trim-v1",
     "living-mounts": "edits/horse-0286-trim-v1",
-    "spiderAlternative": "edits/spider-fletching-take4-crop-v1"
+    "spiderAlternative": "edits/spider-fletching-take4-crop-v1",
+    "merfolk": "edits/merfolk-selection-underwater-v1"
   },
   "terrain": {
     "forest": "edits/forest-book-03-soft-v1",
@@ -173,6 +174,7 @@
     "octopus": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
     "birds-and-bats": "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg",
     "crab": "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
-    "reptiles-other-mammals-shark-gryphon": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg"
+    "reptiles-other-mammals-shark-gryphon": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
+    "merfolk": "edits/merfolk-death-underwater-v1"
   }
 }

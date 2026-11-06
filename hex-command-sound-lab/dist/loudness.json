@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "264a636e2d46bda3dc76799ff301393029f5b4823160d36ac174fb6fe02481a5",
+  "catalogSha256": "2c086b230b5e49dbde12b240e4f15ba7cb31662c23135cc4e8b683eb63199b9a",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -66905,6 +66905,160 @@
               "combinedPlaybackGainDb": -6.7,
               "playbackPeakDbFS": -17.04,
               "playbackRmsDbFS": -35.95,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/merfolk-selection-underwater-v1",
+      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2",
+      "pack": "audition-edits",
+      "path": "audio/listening/cd984a2c2df514136c6a.mp3",
+      "listeningSha256": "bdcf960c73cc0c85ffa681ed8dc84a8b2da4181a315a0d87c7c5158f5b681d47",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": 9.0,
+      "full": {
+        "duration": 0.5758,
+        "peakDbFS": -19.51,
+        "rmsDbFS": -40.98,
+        "strongest50msRmsDbFS": -35.29,
+        "leadingBelow55Ms": 12.1,
+        "playbackPeakDbFS": -10.51,
+        "playbackRmsDbFS": -31.98,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": 9.0,
+          "duration": 0.5208,
+          "peakDbFS": -19.51,
+          "rmsDbFS": -40.55,
+          "strongest50msRmsDbFS": -35.29,
+          "leadingBelow55Ms": 12.1,
+          "playbackPeakDbFS": -10.51,
+          "playbackRmsDbFS": -31.55,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": 9.0,
+            "playbackPeakDbFS": -10.51,
+            "playbackRmsDbFS": -31.98,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": 9.0,
+              "playbackPeakDbFS": -10.51,
+              "playbackRmsDbFS": -31.55,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": 6.01,
+            "playbackPeakDbFS": -13.5,
+            "playbackRmsDbFS": -34.97,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": 6.01,
+              "playbackPeakDbFS": -13.5,
+              "playbackRmsDbFS": -34.54,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/merfolk-death-underwater-v1",
+      "name": "Merfolk death \u00b7 underwater Cough 02",
+      "pack": "audition-edits",
+      "path": "audio/listening/c3472e6c12499ac18694.mp3",
+      "listeningSha256": "9b3515226a4d296a4ec80a560ba0b2aed39d03a243abc0a1ed7e5f42bde5118c",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -12.63,
+      "full": {
+        "duration": 0.3263,
+        "peakDbFS": -2.25,
+        "rmsDbFS": -21.38,
+        "strongest50msRmsDbFS": -13.66,
+        "leadingBelow55Ms": 8.0,
+        "playbackPeakDbFS": -14.88,
+        "playbackRmsDbFS": -34.01,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -12.63,
+          "duration": 0.3263,
+          "peakDbFS": -2.25,
+          "rmsDbFS": -21.38,
+          "strongest50msRmsDbFS": -13.66,
+          "leadingBelow55Ms": 8.0,
+          "playbackPeakDbFS": -14.88,
+          "playbackRmsDbFS": -34.01,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -12.63,
+            "playbackPeakDbFS": -14.88,
+            "playbackRmsDbFS": -34.01,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -12.63,
+              "playbackPeakDbFS": -14.88,
+              "playbackRmsDbFS": -34.01,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -15.62,
+            "playbackPeakDbFS": -17.87,
+            "playbackRmsDbFS": -37.0,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -15.62,
+              "playbackPeakDbFS": -17.87,
+              "playbackRmsDbFS": -37.0,
               "playbackStrongest50msRmsDbFS": -29.28,
               "flags": []
             }

@@ -1,13 +1,13 @@
 {
-  "paletteReferences": 118,
+  "paletteReferences": 120,
   "paletteInternalQuietIssues": [],
   "method": "Conservative edge-silence audit for every playable take; originals stay intact.\n\n5ms RMS frames; gate 45dB below that take's strongest frame (floor -80dBFS).\nRetain 5ms before activity and 12ms after. Only remove >=20ms of edge quiet.\nInternal quiet is reported, never spliced out. Requires Python 3, Node and FFmpeg.",
   "applied": true,
-  "recordings": 566,
-  "takes": 1378,
-  "changedRecordings": 361,
-  "changedTakes": 479,
-  "catalogSha256": "264a636e2d46bda3dc76799ff301393029f5b4823160d36ac174fb6fe02481a5",
+  "recordings": 568,
+  "takes": 1380,
+  "changedRecordings": 362,
+  "changedTakes": 480,
+  "catalogSha256": "2c086b230b5e49dbde12b240e4f15ba7cb31662c23135cc4e8b683eb63199b9a",
   "entries": [
     {
       "id": "antumdeluge/fire-crackling/fire-1.wav",
@@ -44650,6 +44650,292 @@
         }
       ],
       "paletteReferences": []
+    },
+    {
+      "id": "edits/merfolk-selection-underwater-v1",
+      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2",
+      "listeningSha256": "bdcf960c73cc0c85ffa681ed8dc84a8b2da4181a315a0d87c7c5158f5b681d47",
+      "originalRanges": [
+        {
+          "start": 0,
+          "duration": 0.5758
+        }
+      ],
+      "appliedRanges": [
+        {
+          "start": 0,
+          "duration": 0.5208
+        }
+      ],
+      "takes": [
+        {
+          "take": 1,
+          "leadingQuietMs": 5.0,
+          "trailingQuietMs": 66.9,
+          "trimmedLeadingMs": 0,
+          "trimmedTrailingMs": 54.9,
+          "gateDbFS": -74.9,
+          "internalQuiet": [],
+          "remainingInternalQuiet": [],
+          "reviewedOverride": null
+        }
+      ],
+      "paletteReferences": [
+        {
+          "id": "edits/merfolk-selection-underwater-v1",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "merfolk/harpooner",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tidehunter",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-harpoon-master",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-netter-l2",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-netter-l3",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/reefguard",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tridentguard",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-reef-champion",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-trident-l2",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-trident-l3",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/wavemender",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tidesage",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tide-oracle",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tidecrusher-l2",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tidecrusher-l3",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-maceguard",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-maceguard-l2",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-maceguard-l3",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tidekeeper",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tideseer",
+              "action": "tap",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tide-sovereign",
+              "action": "tap",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "edits/merfolk-death-underwater-v1",
+      "name": "Merfolk death \u00b7 underwater Cough 02",
+      "listeningSha256": "9b3515226a4d296a4ec80a560ba0b2aed39d03a243abc0a1ed7e5f42bde5118c",
+      "originalRanges": [
+        {
+          "start": 0,
+          "duration": 0.3263
+        }
+      ],
+      "appliedRanges": [
+        {
+          "start": 0,
+          "duration": 0.3263
+        }
+      ],
+      "takes": [
+        {
+          "take": 1,
+          "leadingQuietMs": 5.0,
+          "trailingQuietMs": 17.0,
+          "trimmedLeadingMs": 0,
+          "trimmedTrailingMs": 0,
+          "gateDbFS": -54.0,
+          "internalQuiet": [],
+          "remainingInternalQuiet": [],
+          "reviewedOverride": null
+        }
+      ],
+      "paletteReferences": [
+        {
+          "id": "edits/merfolk-death-underwater-v1",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "merfolk/harpooner",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tidehunter",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-harpoon-master",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-netter-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-netter-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/reefguard",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tridentguard",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-reef-champion",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-trident-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-trident-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/wavemender",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tidesage",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tide-oracle",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tidecrusher-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tidecrusher-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-maceguard",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-maceguard-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-maceguard-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tidekeeper",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tideseer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tide-sovereign",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1",

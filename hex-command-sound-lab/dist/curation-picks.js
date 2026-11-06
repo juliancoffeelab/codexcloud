@@ -1,4 +1,4 @@
-import { deathPick, beastDeathId, DEATH_SOUNDS } from "./death-picks.js?v=beast-family-deaths-2";
+import { deathPick, beastDeathId, DEATH_SOUNDS } from "./death-picks.js?v=merfolk-underwater-1";
 // Authored audition choices. Death rows are candidates, not live-game events.
 export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   const byId = new Map(catalog.map((sound) => [sound.id, sound]));
@@ -127,6 +127,9 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
       }
     }
   }
+  if (entity.faction === "merfolk")
+    choose("tap", ["edits/merfolk-selection-underwater-v1", "rpg-audio/clothBelt2"],
+      "Same Cloth Belt 2 take underwater; original beside it for comparison.");
   const selectionRow = actions.find(row => row.key === "tap");
   const selections = selectionRow.suggested.map(id => ({ id, take: selectionRow.preferredTakes?.[id] ?? 0 }));
   const deathChoice = deathPick(entity, { bone, spirit }, selections[0]);
@@ -147,6 +150,10 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     if (family === "bear") death.suggested.splice(1, 0, rpg("roar_02"));
     death.suggested = [...new Set(death.suggested)];
     death.description = "Approved creature-family death; prior selection fade remains for comparison. No new processing.";
+  }
+  if (deathChoice.group === "merfolk") {
+    death.suggested.push(DEATH_SOUNDS.flesh);
+    death.description = "Same Cough 02 take underwater; original beside it for comparison.";
   }
   death.title = "Death";
   death.deathGroup = deathChoice.group;
