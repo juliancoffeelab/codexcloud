@@ -164,7 +164,9 @@ known. An unidentified flash save remains untouched, with a warning strongly
 recommending explicit deletion. Conflicting campaign claims remain unidentified
 regardless of index order or whether the snapshot itself is readable. They are
 excluded from campaign deletion, and rebuilding the list preserves their claims
-until an explicit cleanup action resolves them.
+until an explicit cleanup action resolves them. IndexedDB rebuilding leaves the
+original disputed list entry and snapshot untouched; competing claims must never
+be written over each other under their shared snapshot key.
 
 Repair shows problems before collapsed readable campaigns. Record identity,
 ownership and damage are distinct typed states. Missing snapshots offer removal

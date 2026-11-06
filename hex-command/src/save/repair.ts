@@ -48,21 +48,20 @@ export function inspectImport(
 ): Promise<RepairInventory> {
   return withImportLock(async () => {
     const errors: string[] = [];
-    let authoritative = failure.source === "indexedDB";
+    let authoritative = false;
     let completedElsewhere = false;
-    if (failure.source === "localStorage") {
-      try {
-        authoritative = await initialized();
-        completedElsewhere = authoritative;
-      } catch (error) {
-        errors.push(String(error));
-      }
+    try {
+      authoritative = await initialized();
+      completedElsewhere = failure.source === "localStorage" && authoritative;
+    } catch (error) {
+      errors.push(String(error));
     }
     let source: LocalSource;
     try {
-      source = authoritative
-        ? await transaction([STATE, ENTRIES, TURNS], "readonly", databaseSource)
-        : readImportSource();
+      source =
+        failure.source === "indexedDB" || authoritative
+          ? await transaction([STATE, ENTRIES, TURNS], "readonly", databaseSource)
+          : readImportSource();
     } catch (error) {
       return { records: [], errors: [...errors, String(error)], authoritative, completedElsewhere };
     }
@@ -129,8 +128,17 @@ export function repairImport(failure: LoadProblem, target: RepairTarget): Promis
       }
       if (target.kind === "index" && plan.writes[HISTORY_KEY]) {
         const entries = JSON.parse(plan.writes[HISTORY_KEY]!).entries;
-        tx.objectStore(ENTRIES).clear();
-        for (const entry of entries) tx.objectStore(ENTRIES).put(entry);
+        // A conflict can span the original list entry and its payload. Rewriting
+        // both claims under their shared ID would silently choose the last one.
+        const disputed = new Set<IDBValidKey>(
+          inspectStorageV1ToV2(source)
+            .filter((record) => record.ownership === "conflicting")
+            .map((record) => record.key.slice("hex-command-progress:".length)),
+        );
+        const store = tx.objectStore(ENTRIES);
+        for (const key of await request(store.getAllKeys()))
+          if (!disputed.has(key)) store.delete(key);
+        for (const entry of entries) if (!disputed.has(entry.id)) store.put(entry);
       }
     });
   });

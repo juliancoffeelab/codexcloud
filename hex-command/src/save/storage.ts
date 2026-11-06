@@ -18,11 +18,13 @@ export function request<T>(value: IDBRequest<T>): Promise<T> {
     value.onerror = () => reject(value.error);
   });
 }
-export function database(): Promise<IDBDatabase> {
+export async function database(): Promise<IDBDatabase> {
   if (owner !== indexedDB || !opening) {
     owner = indexedDB;
+    opening = undefined;
+    // A synchronous access denial must not leave a rejected opening cached.
+    const value = indexedDB.open(DATABASE_NAME, DATABASE_VERSION);
     opening = new Promise((resolve, reject) => {
-      const value = indexedDB.open(DATABASE_NAME, DATABASE_VERSION);
       let abandoned = false;
       value.onupgradeneeded = () => {
         const db = value.result;
