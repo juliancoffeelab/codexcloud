@@ -1,3 +1,9 @@
+import {
+  inspectStorageV1ToV2,
+  HISTORY_KEY,
+  historyPayloadKey,
+  type LocalSource,
+} from "../src/save/migrations/storage-v1-to-v2";
 import { repairImport } from "../src/save/repair";
 import { readSave, storeSave } from "../src/save/storage";
 import { historicalCharacters, historicalTiles } from "./legacy-save";
@@ -424,3 +430,19 @@ for (const dead of [false, true]) {
     restored.dispose();
   });
 }
+
+test("Repair distinguishes a missing history list from present empty or invalid text", () => {
+  for (const text of [null, "", "{broken", JSON.stringify({ version: 4, entries: [] })]) {
+    for (const hasSnapshot of [false, true]) {
+      const source: LocalSource = { [HISTORY_KEY]: text };
+      if (hasSnapshot) source[historyPayloadKey("unidentified")] = "{broken";
+      const before = structuredClone(source);
+      const records = inspectStorageV1ToV2(source);
+      const indexes = records.filter((record) => record.key === HISTORY_KEY);
+      assert.equal(indexes.length, text === null && !hasSnapshot ? 0 : 1);
+      assert.equal(new Set(records.map((record) => record.key)).size, records.length);
+      if (text === "") assert(indexes[0]?.error);
+      assert.deepEqual(source, before);
+    }
+  }
+});

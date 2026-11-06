@@ -34,12 +34,10 @@ function importedSave(raw: string) {
 }
 
 export function migrateStorageV1ToV2(source: LocalSource) {
-  const raw = source[SAVE_KEY];
-  const current =
-    raw !== undefined && raw !== null ? currentFlashSave(importedSave(raw)) : undefined;
-  const text = source[HISTORY_KEY];
-  const history =
-    text !== undefined && text !== null ? migrateHistoryIndex(JSON.parse(text)) : undefined;
+  const raw: string | null = source[SAVE_KEY] ?? null;
+  const current = raw === null ? undefined : currentFlashSave(importedSave(raw));
+  const indexText: string | null = source[HISTORY_KEY] ?? null;
+  const history = indexText === null ? undefined : migrateHistoryIndex(JSON.parse(indexText));
   const entries = history?.index.entries ?? [];
   const indexed = new Set(entries.map((entry) => historyPayloadKey(entry.id)));
   const retired = new Set(history?.removedIds.map(historyPayloadKey) ?? []);
@@ -66,15 +64,15 @@ export function migrateStorageV1ToV2(source: LocalSource) {
 export function inspectStorageV1ToV2(source: LocalSource): SourceRecord[] {
   const records: SourceRecord[] = [];
   const metadata = new Map<string, import("../metadata").TurnEntry>();
-  const index = source[HISTORY_KEY];
-  if (index !== undefined && index !== null) {
+  const indexText: string | null = source[HISTORY_KEY] ?? null;
+  if (indexText !== null) {
     const record: SourceRecord = {
       key: HISTORY_KEY,
       kind: "index",
       label: "History list",
     };
     try {
-      const value: unknown = JSON.parse(index);
+      const value: unknown = JSON.parse(indexText);
       if (!isRecord(value) || !Array.isArray(value.entries))
         throw new Error("History list is unreadable.");
       // A broken row must not hide other readable rows.
@@ -93,8 +91,7 @@ export function inspectStorageV1ToV2(source: LocalSource): SourceRecord[] {
       record.error = String(error);
     }
     records.push(record);
-  }
-  if (!index && Object.keys(source).some((key) => key.startsWith("hex-command-progress:")))
+  } else if (Object.keys(source).some((key) => key.startsWith("hex-command-progress:")))
     records.push({
       key: HISTORY_KEY,
       kind: "index",
@@ -177,15 +174,16 @@ export function repairStorageV1ToV2(
     throw new Error("This is not a save storage record.");
   const deleted = new Set(selected);
   const writes: LocalSource = {};
+  const indexText: string | null = source[HISTORY_KEY] ?? null;
   if (target.kind === "all" || deleted.has(SAVE_KEY)) writes[NEW_GAME_KEY] = "true";
   if (target.kind === "index") {
     const entries = records
       .filter((r) => r.kind === "turn" && r.save?.progress.entry.kind === "turn")
       .map((r) => r.entry!);
     writes[HISTORY_KEY] = JSON.stringify({ version: 4, entries });
-  } else if (target.kind !== "all" && !deleted.has(HISTORY_KEY) && source[HISTORY_KEY]) {
+  } else if (target.kind !== "all" && !deleted.has(HISTORY_KEY) && indexText !== null) {
     try {
-      const index: unknown = JSON.parse(source[HISTORY_KEY]!);
+      const index: unknown = JSON.parse(indexText);
       if (isRecord(index) && Array.isArray(index.entries)) {
         const entries = index.entries.filter(
           (entry) =>
