@@ -41,13 +41,15 @@ source notes, favorites and export. Unit names remain accessible labels without
 occupying the map. This is a game-style sound audition interface, not a battle
 simulation or a replica of gameplay stats.
 
-Tap **Enable audio** once to unlock mobile audio. The board then
-prefetches and decodes selected action defaults, nearby comparison cards and
+The board automatically prefetches and decodes selected action defaults, nearby comparison cards and
 visible/neighboring map selection cues. Panning and switching entities refreshes
-that queue. Audio does not download or play before an enabling/play gesture.
+that queue. Audio downloads and decodes in a suspended context on load; nothing plays automatically.
+The first ordinary tap on a sprite/action/recording resumes audio and plays that
+sound. There is no enable/arming button. Action buttons use local snapshots of
+the game's SVG icons; named clip buttons have a large speaker icon.
 Ready means decoded in memory. Ready playback schedules a Web Audio source in
 the tap handler without awaiting fetch/decode; unprepared recordings still load
-on demand. The status reports handler-to-schedule time, **not** physical speaker
+on demand. Internal diagnostics measure scheduling time rather than physical speaker
 latency. Browser, OS, speakers and Bluetooth add latency; exact phone timing is
 not established by desktop Chromium checks.
 
@@ -196,7 +198,7 @@ categories, take boundaries and listening paths. `sources.json`, `coverage.json`
 `provenance.json` and original license/source texts ship with the site. The
 listening-library ZIP contains every listening file plus those records. It is a
 portable audition collection, not a lossless copy of the large original WAVs.
-The decoded cache is bounded by memory; selected and nearby sounds prepare after a gesture.
+The decoded cache is bounded by memory; selected and nearby sounds prepare automatically.
 
 Unit artwork is a copied snapshot of native 64×64 game sprites, without edits or
 resizing. Roster and artwork snapshots introduce no cross-project runtime imports.
@@ -212,3 +214,7 @@ an archive containing `.openai/hosting.json` and `dist/`.
 The deployed site survives environment reloads, and a fresh repository checkout
 can serve the complete soundboard without rebuilding or downloading assets.
 Source originals under `vendor/` need not be included in the hosted static output.
+
+Navigation handlers are scoped to the actual tabs; bubbling audio clicks never
+reselect the current view or cancel playback. The first-tap browser regression
+check waits for a recording to finish, not merely for its source node to start.

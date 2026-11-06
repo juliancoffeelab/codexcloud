@@ -1,3 +1,4 @@
+import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
 import { buildActions } from "./matching.js?v=beast-palette-1";
 const $ = (selector) => document.querySelector(selector);
@@ -190,6 +191,9 @@ async function start() {
   }
   function halt(reset = true) {
     cancelAnimationFrame(frame);
+    document
+      .querySelectorAll(".sound-choice.is-playing")
+      .forEach((card) => card.classList.remove("is-playing"));
     request++;
     controller?.abort();
     controller = null;
@@ -203,15 +207,15 @@ async function start() {
     if (reset) {
       selection = null;
       playingId = null;
-      $("#playing").textContent = "Ready when you are.";
+      $("#playing").textContent = "Tap a unit or a sound.";
       $("#seek").value = 0;
       $("#seek").disabled = true;
       $("#time").textContent = "0:00 / 0:00";
       drawWave();
     }
   }
-  async function unlock() {
-    if (!context) {
+  function ensureContext() {
+    if (!context || context.state === "closed") {
       const C = window.AudioContext || window.webkitAudioContext;
       if (!C) throw Error("This browser does not support Web Audio");
       context = new C({ latencyHint: "interactive" });
@@ -219,6 +223,9 @@ async function start() {
       master.gain.value = Number($("#volume").value) / 100;
       master.connect(context.destination);
     }
+  }
+  async function unlock() {
+    ensureContext();
     const resume =
       context.state === "running" ? Promise.resolve() : context.resume();
     const primer = context.createBufferSource();
@@ -245,8 +252,6 @@ async function start() {
     $("#cache-status").textContent = audioEnabled
       ? `${count}/${defaults.length} actions ready`
       : "Tap to prepare audio";
-    $("#arm-audio").textContent =
-      context?.state === "running" ? "Audio enabled" : "Enable audio";
   }
   function warmSelection() {
     updateReady();
@@ -301,7 +306,7 @@ async function start() {
       defaults.length + Math.min(visible.length, 3),
     );
   }
-  async function enableAudio() {
+  async function resumeAndWarm() {
     try {
       await unlock();
       audioEnabled = true;
@@ -310,7 +315,18 @@ async function start() {
       $("#cache-status").textContent = error.message;
     }
   }
-  $("#arm-audio").onclick = enableAudio;
+  // Resume in the same gesture that plays a sound; no enable/arming step.
+  const resumeOnGesture = () => {
+    if (context?.state !== "running") void resumeAndWarm();
+  };
+  document.addEventListener("pointerdown", resumeOnGesture, { capture: true });
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      if (event.key === "Enter" || event.key === " ") resumeOnGesture();
+    },
+    { capture: true },
+  );
   let mapWarmTimer;
   $("#roster").addEventListener("scroll", () => {
     clearTimeout(mapWarmTimer);
@@ -343,9 +359,19 @@ async function start() {
         node.onended = null;
         node.disconnect();
         gain.disconnect();
-        if (source === node) source = null;
+        if (source === node) {
+          source = null;
+          document
+            .querySelectorAll(".sound-choice.is-playing")
+            .forEach((card) => card.classList.remove("is-playing"));
+        }
         resolve();
       };
+      document
+        .querySelectorAll(".sound-choice")
+        .forEach((card) =>
+          card.classList.toggle("is-playing", card.dataset.sound === playingId),
+        );
       node.start(0, start + position, Math.max(0.001, duration - position));
       const scheduled = Math.max(0, performance.now() - tapStarted);
       $("#cache-status").textContent = `Ready · ${scheduled.toFixed(0)} ms`;
@@ -693,12 +719,31 @@ async function start() {
             : action.key === "hit"
               ? "Hit"
               : action.title.replace(/^Attack · /, "");
-      const trigger = el(
-        "button",
-        "action-trigger",
-        `▸ ${label}${action.hypothetical ? " ◇" : ""}`,
+      const attack = unit.attacks?.find(
+        (item) => `attack-${item.id}` === action.key,
       );
-      trigger.title = "Hear your saved choice, or the default";
+      const symbol =
+        action.key === "move"
+          ? "move"
+          : action.key === "hit"
+            ? "shield"
+            : action.key === "tap"
+              ? unit.kind === "terrain"
+                ? "keep"
+                : "recruit"
+              : attack?.category === "ranged"
+                ? "range"
+                : attack?.damageType === "blade"
+                  ? "blade"
+                  : attack?.damageType === "pierce"
+                    ? "pierce"
+                    : attack
+                      ? "impact"
+                      : "range";
+      const trigger = el("button", "action-trigger");
+      trigger.innerHTML = iconMarkup(symbol);
+      trigger.title = label;
+
       trigger.setAttribute("aria-label", `Hear ${unit.name} ${action.title}`);
       trigger.disabled = !chosenFor(action);
       trigger.onclick = () => {
@@ -749,7 +794,9 @@ async function start() {
           id,
           take: takes.value === "full" ? null : Number(takes.value),
         });
-        const sound = el("button", "sound-button", `▸ ${pretty(item.name)}`);
+        const sound = el("button", "sound-button");
+        sound.innerHTML = speakerMarkup();
+        sound.append(el("span", "clip-name", pretty(item.name)));
         sound.setAttribute(
           "aria-label",
           `Hear ${action.title}: ${pretty(item.name)}`,
@@ -1082,7 +1129,7 @@ async function start() {
   function showView(name) {
     document.body.dataset.view = name;
     cache.cancelWarm();
-    document.querySelectorAll("[data-view]").forEach((tab) => {
+    document.querySelectorAll(".tabs [data-view]").forEach((tab) => {
       const active = tab.dataset.view === name;
       tab.classList.toggle("active", active);
       tab.setAttribute("aria-selected", String(active));
@@ -1105,7 +1152,7 @@ async function start() {
     }
     if (name === "library") renderLibrary();
   }
-  for (const tab of document.querySelectorAll("[data-view]"))
+  for (const tab of document.querySelectorAll(".tabs [data-view]"))
     tab.onclick = () => showView(tab.dataset.view);
   $("#browse-new").onclick = (e) => {
     e.preventDefault();
@@ -1196,4 +1243,12 @@ async function start() {
   $("#library-count").textContent = catalog.length;
   drawWave();
   setFaction(activeFaction.id);
+  // Decode ahead while suspended. The first ordinary tap resumes audio and plays.
+  try {
+    ensureContext();
+    audioEnabled = true;
+    warmSelection();
+  } catch (error) {
+    $("#playing").textContent = error.message;
+  }
 }

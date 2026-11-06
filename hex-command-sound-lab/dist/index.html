@@ -9,7 +9,8 @@
       content="Audition and compare Hexcommand unit movement, attacks and sound variations."
     />
     <title>Hexcommand — Sound Lab</title>
-    <link rel="stylesheet" href="style.css?v=map-dock-1" />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="style.css?v=direct-tap-1" />
   </head>
   <body class="field-mode" data-view="units">
     <header>
@@ -49,10 +50,6 @@
         </button>
       </nav>
       <section id="units-view">
-        <div class="field-toolbar">
-          <button id="arm-audio">Enable audio</button>
-          <span id="cache-status" role="status">Tap to prepare audio</span>
-        </div>
         <p class="collection-note">
           All 467 vendored CC0 recordings are ready to play here. No imports or
           external downloads needed.
@@ -242,11 +239,12 @@
       ><span>HEADPHONES RECOMMENDED</span>
     </footer>
     <div class="player">
+      <span id="cache-status" hidden></span>
       <button id="stop" aria-label="Stop all audio">■</button>
       <div class="now">
         <span class="eyebrow">NOW PLAYING</span
         ><span id="playing" role="status" aria-live="polite"
-          >Ready when you are.</span
+          >Tap a unit or a sound.</span
         >
       </div>
       <label class="normalize"
@@ -281,6 +279,6 @@
         /><output id="volume-value">55%</output></label
       >
     </div>
-    <script type="module" src="app.js?v=map-dock-1"></script>
+    <script type="module" src="app.js?v=direct-tap-1"></script>
   </body>
 </html>
