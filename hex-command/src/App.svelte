@@ -17,7 +17,7 @@
   import TerrainPanel from "./ui/TerrainPanel.svelte";
   import GroundItemsPanel from "./ui/GroundItemsPanel.svelte";
   import SaveFailure from "./ui/SaveFailure.svelte";
-  let settings: { openSavedGames(): void };
+  let settings: { open(focusId?: string): void; openSavedGames(): void };
   import SettingsDialog from "./ui/SettingsDialog.svelte";
   let { controller }: { controller: BattleController } = $props();
   const view = $derived(controller.view);
@@ -60,7 +60,7 @@
     briefingExpanded = false;
   });
   let settingsDialog = $state<HTMLDialogElement>();
-  let newGame: { open: (mode: "skirmish" | "campaign") => void };
+  let newGame: { open: (mode: "skirmish" | "campaign", onBack?: () => void) => void };
   function openCampaignPicker() {
     settingsDialog?.close();
     newGame.open("campaign");
@@ -70,8 +70,12 @@
     newGame.open("skirmish");
   }
   function openSettings() {
-    settingsDialog?.showModal();
+    settings.open();
     playSound("select");
+  }
+  function openNewGameFromSettings() {
+    settingsDialog?.close();
+    newGame.open("skirmish", () => settings.open("new-game"));
   }
   function globalKeydown(event: KeyboardEvent) {
     if (event.key === "Escape" && !document.querySelector("dialog[open]"))
@@ -153,7 +157,7 @@
   {actions}
   bind:dialog={settingsDialog}
   bind:this={settings}
-  onNewBattle={openMapPicker}
+  onNewBattle={openNewGameFromSettings}
 />
 <Dialogue view={$view} {actions} />
 <NewGameDialog bind:this={newGame} view={$view} {actions} />

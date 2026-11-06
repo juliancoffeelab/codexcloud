@@ -227,8 +227,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-weight: 600;
-    font-family: system-ui, sans-serif;
+    font:
+      600 19px/1.2 Georgia,
+      serif;
   }
   .run-title svg {
     flex-shrink: 0;
