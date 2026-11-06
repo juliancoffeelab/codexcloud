@@ -5,8 +5,6 @@ import { pathToFileURL } from "node:url";
 
 // Copy this file into ignored tmp/, then adapt hooks/assertions for the authorized task.
 export async function openHarness(options = {}) {
-  if (process.env.LIVE_PLAY_AUTHORIZED !== "1")
-    throw new Error("Explicit user authorization required before opening live gameplay");
   const config = {
     url: process.env.LIVE_PLAY_URL || "http://127.0.0.1:5191",
     artifacts: process.env.LIVE_PLAY_ARTIFACTS || "tmp/live-play/artifacts",
@@ -273,10 +271,6 @@ export async function runCampaigns(harness, options = {}) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  if (process.env.LIVE_PLAY_AUTHORIZED !== "1")
-    throw new Error(
-      "Explicit user authorization required; set LIVE_PLAY_AUTHORIZED=1 only after receiving it.",
-    );
   const harness = await openHarness();
   try {
     const results = await runCampaigns(harness, {

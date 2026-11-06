@@ -1,9 +1,9 @@
 """Read-only L1/L2/L3 race grids or trees with one shared native pixel scale.
 
-Usage: python3 .agents/skills/pixel-lineup/scripts/preview.py --race humans
-       python3 .agents/skills/pixel-lineup/scripts/preview.py --race beasts --no-names --no-boxes
-       python3 .agents/skills/pixel-lineup/scripts/preview.py --list
-       python3 .agents/skills/pixel-lineup/scripts/preview.py --race humans --layout tree
+Usage: python3 .agents/skills/design-unit/scripts/preview.py --race humans
+       python3 .agents/skills/design-unit/scripts/preview.py --race beasts --no-names --no-boxes
+       python3 .agents/skills/design-unit/scripts/preview.py --list
+       python3 .agents/skills/design-unit/scripts/preview.py --race humans --layout tree
 No artwork builds, cleanup recipes or source writes are performed.
 """
 

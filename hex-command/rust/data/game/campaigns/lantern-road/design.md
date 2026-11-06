@@ -141,8 +141,7 @@ defeated to complete that optional objective. The rescued people remain with the
 The Bellwarden's approaching ritual limits the whole chapter to thirty rounds.
 Both rescue and departure must finish by the end of round 30; an unfinished
 chapter is lost when round 31 begins. Clearing every hostile remains optional
-and consumes time from this same limit. The deadline is shown in the briefing, survival objectives and a persistent
-turn counter above the battlefield. The rescue testimony prompts Oren to warn
+and consumes time from this same limit. Urgency is communicated through the authored briefing, hints and dialogue. The rescue testimony prompts Oren to warn
 about a binding ritual; if he is dead, Nera urges the company to reach the remaining
 prisoners while they are alive. The round-26 bell prompts another urgent warning
 from the surviving speaker. It does not change the AI's planning priorities.

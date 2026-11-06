@@ -14,8 +14,11 @@ Work from the game root with Python 3 and Pillow. Read
 ## Inspect
 
 Detection requests are read-only. Before edits, preserve the exact baseline
-matrix, palette and rendered image in a fresh ignored `tmp/` directory. Keep source matrix dimensions unchanged. Apply the project’s native canvas and
-grounding rules from [battlefield contract](../battlefield-contract/SKILL.md). The current cleanup helpers accept ordinary 64×64 matrices. For complete padded
+matrix, palette and rendered image in a fresh ignored `tmp/` directory. Keep
+source matrix dimensions unchanged. For units, follow the
+[native artwork rules](../design-unit/SKILL.md#native-artwork); for terrain, follow
+[its frame contract](../design-terrain/SKILL.md#terrain-contract). The current cleanup
+helpers accept ordinary 64×64 matrices. For complete padded
 terrain frames, retain the declared canvas, anchor and depth and inspect the full
 frame through the artwork builder/map renderer. Report that guarded cleanup helpers
 do not yet support this branch; extend those shared helpers within an authorized
@@ -39,17 +42,8 @@ python3 .agents/skills/pixel-cleaning/scripts/review.py \
 
 The combined reviewer accepts unit, terrain and prop matrices. It provides
 isolated-pixel and outline candidates, material neighborhoods and full previews.
-Unit previews also compare player, enemy and debug faction colors. Standalone
-detectors remain available:
-
-```sh
-python3 .agents/skills/pixel-cleaning/scripts/check_isolated_pixels.py \
-  pixel/art/terrain/road/9.txt --output tmp/road-review/strays.json \
-  --images-dir tmp/road-review
-python3 .agents/skills/pixel-cleaning/scripts/check_broken_outlines.py \
-  pixel/art/terrain/road/9.txt --output tmp/road-review/outlines.json \
-  --images-dir tmp/road-review
-```
+Unit previews also compare player, enemy and debug faction colors. For standalone detectors or detector-specific options, consult
+[detector commands](implementation.md#standalone-detectors).
 
 ## Repair
 
@@ -58,27 +52,23 @@ instructions. Inspect connected wrong-material patches too; zero flags does not
 establish clean artwork. Preserve intentional diagonals, details and negative
 spaces. Terrain does not automatically need a black outline.
 
-Use individually reviewed edits with `matrix_sha256`, `palette_sha256` and an
-`edits` list. Each edit has native `x`, `y`, `from`, `to`, `material` and `reason`.
-Outline/transparency changes require `boundary_reviewed: true`.
+For confirmed edits, follow the
+[guarded edit request contract](implementation.md#edit-request-contract).
 
 ```sh
 python3 .agents/skills/pixel-cleaning/scripts/apply_edits.py \
   pixel/art/terrain/hill/tile.txt tmp/hill-edits.json tmp/hill-candidate
 ```
 
-The helper checks hashes and original symbols, rejects duplicate coordinates,
-and writes a fresh candidate using the original matrix filename. Exact baseline
-matrix/palette files remain under `before/`, with a comparison image alongside.
-Terrain candidates include resolved ground shades to render outside canonical
-folders. Keep those scratch colors out of canonical material palettes; shared
-`G`/`g` colors belong in `terrain/floors.json`.
+The helper writes a fresh candidate and byte-exact baseline for comparison.
+For terrain scratch palette integration, follow
+[floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
 
 Rerun diagnostics and inspect the full result. Correct only confirmed defects,
 restore mistaken edits exactly and state remaining uncertainty. Do not modify
 only a PNG, resize/crop artwork to hide defects, or bulk-apply detector flags.
 Shape or palette-wide changes belong in
-[pinkbox-enhancement](../pinkbox-enhancement/SKILL.md).
+[artwork-enhancement](../artwork-enhancement/SKILL.md).
 
 ## Finish
 

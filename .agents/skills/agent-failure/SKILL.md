@@ -36,6 +36,8 @@ observed result. Support relevant layers with evidence; explain when a layer doe
 not contribute. Do not substitute an instruction explanation for an architectural
 or implementation cause.
 
+“I failed to apply/follow the instruction” is not a diagnosis.
+
 An explicit existing rule must not be relabelled as missing or ambiguous to fit an
 explanation. Quoting that rule alone does not establish the cause either. Report
 uncertainty and the next discriminating check when the mechanism is unproven.

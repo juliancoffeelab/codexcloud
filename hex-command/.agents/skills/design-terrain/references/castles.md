@@ -1,7 +1,7 @@
 # Multi-hex structures
 
 Read before authoring or repairing paving, walls or towers. The
-[permanent terrain contract](../../battlefield-contract/SKILL.md#permanent-prohibition-on-map-post-processing)
+[permanent terrain contract](../SKILL.md#terrain-contract)
 applies throughout.
 
 Define reusable tiles before laying out a map. Castle tile data declares
@@ -27,8 +27,8 @@ polygon beneath them; ground belongs in the source artwork. Runtime and offline
 map rendering use the same painter. Verify order independence by reversing and
 shuffling tiles within each z level while retaining the keep’s higher z.
 
-Frames remain 80×96, anchored at (40,48), around the 64×64 logical hex. Do not
-resize artwork or extend this canvas. Paving phase uses the native 56×48 lattice,
+Use the approved [terrain canvas](../SKILL.md#terrain-contract)
+without resizing artwork or extending the frame. Paving phase uses the native 56×48 lattice,
 so ground and walls continue under all three neighbor translations. Inspect empty
 and occupied layouts, inward corners, three-way joins and an enclosed keep.
 

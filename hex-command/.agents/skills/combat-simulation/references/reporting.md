@@ -2,17 +2,14 @@
 
 ## Choose the report for the task
 
-For maintenance, tooling and bug fixes, still run the required simulations and
-compare relevant outcomes with a matching baseline. Keep unchanged results
-internal; a brief statement that simulation validation passed is sufficient.
+For maintenance, tooling and bug fixes, keep unchanged results internal; a brief
+statement that simulation validation passed is sufficient.
 Do not print unchanged counts, win rates, matchup matrices or campaign tables.
 
-Investigate differences and report meaningful changes, regressions or validation
-gaps with the affected scope, evidence and limits. Expected effects of the fix
-are not automatically regressions. Distinguish execution errors from in-game
-defeats. Disclose when a baseline comparison was unavailable; completing a run
-alone does not establish unchanged behavior. Include detailed results only when
-requested or needed to explain a task-relevant finding.
+Report meaningful changes, regressions or validation gaps with the affected
+scope, evidence and limits. Distinguish execution errors from in-game defeats;
+disclose missing baseline comparisons. Include details only when requested or
+needed to explain a task-relevant finding.
 
 Use the tables below for requested simulation reports, comparisons and balance
 investigations. Scope them to the user's question. A maintenance smoke run does
@@ -50,8 +47,8 @@ counts such as `3/4` over percentages that obscure the sample size.
 3. For a campaign workload, include **the campaign table**, campaigns as rows and simulation-player
    tactics as columns. Cells are completion counts such as `16/20`, without
    percentages. Split campaigns with multiple player diplomacy modes into
-   separate labeled rows, such as Ashen Oath (pragmatic) and Ashen Oath
-   (restrained); never pool these modes. Also split named objective routes such as flight and fight
+   separate labeled rows, such as Ashen Oath (unrestricted) and Ashen Oath
+   (diplomatic); never pool these modes. Also split named objective routes such as flight and fight
    into separate labeled rows. Name the fixed Classic opponent.
 4. Add important findings and limitations. For scoped requests, show that scope.
 

@@ -46,7 +46,7 @@ async function main() {
   const [mode, ...flags] = process.argv.slice(2);
   if (mode === "--help") {
     process.stdout.write(
-      "Usage: node scripts/site-operation.mjs prepare|deploy [--preview PR]\nJSON-lines tool transport on stdin/stdout; see .agents/skills/publish/operations.md.\n",
+      "Usage: node scripts/site-operation.mjs prepare|deploy [--preview PR]\nJSON-lines tool transport on stdin/stdout; see .agents/skills/deploy/operations.md.\n",
     );
     return;
   }

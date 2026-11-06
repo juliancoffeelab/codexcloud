@@ -16,7 +16,7 @@ spec = importlib.util.spec_from_file_location('extract', ROOT / '.agents/skills/
 extract = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(extract)
 
-spec = importlib.util.spec_from_file_location('enhancement', ROOT / '.agents/skills/pinkbox-enhancement/scripts/prepare.py')
+spec = importlib.util.spec_from_file_location('enhancement', ROOT / '.agents/skills/artwork-enhancement/scripts/prepare.py')
 enhancement = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(enhancement)
 

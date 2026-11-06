@@ -22,8 +22,7 @@ const files = [
   "pixel/art/units/*/*/palette.json",
   "pixel/art/terrain/*/palette.json",
   "pixel/art/portraits/*/palette.json",
-  "docs/development.md",
-  "docs/terrain-artwork.md",
+  "docs/**/*.md",
   "rust/README.md",
   "rust/data/**/*.{json,md}",
 ];
