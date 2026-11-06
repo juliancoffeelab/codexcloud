@@ -16,9 +16,8 @@
   import UnitPanel from "./ui/UnitPanel.svelte";
   import TerrainPanel from "./ui/TerrainPanel.svelte";
   import GroundItemsPanel from "./ui/GroundItemsPanel.svelte";
-  import SavedProgress from "./ui/SavedProgress.svelte";
   import SaveFailure from "./ui/SaveFailure.svelte";
-  let savedProgress: { open(): void };
+  let settings: { openSavedGames(): void };
   import SettingsDialog from "./ui/SettingsDialog.svelte";
   let { controller }: { controller: BattleController } = $props();
   const view = $derived(controller.view);
@@ -153,21 +152,10 @@
   view={$view}
   {actions}
   bind:dialog={settingsDialog}
+  bind:this={settings}
   onNewBattle={openMapPicker}
-  onSavedGames={() => {
-    settingsDialog?.close();
-    savedProgress.open();
-  }}
 />
 <Dialogue view={$view} {actions} />
 <NewGameDialog bind:this={newGame} view={$view} {actions} />
 
-<SavedProgress bind:this={savedProgress} view={$view} {actions} />
-<SaveFailure
-  view={$view}
-  {actions}
-  onManage={() => {
-    settingsDialog?.close();
-    savedProgress.open();
-  }}
-/>
+<SaveFailure view={$view} {actions} onManage={() => settings.openSavedGames()} />

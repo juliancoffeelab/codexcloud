@@ -1,14 +1,22 @@
 <script lang="ts">
   import TraceControls from "./TraceControls.svelte";
+  import SavedProgress from "./SavedProgress.svelte";
   import type { BattleView, BattleCommands } from "../controller/view";
   interface Props {
     view: BattleView;
     actions: BattleCommands;
     dialog?: HTMLDialogElement;
     onNewBattle: () => void;
-    onSavedGames: () => void;
   }
-  let { view, actions, dialog = $bindable(), onNewBattle, onSavedGames }: Props = $props();
+  let { view, actions, dialog = $bindable(), onNewBattle }: Props = $props();
+  let savedGamesPanel: HTMLDetailsElement;
+  let savedGames: { open(): void };
+  export function openSavedGames() {
+    dialog?.showModal();
+    savedGamesPanel.open = true;
+    savedGames.open();
+    savedGamesPanel.querySelector("summary")?.scrollIntoView({ block: "nearest" });
+  }
   function closeOnBackdropClick(event: MouseEvent) {
     if (!dialog || event.target !== dialog) return;
     const bounds = dialog.getBoundingClientRect();
@@ -42,8 +50,17 @@
       onchange={(event) => void actions.setSound(event.currentTarget.checked)}
     />
   </label>
-  <button class="saved-games-entry" onclick={onSavedGames}>Saved games</button>
   <button id="new-game" class="primary" onclick={onNewBattle}>New game</button>
+  <details
+    class="panel"
+    bind:this={savedGamesPanel}
+    ontoggle={() => {
+      if (savedGamesPanel.open) savedGames.open();
+    }}
+  >
+    <summary>Saved games</summary>
+    <SavedProgress bind:this={savedGames} {view} {actions} onLoad={() => dialog?.close()} />
+  </details>
   <details class="panel">
     <summary>Field manual</summary>
     <div class="manual">
