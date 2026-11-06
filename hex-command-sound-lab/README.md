@@ -362,3 +362,10 @@ uses a 0.48-second faded attack edit; ritual Fout 03 uses a 0.45-second quiet ed
 Originals remain available. `node scripts/check-cue-durations.mjs` audits actual
 default take lengths over 0.5 seconds; Sources links its 25-cue report. Other long
 cues remain unchanged pending listening review. Catalog: 539 recordings / 1,351 takes.
+
+Deer/stag levels 1–3 select a 0.40-second Trot hoof excerpt; shared movement
+remains the board click and foxes are unchanged. Forest now uses a 0.45-second
+quiet Book 03 edit. Burned village/house use a new Fire 1 excerpt (1.55–2.00 s)
+with a 0.20-second release fade; previous edits and full sources remain available.
+Saved terrain choices using the replaced edits migrate with a local backup.
+Beast attack suggestions remain unchanged pending review. Catalog: 542 / 1,354 takes.

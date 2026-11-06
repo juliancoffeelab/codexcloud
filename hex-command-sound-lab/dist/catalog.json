@@ -17689,5 +17689,154 @@
         "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
       }
     }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/forest-book-03-short-v1",
+    "name": "Forest \u00b7 short quiet Book 03",
+    "path": "audio/listening/d9d20fdebff923b6e28a.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Short forest texture with a gradual fade; retain existing quiet processing. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "rubberduck/80-cc0-rpg-sfx/book_03.ogg",
+    "sourceHash": "f72e4af8172ae98eaa350892072120e79eb87f91448b99aeaaf1febe070fbb2e",
+    "duration": 0.4402,
+    "gainDb": 0,
+    "categories": [
+      "equipment"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.4402
+      }
+    ],
+    "originalKind": "designed-effects",
+    "derivedFrom": "rubberduck/80-cc0-rpg-sfx/book_03.ogg",
+    "processingRecipe": {
+      "id": "edits/forest-book-03-short-v1",
+      "sourceId": "rubberduck/80-cc0-rpg-sfx/book_03.ogg",
+      "sourceHash": "f72e4af8172ae98eaa350892072120e79eb87f91448b99aeaaf1febe070fbb2e",
+      "name": "Forest \u00b7 short quiet Book 03",
+      "intent": "Short forest texture with a gradual fade; retain existing quiet processing.",
+      "preserveLevel": true,
+      "filters": [
+        "atrim=start=0.12:duration=0.8",
+        "asetpts=PTS-STARTPTS",
+        "asetrate=35000",
+        "aresample=44100",
+        "highpass=f=180",
+        "volume=14dB",
+        "asoftclip=type=tanh:threshold=0.25:output=0.7",
+        "lowpass=f=2800",
+        "volume=-12.1dB",
+        "atrim=duration=0.45",
+        "afade=t=in:d=0.02",
+        "afade=t=out:st=0.29:d=0.16"
+      ],
+      "levelReference": {
+        "family": "current/terrain-forest",
+        "targetStrongest50msDbFS": -34.81,
+        "method": "Match the median existing forest cue after its game-relative gain at the board default volume; preserve intentional attenuation."
+      }
+    },
+    "preserveLevel": true
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/burned-fire-recut-v2",
+    "name": "Burned settlement \u00b7 smooth fire recut",
+    "path": "audio/listening/e941ab532c9618df6e46.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/fire-crackling",
+    "creator": "AntumDeluge",
+    "kind": "processed-effect",
+    "notes": "Different fire excerpt ending in a quieter patch with a long fade to avoid the reported clicky ending. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "antumdeluge/fire-crackling/fire-1.wav",
+    "sourceHash": "26702de8a195bcbafeae72034861d875a1b7917168a25106f4e1957ecdddf7e5",
+    "duration": 0.45,
+    "gainDb": 0,
+    "categories": [
+      "magic"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.45
+      }
+    ],
+    "originalKind": "fireplace-effect",
+    "derivedFrom": "antumdeluge/fire-crackling/fire-1.wav",
+    "processingRecipe": {
+      "id": "edits/burned-fire-recut-v2",
+      "sourceId": "antumdeluge/fire-crackling/fire-1.wav",
+      "sourceHash": "26702de8a195bcbafeae72034861d875a1b7917168a25106f4e1957ecdddf7e5",
+      "name": "Burned settlement \u00b7 smooth fire recut",
+      "intent": "Different fire excerpt ending in a quieter patch with a long fade to avoid the reported clicky ending.",
+      "filters": [
+        "atrim=start=1.55:duration=0.45",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=160:p=2",
+        "lowpass=f=3500",
+        "afade=t=in:d=0.035",
+        "afade=t=out:st=0.25:d=0.20",
+        "volume=2.0dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -7,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/deer-trot-short-v1",
+    "name": "Deer \u00b7 short trot contact",
+    "path": "audio/listening/d3ff937ecb64f32adc62.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/horse-trotting",
+    "creator": "EZduzziteh",
+    "kind": "processed-foley",
+    "notes": "Short horse-trot Foley excerpt as the user-requested deer selection proxy; shared board movement remains unchanged. Per-take level matching follows the live-game reference.",
+    "sourcePath": "ezduzziteh/horse-trotting/Trot.ogg",
+    "sourceHash": "0fd1a787f3ebb2c0213de8a807566a4879b659bdf2643c8720d6e1720bb436b9",
+    "duration": 0.4,
+    "gainDb": 0,
+    "categories": [
+      "movement"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.4
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "ezduzziteh/horse-trotting/Trot.ogg",
+    "processingRecipe": {
+      "id": "edits/deer-trot-short-v1",
+      "sourceId": "ezduzziteh/horse-trotting/Trot.ogg",
+      "sourceHash": "0fd1a787f3ebb2c0213de8a807566a4879b659bdf2643c8720d6e1720bb436b9",
+      "name": "Deer \u00b7 short trot contact",
+      "intent": "Short horse-trot Foley excerpt as the user-requested deer selection proxy; shared board movement remains unchanged.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.88:duration=0.40",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.008",
+        "afade=t=out:st=0.32:d=0.08"
+      ]
+    },
+    "preserveLevel": false
   }
 ]

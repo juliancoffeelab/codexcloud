@@ -1,7 +1,7 @@
 import { applyCuratedPicks } from "./curation-picks.js?v=short-cues-1";
 import { weaponSelection } from "./weapon-selection.js?v=curation-1";
-import { creaturePick } from "./creature-picks.js?v=curation-1";
-import { terrainPicks } from "./terrain-picks.js?v=short-cues-1";
+import { creaturePick } from "./creature-picks.js?v=terrain-recut-2";
+import { terrainPicks } from "./terrain-picks.js?v=terrain-recut-2";
 // Explicit semantic families keep mechanical actions separate from animal voices.
 // Recommendations are curated source IDs; alternatives include every matching recording.
 export function buildActions(entity, catalog, { extras = false } = {}) {

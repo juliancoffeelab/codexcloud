@@ -53,7 +53,7 @@ for (const faction of workbench.factions)
     units++;
   }
 for (const [id, wanted] of [
-  ["forest", "edits/forest-book-03-soft-v1"],
+  ["forest", "edits/forest-book-03-short-v1"],
   ["grove", "edits/ruins-magic-soft-v1"],
   ["ruins", "current/terrain-hill-1"],
 ]) {
@@ -72,7 +72,7 @@ for (const name of [
   "spear-sabre-one-shot-v1",
 ])
   assert.equal(profiles[`edits/${name}`].preserved, false);
-assert.equal(profiles["edits/forest-book-03-soft-v1"].preserved, true);
+assert.equal(profiles["edits/forest-book-03-short-v1"].preserved, true);
 for (const group of read("curation-notes.json").groups)
   for (const id of group.ids) assert(byId.has(id));
 console.log(

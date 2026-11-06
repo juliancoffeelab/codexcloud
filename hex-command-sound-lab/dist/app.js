@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=short-cues-1";
+import { buildActions } from "./matching.js?v=terrain-recut-2";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -15,10 +15,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=short-cues-1"),
+    loadJSON("catalog.json?v=terrain-recut-2"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json"),
-    loadJSON("playback-levels.json?v=short-cues-1"),
+    loadJSON("playback-levels.json?v=terrain-recut-2"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1502,6 +1502,23 @@ async function start() {
       localStorage.setItem("hex-sound-before-short-fout-v1", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-short-fout-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-terrain-recut-v2")) {
+      const replacements = {
+        "edits/forest-book-03-soft-v1": "edits/forest-book-03-short-v1",
+        "edits/burned-fire-soft-v1": "edits/burned-fire-recut-v2",
+      };
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!replacements[choice.id] || !key.startsWith("terrain/")) continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: replacements[choice.id], take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-terrain-recut-v2", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-terrain-recut-v2", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

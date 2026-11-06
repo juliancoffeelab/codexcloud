@@ -1889,3 +1889,9 @@ edits/fout-01-short-v1,Fout 01 · short attack,audition-edits,full,,0.48,-0.71,-
 edits/fout-01-short-v1,Fout 01 · short attack,audition-edits,take-1,0,0.48,-0.71,-10.78,-8.98,-17.31,-18.02,-28.09,-26.29,0.1,,False
 edits/ritual-fout-03-short-v1,Ritual · short quiet fout 03,audition-edits,full,,0.45,-20.17,-31.76,-29.5,-5.19,-25.36,-36.95,-34.69,1.0,,True
 edits/ritual-fout-03-short-v1,Ritual · short quiet fout 03,audition-edits,take-1,0,0.45,-20.17,-31.76,-29.5,-5.19,-25.36,-36.95,-34.69,1.0,,True
+edits/forest-book-03-short-v1,Forest · short quiet Book 03,audition-edits,full,,0.4402,-27.59,-39.08,-36.05,-5.19,-32.78,-44.27,-41.24,1.4,quiet-at-playback-setting,True
+edits/forest-book-03-short-v1,Forest · short quiet Book 03,audition-edits,take-1,0,0.4402,-27.59,-39.08,-36.05,-5.19,-32.78,-44.27,-41.24,1.4,quiet-at-playback-setting,True
+edits/burned-fire-recut-v2,Burned settlement · smooth fire recut,audition-edits,full,,0.45,-11.59,-36.49,-30.78,-5.19,-16.78,-41.68,-35.97,4.0,,True
+edits/burned-fire-recut-v2,Burned settlement · smooth fire recut,audition-edits,take-1,0,0.45,-11.59,-36.49,-30.78,-5.19,-16.78,-41.68,-35.97,4.0,,True
+edits/deer-trot-short-v1,Deer · short trot contact,audition-edits,full,,0.4,-8.12,-26.54,-19.92,-6.37,-14.49,-32.91,-26.29,4.9,,False
+edits/deer-trot-short-v1,Deer · short trot contact,audition-edits,take-1,0,0.4,-8.12,-26.54,-19.92,-6.37,-14.49,-32.91,-26.29,4.9,,False

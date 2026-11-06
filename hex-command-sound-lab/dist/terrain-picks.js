@@ -14,7 +14,7 @@ const water = cue(original("terrain-water"), "The existing water cue.", [
 export const terrainPicks = {
   forest: {
     tap: cue(
-      [edit("forest-book-03-soft-v1")],
+      [edit("forest-book-03-short-v1")],
       "Quiet distorted Book 03 forest texture.",
       ["wood"],
     ),
@@ -106,12 +106,12 @@ export const terrainPicks = {
   },
   "burned-village": {
     tap: cue(
-      [edit("burned-fire-soft-v1")],
+      [edit("burned-fire-recut-v2")],
       "Soft crackling fire for the burned settlement.",
       ["fire"],
     ),
     ambience: cue(
-      [edit("burned-fire-soft-v1")],
+      [edit("burned-fire-recut-v2")],
       "A short quiet crackle texture, not an automatic loop.",
       ["fire"],
     ),

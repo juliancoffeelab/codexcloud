@@ -16,19 +16,6 @@
       ]
     },
     {
-      "id": "edits/forest-book-03-soft-v1",
-      "name": "Forest · distorted quiet Book 03",
-      "take": 1,
-      "start": 0,
-      "duration": 1.0971,
-      "uses": [
-        {
-          "entity": "terrain/forest",
-          "action": "tap"
-        }
-      ]
-    },
-    {
       "id": "still-north-media/weapon-textures/part-2/Sabre Draw Fast.wav",
       "name": "Sabre Draw Fast",
       "take": 1,
@@ -120,18 +107,6 @@
         },
         {
           "entity": "beasts/shark-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/stag",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/stag-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/stag-l3",
           "action": "tap"
         },
         {
@@ -918,19 +893,6 @@
         {
           "entity": "skeletons/skeleton-dreadguard",
           "action": "attack-boneclub"
-        }
-      ]
-    },
-    {
-      "id": "edits/burned-fire-soft-v1",
-      "name": "Burned settlement · soft fire excerpt",
-      "take": 1,
-      "start": 0,
-      "duration": 0.55,
-      "uses": [
-        {
-          "entity": "terrain/burned-village",
-          "action": "tap"
         }
       ]
     },

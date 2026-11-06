@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "3c2775253ad08dcf4f0c9c9e70a8e78468f759885733b8f9b0625dc18fb63b75",
+  "catalogSha256": "baf80b5e3f7694ddbf4b9e746923121e70d1af8370b3be230a9a78a174ecf591",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -33476,6 +33476,127 @@
           "playbackPeakDbFS": -25.36,
           "playbackRmsDbFS": -36.95,
           "playbackStrongest50msRmsDbFS": -34.69,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/forest-book-03-short-v1",
+      "name": "Forest \u00b7 short quiet Book 03",
+      "pack": "audition-edits",
+      "path": "audio/listening/d9d20fdebff923b6e28a.mp3",
+      "listeningSha256": "375d1c2b3bcfa40cc640c70d9eef0a482e907aa7d31a8a655c0a1295d5d364ed",
+      "intentionallyQuietEdit": true,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -5.19,
+      "full": {
+        "duration": 0.4402,
+        "peakDbFS": -27.59,
+        "rmsDbFS": -39.08,
+        "strongest50msRmsDbFS": -36.05,
+        "leadingBelow55Ms": 1.4,
+        "playbackPeakDbFS": -32.78,
+        "playbackRmsDbFS": -44.27,
+        "playbackStrongest50msRmsDbFS": -41.24,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": [
+          "quiet-at-playback-setting"
+        ]
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -5.19,
+          "duration": 0.4402,
+          "peakDbFS": -27.59,
+          "rmsDbFS": -39.08,
+          "strongest50msRmsDbFS": -36.05,
+          "leadingBelow55Ms": 1.4,
+          "playbackPeakDbFS": -32.78,
+          "playbackRmsDbFS": -44.27,
+          "playbackStrongest50msRmsDbFS": -41.24,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": [
+            "quiet-at-playback-setting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "edits/burned-fire-recut-v2",
+      "name": "Burned settlement \u00b7 smooth fire recut",
+      "pack": "audition-edits",
+      "path": "audio/listening/e941ab532c9618df6e46.mp3",
+      "listeningSha256": "d0ffc4a3a6c0f152becd2c29f45629d8b2d985fd488ad1859d7a05efd86e1d31",
+      "intentionallyQuietEdit": true,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -5.19,
+      "full": {
+        "duration": 0.45,
+        "peakDbFS": -11.59,
+        "rmsDbFS": -36.49,
+        "strongest50msRmsDbFS": -30.78,
+        "leadingBelow55Ms": 4.0,
+        "playbackPeakDbFS": -16.78,
+        "playbackRmsDbFS": -41.68,
+        "playbackStrongest50msRmsDbFS": -35.97,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -5.19,
+          "duration": 0.45,
+          "peakDbFS": -11.59,
+          "rmsDbFS": -36.49,
+          "strongest50msRmsDbFS": -30.78,
+          "leadingBelow55Ms": 4.0,
+          "playbackPeakDbFS": -16.78,
+          "playbackRmsDbFS": -41.68,
+          "playbackStrongest50msRmsDbFS": -35.97,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/deer-trot-short-v1",
+      "name": "Deer \u00b7 short trot contact",
+      "pack": "audition-edits",
+      "path": "audio/listening/d3ff937ecb64f32adc62.mp3",
+      "listeningSha256": "59ad821608c0c86c0ab7efd7177f3c7e088a1e790edd55d860a8a8cc91378637",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -6.37,
+      "full": {
+        "duration": 0.4,
+        "peakDbFS": -8.12,
+        "rmsDbFS": -26.54,
+        "strongest50msRmsDbFS": -19.92,
+        "leadingBelow55Ms": 4.9,
+        "playbackPeakDbFS": -14.49,
+        "playbackRmsDbFS": -32.91,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -6.37,
+          "duration": 0.4,
+          "peakDbFS": -8.12,
+          "rmsDbFS": -26.54,
+          "strongest50msRmsDbFS": -19.92,
+          "leadingBelow55Ms": 4.9,
+          "playbackPeakDbFS": -14.49,
+          "playbackRmsDbFS": -32.91,
+          "playbackStrongest50msRmsDbFS": -26.29,
           "decodedSamplesAtOrAboveFullScale": 0,
           "flags": []
         }
