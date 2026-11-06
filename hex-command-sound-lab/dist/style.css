@@ -1587,3 +1587,400 @@ button.is-playing {
   border-radius: 3px;
   flex-shrink: 0;
 }
+
+/* The field is a compact picker. Most of the screen belongs to sound auditioning. */
+body.field-mode:is([data-view="units"], [data-view="terrain"]) {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+body.field-mode header,
+body.field-mode .intro {
+  display: none;
+}
+body.field-mode main {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 8px;
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+body.field-mode .tabs {
+  flex-shrink: 0;
+  height: 34px;
+  margin: 0;
+  gap: 20px;
+  padding: 0;
+}
+body.field-mode .tabs button {
+  padding: 6px 0;
+  font-size: 10px;
+}
+body.field-mode #units-view:not([hidden]) {
+  min-height: 0;
+  flex: 1;
+  display: grid;
+  grid-template-rows: 32px 32px 144px minmax(0, 1fr);
+  grid-template-areas: "toolbar" "factions" "map" "dock";
+  gap: 4px;
+  padding-bottom: 4px;
+}
+body.field-mode
+  #units-view
+  > :is(
+    .collection-note,
+    .section-line,
+    .entity-tools,
+    .unit-picker,
+    .entity-navigation,
+    #roster-count,
+    #workbench-body
+  ) {
+  display: none !important;
+}
+.field-toolbar {
+  grid-area: toolbar;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.field-toolbar button {
+  min-height: 30px;
+  padding: 4px 9px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+#cache-status {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--muted);
+}
+body.field-mode #factions {
+  grid-area: factions;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: none;
+}
+body.field-mode #factions[hidden] {
+  display: none;
+}
+body.field-mode #units-view:has(#factions[hidden]) {
+  grid-template-rows: 32px 0px 144px minmax(0, 1fr);
+}
+body.field-mode .faction-button {
+  flex: 0 0 auto;
+  min-width: 0;
+  padding: 5px 12px;
+  border-radius: 4px;
+}
+body.field-mode .faction-button strong {
+  font-size: 11px;
+}
+body.field-mode .faction-button small {
+  display: none;
+}
+body.field-mode #roster {
+  grid-area: map;
+  display: grid;
+  grid-template-columns: none;
+  grid-template-rows: repeat(3, 46px);
+  grid-auto-flow: column;
+  grid-auto-columns: 56px;
+  justify-content: start;
+  align-content: start;
+  overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y;
+  gap: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 2px 4px;
+  background: radial-gradient(ellipse at 45% 25%, #35422c, #1b281f 75%);
+  border: 1px solid #4d593b;
+  border-radius: 4px;
+  scrollbar-width: thin;
+}
+body.field-mode #roster button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  min-width: 54px;
+  height: 46px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  isolation: isolate;
+  touch-action: pan-x pan-y;
+}
+body.field-mode #roster button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #59604977;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  z-index: -2;
+}
+body.field-mode #roster button::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: #283824;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  z-index: -1;
+}
+body.field-mode #roster button.selected::before {
+  background: var(--accent);
+}
+body.field-mode #roster button.selected::after {
+  background: #52613b;
+}
+body.field-mode #roster img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 1px #0008);
+}
+body.field-mode #roster span {
+  display: none;
+}
+body.field-mode #sound-dock {
+  grid-area: dock;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: #1d251f;
+  padding: 4px 7px;
+}
+.dock-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  flex-shrink: 0;
+}
+.dock-heading img {
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.dock-heading > div {
+  flex: 1;
+  min-width: 0;
+}
+.dock-heading h2 {
+  margin: 0;
+  font-size: 12px;
+}
+.dock-heading p {
+  margin: 3px 0;
+  font-size: 10px;
+  color: var(--muted);
+}
+#more-actions {
+  min-height: 30px;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+}
+#more-actions.selected {
+  border-color: var(--accent);
+}
+#sound-rows {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding: 0 0 5px;
+  flex: 1;
+}
+.audition-row {
+  margin: 0 0 7px;
+  border-top: 1px solid #3a4735;
+  padding-top: 4px;
+}
+.audition-row-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.action-trigger {
+  min-height: 30px;
+  min-width: 75px;
+  border: 0;
+  border-radius: 4px;
+  padding: 4px 9px;
+  text-align: left;
+  font-weight: bold;
+  font-size: 12px;
+  color: var(--accent);
+  background: #34402d;
+}
+.row-groups {
+  display: flex;
+  gap: 4px;
+}
+.row-groups button {
+  min-height: 28px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.row-groups button.selected {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #303d28;
+}
+.action-sounds {
+  display: flex;
+  position: relative;
+  gap: 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  padding-bottom: 3px;
+}
+.sound-choice {
+  flex: 0 0 183px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
+  grid-template-rows: 34px 24px;
+  gap: 2px 4px;
+  padding: 3px;
+  border: 1px solid #3b4934;
+  border-radius: 4px;
+  background: #223022;
+  scroll-snap-align: start;
+}
+.sound-button {
+  grid-column: 1/-1;
+  min-width: 0;
+  border: 0;
+  font-size: 11px;
+  text-align: left;
+  padding: 3px 5px;
+  color: var(--text);
+  background: #35432d;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.sound-ready {
+  display: none;
+}
+.sound-button:has(+ .sound-ready.is-ready)::after {
+  content: " ●";
+  color: #c8e99a;
+  font-size: 9px;
+}
+.choice-takes {
+  width: 100%;
+  min-width: 0;
+  height: 24px;
+  padding: 1px 4px;
+  font-size: 10px;
+  margin: 0;
+}
+.save-choice {
+  width: 36px;
+  height: 24px;
+  padding: 0;
+  border-radius: 3px;
+  color: var(--muted);
+}
+.save-choice.chosen {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.clear-row-choice {
+  align-self: center;
+  padding: 6px 8px;
+  font-size: 10px;
+}
+.dock-empty {
+  padding: 8px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"]) footer {
+  display: none;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"]) .player {
+  position: static;
+  flex-shrink: 0;
+  display: flex;
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  padding: 4px 8px;
+  gap: 8px;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"]) .player .now {
+  min-width: 0;
+  flex: 1;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"])
+  .player
+  .now
+  .eyebrow {
+  display: none;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"]) #playing {
+  font-size: 10px;
+  max-width: none;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"])
+  .player
+  :is(#wave, .transport, .volume) {
+  display: none;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"])
+  .player
+  .normalize {
+  font-size: 9px;
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  white-space: nowrap;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"]) #stop {
+  min-width: 34px;
+  min-height: 32px;
+}
+@media (max-height: 500px) and (min-width: 600px) {
+  body.field-mode #units-view:not([hidden]),
+  body.field-mode #units-view:has(#factions[hidden]) {
+    grid-template-columns: 230px minmax(0, 1fr);
+    grid-template-rows: 32px 32px minmax(0, 1fr);
+    grid-template-areas: "toolbar dock" "factions dock" "map dock";
+  }
+  body.field-mode #cache-status {
+    display: none;
+  }
+}
+
+body.field-mode #sound-dock[hidden] {
+  display: none;
+}

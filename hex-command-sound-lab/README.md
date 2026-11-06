@@ -25,44 +25,70 @@ All application source and listening assets are tracked in `dist/`. That folder
 is authored static-site source. The project has no runtime dependency on other
 repository projects, an execution environment, or external downloads.
 
+## Phone map view
+
+The default view gives most of the viewport to sounds. A compact, unnamed
+three-row sprite field contains **every level** of the selected faction; Terrain
+contains all 27 tiles. Pan sideways and tap a sprite to hear its selection cue.
+There is no search, large unit description card, generic Play button or Detailed
+view. Select, Move, each named weapon attack and Hit have independent rows below
+the map. Each row's action button plays the saved assignment or default; its
+named recording buttons play that exact clip/take. Swipe each row sideways to
+compare. Suggested and Other recordings stay separate, and saved assignments
+have a Saved group. Each card retains takes, full source and Use. Extra sounds
+adds the hypothetical voice/death/reload rows. Library/Sources retain recordings,
+source notes, favorites and export. Unit names remain accessible labels without
+occupying the map. This is a game-style sound audition interface, not a battle
+simulation or a replica of gameplay stats.
+
+Tap **Enable audio** once to unlock mobile audio. The board then
+prefetches and decodes selected action defaults, nearby comparison cards and
+visible/neighboring map selection cues. Panning and switching entities refreshes
+that queue. Audio does not download or play before an enabling/play gesture.
+Ready means decoded in memory. Ready playback schedules a Web Audio source in
+the tap handler without awaiting fetch/decode; unprepared recordings still load
+on demand. The status reports handler-to-schedule time, **not** physical speaker
+latency. Browser, OS, speakers and Bluetooth add latency; exact phone timing is
+not established by desktop Chromium checks.
+
+This follows the live game's interactive AudioContext, gesture unlock, decoded
+sample warming and source-node playback pattern. It does not change the game or
+promise identical acoustic latency. The audition board uses local MP3 listening
+copies and an LRU decoded cache targeting 48 MiB (one oversized recording may
+exceed it alone), two background fetch/decode workers and canceled stale queues.
+Foreground preparation can replace an old scene's cached sounds; optional
+lookahead stops when the budget is full. Rapid taps replace playback, and late
+loads cannot trigger an obsolete selection. Quiet authored edits keep their gain.
+
+Cache behavior can be checked without dependencies:
+
+```sh
+node scripts/check-audio-cache.mjs
+```
+
 ## Auditioning
 
 - Factions includes Humans, Merfolk, Skeletons, Woodland, Zombies, Elves,
-  Dwarves, Cursed, Beasts and Undead Animals. Every advancement in each artwork
-  lineup is included. The dropdown is the complete roster; sprite buttons are
-  quick picks. Search includes names, roles and attacks.
-- Game-defined attacks are copied from authored game data. Artwork-only units
-  carry explicitly proposed weapon actions inferred from equipment and role.
-  This does not register or release units in the playable game.
-- Every action separates **Suggested** recordings from **Other plausible
-  matches**. The latter contains the complete rule-matched set, without a
-  first-five cutoff, excluding the suggestions already shown. Expand it to
-  compare every matching recording and every take. Matching is semantic and
-  editable in `dist/matching.js`: weapon mechanics, target material, equipment,
-  movement type and vocal type each have separate rules. Animal calls never
-  enter weapon attacks merely because they share a faction.
-- Main actions are Tap/selection (equipment or brief creature feedback),
-  Movement, each named Attack, and Hit/taking damage. The hypothetical-extras
-  toggle adds suitable voice/reaction, fall/death, reload, capture or ambience
-  proposals where the collection supplies candidates. A firearm shot remains
-  visibly unsupported instead of receiving an unrelated sound.
-- Terrain includes every authored terrain type, with tile tap and surface
-  contact suggestions. Optional contacts/capture/ambience are marked
-  hypothetical. Water, wings, bone contacts and animal proxies have caveats.
-- Play auditions the chosen take; each recording's dropdown includes all takes
-  and the full source session. **Use** persists a recording/take for that exact
-  faction/unit/action or terrain/action. Your saved choice appears on the action
-  card and drives Play action sequence. Clear returns to the first suggestion.
-- Stars persist a global favorite list. Export includes both favorite recordings
-  and contextual assignments with original paths/hashes, source, creator,
-  license and take boundaries. Browser storage is local to that device.
-- Original game mode remains available for archived-family comparison. It does
-  not imply that unreleased units had historical sound assignments.
-- Full library retains all 518 original listening entries plus labeled processed auditions. Filter by source, category, name or
-  recording type; Show every recording removes the initial result-page limit.
-- Multi-take weapon boundaries are approximate. Full recordings preserve the
-  entire session. Stop or Escape cancels playback and pending sequences; the
-  position slider seeks. Match levels applies optional peak gain, not mastering.
+  Dwarves, Cursed, Beasts and Undead Animals. All 238 entries and 27 terrains are
+  on the map, including every released/unreleased advancement.
+- Game-defined attacks come from authored game data; artwork-only attacks are
+  proposed from equipment/role. This does not release units in the game.
+- Every action separates Suggested recordings from disjoint Other plausible
+  matches. There is no arbitrary cutoff. All takes/full sources remain accessible.
+  `dist/matching.js` keeps weapon mechanics, equipment/material, movement and
+  voices separate. Animal calls never substitute for a weapon attack.
+- Use persists the recording and selected take for that exact entity/action.
+  The action button and tile selection follow personal choices. Saved exposes
+  the assignment and Reset restores the default. Storage is local to the browser.
+- Extra sounds adds hypothetical voice/reaction, fall/death, reload, capture or
+  ambience rows. Unsupported firearm shots stay gaps. These proposals and
+  creature/terrain proxies are not claims of natural species recordings.
+- Library includes all 518 original listening entries plus labeled derived
+  auditions. It retains filters, all-recordings access, favorites, take expansion,
+  original game recordings, source/licensing details, downloads and JSON export.
+- Stop or Escape cancels playback. Match levels is optional peak gain, not
+  mastering; quiet authored edits retain their attenuation. Weapon take boundaries
+  are approximate; the complete source session remains selectable.
 
 ## Material starters
 
@@ -170,7 +196,7 @@ categories, take boundaries and listening paths. `sources.json`, `coverage.json`
 `provenance.json` and original license/source texts ship with the site. The
 listening-library ZIP contains every listening file plus those records. It is a
 portable audition collection, not a lossless copy of the large original WAVs.
-Only six decoded recordings are cached; playback requests are made on demand.
+The decoded cache is bounded by memory; selected and nearby sounds prepare after a gesture.
 
 Unit artwork is a copied snapshot of native 64×64 game sprites, without edits or
 resizing. Roster and artwork snapshots introduce no cross-project runtime imports.

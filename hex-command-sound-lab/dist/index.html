@@ -9,9 +9,9 @@
       content="Audition and compare Hexcommand unit movement, attacks and sound variations."
     />
     <title>Hexcommand — Sound Lab</title>
-    <link rel="stylesheet" href="style.css?v=terrain-batch-1" />
+    <link rel="stylesheet" href="style.css?v=map-dock-1" />
   </head>
-  <body>
+  <body class="field-mode" data-view="units">
     <header>
       <a class="brand" href="#"
         ><span class="hex">⬡</span> HEXCOMMAND <span class="divider">/</span
@@ -49,6 +49,10 @@
         </button>
       </nav>
       <section id="units-view">
+        <div class="field-toolbar">
+          <button id="arm-audio">Enable audio</button>
+          <span id="cache-status" role="status">Tap to prepare audio</span>
+        </div>
         <p class="collection-note">
           All 467 vendored CC0 recordings are ready to play here. No imports or
           external downloads needed.
@@ -82,6 +86,22 @@
           role="group"
           aria-label="Choose unit"
         ></div>
+        <section id="sound-dock" aria-label="Selected tile sound controls">
+          <div class="dock-heading">
+            <img id="dock-image" width="36" height="36" alt="" />
+            <div>
+              <h2 id="dock-name"></h2>
+              <p id="dock-meta"></p>
+            </div>
+            <button
+              id="more-actions"
+              aria-label="Toggle optional sound actions"
+            >
+              Extra sounds
+            </button>
+          </div>
+          <div id="sound-rows"></div>
+        </section>
         <label class="unit-picker"
           >Unit / terrain
           <select id="unit-select" aria-label="Unit or terrain"></select
@@ -261,6 +281,6 @@
         /><output id="volume-value">55%</output></label
       >
     </div>
-    <script type="module" src="app.js?v=beast-palette-1"></script>
+    <script type="module" src="app.js?v=map-dock-1"></script>
   </body>
 </html>

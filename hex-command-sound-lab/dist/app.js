@@ -1,3 +1,4 @@
+import { AudioCache } from "./audio-cache.js?v=map-dock-1";
 import { buildActions } from "./matching.js?v=beast-palette-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
@@ -13,7 +14,7 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo] = await Promise.all([
-    loadJSON("catalog.json?v=terrain-batch-1"),
+    loadJSON("catalog.json?v=map-dock-1"),
     loadJSON("workbench.json?v=factions-1"),
     loadJSON("sources.json"),
   ]);
@@ -54,8 +55,13 @@ async function start() {
     playingId,
     mode = "candidate",
     visibleCount = 60;
-  const buffers = new Map(),
-    expanded = new Set();
+  const cache = new AudioCache(() => context);
+  const expanded = new Set();
+  let dockEntity;
+  let audioEnabled = false,
+    tapStarted = 0;
+  document.body.classList.add("field-mode");
+  document.body.dataset.view = "units";
   const pretty = (name) =>
     name
       .replace(/_/g, " ")
@@ -70,6 +76,11 @@ async function start() {
     return result;
   }
   const factions = workbench.factions;
+  const entityByKey = new Map(
+    [...factions.flatMap((f) => f.units), ...workbench.terrains].map(
+      (entity) => [entity.key, entity],
+    ),
+  );
   let activeFaction = factions.find((f) => f.id === "humans") || factions[0];
   let entityMode = "unit",
     unit = activeFaction.units[0];
@@ -219,23 +230,92 @@ async function start() {
     if (context.state !== "running")
       throw Error("Audio is paused by the browser. Tap play again");
   }
-  async function getBuffer(item, signal) {
-    let pending = buffers.get(item.id);
-    if (!pending) {
-      pending = fetch(item.path, { signal })
-        .then((r) => {
-          if (!r.ok) throw Error(`Audio returned HTTP ${r.status}`);
-          return r.arrayBuffer();
-        })
-        .then((b) => context.decodeAudioData(b));
-      buffers.set(item.id, pending);
-      pending.catch(() => {
-        if (buffers.get(item.id) === pending) buffers.delete(item.id);
-      });
-      while (buffers.size > 6) buffers.delete(buffers.keys().next().value);
-    }
-    return pending;
+  function getBuffer(item) {
+    return cache.load(item);
   }
+  function updateReady() {
+    document.querySelectorAll("[data-ready]").forEach((label) => {
+      const ready = cache.ready.has(label.dataset.ready);
+      label.textContent = ready ? "● Ready" : "○ Not prepared";
+      label.classList.toggle("is-ready", ready);
+    });
+    const rows = currentRows();
+    const defaults = rows.map(chosenFor).filter(Boolean);
+    const count = defaults.filter((ref) => cache.ready.has(ref.id)).length;
+    $("#cache-status").textContent = audioEnabled
+      ? `${count}/${defaults.length} actions ready`
+      : "Tap to prepare audio";
+    $("#arm-audio").textContent =
+      context?.state === "running" ? "Audio enabled" : "Enable audio";
+  }
+  function warmSelection() {
+    updateReady();
+    if (
+      !audioEnabled ||
+      !context ||
+      document.hidden ||
+      !["units", "terrain"].includes(document.body.dataset.view)
+    )
+      return;
+    const defaults = currentRows()
+      .map(chosenFor)
+      .filter(Boolean)
+      .map((ref) => byId.get(ref.id));
+    const visible = [...document.querySelectorAll(".sound-choice")]
+      .filter((card) => {
+        const a = card.getBoundingClientRect(),
+          strip = card.parentElement.getBoundingClientRect(),
+          panel = $("#sound-rows").getBoundingClientRect();
+        return (
+          strip.width > 0 &&
+          a.right >= strip.left - 180 &&
+          a.left <= strip.right + 180 &&
+          a.bottom >= panel.top &&
+          a.top <= panel.bottom
+        );
+      })
+      .map((card) => byId.get(card.dataset.sound));
+    const mapBounds = $("#roster").getBoundingClientRect();
+    const nearby = [...$("#roster").children]
+      .filter((tile) => {
+        const r = tile.getBoundingClientRect();
+        return (
+          r.right >= mapBounds.left - 104 &&
+          r.left <= mapBounds.right + 104 &&
+          r.bottom >= mapBounds.top &&
+          r.top <= mapBounds.bottom
+        );
+      })
+      .map((tile) => {
+        const entity = entityByKey.get(tile.dataset.unit);
+        const tap = buildActions(entity, catalog).find(
+          (row) => row.key === "tap",
+        );
+        return byId.get(
+          assignments[`${entity.key}/tap`]?.id || tap?.suggested[0],
+        );
+      });
+    void cache.warm(
+      [...defaults, ...visible, ...nearby].filter(Boolean),
+      updateReady,
+      defaults.length + Math.min(visible.length, 3),
+    );
+  }
+  async function enableAudio() {
+    try {
+      await unlock();
+      audioEnabled = true;
+      warmSelection();
+    } catch (error) {
+      $("#cache-status").textContent = error.message;
+    }
+  }
+  $("#arm-audio").onclick = enableAudio;
+  let mapWarmTimer;
+  $("#roster").addEventListener("scroll", () => {
+    clearTimeout(mapWarmTimer);
+    mapWarmTimer = setTimeout(warmSelection, 100);
+  });
   function tick() {
     if (!selection || !source) return;
     const elapsed = Math.min(
@@ -267,6 +347,11 @@ async function start() {
         resolve();
       };
       node.start(0, start + position, Math.max(0.001, duration - position));
+      const scheduled = Math.max(0, performance.now() - tapStarted);
+      $("#cache-status").textContent = `Ready · ${scheduled.toFixed(0)} ms`;
+      $("#cache-status").dataset.scheduleMs = scheduled.toFixed(2);
+      $("#cache-status").title =
+        "Tap to Web Audio scheduling; speaker and Bluetooth latency is additional.";
       tick();
     });
   }
@@ -276,13 +361,16 @@ async function start() {
     const abort = new AbortController();
     controller = abort;
     try {
-      await unlock();
+      tapStarted = performance.now();
+      if (context?.state !== "running") await unlock();
+      audioEnabled = true;
       for (const ref of list) {
         if (ticket !== request) return;
         const item = byId.get(ref.id);
         if (!item) throw Error("Sound not found");
         $("#playing").textContent = `Loading ${pretty(item.name)}…`;
-        const buffer = await getBuffer(item, abort.signal);
+        const buffer = cache.peek(item.id) || (await getBuffer(item));
+        updateReady();
         if (ticket !== request) return;
         const take = ref.take === null ? null : item.takes?.[ref.take || 0];
         const start = take?.start || 0,
@@ -338,7 +426,10 @@ async function start() {
     if (e.key === "Escape") halt();
   });
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) halt();
+    if (document.hidden) {
+      halt();
+      cache.cancelWarm();
+    }
   });
   $("#volume").oninput = (e) => {
     const value = Number(e.target.value);
@@ -349,7 +440,7 @@ async function start() {
   $("#normalize").onchange = () => {
     if (selection) play([selection.ref]);
   };
-  function pickUnit(key) {
+  function pickUnit(key, audition = false) {
     const list =
       entityMode === "terrain" ? workbench.terrains : activeFaction.units;
     const next = list.find((u) => u.key === key);
@@ -359,6 +450,12 @@ async function start() {
     if (entityMode === "terrain") rememberedTerrain = key;
     else rememberedUnit = key;
     renderUnit();
+    if (audition) {
+      const ref = chosenFor(
+        currentRows().find((a) => a.key === "tap") || currentRows()[0],
+      );
+      if (ref) void play([ref]);
+    }
   }
   function soundCard(id, action, isSuggested) {
     const item = byId.get(id),
@@ -563,6 +660,155 @@ async function start() {
       article.append(more);
       root.append(article);
     }
+    renderDock();
+  }
+  const dockGroups = new Map();
+  const dockScroll = new Map();
+  function renderDock() {
+    const rows = currentRows();
+    $("#dock-image").src = unit.artwork;
+    $("#dock-name").textContent = "Tap a sound to hear it";
+    $("#dock-meta").textContent =
+      "Swipe for alternatives · Use saves your pick";
+    const root = $("#sound-rows");
+    // Save horizontal positions before updating choices, without moving the panel.
+    for (const strip of root.querySelectorAll(".action-sounds"))
+      dockScroll.set(strip.dataset.context, strip.scrollLeft);
+    const panelScroll = root.scrollTop;
+    root.replaceChildren();
+    for (const action of rows) {
+      const key = keyFor(action),
+        saved = assignments[key];
+      const group = dockGroups.get(key) || "suggested";
+      const row = el("section", "audition-row");
+      row.dataset.action = action.key;
+      const heading = el("div", "audition-row-heading");
+      const label =
+        action.key === "tap"
+          ? unit.kind === "terrain"
+            ? "Tile"
+            : "Select"
+          : action.key === "move"
+            ? "Move"
+            : action.key === "hit"
+              ? "Hit"
+              : action.title.replace(/^Attack · /, "");
+      const trigger = el(
+        "button",
+        "action-trigger",
+        `▸ ${label}${action.hypothetical ? " ◇" : ""}`,
+      );
+      trigger.title = "Hear your saved choice, or the default";
+      trigger.setAttribute("aria-label", `Hear ${unit.name} ${action.title}`);
+      trigger.disabled = !chosenFor(action);
+      trigger.onclick = () => {
+        const ref = chosenFor(action);
+        if (ref) void play([ref]);
+      };
+      heading.append(trigger);
+      const groups = el("div", "row-groups");
+      for (const [kind, text] of [
+        ["suggested", "Suggested"],
+        ["alternatives", "Other"],
+        ...(saved ? [["saved", "Saved"]] : []),
+      ]) {
+        const b = el("button", kind === group ? "selected" : "", text);
+        b.setAttribute("aria-pressed", String(kind === group));
+        b.onclick = () => {
+          dockGroups.set(key, kind);
+          renderDock();
+        };
+        groups.append(b);
+      }
+      heading.append(groups);
+      row.append(heading);
+      const strip = el("div", "action-sounds");
+      strip.dataset.context = `${key}/${group}`;
+      strip.setAttribute("aria-label", `${action.title}: swipe recordings`);
+      const ids = group === "saved" && saved ? [saved.id] : action[group] || [];
+      for (const id of ids) {
+        const item = byId.get(id),
+          card = el("div", "sound-choice");
+        card.dataset.sound = id;
+        const takes = el("select", "choice-takes");
+        takes.setAttribute(
+          "aria-label",
+          `${action.title}: ${pretty(item.name)} take`,
+        );
+        (item.takes || [{ duration: item.duration }]).forEach((take, i) => {
+          const o = el("option", "", `${i + 1} · ${take.duration.toFixed(2)}s`);
+          o.value = String(i);
+          takes.append(o);
+        });
+        const full = el("option", "", "Full source");
+        full.value = "full";
+        takes.append(full);
+        if (saved?.id === id)
+          takes.value = saved.take === null ? "full" : String(saved.take || 0);
+        const ref = () => ({
+          id,
+          take: takes.value === "full" ? null : Number(takes.value),
+        });
+        const sound = el("button", "sound-button", `▸ ${pretty(item.name)}`);
+        sound.setAttribute(
+          "aria-label",
+          `Hear ${action.title}: ${pretty(item.name)}`,
+        );
+        sound.onclick = () => void play([ref()]);
+        const ready = el("span", "sound-ready");
+        ready.dataset.ready = id;
+        const use = el(
+          "button",
+          `save-choice${saved?.id === id ? " chosen" : ""}`,
+          saved?.id === id ? "✓" : "Use",
+        );
+        use.setAttribute(
+          "aria-label",
+          `Save ${pretty(item.name)} for ${unit.name} ${action.title}`,
+        );
+        use.title =
+          saved?.id === id ? "Update saved take" : "Save for this action";
+        use.onclick = () => {
+          assignments[key] = { ...ref(), entity: unit.key, action: action.key };
+          saveAssignments();
+          renderDock();
+        };
+        card.append(sound, ready, takes, use);
+        strip.append(card);
+      }
+      if (!ids.length)
+        strip.append(
+          el(
+            "p",
+            "dock-empty",
+            group === "suggested"
+              ? "No suggested sound. Try Other."
+              : "No recordings in this group.",
+          ),
+        );
+      if (group === "saved" && saved) {
+        const reset = el("button", "clear-row-choice", "Reset");
+        reset.onclick = () => {
+          delete assignments[key];
+          dockGroups.set(key, "suggested");
+          saveAssignments();
+          renderDock();
+        };
+        strip.append(reset);
+      }
+      row.append(strip);
+      root.append(row);
+      strip.scrollLeft = dockScroll.get(strip.dataset.context) || 0;
+      let timer;
+      strip.onscroll = () => {
+        dockScroll.set(strip.dataset.context, strip.scrollLeft);
+        clearTimeout(timer);
+        timer = setTimeout(warmSelection, 100);
+      };
+    }
+    root.scrollTop = dockEntity === unit.key ? panelScroll : 0;
+    dockEntity = unit.key;
+    requestAnimationFrame(warmSelection);
   }
   function populateUnits() {
     const q = $("#entity-search").value.trim().toLowerCase();
@@ -581,7 +827,11 @@ async function start() {
       `${matches.length} ${entityMode === "terrain" ? "terrain types" : "units"} · every level included`;
     $("#workbench-body").hidden = !matches.length;
     select.disabled = !matches.length;
+    $("#sound-dock").hidden = !matches.length;
     if (!matches.length) {
+      $("#sound-rows").replaceChildren();
+      $("#dock-name").textContent = "No matching tiles";
+      cache.cancelWarm();
       select.append(el("option", "", "No matching entries"));
       return;
     }
@@ -598,9 +848,7 @@ async function start() {
       const key = entityMode === "terrain" ? rememberedTerrain : rememberedUnit;
       unit = matches.find((x) => x.key === key) || matches[0];
     }
-    for (const u of matches
-      .filter((x) => entityMode === "terrain" || x.level === 1)
-      .slice(0, 10)) {
+    for (const u of matches) {
       const button = el("button");
       button.dataset.unit = u.key;
       const image = el("img");
@@ -609,7 +857,8 @@ async function start() {
       image.width = 64;
       image.height = 64;
       button.append(image, el("span", "", u.name));
-      button.onclick = () => pickUnit(u.key);
+      button.setAttribute("aria-label", `Select and hear ${u.name}`);
+      button.onclick = () => pickUnit(u.key, true);
       quick.append(button);
     }
     renderUnit();
@@ -644,6 +893,15 @@ async function start() {
   $("#unit-select").onchange = (e) => pickUnit(e.target.value);
   $("#entity-search").oninput = populateUnits;
   $("#extras").onchange = () => renderUnit();
+  $("#more-actions").onclick = () => {
+    $("#extras").checked = !$("#extras").checked;
+    $("#more-actions").classList.toggle("selected", $("#extras").checked);
+    renderDock();
+  };
+  $("#sound-rows").addEventListener("scroll", () => {
+    clearTimeout(mapWarmTimer);
+    mapWarmTimer = setTimeout(warmSelection, 100);
+  });
   $("#previous-unit").onclick = () => {
     const options = [...$("#unit-select").options],
       i = options.findIndex((o) => o.value === unit.key);
@@ -822,6 +1080,8 @@ async function start() {
   $("#category").onchange = () => renderLibrary(true);
   $("#favorites-only").onchange = () => renderLibrary(true);
   function showView(name) {
+    document.body.dataset.view = name;
+    cache.cancelWarm();
     document.querySelectorAll("[data-view]").forEach((tab) => {
       const active = tab.dataset.view === name;
       tab.classList.toggle("active", active);
