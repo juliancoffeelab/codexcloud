@@ -1,3 +1,4 @@
+import { weaponSelection } from "./weapon-selection.js?v=weapon-selection-1";
 import { creaturePick } from "./creature-picks.js?v=spider-bug-1";
 import { terrainPicks } from "./terrain-picks.js?v=terrain-batch-1";
 // Explicit semantic families keep mechanical actions separate from animal voices.
@@ -708,6 +709,23 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       ].filter((id) => id !== palette.sound && !excluded(id));
       action.suggested = [palette.sound];
     }
+  }
+  const selection = weaponSelection(entity);
+  if (selection && !mounted && !horse && !bone && faction !== "zombies") {
+    const action = result.find((row) => row.key === "tap");
+    const previous = [...action.suggested, ...action.alternatives];
+    action.suggested = find(selection.pack, selection.suggested).map(
+      (item) => item.id,
+    );
+    action.alternatives = [
+      ...new Set([
+        ...previous,
+        ...find(selection.pack, selection.alternatives).map((item) => item.id),
+      ]),
+    ].filter((id) => !action.suggested.includes(id));
+    action.description = selection.note;
+    action.caveat =
+      "Weapon/equipment handling for selection; attack and hit cues stay separate.";
   }
   if ((mounted || horse) && !bone) {
     const mountVoice = find("denischardonnet/horse-vocals", /^0286$/);

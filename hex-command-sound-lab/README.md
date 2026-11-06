@@ -92,6 +92,18 @@ node scripts/check-audio-cache.mjs
   mastering; quiet authored edits retain their attenuation. Weapon take boundaries
   are approximate; the complete source session remains selectable.
 
+## Weapon-led selection
+
+`dist/weapon-selection.js` names the specific exceptions to material defaults:
+Human scouts/ranger/shadowblade and elven archers/two-knifers use dagger handling;
+human and dwarven crossbowmen/arbalesters share archer nocking. Elven swordsmen
+use Sabre Draw Fast; jumpers use Spear Swing as a throwing proxy. Dwarven
+arquebusiers use a metal latch mechanism proxy. Slingers use leather pouch
+handling, not a claimed sling recording. Existing weapon/material alternatives
+remain available. These rules only change selection. Ordinary infantry,
+miners/hammerers/polearm dwarves, netters/tide hunters, mounts and undead retain
+their established defaults. No new recording downloads are required.
+
 ## Material starters
 
 Selection and hit suggestions use `item_wood_03` for solid skeletons, belt
