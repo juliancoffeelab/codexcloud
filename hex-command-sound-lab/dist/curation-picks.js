@@ -74,7 +74,16 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   for (const attack of entity.attacks || []) {
     const key = `attack-${attack.id}`;
     const name = attack.name.toLowerCase();
-    if (attack.id === "root-crush") {
+    if (entity.faction === "elves" && /^(elf-flanker(?:-l[23])?|elf-jumper-l[23])$/.test(entity.id) && attack.id === "blade") {
+      const jumper = /^elf-jumper/.test(entity.id);
+      const row = choose(key, [1,2,3].map(n => `rubberduck/80-cc0-rpg-sfx/blade_0${n}.ogg`),
+        jumper ? "Jumper spear attack using the current spear palette." : "Knife attack; excluded from the sword/spear swap.");
+      row.title = `Attack · ${jumper ? "Spear" : "Knives"}`;
+      row.attackName = jumper ? "Spear" : "Knives";
+      row.damageType = jumper ? "pierce" : "blade";
+    } else if (attack.id === "spectral-touch") {
+      choose(key, ["rubberduck/80-cc0-rpg-sfx/spell_02.ogg"], "Spell 02 for magical Spectral Touch.");
+    } else if (attack.id === "root-crush") {
       choose(key, ["rubberduck/80-cc0-rpg-sfx/spell_02.ogg"], "Spell 02 for Crushing Roots.");
     } else if (/axe|halberd/.test(name) && !/pickaxe/.test(name)) {
       choose(key, ["rubberduck/80-cc0-rpg-sfx/metal_01.ogg"],

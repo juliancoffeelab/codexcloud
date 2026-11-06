@@ -409,3 +409,9 @@ conditional Attack 3 switch. This supersedes the earlier conditional-mode design
 
 Crushing Roots (root-crush), the third attack on Briarweaver and Thorn Oracle,
 uses Spell 02 and remains accessible through its normal attack card.
+
+Elven flankers (all three levels) are knife users and excluded from the
+sword/spear swap. Jumpers use the current spear palette. Authored audition
+labels/icons explicitly identify Knives/Spear despite the source roster generic
+Blade attack key; stable keys preserve assignments. Spectral Touch on Ghost,
+Wraith and Spectre uses Spell 02.

@@ -1103,6 +1103,18 @@
       "duration": 0.5464,
       "uses": [
         {
+          "entity": "skeletons/ghost",
+          "action": "attack-spectral-touch"
+        },
+        {
+          "entity": "skeletons/wraith",
+          "action": "attack-spectral-touch"
+        },
+        {
+          "entity": "skeletons/spectre",
+          "action": "attack-spectral-touch"
+        },
+        {
           "entity": "woodland/briarweaver",
           "action": "attack-root-crush"
         },

@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=roots-spell2-1";
+import { buildActions } from "./matching.js?v=elf-roles-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -843,7 +843,7 @@ async function start() {
         (item) => `attack-${item.id}` === action.key,
       );
       const symbol = attack
-        ? attack.damageType
+        ? action.damageType || attack.damageType
         : action.key === "move"
           ? "move"
           : action.key === "hit"
@@ -856,7 +856,7 @@ async function start() {
         action.key === "death" ? speakerMarkup() : iconMarkup(symbol);
       if (action.key === "death")
         trigger.append(el("span", "weapon-label", "Death"));
-      if (attack) trigger.append(el("span", "weapon-label", attack.name));
+      if (attack) trigger.append(el("span", "weapon-label", action.attackName || attack.name));
       trigger.title = label;
 
       trigger.setAttribute("aria-label", `Hear ${unit.name} ${action.title}`);

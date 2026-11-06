@@ -45,6 +45,14 @@ for (const faction of workbench.factions)
         assert.deepEqual(actions.find(row => row.key === `attack-${attack.id}`).suggested,
           tap.suggested, `${unit.key}: undead animal attack follows its selection palette`);
       }
+    if (/^elf-flanker(?:-l[23])?$|^elf-jumper-l[23]$/.test(unit.id)) {
+      const row = actions.find(row => row.key === "attack-blade");
+      assert.equal(row.suggested[0], "rubberduck/80-cc0-rpg-sfx/blade_01.ogg");
+      assert.equal(row.attackName, /^elf-jumper/.test(unit.id) ? "Spear" : "Knives");
+    }
+    if (/^(ghost|wraith|spectre)$/.test(unit.id))
+      assert.equal(actions.find(row => row.key === "attack-spectral-touch").suggested[0],
+        "rubberduck/80-cc0-rpg-sfx/spell_02.ogg");
     const attacks = actions.filter(row => row.key.startsWith("attack-"));
     if (/^giant-(wasp|spider)(?:-l[23])?$/.test(unit.id))
       assert(attacks.every(row => row.suggested[0].endsWith("/spit_01.ogg")));
