@@ -83,7 +83,8 @@ omissions, contradicted assumptions, irrelevant old suggestions and implications
 in a separate report. Historical mechanisms are alternatives; current requirements
 control the assessment. Verify that the frozen artifacts stayed unchanged.
 
-The coordinator assesses the comparison and the main skill's mechanism audit.
+The coordinator assesses the comparison and the
+[mechanism audit](design-review.md#5-audit-every-mechanism).
 Report the frozen design, independent findings, unresolved decisions/evidence and
 any contamination. A future implementor receives the agreed requirements and
 selected design in a fresh context; withheld evaluation material stays outside
