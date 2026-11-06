@@ -607,3 +607,31 @@ Misc 05 for bats, owls and ravens; Slime 01 for spiders, wasps and octopus;
 Slime 03 for rays; Eat 01 for crabs. Woodland boars use Roar 03. Wolves retain
 Howl and treants retain Creak. The primary death suggestion and Death map tap
 use these choices; older selection-fade clips remain comparisons only.
+
+### Playback variations
+
+The player’s Variations checkbox defaults on and persists locally. Candidate
+map taps, action buttons and sequences use shuffle bags with no immediate
+repeat, including across bag boundaries. Exact recording/take buttons, full
+sources, Library playback and Original Game comparison stay exact. Saved source
+and take assignments stay locked; only subtle pitch variation applies to them.
+
+Pitch ranges are ±0.8 semitone for most actions, ±1.2 for deaths, ±0.6 for
+terrain and ±0.35 for the shared board move. Rate changes naturally change
+length; envelope scheduling and seek/progress use the same rate. There is no
+random gain, added reverb, offline render or voice modulation. Existing level
+profiles apply unchanged to the actual chosen recording/take.
+
+Where an action already recommends numbered siblings of the same recording
+family, unsaved defaults can rotate those approved alternatives. Other/Library
+candidates and old death comparison suggestions never enter that pool. Reviewed
+bow sessions can rotate their audited takes when no preferred/saved take is
+pinned. Single recordings still vary in pitch. This reduces repetition; it does
+not manufacture distinct recorded performances from one sample.
+
+Prefetch prepares the eligible pool without advancing either shuffle bag.
+`dist/playback-variations.js` implements the reusable policy; property checks
+cover bag boundaries, range limits, pinned choices and prefetch state isolation.
+Mobile Chromium checks actual source rates, completed timing, exact auditions,
+rapid retriggers, toggle persistence and the compact 320px player controls.
+These variations are Sound Lab auditions; playable-game integration is separate.

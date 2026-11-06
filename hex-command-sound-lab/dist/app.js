@@ -1,3 +1,4 @@
+import { PlaybackVariations } from "./playback-variations.js?v=variations-1";
 import { DEATH_SOUNDS } from "./death-picks.js?v=beast-family-deaths-2";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
@@ -64,6 +65,12 @@ async function start() {
     libraryMatches = [],
     sourceGain,
     sourceEnvelope;
+  const variations = new PlaybackVariations();
+  try { $("#variations").checked = localStorage.getItem("hex-sound-variations-v1") !== "off"; } catch {}
+  $("#variations").onchange = () => {
+    try { localStorage.setItem("hex-sound-variations-v1", $("#variations").checked ? "on" : "off"); } catch {}
+    warmSelection();
+  };
   const cache = new AudioCache(() => context);
   const expanded = new Set();
   let dockEntity;
@@ -197,6 +204,11 @@ async function start() {
         ? { id: defaultId, take: action.preferredTakes?.[defaultId] ?? 0, levelClass: levelClassFor(action) }
         : null;
   }
+  function gameRef(action) {
+    const ref = chosenFor(action);
+    return ref && mode === "candidate" && $("#variations").checked
+      ? variations.plan(ref, action, byId, Boolean(assignments[keyFor(action)])) : ref;
+  }
   function drawWave(buffer) {
     const c = $("#wave"),
       g = c.getContext("2d");
@@ -300,10 +312,11 @@ async function start() {
       !["units", "terrain"].includes(document.body.dataset.view)
     )
       return;
-    const defaults = currentRows()
-      .map(chosenFor)
-      .filter(Boolean)
-      .map((ref) => byId.get(ref.id));
+    const defaults = currentRows().flatMap(action => {
+      const ref = chosenFor(action);
+      return !ref ? [] : $("#variations").checked && mode === "candidate"
+        ? variations.candidates(ref, action, byId, Boolean(assignments[keyFor(action)])) : [ref];
+    }).map(ref => byId.get(ref.id));
     const visible = [...document.querySelectorAll(".sound-choice")]
       .filter((card) => {
         const a = card.getBoundingClientRect(),
@@ -375,7 +388,7 @@ async function start() {
     if (!selection || !source) return;
     const elapsed = Math.min(
       selection.duration,
-      resumedAt + context.currentTime - beganAt,
+      resumedAt + (context.currentTime - beganAt) * (selection.ref.variationRate || 1),
     );
     $("#seek").value = elapsed;
     $("#time").textContent = `${time(elapsed)} / ${time(selection.duration)}`;
@@ -387,6 +400,8 @@ async function start() {
         envelope = context.createGain(),
         gain = context.createGain();
       node.buffer = buffer;
+      const rate = selection.ref.variationRate || 1;
+      node.playbackRate.value = rate;
       const item = byId.get(playingId);
       const profile = playbackLevels.entries[playingId];
       const gainDb = playbackGainForRef(profile, selection.ref);
@@ -399,7 +414,7 @@ async function start() {
       envelope.connect(master);
       sourceEnvelope = envelope;
       const now = context.currentTime;
-      const remaining = Math.max(0.001, duration - position);
+      const remaining = Math.max(0.001, (duration - position) / rate);
       const fadeIn = Math.min(0.005, remaining / 4);
       const fadeOut = Math.min(0.008, remaining / 4);
       envelope.gain.setValueAtTime(0, now);
@@ -490,7 +505,7 @@ async function start() {
           $("#seek").value = 0;
           $("#seek").disabled = false;
           $("#playing").textContent =
-            `${prefix}${pretty(item.name)}${take && item.takes.length > 1 ? ` · take ${(ref.take || 0) + 1}` : ""}`;
+            `${prefix}${pretty(item.name)}${take && item.takes.length > 1 ? ` · take ${(ref.take || 0) + 1}` : ""}${ref.varied ? " · varied" : ""}`;
           drawWave(buffer);
           // Decode one recording ahead, rather than the whole collection.
           if (batch && index + 1 < list.length)
@@ -583,7 +598,7 @@ async function start() {
     renderUnit();
     if (audition) {
       const action = unitTapAction(unit, currentRows());
-      const ref = action && chosenFor(action);
+      const ref = action && gameRef(action);
       if (ref) void play([ref]);
       else
         $("#playing").textContent =
@@ -888,7 +903,7 @@ async function start() {
       trigger.setAttribute("aria-label", `Hear ${unit.name} ${action.title}`);
       trigger.disabled = !chosenFor(action);
       trigger.onclick = () => {
-        const ref = chosenFor(action);
+        const ref = gameRef(action);
         if (ref) void play([ref]);
       };
       heading.append(trigger);
@@ -1151,7 +1166,7 @@ async function start() {
             ["tap", "move", "hit"].includes(a.key) ||
             a.key.startsWith("attack-"),
         )
-        .map(chosenFor)
+        .map(gameRef)
         .filter(Boolean),
     );
   function persist() {
