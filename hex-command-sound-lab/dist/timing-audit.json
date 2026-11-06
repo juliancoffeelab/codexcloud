@@ -1,5 +1,5 @@
 {
-  "paletteReferences": 114,
+  "paletteReferences": 115,
   "paletteInternalQuietIssues": [],
   "method": "Conservative edge-silence audit for every playable take; originals stay intact.\n\n5ms RMS frames; gate 45dB below that take's strongest frame (floor -80dBFS).\nRetain 5ms before activity and 12ms after. Only remove >=20ms of edge quiet.\nInternal quiet is reported, never spliced out. Requires Python 3, Node and FFmpeg.",
   "applied": true,
@@ -13478,7 +13478,19 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": []
+      "paletteReferences": [
+        {
+          "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "beasts/bear",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
@@ -13509,7 +13521,19 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": []
+      "paletteReferences": [
+        {
+          "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "beasts/bear",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
@@ -44299,19 +44323,7 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": [
-        {
-          "id": "edits/bear-death-long-decay-v1",
-          "take": 0,
-          "uses": [
-            {
-              "entity": "beasts/bear",
-              "action": "death",
-              "levelClass": null
-            }
-          ]
-        }
-      ]
+      "paletteReferences": []
     },
     {
       "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1",

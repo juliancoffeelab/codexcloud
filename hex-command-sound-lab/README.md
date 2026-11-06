@@ -588,11 +588,12 @@ Humans and ordinary Woodland humanoids keep the original Cough 02. Old saved
 plain cough choices migrate to the applicable processed cough with local backups.
 Ten static death/timbre recordings plus ten shared selection-derived beast clips are active.
 
-### Bear death A/B audition
+### Bear death original-performance comparison
 
-Only the base bear gets an additional Suggested Death option, “sustained dying
-growl · compare.” Its existing short death remains the default. The comparison
-keeps the main roar through 0.22s, then stretches the original decay by 2.5×
-without lowering pitch, with a brief crossfade, a release fade and light room
-reflections. Other beast defaults remain unchanged. Recipe and original hash live
-in `audio-edits.json`; the original selection and previous death remain available.
+The base bear now offers the two longer original RPG Creature Roar 02/03 takes
+(about 0.90/0.87 seconds), followed by its previous short death. There is no new
+time stretching, pitch effect or reverb. Death-mode map taps default to Creature
+Roar 02; saved earlier short/subtle defaults migrate once with a local backup.
+The subtle stretched first attempt remains archived in Library only. Other
+beasts and the bear selection sound remain unchanged. These are alternatives
+for listening review, not a claim that a natural dying groan has been found.

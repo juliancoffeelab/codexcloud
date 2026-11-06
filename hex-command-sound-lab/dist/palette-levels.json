@@ -23,7 +23,7 @@
       }
     },
     "death": {
-      "choices": 21,
+      "choices": 22,
       "min": -26.29,
       "average": -26.24,
       "max": -25.29,
@@ -4282,12 +4282,28 @@
       ]
     },
     {
-      "id": "edits/bear-death-long-decay-v1",
-      "name": "Bear death \u00b7 sustained dying growl \u00b7 compare",
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg",
+      "name": "creature_roar_02",
       "take": 1,
       "context": "death",
       "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -14.05,
+      "playbackPeakDbFS": -15.27,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/bear",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
+      "name": "creature_roar_03",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -19.06,
       "inRange": true,
       "uses": [
         {

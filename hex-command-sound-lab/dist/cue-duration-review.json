@@ -66,6 +66,19 @@
       ]
     },
     {
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg",
+      "name": "creature_roar_02",
+      "take": 1,
+      "start": 0,
+      "duration": 0.895,
+      "uses": [
+        {
+          "entity": "beasts/bear",
+          "action": "death"
+        }
+      ]
+    },
+    {
       "id": "edits/beast-death/edits/octopus-gurgle-soft-v1/take-1",
       "name": "Beast death · Octopus · soft gurgle · fade",
       "take": 1,

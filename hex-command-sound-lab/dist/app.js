@@ -1,8 +1,8 @@
-import { DEATH_SOUNDS } from "./death-picks.js?v=bear-decay-compare-1";
+import { DEATH_SOUNDS } from "./death-picks.js?v=bear-original-groans-3";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=bear-decay-compare-1";
+import { buildActions } from "./matching.js?v=bear-original-groans-3";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -17,10 +17,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=bear-decay-compare-1"),
+    loadJSON("catalog.json?v=bear-original-groans-3"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=bear-decay-compare-1"),
+    loadJSON("playback-levels.json?v=bear-original-groans-3"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -190,7 +190,7 @@ async function start() {
     const saved = assignments[keyFor(action)];
     const selected = assignments[`${unit.key}/tap`];
     const matchingDeath = action.selectionDeaths?.find(ref => ref.id === selected?.id && ref.take === selected?.take);
-    const defaultId = matchingDeath?.deathId || action.suggested[0];
+    const defaultId = action.defaultSound || matchingDeath?.deathId || action.suggested[0];
     return saved && byId.has(saved.id)
       ? { ...saved, levelClass: levelClassFor(action) }
       : defaultId
@@ -1753,6 +1753,17 @@ async function start() {
       localStorage.setItem("hex-sound-before-beast-selection-deaths-v1", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-beast-selection-deaths-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-bear-original-groans-v3")) {
+      const key = "beasts/bear/death", old = assignments[key];
+      if (old && ["edits/bear-death-long-decay-v1", "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1"].includes(old.id)) {
+        localStorage.setItem("hex-sound-before-bear-original-groans-v3", JSON.stringify({ [key]: old }));
+        assignments[key] = { ...old, id: "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg", take: 0 };
+        saveAssignments();
+      }
+      localStorage.setItem("hex-sound-bear-original-groans-v3", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

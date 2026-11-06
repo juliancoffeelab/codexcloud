@@ -4154,7 +4154,18 @@
       ]
     },
     {
-      "id": "edits/bear-death-long-decay-v1",
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/bear",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
       "take": 0,
       "uses": [
         {
