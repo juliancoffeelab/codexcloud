@@ -21,13 +21,9 @@ and their procedures in skills; list their invocation conditions below.
 
 ## Failures
 
-When a user asks to diagnose agent failure, you need to diagnose it. Failed
-instruction is a failure of instruction, never the agent. Gaps or ambiguity in
-instructions are instruction failures too. Prefer finding ways to fix code or
-architecture to prevent recurrence, unless the cause is clearly a bad instruction.
-For instruction failures, identify how the instruction should be edited or removed,
-or, in rarer cases, extended.
-
+Diagnose agent failures through instructions, workflow, tooling or architecture.
+“I failed to apply/follow the instruction” is not a diagnosis. When the user asks
+what caused an agent failure, use [agent-failure](.agents/skills/agent-failure/SKILL.md).
 
 # Skills
 
