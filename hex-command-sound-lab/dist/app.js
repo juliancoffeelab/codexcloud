@@ -1,4 +1,4 @@
-import { buildActions } from "./matching.js?v=factions-1";
+import { buildActions } from "./matching.js?v=material-picks-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);

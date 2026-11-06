@@ -212,8 +212,42 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
   const armored =
     faction === "dwarves" ||
     /knight|champion|marshal|shield|guard|warden|iron|revenant/.test(text);
-  const bone = /skeletons|undead-animals/.test(faction) && !spirit;
+  const bone =
+    (faction === "skeletons" && !/^(ghost|spectre|wraith)$/.test(entity.id)) ||
+    (faction === "undead-animals" && /skeletal|bone-/.test(entity.id));
   const tree = /treant|wildkeeper|grovewarden/.test(text);
+  const arrowBow = entity.attacks.some(
+    (a) => /bow/i.test(a.name) && !/crossbow/i.test(a.name),
+  );
+  const skirmisher =
+    /scout|ranger|shadowblade|flanker|bladedancer|jumper|slinger/.test(text);
+  const frontline =
+    !mounted &&
+    !beast &&
+    !spirit &&
+    !caster &&
+    !skirmisher &&
+    !entity.attacks.some((a) => /bow|arbalest|pistol|arquebus/i.test(a.name)) &&
+    entity.attacks.some((a) =>
+      /sword|blade|spear|trident|halberd|axe|hammer|mace|club|pick/i.test(
+        a.name,
+      ),
+    );
+  const humanoid = !beast && !spirit;
+  const materialStarter = bone
+    ? fx(/^item_wood_03$/)
+    : frontline
+      ? entity.level <= 1
+        ? rpg(/^beltHandle[12]$/)
+        : fx(/^chain_0[123]$/)
+      : humanoid
+        ? rpg(/^cloth3$/)
+        : [];
+  const nocking = weapon(/^(English Longbow|Scythian Recurve) Nock Arrow$/);
+  const bowHandling = weapon(
+    /^(English Longbow|Scythian Recurve) (Nock Arrow|Set Arrow|Draw)$/,
+  );
+
   const movement = mounted
     ? find("ezduzziteh/horse-trotting", /Trot/)
     : flying
@@ -242,7 +276,10 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
                   : /^footstep_grass_00[01]$/,
               );
   let tapPossible, tap;
-  if (canine) {
+  if (bone) {
+    tapPossible = union(fx(/^item_wood_|^wood_|^chain_/), rpg(/^cloth/));
+    tap = materialStarter;
+  } else if (canine) {
     tapPossible = union(
       find("qubodup/dog-snarl-grunt-grumble", /dog/),
       creature(/^breath$|^grunt_/),
@@ -257,9 +294,6 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
   } else if (spirit) {
     tapPossible = union(cloth, old("unit-commander"));
     tap = rpg(/^cloth1$/);
-  } else if (bone) {
-    tapPossible = union(fx(/^chain_|^wood_/), rpg(/^metalClick$|^cloth/));
-    tap = fx(/^chain_01$/);
   } else {
     tapPossible = union(
       subtle,
@@ -273,13 +307,37 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         ? rpg(/^metalClick$/)
         : rpg(/^handleSmallLeather$/);
   }
+  if (!bone && humanoid) {
+    tapPossible = union(
+      tapPossible,
+      fx(/^chain_/),
+      rpg(/^beltHandle[12]$|^cloth3$/),
+    );
+    tap = arrowBow ? nocking : materialStarter;
+    if (arrowBow) {
+      tapPossible = union(tapPossible, bowHandling);
+      if (bone) tap = union(tap, nocking);
+    }
+  }
+  if (arrowBow) {
+    tapPossible = union(tapPossible, bowHandling);
+    if (bone) tap = union(tap, nocking);
+  }
   const result = [
     row(
       "tap",
       "Tap / selection",
       beast
         ? "Brief body or idle feedback when selecting this creature."
-        : "Brief equipment handling when selecting this unit.",
+        : arrowBow
+          ? "Arrow nocking / handling for selection."
+          : bone
+            ? "Dry item-wood contact for skeletal selection."
+            : frontline
+              ? entity.level <= 1
+                ? "Belt handling for level-one infantry."
+                : "Chain movement for armored infantry."
+              : "Soft cloth movement for lighter units.",
       tap,
       tapPossible,
       {
@@ -335,8 +393,10 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         ),
         old("attack-bow"),
       );
-      suggested = weapon(/^English Longbow Shoot$/);
-      note = "Recorded bow releases; choose recurve as an alternative.";
+      possible = union(possible, bowHandling);
+      suggested = nocking;
+      note =
+        "Arrow nocking as a quieter attack-feedback candidate. This depicts handling rather than the release; shot and flight recordings remain alternatives.";
     } else if (/fire/.test(name)) {
       possible = fire;
       suggested = fx(/^spell_fire_0[12]$/);
@@ -452,15 +512,20 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       ),
     );
   }
-  const hitPossible = tree
-    ? wood
-    : bone
-      ? union(wood, fx(/^chain_|^metal_/), soft)
-      : armored
-        ? union(metal, soft)
-        : union(soft, undead ? creature(/^hurt_/) : []);
-  const hitSuggested =
-    tree || bone
+  const hitPossible = union(
+    materialStarter,
+    humanoid ? union(fx(/^chain_/), rpg(/^beltHandle[12]$|^cloth3$/)) : [],
+    tree
+      ? wood
+      : bone
+        ? union(wood, fx(/^chain_|^metal_/), soft)
+        : armored
+          ? union(metal, soft)
+          : union(soft, undead ? creature(/^hurt_/) : []),
+  );
+  const hitSuggested = materialStarter.length
+    ? materialStarter
+    : tree
       ? material(/^impactWood_light_00[01]$/)
       : armored
         ? material(/^impactMetal_medium_00[01]$/)
@@ -469,7 +534,15 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
     row(
       "hit",
       "Hit / taking damage",
-      "Contact when this unit receives a hit; material follows the target.",
+      bone
+        ? "Item wood 03 as a dry skeletal hit starter."
+        : frontline
+          ? entity.level <= 1
+            ? "Belt handling as the level-one infantry hit starter."
+            : "Chain movement as the armored infantry hit starter."
+          : humanoid
+            ? "Cloth 3 as a soft hit-feedback starter; impacts remain alternatives."
+            : "Contact when this unit receives a hit; material follows the target.",
       hitSuggested,
       hitPossible,
       { caveat: bone ? "Wood is a dry bone-contact proxy." : "" },
