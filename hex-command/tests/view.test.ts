@@ -157,6 +157,12 @@ test("Command facade forwards calls without exposing reads", async () => {
     downloadDebugReport: () => {},
     savedProgress: () => [],
     saveGame: async () => {},
+    savedSummary: async () => ({
+      gold: 0,
+      villages: { owned: 0, total: 0 },
+      objectives: null,
+      units: [],
+    }),
     savedRecovery: () => undefined,
     restoreProgress: async () => {},
     deleteSavedProgress: async () => {},

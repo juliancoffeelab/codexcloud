@@ -10,6 +10,7 @@ import { loadBattle, restoreBattleText, loadProgressHistory } from "../save/load
 import { serializeBattle, TurnCheckpoint } from "../save/write";
 import { storeSave, NEW_GAME_KEY, needsNewGame } from "../save/storage";
 import { withProgressLock } from "../save/transaction";
+import { summarizeSave } from "../save/summary";
 import { saveFailure, type SaveFailure } from "../save/failure";
 import { captureBrowserSaves } from "../save/debug";
 import {
@@ -406,6 +407,17 @@ export class BattleController {
 
   savedProgress(): TurnEntry[] {
     return listProgress();
+  }
+  savedSummary(id: string) {
+    return this.storageUpdate(() => {
+      const restored = restoreBattleText(this.nativeFactory, progressText(id), "turn");
+      try {
+        if (restored.migrated) updateProgress(currentTurn(restored.save));
+        return summarizeSave(restored.game);
+      } finally {
+        restored.game.dispose();
+      }
+    });
   }
   savedRecovery() {
     return currentProgress();

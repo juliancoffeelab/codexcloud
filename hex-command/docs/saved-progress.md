@@ -4,16 +4,25 @@ Saved progress is local to a browser profile. Saving and loading use browser
 storage directly and do not require a network service. Clearing site data removes
 saved progress.
 
-Saved games are opened from Settings. They use authored campaign and map names,
-a separate history for each game and compact rows whose load/delete actions
-appear locally when selected. Games are ordered by their latest save; each history
-is ordered newest first and repeats chapter headings whenever play returns to a
-chapter. Games on the same map remain separate and show their opening save time
-(or earliest retained save time if the opening was removed). Current recovery is
-not listed as a second historical checkpoint.
-Deletes require confirmation. Settings also exposes Save game, which creates a
-manual turn snapshot without move undo. Manual saves
-are labelled in history and are exempt from automatic pruning.
+Saved games are opened from Settings. Each playthrough has an inline disclosure:
+its heading unfolds and folds the history in place. Games sort by their latest
+save and remain separate even when they use the same map. The heading shows the
+opening save time, or the earliest retained save if the opening was removed.
+
+Turns form a flat newest-first list. Campaign rows retain chapter numbering and
+names (for example, `II: The Toll Road, 5`); standalone scenarios show only the
+turn number. Load and magnifying-glass buttons stay visible and do not move when
+details open. Each detail section shows saved gold, player-controlled units by
+level, captured villages and visible completed objectives. Summaries are read on
+demand from the selected checkpoint through normal migration/native validation;
+they neither advance nor replace current play and add no persisted format fields.
+
+Load, individual deletion and Delete all campaign saves require a confirmation
+that identifies their target. Confirmation initially rejects rapid follow-up taps.
+Individual deletion is secondary inside the summary; whole-campaign deletion is
+a quiet action after that playthrough's turns. Settings also exposes Save game,
+which records a turn snapshot without move undo. Manual saves are labelled and
+are exempt from automatic pruning.
 
 A failed write leaves the previous committed recovery available. A dialog explains
 whether storage is full, access is blocked, or an internal error occurred. Capacity

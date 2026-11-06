@@ -23,8 +23,7 @@
   let screen = $state<Screen>("hub");
   let body = $state<HTMLDivElement>();
   let frame: { focusHeading(): void };
-  let savedGames: { open(): void; back(): void };
-  let savedRun = $state("");
+  let savedGames: { open(): void };
   let saving = $state(false);
   let saved = $state(false);
   async function saveGame() {
@@ -38,28 +37,9 @@
       saving = false;
     }
   }
-  let savedListPosition = 0;
-  let lastSavedRun = "";
-  async function navigateSavedGame(inGame: boolean) {
-    if (inGame) {
-      savedListPosition = body?.scrollTop ?? 0;
-      lastSavedRun = savedRun;
-    }
-    await tick();
-    if (screen !== "saves" || !dialog?.open || !body) return;
-    body.scrollTop = inGame ? 0 : savedListPosition;
-    if (inGame) frame.focusHeading();
-    else
-      body
-        .querySelector<HTMLButtonElement>(`[data-run-id="${lastSavedRun}"]`)
-        ?.focus({ preventScroll: true });
-  }
   const positions = new Map<Screen, number>();
   function rememberPosition() {
-    positions.set(
-      screen,
-      screen === "saves" && savedRun ? savedListPosition : (body?.scrollTop ?? 0),
-    );
+    positions.set(screen, body?.scrollTop ?? 0);
   }
   function close() {
     rememberPosition();
@@ -133,12 +113,10 @@
   title={titles[screen]}
   width={screen === "hub" ? "420px" : screen === "saves" ? "500px" : "680px"}
   tall={screen !== "hub"}
-  backLabel={screen === "saves" && savedRun ? "Back to saved games" : "Back to Settings"}
   onBack={screen === "hub"
     ? undefined
     : () => {
-        if (screen === "saves" && savedRun) savedGames.back();
-        else void navigate("hub");
+        void navigate("hub");
       }}
 >
   <div class="settings-hub" hidden={screen !== "hub"}>
@@ -185,14 +163,7 @@
     </section>
   </div>
   <div hidden={screen !== "saves"}>
-    <SavedProgress
-      bind:this={savedGames}
-      {view}
-      bind:run={savedRun}
-      {actions}
-      onLoad={close}
-      onNavigate={navigateSavedGame}
-    />
+    <SavedProgress bind:this={savedGames} {view} {actions} onLoad={close} />
   </div>
   <div class="reference" hidden={screen !== "manual"}>
     <div class="manual">

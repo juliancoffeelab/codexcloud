@@ -67,6 +67,7 @@ export interface BattleCommands {
   downloadDebugReport(): void;
   savedProgress(): import("../save/metadata").TurnEntry[];
   saveGame(): Promise<void>;
+  savedSummary(id: string): Promise<import("../save/summary").SaveSummary>;
   savedRecovery(): import("../save/metadata").CurrentEntry | undefined;
   restoreProgress(id: string): Promise<void>;
   deleteSavedProgress(id: string): Promise<void>;
@@ -79,6 +80,7 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
   return Object.freeze({
     savedProgress: controller.savedProgress.bind(controller),
     saveGame: controller.saveGame.bind(controller),
+    savedSummary: controller.savedSummary.bind(controller),
     savedRecovery: controller.savedRecovery.bind(controller),
     restoreProgress: controller.restoreProgress.bind(controller),
     deleteSavedProgress: controller.deleteSavedProgress.bind(controller),

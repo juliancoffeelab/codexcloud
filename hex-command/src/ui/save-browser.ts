@@ -62,13 +62,10 @@ export function savedGames<T extends SaveInfo>(sources: readonly T[]) {
   }
   return [...games.values()].sort((a, b) => saveOrder(a.latest, b.latest));
 }
-/** Group adjacent chapters only; revisiting a chapter creates another heading. */
-export function chapterGroups(entries: readonly TurnEntry[]) {
-  const groups: { mission: string; number: number; name: string; entries: TurnEntry[] }[] = [];
-  for (const entry of entries) {
-    const previous = groups.at(-1);
-    if (previous?.mission === entry.mission) previous.entries.push(entry);
-    else groups.push({ mission: entry.mission, ...chapter(entry), entries: [entry] });
-  }
-  return groups;
+/** Scenarios need no redundant chapter title; campaigns retain chapter and turn identity. */
+export function turnName(entry: TurnEntry): string {
+  const info = chapter(entry);
+  return info.number
+    ? `${roman(info.number)}: ${info.name}, ${entry.round}`
+    : `Turn ${entry.round}`;
 }
