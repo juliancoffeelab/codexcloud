@@ -187,6 +187,18 @@
           "action": "attack-shield-bash"
         },
         {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "attack-pickaxe"
+        },
+        {
           "entity": "dwarves/dwarf-hammerer-l2",
           "action": "attack-hammer"
         },
@@ -1010,23 +1022,11 @@
         },
         {
           "entity": "dwarves/dwarf-axe-pick-l2",
-          "action": "attack-pickaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l2",
           "action": "attack-axe"
         },
         {
           "entity": "dwarves/dwarf-axe-pick-l3",
-          "action": "attack-pickaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l3",
           "action": "attack-axe"
-        },
-        {
-          "entity": "dwarves/dwarf-pickaxe",
-          "action": "attack-pickaxe"
         },
         {
           "entity": "dwarves/dwarf-pickaxe",

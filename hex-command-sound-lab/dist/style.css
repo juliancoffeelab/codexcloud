@@ -2117,3 +2117,5 @@ body.field-mode:is([data-view="units"], [data-view="terrain"]) #volume-value {
   color: var(--muted);
   font-size: 12px;
 }
+
+#tap-mode button[hidden] { display: none; }

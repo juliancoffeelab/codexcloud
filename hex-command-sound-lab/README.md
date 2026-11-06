@@ -393,6 +393,12 @@ entries: bone-contact item Wood 03 for skeletal animals, Grunt 4 for zombie bear
 Cloth 3 for corpse vultures. Bone-dragon fire retains Spell Fire 07. Curation
 checks explicitly cover the separate undead faction as well as living beasts.
 
-All axe-family attacks (axes, poleaxes, pickaxes and halberds) now suggest
+Axe-family attacks (axes, poleaxes and halberds) now suggest
 Rubberduck Metal 01 across factions, superseding the dwarf Mining 001 axe default.
 Other dwarf melee and ranged/spell choices are unchanged.
+
+Pickaxes remain on Mining 001, explicitly excluded from Metal 01. Unit tap modes
+now include Attack 2, plus Attack 3 for Briarweaver and Thorn Oracle (the two
+three-attack units). Mode persists; units lacking the requested attack report it
+without falling back. Roster attack counts: 145 with two, 90 with one, 2 with
+three, 1 with none. Terrain taps are unaffected.

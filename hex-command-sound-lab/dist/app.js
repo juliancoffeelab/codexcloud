@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=axe-metal-1";
+import { buildActions } from "./matching.js?v=secondary-attacks-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -67,7 +67,7 @@ async function start() {
   let unitTapMode = "selection";
   try {
     const savedMode = localStorage.getItem("hex-sound-unit-tap-mode");
-    unitTapMode = ["selection", "attack"].includes(savedMode)
+    unitTapMode = ["selection", "attack", "attack2", "attack3"].includes(savedMode)
       ? savedMode
       : "selection";
   } catch {}
@@ -178,7 +178,7 @@ async function start() {
     if (entity.kind === "terrain" || unitTapMode === "selection")
       return rows.find((row) => row.key === "tap");
     if (unitTapMode === "hurt") return rows.find((row) => row.key === "hit");
-    return rows.find((row) => row.key.startsWith("attack-"));
+    return rows.filter((row) => row.key.startsWith("attack-"))[unitTapMode === "attack3" ? 2 : unitTapMode === "attack2" ? 1 : 0];
   }
   function chosenFor(action) {
     const saved = assignments[keyFor(action)];
@@ -562,8 +562,8 @@ async function start() {
       if (ref) void play([ref]);
       else
         $("#playing").textContent =
-          unitTapMode === "attack"
-            ? "No main attack sound assigned to this unit."
+          unitTapMode.startsWith("attack")
+            ? `No ${unitTapMode === "attack2" ? "secondary" : unitTapMode === "attack3" ? "third" : "main"} attack sound assigned to this unit.`
             : "No sound assigned.";
     }
   }
@@ -787,9 +787,10 @@ async function start() {
     $("#dock-meta").textContent =
       unit.kind === "terrain"
         ? "Tap a tile to hear it"
-        : `Unit taps play ${unitTapMode === "attack" ? "the main attack" : unitTapMode} sounds`;
+        : `Unit taps play ${unitTapMode === "attack" ? "the main attack" : unitTapMode === "attack2" ? "the secondary attack" : unitTapMode === "attack3" ? "the third attack" : unitTapMode} sounds`;
     $("#tap-mode").hidden = unit.kind === "terrain";
     for (const button of document.querySelectorAll("[data-tap-mode]")) {
+      button.hidden = button.dataset.tapMode === "attack3" && (unit.attacks?.length || 0) < 3 && unitTapMode !== "attack3";
       const active = button.dataset.tapMode === unitTapMode;
       button.classList.toggle("selected", active);
       button.setAttribute("aria-pressed", String(active));
