@@ -2067,7 +2067,7 @@ body.field-mode #sound-dock[hidden] {
   flex: 1;
   min-width: 0;
   min-height: 36px;
-  padding: 5px 6px;
+  padding: 5px 4px;
   border-radius: 4px;
   font-size: 11px;
   white-space: nowrap;

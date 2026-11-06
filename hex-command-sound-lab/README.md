@@ -524,3 +524,27 @@ roles, all suggested ranges and exemptions. Mobile Chromium verifies the real
 AudioParam gains for octopus selection/attack, Stones as weapon/road, doors,
 quarry/bell and raw/matched toggling. Base/library gains and audio bytes remain
 unchanged. Timing, curation and playback-level checks pass.
+
+### Four shared death auditions
+
+The compact fixed tap switch is now Selection / Attack 1 / Attack 2 / Death.
+Death mode persists across reloads and uses one of four shared, already-trimmed
+recordings: Flesh = Grunt 1, Bones = Eat 1, Spirit = the processed Grunt 2 body,
+Wood = Plank medium 004. All 238 unit entries have one death audition; there are
+no armor, size, species, layering or random-variation branches. Wildkeeper and
+Grovewarden mages use Flesh; only treants use Wood. Skeletal animals use Bones.
+`dist/death-picks.js` is the single four-pick mapping. Death is soundboard-only;
+Original Game comparison has no assigned historical death cue. Terrain taps keep
+their normal behavior regardless of the remembered unit mode.
+
+Axes, poleaxes and halberds now use the exact werewolf claw swish
+(`edits/knife-slice-2-no-hit-v1`). Pickaxes remain Mining 001. Old saved Metal 01
+axe defaults and the former nonshared knight death pick migrate with local
+backups; earlier audio remains in Library. No audio files or gains changed.
+
+Death auditions participate in the palette/timing reports as a separate group;
+all four measure -26.29 dBFS at the 55% matched reference volume. There are still
+548 recordings / 1,360 takes. All-unit curation checks enforce exactly four death
+IDs and one recommendation per unit. Touch Chromium at 320px verifies four buttons
+on one row without text overflow, all four deaths completing playback, persisted
+Death mode, saved-pick migrations, axe swish, pickaxe mining and unaffected terrain.

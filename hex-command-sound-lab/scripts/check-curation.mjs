@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import { buildActions } from "../dist/matching.js";
+import { DEATH_SOUNDS } from "../dist/death-picks.js";
 const root = new URL("../dist/", import.meta.url);
 const read = (name) => JSON.parse(fs.readFileSync(new URL(name, root)));
 const catalog = read("catalog.json"),
   workbench = read("workbench.json");
 const byId = new Map(catalog.map((item) => [item.id, item]));
 let units = 0;
+const deathIds = new Set();
 for (const faction of workbench.factions)
   for (const unit of faction.units) {
     const actions = buildActions(unit, catalog, { extras: true });
@@ -81,7 +83,7 @@ for (const faction of workbench.factions)
     for (const attack of unit.attacks)
       if (/axe|halberd/i.test(attack.name) && !/pickaxe/i.test(attack.name))
         assert.equal(attacks.find(row => row.key === `attack-${attack.id}`).suggested[0],
-          "edits/metal-01-soft-onset-v1");
+          "edits/knife-slice-2-no-hit-v1");
     for (const attack of unit.attacks)
       if (/arquebus|pistol|musket|gunshot/i.test(attack.name))
         assert.equal(attacks.find(row => row.key === `attack-${attack.id}`).suggested[0], "impact-sounds/impactPlate_medium_000");
@@ -102,10 +104,18 @@ for (const faction of workbench.factions)
     const death = buildActions(unit, catalog).find(
       (row) => row.key === "death",
     );
-    if (death)
-      assert(death.hypothetical, `${unit.key}: death must stay a proposal`);
+    assert(death, `${unit.key}: missing shared death`);
+    assert.equal(death.suggested.length, 1);
+    deathIds.add(death.suggested[0]);
+    assert.equal(death.suggested[0], DEATH_SOUNDS[death.deathGroup]);
+    if (/^(wildkeeper|grovewarden)$/.test(unit.id)) assert.equal(death.deathGroup, "flesh");
+    if (/^treant(?:-l[23])?$/.test(unit.id)) assert.equal(death.deathGroup, "wood");
+    if (/^(ghost|spectre|wraith)$/.test(unit.id)) assert.equal(death.deathGroup, "spirit");
+    assert.equal(death.alternatives.length, 0);
+    assert(death.hypothetical, `${unit.key}: death must stay a proposal`);
     units++;
   }
+assert.equal(deathIds.size, 4, "Exactly four shared death recordings");
 for (const [id, wanted] of [
   ["forest", "edits/forest-book-03-short-v1"],
   ["grove", "edits/grove-short-magic-v2"],

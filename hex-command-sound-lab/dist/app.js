@@ -1,7 +1,8 @@
+import { DEATH_SOUNDS } from "./death-picks.js?v=death-four-1";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=snake-texture-2";
+import { buildActions } from "./matching.js?v=death-four-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -69,7 +70,7 @@ async function start() {
   let unitTapMode = "selection";
   try {
     const savedMode = localStorage.getItem("hex-sound-unit-tap-mode");
-    unitTapMode = ["selection", "attack", "attack2"].includes(savedMode)
+    unitTapMode = ["selection", "attack", "attack2", "death"].includes(savedMode)
       ? savedMode
       : "selection";
   } catch {}
@@ -150,7 +151,7 @@ async function start() {
                   ? "terrain-keep"
                   : "terrain-plains"
         : "select";
-    return rows.map((row) => {
+    return rows.filter(row => row.key !== "death").map((row) => {
       const name = row.key.startsWith("attack-")
         ? /bow|crossbow|arbalest/i.test(row.title)
           ? "attack-bow"
@@ -179,7 +180,7 @@ async function start() {
   function unitTapAction(entity, rows) {
     if (entity.kind === "terrain" || unitTapMode === "selection")
       return rows.find((row) => row.key === "tap");
-    if (unitTapMode === "hurt") return rows.find((row) => row.key === "hit");
+    if (unitTapMode === "death") return rows.find((row) => row.key === "death");
     return rows.filter((row) => row.key.startsWith("attack-"))[unitTapMode === "attack2" ? 1 : 0];
   }
   function levelClassFor(action) {
@@ -585,7 +586,7 @@ async function start() {
         $("#playing").textContent =
           unitTapMode.startsWith("attack")
             ? `No ${unitTapMode === "attack2" ? "secondary" : "main"} attack sound assigned to this unit.`
-            : "No sound assigned.";
+            : unitTapMode === "death" ? "No death sound assigned to this unit." : "No sound assigned.";
     }
   }
   function soundCard(id, action, isSuggested) {
@@ -992,7 +993,7 @@ async function start() {
           action.key === "move"
             ? "Move · shared board click"
             : action.key === "death"
-              ? "Death candidate"
+              ? "Death sound"
               : unitTapMode === "hurt"
                 ? "Hurt alternatives"
                 : "Selection alternatives",
@@ -1631,6 +1632,31 @@ async function start() {
       localStorage.setItem("hex-sound-before-snake-texture-v2", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-snake-texture-v2", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-four-deaths-v1")) {
+      const backup = {}, allowed = new Set(Object.values(DEATH_SOUNDS));
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!key.endsWith("/death") || allowed.has(choice.id)) continue;
+        const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
+        if (entity?.kind !== "unit") continue;
+        const death = buildActions(entity, catalog).find(row => row.key === "death");
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: death.suggested[0], take: 0 };
+      }
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!key.includes("/attack-") || choice.id !== "edits/metal-01-soft-onset-v1") continue;
+        const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
+        if (!entity) continue;
+        const action = buildActions(entity, catalog).find(row => row.key === key.slice(key.lastIndexOf("/") + 1));
+        if (action?.suggested[0] !== "edits/knife-slice-2-no-hit-v1") continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: action.suggested[0], take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-four-deaths-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-four-deaths-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

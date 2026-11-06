@@ -1,3 +1,4 @@
+import { deathPick } from "./death-picks.js?v=death-four-1";
 // Authored audition choices. Death rows are candidates, not live-game events.
 export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   const byId = new Map(catalog.map((sound) => [sound.id, sound]));
@@ -34,23 +35,13 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
       row.caveat = "Trimmed designed creature voice as a ghost proxy.";
     }
   }
-  if (bone) {
-    const death = choose(
-      "death",
-      ["rubberduck/80-cc0-creature-sfx/eat_01.ogg"],
-      "Eat 1 as a proposed skeletal breakup/death texture.",
-    );
-    death.caveat =
-      "Designed eating texture used as a skeletal proxy; the live game has no separate death cue.";
-  } else if (entity.id === "knight") {
-    const death = choose(
-      "death",
-      ["rpg-audio/metalPot3"],
-      "Metal pot 3 as a proposed armored knight fall/death contact.",
-    );
-    death.caveat =
-      "Equipment Foley proxy, not a recorded armored fall; no live-game death integration.";
-  }
+  const deathChoice = deathPick(entity, { bone, spirit });
+  const death = choose("death", [deathChoice.sound], `Shared ${deathChoice.group} death audition.`);
+  death.title = "Death";
+  death.deathGroup = deathChoice.group;
+  death.alternatives = [];
+  death.hypothetical = true;
+  death.caveat = "Shared soundboard death audition; no live-game death integration.";
   if (/^merfolk-maceguard(?:-l[23])?$/.test(entity.id)) {
     const id = "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav";
     const row = choose("attack-mace", [id],
@@ -96,8 +87,8 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     } else if (attack.id === "root-crush") {
       choose(key, ["rubberduck/80-cc0-rpg-sfx/spell_02.ogg"], "Spell 02 for Crushing Roots.");
     } else if (/axe|halberd/.test(name) && !/pickaxe/.test(name)) {
-      choose(key, ["edits/metal-01-soft-onset-v1"],
-        "Metal 01 without its opening hit for axe-family attacks, including poleaxes and halberds.");
+      choose(key, ["edits/knife-slice-2-no-hit-v1"],
+        "The werewolf claw swish for axes, poleaxes and halberds; pickaxes keep mining.");
     } else if (["humans", "elves"].includes(entity.faction) && /^(sword|blade)$/.test(name)) {
       choose(key, ["edits/spear-sabre-one-shot-v1"], "Sword attack using the former spear contact.");
     } else if (["humans", "elves"].includes(entity.faction) && /^(spear|lance)$/.test(name)) {
