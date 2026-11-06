@@ -337,3 +337,12 @@ turn-start entries and retires archived recovery and imported-position entries.
 Their payloads are deleted after committing the converted index. Current recovery
 lives at its separate fixed key and is not deleted. Missing metadata on an old
 current save does not create historical records.
+
+## Version 36 and history index 3: manual checkpoints
+
+The explicit 35→36 and history-index 2→3 steps preserve existing checkpoint facts
+and metadata. The target model adds explicitly requested manual saves with their
+own identities and move undo. Automatic turn snapshots still contain no undo;
+current recovery remains separate. No old representation is accepted by runtime
+readers or writers. Manual saves are exempt from age-based automatic retention,
+but explicit individual or campaign deletion has no exemptions.

@@ -69,7 +69,12 @@
     preloadTerrainMap(mode === "campaign" ? campaign.missions[0]!.map.id : mapId);
   }
   function requestStart() {
-    if (view.game.mapId !== "developer" && !view.game.winner && view.completedTurns > 1) {
+    if (
+      !view.needsNewGame &&
+      view.game.mapId !== "developer" &&
+      !view.game.winner &&
+      view.completedTurns > 1
+    ) {
       confirmation.showModal();
       confirmation.querySelector<HTMLButtonElement>(".quiet")?.focus();
     } else start();
@@ -123,6 +128,7 @@
 
 <DialogWindow
   title="New game"
+  canDismiss={!view.needsNewGame}
   className="new-game-dialog"
   bind:dialog
   width="520px"

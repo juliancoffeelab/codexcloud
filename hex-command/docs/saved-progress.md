@@ -11,7 +11,9 @@ is ordered newest first and repeats chapter headings whenever play returns to a
 chapter. Games on the same map remain separate and show their opening save time
 (or earliest retained save time if the opening was removed). Current recovery is
 not listed as a second historical checkpoint.
-Deletes require confirmation.
+Deletes require confirmation. Settings also exposes Save game, which creates a
+manual checkpoint of the exact position and available move undo. Manual saves
+are labelled in history and are exempt from automatic pruning.
 
 A failed write leaves the previous committed recovery available. A dialog explains
 whether storage is full, access is blocked, or an internal error occurred. Capacity
@@ -32,10 +34,11 @@ throughout its actions, then writes the fully resolved result. Enemy-first games
 retain the untouched opening enemy state. Reload resumes from these safe points;
 updates may migrate the underlying state and discard undo.
 
-Historical payloads are immutable turn-start checkpoints, including opening
+Automatic historical payloads are immutable turn-start checkpoints, including opening
 mission dialogue and campaign progress. Completed battles remain recoverable as
 the current continuation; they do not create a mid-turn historical checkpoint.
-There is one exact-state current save, including undo. Starting another run or
+There is one exact-state current recovery, including undo, alongside any
+explicitly requested manual checkpoints. Starting another run or
 loading earlier progress replaces it; it must not archive the outgoing recovery.
 Previously recorded turn starts remain accessible when play continues differently.
 
@@ -54,17 +57,27 @@ remove index entries before removing payloads. Interrupted operations can leave
 unreferenced bytes but never publish an absent payload. Each payload replacement
 and current recovery replacement is an atomic browser storage write.
 
-Automatic thinning runs at turn boundaries. It is optional maintenance: a failure
-does not invalidate an already committed checkpoint, and its error is included in
-the debug report. It retains every one of the latest 24 turn checkpoints in each continuation. Older checkpoints are selected by a
-stable turn ordinal at intervals of 2, 4, 8 and so on in progressively older age
-bands. Mission starts are always exempt from automatic thinning. Whole-run cleanup
-protects only the current recovery. Historical turn starts, including the current
-turn’s start and mission starts, can be deleted manually. Retained payloads are
-complete native snapshots, so a missing ancestor does not prevent loading them.
+Automatic thinning uses save time across branches within each game. The latest
+five minutes remain dense, followed by one save per five minutes up to an hour,
+one per hour up to a day, one per day up to a week, and one per week up to thirty
+days. Older ordinary turn saves expire. Chapter starts, manual saves, the latest
+automatic turn in each game, and the sole current recovery remain untouched by
+automatic cleanup. Retention maintenance runs before and after turn insertion so
+eligible old history can free space before a new payload is written. No-op
+maintenance does not rewrite the index.
 
-History accepts only immutable snapshots captured at real turn boundaries; its
-writer cannot accept a current save or arbitrary serialized bytes. Current recovery
+Individual historical saves can be deleted manually. Delete campaign saves
+removes the selected playthrough's entire history and any stored current recovery
+belonging to it, with no protected checkpoints. If it is the locally played game,
+a prominent red warning explains that deletion ends play and opens the existing
+New game UI. Confirming cancels pending work and prevents autosaves from recreating
+the deleted session. A small browser marker retains the choice of New game after
+reload until another game is saved. Deleting an inactive game leaves current play
+running and automatically attempts to save pending progress. The storage-full
+warning clears only when saving succeeds; no success banner is added.
+
+History writers accept opaque turn-boundary or explicitly requested manual
+snapshots, never a current recovery or arbitrary serialized bytes. Current recovery
 has a separate metadata query and is never an entry in the history index.
 
 Each record carries stable run, continuation, checkpoint and parent identities.
@@ -74,7 +87,9 @@ state or network-dependent code is part of local persistence today.
 
 ## Save migrations
 
-The current battle envelope is version 35 and the history index is version 2.
+The current battle envelope is version 36 and the history index is version 3.
+The explicit 35→36 and index 2→3 steps retain existing facts and introduce the
+manual-checkpoint variant.
 The explicit 34→35 conversion resolves missing identities, setup, experience and
 combat RNG from frozen defaults. It removes the old imported-position variant and
 discards old undo. Native restoration validates the converted state without
@@ -82,8 +97,7 @@ repairing it or consulting historical formats.
 
 The explicit history-index 1→2 conversion retains genuine turn starts and removes
 archived recoveries and imported positions. Their payloads are removed only after
-the converted index is committed. The sole current recovery is untouched by history
-cleanup. This conversion runs under the same short-lived history lock as normal
+the converted index is committed. Automatic history cleanup leaves the sole current recovery untouched. This conversion runs under the same short-lived history lock as normal
 history transactions; it never reconstructs unavailable turn starts.
 
 Older turn payloads pass through the versioned migration chain when selected,

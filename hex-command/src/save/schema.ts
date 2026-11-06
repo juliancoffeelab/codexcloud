@@ -1,10 +1,10 @@
 import { validUndoStep } from "./undo";
 import { validSetup, type SessionSetup } from "../game/setup";
 import type { SavedGame, UndoStep } from "../../rust/pkg/hex_command";
-import type { CurrentEntry, TurnEntry } from "./metadata";
+import type { CurrentEntry, TurnEntry, ManualEntry, HistoryEntry } from "./metadata";
 
-export const SAVE_VERSION = 35;
-export const HISTORY_VERSION = 2;
+export const SAVE_VERSION = 36;
+export const HISTORY_VERSION = 3;
 interface SaveBase {
   version: typeof SAVE_VERSION;
   checkpoint: SavedGame;
@@ -20,15 +20,22 @@ export interface TurnSave extends SaveBase {
   undo?: never;
   progress: { entry: TurnEntry };
 }
-export type BattleSave = CurrentSave | TurnSave;
+export interface ManualSave extends SaveBase {
+  pendingEnemy: false;
+  undo: UndoStep[];
+  progress: { entry: ManualEntry };
+}
+export type HistoricalSave = TurnSave | ManualSave;
+export type BattleSave = CurrentSave | HistoricalSave;
 export interface HistoryIndex {
   version: typeof HISTORY_VERSION;
-  entries: TurnEntry[];
+  entries: HistoryEntry[];
 }
 export const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
-function validEntry(value: unknown): value is CurrentEntry | TurnEntry {
-  if (!isRecord(value) || !["turn", "recovery"].includes(String(value.kind))) return false;
+function validEntry(value: unknown): value is CurrentEntry | HistoryEntry {
+  if (!isRecord(value) || !["turn", "recovery", "manual"].includes(String(value.kind)))
+    return false;
   const keys = [
     "id",
     "runId",
@@ -56,7 +63,8 @@ function validEntry(value: unknown): value is CurrentEntry | TurnEntry {
     (value.kind === "turn"
       ? value.id === value.checkpointId &&
         (value.parentId === undefined || typeof value.parentId === "string")
-      : value.id === value.branchId && value.missionStart === false)
+      : value.missionStart === false &&
+        value.id === (value.kind === "recovery" ? value.branchId : value.checkpointId))
   );
 }
 /** Current contracts only. Historical forms are converted before validation. */
@@ -73,6 +81,7 @@ export function currentSave(value: unknown): BattleSave {
     Object.keys(value.progress).some((key) => key !== "entry") ||
     !validEntry(value.progress.entry) ||
     typeof value.pendingEnemy !== "boolean" ||
+    (value.progress.entry.kind === "manual" && value.pendingEnemy !== false) ||
     !isRecord(value.checkpoint) ||
     !isRecord(value.checkpoint.state) ||
     !Array.isArray(value.checkpoint.state.factions) ||
@@ -97,13 +106,18 @@ export function currentTurn(value: unknown): TurnSave {
   if (save.progress.entry.kind !== "turn") throw new Error("Expected a turn-start checkpoint");
   return save as TurnSave;
 }
+export function currentHistorical(value: unknown): HistoricalSave {
+  const save = currentSave(value);
+  if (save.progress.entry.kind === "recovery") throw new Error("Expected a historical checkpoint");
+  return save as HistoricalSave;
+}
 export function currentHistoryIndex(value: unknown): HistoryIndex {
   if (
     !isRecord(value) ||
     value.version !== HISTORY_VERSION ||
     Object.keys(value).some((key) => key !== "version" && key !== "entries") ||
     !Array.isArray(value.entries) ||
-    value.entries.some((entry) => !validEntry(entry) || entry.kind !== "turn") ||
+    value.entries.some((entry) => !validEntry(entry) || entry.kind === "recovery") ||
     new Set(value.entries.map((entry) => entry.id)).size !== value.entries.length
   )
     throw new Error(

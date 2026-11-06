@@ -7,11 +7,11 @@ Requirements for [issue #46](https://github.com/juliancoffeelab/codexcloud/issue
 1. **Recover current play.** After a completed action at a safe save point, refreshing or reopening restores the current battle, campaign state, and available move-undo history. Existing undo barriers remain intact. Migrations may discard undo history.
 2. **Keep enemy turns atomic.** An enemy turn is either saved in full or not saved at all. Partial enemy-turn execution must not be persisted.
 3. **Keep independent runs.** Starting another campaign or skirmish must preserve existing runs.
-4. **Revisit previous turns.** Historical checkpoints restore the start of a turn, including the campaign state reached at that point. Only the current save retains exact mid-turn state and available undo.
+4. **Revisit previous turns.** Historical checkpoints restore the start of a turn, including the campaign state reached at that point. Explicit manual saves may also retain exact mid-turn state and available undo.
 5. **Preserve alternative continuations.** Returning to an earlier checkpoint and playing differently must leave previously reached later progress accessible.
 6. **Browse saved progress.** Show saves ordered by save time, with enough context—run, mission, and turn—to identify them.
-7. **Manage storage.** Allow deleting individual historical checkpoints and deleting or pruning whole runs. Storage failures must provide an error and access to cleanup tools.
-8. **Retain history selectively.** Automatic history may keep recent turns densely and older turns more sparsely. The exact retention policy remains to be defined.
+7. **Manage storage.** Allow deleting individual historical checkpoints or every save in a selected run. Deleting the currently played run warns the player, ends that session and opens New game. Storage failures must provide an error and access to cleanup tools.
+8. **Retain history selectively.** Automatic history may keep recent turns densely and older turns more sparsely. Age is measured by save time across branches within each run. Preserve chapter starts, explicit manual saves and the latest automatic turn per run during automatic pruning; explicit deletion has no exemptions.
 9. **Support offline play.** Local saving and loading must remain usable without a network connection or cloud service.
 10. **Expose local persistence status.** Distinguish successfully saved progress from local-save failure.
 11. **Migrate saves.** Current recovery data and historical checkpoints follow the supported migration path after updates. Undo history may be discarded during migration.

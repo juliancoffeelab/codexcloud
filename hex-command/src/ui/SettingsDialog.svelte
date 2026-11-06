@@ -25,6 +25,19 @@
   let frame: { focusHeading(): void };
   let savedGames: { open(): void; back(): void };
   let savedRun = $state("");
+  let saving = $state(false);
+  let saved = $state(false);
+  async function saveGame() {
+    saving = true;
+    try {
+      await actions.saveGame();
+      saved = true;
+    } catch {
+      /* The controller exposes the save-failure dialog. */
+    } finally {
+      saving = false;
+    }
+  }
   let savedListPosition = 0;
   let lastSavedRun = "";
   async function navigateSavedGame(inGame: boolean) {
@@ -72,6 +85,7 @@
   }
   export function open(focusId?: string) {
     screen = "hub";
+    saved = false;
     dialog?.showModal();
     void tick().then(() => {
       if (screen === "hub" && dialog?.open && body) {
@@ -154,6 +168,9 @@
         </p>
       </details>
       {@render entry("Saved games", "saves")}
+      <button class="new-game" disabled={saving || saved || !view.canSave} onclick={saveGame}>
+        {saving ? "Saving…" : saved ? "Saved" : "Save game"}
+      </button>
       <button id="new-game" class="new-game" onclick={newBattle}>New game</button>
     </section>
     <section>
@@ -170,6 +187,7 @@
   <div hidden={screen !== "saves"}>
     <SavedProgress
       bind:this={savedGames}
+      {view}
       bind:run={savedRun}
       {actions}
       onLoad={close}
@@ -378,7 +396,7 @@
     padding: 5px 0 12px;
     font-size: 12px;
   }
-  #new-game.new-game {
+  .new-game {
     min-height: 44px;
     width: 100%;
     margin: 12px 0 4px;

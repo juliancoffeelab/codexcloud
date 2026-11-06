@@ -1,6 +1,7 @@
 <script lang="ts">
-  import type { BattleCommands } from "../controller/view";
-  import type { CurrentEntry, TurnEntry } from "../save/metadata";
+  import DialogWindow from "./DialogWindow.svelte";
+  import type { BattleView, BattleCommands } from "../controller/view";
+  import type { CurrentEntry, HistoryEntry } from "../save/metadata";
   import {
     runName,
     chapter,
@@ -12,16 +13,18 @@
   } from "./save-browser";
   let {
     actions,
+    view,
     onLoad = () => {},
     run = $bindable(""),
     onNavigate = () => {},
   }: {
     actions: BattleCommands;
+    view: BattleView;
     onLoad?: () => void;
     run?: string;
     onNavigate?: (inGame: boolean) => void;
   } = $props();
-  let entries = $state<TurnEntry[]>([]);
+  let entries = $state<HistoryEntry[]>([]);
   let recovery = $state<CurrentEntry>();
   const games = $derived(savedGames([...entries, ...(recovery ? [recovery] : [])]));
   const game = $derived(games.find((game) => game.id === run));
@@ -29,10 +32,17 @@
   let busy = $state(false);
   let selected = $state("");
   let limit = $state(30);
-  let managing = $state(false);
+  let confirmation = $state<HTMLDialogElement>();
+  let deletion = $state<{
+    id: string;
+    name: string;
+    started: string;
+    current: boolean;
+    count: number;
+  }>();
   const historical = $derived(entries.filter((entry) => entry.runId === run).sort(saveOrder));
   const groups = $derived(chapterGroups(historical.slice(0, limit)));
-  function firstSaved(entry: TurnEntry | CurrentEntry): string {
+  function firstSaved(entry: HistoryEntry | CurrentEntry): string {
     return `${entry.kind === "turn" && entry.missionStart && entry.ordinal === 1 ? "Started" : "Earliest save"} ${saveTime(entry.savedAt)}`;
   }
   function refresh() {
@@ -45,7 +55,6 @@
     run = "";
     failure = "";
     limit = 30;
-    managing = false;
     selected = "";
     try {
       refresh();
@@ -74,51 +83,49 @@
     run = id;
     selected = "";
     limit = 30;
-    managing = false;
     onNavigate(!!run);
   }
   export function back() {
     changeRun("");
   }
-  async function remove(entry: TurnEntry) {
+  async function remove(entry: HistoryEntry) {
     if (confirm(`Delete turn ${entry.round} from ${chapter(entry).name}?`))
       await perform(() => actions.deleteSavedProgress(entry.id));
   }
-  async function removeRun() {
-    const current = recovery?.runId === run;
-    const name = game ? runName(game.latest) : "this game";
-    if (
-      confirm(
-        `${current ? "Delete all other saves" : "Delete all saves"} for ${name}?${current ? " Your current position will be kept." : ""}`,
-      )
-    ) {
-      await perform(() => actions.deleteSavedRun(run));
-      managing = false;
-    }
+  function removeRun() {
+    if (!game) return;
+    deletion = {
+      id: run,
+      name: runName(game.latest),
+      started: firstSaved(game.earliest),
+      current: view.activeRunId === run,
+      count: historical.length + (recovery?.runId === run ? 1 : 0),
+    };
+    confirmation?.showModal();
+    confirmation?.querySelector<HTMLButtonElement>(".cancel-delete")?.focus();
+  }
+  async function confirmDelete() {
+    if (!deletion) return;
+    if (await perform(() => actions.deleteSavedRun(deletion!.id))) confirmation?.close();
   }
 </script>
 
 <section class="saved-games-browser" aria-label="Saved games" aria-busy={busy}>
   {#if failure}<p role="alert" class="save-alert">{failure}</p>
     <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>{/if}
+  {#if view.saveFailure?.kind === "full"}
+    <p class="space-warning" role="status">
+      <strong>Latest progress hasn’t been saved</strong>
+      Delete campaign saves or individual turns to free space.
+    </p>
+  {/if}
   {#if game}
     <div class="run-controls">
       <div class="run-copy">
         <h3 class="run-title">{runName(game.latest)}</h3>
         <p class="first-saved">{firstSaved(game.earliest)}</p>
       </div>
-      <button class="manage-button" aria-expanded={managing} onclick={() => (managing = !managing)}>
-        Manage
-      </button>
     </div>
-    {#if managing}<div class="run-management">
-        <button disabled={busy} onclick={() => perform(() => actions.pruneSavedRun(run))}>
-          Prune older saves
-        </button>
-        <button class="delete-button" disabled={busy} onclick={removeRun}>
-          {recovery?.runId === run ? "Delete other saves" : "Delete all saves"}
-        </button>
-      </div>{/if}
     <div class="save-history">
       {#each groups as group (group.entries[0]!.id)}
         <section class="chapter-group" aria-label={group.name}>
@@ -136,7 +143,11 @@
                   aria-expanded={selected === entry.id}
                   onclick={() => (selected = selected === entry.id ? "" : entry.id)}
                 >
-                  <span class="turn">Turn {entry.round}</span>
+                  <span class="turn">
+                    Turn {entry.round}{#if entry.kind === "manual"}<span class="manual-label">
+                        · Manual save
+                      </span>{/if}
+                  </span>
                   <span class="save-time">
                     {saveTime(entry.savedAt)}
                   </span>
@@ -164,6 +175,9 @@
           Show more
         </button>{/if}
     </div>
+    <button class="delete-campaign" disabled={busy} onclick={removeRun}>
+      Delete campaign saves
+    </button>
   {:else if games.length}
     <div class="game-list">
       {#each games as game (game.id)}
@@ -181,8 +195,133 @@
     </div>
   {:else if !failure}<p class="empty-history">No saved games.</p>{/if}
 </section>
+<DialogWindow
+  title="Delete campaign saves?"
+  bind:dialog={confirmation}
+  width="380px"
+  canDismiss={!busy}
+>
+  {#if deletion}
+    <p class="delete-name">{deletion.name}</p>
+    <p class="first-saved">{deletion.started}</p>
+    {#if deletion.current}
+      <div class="current-warning">
+        <strong>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m12 3 10 18H2L12 3zM12 9v5M12 17v1" />
+          </svg>
+          <span>This is the game you’re currently playing.</span>
+        </strong>
+        <p>Deleting its saves will end this game and open New game.</p>
+      </div>
+    {/if}
+    <p class="delete-explanation">
+      All {deletion.count} saves will be deleted, including chapter starts. This cannot be undone.
+    </p>
+    {#if failure}<p class="save-alert" role="alert">{failure}</p>{/if}
+    <button class="confirm-delete" disabled={busy} onclick={confirmDelete}>
+      Delete campaign saves
+    </button>
+    <button class="cancel-delete" disabled={busy} onclick={() => confirmation?.close()}>
+      Cancel
+    </button>
+  {/if}
+</DialogWindow>
 
 <style>
+  .space-warning {
+    margin: 14px 0 0;
+    padding: 11px 12px;
+    border: 1px solid #8a7742;
+    border-radius: 4px;
+    background: #b9923410;
+    color: #dfcc91;
+    font:
+      12px/1.45 system-ui,
+      sans-serif;
+  }
+  .space-warning strong {
+    display: block;
+    margin-bottom: 3px;
+  }
+  .delete-campaign {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 24px;
+    border: 1px solid #9f6256;
+    border-radius: 4px;
+    background: #bb645314;
+    color: #e4a49a;
+    font-size: 13px;
+  }
+  .manual-label {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .delete-name {
+    font:
+      20px/1.3 Georgia,
+      serif;
+    margin: 18px 0 5px;
+  }
+  .current-warning {
+    margin: 20px 0;
+    border: 1px solid #ac6658;
+    border-left: 3px solid #d58372;
+    background: #b8534117;
+    border-radius: 4px;
+    padding: 12px;
+  }
+  .current-warning strong {
+    display: flex;
+    gap: 8px;
+    color: #f2afa1;
+    font:
+      600 13px/1.45 system-ui,
+      sans-serif;
+  }
+  .current-warning svg {
+    flex: 0 0 17px;
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    margin-top: 1px;
+  }
+  .current-warning p {
+    font:
+      12px/1.5 system-ui,
+      sans-serif;
+    color: #e3b1a6;
+    margin: 8px 0 0;
+  }
+  .delete-explanation {
+    font:
+      13px/1.55 system-ui,
+      sans-serif;
+    margin: 20px 0;
+  }
+  .confirm-delete,
+  .cancel-delete {
+    display: block;
+    width: 100%;
+    min-height: 43px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  .confirm-delete {
+    background: #ad5445;
+    border: 1px solid #c87464;
+    color: #fff1e9;
+    font-weight: 600;
+  }
+  .cancel-delete {
+    margin-top: 9px;
+    background: none;
+    border: 1px solid #5b654f;
+  }
   .saved-games-browser {
     min-width: 0;
   }
@@ -240,22 +379,6 @@
     stroke: var(--muted);
     stroke-width: 1.6;
     flex-shrink: 0;
-  }
-  .manage-button {
-    min-height: 36px;
-    padding: 6px 11px;
-    font-size: 12px;
-  }
-  .run-management {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 10px 12px;
-  }
-  .run-management button {
-    font-size: 12px;
-    min-height: 36px;
-    padding: 6px 10px;
   }
   .save-history {
     padding-bottom: 12px;

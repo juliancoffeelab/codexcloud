@@ -1,14 +1,16 @@
 import { nativeValue, type LiveGame } from "../game/live-game";
 import { SAVE_VERSION } from "./schema";
-import type { CurrentSave, BattleSave } from "./schema";
+import type { CurrentSave, BattleSave, ManualSave } from "./schema";
 import { validSetup } from "../game/setup";
 import { storeSave } from "./storage";
 import {
   describeRecovery,
+  describeManual,
   describeTurn,
   newRun,
   type ProgressIdentity,
   type TurnEntry,
+  type ManualEntry,
 } from "./metadata";
 
 function serialize(game: LiveGame, metadata: Omit<BattleSave, "checkpoint">): string | undefined {
@@ -72,5 +74,38 @@ export function saveBattle(game: LiveGame, pendingEnemy = false): void {
     } catch {
       /* Storage is optional for direct consumers. */
     }
+  }
+}
+
+/** An explicitly requested immutable snapshot, distinct from automatic turn starts. */
+export class ManualCheckpoint {
+  readonly #text: string;
+  private constructor(
+    readonly entry: ManualEntry,
+    text: string,
+  ) {
+    this.#text = text;
+    Object.freeze(this);
+  }
+  static capture(
+    game: LiveGame,
+    identity: ProgressIdentity,
+    undo: ManualSave["undo"],
+  ): ManualCheckpoint {
+    if (game.turn !== "player" && !game.winner)
+      throw new Error("Wait for the enemy turn to finish before saving.");
+    const entry = Object.freeze(describeManual(game, identity));
+    const text = serialize(game, {
+      version: SAVE_VERSION,
+      setup: game.setup,
+      pendingEnemy: false,
+      undo,
+      progress: { entry },
+    });
+    if (!text) throw new Error("This position cannot be saved yet.");
+    return new ManualCheckpoint(entry, text);
+  }
+  static text(checkpoint: ManualCheckpoint): string {
+    return checkpoint.#text;
   }
 }

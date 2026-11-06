@@ -21,6 +21,9 @@ export interface RecruitmentContext {
 /** Every display decision belongs to one published revision. */
 export interface BattleView {
   readonly game: GameView;
+  readonly needsNewGame: boolean;
+  readonly canSave: boolean;
+  readonly activeRunId: string | null;
   readonly selected: string | null;
   readonly target: string | null;
   readonly focusedTile: string;
@@ -62,7 +65,8 @@ export interface BattleCommands {
   ): Promise<GameSnapshot>;
   setSound(enabled: boolean): Promise<void>;
   downloadDebugReport(): void;
-  savedProgress(): import("../save/metadata").TurnEntry[];
+  savedProgress(): import("../save/metadata").HistoryEntry[];
+  saveGame(): Promise<void>;
   savedRecovery(): import("../save/metadata").CurrentEntry | undefined;
   restoreProgress(id: string): Promise<void>;
   deleteSavedProgress(id: string): Promise<void>;
@@ -74,6 +78,7 @@ export interface BattleCommands {
 export function createBattleCommands(controller: BattleCommands): BattleCommands {
   return Object.freeze({
     savedProgress: controller.savedProgress.bind(controller),
+    saveGame: controller.saveGame.bind(controller),
     savedRecovery: controller.savedRecovery.bind(controller),
     restoreProgress: controller.restoreProgress.bind(controller),
     deleteSavedProgress: controller.deleteSavedProgress.bind(controller),

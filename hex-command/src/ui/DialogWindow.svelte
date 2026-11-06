@@ -8,6 +8,7 @@
     id,
     width = "420px",
     tall = false,
+    canDismiss = true,
     onBack,
     backLabel = "Back to Settings",
     onBeforeClose,
@@ -20,6 +21,7 @@
     id?: string;
     width?: string;
     tall?: boolean;
+    canDismiss?: boolean;
     onBack?: () => void;
     backLabel?: string;
     onBeforeClose?: () => void;
@@ -30,6 +32,7 @@
     heading.focus({ preventScroll: true });
   }
   function close() {
+    if (!canDismiss) return;
     onBeforeClose?.();
     dialog?.close();
   }
@@ -54,7 +57,10 @@
   style:--window-width={width}
   aria-label={title}
   onclick={backdrop}
-  oncancel={() => onBeforeClose?.()}
+  oncancel={(event) => {
+    if (!canDismiss) event.preventDefault();
+    else onBeforeClose?.();
+  }}
 >
   <header class:with-back={!!onBack}>
     {#if onBack}
@@ -63,9 +69,13 @@
       </button>
     {/if}
     <h2 bind:this={heading} tabindex="-1">{title}</h2>
-    <button class="window-icon" onclick={close} aria-label={`Close ${title.toLowerCase()}`}>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
-    </button>
+    {#if canDismiss}<button
+        class="window-icon"
+        onclick={close}
+        aria-label={`Close ${title.toLowerCase()}`}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+      </button>{/if}
   </header>
   <div class="window-content" bind:this={body}>{@render children()}</div>
 </dialog>

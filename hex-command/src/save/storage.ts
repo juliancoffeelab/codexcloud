@@ -1,3 +1,4 @@
+export const NEW_GAME_KEY = "hex-command-choose-new-game";
 export const SAVE_KEY = "hex-command-battle";
 export const HISTORY_KEY = "hex-command-progress-index";
 export const historyPayloadKey = (id: string): string => `hex-command-progress:${id}`;
@@ -19,5 +20,13 @@ export function wipeSave(): void {
     localStorage.removeItem(SAVE_KEY);
   } catch {
     /* Disabled browser storage must not stop a fresh game. */
+  }
+}
+
+export function needsNewGame(): boolean {
+  try {
+    return localStorage.getItem(NEW_GAME_KEY) === "true";
+  } catch {
+    return false;
   }
 }

@@ -4,7 +4,7 @@ import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migrations";
 import { wipeSave, storeSave, SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
 import { migrateHistoryIndex } from "./migrations/history";
-import { currentRecovery, currentTurn } from "./schema";
+import { currentRecovery, currentTurn, currentHistorical } from "./schema";
 import type { BattleSave } from "./schema";
 
 export interface LoadedBattle {
@@ -19,10 +19,15 @@ export interface LoadedBattle {
 export function restoreBattleText(
   factory: GameEngineFactory,
   raw: string,
-  kind: "recovery" | "turn" = "recovery",
+  kind: "recovery" | "turn" | "history" = "recovery",
 ): LoadedBattle & { save: BattleSave; migrated: boolean } {
   const converted = migrateSave(JSON.parse(raw));
-  const save = kind === "recovery" ? currentRecovery(converted.save) : currentTurn(converted.save);
+  const save =
+    kind === "recovery"
+      ? currentRecovery(converted.save)
+      : kind === "turn"
+        ? currentTurn(converted.save)
+        : currentHistorical(converted.save);
   const migrated = converted.migrated;
   if (save.undo?.length) {
     if (save.pendingEnemy) throw new Error("Pending enemy turns cannot retain move undo.");

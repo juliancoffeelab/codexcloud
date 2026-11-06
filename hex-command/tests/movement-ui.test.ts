@@ -11,6 +11,9 @@ import { DEFAULT_SETUP, opponentSummary } from "../src/game/setup";
 function published(game: Game, selected: string): BattleView {
   return {
     game: game.publishedView(),
+    needsNewGame: false,
+    canSave: true,
+    activeRunId: "test-run",
     selected,
     target: null,
     inspectedTile: required(game.unit(selected)).tile,

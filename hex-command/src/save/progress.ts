@@ -1,14 +1,14 @@
 import {
   currentHistoryIndex,
   currentRecovery,
-  currentTurn,
+  currentHistorical,
   HISTORY_VERSION,
   type HistoryIndex,
-  type TurnSave,
+  type HistoricalSave,
 } from "./schema";
-import { readSave, HISTORY_KEY, historyPayloadKey } from "./storage";
-import { TurnStartCheckpoint } from "./write";
-import type { CurrentEntry, TurnEntry } from "./metadata";
+import { readSave, SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
+import { TurnStartCheckpoint, ManualCheckpoint } from "./write";
+import type { CurrentEntry, HistoryEntry } from "./metadata";
 
 function index(): HistoryIndex {
   const text = localStorage.getItem(HISTORY_KEY);
@@ -24,13 +24,17 @@ export function currentProgress(): CurrentEntry | undefined {
   return text === null ? undefined : currentRecovery(JSON.parse(text)).progress.entry;
 }
 /** History never includes the current recovery. */
-export function listProgress(): TurnEntry[] {
+export function listProgress(): HistoryEntry[] {
   return index().entries.sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id));
 }
 /** Only turn-boundary snapshots can create historical records. Caller holds the storage lock. */
 export function addTurn(checkpoint: TurnStartCheckpoint): void {
-  const text = TurnStartCheckpoint.text(checkpoint);
-  const entry = checkpoint.entry;
+  insertCheckpoint(checkpoint.entry, TurnStartCheckpoint.text(checkpoint));
+}
+export function addManual(checkpoint: ManualCheckpoint): void {
+  insertCheckpoint(checkpoint.entry, ManualCheckpoint.text(checkpoint));
+}
+function insertCheckpoint(entry: HistoryEntry, text: string): void {
   const value = index(),
     key = historyPayloadKey(entry.id);
   const previous = localStorage.getItem(key);
@@ -54,10 +58,10 @@ export function progressText(id: string): string {
   if (text === null) throw new Error("This saved checkpoint is no longer available.");
   return text;
 }
-function removeWhere(predicate: (entry: TurnEntry) => boolean): void {
-  const value = index(),
-    removed = value.entries.filter(predicate),
+function removeWhere(value: HistoryIndex, predicate: (entry: HistoryEntry) => boolean): void {
+  const removed = value.entries.filter(predicate),
     ids = new Set(removed.map((entry) => entry.id));
+  if (!removed.length) return;
   commit({
     version: HISTORY_VERSION,
     entries: value.entries.filter((entry) => !ids.has(entry.id)),
@@ -67,35 +71,58 @@ function removeWhere(predicate: (entry: TurnEntry) => boolean): void {
 export function deleteProgress(id: string): void {
   if (!index().entries.some((entry) => entry.id === id))
     throw new Error("Saved turn is unavailable.");
-  removeWhere((entry) => entry.id === id);
+  removeWhere(index(), (entry) => entry.id === id);
 }
 export function deleteRun(runId: string): void {
-  removeWhere((entry) => entry.runId === runId);
+  removeWhere(index(), (entry) => entry.runId === runId);
+  if (currentProgress()?.runId === runId) localStorage.removeItem(SAVE_KEY);
 }
-/** Existing dense/exponential retention policy, applied exclusively to turn starts. */
-export function pruneProgress(runId?: string): void {
-  const entries = index().entries,
+/** Recent saves are dense; old branches share their game's age-based allowance. */
+export function pruneProgress(runId?: string, now = Date.now()): void {
+  const value = index(),
     keep = new Set<string>(),
-    branches = new Map<string, TurnEntry[]>();
-  for (const entry of entries) {
+    latest = new Map<string, HistoryEntry>(),
+    buckets = new Map<string, HistoryEntry>();
+  const minute = 60_000,
+    hour = 60 * minute,
+    day = 24 * hour;
+  const newer = (a: HistoryEntry, b: HistoryEntry) =>
+    a.savedAt > b.savedAt || (a.savedAt === b.savedAt && a.id < b.id);
+  for (const entry of value.entries) {
     if (runId && entry.runId !== runId) continue;
-    const branch = branches.get(entry.branchId) ?? [];
-    branch.push(entry);
-    branches.set(entry.branchId, branch);
-  }
-  for (const branch of branches.values()) {
-    const newest = branch.reduce((maximum, entry) => Math.max(maximum, entry.ordinal), 0);
-    for (const entry of branch) {
-      const age = newest - entry.ordinal,
-        interval = age < 24 ? 1 : 2 ** (1 + Math.floor(Math.log2(age / 24)));
-      if (entry.missionStart || entry.ordinal % interval === 0) keep.add(entry.id);
+    const previous = latest.get(entry.runId);
+    if (entry.kind === "turn" && (!previous || newer(entry, previous)))
+      latest.set(entry.runId, entry);
+    if (entry.kind === "manual" || entry.missionStart) {
+      keep.add(entry.id);
+      continue;
     }
+    const age = Math.max(0, now - entry.savedAt);
+    if (age < 5 * minute) {
+      keep.add(entry.id);
+      continue;
+    }
+    const interval =
+      age < hour
+        ? 5 * minute
+        : age < day
+          ? hour
+          : age < 7 * day
+            ? day
+            : age < 30 * day
+              ? 7 * day
+              : 0;
+    if (!interval) continue;
+    const key = `${entry.runId}:${interval}:${Math.floor(entry.savedAt / interval)}`;
+    const retained = buckets.get(key);
+    if (!retained || newer(entry, retained)) buckets.set(key, entry);
   }
-  removeWhere((entry) => (!runId || entry.runId === runId) && !keep.has(entry.id));
+  for (const entry of [...latest.values(), ...buckets.values()]) keep.add(entry.id);
+  removeWhere(value, (entry) => (!runId || entry.runId === runId) && !keep.has(entry.id));
 }
 /** Migration may replace an existing turn payload, but cannot add records or recoveries. */
-export function updateProgress(save: TurnSave): void {
-  currentTurn(save);
+export function updateProgress(save: HistoricalSave): void {
+  currentHistorical(save);
   const id = save.progress.entry.id;
   if (!index().entries.some((entry) => entry.id === id))
     throw new Error("Saved turn is unavailable.");

@@ -61,6 +61,12 @@
   });
   let settingsDialog = $state<HTMLDialogElement>();
   let newGame: { open: (mode: "skirmish" | "campaign", onBack?: () => void) => void };
+  $effect(() => {
+    if ($view.needsNewGame) {
+      settingsDialog?.close();
+      newGame?.open("campaign");
+    }
+  });
   function openCampaignPicker() {
     settingsDialog?.close();
     newGame.open("campaign");
@@ -124,34 +130,34 @@
 </script>
 
 <svelte:document onkeydown={globalKeydown} onclick={clickAway} />
-<main class="battle-layout">
-  <TurnBar
-    view={$view}
-    {actions}
-    onSettings={openSettings}
-    {briefingExpanded}
-    onBriefing={() => (briefingExpanded = !briefingExpanded)}
-  />
-  <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
-  <div class="battle-content">
-    <CampaignPanel
+{#if !$view.needsNewGame}<main class="battle-layout">
+    <TurnBar
       view={$view}
       {actions}
-      bind:expanded={briefingExpanded}
-      onNewCampaign={openCampaignPicker}
+      onSettings={openSettings}
+      {briefingExpanded}
+      onBriefing={() => (briefingExpanded = !briefingExpanded)}
     />
-    <div class="workspace" class:map-only={!inspectionOpen}>
-      <Battlefield view={$view} {actions} />
-      {#if inspectionOpen}
-        <aside aria-label="Unit and terrain details">
-          <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
-          <TerrainPanel view={$view} {actions} {previews} />
-          <GroundItemsPanel view={$view} />
-        </aside>
-      {/if}
+    <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
+    <div class="battle-content">
+      <CampaignPanel
+        view={$view}
+        {actions}
+        bind:expanded={briefingExpanded}
+        onNewCampaign={openCampaignPicker}
+      />
+      <div class="workspace" class:map-only={!inspectionOpen}>
+        <Battlefield view={$view} {actions} />
+        {#if inspectionOpen}
+          <aside aria-label="Unit and terrain details">
+            <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
+            <TerrainPanel view={$view} {actions} {previews} />
+            <GroundItemsPanel view={$view} />
+          </aside>
+        {/if}
+      </div>
     </div>
-  </div>
-</main>
+  </main>{/if}
 <SettingsDialog
   view={$view}
   {actions}
@@ -159,7 +165,7 @@
   bind:this={settings}
   onNewBattle={openNewGameFromSettings}
 />
-<Dialogue view={$view} {actions} />
+{#if !$view.needsNewGame}<Dialogue view={$view} {actions} />{/if}
 <NewGameDialog bind:this={newGame} view={$view} {actions} />
 
 <SaveFailure view={$view} {actions} onManage={() => settings.openSavedGames()} />
