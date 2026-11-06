@@ -380,3 +380,10 @@ personal assignments retain priority. Duration audit and ZIP refreshed.
 Living tree selection (Wildkeeper, Grovewarden and all three treants) uses
 Roar 3 consistently. Old saved Grunt 4 selection choices migrate with a backup;
 attack mappings remain unchanged.
+
+Wildkeeper/Grovewarden mage selection uses Cloth 3, superseding the previous
+tree-group Roar 3 choice; old saved grunt/roar mage selections migrate with backup.
+Human/elf swords use the former spear contact; spears/lances use the former sword
+blade choices. Knives stay unchanged. Dwarven axe/pickaxe/hammer/spear/shield attacks
+use Mining 001; ranged weapons and spells retain their picks. Human mace/hammer
+attacks share Merfolk Mace Spear Haft take 12.

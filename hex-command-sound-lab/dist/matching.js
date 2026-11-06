@@ -1,4 +1,4 @@
-import { applyCuratedPicks } from "./curation-picks.js?v=tree-selection-1";
+import { applyCuratedPicks } from "./curation-picks.js?v=weapon-swap-1";
 import { weaponSelection } from "./weapon-selection.js?v=curation-1";
 import { creaturePick } from "./creature-picks.js?v=terrain-recut-2";
 import { terrainPicks } from "./terrain-picks.js?v=terrain-recut-2";

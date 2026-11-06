@@ -168,6 +168,131 @@
       ]
     },
     {
+      "id": "impact-sounds/impactMining_001",
+      "name": "impactMining_001",
+      "take": 1,
+      "start": 0,
+      "duration": 0.8694,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "attack-shield-bash"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "attack-shield-bash"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "attack-shield-bash"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "attack-poleaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "attack-poleaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-runesmith",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l3",
+          "action": "attack-hammer"
+        }
+      ]
+    },
+    {
       "id": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
       "name": "alien_03",
       "take": 1,
@@ -830,18 +955,6 @@
       "duration": 0.6093,
       "uses": [
         {
-          "entity": "dwarves/dwarf-axeguard",
-          "action": "attack-shield-bash"
-        },
-        {
-          "entity": "dwarves/dwarf-axeguard-l2",
-          "action": "attack-shield-bash"
-        },
-        {
-          "entity": "dwarves/dwarf-axeguard-l3",
-          "action": "attack-shield-bash"
-        },
-        {
           "entity": "dwarves/dwarf-arquebus-l2",
           "action": "attack-arquebus"
         },
@@ -911,82 +1024,6 @@
       "start": 0,
       "duration": 0.5656,
       "uses": [
-        {
-          "entity": "dwarves/dwarf-hammerer-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-hammerer-l3",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-runesmith",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-thundersmith-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-thundersmith-l3",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-stonespell-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-stonespell-l3",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-goat-rider-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-goat-rider-l3",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-forge-lord",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-forge-lord-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-forge-lord-l3",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "humans/swordsman",
-          "action": "attack-mace"
-        },
-        {
-          "entity": "humans/champion",
-          "action": "attack-mace"
-        },
-        {
-          "entity": "humans/hammerman",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "humans/warhammer",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "humans/commander",
-          "action": "attack-mace"
-        },
-        {
-          "entity": "humans/marshal",
-          "action": "attack-mace"
-        },
-        {
-          "entity": "humans/grand-marshal",
-          "action": "attack-mace"
-        },
         {
           "entity": "merfolk/tridentguard",
           "action": "attack-shellclub"

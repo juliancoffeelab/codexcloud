@@ -67,11 +67,25 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     if (actions.some(row => row.key === "voice"))
       choose("voice", [roar], "Roar 3 creature response.");
   }
-  if (/^(?:fox-spearguard|treant)(?:-l[23])?$|^(wildkeeper|grovewarden)$/.test(entity.id))
+  if (/^(?:fox-spearguard|treant)(?:-l[23])?$/.test(entity.id))
     choose("tap", [roar], "Roar 3 for Thornshield and living tree selection.");
+  if (/^(wildkeeper|grovewarden)(?:-l[23])?$/.test(entity.id))
+    choose("tap", ["rpg-audio/cloth3"], "Cloth 3 for Wildkeeper-line mage selection.");
   for (const attack of entity.attacks || []) {
     const key = `attack-${attack.id}`;
-    if (/arquebus|pistol|musket|gunshot/i.test(attack.name)) {
+    const name = attack.name.toLowerCase();
+    if (["humans", "elves"].includes(entity.faction) && /^(sword|blade)$/.test(name)) {
+      choose(key, ["edits/spear-sabre-one-shot-v1"], "Sword attack using the former spear contact.");
+    } else if (["humans", "elves"].includes(entity.faction) && /^(spear|lance)$/.test(name)) {
+      choose(key, [1,2,3].map(n => `rubberduck/80-cc0-rpg-sfx/blade_0${n}.ogg`),
+        "Spear attack using the former sword blade sounds.");
+    } else if (entity.faction === "humans" && /mace|hammer/.test(name)) {
+      const id = "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav";
+      const row = choose(key, [id], "Mace Spear Haft, take 12, shared with Merfolk macers.");
+      row.preferredTakes = { [id]: 11 };
+    } else if (entity.faction === "dwarves" && /axe|hammer|spear|shield/.test(name)) {
+      choose(key, ["impact-sounds/impactMining_001"], "Mining 001 as the dwarven physical melee contact.");
+    } else if (/arquebus|pistol|musket|gunshot/i.test(attack.name)) {
       const row = choose(key, ["impact-sounds/impactPlate_medium_000"],
         "Impact Plate medium 000 as the chosen firearm shot proxy.");
       row.caveat = "Metal impact proxy selected for this attack.";
