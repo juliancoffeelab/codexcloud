@@ -67,7 +67,7 @@ async function start() {
   let unitTapMode = "selection";
   try {
     const savedMode = localStorage.getItem("hex-sound-unit-tap-mode");
-    unitTapMode = ["selection", "attack", "attack2", "attack3"].includes(savedMode)
+    unitTapMode = ["selection", "attack", "attack2"].includes(savedMode)
       ? savedMode
       : "selection";
   } catch {}
@@ -178,7 +178,7 @@ async function start() {
     if (entity.kind === "terrain" || unitTapMode === "selection")
       return rows.find((row) => row.key === "tap");
     if (unitTapMode === "hurt") return rows.find((row) => row.key === "hit");
-    return rows.filter((row) => row.key.startsWith("attack-"))[unitTapMode === "attack3" ? 2 : unitTapMode === "attack2" ? 1 : 0];
+    return rows.filter((row) => row.key.startsWith("attack-"))[unitTapMode === "attack2" ? 1 : 0];
   }
   function chosenFor(action) {
     const saved = assignments[keyFor(action)];
@@ -563,7 +563,7 @@ async function start() {
       else
         $("#playing").textContent =
           unitTapMode.startsWith("attack")
-            ? `No ${unitTapMode === "attack2" ? "secondary" : unitTapMode === "attack3" ? "third" : "main"} attack sound assigned to this unit.`
+            ? `No ${unitTapMode === "attack2" ? "secondary" : "main"} attack sound assigned to this unit.`
             : "No sound assigned.";
     }
   }
@@ -787,10 +787,9 @@ async function start() {
     $("#dock-meta").textContent =
       unit.kind === "terrain"
         ? "Tap a tile to hear it"
-        : `Unit taps play ${unitTapMode === "attack" ? "the main attack" : unitTapMode === "attack2" ? "the secondary attack" : unitTapMode === "attack3" ? "the third attack" : unitTapMode} sounds`;
+        : `Unit taps play ${unitTapMode === "attack" ? "the main attack" : unitTapMode === "attack2" ? "the secondary attack" : unitTapMode} sounds`;
     $("#tap-mode").hidden = unit.kind === "terrain";
     for (const button of document.querySelectorAll("[data-tap-mode]")) {
-      button.hidden = button.dataset.tapMode === "attack3" && (unit.attacks?.length || 0) < 3 && unitTapMode !== "attack3";
       const active = button.dataset.tapMode === unitTapMode;
       button.classList.toggle("selected", active);
       button.setAttribute("aria-pressed", String(active));

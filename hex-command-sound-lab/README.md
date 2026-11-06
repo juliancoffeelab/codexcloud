@@ -402,3 +402,7 @@ now include Attack 2, plus Attack 3 for Briarweaver and Thorn Oracle (the two
 three-attack units). Mode persists; units lacking the requested attack report it
 without falling back. Roster attack counts: 145 with two, 90 with one, 2 with
 three, 1 with none. Terrain taps are unaffected.
+
+The tap-mode switch is fixed: Selection / Main attack / Attack 2 for every unit.
+Third attacks remain accessible on their normal attack cards; there is no
+conditional Attack 3 switch. This supersedes the earlier conditional-mode design.
