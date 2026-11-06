@@ -9,8 +9,9 @@
     actions: BattleCommands;
     dialog?: HTMLDialogElement;
     onNewBattle: () => void;
+    onRepair: () => void;
   }
-  let { view, actions, dialog = $bindable(), onNewBattle }: Props = $props();
+  let { view, actions, dialog = $bindable(), onNewBattle, onRepair }: Props = $props();
   type Screen = "hub" | "saves" | "manual" | "conversations" | "journal" | "debug";
   const titles: Record<Screen, string> = {
     hub: "Settings",
@@ -50,6 +51,10 @@
     onNewBattle();
   }
   async function navigate(next: Screen) {
+    if (next === "saves" && view.importFailure) {
+      onRepair();
+      return;
+    }
     rememberPosition();
     const previous = screen;
     screen = next;
@@ -75,6 +80,10 @@
     });
   }
   export function openSavedGames() {
+    if (view.importFailure) {
+      onRepair();
+      return;
+    }
     screen = "saves";
     void savedGames.open();
     dialog?.showModal();
@@ -145,7 +154,7 @@
           {:else}Policy: {view.opponent.policy}{/if}
         </p>
       </details>
-      {@render entry("Saved games", "saves")}
+      {@render entry(view.importFailure ? "Repair saved data" : "Saved games", "saves")}
       <button class="new-game" disabled={saving || saved || !view.canSave} onclick={saveGame}>
         {saving ? "Saving…" : saved ? "Saved" : "Save game"}
       </button>

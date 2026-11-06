@@ -17,6 +17,8 @@
   import TerrainPanel from "./ui/TerrainPanel.svelte";
   import GroundItemsPanel from "./ui/GroundItemsPanel.svelte";
   import SaveFailure from "./ui/SaveFailure.svelte";
+  import ImportRepair from "./ui/ImportRepair.svelte";
+  let repair: { open(): Promise<void> };
   let settings: { open(focusId?: string): void; openSavedGames(): void };
   import SettingsDialog from "./ui/SettingsDialog.svelte";
   let { controller }: { controller: BattleController } = $props();
@@ -164,8 +166,14 @@
   bind:dialog={settingsDialog}
   bind:this={settings}
   onNewBattle={openNewGameFromSettings}
+  onRepair={() => {
+    settingsDialog?.close();
+    void repair.open();
+  }}
 />
 {#if !$view.needsNewGame}<Dialogue view={$view} {actions} />{/if}
 <NewGameDialog bind:this={newGame} view={$view} {actions} />
 
 <SaveFailure view={$view} {actions} onManage={() => settings.openSavedGames()} />
+
+<ImportRepair bind:this={repair} view={$view} {actions} onNewGame={openMapPicker} />

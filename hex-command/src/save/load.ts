@@ -3,7 +3,8 @@ import { LiveGame, nativeValue } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migrations";
 import { wipeSave, storeSave, readSave, readSession } from "./storage";
-import { importLocalStorage, pendingImport } from "./import";
+import { importLocalStorage, readImportSource } from "./import";
+import type { ImportFailure } from "./repair-types";
 import { currentFlashSave, currentTurn } from "./schema";
 import type { CurrentEntry } from "./metadata";
 import type { BattleSave } from "./schema";
@@ -15,9 +16,8 @@ export interface LoadedBattle {
   undo?: import("../game/undo").SavedUndoEntry[];
   notice?: string;
   storageFailure?: string;
-  retainedFlashSave?: CurrentEntry;
   chooseNewGame?: boolean;
-  importPending?: boolean;
+  importFailure?: ImportFailure;
 }
 /** Canonical decoding belongs to the loading boundary, independent of committing it. */
 function decodeBattleText(raw: string) {
@@ -63,23 +63,21 @@ export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBatt
   try {
     await initializeRepository(factory);
   } catch (error) {
-    let retainedFlashSave: CurrentEntry | undefined;
-    let chooseNewGame = false;
+    const detail = `${String(error)}\n${error instanceof Error ? (error.stack ?? "") : ""}`;
+    let hasSource = true;
     try {
-      const data = await pendingImport();
-      if (!data) return loadBattle(factory);
-      retainedFlashSave = data.current?.progress.entry;
-      chooseNewGame = data.chooseNewGame;
+      hasSource = Object.keys(readImportSource()).some(
+        (key) => key !== "hex-command-choose-new-game",
+      );
     } catch {
-      /* Preserve malformed source for diagnostics. */
+      /* Presence is unknown. Preserve it. */
     }
     return {
       game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
       pendingEnemy: false,
-      storageFailure: `${String(error)}\n${error instanceof Error ? (error.stack ?? "") : ""}`,
-      retainedFlashSave,
-      chooseNewGame,
-      importPending: true,
+      ...(hasSource
+        ? { importFailure: { source: "localStorage" as const, detail } }
+        : { storageFailure: detail }),
     };
   }
   let raw: string | null = null;
@@ -102,8 +100,7 @@ export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBatt
           return {
             game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
             pendingEnemy: false,
-            storageFailure: String(error),
-            retainedFlashSave: currentFlashSave(restored.save).progress.entry,
+            importFailure: { source: "indexedDB", detail: String(error) },
             notice:
               "Saved progress needs an update, but storage refused the write. Free storage in Saved progress, then reload to restore it.",
           };

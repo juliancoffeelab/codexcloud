@@ -33,6 +33,7 @@ export interface BattleView {
   readonly status: string;
   readonly persistence: string;
   readonly saveError: string | null;
+  readonly importFailure?: import("../save/repair-types").ImportFailure | null;
   readonly saveFailure?: import("../save/failure").SaveFailure | null;
   readonly artwork: Artwork;
   readonly sound: boolean;
@@ -65,6 +66,9 @@ export interface BattleCommands {
   ): Promise<GameSnapshot>;
   setSound(enabled: boolean): Promise<void>;
   downloadDebugReport(): Promise<void>;
+  repairInventory(): Promise<import("../save/repair-types").RepairInventory>;
+  repairSavedData(target: import("../save/repair-types").RepairTarget): Promise<void>;
+  retryImport(): Promise<boolean>;
   savedProgress(): Promise<import("../save/metadata").TurnEntry[]>;
   saveGame(): Promise<void>;
   savedSummary(id: string): Promise<import("../save/summary").SaveSummary>;
@@ -78,6 +82,9 @@ export interface BattleCommands {
 
 export function createBattleCommands(controller: BattleCommands): BattleCommands {
   return Object.freeze({
+    repairInventory: controller.repairInventory.bind(controller),
+    repairSavedData: controller.repairSavedData.bind(controller),
+    retryImport: controller.retryImport.bind(controller),
     savedProgress: controller.savedProgress.bind(controller),
     saveGame: controller.saveGame.bind(controller),
     savedSummary: controller.savedSummary.bind(controller),
