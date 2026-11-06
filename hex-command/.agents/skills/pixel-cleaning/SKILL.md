@@ -39,17 +39,8 @@ python3 .agents/skills/pixel-cleaning/scripts/review.py \
 
 The combined reviewer accepts unit, terrain and prop matrices. It provides
 isolated-pixel and outline candidates, material neighborhoods and full previews.
-Unit previews also compare player, enemy and debug faction colors. Standalone
-detectors remain available:
-
-```sh
-python3 .agents/skills/pixel-cleaning/scripts/check_isolated_pixels.py \
-  pixel/art/terrain/road/9.txt --output tmp/road-review/strays.json \
-  --images-dir tmp/road-review
-python3 .agents/skills/pixel-cleaning/scripts/check_broken_outlines.py \
-  pixel/art/terrain/road/9.txt --output tmp/road-review/outlines.json \
-  --images-dir tmp/road-review
-```
+Unit previews also compare player, enemy and debug faction colors. For standalone detectors or detector-specific options, consult
+[detector commands](implementation.md#standalone-detectors).
 
 ## Repair
 
@@ -58,21 +49,17 @@ instructions. Inspect connected wrong-material patches too; zero flags does not
 establish clean artwork. Preserve intentional diagonals, details and negative
 spaces. Terrain does not automatically need a black outline.
 
-Use individually reviewed edits with `matrix_sha256`, `palette_sha256` and an
-`edits` list. Each edit has native `x`, `y`, `from`, `to`, `material` and `reason`.
-Outline/transparency changes require `boundary_reviewed: true`.
+For confirmed edits, follow the
+[guarded edit request contract](implementation.md#edit-request-contract).
 
 ```sh
 python3 .agents/skills/pixel-cleaning/scripts/apply_edits.py \
   pixel/art/terrain/hill/tile.txt tmp/hill-edits.json tmp/hill-candidate
 ```
 
-The helper checks hashes and original symbols, rejects duplicate coordinates,
-and writes a fresh candidate using the original matrix filename. Exact baseline
-matrix/palette files remain under `before/`, with a comparison image alongside.
-Terrain candidates include resolved ground shades to render outside canonical
-folders. Keep those scratch colors out of canonical material palettes; shared
-`G`/`g` colors belong in `terrain/floors.json`.
+The helper writes a fresh candidate and byte-exact baseline for comparison.
+For terrain scratch palette integration, follow
+[floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
 
 Rerun diagnostics and inspect the full result. Correct only confirmed defects,
 restore mistaken edits exactly and state remaining uncertainty. Do not modify

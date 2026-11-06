@@ -17,11 +17,7 @@ through equipment, pose and silhouette at the shared battlefield scale.
    Judge ownership by anatomy/surface: brown belongs to leather, wood or hair;
    misplaced brown does not become a gold shadow.
 3. Use [artwork-enhancement](../artwork-enhancement/SKILL.md) for tiers/branches
-   based on the approved unit. Choose manual matrix/material edits for controlled
-   local changes or another pinkbox generation for substantial shape, equipment
-   or pose changes. Generation can handle large changes more reliably than
-   extensive hand reshaping, but costs another extraction and cleanup pass and
-   can alter correct details. Inspect and clean either route.
+   based on the approved unit; follow its route-selection and preservation rules.
 4. Preview the whole line with [pixel-lineup](../pixel-lineup/SKILL.md), then
    inspect each unit on the battlefield. Show clean previews in the requested
    faction, otherwise the last used faction or enemy.

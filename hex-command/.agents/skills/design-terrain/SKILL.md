@@ -13,15 +13,6 @@ Generate reusable tile libraries from tile definitions before constructing maps.
 Artwork generators accept no map input. Maps use the shared terrain selector;
 an unsupported selection fails instead of generating another tile.
 
-Native canvas dimensions are a finite, enforced contract, not a convenience
-setting in artwork metadata. Ordinary terrain is exactly 64×64. Only
-`castle-wall` and `castle-bell` use the approved 80×96 canvas,
-anchored at (40,48), without resizing the 64×64 logical hex or its pixels.
-Do not enlarge canvases, move anchors, or add another size/family to make artwork
-fit. A different profile requires an explicit user request and a coordinated
-change to the validator, authoring tools and documented contract. Drawing depth
-may be any authored integer; it does not authorize larger artwork.
-
 1. Establish the reusable terrain family, floor, connection meanings and
    intended lighting. Compare approved terrain with troops at native scale.
 2. Read the reference for the work being done:

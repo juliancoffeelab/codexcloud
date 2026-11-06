@@ -13,8 +13,10 @@ Tests must be small, fast, and lightweight.
   cases in existing test matrices.
 - Validate content through generic schema and consistency checks. Measure
   balance through simulations.
-- Do not add permanent tests unless you can guarantee that they will fail in
-  the future. A reproduced bug alone does not justify a permanent regression test.
+- A test belongs in the codebase only if the agent can promise its value is
+  greater than its total burden, including runtime, maintenance, brittleness and
+  duplication. If that promise cannot be made, use a disposable probe. Reproducing
+  a bug alone does not satisfy this rule.
 - For bug fixes, use a disposable test or probe: reproduce the failure, fix the
   code, verify that the probe passes, then delete it. Run the relevant existing
   suites and remove obsolete expectations rather than preserving incorrect behavior.

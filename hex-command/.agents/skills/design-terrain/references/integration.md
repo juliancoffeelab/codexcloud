@@ -20,15 +20,13 @@ format just to select its sprite.
    do not inherit another terrain's behavior merely because its artwork is similar.
 2. Add native `<mask>.txt` sources for connected terrain, or `tile.txt` only
    for terrain without connection variants, and material `palette.json` under
-   `pixel/art/terrain/<id>/`. Shared `G`/`g` ground colors come from the map tile's
-   explicit `floor`; without one they render transparent. Keep foreground pieces
+   `pixel/art/terrain/<id>/`. Follow [floor ownership](surfaces.md#floor-palettes).
+   Keep foreground pieces
    in `pixel/art/terrain/props/<id>/<piece>/` and compose them in `layouts.json`.
-   Ordinary props fit inside their hex. Explicitly padded complete terrain frames
-   must use the finite canvas policy in `scripts/build-pixel-art.py`: only the
-   two castle families may declare 80×96 with anchor (40,48). `canvas.json`
-   cannot opt another family into overflow or enlarge the approved profile.
-   Drawing depth is an authored integer. The build bakes complete frames;
-   runtime does not draw props outside those frames.
+   Ordinary props fit inside their hex. Complete terrain frames follow the
+   [shared canvas contract](../../battlefield-contract/SKILL.md#terrain-canvas),
+   enforced by `scripts/build-pixel-art.py`. The build bakes complete frames;
+   runtime does not draw props outside them.
 3. If directional frames are needed, follow bridge/ford: add source matrices,
    register their allowed stems in `scripts/build-pixel-art.py`, and select them
    in `src/presentation/terrain-connections.ts`. Match connection validation in

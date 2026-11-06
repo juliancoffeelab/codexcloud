@@ -2,17 +2,14 @@
 
 ## Choose the report for the task
 
-For maintenance, tooling and bug fixes, still run the required simulations and
-compare relevant outcomes with a matching baseline. Keep unchanged results
-internal; a brief statement that simulation validation passed is sufficient.
+For maintenance, tooling and bug fixes, keep unchanged results internal; a brief
+statement that simulation validation passed is sufficient.
 Do not print unchanged counts, win rates, matchup matrices or campaign tables.
 
-Investigate differences and report meaningful changes, regressions or validation
-gaps with the affected scope, evidence and limits. Expected effects of the fix
-are not automatically regressions. Distinguish execution errors from in-game
-defeats. Disclose when a baseline comparison was unavailable; completing a run
-alone does not establish unchanged behavior. Include detailed results only when
-requested or needed to explain a task-relevant finding.
+Report meaningful changes, regressions or validation gaps with the affected
+scope, evidence and limits. Distinguish execution errors from in-game defeats;
+disclose missing baseline comparisons. Include details only when requested or
+needed to explain a task-relevant finding.
 
 Use the tables below for requested simulation reports, comparisons and balance
 investigations. Scope them to the user's question. A maintenance smoke run does

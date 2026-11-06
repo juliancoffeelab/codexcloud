@@ -5,9 +5,8 @@ Read when choosing a tile’s surfaces, foliage and source formats.
 Distinguish the backdrop, foreground and foliage of a terrain tile. These are
 visual roles, not a requirement for three separate files:
 
-- **Background:** the ground surface: grass, soil, rock or water. Shared `G`/`g`
-  colors come from `pixel/art/terrain/floors.json`. Floor changes should not
-  recolor trees, structures or stones.
+- **Background:** the ground surface: grass, soil, rock or water. See
+  [floor palettes](#floor-palettes) for shared ground colors.
 - **Foreground:** grass tufts, trees, roads, rocks, crossing stones, villages and
   structures. Use separate material symbols and reusable transparent 64×64
   pieces. These are composed over ground, with procedural variation suited to

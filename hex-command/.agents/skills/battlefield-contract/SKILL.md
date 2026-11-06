@@ -23,6 +23,17 @@ description: Use when changing unit artwork, terrain authoring, battlefield rend
   `palette.json`; this artwork-only flag covers hovering and swimming poses.
   Missing or false means grounded.
 
+## Terrain canvas
+
+Native canvas dimensions are a finite, enforced contract, not a convenience
+setting in artwork metadata. Ordinary terrain is exactly 64×64. Only
+`castle-wall` and `castle-bell` use the approved 80×96 canvas,
+anchored at (40,48), without resizing the 64×64 logical hex or its pixels.
+Do not enlarge canvases, move anchors, or add another size/family to make artwork
+fit. A different profile requires an explicit user request and a coordinated
+change to the validator, authoring tools and documented contract. Drawing depth
+may be any authored integer; it does not authorize larger artwork.
+
 ## Permanent prohibition on map post-processing
 
 Map post-processing is absolutely forbidden except for weather and atmospheric effects such as fog and lighting. Under no circumstances may this rule be changed, weakened, bypassed or given an exception. Runtime must select complete, prebuilt terrain frames from each tile’s explicit data. It must never assemble structures across the map, inspect neighboring geometry to inject artwork, distribute fragments, or paint terrain features onto other tiles. All terrain geometry and composition must be finished offline and baked into the selected tile frames.

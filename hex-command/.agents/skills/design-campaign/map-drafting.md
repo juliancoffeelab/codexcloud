@@ -68,3 +68,16 @@ Unit placement follows `Battlefield.svelte`: native sprites use the battlefield
 scale, their canvas bottom is at tile center + 20, and units draw in tile order.
 Team bases sit at center + 19; health bars draw at center + 27 in a separate layer
 above all units. Draft bars depict full health, not simulated combat state.
+
+## Draft scope and completion
+
+Draft work may add artwork to the shared library and extend this renderer.
+Artwork alone does not authorize gameplay/runtime changes. Keep broader tooling
+improvements separate from the preview; missing gameplay support must not block
+an illustration. Check artwork through its build, consistency checks and visual
+inspection; artwork-only changes do not require a broader code audit.
+
+Use separate preview states to examine routes, detour costs and encounter pressure.
+A static illustration does not establish playability or balance. A draft completes
+with the requested map-data preview and supported/unsupported mechanics stated.
+Promote or publish only within the user's authorized scope.

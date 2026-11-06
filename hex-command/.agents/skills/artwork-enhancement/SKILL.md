@@ -59,20 +59,15 @@ python3 .agents/skills/artwork-enhancement/scripts/prepare.py \
   scout tmp/scout-upgrade/template.png --label 'Scout L2' --style-anchors ranger archer
 ```
 
-The helper infers the approved matrix kind; use `--kind prop` for isolated
-pieces in scratch directories. Unit templates preserve the approved unit's
-flying/swimming pose flag by default.
-Use `--flying` or `--no-flying` only when changing that pose. Pass `--output-palette`
-when its material colors must stay fixed.
+The helper preserves the approved unit's flying/swimming pose flag unless the
+requested change requires an override. For kind, pose and palette overrides,
+read [regeneration options](implementation.md#regeneration-options).
 
 ## Terrain and integration
 
-For terrain floor recoloring, change the selected shared palette or a tile's
-floor selection as described in [floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
-The matrix stays unchanged; inspect affected tiles after rebuilding artwork.
-Terrain/prop fill candidates preserve the matrix filename and carry resolved
-floor colors for scratch previews. Before integration, keep canonical `G`/`g`
-colors in `floors.json`, not local material palettes.
+For terrain floor recoloring, scratch previews or canonical palette integration,
+follow [floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
+Inspect affected tiles after rebuilding artwork.
 
 Use [pixel cleaning](../pixel-cleaning/SKILL.md) before showing the result and
 [lineup previews](../pixel-lineup/SKILL.md) for progression. Show clean matrix

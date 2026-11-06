@@ -49,11 +49,7 @@ standalone props before judging their placement in an assembled terrain hex.
 
 Use `--output-palette` to preserve reference material colors rather than letting
 style anchors widen the output palette. This selects output colors, not anchor
-backgrounds. Canonical terrain references render `G`/`g` transparent because no
-floor is selected; inspect the sheet for other ground decorations before generation.
-Terrain scratch palettes carry resolved
-floor colors for preview; canonical ground shades remain in
-`pixel/art/terrain/floors.json`, as described in
+backgrounds. For canonical terrain references and scratch palette integration, consult
 [floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
 
 Unit-only options are `--flying` / `--no-flying`, `--body-guide X Y W H` and

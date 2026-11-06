@@ -16,10 +16,9 @@ symbol mappings. Changes are applied to a copied matrix; the original matrix and
 palette are preserved in the candidate's `before/` directory. Comparison rendering
 uses the cleaning helper's preview functions.
 
-Terrain and prop fill candidates retain the original matrix filename and resolved
-floor colors for scratch rendering; exact source files remain under `before/`.
-Comparison rendering uses the canonical source and the candidate. Canonical
-integration keeps shared floor shades out of local material palettes.
+Terrain and prop fill candidates retain the matrix filename and exact source
+files under `before/`. For scratch palettes and canonical integration, follow
+[floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
 
 ## Fill request contract
 
@@ -29,3 +28,11 @@ Optional `palette_additions` maps new material symbols to RGBA colors. Use a fre
 output directory under `tmp/`. The helper produces the candidate matrix/palette,
 an exact `before/` copy, a change record and comparison image. Outline, transparency
 and faction-cloth changes use individually reviewed [pixel edits](../pixel-cleaning/SKILL.md#repair).
+
+## Regeneration options
+
+The helper infers the approved matrix kind; use `--kind prop` for isolated
+pieces in scratch directories. Unit templates preserve the approved unit's
+flying/swimming pose flag by default.
+Use `--flying` or `--no-flying` only when changing that pose. Pass `--output-palette`
+when its material colors must stay fixed.

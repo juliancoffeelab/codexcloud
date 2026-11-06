@@ -22,8 +22,8 @@ python3 .agents/skills/pixel-lineup/scripts/preview.py \
 Prefer `--layout tree` for faction lineups: show each shared L1 once, centered
 beside its L2 branches, with arrows connecting L1 → L2 → L3. Commander tiers
 precede the unit families. Use `--layout grid` for the old row-per-branch view.
-All frames stay 64×64 at one integer nearest-neighbor scale, including cavalry.
-Do not crop, resize individual units, shift their baseline or pad them again.
+Present complete native frames at one shared integer nearest-neighbor preview
+scale, following the battlefield contract.
 Use the requested faction, otherwise the last used faction or enemy. Show both
 only when requested. Use `--help` for display options. Tree pagination keeps each
 family and its connectors together, so a large family can exceed the requested
