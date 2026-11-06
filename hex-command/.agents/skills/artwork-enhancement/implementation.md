@@ -1,4 +1,4 @@
-# Pinkbox enhancement implementation
+# Artwork enhancement implementation
 
 Read this when changing or debugging `prepare.py` or `fill.py`. The operating branches are in [SKILL.md](SKILL.md).
 

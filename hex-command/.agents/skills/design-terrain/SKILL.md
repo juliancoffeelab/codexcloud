@@ -32,7 +32,7 @@ may be any authored integer; it does not authorize larger artwork.
    - [Integration](references/integration.md) when adding an ID or installing artwork.
 3. Author candidate matrices offline. Use
    [pinkbox-generation](../pinkbox-generation/SKILL.md) for ordinary ground hexes
-   or transparent props, and [pinkbox-enhancement](../pinkbox-enhancement/SKILL.md)
+   or transparent props, and [artwork-enhancement](../artwork-enhancement/SKILL.md)
    for revisions. Review generated or edited candidates with
    [pixel-cleaning](../pixel-cleaning/SKILL.md). Retain original evidence in ignored tmp/.
 4. Preview the complete tiles through the

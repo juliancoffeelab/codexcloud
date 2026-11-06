@@ -1,9 +1,9 @@
 ---
-name: pinkbox-enhancement
-description: Use to revise approved pixel artwork manually or through another pinkbox generation, including unit upgrades and terrain changes.
+name: artwork-enhancement
+description: Use to revise approved pixel artwork, including manual edits, recoloring, regeneration, unit upgrades and terrain changes.
 ---
 
-# Pinkbox enhancement
+# Artwork enhancement
 
 Apply the [battlefield contract](../battlefield-contract/SKILL.md) for native scale, canvas and grounding.
 
@@ -43,7 +43,7 @@ For a guarded material fill, read the [fill request contract](implementation.md#
 Use a fresh candidate directory under ignored tmp/.
 
 ```sh
-python3 .agents/skills/pinkbox-enhancement/scripts/fill.py \
+python3 .agents/skills/artwork-enhancement/scripts/fill.py \
   pixel/art/units/humans/adept/sprite.txt tmp/upgrade/fill.json tmp/upgrade/candidate
 ```
 
@@ -55,7 +55,7 @@ prompt and save the unchanged output. Prepare a separate native 64×64 template
 for each tier, with the approved unit first and two style anchors:
 
 ```sh
-python3 .agents/skills/pinkbox-enhancement/scripts/prepare.py \
+python3 .agents/skills/artwork-enhancement/scripts/prepare.py \
   scout tmp/scout-upgrade/template.png --label 'Scout L2' --style-anchors ranger archer
 ```
 

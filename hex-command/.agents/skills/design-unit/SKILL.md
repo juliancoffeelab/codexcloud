@@ -16,7 +16,7 @@ through equipment, pose and silhouette at the shared battlefield scale.
    brown, ivory, skin and steel separately, including shades and every occurrence.
    Judge ownership by anatomy/surface: brown belongs to leather, wood or hair;
    misplaced brown does not become a gold shadow.
-3. Use [pinkbox-enhancement](../pinkbox-enhancement/SKILL.md) for tiers/branches
+3. Use [artwork-enhancement](../artwork-enhancement/SKILL.md) for tiers/branches
    based on the approved unit. Choose manual matrix/material edits for controlled
    local changes or another pinkbox generation for substantial shape, equipment
    or pose changes. Generation can handle large changes more reliably than

@@ -61,9 +61,9 @@ implementation, checks, commits or deployment only when the user asks to continu
   including units, terrain and foreground props.
 - [pixel-cleaning](.agents/skills/pixel-cleaning/SKILL.md): Use when inspecting,
   cleaning or repairing native pixel artwork, including units, terrain and props.
-- [pinkbox-enhancement](.agents/skills/pinkbox-enhancement/SKILL.md): Use when
-  revising approved pixel artwork manually or through another pinkbox generation,
-  including unit upgrades and terrain changes.
+- [artwork-enhancement](.agents/skills/artwork-enhancement/SKILL.md): Use when
+  revising approved pixel artwork, including manual edits, recoloring,
+  regeneration, unit upgrades and terrain changes.
 - [pixel-lineup](.agents/skills/pixel-lineup/SKILL.md): Use when asked to show,
   preview or visually compare faction lineups, unit upgrade trees or progression
   grids.

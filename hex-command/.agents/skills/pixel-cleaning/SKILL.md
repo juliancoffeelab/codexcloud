@@ -78,7 +78,7 @@ Rerun diagnostics and inspect the full result. Correct only confirmed defects,
 restore mistaken edits exactly and state remaining uncertainty. Do not modify
 only a PNG, resize/crop artwork to hide defects, or bulk-apply detector flags.
 Shape or palette-wide changes belong in
-[pinkbox-enhancement](../pinkbox-enhancement/SKILL.md).
+[artwork-enhancement](../artwork-enhancement/SKILL.md).
 
 ## Finish
 
