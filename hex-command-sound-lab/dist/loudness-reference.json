@@ -1,0 +1,11 @@
+{
+  "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
+  "gameMasterGain": 0.29,
+  "boardReferenceVolumePercent": 55,
+  "familyGains": {"select": 0.25},
+  "referenceIds": [
+    "current/attack-melee-1", "current/attack-melee-2", "current/attack-melee-3",
+    "current/attack-bow-1", "current/attack-bow-2", "current/attack-bow-3"
+  ],
+  "method": "Median strongest-50ms RMS of the live game's six existing melee/bow cues, including the game master gain. Match toward that digital output at the board's 55% reference volume. Other volume settings scale normally. Current game cues reproduce their original relative gains; authored quiet edits retain zero makeup gain."
+}

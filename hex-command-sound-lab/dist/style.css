@@ -1953,7 +1953,7 @@ body.field-mode:is([data-view="units"], [data-view="terrain"]) #playing {
 }
 body.field-mode:is([data-view="units"], [data-view="terrain"])
   .player
-  :is(#wave, .transport, .volume) {
+  :is(#wave, .transport) {
   display: none;
 }
 body.field-mode:is([data-view="units"], [data-view="terrain"])
@@ -2079,4 +2079,25 @@ body.field-mode #sound-dock[hidden] {
 }
 .dock-heading:has(#tap-mode:not([hidden])) > div:not(#tap-mode) {
   display: none;
+}
+
+body.field-mode:is([data-view="units"], [data-view="terrain"]) .player .volume {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+  margin: 0;
+  font-size: 0;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"]) #volume {
+  display: block;
+  width: 65px;
+  min-width: 0;
+  height: 20px;
+  margin: 0;
+}
+body.field-mode:is([data-view="units"], [data-view="terrain"]) #volume-value {
+  display: inline;
+  font-size: 9px;
+  min-width: 25px;
 }

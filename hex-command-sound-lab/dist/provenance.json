@@ -2,7 +2,7 @@
   "originals": "vendor/sfx/ in the repository; all originals unchanged",
   "processing": "mp3-mono-44100-96k-v1",
   "takeDetection": "silencedetect -42 dB, 0.25 s; fallback -30 dB if no silence; approximate boundaries only",
-  "playbackGain": "Optional per-recording peak gain toward -3 dBFS, capped at +18/-12 dB",
+  "playbackGain": "Per-take strongest-50ms RMS matched toward the median live melee/bow output; loudness-reference.json and playback-levels.json. Sample-peak ceiling -1.5 dBFS, gains bounded -18/+24 dB; authored quiet edits retain zero gain.",
   "sourceManifest": "sources.json",
   "sourceHashes": "catalog.json sourceHash",
   "auditionEdits": "audio-edits.json; derived edits keep their intended gain when level matching is enabled"

@@ -94,9 +94,48 @@ node scripts/check-audio-cache.mjs
 - Library includes all 518 original listening entries plus labeled derived
   auditions. It retains filters, all-recordings access, favorites, take expansion,
   original game recordings, source/licensing details, downloads and JSON export.
-- Stop or Escape cancels playback. Match levels is optional peak gain, not
-  mastering; quiet authored edits retain their attenuation. Weapon take boundaries
+- Stop or Escape cancels playback. Match levels applies per-take gain toward the live-game median;
+  quiet authored edits retain their attenuation. Weapon take boundaries
   are approximate; the complete source session remains selectable.
+
+## Loudness checks and playback matching
+
+Run `python3 scripts/check-loudness.py` to measure every decoded listening copy
+and each take. Sources links the complete CSV/JSON reports. Measurements include
+sample peak, RMS, strongest 50 ms RMS, leading quiet, projected playback levels
+and flags for quiet ranges or clipping. They include app volume (default 55%)
+and the selected gain profile, but cannot measure phone speakers or system volume.
+Short effects are measured with windowed RMS rather than pretending that integrated
+LUFS is reliable for every tiny clip. CSV rows distinguish full sessions and takes.
+Use `--only "Axe Swing" --output tmp/axe.json` for one source; `--no-normalize`
+models raw playback, and `--volume 100` models a different app volume.
+
+Match levels now uses the **selected take**, not a single loud peak elsewhere
+in its full recording. `loudness-reference.json` anchors the target to the median
+strongest-50ms RMS of the live game's six existing melee/bow cues at its 0.29
+master gain. At the board's reference 55% volume that output is about -26.3 dBFS.
+Turning the visible volume slider still scales everything normally. Archived game
+samples retain their relative game levels, including selection's extra 0.25 gain.
+Authored quiet edits keep zero makeup gain. New-source take/session gains aim at
+the reference with a -1.5 dBFS sample-peak ceiling and bounds of -18/+24 dB.
+This is constant gain, not a compressor or a guarantee of equal perceived loudness.
+Unchecking Match levels plays the original listening copy with only app volume.
+
+`build-playback-levels.py` verifies the report's catalog/listening hashes and writes
+`dist/playback-levels.json`. To regenerate after changing audio, run these in order:
+
+```sh
+python3 scripts/check-loudness.py --legacy-gains
+python3 scripts/build-playback-levels.py
+python3 scripts/check-loudness.py
+python3 scripts/check-playback-levels.py
+```
+
+The full listening builder runs this measurement/gain/report pipeline and bundles
+the reports, profiles and reference with the listening ZIP. No source recording or
+authored processing recipe is changed by playback matching. Numerical checks cover
+quiet/loud takes, transient headroom, silence, leading quiet, every published range,
+retention of quiet edits and the original game's relative gains.
 
 ## Weapon-led selection
 
@@ -217,7 +256,8 @@ python3 scripts/build-soundboard.py
 
 The builder reads only this project's locked originals and metadata. It converts
 CC0 recordings to mono 44.1 kHz / 96 kbps MP3 for broad browser compatibility,
-records optional peak gain, and suggests weapon takes from silence detection.
+retains legacy catalog peak gains for compatibility, suggests takes from silence
+detection, and generates the measured per-take matching profiles described above.
 Original audio is never rewritten. A clean rebuild may differ bytewise between
 FFmpeg versions; source hashes identify unchanged originals.
 

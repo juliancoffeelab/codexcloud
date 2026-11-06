@@ -1,0 +1,4961 @@
+{
+  "catalogSha256": "04bc90d2d1e553de62f1f6577f55c6c555640b4743952b76753f940c859445f7",
+  "targetStrongest50msRmsDbFS": -21.1,
+  "reference": {
+    "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
+    "gameMasterGain": 0.29,
+    "boardReferenceVolumePercent": 55,
+    "familyGains": {
+      "select": 0.25
+    },
+    "referenceIds": [
+      "current/attack-melee-1",
+      "current/attack-melee-2",
+      "current/attack-melee-3",
+      "current/attack-bow-1",
+      "current/attack-bow-2",
+      "current/attack-bow-3"
+    ],
+    "method": "Median strongest-50ms RMS of the live game's six existing melee/bow cues, including the game master gain. Match toward that digital output at the board's 55% reference volume. Other volume settings scale normally. Current game cues reproduce their original relative gains; authored quiet edits retain zero makeup gain.",
+    "medianGameOutputStrongest50msRmsDbFS": -26.3,
+    "targetBeforeBoardMasterDbFS": -21.1
+  },
+  "samplePeakCeilingDbFS": -1.5,
+  "minGainDb": -18,
+  "maxGainDb": 24,
+  "method": "Constant gain per decoded take/full session. Target strongest 50ms RMS subject to sample-peak ceiling; no compressor, no true-peak or perceptual loudness guarantee. Authored quiet edits keep zero gain; archived game samples retain their relative game gain at the board reference volume.",
+  "entries": {
+    "antumdeluge/fire-crackling/fire-1.wav": {
+      "full": 4.8,
+      "takes": [
+        4.8
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "antumdeluge/fire-crackling/fire-1_0.ogg": {
+      "full": 2.31,
+      "takes": [
+        2.31
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "denischardonnet/horse-vocals/0284.mp3": {
+      "full": -14.09,
+      "takes": [
+        -14.09
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "denischardonnet/horse-vocals/0286.mp3": {
+      "full": -9.5,
+      "takes": [
+        -9.5
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "ezduzziteh/horse-trotting/Trot.ogg": {
+      "full": -6.06,
+      "takes": [
+        -6.06
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "jaggedstone/magic-spell-sfx/magical_1_0.ogg": {
+      "full": -2.47,
+      "takes": [
+        -2.47
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "jaggedstone/magic-spell-sfx/magical_2.ogg": {
+      "full": 1.34,
+      "takes": [
+        1.34
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "jaggedstone/magic-spell-sfx/magical_3.ogg": {
+      "full": -9.01,
+      "takes": [
+        -9.01
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "jaggedstone/magic-spell-sfx/magical_4.ogg": {
+      "full": 2.99,
+      "takes": [
+        2.99
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "jaggedstone/magic-spell-sfx/magical_5.ogg": {
+      "full": 4.76,
+      "takes": [
+        4.76
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "jaggedstone/magic-spell-sfx/magical_6_0.ogg": {
+      "full": 11.09,
+      "takes": [
+        11.09
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "jaggedstone/magic-spell-sfx/magical_7_0.ogg": {
+      "full": 9.51,
+      "takes": [
+        9.51
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_carpet_000": {
+      "full": -5.23,
+      "takes": [
+        -5.23
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_carpet_001": {
+      "full": -8.46,
+      "takes": [
+        -8.46
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_carpet_002": {
+      "full": -8.46,
+      "takes": [
+        -8.46
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_carpet_003": {
+      "full": -5.35,
+      "takes": [
+        -5.35
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_carpet_004": {
+      "full": -5.35,
+      "takes": [
+        -5.35
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_concrete_000": {
+      "full": -5.91,
+      "takes": [
+        -5.91
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_concrete_001": {
+      "full": -4.48,
+      "takes": [
+        -4.48
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_concrete_002": {
+      "full": -4.39,
+      "takes": [
+        -4.39
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_concrete_003": {
+      "full": -5.31,
+      "takes": [
+        -5.31
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_concrete_004": {
+      "full": -5.95,
+      "takes": [
+        -5.95
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_grass_000": {
+      "full": -5.65,
+      "takes": [
+        -5.65
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_grass_001": {
+      "full": -6.1,
+      "takes": [
+        -6.1
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_grass_002": {
+      "full": -5.64,
+      "takes": [
+        -5.64
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_grass_003": {
+      "full": -5.39,
+      "takes": [
+        -5.39
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_grass_004": {
+      "full": -5.82,
+      "takes": [
+        -5.82
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_snow_000": {
+      "full": -8.37,
+      "takes": [
+        -8.37
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_snow_001": {
+      "full": -11.81,
+      "takes": [
+        -11.81
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_snow_002": {
+      "full": -11.93,
+      "takes": [
+        -11.93
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_snow_003": {
+      "full": -6.39,
+      "takes": [
+        -6.39
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_snow_004": {
+      "full": -8.81,
+      "takes": [
+        -8.81
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_wood_000": {
+      "full": -9.83,
+      "takes": [
+        -9.83
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_wood_001": {
+      "full": -10.59,
+      "takes": [
+        -10.59
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_wood_002": {
+      "full": -11.19,
+      "takes": [
+        -11.19
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_wood_003": {
+      "full": -9.13,
+      "takes": [
+        -9.13
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/footstep_wood_004": {
+      "full": -11.03,
+      "takes": [
+        -11.03
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactBell_heavy_000": {
+      "full": -9.04,
+      "takes": [
+        -9.04
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactBell_heavy_001": {
+      "full": -11.15,
+      "takes": [
+        -11.15
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactBell_heavy_002": {
+      "full": -10.06,
+      "takes": [
+        -10.06
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactBell_heavy_003": {
+      "full": -9.41,
+      "takes": [
+        -9.41
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactBell_heavy_004": {
+      "full": -9.14,
+      "takes": [
+        -9.14
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGeneric_light_000": {
+      "full": -7.77,
+      "takes": [
+        -7.77
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGeneric_light_001": {
+      "full": -7.25,
+      "takes": [
+        -7.25
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGeneric_light_002": {
+      "full": -7.48,
+      "takes": [
+        -7.48
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGeneric_light_003": {
+      "full": -7.29,
+      "takes": [
+        -7.29
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGeneric_light_004": {
+      "full": -7.49,
+      "takes": [
+        -7.49
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_heavy_000": {
+      "full": -7.83,
+      "takes": [
+        -7.83
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_heavy_001": {
+      "full": -7.5,
+      "takes": [
+        -7.5
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_heavy_002": {
+      "full": -7.29,
+      "takes": [
+        -7.29
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_heavy_003": {
+      "full": -9.21,
+      "takes": [
+        -9.21
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_heavy_004": {
+      "full": -8.25,
+      "takes": [
+        -8.25
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_light_000": {
+      "full": -8.46,
+      "takes": [
+        -8.46
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_light_001": {
+      "full": -8.48,
+      "takes": [
+        -8.48
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_light_002": {
+      "full": -9.72,
+      "takes": [
+        -9.72
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_light_003": {
+      "full": -8.75,
+      "takes": [
+        -8.75
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_light_004": {
+      "full": -9.29,
+      "takes": [
+        -9.29
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_medium_000": {
+      "full": -8.22,
+      "takes": [
+        -8.22
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_medium_001": {
+      "full": -8.44,
+      "takes": [
+        -8.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_medium_002": {
+      "full": -8.11,
+      "takes": [
+        -8.11
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_medium_003": {
+      "full": -8.12,
+      "takes": [
+        -8.12
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactGlass_medium_004": {
+      "full": -8.86,
+      "takes": [
+        -8.86
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_heavy_000": {
+      "full": -8.36,
+      "takes": [
+        -8.36
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_heavy_001": {
+      "full": -8.53,
+      "takes": [
+        -8.53
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_heavy_002": {
+      "full": -8.6,
+      "takes": [
+        -8.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_heavy_003": {
+      "full": -8.47,
+      "takes": [
+        -8.47
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_heavy_004": {
+      "full": -8.3,
+      "takes": [
+        -8.3
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_light_000": {
+      "full": -11.02,
+      "takes": [
+        -11.02
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_light_001": {
+      "full": -10.56,
+      "takes": [
+        -10.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_light_002": {
+      "full": -9.66,
+      "takes": [
+        -9.66
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_light_003": {
+      "full": -11.95,
+      "takes": [
+        -11.95
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_light_004": {
+      "full": -9.22,
+      "takes": [
+        -9.22
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_medium_000": {
+      "full": -9.13,
+      "takes": [
+        -9.13
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_medium_001": {
+      "full": -8.65,
+      "takes": [
+        -8.65
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_medium_002": {
+      "full": -6.19,
+      "takes": [
+        -6.19
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_medium_003": {
+      "full": -8.84,
+      "takes": [
+        -8.84
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMetal_medium_004": {
+      "full": -6.54,
+      "takes": [
+        -6.54
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMining_000": {
+      "full": -14.75,
+      "takes": [
+        -14.75
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMining_001": {
+      "full": -14.31,
+      "takes": [
+        -14.31
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMining_002": {
+      "full": -12.0,
+      "takes": [
+        -12.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMining_003": {
+      "full": -12.5,
+      "takes": [
+        -12.5
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactMining_004": {
+      "full": -15.17,
+      "takes": [
+        -15.17
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlank_medium_000": {
+      "full": -11.6,
+      "takes": [
+        -11.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlank_medium_001": {
+      "full": -14.9,
+      "takes": [
+        -14.9
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlank_medium_002": {
+      "full": -14.5,
+      "takes": [
+        -14.5
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlank_medium_003": {
+      "full": -13.96,
+      "takes": [
+        -13.96
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlank_medium_004": {
+      "full": -10.3,
+      "takes": [
+        -10.3
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_heavy_000": {
+      "full": -10.34,
+      "takes": [
+        -10.34
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_heavy_001": {
+      "full": -13.56,
+      "takes": [
+        -13.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_heavy_002": {
+      "full": -11.06,
+      "takes": [
+        -11.06
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_heavy_003": {
+      "full": -13.4,
+      "takes": [
+        -13.4
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_heavy_004": {
+      "full": -11.29,
+      "takes": [
+        -11.29
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_light_000": {
+      "full": -8.41,
+      "takes": [
+        -8.41
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_light_001": {
+      "full": -7.11,
+      "takes": [
+        -7.11
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_light_002": {
+      "full": -8.2,
+      "takes": [
+        -8.2
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_light_003": {
+      "full": -9.35,
+      "takes": [
+        -9.35
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_light_004": {
+      "full": -8.32,
+      "takes": [
+        -8.32
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_medium_000": {
+      "full": -8.44,
+      "takes": [
+        -8.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_medium_001": {
+      "full": -9.79,
+      "takes": [
+        -9.79
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_medium_002": {
+      "full": -8.9,
+      "takes": [
+        -8.9
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_medium_003": {
+      "full": -11.56,
+      "takes": [
+        -11.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPlate_medium_004": {
+      "full": -11.61,
+      "takes": [
+        -11.61
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_heavy_000": {
+      "full": -15.14,
+      "takes": [
+        -15.14
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_heavy_001": {
+      "full": -15.03,
+      "takes": [
+        -15.03
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_heavy_002": {
+      "full": -14.92,
+      "takes": [
+        -14.92
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_heavy_003": {
+      "full": -14.69,
+      "takes": [
+        -14.69
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_heavy_004": {
+      "full": -15.13,
+      "takes": [
+        -15.13
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_medium_000": {
+      "full": -14.23,
+      "takes": [
+        -14.23
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_medium_001": {
+      "full": -14.34,
+      "takes": [
+        -14.34
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_medium_002": {
+      "full": -14.3,
+      "takes": [
+        -14.3
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_medium_003": {
+      "full": -13.74,
+      "takes": [
+        -13.74
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactPunch_medium_004": {
+      "full": -14.43,
+      "takes": [
+        -14.43
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_heavy_000": {
+      "full": -15.66,
+      "takes": [
+        -15.66
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_heavy_001": {
+      "full": -15.8,
+      "takes": [
+        -15.8
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_heavy_002": {
+      "full": -16.09,
+      "takes": [
+        -16.09
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_heavy_003": {
+      "full": -16.52,
+      "takes": [
+        -16.52
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_heavy_004": {
+      "full": -16.03,
+      "takes": [
+        -16.03
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_medium_000": {
+      "full": -13.03,
+      "takes": [
+        -13.03
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_medium_001": {
+      "full": -14.32,
+      "takes": [
+        -14.32
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_medium_002": {
+      "full": -13.74,
+      "takes": [
+        -13.74
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_medium_003": {
+      "full": -13.77,
+      "takes": [
+        -13.77
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactSoft_medium_004": {
+      "full": -13.78,
+      "takes": [
+        -13.78
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactTin_medium_000": {
+      "full": -7.67,
+      "takes": [
+        -7.67
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactTin_medium_001": {
+      "full": -6.34,
+      "takes": [
+        -6.34
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactTin_medium_002": {
+      "full": -6.32,
+      "takes": [
+        -6.32
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactTin_medium_003": {
+      "full": -6.67,
+      "takes": [
+        -6.67
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactTin_medium_004": {
+      "full": -6.49,
+      "takes": [
+        -6.49
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_heavy_000": {
+      "full": -11.89,
+      "takes": [
+        -11.89
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_heavy_001": {
+      "full": -11.78,
+      "takes": [
+        -11.78
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_heavy_002": {
+      "full": -12.58,
+      "takes": [
+        -12.58
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_heavy_003": {
+      "full": -11.13,
+      "takes": [
+        -11.13
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_heavy_004": {
+      "full": -11.43,
+      "takes": [
+        -11.43
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_light_000": {
+      "full": -8.58,
+      "takes": [
+        -8.58
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_light_001": {
+      "full": -6.83,
+      "takes": [
+        -6.83
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_light_002": {
+      "full": -8.81,
+      "takes": [
+        -8.81
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_light_003": {
+      "full": -7.14,
+      "takes": [
+        -7.14
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_light_004": {
+      "full": -6.17,
+      "takes": [
+        -6.17
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_medium_000": {
+      "full": -9.12,
+      "takes": [
+        -9.12
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_medium_001": {
+      "full": -9.18,
+      "takes": [
+        -9.18
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_medium_002": {
+      "full": -9.09,
+      "takes": [
+        -9.09
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_medium_003": {
+      "full": -9.0,
+      "takes": [
+        -9.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "impact-sounds/impactWood_medium_004": {
+      "full": -9.54,
+      "takes": [
+        -9.54
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/beltHandle1": {
+      "full": -1.8,
+      "takes": [
+        -1.8
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/beltHandle2": {
+      "full": 0.06,
+      "takes": [
+        0.06
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/bookClose": {
+      "full": -10.6,
+      "takes": [
+        -10.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/bookFlip1": {
+      "full": -5.13,
+      "takes": [
+        -5.13
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/bookFlip2": {
+      "full": 5.61,
+      "takes": [
+        5.61
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/bookFlip3": {
+      "full": 2.1,
+      "takes": [
+        2.1
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/bookOpen": {
+      "full": 6.01,
+      "takes": [
+        6.01
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/bookPlace1": {
+      "full": -12.44,
+      "takes": [
+        -12.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/bookPlace2": {
+      "full": -13.16,
+      "takes": [
+        -13.16
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/bookPlace3": {
+      "full": -12.61,
+      "takes": [
+        -12.61
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/chop": {
+      "full": -11.15,
+      "takes": [
+        -11.15
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/cloth1": {
+      "full": -4.23,
+      "takes": [
+        -4.23
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/cloth2": {
+      "full": -0.42,
+      "takes": [
+        -0.42
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/cloth3": {
+      "full": 2.16,
+      "takes": [
+        2.16
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/cloth4": {
+      "full": 7.29,
+      "takes": [
+        7.29
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/clothBelt": {
+      "full": -1.74,
+      "takes": [
+        -1.74
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/clothBelt2": {
+      "full": 2.48,
+      "takes": [
+        2.48
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/creak1": {
+      "full": -5.73,
+      "takes": [
+        -5.73
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/creak2": {
+      "full": -6.41,
+      "takes": [
+        -6.41
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/creak3": {
+      "full": -9.19,
+      "takes": [
+        -9.19
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/doorClose_1": {
+      "full": -14.92,
+      "takes": [
+        -14.92
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/doorClose_2": {
+      "full": -11.97,
+      "takes": [
+        -11.97
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/doorClose_3": {
+      "full": -17.5,
+      "takes": [
+        -17.5
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/doorClose_4": {
+      "full": -12.84,
+      "takes": [
+        -12.84
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/doorOpen_1": {
+      "full": -12.27,
+      "takes": [
+        -12.27
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/doorOpen_2": {
+      "full": -12.34,
+      "takes": [
+        -12.34
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/drawKnife1": {
+      "full": 15.22,
+      "takes": [
+        15.22
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/drawKnife2": {
+      "full": 12.02,
+      "takes": [
+        12.02
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/drawKnife3": {
+      "full": 6.56,
+      "takes": [
+        6.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/dropLeather": {
+      "full": -6.27,
+      "takes": [
+        -6.27
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep00": {
+      "full": -8.85,
+      "takes": [
+        -8.85
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep01": {
+      "full": -10.55,
+      "takes": [
+        -10.55
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep02": {
+      "full": -4.48,
+      "takes": [
+        -4.48
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep03": {
+      "full": -9.84,
+      "takes": [
+        -9.84
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep04": {
+      "full": -4.87,
+      "takes": [
+        -4.87
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep05": {
+      "full": -3.41,
+      "takes": [
+        -3.41
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep06": {
+      "full": -5.35,
+      "takes": [
+        -5.35
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep07": {
+      "full": -8.08,
+      "takes": [
+        -8.08
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep08": {
+      "full": -12.97,
+      "takes": [
+        -12.97
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/footstep09": {
+      "full": -3.02,
+      "takes": [
+        -3.02
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/handleCoins": {
+      "full": -6.02,
+      "takes": [
+        -6.02
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/handleCoins2": {
+      "full": 5.85,
+      "takes": [
+        5.85
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/handleSmallLeather": {
+      "full": 6.68,
+      "takes": [
+        6.68
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/handleSmallLeather2": {
+      "full": 10.22,
+      "takes": [
+        10.22
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/knifeSlice": {
+      "full": -9.79,
+      "takes": [
+        -9.79
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/knifeSlice2": {
+      "full": -12.44,
+      "takes": [
+        -12.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/metalClick": {
+      "full": 4.21,
+      "takes": [
+        4.21
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/metalLatch": {
+      "full": -9.5,
+      "takes": [
+        -9.5
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/metalPot1": {
+      "full": -15.52,
+      "takes": [
+        -15.52
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/metalPot2": {
+      "full": -18.0,
+      "takes": [
+        -18.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/metalPot3": {
+      "full": -18.0,
+      "takes": [
+        -18.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rpg-audio/Preview": {
+      "full": -18.0,
+      "takes": [
+        -18.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "qubodup/3-dark-magic-spells/dark_magic/fout-01.flac": {
+      "full": -12.11,
+      "takes": [
+        -12.11
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "qubodup/3-dark-magic-spells/dark_magic/fout-02.flac": {
+      "full": -11.61,
+      "takes": [
+        -11.61
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac": {
+      "full": -12.28,
+      "takes": [
+        -12.28
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "qubodup/dog-snarl-grunt-grumble/dog/dog-growl.flac": {
+      "full": -8.51,
+      "takes": [
+        -8.51
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac": {
+      "full": -9.2,
+      "takes": [
+        -9.2
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac": {
+      "full": -9.26,
+      "takes": [
+        -9.26
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/alien_01.ogg": {
+      "full": -6.16,
+      "takes": [
+        -6.16
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/alien_02.ogg": {
+      "full": -11.35,
+      "takes": [
+        -11.35
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/alien_03.ogg": {
+      "full": -11.36,
+      "takes": [
+        -11.36
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/alien_04.ogg": {
+      "full": -4.2,
+      "takes": [
+        -4.2
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/alien_05.ogg": {
+      "full": -3.9,
+      "takes": [
+        -3.9
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/alien_06.ogg": {
+      "full": -10.88,
+      "takes": [
+        -10.88
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/barking_01.ogg": {
+      "full": -12.41,
+      "takes": [
+        -12.41
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/barking_02.ogg": {
+      "full": -13.6,
+      "takes": [
+        -13.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/breath.ogg": {
+      "full": 0.59,
+      "takes": [
+        0.59
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/bug_01.ogg": {
+      "full": -5.95,
+      "takes": [
+        -5.95
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/bug_02.ogg": {
+      "full": -5.51,
+      "takes": [
+        -5.51
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/bug_03.ogg": {
+      "full": -8.15,
+      "takes": [
+        -8.15
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/bug_04.ogg": {
+      "full": -10.64,
+      "takes": [
+        -10.64
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/burble_01.ogg": {
+      "full": -5.58,
+      "takes": [
+        -5.58
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/burble_02.ogg": {
+      "full": -6.69,
+      "takes": [
+        -6.69
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/burp_01.ogg": {
+      "full": -14.46,
+      "takes": [
+        -14.46
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/burp_02.ogg": {
+      "full": -14.01,
+      "takes": [
+        -14.01
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cough_01.ogg": {
+      "full": -14.16,
+      "takes": [
+        -14.16
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cough_02.ogg": {
+      "full": -12.65,
+      "takes": [
+        -12.65
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cough_03.ogg": {
+      "full": -12.05,
+      "takes": [
+        -12.05
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_01.ogg": {
+      "full": -7.24,
+      "takes": [
+        -7.24
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_02.ogg": {
+      "full": -3.25,
+      "takes": [
+        -3.25
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_03.ogg": {
+      "full": -1.65,
+      "takes": [
+        -1.65
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_04.ogg": {
+      "full": -11.22,
+      "takes": [
+        -11.22
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_05.ogg": {
+      "full": -6.8,
+      "takes": [
+        -6.8
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_06.ogg": {
+      "full": -3.91,
+      "takes": [
+        -3.91
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_07.ogg": {
+      "full": -5.75,
+      "takes": [
+        -5.75
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_08.ogg": {
+      "full": -3.05,
+      "takes": [
+        -3.05
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_09.ogg": {
+      "full": -5.44,
+      "takes": [
+        -5.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/cute_10.ogg": {
+      "full": -3.44,
+      "takes": [
+        -3.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/eat_01.ogg": {
+      "full": -5.87,
+      "takes": [
+        -5.87
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/eat_02.ogg": {
+      "full": -9.29,
+      "takes": [
+        -9.29
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/eat_03.ogg": {
+      "full": -7.89,
+      "takes": [
+        -7.89
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/eat_04.ogg": {
+      "full": -5.53,
+      "takes": [
+        -5.53
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/grunt_01.ogg": {
+      "full": -7.0,
+      "takes": [
+        -7.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/grunt_02.ogg": {
+      "full": -11.38,
+      "takes": [
+        -11.38
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/grunt_03.ogg": {
+      "full": -9.9,
+      "takes": [
+        -9.9
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/grunt_04.ogg": {
+      "full": -11.07,
+      "takes": [
+        -11.07
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/grunt_05.ogg": {
+      "full": -8.66,
+      "takes": [
+        -8.66
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/howl.ogg": {
+      "full": -16.68,
+      "takes": [
+        -16.68
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/hurt_01.ogg": {
+      "full": -7.21,
+      "takes": [
+        -7.21
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/hurt_02.ogg": {
+      "full": -12.76,
+      "takes": [
+        -12.76
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/hurt_03.ogg": {
+      "full": -17.12,
+      "takes": [
+        -17.12
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/hurt_04.ogg": {
+      "full": -18.0,
+      "takes": [
+        -18.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/hurt_05.ogg": {
+      "full": -12.31,
+      "takes": [
+        -12.31
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/misc_01.ogg": {
+      "full": -6.49,
+      "takes": [
+        -6.49
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/misc_02.ogg": {
+      "full": -11.24,
+      "takes": [
+        -11.24
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/misc_03.ogg": {
+      "full": -7.32,
+      "takes": [
+        -7.32
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/misc_04.ogg": {
+      "full": -11.49,
+      "takes": [
+        -11.49
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/misc_05.ogg": {
+      "full": -10.65,
+      "takes": [
+        -10.65
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/misc_06.ogg": {
+      "full": -6.2,
+      "takes": [
+        -6.2
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/misc_07.ogg": {
+      "full": -7.28,
+      "takes": [
+        -7.28
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/misc_08.ogg": {
+      "full": -9.05,
+      "takes": [
+        -9.05
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/misc_09.ogg": {
+      "full": -13.87,
+      "takes": [
+        -13.87
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/monster_01.ogg": {
+      "full": -10.02,
+      "takes": [
+        -10.02
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/monster_02.ogg": {
+      "full": -7.2,
+      "takes": [
+        -7.2
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/monster_03.ogg": {
+      "full": -15.08,
+      "takes": [
+        -15.08
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/monster_04.ogg": {
+      "full": -16.11,
+      "takes": [
+        -16.11
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/monster_05.ogg": {
+      "full": -4.41,
+      "takes": [
+        -4.41
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/monster_06.ogg": {
+      "full": -14.56,
+      "takes": [
+        -14.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/monster_07.ogg": {
+      "full": -17.6,
+      "takes": [
+        -17.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/nose.ogg": {
+      "full": -11.2,
+      "takes": [
+        -11.2
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/ooh.ogg": {
+      "full": -12.97,
+      "takes": [
+        -12.97
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/roar_01.ogg": {
+      "full": -6.74,
+      "takes": [
+        -6.74
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/roar_02.ogg": {
+      "full": -14.19,
+      "takes": [
+        -14.19
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/roar_03.ogg": {
+      "full": -11.84,
+      "takes": [
+        -11.84
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/scream_01.ogg": {
+      "full": -13.44,
+      "takes": [
+        -13.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/scream_02.ogg": {
+      "full": -13.59,
+      "takes": [
+        -13.59
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/snore.ogg": {
+      "full": 1.69,
+      "takes": [
+        1.69
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/spit_01.ogg": {
+      "full": -5.32,
+      "takes": [
+        -5.32
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/spit_02.ogg": {
+      "full": -9.22,
+      "takes": [
+        -9.22
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/spit_03.ogg": {
+      "full": -4.38,
+      "takes": [
+        -4.38
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/troll_01.ogg": {
+      "full": -9.2,
+      "takes": [
+        -9.2
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/troll_02.ogg": {
+      "full": -15.93,
+      "takes": [
+        -15.93
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/troll_03.ogg": {
+      "full": -16.24,
+      "takes": [
+        -16.24
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/weird_01.ogg": {
+      "full": -9.26,
+      "takes": [
+        -9.26
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/weird_02.ogg": {
+      "full": -11.1,
+      "takes": [
+        -11.1
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/weird_03.ogg": {
+      "full": -7.77,
+      "takes": [
+        -7.77
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/weird_04.ogg": {
+      "full": -16.79,
+      "takes": [
+        -16.79
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-creature-sfx/weird_05.ogg": {
+      "full": -18.0,
+      "takes": [
+        -18.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/blade_01.ogg": {
+      "full": -7.53,
+      "takes": [
+        -7.53
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/blade_02.ogg": {
+      "full": -6.54,
+      "takes": [
+        -6.54
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/blade_03.ogg": {
+      "full": -5.49,
+      "takes": [
+        -5.49
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/book_01.ogg": {
+      "full": -3.53,
+      "takes": [
+        -3.53
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/book_02.ogg": {
+      "full": -3.77,
+      "takes": [
+        -3.77
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/book_03.ogg": {
+      "full": -4.57,
+      "takes": [
+        -4.57
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/book_04.ogg": {
+      "full": -0.06,
+      "takes": [
+        -0.06
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/chain_01.ogg": {
+      "full": -10.27,
+      "takes": [
+        -10.27
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/chain_02.ogg": {
+      "full": -9.87,
+      "takes": [
+        -9.87
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/chain_03.ogg": {
+      "full": -6.96,
+      "takes": [
+        -6.96
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_die_01.ogg": {
+      "full": -16.82,
+      "takes": [
+        -16.82
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_hurt_01.ogg": {
+      "full": -12.8,
+      "takes": [
+        -12.8
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_hurt_02.ogg": {
+      "full": -8.71,
+      "takes": [
+        -8.71
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_misc_01.ogg": {
+      "full": -6.09,
+      "takes": [
+        -6.09
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_misc_02.ogg": {
+      "full": -2.51,
+      "takes": [
+        -2.51
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_misc_03.ogg": {
+      "full": -4.82,
+      "takes": [
+        -4.82
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_misc_04.ogg": {
+      "full": -2.8,
+      "takes": [
+        -2.8
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg": {
+      "full": -8.14,
+      "takes": [
+        -8.14
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_misc_06.ogg": {
+      "full": -5.14,
+      "takes": [
+        -5.14
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_misc_07.ogg": {
+      "full": -0.75,
+      "takes": [
+        -0.75
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_misc_08.ogg": {
+      "full": -2.81,
+      "takes": [
+        -2.81
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_monster_01.ogg": {
+      "full": -7.83,
+      "takes": [
+        -7.83
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_monster_02.ogg": {
+      "full": -6.6,
+      "takes": [
+        -6.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_monster_03.ogg": {
+      "full": -4.25,
+      "takes": [
+        -4.25
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_monster_04.ogg": {
+      "full": -2.88,
+      "takes": [
+        -2.88
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_roar_01.ogg": {
+      "full": -18.0,
+      "takes": [
+        -18.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg": {
+      "full": -11.17,
+      "takes": [
+        -11.17
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg": {
+      "full": -16.36,
+      "takes": [
+        -16.36
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg": {
+      "full": -7.72,
+      "takes": [
+        -7.72
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_slime_02.ogg": {
+      "full": -5.4,
+      "takes": [
+        -5.4
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg": {
+      "full": -6.96,
+      "takes": [
+        -6.96
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/creature_slime_04.ogg": {
+      "full": -7.28,
+      "takes": [
+        -7.28
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_coins_01.ogg": {
+      "full": -4.54,
+      "takes": [
+        -4.54
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_coins_02.ogg": {
+      "full": -5.45,
+      "takes": [
+        -5.45
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_coins_03.ogg": {
+      "full": -2.54,
+      "takes": [
+        -2.54
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_coins_04.ogg": {
+      "full": -4.21,
+      "takes": [
+        -4.21
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_gem_01.ogg": {
+      "full": -6.34,
+      "takes": [
+        -6.34
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_gem_02.ogg": {
+      "full": 1.06,
+      "takes": [
+        1.06
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_gem_03.ogg": {
+      "full": -4.02,
+      "takes": [
+        -4.02
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_gem_04.ogg": {
+      "full": -4.73,
+      "takes": [
+        -4.73
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_misc_01.ogg": {
+      "full": -4.21,
+      "takes": [
+        -4.21
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_misc_02.ogg": {
+      "full": -7.96,
+      "takes": [
+        -7.96
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_misc_03.ogg": {
+      "full": -4.06,
+      "takes": [
+        -4.06
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_misc_04.ogg": {
+      "full": -5.59,
+      "takes": [
+        -5.59
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_misc_05.ogg": {
+      "full": -6.72,
+      "takes": [
+        -6.72
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_misc_06.ogg": {
+      "full": -6.7,
+      "takes": [
+        -6.7
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_stone_01.ogg": {
+      "full": -7.6,
+      "takes": [
+        -7.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_stone_02.ogg": {
+      "full": -2.48,
+      "takes": [
+        -2.48
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_stone_03.ogg": {
+      "full": -3.54,
+      "takes": [
+        -3.54
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_stone_04.ogg": {
+      "full": -4.63,
+      "takes": [
+        -4.63
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_wood_01.ogg": {
+      "full": -5.45,
+      "takes": [
+        -5.45
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_wood_02.ogg": {
+      "full": -1.08,
+      "takes": [
+        -1.08
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg": {
+      "full": -8.56,
+      "takes": [
+        -8.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/lock_01.ogg": {
+      "full": -2.86,
+      "takes": [
+        -2.86
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/lock_02.ogg": {
+      "full": -4.3,
+      "takes": [
+        -4.3
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/lock_03.ogg": {
+      "full": -1.02,
+      "takes": [
+        -1.02
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/metal_01.ogg": {
+      "full": -4.44,
+      "takes": [
+        -4.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/metal_02.ogg": {
+      "full": -10.81,
+      "takes": [
+        -10.81
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/metal_03.ogg": {
+      "full": -9.92,
+      "takes": [
+        -9.92
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/misc_01.ogg": {
+      "full": -4.35,
+      "takes": [
+        -4.35
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/misc_02.ogg": {
+      "full": -11.8,
+      "takes": [
+        -11.8
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/misc_03.ogg": {
+      "full": 1.14,
+      "takes": [
+        1.14
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/spell_01.ogg": {
+      "full": -12.73,
+      "takes": [
+        -12.73
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/spell_02.ogg": {
+      "full": -11.54,
+      "takes": [
+        -11.54
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/spell_fire_01.ogg": {
+      "full": 10.49,
+      "takes": [
+        10.49
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/spell_fire_02.ogg": {
+      "full": 12.77,
+      "takes": [
+        12.77
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/spell_fire_03.ogg": {
+      "full": 9.11,
+      "takes": [
+        9.11
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/spell_fire_04.ogg": {
+      "full": 10.83,
+      "takes": [
+        10.83
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/spell_fire_05.ogg": {
+      "full": 7.99,
+      "takes": [
+        7.99
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/spell_fire_06.ogg": {
+      "full": 2.37,
+      "takes": [
+        2.37
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg": {
+      "full": 2.77,
+      "takes": [
+        2.77
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/stones_01.ogg": {
+      "full": -3.89,
+      "takes": [
+        -3.89
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/stones_02.ogg": {
+      "full": -4.53,
+      "takes": [
+        -4.53
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/stones_03.ogg": {
+      "full": -4.53,
+      "takes": [
+        -4.53
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/stones_04.ogg": {
+      "full": -7.72,
+      "takes": [
+        -7.72
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/wood_01.ogg": {
+      "full": -1.89,
+      "takes": [
+        -1.89
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/wood_02.ogg": {
+      "full": -3.52,
+      "takes": [
+        -3.52
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/wood_03.ogg": {
+      "full": -10.0,
+      "takes": [
+        -10.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/wood_04.ogg": {
+      "full": -4.17,
+      "takes": [
+        -4.17
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "rubberduck/80-cc0-rpg-sfx/wood_05.ogg": {
+      "full": -6.25,
+      "takes": [
+        -6.25
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (1).wav": {
+      "full": -8.73,
+      "takes": [
+        -8.73
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (10).wav": {
+      "full": -10.19,
+      "takes": [
+        -10.19
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (11).wav": {
+      "full": -9.13,
+      "takes": [
+        -9.13
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (12).wav": {
+      "full": -10.12,
+      "takes": [
+        -10.12
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (13).wav": {
+      "full": -4.63,
+      "takes": [
+        -4.63
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (14).wav": {
+      "full": -9.75,
+      "takes": [
+        -9.75
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (15).wav": {
+      "full": -10.11,
+      "takes": [
+        -10.11
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (2).wav": {
+      "full": -11.48,
+      "takes": [
+        -11.48
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (3).wav": {
+      "full": -9.86,
+      "takes": [
+        -9.86
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (4).wav": {
+      "full": -10.58,
+      "takes": [
+        -10.58
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (5).wav": {
+      "full": -8.65,
+      "takes": [
+        -8.65
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (6).wav": {
+      "full": -10.72,
+      "takes": [
+        -10.72
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (7).wav": {
+      "full": -11.2,
+      "takes": [
+        -11.2
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (8).wav": {
+      "full": -8.19,
+      "takes": [
+        -8.19
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (9).wav": {
+      "full": -10.04,
+      "takes": [
+        -10.04
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Katana Blade on Blade.wav": {
+      "full": -1.27,
+      "takes": [
+        0.4,
+        0.73,
+        6.37,
+        14.94,
+        19.11,
+        9.92,
+        9.57,
+        1.62,
+        -1.27,
+        15.04,
+        22.04,
+        24.0,
+        24.0,
+        15.83,
+        13.59
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Katana Haft on Blade.wav": {
+      "full": -1.11,
+      "takes": [
+        -1.11,
+        2.09,
+        13.36,
+        5.14,
+        1.3,
+        5.44
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Norse Sword Blade on Blade.wav": {
+      "full": -0.96,
+      "takes": [
+        2.11,
+        2.53,
+        2.61,
+        1.3,
+        2.91,
+        9.59,
+        -0.21,
+        6.78,
+        4.1,
+        -0.96
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Norse Sword Haft on Blade.wav": {
+      "full": -2.71,
+      "takes": [
+        3.15,
+        -0.16,
+        -1.94,
+        5.97,
+        7.16,
+        1.83,
+        -2.74,
+        5.62
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Sabre Blade on Blade.wav": {
+      "full": 3.01,
+      "takes": [
+        5.41,
+        3.25,
+        6.65
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Sabre Blade on Hilt.wav": {
+      "full": 0.37,
+      "takes": [
+        5.24,
+        3.15,
+        0.37,
+        4.23,
+        3.1,
+        0.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Sabre Haft on Blade.wav": {
+      "full": 0.37,
+      "takes": [
+        4.44,
+        0.37,
+        8.52,
+        6.98
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Sabre Haft on Hilt.wav": {
+      "full": -0.87,
+      "takes": [
+        2.27,
+        -0.87
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Spear Blade on Blade.wav": {
+      "full": -4.16,
+      "takes": [
+        -4.16
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Spear Blade on haft.wav": {
+      "full": 5.35,
+      "takes": [
+        6.4,
+        18.02,
+        11.54,
+        6.79,
+        5.65,
+        13.18
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Axe Spear Haft on Haft.wav": {
+      "full": 2.45,
+      "takes": [
+        6.03,
+        2.69,
+        8.03
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Dagger Axe Blade on Blade.wav": {
+      "full": -1.04,
+      "takes": [
+        1.27,
+        -1.04
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Dagger Axe Blade on Haft.wav": {
+      "full": 4.57,
+      "takes": [
+        4.57
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Dagger Katana Blade on Blade.wav": {
+      "full": 3.21,
+      "takes": [
+        3.21,
+        9.15,
+        3.27
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Dagger Norse Sword Blade on Blade.wav": {
+      "full": 2.86,
+      "takes": [
+        2.86
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Dagger Spear Blade on Blade.wav": {
+      "full": 4.72,
+      "takes": [
+        4.72
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Dagger Spear Blade on Haft.wav": {
+      "full": 8.38,
+      "takes": [
+        13.35,
+        22.45,
+        16.5,
+        10.19,
+        8.38
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Mace Axe Blade and Haft.wav": {
+      "full": -2.44,
+      "takes": [
+        11.01,
+        10.29,
+        20.59,
+        2.27,
+        10.47,
+        9.83,
+        24.0,
+        2.24,
+        5.18,
+        3.7,
+        -0.41,
+        0.25,
+        14.91,
+        2.13,
+        16.05,
+        1.04,
+        -2.52,
+        3.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Mace Dagger Blade.wav": {
+      "full": 1.83,
+      "takes": [
+        14.09,
+        11.96,
+        5.58,
+        3.11,
+        16.23,
+        18.5,
+        12.6,
+        20.92,
+        1.98,
+        5.75,
+        6.84,
+        12.34
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Mace Katana Blade.wav": {
+      "full": 2.31,
+      "takes": [
+        12.23,
+        6.11,
+        6.9,
+        13.07,
+        4.58,
+        9.29,
+        16.44,
+        8.18,
+        7.22,
+        7.85,
+        4.1,
+        5.15,
+        11.23,
+        22.17,
+        2.28
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Mace Norse Sword Blade.wav": {
+      "full": -3.5,
+      "takes": [
+        24.0,
+        -1.02,
+        2.65,
+        1.79,
+        9.48,
+        -0.89,
+        -0.39,
+        18.4,
+        -3.45,
+        12.24,
+        11.49,
+        1.19
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Mace Sabre Blade.wav": {
+      "full": 0.56,
+      "takes": [
+        7.74,
+        4.48,
+        7.51,
+        3.4,
+        4.14,
+        13.64,
+        9.5,
+        12.2,
+        3.42,
+        3.4,
+        9.56,
+        0.6,
+        15.8,
+        10.68
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Mace Seax Blade.wav": {
+      "full": 1.68,
+      "takes": [
+        2.14,
+        2.66,
+        1.85,
+        7.12,
+        3.45,
+        12.36,
+        2.1,
+        4.84,
+        5.51
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav": {
+      "full": -3.3,
+      "takes": [
+        6.86,
+        6.2,
+        3.67,
+        0.69,
+        -2.66,
+        -0.23,
+        -0.68,
+        -1.65,
+        -3.36,
+        2.37
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav": {
+      "full": -0.59,
+      "takes": [
+        3.59,
+        5.51,
+        1.81,
+        7.14,
+        13.14,
+        -0.49,
+        19.97,
+        9.39,
+        17.43,
+        6.55,
+        11.37,
+        18.38
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Norse Sword Katana Blade on Blade.wav": {
+      "full": -1.02,
+      "takes": [
+        2.8,
+        4.24,
+        11.42,
+        4.02,
+        11.93,
+        2.12,
+        1.4,
+        8.48,
+        5.83,
+        17.71,
+        24.0,
+        22.7,
+        22.2,
+        24.0,
+        24.0,
+        21.17,
+        24.0,
+        0.14,
+        3.58,
+        20.29,
+        16.0,
+        24.0,
+        3.57,
+        7.53,
+        5.73,
+        5.54,
+        6.06,
+        -0.97
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Sabre Katana Blade on Blade.wav": {
+      "full": -1.01,
+      "takes": [
+        0.94,
+        2.48,
+        10.29,
+        2.49,
+        13.48,
+        4.87,
+        16.28,
+        6.77,
+        5.35,
+        16.88,
+        7.78,
+        11.92,
+        5.33,
+        2.76,
+        -1.01,
+        3.26,
+        11.08,
+        13.58
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Sabre Katana Hilt on Blade.wav": {
+      "full": 6.7,
+      "takes": [
+        13.38,
+        18.55,
+        12.17,
+        20.02,
+        8.57,
+        6.71,
+        16.97,
+        11.71,
+        14.06,
+        18.63,
+        12.38,
+        18.59,
+        9.76
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-1/Sabre Norse Sword Blade on Blade.wav": {
+      "full": -0.72,
+      "takes": [
+        5.08,
+        10.6,
+        16.87,
+        9.23,
+        11.54,
+        16.33,
+        16.97,
+        12.27,
+        24.0,
+        18.73,
+        15.65,
+        24.0,
+        24.0,
+        12.87,
+        9.46,
+        2.08,
+        -0.69,
+        4.8,
+        7.51,
+        1.19,
+        6.73,
+        4.12,
+        1.59
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Sabre Norse Sword Hilt on Blade.wav": {
+      "full": 2.22,
+      "takes": [
+        3.94,
+        24.0,
+        2.39,
+        11.48,
+        5.39,
+        12.04,
+        12.38,
+        9.74,
+        15.62,
+        5.35,
+        7.04,
+        13.67,
+        12.56,
+        24.0,
+        17.06,
+        24.0,
+        14.85,
+        18.14
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Seax Axe Blade on Blade.wav": {
+      "full": 3.54,
+      "takes": [
+        8.66,
+        4.18,
+        8.67,
+        6.18,
+        11.88,
+        18.69,
+        3.54,
+        13.0,
+        13.85,
+        21.29,
+        14.71,
+        23.63,
+        10.24,
+        5.65,
+        19.45,
+        18.75,
+        20.07
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Seax Axe Blade on Haft.wav": {
+      "full": 0.77,
+      "takes": [
+        8.5,
+        0.77,
+        9.08,
+        13.87,
+        19.06,
+        4.69,
+        4.65,
+        9.76,
+        6.46,
+        13.18,
+        11.92,
+        7.38,
+        12.75,
+        7.38,
+        4.74,
+        5.37,
+        1.42
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Seax Dagger Blade on Blade.wav": {
+      "full": 5.84,
+      "takes": [
+        5.84,
+        12.81,
+        20.8,
+        11.57,
+        9.16,
+        20.31,
+        23.84,
+        14.52,
+        14.86,
+        16.64,
+        20.84,
+        6.59,
+        15.62
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Seax Katana Blade on Blade.wav": {
+      "full": 2.97,
+      "takes": [
+        2.97,
+        6.96,
+        6.9,
+        14.88,
+        6.41,
+        12.3,
+        23.27,
+        4.2,
+        11.2,
+        5.38,
+        7.91,
+        5.03
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Seax Norse Sword Blade on Blade.wav": {
+      "full": -3.46,
+      "takes": [
+        -0.04,
+        7.12,
+        -3.09,
+        -1.81,
+        5.79,
+        4.76,
+        13.95,
+        21.9,
+        24.0,
+        -3.33,
+        15.68,
+        3.3,
+        11.21,
+        6.39,
+        24.0,
+        4.23,
+        0.9
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Seax Spear Blade on Blade.wav": {
+      "full": 0.73,
+      "takes": [
+        0.73,
+        2.71,
+        14.7,
+        16.09,
+        6.23,
+        3.94,
+        8.61,
+        11.74,
+        6.65,
+        3.17,
+        14.69,
+        22.58,
+        24.0,
+        7.24,
+        14.22,
+        6.41,
+        10.07
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Seax Spear Blade on Haft.wav": {
+      "full": 7.78,
+      "takes": [
+        15.43,
+        13.38,
+        16.01,
+        7.78,
+        16.12,
+        12.65,
+        9.39,
+        10.68,
+        19.04,
+        22.39,
+        18.23,
+        19.21,
+        8.44,
+        12.3
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Katana Blade on Blade.wav": {
+      "full": 0.71,
+      "takes": [
+        2.36,
+        8.34,
+        0.89,
+        13.14,
+        13.7,
+        15.49,
+        11.18,
+        13.62,
+        4.68,
+        10.1,
+        24.0,
+        15.16
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Katana Haft on Blade.wav": {
+      "full": 5.95,
+      "takes": [
+        7.03,
+        8.13,
+        18.65,
+        6.1,
+        18.42,
+        19.03,
+        24.0,
+        24.0,
+        20.95,
+        24.0,
+        12.45,
+        8.36
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Norse Sword Blade on Blade.wav": {
+      "full": 0.21,
+      "takes": [
+        4.77,
+        17.66,
+        13.64,
+        3.95,
+        7.39,
+        8.0,
+        12.03,
+        0.5,
+        24.0,
+        6.4,
+        5.24,
+        3.55,
+        16.09,
+        19.19,
+        21.11,
+        10.84,
+        23.38,
+        24.0,
+        24.0,
+        23.65,
+        24.0,
+        24.0
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Norse Sword Haft on Blade.wav": {
+      "full": -0.19,
+      "takes": [
+        4.15,
+        6.66,
+        20.45,
+        15.17,
+        -0.02,
+        14.79,
+        11.39,
+        17.96,
+        17.82,
+        8.92,
+        16.29,
+        19.9,
+        9.84,
+        20.84,
+        10.21,
+        14.9,
+        24.0,
+        13.73,
+        17.28
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Sabre Blade on Blade.wav": {
+      "full": 0.65,
+      "takes": [
+        2.49,
+        7.66,
+        11.88,
+        9.77,
+        24.0,
+        22.49,
+        14.41,
+        11.86,
+        11.01,
+        19.39,
+        22.4,
+        12.4,
+        9.76,
+        13.41,
+        19.78,
+        16.15,
+        1.13,
+        17.62,
+        4.71,
+        18.91
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Sabre Blade on Hilt.wav": {
+      "full": -0.29,
+      "takes": [
+        0.97,
+        2.11,
+        3.98,
+        12.06,
+        9.5,
+        2.12,
+        12.56,
+        -0.13,
+        2.52
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Sabre Haft on Blade.wav": {
+      "full": -1.06,
+      "takes": [
+        2.83,
+        12.65,
+        12.43,
+        21.21,
+        -1.06,
+        14.53,
+        11.59,
+        23.35,
+        15.18,
+        4.97
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Sabre Haft on Hilt.wav": {
+      "full": 4.89,
+      "takes": [
+        4.89,
+        10.14,
+        8.58,
+        9.31,
+        15.14,
+        20.43,
+        9.03,
+        10.65
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Spear Blade on Blade.wav": {
+      "full": -3.4,
+      "takes": [
+        -3.01,
+        -0.77,
+        19.54,
+        -1.45,
+        18.77,
+        -2.38,
+        9.67,
+        4.96,
+        13.73,
+        -2.94,
+        3.85,
+        2.25,
+        2.07,
+        4.89,
+        11.47,
+        1.71
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Spear Blade on Haft.wav": {
+      "full": 0.96,
+      "takes": [
+        3.44,
+        21.07,
+        8.4,
+        9.2,
+        15.32,
+        6.91,
+        0.96,
+        9.11,
+        10.48,
+        2.36,
+        8.09
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-impacts/part-2/Spear Spear Haft on Haft.wav": {
+      "full": 2.79,
+      "takes": [
+        9.02,
+        12.13,
+        3.07,
+        6.45,
+        8.84,
+        10.15,
+        6.67,
+        9.24
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Arrow Fletching.wav": {
+      "full": 1.16,
+      "takes": [
+        24.0,
+        20.52,
+        13.66,
+        19.98,
+        1.16,
+        3.22
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Crossbow Bolt Approach.wav": {
+      "full": -4.29,
+      "takes": [
+        -4.29
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Crossbow Bolt Pass.wav": {
+      "full": -5.55,
+      "takes": [
+        -5.53,
+        -0.66,
+        0.05
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav": {
+      "full": 3.41,
+      "takes": [
+        6.71,
+        4.34,
+        3.71
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Crossbow Lever Trigger.wav": {
+      "full": 5.52,
+      "takes": [
+        12.46,
+        11.88,
+        5.53
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Crossbow Place Bolt.wav": {
+      "full": -5.05,
+      "takes": [
+        -5.05
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Crossbow Set Nut Against Sear.wav": {
+      "full": 13.46,
+      "takes": [
+        13.46,
+        16.83
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Crossbow Shoot.wav": {
+      "full": -2.05,
+      "takes": [
+        -1.31,
+        -0.37,
+        -0.83,
+        -0.82,
+        -2.0,
+        -1.41
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/English Longbow Draw.wav": {
+      "full": 7.89,
+      "takes": [
+        9.18,
+        19.04,
+        13.96,
+        15.32,
+        14.39,
+        11.35,
+        8.13,
+        8.88,
+        7.87,
+        11.14,
+        14.38,
+        16.37,
+        14.86,
+        12.28,
+        12.84
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav": {
+      "full": -7.34,
+      "takes": [
+        -7.34,
+        8.51,
+        13.05,
+        -0.96,
+        12.81,
+        -1.01,
+        2.63
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/English Longbow Set Arrow.wav": {
+      "full": 3.69,
+      "takes": [
+        3.69
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/English Longbow Shoot.wav": {
+      "full": 1.5,
+      "takes": [
+        2.75,
+        1.54,
+        11.99,
+        5.38
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Katana Sheath Fast.wav": {
+      "full": -4.53,
+      "takes": [
+        9.25,
+        15.61,
+        -4.54,
+        14.54,
+        11.97,
+        0.64,
+        0.26
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Katana Sheath Slow.wav": {
+      "full": -1.39,
+      "takes": [
+        24.0,
+        18.25,
+        10.35,
+        16.92,
+        -1.39,
+        24.0,
+        23.17,
+        10.82,
+        13.04
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Katana Swing.wav": {
+      "full": -9.79,
+      "takes": [
+        -2.02,
+        5.52,
+        2.65,
+        10.15,
+        3.01,
+        -5.68,
+        2.6,
+        -10.12
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Approach.wav": {
+      "full": 0.93,
+      "takes": [
+        0.93,
+        4.73,
+        2.01
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Pass.wav": {
+      "full": 0.2,
+      "takes": [
+        17.11,
+        0.2,
+        0.58
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Passby.wav": {
+      "full": -0.31,
+      "takes": [
+        -0.31
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Draw.wav": {
+      "full": -1.16,
+      "takes": [
+        -1.16
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Heavy Arrow Approach.wav": {
+      "full": -2.62,
+      "takes": [
+        16.1,
+        -2.62
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Heavy Arrow Pass.wav": {
+      "full": -2.45,
+      "takes": [
+        3.63,
+        3.63,
+        -2.19
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Heavy Arrow Passby.wav": {
+      "full": -6.66,
+      "takes": [
+        -6.66
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Nock Arrow.wav": {
+      "full": 1.19,
+      "takes": [
+        2.94,
+        1.21
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Set Arrow.wav": {
+      "full": -2.09,
+      "takes": [
+        13.28,
+        10.79,
+        -2.03,
+        3.8,
+        -1.57,
+        4.12,
+        6.82,
+        5.11
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav": {
+      "full": 1.19,
+      "takes": [
+        1.89,
+        10.15,
+        13.67,
+        8.08,
+        13.89,
+        5.19,
+        1.21,
+        5.23
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Axe Swing.wav": {
+      "full": -12.59,
+      "takes": [
+        6.55,
+        -10.44,
+        -8.4,
+        -7.16,
+        0.09,
+        -10.04,
+        -12.31
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Dagger Draw Fast.wav": {
+      "full": 3.46,
+      "takes": [
+        3.57,
+        6.41,
+        6.06
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Dagger Draw Slow.wav": {
+      "full": -0.74,
+      "takes": [
+        -0.74,
+        4.42,
+        3.52
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Dagger Sheath Fast.wav": {
+      "full": -1.61,
+      "takes": [
+        -1.62,
+        -0.14,
+        15.48,
+        22.06,
+        18.79,
+        22.59,
+        2.29,
+        10.62,
+        18.28,
+        6.38
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Dagger Sheath Slow.wav": {
+      "full": 12.43,
+      "takes": [
+        18.16,
+        14.58,
+        12.48
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Dagger Swing.wav": {
+      "full": -7.8,
+      "takes": [
+        4.31,
+        0.62,
+        -7.92,
+        -3.7,
+        -3.66,
+        -7.19
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Katana Draw Fast.wav": {
+      "full": -1.11,
+      "takes": [
+        -1.11,
+        7.74,
+        7.23,
+        14.09,
+        7.27,
+        13.92
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Katana Draw Slow.wav": {
+      "full": 1.96,
+      "takes": [
+        23.35,
+        19.75,
+        12.39,
+        10.16,
+        1.39
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Sabre Draw Fast.wav": {
+      "full": -1.56,
+      "takes": [
+        7.49,
+        5.24,
+        3.04,
+        4.53,
+        -0.47
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Sabre Draw Slow.wav": {
+      "full": 8.05,
+      "takes": [
+        8.05,
+        11.9
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Sabre Sheath Fast.wav": {
+      "full": -2.33,
+      "takes": [
+        -0.75,
+        3.76,
+        -2.37
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Sabre Sheath Slow.wav": {
+      "full": 3.2,
+      "takes": [
+        14.89,
+        9.31,
+        3.29,
+        18.86,
+        18.39,
+        12.39,
+        8.21,
+        13.39,
+        6.83,
+        3.2,
+        7.01,
+        17.45,
+        6.64,
+        9.31
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Sabre Swing.wav": {
+      "full": -2.99,
+      "takes": [
+        14.29,
+        15.66,
+        19.28,
+        24.0,
+        16.71,
+        17.4,
+        24.0,
+        16.5,
+        12.21,
+        14.13,
+        21.12,
+        14.86,
+        17.33,
+        5.94,
+        18.91,
+        9.51,
+        12.04,
+        18.4,
+        7.34,
+        14.77,
+        3.56,
+        10.33,
+        0.34,
+        -2.85
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Seax Draw Fast.wav": {
+      "full": 5.18,
+      "takes": [
+        5.74,
+        5.17,
+        6.47
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Seax Draw Slow.wav": {
+      "full": 6.62,
+      "takes": [
+        24.0,
+        24.0,
+        24.0,
+        24.0,
+        6.64,
+        18.42,
+        17.85
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Seax Sheath Fast.wav": {
+      "full": 1.04,
+      "takes": [
+        6.27,
+        10.61,
+        10.66,
+        6.69,
+        1.02,
+        3.79
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Seax Sheath Slow.wav": {
+      "full": 5.69,
+      "takes": [
+        5.65,
+        9.79,
+        12.22,
+        8.17
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Seax Swing.wav": {
+      "full": -11.77,
+      "takes": [
+        -2.57,
+        4.57,
+        3.27,
+        -11.77,
+        -3.9,
+        10.53,
+        8.29,
+        -3.42,
+        -0.61,
+        -3.47
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "still-north-media/weapon-textures/part-2/Spear Swing.wav": {
+      "full": -2.38,
+      "takes": [
+        -0.6,
+        0.12,
+        -0.43,
+        -2.25,
+        1.38,
+        2.37
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "current/attack-bow-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/attack-bow-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/attack-bow-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/attack-melee-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/attack-melee-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/attack-melee-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/defeat-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/defeat-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/defeat-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/recruit-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/recruit-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/recruit-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/select-1": {
+      "full": -17.6,
+      "takes": [
+        -17.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/select-2": {
+      "full": -17.6,
+      "takes": [
+        -17.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/select-3": {
+      "full": -17.6,
+      "takes": [
+        -17.6
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-forest-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-forest-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-forest-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-hill-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-hill-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-hill-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-keep-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-keep-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-keep-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-plains-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-plains-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-plains-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-village-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-village-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-village-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-water-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-water-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/terrain-water-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/turn-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/turn-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/turn-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-archer-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-archer-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-archer-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-commander-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-commander-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-commander-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-scout-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-scout-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-scout-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-soldier-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-soldier-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/unit-soldier-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/victory-1": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/victory-2": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "current/victory-3": {
+      "full": -5.56,
+      "takes": [
+        -5.56
+      ],
+      "preserved": false,
+      "gameRelativeGain": true
+    },
+    "edits/plains-grass-003-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/keep-metal-light-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/fort-wood-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/marsh-gurgle-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/ruins-magic-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/grove-magic-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/mountain-mining-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/quarry-mining-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/house-door-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/burned-fire-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/ritual-fout-03-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/snake-belt-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/spider-creak-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/octopus-gurgle-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    }
+  }
+}

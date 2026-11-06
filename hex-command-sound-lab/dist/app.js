@@ -14,10 +14,11 @@ try {
     `Could not load the soundboard: ${error.message}. Reload to retry.`;
 }
 async function start() {
-  const [catalog, workbench, sourceInfo] = await Promise.all([
+  const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
     loadJSON("catalog.json?v=map-dock-1"),
     loadJSON("workbench.json?v=factions-1"),
     loadJSON("sources.json"),
+    loadJSON("playback-levels.json?v=take-levels-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -364,8 +365,13 @@ async function start() {
       const node = context.createBufferSource(),
         gain = context.createGain();
       node.buffer = buffer;
+      const item = byId.get(playingId);
+      const profile = playbackLevels.entries[playingId];
+      const take = selection.ref.take;
+      const gainDb =
+        take === null ? profile?.full : profile?.takes?.[take || 0];
       gain.gain.value = $("#normalize").checked
-        ? 10 ** ((byId.get(playingId)?.gainDb || 0) / 20)
+        ? 10 ** ((gainDb ?? item.gainDb ?? 0) / 20)
         : 1;
       node.connect(gain);
       gain.connect(master);
