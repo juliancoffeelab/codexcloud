@@ -72,6 +72,7 @@ armored infantry, and `cloth3` for lighter humanoids. Other plausible equipment
 and impact recordings remain available. Bow users have nocking candidates for
 selection and attack feedback, with releases/flight as alternatives. A nocking
 attack cue is explicitly a handling proxy rather than a recorded release.
+Merfolk selection defaults to `clothBelt2` across the roster.
 Personal Use assignments take precedence over these editorial suggestions.
 
 ## Terrain audition edits

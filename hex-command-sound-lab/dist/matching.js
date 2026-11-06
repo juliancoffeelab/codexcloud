@@ -374,21 +374,27 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
     tapPossible = union(tapPossible, bowHandling);
     if (bone) tap = union(tap, nocking);
   }
+  if (faction === "merfolk") {
+    tap = rpg(/^clothBelt2$/);
+    tapPossible = union(tapPossible, cloth);
+  }
   const result = [
     row(
       "tap",
       "Tap / selection",
-      beast
-        ? "Brief body or idle feedback when selecting this creature."
-        : arrowBow
-          ? "Arrow nocking / handling for selection."
-          : bone
-            ? "Dry item-wood contact for skeletal selection."
-            : frontline
-              ? entity.level <= 1
-                ? "Belt handling for level-one infantry."
-                : "Chain movement for armored infantry."
-              : "Soft cloth movement for lighter units.",
+      faction === "merfolk"
+        ? "Cloth belt handling for Merfolk selection."
+        : beast
+          ? "Brief body or idle feedback when selecting this creature."
+          : arrowBow
+            ? "Arrow nocking / handling for selection."
+            : bone
+              ? "Dry item-wood contact for skeletal selection."
+              : frontline
+                ? entity.level <= 1
+                  ? "Belt handling for level-one infantry."
+                  : "Chain movement for armored infantry."
+                : "Soft cloth movement for lighter units.",
       tap,
       tapPossible,
       {
