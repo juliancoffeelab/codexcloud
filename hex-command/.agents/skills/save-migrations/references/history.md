@@ -355,3 +355,14 @@ A required manual boolean identifies explicit saves for retention and display;
 it does not change the payload contract. Current recovery keeps its undo.
 Index 3→4 makes the same metadata conversion. Older shapes are interpreted only
 inside the version conversions; normal code accepts only the target model.
+
+## Storage version 2: IndexedDB
+
+`storage-v1-to-v2.ts` converts the localStorage recovery and history into current
+recovery, metadata and snapshot records. It runs envelope/index migrations without
+changing native facts or creating missing history. Native validation precedes the
+single import transaction. The initialization marker commits with all records;
+localStorage remains untouched until success. Initialized IndexedDB wins over
+later localStorage writes, including writes from tabs running an older build.
+The native save envelope remains version 37; the IndexedDB database schema starts
+at version 1, independently of save-envelope and storage-source versions.

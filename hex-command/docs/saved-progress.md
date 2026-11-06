@@ -36,7 +36,7 @@ failures provide appropriate browser guidance or access to the debug report.
 
 ## Recovery and history
 
-`hex-command-battle` is the atomic current recovery envelope. Completed player
+The IndexedDB `state.current` record is the atomic current recovery envelope. Completed player
 actions write the complete native checkpoint together with compact backward
 changes for the available move undo. Unchanged terrain and rosters are stored
 once. Combat, recruitment, promotion, item drops and turn changes retain
@@ -60,14 +60,25 @@ invent an unavailable turn start.
 
 ## Storage and retention
 
-`src/save/progress.ts` owns the local repository operations. Its versioned
-metadata index is separate from checkpoint payloads, so browsing reads labels and
-timestamps without deserializing every battlefield. The dialog renders thirty
+`src/save/storage.ts` owns the asynchronous IndexedDB boundary; repository
+operations live in `src/save/progress.ts`. The `hex-command-saves` database has
+separate `state`, `entries` and `turns` stores. Metadata indexes support game and
+save-time queries without deserializing battlefields. The dialog renders thirty
 entries at a time. Recovery writes do not scan or rewrite historical payloads.
-A history insert writes its payload before publishing its index entry; deletions
-remove index entries before removing payloads. Interrupted operations can leave
-unreferenced bytes but never publish an absent payload. Each payload replacement
-and current recovery replacement is an atomic browser storage write.
+
+History insertion, replacement and deletion update metadata and payloads in one
+transaction. Whole-campaign deletion checks recovery ownership and removes the
+matching recovery in that same transaction. Recovery writes clear the idle choice
+atomically. Transactions request strict durability; callers report success after
+commit. Action checkpoints are captured before queuing, so a delayed write cannot
+serialize a later action or another session. Enemy work waits for its boundary
+write attempt before proceeding.
+
+Tabs share database transactions without owning gameplay. The last committed
+recovery write wins. History transactions operate on current database records,
+so competing additions cannot overwrite an entire stale index. A locally deleted
+active game cancels that session's pending work. Another active tab may still save
+its own game afterward; there is no tab-control or takeover protocol.
 
 Automatic thinning uses save time across branches within each game. The latest
 five minutes remain dense, followed by one save per five minutes up to an hour,
@@ -76,7 +87,7 @@ days. Older ordinary turn saves expire. Chapter starts, manual saves, the latest
 automatic turn in each game, and the sole current recovery remain untouched by
 automatic cleanup. Retention maintenance runs before and after turn insertion so
 eligible old history can free space before a new payload is written. No-op
-maintenance does not rewrite the index.
+maintenance does not rewrite unchanged records.
 
 Individual historical saves can be deleted manually. Delete campaign saves
 removes the selected playthrough's entire history and any stored current recovery
@@ -91,7 +102,7 @@ warning clears only when saving succeeds; no success banner is added.
 History writers accept opaque turn-boundary or explicitly requested manual
 turn snapshots, all using the same snapshot-only format without undo. They reject
 current recoveries and arbitrary serialized bytes. Current recovery
-has a separate metadata query and is never an entry in the history index.
+has a separate metadata query and is never a historical turn entry.
 
 Each record carries stable run, continuation, checkpoint and parent identities.
 These identities and self-contained payloads leave room for a future player-private
@@ -100,7 +111,8 @@ state or network-dependent code is part of local persistence today.
 
 ## Save migrations
 
-The current battle envelope is version 37 and the history index is version 4.
+The current battle envelope is version 37. The imported localStorage history
+index reaches version 4 before being split into IndexedDB records.
 The explicit 36→37 and index 3→4 steps collapse the earlier manual variant into
 the shared turn-snapshot format, discard historical undo, and record manual status
 only as retention/presentation metadata. Current recovery retains its undo.
@@ -110,19 +122,41 @@ discards old undo. Native restoration validates the converted state without
 repairing it or consulting historical formats.
 
 The explicit history-index 1→2 conversion retains genuine turn starts and removes
-archived recoveries and imported positions. Their payloads are removed only after
-the converted index is committed. Automatic history cleanup leaves the sole current recovery untouched. This conversion runs under the same short-lived history lock as normal
-history transactions; it never reconstructs unavailable turn starts.
+archived recoveries and imported positions. Retired payloads are excluded from the IndexedDB import. Automatic history
+cleanup leaves the sole current recovery untouched. Conversion never reconstructs
+unavailable turn starts.
 
-Older turn payloads pass through the versioned migration chain when selected,
-then their converted current-format payload is committed before restoration.
-If committing a converted recovery fails, the loading boundary can still return
-its canonical ownership metadata through the same migration chain without a write.
-Cleanup resolves ownership before deleting any history. Deleting another campaign
-retries the retained recovery; deleting its own campaign ends the session and opens
-New game. Opening save management dismisses any pending Load confirmation.
-No historical shape is interpreted by gameplay, browsing or repository operations.
-Conversion code and frozen historical data remain under `src/save/migrations/`.
+Storage version 1→2 imports localStorage through an explicit pure conversion in
+`src/save/migrations/storage-v1-to-v2.ts`. Existing save-envelope and index
+migrations run first. Native validation checks every retained checkpoint and
+recovery undo before writing. All imported records and the initialization marker
+commit in a single transaction. No source record is removed before that commit.
+An empty database is also initialized explicitly: its lack of current play is
+still authoritative. A short-lived Web Lock serializes source import and source
+cleanup across new-code tabs; gameplay needs no ownership lock. A failed-import
+tab rechecks authority before offering source data or deleting it.
+
+Once initialization commits, IndexedDB is authoritative. Startup discards any
+remaining or subsequently written game-save localStorage records without reading
+them as saves. Old tabs can continue running, but their later localStorage writes
+are discarded on reload. Other preferences, such as sound, remain independent.
+There is no forced reload, reconciliation or localStorage gameplay backend.
+
+A failed import leaves the original source intact and the database uninitialized.
+The loading boundary exposes canonical migration metadata for cleanup; source
+cleanup is restricted to migration recovery, then import is retried. Normal
+repository operations refuse an uninitialized database. A failed conversion or
+native validation retains the source for diagnosis. Failed writes keep prior
+committed data. Debug reports include raw records from every IndexedDB store and
+any remaining import source.
+
+Subsequent stored-envelope conversions still use the loading boundary and commit
+before installing the restored game. Cleanup resolves ownership before mutation.
+Deleting another campaign retries retained recovery; deleting its own campaign
+ends the session and opens New game. Opening save management dismisses any pending
+Load confirmation. No historical shape is interpreted by gameplay, browsing or
+repository operations. Conversion code and frozen historical data remain under
+`src/save/migrations/`.
 
 Undo validation transfers the current state and compact changes to Rust once.
 Rust reconstructs and validates every earlier state against the native rules

@@ -107,11 +107,17 @@ export async function openHarness(options = {}) {
   const checkpoint = async (name) => {
     const data = await evaluate(async () => {
       const { controller, game } = globalThis.__livePlay;
+      let entries = null;
+      let entriesError;
+      if (typeof controller.savedProgress === "function") {
+        try { entries = await controller.savedProgress(); }
+        catch (error) { entriesError = String(error); }
+      }
       return {
         snapshot: controller.snapshot(),
         native: game().checkpoint(),
-        entries:
-          typeof controller.savedProgress === "function" ? await controller.savedProgress() : null,
+        entries,
+        entriesError,
         storage: await (await import("/src/save/debug.ts")).captureBrowserSaves(),
       };
     });

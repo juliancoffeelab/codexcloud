@@ -228,6 +228,7 @@ export class BattleController {
       needsNewGame: this.awaitingNewGame,
       canSave:
         !this.awaitingNewGame &&
+        !this.preserveStoredRecovery &&
         !this.settling() &&
         (this.#game.turn === "player" || !!this.#game.winner),
       activeRunId: this.awaitingNewGame ? null : this.progress.runId,
@@ -365,6 +366,7 @@ export class BattleController {
       this.failedSave(error);
       return async () => {};
     }
+    if (text) this.persistence = "Saving…";
     return async () => {
       if (!text || this.disposed || session !== this.sessionVersion) return;
       try {
@@ -437,11 +439,17 @@ export class BattleController {
     }
   }
 
+  private async migrationSource() {
+    if (!this.importPending) return;
+    const data = await pendingImport();
+    if (!data) this.importPending = false;
+    return data;
+  }
+
   async savedProgress(): Promise<TurnEntry[]> {
     await this.saved();
-    return this.importPending
-      ? pendingImport().turns.map((save) => save.progress.entry)
-      : listProgress();
+    const data = await this.migrationSource();
+    return data ? data.turns.map((save) => save.progress.entry) : listProgress();
   }
   savedSummary(id: string) {
     return this.storageUpdate(async () => {
@@ -456,7 +464,8 @@ export class BattleController {
   }
   async savedRecovery() {
     await this.saved();
-    return this.importPending ? pendingImport().current?.progress.entry : currentProgress();
+    const data = await this.migrationSource();
+    return data ? data.current?.progress.entry : currentProgress();
   }
 
   private async finishPendingHistory(): Promise<void> {
@@ -550,16 +559,18 @@ export class BattleController {
   deleteSavedProgress(id: string): Promise<void> {
     return this.storageUpdate(() =>
       this.cleanupSaves(async () => {
-        if (this.importPending) deleteImportSaves({ id });
-        else await deleteProgress(id);
+        if (this.importPending && (await deleteImportSaves({ id }))) return;
+        this.importPending = false;
+        await deleteProgress(id);
       }),
     );
   }
   deleteSavedRun(id: string): Promise<void> {
     return this.storageUpdate(async () => {
       const remove = async () => {
-        if (this.importPending) deleteImportSaves({ runId: id });
-        else await deleteRun(id);
+        if (this.importPending && (await deleteImportSaves({ runId: id }))) return;
+        this.importPending = false;
+        await deleteRun(id);
       };
       if (id !== this.progress.runId || this.awaitingNewGame) {
         await this.cleanupSaves(remove);
@@ -590,6 +601,8 @@ export class BattleController {
     return this.storageUpdate(async () => {
       this.requireSession();
       this.requireSettled();
+      if (this.preserveStoredRecovery)
+        throw new Error("Finish updating saved progress before making a manual save.");
       try {
         const point = TurnCheckpoint.capture(
           this.#game,

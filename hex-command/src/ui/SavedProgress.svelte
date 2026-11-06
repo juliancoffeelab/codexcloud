@@ -81,6 +81,8 @@
     confirmationReady = false;
     clearTimeout(armTimer);
     generation++;
+    entries = [];
+    recovery = undefined;
     expanded = {};
     limits = {};
     summaries = {};

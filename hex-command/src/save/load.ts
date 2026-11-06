@@ -2,7 +2,7 @@ import { decodeUndo } from "./undo";
 import { LiveGame, nativeValue } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migrations";
-import { wipeSave, storeSave, readSave, needsNewGame } from "./storage";
+import { wipeSave, storeSave, readSave, readSession } from "./storage";
 import { importLocalStorage, pendingImport } from "./import";
 import { currentRecovery, currentTurn } from "./schema";
 import type { CurrentEntry } from "./metadata";
@@ -66,7 +66,8 @@ export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBatt
     let retainedRecovery: CurrentEntry | undefined;
     let chooseNewGame = false;
     try {
-      const data = pendingImport();
+      const data = await pendingImport();
+      if (!data) return loadBattle(factory);
       retainedRecovery = data.current?.progress.entry;
       chooseNewGame = data.chooseNewGame;
     } catch {
@@ -83,8 +84,9 @@ export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBatt
   }
   let raw: string | null = null;
   let storageFailure: string | undefined;
+  let chooseNewGame = false;
   try {
-    raw = await readSave();
+    ({ text: raw, chooseNewGame } = await readSession());
   } catch (error) {
     storageFailure = String(error);
   }
@@ -121,6 +123,6 @@ export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBatt
     game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
     pendingEnemy: false,
     storageFailure,
-    chooseNewGame: await needsNewGame(),
+    chooseNewGame,
   };
 }
