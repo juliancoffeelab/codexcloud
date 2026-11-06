@@ -57,6 +57,39 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
       "Mace Spear Haft, take 12: a dull contact for the stone-headed Merfolk mace.");
     row.preferredTakes = { [id]: 11 };
   }
+  const creatureSound = (name) => `rubberduck/80-cc0-creature-sfx/${name}.ogg`;
+  const roar = creatureSound("roar_03");
+  const tap = actions.find((row) => row.key === "tap");
+  const isBeast = entity.key?.startsWith("beasts/") || /^(boar|greatboar|woodland-ancient-boar)$/.test(entity.id);
+  const originalGrunt = tap?.suggested.find((id) => /\/grunt_0[14]\.ogg$/.test(id));
+  if (isBeast && originalGrunt) {
+    choose("tap", [roar], "Roar 3 for creature selection; its former grunt moves to attacks.");
+    if (actions.some(row => row.key === "voice"))
+      choose("voice", [roar], "Roar 3 creature response.");
+  }
+  if (/^fox-spearguard(?:-l[23])?$/.test(entity.id))
+    choose("tap", [roar], "Roar 3 for Thornshield selection.");
+  for (const attack of entity.attacks || []) {
+    const key = `attack-${attack.id}`;
+    if (/arquebus|pistol|musket|gunshot/i.test(attack.name)) {
+      const row = choose(key, ["impact-sounds/impactPlate_medium_000"],
+        "Impact Plate medium 000 as the chosen firearm shot proxy.");
+      row.caveat = "Metal impact proxy selected for this attack.";
+    } else if (/^treant(?:-l[23])?$/.test(entity.id)) {
+      choose(key, ["impact-sounds/impactPlank_medium_004"],
+        "Impact Plank medium 004 for treant attacks.");
+    } else if (isBeast && !/fire|magic|spell/i.test(attack.name)) {
+      const sound = /^giant-(wasp|spider)(?:-l[23])?$/.test(entity.id)
+        ? creatureSound("spit_01")
+        : originalGrunt || tap?.suggested[0];
+      if (sound) {
+        const row = choose(key, [sound], originalGrunt
+          ? "Former selection grunt used for the creature attack."
+          : "Creature attack placeholder using its selection texture; bugs use Spit 01.");
+        row.caveat = "Audition proxy for a creature attack.";
+      }
+    }
+  }
   const movement = actions.find((row) => row.key === "move");
   if (
     movement &&

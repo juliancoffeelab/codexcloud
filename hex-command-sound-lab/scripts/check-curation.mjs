@@ -27,7 +27,7 @@ for (const faction of workbench.factions)
       assert(!action.suggested.some((id) => action.alternatives.includes(id)));
       if (action.key.startsWith("attack-")) {
         assert(
-          !action.suggested.some((id) => /alien_|grunt_|horse-vocals/.test(id)),
+          unit.key.startsWith("beasts/") || /^(boar|greatboar|woodland-ancient-boar)$/.test(unit.id) || !action.suggested.some((id) => /alien_|grunt_|horse-vocals/.test(id)),
         );
         if (/fire/i.test(action.title))
           assert(action.suggested.every((id) => id.includes("spell_fire_07")));
@@ -37,6 +37,16 @@ for (const faction of workbench.factions)
           assert.equal(action.suggested[0], "rpg-audio/bookClose");
       }
     }
+    const attacks = actions.filter(row => row.key.startsWith("attack-"));
+    if (/^giant-(wasp|spider)(?:-l[23])?$/.test(unit.id))
+      assert(attacks.every(row => row.suggested[0].endsWith("/spit_01.ogg")));
+    if (/^treant(?:-l[23])?$/.test(unit.id))
+      assert(attacks.every(row => row.suggested[0] === "impact-sounds/impactPlank_medium_004"));
+    if (/^fox-spearguard(?:-l[23])?$/.test(unit.id))
+      assert(tap.suggested[0].endsWith("/roar_03.ogg"));
+    for (const attack of unit.attacks)
+      if (/arquebus|pistol|musket|gunshot/i.test(attack.name))
+        assert.equal(attacks.find(row => row.key === `attack-${attack.id}`).suggested[0], "impact-sounds/impactPlate_medium_000");
     if (/^giant-wasp/.test(unit.id))
       assert(tap.suggested[0].includes("alien_03"));
     if (/^giant-spider/.test(unit.id))

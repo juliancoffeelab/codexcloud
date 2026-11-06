@@ -369,3 +369,10 @@ quiet Book 03 edit. Burned village/house use a new Fire 1 excerpt (1.55–2.00 s
 with a 0.20-second release fade; previous edits and full sources remain available.
 Saved terrain choices using the replaced edits migrate with a local backup.
 Beast attack suggestions remain unchanged pending review. Catalog: 542 / 1,354 takes.
+
+Beast attack pass: spider/wasp Spit 01; living beasts previously selecting with
+Grunt 1/4 now select Roar 3 and attack with their former grunt. Remaining physical
+beast attacks reuse selection textures; dragon fire keeps Spell Fire 07. Boars
+follow the same grunt/roar split. Firearms use Impact Plate medium 000; all treant
+attacks use Impact Plank medium 004; Thornshield levels 1–3 select Roar 3. Saved
+personal assignments retain priority. Duration audit and ZIP refreshed.
