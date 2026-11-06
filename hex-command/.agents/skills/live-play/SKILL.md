@@ -21,8 +21,8 @@ support production bundles.
    and adapt that copy. Use an isolated context and generated progress; identify
    synthetic historical fixtures when relevant. For custom policies, recalls,
    hooks or adapter changes, read the [harness reference](references/harness.md).
-3. Set `LIVE_PLAY_AUTHORIZED=1` after establishing authorization. Run from the game
-   root, setting `CHROMIUM_PATH` for an installed system browser when necessary.
+3. Run from the game root, setting `CHROMIUM_PATH` for an installed system browser
+   when necessary.
    Give every run a fresh artifact directory. Defaults are bounded, not a victory
    guarantee; configure the requested limits and assertions before execution.
 4. Stop when the assertions observe their target transitions or a bounded failure
@@ -35,7 +35,7 @@ support production bundles.
 
 ```sh
 # From hex-command; use a fresh artifacts directory for every run.
-LIVE_PLAY_AUTHORIZED=1 CHROMIUM_PATH=/usr/bin/chromium \
+CHROMIUM_PATH=/usr/bin/chromium \
   LIVE_PLAY_URL=http://127.0.0.1:5191 \
   LIVE_PLAY_ARTIFACTS=tmp/live-play/run-1 \
   ENEMY_PAUSE_SCALE=0 PLAYER_AI_POLICY=classic CAMPAIGNS=mirror-night \
