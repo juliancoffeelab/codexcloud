@@ -351,3 +351,7 @@ Run `python3 scripts/check-take-boundaries.py` to check coverage, bounds, origin
 hashes, retained listening copies and the two reference cases. The manifest is
 included in the downloadable library ZIP. The catalog now contains 537 recordings
 and 1,349 playable takes, with fresh per-take loudness measurements and gains.
+
+Merfolk maceguard levels 1–3 suggest **Mace Spear Haft, take 12**
+(6.7898–7.0720 s) for their stone-headed mace attacks. Per-action preferred takes
+apply to unit taps and audition cards; personal saved choices still take precedence.

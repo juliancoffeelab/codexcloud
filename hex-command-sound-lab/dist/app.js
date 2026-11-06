@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=bow-review-1";
+import { buildActions } from "./matching.js?v=merfolk-mace-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -187,7 +187,7 @@ async function start() {
     return saved && byId.has(saved.id)
       ? saved
       : action.suggested[0]
-        ? { id: action.suggested[0], take: 0 }
+        ? { id: action.suggested[0], take: action.preferredTakes?.[action.suggested[0]] ?? 0 }
         : null;
   }
   function drawWave(buffer) {
@@ -607,6 +607,7 @@ async function start() {
     const full = el("option", "", "Full recording");
     full.value = "full";
     takes.append(full);
+    takes.value = String(action.preferredTakes?.[id] ?? 0);
     const saved = assignments[keyFor(action)];
     if (saved?.id === id)
       takes.value = saved.take === null ? "full" : String(saved.take || 0);
@@ -904,6 +905,7 @@ async function start() {
         const full = el("option", "", "Full source");
         full.value = "full";
         takes.append(full);
+        takes.value = String(action.preferredTakes?.[id] ?? 0);
         if (saved?.id === id)
           takes.value = saved.take === null ? "full" : String(saved.take || 0);
         const ref = () => ({

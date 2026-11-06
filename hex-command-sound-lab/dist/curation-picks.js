@@ -51,6 +51,12 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     death.caveat =
       "Equipment Foley proxy, not a recorded armored fall; no live-game death integration.";
   }
+  if (/^merfolk-maceguard(?:-l[23])?$/.test(entity.id)) {
+    const id = "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav";
+    const row = choose("attack-mace", [id],
+      "Mace Spear Haft, take 12: a dull contact for the stone-headed Merfolk mace.");
+    row.preferredTakes = { [id]: 11 };
+  }
   const movement = actions.find((row) => row.key === "move");
   if (
     movement &&

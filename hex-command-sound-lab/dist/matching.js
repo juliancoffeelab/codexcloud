@@ -1,4 +1,4 @@
-import { applyCuratedPicks } from "./curation-picks.js?v=curation-1";
+import { applyCuratedPicks } from "./curation-picks.js?v=merfolk-mace-1";
 import { weaponSelection } from "./weapon-selection.js?v=curation-1";
 import { creaturePick } from "./creature-picks.js?v=curation-1";
 import { terrainPicks } from "./terrain-picks.js?v=curation-1";
