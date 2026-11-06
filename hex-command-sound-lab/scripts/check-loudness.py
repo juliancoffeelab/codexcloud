@@ -75,13 +75,27 @@ def analyze(item, volume_db, normalize, profiles):
         end = min(len(samples), int((take["start"] + take["duration"]) * RATE))
         take_gain = profile.get("takes", [])[index] if index < len(profile.get("takes", [])) else (item.get("gainDb", 0) if normalize else 0)
         takes.append({"take": index + 1, "start": take["start"], "combinedPlaybackGainDb": round(take_gain + volume_db, 2), **measure(samples[start:end], take_gain + volume_db)})
+    full_stats = measure(samples, applied)
+    def project(measurement, gain):
+        total = gain + volume_db
+        result = {"combinedPlaybackGainDb": round(total, 2),
+                  "playbackPeakDbFS": round(measurement["peakDbFS"] + total, 2),
+                  "playbackRmsDbFS": round(measurement["rmsDbFS"] + total, 2),
+                  "playbackStrongest50msRmsDbFS": round(measurement["strongest50msRmsDbFS"] + total, 2)}
+        result["flags"] = [f for f in measurement.get("flags", []) if f not in ["quiet-at-playback-setting", "projected-clipping"]]
+        if result["playbackStrongest50msRmsDbFS"] < -38:result["flags"].append("quiet-at-playback-setting")
+        if result["playbackPeakDbFS"] > 0:result["flags"].append("projected-clipping")
+        return result
+    contexts = {name: {"full": project(full_stats, context["full"]),
+                       "takes": [project(measurement, gain) for measurement, gain in zip(takes, context["takes"])]}
+                for name, context in profile.get("contexts", {}).items()}
     return {
         "id": item["id"], "name": item["name"], "pack": item["pack"], "path": item["path"],
         "listeningSha256": hashlib.sha256(path.read_bytes()).hexdigest(),
         "intentionallyQuietEdit": bool(item.get("preserveLevel", item.get("derivedFrom"))),
         "catalogGainDb": item.get("gainDb", 0),
         "combinedPlaybackGainDb": round(applied, 2),
-        "full": measure(samples, applied), "takes": takes,
+        "full": full_stats, "takes": takes, "contexts": contexts,
     }
 
 
@@ -118,20 +132,25 @@ def main():
         "playbackMethod": "raw" if args.no_normalize else "per-take-playback-levels" if profiles else "legacy-whole-recording-peak",
         "playbackReference": levels.get("reference") if profiles else None,
         "method": "Decoded mono listening copies; sample peak, whole-range RMS, strongest half-overlapping 50ms RMS. dBFS is not acoustic SPL or perceived loudness. Playback levels include the selected per-range profile (or legacy catalog gain) and app volume; no device/system gain.",
-        "quietFlag": "Playback strongest 50ms RMS below -38 dBFS; diagnostic heuristic, not an automatic mastering target. Authored quiet edits remain intentional.",
+        "quietFlag": "Playback strongest 50ms RMS below -38 dBFS; diagnostic heuristic, not an automatic mastering target. This flag describes the base profile; context-specific event levels are reported separately.",
         "entries": entries,
     }
     dest = args.output or ROOT / "dist/loudness.json"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(report, indent=2) + "\n")
     with dest.with_suffix(".csv").open("w", newline="") as handle:
-        fields = ["id", "name", "pack", "range", "start", "duration", "peakDbFS", "rmsDbFS", "strongest50msRmsDbFS", "combinedPlaybackGainDb", "playbackPeakDbFS", "playbackRmsDbFS", "playbackStrongest50msRmsDbFS", "leadingBelow55Ms", "flags", "intentionallyQuietEdit"]
+        fields = ["id", "name", "pack", "context", "range", "start", "duration", "peakDbFS", "rmsDbFS", "strongest50msRmsDbFS", "combinedPlaybackGainDb", "playbackPeakDbFS", "playbackRmsDbFS", "playbackStrongest50msRmsDbFS", "leadingBelow55Ms", "flags", "intentionallyQuietEdit"]
         writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         for item in entries:
             for name, measurement in [("full", item["full"]), *[(f"take-{x['take']}", x) for x in item["takes"]]]:
-                row = {**item, **measurement, "range": name, "flags": ";".join(measurement.get("flags", []))}
+                row = {**item, **measurement, "context": "base", "range": name, "flags": ";".join(measurement.get("flags", []))}
                 writer.writerow(row)
+            for context_name, context in item.get("contexts", {}).items():
+                for name, base, level in [("full", item["full"], context["full"]),
+                    *[(f"take-{base['take']}", base, level) for base, level in zip(item["takes"], context["takes"])]]:
+                    writer.writerow({**item, **base, **level, "context": context_name, "range": name,
+                                     "flags": ";".join(level.get("flags", []))})
     flagged = [x for x in entries if "quiet-at-playback-setting" in x["takes"][0].get("flags", [])]
     print(json.dumps({"recordings": len(entries), "takes": sum(len(x["takes"]) for x in entries), "quietFirstTakes": len(flagged), "silentFirstTakes": sum("silent" in x["takes"][0].get("flags", []) for x in entries), "json": str(dest), "csv": str(dest.with_suffix('.csv'))}, indent=2))
 

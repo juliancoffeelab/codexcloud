@@ -1,3 +1,4 @@
+import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
 import { buildActions } from "./matching.js?v=snake-texture-2";
@@ -18,7 +19,7 @@ async function start() {
     loadJSON("catalog.json?v=snake-texture-2"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=snake-texture-2"),
+    loadJSON("playback-levels.json?v=event-ranges-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -181,12 +182,15 @@ async function start() {
     if (unitTapMode === "hurt") return rows.find((row) => row.key === "hit");
     return rows.filter((row) => row.key.startsWith("attack-"))[unitTapMode === "attack2" ? 1 : 0];
   }
+  function levelClassFor(action) {
+    return eventLevelClass(unit, action, playbackLevels.reference);
+  }
   function chosenFor(action) {
     const saved = assignments[keyFor(action)];
     return saved && byId.has(saved.id)
-      ? saved
+      ? { ...saved, levelClass: levelClassFor(action) }
       : action.suggested[0]
-        ? { id: action.suggested[0], take: action.preferredTakes?.[action.suggested[0]] ?? 0 }
+        ? { id: action.suggested[0], take: action.preferredTakes?.[action.suggested[0]] ?? 0, levelClass: levelClassFor(action) }
         : null;
   }
   function drawWave(buffer) {
@@ -381,9 +385,7 @@ async function start() {
       node.buffer = buffer;
       const item = byId.get(playingId);
       const profile = playbackLevels.entries[playingId];
-      const take = selection.ref.take;
-      const gainDb =
-        take === null ? profile?.full : profile?.takes?.[take || 0];
+      const gainDb = playbackGainForRef(profile, selection.ref);
       sourceGain = gain;
       gain.gain.value = $("#normalize").checked
         ? 10 ** ((gainDb ?? item.gainDb ?? 0) / 20)
@@ -557,9 +559,7 @@ async function start() {
     if (libraryPlayback) {
       if (sourceGain && selection) {
         const profile = playbackLevels.entries[playingId];
-        const take = selection.ref.take;
-        const gainDb =
-          take === null ? profile?.full : profile?.takes?.[take || 0];
+        const gainDb = playbackGainForRef(profile, selection.ref);
         const value = $("#normalize").checked
           ? 10 ** ((gainDb ?? byId.get(playingId).gainDb ?? 0) / 20)
           : 1;
@@ -633,6 +633,7 @@ async function start() {
     const selectedRef = () => ({
       id,
       take: takes.value === "full" ? null : Number(takes.value),
+      levelClass: levelClassFor(action),
     });
     button.onclick = () => play([selectedRef()]);
     const use = el(
@@ -930,6 +931,7 @@ async function start() {
         const ref = () => ({
           id,
           take: takes.value === "full" ? null : Number(takes.value),
+          levelClass: levelClassFor(action),
         });
         const sound = el("button", "sound-button");
         sound.innerHTML = speakerMarkup();

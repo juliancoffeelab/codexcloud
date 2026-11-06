@@ -491,3 +491,36 @@ matching. Strongest-50ms playback RMS at the 55% reference volume is -26.29 dBFS
 versus -47.38 for the previous quiet edit. The old edit remains an alternative;
 saved snake/serpent choices using it migrate with a local backup. All six levels
 are covered. Catalog: 548 recordings / 1,360 takes, 29 derived auditions.
+
+### Event-specific loudness ranges
+
+With Match levels enabled, attack and ordinary-terrain events use separate
+whole-cue gain profiles. Existing-game strongest-50ms RMS ranges at game master
+0.29 (board reference volume 55%) are attacks -27.23 to -24.13 dBFS and terrain
+-41.28 to -29.28 dBFS. A cue already in range retains its gain; an outlier gets
+one constant gain adjustment toward the nearest boundary, respecting the existing
+-18/+24dB gain limits and -1.5dBFS sample-peak ceiling. This is not waveform
+clipping, limiting, compression or a new envelope. Changing the master volume
+scales all levels normally; raw mode bypasses matching.
+
+Quarry/mine (`cave`) and bell (`castle-bell`) terrain contexts retain their base
+profiles. Mountain terrain remains ordinary terrain. Unit selection, movement
+and generic Library auditions retain their existing base gains. Context is carried
+through map taps, attack cards, saved choices, full-source auditions, sequences
+and the Match levels toggle. Shared Stones and item Wood recordings therefore
+have different gains as weapons/selection versus terrain. Octopus attacks rise
+into the attack band without changing its softer selection cue.
+
+`playback-levels.json` contains base profiles plus `contexts.attack` and
+`contexts.terrain`. `event-levels.js` is the shared browser/reference selector.
+The CSV/JSON loudness reports include base and contextual projections. Sources
+and the ZIP expose `palette-levels.json`, the report of actual suggested choices:
+39 attack choices -27.23 to -26.29 dBFS; 32 ordinary-terrain choices -41.28 to
+-29.28. Exceptions are separately labeled. All 104 contextual palette choices
+are checked, including unchanged selection/movement and explicit exemptions.
+
+`node scripts/check-event-levels.mjs` verifies actual selector math, shared-source
+roles, all suggested ranges and exemptions. Mobile Chromium verifies the real
+AudioParam gains for octopus selection/attack, Stones as weapon/road, doors,
+quarry/bell and raw/matched toggling. Base/library gains and audio bytes remain
+unchanged. Timing, curation and playback-level checks pass.

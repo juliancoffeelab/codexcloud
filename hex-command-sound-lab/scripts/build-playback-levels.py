@@ -35,6 +35,11 @@ def main():
     target = reference_output - board_gain
     reference["medianGameOutputStrongest50msRmsDbFS"] = round(reference_output, 2)
     reference["targetBeforeBoardMasterDbFS"] = round(target, 2)
+    event_ranges = {}
+    for name, ids in [("attack", reference["referenceIds"]),
+                      ("terrain", [x["id"] for x in catalog if x["id"].startswith(reference["terrainReferencePrefix"])])]:
+        values = [measured[id]["full"]["strongest50msRmsDbFS"] + game_gain for id in ids]
+        event_ranges[name] = {"minDbFS": round(min(values), 2), "maxDbFS": round(max(values), 2), "referenceIds": ids}
     entries = {}
     for item in catalog:
         stats = measured[item["id"]]
@@ -51,10 +56,22 @@ def main():
         else:
             full = gain_for(stats["full"], target)
             takes = [gain_for(take, target) for take in stats["takes"]]
-        entries[item["id"]] = {"full": full, "takes": takes, "preserved": preserve, "gameRelativeGain": item["pack"] == "current"}
+        contexts = {}
+        for name, band in event_ranges.items():
+            def contextual_gain(measurement, base):
+                output = measurement["strongest50msRmsDbFS"] + base + board_gain
+                desired = max(band["minDbFS"], min(band["maxDbFS"], output))
+                if abs(output - desired) < 0.01:
+                    return base
+                return gain_for(measurement, desired - board_gain)
+            contexts[name] = {"full": contextual_gain(stats["full"], full),
+                              "takes": [contextual_gain(take, base) for take, base in zip(stats["takes"], takes)]}
+        entries[item["id"]] = {"full": full, "takes": takes, "preserved": preserve,
+                               "gameRelativeGain": item["pack"] == "current", "contexts": contexts}
     output = {"catalogSha256": digest, "targetStrongest50msRmsDbFS": round(target, 2), "reference": reference,
               "samplePeakCeilingDbFS": CEILING, "minGainDb": -18, "maxGainDb": 24,
-              "method": "Constant gain per decoded take/full session. Target strongest 50ms RMS subject to sample-peak ceiling; no compressor, no true-peak or perceptual loudness guarantee. Authored quiet edits keep zero gain; archived game samples retain their relative game gain at the board reference volume.",
+              "eventRanges": event_ranges,
+              "method": "Context-specific attack/terrain gains clamp toward their existing game ranges, overriding quiet-edit preservation only for those events. Other contexts retain the base profile. Constant gain per decoded take/full session. Target strongest 50ms RMS subject to sample-peak ceiling; no compressor, no true-peak or perceptual loudness guarantee. Base/library profiles of authored quiet edits keep zero gain; archived game samples retain their relative base game gain at the board reference volume.",
               "entries": entries}
     (ROOT / "dist/playback-levels.json").write_text(json.dumps(output, indent=2) + "\n")
     print(f"Generated per-take playback gains for {len(entries)} recordings")
