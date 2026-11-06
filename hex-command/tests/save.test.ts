@@ -1,5 +1,6 @@
 import {
   inspectStorageV1ToV2,
+  repairStorageV1ToV2,
   HISTORY_KEY,
   historyPayloadKey,
   type LocalSource,
@@ -444,5 +445,54 @@ test("Repair distinguishes a missing history list from present empty or invalid 
       if (text === "") assert(indexes[0]?.error);
       assert.deepEqual(source, before);
     }
+  }
+});
+
+test("Repair preserves disputed snapshot ownership regardless of index row order", () => {
+  const entry = {
+    id: "point",
+    checkpointId: "point",
+    branchId: "branch",
+    runId: "campaign-a",
+    ordinal: 1,
+    savedAt: 1,
+    run: "mirror",
+    mission: "mirror",
+    round: 1,
+    side: "player",
+    kind: "turn",
+    missionStart: true,
+    manual: false,
+  };
+  const other = { ...entry, runId: "campaign-b", run: "green-accord" };
+  const key = historyPayloadKey(entry.id);
+  for (const rows of [
+    [entry, other],
+    [other, entry],
+  ]) {
+    const source: LocalSource = {
+      [HISTORY_KEY]: JSON.stringify({ version: 4, entries: rows }),
+      [key]: "{unreadable snapshot",
+    };
+    const before = structuredClone(source);
+    const record = inspectStorageV1ToV2(source).find((record) => record.key === key)!;
+    assert.equal(record.ownership, "conflicting");
+    assert.equal(record.runId, undefined);
+    assert.equal(record.issue, "ownership_conflict");
+    for (const runId of [entry.runId, other.runId]) {
+      const plan = repairStorageV1ToV2(source, { kind: "campaign", runId });
+      assert(!plan.deleted.includes(key));
+      assert.equal(plan.writes[HISTORY_KEY], undefined);
+    }
+    const rebuilt = repairStorageV1ToV2(source, { kind: "index" });
+    assert.equal(
+      JSON.parse(rebuilt.writes[HISTORY_KEY]!).entries.length,
+      2,
+      "Rebuilding must retain unresolved ownership claims",
+    );
+    const deletion = repairStorageV1ToV2(source, { kind: "record", key });
+    assert(deletion.deleted.includes(key));
+    assert.equal(JSON.parse(deletion.writes[HISTORY_KEY]!).entries.length, 0);
+    assert.deepEqual(source, before);
   }
 });

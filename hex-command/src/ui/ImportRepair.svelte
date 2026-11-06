@@ -2,7 +2,7 @@
   import { onDestroy } from "svelte";
   import DialogWindow from "./DialogWindow.svelte";
   import SaveIcon from "./SaveIcon.svelte";
-  import { runName, saveTime } from "./save-browser";
+  import { runName, saveTime, chapter, roman } from "./save-browser";
   import {
     repairModel,
     issueText,
@@ -40,7 +40,7 @@
     completedElsewhere: false,
   });
   let pending = $state<{
-    target: RepairTarget | { kind: "resume"; expected: CurrentEntry | null };
+    target: RepairTarget | { kind: "resume"; expected?: CurrentEntry | null };
     message: RepairConfirmation;
   }>();
   let armed = $state(false);
@@ -125,6 +125,17 @@
       },
     );
   }
+  function reviewReadAgain() {
+    ask(
+      { kind: "resume" },
+      {
+        title: "Try reading saved progress again?",
+        copy: "Stored progress hasn’t been identified. If it can be read, its flash save will replace your current unsaved play. If there is no flash save, New game will open.",
+        action: "Try reading again",
+        destructive: false,
+      },
+    );
+  }
   function rebuild() {
     ask(
       { kind: "index" },
@@ -200,6 +211,9 @@
     <summary>Technical details</summary>
     <code>{record.key}</code>
     {#if record.error}<pre>{record.error}</pre>{/if}
+    {#if record.ownership === "conflicting"}{#each record.claims as claim}<pre>{runName(
+            claim,
+          )} · {claim.runId} · {claim.mission} · {saveTime(claim.savedAt)}</pre>{/each}{/if}
   </details>
 {/snippet}
 {#snippet row(record: RepairRecord, attention = false)}
@@ -212,17 +226,20 @@
     <div class="record-top">
       <div class="copy">
         {#if attention && record.entry}<p class="campaign-context">{runName(record.entry)}</p>{/if}
-        <strong>{recordName(record)}</strong>
+        {#if record.entry?.kind === "turn" && chapter(record.entry).number}
+          <span class="turn-name">
+            <span class="numeral">{roman(chapter(record.entry).number)}</span>
+            <strong>{chapter(record.entry).name}, {record.entry.round}</strong>
+          </span>
+        {:else}<strong>{recordName(record)}</strong>{/if}
         {#if record.entry}<p class="time">{saveTime(record.entry.savedAt)}</p>{/if}
         {#if record.issue}<p class="damage">{issueText(record)}</p>{/if}
       </div>
-      {#if record.kind !== "index" && !(record.kind === "flash" && record.ownership !== "known") && record.ownership !== "conflicting"}
+      {#if record.kind !== "index" && !(record.kind === "flash" && record.ownership !== "known") && record.ownership !== "conflicting" && record.issue !== "missing_snapshot"}
         <button
           class="trash"
           disabled={busy}
-          aria-label={record.issue === "missing_snapshot"
-            ? `Remove ${recordName(record)} from list`
-            : `Delete ${recordName(record)}`}
+          aria-label={`Delete ${recordName(record)}`}
           onclick={() => ask({ kind: "record", key: record.key }, recordConfirmation(record))}
         >
           <SaveIcon name="trash" />
@@ -241,11 +258,20 @@
       >
         <SaveIcon name="trash" />Delete flash save
       </button>
+    {:else if record.issue === "missing_snapshot"}
+      <button
+        class="delete-link"
+        disabled={busy}
+        onclick={() => ask({ kind: "record", key: record.key }, recordConfirmation(record))}
+      >
+        <SaveIcon name="trash" />Remove missing turn from list
+      </button>
     {:else if record.ownership === "conflicting"}
       <p>
-        It is listed under {Array.from(new Set(record.claims.map(runName)))
+        This turn is linked to {new Set(record.claims.map((claim) => claim.runId)).size} different playthroughs:
+        {Array.from(new Set(record.claims.map(runName)))
           .sort()
-          .join(" and ")}. It will be kept when either campaign is deleted.
+          .join(" and ")}. Deleting a campaign will leave this turn untouched.
       </p>
       <button
         class="delete-link"
@@ -292,6 +318,9 @@
       <p class="intro" role="status">
         {busy && !inventory.records.length ? "Checking retained saves…" : model.summary}
       </p>
+      {#if inventory.errors.length}<button class="review" disabled={busy} onclick={reviewReadAgain}>
+          Try reading again
+        </button>{/if}
       {#if model.attention.length}<p class="section-label">Needs attention</p>
         {#each model.attention as record (record.key)}{@render row(record, true)}{/each}{/if}
       {#if model.campaigns.length}<p class="section-label">
@@ -305,9 +334,10 @@
               <span>
                 {campaign.name}
                 <small>
-                  {campaign.records.filter((r) => r.kind === "turn").length} turn saves{campaign.records.some(
-                    (r) => r.kind === "flash",
-                  )
+                  {campaign.records.filter((r) => r.kind === "turn").length}
+                  {campaign.records.filter((r) => r.kind === "turn").length === 1
+                    ? "turn save"
+                    : "turn saves"}{campaign.records.some((r) => r.kind === "flash")
                     ? " · Flash save"
                     : ""}
                 </small>
@@ -345,7 +375,9 @@
       {#if model.ready}<button class="review" disabled={busy} onclick={manage}>
           Saved games
         </button>{/if}
-      <button class="play" disabled={busy} onclick={play}>New game without saving</button>
+      <button class="play" disabled={busy} onclick={play}>
+        {model.ready ? "New game" : "New game without saving"}
+      </button>
       <div class="support">
         <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
         <button class="delete-link" disabled={busy || model.ready} onclick={reset}>
@@ -409,6 +441,25 @@
   .copy {
     min-width: 0;
     flex: 1;
+  }
+  .turn-name {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .numeral {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    min-width: 25px;
+    height: 26px;
+    padding: 0 3px;
+    border: 1px solid #716b46;
+    border-radius: 3px;
+    color: #ddc476;
+    font:
+      600 17px Georgia,
+      serif;
   }
   .record strong {
     font:
@@ -594,8 +645,8 @@
     bottom: 0;
     background: var(--surface);
     border-top: 1px solid var(--line);
-    margin: 14px -28px -24px;
-    padding: 11px 28px 14px;
+    margin: 14px -20px -20px;
+    padding: 11px 20px 14px;
     z-index: 1;
   }
 </style>

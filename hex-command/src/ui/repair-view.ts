@@ -3,9 +3,7 @@ import { runName, saveTime, turnName, saveOrder } from "./save-browser";
 
 export function recordName(record: RepairRecord): string {
   if (record.kind === "flash")
-    return record.ownership === "known"
-      ? `Flash save · ${runName(record.entry)}`
-      : "Unidentified flash save";
+    return record.ownership === "known" ? "Flash save" : "Unidentified flash save";
   if (record.kind === "index") return "Save list";
   if (record.entry?.kind === "turn") return turnName(record.entry);
   return record.kind === "turn" ? "Unidentified turn save" : "Unidentified save";
@@ -63,7 +61,9 @@ export function repairModel(inventory: RepairInventory, problem: LoadProblem | n
   else if (ready)
     summary = inventory.completedElsewhere
       ? "Another tab finished updating your saves."
-      : "Your saved games can now be read.";
+      : inventory.records.some((record) => record.kind !== "index")
+        ? "Your saved games can now be read."
+        : "No retained saves remain.";
   else if (problem?.kind === "full")
     summary =
       "There isn’t enough space to finish updating saved games. Delete saves you no longer need, then finish the update.";
@@ -80,6 +80,7 @@ export function repairModel(inventory: RepairInventory, problem: LoadProblem | n
   else if (attention.length) summary = `${attention.length} saved records need attention.`;
   else if (!inventory.records.length) summary = "No retained saves remain.";
   else summary = "The remaining saved games are ready to update.";
+  if (ready && !flash) summary += " There is no flash save to continue.";
   if (!ready && flash && !flash.issue && problem?.kind !== "full" && !inventory.errors.length)
     summary += " Your flash save is intact.";
   const continuation = flash

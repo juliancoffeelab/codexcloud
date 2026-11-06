@@ -349,3 +349,61 @@ test("Unavailable storage with no source saves allows a new campaign and player 
     controller.dispose();
   }
 });
+
+for (const mode of ["exception", "abort"] as const) {
+  test(`A failed flash read (${mode}) cannot authorize fresh-game writes`, async () => {
+    const original = await BattleController.create(async () => {}, factory);
+    await original.initialize();
+    const opening = original.snapshot();
+    const actor = required(
+      opening.units.find(
+        (unit) => unit.side === "player" && original.actions(unit.id).moves.length,
+      ),
+    );
+    original.move(actor.id, required(original.actions(actor.id).moves[0]).tile);
+    await original.saved();
+    const stored = required(await readSave());
+    const savedHistory = await original.savedProgress();
+    assert(JSON.parse(stored).undo.length);
+    original.dispose();
+    const { IDBObjectStore } = await import("fake-indexeddb");
+    const get = IDBObjectStore.prototype.get;
+    let injected = false;
+    const spy = vi.spyOn(IDBObjectStore.prototype, "get").mockImplementation(function (
+      this: IDBObjectStore,
+      key,
+    ) {
+      if (!injected && this.name === "state" && key === "current") {
+        injected = true;
+        if (mode === "exception") throw new DOMException("Injected read failure", "UnknownError");
+        const request = get.call(this, key);
+        request.addEventListener("success", () => this.transaction.abort());
+        return request;
+      }
+      return get.call(this, key);
+    });
+    let controller: BattleController | undefined;
+    try {
+      controller = await BattleController.create(async () => {}, factory);
+      await controller.initialize();
+      assert(injected);
+      assert.equal(await readSave(), stored);
+      await controller.startCampaign("lantern-road");
+      controller.advanceDialogue(true);
+      await controller.saved();
+      assert.equal(await readSave(), stored, "In-memory play must not overwrite an unread save");
+      assert.equal(await controller.retrySavedProgress(), true);
+      assert.deepEqual(await controller.savedProgress(), savedHistory);
+      assert.deepEqual(
+        JSON.parse(required(await readSave())).checkpoint,
+        JSON.parse(stored).checkpoint,
+      );
+      controller.undoMove();
+      await controller.saved();
+      assert.deepEqual(controller.snapshot(), opening);
+    } finally {
+      spy.mockRestore();
+      controller?.dispose();
+    }
+  });
+}

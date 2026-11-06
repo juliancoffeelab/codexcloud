@@ -145,32 +145,50 @@ are discarded on reload. Other preferences, such as sound, remain independent.
 There is no forced reload, reconciliation or localStorage gameplay backend.
 
 A failed import leaves the source intact and the database uninitialized. It opens
-**Saved data needs repair**, independently of ordinary save-write errors. Normal
+**Repair saved games**, independently of ordinary save-write errors. Normal
 Saved games only reads the initialized target repository; it never becomes an
 adapter for unmigrated source data.
+
+Startup distinguishes restored progress, a successfully read empty repository,
+and a blocked load. A read exception or aborted transaction is a blocked load,
+never an empty repository. Its dialog states that saved contents are unknown and
+automatic saving is paused. Read, capacity and access failures are distinguished
+from malformed data. Trying the read again or inspecting retained records does
+not grant write authority to temporary in-memory play.
 
 Repair inventories each source record independently. Readable metadata can identify
 a campaign even when its snapshot is malformed. Unreadable records remain visible
 by storage key. Individual deletion does not decode a battlefield. Campaign deletion
 removes only records whose ownership is established, including its flash save when
 known. An unidentified flash save remains untouched, with a warning strongly
-recommending explicit deletion. Conflicting identities are treated as unknown.
+recommending explicit deletion. Conflicting campaign claims remain unidentified
+regardless of index order or whether the snapshot itself is readable. They are
+excluded from campaign deletion, and rebuilding the list preserves their claims
+until an explicit cleanup action resolves them.
+
+Repair shows problems before collapsed readable campaigns. Record identity,
+ownership and damage are distinct typed states. Missing snapshots offer removal
+of their list entry; damaged or incomplete lists offer rebuilding. Exact errors,
+storage keys and conflicting claims live under Technical details. Confirmations
+describe the actual flash-save outcome: included, unidentified and kept, belonging
+to another campaign and kept, or absent.
 
 A damaged or missing history list can be rebuilt from identifiable snapshots.
 Unlisted and unidentified payloads are retained for explicit cleanup rather than
-silently lost on import. Delete all source saves provides a confirmed reset path.
+silently lost on import. Delete all retained saves provides a confirmed reset path.
 All destructive actions require confirmation. Cleanup does not import implicitly;
-Import remaining saves confirms replacement of any current unsaved play, retries
+the continuation action confirms replacement of any current unsaved play, retries
 conversion and native validation, then installs the
 retained flash save or opens the existing New game UI when none remains. A tab
-whose import completed elsewhere must reopen the authoritative data before repair
-can delete anything.
+whose import completed elsewhere inventories the authoritative data and displays
+the actual flash save before continuation. If that save changes after confirmation
+opens, restoration stops and requires reviewing the updated details.
 
 Choose a new game without saving keeps source records untouched and permits normal
 in-memory gameplay while repair is pending. Source repair and normal gameplay
 remain separate: automatic writes stay suspended until import completes. If storage
-is unavailable with no source saves, the ordinary storage error explains the lack
-of saving, and campaigns, scenarios and player actions remain usable. Pending
+is unavailable with no source saves, the access error explains the lack of saving,
+and campaigns, scenarios and player actions remain usable. Pending
 history writes are best-effort when switching games; they cannot veto fresh play.
 
 Subsequent stored-envelope conversions still use the loading boundary and commit
