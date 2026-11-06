@@ -73,6 +73,9 @@ and impact recordings remain available. Bow users have nocking candidates for
 selection and recorded English Longbow Shoot for attacks. Crossbows use
 Crossbow Shoot; flight and handling recordings remain alternatives.
 Merfolk selection defaults to `clothBelt2` across the roster.
+Bears use `grunt_01` for selection and optional voice. Treants, Wildkeeper,
+Grovewarden, zombie Shambler and Ghoul use `grunt_04`; other creature voice
+sets exclude that reserved grunt. These are designed vocal proxies.
 Personal Use assignments take precedence over these editorial suggestions.
 
 ## Terrain audition edits

@@ -267,6 +267,15 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
     (faction === "skeletons" && !/^(ghost|spectre|wraith)$/.test(entity.id)) ||
     (faction === "undead-animals" && /skeletal|bone-/.test(entity.id));
   const tree = /treant|wildkeeper|grovewarden/.test(text);
+  const bear = /^bear(?:-l[23])?$/.test(entity.id);
+  const heavyHorror =
+    tree ||
+    (faction === "zombies" && /^zombie-(shambler|ghoul)$/.test(entity.id));
+  const vocalStarter = heavyHorror
+    ? creature(/^grunt_04$/)
+    : bear
+      ? creature(/^grunt_01$/)
+      : [];
   const arrowBow = entity.attacks.some(
     (a) => /bow/i.test(a.name) && !/crossbow/i.test(a.name),
   );
@@ -378,23 +387,31 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
     tap = rpg(/^clothBelt2$/);
     tapPossible = union(tapPossible, cloth);
   }
+  if (vocalStarter.length) {
+    tapPossible = union(tapPossible, tap, vocalStarter);
+    tap = vocalStarter;
+  }
   const result = [
     row(
       "tap",
       "Tap / selection",
-      faction === "merfolk"
-        ? "Cloth belt handling for Merfolk selection."
-        : beast
-          ? "Brief body or idle feedback when selecting this creature."
-          : arrowBow
-            ? "Arrow nocking / handling for selection."
-            : bone
-              ? "Dry item-wood contact for skeletal selection."
-              : frontline
-                ? entity.level <= 1
-                  ? "Belt handling for level-one infantry."
-                  : "Chain movement for armored infantry."
-                : "Soft cloth movement for lighter units.",
+      vocalStarter.length
+        ? heavyHorror
+          ? "Grunt 4 for large tree creatures and zombie horrors."
+          : "Grunt 1 for bear selection."
+        : faction === "merfolk"
+          ? "Cloth belt handling for Merfolk selection."
+          : beast
+            ? "Brief body or idle feedback when selecting this creature."
+            : arrowBow
+              ? "Arrow nocking / handling for selection."
+              : bone
+                ? "Dry item-wood contact for skeletal selection."
+                : frontline
+                  ? entity.level <= 1
+                    ? "Belt handling for level-one infantry."
+                    : "Chain movement for armored infantry."
+                  : "Soft cloth movement for lighter units.",
       tap,
       tapPossible,
       {
@@ -620,13 +637,20 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         fx(/^creature_(hurt|die|monster)/),
       );
     else if (beast) vocals = creature(/^(roar_|grunt_|bug_|breath$|hurt_)/);
+    if (!heavyHorror) vocals = vocals.filter((x) => x.name !== "grunt_04");
+    vocals = union(vocalStarter, vocals);
     if (vocals.length)
       result.push(
         row(
           "voice",
           "Voice / reaction",
           "Optional idle or reaction voice.",
-          named(vocals, /dog-growl$|0284$|output \(1\)$|roar_01$|grunt_01$/),
+          vocalStarter.length
+            ? vocalStarter
+            : named(
+                vocals,
+                /dog-growl$|0284$|output \(1\)$|roar_01$|grunt_01$/,
+              ),
           vocals,
           {
             hypothetical: true,
