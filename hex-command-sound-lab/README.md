@@ -392,3 +392,7 @@ Undead Animals physical attacks reuse their selection palettes across all 18
 entries: bone-contact item Wood 03 for skeletal animals, Grunt 4 for zombie bears,
 Cloth 3 for corpse vultures. Bone-dragon fire retains Spell Fire 07. Curation
 checks explicitly cover the separate undead faction as well as living beasts.
+
+All axe-family attacks (axes, poleaxes, pickaxes and halberds) now suggest
+Rubberduck Metal 01 across factions, superseding the dwarf Mining 001 axe default.
+Other dwarf melee and ranged/spell choices are unchanged.

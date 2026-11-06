@@ -74,7 +74,10 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   for (const attack of entity.attacks || []) {
     const key = `attack-${attack.id}`;
     const name = attack.name.toLowerCase();
-    if (["humans", "elves"].includes(entity.faction) && /^(sword|blade)$/.test(name)) {
+    if (/axe|halberd/.test(name)) {
+      choose(key, ["rubberduck/80-cc0-rpg-sfx/metal_01.ogg"],
+        "Metal 01 for axe-family attacks, including poleaxes, pickaxes and halberds.");
+    } else if (["humans", "elves"].includes(entity.faction) && /^(sword|blade)$/.test(name)) {
       choose(key, ["edits/spear-sabre-one-shot-v1"], "Sword attack using the former spear contact.");
     } else if (["humans", "elves"].includes(entity.faction) && /^(spear|lance)$/.test(name)) {
       choose(key, [1,2,3].map(n => `rubberduck/80-cc0-rpg-sfx/blade_0${n}.ogg`),

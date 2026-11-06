@@ -176,15 +176,7 @@
       "uses": [
         {
           "entity": "dwarves/dwarf-axeguard",
-          "action": "attack-axe"
-        },
-        {
-          "entity": "dwarves/dwarf-axeguard",
           "action": "attack-shield-bash"
-        },
-        {
-          "entity": "dwarves/dwarf-axeguard-l2",
-          "action": "attack-axe"
         },
         {
           "entity": "dwarves/dwarf-axeguard-l2",
@@ -192,35 +184,7 @@
         },
         {
           "entity": "dwarves/dwarf-axeguard-l3",
-          "action": "attack-axe"
-        },
-        {
-          "entity": "dwarves/dwarf-axeguard-l3",
           "action": "attack-shield-bash"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l2",
-          "action": "attack-pickaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l2",
-          "action": "attack-axe"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l3",
-          "action": "attack-pickaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l3",
-          "action": "attack-axe"
-        },
-        {
-          "entity": "dwarves/dwarf-pickaxe",
-          "action": "attack-pickaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-pickaxe",
-          "action": "attack-axe"
         },
         {
           "entity": "dwarves/dwarf-hammerer-l2",
@@ -229,22 +193,6 @@
         {
           "entity": "dwarves/dwarf-hammerer-l3",
           "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-poleaxe-l2",
-          "action": "attack-poleaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-poleaxe-l2",
-          "action": "attack-axe"
-        },
-        {
-          "entity": "dwarves/dwarf-poleaxe-l3",
-          "action": "attack-poleaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-poleaxe-l3",
-          "action": "attack-axe"
         },
         {
           "entity": "dwarves/dwarf-runesmith",
@@ -1038,6 +986,95 @@
         {
           "entity": "woodland/woodland-alpha-wolf",
           "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/metal_01.ogg",
+      "name": "metal_01",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5759,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "attack-poleaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "attack-poleaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "attack-halberd"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "attack-halberd"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l3",
+          "action": "attack-axe"
         }
       ]
     },

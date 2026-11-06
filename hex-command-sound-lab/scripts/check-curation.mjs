@@ -53,6 +53,10 @@ for (const faction of workbench.factions)
     if (/^(?:fox-spearguard|treant)(?:-l[23])?$/.test(unit.id))
       assert(tap.suggested[0].endsWith("/roar_03.ogg"));
     for (const attack of unit.attacks)
+      if (/axe|halberd/i.test(attack.name))
+        assert.equal(attacks.find(row => row.key === `attack-${attack.id}`).suggested[0],
+          "rubberduck/80-cc0-rpg-sfx/metal_01.ogg");
+    for (const attack of unit.attacks)
       if (/arquebus|pistol|musket|gunshot/i.test(attack.name))
         assert.equal(attacks.find(row => row.key === `attack-${attack.id}`).suggested[0], "impact-sounds/impactPlate_medium_000");
     if (/^giant-wasp/.test(unit.id))
