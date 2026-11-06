@@ -5,8 +5,12 @@ storage directly and do not require a network service. Clearing site data remove
 saved progress.
 
 Saved games are opened from Settings. They use authored campaign and map names,
-chapter groups and compact rows whose load/delete actions appear locally when
-selected. Current recovery is not listed as a second historical checkpoint.
+a separate history for each game and compact rows whose load/delete actions
+appear locally when selected. Games are ordered by their latest save; each history
+is ordered newest first and repeats chapter headings whenever play returns to a
+chapter. Games on the same map remain separate and show their opening save time
+(or earliest retained save time if the opening was removed). Current recovery is
+not listed as a second historical checkpoint.
 Deletes require confirmation.
 
 A failed write leaves the previous committed recovery available. A dialog explains

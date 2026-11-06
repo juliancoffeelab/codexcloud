@@ -1,53 +1,48 @@
 <script lang="ts">
-  import type { BattleView, BattleCommands } from "../controller/view";
+  import type { BattleCommands } from "../controller/view";
   import type { CurrentEntry, TurnEntry } from "../save/metadata";
-  import { runName, chapter, roman, saveTime } from "./save-browser";
+  import {
+    runName,
+    chapter,
+    roman,
+    saveTime,
+    saveOrder,
+    savedGames,
+    chapterGroups,
+  } from "./save-browser";
   let {
-    view,
     actions,
     onLoad = () => {},
-  }: { view: BattleView; actions: BattleCommands; onLoad?: () => void } = $props();
+    run = $bindable(""),
+    onNavigate = () => {},
+  }: {
+    actions: BattleCommands;
+    onLoad?: () => void;
+    run?: string;
+    onNavigate?: (inGame: boolean) => void;
+  } = $props();
   let entries = $state<TurnEntry[]>([]);
   let recovery = $state<CurrentEntry>();
-  const sources = $derived(
-    [...entries, ...(recovery ? [recovery] : [])].sort(
-      (a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id),
-    ),
-  );
+  const games = $derived(savedGames([...entries, ...(recovery ? [recovery] : [])]));
+  const game = $derived(games.find((game) => game.id === run));
   let failure = $state("");
   let busy = $state(false);
-  let run = $state("");
   let selected = $state("");
   let limit = $state(30);
   let managing = $state(false);
-  const runs = $derived([...new Map(sources.map((entry) => [entry.runId, entry])).values()]);
-  const choices = $derived(
-    runs.map((entry) => ({
-      value: entry.runId,
-      label: runName(entry),
-      description: `Last saved ${saveTime(Math.max(...sources.filter((item) => item.runId === entry.runId).map((item) => item.savedAt)))}`,
-    })),
-  );
-  const historical = $derived(entries.filter((entry) => entry.runId === run));
-  const groups = $derived.by(() => {
-    const result = new Map<string, { number: number; name: string; entries: TurnEntry[] }>();
-    for (const entry of historical.slice(0, limit)) {
-      const info = chapter(entry);
-      const key = `${info.number}:${info.name}`;
-      const group = result.get(key) ?? { ...info, entries: [] };
-      group.entries.push(entry);
-      result.set(key, group);
-    }
-    return [...result.values()];
-  });
+  const historical = $derived(entries.filter((entry) => entry.runId === run).sort(saveOrder));
+  const groups = $derived(chapterGroups(historical.slice(0, limit)));
+  function firstSaved(entry: TurnEntry | CurrentEntry): string {
+    return `${entry.kind === "turn" && entry.missionStart && entry.ordinal === 1 ? "Started" : "Earliest save"} ${saveTime(entry.savedAt)}`;
+  }
   function refresh() {
     entries = actions.savedProgress();
     recovery = actions.savedRecovery();
-    if (!sources.some((entry) => entry.runId === run))
-      run = recovery?.runId ?? entries[0]?.runId ?? "";
+    if (run && !games.some((game) => game.id === run)) changeRun("");
     if (!entries.some((entry) => entry.id === selected)) selected = "";
   }
   export function open() {
+    run = "";
     failure = "";
     limit = 30;
     managing = false;
@@ -76,10 +71,14 @@
     }
   }
   function changeRun(id: string) {
-    run = run === id ? "" : id;
+    run = id;
     selected = "";
     limit = 30;
     managing = false;
+    onNavigate(!!run);
+  }
+  export function back() {
+    changeRun("");
   }
   async function remove(entry: TurnEntry) {
     if (confirm(`Delete turn ${entry.round} from ${chapter(entry).name}?`))
@@ -87,7 +86,7 @@
   }
   async function removeRun() {
     const current = recovery?.runId === run;
-    const name = choices.find((choice) => choice.value === run)?.label ?? "this game";
+    const name = game ? runName(game.latest) : "this game";
     if (
       confirm(
         `${current ? "Delete all other saves" : "Delete all saves"} for ${name}?${current ? " Your current position will be kept." : ""}`,
@@ -102,103 +101,84 @@
 <section class="saved-games-browser" aria-label="Saved games" aria-busy={busy}>
   {#if failure}<p role="alert" class="save-alert">{failure}</p>
     <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>{/if}
-  {#if runs.length}
-    {#each choices as game (game.value)}
-      <div class="run-controls">
-        <button
-          class="run-toggle"
-          aria-label={game.label}
-          aria-expanded={run === game.value}
-          aria-controls={`history-${game.value}`}
-          onclick={() => changeRun(game.value)}
-        >
-          <span class="run-title">
-            {game.label}
-            <svg
-              class:collapsed={run !== game.value}
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              aria-hidden="true"
-            >
-              <path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" />
-            </svg>
-          </span>
-          <span class="last-saved">{game.description}</span>
+  {#if game}
+    <div class="run-controls">
+      <div class="run-copy">
+        <h3 class="run-title">{runName(game.latest)}</h3>
+        <p class="first-saved">{firstSaved(game.earliest)}</p>
+      </div>
+      <button class="manage-button" aria-expanded={managing} onclick={() => (managing = !managing)}>
+        Manage
+      </button>
+    </div>
+    {#if managing}<div class="run-management">
+        <button disabled={busy} onclick={() => perform(() => actions.pruneSavedRun(run))}>
+          Prune older saves
         </button>
-        {#if run === game.value}<button
-            class="manage-button"
-            aria-expanded={managing}
-            onclick={() => (managing = !managing)}
-          >
-            Manage
-          </button>{/if}
-      </div>
-      <div id={`history-${game.value}`} hidden={run !== game.value}>
-        {#if run === game.value}
-          {#if managing}<div class="run-management">
-              <button disabled={busy} onclick={() => perform(() => actions.pruneSavedRun(run))}>
-                Prune older saves
-              </button>
-              <button class="delete-button" disabled={busy} onclick={removeRun}>
-                {recovery?.runId === run ? "Delete other saves" : "Delete all saves"}
-              </button>
-            </div>{/if}
-          <div class="save-history">
-            {#each groups as group (`${group.number}:${group.name}`)}
-              <section class="chapter-group" aria-label={group.name}>
-                <h3>
-                  {#if group.number}<span
-                      class="chapter-number"
-                      aria-label={`Chapter ${group.number}`}
+        <button class="delete-button" disabled={busy} onclick={removeRun}>
+          {recovery?.runId === run ? "Delete other saves" : "Delete all saves"}
+        </button>
+      </div>{/if}
+    <div class="save-history">
+      {#each groups as group (group.entries[0]!.id)}
+        <section class="chapter-group" aria-label={group.name}>
+          <h3>
+            {#if group.number}<span class="chapter-number" aria-label={`Chapter ${group.number}`}>
+                {roman(group.number)}
+              </span>{/if}
+            <span>{group.name}</span>
+          </h3>
+          <ul>
+            {#each group.entries as entry (entry.id)}
+              <li class:expanded={selected === entry.id} data-save-id={entry.id}>
+                <button
+                  class="save-row"
+                  aria-expanded={selected === entry.id}
+                  onclick={() => (selected = selected === entry.id ? "" : entry.id)}
+                >
+                  <span class="turn">Turn {entry.round}</span>
+                  <span class="save-time">
+                    {saveTime(entry.savedAt)}
+                  </span>
+                </button>
+                {#if selected === entry.id}<div class="row-actions">
+                    <button
+                      class="load-button"
+                      disabled={busy}
+                      onclick={async () => {
+                        if (await perform(() => actions.restoreProgress(entry.id))) onLoad();
+                      }}
                     >
-                      {roman(group.number)}
-                    </span>{/if}
-                  <span>{group.name}</span>
-                </h3>
-                <ul>
-                  {#each group.entries as entry (entry.id)}
-                    <li class:expanded={selected === entry.id} data-save-id={entry.id}>
-                      <button
-                        class="save-row"
-                        aria-expanded={selected === entry.id}
-                        onclick={() => (selected = selected === entry.id ? "" : entry.id)}
-                      >
-                        <span class="turn">Turn {entry.round}</span>
-                        <span class="save-time">
-                          {saveTime(entry.savedAt)}
-                        </span>
-                      </button>
-                      {#if selected === entry.id}<div class="row-actions">
-                          <button
-                            class="load-button"
-                            disabled={busy}
-                            onclick={async () => {
-                              if (await perform(() => actions.restoreProgress(entry.id))) onLoad();
-                            }}
-                          >
-                            Load
-                          </button>
-                          <button
-                            class="delete-button"
-                            disabled={busy}
-                            onclick={() => remove(entry)}
-                          >
-                            Delete
-                          </button>
-                        </div>{/if}
-                    </li>
-                  {/each}
-                </ul>
-              </section>
-            {:else}<p class="empty-history">No earlier saves.</p>{/each}
-            {#if historical.length > limit}<button class="show-more" onclick={() => (limit += 30)}>
-                Show more
-              </button>{/if}
-          </div>
-        {/if}
-      </div>
-    {/each}
+                      Load
+                    </button>
+                    <button class="delete-button" disabled={busy} onclick={() => remove(entry)}>
+                      Delete
+                    </button>
+                  </div>{/if}
+              </li>
+            {/each}
+          </ul>
+        </section>
+      {:else}<p class="empty-history">No earlier saves.</p>{/each}
+      {#if historical.length > limit}<button class="show-more" onclick={() => (limit += 30)}>
+          Show more
+        </button>{/if}
+    </div>
+  {:else if games.length}
+    <div class="game-list">
+      {#each games as game (game.id)}
+        <button class="game-choice" data-run-id={game.id} onclick={() => changeRun(game.id)}>
+          <span class="run-copy">
+            <span class="run-title">{runName(game.latest)}</span>
+            <span class="first-saved">{firstSaved(game.earliest)}</span>
+            <span class="last-saved">Last saved {saveTime(game.latest.savedAt)}</span>
+          </span>
+          <svg class="chevron" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="m6 3 5 5-5 5" />
+          </svg>
+        </button>
+      {/each}
+    </div>
   {:else if !failure}<p class="empty-history">No saved games.</p>{/if}
 </section>
 
@@ -214,37 +194,52 @@
     gap: 8px;
     border-bottom: 1px solid var(--line);
   }
-  .run-toggle {
+  .run-copy {
     flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     gap: 3px;
-    padding: 2px 0;
-    border: 0;
-    background: none;
-    text-align: left;
   }
   .run-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    margin: 0;
     font:
       600 19px/1.2 Georgia,
       serif;
   }
-  .run-title svg {
-    flex-shrink: 0;
-  }
-  .run-title svg.collapsed {
-    transform: rotate(-90deg);
-  }
+  .first-saved,
   .last-saved {
+    margin: 0;
     font:
-      12px/1.4 system-ui,
+      11px/1.4 system-ui,
       sans-serif;
     color: var(--muted);
+  }
+  .last-saved {
+    color: #cbbd96;
+  }
+  .game-choice {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 18px 0;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: none;
+    text-align: left;
+  }
+  .game-choice .run-title {
+    font-weight: 400;
+  }
+  .chevron {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: var(--muted);
+    stroke-width: 1.6;
+    flex-shrink: 0;
   }
   .manage-button {
     min-height: 36px;
