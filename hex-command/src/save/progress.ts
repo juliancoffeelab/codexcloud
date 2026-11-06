@@ -1,12 +1,12 @@
 import {
   currentHistoryIndex,
-  currentRecovery,
   currentTurn,
   HISTORY_VERSION,
   type HistoryIndex,
   type TurnSave,
 } from "./schema";
-import { readSave, SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
+import { SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
+import { readCurrentRecovery } from "./load";
 import { TurnCheckpoint } from "./write";
 import type { CurrentEntry, TurnEntry } from "./metadata";
 
@@ -20,8 +20,7 @@ function commit(value: HistoryIndex): void {
   localStorage.setItem(HISTORY_KEY, JSON.stringify(value));
 }
 export function currentProgress(): CurrentEntry | undefined {
-  const text = readSave();
-  return text === null ? undefined : currentRecovery(JSON.parse(text)).progress.entry;
+  return readCurrentRecovery();
 }
 /** History never includes the current recovery. */
 export function listProgress(): TurnEntry[] {
@@ -71,8 +70,10 @@ export function deleteProgress(id: string): void {
   removeWhere(index(), (entry) => entry.id === id);
 }
 export function deleteRun(runId: string): void {
+  // Resolve ownership before any mutation, even when migration could not be committed.
+  const ownsRecovery = currentProgress()?.runId === runId;
   removeWhere(index(), (entry) => entry.runId === runId);
-  if (currentProgress()?.runId === runId) localStorage.removeItem(SAVE_KEY);
+  if (ownsRecovery) localStorage.removeItem(SAVE_KEY);
 }
 /** Recent saves are dense; old branches share their game's age-based allowance. */
 export function pruneProgress(runId?: string, now = Date.now()): void {

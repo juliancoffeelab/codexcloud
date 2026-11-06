@@ -16,6 +16,9 @@ details open. Each detail section shows saved gold, player-controlled units by
 level, captured villages and visible completed objectives. Summaries are read on
 demand from the selected checkpoint through normal migration/native validation;
 they neither advance nor replace current play and add no persisted format fields.
+Objective counts use current `progress.done`, including objectives that can become
+incomplete again. Permanent completion history remains internal to gameplay; the
+inspection API exposes no separate historical completion flag.
 
 Load, individual deletion and Delete all campaign saves require a confirmation
 that identifies their target. Confirmation initially rejects rapid follow-up taps.
@@ -113,6 +116,11 @@ history transactions; it never reconstructs unavailable turn starts.
 
 Older turn payloads pass through the versioned migration chain when selected,
 then their converted current-format payload is committed before restoration.
+If committing a converted recovery fails, the loading boundary can still return
+its canonical ownership metadata through the same migration chain without a write.
+Cleanup resolves ownership before deleting any history. Deleting another campaign
+retries the retained recovery; deleting its own campaign ends the session and opens
+New game. Opening save management dismisses any pending Load confirmation.
 No historical shape is interpreted by gameplay, browsing or repository operations.
 Conversion code and frozen historical data remain under `src/save/migrations/`.
 

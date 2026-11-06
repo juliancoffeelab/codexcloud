@@ -122,7 +122,8 @@ export class BattleController {
     this.#game = game;
     this.awaitingNewGame = !restored.save && needsNewGame();
     this.pendingEnemyReplay = restored.pendingEnemy;
-    this.progress = restored.save ? progressIdentity(restored.save.progress.entry) : newRun();
+    const identity = restored.save?.progress.entry ?? restored.retainedRecovery;
+    this.progress = identity ? progressIdentity(identity) : newRun();
     this.historyStart = !restored.save;
     this.history.restore(game, restored.undo ?? []);
     this.preserveStoredRecovery = !!restored.storageFailure;

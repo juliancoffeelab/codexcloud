@@ -767,7 +767,6 @@ impl Game<'_> {
         let objective = event.objective.as_ref().unwrap();
         let state = self.scripts.as_deref().unwrap();
         let failed = state.failed.iter().any(|id| id == event.objective_id());
-        let achieved = state.completed.iter().any(|id| id == event.objective_id());
         let done = EventFacts::new(self).objective_satisfied(state, event.objective_id());
         let available = self.objective_available(event);
         let (tiles, total) = match &objective.intent {
@@ -842,7 +841,6 @@ impl Game<'_> {
             },
             visible,
             available,
-            achieved,
             failed,
             progress: Progress {
                 label: objective.label.clone(),

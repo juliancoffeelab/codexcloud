@@ -70,6 +70,10 @@
     recovery = actions.savedRecovery();
   }
   export function open() {
+    confirmation?.close();
+    pending = undefined;
+    confirmationReady = false;
+    clearTimeout(armTimer);
     generation++;
     expanded = {};
     limits = {};

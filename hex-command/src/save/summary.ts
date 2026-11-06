@@ -35,7 +35,7 @@ export function summarizeSave(game: LiveGame): SaveSummary {
       total: villages.length,
     },
     objectives: objectives
-      ? { completed: objectives.filter((o) => o.achieved).length, total: objectives.length }
+      ? { completed: objectives.filter((o) => o.progress.done).length, total: objectives.length }
       : null,
     units: [...levels].sort(([a], [b]) => a - b).map(([level, count]) => ({ level, count })),
   };

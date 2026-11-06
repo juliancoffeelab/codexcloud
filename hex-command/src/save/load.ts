@@ -2,9 +2,10 @@ import { decodeUndo } from "./undo";
 import { LiveGame, nativeValue } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migrations";
-import { wipeSave, storeSave, SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
+import { wipeSave, storeSave, readSave, SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
 import { migrateHistoryIndex } from "./migrations/history";
 import { currentRecovery, currentTurn } from "./schema";
+import type { CurrentEntry } from "./metadata";
 import type { BattleSave } from "./schema";
 
 export interface LoadedBattle {
@@ -14,6 +15,16 @@ export interface LoadedBattle {
   undo?: import("../game/undo").SavedUndoEntry[];
   notice?: string;
   storageFailure?: string;
+  retainedRecovery?: CurrentEntry;
+}
+/** Canonical decoding belongs to the loading boundary, independent of committing it. */
+function decodeBattleText(raw: string) {
+  return migrateSave(JSON.parse(raw));
+}
+/** Read ownership without requiring a migration write or starting a battle. */
+export function readCurrentRecovery(): CurrentEntry | undefined {
+  const raw = readSave();
+  return raw === null ? undefined : currentRecovery(decodeBattleText(raw).save).progress.entry;
 }
 /** Migration is data-only. Validate both recovery and move undo through the native engine. */
 export function restoreBattleText(
@@ -21,9 +32,8 @@ export function restoreBattleText(
   raw: string,
   kind: "recovery" | "turn" = "recovery",
 ): LoadedBattle & { save: BattleSave; migrated: boolean } {
-  const converted = migrateSave(JSON.parse(raw));
-  const save = kind === "recovery" ? currentRecovery(converted.save) : currentTurn(converted.save);
-  const migrated = converted.migrated;
+  const { save: converted, migrated } = decodeBattleText(raw);
+  const save = kind === "recovery" ? currentRecovery(converted) : currentTurn(converted);
   if (save.undo?.length) {
     if (save.pendingEnemy) throw new Error("Pending enemy turns cannot retain move undo.");
     nativeValue(factory.validateUndo(save.checkpoint.state, save.undo));
@@ -54,6 +64,7 @@ export function loadBattle(factory: GameEngineFactory): LoadedBattle {
             game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
             pendingEnemy: false,
             storageFailure: String(error),
+            retainedRecovery: currentRecovery(restored.save).progress.entry,
             notice:
               "Saved progress needs an update, but storage refused the write. Free storage in Saved progress, then reload to restore it.",
           };
