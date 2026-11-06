@@ -1,8 +1,8 @@
-import { DEATH_SOUNDS } from "./death-picks.js?v=beast-slime-deaths-1";
+import { DEATH_SOUNDS } from "./death-picks.js?v=beast-family-deaths-2";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=beast-slime-deaths-1";
+import { buildActions } from "./matching.js?v=beast-family-deaths-2";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -17,10 +17,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=beast-slime-deaths-1"),
+    loadJSON("catalog.json?v=beast-family-deaths-2"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=beast-slime-deaths-1"),
+    loadJSON("playback-levels.json?v=beast-family-deaths-2"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1778,7 +1778,7 @@ async function start() {
     }
   } catch {}
   try {
-    if (!localStorage.getItem("hex-sound-slime-deaths-v1")) {
+    if (!localStorage.getItem("hex-sound-beast-family-deaths-v2")) {
       const backup = {};
       for (const [key, old] of Object.entries(assignments)) {
         if (!key.endsWith("/death") || !old.id.startsWith("edits/beast-death/")) continue;
@@ -1789,9 +1789,9 @@ async function start() {
         backup[key] = old;
         assignments[key] = { ...old, id: death.defaultSound, take: 0 };
       }
-      localStorage.setItem("hex-sound-before-slime-deaths-v1", JSON.stringify(backup));
+      localStorage.setItem("hex-sound-before-beast-family-deaths-v2", JSON.stringify(backup));
       saveAssignments();
-      localStorage.setItem("hex-sound-slime-deaths-v1", "true");
+      localStorage.setItem("hex-sound-beast-family-deaths-v2", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

@@ -1,4 +1,4 @@
-import { deathPick, beastDeathId } from "./death-picks.js?v=beast-slime-deaths-1";
+import { deathPick, beastDeathId, DEATH_SOUNDS } from "./death-picks.js?v=beast-family-deaths-2";
 // Authored audition choices. Death rows are candidates, not live-game events.
 export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   const byId = new Map(catalog.map((sound) => [sound.id, sound]));
@@ -134,20 +134,19 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     ? selections.map(ref => ({ ...ref, deathId: beastDeathId(ref.id, ref.take) })) : [];
   const death = choose("death", selectionDeaths.length ? selectionDeaths.map(ref => ref.deathId) : [deathChoice.sound],
     selectionDeaths.length ? "Current selection sound with a long fade and light room reflections." : `Shared ${deathChoice.group} death audition.`);
-  if (entity.faction === "beasts" && /^bear(?:-l[23])?$/.test(entity.id)) {
-    const groans = ["rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg", "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg"];
-    death.suggested.unshift(...groans);
-    death.defaultSound = groans[0];
-    death.description = "Two longer original creature performances for comparison. No time stretching, pitch effects or reverb; previous short death remains third.";
-  }
-  if (entity.faction === "beasts") {
+  if (deathChoice.group === "beast") {
     const family = entity.id.replace(/-l[23]$/, "");
-    const slime = ["giant-spider", "giant-wasp"].includes(family) ? "01" : family === "ray" ? "03" : null;
-    if (slime) {
-      death.defaultSound = `rubberduck/80-cc0-rpg-sfx/creature_slime_${slime}.ogg`;
-      death.suggested.unshift(death.defaultSound);
-      death.description = "Approved slime death for bugs/rays; prior selection fade remains for comparison.";
-    }
+    const rpg = name => `rubberduck/80-cc0-rpg-sfx/creature_${name}.ogg`;
+    const sound = ["giant-spider", "giant-wasp", "octopus"].includes(family) ? rpg("slime_01")
+      : family === "ray" ? rpg("slime_03")
+      : ["giant-bat", "giant-owl", "giant-raven"].includes(family) ? rpg("misc_05")
+      : family === "giant-crab" ? DEATH_SOUNDS.bones
+      : rpg("roar_03");
+    death.defaultSound = sound;
+    death.suggested.unshift(sound);
+    if (family === "bear") death.suggested.splice(1, 0, rpg("roar_02"));
+    death.suggested = [...new Set(death.suggested)];
+    death.description = "Approved creature-family death; prior selection fade remains for comparison. No new processing.";
   }
   death.title = "Death";
   death.deathGroup = deathChoice.group;

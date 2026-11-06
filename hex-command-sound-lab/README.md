@@ -599,3 +599,11 @@ beasts and the bear selection sound remain unchanged. These are alternatives
 for listening review, Creature Roar 03 is the approved bear death and reference for future beast death comparisons.
 
 Approved death families now cover all three bear levels (Creature Roar 03), giant spiders/wasps (Creature Slime 01), and rays (Creature Slime 03). Other beast families retain prior suggestions pending review.
+
+### Approved beast death palette
+
+All levels: Roar 03 for mammals, reptiles (including dragons), shark and gryphon;
+Misc 05 for bats, owls and ravens; Slime 01 for spiders, wasps and octopus;
+Slime 03 for rays; Eat 01 for crabs. Woodland boars use Roar 03. Wolves retain
+Howl and treants retain Creak. The primary death suggestion and Death map tap
+use these choices; older selection-fade clips remain comparisons only.

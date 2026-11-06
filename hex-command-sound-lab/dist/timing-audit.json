@@ -1,5 +1,5 @@
 {
-  "paletteReferences": 117,
+  "paletteReferences": 118,
   "paletteInternalQuietIssues": [],
   "method": "Conservative edge-silence audit for every playable take; originals stay intact.\n\n5ms RMS frames; gate 45dB below that take's strongest frame (floor -80dBFS).\nRetain 5ms before activity and 12ms after. Only remove >=20ms of edge quiet.\nInternal quiet is reported, never spliced out. Requires Python 3, Node and FFmpeg.",
   "applied": true,
@@ -9120,6 +9120,21 @@
           "take": 0,
           "uses": [
             {
+              "entity": "beasts/giant-crab",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-crab-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-crab-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
               "entity": "skeletons/skeleton",
               "action": "death",
               "levelClass": null
@@ -13199,7 +13214,59 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": []
+      "paletteReferences": [
+        {
+          "id": "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "beasts/giant-bat",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-bat-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-bat-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-owl",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-owl-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-owl-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-raven",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-raven-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-raven-l3",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "rubberduck/80-cc0-rpg-sfx/creature_misc_06.ogg",
@@ -13537,6 +13604,21 @@
           "take": 0,
           "uses": [
             {
+              "entity": "beasts/basilisk",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/basilisk-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/basilisk-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
               "entity": "beasts/bear",
               "action": "death",
               "levelClass": null
@@ -13548,6 +13630,156 @@
             },
             {
               "entity": "beasts/bear-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/crocodile",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/crocodile-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/crocodile-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/dragon",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/dragon-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/dragon-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-snake",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-snake-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-snake-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-tortoise",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-tortoise-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-tortoise-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/gryphon",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/gryphon-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/gryphon-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/lynx",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/lynx-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/lynx-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/sea-serpent",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/sea-serpent-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/sea-serpent-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/shark",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/shark-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/shark-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/stag",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/stag-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/stag-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/boar",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/greatboar",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/woodland-ancient-boar",
               "action": "death",
               "levelClass": null
             }
@@ -13616,6 +13848,21 @@
             },
             {
               "entity": "beasts/giant-wasp-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/octopus",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/octopus-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/octopus-l3",
               "action": "death",
               "levelClass": null
             }

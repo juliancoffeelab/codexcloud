@@ -111,7 +111,14 @@ for (const faction of workbench.factions)
     assert(death, `${unit.key}: missing shared death`);
     for (const id of death.suggested) deathIds.add(id);
     if (death.deathGroup === "beast") {
-      assert.deepEqual(death.suggested, [...(/^beasts\/bear(?:-l[23])?$/.test(unit.key) ? ["rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg", "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg"] : []), ...(/^beasts\/giant-(spider|wasp)(?:-l[23])?$/.test(unit.key) ? ["rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg"] : /^beasts\/ray(?:-l[23])?$/.test(unit.key) ? ["rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg"] : []), ...tap.suggested.map(id => beastDeathId(id, tap.preferredTakes?.[id] ?? 0))]);
+      const family = unit.id.replace(/-l[23]$/, "");
+      const source = ["giant-spider", "giant-wasp", "octopus"].includes(family) ? "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg"
+        : family === "ray" ? "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg"
+        : ["giant-bat", "giant-owl", "giant-raven"].includes(family) ? "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg"
+        : family === "giant-crab" ? DEATH_SOUNDS.bones
+        : "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg";
+      assert.equal(death.defaultSound, source);
+      assert.deepEqual(death.suggested, [...new Set([source, ...(family === "bear" ? ["rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg"] : []), ...tap.suggested.map(id => beastDeathId(id, tap.preferredTakes?.[id] ?? 0))])]);
       for (const ref of death.selectionDeaths) assert.equal(byId.get(ref.deathId).derivedFrom, ref.id);
     } else {
       assert.equal(death.suggested.length, 1);
@@ -130,7 +137,7 @@ for (const faction of workbench.factions)
     assert(death.hypothetical, `${unit.key}: death must stay a proposal`);
     units++;
   }
-assert.equal([...deathIds].filter(id => !id.startsWith("edits/beast-death/") && !/^rubberduck\/80-cc0-rpg-sfx\/creature_(?:roar_0[23]|slime_0[13])\.ogg$/.test(id)).length, Object.keys(DEATH_SOUNDS).length);
+assert.equal([...deathIds].filter(id => !id.startsWith("edits/beast-death/") && !/^rubberduck\/80-cc0-rpg-sfx\/creature_(?:roar_0[23]|slime_0[13]|misc_05)\.ogg$/.test(id)).length, Object.keys(DEATH_SOUNDS).length);
 for (const [id, wanted] of [
   ["forest", "edits/forest-book-03-short-v1"],
   ["grove", "edits/grove-short-magic-v2"],

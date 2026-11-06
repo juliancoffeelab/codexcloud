@@ -73,6 +73,18 @@
       "duration": 0.87,
       "uses": [
         {
+          "entity": "beasts/basilisk",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/basilisk-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/basilisk-l3",
+          "action": "death"
+        },
+        {
           "entity": "beasts/bear",
           "action": "death"
         },
@@ -83,26 +95,125 @@
         {
           "entity": "beasts/bear-l3",
           "action": "death"
-        }
-      ]
-    },
-    {
-      "id": "edits/beast-death/edits/octopus-gurgle-soft-v1/take-1",
-      "name": "Beast death · Octopus · soft gurgle · fade",
-      "take": 1,
-      "start": 0,
-      "duration": 0.8401,
-      "uses": [
+        },
         {
-          "entity": "beasts/octopus",
+          "entity": "beasts/crocodile",
           "action": "death"
         },
         {
-          "entity": "beasts/octopus-l2",
+          "entity": "beasts/crocodile-l2",
           "action": "death"
         },
         {
-          "entity": "beasts/octopus-l3",
+          "entity": "beasts/crocodile-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/dragon",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-snake",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-tortoise",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/gryphon",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/gryphon-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/gryphon-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/lynx",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/lynx-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/lynx-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/shark",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/shark-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/shark-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/stag",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/stag-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/stag-l3",
+          "action": "death"
+        },
+        {
+          "entity": "woodland/boar",
+          "action": "death"
+        },
+        {
+          "entity": "woodland/greatboar",
+          "action": "death"
+        },
+        {
+          "entity": "woodland/woodland-ancient-boar",
           "action": "death"
         }
       ]
@@ -609,6 +720,18 @@
         {
           "entity": "beasts/giant-wasp-l3",
           "action": "death"
+        },
+        {
+          "entity": "beasts/octopus",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/octopus-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/octopus-l3",
+          "action": "death"
         }
       ]
     },
@@ -642,39 +765,6 @@
         {
           "entity": "woodland/woodland-alpha-wolf",
           "action": "tap"
-        }
-      ]
-    },
-    {
-      "id": "edits/beast-death/edits/snake-belt-texture-v2/take-1",
-      "name": "Beast death · Snake · rough belt texture · fade",
-      "take": 1,
-      "start": 0,
-      "duration": 0.5458,
-      "uses": [
-        {
-          "entity": "beasts/giant-snake",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/giant-snake-l2",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/giant-snake-l3",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/sea-serpent",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/sea-serpent-l2",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/sea-serpent-l3",
-          "action": "death"
         }
       ]
     },
@@ -969,6 +1059,18 @@
       "start": 0,
       "duration": 0.5159,
       "uses": [
+        {
+          "entity": "beasts/giant-crab",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-crab-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-crab-l3",
+          "action": "death"
+        },
         {
           "entity": "skeletons/skeleton",
           "action": "death"

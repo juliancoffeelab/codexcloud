@@ -169,6 +169,10 @@
     "reference": "User-approved longer dying creature sound; bear only, other beast groups unchanged.",
     "bugs": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
     "ray": "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg",
-    "scope": "All three levels of bears, spiders, wasps and rays. Other families unchanged."
+    "scope": "All levels of all 19 Beasts families and Woodland boars. Wolves, treants and other faction-specific death groups retained.",
+    "octopus": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
+    "birds-and-bats": "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg",
+    "crab": "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
+    "reptiles-other-mammals-shark-gryphon": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg"
   }
 }
