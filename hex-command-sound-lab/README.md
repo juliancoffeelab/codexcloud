@@ -100,7 +100,9 @@ armored infantry, and `cloth3` for lighter humanoids. Other plausible equipment
 and impact recordings remain available. Bow users have nocking candidates for
 selection and recorded English Longbow Shoot for attacks. Crossbows use
 Crossbow Shoot; flight and handling recordings remain alternatives.
-Merfolk selection defaults to `clothBelt2` across the roster.
+Merfolk selection defaults to `clothBelt2` across the roster. Horses and mounted
+units use natural horse vocal `0286` for selection and optional voice; deer/goat
+and undead mounts use it as a proxy. Movement stays the board click.
 Creature selection palettes live in `dist/creature-picks.js`: compact mammals and
 several aquatic beasts use grunt 1; heavy reptiles, crab/tortoise and zombie bears
 use grunt 4. Treants and zombie Shambler/Ghoul retain grunt 4. Leathery fliers use

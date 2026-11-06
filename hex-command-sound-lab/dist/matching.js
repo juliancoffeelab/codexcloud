@@ -588,7 +588,8 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         find("qubodup/dog-snarl-grunt-grumble", /dog/),
         creature(/^howl$|^barking/),
       );
-    else if (horse) vocals = find("denischardonnet/horse-vocals", /028/);
+    else if (horse || mounted)
+      vocals = find("denischardonnet/horse-vocals", /028/);
     else if (spirit) vocals = ghostVoice;
     else if (faction === "zombies")
       vocals = union(
@@ -705,6 +706,25 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         ...new Set([...action.suggested, ...action.alternatives]),
       ].filter((id) => id !== palette.sound && !excluded(id));
       action.suggested = [palette.sound];
+    }
+  }
+  if (mounted || horse) {
+    const mountVoice = find("denischardonnet/horse-vocals", /^0286$/);
+    for (const action of result) {
+      if (!["tap", "voice"].includes(action.key)) continue;
+      const previous = [...action.suggested, ...action.alternatives];
+      action.suggested = mountVoice.map((item) => item.id);
+      action.alternatives = [
+        ...new Set([
+          ...previous,
+          ...find("denischardonnet/horse-vocals", /028/).map((item) => item.id),
+        ]),
+      ].filter((id) => !action.suggested.includes(id));
+      action.description =
+        "0286 horse vocal for selecting horses and mounted units.";
+      action.caveat = horse
+        ? "Natural horse recording; undead mounts use it as a proxy."
+        : "Natural horse vocal used as a mount proxy for deer/goat riders.";
     }
   }
   return result;
