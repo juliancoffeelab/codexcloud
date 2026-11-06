@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "e7b9757f50e57cb9cf484d8b9047eb0c6df77743c685d165b71fbf7ae33f246c",
+  "catalogSha256": "915134809dfe58d84b5d604bca89ec3c126c6bde453de34b021f01debff730bf",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -3898,11 +3898,29 @@
       "full": 1.16,
       "takes": [
         24.0,
-        20.52,
+        20.93,
         13.66,
         19.98,
         1.16,
-        3.22
+        6.63,
+        14.9,
+        12.36,
+        12.82,
+        8.21,
+        6.06,
+        4.02,
+        10.17,
+        8.43,
+        7.82,
+        11.61,
+        9.23,
+        12.03,
+        7.73,
+        11.22,
+        10.04,
+        9.58,
+        13.92,
+        7.52
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3910,7 +3928,10 @@
     "still-north-media/weapon-textures/part-1/Crossbow Bolt Approach.wav": {
       "full": -4.29,
       "takes": [
-        -4.29
+        -4.44,
+        4.1,
+        5.65,
+        4.73
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3918,9 +3939,9 @@
     "still-north-media/weapon-textures/part-1/Crossbow Bolt Pass.wav": {
       "full": -5.55,
       "takes": [
-        -5.53,
-        -0.66,
-        0.05
+        -5.74,
+        -0.8,
+        -0.08
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3928,9 +3949,9 @@
     "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav": {
       "full": 3.41,
       "takes": [
-        6.71,
-        4.34,
-        3.71
+        5.87,
+        3.49,
+        2.99
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3938,9 +3959,16 @@
     "still-north-media/weapon-textures/part-1/Crossbow Lever Trigger.wav": {
       "full": 5.52,
       "takes": [
-        12.46,
+        12.27,
+        12.01,
         11.88,
-        5.53
+        10.64,
+        6.85,
+        7.31,
+        8.49,
+        11.24,
+        7.17,
+        5.55
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3948,7 +3976,17 @@
     "still-north-media/weapon-textures/part-1/Crossbow Place Bolt.wav": {
       "full": -5.05,
       "takes": [
-        -5.05
+        -5.08,
+        1.29,
+        1.1,
+        5.21,
+        5.85,
+        6.22,
+        7.88,
+        6.55,
+        9.82,
+        8.8,
+        10.33
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3956,8 +3994,17 @@
     "still-north-media/weapon-textures/part-1/Crossbow Set Nut Against Sear.wav": {
       "full": 13.46,
       "takes": [
+        19.92,
+        21.53,
+        16.21,
         13.46,
-        16.83
+        13.92,
+        13.72,
+        13.46,
+        24.0,
+        16.83,
+        22.76,
+        18.41
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3965,11 +4012,11 @@
     "still-north-media/weapon-textures/part-1/Crossbow Shoot.wav": {
       "full": -2.05,
       "takes": [
-        -1.31,
-        -0.37,
-        -0.83,
-        -0.82,
-        -2.0,
+        -1.4,
+        -0.43,
+        -0.89,
+        -0.96,
+        -2.05,
         -1.41
       ],
       "preserved": false,
@@ -3978,21 +4025,23 @@
     "still-north-media/weapon-textures/part-1/English Longbow Draw.wav": {
       "full": 7.89,
       "takes": [
-        9.18,
-        19.04,
-        13.96,
-        15.32,
-        14.39,
-        11.35,
+        9.45,
+        17.24,
+        15.35,
+        15.08,
+        14.78,
+        11.4,
         8.13,
-        8.88,
-        7.87,
-        11.14,
-        14.38,
-        16.37,
-        14.86,
-        12.28,
-        12.84
+        8.69,
+        7.73,
+        19.36,
+        11.12,
+        16.61,
+        15.0,
+        14.93,
+        19.27,
+        13.96,
+        12.94
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4000,13 +4049,15 @@
     "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav": {
       "full": -7.34,
       "takes": [
-        -7.34,
+        2.69,
+        -7.56,
+        7.02,
         8.51,
         13.05,
         -0.96,
         12.81,
         -1.01,
-        2.63
+        2.23
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4014,6 +4065,16 @@
     "still-north-media/weapon-textures/part-1/English Longbow Set Arrow.wav": {
       "full": 3.69,
       "takes": [
+        6.93,
+        10.3,
+        4.0,
+        6.12,
+        8.91,
+        4.24,
+        3.72,
+        4.71,
+        5.77,
+        9.04,
         3.69
       ],
       "preserved": false,
@@ -4022,9 +4083,11 @@
     "still-north-media/weapon-textures/part-1/English Longbow Shoot.wav": {
       "full": 1.5,
       "takes": [
-        2.75,
-        1.54,
-        11.99,
+        2.72,
+        8.74,
+        5.61,
+        1.47,
+        11.89,
         5.38
       ],
       "preserved": false,
@@ -4078,9 +4141,14 @@
     "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Approach.wav": {
       "full": 0.93,
       "takes": [
-        0.93,
-        4.73,
-        2.01
+        13.35,
+        10.38,
+        0.64,
+        5.76,
+        9.96,
+        4.78,
+        2.14,
+        8.22
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4089,8 +4157,10 @@
       "full": 0.2,
       "takes": [
         17.11,
-        0.2,
-        0.58
+        0.25,
+        0.64,
+        0.56,
+        3.7
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4098,7 +4168,13 @@
     "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Passby.wav": {
       "full": -0.31,
       "takes": [
-        -0.31
+        18.84,
+        2.27,
+        16.13,
+        15.39,
+        4.77,
+        3.33,
+        -0.22
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4106,7 +4182,39 @@
     "still-north-media/weapon-textures/part-1/Scythian Recurve Draw.wav": {
       "full": -1.16,
       "takes": [
-        -1.16
+        6.33,
+        4.48,
+        7.2,
+        8.36,
+        4.03,
+        3.37,
+        7.68,
+        12.6,
+        13.13,
+        11.54,
+        18.61,
+        22.28,
+        19.13,
+        20.89,
+        12.84,
+        14.12,
+        2.67,
+        14.17,
+        9.58,
+        -1.16,
+        15.52,
+        14.86,
+        6.56,
+        0.48,
+        8.09,
+        10.93,
+        3.23,
+        10.42,
+        3.23,
+        11.65,
+        15.14,
+        6.58,
+        5.25
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4114,8 +4222,16 @@
     "still-north-media/weapon-textures/part-1/Scythian Recurve Heavy Arrow Approach.wav": {
       "full": -2.62,
       "takes": [
-        16.1,
-        -2.62
+        16.36,
+        5.32,
+        2.99,
+        12.46,
+        13.51,
+        18.14,
+        4.38,
+        10.25,
+        -2.57,
+        11.18
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4123,9 +4239,12 @@
     "still-north-media/weapon-textures/part-1/Scythian Recurve Heavy Arrow Pass.wav": {
       "full": -2.45,
       "takes": [
-        3.63,
-        3.63,
-        -2.19
+        4.26,
+        3.52,
+        -0.05,
+        -2.36,
+        -1.92,
+        -2.01
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4133,7 +4252,12 @@
     "still-north-media/weapon-textures/part-1/Scythian Recurve Heavy Arrow Passby.wav": {
       "full": -6.66,
       "takes": [
-        -6.66
+        -6.17,
+        -3.57,
+        -6.65,
+        -3.81,
+        -6.25,
+        -5.65
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4141,8 +4265,18 @@
     "still-north-media/weapon-textures/part-1/Scythian Recurve Nock Arrow.wav": {
       "full": 1.19,
       "takes": [
-        2.94,
-        1.21
+        13.89,
+        3.84,
+        2.83,
+        3.93,
+        5.38,
+        11.16,
+        10.49,
+        2.2,
+        11.02,
+        3.45,
+        1.19,
+        7.32
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4150,14 +4284,16 @@
     "still-north-media/weapon-textures/part-1/Scythian Recurve Set Arrow.wav": {
       "full": -2.09,
       "takes": [
-        13.28,
-        10.79,
-        -2.03,
-        3.8,
-        -1.57,
-        4.12,
-        6.82,
-        5.11
+        13.25,
+        10.69,
+        -2.09,
+        0.32,
+        3.66,
+        -1.66,
+        -0.12,
+        4.0,
+        6.73,
+        4.96
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -4165,7 +4301,7 @@
     "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav": {
       "full": 1.19,
       "takes": [
-        1.89,
+        1.87,
         10.15,
         13.67,
         8.08,

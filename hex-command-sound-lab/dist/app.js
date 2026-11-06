@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=curation-1";
+import { buildActions } from "./matching.js?v=bow-review-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -15,10 +15,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=curation-1"),
+    loadJSON("catalog.json?v=bow-review-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json"),
-    loadJSON("playback-levels.json?v=curation-1"),
+    loadJSON("playback-levels.json?v=bow-review-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1462,6 +1462,29 @@ async function start() {
         saveAssignments();
       }
       localStorage.setItem("hex-sound-curation-migration-v1", "true");
+    }
+  } catch {}
+  // Remap saved indices by source-time overlap after splitting merged bow takes.
+  try {
+    if (!localStorage.getItem("hex-sound-bow-review-v1")) {
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        const item = byId.get(choice.id);
+        const old = item?.previousTakes?.[choice.take];
+        if (choice.take == null || !old) continue;
+        backup[key] = choice;
+        let best = 0, score = -Infinity;
+        item.takes.forEach((take, index) => {
+          const overlap = Math.max(0, Math.min(old.start + old.duration,
+            take.start + take.duration) - Math.max(old.start, take.start));
+          const value = overlap / take.duration - Math.abs(take.start - old.start) * 0.0001;
+          if (value > score) { score = value; best = index; }
+        });
+        assignments[key] = { ...choice, take: best };
+      }
+      localStorage.setItem("hex-sound-before-bow-review-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-bow-review-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

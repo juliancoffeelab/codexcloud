@@ -96,7 +96,7 @@ node scripts/check-audio-cache.mjs
   original game recordings, source/licensing details, downloads and JSON export.
 - Stop or Escape cancels playback. Match levels applies per-take gain toward the live-game median;
   quiet authored edits retain their attenuation. Weapon take boundaries
-  are approximate; the complete source session remains selectable.
+  use authored waveform-reviewed windows for all 22 Still North Media bow, crossbow and arrow sessions (`take-boundaries.json`); other automatic boundaries remain approximate. The complete source session remains selectable.
 
 ## Play the library in sequence
 
@@ -335,3 +335,19 @@ Source originals under `vendor/` need not be included in the hosted static outpu
 Navigation handlers are scoped to the actual tabs; bubbling audio clicks never
 reselect the current view or cancel playback. The first-tap browser regression
 check waits for a recording to finish, not merely for its source node to start.
+
+### Reviewed bow and crossbow takes
+
+`take-boundaries.json` overrides the automatic silence detector for all 22 Still
+North Media bow/crossbow/arrow sessions: 220 action windows, previously 84.
+These are waveform-reviewed cuts, pending subjective listening review. Long draws,
+fletching and paired pass-by transients retain their natural lengths; 0.3 seconds
+is not a fixed limit. English Longbow Nock Arrow retains the approved 0.2744-second
+window (now take 6), and Scythian Recurve Shoot retains eight shots. All complete
+recordings and original audio bytes remain unchanged. Existing saved take indices
+are backed up locally and remapped by source-time overlap once.
+
+Run `python3 scripts/check-take-boundaries.py` to check coverage, bounds, original
+hashes, retained listening copies and the two reference cases. The manifest is
+included in the downloadable library ZIP. The catalog now contains 537 recordings
+and 1,349 playable takes, with fresh per-take loudness measurements and gains.

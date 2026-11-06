@@ -13044,7 +13044,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
     "name": "Arrow Fletching",
     "path": "audio/listening/7b63761b4d153b9d8fe8.mp3",
@@ -13063,6 +13063,104 @@
       "equipment"
     ],
     "takes": [
+      {
+        "start": 0.25,
+        "duration": 0.65
+      },
+      {
+        "start": 1.2,
+        "duration": 1.92
+      },
+      {
+        "start": 3.4,
+        "duration": 2.3
+      },
+      {
+        "start": 6.1,
+        "duration": 1.0
+      },
+      {
+        "start": 7.75,
+        "duration": 2.2
+      },
+      {
+        "start": 10.45,
+        "duration": 1.03
+      },
+      {
+        "start": 11.7,
+        "duration": 1.1
+      },
+      {
+        "start": 13.25,
+        "duration": 0.6
+      },
+      {
+        "start": 14.2,
+        "duration": 2.05
+      },
+      {
+        "start": 16.65,
+        "duration": 1.7
+      },
+      {
+        "start": 18.45,
+        "duration": 0.58
+      },
+      {
+        "start": 19.1,
+        "duration": 0.38
+      },
+      {
+        "start": 19.5,
+        "duration": 0.65
+      },
+      {
+        "start": 20.18,
+        "duration": 0.6
+      },
+      {
+        "start": 20.88,
+        "duration": 0.62
+      },
+      {
+        "start": 21.73,
+        "duration": 1.37
+      },
+      {
+        "start": 23.7,
+        "duration": 1.1
+      },
+      {
+        "start": 25.3,
+        "duration": 0.84
+      },
+      {
+        "start": 26.15,
+        "duration": 0.55
+      },
+      {
+        "start": 27.15,
+        "duration": 0.47
+      },
+      {
+        "start": 27.68,
+        "duration": 0.57
+      },
+      {
+        "start": 29.08,
+        "duration": 0.49
+      },
+      {
+        "start": 29.65,
+        "duration": 0.85
+      },
+      {
+        "start": 30.62,
+        "duration": 0.548
+      }
+    ],
+    "previousTakes": [
       {
         "start": 0.3886,
         "duration": 0.5429
@@ -13090,7 +13188,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Crossbow Bolt Approach.wav",
     "name": "Crossbow Bolt Approach",
     "path": "audio/listening/66d1b4b71f1e6fe0efe3.mp3",
@@ -13110,13 +13208,31 @@
     ],
     "takes": [
       {
+        "start": 0.165,
+        "duration": 0.585
+      },
+      {
+        "start": 0.825,
+        "duration": 0.525
+      },
+      {
+        "start": 1.395,
+        "duration": 0.525
+      },
+      {
+        "start": 1.96,
+        "duration": 0.528
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 2.488
       }
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Crossbow Bolt Pass.wav",
     "name": "Crossbow Bolt Pass",
     "path": "audio/listening/ebab84dce5ab0ee0c672.mp3",
@@ -13136,6 +13252,20 @@
     ],
     "takes": [
       {
+        "start": 0.535,
+        "duration": 0.52
+      },
+      {
+        "start": 1.395,
+        "duration": 0.505
+      },
+      {
+        "start": 2.31,
+        "duration": 0.5273
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0.5474,
         "duration": 0.5753
       },
@@ -13150,7 +13280,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav",
     "name": "Crossbow Bolt Passby",
     "path": "audio/listening/625d2baed4fb48abd3af.mp3",
@@ -13170,6 +13300,20 @@
     ],
     "takes": [
       {
+        "start": 0.27,
+        "duration": 0.41
+      },
+      {
+        "start": 0.92,
+        "duration": 0.42
+      },
+      {
+        "start": 1.76,
+        "duration": 0.5747
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0.2767,
         "duration": 0.3975
       },
@@ -13184,7 +13328,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Crossbow Lever Trigger.wav",
     "name": "Crossbow Lever Trigger",
     "path": "audio/listening/b1598bde6efc4fb7f542.mp3",
@@ -13204,6 +13348,48 @@
     ],
     "takes": [
       {
+        "start": 0.13,
+        "duration": 0.21
+      },
+      {
+        "start": 0.65,
+        "duration": 0.22
+      },
+      {
+        "start": 1.19,
+        "duration": 0.21
+      },
+      {
+        "start": 1.735,
+        "duration": 0.255
+      },
+      {
+        "start": 2.29,
+        "duration": 0.28
+      },
+      {
+        "start": 2.79,
+        "duration": 0.24
+      },
+      {
+        "start": 3.35,
+        "duration": 0.25
+      },
+      {
+        "start": 3.85,
+        "duration": 0.23
+      },
+      {
+        "start": 4.26,
+        "duration": 0.27
+      },
+      {
+        "start": 4.77,
+        "duration": 0.2353
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 0.3695
       },
@@ -13218,7 +13404,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Crossbow Place Bolt.wav",
     "name": "Crossbow Place Bolt",
     "path": "audio/listening/bfc069e8002f1093c30f.mp3",
@@ -13238,13 +13424,59 @@
     ],
     "takes": [
       {
+        "start": 0.21,
+        "duration": 0.48
+      },
+      {
+        "start": 1.22,
+        "duration": 0.52
+      },
+      {
+        "start": 2.04,
+        "duration": 0.61
+      },
+      {
+        "start": 3.3,
+        "duration": 0.52
+      },
+      {
+        "start": 4.14,
+        "duration": 0.74
+      },
+      {
+        "start": 5.08,
+        "duration": 0.32
+      },
+      {
+        "start": 5.63,
+        "duration": 0.59
+      },
+      {
+        "start": 6.35,
+        "duration": 0.52
+      },
+      {
+        "start": 7.01,
+        "duration": 0.43
+      },
+      {
+        "start": 7.45,
+        "duration": 0.58
+      },
+      {
+        "start": 8.26,
+        "duration": 0.4507
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 8.7107
       }
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Crossbow Set Nut Against Sear.wav",
     "name": "Crossbow Set Nut Against Sear",
     "path": "audio/listening/0c21e0bd38f3d38ad7cf.mp3",
@@ -13264,6 +13496,52 @@
     ],
     "takes": [
       {
+        "start": 0.16,
+        "duration": 0.14
+      },
+      {
+        "start": 0.39,
+        "duration": 0.14
+      },
+      {
+        "start": 0.63,
+        "duration": 0.23
+      },
+      {
+        "start": 0.9,
+        "duration": 0.2
+      },
+      {
+        "start": 1.13,
+        "duration": 0.22
+      },
+      {
+        "start": 1.36,
+        "duration": 0.49
+      },
+      {
+        "start": 1.86,
+        "duration": 0.34
+      },
+      {
+        "start": 2.27,
+        "duration": 0.32
+      },
+      {
+        "start": 3.09,
+        "duration": 0.31
+      },
+      {
+        "start": 3.6,
+        "duration": 0.3
+      },
+      {
+        "start": 3.93,
+        "duration": 0.2726
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 2.6334
       },
@@ -13274,7 +13552,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Crossbow Shoot.wav",
     "name": "Crossbow Shoot",
     "path": "audio/listening/49d0cec22b22962371ce.mp3",
@@ -13293,6 +13571,32 @@
       "attack"
     ],
     "takes": [
+      {
+        "start": 0.31,
+        "duration": 0.24
+      },
+      {
+        "start": 0.825,
+        "duration": 0.24
+      },
+      {
+        "start": 1.397,
+        "duration": 0.253
+      },
+      {
+        "start": 1.916,
+        "duration": 0.234
+      },
+      {
+        "start": 2.475,
+        "duration": 0.225
+      },
+      {
+        "start": 2.965,
+        "duration": 0.195
+      }
+    ],
+    "previousTakes": [
       {
         "start": 0.3188,
         "duration": 0.2397
@@ -13320,7 +13624,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/English Longbow Draw.wav",
     "name": "English Longbow Draw",
     "path": "audio/listening/cf92a03458d4593a8ef8.mp3",
@@ -13339,6 +13643,76 @@
       "equipment"
     ],
     "takes": [
+      {
+        "start": 2.43,
+        "duration": 1.95
+      },
+      {
+        "start": 4.65,
+        "duration": 1.33
+      },
+      {
+        "start": 7.13,
+        "duration": 1.44
+      },
+      {
+        "start": 9.32,
+        "duration": 0.97
+      },
+      {
+        "start": 10.84,
+        "duration": 0.65
+      },
+      {
+        "start": 11.72,
+        "duration": 0.83
+      },
+      {
+        "start": 13.17,
+        "duration": 0.71
+      },
+      {
+        "start": 14.1,
+        "duration": 0.88
+      },
+      {
+        "start": 15.38,
+        "duration": 0.77
+      },
+      {
+        "start": 16.43,
+        "duration": 1.0
+      },
+      {
+        "start": 18.55,
+        "duration": 0.75
+      },
+      {
+        "start": 20.21,
+        "duration": 1.0
+      },
+      {
+        "start": 21.61,
+        "duration": 0.62
+      },
+      {
+        "start": 22.28,
+        "duration": 1.37
+      },
+      {
+        "start": 24.92,
+        "duration": 0.86
+      },
+      {
+        "start": 26.05,
+        "duration": 0.78
+      },
+      {
+        "start": 27.38,
+        "duration": 0.65
+      }
+    ],
+    "previousTakes": [
       {
         "start": 2.7597,
         "duration": 1.4129
@@ -13402,7 +13776,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav",
     "name": "English Longbow Nock Arrow",
     "path": "audio/listening/8cda4ca14190a22a1aa6.mp3",
@@ -13421,6 +13795,44 @@
       "equipment"
     ],
     "takes": [
+      {
+        "start": 0.035,
+        "duration": 0.295
+      },
+      {
+        "start": 0.705,
+        "duration": 0.395
+      },
+      {
+        "start": 1.375,
+        "duration": 0.295
+      },
+      {
+        "start": 2.009,
+        "duration": 0.1821
+      },
+      {
+        "start": 2.7215,
+        "duration": 0.2531
+      },
+      {
+        "start": 3.6439,
+        "duration": 0.2744
+      },
+      {
+        "start": 4.4791,
+        "duration": 0.1805
+      },
+      {
+        "start": 5.1943,
+        "duration": 0.2659
+      },
+      {
+        "start": 6.055,
+        "duration": 0.345
+      }
+    ],
+    "previousTakes": [
       {
         "start": 0,
         "duration": 1.5877
@@ -13452,7 +13864,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/English Longbow Set Arrow.wav",
     "name": "English Longbow Set Arrow",
     "path": "audio/listening/f0560155e7ce0c2e627d.mp3",
@@ -13472,13 +13884,59 @@
     ],
     "takes": [
       {
+        "start": 0.06,
+        "duration": 0.34
+      },
+      {
+        "start": 0.56,
+        "duration": 0.28
+      },
+      {
+        "start": 0.915,
+        "duration": 0.325
+      },
+      {
+        "start": 1.3,
+        "duration": 0.32
+      },
+      {
+        "start": 1.69,
+        "duration": 0.32
+      },
+      {
+        "start": 2.02,
+        "duration": 0.31
+      },
+      {
+        "start": 2.35,
+        "duration": 0.29
+      },
+      {
+        "start": 2.68,
+        "duration": 0.32
+      },
+      {
+        "start": 3.01,
+        "duration": 0.29
+      },
+      {
+        "start": 3.32,
+        "duration": 0.27
+      },
+      {
+        "start": 3.65,
+        "duration": 0.2593
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 3.9093
       }
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/English Longbow Shoot.wav",
     "name": "English Longbow Shoot",
     "path": "audio/listening/84d23ff3a9044f31429d.mp3",
@@ -13497,6 +13955,32 @@
       "attack"
     ],
     "takes": [
+      {
+        "start": 0.085,
+        "duration": 0.275
+      },
+      {
+        "start": 0.425,
+        "duration": 0.275
+      },
+      {
+        "start": 0.755,
+        "duration": 0.285
+      },
+      {
+        "start": 1.234,
+        "duration": 0.266
+      },
+      {
+        "start": 2.06,
+        "duration": 0.34
+      },
+      {
+        "start": 3.18,
+        "duration": 0.38
+      }
+    ],
+    "previousTakes": [
       {
         "start": 0,
         "duration": 0.9412
@@ -13678,7 +14162,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Approach.wav",
     "name": "Scythian Recurve Arrow Approach",
     "path": "audio/listening/b630f543162bb591dd08.mp3",
@@ -13698,6 +14182,40 @@
     ],
     "takes": [
       {
+        "start": 0.16,
+        "duration": 0.32
+      },
+      {
+        "start": 0.535,
+        "duration": 0.465
+      },
+      {
+        "start": 1.14,
+        "duration": 0.9
+      },
+      {
+        "start": 2.35,
+        "duration": 0.75
+      },
+      {
+        "start": 3.4,
+        "duration": 0.71
+      },
+      {
+        "start": 4.19,
+        "duration": 0.69
+      },
+      {
+        "start": 5.02,
+        "duration": 0.67
+      },
+      {
+        "start": 5.75,
+        "duration": 0.7247
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 2.9872
       },
@@ -13712,7 +14230,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Pass.wav",
     "name": "Scythian Recurve Arrow Pass",
     "path": "audio/listening/7cab57593e732068104d.mp3",
@@ -13732,6 +14250,28 @@
     ],
     "takes": [
       {
+        "start": 0.0,
+        "duration": 0.49
+      },
+      {
+        "start": 0.495,
+        "duration": 0.585
+      },
+      {
+        "start": 1.1,
+        "duration": 0.65
+      },
+      {
+        "start": 1.86,
+        "duration": 0.23
+      },
+      {
+        "start": 2.16,
+        "duration": 0.6213
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 0.27
       },
@@ -13746,7 +14286,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Passby.wav",
     "name": "Scythian Recurve Arrow Passby",
     "path": "audio/listening/4047ae0b768af7daec1d.mp3",
@@ -13766,13 +14306,43 @@
     ],
     "takes": [
       {
+        "start": 0.105,
+        "duration": 0.565
+      },
+      {
+        "start": 0.73,
+        "duration": 0.47
+      },
+      {
+        "start": 1.24,
+        "duration": 0.54
+      },
+      {
+        "start": 1.83,
+        "duration": 0.43
+      },
+      {
+        "start": 2.32,
+        "duration": 0.5
+      },
+      {
+        "start": 2.84,
+        "duration": 0.48
+      },
+      {
+        "start": 3.335,
+        "duration": 0.449
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 3.784
       }
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Draw.wav",
     "name": "Scythian Recurve Draw",
     "path": "audio/listening/af2f4431aee0f7aa46b2.mp3",
@@ -13792,13 +14362,147 @@
     ],
     "takes": [
       {
+        "start": 0.36,
+        "duration": 1.39
+      },
+      {
+        "start": 2.86,
+        "duration": 0.92
+      },
+      {
+        "start": 4.51,
+        "duration": 1.3
+      },
+      {
+        "start": 7.01,
+        "duration": 1.07
+      },
+      {
+        "start": 8.68,
+        "duration": 1.11
+      },
+      {
+        "start": 10.33,
+        "duration": 0.87
+      },
+      {
+        "start": 11.64,
+        "duration": 0.68
+      },
+      {
+        "start": 12.76,
+        "duration": 0.44
+      },
+      {
+        "start": 13.49,
+        "duration": 0.56
+      },
+      {
+        "start": 14.51,
+        "duration": 0.54
+      },
+      {
+        "start": 15.53,
+        "duration": 0.36
+      },
+      {
+        "start": 16.1,
+        "duration": 0.51
+      },
+      {
+        "start": 16.72,
+        "duration": 0.48
+      },
+      {
+        "start": 17.48,
+        "duration": 0.57
+      },
+      {
+        "start": 18.36,
+        "duration": 1.34
+      },
+      {
+        "start": 20.62,
+        "duration": 0.54
+      },
+      {
+        "start": 21.89,
+        "duration": 0.77
+      },
+      {
+        "start": 22.98,
+        "duration": 0.62
+      },
+      {
+        "start": 24.91,
+        "duration": 0.81
+      },
+      {
+        "start": 26.58,
+        "duration": 0.77
+      },
+      {
+        "start": 27.68,
+        "duration": 0.74
+      },
+      {
+        "start": 29.52,
+        "duration": 0.56
+      },
+      {
+        "start": 30.8,
+        "duration": 0.96
+      },
+      {
+        "start": 32.57,
+        "duration": 0.91
+      },
+      {
+        "start": 33.75,
+        "duration": 0.89
+      },
+      {
+        "start": 35.82,
+        "duration": 0.67
+      },
+      {
+        "start": 36.87,
+        "duration": 1.08
+      },
+      {
+        "start": 39.02,
+        "duration": 0.71
+      },
+      {
+        "start": 39.9,
+        "duration": 0.55
+      },
+      {
+        "start": 40.6,
+        "duration": 0.55
+      },
+      {
+        "start": 43.19,
+        "duration": 0.46
+      },
+      {
+        "start": 43.91,
+        "duration": 1.4
+      },
+      {
+        "start": 46.6,
+        "duration": 0.6053
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 47.2053
       }
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Heavy Arrow Approach.wav",
     "name": "Scythian Recurve Heavy Arrow Approach",
     "path": "audio/listening/43962997403068901bfe.mp3",
@@ -13818,6 +14522,48 @@
     ],
     "takes": [
       {
+        "start": 0.16,
+        "duration": 0.74
+      },
+      {
+        "start": 1.19,
+        "duration": 0.83
+      },
+      {
+        "start": 2.11,
+        "duration": 0.53
+      },
+      {
+        "start": 2.66,
+        "duration": 0.44
+      },
+      {
+        "start": 3.16,
+        "duration": 0.66
+      },
+      {
+        "start": 3.85,
+        "duration": 0.34
+      },
+      {
+        "start": 4.24,
+        "duration": 0.56
+      },
+      {
+        "start": 4.83,
+        "duration": 0.35
+      },
+      {
+        "start": 5.19,
+        "duration": 0.54
+      },
+      {
+        "start": 5.75,
+        "duration": 0.3753
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 0.3787
       },
@@ -13828,7 +14574,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Heavy Arrow Pass.wav",
     "name": "Scythian Recurve Heavy Arrow Pass",
     "path": "audio/listening/a00ad301c97a569ec4ec.mp3",
@@ -13848,6 +14594,32 @@
     ],
     "takes": [
       {
+        "start": 0.035,
+        "duration": 0.625
+      },
+      {
+        "start": 0.68,
+        "duration": 0.62
+      },
+      {
+        "start": 1.39,
+        "duration": 0.65
+      },
+      {
+        "start": 2.08,
+        "duration": 0.6
+      },
+      {
+        "start": 2.695,
+        "duration": 0.655
+      },
+      {
+        "start": 3.37,
+        "duration": 0.638
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 0.4556
       },
@@ -13862,7 +14634,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Heavy Arrow Passby.wav",
     "name": "Scythian Recurve Heavy Arrow Passby",
     "path": "audio/listening/3f6e0b4bf98841954f60.mp3",
@@ -13882,13 +14654,39 @@
     ],
     "takes": [
       {
+        "start": 0.09,
+        "duration": 0.4
+      },
+      {
+        "start": 0.56,
+        "duration": 0.44
+      },
+      {
+        "start": 1.065,
+        "duration": 0.465
+      },
+      {
+        "start": 1.56,
+        "duration": 0.5
+      },
+      {
+        "start": 2.08,
+        "duration": 0.47
+      },
+      {
+        "start": 2.58,
+        "duration": 0.4707
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 3.0507
       }
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Nock Arrow.wav",
     "name": "Scythian Recurve Nock Arrow",
     "path": "audio/listening/6849431c73ad000b0163.mp3",
@@ -13908,6 +14706,56 @@
     ],
     "takes": [
       {
+        "start": 0.09,
+        "duration": 0.175
+      },
+      {
+        "start": 0.38,
+        "duration": 0.26
+      },
+      {
+        "start": 0.73,
+        "duration": 0.31
+      },
+      {
+        "start": 1.115,
+        "duration": 0.285
+      },
+      {
+        "start": 1.48,
+        "duration": 0.33
+      },
+      {
+        "start": 1.93,
+        "duration": 0.27
+      },
+      {
+        "start": 2.235,
+        "duration": 0.265
+      },
+      {
+        "start": 2.55,
+        "duration": 0.27
+      },
+      {
+        "start": 2.865,
+        "duration": 0.315
+      },
+      {
+        "start": 3.255,
+        "duration": 0.345
+      },
+      {
+        "start": 3.655,
+        "duration": 0.245
+      },
+      {
+        "start": 3.91,
+        "duration": 0.234
+      }
+    ],
+    "previousTakes": [
+      {
         "start": 0,
         "duration": 1.7321
       },
@@ -13918,7 +14766,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Set Arrow.wav",
     "name": "Scythian Recurve Set Arrow",
     "path": "audio/listening/183a8eff0037d6ba2539.mp3",
@@ -13937,6 +14785,48 @@
       "equipment"
     ],
     "takes": [
+      {
+        "start": 0.035,
+        "duration": 0.365
+      },
+      {
+        "start": 0.45,
+        "duration": 0.28
+      },
+      {
+        "start": 0.825,
+        "duration": 0.335
+      },
+      {
+        "start": 1.195,
+        "duration": 0.475
+      },
+      {
+        "start": 1.71,
+        "duration": 0.33
+      },
+      {
+        "start": 2.09,
+        "duration": 0.51
+      },
+      {
+        "start": 2.66,
+        "duration": 0.45
+      },
+      {
+        "start": 3.21,
+        "duration": 0.68
+      },
+      {
+        "start": 3.95,
+        "duration": 0.39
+      },
+      {
+        "start": 4.43,
+        "duration": 0.562
+      }
+    ],
+    "previousTakes": [
       {
         "start": 0,
         "duration": 0.1871
@@ -13972,7 +14862,7 @@
     ]
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "bow-review-v1",
     "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav",
     "name": "Scythian Recurve Shoot",
     "path": "audio/listening/436ed2327eca14689107.mp3",
@@ -13991,6 +14881,40 @@
       "attack"
     ],
     "takes": [
+      {
+        "start": 0.185,
+        "duration": 0.2233
+      },
+      {
+        "start": 0.9094,
+        "duration": 0.1656
+      },
+      {
+        "start": 1.4519,
+        "duration": 0.1564
+      },
+      {
+        "start": 1.8991,
+        "duration": 0.1759
+      },
+      {
+        "start": 2.4284,
+        "duration": 0.151
+      },
+      {
+        "start": 2.9447,
+        "duration": 0.1872
+      },
+      {
+        "start": 3.3912,
+        "duration": 0.1965
+      },
+      {
+        "start": 3.8282,
+        "duration": 0.2838
+      }
+    ],
+    "previousTakes": [
       {
         "start": 0,
         "duration": 0.4083

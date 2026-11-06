@@ -27,7 +27,7 @@ def build(entry):
  family={'kenney/impact-sounds':'impact-sounds','kenney/rpg-audio':'rpg-audio'}.get(entry['pack'],entry['pack'])
  id=f'{family}/{name}' if family in ('impact-sounds','rpg-audio') else f'{entry["pack"]}/{path.split(entry["pack"]+"/",1)[1]}'
  prev=previous.get(id)
- if prev and prev.get('sourceHash')==entry['sha256'] and dest.exists() and prev.get('takeMethod')=='silence42-fallback30-v2':return prev
+ if prev and prev.get('sourceHash')==entry['sha256'] and dest.exists() and prev.get('takeMethod') in ('silence42-fallback30-v2','bow-review-v1'):return prev
  duration=info['duration_seconds']
  analysis=run(['ffmpeg','-hide_banner','-nostdin','-i',str(src),'-af','volumedetect,silencedetect=noise=-42dB:d=0.25','-f','null','-'])
  peak=float(re.search(r'max_volume: ([-\d.]+) dB',analysis)[1])
@@ -71,6 +71,15 @@ for item in old.values():
  item.setdefault('packLabel','Current Hexcommand');item['categories']=['baseline'];item['kind']='current-game-synthesis';item['gainDb']=0
  item['duration']=float(run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',str(OUT/item['path'])]).strip())
  result.append(item)
+# Reviewed boundaries override automatic proposals, including cached catalog rows.
+review=json.loads((ROOT/'take-boundaries.json').read_text())
+by_id={item['id']:item for item in result}
+for entry in review['recordings']:
+ item=by_id[entry['id']]
+ if item['sourceHash']!=entry['sourceHash']:raise ValueError('Reviewed source changed: '+entry['id'])
+ item['takes']=entry['takes'];item['takeMethod']=review['version']
+ item['previousTakes']=entry['previousTakes']
+shutil.copy(ROOT/'take-boundaries.json',OUT/'take-boundaries.json')
 (OUT/'catalog.json').write_text(json.dumps(result,indent=2)+'\n')
 subprocess.run([sys.executable,str(ROOT/'scripts/build-edits.py')],check=True)
 result=json.loads((OUT/'catalog.json').read_text())
@@ -84,7 +93,7 @@ for key,p in packs.items():
  d=VENDOR/key
  for name in ['SOURCE.txt','CREDITS.txt','License.txt']:
   if (d/name).exists():shutil.copy(d/name,OUT/'licenses/packs'/f'{key.replace("/","--")}--{name}')
-(OUT/'provenance.json').write_text(json.dumps({'originals':'vendor/sfx/ in the repository; all originals unchanged','processing':SCHEME,'takeDetection':'silencedetect -42 dB, 0.25 s; fallback -30 dB if no silence; approximate boundaries only','playbackGain':'Per-take strongest-50ms RMS matched toward the median live melee/bow output; loudness-reference.json and playback-levels.json. Sample-peak ceiling -1.5 dBFS, gains bounded -18/+24 dB; authored quiet edits retain zero gain.','sourceManifest':'sources.json','sourceHashes':'catalog.json sourceHash','auditionEdits':'audio-edits.json; derived edits keep their intended gain when level matching is enabled'},indent=2)+'\n')
+(OUT/'provenance.json').write_text(json.dumps({'originals':'vendor/sfx/ in the repository; all originals unchanged','processing':SCHEME,'reviewedTakeBoundaries':'take-boundaries.json; bow/crossbow/arrow sessions use authored action windows', 'takeDetection':'silencedetect -42 dB, 0.25 s; fallback -30 dB if no silence; approximate boundaries only','playbackGain':'Per-take strongest-50ms RMS matched toward the median live melee/bow output; loudness-reference.json and playback-levels.json. Sample-peak ceiling -1.5 dBFS, gains bounded -18/+24 dB; authored quiet edits retain zero gain.','sourceManifest':'sources.json','sourceHashes':'catalog.json sourceHash','auditionEdits':'audio-edits.json; derived edits keep their intended gain when level matching is enabled'},indent=2)+'\n')
 if (ROOT/'curation-notes.json').exists():shutil.copy(ROOT/'curation-notes.json',OUT/'curation-notes.json')
 # Measure exact listening takes, generate bounded playback gains, then report effective levels.
 for args in [["check-loudness.py", "--legacy-gains"], ["build-playback-levels.py"], ["check-loudness.py"]]:
@@ -93,6 +102,6 @@ with zipfile.ZipFile(OUT/'sound-library.zip','w',zipfile.ZIP_DEFLATED) as z:
  for path in sorted({item['path'] for item in result}):z.write(OUT/path,path)
  for f in (OUT/'licenses').rglob('*'):
   if f.is_file():z.write(f,f.relative_to(OUT))
- for name in ['catalog.json','sources.json','coverage.json','roster.json','provenance.json','workbench.json','audio-edits.json','curation-notes.json','playback-levels.json','loudness-reference.json','loudness.json','loudness.csv','workbench/terrain-portraits/provenance.json']:
+ for name in ['take-boundaries.json','catalog.json','sources.json','coverage.json','roster.json','provenance.json','workbench.json','audio-edits.json','curation-notes.json','playback-levels.json','loudness-reference.json','loudness.json','loudness.csv','workbench/terrain-portraits/provenance.json']:
   if (OUT/name).exists():z.write(OUT/name,name)
 print(json.dumps(dict(recordings=len(result),cc0=len(inventory),takes=sum(len(x.get('takes',[])) or 1 for x in result),listeningMiB=round(sum((OUT/x['path']).stat().st_size for x in result)/1048576,2)),indent=2))
