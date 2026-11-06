@@ -74,7 +74,15 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   for (const attack of entity.attacks || []) {
     const key = `attack-${attack.id}`;
     const name = attack.name.toLowerCase();
-    if (entity.faction === "elves" && /^(elf-flanker(?:-l[23])?|elf-jumper-l[23])$/.test(entity.id) && attack.id === "blade") {
+    if ((entity.faction === "zombies" || /^zombie-bear/.test(entity.id)) && /grasp|hands/.test(name)) {
+      choose(key, [creatureSound("burp_02")], "Burp 2 for the zombie grasping-hands attack.");
+    } else if ((entity.faction === "zombies" || /^zombie-bear/.test(entity.id)) && /bite/.test(name)) {
+      choose(key, [creatureSound("grunt_05")], "Grunt 5 for the zombie bite.");
+    } else if (/claw/.test(name)) {
+      choose(key, ["rpg-audio/knifeSlice2"], "Knife Slice 2 as the claw-slash texture.");
+    } else if (/wolf/.test(entity.id) && /bite|fang/.test(name)) {
+      choose(key, ["qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac"], "Snarl for wolf and werewolf bites.");
+    } else if (entity.faction === "elves" && /^(elf-flanker(?:-l[23])?|elf-jumper-l[23])$/.test(entity.id) && attack.id === "blade") {
       const jumper = /^elf-jumper/.test(entity.id);
       const row = choose(key, [1,2,3].map(n => `rubberduck/80-cc0-rpg-sfx/blade_0${n}.ogg`),
         jumper ? "Jumper spear attack using the current spear palette." : "Knife attack; excluded from the sword/spear swap.");

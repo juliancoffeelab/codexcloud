@@ -27,7 +27,7 @@ for (const faction of workbench.factions)
       assert(!action.suggested.some((id) => action.alternatives.includes(id)));
       if (action.key.startsWith("attack-")) {
         assert(
-          ["beasts", "undead-animals"].includes(unit.faction) || /^(boar|greatboar|woodland-ancient-boar)$/.test(unit.id) || !action.suggested.some((id) => /alien_|grunt_|horse-vocals/.test(id)),
+          ["beasts", "undead-animals"].includes(unit.faction) || (unit.faction === "zombies" && action.key === "attack-bite") || /^(boar|greatboar|woodland-ancient-boar)$/.test(unit.id) || !action.suggested.some((id) => /alien_|grunt_|horse-vocals/.test(id)),
         );
         if (/fire/i.test(action.title))
           assert(action.suggested.every((id) => id.includes("spell_fire_07")));
@@ -41,7 +41,7 @@ for (const faction of workbench.factions)
       assert.equal(tap.suggested[0], "rpg-audio/cloth3");
     if (unit.faction === "undead-animals")
       for (const attack of unit.attacks) {
-        if (/fire|magic|spell/i.test(attack.name)) continue;
+        if (/fire|magic|spell|claw/i.test(attack.name) || (/^zombie-bear/.test(unit.id) && /bite/i.test(attack.name))) continue;
         assert.deepEqual(actions.find(row => row.key === `attack-${attack.id}`).suggested,
           tap.suggested, `${unit.key}: undead animal attack follows its selection palette`);
       }
@@ -53,6 +53,16 @@ for (const faction of workbench.factions)
     if (/^(ghost|wraith|spectre)$/.test(unit.id))
       assert.equal(actions.find(row => row.key === "attack-spectral-touch").suggested[0],
         "rubberduck/80-cc0-rpg-sfx/spell_02.ogg");
+    for (const attack of unit.attacks) {
+      const row = actions.find(row => row.key === `attack-${attack.id}`);
+      if (/claw/i.test(attack.name)) assert.equal(row.suggested[0], "rpg-audio/knifeSlice2");
+      if (/wolf/.test(unit.id) && /bite|fang/i.test(attack.name))
+        assert.equal(row.suggested[0], "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac");
+      if (unit.faction === "zombies" || /^zombie-bear/.test(unit.id)) {
+        if (/bite/i.test(attack.name)) assert(row.suggested[0].endsWith("/grunt_05.ogg"));
+        if (/grasp|hands/i.test(attack.name)) assert(row.suggested[0].endsWith("/burp_02.ogg"));
+      }
+    }
     const attacks = actions.filter(row => row.key.startsWith("attack-"));
     if (/^giant-(wasp|spider)(?:-l[23])?$/.test(unit.id))
       assert(attacks.every(row => row.suggested[0].endsWith("/spit_01.ogg")));

@@ -420,3 +420,8 @@ Deer/stag selection now matches riders exactly: trimmed horse vocal 0286,
 replacing Trot. Saved deer Trot choices migrate with backup; original Trot and
 its short edit remain available as alternatives. Physical deer attacks continue
 to follow the selection palette.
+
+Wolves and werewolves bite with Dog Snarl. All claw attacks use Knife Slice 2.
+Zombie grasping hands use Burp 2; zombie bites (including zombie bears) use
+Grunt 5. These specific attack choices supersede selection-reuse placeholders;
+selection and weapon/spell mappings remain unchanged.

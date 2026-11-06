@@ -86,20 +86,8 @@
       "duration": 0.9328,
       "uses": [
         {
-          "entity": "beasts/bear",
-          "action": "attack-claws"
-        },
-        {
-          "entity": "beasts/bear-l2",
-          "action": "attack-claws"
-        },
-        {
           "entity": "beasts/bear-l2",
           "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/bear-l3",
-          "action": "attack-claws"
         },
         {
           "entity": "beasts/bear-l3",
@@ -107,23 +95,11 @@
         },
         {
           "entity": "beasts/lynx",
-          "action": "attack-claws"
-        },
-        {
-          "entity": "beasts/lynx",
           "action": "attack-bite"
         },
         {
           "entity": "beasts/lynx-l2",
-          "action": "attack-claws"
-        },
-        {
-          "entity": "beasts/lynx-l2",
           "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/lynx-l3",
-          "action": "attack-claws"
         },
         {
           "entity": "beasts/lynx-l3",
@@ -270,6 +246,31 @@
         {
           "entity": "beasts/giant-wasp-l3",
           "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/burp_02.ogg",
+      "name": "burp_02",
+      "take": 1,
+      "start": 0,
+      "duration": 0.8192,
+      "uses": [
+        {
+          "entity": "zombies/zombie-walker",
+          "action": "attack-grasp"
+        },
+        {
+          "entity": "zombies/zombie-plague-carrier",
+          "action": "attack-grasping-hands"
+        },
+        {
+          "entity": "zombies/zombie-shambler",
+          "action": "attack-grasping-hands"
+        },
+        {
+          "entity": "zombies/zombie-ghoul",
+          "action": "attack-grasping-hands"
         }
       ]
     },
@@ -532,6 +533,39 @@
       ]
     },
     {
+      "id": "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
+      "name": "dog-snarl",
+      "take": 1,
+      "start": 0,
+      "duration": 0.7002,
+      "uses": [
+        {
+          "entity": "cursed/werewolf",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "woodland/wolf",
+          "action": "attack-fangs"
+        },
+        {
+          "entity": "woodland/direwolf",
+          "action": "attack-fangs"
+        },
+        {
+          "entity": "woodland/woodland-alpha-wolf",
+          "action": "attack-fangs"
+        }
+      ]
+    },
+    {
       "id": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
       "name": "stones_01",
       "take": 1,
@@ -682,6 +716,39 @@
         {
           "entity": "undead-animals/bone-dragon-l3",
           "action": "attack-fire-breath"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/grunt_05.ogg",
+      "name": "grunt_05",
+      "take": 1,
+      "start": 0,
+      "duration": 0.6499,
+      "uses": [
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "zombies/zombie-plague-carrier",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "zombies/zombie-shambler",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "zombies/zombie-ghoul",
+          "action": "attack-bite"
         }
       ]
     },
@@ -874,36 +941,12 @@
           "action": "tap"
         },
         {
-          "entity": "undead-animals/zombie-bear",
-          "action": "attack-claws"
-        },
-        {
-          "entity": "undead-animals/zombie-bear",
-          "action": "attack-bite"
-        },
-        {
           "entity": "undead-animals/zombie-bear-l2",
           "action": "tap"
         },
         {
-          "entity": "undead-animals/zombie-bear-l2",
-          "action": "attack-claws"
-        },
-        {
-          "entity": "undead-animals/zombie-bear-l2",
-          "action": "attack-bite"
-        },
-        {
           "entity": "undead-animals/zombie-bear-l3",
           "action": "tap"
-        },
-        {
-          "entity": "undead-animals/zombie-bear-l3",
-          "action": "attack-claws"
-        },
-        {
-          "entity": "undead-animals/zombie-bear-l3",
-          "action": "attack-bite"
         },
         {
           "entity": "zombies/zombie-cleaver",
@@ -1067,6 +1110,87 @@
         {
           "entity": "skeletons/skeleton-axeman-l3",
           "action": "attack-axe"
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/knifeSlice2",
+      "name": "knifeSlice2",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5688,
+      "uses": [
+        {
+          "entity": "beasts/bear",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/bear-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/bear-l3",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/dragon",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/lynx",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/lynx-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/lynx-l3",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "cursed/werewolf",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/bone-dragon",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l3",
+          "action": "attack-claws"
         }
       ]
     },
