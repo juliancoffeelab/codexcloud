@@ -166,6 +166,9 @@
   },
   "death": {
     "bear": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
-    "reference": "User-approved longer dying creature sound; bear only, other beast groups unchanged."
+    "reference": "User-approved longer dying creature sound; bear only, other beast groups unchanged.",
+    "bugs": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
+    "ray": "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg",
+    "scope": "All three levels of bears, spiders, wasps and rays. Other families unchanged."
   }
 }

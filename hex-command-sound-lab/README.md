@@ -597,3 +597,5 @@ Roar 03 (user approved); saved earlier short/subtle defaults migrate once with a
 The subtle stretched first attempt remains archived in Library only. Other
 beasts and the bear selection sound remain unchanged. These are alternatives
 for listening review, Creature Roar 03 is the approved bear death and reference for future beast death comparisons.
+
+Approved death families now cover all three bear levels (Creature Roar 03), giant spiders/wasps (Creature Slime 01), and rays (Creature Slime 03). Other beast families retain prior suggestions pending review.

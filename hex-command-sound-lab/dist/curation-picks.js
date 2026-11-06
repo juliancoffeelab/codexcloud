@@ -1,4 +1,4 @@
-import { deathPick, beastDeathId } from "./death-picks.js?v=bear-roar3-approved-1";
+import { deathPick, beastDeathId } from "./death-picks.js?v=beast-slime-deaths-1";
 // Authored audition choices. Death rows are candidates, not live-game events.
 export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   const byId = new Map(catalog.map((sound) => [sound.id, sound]));
@@ -134,11 +134,20 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     ? selections.map(ref => ({ ...ref, deathId: beastDeathId(ref.id, ref.take) })) : [];
   const death = choose("death", selectionDeaths.length ? selectionDeaths.map(ref => ref.deathId) : [deathChoice.sound],
     selectionDeaths.length ? "Current selection sound with a long fade and light room reflections." : `Shared ${deathChoice.group} death audition.`);
-  if (entity.faction === "beasts" && entity.id === "bear") {
+  if (entity.faction === "beasts" && /^bear(?:-l[23])?$/.test(entity.id)) {
     const groans = ["rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg", "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg"];
     death.suggested.unshift(...groans);
     death.defaultSound = groans[0];
     death.description = "Two longer original creature performances for comparison. No time stretching, pitch effects or reverb; previous short death remains third.";
+  }
+  if (entity.faction === "beasts") {
+    const family = entity.id.replace(/-l[23]$/, "");
+    const slime = ["giant-spider", "giant-wasp"].includes(family) ? "01" : family === "ray" ? "03" : null;
+    if (slime) {
+      death.defaultSound = `rubberduck/80-cc0-rpg-sfx/creature_slime_${slime}.ogg`;
+      death.suggested.unshift(death.defaultSound);
+      death.description = "Approved slime death for bugs/rays; prior selection fade remains for comparison.";
+    }
   }
   death.title = "Death";
   death.deathGroup = deathChoice.group;

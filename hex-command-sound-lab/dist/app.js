@@ -1,8 +1,8 @@
-import { DEATH_SOUNDS } from "./death-picks.js?v=bear-roar3-approved-1";
+import { DEATH_SOUNDS } from "./death-picks.js?v=beast-slime-deaths-1";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=bear-roar3-approved-1";
+import { buildActions } from "./matching.js?v=beast-slime-deaths-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -17,10 +17,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=bear-roar3-approved-1"),
+    loadJSON("catalog.json?v=beast-slime-deaths-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=bear-roar3-approved-1"),
+    loadJSON("playback-levels.json?v=beast-slime-deaths-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1775,6 +1775,23 @@ async function start() {
         saveAssignments();
       }
       localStorage.setItem("hex-sound-bear-roar3-approved-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-slime-deaths-v1")) {
+      const backup = {};
+      for (const [key, old] of Object.entries(assignments)) {
+        if (!key.endsWith("/death") || !old.id.startsWith("edits/beast-death/")) continue;
+        const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
+        if (entity?.kind !== "unit") continue;
+        const death = buildActions(entity, catalog).find(row => row.key === "death");
+        if (!death?.defaultSound) continue;
+        backup[key] = old;
+        assignments[key] = { ...old, id: death.defaultSound, take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-slime-deaths-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-slime-deaths-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

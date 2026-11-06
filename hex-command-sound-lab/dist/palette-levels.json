@@ -23,9 +23,9 @@
       }
     },
     "death": {
-      "choices": 22,
+      "choices": 24,
       "min": -26.29,
-      "average": -26.24,
+      "average": -26.25,
       "max": -25.29,
       "referenceRange": null
     },
@@ -4282,6 +4282,32 @@
       ]
     },
     {
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
+      "name": "creature_roar_03",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -19.06,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/bear",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/bear-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/bear-l3",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
       "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg",
       "name": "creature_roar_02",
       "take": 1,
@@ -4294,20 +4320,14 @@
           "entity": "beasts/bear",
           "action": "death",
           "levelClass": null
-        }
-      ]
-    },
-    {
-      "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
-      "name": "creature_roar_03",
-      "take": 1,
-      "context": "death",
-      "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -19.06,
-      "inRange": true,
-      "uses": [
+        },
         {
-          "entity": "beasts/bear",
+          "entity": "beasts/bear-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/bear-l3",
           "action": "death",
           "levelClass": null
         }
@@ -5143,6 +5163,47 @@
       ]
     },
     {
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
+      "name": "creature_slime_01",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -14.88,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/giant-spider",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-wasp",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-wasp-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/giant-wasp-l3",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
       "id": "edits/beast-death/edits/spider-fletching-take1-short-v1/take-1",
       "name": "Beast death \u00b7 Spider \u00b7 Arrow Fletching take 1 short \u00b7 fade",
       "take": 1,
@@ -5378,6 +5439,32 @@
           "entity": "merfolk/reefguard",
           "action": "attack-tail",
           "levelClass": "attack"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg",
+      "name": "creature_slime_03",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -13.47,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/ray",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/ray-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "beasts/ray-l3",
+          "action": "death",
+          "levelClass": null
         }
       ]
     },

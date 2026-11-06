@@ -66,14 +66,22 @@
       ]
     },
     {
-      "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg",
-      "name": "creature_roar_02",
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
+      "name": "creature_roar_03",
       "take": 1,
       "start": 0,
-      "duration": 0.895,
+      "duration": 0.87,
       "uses": [
         {
           "entity": "beasts/bear",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/bear-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/bear-l3",
           "action": "death"
         }
       ]
@@ -330,27 +338,6 @@
       ]
     },
     {
-      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_03.ogg/take-1",
-      "name": "Beast death · alien_03 · fade",
-      "take": 1,
-      "start": 0,
-      "duration": 0.6306,
-      "uses": [
-        {
-          "entity": "beasts/giant-wasp",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/giant-wasp-l2",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/giant-wasp-l3",
-          "action": "death"
-        }
-      ]
-    },
-    {
       "id": "edits/quarry-mining-v1",
       "name": "Quarry · mining contact",
       "take": 1,
@@ -593,6 +580,39 @@
       ]
     },
     {
+      "id": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
+      "name": "creature_slime_01",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5657,
+      "uses": [
+        {
+          "entity": "beasts/giant-spider",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-wasp",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-wasp-l2",
+          "action": "death"
+        },
+        {
+          "entity": "beasts/giant-wasp-l3",
+          "action": "death"
+        }
+      ]
+    },
+    {
       "id": "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac",
       "name": "dog-grumble",
       "take": 1,
@@ -773,48 +793,6 @@
         {
           "entity": "dwarves/dwarf-forge-lord-l3",
           "action": "attack-hammer"
-        }
-      ]
-    },
-    {
-      "id": "edits/beast-death/edits/spider-fletching-take1-short-v1/take-1",
-      "name": "Beast death · Spider · Arrow Fletching take 1 short · fade",
-      "take": 1,
-      "start": 0,
-      "duration": 0.5308,
-      "uses": [
-        {
-          "entity": "beasts/giant-spider",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/giant-spider-l2",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/giant-spider-l3",
-          "action": "death"
-        }
-      ]
-    },
-    {
-      "id": "edits/beast-death/rubberduck/80-cc0-creature-sfx/alien_02.ogg/take-1",
-      "name": "Beast death · alien_02 · fade",
-      "take": 1,
-      "start": 0,
-      "duration": 0.5308,
-      "uses": [
-        {
-          "entity": "beasts/ray",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/ray-l2",
-          "action": "death"
-        },
-        {
-          "entity": "beasts/ray-l3",
-          "action": "death"
         }
       ]
     },
