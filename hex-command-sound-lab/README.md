@@ -98,6 +98,21 @@ node scripts/check-audio-cache.mjs
   quiet authored edits retain their attenuation. Weapon take boundaries
   are approximate; the complete source session remains selectable.
 
+## Play the library in sequence
+
+Library's **Play all N** queues every recording matching the current filters and
+favorites, including entries beyond the 60-row display limit. With no filters this
+is all 532 complete recordings (about 20:13). Each full source plays once; take
+ranges are not added again. The queue is a snapshot, so changing filters while it
+plays changes the next Play all selection, not the running order.
+
+The button becomes Stop all, and the footer shows recording number/name. Either
+Stop button or starting another sound cancels the queue; canceled late loads do
+not resume it. Failed recordings are skipped and counted at completion. Only one
+source is fetched/decoded ahead, using the existing bounded cache. Match levels
+can change during the queue without restarting it. As with other playback, hiding
+the tab stops playback; manual seeking switches to that single recording.
+
 ## Loudness checks and playback matching
 
 Run `python3 scripts/check-loudness.py` to measure every decoded listening copy

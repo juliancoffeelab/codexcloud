@@ -10,7 +10,7 @@
     />
     <title>Hexcommand — Sound Lab</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="style.css?v=take-levels-1" />
+    <link rel="stylesheet" href="style.css?v=library-play-all-1" />
   </head>
   <body class="field-mode" data-view="units">
     <header>
@@ -177,6 +177,11 @@
             >↓ Download listening library</a
           >
         </div>
+        <div class="library-batch">
+          <button id="library-play-all" class="primary" aria-pressed="false">
+            ▶ Play all</button
+          ><span id="library-queue"></span>
+        </div>
         <div class="filters">
           <label class="search"
             ><span>Search sounds</span
@@ -288,6 +293,6 @@
         /><output id="volume-value">55%</output></label
       >
     </div>
-    <script type="module" src="app.js?v=terrain-levels-1"></script>
+    <script type="module" src="app.js?v=library-play-all-1"></script>
   </body>
 </html>

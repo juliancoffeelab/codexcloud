@@ -57,6 +57,9 @@ async function start() {
     playingId,
     mode = "candidate",
     visibleCount = 60;
+  let libraryPlayback = null,
+    libraryMatches = [],
+    sourceGain;
   const cache = new AudioCache(() => context);
   const expanded = new Set();
   let dockEntity;
@@ -207,6 +210,9 @@ async function start() {
     }
   }
   function halt(reset = true) {
+    libraryPlayback = null;
+    sourceGain = null;
+    updateLibraryControls();
     cancelAnimationFrame(frame);
     document
       .querySelectorAll(".sound-choice.is-playing")
@@ -370,6 +376,7 @@ async function start() {
       const take = selection.ref.take;
       const gainDb =
         take === null ? profile?.full : profile?.takes?.[take || 0];
+      sourceGain = gain;
       gain.gain.value = $("#normalize").checked
         ? 10 ** ((gainDb ?? item.gainDb ?? 0) / 20)
         : 1;
@@ -384,6 +391,7 @@ async function start() {
         gain.disconnect();
         if (source === node) {
           source = null;
+          sourceGain = null;
           document
             .querySelectorAll(".sound-choice.is-playing")
             .forEach((card) => card.classList.remove("is-playing"));
@@ -404,49 +412,88 @@ async function start() {
       tick();
     });
   }
-  async function play(list) {
+  function updateLibraryControls() {
+    const active = Boolean(libraryPlayback);
+    $("#library-play-all").textContent = active
+      ? "■ Stop all"
+      : `▶ Play all ${libraryMatches.length}`;
+    $("#library-play-all").disabled = !active && !libraryMatches.length;
+    $("#library-play-all").setAttribute("aria-pressed", String(active));
+    $("#library-queue").textContent = active
+      ? `${libraryPlayback.index + 1} / ${libraryPlayback.total} full recordings${libraryPlayback.failed ? ` · ${libraryPlayback.failed} skipped` : ""}`
+      : `${libraryMatches.length} full recordings · ${time(libraryMatches.reduce((sum, item) => sum + item.duration, 0))}`;
+  }
+  async function play(list, { libraryBatch = false } = {}) {
     halt();
     const ticket = request;
     const abort = new AbortController();
     controller = abort;
+    const batch = libraryBatch
+      ? { index: 0, total: list.length, failed: 0 }
+      : null;
+    libraryPlayback = batch;
+    updateLibraryControls();
     try {
-      tapStarted = performance.now();
       if (context?.state !== "running") await unlock();
       audioEnabled = true;
-      for (const ref of list) {
+      for (let index = 0; index < list.length; index++) {
         if (ticket !== request) return;
-        const item = byId.get(ref.id);
+        const ref = list[index],
+          item = byId.get(ref.id);
         if (!item) throw Error("Sound not found");
-        $("#playing").textContent = `Loading ${pretty(item.name)}…`;
-        const buffer = cache.peek(item.id) || (await getBuffer(item));
-        updateReady();
-        if (ticket !== request) return;
-        const take = ref.take === null ? null : item.takes?.[ref.take || 0];
-        const start = take?.start || 0,
-          duration = Math.min(
+        const prefix = batch ? `${index + 1}/${list.length} · ` : "";
+        if (batch) {
+          batch.index = index;
+          updateLibraryControls();
+        }
+        try {
+          tapStarted = performance.now();
+          $("#playing").textContent = `${prefix}Loading ${pretty(item.name)}…`;
+          const buffer = cache.peek(item.id) || (await getBuffer(item));
+          if (ticket !== request) return;
+          updateReady();
+          const take = ref.take === null ? null : item.takes?.[ref.take || 0];
+          const start = take?.start || 0;
+          const duration = Math.min(
             take?.duration || buffer.duration,
             buffer.duration - start,
           );
-        selection = { buffer, start, duration, ref };
-        playingId = item.id;
-        $("#seek").max = duration;
-        $("#seek").value = 0;
-        $("#seek").disabled = false;
-        $("#playing").textContent =
-          `${pretty(item.name)}${take && item.takes.length > 1 ? ` · take ${(ref.take || 0) + 1}` : ""}`;
-        drawWave(buffer);
-        await startNode(buffer, start, duration, 0, ticket);
+          selection = { buffer, start, duration, ref };
+          playingId = item.id;
+          $("#seek").max = duration;
+          $("#seek").value = 0;
+          $("#seek").disabled = false;
+          $("#playing").textContent =
+            `${prefix}${pretty(item.name)}${take && item.takes.length > 1 ? ` · take ${(ref.take || 0) + 1}` : ""}`;
+          drawWave(buffer);
+          // Decode one recording ahead, rather than the whole collection.
+          if (batch && index + 1 < list.length)
+            void getBuffer(byId.get(list[index + 1].id)).catch(() => {});
+          await startNode(buffer, start, duration, 0, ticket);
+        } catch (error) {
+          if (!batch) throw error;
+          if (ticket !== request) return;
+          batch.failed++;
+          updateLibraryControls();
+        }
       }
       if (ticket === request) {
         cancelAnimationFrame(frame);
         $("#seek").value = selection?.duration || 0;
         $("#time").textContent =
           `${time(selection?.duration || 0)} / ${time(selection?.duration || 0)}`;
-        $("#playing").textContent += " · finished";
+        $("#playing").textContent = batch
+          ? `Finished ${list.length - batch.failed}/${list.length} recordings${batch.failed ? ` · ${batch.failed} skipped` : ""}`
+          : `${$("#playing").textContent} · finished`;
       }
     } catch (error) {
       if (ticket === request)
         $("#playing").textContent = `${error.message}. Tap again to retry.`;
+    } finally {
+      if (ticket === request) {
+        libraryPlayback = null;
+        updateLibraryControls();
+      }
     }
   }
   $("#seek").onchange = async (e) => {
@@ -487,7 +534,18 @@ async function start() {
       master.gain.setTargetAtTime(value / 100, context.currentTime, 0.015);
   };
   $("#normalize").onchange = () => {
-    if (selection) play([selection.ref]);
+    if (libraryPlayback) {
+      if (sourceGain && selection) {
+        const profile = playbackLevels.entries[playingId];
+        const take = selection.ref.take;
+        const gainDb =
+          take === null ? profile?.full : profile?.takes?.[take || 0];
+        const value = $("#normalize").checked
+          ? 10 ** ((gainDb ?? byId.get(playingId).gainDb ?? 0) / 20)
+          : 1;
+        sourceGain.gain.setTargetAtTime(value, context.currentTime, 0.01);
+      }
+    } else if (selection) play([selection.ref]);
   };
   function pickUnit(key, audition = false) {
     const list =
@@ -1096,6 +1154,8 @@ async function start() {
           .toLowerCase()
           .includes(q),
     );
+    libraryMatches = items;
+    updateLibraryControls();
     $("#results").textContent =
       `Showing ${Math.min(visibleCount, items.length)} of ${items.length} RECORDINGS · ${items.reduce((sum, x) => sum + (x.takes?.length || 1), 0)} TAKES${only ? " · FAVORITES" : ""}`;
     const root = $("#library-list");
@@ -1195,6 +1255,14 @@ async function start() {
       root.append(more);
     }
   }
+  $("#library-play-all").onclick = () => {
+    if (libraryPlayback) halt();
+    else if (libraryMatches.length)
+      void play(
+        libraryMatches.map((item) => ({ id: item.id, take: null })),
+        { libraryBatch: true },
+      );
+  };
   $("#show-all-recordings").onclick = () => {
     visibleCount = catalog.length;
     renderLibrary();
