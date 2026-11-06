@@ -102,7 +102,8 @@ selection and recorded English Longbow Shoot for attacks. Crossbows use
 Crossbow Shoot; flight and handling recordings remain alternatives.
 Merfolk selection defaults to `clothBelt2` across the roster. Horses and mounted
 units use natural horse vocal `0286` for selection and optional voice; deer/goat
-and undead mounts use it as a proxy. Movement stays the board click.
+mounts use it as a proxy. Skeletal mounts instead keep `item_wood_03`.
+Movement stays the board click.
 Creature selection palettes live in `dist/creature-picks.js`: compact mammals and
 several aquatic beasts use grunt 1; heavy reptiles, crab/tortoise and zombie bears
 use grunt 4. Treants and zombie Shambler/Ghoul retain grunt 4. Leathery fliers use
@@ -116,6 +117,10 @@ label cloth or creaks as animal voices. Attacks remain separate.
 Unit movement defaults to the three archived `select` board-click variations,
 played once per completed move. Wings, cloth, gurgles and creature textures belong
 to selection; terrain tap/contact preferences remain separate.
+Skeletal selection, including hounds, riders, horses and bone dragons, defaults
+to `item_wood_03`; spectral units keep their separate cues. Zombie selection and
+optional voice default to `breath`. Cleaver, Plague carrier, Shambler and Ghoul
+use `grunt_04`; fire-holding casters keep breath even on the larger sprites.
 Personal Use assignments take precedence over these editorial suggestions.
 
 ## Terrain audition edits

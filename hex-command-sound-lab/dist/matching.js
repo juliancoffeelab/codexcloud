@@ -271,7 +271,8 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
   const bear = /^bear(?:-l[23])?$/.test(entity.id);
   const heavyHorror =
     tree ||
-    (faction === "zombies" && /^zombie-(shambler|ghoul)$/.test(entity.id));
+    (faction === "zombies" &&
+      /^zombie-(cleaver|plague-carrier|shambler|ghoul)$/.test(entity.id));
   const vocalStarter = heavyHorror
     ? creature(/^grunt_04$/)
     : bear
@@ -708,7 +709,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       action.suggested = [palette.sound];
     }
   }
-  if (mounted || horse) {
+  if ((mounted || horse) && !bone) {
     const mountVoice = find("denischardonnet/horse-vocals", /^0286$/);
     for (const action of result) {
       if (!["tap", "voice"].includes(action.key)) continue;
@@ -725,6 +726,30 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       action.caveat = horse
         ? "Natural horse recording; undead mounts use it as a proxy."
         : "Natural horse vocal used as a mount proxy for deer/goat riders.";
+    }
+  }
+  if (bone || faction === "zombies") {
+    const starter = bone
+      ? fx(/^item_wood_03$/)
+      : heavyHorror
+        ? creature(/^grunt_04$/)
+        : creature(/^breath$/);
+    for (const action of result) {
+      if (action.key !== "tap" && action.key !== "voice") continue;
+      const previous = [...action.suggested, ...action.alternatives];
+      action.suggested =
+        bone && action.key === "voice" ? [] : starter.map((item) => item.id);
+      action.alternatives = [
+        ...new Set([...previous, ...starter.map((item) => item.id)]),
+      ].filter((id) => !action.suggested.includes(id));
+      action.description = bone
+        ? "Dry skeletal item-wood contact for selection."
+        : heavyHorror
+          ? "Grunt 4 for bulky zombie melee/carrier bodies."
+          : "Breath for ordinary zombies and fire-holding casters.";
+      action.caveat = bone
+        ? "Wood is a bone-contact proxy, not a creature voice."
+        : "Designed creature vocal; fire-holding casters keep breath regardless of size.";
     }
   }
   return result;
