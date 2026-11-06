@@ -48,7 +48,7 @@ class PlaybackLevels(unittest.TestCase):
             self.assertEqual(len(profile["takes"]), len(item.get("takes") or [None]))
             for gain, measurement in [(profile["full"], stats["full"]), *zip(profile["takes"], stats["takes"])]:
                 self.assertTrue(math.isfinite(gain))
-                if item.get("derivedFrom"):
+                if item.get("preserveLevel", item.get("derivedFrom")):
                     self.assertEqual(gain, 0, item["id"])
                 elif item["pack"] == "current":
                     reference = json.loads((ROOT / "loudness-reference.json").read_text())

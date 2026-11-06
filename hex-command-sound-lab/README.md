@@ -102,7 +102,7 @@ node scripts/check-audio-cache.mjs
 
 Library's **Play all N** queues every recording matching the current filters and
 favorites, including entries beyond the 60-row display limit. With no filters this
-is all 532 complete recordings (about 20:13). Each full source plays once; take
+is all 537 complete recordings (about 20:15). Each full source plays once; take
 ranges are not added again. The queue is a snapshot, so changing filters while it
 plays changes the next Play all selection, not the running order.
 
@@ -157,7 +157,7 @@ retention of quiet edits and the original game's relative gains.
 `dist/weapon-selection.js` names the specific exceptions to material defaults:
 Human scouts/ranger/shadowblade and elven archers/two-knifers use dagger handling;
 human and dwarven crossbowmen/arbalesters share archer nocking. Elven swordsmen
-use Sabre Draw Fast; jumpers use Spear Swing as a throwing proxy. Dwarven
+use Sabre Draw Fast; jumpers use Crossbow Bolt Passby as a projectile proxy. Dwarven
 arquebusiers use a metal latch mechanism proxy. Slingers use leather pouch
 handling, not a claimed sling recording. Existing weapon/material alternatives
 remain available. These rules only change selection. Ordinary infantry,
@@ -173,15 +173,15 @@ and impact recordings remain available. Bow users have nocking candidates for
 selection and recorded English Longbow Shoot for attacks. Crossbows use
 Crossbow Shoot; flight and handling recordings remain alternatives.
 Merfolk selection defaults to `clothBelt2` across the roster. Horses and mounted
-units use natural horse vocal `0286` for selection and optional voice; deer/goat
+units use the trimmed `0286` horse burst for selection and optional voice; deer/goat
 mounts use it as a proxy. Skeletal mounts instead keep `item_wood_03`.
 Movement stays the board click.
 Creature selection palettes live in `dist/creature-picks.js`: compact mammals and
-several aquatic beasts use grunt 1; heavy reptiles, crab/tortoise and zombie bears
+some aquatic beasts use grunt 1; heavy reptiles, crab/tortoise and zombie bears
 use grunt 4. Treants and zombie Shambler/Ghoul retain grunt 4. Leathery fliers use
 cloth 2, birds/gryphons cloth 3, snakes a quiet saturated clothBelt2, octopus a
-soft gurgle, spiders `bug_01` with the quiet creak as an alternative. Wasps offer designed insect
-clips and arrow fletching as unconfirmed buzz candidates. These are audition
+soft gurgle, wasps use `alien_03`, spiders `alien_04`, and rays `alien_02`. Previous bugs,
+grunt and creak options remain alternatives. These are audition
 proxies, not authentic species recordings. Breath is restricted to zombie
 choices; cloth 1 is excluded from unit action choices. Originals remain in the
 full library. Wing/contact palettes apply to selection; vocal slots do not
@@ -194,6 +194,30 @@ to `item_wood_03`; spectral units keep their separate cues. Zombie selection and
 optional voice default to `breath`. Cleaver, Plague carrier, Shambler and Ghoul
 use `grunt_04`; fire-holding casters keep breath even on the larger sprites.
 Personal Use assignments take precedence over these editorial suggestions.
+
+## Current audition curation
+
+`curation-notes.json` records the user's approved picks, review families and proxies
+and is downloadable from Sources. Horse 0286 has a separate 0.205–0.610 s cut;
+ghosts use Grunt 2 faded out at 0.360 s before the scratchy tail. These trim-only
+edits are level-matched like other sources (`preserveLevel: false`); the new quiet
+filtered/distorted Book 03 forest cue preserves its deliberately low level.
+
+Axe/polearm and spear attacks now use isolated axe/katana and spear/sabre contacts.
+Near-silent recorded Swing sessions remain in Library but are excluded from unit
+suggestions. Bow releases prefer Scythian Recurve Shoot, with English Longbow
+Shoot retained; crossbows also suggest Bolt Passby. Fire attacks use Spell Fire 07,
+physical staff contacts Wood 05, and sling release Book Close as a proxy.
+
+Skeletons have a collapsed **Death candidate** for Eat 1; the human knight has Metal
+Pot 3. These do not add deaths to gameplay or alter Hurt. Move offers Wood 04 as a
+trial alternative and retains the original board click. Mining/Plank/Plate, creaks
+and other blade contacts remain review candidates. Existing originals and personal
+choices remain available. A one-time backed-up migration rebinds saved raw 0286
+mount cues to the trim, replaces old ghost cloth/leather choices, and retires
+explicitly rejected saved Swing assignments. Old curated ruins/grove magic
+assignments are rebound to the newly requested hill/magic routing; unrelated
+personal choices are retained.
 
 ## Terrain audition edits
 
@@ -209,8 +233,8 @@ presets keep related tiles consistent. Current starters include:
 | Keep | Quiet light-metal contact |
 | Fort | Wood, approximately matched to Keep |
 | Marsh | Existing water or a heavily softened burble |
-| Ruins | Existing hill wind or very quiet magic |
-| Sacred grove | Soft magic |
+| Ruins | Existing hill wind |
+| Sacred grove | Former quiet ruins magic |
 | Ferry / landing / water | Existing generated water |
 | House / hill monastery / church | Quiet door contact |
 | Village | Existing village cue |

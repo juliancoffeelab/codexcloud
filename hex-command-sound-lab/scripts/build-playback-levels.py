@@ -40,7 +40,7 @@ def main():
         stats = measured[item["id"]]
         if hashlib.sha256((ROOT / "dist" / item["path"]).read_bytes()).hexdigest() != stats["listeningSha256"]:
             raise ValueError(f"Listening file changed: {item['id']}")
-        preserve = bool(item.get("derivedFrom"))
+        preserve = bool(item.get("preserveLevel", item.get("derivedFrom")))
         if preserve:
             full = 0
             takes = [0 for take in stats["takes"]]

@@ -1,6 +1,7 @@
-import { weaponSelection } from "./weapon-selection.js?v=weapon-selection-1";
-import { creaturePick } from "./creature-picks.js?v=spider-bug-1";
-import { terrainPicks } from "./terrain-picks.js?v=terrain-batch-1";
+import { applyCuratedPicks } from "./curation-picks.js?v=curation-1";
+import { weaponSelection } from "./weapon-selection.js?v=curation-1";
+import { creaturePick } from "./creature-picks.js?v=curation-1";
+import { terrainPicks } from "./terrain-picks.js?v=curation-1";
 // Explicit semantic families keep mechanical actions separate from animal voices.
 // Recommendations are curated source IDs; alternatives include every matching recording.
 export function buildActions(entity, catalog, { extras = false } = {}) {
@@ -18,6 +19,8 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
     find("still-north-media/weapon-textures", pattern);
   const contact = (pattern) =>
     find("still-north-media/weapon-impacts", pattern);
+  const edited = (name) =>
+    catalog.filter((sound) => sound.id === `edits/${name}`);
   const old = (family) => find("current", new RegExp(`^${family}-[123]$`));
   const row = (
     key,
@@ -419,7 +422,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         weapon(/^Crossbow Shoot$|^Crossbow Bolt (Pass|Passby|Approach)$/),
         old("attack-bow"),
       );
-      suggested = weapon(/^Crossbow Shoot$/);
+      suggested = weapon(/^Crossbow Shoot$|^Crossbow Bolt Passby$/);
       note = "Recorded crossbow releases, with flight layers as alternatives.";
     } else if (/bow/.test(name)) {
       possible = union(
@@ -429,12 +432,15 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         old("attack-bow"),
       );
       possible = union(possible, bowHandling);
-      suggested = weapon(/^English Longbow Shoot$/);
+      suggested = union(
+        weapon(/^Scythian Recurve Shoot$/),
+        weapon(/^English Longbow Shoot$/),
+      );
       note =
         "Recorded bow release; arrow flight and nocking remain alternatives.";
     } else if (/fire/.test(name)) {
       possible = fire;
-      suggested = fx(/^spell_fire_0[12]$/);
+      suggested = fx(/^spell_fire_07$/);
       note = "Designed fire attack, with crackle layers as alternatives.";
     } else if (/grave|corruption|mire|soul/.test(name)) {
       possible = union(dark, magic, fx(/^creature_slime/));
@@ -469,8 +475,9 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         contact(/Axe|Spear/),
         old("attack-melee"),
       );
-      suggested = weapon(/^Axe Swing$/);
-      note = "Axe / polearm movement recordings.";
+      suggested = edited("axe-katana-one-shot-v1");
+      note =
+        "A single approved axe/katana blade contact; swing sessions are excluded.";
     } else if (/spear|lance|trident|harpoon/.test(name)) {
       possible = union(
         weapon(/^Spear Swing$/),
@@ -478,16 +485,18 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         old("attack-melee"),
         /harpoon/.test(name) ? weapon(/^Crossbow Bolt (Pass|Approach)$/) : [],
       );
-      suggested = weapon(/^Spear Swing$/);
-      note = "Recorded spear movement; harpoon flight is a projectile proxy.";
+      suggested = edited("spear-sabre-one-shot-v1");
+      note =
+        "A single approved spear/sabre contact; harpoon flight stays a proxy alternative.";
     } else if (/axe/.test(name)) {
       possible = union(
         weapon(/^(Axe|Sabre) Swing$/),
         contact(/Axe/),
         old("attack-melee"),
       );
-      suggested = weapon(/^Axe Swing$/);
-      note = "Recorded axe swing.";
+      suggested = edited("axe-katana-one-shot-v1");
+      note =
+        "A single approved axe/katana contact instead of the near-silent swing.";
     } else if (/mace|hammer|club|pickaxe/.test(name)) {
       possible = union(
         contact(/^Mace /),
@@ -500,8 +509,12 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         "Blunt or mining contacts; these are contact layers, not a complete attack sequence.";
     } else if (/staff|bough/.test(name)) {
       possible = wood;
-      suggested = material(/^impactWood_medium_00[01]$/);
-      note = "Wood contact for a staff or bough.";
+      suggested = /staff/.test(name)
+        ? fx(/^wood_05$/)
+        : material(/^impactWood_medium_00[01]$/);
+      note = /staff/.test(name)
+        ? "Wood 05 for the physical staff contact, separate from casting."
+        : "Wood contact for a bough.";
     } else if (/shield/.test(name)) {
       possible = union(material(/^impactPlate|^impactWood/), contact(/Haft/));
       suggested = material(/^impactPlate_medium_00[01]$/);
@@ -511,11 +524,14 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         weapon(/Arrow (Pass|Approach)$|Bolt (Pass|Approach)$/),
         fx(/^stones_|^item_stone/),
       );
-      suggested = /stone/.test(name)
-        ? fx(/^stones_01$/)
-        : weapon(/^Scythian Recurve Arrow Pass$/);
-      note =
-        "Projectile flight or stone contact; texture proxies for this weapon.";
+      suggested = /sling/.test(name)
+        ? rpg(/^bookClose$/)
+        : /stone/.test(name)
+          ? fx(/^stones_01$/)
+          : weapon(/^Scythian Recurve Arrow Pass$/);
+      note = /sling/.test(name)
+        ? "Book close as a sling-release texture proxy."
+        : "Projectile flight or stone contact; texture proxies for this weapon.";
     } else if (
       /claw|fang|bite|beak|talon|sting|pincer|tusk|grasp|trample|hoof|antler|tail|tentacle/.test(
         name,
@@ -699,7 +715,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       action.description = palette.note;
       action.caveat = "Audition texture, not an authentic species recording.";
     }
-    if (action.key === "voice" && !/grunt_/.test(palette.sound)) {
+    if (action.key === "voice" && !/(grunt_|alien_)/.test(palette.sound)) {
       action.suggested = [];
       action.caveat =
         "No species-specific voice selected; selection uses a handling texture.";
@@ -728,7 +744,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       "Weapon/equipment handling for selection; attack and hit cues stay separate.";
   }
   if ((mounted || horse) && !bone) {
-    const mountVoice = find("denischardonnet/horse-vocals", /^0286$/);
+    const mountVoice = edited("horse-0286-trim-v1");
     for (const action of result) {
       if (!["tap", "voice"].includes(action.key)) continue;
       const previous = [...action.suggested, ...action.alternatives];
@@ -739,8 +755,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
           ...find("denischardonnet/horse-vocals", /028/).map((item) => item.id),
         ]),
       ].filter((id) => !action.suggested.includes(id));
-      action.description =
-        "0286 horse vocal for selecting horses and mounted units.";
+      action.description = "0286 horse burst with its quiet lead-in trimmed.";
       action.caveat = horse
         ? "Natural horse recording; undead mounts use it as a proxy."
         : "Natural horse vocal used as a mount proxy for deer/goat riders.";
@@ -770,5 +785,6 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         : "Designed creature vocal; fire-holding casters keep breath regardless of size.";
     }
   }
+  applyCuratedPicks(entity, result, catalog, { bone, spirit });
   return result;
 }

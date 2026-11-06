@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=weapon-selection-1";
+import { buildActions } from "./matching.js?v=curation-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -15,15 +15,16 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=map-dock-1"),
+    loadJSON("catalog.json?v=curation-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json"),
-    loadJSON("playback-levels.json?v=take-levels-1"),
+    loadJSON("playback-levels.json?v=curation-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
     "recorded-foley": "Recorded Foley",
     "processed-foley": "Processed Foley",
+    "processed-natural-recording": "Edited natural recording",
     "processed-effect": "Processed effect",
     "recorded-weapons": "Recorded weapons",
     "natural-animal-recording": "Natural animal recording",
@@ -807,6 +808,7 @@ async function start() {
             ...rows.filter(
               (row) => row.key === (unitTapMode === "hurt" ? "hit" : "tap"),
             ),
+            ...rows.filter((row) => row.key === "death"),
             ...rows.filter((row) => row.key === "move"),
           ]
         : rows;
@@ -851,7 +853,10 @@ async function start() {
               ? "keep"
               : "recruit";
       const trigger = el("button", "action-trigger");
-      trigger.innerHTML = iconMarkup(symbol);
+      trigger.innerHTML =
+        action.key === "death" ? speakerMarkup() : iconMarkup(symbol);
+      if (action.key === "death")
+        trigger.append(el("span", "weapon-label", "Death"));
       if (attack) trigger.append(el("span", "weapon-label", attack.name));
       trigger.title = label;
 
@@ -963,9 +968,11 @@ async function start() {
           "",
           action.key === "move"
             ? "Move · shared board click"
-            : unitTapMode === "hurt"
-              ? "Hurt alternatives"
-              : "Selection alternatives",
+            : action.key === "death"
+              ? "Death candidate"
+              : unitTapMode === "hurt"
+                ? "Hurt alternatives"
+                : "Selection alternatives",
         );
         details.append(summary, row);
         details.open = secondaryOpen.has(key);
@@ -1387,6 +1394,76 @@ async function start() {
   $("#total").textContent = catalog.length;
   $("#library-count").textContent = catalog.length;
   drawWave();
+  // Rebind the explicitly trimmed horse cue and retire rejected saved swings once.
+  try {
+    if (!localStorage.getItem("hex-sound-curation-migration-v1")) {
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
+        const sound = byId.get(choice.id);
+        if (!entity || !sound) continue;
+        if (entity.kind === "terrain") {
+          const oldMagic = [
+            "edits/ruins-magic-soft-v1",
+            "edits/grove-magic-soft-v1",
+          ];
+          if (key === "terrain/ruins/tap" && oldMagic.includes(choice.id)) {
+            backup[key] = choice;
+            delete assignments[key];
+          } else if (
+            key === "terrain/grove/tap" &&
+            choice.id === "edits/grove-magic-soft-v1"
+          ) {
+            backup[key] = choice;
+            assignments[key] = {
+              ...choice,
+              id: "edits/ruins-magic-soft-v1",
+              take: 0,
+            };
+          }
+          continue;
+        }
+        if (entity.kind !== "unit") continue;
+        if (
+          choice.id === "denischardonnet/horse-vocals/0286.mp3" &&
+          /\/(tap|voice)$/.test(key)
+        ) {
+          backup[key] = choice;
+          assignments[key] = {
+            ...choice,
+            id: "edits/horse-0286-trim-v1",
+            take: 0,
+          };
+        } else if (
+          /^(ghost|spectre|wraith)$/.test(entity.id) &&
+          /\/(tap|voice)$/.test(key) &&
+          sound.pack === "rpg-audio" &&
+          /^(cloth[234]|handleSmallLeather[2]?)$/.test(sound.name)
+        ) {
+          backup[key] = choice;
+          assignments[key] = {
+            ...choice,
+            id: "edits/ghost-grunt-02-trim-v1",
+            take: 0,
+          };
+        } else if (
+          sound.pack === "still-north-media/weapon-textures" &&
+          / Swing$/.test(sound.name)
+        ) {
+          backup[key] = choice;
+          delete assignments[key];
+        }
+      }
+      if (Object.keys(backup).length) {
+        localStorage.setItem(
+          "hex-sound-before-curation-v1",
+          JSON.stringify(backup),
+        );
+        saveAssignments();
+      }
+      localStorage.setItem("hex-sound-curation-migration-v1", "true");
+    }
+  } catch {}
   setFaction(activeFaction.id);
   // Decode ahead while suspended. The first ordinary tap resumes audio and plays.
   try {

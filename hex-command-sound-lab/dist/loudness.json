@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "04bc90d2d1e553de62f1f6577f55c6c555640b4743952b76753f940c859445f7",
+  "catalogSha256": "e7b9757f50e57cb9cf484d8b9047eb0c6df77743c685d165b71fbf7ae33f246c",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -31167,6 +31167,205 @@
           "playbackStrongest50msRmsDbFS": -31.28,
           "decodedSamplesAtOrAboveFullScale": 0,
           "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/horse-0286-trim-v1",
+      "name": "0286 \u00b7 lead-in trimmed",
+      "pack": "audition-edits",
+      "path": "audio/listening/fa9d01fbd0f9fedcecda.mp3",
+      "listeningSha256": "b428a18b3299984f4855ffd4cdc2a04bfae6c2b40fba9f25fe638fb028a47d5d",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -11.91,
+      "full": {
+        "duration": 0.405,
+        "peakDbFS": -1.61,
+        "rmsDbFS": -19.16,
+        "strongest50msRmsDbFS": -14.38,
+        "leadingBelow55Ms": 0.4,
+        "playbackPeakDbFS": -13.52,
+        "playbackRmsDbFS": -31.07,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -11.91,
+          "duration": 0.405,
+          "peakDbFS": -1.61,
+          "rmsDbFS": -19.16,
+          "strongest50msRmsDbFS": -14.38,
+          "leadingBelow55Ms": 0.4,
+          "playbackPeakDbFS": -13.52,
+          "playbackRmsDbFS": -31.07,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/ghost-grunt-02-trim-v1",
+      "name": "Ghost \u00b7 Grunt 2 without scratchy ending",
+      "pack": "audition-edits",
+      "path": "audio/listening/1a084139e7633f027ebf.mp3",
+      "listeningSha256": "4c2f0f9132b89652ab237870fac4c3c8212dee6638b06a8c0b4ba755c678f462",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -16.57,
+      "full": {
+        "duration": 0.36,
+        "peakDbFS": -5.64,
+        "rmsDbFS": -12.8,
+        "strongest50msRmsDbFS": -9.72,
+        "leadingBelow55Ms": 14.7,
+        "playbackPeakDbFS": -22.21,
+        "playbackRmsDbFS": -29.37,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -16.57,
+          "duration": 0.36,
+          "peakDbFS": -5.64,
+          "rmsDbFS": -12.8,
+          "strongest50msRmsDbFS": -9.72,
+          "leadingBelow55Ms": 14.7,
+          "playbackPeakDbFS": -22.21,
+          "playbackRmsDbFS": -29.37,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/axe-katana-one-shot-v1",
+      "name": "Axe\u2013katana \u00b7 single contact",
+      "pack": "audition-edits",
+      "path": "audio/listening/168b44e9a7ac94cf5e37.mp3",
+      "listeningSha256": "9fa634e1695e12eec3b224db4d977558c9479d351bbdbaece11426c96dd7c741",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -4.49,
+      "full": {
+        "duration": 0.2563,
+        "peakDbFS": -4.23,
+        "rmsDbFS": -28.62,
+        "strongest50msRmsDbFS": -21.8,
+        "leadingBelow55Ms": 10.1,
+        "playbackPeakDbFS": -8.72,
+        "playbackRmsDbFS": -33.11,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -4.49,
+          "duration": 0.2563,
+          "peakDbFS": -4.23,
+          "rmsDbFS": -28.62,
+          "strongest50msRmsDbFS": -21.8,
+          "leadingBelow55Ms": 10.1,
+          "playbackPeakDbFS": -8.72,
+          "playbackRmsDbFS": -33.11,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/spear-sabre-one-shot-v1",
+      "name": "Spear\u2013sabre \u00b7 single contact",
+      "pack": "audition-edits",
+      "path": "audio/listening/be8030c384b90d9840b8.mp3",
+      "listeningSha256": "f360752c5fd20f763a795ff13f468eb57885ee2769e0db5312e5708be66c03f4",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -2.69,
+      "full": {
+        "duration": 0.3347,
+        "peakDbFS": -5.49,
+        "rmsDbFS": -28.95,
+        "strongest50msRmsDbFS": -23.6,
+        "leadingBelow55Ms": 10.5,
+        "playbackPeakDbFS": -8.18,
+        "playbackRmsDbFS": -31.64,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -2.69,
+          "duration": 0.3347,
+          "peakDbFS": -5.49,
+          "rmsDbFS": -28.95,
+          "strongest50msRmsDbFS": -23.6,
+          "leadingBelow55Ms": 10.5,
+          "playbackPeakDbFS": -8.18,
+          "playbackRmsDbFS": -31.64,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/forest-book-03-soft-v1",
+      "name": "Forest \u00b7 distorted quiet Book 03",
+      "pack": "audition-edits",
+      "path": "audio/listening/c9032102cc065e129cae.mp3",
+      "listeningSha256": "64278801ddb42a3261f8338d9476a9ea828cd5f89b539f0be7fa52c46415c717",
+      "intentionallyQuietEdit": true,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -5.19,
+      "full": {
+        "duration": 1.0971,
+        "peakDbFS": -27.18,
+        "rmsDbFS": -38.46,
+        "strongest50msRmsDbFS": -34.81,
+        "leadingBelow55Ms": 1.4,
+        "playbackPeakDbFS": -32.37,
+        "playbackRmsDbFS": -43.65,
+        "playbackStrongest50msRmsDbFS": -40.0,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": [
+          "quiet-at-playback-setting"
+        ]
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -5.19,
+          "duration": 1.0971,
+          "peakDbFS": -27.18,
+          "rmsDbFS": -38.46,
+          "strongest50msRmsDbFS": -34.81,
+          "leadingBelow55Ms": 1.4,
+          "playbackPeakDbFS": -32.37,
+          "playbackRmsDbFS": -43.65,
+          "playbackStrongest50msRmsDbFS": -40.0,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": [
+            "quiet-at-playback-setting"
+          ]
         }
       ]
     }

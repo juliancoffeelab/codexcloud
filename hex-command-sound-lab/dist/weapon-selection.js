@@ -30,9 +30,9 @@ export function weaponSelection(entity) {
   if (/^elf-jumper-l[23]$/.test(id))
     return {
       pack: "still-north-media/weapon-textures",
-      suggested: /^Spear Swing$/,
-      alternatives: /^Spear Swing$/,
-      note: "Spear swing as a throwing-motion proxy for jumper selection; no dedicated spear-throw recording is claimed.",
+      suggested: /^Crossbow Bolt Passby$/,
+      alternatives: /^Crossbow Bolt (Pass|Passby|Approach)$/,
+      note: "Bolt passby as a throwing/projectile proxy for jumper selection; no spear throw is claimed.",
     };
   if (/^dwarf-arquebus-l[23]$/.test(id))
     return {

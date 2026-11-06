@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "04bc90d2d1e553de62f1f6577f55c6c555640b4743952b76753f940c859445f7",
+  "catalogSha256": "e7b9757f50e57cb9cf484d8b9047eb0c6df77743c685d165b71fbf7ae33f246c",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -4950,6 +4950,46 @@
       "gameRelativeGain": false
     },
     "edits/octopus-gurgle-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/horse-0286-trim-v1": {
+      "full": -6.72,
+      "takes": [
+        -6.72
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "edits/ghost-grunt-02-trim-v1": {
+      "full": -11.38,
+      "takes": [
+        -11.38
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "edits/axe-katana-one-shot-v1": {
+      "full": 0.7,
+      "takes": [
+        0.7
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "edits/spear-sabre-one-shot-v1": {
+      "full": 2.5,
+      "takes": [
+        2.5
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "edits/forest-book-03-soft-v1": {
       "full": 0,
       "takes": [
         0

@@ -1739,3 +1739,13 @@ edits/spider-creak-soft-v1,Spider · tiny filtered creak,audition-edits,full,,0.
 edits/spider-creak-soft-v1,Spider · tiny filtered creak,audition-edits,take-1,0,0.9593,-33.72,-50.63,-41.62,-5.19,-38.91,-55.82,-46.81,254.3,quiet-at-playback-setting;leading-quiet-over-100ms,True
 edits/octopus-gurgle-soft-v1,Octopus · soft gurgle,audition-edits,full,,0.9916,-13.77,-32.8,-26.09,-5.19,-18.96,-37.99,-31.28,59.6,,True
 edits/octopus-gurgle-soft-v1,Octopus · soft gurgle,audition-edits,take-1,0,0.9916,-13.77,-32.8,-26.09,-5.19,-18.96,-37.99,-31.28,59.6,,True
+edits/horse-0286-trim-v1,0286 · lead-in trimmed,audition-edits,full,,0.405,-1.61,-19.16,-14.38,-11.91,-13.52,-31.07,-26.29,0.4,,False
+edits/horse-0286-trim-v1,0286 · lead-in trimmed,audition-edits,take-1,0,0.405,-1.61,-19.16,-14.38,-11.91,-13.52,-31.07,-26.29,0.4,,False
+edits/ghost-grunt-02-trim-v1,Ghost · Grunt 2 without scratchy ending,audition-edits,full,,0.36,-5.64,-12.8,-9.72,-16.57,-22.21,-29.37,-26.29,14.7,,False
+edits/ghost-grunt-02-trim-v1,Ghost · Grunt 2 without scratchy ending,audition-edits,take-1,0,0.36,-5.64,-12.8,-9.72,-16.57,-22.21,-29.37,-26.29,14.7,,False
+edits/axe-katana-one-shot-v1,Axe–katana · single contact,audition-edits,full,,0.2563,-4.23,-28.62,-21.8,-4.49,-8.72,-33.11,-26.29,10.1,,False
+edits/axe-katana-one-shot-v1,Axe–katana · single contact,audition-edits,take-1,0,0.2563,-4.23,-28.62,-21.8,-4.49,-8.72,-33.11,-26.29,10.1,,False
+edits/spear-sabre-one-shot-v1,Spear–sabre · single contact,audition-edits,full,,0.3347,-5.49,-28.95,-23.6,-2.69,-8.18,-31.64,-26.29,10.5,,False
+edits/spear-sabre-one-shot-v1,Spear–sabre · single contact,audition-edits,take-1,0,0.3347,-5.49,-28.95,-23.6,-2.69,-8.18,-31.64,-26.29,10.5,,False
+edits/forest-book-03-soft-v1,Forest · distorted quiet Book 03,audition-edits,full,,1.0971,-27.18,-38.46,-34.81,-5.19,-32.37,-43.65,-40.0,1.4,quiet-at-playback-setting,True
+edits/forest-book-03-soft-v1,Forest · distorted quiet Book 03,audition-edits,take-1,0,1.0971,-27.18,-38.46,-34.81,-5.19,-32.37,-43.65,-40.0,1.4,quiet-at-playback-setting,True

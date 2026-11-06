@@ -274,6 +274,89 @@
         "lowpass=f=3200",
         "volume=-10dB"
       ]
+    },
+    {
+      "id": "edits/horse-0286-trim-v1",
+      "sourceId": "denischardonnet/horse-vocals/0286.mp3",
+      "sourceHash": "9801f871af4f6805842457c4c5578daf42725fe1c1cc5dec40a2a6c1ee2bc12d",
+      "name": "0286 \u00b7 lead-in trimmed",
+      "intent": "Trim the first 205 ms and the quiet tail; keep the main horse burst. Original retained. The user identified unwanted voice in the lead-in; this cut removes that region rather than attempting voice separation.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.205:duration=0.405",
+        "asetpts=PTS-STARTPTS",
+        "volume=-3dB",
+        "afade=t=in:d=0.004",
+        "afade=t=out:st=0.393:d=0.012"
+      ]
+    },
+    {
+      "id": "edits/ghost-grunt-02-trim-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/grunt_02.ogg",
+      "sourceHash": "76d78154f2f22b3f373bd3ec4ff0edabb459322f72adabfa285b738f37987cbb",
+      "name": "Ghost \u00b7 Grunt 2 without scratchy ending",
+      "intent": "Keep the tonal body of Grunt 2 and fade before the irregular scratchy tail begins. Designed creature voice used as a ghost proxy.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0:duration=0.36",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.004",
+        "afade=t=out:st=0.31:d=0.05"
+      ]
+    },
+    {
+      "id": "edits/axe-katana-one-shot-v1",
+      "sourceId": "still-north-media/weapon-impacts/part-1/Axe Katana Blade on Blade.wav",
+      "sourceHash": "b49802948f32a82a3fcc3431448341cf0ea94ecc4a0b8c8c196b1340f79c6606",
+      "name": "Axe\u2013katana \u00b7 single contact",
+      "intent": "One isolated blade contact from the approved axe/katana session (second detected take), with short edge fades. Contact proxy, not a swing recording.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=1.1572:duration=0.2563",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.003",
+        "afade=t=out:st=0.2443:d=0.012"
+      ]
+    },
+    {
+      "id": "edits/spear-sabre-one-shot-v1",
+      "sourceId": "still-north-media/weapon-impacts/part-2/Spear Sabre Blade on Blade.wav",
+      "sourceHash": "c971fbe6e7f31bdf6609ff21690e9f33bec70ad47529a46b3a86d9d29e462612",
+      "name": "Spear\u2013sabre \u00b7 single contact",
+      "intent": "One isolated blade contact from the approved spear/sabre session, with short edge fades. Contact proxy, not a swing recording.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.2879:duration=0.3347",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.003",
+        "afade=t=out:st=0.3197:d=0.015"
+      ]
+    },
+    {
+      "id": "edits/forest-book-03-soft-v1",
+      "sourceId": "rubberduck/80-cc0-rpg-sfx/book_03.ogg",
+      "sourceHash": "f72e4af8172ae98eaa350892072120e79eb87f91448b99aeaaf1febe070fbb2e",
+      "name": "Forest \u00b7 distorted quiet Book 03",
+      "intent": "Experimental forest texture from Rubberduck Book 03, lowered in pitch, saturated, filtered and reduced to the existing forest cue level. Not a field recording.",
+      "preserveLevel": true,
+      "filters": [
+        "atrim=start=0.12:duration=0.8",
+        "asetpts=PTS-STARTPTS",
+        "asetrate=35000",
+        "aresample=44100",
+        "highpass=f=180",
+        "volume=14dB",
+        "asoftclip=type=tanh:threshold=0.25:output=0.7",
+        "lowpass=f=2800",
+        "afade=t=in:d=0.012",
+        "afade=t=out:st=0.95:d=0.05",
+        "volume=-12.1dB"
+      ],
+      "levelReference": {
+        "family": "current/terrain-forest",
+        "targetStrongest50msDbFS": -34.81,
+        "method": "Match the median existing forest cue after its game-relative gain at the board default volume; preserve intentional attenuation."
+      }
     }
   ]
 }

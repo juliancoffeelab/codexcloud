@@ -1,0 +1,163 @@
+{
+  "revision": "curation-1",
+  "selection": {
+    "wasp": "alien_03",
+    "spider": "alien_04",
+    "ray": "alien_02",
+    "ghost": "edits/ghost-grunt-02-trim-v1",
+    "living-mounts": "edits/horse-0286-trim-v1"
+  },
+  "terrain": {
+    "forest": "edits/forest-book-03-soft-v1",
+    "grove": "edits/ruins-magic-soft-v1",
+    "ruins": "current/terrain-hill-1..3"
+  },
+  "rejectedDefaults": {
+    "pattern": "recorded weapon-texture Swing sessions",
+    "reason": "User reports insufficient audible content. Retained in full library, removed from unit suggestions and saved swing assignments revert to defaults with a backup."
+  },
+  "groups": [
+    {
+      "title": "Mining, Plank and Plate",
+      "status": "review",
+      "note": "Keep these impact families available for material/terrain auditions; no blanket new default.",
+      "ids": [
+        "impact-sounds/impactMining_000",
+        "impact-sounds/impactMining_001",
+        "impact-sounds/impactMining_002",
+        "impact-sounds/impactMining_003",
+        "impact-sounds/impactMining_004",
+        "impact-sounds/impactPlank_medium_000",
+        "impact-sounds/impactPlank_medium_001",
+        "impact-sounds/impactPlank_medium_002",
+        "impact-sounds/impactPlank_medium_003",
+        "impact-sounds/impactPlank_medium_004",
+        "impact-sounds/impactPlate_heavy_000",
+        "impact-sounds/impactPlate_heavy_001",
+        "impact-sounds/impactPlate_heavy_002",
+        "impact-sounds/impactPlate_heavy_003",
+        "impact-sounds/impactPlate_heavy_004",
+        "impact-sounds/impactPlate_light_000",
+        "impact-sounds/impactPlate_light_001",
+        "impact-sounds/impactPlate_light_002",
+        "impact-sounds/impactPlate_light_003",
+        "impact-sounds/impactPlate_light_004",
+        "impact-sounds/impactPlate_medium_000",
+        "impact-sounds/impactPlate_medium_001",
+        "impact-sounds/impactPlate_medium_002",
+        "impact-sounds/impactPlate_medium_003",
+        "impact-sounds/impactPlate_medium_004"
+      ]
+    },
+    {
+      "title": "Creaks",
+      "status": "review",
+      "note": "Retain for tree/wood alternatives and general review; no invented placement.",
+      "ids": [
+        "rpg-audio/creak1",
+        "rpg-audio/creak2",
+        "rpg-audio/creak3"
+      ]
+    },
+    {
+      "title": "Book close",
+      "status": "sling-default-proxy",
+      "note": "Book-close contact as a sling-release proxy, not a sling recording.",
+      "ids": [
+        "rpg-audio/bookClose"
+      ]
+    },
+    {
+      "title": "Armored death",
+      "status": "death-candidate",
+      "note": "Collapsed knight death candidate; no gameplay death integration.",
+      "ids": [
+        "rpg-audio/metalPot3"
+      ]
+    },
+    {
+      "title": "Skeletal death",
+      "status": "death-candidate",
+      "note": "Collapsed skeletal breakup/death proxy; not a literal bone recording.",
+      "ids": [
+        "rubberduck/80-cc0-creature-sfx/eat_01.ogg"
+      ]
+    },
+    {
+      "title": "Wood staff contact",
+      "status": "physical-staff-default",
+      "note": "Used only for physical staff attacks, separate from spell casts.",
+      "ids": [
+        "rubberduck/80-cc0-rpg-sfx/wood_05.ogg"
+      ]
+    },
+    {
+      "title": "Placed figurine",
+      "status": "movement-alternative",
+      "note": "Trial under Move alternatives; shared original board click remains default.",
+      "ids": [
+        "rubberduck/80-cc0-rpg-sfx/wood_04.ogg"
+      ]
+    },
+    {
+      "title": "Approved blade contacts",
+      "status": "one-shot-defaults",
+      "note": "Separate clean one-shots back axe/polearm and spear contacts. Other blade-on-blade sessions remain material alternatives.",
+      "ids": [
+        "still-north-media/weapon-impacts/part-1/Axe Katana Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Spear Sabre Blade on Blade.wav"
+      ]
+    },
+    {
+      "title": "Other blade contacts",
+      "status": "review",
+      "note": "Mechanical blade-contact candidates, not animal voices.",
+      "ids": [
+        "still-north-media/weapon-impacts/part-1/Axe Katana Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Axe Norse Sword Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Axe Sabre Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Axe Spear Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Dagger Axe Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Dagger Katana Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Dagger Norse Sword Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Dagger Spear Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Norse Sword Katana Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Sabre Katana Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-1/Sabre Norse Sword Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Seax Axe Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Seax Dagger Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Seax Katana Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Seax Norse Sword Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Seax Spear Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Spear Katana Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Spear Norse Sword Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Spear Sabre Blade on Blade.wav",
+        "still-north-media/weapon-impacts/part-2/Spear Spear Blade on Blade.wav"
+      ]
+    },
+    {
+      "title": "Bolt passby",
+      "status": "suggested",
+      "note": "Crossbow attack suggestion and jumper selection projectile proxy.",
+      "ids": [
+        "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav"
+      ]
+    },
+    {
+      "title": "Recurve release",
+      "status": "bow-default",
+      "note": "Preferred bow release; English Longbow Shoot remains suggested.",
+      "ids": [
+        "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav"
+      ]
+    },
+    {
+      "title": "Fire 007",
+      "status": "fire-default",
+      "note": "Preferred designed fire attack.",
+      "ids": [
+        "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg"
+      ]
+    }
+  ]
+}

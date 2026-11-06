@@ -18,7 +18,7 @@ export function creaturePick(entity) {
   if (/^(giant-snake|sea-serpent)(?:-l[23])?$/.test(id))
     return pick(
       "edits/snake-belt-soft-v1",
-      "Quiet, lightly distorted Merfolk belt texture for snake movement.",
+      "Quiet, lightly distorted Merfolk belt texture for snake selection.",
       true,
       ["rpg-audio/clothBelt2"],
     );
@@ -29,13 +29,21 @@ export function creaturePick(entity) {
       true,
       ["rubberduck/80-cc0-creature-sfx/burble_02.ogg"],
     );
+  if (/^ray(?:-l[23])?$/.test(id))
+    return pick(
+      "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
+      "Alien 2 for ray selection.",
+      false,
+      [grunt(1)],
+    );
   if (/^giant-spider(?:-l[23])?$/.test(id))
     return pick(
-      "rubberduck/80-cc0-creature-sfx/bug_01.ogg",
-      "Designed bug texture for spider selection.",
+      "rubberduck/80-cc0-creature-sfx/alien_04.ogg",
+      "Alien 4 as the spider selection starter.",
       true,
       [
         "edits/spider-creak-soft-v1",
+        "rubberduck/80-cc0-creature-sfx/bug_01.ogg",
         "rubberduck/80-cc0-creature-sfx/bug_02.ogg",
         "rubberduck/80-cc0-creature-sfx/bug_03.ogg",
         "rubberduck/80-cc0-creature-sfx/bug_04.ogg",
@@ -45,10 +53,11 @@ export function creaturePick(entity) {
     );
   if (/^giant-wasp(?:-l[23])?$/.test(id))
     return pick(
-      "rubberduck/80-cc0-creature-sfx/bug_01.ogg",
-      "Designed insect texture to audition as a wasp buzz proxy.",
+      "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
+      "Alien 3 as the wasp selection starter.",
       true,
       [
+        "rubberduck/80-cc0-creature-sfx/bug_01.ogg",
         "rubberduck/80-cc0-creature-sfx/bug_02.ogg",
         "rubberduck/80-cc0-creature-sfx/bug_03.ogg",
         "rubberduck/80-cc0-creature-sfx/bug_04.ogg",

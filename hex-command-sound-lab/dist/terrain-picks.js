@@ -12,6 +12,13 @@ const water = cue(original("terrain-water"), "The existing water cue.", [
   "water",
 ]);
 export const terrainPicks = {
+  forest: {
+    tap: cue(
+      [edit("forest-book-03-soft-v1")],
+      "Quiet distorted Book 03 forest texture.",
+      ["wood"],
+    ),
+  },
   road: {
     tap: cue([stone], "Stones 01 for the road.", ["stone"]),
     move: cue([stone], "Stones 01 for road contact.", ["stone"]),
@@ -52,11 +59,7 @@ export const terrainPicks = {
     ),
   },
   ruins: {
-    tap: cue(
-      [...original("terrain-hill"), edit("ruins-magic-soft-v1")],
-      "Hill wind, or a very quiet magical trace.",
-      ["magic", "dark"],
-    ),
+    tap: cue(original("terrain-hill"), "The existing hill wind for ruins."),
   },
   fort: {
     tap: cue(
@@ -67,8 +70,8 @@ export const terrainPicks = {
   },
   grove: {
     tap: cue(
-      [edit("grove-magic-soft-v1")],
-      "A soft magical cue for the sacred grove.",
+      [edit("ruins-magic-soft-v1")],
+      "The former quiet ruins magic for the sacred grove.",
       ["magic"],
     ),
   },

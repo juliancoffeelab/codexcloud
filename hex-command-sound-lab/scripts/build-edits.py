@@ -32,15 +32,19 @@ for recipe in recipes["edits"]:
     duration = len(decoded) / (4 * 44100)
     if duration <= 0:
         raise ValueError(f"Empty rendered edit: {recipe['id']}")
+    preserve = recipe.get("preserveLevel", True)
+    kind = "processed-natural-recording" if original["kind"] == "natural-animal-recording" else "processed-foley" if original["kind"] in ["recorded-foley", "recorded-weapons"] else "processed-effect"
     item = {**original,
         "id": recipe["id"], "name": recipe["name"], "path": path.relative_to(OUT).as_posix(),
-        "pack": "audition-edits", "packLabel": "Audition edits", "kind": "processed-foley" if original["kind"] in ["recorded-foley", "recorded-weapons"] else "processed-effect",
+        "pack": "audition-edits", "packLabel": "Audition edits", "kind": kind,
         "originalKind": original["kind"], "takeMethod": "authored-edit",
         "derivedFrom": original["id"], "processingRecipe": recipe, "duration": round(duration, 4),
         "gainDb": 0, "categories": original.get("categories", ["movement"]),
         "takes": [{"start": 0, "duration": round(duration, 4)}],
-        "notes": recipe["intent"] + " Level matching does not boost this deliberately quiet edit.",
+        "notes": recipe["intent"] + (" Level matching does not boost this deliberately quiet edit." if preserve else " Per-take level matching follows the live-game reference."),
     }
+    if "preserveLevel" in recipe:
+        item["preserveLevel"] = preserve
     result.append(item)
     print(f"Rendered {recipe['id']} from {original['id']}")
 

@@ -78,7 +78,7 @@ def analyze(item, volume_db, normalize, profiles):
     return {
         "id": item["id"], "name": item["name"], "pack": item["pack"], "path": item["path"],
         "listeningSha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-        "intentionallyQuietEdit": bool(item.get("derivedFrom")),
+        "intentionallyQuietEdit": bool(item.get("preserveLevel", item.get("derivedFrom"))),
         "catalogGainDb": item.get("gainDb", 0),
         "combinedPlaybackGainDb": round(applied, 2),
         "full": measure(samples, applied), "takes": takes,
@@ -126,7 +126,7 @@ def main():
     dest.write_text(json.dumps(report, indent=2) + "\n")
     with dest.with_suffix(".csv").open("w", newline="") as handle:
         fields = ["id", "name", "pack", "range", "start", "duration", "peakDbFS", "rmsDbFS", "strongest50msRmsDbFS", "combinedPlaybackGainDb", "playbackPeakDbFS", "playbackRmsDbFS", "playbackStrongest50msRmsDbFS", "leadingBelow55Ms", "flags", "intentionallyQuietEdit"]
-        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore")
+        writer = csv.DictWriter(handle, fieldnames=fields, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         for item in entries:
             for name, measurement in [("full", item["full"]), *[(f"take-{x['take']}", x) for x in item["takes"]]]:
