@@ -6443,8 +6443,10 @@
       "kind": "terrain",
       "name": "Road",
       "role": "road",
-      "artwork": "workbench/terrain/road.png",
-      "description": "Normal movement. No protection."
+      "artwork": "workbench/terrain-portraits/road.png",
+      "description": "Normal movement. No protection.",
+      "portraitFrame": "terrain_road_9__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "plains",
@@ -6452,8 +6454,10 @@
       "kind": "terrain",
       "name": "Plains",
       "role": "plains",
-      "artwork": "workbench/terrain/plains.png",
-      "description": "Normal movement. No protection."
+      "artwork": "workbench/terrain-portraits/plains.png",
+      "description": "Normal movement. No protection.",
+      "portraitFrame": "terrain_plains_layout_0__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "forest",
@@ -6461,8 +6465,10 @@
       "kind": "terrain",
       "name": "Forest",
       "role": "forest",
-      "artwork": "workbench/terrain/forest.png",
-      "description": "Costs 2 movement; ranged damage reduced by 1."
+      "artwork": "workbench/terrain-portraits/forest.png",
+      "description": "Costs 2 movement; ranged damage reduced by 1.",
+      "portraitFrame": "terrain_forest_layout_0__green-forest",
+      "portraitFloor": "green-forest"
     },
     {
       "id": "hill",
@@ -6470,8 +6476,10 @@
       "kind": "terrain",
       "name": "Hills",
       "role": "hill",
-      "artwork": "workbench/terrain/hill.png",
-      "description": "Costs 2 movement; all damage reduced by 1."
+      "artwork": "workbench/terrain-portraits/hill.png",
+      "description": "Costs 2 movement; all damage reduced by 1.",
+      "portraitFrame": "terrain_hill_layout_0__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "water",
@@ -6479,8 +6487,10 @@
       "kind": "terrain",
       "name": "Water",
       "role": "water",
-      "artwork": "workbench/terrain/water.png",
-      "description": "Impassable to land units."
+      "artwork": "workbench/terrain-portraits/water.png",
+      "description": "Impassable to land units.",
+      "portraitFrame": "terrain_water__dark-water",
+      "portraitFloor": "dark-water"
     },
     {
       "id": "bridge",
@@ -6488,8 +6498,10 @@
       "kind": "terrain",
       "name": "Bridge",
       "role": "bridge",
-      "artwork": "workbench/terrain/bridge.png",
-      "description": "A crossing over water. Normal movement; no protection."
+      "artwork": "workbench/terrain-portraits/bridge.png",
+      "description": "A crossing over water. Normal movement; no protection.",
+      "portraitFrame": "terrain_bridge_9__dark-water",
+      "portraitFloor": "dark-water"
     },
     {
       "id": "ford",
@@ -6497,8 +6509,10 @@
       "kind": "terrain",
       "name": "Shallow water",
       "role": "ford",
-      "artwork": "workbench/terrain/ford.png",
-      "description": "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage."
+      "artwork": "workbench/terrain-portraits/ford.png",
+      "description": "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage.",
+      "portraitFrame": "terrain_ford_9_layout_0__shallow-water",
+      "portraitFloor": "shallow-water"
     },
     {
       "id": "village",
@@ -6506,8 +6520,10 @@
       "kind": "terrain",
       "name": "Village",
       "role": "village",
-      "artwork": "workbench/terrain/village.png",
-      "description": "+2 gold per turn. Heals a friendly occupant by 4 HP."
+      "artwork": "workbench/terrain-portraits/village.png",
+      "description": "+2 gold per turn. Heals a friendly occupant by 4 HP.",
+      "portraitFrame": "terrain_village_0__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "keep",
@@ -6515,8 +6531,10 @@
       "kind": "terrain",
       "name": "Keep",
       "role": "keep",
-      "artwork": "workbench/terrain/keep.png",
-      "description": "Your commander can recruit into adjacent empty hexes. Blocks ranged attacks through the tile."
+      "artwork": "workbench/terrain-portraits/keep.png",
+      "description": "Your commander can recruit into adjacent empty hexes. Blocks ranged attacks through the tile.",
+      "portraitFrame": "terrain_keep__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "marsh",
@@ -6524,8 +6542,10 @@
       "kind": "terrain",
       "name": "Marsh",
       "role": "marsh",
-      "artwork": "workbench/terrain/marsh.png",
-      "description": "Mud slows land units and exposes them to 1 extra damage. Merfolk move easily here and take 1 less damage."
+      "artwork": "workbench/terrain-portraits/marsh.png",
+      "description": "Mud slows land units and exposes them to 1 extra damage. Merfolk move easily here and take 1 less damage.",
+      "portraitFrame": "terrain_marsh__marsh",
+      "portraitFloor": "marsh"
     },
     {
       "id": "ruins",
@@ -6533,8 +6553,10 @@
       "kind": "terrain",
       "name": "Ruins",
       "role": "ruins",
-      "artwork": "workbench/terrain/ruins.png",
-      "description": "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them."
+      "artwork": "workbench/terrain-portraits/ruins.png",
+      "description": "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them.",
+      "portraitFrame": "terrain_ruins__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "fort",
@@ -6542,8 +6564,10 @@
       "kind": "terrain",
       "name": "Fort",
       "role": "fort",
-      "artwork": "workbench/terrain/fort.png",
-      "description": "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing."
+      "artwork": "workbench/terrain-portraits/fort.png",
+      "description": "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing.",
+      "portraitFrame": "terrain_fort__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "grove",
@@ -6551,8 +6575,10 @@
       "kind": "terrain",
       "name": "Sacred grove",
       "role": "grove",
-      "artwork": "workbench/terrain/grove.png",
-      "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 4 HP, but provides no income."
+      "artwork": "workbench/terrain-portraits/grove.png",
+      "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 4 HP, but provides no income.",
+      "portraitFrame": "terrain_sacred_grove__green-forest",
+      "portraitFloor": "green-forest"
     },
     {
       "id": "landing",
@@ -6560,8 +6586,10 @@
       "kind": "terrain",
       "name": "Ferry landing",
       "role": "landing",
-      "artwork": "workbench/terrain/landing.png",
-      "description": "A jetty on the riverbank. Normal movement; no protection."
+      "artwork": "workbench/terrain-portraits/landing.png",
+      "description": "A jetty on the riverbank. Normal movement; no protection.",
+      "portraitFrame": "terrain_landing_1_layout_0__shallow-water",
+      "portraitFloor": "shallow-water"
     },
     {
       "id": "ferry",
@@ -6569,8 +6597,10 @@
       "kind": "terrain",
       "name": "Moored ferry",
       "role": "ferry",
-      "artwork": "workbench/terrain/ferry.png",
-      "description": "A boat moored beside a riverbank jetty. Normal movement; no protection. Boarding does not move units across the river."
+      "artwork": "workbench/terrain-portraits/ferry.png",
+      "description": "A boat moored beside a riverbank jetty. Normal movement; no protection. Boarding does not move units across the river.",
+      "portraitFrame": "terrain_ferry_1_layout_0__dark-water",
+      "portraitFloor": "dark-water"
     },
     {
       "id": "house",
@@ -6578,8 +6608,10 @@
       "kind": "terrain",
       "name": "House",
       "role": "house",
-      "artwork": "workbench/terrain/house.png",
-      "description": "A single home. Normal movement; no protection, income or healing."
+      "artwork": "workbench/terrain-portraits/house.png",
+      "description": "A single home. Normal movement; no protection, income or healing.",
+      "portraitFrame": "terrain_house_layout_0__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "mountain",
@@ -6587,8 +6619,10 @@
       "kind": "terrain",
       "name": "Mountains",
       "role": "mountain",
-      "artwork": "workbench/terrain/mountain.png",
-      "description": "A sheer mountain ridge, impassable to land units. Blocks ranged attacks through the tile."
+      "artwork": "workbench/terrain-portraits/mountain.png",
+      "description": "A sheer mountain ridge, impassable to land units. Blocks ranged attacks through the tile.",
+      "portraitFrame": "terrain_mountain_layout_0__mountain-rock",
+      "portraitFloor": "mountain-rock"
     },
     {
       "id": "cave",
@@ -6596,8 +6630,10 @@
       "kind": "terrain",
       "name": "Quarry cave",
       "role": "cave",
-      "artwork": "workbench/terrain/cave.png",
-      "description": "A sheltered entrance at the foot of a mountain. Costs 2 movement; no protection. The mountain blocks ranged attacks through the tile. Scenario objectives specify what can be found inside."
+      "artwork": "workbench/terrain-portraits/cave.png",
+      "description": "A sheltered entrance at the foot of a mountain. Costs 2 movement; no protection. The mountain blocks ranged attacks through the tile. Scenario objectives specify what can be found inside.",
+      "portraitFrame": "terrain_cave_layout_0__mountain-rock",
+      "portraitFloor": "mountain-rock"
     },
     {
       "id": "burned-village",
@@ -6605,8 +6641,10 @@
       "kind": "terrain",
       "name": "Burned village",
       "role": "burned-village",
-      "artwork": "workbench/terrain/burned-village.png",
-      "description": "Charred homes on open ground. No income, healing or protection."
+      "artwork": "workbench/terrain-portraits/burned-village.png",
+      "description": "Charred homes on open ground. No income, healing or protection.",
+      "portraitFrame": "terrain_burned-village_layout_0__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "signpost",
@@ -6614,8 +6652,10 @@
       "kind": "terrain",
       "name": "Road sign",
       "role": "signpost",
-      "artwork": "workbench/terrain/signpost.png",
-      "description": "A wooden waymarker beside the road. Normal movement; no protection."
+      "artwork": "workbench/terrain-portraits/signpost.png",
+      "description": "A wooden waymarker beside the road. Normal movement; no protection.",
+      "portraitFrame": "terrain_signpost_9_layout_0__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "castle-wall",
@@ -6623,8 +6663,10 @@
       "kind": "terrain",
       "name": "Castle courtyard",
       "role": "fortification",
-      "artwork": "workbench/terrain/castle-wall.png",
-      "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment."
+      "artwork": "workbench/terrain-portraits/castle-wall.png",
+      "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment.",
+      "portraitFrame": "terrain_castle-wall_63__castle-paving",
+      "portraitFloor": "castle-paving"
     },
     {
       "id": "castle-bell",
@@ -6632,8 +6674,10 @@
       "kind": "terrain",
       "name": "Bell keep",
       "role": "keep",
-      "artwork": "workbench/terrain/castle-bell.png",
-      "description": "An enclosed fortified keep. Its owner\u2019s leader can recruit into adjacent empty passable hexes. All incoming damage reduced by 1. No income or healing."
+      "artwork": "workbench/terrain-portraits/castle-bell.png",
+      "description": "An enclosed fortified keep. Its owner\u2019s leader can recruit into adjacent empty passable hexes. All incoming damage reduced by 1. No income or healing.",
+      "portraitFrame": "terrain_castle-bell_63__castle-paving",
+      "portraitFloor": "castle-paving"
     },
     {
       "id": "monastery",
@@ -6641,8 +6685,10 @@
       "kind": "terrain",
       "name": "Hill monastery",
       "role": "monastery",
-      "artwork": "workbench/terrain/monastery.png",
-      "description": "A hilltop sanctuary. Costs 1 movement and shelters against ranged attacks. Scenario rituals use this site."
+      "artwork": "workbench/terrain-portraits/monastery.png",
+      "description": "A hilltop sanctuary. Costs 1 movement and shelters against ranged attacks. Scenario rituals use this site.",
+      "portraitFrame": "terrain_monastery_layout_0__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "church",
@@ -6650,8 +6696,10 @@
       "kind": "terrain",
       "name": "Church",
       "role": "church",
-      "artwork": "workbench/terrain/church.png",
-      "description": "A quiet church. Normal movement; no protection. Scenario discoveries may leave equipment here."
+      "artwork": "workbench/terrain-portraits/church.png",
+      "description": "A quiet church. Normal movement; no protection. Scenario discoveries may leave equipment here.",
+      "portraitFrame": "terrain_church_layout_0__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "graveyard",
@@ -6659,8 +6707,10 @@
       "kind": "terrain",
       "name": "Burial ground",
       "role": "graveyard",
-      "artwork": "workbench/terrain/graveyard.png",
-      "description": "Old burial stones. Normal movement; no protection."
+      "artwork": "workbench/terrain-portraits/graveyard.png",
+      "description": "Old burial stones. Normal movement; no protection.",
+      "portraitFrame": "terrain_graveyard_layout_0__green-plain",
+      "portraitFloor": "green-plain"
     },
     {
       "id": "ritual-star",
@@ -6668,8 +6718,10 @@
       "kind": "terrain",
       "name": "Ritual mark",
       "role": "ritual-star",
-      "artwork": "workbench/terrain/ritual-star.png",
-      "description": "A charged ritual mark. Captives still standing here can be consumed by the bell."
+      "artwork": "workbench/terrain-portraits/ritual-star.png",
+      "description": "A charged ritual mark. Captives still standing here can be consumed by the bell.",
+      "portraitFrame": "terrain_ritual-star_layout_0__mountain-rock",
+      "portraitFloor": "mountain-rock"
     },
     {
       "id": "ritual-spent",
@@ -6677,8 +6729,14 @@
       "kind": "terrain",
       "name": "Spent ritual mark",
       "role": "ritual-spent",
-      "artwork": "workbench/terrain/ritual-spent.png",
-      "description": "The ritual has burned out. It cannot feed the bell again."
+      "artwork": "workbench/terrain-portraits/ritual-spent.png",
+      "description": "The ritual has burned out. It cannot feed the bell again.",
+      "portraitFrame": "terrain_ritual-spent_layout_0__mountain-rock",
+      "portraitFloor": "mountain-rock"
     }
-  ]
+  ],
+  "terrainPortraits": {
+    "provenance": "workbench/terrain-portraits/provenance.json",
+    "previewDefinitionSha256": "e3f06bf858fc1c8a93482600e1580e817928509ecd8acf208b60251ee06a9bd7"
+  }
 }

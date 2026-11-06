@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Copy a self-contained faction/artwork snapshot from an explicitly supplied game checkout."""
-import argparse,json,re,shutil,subprocess
+import argparse,json,re,shutil,subprocess,sys
 from pathlib import Path
 p=argparse.ArgumentParser();p.add_argument('--game-dir',type=Path,required=True);args=p.parse_args()
 game=args.game_dir.resolve();root=Path(__file__).resolve().parents[1];out=root/'dist'
@@ -67,3 +67,6 @@ for t in json.loads((game/'rust/data/game/terrain.json').read_text()):
 revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=game,text=True).strip()
 (out/'workbench.json').write_text(json.dumps(dict(schemaVersion=1,sourceRevision=revision,factions=factions,terrains=terrains),indent=2)+'\n')
 print(json.dumps(dict(factions=len(factions),units=sum(len(f['units']) for f in factions),terrain=len(terrains))))
+
+# Use the same complete portrait/floor choices as the game UI, rather than bare props.
+subprocess.run([sys.executable, str(root/"scripts/terrain_portraits.py"), "--game-dir", str(game)], check=True)

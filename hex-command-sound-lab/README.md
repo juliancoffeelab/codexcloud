@@ -233,6 +233,16 @@ no cross-project dependency. To refresh it from an explicit game checkout:
 python3 scripts/snapshot-workbench.py --game-dir /path/to/hex-command
 ```
 
+Terrain snapshots copy the canonical complete frames selected by the game's
+`terrain-preview.ts`, including floors and assembled props. The source frame keys,
+PNG hashes and native sizes are recorded in
+`dist/workbench/terrain-portraits/provenance.json`. To refresh just those portraits
+without touching any unit snapshot:
+
+```sh
+python3 scripts/terrain_portraits.py --game-dir /path/to/hex-command
+```
+
 The game checkout must already have its generated pixel assets (run its own
 artwork build there first). This copies canonical lineup membership, levels,
 roles, gameplay IDs, attacks, terrain and unchanged unit sprites (64×64) and native terrain artwork into

@@ -1,0 +1,196 @@
+{
+  "source": "Hexcommand src/presentation/terrain-preview.ts canonical portraits",
+  "previewDefinitionSha256": "e3f06bf858fc1c8a93482600e1580e817928509ecd8acf208b60251ee06a9bd7",
+  "method": "Exact copies of complete floor-colored portrait frames. No compositing, redraw or resizing.",
+  "portraits": {
+    "road": {
+      "frame": "terrain_road_9__green-plain",
+      "sourcePath": "public/assets/sprites/9c2605fb79a7122a97b62030.png",
+      "sha256": "9c2605fb79a7122a97b62030f1bd78eccd5731f296639313eeed055eda846d6f",
+      "width": 64,
+      "height": 64
+    },
+    "plains": {
+      "frame": "terrain_plains_layout_0__green-plain",
+      "sourcePath": "public/assets/sprites/6da1f58093b7ee80f9883a59.png",
+      "sha256": "6da1f58093b7ee80f9883a59097ab71f95357c6a55e7648b341a5ec7d06d3af6",
+      "width": 64,
+      "height": 64
+    },
+    "forest": {
+      "frame": "terrain_forest_layout_0__green-forest",
+      "sourcePath": "public/assets/sprites/2c500cab0126eb299b3a37eb.png",
+      "sha256": "2c500cab0126eb299b3a37ebfcd8e24d575bc02dbbbfe10b7d849296ed6a4ac3",
+      "width": 64,
+      "height": 64
+    },
+    "hill": {
+      "frame": "terrain_hill_layout_0__green-plain",
+      "sourcePath": "public/assets/sprites/20136baae16ead7e45cb3aa4.png",
+      "sha256": "20136baae16ead7e45cb3aa41986d745d2b8033c24605e1062a79f4bb2d39ef6",
+      "width": 64,
+      "height": 64
+    },
+    "water": {
+      "frame": "terrain_water__dark-water",
+      "sourcePath": "public/assets/sprites/db12b4a5f4a4bcfea2bc8de9.png",
+      "sha256": "db12b4a5f4a4bcfea2bc8de97161d5445b1751a1dacaaa9192b522cffd8da264",
+      "width": 64,
+      "height": 64
+    },
+    "bridge": {
+      "frame": "terrain_bridge_9__dark-water",
+      "sourcePath": "public/assets/sprites/8644876e6cb50912766ef544.png",
+      "sha256": "8644876e6cb50912766ef544230c3a5d3d01ebe917560971d8ba65afbe9d29ef",
+      "width": 64,
+      "height": 64
+    },
+    "ford": {
+      "frame": "terrain_ford_9_layout_0__shallow-water",
+      "sourcePath": "public/assets/sprites/89c7ffdc998f9270d8d004d0.png",
+      "sha256": "89c7ffdc998f9270d8d004d04b96cb4b8d29a605adbf7bd977cff8518e68fd80",
+      "width": 64,
+      "height": 64
+    },
+    "village": {
+      "frame": "terrain_village_0__green-plain",
+      "sourcePath": "public/assets/sprites/614e8d2531f81b17f777ce14.png",
+      "sha256": "614e8d2531f81b17f777ce142cf4ded15b1277a4fff89e4dd1844d0822010d68",
+      "width": 64,
+      "height": 64
+    },
+    "keep": {
+      "frame": "terrain_keep__green-plain",
+      "sourcePath": "public/assets/sprites/086f7041eb6b949b5b0911bc.png",
+      "sha256": "086f7041eb6b949b5b0911bc08cf28585cac960b44f91c442088ecac861acf0f",
+      "width": 64,
+      "height": 64
+    },
+    "marsh": {
+      "frame": "terrain_marsh__marsh",
+      "sourcePath": "public/assets/sprites/e09eb2f63b49cac095b65cb5.png",
+      "sha256": "e09eb2f63b49cac095b65cb59473dae6019ecf0ed7c0c3f5e0888ae0150fa55f",
+      "width": 64,
+      "height": 64
+    },
+    "ruins": {
+      "frame": "terrain_ruins__green-plain",
+      "sourcePath": "public/assets/sprites/8b7c1ee6a8e45c14a48008dd.png",
+      "sha256": "8b7c1ee6a8e45c14a48008dd92c829afd017d0ac543f99edd27b164ebda795a1",
+      "width": 64,
+      "height": 64
+    },
+    "fort": {
+      "frame": "terrain_fort__green-plain",
+      "sourcePath": "public/assets/sprites/6ad352730622a24f14a01aeb.png",
+      "sha256": "6ad352730622a24f14a01aebc5bc98f1bdbc598e391281a2e9ebe8e8e559b6a2",
+      "width": 64,
+      "height": 64
+    },
+    "grove": {
+      "frame": "terrain_sacred_grove__green-forest",
+      "sourcePath": "public/assets/sprites/05f10af4000cbe0b274f8e04.png",
+      "sha256": "05f10af4000cbe0b274f8e043f62b98c1907a07bd27f3b074a14edc9b99a27cd",
+      "width": 64,
+      "height": 64
+    },
+    "landing": {
+      "frame": "terrain_landing_1_layout_0__shallow-water",
+      "sourcePath": "public/assets/sprites/23e242112cfc2cbe121c7157.png",
+      "sha256": "23e242112cfc2cbe121c71571907abde71247ee9b7346ec5d3ae4d294ed7cbf2",
+      "width": 64,
+      "height": 64
+    },
+    "ferry": {
+      "frame": "terrain_ferry_1_layout_0__dark-water",
+      "sourcePath": "public/assets/sprites/804196ab671e24cca50d0af3.png",
+      "sha256": "804196ab671e24cca50d0af3a3e3adc051bd78a1a1eae967e48f966954be2a1f",
+      "width": 64,
+      "height": 64
+    },
+    "house": {
+      "frame": "terrain_house_layout_0__green-plain",
+      "sourcePath": "public/assets/sprites/872ccd9ba34cbe68b14d22ba.png",
+      "sha256": "872ccd9ba34cbe68b14d22ba45bd04bef0977d26ef37319b913132193cee02f3",
+      "width": 64,
+      "height": 64
+    },
+    "mountain": {
+      "frame": "terrain_mountain_layout_0__mountain-rock",
+      "sourcePath": "public/assets/sprites/498e17069f31208e88fa2c9d.png",
+      "sha256": "498e17069f31208e88fa2c9dc89e95f9761932220a38fbb552861f333f4d15ca",
+      "width": 64,
+      "height": 64
+    },
+    "cave": {
+      "frame": "terrain_cave_layout_0__mountain-rock",
+      "sourcePath": "public/assets/sprites/5e792ccc3e14baca4ba449ba.png",
+      "sha256": "5e792ccc3e14baca4ba449bae181373d20e3fe8b18b8e5e0e8c0b3f25cdd1951",
+      "width": 64,
+      "height": 64
+    },
+    "burned-village": {
+      "frame": "terrain_burned-village_layout_0__green-plain",
+      "sourcePath": "public/assets/sprites/6926bd5620e23d510f381fdc.png",
+      "sha256": "6926bd5620e23d510f381fdc44ea0209247c9b79b1a829e6de7d599cea4aa0fd",
+      "width": 64,
+      "height": 64
+    },
+    "signpost": {
+      "frame": "terrain_signpost_9_layout_0__green-plain",
+      "sourcePath": "public/assets/sprites/790034e40c5068d845f154a6.png",
+      "sha256": "790034e40c5068d845f154a6c5941e21a37fb9c79833d3e344fb297cf2c49c2c",
+      "width": 64,
+      "height": 64
+    },
+    "castle-wall": {
+      "frame": "terrain_castle-wall_63__castle-paving",
+      "sourcePath": "public/assets/sprites/710f6f467b512ce16b3b7b6c.png",
+      "sha256": "710f6f467b512ce16b3b7b6c64a0b96eb106d17f0dd8d7eb2cc8a7ef2324e3e6",
+      "width": 80,
+      "height": 96
+    },
+    "castle-bell": {
+      "frame": "terrain_castle-bell_63__castle-paving",
+      "sourcePath": "public/assets/sprites/cb5a740120c285d124165cad.png",
+      "sha256": "cb5a740120c285d124165caded333f0ef3b7ef90b25d0b1f902eef83be815e93",
+      "width": 80,
+      "height": 96
+    },
+    "monastery": {
+      "frame": "terrain_monastery_layout_0__green-plain",
+      "sourcePath": "public/assets/sprites/b3fa7ba7d40fdeb22ce6af26.png",
+      "sha256": "b3fa7ba7d40fdeb22ce6af26ce967742e56cc31c1ebdf569bd96d2ff76396d62",
+      "width": 64,
+      "height": 64
+    },
+    "church": {
+      "frame": "terrain_church_layout_0__green-plain",
+      "sourcePath": "public/assets/sprites/0ead9c245ce1248cc85d7c19.png",
+      "sha256": "0ead9c245ce1248cc85d7c198eee366e0fedf14ccb6168706e91d6633bea0390",
+      "width": 64,
+      "height": 64
+    },
+    "graveyard": {
+      "frame": "terrain_graveyard_layout_0__green-plain",
+      "sourcePath": "public/assets/sprites/fe20d208c4878b3a63e0869a.png",
+      "sha256": "fe20d208c4878b3a63e0869ac97addb8cc8f119867537bf041436840de7ef178",
+      "width": 64,
+      "height": 64
+    },
+    "ritual-star": {
+      "frame": "terrain_ritual-star_layout_0__mountain-rock",
+      "sourcePath": "public/assets/sprites/40937875586fe11fe4a49e3a.png",
+      "sha256": "40937875586fe11fe4a49e3a095a5472e2886b0b33806196b218de46368db1fa",
+      "width": 64,
+      "height": 64
+    },
+    "ritual-spent": {
+      "frame": "terrain_ritual-spent_layout_0__mountain-rock",
+      "sourcePath": "public/assets/sprites/bc7d38a2646cdbb016d079d8.png",
+      "sha256": "bc7d38a2646cdbb016d079d847c891e22a87f3e350df8384e7cd6d49ef57ccf4",
+      "width": 64,
+      "height": 64
+    }
+  }
+}

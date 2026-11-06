@@ -16,7 +16,7 @@ try {
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
     loadJSON("catalog.json?v=map-dock-1"),
-    loadJSON("workbench.json?v=factions-1"),
+    loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json"),
     loadJSON("playback-levels.json?v=take-levels-1"),
   ]);
