@@ -610,7 +610,7 @@ use these choices; older selection-fade clips remain comparisons only.
 
 ### Playback variations
 
-The player’s Variations checkbox defaults on and persists locally. Candidate
+The player’s Alterations checkbox defaults on and persists locally. Candidate
 map taps, action buttons and sequences use shuffle bags with no immediate
 repeat, including across bag boundaries. Exact recording/take buttons, full
 sources, Library playback and Original Game comparison stay exact. Saved source
@@ -622,16 +622,14 @@ length; envelope scheduling and seek/progress use the same rate. There is no
 random gain, added reverb, offline render or voice modulation. Existing level
 profiles apply unchanged to the actual chosen recording/take.
 
-Where an action already recommends numbered siblings of the same recording
-family, unsaved defaults can rotate those approved alternatives. Other/Library
-candidates and old death comparison suggestions never enter that pool. Reviewed
-bow sessions can rotate their audited takes when no preferred/saved take is
-pinned. Single recordings still vary in pitch. This reduces repetition; it does
-not manufacture distinct recorded performances from one sample.
+Every trigger keeps the exact chosen recording ID and take. No numbered sibling,
+other version or alternate take enters playback. Spell 1 stays Spell 1, even if
+Spell 2 appears next to it in Suggested. Alterations apply whether the choice is
+a default or explicitly saved. The player label is Alterations.
 
-Prefetch prepares the eligible pool without advancing either shuffle bag.
+Prefetch prepares the chosen source without advancing the alteration shuffle bag.
 `dist/playback-variations.js` implements the reusable policy; property checks
-cover bag boundaries, range limits, pinned choices and prefetch state isolation.
+cover bag boundaries, range limits and exact recording/take identity preservation.
 Mobile Chromium checks actual source rates, completed timing, exact auditions,
 rapid retriggers, toggle persistence and the compact 320px player controls.
 These variations are Sound Lab auditions; playable-game integration is separate.

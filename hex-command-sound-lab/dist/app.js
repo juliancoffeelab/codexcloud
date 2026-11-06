@@ -1,4 +1,4 @@
-import { PlaybackVariations } from "./playback-variations.js?v=variations-1";
+import { PlaybackVariations } from "./playback-variations.js?v=alterations-2";
 import { DEATH_SOUNDS } from "./death-picks.js?v=beast-family-deaths-2";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
@@ -207,7 +207,7 @@ async function start() {
   function gameRef(action) {
     const ref = chosenFor(action);
     return ref && mode === "candidate" && $("#variations").checked
-      ? variations.plan(ref, action, byId, Boolean(assignments[keyFor(action)])) : ref;
+      ? variations.plan(ref, action) : ref;
   }
   function drawWave(buffer) {
     const c = $("#wave"),
@@ -312,11 +312,7 @@ async function start() {
       !["units", "terrain"].includes(document.body.dataset.view)
     )
       return;
-    const defaults = currentRows().flatMap(action => {
-      const ref = chosenFor(action);
-      return !ref ? [] : $("#variations").checked && mode === "candidate"
-        ? variations.candidates(ref, action, byId, Boolean(assignments[keyFor(action)])) : [ref];
-    }).map(ref => byId.get(ref.id));
+    const defaults = currentRows().map(chosenFor).filter(Boolean).map(ref => byId.get(ref.id));
     const visible = [...document.querySelectorAll(".sound-choice")]
       .filter((card) => {
         const a = card.getBoundingClientRect(),
