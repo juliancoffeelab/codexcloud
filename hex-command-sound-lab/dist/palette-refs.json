@@ -1,0 +1,7185 @@
+{
+  "scope": "Suggested cues including suggested recording variations; excludes hidden hurt and hypothetical actions. Personal saved choices may differ.",
+  "refs": [
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/basilisk",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/basilisk-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/basilisk-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/bear",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/bear-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/bear-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/crocodile",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/crocodile-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/crocodile-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-crab",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-crab-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-crab-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-tortoise",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/lynx",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/lynx-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/lynx-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/shark",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/shark-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/shark-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/boar",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/greatboar",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/woodland-ancient-boar",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/fox-spearguard",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/treant",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/treant-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/treant-l3",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/select-1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/basilisk",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/basilisk-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/basilisk-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/bear",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/bear-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/bear-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/crocodile",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/crocodile-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/crocodile-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/dragon",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-bat",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-bat-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-bat-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-crab",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-crab-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-crab-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-owl",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-owl-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-owl-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-raven",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-raven-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-raven-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-snake",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-spider",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-tortoise",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-wasp",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-wasp-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-wasp-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/gryphon",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/gryphon-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/gryphon-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/lynx",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/lynx-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/lynx-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/octopus",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/octopus-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/octopus-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/ray",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/ray-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/ray-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/shark",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/shark-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/shark-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/stag",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/stag-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/stag-l3",
+          "action": "move"
+        },
+        {
+          "entity": "cursed/werewolf",
+          "action": "move"
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "move"
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-runesmith",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-spearman",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-spearman-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-spearman-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-jumper-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-jumper-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-flanker",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-flanker-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-flanker-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-bladedancer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-bladedancer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-archer",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-archer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-archer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-deer-archer",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-caster",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-banner-lord",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l3",
+          "action": "move"
+        },
+        {
+          "entity": "humans/leather-swordsman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/swordsman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/champion",
+          "action": "move"
+        },
+        {
+          "entity": "humans/hammerman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/warhammer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/leather-spearman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "move"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "move"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "move"
+        },
+        {
+          "entity": "humans/scout",
+          "action": "move"
+        },
+        {
+          "entity": "humans/ranger",
+          "action": "move"
+        },
+        {
+          "entity": "humans/shadowblade",
+          "action": "move"
+        },
+        {
+          "entity": "humans/slinger",
+          "action": "move"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "move"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "move"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "move"
+        },
+        {
+          "entity": "humans/adept",
+          "action": "move"
+        },
+        {
+          "entity": "humans/storm-mage",
+          "action": "move"
+        },
+        {
+          "entity": "humans/archmage",
+          "action": "move"
+        },
+        {
+          "entity": "humans/healer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/high-healer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/rider",
+          "action": "move"
+        },
+        {
+          "entity": "humans/lancer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/knight",
+          "action": "move"
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/captives",
+          "action": "move"
+        },
+        {
+          "entity": "humans/commander",
+          "action": "move"
+        },
+        {
+          "entity": "humans/marshal",
+          "action": "move"
+        },
+        {
+          "entity": "humans/grand-marshal",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/harpooner",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tidehunter",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-harpoon-master",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/reefguard",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tridentguard",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-reef-champion",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/wavemender",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tidesage",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-oracle",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tidekeeper",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tideseer",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-sovereign",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/revenant",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-dreadguard",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-rider",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/bonearcher",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/deatharcher",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-bow-master",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/ghost",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/wraith",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/spectre",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/lich-commander-l1",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/lich-commander-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/lich-commander-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/bone-dragon",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l3",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/wolf",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/direwolf",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-alpha-wolf",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/boar",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/greatboar",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-ancient-boar",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/thorncaller",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/briarweaver",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-thorn-oracle",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-bramble-warden",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-thornbinder",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/fox-spearguard",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l2",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l3",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/treant",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/treant-l2",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/treant-l3",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/wildkeeper",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/grovewarden",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-grove-oracle",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-walker",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-fighter",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-cleaver",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-decay-caster",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-plague-carrier",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-shambler",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-ghoul",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage-l1",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-corruption-archmage",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "current/select-2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/basilisk",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/basilisk-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/basilisk-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/bear",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/bear-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/bear-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/crocodile",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/crocodile-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/crocodile-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/dragon",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-bat",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-bat-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-bat-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-crab",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-crab-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-crab-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-owl",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-owl-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-owl-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-raven",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-raven-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-raven-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-snake",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-spider",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-tortoise",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-wasp",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-wasp-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-wasp-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/gryphon",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/gryphon-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/gryphon-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/lynx",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/lynx-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/lynx-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/octopus",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/octopus-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/octopus-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/ray",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/ray-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/ray-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/shark",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/shark-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/shark-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/stag",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/stag-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/stag-l3",
+          "action": "move"
+        },
+        {
+          "entity": "cursed/werewolf",
+          "action": "move"
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "move"
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-runesmith",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-spearman",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-spearman-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-spearman-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-jumper-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-jumper-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-flanker",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-flanker-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-flanker-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-bladedancer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-bladedancer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-archer",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-archer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-archer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-deer-archer",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-caster",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-banner-lord",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l3",
+          "action": "move"
+        },
+        {
+          "entity": "humans/leather-swordsman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/swordsman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/champion",
+          "action": "move"
+        },
+        {
+          "entity": "humans/hammerman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/warhammer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/leather-spearman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "move"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "move"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "move"
+        },
+        {
+          "entity": "humans/scout",
+          "action": "move"
+        },
+        {
+          "entity": "humans/ranger",
+          "action": "move"
+        },
+        {
+          "entity": "humans/shadowblade",
+          "action": "move"
+        },
+        {
+          "entity": "humans/slinger",
+          "action": "move"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "move"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "move"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "move"
+        },
+        {
+          "entity": "humans/adept",
+          "action": "move"
+        },
+        {
+          "entity": "humans/storm-mage",
+          "action": "move"
+        },
+        {
+          "entity": "humans/archmage",
+          "action": "move"
+        },
+        {
+          "entity": "humans/healer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/high-healer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/rider",
+          "action": "move"
+        },
+        {
+          "entity": "humans/lancer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/knight",
+          "action": "move"
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/captives",
+          "action": "move"
+        },
+        {
+          "entity": "humans/commander",
+          "action": "move"
+        },
+        {
+          "entity": "humans/marshal",
+          "action": "move"
+        },
+        {
+          "entity": "humans/grand-marshal",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/harpooner",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tidehunter",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-harpoon-master",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/reefguard",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tridentguard",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-reef-champion",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/wavemender",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tidesage",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-oracle",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tidekeeper",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tideseer",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-sovereign",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/revenant",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-dreadguard",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-rider",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/bonearcher",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/deatharcher",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-bow-master",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/ghost",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/wraith",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/spectre",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/lich-commander-l1",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/lich-commander-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/lich-commander-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/bone-dragon",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l3",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/wolf",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/direwolf",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-alpha-wolf",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/boar",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/greatboar",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-ancient-boar",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/thorncaller",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/briarweaver",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-thorn-oracle",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-bramble-warden",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-thornbinder",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/fox-spearguard",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l2",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l3",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/treant",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/treant-l2",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/treant-l3",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/wildkeeper",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/grovewarden",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-grove-oracle",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-walker",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-fighter",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-cleaver",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-decay-caster",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-plague-carrier",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-shambler",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-ghoul",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage-l1",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-corruption-archmage",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "current/select-3",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/basilisk",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/basilisk-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/basilisk-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/bear",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/bear-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/bear-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/crocodile",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/crocodile-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/crocodile-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/dragon",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-bat",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-bat-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-bat-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-crab",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-crab-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-crab-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-owl",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-owl-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-owl-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-raven",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-raven-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-raven-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-snake",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-spider",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-tortoise",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-wasp",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-wasp-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/giant-wasp-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/gryphon",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/gryphon-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/gryphon-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/lynx",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/lynx-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/lynx-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/octopus",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/octopus-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/octopus-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/ray",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/ray-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/ray-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/shark",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/shark-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/shark-l3",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/stag",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/stag-l2",
+          "action": "move"
+        },
+        {
+          "entity": "beasts/stag-l3",
+          "action": "move"
+        },
+        {
+          "entity": "cursed/werewolf",
+          "action": "move"
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "move"
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-runesmith",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l2",
+          "action": "move"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-spearman",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-spearman-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-spearman-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-jumper-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-jumper-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-flanker",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-flanker-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-flanker-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-bladedancer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-bladedancer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-archer",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-archer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-archer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-deer-archer",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-caster",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-banner-lord",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l2",
+          "action": "move"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l3",
+          "action": "move"
+        },
+        {
+          "entity": "humans/leather-swordsman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/swordsman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/champion",
+          "action": "move"
+        },
+        {
+          "entity": "humans/hammerman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/warhammer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/leather-spearman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "move"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "move"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "move"
+        },
+        {
+          "entity": "humans/scout",
+          "action": "move"
+        },
+        {
+          "entity": "humans/ranger",
+          "action": "move"
+        },
+        {
+          "entity": "humans/shadowblade",
+          "action": "move"
+        },
+        {
+          "entity": "humans/slinger",
+          "action": "move"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "move"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "move"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "move"
+        },
+        {
+          "entity": "humans/adept",
+          "action": "move"
+        },
+        {
+          "entity": "humans/storm-mage",
+          "action": "move"
+        },
+        {
+          "entity": "humans/archmage",
+          "action": "move"
+        },
+        {
+          "entity": "humans/healer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/high-healer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/rider",
+          "action": "move"
+        },
+        {
+          "entity": "humans/lancer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/knight",
+          "action": "move"
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "move"
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "move"
+        },
+        {
+          "entity": "humans/captives",
+          "action": "move"
+        },
+        {
+          "entity": "humans/commander",
+          "action": "move"
+        },
+        {
+          "entity": "humans/marshal",
+          "action": "move"
+        },
+        {
+          "entity": "humans/grand-marshal",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/harpooner",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tidehunter",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-harpoon-master",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/reefguard",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tridentguard",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-reef-champion",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/wavemender",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tidesage",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-oracle",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l2",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l3",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tidekeeper",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/tideseer",
+          "action": "move"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-sovereign",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/revenant",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-dreadguard",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-rider",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/bonearcher",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/deatharcher",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-bow-master",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l3",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/ghost",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/wraith",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/spectre",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/lich-commander-l1",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/lich-commander-l2",
+          "action": "move"
+        },
+        {
+          "entity": "skeletons/lich-commander-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/bone-dragon",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l2",
+          "action": "move"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l3",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/wolf",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/direwolf",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-alpha-wolf",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/boar",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/greatboar",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-ancient-boar",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/thorncaller",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/briarweaver",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-thorn-oracle",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-bramble-warden",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-thornbinder",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/fox-spearguard",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l2",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l3",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/treant",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/treant-l2",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/treant-l3",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/wildkeeper",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/grovewarden",
+          "action": "move"
+        },
+        {
+          "entity": "woodland/woodland-grove-oracle",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-walker",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-fighter",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-cleaver",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-decay-caster",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-plague-carrier",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-shambler",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-ghoul",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage-l1",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage",
+          "action": "move"
+        },
+        {
+          "entity": "zombies/zombie-corruption-archmage",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/grunt_04.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/basilisk",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/basilisk-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/basilisk-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/crocodile",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/crocodile-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/crocodile-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-crab",
+          "action": "attack-pincers"
+        },
+        {
+          "entity": "beasts/giant-crab-l2",
+          "action": "attack-pincers"
+        },
+        {
+          "entity": "beasts/giant-crab-l3",
+          "action": "attack-pincers"
+        },
+        {
+          "entity": "beasts/giant-tortoise",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-tortoise-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "zombies/zombie-cleaver",
+          "action": "tap"
+        },
+        {
+          "entity": "zombies/zombie-plague-carrier",
+          "action": "tap"
+        },
+        {
+          "entity": "zombies/zombie-shambler",
+          "action": "tap"
+        },
+        {
+          "entity": "zombies/zombie-ghoul",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/knife-slice-2-no-hit-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/bear",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/bear-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/bear-l3",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/dragon",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/lynx",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/lynx-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "beasts/lynx-l3",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "cursed/werewolf",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/bone-dragon",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l3",
+          "action": "attack-claws"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/bear-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/bear-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/lynx",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/lynx-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/lynx-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/shark",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/shark-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/shark-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "woodland/boar",
+          "action": "attack-trample"
+        },
+        {
+          "entity": "woodland/boar",
+          "action": "attack-tusks"
+        },
+        {
+          "entity": "woodland/greatboar",
+          "action": "attack-trample"
+        },
+        {
+          "entity": "woodland/greatboar",
+          "action": "attack-tusks"
+        },
+        {
+          "entity": "woodland/woodland-ancient-boar",
+          "action": "attack-trample"
+        },
+        {
+          "entity": "woodland/woodland-ancient-boar",
+          "action": "attack-tusks"
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/cloth2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/dragon",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-bat",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-bat",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-bat-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-bat-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-bat-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-bat-l3",
+          "action": "attack-bite"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/dragon",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "attack-firepot"
+        },
+        {
+          "entity": "undead-animals/bone-dragon",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l2",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l3",
+          "action": "attack-fire-breath"
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/cloth3",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/giant-owl",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-owl",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "beasts/giant-owl",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "beasts/giant-owl-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-owl-l2",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "beasts/giant-owl-l2",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "beasts/giant-owl-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-owl-l3",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "beasts/giant-owl-l3",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "beasts/giant-raven",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-raven",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "beasts/giant-raven",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "beasts/giant-raven-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-raven-l2",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "beasts/giant-raven-l2",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "beasts/giant-raven-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-raven-l3",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "beasts/giant-raven-l3",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "beasts/gryphon",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/gryphon",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "beasts/gryphon",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "beasts/gryphon-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/gryphon-l2",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "beasts/gryphon-l2",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "beasts/gryphon-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/gryphon-l3",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "beasts/gryphon-l3",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "dwarves/dwarf-runesmith",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-caster",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-caster-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-caster-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/adept",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/storm-mage",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/archmage",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/healer",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/high-healer",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/captives",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l2",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l2",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l3",
+          "action": "attack-talons"
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l3",
+          "action": "attack-beak"
+        },
+        {
+          "entity": "woodland/thorncaller",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/briarweaver",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/woodland-thorn-oracle",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/woodland-bramble-warden",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/woodland-thornbinder",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/wildkeeper",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/grovewarden",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/woodland-grove-oracle",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/snake-belt-soft-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/giant-snake",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-snake",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "attack-bite"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/alien_04.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/giant-spider",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/spit_01.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/giant-spider",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-spider-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-spider-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-wasp",
+          "action": "attack-sting"
+        },
+        {
+          "entity": "beasts/giant-wasp-l2",
+          "action": "attack-sting"
+        },
+        {
+          "entity": "beasts/giant-wasp-l3",
+          "action": "attack-sting"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/giant-wasp",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-wasp-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-wasp-l3",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/octopus-gurgle-soft-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/octopus",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/octopus",
+          "action": "attack-tentacles"
+        },
+        {
+          "entity": "beasts/octopus-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/octopus-l2",
+          "action": "attack-tentacles"
+        },
+        {
+          "entity": "beasts/octopus-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/octopus-l3",
+          "action": "attack-tentacles"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/ray",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/ray-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/ray-l3",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "kyles/fish-slap/fish_drop1.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/ray",
+          "action": "attack-tail-strike"
+        },
+        {
+          "entity": "beasts/ray-l2",
+          "action": "attack-tail-strike"
+        },
+        {
+          "entity": "beasts/ray-l3",
+          "action": "attack-tail-strike"
+        },
+        {
+          "entity": "merfolk/reefguard",
+          "action": "attack-tail"
+        }
+      ]
+    },
+    {
+      "id": "edits/horse-0286-trim-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "beasts/stag",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/stag",
+          "action": "attack-trample"
+        },
+        {
+          "entity": "beasts/stag",
+          "action": "attack-antlers"
+        },
+        {
+          "entity": "beasts/stag-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/stag-l2",
+          "action": "attack-trample"
+        },
+        {
+          "entity": "beasts/stag-l2",
+          "action": "attack-antlers"
+        },
+        {
+          "entity": "beasts/stag-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/stag-l3",
+          "action": "attack-trample"
+        },
+        {
+          "entity": "beasts/stag-l3",
+          "action": "attack-antlers"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-deer-archer",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/rider",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/lancer",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/knight",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "cursed/werewolf",
+          "action": "tap"
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "tap"
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/wolf",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/direwolf",
+          "action": "tap"
+        },
+        {
+          "entity": "woodland/woodland-alpha-wolf",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "cursed/werewolf",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "woodland/wolf",
+          "action": "attack-fangs"
+        },
+        {
+          "entity": "woodland/direwolf",
+          "action": "attack-fangs"
+        },
+        {
+          "entity": "woodland/woodland-alpha-wolf",
+          "action": "attack-fangs"
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/beltHandle1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-spearman",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-banner-lord",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/leather-swordsman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/leather-spearman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/commander",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/beltHandle2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-spearman",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-banner-lord",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/leather-swordsman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/leather-spearman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/commander",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/metal-01-soft-onset-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "attack-poleaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "attack-poleaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "attack-halberd"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "attack-halberd"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l2",
+          "action": "attack-axe"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l3",
+          "action": "attack-axe"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/impactMining_001",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "attack-shield-bash"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "attack-shield-bash"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "attack-shield-bash"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-runesmith",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l3",
+          "action": "attack-hammer"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/chain_01.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-spearman-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-spearman-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/swordsman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/champion",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/hammerman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/warhammer",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/marshal",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/grand-marshal",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/chain_02.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-spearman-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-spearman-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/swordsman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/champion",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/hammerman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/warhammer",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/marshal",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/grand-marshal",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/chain_03.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-spearman-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-spearman-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/swordsman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/champion",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/hammerman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/warhammer",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/halberdier",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/marshal",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/grand-marshal",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Nock Arrow.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "attack-crossbow"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "attack-crossbow"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "attack-crossbow"
+        },
+        {
+          "entity": "elves/elf-jumper-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-jumper-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "attack-crossbow"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "attack-arbalest"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-textures/part-1/Crossbow Shoot.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "attack-crossbow"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "attack-crossbow"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "attack-crossbow"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "attack-crossbow"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "attack-arbalest"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/blade_01.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-spearman",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-spearman-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-spearman-l3",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-jumper-l2",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-jumper-l3",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-flanker",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-flanker-l2",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-flanker-l3",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-archer-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-archer-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-deer-archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-banner-lord",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l3",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/leather-spearman",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/scout",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/ranger",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/shadowblade",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/slinger",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/rider",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/lancer",
+          "action": "attack-lance"
+        },
+        {
+          "entity": "humans/knight",
+          "action": "attack-lance"
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/harpooner",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/tidehunter",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/merfolk-harpoon-master",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "skeletons/skeleton",
+          "action": "attack-rustblade"
+        },
+        {
+          "entity": "skeletons/revenant",
+          "action": "attack-rustblade"
+        },
+        {
+          "entity": "skeletons/skeleton-dreadguard",
+          "action": "attack-rustblade"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l2",
+          "action": "attack-scythe"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l3",
+          "action": "attack-scythe"
+        },
+        {
+          "entity": "skeletons/skeleton-rider",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l3",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "zombies/zombie-fighter",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "zombies/zombie-cleaver",
+          "action": "attack-cleaver"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/blade_02.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-spearman",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-spearman-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-spearman-l3",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-jumper-l2",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-jumper-l3",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-flanker",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-flanker-l2",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-flanker-l3",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-archer-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-archer-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-deer-archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-banner-lord",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l3",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/leather-spearman",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/scout",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/ranger",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/shadowblade",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/slinger",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/rider",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/lancer",
+          "action": "attack-lance"
+        },
+        {
+          "entity": "humans/knight",
+          "action": "attack-lance"
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/harpooner",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/tidehunter",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/merfolk-harpoon-master",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "skeletons/skeleton",
+          "action": "attack-rustblade"
+        },
+        {
+          "entity": "skeletons/revenant",
+          "action": "attack-rustblade"
+        },
+        {
+          "entity": "skeletons/skeleton-dreadguard",
+          "action": "attack-rustblade"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l2",
+          "action": "attack-scythe"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l3",
+          "action": "attack-scythe"
+        },
+        {
+          "entity": "skeletons/skeleton-rider",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l3",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "zombies/zombie-fighter",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "zombies/zombie-cleaver",
+          "action": "attack-cleaver"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/blade_03.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-crossbow",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-crossbow-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-spearman",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-spearman-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-spearman-l3",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-jumper-l2",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-jumper-l3",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-flanker",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-flanker-l2",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-flanker-l3",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-archer-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-archer-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-deer-archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "elves/elf-banner-lord",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "elves/elf-banner-lord-l3",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/leather-spearman",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/scout",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/ranger",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/shadowblade",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/slinger",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/crossbowman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/arbalester",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/rider",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "humans/lancer",
+          "action": "attack-lance"
+        },
+        {
+          "entity": "humans/knight",
+          "action": "attack-lance"
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/harpooner",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/tidehunter",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/merfolk-harpoon-master",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "skeletons/skeleton",
+          "action": "attack-rustblade"
+        },
+        {
+          "entity": "skeletons/revenant",
+          "action": "attack-rustblade"
+        },
+        {
+          "entity": "skeletons/skeleton-dreadguard",
+          "action": "attack-rustblade"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l2",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l3",
+          "action": "attack-knife"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l2",
+          "action": "attack-scythe"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l3",
+          "action": "attack-scythe"
+        },
+        {
+          "entity": "skeletons/skeleton-rider",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l3",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "zombies/zombie-fighter",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "zombies/zombie-cleaver",
+          "action": "attack-cleaver"
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/metalLatch",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-arquebus-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l3",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/impactPlate_medium_000",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-arquebus-l2",
+          "action": "attack-arquebus"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l3",
+          "action": "attack-arquebus"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+          "action": "attack-pistol"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+          "action": "attack-pistol"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "attack-shieldbash"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "attack-shieldbash"
+        },
+        {
+          "entity": "skeletons/skeleton",
+          "action": "attack-shieldbash"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-runesmith",
+          "action": "attack-rune-stone"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l2",
+          "action": "attack-rune-spark"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l3",
+          "action": "attack-rune-spark"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l2",
+          "action": "attack-rune-stone"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l3",
+          "action": "attack-rune-stone"
+        },
+        {
+          "entity": "elves/elf-caster",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "elves/elf-caster-l2",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "elves/elf-caster-l3",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l2",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l3",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "humans/adept",
+          "action": "attack-spark"
+        },
+        {
+          "entity": "humans/storm-mage",
+          "action": "attack-spark"
+        },
+        {
+          "entity": "humans/archmage",
+          "action": "attack-spark"
+        },
+        {
+          "entity": "humans/healer",
+          "action": "attack-light"
+        },
+        {
+          "entity": "humans/high-healer",
+          "action": "attack-light"
+        },
+        {
+          "entity": "merfolk/wavemender",
+          "action": "attack-surge"
+        },
+        {
+          "entity": "merfolk/tidesage",
+          "action": "attack-surge"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-oracle",
+          "action": "attack-surge"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l2",
+          "action": "attack-crushing-wave"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l3",
+          "action": "attack-crushing-wave"
+        },
+        {
+          "entity": "merfolk/tidekeeper",
+          "action": "attack-tidebolt"
+        },
+        {
+          "entity": "merfolk/tideseer",
+          "action": "attack-tidebolt"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-sovereign",
+          "action": "attack-tidebolt"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster",
+          "action": "attack-boneburst"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l2",
+          "action": "attack-boneburst"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l3",
+          "action": "attack-boneburst"
+        },
+        {
+          "entity": "skeletons/ghost",
+          "action": "attack-spectral-orb"
+        },
+        {
+          "entity": "skeletons/wraith",
+          "action": "attack-spectral-orb"
+        },
+        {
+          "entity": "skeletons/spectre",
+          "action": "attack-spectral-orb"
+        },
+        {
+          "entity": "terrain/ritual-spent",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-runesmith",
+          "action": "attack-rune-stone"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l2",
+          "action": "attack-rune-spark"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l3",
+          "action": "attack-rune-spark"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l2",
+          "action": "attack-rune-stone"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l3",
+          "action": "attack-rune-stone"
+        },
+        {
+          "entity": "elves/elf-caster",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "elves/elf-caster-l2",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "elves/elf-caster-l3",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l2",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l3",
+          "action": "attack-arcane-spell"
+        },
+        {
+          "entity": "humans/adept",
+          "action": "attack-spark"
+        },
+        {
+          "entity": "humans/storm-mage",
+          "action": "attack-spark"
+        },
+        {
+          "entity": "humans/archmage",
+          "action": "attack-spark"
+        },
+        {
+          "entity": "humans/healer",
+          "action": "attack-light"
+        },
+        {
+          "entity": "humans/high-healer",
+          "action": "attack-light"
+        },
+        {
+          "entity": "merfolk/wavemender",
+          "action": "attack-surge"
+        },
+        {
+          "entity": "merfolk/tidesage",
+          "action": "attack-surge"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-oracle",
+          "action": "attack-surge"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l2",
+          "action": "attack-crushing-wave"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l3",
+          "action": "attack-crushing-wave"
+        },
+        {
+          "entity": "merfolk/tidekeeper",
+          "action": "attack-tidebolt"
+        },
+        {
+          "entity": "merfolk/tideseer",
+          "action": "attack-tidebolt"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-sovereign",
+          "action": "attack-tidebolt"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster",
+          "action": "attack-boneburst"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l2",
+          "action": "attack-boneburst"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l3",
+          "action": "attack-boneburst"
+        },
+        {
+          "entity": "skeletons/ghost",
+          "action": "attack-spectral-touch"
+        },
+        {
+          "entity": "skeletons/ghost",
+          "action": "attack-spectral-orb"
+        },
+        {
+          "entity": "skeletons/wraith",
+          "action": "attack-spectral-touch"
+        },
+        {
+          "entity": "skeletons/wraith",
+          "action": "attack-spectral-orb"
+        },
+        {
+          "entity": "skeletons/spectre",
+          "action": "attack-spectral-touch"
+        },
+        {
+          "entity": "skeletons/spectre",
+          "action": "attack-spectral-orb"
+        },
+        {
+          "entity": "woodland/briarweaver",
+          "action": "attack-root-crush"
+        },
+        {
+          "entity": "woodland/woodland-thorn-oracle",
+          "action": "attack-root-crush"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-textures/part-2/Dagger Draw Fast.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "elves/elf-flanker",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-flanker-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-flanker-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-archer",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-archer-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-archer-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/scout",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/ranger",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/shadowblade",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-textures/part-2/Sabre Draw Fast.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "elves/elf-bladedancer-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "elves/elf-bladedancer-l3",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/spear-sabre-one-shot-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "elves/elf-bladedancer-l2",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "elves/elf-bladedancer-l3",
+          "action": "attack-blade"
+        },
+        {
+          "entity": "humans/leather-swordsman",
+          "action": "attack-sword"
+        },
+        {
+          "entity": "humans/swordsman",
+          "action": "attack-sword"
+        },
+        {
+          "entity": "humans/champion",
+          "action": "attack-sword"
+        },
+        {
+          "entity": "humans/knight",
+          "action": "attack-sword"
+        },
+        {
+          "entity": "humans/commander",
+          "action": "attack-sword"
+        },
+        {
+          "entity": "humans/marshal",
+          "action": "attack-sword"
+        },
+        {
+          "entity": "humans/grand-marshal",
+          "action": "attack-sword"
+        },
+        {
+          "entity": "merfolk/harpooner",
+          "action": "attack-harpoon"
+        },
+        {
+          "entity": "merfolk/tidehunter",
+          "action": "attack-harpoon"
+        },
+        {
+          "entity": "merfolk/merfolk-harpoon-master",
+          "action": "attack-harpoon"
+        },
+        {
+          "entity": "merfolk/reefguard",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "merfolk/tridentguard",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "merfolk/merfolk-reef-champion",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l2",
+          "action": "attack-trident"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l3",
+          "action": "attack-trident"
+        },
+        {
+          "entity": "merfolk/tidekeeper",
+          "action": "attack-trident"
+        },
+        {
+          "entity": "merfolk/tideseer",
+          "action": "attack-trident"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-sovereign",
+          "action": "attack-trident"
+        },
+        {
+          "entity": "woodland/fox-spearguard",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l2",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "woodland/fox-spearguard-l3",
+          "action": "attack-spear"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "elves/elf-archer",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-archer-l2",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-archer-l3",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-deer-archer",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l2",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l3",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "skeletons/bonearcher",
+          "action": "attack-bonebow"
+        },
+        {
+          "entity": "skeletons/deatharcher",
+          "action": "attack-bonebow"
+        },
+        {
+          "entity": "skeletons/skeleton-bow-master",
+          "action": "attack-bonebow"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-textures/part-1/English Longbow Shoot.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "elves/elf-archer",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-archer-l2",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-archer-l3",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-deer-archer",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l2",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "elves/elf-deer-archer-l3",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/archer",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/marksman",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/sharpshooter",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "attack-bow"
+        },
+        {
+          "entity": "skeletons/bonearcher",
+          "action": "attack-bonebow"
+        },
+        {
+          "entity": "skeletons/deatharcher",
+          "action": "attack-bonebow"
+        },
+        {
+          "entity": "skeletons/skeleton-bow-master",
+          "action": "attack-bonebow"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/wood_05.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "elves/elf-caster",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "elves/elf-caster-l2",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "elves/elf-caster-l3",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l2",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "elves/elf-killing-caster-l3",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "humans/adept",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "humans/storm-mage",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "humans/archmage",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "humans/healer",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "humans/high-healer",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "merfolk/wavemender",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "merfolk/tidesage",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-oracle",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l2",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l3",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l2",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l3",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "skeletons/lich-commander-l1",
+          "action": "attack-bonestaff"
+        },
+        {
+          "entity": "skeletons/lich-commander-l2",
+          "action": "attack-bonestaff"
+        },
+        {
+          "entity": "skeletons/lich-commander-l3",
+          "action": "attack-bonestaff"
+        },
+        {
+          "entity": "woodland/thorncaller",
+          "action": "attack-rootstaff"
+        },
+        {
+          "entity": "woodland/briarweaver",
+          "action": "attack-rootstaff"
+        },
+        {
+          "entity": "woodland/woodland-thorn-oracle",
+          "action": "attack-rootstaff"
+        },
+        {
+          "entity": "woodland/woodland-bramble-warden",
+          "action": "attack-rootstaff"
+        },
+        {
+          "entity": "woodland/woodland-thornbinder",
+          "action": "attack-rootstaff"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage-l1",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage",
+          "action": "attack-staff"
+        },
+        {
+          "entity": "zombies/zombie-corruption-archmage",
+          "action": "attack-staff"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav",
+      "take": 11,
+      "uses": [
+        {
+          "entity": "humans/swordsman",
+          "action": "attack-mace"
+        },
+        {
+          "entity": "humans/champion",
+          "action": "attack-mace"
+        },
+        {
+          "entity": "humans/hammerman",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "humans/warhammer",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "humans/commander",
+          "action": "attack-mace"
+        },
+        {
+          "entity": "humans/marshal",
+          "action": "attack-mace"
+        },
+        {
+          "entity": "humans/grand-marshal",
+          "action": "attack-mace"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard",
+          "action": "attack-mace"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l2",
+          "action": "attack-mace"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l3",
+          "action": "attack-mace"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/impactPlate_medium_001",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "humans/spearman",
+          "action": "attack-shieldbash"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "attack-shieldbash"
+        },
+        {
+          "entity": "skeletons/skeleton",
+          "action": "attack-shieldbash"
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/bookClose",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "humans/scout",
+          "action": "attack-sling"
+        },
+        {
+          "entity": "humans/ranger",
+          "action": "attack-sling"
+        },
+        {
+          "entity": "humans/shadowblade",
+          "action": "attack-sling"
+        },
+        {
+          "entity": "humans/slinger",
+          "action": "attack-sling"
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/handleSmallLeather2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "humans/slinger",
+          "action": "tap"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/clothBelt2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "merfolk/harpooner",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tidehunter",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-harpoon-master",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/reefguard",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tridentguard",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-reef-champion",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-trident-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/wavemender",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tidesage",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-oracle",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-tidecrusher-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-maceguard-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tidekeeper",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/tideseer",
+          "action": "tap"
+        },
+        {
+          "entity": "merfolk/merfolk-tide-sovereign",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Pass.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "merfolk/merfolk-netter-l2",
+          "action": "attack-weighted-net"
+        },
+        {
+          "entity": "merfolk/merfolk-netter-l3",
+          "action": "attack-weighted-net"
+        },
+        {
+          "entity": "skeletons/bonearcher",
+          "action": "attack-shard"
+        },
+        {
+          "entity": "skeletons/deatharcher",
+          "action": "attack-shard"
+        },
+        {
+          "entity": "skeletons/skeleton-bow-master",
+          "action": "attack-shard"
+        },
+        {
+          "entity": "woodland/thorncaller",
+          "action": "attack-thorns"
+        },
+        {
+          "entity": "woodland/briarweaver",
+          "action": "attack-thorns"
+        },
+        {
+          "entity": "woodland/woodland-thorn-oracle",
+          "action": "attack-thorns"
+        },
+        {
+          "entity": "woodland/woodland-bramble-warden",
+          "action": "attack-thorns"
+        },
+        {
+          "entity": "woodland/woodland-thornbinder",
+          "action": "attack-thorns"
+        }
+      ]
+    },
+    {
+      "id": "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "merfolk/tridentguard",
+          "action": "attack-shellclub"
+        },
+        {
+          "entity": "merfolk/merfolk-reef-champion",
+          "action": "attack-shellclub"
+        },
+        {
+          "entity": "skeletons/revenant",
+          "action": "attack-boneclub"
+        },
+        {
+          "entity": "skeletons/skeleton-dreadguard",
+          "action": "attack-boneclub"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "skeletons/skeleton",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/revenant",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-dreadguard",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-flanker-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-impact-caster-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-rider",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-rider-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/bonearcher",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/deatharcher",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-bow-master",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/skeleton-axeman-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/lich-commander-l1",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/lich-commander-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/lich-commander-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound",
+          "action": "attack-fangs"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/skeletal-hound-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse",
+          "action": "attack-trample"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse",
+          "action": "attack-hooves"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l2",
+          "action": "attack-trample"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l2",
+          "action": "attack-hooves"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l3",
+          "action": "attack-trample"
+        },
+        {
+          "entity": "undead-animals/skeletal-horse-l3",
+          "action": "attack-hooves"
+        },
+        {
+          "entity": "undead-animals/bone-dragon",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/graveyard",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/fout-01-short-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l2",
+          "action": "attack-soul-drain"
+        },
+        {
+          "entity": "skeletons/skeleton-scythe-caster-l3",
+          "action": "attack-soul-drain"
+        },
+        {
+          "entity": "skeletons/lich-commander-l1",
+          "action": "attack-gravebolt"
+        },
+        {
+          "entity": "skeletons/lich-commander-l2",
+          "action": "attack-gravebolt"
+        },
+        {
+          "entity": "skeletons/lich-commander-l3",
+          "action": "attack-gravebolt"
+        },
+        {
+          "entity": "zombies/zombie-decay-caster",
+          "action": "attack-mire-bolt"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage-l1",
+          "action": "attack-corruption-spell"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage",
+          "action": "attack-corruption-spell"
+        },
+        {
+          "entity": "zombies/zombie-corruption-archmage",
+          "action": "attack-corruption-spell"
+        }
+      ]
+    },
+    {
+      "id": "edits/ghost-grunt-02-trim-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "skeletons/ghost",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/wraith",
+          "action": "tap"
+        },
+        {
+          "entity": "skeletons/spectre",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/grunt_05.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "zombies/zombie-plague-carrier",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "zombies/zombie-shambler",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "zombies/zombie-ghoul",
+          "action": "attack-bite"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/impactPlank_medium_004",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "woodland/treant",
+          "action": "attack-bough"
+        },
+        {
+          "entity": "woodland/treant",
+          "action": "attack-spikes"
+        },
+        {
+          "entity": "woodland/treant-l2",
+          "action": "attack-bough"
+        },
+        {
+          "entity": "woodland/treant-l2",
+          "action": "attack-spikes"
+        },
+        {
+          "entity": "woodland/treant-l3",
+          "action": "attack-bough"
+        },
+        {
+          "entity": "woodland/treant-l3",
+          "action": "attack-spikes"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/impactWood_medium_000",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "woodland/wildkeeper",
+          "action": "attack-bough"
+        },
+        {
+          "entity": "woodland/grovewarden",
+          "action": "attack-bough"
+        },
+        {
+          "entity": "woodland/woodland-grove-oracle",
+          "action": "attack-bough"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/impactWood_medium_001",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "woodland/wildkeeper",
+          "action": "attack-bough"
+        },
+        {
+          "entity": "woodland/grovewarden",
+          "action": "attack-bough"
+        },
+        {
+          "entity": "woodland/woodland-grove-oracle",
+          "action": "attack-bough"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "woodland/wildkeeper",
+          "action": "attack-stones"
+        },
+        {
+          "entity": "woodland/grovewarden",
+          "action": "attack-stones"
+        },
+        {
+          "entity": "woodland/woodland-grove-oracle",
+          "action": "attack-stones"
+        },
+        {
+          "entity": "terrain/road",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/road",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/bridge",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/breath.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "zombies/zombie-walker",
+          "action": "tap"
+        },
+        {
+          "entity": "zombies/zombie-fighter",
+          "action": "tap"
+        },
+        {
+          "entity": "zombies/zombie-decay-caster",
+          "action": "tap"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage-l1",
+          "action": "tap"
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage",
+          "action": "tap"
+        },
+        {
+          "entity": "zombies/zombie-corruption-archmage",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/burp_02.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "zombies/zombie-walker",
+          "action": "attack-grasp"
+        },
+        {
+          "entity": "zombies/zombie-plague-carrier",
+          "action": "attack-grasping-hands"
+        },
+        {
+          "entity": "zombies/zombie-shambler",
+          "action": "attack-grasping-hands"
+        },
+        {
+          "entity": "zombies/zombie-ghoul",
+          "action": "attack-grasping-hands"
+        }
+      ]
+    },
+    {
+      "id": "edits/plains-grass-003-soft-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/plains",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/plains",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "edits/forest-book-03-short-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/forest",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/footstep_grass_000",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/forest",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/grove",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/graveyard",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-hill-1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/hill",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/ruins",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-hill-2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/hill",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/ruins",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-hill-3",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/hill",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/ruins",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/footstep_concrete_000",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/hill",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/village",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/keep",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/ruins",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/fort",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/house",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/mountain",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/cave",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/burned-village",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/castle-wall",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/castle-bell",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/monastery",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/church",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/ritual-star",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/ritual-spent",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-water-1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/water",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/water",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/ford",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/ford",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/marsh",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/marsh",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/landing",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/landing",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/ferry",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/ferry",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-water-2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/water",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/ford",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/marsh",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/landing",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/ferry",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-water-3",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/water",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/ford",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/marsh",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/landing",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/ferry",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/water",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/ford",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/landing",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/ferry",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/footstep_wood_000",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/bridge",
+          "action": "move"
+        },
+        {
+          "entity": "terrain/signpost",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-village-1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/village",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-village-2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/village",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-village-3",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/village",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/keep-metal-light-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/keep",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/marsh-gurgle-soft-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/marsh",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/marsh",
+          "action": "move"
+        }
+      ]
+    },
+    {
+      "id": "edits/fort-wood-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/fort",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/grove-short-magic-v2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/grove",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/house-door-soft-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/house",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/monastery",
+          "action": "tap"
+        },
+        {
+          "entity": "terrain/church",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/mountain-mining-soft-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/mountain",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/quarry-mining-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/cave",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/burned-fire-soft-onset-v3",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/burned-village",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-plains-1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/signpost",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-plains-2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/signpost",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-plains-3",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/signpost",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-keep-1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/castle-wall",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-keep-2",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/castle-wall",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "current/terrain-keep-3",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/castle-wall",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/impactBell_heavy_000",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/castle-bell",
+          "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "edits/ritual-fout-03-short-v1",
+      "take": 0,
+      "uses": [
+        {
+          "entity": "terrain/ritual-star",
+          "action": "tap"
+        }
+      ]
+    }
+  ]
+}

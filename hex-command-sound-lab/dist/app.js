@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=soft-onsets-1";
+import { buildActions } from "./matching.js?v=timing-gate-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -15,10 +15,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=soft-onsets-1"),
+    loadJSON("catalog.json?v=timing-gate-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=soft-onsets-1"),
+    loadJSON("playback-levels.json?v=timing-gate-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -60,7 +60,8 @@ async function start() {
     visibleCount = 60;
   let libraryPlayback = null,
     libraryMatches = [],
-    sourceGain;
+    sourceGain,
+    sourceEnvelope;
   const cache = new AudioCache(() => context);
   const expanded = new Set();
   let dockEntity;
@@ -211,6 +212,8 @@ async function start() {
   function halt(reset = true) {
     libraryPlayback = null;
     sourceGain = null;
+    const stoppingEnvelope = sourceEnvelope;
+    sourceEnvelope = null;
     updateLibraryControls();
     cancelAnimationFrame(frame);
     document
@@ -223,7 +226,12 @@ async function start() {
       const active = source;
       source = null;
       try {
-        active.stop();
+        if (stoppingEnvelope) {
+          const now = context.currentTime;
+          stoppingEnvelope.gain.cancelAndHoldAtTime(now);
+          stoppingEnvelope.gain.linearRampToValueAtTime(0, now + 0.005);
+          active.stop(now + 0.005);
+        } else active.stop();
       } catch {}
     }
     if (reset) {
@@ -368,6 +376,7 @@ async function start() {
   function startNode(buffer, start, duration, position, ticket) {
     return new Promise((resolve) => {
       const node = context.createBufferSource(),
+        envelope = context.createGain(),
         gain = context.createGain();
       node.buffer = buffer;
       const item = byId.get(playingId);
@@ -380,7 +389,17 @@ async function start() {
         ? 10 ** ((gainDb ?? item.gainDb ?? 0) / 20)
         : 1;
       node.connect(gain);
-      gain.connect(master);
+      gain.connect(envelope);
+      envelope.connect(master);
+      sourceEnvelope = envelope;
+      const now = context.currentTime;
+      const remaining = Math.max(0.001, duration - position);
+      const fadeIn = Math.min(0.005, remaining / 4);
+      const fadeOut = Math.min(0.008, remaining / 4);
+      envelope.gain.setValueAtTime(0, now);
+      envelope.gain.linearRampToValueAtTime(1, now + fadeIn);
+      envelope.gain.setValueAtTime(1, now + remaining - fadeOut);
+      envelope.gain.linearRampToValueAtTime(0, now + remaining);
       source = node;
       beganAt = context.currentTime;
       resumedAt = position;
@@ -388,9 +407,11 @@ async function start() {
         node.onended = null;
         node.disconnect();
         gain.disconnect();
+        envelope.disconnect();
         if (source === node) {
           source = null;
           sourceGain = null;
+          sourceEnvelope = null;
           document
             .querySelectorAll(".sound-choice.is-playing")
             .forEach((card) => card.classList.remove("is-playing"));
@@ -1583,6 +1604,17 @@ async function start() {
       localStorage.setItem("hex-sound-before-soft-onsets-v1", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-soft-onsets-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-grove-short-v2")) {
+      const key = "terrain/grove/tap", choice = assignments[key];
+      if (choice && ["edits/ruins-magic-soft-v1", "edits/grove-magic-soft-v1"].includes(choice.id)) {
+        localStorage.setItem("hex-sound-before-grove-short-v2", JSON.stringify({ [key]: choice }));
+        assignments[key] = { ...choice, id: "edits/grove-short-magic-v2", take: 0 };
+        saveAssignments();
+      }
+      localStorage.setItem("hex-sound-grove-short-v2", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

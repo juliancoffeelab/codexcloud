@@ -441,3 +441,45 @@ body from 0.235–0.475 s with fades (about 0.24 s). Burned settlements use a ne
 Originals and earlier edits remain available. Skeleton riders at all three levels
 use the current spear blade palette. Old saved defaults for these changes migrate
 with backups. Catalog: 546 recordings / 1,358 takes; 27 separate audition edits.
+
+### Palette timing gate
+
+The current catalog is 547 recordings / 1,359 individual takes, including a
+roughly 0.30-second quiet Sacred Grove edit. Full source files remain unchanged.
+The build runs `scripts/audit-timing.py --apply` after rendering recipes and
+before generating measurements and playback gains. It uses 5ms RMS frames,
+a gate 45dB below each take's strongest frame (floor -80dBFS), keeps 5ms before
+activity and 12ms after, and removes edge quiet only when it exceeds 20ms.
+This tightened 466 takes across 348 recordings. Take counts/indices are stable.
+The approved English nock and eight Scythian shots remain intact. The reviewed
+Plank 004 override retains the first impact and removes a separated trailing tick.
+
+`timing-audit.json` records source listening hashes, original/applied windows,
+thresholds, edge removals, internal gaps and palette references. `palette-refs.json`
+is generated from the actual matching code: 92 distinct suggested recording/take
+choices, excluding deferred hurt and hypothetical actions. None has remaining
+internal quiet >=100ms under the stated gate. Longer unselected library takes
+still include 48 reported internal gaps; these may be compound performances,
+and are not silently spliced. Full recordings retain their original pauses.
+This is an amplitude-based audit, not a claim of subjective listening to every
+file. Deliberate quiet textures and decays are preserved by the relative gate.
+
+The audit is idempotent: it reuses the recorded original windows rather than
+progressively trimming prior output. `scripts/check-timing.py` verifies catalog
+hash, listening hashes, bounds, stable indices, non-silent takes and palette
+results. Both audit and playback checks pass on the built payload.
+
+Playback adds a 5ms attack and 8ms release envelope, plus a 5ms fade when a tap
+interrupts another sound. A touch-browser test verifies eight rapid retriggers,
+completion without stale callbacks, the scheduling envelopes, the shortened grove,
+trimmed source offsets and intact full-session playback.
+
+Sources exposes the timing audit and `upstream-levels.json`. Upstream statistics
+use complete archived sources, so timing edits do not change the baseline.
+For the six reference attack cues at the game's 0.29 master gain, strongest-50ms
+RMS is min -27.23 / mean -25.88 / max -24.13 dBFS (median -26.30). Across all 51
+archived game cues it is -45.78 / -31.73 / -18.77 dBFS. These are arithmetic means
+of per-cue dB values, not acoustic SPL or an energy-weighted mix.
+
+Programmatic variation can use small playback-rate/pitch and gain offsets and/or
+rotate clean takes. Random variation is not enabled during palette acceptance.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build browser-friendly listening copies and catalog from the locked originals.
 
-Requires Python 3.11+, FFmpeg and FFprobe. Originals are never changed.
+Requires Python 3.11+, Node, FFmpeg and FFprobe. Originals are never changed.
 """
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
@@ -82,6 +82,7 @@ for entry in review['recordings']:
 shutil.copy(ROOT/'take-boundaries.json',OUT/'take-boundaries.json')
 (OUT/'catalog.json').write_text(json.dumps(result,indent=2)+'\n')
 subprocess.run([sys.executable,str(ROOT/'scripts/build-edits.py')],check=True)
+subprocess.run([sys.executable,str(ROOT/'scripts/audit-timing.py'),'--apply'],check=True)
 result=json.loads((OUT/'catalog.json').read_text())
 (OUT/'sources.json').write_text(json.dumps(sources,indent=2)+'\n')
 (OUT/'coverage.json').write_text((VENDOR/'coverage.json').read_text())
@@ -99,10 +100,11 @@ if (ROOT/'curation-notes.json').exists():shutil.copy(ROOT/'curation-notes.json',
 for args in [["check-loudness.py", "--legacy-gains"], ["build-playback-levels.py"], ["check-loudness.py"]]:
  subprocess.run([sys.executable, str(ROOT / "scripts" / args[0]), *args[1:]], check=True)
 subprocess.run(['node',str(ROOT/'scripts/check-cue-durations.mjs')],check=True)
+subprocess.run([sys.executable,str(ROOT/'scripts/upstream-levels.py')],check=True)
 with zipfile.ZipFile(OUT/'sound-library.zip','w',zipfile.ZIP_DEFLATED) as z:
  for path in sorted({item['path'] for item in result}):z.write(OUT/path,path)
  for f in (OUT/'licenses').rglob('*'):
   if f.is_file():z.write(f,f.relative_to(OUT))
- for name in ['cue-duration-review.json','take-boundaries.json','catalog.json','sources.json','coverage.json','roster.json','provenance.json','workbench.json','audio-edits.json','curation-notes.json','playback-levels.json','loudness-reference.json','loudness.json','loudness.csv','workbench/terrain-portraits/provenance.json']:
+ for name in ['upstream-levels.json','timing-audit.json','palette-refs.json','cue-duration-review.json','take-boundaries.json','catalog.json','sources.json','coverage.json','roster.json','provenance.json','workbench.json','audio-edits.json','curation-notes.json','playback-levels.json','loudness-reference.json','loudness.json','loudness.csv','workbench/terrain-portraits/provenance.json']:
   if (OUT/name).exists():z.write(OUT/name,name)
 print(json.dumps(dict(recordings=len(result),cc0=len(inventory),takes=sum(len(x.get('takes',[])) or 1 for x in result),listeningMiB=round(sum((OUT/x['path']).stat().st_size for x in result)/1048576,2)),indent=2))

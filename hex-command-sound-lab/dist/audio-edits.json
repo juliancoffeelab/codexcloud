@@ -508,6 +508,29 @@
         "targetOffsetDb": -7,
         "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
       }
+    },
+    {
+      "id": "edits/grove-short-magic-v2",
+      "sourceId": "jaggedstone/magic-spell-sfx/magical_2.ogg",
+      "sourceHash": "84a70f63f3f21e5ba4a48285b760a663d422ad3feddba2f3cbadd94b76cdc52e",
+      "name": "Sacred grove \u00b7 short quiet magic",
+      "intent": "Shortened sacred grove magic, preserving the previous quiet timbre.",
+      "filters": [
+        "atrim=start=0.05:duration=0.30",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=220:p=2",
+        "lowpass=f=3500",
+        "afade=t=in:d=0.01",
+        "afade=t=out:st=0.21:d=0.09",
+        "volume=-11.7dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -10,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      },
+      "preserveLevel": true
     }
   ]
 }

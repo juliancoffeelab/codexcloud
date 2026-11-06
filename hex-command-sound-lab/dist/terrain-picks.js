@@ -70,8 +70,8 @@ export const terrainPicks = {
   },
   grove: {
     tap: cue(
-      [edit("ruins-magic-soft-v1")],
-      "The former quiet ruins magic for the sacred grove.",
+      [edit("grove-short-magic-v2")],
+      "Short quiet magic for the sacred grove.",
       ["magic"],
     ),
   },

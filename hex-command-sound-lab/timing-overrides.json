@@ -1,0 +1,12 @@
+{
+  "overrides": [
+    {
+      "id": "impact-sounds/impactPlank_medium_004",
+      "sourceHash": "6a51318c1c63821ea757622b57fafbf44c16c28129f6d39406a784260d87c447",
+      "take": 0,
+      "start": 0,
+      "duration": 0.2,
+      "reason": "Keep the first plank impact; discard the isolated tail after a roughly 185ms gap."
+    }
+  ]
+}

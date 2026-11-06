@@ -104,7 +104,7 @@ for (const faction of workbench.factions)
   }
 for (const [id, wanted] of [
   ["forest", "edits/forest-book-03-short-v1"],
-  ["grove", "edits/ruins-magic-soft-v1"],
+  ["grove", "edits/grove-short-magic-v2"],
   ["ruins", "current/terrain-hill-1"],
 ]) {
   const terrain = workbench.terrains.find((tile) => tile.id === id);

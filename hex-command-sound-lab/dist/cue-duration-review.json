@@ -7,7 +7,7 @@
       "name": "impactBell_heavy_000",
       "take": 1,
       "start": 0,
-      "duration": 1.4802,
+      "duration": 1.1494,
       "uses": [
         {
           "entity": "terrain/castle-bell",
@@ -19,8 +19,8 @@
       "id": "still-north-media/weapon-textures/part-2/Sabre Draw Fast.wav",
       "name": "Sabre Draw Fast",
       "take": 1,
-      "start": 0,
-      "duration": 1.0921,
+      "start": 0.0748,
+      "duration": 0.9848,
       "uses": [
         {
           "entity": "elves/elf-bladedancer-l2",
@@ -36,8 +36,8 @@
       "id": "edits/octopus-gurgle-soft-v1",
       "name": "Octopus · soft gurgle",
       "take": 1,
-      "start": 0,
-      "duration": 0.9916,
+      "start": 0.0499,
+      "duration": 0.9417,
       "uses": [
         {
           "entity": "beasts/octopus",
@@ -66,14 +66,22 @@
       ]
     },
     {
-      "id": "edits/quarry-mining-v1",
-      "name": "Quarry · mining contact",
+      "id": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
+      "name": "alien_03",
       "take": 1,
       "start": 0,
-      "duration": 0.9374,
+      "duration": 0.7254,
       "uses": [
         {
-          "entity": "terrain/cave",
+          "entity": "beasts/giant-wasp",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-wasp-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-wasp-l3",
           "action": "tap"
         }
       ]
@@ -82,8 +90,8 @@
       "id": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
       "name": "grunt_01",
       "take": 1,
-      "start": 0,
-      "duration": 0.9328,
+      "start": 0.0499,
+      "duration": 0.7054,
       "uses": [
         {
           "entity": "beasts/bear-l2",
@@ -144,117 +152,11 @@
       ]
     },
     {
-      "id": "impact-sounds/impactMining_001",
-      "name": "impactMining_001",
-      "take": 1,
-      "start": 0,
-      "duration": 0.8694,
-      "uses": [
-        {
-          "entity": "dwarves/dwarf-axeguard",
-          "action": "attack-shield-bash"
-        },
-        {
-          "entity": "dwarves/dwarf-axeguard-l2",
-          "action": "attack-shield-bash"
-        },
-        {
-          "entity": "dwarves/dwarf-axeguard-l3",
-          "action": "attack-shield-bash"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l2",
-          "action": "attack-pickaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l3",
-          "action": "attack-pickaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-pickaxe",
-          "action": "attack-pickaxe"
-        },
-        {
-          "entity": "dwarves/dwarf-hammerer-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-hammerer-l3",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-runesmith",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-thundersmith-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-thundersmith-l3",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-stonespell-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-stonespell-l3",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-goat-rider",
-          "action": "attack-spear"
-        },
-        {
-          "entity": "dwarves/dwarf-goat-rider-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-goat-rider-l3",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-forge-lord",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-forge-lord-l2",
-          "action": "attack-hammer"
-        },
-        {
-          "entity": "dwarves/dwarf-forge-lord-l3",
-          "action": "attack-hammer"
-        }
-      ]
-    },
-    {
-      "id": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
-      "name": "alien_03",
-      "take": 1,
-      "start": 0,
-      "duration": 0.8293,
-      "uses": [
-        {
-          "entity": "beasts/giant-wasp",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/giant-wasp-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/giant-wasp-l3",
-          "action": "tap"
-        }
-      ]
-    },
-    {
       "id": "rubberduck/80-cc0-creature-sfx/burp_02.ogg",
       "name": "burp_02",
       "take": 1,
-      "start": 0,
-      "duration": 0.8192,
+      "start": 0.0399,
+      "duration": 0.7004,
       "uses": [
         {
           "entity": "zombies/zombie-walker",
@@ -275,134 +177,69 @@
       ]
     },
     {
-      "id": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
-      "name": "alien_02",
+      "id": "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
+      "name": "dog-snarl",
       "take": 1,
       "start": 0,
-      "duration": 0.7832,
+      "duration": 0.6655,
       "uses": [
         {
-          "entity": "beasts/ray",
+          "entity": "cursed/werewolf",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "woodland/wolf",
+          "action": "attack-fangs"
+        },
+        {
+          "entity": "woodland/direwolf",
+          "action": "attack-fangs"
+        },
+        {
+          "entity": "woodland/woodland-alpha-wolf",
+          "action": "attack-fangs"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/alien_04.ogg",
+      "name": "alien_04",
+      "take": 1,
+      "start": 0.0648,
+      "duration": 0.655,
+      "uses": [
+        {
+          "entity": "beasts/giant-spider",
           "action": "tap"
         },
         {
-          "entity": "beasts/ray-l2",
+          "entity": "beasts/giant-spider-l2",
           "action": "tap"
         },
         {
-          "entity": "beasts/ray-l3",
+          "entity": "beasts/giant-spider-l3",
           "action": "tap"
         }
       ]
     },
     {
-      "id": "impact-sounds/impactPlank_medium_004",
-      "name": "impactPlank_medium_004",
+      "id": "edits/quarry-mining-v1",
+      "name": "Quarry · mining contact",
       "take": 1,
       "start": 0,
-      "duration": 0.779,
+      "duration": 0.6306,
       "uses": [
         {
-          "entity": "woodland/treant",
-          "action": "attack-bough"
-        },
-        {
-          "entity": "woodland/treant",
-          "action": "attack-spikes"
-        },
-        {
-          "entity": "woodland/treant-l2",
-          "action": "attack-bough"
-        },
-        {
-          "entity": "woodland/treant-l2",
-          "action": "attack-spikes"
-        },
-        {
-          "entity": "woodland/treant-l3",
-          "action": "attack-bough"
-        },
-        {
-          "entity": "woodland/treant-l3",
-          "action": "attack-spikes"
-        }
-      ]
-    },
-    {
-      "id": "impact-sounds/footstep_grass_000",
-      "name": "footstep_grass_000",
-      "take": 1,
-      "start": 0,
-      "duration": 0.7776,
-      "uses": [
-        {
-          "entity": "terrain/forest",
-          "action": "move"
-        },
-        {
-          "entity": "terrain/grove",
-          "action": "move"
-        },
-        {
-          "entity": "terrain/graveyard",
-          "action": "move"
-        }
-      ]
-    },
-    {
-      "id": "edits/snake-belt-soft-v1",
-      "name": "Snake · quiet rough belt",
-      "take": 1,
-      "start": 0,
-      "duration": 0.7533,
-      "uses": [
-        {
-          "entity": "beasts/giant-snake",
+          "entity": "terrain/cave",
           "action": "tap"
-        },
-        {
-          "entity": "beasts/giant-snake",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/giant-snake-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/giant-snake-l2",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/giant-snake-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/giant-snake-l3",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/sea-serpent",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/sea-serpent",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/sea-serpent-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/sea-serpent-l2",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/sea-serpent-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/sea-serpent-l3",
-          "action": "attack-bite"
         }
       ]
     },
@@ -411,7 +248,7 @@
       "name": "clothBelt2",
       "take": 1,
       "start": 0,
-      "duration": 0.7533,
+      "duration": 0.5757,
       "uses": [
         {
           "entity": "merfolk/harpooner",
@@ -500,243 +337,235 @@
       ]
     },
     {
-      "id": "rubberduck/80-cc0-creature-sfx/alien_04.ogg",
-      "name": "alien_04",
+      "id": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
+      "name": "alien_02",
       "take": 1,
       "start": 0,
-      "duration": 0.7198,
+      "duration": 0.5707,
       "uses": [
         {
-          "entity": "beasts/giant-spider",
+          "entity": "beasts/ray",
           "action": "tap"
         },
         {
-          "entity": "beasts/giant-spider-l2",
+          "entity": "beasts/ray-l2",
           "action": "tap"
         },
         {
-          "entity": "beasts/giant-spider-l3",
+          "entity": "beasts/ray-l3",
           "action": "tap"
         }
       ]
     },
     {
-      "id": "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
-      "name": "dog-snarl",
+      "id": "impact-sounds/impactPlate_medium_000",
+      "name": "impactPlate_medium_000",
       "take": 1,
       "start": 0,
-      "duration": 0.7002,
+      "duration": 0.5707,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-arquebus-l2",
+          "action": "attack-arquebus"
+        },
+        {
+          "entity": "dwarves/dwarf-arquebus-l3",
+          "action": "attack-arquebus"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+          "action": "attack-pistol"
+        },
+        {
+          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+          "action": "attack-pistol"
+        },
+        {
+          "entity": "humans/spearman",
+          "action": "attack-shieldbash"
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "attack-shieldbash"
+        },
+        {
+          "entity": "skeletons/skeleton",
+          "action": "attack-shieldbash"
+        }
+      ]
+    },
+    {
+      "id": "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac",
+      "name": "dog-grumble",
+      "take": 1,
+      "start": 0.0349,
+      "duration": 0.5651,
       "uses": [
         {
           "entity": "cursed/werewolf",
-          "action": "attack-bite"
+          "action": "tap"
         },
         {
           "entity": "cursed/werewolf-ironfang",
-          "action": "attack-bite"
+          "action": "tap"
         },
         {
           "entity": "cursed/werewolf-pack-king",
-          "action": "attack-bite"
+          "action": "tap"
         },
         {
           "entity": "woodland/wolf",
-          "action": "attack-fangs"
+          "action": "tap"
         },
         {
           "entity": "woodland/direwolf",
-          "action": "attack-fangs"
+          "action": "tap"
         },
         {
           "entity": "woodland/woodland-alpha-wolf",
-          "action": "attack-fangs"
-        }
-      ]
-    },
-    {
-      "id": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
-      "name": "stones_01",
-      "take": 1,
-      "start": 0,
-      "duration": 0.6808,
-      "uses": [
-        {
-          "entity": "woodland/wildkeeper",
-          "action": "attack-stones"
-        },
-        {
-          "entity": "woodland/grovewarden",
-          "action": "attack-stones"
-        },
-        {
-          "entity": "woodland/woodland-grove-oracle",
-          "action": "attack-stones"
-        },
-        {
-          "entity": "terrain/road",
-          "action": "tap"
-        },
-        {
-          "entity": "terrain/road",
-          "action": "move"
-        },
-        {
-          "entity": "terrain/bridge",
           "action": "tap"
         }
       ]
     },
     {
-      "id": "edits/house-door-soft-v1",
-      "name": "House / church / monastery · quiet door",
+      "id": "edits/snake-belt-soft-v1",
+      "name": "Snake · quiet rough belt",
       "take": 1,
       "start": 0,
-      "duration": 0.675,
+      "duration": 0.5608,
       "uses": [
         {
-          "entity": "terrain/house",
+          "entity": "beasts/giant-snake",
           "action": "tap"
         },
         {
-          "entity": "terrain/monastery",
-          "action": "tap"
-        },
-        {
-          "entity": "terrain/church",
-          "action": "tap"
-        }
-      ]
-    },
-    {
-      "id": "rubberduck/80-cc0-creature-sfx/breath.ogg",
-      "name": "breath",
-      "take": 1,
-      "start": 0,
-      "duration": 0.6704,
-      "uses": [
-        {
-          "entity": "zombies/zombie-walker",
-          "action": "tap"
-        },
-        {
-          "entity": "zombies/zombie-fighter",
-          "action": "tap"
-        },
-        {
-          "entity": "zombies/zombie-decay-caster",
-          "action": "tap"
-        },
-        {
-          "entity": "zombies/zombie-corruption-mage-l1",
-          "action": "tap"
-        },
-        {
-          "entity": "zombies/zombie-corruption-mage",
-          "action": "tap"
-        },
-        {
-          "entity": "zombies/zombie-corruption-archmage",
-          "action": "tap"
-        }
-      ]
-    },
-    {
-      "id": "edits/plains-grass-003-soft-v1",
-      "name": "footstep_grass_003 · soft bass-cut audition",
-      "take": 1,
-      "start": 0,
-      "duration": 0.6664,
-      "uses": [
-        {
-          "entity": "terrain/plains",
-          "action": "tap"
-        },
-        {
-          "entity": "terrain/plains",
-          "action": "move"
-        }
-      ]
-    },
-    {
-      "id": "edits/ruins-magic-soft-v1",
-      "name": "Ruins · very quiet magical trace",
-      "take": 1,
-      "start": 0,
-      "duration": 0.655,
-      "uses": [
-        {
-          "entity": "terrain/grove",
-          "action": "tap"
-        }
-      ]
-    },
-    {
-      "id": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
-      "name": "spell_fire_07",
-      "take": 1,
-      "start": 0,
-      "duration": 0.6513,
-      "uses": [
-        {
-          "entity": "beasts/dragon",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "beasts/dragon-l2",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "beasts/dragon-l3",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "humans/fireslinger",
-          "action": "attack-firepot"
-        },
-        {
-          "entity": "undead-animals/bone-dragon",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "undead-animals/bone-dragon-l2",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "undead-animals/bone-dragon-l3",
-          "action": "attack-fire-breath"
-        }
-      ]
-    },
-    {
-      "id": "rubberduck/80-cc0-creature-sfx/grunt_05.ogg",
-      "name": "grunt_05",
-      "take": 1,
-      "start": 0,
-      "duration": 0.6499,
-      "uses": [
-        {
-          "entity": "undead-animals/zombie-bear",
+          "entity": "beasts/giant-snake",
           "action": "attack-bite"
         },
         {
-          "entity": "undead-animals/zombie-bear-l2",
+          "entity": "beasts/giant-snake-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
           "action": "attack-bite"
         },
         {
-          "entity": "undead-animals/zombie-bear-l3",
+          "entity": "beasts/giant-snake-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
           "action": "attack-bite"
         },
         {
-          "entity": "zombies/zombie-plague-carrier",
+          "entity": "beasts/sea-serpent",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/sea-serpent",
           "action": "attack-bite"
         },
         {
-          "entity": "zombies/zombie-shambler",
+          "entity": "beasts/sea-serpent-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
           "action": "attack-bite"
         },
         {
-          "entity": "zombies/zombie-ghoul",
+          "entity": "beasts/sea-serpent-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
           "action": "attack-bite"
+        }
+      ]
+    },
+    {
+      "id": "impact-sounds/impactMining_001",
+      "name": "impactMining_001",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5458,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard",
+          "action": "attack-shield-bash"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "attack-shield-bash"
+        },
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "attack-shield-bash"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-pickaxe",
+          "action": "attack-pickaxe"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-runesmith",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-thundersmith-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-stonespell-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider",
+          "action": "attack-spear"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-goat-rider-l3",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l2",
+          "action": "attack-hammer"
+        },
+        {
+          "entity": "dwarves/dwarf-forge-lord-l3",
+          "action": "attack-hammer"
         }
       ]
     },
@@ -745,7 +574,7 @@
       "name": "spell_01",
       "take": 1,
       "start": 0,
-      "duration": 0.633,
+      "duration": 0.5308,
       "uses": [
         {
           "entity": "dwarves/dwarf-runesmith",
@@ -870,11 +699,48 @@
       ]
     },
     {
+      "id": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
+      "name": "spell_fire_07",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5208,
+      "uses": [
+        {
+          "entity": "beasts/dragon",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "attack-firepot"
+        },
+        {
+          "entity": "undead-animals/bone-dragon",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l2",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l3",
+          "action": "attack-fire-breath"
+        }
+      ]
+    },
+    {
       "id": "rubberduck/80-cc0-creature-sfx/grunt_04.ogg",
       "name": "grunt_04",
       "take": 1,
       "start": 0,
-      "duration": 0.6109,
+      "duration": 0.5059,
       "uses": [
         {
           "entity": "beasts/basilisk",
@@ -955,230 +821,34 @@
       ]
     },
     {
-      "id": "impact-sounds/impactPlate_medium_000",
-      "name": "impactPlate_medium_000",
+      "id": "rubberduck/80-cc0-creature-sfx/breath.ogg",
+      "name": "breath",
       "take": 1,
       "start": 0,
-      "duration": 0.6093,
+      "duration": 0.5009,
       "uses": [
         {
-          "entity": "dwarves/dwarf-arquebus-l2",
-          "action": "attack-arquebus"
-        },
-        {
-          "entity": "dwarves/dwarf-arquebus-l3",
-          "action": "attack-arquebus"
-        },
-        {
-          "entity": "dwarves/dwarf-pistol-goat-rider-l2",
-          "action": "attack-pistol"
-        },
-        {
-          "entity": "dwarves/dwarf-pistol-goat-rider-l3",
-          "action": "attack-pistol"
-        },
-        {
-          "entity": "humans/spearman",
-          "action": "attack-shieldbash"
-        },
-        {
-          "entity": "humans/sentinel",
-          "action": "attack-shieldbash"
-        },
-        {
-          "entity": "skeletons/skeleton",
-          "action": "attack-shieldbash"
-        }
-      ]
-    },
-    {
-      "id": "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac",
-      "name": "dog-grumble",
-      "take": 1,
-      "start": 0,
-      "duration": 0.6,
-      "uses": [
-        {
-          "entity": "cursed/werewolf",
+          "entity": "zombies/zombie-walker",
           "action": "tap"
         },
         {
-          "entity": "cursed/werewolf-ironfang",
+          "entity": "zombies/zombie-fighter",
           "action": "tap"
         },
         {
-          "entity": "cursed/werewolf-pack-king",
+          "entity": "zombies/zombie-decay-caster",
           "action": "tap"
         },
         {
-          "entity": "woodland/wolf",
+          "entity": "zombies/zombie-corruption-mage-l1",
           "action": "tap"
         },
         {
-          "entity": "woodland/direwolf",
+          "entity": "zombies/zombie-corruption-mage",
           "action": "tap"
         },
         {
-          "entity": "woodland/woodland-alpha-wolf",
-          "action": "tap"
-        }
-      ]
-    },
-    {
-      "id": "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav",
-      "name": "Mace Spear Blade",
-      "take": 1,
-      "start": 0,
-      "duration": 0.5656,
-      "uses": [
-        {
-          "entity": "merfolk/tridentguard",
-          "action": "attack-shellclub"
-        },
-        {
-          "entity": "merfolk/merfolk-reef-champion",
-          "action": "attack-shellclub"
-        },
-        {
-          "entity": "skeletons/revenant",
-          "action": "attack-boneclub"
-        },
-        {
-          "entity": "skeletons/skeleton-dreadguard",
-          "action": "attack-boneclub"
-        }
-      ]
-    },
-    {
-      "id": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
-      "name": "spell_02",
-      "take": 1,
-      "start": 0,
-      "duration": 0.5464,
-      "uses": [
-        {
-          "entity": "skeletons/ghost",
-          "action": "attack-spectral-touch"
-        },
-        {
-          "entity": "skeletons/wraith",
-          "action": "attack-spectral-touch"
-        },
-        {
-          "entity": "skeletons/spectre",
-          "action": "attack-spectral-touch"
-        },
-        {
-          "entity": "woodland/briarweaver",
-          "action": "attack-root-crush"
-        },
-        {
-          "entity": "woodland/woodland-thorn-oracle",
-          "action": "attack-root-crush"
-        }
-      ]
-    },
-    {
-      "id": "rubberduck/80-cc0-rpg-sfx/chain_01.ogg",
-      "name": "chain_01",
-      "take": 1,
-      "start": 0,
-      "duration": 0.5063,
-      "uses": [
-        {
-          "entity": "dwarves/dwarf-axeguard-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "dwarves/dwarf-axeguard-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "dwarves/dwarf-hammerer-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "dwarves/dwarf-hammerer-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "dwarves/dwarf-poleaxe-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "dwarves/dwarf-poleaxe-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "dwarves/dwarf-forge-lord-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "dwarves/dwarf-forge-lord-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "elves/elf-spearman-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "elves/elf-spearman-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "elves/elf-banner-lord-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "elves/elf-banner-lord-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/swordsman",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/champion",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/hammerman",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/warhammer",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/spearman",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/sentinel",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/halberdier",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/halberd-master",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/marshal",
-          "action": "tap"
-        },
-        {
-          "entity": "humans/grand-marshal",
+          "entity": "zombies/zombie-corruption-archmage",
           "action": "tap"
         }
       ]

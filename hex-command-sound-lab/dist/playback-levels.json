@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "7f1d40194959d9bbadf7fbe8037ed8beaf8d352a168251642d0062bab38335d1",
+  "catalogSha256": "14e56ee06f8766edfff55f7c57a39307f60b74a11d6324fb3059df0892244771",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -1180,7 +1180,7 @@
     "rpg-audio/bookClose": {
       "full": -10.6,
       "takes": [
-        -10.6
+        -10.64
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1188,7 +1188,7 @@
     "rpg-audio/bookFlip1": {
       "full": -5.13,
       "takes": [
-        -5.13
+        -5.1
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1300,7 +1300,7 @@
     "rpg-audio/creak1": {
       "full": -5.73,
       "takes": [
-        -5.73
+        -5.51
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1484,7 +1484,7 @@
     "rpg-audio/handleCoins": {
       "full": -6.02,
       "takes": [
-        -6.02
+        -6.06
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1516,7 +1516,7 @@
     "rpg-audio/knifeSlice": {
       "full": -9.79,
       "takes": [
-        -9.79
+        -9.92
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1548,7 +1548,7 @@
     "rpg-audio/metalPot1": {
       "full": -15.52,
       "takes": [
-        -15.52
+        -15.37
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1612,7 +1612,7 @@
     "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac": {
       "full": -9.2,
       "takes": [
-        -9.2
+        -9.39
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1660,7 +1660,7 @@
     "rubberduck/80-cc0-creature-sfx/alien_05.ogg": {
       "full": -3.9,
       "takes": [
-        -3.9
+        -3.97
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1700,7 +1700,7 @@
     "rubberduck/80-cc0-creature-sfx/bug_01.ogg": {
       "full": -5.95,
       "takes": [
-        -5.95
+        -5.93
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1724,7 +1724,7 @@
     "rubberduck/80-cc0-creature-sfx/bug_04.ogg": {
       "full": -10.64,
       "takes": [
-        -10.64
+        -10.57
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1732,7 +1732,7 @@
     "rubberduck/80-cc0-creature-sfx/burble_01.ogg": {
       "full": -5.58,
       "takes": [
-        -5.58
+        -5.57
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1756,7 +1756,7 @@
     "rubberduck/80-cc0-creature-sfx/burp_02.ogg": {
       "full": -14.01,
       "takes": [
-        -14.01
+        -14.19
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1764,7 +1764,7 @@
     "rubberduck/80-cc0-creature-sfx/cough_01.ogg": {
       "full": -14.16,
       "takes": [
-        -14.16
+        -14.19
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1780,7 +1780,7 @@
     "rubberduck/80-cc0-creature-sfx/cough_03.ogg": {
       "full": -12.05,
       "takes": [
-        -12.05
+        -11.81
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1844,7 +1844,7 @@
     "rubberduck/80-cc0-creature-sfx/cute_08.ogg": {
       "full": -3.05,
       "takes": [
-        -3.05
+        -3.04
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1852,7 +1852,7 @@
     "rubberduck/80-cc0-creature-sfx/cute_09.ogg": {
       "full": -5.44,
       "takes": [
-        -5.44
+        -5.52
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1900,7 +1900,7 @@
     "rubberduck/80-cc0-creature-sfx/grunt_01.ogg": {
       "full": -7.0,
       "takes": [
-        -7.0
+        -7.03
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1916,7 +1916,7 @@
     "rubberduck/80-cc0-creature-sfx/grunt_03.ogg": {
       "full": -9.9,
       "takes": [
-        -9.9
+        -9.86
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1932,7 +1932,7 @@
     "rubberduck/80-cc0-creature-sfx/grunt_05.ogg": {
       "full": -8.66,
       "takes": [
-        -8.66
+        -8.64
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -1988,7 +1988,7 @@
     "rubberduck/80-cc0-creature-sfx/misc_01.ogg": {
       "full": -6.49,
       "takes": [
-        -6.49
+        -6.51
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2020,7 +2020,7 @@
     "rubberduck/80-cc0-creature-sfx/misc_05.ogg": {
       "full": -10.65,
       "takes": [
-        -10.65
+        -11.04
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2068,7 +2068,7 @@
     "rubberduck/80-cc0-creature-sfx/monster_02.ogg": {
       "full": -7.2,
       "takes": [
-        -7.2
+        -7.22
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2076,7 +2076,7 @@
     "rubberduck/80-cc0-creature-sfx/monster_03.ogg": {
       "full": -15.08,
       "takes": [
-        -15.08
+        -15.07
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2084,7 +2084,7 @@
     "rubberduck/80-cc0-creature-sfx/monster_04.ogg": {
       "full": -16.11,
       "takes": [
-        -16.11
+        -15.7
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2100,7 +2100,7 @@
     "rubberduck/80-cc0-creature-sfx/monster_06.ogg": {
       "full": -14.56,
       "takes": [
-        -14.56
+        -14.2
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2108,7 +2108,7 @@
     "rubberduck/80-cc0-creature-sfx/monster_07.ogg": {
       "full": -17.6,
       "takes": [
-        -17.6
+        -17.0
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2124,7 +2124,7 @@
     "rubberduck/80-cc0-creature-sfx/ooh.ogg": {
       "full": -12.97,
       "takes": [
-        -12.97
+        -13.05
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2180,7 +2180,7 @@
     "rubberduck/80-cc0-creature-sfx/spit_01.ogg": {
       "full": -5.32,
       "takes": [
-        -5.32
+        -5.43
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2188,7 +2188,7 @@
     "rubberduck/80-cc0-creature-sfx/spit_02.ogg": {
       "full": -9.22,
       "takes": [
-        -9.22
+        -9.19
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2228,7 +2228,7 @@
     "rubberduck/80-cc0-creature-sfx/weird_01.ogg": {
       "full": -9.26,
       "takes": [
-        -9.26
+        -9.45
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2308,7 +2308,7 @@
     "rubberduck/80-cc0-rpg-sfx/book_03.ogg": {
       "full": -4.57,
       "takes": [
-        -4.57
+        -4.48
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2348,7 +2348,7 @@
     "rubberduck/80-cc0-rpg-sfx/creature_die_01.ogg": {
       "full": -16.82,
       "takes": [
-        -16.82
+        -16.86
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2356,7 +2356,7 @@
     "rubberduck/80-cc0-rpg-sfx/creature_hurt_01.ogg": {
       "full": -12.8,
       "takes": [
-        -12.8
+        -13.08
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2452,7 +2452,7 @@
     "rubberduck/80-cc0-rpg-sfx/creature_monster_03.ogg": {
       "full": -4.25,
       "takes": [
-        -4.25
+        -4.57
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2500,7 +2500,7 @@
     "rubberduck/80-cc0-rpg-sfx/creature_slime_02.ogg": {
       "full": -5.4,
       "takes": [
-        -5.4
+        -5.47
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2716,7 +2716,7 @@
     "rubberduck/80-cc0-rpg-sfx/metal_01.ogg": {
       "full": -4.44,
       "takes": [
-        -4.44
+        -5.13
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2844,7 +2844,7 @@
     "rubberduck/80-cc0-rpg-sfx/stones_02.ogg": {
       "full": -4.53,
       "takes": [
-        -4.53
+        -4.21
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2892,7 +2892,7 @@
     "rubberduck/80-cc0-rpg-sfx/wood_04.ogg": {
       "full": -4.17,
       "takes": [
-        -4.17
+        -4.44
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2908,7 +2908,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (1).wav": {
       "full": -8.73,
       "takes": [
-        -8.73
+        -8.72
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2924,7 +2924,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (11).wav": {
       "full": -9.13,
       "takes": [
-        -9.13
+        -9.25
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2940,7 +2940,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (13).wav": {
       "full": -4.63,
       "takes": [
-        -4.63
+        -4.64
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2956,7 +2956,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (15).wav": {
       "full": -10.11,
       "takes": [
-        -10.11
+        -10.34
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2964,7 +2964,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (2).wav": {
       "full": -11.48,
       "takes": [
-        -11.48
+        -11.49
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2972,7 +2972,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (3).wav": {
       "full": -9.86,
       "takes": [
-        -9.86
+        -9.84
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2980,7 +2980,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (4).wav": {
       "full": -10.58,
       "takes": [
-        -10.58
+        -10.59
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2988,7 +2988,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (5).wav": {
       "full": -8.65,
       "takes": [
-        -8.65
+        -8.62
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -2996,7 +2996,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (6).wav": {
       "full": -10.72,
       "takes": [
-        -10.72
+        -10.59
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3004,7 +3004,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (7).wav": {
       "full": -11.2,
       "takes": [
-        -11.2
+        -11.21
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3012,7 +3012,7 @@
     "sorth/ghost-voice-pack/Ghost and Lich Voice Pack/output (8).wav": {
       "full": -8.19,
       "takes": [
-        -8.19
+        -8.25
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3028,7 +3028,7 @@
     "still-north-media/weapon-impacts/part-1/Axe Katana Blade on Blade.wav": {
       "full": -1.27,
       "takes": [
-        0.4,
+        0.45,
         0.73,
         6.37,
         14.94,
@@ -3063,7 +3063,7 @@
     "still-north-media/weapon-impacts/part-1/Axe Norse Sword Blade on Blade.wav": {
       "full": -0.96,
       "takes": [
-        2.11,
+        1.96,
         2.53,
         2.61,
         1.3,
@@ -3095,7 +3095,7 @@
     "still-north-media/weapon-impacts/part-1/Axe Sabre Blade on Blade.wav": {
       "full": 3.01,
       "takes": [
-        5.41,
+        5.26,
         3.25,
         6.65
       ],
@@ -3105,7 +3105,7 @@
     "still-north-media/weapon-impacts/part-1/Axe Sabre Blade on Hilt.wav": {
       "full": 0.37,
       "takes": [
-        5.24,
+        5.26,
         3.15,
         0.37,
         4.23,
@@ -3118,7 +3118,7 @@
     "still-north-media/weapon-impacts/part-1/Axe Sabre Haft on Blade.wav": {
       "full": 0.37,
       "takes": [
-        4.44,
+        4.4,
         0.37,
         8.52,
         6.98
@@ -3138,7 +3138,7 @@
     "still-north-media/weapon-impacts/part-1/Axe Spear Blade on Blade.wav": {
       "full": -4.16,
       "takes": [
-        -4.16
+        -4.2
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3146,7 +3146,7 @@
     "still-north-media/weapon-impacts/part-1/Axe Spear Blade on haft.wav": {
       "full": 5.35,
       "takes": [
-        6.4,
+        6.29,
         18.02,
         11.54,
         6.79,
@@ -3204,7 +3204,7 @@
     "still-north-media/weapon-impacts/part-1/Dagger Spear Blade on Blade.wav": {
       "full": 4.72,
       "takes": [
-        4.72
+        4.65
       ],
       "preserved": false,
       "gameRelativeGain": false
@@ -3224,7 +3224,7 @@
     "still-north-media/weapon-impacts/part-1/Mace Axe Blade and Haft.wav": {
       "full": -2.44,
       "takes": [
-        11.01,
+        11.07,
         10.29,
         20.59,
         2.27,
@@ -3249,7 +3249,7 @@
     "still-north-media/weapon-impacts/part-1/Mace Dagger Blade.wav": {
       "full": 1.83,
       "takes": [
-        14.09,
+        14.1,
         11.96,
         5.58,
         3.11,
@@ -3309,7 +3309,7 @@
     "still-north-media/weapon-impacts/part-1/Mace Sabre Blade.wav": {
       "full": 0.56,
       "takes": [
-        7.74,
+        7.4,
         4.48,
         7.51,
         3.4,
@@ -3330,7 +3330,7 @@
     "still-north-media/weapon-impacts/part-1/Mace Seax Blade.wav": {
       "full": 1.68,
       "takes": [
-        2.14,
+        2.03,
         2.66,
         1.85,
         7.12,
@@ -3346,7 +3346,7 @@
     "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav": {
       "full": -3.3,
       "takes": [
-        6.86,
+        6.77,
         6.2,
         3.67,
         0.69,
@@ -3363,7 +3363,7 @@
     "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav": {
       "full": -0.59,
       "takes": [
-        3.59,
+        3.4,
         5.51,
         1.81,
         7.14,
@@ -3442,7 +3442,7 @@
     "still-north-media/weapon-impacts/part-1/Sabre Katana Hilt on Blade.wav": {
       "full": 6.7,
       "takes": [
-        13.38,
+        13.28,
         18.55,
         12.17,
         20.02,
@@ -3462,7 +3462,7 @@
     "still-north-media/weapon-impacts/part-1/Sabre Norse Sword Blade on Blade.wav": {
       "full": -0.72,
       "takes": [
-        5.08,
+        5.22,
         10.6,
         16.87,
         9.23,
@@ -3517,7 +3517,7 @@
     "still-north-media/weapon-impacts/part-2/Seax Axe Blade on Blade.wav": {
       "full": 3.54,
       "takes": [
-        8.66,
+        8.38,
         4.18,
         8.67,
         6.18,
@@ -3604,7 +3604,7 @@
     "still-north-media/weapon-impacts/part-2/Seax Norse Sword Blade on Blade.wav": {
       "full": -3.46,
       "takes": [
-        -0.04,
+        -0.03,
         7.12,
         -3.09,
         -1.81,
@@ -3652,7 +3652,7 @@
     "still-north-media/weapon-impacts/part-2/Seax Spear Blade on Haft.wav": {
       "full": 7.78,
       "takes": [
-        15.43,
+        15.21,
         13.38,
         16.01,
         7.78,
@@ -3692,7 +3692,7 @@
     "still-north-media/weapon-impacts/part-2/Spear Katana Haft on Blade.wav": {
       "full": 5.95,
       "takes": [
-        7.03,
+        7.04,
         8.13,
         18.65,
         6.1,
@@ -3740,7 +3740,7 @@
     "still-north-media/weapon-impacts/part-2/Spear Norse Sword Haft on Blade.wav": {
       "full": -0.19,
       "takes": [
-        4.15,
+        3.66,
         6.66,
         20.45,
         15.17,
@@ -3841,7 +3841,7 @@
     "still-north-media/weapon-impacts/part-2/Spear Spear Blade on Blade.wav": {
       "full": -3.4,
       "takes": [
-        -3.01,
+        -2.9,
         -0.77,
         19.54,
         -1.45,
@@ -3864,7 +3864,7 @@
     "still-north-media/weapon-impacts/part-2/Spear Spear Blade on Haft.wav": {
       "full": 0.96,
       "takes": [
-        3.44,
+        3.42,
         21.07,
         8.4,
         9.2,
@@ -3882,7 +3882,7 @@
     "still-north-media/weapon-impacts/part-2/Spear Spear Haft on Haft.wav": {
       "full": 2.79,
       "takes": [
-        9.02,
+        9.15,
         12.13,
         3.07,
         6.45,
@@ -4427,7 +4427,7 @@
     "still-north-media/weapon-textures/part-2/Sabre Draw Slow.wav": {
       "full": 8.05,
       "takes": [
-        8.05,
+        8.42,
         11.9
       ],
       "preserved": false,
@@ -4436,7 +4436,7 @@
     "still-north-media/weapon-textures/part-2/Sabre Sheath Fast.wav": {
       "full": -2.33,
       "takes": [
-        -0.75,
+        -0.78,
         3.76,
         -2.37
       ],
@@ -4467,7 +4467,7 @@
     "still-north-media/weapon-textures/part-2/Sabre Swing.wav": {
       "full": -2.99,
       "takes": [
-        14.29,
+        14.6,
         15.66,
         19.28,
         24.0,
@@ -5198,6 +5198,14 @@
       "gameRelativeGain": false
     },
     "edits/burned-fire-soft-onset-v3": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/grove-short-magic-v2": {
       "full": 0,
       "takes": [
         0

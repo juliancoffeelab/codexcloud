@@ -10,7 +10,13 @@ expected={x['id'] for x in catalog if x['pack']=='still-north-media/weapon-textu
 assert {x['id'] for x in review['recordings']}==expected
 for entry in review['recordings']:
  item=by_id[entry['id']]
- assert item['takes']==entry['takes'] and item['sourceHash']==entry['sourceHash']
+ audit_path=root/'dist/timing-audit.json'
+ audit={x['id']:x for x in json.loads(audit_path.read_text())['entries']} if audit_path.exists() else {}
+ if entry['id'] in audit:
+  assert audit[entry['id']]['originalRanges']==entry['takes']
+  assert item['takes']==audit[entry['id']]['appliedRanges']
+ else:assert item['takes']==entry['takes']
+ assert item['sourceHash']==entry['sourceHash']
  assert hashlib.sha256((root/'vendor/sfx'/item['sourcePath']).read_bytes()).hexdigest()==entry['sourceHash']
  end=0
  for take in entry['takes']:
