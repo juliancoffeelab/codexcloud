@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "14e56ee06f8766edfff55f7c57a39307f60b74a11d6324fb3059df0892244771",
+  "catalogSha256": "b4f41683e8cb356f69162b1efc9a1f7793afff62d2ef52935bc357e22ddec500",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -5211,6 +5211,14 @@
         0
       ],
       "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/snake-belt-texture-v2": {
+      "full": 6.86,
+      "takes": [
+        6.86
+      ],
+      "preserved": false,
       "gameRelativeGain": false
     }
   }

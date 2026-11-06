@@ -483,3 +483,11 @@ of per-cue dB values, not acoustic SPL or an energy-weighted mix.
 
 Programmatic variation can use small playback-rate/pitch and gain offsets and/or
 rotate clean takes. Random variation is not enabled during palette acceptance.
+
+Snake / sea-serpent selection and bite now use `edits/snake-belt-texture-v2`:
+300Hz high-pass, 6dB drive into tanh saturation, and a 4200Hz low-pass, with no
+intentional attenuation. `preserveLevel: false` allows ordinary game-reference
+matching. Strongest-50ms playback RMS at the 55% reference volume is -26.29 dBFS,
+versus -47.38 for the previous quiet edit. The old edit remains an alternative;
+saved snake/serpent choices using it migrate with a local backup. All six levels
+are covered. Catalog: 548 recordings / 1,360 takes, 29 derived auditions.

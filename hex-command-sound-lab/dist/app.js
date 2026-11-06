@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=timing-gate-1";
+import { buildActions } from "./matching.js?v=snake-texture-2";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -15,10 +15,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=timing-gate-1"),
+    loadJSON("catalog.json?v=snake-texture-2"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=timing-gate-1"),
+    loadJSON("playback-levels.json?v=snake-texture-2"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1615,6 +1615,20 @@ async function start() {
         saveAssignments();
       }
       localStorage.setItem("hex-sound-grove-short-v2", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-snake-texture-v2")) {
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!/^beasts\/(?:giant-snake|sea-serpent)(?:-l[23])?\//.test(key)
+          || choice.id !== "edits/snake-belt-soft-v1") continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: "edits/snake-belt-texture-v2", take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-snake-texture-v2", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-snake-texture-v2", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

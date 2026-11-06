@@ -19,10 +19,10 @@ export function creaturePick(entity) {
     return pick(cloth(3), "Cloth 3 as feather and wing handling.", true);
   if (/^(giant-snake|sea-serpent)(?:-l[23])?$/.test(id))
     return pick(
-      "edits/snake-belt-soft-v1",
-      "Quiet, lightly distorted Merfolk belt texture for snake selection.",
+      "edits/snake-belt-texture-v2",
+      "Filtered, saturated belt texture for snakes at the normal cue level.",
       true,
-      ["rpg-audio/clothBelt2"],
+      ["rpg-audio/clothBelt2", "edits/snake-belt-soft-v1"],
     );
   if (/^octopus(?:-l[23])?$/.test(id))
     return pick(

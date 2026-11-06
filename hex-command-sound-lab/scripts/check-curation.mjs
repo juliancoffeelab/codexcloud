@@ -85,6 +85,10 @@ for (const faction of workbench.factions)
     for (const attack of unit.attacks)
       if (/arquebus|pistol|musket|gunshot/i.test(attack.name))
         assert.equal(attacks.find(row => row.key === `attack-${attack.id}`).suggested[0], "impact-sounds/impactPlate_medium_000");
+    if (/^(giant-snake|sea-serpent)(?:-l[23])?$/.test(unit.id)) {
+      assert.equal(tap.suggested[0], "edits/snake-belt-texture-v2");
+      assert(actions.filter(row => row.key.startsWith("attack-")).every(row => row.suggested[0] === tap.suggested[0]));
+    }
     if (/^stag(?:-l[23])?$/.test(unit.id))
       assert.equal(tap.suggested[0], "edits/horse-0286-trim-v1");
     if (/^giant-wasp/.test(unit.id))
@@ -128,3 +132,5 @@ for (const group of read("curation-notes.json").groups)
 console.log(
   `Curation references, semantic defaults and disjoint candidates passed for ${units} units.`,
 );
+
+assert.equal(profiles["edits/snake-belt-texture-v2"].preserved, false);

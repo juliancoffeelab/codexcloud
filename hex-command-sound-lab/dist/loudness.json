@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "14e56ee06f8766edfff55f7c57a39307f60b74a11d6324fb3059df0892244771",
+  "catalogSha256": "b4f41683e8cb356f69162b1efc9a1f7793afff62d2ef52935bc357e22ddec500",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -33734,6 +33734,45 @@
           "flags": [
             "quiet-at-playback-setting"
           ]
+        }
+      ]
+    },
+    {
+      "id": "edits/snake-belt-texture-v2",
+      "name": "Snake \u00b7 rough belt texture",
+      "pack": "audition-edits",
+      "path": "audio/listening/60fc13faf533f79b6e2a.mp3",
+      "listeningSha256": "833a320628eddd560d29bf33ce67c29e7902c18dd8665ae97097f3c4986ebf97",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": 1.67,
+      "full": {
+        "duration": 0.7533,
+        "peakDbFS": -16.77,
+        "rmsDbFS": -33.55,
+        "strongest50msRmsDbFS": -27.96,
+        "leadingBelow55Ms": 9.0,
+        "playbackPeakDbFS": -15.1,
+        "playbackRmsDbFS": -31.88,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": 1.67,
+          "duration": 0.5957,
+          "peakDbFS": -16.77,
+          "rmsDbFS": -32.53,
+          "strongest50msRmsDbFS": -27.96,
+          "leadingBelow55Ms": 9.0,
+          "playbackPeakDbFS": -15.1,
+          "playbackRmsDbFS": -30.86,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
         }
       ]
     }

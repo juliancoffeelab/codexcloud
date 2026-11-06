@@ -3,11 +3,11 @@
   "paletteInternalQuietIssues": [],
   "method": "Conservative edge-silence audit for every playable take; originals stay intact.\n\n5ms RMS frames; gate 45dB below that take's strongest frame (floor -80dBFS).\nRetain 5ms before activity and 12ms after. Only remove >=20ms of edge quiet.\nInternal quiet is reported, never spliced out. Requires Python 3, Node and FFmpeg.",
   "applied": true,
-  "recordings": 547,
-  "takes": 1359,
-  "changedRecordings": 348,
-  "changedTakes": 466,
-  "catalogSha256": "14e56ee06f8766edfff55f7c57a39307f60b74a11d6324fb3059df0892244771",
+  "recordings": 548,
+  "takes": 1360,
+  "changedRecordings": 349,
+  "changedTakes": 467,
+  "catalogSha256": "b4f41683e8cb356f69162b1efc9a1f7793afff62d2ef52935bc357e22ddec500",
   "entries": [
     {
       "id": "antumdeluge/fire-crackling/fire-1.wav",
@@ -40331,62 +40331,7 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": [
-        {
-          "id": "edits/snake-belt-soft-v1",
-          "take": 0,
-          "uses": [
-            {
-              "entity": "beasts/giant-snake",
-              "action": "tap"
-            },
-            {
-              "entity": "beasts/giant-snake",
-              "action": "attack-bite"
-            },
-            {
-              "entity": "beasts/giant-snake-l2",
-              "action": "tap"
-            },
-            {
-              "entity": "beasts/giant-snake-l2",
-              "action": "attack-bite"
-            },
-            {
-              "entity": "beasts/giant-snake-l3",
-              "action": "tap"
-            },
-            {
-              "entity": "beasts/giant-snake-l3",
-              "action": "attack-bite"
-            },
-            {
-              "entity": "beasts/sea-serpent",
-              "action": "tap"
-            },
-            {
-              "entity": "beasts/sea-serpent",
-              "action": "attack-bite"
-            },
-            {
-              "entity": "beasts/sea-serpent-l2",
-              "action": "tap"
-            },
-            {
-              "entity": "beasts/sea-serpent-l2",
-              "action": "attack-bite"
-            },
-            {
-              "entity": "beasts/sea-serpent-l3",
-              "action": "tap"
-            },
-            {
-              "entity": "beasts/sea-serpent-l3",
-              "action": "attack-bite"
-            }
-          ]
-        }
-      ]
+      "paletteReferences": []
     },
     {
       "id": "edits/spider-creak-soft-v1",
@@ -41378,6 +41323,92 @@
             {
               "entity": "terrain/grove",
               "action": "tap"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "edits/snake-belt-texture-v2",
+      "name": "Snake \u00b7 rough belt texture",
+      "listeningSha256": "833a320628eddd560d29bf33ce67c29e7902c18dd8665ae97097f3c4986ebf97",
+      "originalRanges": [
+        {
+          "start": 0,
+          "duration": 0.7533
+        }
+      ],
+      "appliedRanges": [
+        {
+          "start": 0,
+          "duration": 0.5957
+        }
+      ],
+      "takes": [
+        {
+          "take": 1,
+          "leadingQuietMs": 5.0,
+          "trailingQuietMs": 169.6,
+          "trimmedLeadingMs": 0,
+          "trimmedTrailingMs": 157.6,
+          "gateDbFS": -68.3,
+          "internalQuiet": [],
+          "remainingInternalQuiet": [],
+          "reviewedOverride": null
+        }
+      ],
+      "paletteReferences": [
+        {
+          "id": "edits/snake-belt-texture-v2",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "beasts/giant-snake",
+              "action": "tap"
+            },
+            {
+              "entity": "beasts/giant-snake",
+              "action": "attack-bite"
+            },
+            {
+              "entity": "beasts/giant-snake-l2",
+              "action": "tap"
+            },
+            {
+              "entity": "beasts/giant-snake-l2",
+              "action": "attack-bite"
+            },
+            {
+              "entity": "beasts/giant-snake-l3",
+              "action": "tap"
+            },
+            {
+              "entity": "beasts/giant-snake-l3",
+              "action": "attack-bite"
+            },
+            {
+              "entity": "beasts/sea-serpent",
+              "action": "tap"
+            },
+            {
+              "entity": "beasts/sea-serpent",
+              "action": "attack-bite"
+            },
+            {
+              "entity": "beasts/sea-serpent-l2",
+              "action": "tap"
+            },
+            {
+              "entity": "beasts/sea-serpent-l2",
+              "action": "attack-bite"
+            },
+            {
+              "entity": "beasts/sea-serpent-l3",
+              "action": "tap"
+            },
+            {
+              "entity": "beasts/sea-serpent-l3",
+              "action": "attack-bite"
             }
           ]
         }

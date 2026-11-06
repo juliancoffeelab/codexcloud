@@ -531,6 +531,20 @@
         "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
       },
       "preserveLevel": true
+    },
+    {
+      "id": "edits/snake-belt-texture-v2",
+      "sourceId": "rpg-audio/clothBelt2",
+      "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+      "name": "Snake \u00b7 rough belt texture",
+      "intent": "Distinguish snake selection/attacks through a tighter frequency band and saturation, matched to the normal game-reference level instead of deliberate attenuation.",
+      "filters": [
+        "highpass=f=300",
+        "volume=6dB",
+        "asoftclip=type=tanh:threshold=0.12:output=0.8",
+        "lowpass=f=4200"
+      ],
+      "preserveLevel": false
     }
   ]
 }

@@ -244,6 +244,63 @@
       ]
     },
     {
+      "id": "edits/snake-belt-texture-v2",
+      "name": "Snake · rough belt texture",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5957,
+      "uses": [
+        {
+          "entity": "beasts/giant-snake",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-snake",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-snake-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/giant-snake-l3",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/sea-serpent",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/sea-serpent-l2",
+          "action": "attack-bite"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "tap"
+        },
+        {
+          "entity": "beasts/sea-serpent-l3",
+          "action": "attack-bite"
+        }
+      ]
+    },
+    {
       "id": "rpg-audio/clothBelt2",
       "name": "clothBelt2",
       "take": 1,
@@ -424,63 +481,6 @@
         {
           "entity": "woodland/woodland-alpha-wolf",
           "action": "tap"
-        }
-      ]
-    },
-    {
-      "id": "edits/snake-belt-soft-v1",
-      "name": "Snake · quiet rough belt",
-      "take": 1,
-      "start": 0,
-      "duration": 0.5608,
-      "uses": [
-        {
-          "entity": "beasts/giant-snake",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/giant-snake",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/giant-snake-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/giant-snake-l2",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/giant-snake-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/giant-snake-l3",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/sea-serpent",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/sea-serpent",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/sea-serpent-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/sea-serpent-l2",
-          "action": "attack-bite"
-        },
-        {
-          "entity": "beasts/sea-serpent-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "beasts/sea-serpent-l3",
-          "action": "attack-bite"
         }
       ]
     },
