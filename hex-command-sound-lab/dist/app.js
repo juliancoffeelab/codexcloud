@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=secondary-attacks-1";
+import { buildActions } from "./matching.js?v=roots-spell2-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);

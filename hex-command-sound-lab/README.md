@@ -406,3 +406,6 @@ three, 1 with none. Terrain taps are unaffected.
 The tap-mode switch is fixed: Selection / Main attack / Attack 2 for every unit.
 Third attacks remain accessible on their normal attack cards; there is no
 conditional Attack 3 switch. This supersedes the earlier conditional-mode design.
+
+Crushing Roots (root-crush), the third attack on Briarweaver and Thorn Oracle,
+uses Spell 02 and remains accessible through its normal attack card.

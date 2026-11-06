@@ -74,7 +74,9 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   for (const attack of entity.attacks || []) {
     const key = `attack-${attack.id}`;
     const name = attack.name.toLowerCase();
-    if (/axe|halberd/.test(name) && !/pickaxe/.test(name)) {
+    if (attack.id === "root-crush") {
+      choose(key, ["rubberduck/80-cc0-rpg-sfx/spell_02.ogg"], "Spell 02 for Crushing Roots.");
+    } else if (/axe|halberd/.test(name) && !/pickaxe/.test(name)) {
       choose(key, ["rubberduck/80-cc0-rpg-sfx/metal_01.ogg"],
         "Metal 01 for axe-family attacks, including poleaxes and halberds.");
     } else if (["humans", "elves"].includes(entity.faction) && /^(sword|blade)$/.test(name)) {

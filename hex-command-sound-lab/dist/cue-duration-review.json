@@ -809,14 +809,6 @@
           "action": "attack-spectral-orb"
         },
         {
-          "entity": "woodland/briarweaver",
-          "action": "attack-root-crush"
-        },
-        {
-          "entity": "woodland/woodland-thorn-oracle",
-          "action": "attack-root-crush"
-        },
-        {
           "entity": "terrain/ritual-spent",
           "action": "tap"
         }
@@ -1100,6 +1092,23 @@
         {
           "entity": "skeletons/skeleton-dreadguard",
           "action": "attack-boneclub"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
+      "name": "spell_02",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5464,
+      "uses": [
+        {
+          "entity": "woodland/briarweaver",
+          "action": "attack-root-crush"
+        },
+        {
+          "entity": "woodland/woodland-thorn-oracle",
+          "action": "attack-root-crush"
         }
       ]
     },
