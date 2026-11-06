@@ -31,15 +31,18 @@ The default view gives most of the viewport to sounds. A compact, unnamed
 three-row sprite field contains **every level** of the selected faction; Terrain
 contains all 27 tiles. Pan sideways and tap a sprite to hear its selection cue.
 There is no search, large unit description card, generic Play button or Detailed
-view. Select, Move, each named weapon attack and Hit have independent rows below
-the map. Each row's action button plays the saved assignment or default; its
-named recording buttons play that exact clip/take. Swipe each row sideways to
-compare. Suggested and Other recordings stay separate, and saved assignments
-have a Saved group. Each card retains takes, full source and Use. Extra sounds
-adds the hypothetical voice/death/reload rows. Library/Sources retain recordings,
-source notes, favorites and export. Unit names remain accessible labels without
-occupying the map. This is a game-style sound audition interface, not a battle
-simulation or a replica of gameplay stats.
+view. Named weapon attacks occupy the primary sound rows. Selection alternatives
+are collapsed below the attacks; the shared Move click is collapsed at the very
+bottom. Unit taps already play selection. **Hit on tap** switches those taps to
+the unit's hit cue instead, and exposes Hit alternatives in place of Selection
+alternatives. The switch persists locally and is hidden for terrain, whose tile
+sounds remain directly available. There is no Extra sounds button or separate
+primary Hit row. Attack buttons use the game's exact damage-type icon mapping
+and weapon name from its attack list, including pierce icons for bows rather
+than a generic ranged-target replacement. Swipe each row to compare recordings;
+Use saves its take. Suggested/Other/Saved groups remain distinct. Library/Sources
+retain recordings, source notes, favorites and export. Unit names remain
+accessible labels without occupying the map.
 
 The board automatically prefetches and decodes selected action defaults, nearby comparison cards and
 visible/neighboring map selection cues. Panning and switching entities refreshes
@@ -82,9 +85,9 @@ node scripts/check-audio-cache.mjs
 - Use persists the recording and selected take for that exact entity/action.
   The action button and tile selection follow personal choices. Saved exposes
   the assignment and Reset restores the default. Storage is local to the browser.
-- Extra sounds adds hypothetical voice/reaction, fall/death, reload, capture or
-  ambience rows. Unsupported firearm shots stay gaps. These proposals and
-  creature/terrain proxies are not claims of natural species recordings.
+- Unsupported firearm shots stay gaps. Creature/terrain proxies remain labeled;
+  no natural species recording is claimed for a designed texture. Optional
+  source recordings remain available in the full library.
 - Library includes all 518 original listening entries plus labeled derived
   auditions. It retains filters, all-recordings access, favorites, take expansion,
   original game recordings, source/licensing details, downloads and JSON export.

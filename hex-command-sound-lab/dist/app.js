@@ -59,6 +59,12 @@ async function start() {
   const cache = new AudioCache(() => context);
   const expanded = new Set();
   let dockEntity;
+  let hitOnTap = false;
+  try {
+    hitOnTap = localStorage.getItem("hex-sound-hit-on-tap") === "true";
+  } catch {}
+  $("#hit-on-tap").checked = hitOnTap;
+  const secondaryOpen = new Set();
   let audioEnabled = false,
     tapStarted = 0;
   document.body.classList.add("field-mode");
@@ -293,11 +299,12 @@ async function start() {
       })
       .map((tile) => {
         const entity = entityByKey.get(tile.dataset.unit);
+        const cueKey = hitOnTap && entity.kind === "unit" ? "hit" : "tap";
         const tap = buildActions(entity, catalog).find(
-          (row) => row.key === "tap",
+          (row) => row.key === cueKey,
         );
         return byId.get(
-          assignments[`${entity.key}/tap`]?.id || tap?.suggested[0],
+          assignments[`${entity.key}/${cueKey}`]?.id || tap?.suggested[0],
         );
       });
     void cache.warm(
@@ -478,7 +485,9 @@ async function start() {
     renderUnit();
     if (audition) {
       const ref = chosenFor(
-        currentRows().find((a) => a.key === "tap") || currentRows()[0],
+        currentRows().find(
+          (a) => a.key === (hitOnTap && unit.kind === "unit" ? "hit" : "tap"),
+        ) || currentRows()[0],
       );
       if (ref) void play([ref]);
     }
@@ -601,6 +610,10 @@ async function start() {
       const selected = b.dataset.unit === unit.key;
       b.classList.toggle("selected", selected);
       b.setAttribute("aria-pressed", String(selected));
+      b.setAttribute(
+        "aria-label",
+        `Select and hear ${hitOnTap && unit.kind === "unit" ? "hit on " : ""}${b.dataset.unit}`,
+      );
     });
     const root = $("#action-cards");
     root.replaceChildren();
@@ -693,16 +706,41 @@ async function start() {
   function renderDock() {
     const rows = currentRows();
     $("#dock-image").src = unit.artwork;
-    $("#dock-name").textContent = "Tap a sound to hear it";
+    $("#dock-name").textContent =
+      unit.kind === "terrain" ? "Tile sounds" : "Attacks";
     $("#dock-meta").textContent =
-      "Swipe for alternatives · Use saves your pick";
+      unit.kind === "terrain"
+        ? "Tap a tile to hear it"
+        : hitOnTap
+          ? "Unit taps play hit sounds"
+          : "Unit taps play selection sounds";
+    $("#hit-toggle").hidden = unit.kind === "terrain";
     const root = $("#sound-rows");
     // Save horizontal positions before updating choices, without moving the panel.
     for (const strip of root.querySelectorAll(".action-sounds"))
       dockScroll.set(strip.dataset.context, strip.scrollLeft);
     const panelScroll = root.scrollTop;
     root.replaceChildren();
-    for (const action of rows) {
+    const ordered =
+      unit.kind === "unit"
+        ? [
+            ...rows.filter((row) => row.key.startsWith("attack-")),
+            ...rows.filter((row) => row.key === (hitOnTap ? "hit" : "tap")),
+            ...rows.filter((row) => row.key === "move"),
+          ]
+        : rows;
+    if (
+      unit.kind === "unit" &&
+      !ordered.some((row) => row.key.startsWith("attack-"))
+    )
+      root.append(
+        el(
+          "p",
+          "dock-empty",
+          "No weapon attacks. Tap the unit to hear its cue.",
+        ),
+      );
+    for (const action of ordered) {
       const key = keyFor(action),
         saved = assignments[key];
       const group = dockGroups.get(key) || "suggested";
@@ -722,26 +760,18 @@ async function start() {
       const attack = unit.attacks?.find(
         (item) => `attack-${item.id}` === action.key,
       );
-      const symbol =
-        action.key === "move"
+      const symbol = attack
+        ? attack.damageType
+        : action.key === "move"
           ? "move"
           : action.key === "hit"
             ? "shield"
-            : action.key === "tap"
-              ? unit.kind === "terrain"
-                ? "keep"
-                : "recruit"
-              : attack?.category === "ranged"
-                ? "range"
-                : attack?.damageType === "blade"
-                  ? "blade"
-                  : attack?.damageType === "pierce"
-                    ? "pierce"
-                    : attack
-                      ? "impact"
-                      : "range";
+            : unit.kind === "terrain"
+              ? "keep"
+              : "recruit";
       const trigger = el("button", "action-trigger");
       trigger.innerHTML = iconMarkup(symbol);
+      if (attack) trigger.append(el("span", "weapon-label", attack.name));
       trigger.title = label;
 
       trigger.setAttribute("aria-label", `Hear ${unit.name} ${action.title}`);
@@ -844,7 +874,27 @@ async function start() {
         strip.append(reset);
       }
       row.append(strip);
-      root.append(row);
+      if (unit.kind === "unit" && !action.key.startsWith("attack-")) {
+        const details = el("details", "secondary-cue");
+        details.dataset.cue = action.key;
+        const summary = el(
+          "summary",
+          "",
+          action.key === "move"
+            ? "Move · shared board click"
+            : hitOnTap
+              ? "Hit alternatives"
+              : "Selection alternatives",
+        );
+        details.append(summary, row);
+        details.open = secondaryOpen.has(key);
+        details.ontoggle = () => {
+          if (details.open) secondaryOpen.add(key);
+          else secondaryOpen.delete(key);
+          warmSelection();
+        };
+        root.append(details);
+      } else root.append(row);
       strip.scrollLeft = dockScroll.get(strip.dataset.context) || 0;
       let timer;
       strip.onscroll = () => {
@@ -940,10 +990,12 @@ async function start() {
   $("#unit-select").onchange = (e) => pickUnit(e.target.value);
   $("#entity-search").oninput = populateUnits;
   $("#extras").onchange = () => renderUnit();
-  $("#more-actions").onclick = () => {
-    $("#extras").checked = !$("#extras").checked;
-    $("#more-actions").classList.toggle("selected", $("#extras").checked);
-    renderDock();
+  $("#hit-on-tap").onchange = () => {
+    hitOnTap = $("#hit-on-tap").checked;
+    try {
+      localStorage.setItem("hex-sound-hit-on-tap", String(hitOnTap));
+    } catch {}
+    renderUnit();
   };
   $("#sound-rows").addEventListener("scroll", () => {
     clearTimeout(mapWarmTimer);

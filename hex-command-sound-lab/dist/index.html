@@ -10,7 +10,7 @@
     />
     <title>Hexcommand — Sound Lab</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="style.css?v=direct-tap-1" />
+    <link rel="stylesheet" href="style.css?v=attack-focus-1" />
   </head>
   <body class="field-mode" data-view="units">
     <header>
@@ -90,12 +90,10 @@
               <h2 id="dock-name"></h2>
               <p id="dock-meta"></p>
             </div>
-            <button
-              id="more-actions"
-              aria-label="Toggle optional sound actions"
+            <label id="hit-toggle" class="hit-toggle"
+              ><input id="hit-on-tap" type="checkbox" role="switch" /> Hit on
+              tap</label
             >
-              Extra sounds
-            </button>
           </div>
           <div id="sound-rows"></div>
         </section>
@@ -279,6 +277,6 @@
         /><output id="volume-value">55%</output></label
       >
     </div>
-    <script type="module" src="app.js?v=weapon-selection-1"></script>
+    <script type="module" src="app.js?v=attack-focus-1"></script>
   </body>
 </html>
