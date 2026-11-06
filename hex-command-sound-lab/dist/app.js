@@ -1,4 +1,4 @@
-import { buildActions } from "./matching.js?v=terrain-picks-1";
+import { buildActions } from "./matching.js?v=terrain-batch-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -13,7 +13,7 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo] = await Promise.all([
-    loadJSON("catalog.json?v=terrain-picks-1"),
+    loadJSON("catalog.json?v=terrain-batch-1"),
     loadJSON("workbench.json?v=factions-1"),
     loadJSON("sources.json"),
   ]);
@@ -21,6 +21,7 @@ async function start() {
   const kindNames = {
     "recorded-foley": "Recorded Foley",
     "processed-foley": "Processed Foley",
+    "processed-effect": "Processed effect",
     "recorded-weapons": "Recorded weapons",
     "natural-animal-recording": "Natural animal recording",
     "designed-effects": "Designed effect",

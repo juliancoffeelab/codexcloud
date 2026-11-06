@@ -26,15 +26,19 @@ for recipe in recipes["edits"]:
         "-i", str(source), "-map_metadata", "-1", "-af", ",".join(recipe["filters"]),
         "-ac", "1", "-ar", "44100", "-codec:a", "libmp3lame", "-b:a", "96k", str(path),
     ], check=True)
-    duration = float(subprocess.check_output([
-        "ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path),
-    ], text=True).strip())
+    decoded = subprocess.check_output([
+        "ffmpeg", "-v", "error", "-nostdin", "-i", str(path), "-ac", "1", "-ar", "44100", "-f", "f32le", "-",
+    ])
+    duration = len(decoded) / (4 * 44100)
+    if duration <= 0:
+        raise ValueError(f"Empty rendered edit: {recipe['id']}")
     item = {**original,
         "id": recipe["id"], "name": recipe["name"], "path": path.relative_to(OUT).as_posix(),
-        "pack": "audition-edits", "packLabel": "Audition edits", "kind": "processed-foley",
+        "pack": "audition-edits", "packLabel": "Audition edits", "kind": "processed-foley" if original["kind"] in ["recorded-foley", "recorded-weapons"] else "processed-effect",
+        "originalKind": original["kind"], "takeMethod": "authored-edit",
         "derivedFrom": original["id"], "processingRecipe": recipe, "duration": round(duration, 4),
-        "gainDb": 0, "categories": ["movement"],
-        "takes": [{"start": 0, "duration": original["duration"]}],
+        "gainDb": 0, "categories": original.get("categories", ["movement"]),
+        "takes": [{"start": 0, "duration": round(duration, 4)}],
         "notes": recipe["intent"] + " Level matching does not boost this deliberately quiet edit.",
     }
     result.append(item)

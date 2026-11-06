@@ -76,15 +76,47 @@ Personal Use assignments take precedence over these editorial suggestions.
 
 ## Terrain audition edits
 
-Road selection and surface contact suggest `stones_01`. Plains suggests a
-processed `footstep_grass_003` copy; its unprocessed source remains an alternative.
-`audio-edits.json` records source hashes and exact FFmpeg filter recipes.
-`build-soundboard.py` invokes `scripts/build-edits.py` to regenerate them and
-include them in the catalog and download ZIP. Edits render from verified vendor
-originals, not from previously compressed listening copies. Their original
-provenance remains attached. Intentional attenuation is retained even when
-Match levels is enabled; otherwise peak matching would undo the requested mix.
-The originals and their existing catalog IDs remain untouched.
+Terrain preferences are authored in `dist/terrain-picks.js`, separate from the
+semantic matching rules. Suggested records and family alternatives can be
+changed there without changing the original recordings. Shared door and water
+presets keep related tiles consistent. Current starters include:
+
+| Terrain | Tap cue |
+| --- | --- |
+| Road / bridge | `stones_01` |
+| Plains | Soft, bass-cut `footstep_grass_003` |
+| Keep | Quiet light-metal contact |
+| Fort | Wood, approximately matched to Keep |
+| Marsh | Existing water or a heavily softened burble |
+| Ruins | Existing hill wind or very quiet magic |
+| Sacred grove | Soft magic |
+| Ferry / landing / water | Existing generated water |
+| House / hill monastery / church | Quiet door contact |
+| Village | Existing village cue |
+| Hills | Existing wind cue |
+| Mountains | Heavily quieted mining |
+| Quarry cave | More present mining |
+| Burned village / house | Quiet fire excerpt |
+| Road sign | Existing cue |
+| Bell keep | Bell |
+| Castle courtyard | Existing cue |
+| Burial ground | Skeleton starter `item_wood_03` |
+| Ritual mark | Quiet `fout-03` excerpt |
+
+Road and plains also use their chosen cues for surface contact. Other tile
+movement suggestions remain distinct from tap/interaction sounds; a door cue
+does not become a walking sound. Sources without a new preference keep their
+existing candidates. Personal Use assignments retain priority.
+
+`audio-edits.json` records source hashes, exact FFmpeg filter recipes and level
+references. `build-soundboard.py` invokes `scripts/build-edits.py` to regenerate
+these copies and include them in the catalog and download ZIP. Edits render
+from verified vendor originals, not from compressed listening copies. Authored
+excerpts and fades preserve the full unmodified source as an alternative.
+Keep and Fort are calibrated to the archived keep cue's integrated RMS; quarry
+mining is more present than mountain mining. These are first audition mixes,
+not perceptual loudness mastering. Intentional attenuation is retained when
+Match levels is enabled. Original recordings and catalog IDs stay untouched.
 
 ## Refreshing faction and terrain snapshots
 

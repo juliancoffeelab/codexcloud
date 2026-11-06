@@ -15768,7 +15768,7 @@
     "duration": 0.847
   },
   {
-    "takeMethod": "silence42-fallback30-v2",
+    "takeMethod": "authored-edit",
     "id": "edits/plains-grass-003-soft-v1",
     "name": "footstep_grass_003 \u00b7 soft bass-cut audition",
     "path": "audio/listening/2a75dbabede7d55f93a3.mp3",
@@ -15781,17 +15781,19 @@
     "notes": "Quieter plains tap and foot-contact candidate with substantially less low-end weight. Original remains available. Level matching does not boost this deliberately quiet edit.",
     "sourcePath": "kenney/impact-sounds/Audio/footstep_grass_003.ogg",
     "sourceHash": "0546e1d8ab2def714425701a18bd34c5ee2794b12e858e5b595aabcf38a34137",
-    "duration": 0.7053,
+    "duration": 0.6664,
     "gainDb": 0,
     "categories": [
+      "impact",
       "movement"
     ],
     "takes": [
       {
         "start": 0,
-        "duration": 0.6693
+        "duration": 0.6664
       }
     ],
+    "originalKind": "recorded-foley",
     "derivedFrom": "impact-sounds/footstep_grass_003",
     "processingRecipe": {
       "id": "edits/plains-grass-003-soft-v1",
@@ -15807,6 +15809,510 @@
         "afade=t=in:d=0.004",
         "afade=t=out:st=0.6493:d=0.02"
       ]
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/keep-metal-light-v1",
+    "name": "Keep \u00b7 soft light-metal contact",
+    "path": "audio/listening/fa94850d99d43194565d.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/impact-sounds",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-foley",
+    "notes": "Light metal contact matched to the archived keep cue level. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "kenney/impact-sounds/Audio/impactMetal_light_000.ogg",
+    "sourceHash": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d",
+    "duration": 0.3486,
+    "gainDb": 0,
+    "categories": [
+      "impact"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.3486
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "impact-sounds/impactMetal_light_000",
+    "processingRecipe": {
+      "id": "edits/keep-metal-light-v1",
+      "sourceId": "impact-sounds/impactMetal_light_000",
+      "sourceHash": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d",
+      "name": "Keep \u00b7 soft light-metal contact",
+      "intent": "Light metal contact matched to the archived keep cue level.",
+      "filters": [
+        "atrim=start=0:duration=0.3515",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=120:p=2",
+        "lowpass=f=5000",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.3165:d=0.035",
+        "volume=-7.2dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": 0,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/fort-wood-v1",
+    "name": "Fort \u00b7 quiet wood contact",
+    "path": "audio/listening/510b2854dd969cc01bc1.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/impact-sounds",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-foley",
+    "notes": "Wood contact matched approximately to the soft keep metal cue. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "kenney/impact-sounds/Audio/impactWood_light_000.ogg",
+    "sourceHash": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3",
+    "duration": 0.2627,
+    "gainDb": 0,
+    "categories": [
+      "impact"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.2627
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "impact-sounds/impactWood_light_000",
+    "processingRecipe": {
+      "id": "edits/fort-wood-v1",
+      "sourceId": "impact-sounds/impactWood_light_000",
+      "sourceHash": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3",
+      "name": "Fort \u00b7 quiet wood contact",
+      "intent": "Wood contact matched approximately to the soft keep metal cue.",
+      "filters": [
+        "atrim=start=0:duration=0.2656",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=90:p=2",
+        "lowpass=f=4000",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.2306:d=0.035",
+        "volume=-0.6dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": 0,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/marsh-gurgle-soft-v1",
+    "name": "Marsh \u00b7 very soft burble",
+    "path": "audio/listening/f1634a745703619f2136.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Strongly softened designed burble proxy; not a field recording of water. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+    "sourceHash": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+    "duration": 0.9916,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.9916
+      }
+    ],
+    "originalKind": "designed-effects",
+    "derivedFrom": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+    "processingRecipe": {
+      "id": "edits/marsh-gurgle-soft-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+      "sourceHash": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+      "name": "Marsh \u00b7 very soft burble",
+      "intent": "Strongly softened designed burble proxy; not a field recording of water.",
+      "filters": [
+        "atrim=start=0:duration=0.9916",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=150:p=2",
+        "lowpass=f=2600",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.9566:d=0.035",
+        "volume=-13.1dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -8,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/ruins-magic-soft-v1",
+    "name": "Ruins \u00b7 very quiet magical trace",
+    "path": "audio/listening/47b95e2c7f6240b9a185.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/magic-spell-sfx",
+    "creator": "JaggedStone",
+    "kind": "processed-effect",
+    "notes": "A short magical texture, heavily attenuated for ruins; compare with the original hill wind. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "jaggedstone/magic-spell-sfx/magical_2.ogg",
+    "sourceHash": "84a70f63f3f21e5ba4a48285b760a663d422ad3feddba2f3cbadd94b76cdc52e",
+    "duration": 0.655,
+    "gainDb": 0,
+    "categories": [
+      "attack",
+      "impact",
+      "magic"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.655
+      }
+    ],
+    "originalKind": "designed-tonal-effects",
+    "derivedFrom": "jaggedstone/magic-spell-sfx/magical_2.ogg",
+    "processingRecipe": {
+      "id": "edits/ruins-magic-soft-v1",
+      "sourceId": "jaggedstone/magic-spell-sfx/magical_2.ogg",
+      "sourceHash": "84a70f63f3f21e5ba4a48285b760a663d422ad3feddba2f3cbadd94b76cdc52e",
+      "name": "Ruins \u00b7 very quiet magical trace",
+      "intent": "A short magical texture, heavily attenuated for ruins; compare with the original hill wind.",
+      "filters": [
+        "atrim=start=0.05:duration=0.65",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=220:p=2",
+        "lowpass=f=3500",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.615:d=0.035",
+        "volume=-11.7dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -10,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/grove-magic-soft-v1",
+    "name": "Sacred grove \u00b7 soft magic",
+    "path": "audio/listening/705581905df2d4f597b1.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Subtle spell texture for sacred grove selection. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
+    "sourceHash": "bf9c48b76921e56aa266172d969a2c08215d6ce0ffae7c3584f23fa05d3f8bd4",
+    "duration": 0.5464,
+    "gainDb": 0,
+    "categories": [
+      "attack",
+      "magic"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.5464
+      }
+    ],
+    "originalKind": "designed-effects",
+    "derivedFrom": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
+    "processingRecipe": {
+      "id": "edits/grove-magic-soft-v1",
+      "sourceId": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
+      "sourceHash": "bf9c48b76921e56aa266172d969a2c08215d6ce0ffae7c3584f23fa05d3f8bd4",
+      "name": "Sacred grove \u00b7 soft magic",
+      "intent": "Subtle spell texture for sacred grove selection.",
+      "filters": [
+        "atrim=start=0:duration=0.5464",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=180:p=2",
+        "lowpass=f=4500",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.5114:d=0.035",
+        "volume=-12.6dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -6,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/mountain-mining-soft-v1",
+    "name": "Mountains \u00b7 very quiet mining contact",
+    "path": "audio/listening/820c1027047663ff8616.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/impact-sounds",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-foley",
+    "notes": "Short mining texture, heavily reduced for mountains. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "kenney/impact-sounds/Audio/impactMining_000.ogg",
+    "sourceHash": "36b4ea107222d073c67ca64dde26944975609202d5090b2f2021213c1a7e35cd",
+    "duration": 0.45,
+    "gainDb": 0,
+    "categories": [
+      "impact"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.45
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "impact-sounds/impactMining_000",
+    "processingRecipe": {
+      "id": "edits/mountain-mining-soft-v1",
+      "sourceId": "impact-sounds/impactMining_000",
+      "sourceHash": "36b4ea107222d073c67ca64dde26944975609202d5090b2f2021213c1a7e35cd",
+      "name": "Mountains \u00b7 very quiet mining contact",
+      "intent": "Short mining texture, heavily reduced for mountains.",
+      "filters": [
+        "atrim=start=0:duration=0.45",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=220:p=2",
+        "lowpass=f=3500",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.415:d=0.035",
+        "volume=-7.0dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -9,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/quarry-mining-v1",
+    "name": "Quarry \u00b7 mining contact",
+    "path": "audio/listening/fabc286cb33624f3347c.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/impact-sounds",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-foley",
+    "notes": "A more present mining cue than the mountain audition, still at the keep reference level. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "kenney/impact-sounds/Audio/impactMining_000.ogg",
+    "sourceHash": "36b4ea107222d073c67ca64dde26944975609202d5090b2f2021213c1a7e35cd",
+    "duration": 0.9374,
+    "gainDb": 0,
+    "categories": [
+      "impact"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.9374
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "impact-sounds/impactMining_000",
+    "processingRecipe": {
+      "id": "edits/quarry-mining-v1",
+      "sourceId": "impact-sounds/impactMining_000",
+      "sourceHash": "36b4ea107222d073c67ca64dde26944975609202d5090b2f2021213c1a7e35cd",
+      "name": "Quarry \u00b7 mining contact",
+      "intent": "A more present mining cue than the mountain audition, still at the keep reference level.",
+      "filters": [
+        "atrim=start=0:duration=0.9374",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=110:p=2",
+        "lowpass=f=5000",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.9024:d=0.035",
+        "volume=-3.2dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": 0,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/house-door-soft-v1",
+    "name": "House / church / monastery \u00b7 quiet door",
+    "path": "audio/listening/db428a143f907258cb8c.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/rpg-audio",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-foley",
+    "notes": "A restrained door contact shared by house, church and monastery. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "kenney/rpg-audio/Audio/doorClose_1.ogg",
+    "sourceHash": "834d29c60a8a8bfb50b158cdb6b7dfa8f02812a408a1ee9703d038dfab0b1aeb",
+    "duration": 0.675,
+    "gainDb": 0,
+    "categories": [
+      "equipment"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.675
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "rpg-audio/doorClose_1",
+    "processingRecipe": {
+      "id": "edits/house-door-soft-v1",
+      "sourceId": "rpg-audio/doorClose_1",
+      "sourceHash": "834d29c60a8a8bfb50b158cdb6b7dfa8f02812a408a1ee9703d038dfab0b1aeb",
+      "name": "House / church / monastery \u00b7 quiet door",
+      "intent": "A restrained door contact shared by house, church and monastery.",
+      "filters": [
+        "atrim=start=0:duration=0.675",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=90:p=2",
+        "lowpass=f=4500",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.64:d=0.035",
+        "volume=-11.5dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": 0,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/burned-fire-soft-v1",
+    "name": "Burned settlement \u00b7 soft fire excerpt",
+    "path": "audio/listening/9c8cd32c8c86c24a0450.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/fire-crackling",
+    "creator": "AntumDeluge",
+    "kind": "processed-effect",
+    "notes": "A short, softened crackling-fire excerpt for burned village / house selection. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "antumdeluge/fire-crackling/fire-1.wav",
+    "sourceHash": "26702de8a195bcbafeae72034861d875a1b7917168a25106f4e1957ecdddf7e5",
+    "duration": 0.55,
+    "gainDb": 0,
+    "categories": [
+      "magic"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.55
+      }
+    ],
+    "originalKind": "fireplace-effect",
+    "derivedFrom": "antumdeluge/fire-crackling/fire-1.wav",
+    "processingRecipe": {
+      "id": "edits/burned-fire-soft-v1",
+      "sourceId": "antumdeluge/fire-crackling/fire-1.wav",
+      "sourceHash": "26702de8a195bcbafeae72034861d875a1b7917168a25106f4e1957ecdddf7e5",
+      "name": "Burned settlement \u00b7 soft fire excerpt",
+      "intent": "A short, softened crackling-fire excerpt for burned village / house selection.",
+      "filters": [
+        "atrim=start=0.55:duration=0.55",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=160:p=2",
+        "lowpass=f=4500",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.515:d=0.035",
+        "volume=2.0dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -7,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/ritual-fout-03-soft-v1",
+    "name": "Ritual mark \u00b7 quiet fout-03 excerpt",
+    "path": "audio/listening/2e03ae6f40b7aa83616e.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/3-dark-magic-spells",
+    "creator": "qubodup",
+    "kind": "processed-effect",
+    "notes": "A short quiet excerpt of the original fout-03 spell. The full source stays available. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac",
+    "sourceHash": "ec55b77eb3096dcc083d219254d0a37a0ecf071477d7c47bc363092c2ca02d0d",
+    "duration": 0.85,
+    "gainDb": 0,
+    "categories": [
+      "attack",
+      "magic"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.85
+      }
+    ],
+    "originalKind": "synthesized-upstream-effects",
+    "derivedFrom": "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac",
+    "processingRecipe": {
+      "id": "edits/ritual-fout-03-soft-v1",
+      "sourceId": "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac",
+      "sourceHash": "ec55b77eb3096dcc083d219254d0a37a0ecf071477d7c47bc363092c2ca02d0d",
+      "name": "Ritual mark \u00b7 quiet fout-03 excerpt",
+      "intent": "A short quiet excerpt of the original fout-03 spell. The full source stays available.",
+      "filters": [
+        "atrim=start=0.9:duration=0.85",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=160:p=2",
+        "lowpass=f=5000",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.815:d=0.035",
+        "volume=-22.7dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -5,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
     }
   }
 ]

@@ -1,3 +1,4 @@
+import { terrainPicks } from "./terrain-picks.js?v=terrain-batch-1";
 // Explicit semantic families keep mechanical actions separate from animal voices.
 // Recommendations are curated source IDs; alternatives include every matching recording.
 export function buildActions(entity, catalog, { extras = false } = {}) {
@@ -114,24 +115,11 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       tap = material(/^impactBell_heavy_000$/);
       tapPossible = union(material(/^impactBell/), old("terrain-keep"));
     }
-    const plainsEdit = catalog.filter(
-      (x) => x.id === "edits/plains-grass-003-soft-v1",
-    );
-    let surfaceSuggestion = named(
+    const surfaceSuggestion = named(
       ground,
       /^footstep_.*_000$|^terrain-water-1$|^burble_01$/,
     );
-    let surfacePossible = ground;
-    if (id === "road") {
-      tap = fx(/^stones_01$/);
-      tapPossible = union(tapPossible, stone);
-      surfaceSuggestion = tap;
-    } else if (id === "plains") {
-      tap = plainsEdit.length ? plainsEdit : material(/^footstep_grass_003$/);
-      tapPossible = union(tapPossible, ground, tap);
-      surfaceSuggestion = tap;
-      surfacePossible = union(ground, tap);
-    }
+    const surfacePossible = ground;
     const impact = wooden
       ? wood
       : building || /hill|mountain|road/.test(id)
@@ -143,11 +131,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       row(
         "tap",
         "Tap / tile selection",
-        id === "road"
-          ? "Stones 01 for road selection."
-          : id === "plains"
-            ? "Grass 003 with a strong bass cut and lower level."
-            : "A short cue when selecting this tile.",
+        "A short cue when selecting this tile.",
         tap,
         tapPossible,
       ),
@@ -212,6 +196,48 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
             { hypothetical: true },
           ),
         );
+    }
+    const preference = terrainPicks[id] || {};
+    const families = {
+      stone,
+      wood,
+      metal,
+      magic,
+      dark,
+      fire,
+      water: old("terrain-water"),
+      burble: creature(/^burble_/),
+      doors: rpg(/^doorOpen|^doorClose/),
+      mining: material(/^impactMining/),
+      bell: material(/^impactBell/),
+    };
+    for (const action of result) {
+      const pick = preference[action.key];
+      if (!pick) continue;
+      const suggestions = pick.suggested
+        .map((id) => catalog.find((item) => item.id === id))
+        .filter(Boolean);
+      const originalVersions = suggestions
+        .filter((item) => item.derivedFrom)
+        .map((item) => catalog.find((source) => source.id === item.derivedFrom))
+        .filter(Boolean);
+      const matches = union(
+        [...action.suggested, ...action.alternatives].map((id) =>
+          catalog.find((item) => item.id === id),
+        ),
+        ...pick.families.map((name) => families[name] || []),
+        suggestions,
+        originalVersions,
+      );
+      const suggestedIds = new Set(suggestions.map((x) => x.id));
+      action.suggested = suggestions.map((x) => x.id);
+      action.alternatives = matches
+        .filter((x) => !suggestedIds.has(x.id))
+        .map((x) => x.id);
+      action.description = pick.note;
+      if (suggestions.some((x) => x.derivedFrom))
+        action.caveat =
+          "Quiet processed audition. Match levels keeps its intended level. Expand alternatives to compare with the unprocessed source.";
     }
     return result.filter((x) => !x.hypothetical || extras);
   }
