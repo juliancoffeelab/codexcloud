@@ -2,8 +2,9 @@
 
 [Authored JSON](data/README.md) supplies rules and scenario content directly.
 The internal `catalog` crate owns definitions, snapshots and authoring validation;
-`data` re-exports the model vocabulary, `logic` owns battle commands and campaign
-execution, and `ai` owns recruitment, campaign orders and planning. `simulation` owns scheduling,
+`data` re-exports the model vocabulary. The `battle` crate owns mechanical state,
+commands and campaign execution; `ai` owns recruitment, campaign orders and
+planning. `simulation` owns scheduling,
 workers and records; `protocol` defines the browser transfer contract.
 
 A host owns `Catalog` and lends it to operations. Native workers share an immutable

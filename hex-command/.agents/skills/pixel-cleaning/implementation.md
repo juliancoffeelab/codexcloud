@@ -28,16 +28,33 @@ material ownership. `pixel_review_image.py` renders every selected finding besid
 the complete original matrix. These standalone detectors also accept terrain
 frames, as do the combined reviewer and guarded editor.
 
-`apply_edits.py` validates matrix/palette hashes, native integer coordinates,
-original symbols, duplicate coordinates, material/reason fields and explicit
-review of outline/transparency changes before writing a candidate. It copies the
+## Edit request contract
+
+Use individually reviewed edits with `matrix_sha256`, `palette_sha256` and an
+`edits` list. Each edit has native `x`, `y`, `from`, `to`, `material` and `reason`.
+Outline/transparency changes require `boundary_reviewed: true`.
+
+`apply_edits.py` validates hashes, native integer coordinates, original symbols,
+duplicate coordinates and the required review fields before writing a candidate. It copies the
 original palette, matrix and optional ownership mask for before/after inspection.
-Candidate matrices retain their original filenames. Terrain scratch palettes
-include resolved shared floor shades so previews work outside canonical paths;
-baselines remain byte-exact. Comparison renders use the original canonical
-source and candidate. Remove scratch floor entries before canonical integration.
+Candidate matrices retain their original filenames. Baselines remain byte-exact; comparisons render the original and candidate.
+For terrain scratch palettes and canonical integration, follow
+[floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
 
 The script `scripts/build-pixel-art.py` resolves terrain floor colors from canonical terrain paths
 and validates road boundary sections independently of the interior through
 `require_road_exits`. That validation checks exits, not complete visual continuity
 between assembled tiles.
+
+## Standalone detectors
+
+Use these for focused detector investigations:
+
+```sh
+python3 .agents/skills/pixel-cleaning/scripts/check_isolated_pixels.py \
+  pixel/art/terrain/road/9.txt --output tmp/road-review/strays.json \
+  --images-dir tmp/road-review
+python3 .agents/skills/pixel-cleaning/scripts/check_broken_outlines.py \
+  pixel/art/terrain/road/9.txt --output tmp/road-review/outlines.json \
+  --images-dir tmp/road-review
+```

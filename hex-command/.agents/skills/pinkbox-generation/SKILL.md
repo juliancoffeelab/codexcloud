@@ -5,7 +5,8 @@ description: Use to generate or regenerate native pixel artwork from reference m
 
 # Pinkbox generation
 
-Apply the [battlefield contract](../battlefield-contract/SKILL.md) for native scale, canvas and grounding.
+For units and portraits, follow [native artwork](../design-unit/SKILL.md#native-artwork).
+For terrain/props, follow the [terrain contract](../design-terrain/SKILL.md#terrain-contract).
 
 This is the shared generation step for units, terrain tiles and foreground props.
 Use [design-unit](../design-unit/SKILL.md) or
@@ -49,12 +50,8 @@ standalone props before judging their placement in an assembled terrain hex.
 
 Use `--output-palette` to preserve reference material colors rather than letting
 style anchors widen the output palette. This selects output colors, not anchor
-backgrounds. Canonical terrain references render `G`/`g` transparent because no
-floor is selected; inspect the sheet for other ground decorations before generation.
-Terrain scratch palettes carry resolved
-floor colors for preview; canonical ground shades remain in
-`pixel/art/terrain/floors.json`, as described in
-[terrain artwork](../../../docs/terrain-artwork.md).
+backgrounds. For canonical terrain references and scratch palette integration, consult
+[floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
 
 Unit-only options are `--flying` / `--no-flying`, `--body-guide X Y W H` and
 `--staff-guide X Y W H`. Grounded body guides end at row 63. Guides are removable
