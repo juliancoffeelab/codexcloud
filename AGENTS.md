@@ -65,3 +65,4 @@ or, in rarer cases, extended.
 # Skills
 
 - [writing-for-agents](.agents/skills/writing-for-agents/SKILL.md): Use when creating or editing skills or modifying agent instructions.
+- [design-audit](.agents/skills/design-audit/SKILL.md): User-invoked requirements, design, and plan-audit workflow.
