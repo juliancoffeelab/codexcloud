@@ -152,19 +152,26 @@ export function inspectStorageV1ToV2(source: LocalSource): SourceRecord[] {
       const save = importedValue(value);
       stage = "identity";
       const entry = save.progress.entry;
-      if (isFlash ? entry.kind !== "flash" : entry.kind !== "turn" || entry.id !== id)
-        throw new Error("Snapshot identity does not match its storage key.");
-      if (conflict) {
-        // Even a readable payload does not erase contradictory source claims.
-        record.save = save;
-      } else if (hint && hint.runId !== entry.runId) {
+      // Ownership evidence survives a wrong storage key or snapshot kind.
+      // Rejecting identity first would leave the index's owner falsely trusted.
+      const ownershipClaims = claims.some(
+        (claim) => claim.runId === entry.runId && claim.id === entry.id,
+      )
+        ? claims
+        : [...claims, entry];
+      if (new Set(ownershipClaims.map((claim) => claim.runId)).size > 1) {
         record = {
           ...base,
           ownership: "conflicting",
-          claims: [hint, entry as import("../metadata").TurnEntry],
+          claims: ownershipClaims,
           issue: "ownership_conflict",
           error: "The snapshot and save list disagree about campaign ownership.",
         };
+      }
+      if (isFlash ? entry.kind !== "flash" : entry.kind !== "turn" || entry.id !== id)
+        throw new Error("Snapshot identity does not match its storage key.");
+      if (record.ownership === "conflicting") {
+        record.save = save;
       } else {
         record = {
           ...base,
@@ -238,7 +245,10 @@ export function repairStorageV1ToV2(
       .map((r) => r.entry!);
     // Preserve unresolved claims rather than laundering them into known ownership.
     for (const record of records)
-      if (record.ownership === "conflicting") entries.push(...record.claims);
+      if (record.ownership === "conflicting")
+        for (const claim of record.claims)
+          if (claim.kind === "turn" && historyPayloadKey(claim.id) === record.key)
+            entries.push(claim);
     writes[HISTORY_KEY] = JSON.stringify({ version: 4, entries });
   } else if (target.kind !== "all" && !deleted.has(HISTORY_KEY) && indexText !== null) {
     try {

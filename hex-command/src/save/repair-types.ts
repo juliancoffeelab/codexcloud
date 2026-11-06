@@ -36,7 +36,7 @@ export type RepairRecord = RecordInfo &
     | { ownership: "unknown"; runId?: never; runName?: never; entry?: never; claims?: never }
     | {
         ownership: "conflicting";
-        claims: TurnEntry[];
+        claims: (CurrentEntry | TurnEntry)[];
         runId?: never;
         runName?: never;
         entry?: never;

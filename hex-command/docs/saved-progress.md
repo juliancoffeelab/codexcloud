@@ -167,6 +167,9 @@ excluded from campaign deletion, and rebuilding the list preserves their claims
 until an explicit cleanup action resolves them. IndexedDB rebuilding leaves the
 original disputed list entry and snapshot untouched; competing claims must never
 be written over each other under their shared snapshot key.
+Ownership is checked before rejecting a mismatched storage key or snapshot kind,
+so misfiled data cannot hide a competing campaign claim. Rebuilding never invents
+a list entry at a misfiled snapshot's declared ID.
 
 Repair shows problems before collapsed readable campaigns. Record identity,
 ownership and damage are distinct typed states. Missing snapshots offer removal
