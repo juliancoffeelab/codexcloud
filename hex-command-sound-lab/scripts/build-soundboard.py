@@ -87,5 +87,6 @@ with zipfile.ZipFile(OUT/'sound-library.zip','w',zipfile.ZIP_DEFLATED) as z:
  for path in sorted({item['path'] for item in result}):z.write(OUT/path,path)
  for f in (OUT/'licenses').rglob('*'):
   if f.is_file():z.write(f,f.relative_to(OUT))
- for name in ['catalog.json','sources.json','coverage.json','roster.json','provenance.json']:z.write(OUT/name,name)
+ for name in ['catalog.json','sources.json','coverage.json','roster.json','provenance.json','workbench.json']:
+  if (OUT/name).exists():z.write(OUT/name,name)
 print(json.dumps(dict(recordings=len(result),cc0=len(inventory),takes=sum(len(x.get('takes',[])) or 1 for x in result),listeningMiB=round(sum((OUT/x['path']).stat().st_size for x in result)/1048576,2)),indent=2))

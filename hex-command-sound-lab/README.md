@@ -3,7 +3,7 @@
 A standalone soundboard for the complete vendored collection: 467 CC0 recordings
 and 51 archived original-game samples. Browse every recording and its detected
 takes, or use suggested movement, attack, impact, equipment and voice assignments
-for all 107 units in the bundled roster snapshot.
+for 238 entries across all ten released/unreleased faction lineups, plus all 27 terrain types.
 
 Live site: https://hexcommand-sound-lab.lightdarkdaughter.chatgpt.site
 
@@ -27,29 +27,59 @@ repository projects, an execution environment, or external downloads.
 
 ## Auditioning
 
-- Unit buttons are quick picks; the roster dropdown includes every snapshotted
-  unit. Each named attack has a separate row. Numbered buttons play suggested
-  takes. Each row has an explicit sound selector; All plays every take in the
-  selected group. Long groups have a Show all control. Blade effects, legacy
-  knife slices, sabre, katana, dagger and seax stay separate choices. These are
-  proposed assignments, not game
-  changes or claims of authentic species-specific recordings.
-- Full library includes every recording, including the Kenney pack preview.
-  Filter by source, category, name or recording type. Results load in batches.
-  Tap a title to expose all detected takes and the complete recording. Show
-  every recording removes the initial result-page limit in one tap.
-- Multi-take weapon recordings have approximate silence-based boundaries. Full
-  recordings always preserve the entire session. A detected take may contain
-  multiple contacts, quiet sounds or room noise; audition before final selection.
-- Stop or Escape cancels playback, including pending downloads and sequences.
-  Scrub the position slider to seek. Match levels applies optional peak gain
-  during playback; it is not a loudness mastering pass. Volume defaults to 55%.
-- Stars persist favorites in this browser. Export produces a JSON shortlist
-  with original paths/hashes, source/creator/license, and take boundaries.
-- Natural dog and horse recordings, designed creature sounds, performed ghost
-  voices, synthesized spells and recorded weapon Foley are labeled separately.
-  Domestic dog is a canine reference, not a wolf field recording. See the
-  vendored collection's coverage notes for species limitations.
+- Factions includes Humans, Merfolk, Skeletons, Woodland, Zombies, Elves,
+  Dwarves, Cursed, Beasts and Undead Animals. Every advancement in each artwork
+  lineup is included. The dropdown is the complete roster; sprite buttons are
+  quick picks. Search includes names, roles and attacks.
+- Game-defined attacks are copied from authored game data. Artwork-only units
+  carry explicitly proposed weapon actions inferred from equipment and role.
+  This does not register or release units in the playable game.
+- Every action separates **Suggested** recordings from **Other plausible
+  matches**. The latter contains the complete rule-matched set, without a
+  first-five cutoff, excluding the suggestions already shown. Expand it to
+  compare every matching recording and every take. Matching is semantic and
+  editable in `dist/matching.js`: weapon mechanics, target material, equipment,
+  movement type and vocal type each have separate rules. Animal calls never
+  enter weapon attacks merely because they share a faction.
+- Main actions are Tap/selection (equipment or brief creature feedback),
+  Movement, each named Attack, and Hit/taking damage. The hypothetical-extras
+  toggle adds suitable voice/reaction, fall/death, reload, capture or ambience
+  proposals where the collection supplies candidates. A firearm shot remains
+  visibly unsupported instead of receiving an unrelated sound.
+- Terrain includes every authored terrain type, with tile tap and surface
+  contact suggestions. Optional contacts/capture/ambience are marked
+  hypothetical. Water, wings, bone contacts and animal proxies have caveats.
+- Play auditions the chosen take; each recording's dropdown includes all takes
+  and the full source session. **Use** persists a recording/take for that exact
+  faction/unit/action or terrain/action. Your saved choice appears on the action
+  card and drives Play action sequence. Clear returns to the first suggestion.
+- Stars persist a global favorite list. Export includes both favorite recordings
+  and contextual assignments with original paths/hashes, source, creator,
+  license and take boundaries. Browser storage is local to that device.
+- Original game mode remains available for archived-family comparison. It does
+  not imply that unreleased units had historical sound assignments.
+- Full library retains all 518 recordings. Filter by source, category, name or
+  recording type; Show every recording removes the initial result-page limit.
+- Multi-take weapon boundaries are approximate. Full recordings preserve the
+  entire session. Stop or Escape cancels playback and pending sequences; the
+  position slider seeks. Match levels applies optional peak gain, not mastering.
+
+## Refreshing faction and terrain snapshots
+
+All snapshot data/artwork is already tracked; running or deploying the site has
+no cross-project dependency. To refresh it from an explicit game checkout:
+
+```sh
+python3 scripts/snapshot-workbench.py --game-dir /path/to/hex-command
+```
+
+The game checkout must already have its generated pixel assets (run its own
+artwork build there first). This copies canonical lineup membership, levels,
+roles, gameplay IDs, attacks, terrain and unchanged unit sprites (64×64) and native terrain artwork into
+`dist/workbench.json` and `dist/workbench/`. It reads but never modifies the
+supplied checkout. Artwork-only attacks are marked proposed, and snapshot
+metadata records the source revision. This is an audition inventory rather than
+live gameplay integration. Read the generated proposals when reviewing a refresh.
 
 ## Originals and reproducible listening copies
 

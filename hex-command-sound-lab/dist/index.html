@@ -9,7 +9,7 @@
       content="Audition and compare Hexcommand unit movement, attacks and sound variations."
     />
     <title>Hexcommand — Sound Lab</title>
-    <link rel="stylesheet" href="style.css?v=full-collection-2" />
+    <link rel="stylesheet" href="style.css?v=factions-1" />
   </head>
   <body>
     <header>
@@ -24,8 +24,8 @@
           <p class="eyebrow">THE SOUND OF A BATTLEFIELD</p>
           <h1>Give every move<br />a little more <em>weight.</em></h1>
           <p class="lede">
-            Boots on grass. Steel against steel. Pick a unit and listen.<br />Compare
-            the current sounds with a new library of CC0 candidates.
+            Choose a faction or terrain, audition suggestions and plausible
+            alternatives, then save your picks.
           </p>
         </div>
         <div class="intro-right">
@@ -39,12 +39,13 @@
       </section>
       <nav class="tabs" aria-label="Workbench views">
         <button class="active" data-view="units" aria-selected="true">
-          01 <span>Unit workbench</span></button
+          01 <span>Factions</span></button
+        ><button data-view="terrain" aria-selected="false">
+          02 <span>Terrain</span></button
         ><button data-view="library" aria-selected="false">
-          02 <span>Full library</span>
-          <small id="library-count">518</small></button
+          03 <span>Library</span> <small id="library-count">518</small></button
         ><button data-view="sources" aria-selected="false">
-          03 <span>Sources & downloads</span>
+          04 <span>Sources</span>
         </button>
       </nav>
       <section id="units-view">
@@ -54,9 +55,27 @@
           <a href="#library" id="browse-new">Browse the collection →</a>
         </p>
         <div class="section-line">
-          <p>CHOOSE YOUR UNIT</p>
-          <span>Quick picks · or choose any of 107 units</span>
+          <p id="context-label">CHOOSE A FACTION</p>
+          <span>All released and unreleased lineups</span>
         </div>
+        <div
+          id="factions"
+          class="factions"
+          role="group"
+          aria-label="Choose faction"
+        ></div>
+        <div class="entity-tools">
+          <label
+            >Find unit or terrain<input
+              id="entity-search"
+              type="search"
+              placeholder="Name, weapon or role…" /></label
+          ><label class="extras-control"
+            ><input id="extras" type="checkbox" /> Include hypothetical
+            extras</label
+          >
+        </div>
+        <p id="roster-count" class="eyebrow"></p>
         <div
           id="roster"
           class="roster"
@@ -64,14 +83,18 @@
           aria-label="Choose unit"
         ></div>
         <label class="unit-picker"
-          >Full unit roster
-          <select id="unit-select" aria-label="Full unit roster"></select
+          >Unit / terrain
+          <select id="unit-select" aria-label="Unit or terrain"></select
         ></label>
-        <div class="workbench">
+        <div class="entity-navigation">
+          <button id="previous-unit">← Previous</button
+          ><button id="next-unit">Next →</button>
+        </div>
+        <div id="workbench-body" class="workbench">
           <aside class="unit-panel">
             <div class="unit-top">
               <span id="unit-role" class="eyebrow"></span
-              ><span class="badge">AUDITION</span>
+              ><span id="entity-status" class="badge">AUDITION</span>
             </div>
             <div class="stage">
               <div class="stage-hex"></div>
@@ -87,13 +110,13 @@
             </div>
             <button id="sequence" class="primary">
               ▶ &nbsp; Play action sequence</button
-            ><small class="sequence-help">Movement → attack → impact</small>
+            ><small class="sequence-help">Tap → movement → attack → hit</small>
           </aside>
           <div class="auditions">
             <div class="audition-header">
               <div>
                 <p class="eyebrow">LISTEN & COMPARE</p>
-                <h2>A sound for every action.</h2>
+                <h2>Choose the right sound.</h2>
               </div>
               <div class="segmented" role="group" aria-label="Sound version">
                 <button
@@ -101,7 +124,7 @@
                   class="selected"
                   aria-pressed="true"
                 >
-                  CC0 candidates</button
+                  Suggestions &amp; matches</button
                 ><button id="current-mode" aria-pressed="false">
                   Current game
                 </button>
@@ -109,9 +132,10 @@
             </div>
             <div id="action-cards"></div>
             <p class="help">
-              Choose a sound in each row, then use its numbered takes. “All”
-              plays these picks in order. The full library contains every
-              recording and all detected takes.
+              Suggested recordings are separate from every plausible
+              alternative. Each recording exposes all takes. “Use” saves your
+              choice for that unit and action; export keeps the assignment and
+              original source details.
             </p>
           </div>
         </div>
@@ -240,6 +264,6 @@
         /><output id="volume-value">55%</output></label
       >
     </div>
-    <script type="module" src="app.js?v=full-collection-2"></script>
+    <script type="module" src="app.js?v=factions-1"></script>
   </body>
 </html>

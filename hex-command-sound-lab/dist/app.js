@@ -1,3 +1,4 @@
+import { buildActions } from "./matching.js?v=factions-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -11,9 +12,9 @@ try {
     `Could not load the soundboard: ${error.message}. Reload to retry.`;
 }
 async function start() {
-  const [catalog, roster, sourceInfo] = await Promise.all([
+  const [catalog, workbench, sourceInfo] = await Promise.all([
     loadJSON("catalog.json?v=full-collection-1"),
-    loadJSON("roster.json"),
+    loadJSON("workbench.json?v=factions-1"),
     loadJSON("sources.json"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
@@ -21,7 +22,7 @@ async function start() {
     "recorded-foley": "Recorded Foley",
     "recorded-weapons": "Recorded weapons",
     "natural-animal-recording": "Natural animal recording",
-    "designed-effects": "Designed creature / RPG effect",
+    "designed-effects": "Designed effect",
     "performed-designed-voice": "Performed ghost voice",
     "designed-tonal-effects": "Designed magic",
     "fireplace-effect": "Fireplace effect",
@@ -66,304 +67,93 @@ async function start() {
     if (text !== undefined) result.textContent = text;
     return result;
   }
-  const refs = (pack, pattern) =>
-    catalog
-      .filter((x) => x.pack === pack && pattern.test(x.name))
-      .flatMap((x) =>
-        (x.takes?.length ? x.takes : [{}]).map((_, take) => ({
-          id: x.id,
-          take,
-        })),
-      );
-  const weapons = (pattern) =>
-    refs("still-north-media/weapon-textures", pattern);
-  const impacts = (pattern) =>
-    refs("still-north-media/weapon-impacts", pattern);
-  const kenney = (pattern) => refs("impact-sounds", pattern);
-  const rpg = (pattern) => refs("rpg-audio", pattern);
-  const spells = (pattern) => refs("rubberduck/80-cc0-rpg-sfx", pattern);
-  const beasts = (pattern) => refs("rubberduck/80-cc0-creature-sfx", pattern);
-  const baseline = (family) =>
-    [1, 2, 3]
-      .map((n) => ({ id: `current/${family}-${n}`, take: null }))
-      .filter((x) => byId.has(x.id));
-  const units = roster.units;
-  let unit = units.find((x) => x.id === "soldier") || units[0];
-  const mounted = (u) =>
-    /horse|rider|knight|lancer/.test(u.id) || u.id === "rider";
-  const ghost = (u) => /ghost|spectre|wraith|lich|necromancer/.test(u.id);
-  const canine = (u) => /wolf|hound/.test(u.id);
-  const undead = (u) =>
-    /skeleton|skeletal|bone|revenant|zombie/.test(u.id) || ghost(u);
-  const animal = (u) =>
-    /wolf|hound|boar|bear|giant-bat|giant-spider/.test(u.id);
-  function attackPicks(attack) {
-    const name = attack.name.toLowerCase();
-    if (/crossbow|arbalest/.test(name))
-      return {
-        refs: weapons(/^Crossbow Shoot$/),
-        note: "Actual crossbow release recordings",
-      };
-    if (/bow/.test(name))
-      return {
-        refs: weapons(/^English Longbow Shoot$|^Scythian Recurve Shoot$/),
-        note: "Actual longbow and recurve releases",
-      };
-    if (/fire/.test(name))
-      return {
-        refs: spells(/^spell_fire_/),
-        note: "Designed fire spell effects",
-      };
-    if (/grave|soul|mire/.test(name))
-      return {
-        refs: refs("qubodup/3-dark-magic-spells", /fout/),
-        note: "Designed dark magic · upstream synthesis",
-      };
-    if (
-      /spark|light|surge|tide|spectral|bone ?burst|crushing (wave|root)/.test(
-        name,
-      )
-    )
-      return {
-        refs: refs("jaggedstone/magic-spell-sfx", /magical/),
-        note: "Designed spellcasting candidates",
-      };
-    if (/knife|sword|rustblade/.test(name)) {
-      const choices = [
-        {
-          label: "Blade effects · RPG",
-          refs: spells(/^blade_/),
-          note: "Three RPG blade effects · all original variations",
-        },
-        {
-          label: "Knife slices · Kenney",
-          refs: rpg(/^knifeSlice/),
-          note: "The two knife-slice effects from the earlier soundboard",
-        },
-        {
-          label: "Sabre · recorded swings",
-          refs: weapons(/^Sabre Swing$/),
-          note: "Recorded sabre swings · every detected take",
-        },
-        {
-          label: "Katana · recorded swings",
-          refs: weapons(/^Katana Swing$/),
-          note: "Recorded katana swings · every detected take",
-        },
-        {
-          label: "Dagger · recorded swings",
-          refs: weapons(/^Dagger Swing$/),
-          note: "Recorded dagger swings · every detected take",
-        },
-        {
-          label: "Seax · recorded swings",
-          refs: weapons(/^Seax Swing$/),
-          note: "Recorded seax swings · every detected take",
-        },
-      ].filter((choice) => choice.refs.length);
-      return { choices, refs: choices[0].refs, note: choices[0].note };
-    }
-    if (/spear|lance|trident|harpoon|halberd/.test(name))
-      return {
-        refs: weapons(/^Spear Swing$/),
-        note: "Actual spear swing · polearm candidate",
-      };
-    if (/axe|scythe/.test(name))
-      return {
-        refs: weapons(/^Axe Swing$/),
-        note: "Actual axe swing · scythe material candidate",
-      };
-    if (/mace|hammer|club/.test(name))
-      return {
-        refs: impacts(/^Mace /),
-        note: "Actual mace-on-weapon contacts",
-      };
-    if (/staff|bough/.test(name))
-      return {
-        refs: kenney(/^impactWood_medium/),
-        note: "Wood contact candidate for a staff or bough",
-      };
-    if (/fang|bite|tusk|claw|grasp/.test(name))
-      return {
-        refs: beasts(/^eat_|^grunt_/),
-        note: "Designed mouth performances · not recorded animal attacks",
-      };
-    if (/trample/.test(name))
-      return {
-        refs: kenney(/^impactSoft_heavy/),
-        note: "Heavy soft impact candidate",
-      };
-    if (/shield/.test(name))
-      return {
-        refs: kenney(/^impactPlate_medium/),
-        note: "Plate impact candidate for a shield",
-      };
-    if (/sling|stone|shard|spike|thorn|net/.test(name))
-      return {
-        refs: weapons(/^Scythian Recurve Arrow Pass$|^Crossbow Bolt Pass$/),
-        note: "Recorded projectile pass · texture candidate for this attack",
-      };
-    return {
-      refs: spells(/^spell_0/),
-      note: "Designed effect candidate; audition for fit",
-    };
+  const factions = workbench.factions;
+  let activeFaction = factions.find((f) => f.id === "humans") || factions[0];
+  let entityMode = "unit",
+    unit = activeFaction.units[0];
+  let rememberedUnit = unit.key,
+    rememberedTerrain = workbench.terrains[0].key;
+  let assignments;
+  try {
+    assignments = JSON.parse(
+      localStorage.getItem("hex-sound-assignments-v1") || "{}",
+    );
+  } catch {
+    assignments = {};
   }
-  function actionRows() {
-    if (mode === "current") {
-      const old = ["soldier", "warden"].includes(unit.id)
-        ? "unit-archer"
-        : ghost(unit) || undead(unit)
-          ? "unit-commander"
-          : "terrain-plains";
+  const openMatches = new Set();
+  function saveAssignments() {
+    try {
+      localStorage.setItem(
+        "hex-sound-assignments-v1",
+        JSON.stringify(assignments),
+      );
+    } catch {
+      $("#playing").textContent =
+        "Assignments are tab-local; export to keep them.";
+    }
+  }
+  function currentRows() {
+    const rows = buildActions(unit, catalog, { extras: $("#extras").checked });
+    if (mode !== "current") return rows;
+    if (unit.kind === "unit" && !unit.defined)
       return [
         {
-          key: "move",
-          title: "Movement",
-          icon: "↗",
-          note: "Archived original-game movement family",
-          refs: baseline(old),
+          key: "baseline",
+          title: "Original game",
+          description:
+            "This unreleased artwork has no historical game assignment. Switch to Suggestions & matches to audition its proposed actions.",
+          suggested: [],
+          alternatives: [],
         },
-        ...unit.attacks.map((a) => ({
-          key: `attack-${a.id}`,
-          title: `Attack · ${a.name}`,
-          icon: "⚔",
-          note: "Archived original-game attack family",
-          refs: baseline(
-            a.sound === "attack-bow" ? "attack-bow" : "attack-melee",
-          ),
-        })),
       ];
-    }
-    const move = mounted(unit)
-      ? refs("ezduzziteh/horse-trotting", /Trot/)
-      : kenney(
-          ghost(unit)
-            ? /^footstep_carpet/
-            : undead(unit)
-              ? /^footstep_wood/
-              : /^footstep_grass/,
-        );
-    const rows = [
-      {
-        key: "move",
-        title: "Movement",
-        icon: "↗",
-        note: mounted(unit)
-          ? "Horse trot Foley · jacket / bottle / hands"
-          : animal(unit)
-            ? "Grass footstep Foley · paw movement candidate"
-            : "Recorded surface footsteps",
-        refs: move,
-      },
-    ];
-    for (const attack of unit.attacks) {
-      const picks = attackPicks(attack);
-      rows.push({
-        key: `attack-${attack.id}`,
-        title: `Attack · ${attack.name}`,
-        icon: "⚔",
-        note: picks.note,
-        refs: picks.refs,
-        choices: picks.choices,
-      });
-    }
-    rows.push({
-      key: "hit",
-      title: "Impact",
-      icon: "◇",
-      note: animal(unit)
-        ? "Soft-body impact candidate"
-        : ghost(unit)
-          ? "Designed magical contact"
-          : "Recorded weapon / material contact",
-      refs: animal(unit)
-        ? kenney(/^impactSoft_medium/)
-        : ghost(unit)
-          ? spells(/^spell_0/)
-          : impacts(/Spear.*Blade|Sabre.*Blade/),
+    const family =
+      unit.kind === "terrain"
+        ? /water|ford|marsh/.test(unit.id)
+          ? "terrain-water"
+          : /forest|grove/.test(unit.id)
+            ? "terrain-forest"
+            : /hill|mountain/.test(unit.id)
+              ? "terrain-hill"
+              : /village|house/.test(unit.id)
+                ? "terrain-village"
+                : /keep|fort|castle/.test(unit.id)
+                  ? "terrain-keep"
+                  : "terrain-plains"
+        : "select";
+    return rows.map((row) => {
+      const name = row.key.startsWith("attack-")
+        ? /bow|crossbow|arbalest/i.test(row.title)
+          ? "attack-bow"
+          : "attack-melee"
+        : row.key === "hit"
+          ? "attack-melee"
+          : family;
+      const ids = catalog
+        .filter(
+          (x) =>
+            x.pack === "current" && new RegExp(`^${name}-[123]$`).test(x.name),
+        )
+        .map((x) => x.id);
+      return {
+        ...row,
+        suggested: ids,
+        alternatives: [],
+        description:
+          "Archived game family for comparison; unreleased units have no historical assignment.",
+      };
     });
-    if (canine(unit))
-      rows.push({
-        key: "voice",
-        title: "Voice · canine reference",
-        icon: "♫",
-        note: "Natural domestic dog growls · not wolf recordings",
-        refs: refs("qubodup/dog-snarl-grunt-grumble", /dog-/),
-      });
-    else if (mounted(unit))
-      rows.push({
-        key: "voice",
-        title: "Voice · horse",
-        icon: "♫",
-        note: "Natural outdoor horse neigh / snort",
-        refs: refs("denischardonnet/horse-vocals", /028/),
-      });
-    else if (ghost(unit))
-      rows.push({
-        key: "voice",
-        title: "Voice · ghost / lich",
-        icon: "♫",
-        note: "Performed human ghost voice · speech and reactions",
-        refs: refs("sorth/ghost-voice-pack", /output/),
-      });
-    else if (animal(unit))
-      rows.push({
-        key: "voice",
-        title: "Voice · creature design",
-        icon: "♫",
-        note: "Processed mouth performances · not authentic species calls",
-        refs: beasts(/^(roar|grunt|howl)/),
-      });
-    else if (undead(unit))
-      rows.push({
-        key: "voice",
-        title: "Voice · undead",
-        icon: "♫",
-        note: "Designed creature reactions",
-        refs: beasts(/^hurt_|^monster_/),
-      });
-    const bow = unit.attacks.some((a) => /bow|arbalest/i.test(a.name));
-    const gear = bow
-      ? weapons(/Longbow Nock Arrow$|Crossbow Place Bolt$/)
-      : unit.attacks.some((a) => /sword|knife|rustblade/i.test(a.name))
-        ? weapons(/^Dagger Draw Fast$|^Sabre Draw Fast$/)
-        : rpg(/^(cloth|bookFlip)/);
-    rows.push({
-      key: "gear",
-      title: "Equipment & detail",
-      icon: "⋮",
-      note: bow
-        ? "Recorded bow / crossbow loading"
-        : "Cloth, pages or weapon handling",
-      refs: gear,
-    });
-    return rows;
   }
-  const actionChoices = new Map(),
-    expandedActions = new Set();
-  function selectedRows() {
-    return actionRows().map((action) => {
-      if (mode === "current") return action;
-      let choices = action.choices;
-      if (!choices) {
-        const ids = [...new Set(action.refs.map((ref) => ref.id))];
-        choices = [
-          {
-            label: "All suggested recordings",
-            refs: action.refs,
-            note: action.note,
-          },
-          ...ids.map((id) => ({
-            label: pretty(byId.get(id).name),
-            refs: action.refs.filter((ref) => ref.id === id),
-            note: `${byId.get(id).packLabel} · ${pretty(byId.get(id).name)}`,
-          })),
-        ];
-      }
-      const key = `${unit.id}/${action.key}`;
-      const chosen = Math.min(actionChoices.get(key) || 0, choices.length - 1);
-      return { ...action, ...choices[chosen], choices, chosen, choiceKey: key };
-    });
+  function keyFor(action) {
+    return `${unit.key}/${action.key}`;
+  }
+  function chosenFor(action) {
+    const saved = assignments[keyFor(action)];
+    return saved && byId.has(saved.id)
+      ? saved
+      : action.suggested[0]
+        ? { id: action.suggested[0], take: 0 }
+        : null;
   }
   function drawWave(buffer) {
     const c = $("#wave"),
@@ -557,143 +347,311 @@ async function start() {
   $("#normalize").onchange = () => {
     if (selection) play([selection.ref]);
   };
-  function pickUnit(id) {
+  function pickUnit(key) {
+    const list =
+      entityMode === "terrain" ? workbench.terrains : activeFaction.units;
+    const next = list.find((u) => u.key === key);
+    if (!next) return;
     halt();
-    unit = units.find((u) => u.id === id) || unit;
+    unit = next;
+    if (entityMode === "terrain") rememberedTerrain = key;
+    else rememberedUnit = key;
     renderUnit();
   }
+  function soundCard(id, action, isSuggested) {
+    const item = byId.get(id),
+      card = el("div", "candidate-recording");
+    card.dataset.recording = id;
+    const button = el("button", "record-play", "▶");
+    button.setAttribute(
+      "aria-label",
+      `Play ${unit.name} ${action.title}: ${pretty(item.name)}`,
+    );
+    const info = el("div", "record-info"),
+      title = el("span", "record-title", pretty(item.name));
+    info.append(
+      title,
+      el(
+        "small",
+        "record-meta",
+        `${item.packLabel} · ${kindNames[item.kind] || item.kind}`,
+      ),
+    );
+    const takes = el("select", "take-selector");
+    takes.setAttribute(
+      "aria-label",
+      `${action.title}: ${pretty(item.name)} take`,
+    );
+    (item.takes || [{ start: 0, duration: item.duration }]).forEach(
+      (take, i) => {
+        const option = el(
+          "option",
+          "",
+          `Take ${i + 1} · ${take.duration.toFixed(2)}s`,
+        );
+        option.value = i;
+        takes.append(option);
+      },
+    );
+    const full = el("option", "", "Full recording");
+    full.value = "full";
+    takes.append(full);
+    const saved = assignments[keyFor(action)];
+    if (saved?.id === id)
+      takes.value = saved.take === null ? "full" : String(saved.take || 0);
+    const selectedRef = () => ({
+      id,
+      take: takes.value === "full" ? null : Number(takes.value),
+    });
+    button.onclick = () => play([selectedRef()]);
+    const use = el(
+      "button",
+      "use-sound",
+      saved?.id === id ? "Selected" : "Use",
+    );
+    use.setAttribute(
+      "aria-label",
+      `Use ${pretty(item.name)} for ${unit.name} ${action.title}`,
+    );
+    use.setAttribute("aria-pressed", String(saved?.id === id));
+    use.onclick = () => {
+      assignments[keyFor(action)] = {
+        ...selectedRef(),
+        entity: unit.key,
+        action: action.key,
+      };
+      saveAssignments();
+      renderUnit();
+    };
+    takes.onchange = () => {
+      if (assignments[keyFor(action)]?.id === id) {
+        assignments[keyFor(action)] = {
+          ...assignments[keyFor(action)],
+          ...selectedRef(),
+        };
+        saveAssignments();
+        renderUnit();
+      }
+    };
+    const star = el(
+      "button",
+      `favorite${favorites.has(id) ? " saved" : ""}`,
+      favorites.has(id) ? "★" : "☆",
+    );
+    star.setAttribute("aria-label", `Favorite ${item.name}`);
+    star.setAttribute("aria-pressed", String(favorites.has(id)));
+    star.onclick = () => {
+      if (favorites.has(id)) favorites.delete(id);
+      else favorites.add(id);
+      persist();
+      star.textContent = favorites.has(id) ? "★" : "☆";
+      star.classList.toggle("saved", favorites.has(id));
+      star.setAttribute("aria-pressed", String(favorites.has(id)));
+    };
+    card.append(button, info, takes, use, star);
+    return card;
+  }
   function renderUnit() {
-    $("#unit-role").textContent = `${unit.race} · ${unit.family}`;
+    $("#unit-role").textContent =
+      unit.kind === "terrain"
+        ? "Terrain"
+        : `${activeFaction.name} · Level ${unit.level}`;
+    $("#entity-status").textContent =
+      unit.kind === "terrain"
+        ? "TILE"
+        : unit.defined
+          ? "IN GAME"
+          : "ARTWORK / PROPOSED";
     $("#unit-name").textContent = unit.name;
     $("#unit-description").textContent =
-      `Audition ${unit.attacks.map((a) => a.name.toLowerCase()).join(", ") || "movement and equipment"} with movement, material and voice candidates. Suggested assignments, ready for your shortlist.`;
-    $("#unit-image").src = `units/${unit.id}.png`;
+      unit.kind === "terrain"
+        ? "Select a tile cue, surface contact and optional interaction textures."
+        : unit.defined
+          ? "Game-defined attacks, with editable audition suggestions."
+          : "Unreleased artwork roster. Weapon actions below are proposed from its equipment and role.";
+    $("#unit-image").src = unit.artwork;
     $("#unit-image").alt = unit.name;
-    $("#unit-select").value = unit.id;
+    $("#unit-select").value = unit.key;
     document.querySelectorAll("[data-unit]").forEach((b) => {
-      const active = b.dataset.unit === unit.id;
-      b.classList.toggle("selected", active);
-      b.setAttribute("aria-pressed", String(active));
+      const selected = b.dataset.unit === unit.key;
+      b.classList.toggle("selected", selected);
+      b.setAttribute("aria-pressed", String(selected));
     });
     const root = $("#action-cards");
     root.replaceChildren();
-    for (const action of selectedRows()) {
-      const card = el("article", "sound-card");
-      card.dataset.action = action.key;
-      const info = el("div");
-      info.append(
-        el("h3", "sound-title", action.title),
-        el("p", "sound-caption", action.note),
-        el(
-          "span",
-          mode === "current" ? "tag neutral" : "tag",
-          `${mode === "current" ? "ORIGINAL GAME" : "CC0"} · ${action.refs.length} TAKES`,
-        ),
+    for (const action of currentRows()) {
+      const article = el("article", "action-card");
+      article.dataset.action = action.key;
+      const heading = el("div", "action-heading"),
+        titles = el("div");
+      titles.append(
+        el("h3", "", action.title),
+        el("p", "", action.description),
       );
-      if (action.choices?.length > 1) {
-        const chooser = el("select", "sound-choice");
-        chooser.setAttribute(
-          "aria-label",
-          `${unit.name} ${action.title} sound`,
+      heading.append(titles);
+      if (action.hypothetical)
+        heading.append(el("span", "hypothetical", "OPTIONAL / HYPOTHETICAL"));
+      article.append(heading);
+      const savedChoice = assignments[keyFor(action)];
+      if (savedChoice && byId.has(savedChoice.id)) {
+        const chosen = el(
+          "div",
+          "saved-choice",
+          `Your choice: ${pretty(byId.get(savedChoice.id).name)} · ${savedChoice.take === null ? "full recording" : `take ${(savedChoice.take || 0) + 1}`}`,
         );
-        action.choices.forEach((choice, index) => {
-          const option = el(
-            "option",
-            "",
-            `${choice.label} (${choice.refs.length} takes)`,
-          );
-          option.value = index;
-          chooser.append(option);
-        });
-        chooser.value = action.chosen;
-        chooser.onchange = () => {
-          halt();
-          actionChoices.set(action.choiceKey, Number(chooser.value));
+        const clear = el("button", "", "Clear");
+        clear.onclick = () => {
+          delete assignments[keyFor(action)];
+          saveAssignments();
           renderUnit();
         };
-        info.append(chooser);
+        chosen.append(clear);
+        article.append(chosen);
       }
-      card.append(el("span", "action-icon", action.icon), info);
-      const controls = el("div", "sound-controls");
-      if (action.refs.length) {
-        const button = el("button", "play", "▶");
-        button.setAttribute(
-          "aria-label",
-          `Play random ${unit.name} ${action.title}`,
+      if (action.caveat) article.append(el("p", "match-caveat", action.caveat));
+      const suggestions = el("section", "suggestion-group");
+      suggestions.setAttribute("aria-label", `${action.title} suggestions`);
+      suggestions.append(
+        el("h4", "", `Suggested · ${action.suggested.length} recordings`),
+      );
+      if (!action.suggested.length)
+        suggestions.append(
+          el(
+            "p",
+            "empty-match",
+            "No close recommendation in the current collection. Check plausible alternatives below.",
+          ),
         );
-        button.onclick = () =>
-          play([action.refs[Math.floor(Math.random() * action.refs.length)]]);
-        controls.append(button);
-        const expanded = expandedActions.has(
-          `${action.choiceKey}/${action.chosen}`,
+      for (const id of action.suggested)
+        suggestions.append(soundCard(id, action, true));
+      article.append(suggestions);
+      const more = el("details", "alternative-group"),
+        summary = el(
+          "summary",
+          "",
+          `Other plausible matches · ${action.alternatives.length} recordings`,
         );
-        action.refs
-          .slice(0, expanded ? action.refs.length : 6)
-          .forEach((ref, i) => {
-            const b = el("button", "variant", String(i + 1));
-            b.title = `${byId.get(ref.id)?.name} · take ${(ref.take || 0) + 1}`;
-            b.setAttribute(
-              "aria-label",
-              `${unit.name} ${action.title}, variation ${i + 1}`,
-            );
-            b.onclick = () => play([ref]);
-            controls.append(b);
-          });
-        if (action.refs.length > 6) {
-          const more = el(
-            "button",
-            "all",
-            expanded ? "Show fewer" : `Show all ${action.refs.length} takes`,
+      more.append(summary);
+      const matchKey = keyFor(action);
+      more.open = openMatches.has(matchKey);
+      more.ontoggle = () => {
+        if (more.open) openMatches.add(matchKey);
+        else openMatches.delete(matchKey);
+      };
+      const alternatives = el("div", "alternative-recordings");
+      const fill = () => {
+        if (alternatives.childElementCount) return;
+        if (!action.alternatives.length)
+          alternatives.append(
+            el(
+              "p",
+              "empty-match",
+              "No additional recordings match this action.",
+            ),
           );
-          more.onclick = () => {
-            const key = `${action.choiceKey}/${action.chosen}`;
-            if (expanded) expandedActions.delete(key);
-            else expandedActions.add(key);
-            renderUnit();
-          };
-          controls.append(more);
-        }
-        const all = el("button", "all", `All ${action.refs.length} →`);
-        all.setAttribute("aria-label", `Play all ${action.title} picks`);
-        all.onclick = () => play(action.refs);
-        controls.append(all);
-      }
-      card.append(controls);
-      root.append(card);
+        else
+          for (const id of action.alternatives)
+            alternatives.append(soundCard(id, action, false));
+      };
+      if (more.open) fill();
+      more.addEventListener("toggle", () => {
+        if (more.open) fill();
+      });
+      more.append(alternatives);
+      article.append(more);
+      root.append(article);
     }
   }
-  const quick = [
-    "soldier",
-    "archer",
-    "scout",
-    "commander",
-    "spearman",
-    "adept",
-    "necromancer",
-    "skeleton",
-    "wolf",
-    "knight",
-  ];
-  for (const id of quick) {
-    const u = units.find((x) => x.id === id);
-    if (!u) continue;
-    const b = el("button");
-    b.dataset.unit = id;
-    const img = el("img");
-    img.src = `units/${id}.png`;
-    img.alt = "";
-    img.width = 64;
-    img.height = 64;
-    b.append(img, el("span", "", u.name));
-    b.onclick = () => pickUnit(id);
-    $("#roster").append(b);
+  function populateUnits() {
+    const q = $("#entity-search").value.trim().toLowerCase();
+    const list =
+      entityMode === "terrain" ? workbench.terrains : activeFaction.units;
+    const matches = list.filter((x) =>
+      `${x.name} ${x.id} ${x.role || ""} ${x.attacks?.map((a) => a.name).join(" ") || ""}`
+        .toLowerCase()
+        .includes(q),
+    );
+    const select = $("#unit-select"),
+      quick = $("#roster");
+    select.replaceChildren();
+    quick.replaceChildren();
+    $("#roster-count").textContent =
+      `${matches.length} ${entityMode === "terrain" ? "terrain types" : "units"} · every level included`;
+    $("#workbench-body").hidden = !matches.length;
+    select.disabled = !matches.length;
+    if (!matches.length) {
+      select.append(el("option", "", "No matching entries"));
+      return;
+    }
+    for (const u of matches) {
+      const option = el(
+        "option",
+        "",
+        `${u.name}${u.level ? ` · L${u.level}` : ""} · ${u.id}`,
+      );
+      option.value = u.key;
+      select.append(option);
+    }
+    if (!matches.some((x) => x.key === unit.key)) {
+      const key = entityMode === "terrain" ? rememberedTerrain : rememberedUnit;
+      unit = matches.find((x) => x.key === key) || matches[0];
+    }
+    for (const u of matches
+      .filter((x) => entityMode === "terrain" || x.level === 1)
+      .slice(0, 10)) {
+      const button = el("button");
+      button.dataset.unit = u.key;
+      const image = el("img");
+      image.src = u.artwork;
+      image.alt = "";
+      image.width = 64;
+      image.height = 64;
+      button.append(image, el("span", "", u.name));
+      button.onclick = () => pickUnit(u.key);
+      quick.append(button);
+    }
+    renderUnit();
   }
-  for (const u of [...units].sort((a, b) => a.name.localeCompare(b.name))) {
-    const option = el("option", "", `${u.name} · ${u.id}`);
-    option.value = u.id;
-    $("#unit-select").append(option);
+  function setFaction(id) {
+    halt();
+    activeFaction = factions.find((f) => f.id === id) || activeFaction;
+    unit = activeFaction.units[0];
+    rememberedUnit = unit.key;
+    $("#entity-search").value = "";
+    document.querySelectorAll("[data-faction]").forEach((b) => {
+      const selected = b.dataset.faction === id;
+      b.classList.toggle("selected", selected);
+      b.setAttribute("aria-pressed", String(selected));
+    });
+    populateUnits();
+  }
+  for (const faction of factions) {
+    const button = el("button", "faction-button");
+    button.dataset.faction = faction.id;
+    button.append(
+      el("strong", "", faction.name),
+      el(
+        "small",
+        "",
+        `${faction.units.length} units · ${faction.definedCount ? `${faction.definedCount} game-defined` : "unreleased"}`,
+      ),
+    );
+    button.onclick = () => setFaction(faction.id);
+    $("#factions").append(button);
   }
   $("#unit-select").onchange = (e) => pickUnit(e.target.value);
+  $("#entity-search").oninput = populateUnits;
+  $("#extras").onchange = () => renderUnit();
+  $("#previous-unit").onclick = () => {
+    const options = [...$("#unit-select").options],
+      i = options.findIndex((o) => o.value === unit.key);
+    pickUnit(options[(i - 1 + options.length) % options.length]?.value);
+  };
+  $("#next-unit").onclick = () => {
+    const options = [...$("#unit-select").options],
+      i = options.findIndex((o) => o.value === unit.key);
+    pickUnit(options[(i + 1) % options.length]?.value);
+  };
   function setMode(next) {
     halt();
     mode = next;
@@ -711,12 +669,13 @@ async function start() {
   $("#current-mode").textContent = "Original game";
   $("#sequence").onclick = () =>
     play(
-      selectedRows()
+      currentRows()
         .filter(
           (a) =>
-            a.key === "move" || a.key.startsWith("attack-") || a.key === "hit",
+            ["tap", "move", "hit"].includes(a.key) ||
+            a.key.startsWith("attack-"),
         )
-        .map((a) => a.refs[Math.floor(Math.random() * a.refs.length)])
+        .map(chosenFor)
         .filter(Boolean),
     );
   function persist() {
@@ -867,7 +826,21 @@ async function start() {
       tab.setAttribute("aria-selected", String(active));
     });
     for (const view of ["units", "library", "sources"])
-      $(`#${view}-view`).hidden = view !== name;
+      $(`#${view}-view`).hidden =
+        view === "units" ? !["units", "terrain"].includes(name) : view !== name;
+    if (["units", "terrain"].includes(name)) {
+      halt();
+      entityMode = name === "terrain" ? "terrain" : "unit";
+      $("#context-label").textContent =
+        entityMode === "terrain" ? "CHOOSE TERRAIN" : "CHOOSE A FACTION";
+      $("#factions").hidden = entityMode === "terrain";
+      $("#entity-search").value = "";
+      const list =
+        entityMode === "terrain" ? workbench.terrains : activeFaction.units;
+      const key = entityMode === "terrain" ? rememberedTerrain : rememberedUnit;
+      unit = list.find((x) => x.key === key) || list[0];
+      populateUnits();
+    }
     if (name === "library") renderLibrary();
   }
   for (const tab of document.querySelectorAll("[data-view]"))
@@ -878,7 +851,12 @@ async function start() {
   };
   $("#export").onclick = () => {
     const data = {
-      unit: unit.id,
+      entity: unit.key,
+      assignments: Object.entries(assignments).map(([context, choice]) => ({
+        context,
+        ...choice,
+        recording: byId.get(choice.id),
+      })),
       exportedAt: new Date().toISOString(),
       favorites: catalog.filter((x) => favorites.has(x.id)),
     };
@@ -927,5 +905,5 @@ async function start() {
   $("#total").textContent = catalog.length;
   $("#library-count").textContent = catalog.length;
   drawWave();
-  renderUnit();
+  setFaction(activeFaction.id);
 }

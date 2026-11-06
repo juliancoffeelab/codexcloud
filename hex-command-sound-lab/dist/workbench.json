@@ -1,0 +1,6684 @@
+{
+  "schemaVersion": 1,
+  "sourceRevision": "f68e36493ed8a01b1e9d4ef9cbaaf1aa1ac39aca",
+  "factions": [
+    {
+      "id": "beasts",
+      "name": "Beasts",
+      "units": [
+        {
+          "id": "basilisk",
+          "key": "beasts/basilisk",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Basilisk",
+          "level": 1,
+          "role": "basilisk",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/basilisk.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "basilisk-l2",
+          "key": "beasts/basilisk-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Basilisk L2",
+          "level": 2,
+          "role": "Basilisk L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/basilisk-l2.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "basilisk-l3",
+          "key": "beasts/basilisk-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Basilisk L3",
+          "level": 3,
+          "role": "Basilisk L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/basilisk-l3.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "bear",
+          "key": "beasts/bear",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Bear",
+          "level": 1,
+          "role": "bear",
+          "gameplayId": "bear",
+          "defined": true,
+          "artwork": "workbench/units/beasts/bear.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "damage": 7,
+              "count": 2,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "bear-l2",
+          "key": "beasts/bear-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Bear L2",
+          "level": 2,
+          "role": "Bear L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/bear-l2.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "bear-l3",
+          "key": "beasts/bear-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Bear L3",
+          "level": 3,
+          "role": "Bear L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/bear-l3.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "crocodile",
+          "key": "beasts/crocodile",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Crocodile",
+          "level": 1,
+          "role": "crocodile",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/crocodile.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "crocodile-l2",
+          "key": "beasts/crocodile-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Crocodile L2",
+          "level": 2,
+          "role": "Crocodile L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/crocodile-l2.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "crocodile-l3",
+          "key": "beasts/crocodile-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Crocodile L3",
+          "level": 3,
+          "role": "Crocodile L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/crocodile-l3.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dragon",
+          "key": "beasts/dragon",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Dragon",
+          "level": 1,
+          "role": "dragon",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/dragon.png",
+          "attacks": [
+            {
+              "id": "fire-breath",
+              "name": "Fire breath",
+              "proposed": true
+            },
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dragon-l2",
+          "key": "beasts/dragon-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Dragon L2",
+          "level": 2,
+          "role": "Dragon L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/dragon-l2.png",
+          "attacks": [
+            {
+              "id": "fire-breath",
+              "name": "Fire breath",
+              "proposed": true
+            },
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dragon-l3",
+          "key": "beasts/dragon-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Dragon L3",
+          "level": 3,
+          "role": "Dragon L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/dragon-l3.png",
+          "attacks": [
+            {
+              "id": "fire-breath",
+              "name": "Fire breath",
+              "proposed": true
+            },
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-bat",
+          "key": "beasts/giant-bat",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant bat",
+          "level": 1,
+          "role": "giant-bat",
+          "gameplayId": "giant-bat",
+          "defined": true,
+          "artwork": "workbench/units/beasts/giant-bat.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "damage": 2,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "giant-bat-l2",
+          "key": "beasts/giant-bat-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant bat L2",
+          "level": 2,
+          "role": "Giant bat L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-bat-l2.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-bat-l3",
+          "key": "beasts/giant-bat-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant bat L3",
+          "level": 3,
+          "role": "Giant bat L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-bat-l3.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-crab",
+          "key": "beasts/giant-crab",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant crab",
+          "level": 1,
+          "role": "giant-crab",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-crab.png",
+          "attacks": [
+            {
+              "id": "pincers",
+              "name": "Pincers",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-crab-l2",
+          "key": "beasts/giant-crab-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant crab L2",
+          "level": 2,
+          "role": "Giant crab L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-crab-l2.png",
+          "attacks": [
+            {
+              "id": "pincers",
+              "name": "Pincers",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-crab-l3",
+          "key": "beasts/giant-crab-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant crab L3",
+          "level": 3,
+          "role": "Giant crab L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-crab-l3.png",
+          "attacks": [
+            {
+              "id": "pincers",
+              "name": "Pincers",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-owl",
+          "key": "beasts/giant-owl",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant owl",
+          "level": 1,
+          "role": "giant-owl",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-owl.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-owl-l2",
+          "key": "beasts/giant-owl-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant owl L2",
+          "level": 2,
+          "role": "Giant owl L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-owl-l2.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-owl-l3",
+          "key": "beasts/giant-owl-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant owl L3",
+          "level": 3,
+          "role": "Giant owl L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-owl-l3.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-raven",
+          "key": "beasts/giant-raven",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant raven",
+          "level": 1,
+          "role": "giant-raven",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-raven.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-raven-l2",
+          "key": "beasts/giant-raven-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant raven L2",
+          "level": 2,
+          "role": "Giant raven L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-raven-l2.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-raven-l3",
+          "key": "beasts/giant-raven-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant raven L3",
+          "level": 3,
+          "role": "Giant raven L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-raven-l3.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-snake",
+          "key": "beasts/giant-snake",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant snake",
+          "level": 1,
+          "role": "giant-snake",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-snake.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-snake-l2",
+          "key": "beasts/giant-snake-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant snake L2",
+          "level": 2,
+          "role": "Giant snake L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-snake-l2.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-snake-l3",
+          "key": "beasts/giant-snake-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant snake L3",
+          "level": 3,
+          "role": "Giant snake L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-snake-l3.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-spider",
+          "key": "beasts/giant-spider",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant spider",
+          "level": 1,
+          "role": "giant-spider",
+          "gameplayId": "giant-spider",
+          "defined": true,
+          "artwork": "workbench/units/beasts/giant-spider.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "damage": 3,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "giant-spider-l2",
+          "key": "beasts/giant-spider-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant spider L2",
+          "level": 2,
+          "role": "Giant spider L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-spider-l2.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-spider-l3",
+          "key": "beasts/giant-spider-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant spider L3",
+          "level": 3,
+          "role": "Giant spider L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-spider-l3.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-tortoise",
+          "key": "beasts/giant-tortoise",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant tortoise",
+          "level": 1,
+          "role": "giant-tortoise",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-tortoise.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-tortoise-l2",
+          "key": "beasts/giant-tortoise-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant tortoise L2",
+          "level": 2,
+          "role": "Giant tortoise L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-tortoise-l2.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-tortoise-l3",
+          "key": "beasts/giant-tortoise-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant tortoise L3",
+          "level": 3,
+          "role": "Giant tortoise L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-tortoise-l3.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-wasp",
+          "key": "beasts/giant-wasp",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant wasp",
+          "level": 1,
+          "role": "giant-wasp",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-wasp.png",
+          "attacks": [
+            {
+              "id": "sting",
+              "name": "Sting",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-wasp-l2",
+          "key": "beasts/giant-wasp-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant wasp L2",
+          "level": 2,
+          "role": "Giant wasp L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-wasp-l2.png",
+          "attacks": [
+            {
+              "id": "sting",
+              "name": "Sting",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "giant-wasp-l3",
+          "key": "beasts/giant-wasp-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Giant wasp L3",
+          "level": 3,
+          "role": "Giant wasp L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/giant-wasp-l3.png",
+          "attacks": [
+            {
+              "id": "sting",
+              "name": "Sting",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "gryphon",
+          "key": "beasts/gryphon",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Gryphon",
+          "level": 1,
+          "role": "gryphon",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/gryphon.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "gryphon-l2",
+          "key": "beasts/gryphon-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Gryphon L2",
+          "level": 2,
+          "role": "Gryphon L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/gryphon-l2.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "gryphon-l3",
+          "key": "beasts/gryphon-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Gryphon L3",
+          "level": 3,
+          "role": "Gryphon L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/gryphon-l3.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "lynx",
+          "key": "beasts/lynx",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Lynx",
+          "level": 1,
+          "role": "lynx",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/lynx.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "lynx-l2",
+          "key": "beasts/lynx-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Lynx L2",
+          "level": 2,
+          "role": "Lynx L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/lynx-l2.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "lynx-l3",
+          "key": "beasts/lynx-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Lynx L3",
+          "level": 3,
+          "role": "Lynx L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/lynx-l3.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "octopus",
+          "key": "beasts/octopus",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Octopus",
+          "level": 1,
+          "role": "octopus",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/octopus.png",
+          "attacks": [
+            {
+              "id": "tentacles",
+              "name": "Tentacles",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "octopus-l2",
+          "key": "beasts/octopus-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Octopus L2",
+          "level": 2,
+          "role": "Octopus L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/octopus-l2.png",
+          "attacks": [
+            {
+              "id": "tentacles",
+              "name": "Tentacles",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "octopus-l3",
+          "key": "beasts/octopus-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Octopus L3",
+          "level": 3,
+          "role": "Octopus L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/octopus-l3.png",
+          "attacks": [
+            {
+              "id": "tentacles",
+              "name": "Tentacles",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "ray",
+          "key": "beasts/ray",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Ray",
+          "level": 1,
+          "role": "ray",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/ray.png",
+          "attacks": [
+            {
+              "id": "tail-strike",
+              "name": "Tail strike",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "ray-l2",
+          "key": "beasts/ray-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Ray L2",
+          "level": 2,
+          "role": "Ray L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/ray-l2.png",
+          "attacks": [
+            {
+              "id": "tail-strike",
+              "name": "Tail strike",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "ray-l3",
+          "key": "beasts/ray-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Ray L3",
+          "level": 3,
+          "role": "Ray L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/ray-l3.png",
+          "attacks": [
+            {
+              "id": "tail-strike",
+              "name": "Tail strike",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "sea-serpent",
+          "key": "beasts/sea-serpent",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Sea serpent",
+          "level": 1,
+          "role": "sea-serpent",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/sea-serpent.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "sea-serpent-l2",
+          "key": "beasts/sea-serpent-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Sea serpent L2",
+          "level": 2,
+          "role": "Sea serpent L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/sea-serpent-l2.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "sea-serpent-l3",
+          "key": "beasts/sea-serpent-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Sea serpent L3",
+          "level": 3,
+          "role": "Sea serpent L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/sea-serpent-l3.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "shark",
+          "key": "beasts/shark",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Shark",
+          "level": 1,
+          "role": "shark",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/shark.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "shark-l2",
+          "key": "beasts/shark-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Shark L2",
+          "level": 2,
+          "role": "Shark L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/shark-l2.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "shark-l3",
+          "key": "beasts/shark-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Shark L3",
+          "level": 3,
+          "role": "Shark L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/shark-l3.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "stag",
+          "key": "beasts/stag",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Stag",
+          "level": 1,
+          "role": "stag",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/stag.png",
+          "attacks": [
+            {
+              "id": "trample",
+              "name": "Trample",
+              "proposed": true
+            },
+            {
+              "id": "antlers",
+              "name": "Antlers",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "stag-l2",
+          "key": "beasts/stag-l2",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Stag L2",
+          "level": 2,
+          "role": "Stag L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/stag-l2.png",
+          "attacks": [
+            {
+              "id": "trample",
+              "name": "Trample",
+              "proposed": true
+            },
+            {
+              "id": "antlers",
+              "name": "Antlers",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "stag-l3",
+          "key": "beasts/stag-l3",
+          "kind": "unit",
+          "faction": "beasts",
+          "name": "Stag L3",
+          "level": 3,
+          "role": "Stag L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/beasts/stag-l3.png",
+          "attacks": [
+            {
+              "id": "trample",
+              "name": "Trample",
+              "proposed": true
+            },
+            {
+              "id": "antlers",
+              "name": "Antlers",
+              "proposed": true
+            }
+          ]
+        }
+      ],
+      "definedCount": 3
+    },
+    {
+      "id": "cursed",
+      "name": "Cursed",
+      "units": [
+        {
+          "id": "werewolf",
+          "key": "cursed/werewolf",
+          "kind": "unit",
+          "faction": "cursed",
+          "name": "Werewolf",
+          "level": 1,
+          "role": "werewolf",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/cursed/werewolf.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "werewolf-ironfang",
+          "key": "cursed/werewolf-ironfang",
+          "kind": "unit",
+          "faction": "cursed",
+          "name": "Ironfang",
+          "level": 2,
+          "role": "Werewolf",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/cursed/werewolf-ironfang.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "werewolf-pack-king",
+          "key": "cursed/werewolf-pack-king",
+          "kind": "unit",
+          "faction": "cursed",
+          "name": "Pack King",
+          "level": 3,
+          "role": "Werewolf",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/cursed/werewolf-pack-king.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        }
+      ],
+      "definedCount": 0
+    },
+    {
+      "id": "dwarves",
+      "name": "Dwarves",
+      "units": [
+        {
+          "id": "dwarf-axeguard",
+          "key": "dwarves/dwarf-axeguard",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Axe and shield",
+          "level": 1,
+          "role": "dwarf-axeguard",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-axeguard.png",
+          "attacks": [
+            {
+              "id": "axe",
+              "name": "Axe",
+              "proposed": true
+            },
+            {
+              "id": "shield-bash",
+              "name": "Shield bash",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-axeguard-l2",
+          "key": "dwarves/dwarf-axeguard-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Shieldguard",
+          "level": 2,
+          "role": "Shieldguard",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-axeguard-l2.png",
+          "attacks": [
+            {
+              "id": "axe",
+              "name": "Axe",
+              "proposed": true
+            },
+            {
+              "id": "shield-bash",
+              "name": "Shield bash",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-axeguard-l3",
+          "key": "dwarves/dwarf-axeguard-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Shieldguard veteran",
+          "level": 3,
+          "role": "Shieldguard",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-axeguard-l3.png",
+          "attacks": [
+            {
+              "id": "axe",
+              "name": "Axe",
+              "proposed": true
+            },
+            {
+              "id": "shield-bash",
+              "name": "Shield bash",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-axe-pick-l2",
+          "key": "dwarves/dwarf-axe-pick-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Axe and pick fighter",
+          "level": 2,
+          "role": "Axe and pick fighter",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-axe-pick-l2.png",
+          "attacks": [
+            {
+              "id": "pickaxe",
+              "name": "Pickaxe",
+              "proposed": true
+            },
+            {
+              "id": "axe",
+              "name": "Axe",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-axe-pick-l3",
+          "key": "dwarves/dwarf-axe-pick-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Axe and pick fighter veteran",
+          "level": 3,
+          "role": "Axe and pick fighter",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-axe-pick-l3.png",
+          "attacks": [
+            {
+              "id": "pickaxe",
+              "name": "Pickaxe",
+              "proposed": true
+            },
+            {
+              "id": "axe",
+              "name": "Axe",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-pickaxe",
+          "key": "dwarves/dwarf-pickaxe",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Miner",
+          "level": 1,
+          "role": "dwarf-pickaxe",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-pickaxe.png",
+          "attacks": [
+            {
+              "id": "pickaxe",
+              "name": "Pickaxe",
+              "proposed": true
+            },
+            {
+              "id": "axe",
+              "name": "Axe",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-hammerer-l2",
+          "key": "dwarves/dwarf-hammerer-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Hammerer",
+          "level": 2,
+          "role": "Hammerer",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-hammerer-l2.png",
+          "attacks": [
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-hammerer-l3",
+          "key": "dwarves/dwarf-hammerer-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Hammerer veteran",
+          "level": 3,
+          "role": "Hammerer",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-hammerer-l3.png",
+          "attacks": [
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-poleaxe-l2",
+          "key": "dwarves/dwarf-poleaxe-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Poleaxe fighter",
+          "level": 2,
+          "role": "Poleaxe fighter",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-poleaxe-l2.png",
+          "attacks": [
+            {
+              "id": "poleaxe",
+              "name": "Poleaxe",
+              "proposed": true
+            },
+            {
+              "id": "axe",
+              "name": "Axe",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-poleaxe-l3",
+          "key": "dwarves/dwarf-poleaxe-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Poleaxe fighter veteran",
+          "level": 3,
+          "role": "Poleaxe fighter",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-poleaxe-l3.png",
+          "attacks": [
+            {
+              "id": "poleaxe",
+              "name": "Poleaxe",
+              "proposed": true
+            },
+            {
+              "id": "axe",
+              "name": "Axe",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-crossbow",
+          "key": "dwarves/dwarf-crossbow",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Crossbowman",
+          "level": 1,
+          "role": "dwarf-crossbow",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-crossbow.png",
+          "attacks": [
+            {
+              "id": "crossbow",
+              "name": "Crossbow",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-crossbow-l2",
+          "key": "dwarves/dwarf-crossbow-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Crossbow specialist",
+          "level": 2,
+          "role": "Crossbow specialist",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-crossbow-l2.png",
+          "attacks": [
+            {
+              "id": "crossbow",
+              "name": "Crossbow",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-crossbow-l3",
+          "key": "dwarves/dwarf-crossbow-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Crossbow specialist veteran",
+          "level": 3,
+          "role": "Crossbow specialist",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-crossbow-l3.png",
+          "attacks": [
+            {
+              "id": "crossbow",
+              "name": "Crossbow",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-arquebus-l2",
+          "key": "dwarves/dwarf-arquebus-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Arquebusier",
+          "level": 2,
+          "role": "Arquebusier",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-arquebus-l2.png",
+          "attacks": [
+            {
+              "id": "arquebus",
+              "name": "Arquebus",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-arquebus-l3",
+          "key": "dwarves/dwarf-arquebus-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Arquebusier veteran",
+          "level": 3,
+          "role": "Arquebusier",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-arquebus-l3.png",
+          "attacks": [
+            {
+              "id": "arquebus",
+              "name": "Arquebus",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-runesmith",
+          "key": "dwarves/dwarf-runesmith",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Rune apprentice",
+          "level": 1,
+          "role": "dwarf-runesmith",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-runesmith.png",
+          "attacks": [
+            {
+              "id": "rune-stone",
+              "name": "Rune stone",
+              "proposed": true
+            },
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-thundersmith-l2",
+          "key": "dwarves/dwarf-thundersmith-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Thundersmith",
+          "level": 2,
+          "role": "Thundersmith",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-thundersmith-l2.png",
+          "attacks": [
+            {
+              "id": "rune-spark",
+              "name": "Rune spark",
+              "proposed": true
+            },
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-thundersmith-l3",
+          "key": "dwarves/dwarf-thundersmith-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Thundersmith veteran",
+          "level": 3,
+          "role": "Thundersmith",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-thundersmith-l3.png",
+          "attacks": [
+            {
+              "id": "rune-spark",
+              "name": "Rune spark",
+              "proposed": true
+            },
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-stonespell-l2",
+          "key": "dwarves/dwarf-stonespell-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Stonespell",
+          "level": 2,
+          "role": "Stonespell",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-stonespell-l2.png",
+          "attacks": [
+            {
+              "id": "rune-stone",
+              "name": "Rune stone",
+              "proposed": true
+            },
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-stonespell-l3",
+          "key": "dwarves/dwarf-stonespell-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Stonespell veteran",
+          "level": 3,
+          "role": "Stonespell",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-stonespell-l3.png",
+          "attacks": [
+            {
+              "id": "rune-stone",
+              "name": "Rune stone",
+              "proposed": true
+            },
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-goat-rider",
+          "key": "dwarves/dwarf-goat-rider",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Goat rider",
+          "level": 1,
+          "role": "dwarf-goat-rider",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-goat-rider.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-goat-rider-l2",
+          "key": "dwarves/dwarf-goat-rider-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Mounted hammerer",
+          "level": 2,
+          "role": "Mounted hammerer",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-goat-rider-l2.png",
+          "attacks": [
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-goat-rider-l3",
+          "key": "dwarves/dwarf-goat-rider-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Mounted hammerer veteran",
+          "level": 3,
+          "role": "Mounted hammerer",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-goat-rider-l3.png",
+          "attacks": [
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-pistol-goat-rider-l2",
+          "key": "dwarves/dwarf-pistol-goat-rider-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Pistol rider",
+          "level": 2,
+          "role": "Pistol rider",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-pistol-goat-rider-l2.png",
+          "attacks": [
+            {
+              "id": "pistol",
+              "name": "Pistol",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-pistol-goat-rider-l3",
+          "key": "dwarves/dwarf-pistol-goat-rider-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Pistol rider veteran",
+          "level": 3,
+          "role": "Pistol rider",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-pistol-goat-rider-l3.png",
+          "attacks": [
+            {
+              "id": "pistol",
+              "name": "Pistol",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-forge-lord",
+          "key": "dwarves/dwarf-forge-lord",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Forge lord",
+          "level": 1,
+          "role": "commander",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-forge-lord.png",
+          "attacks": [
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-forge-lord-l2",
+          "key": "dwarves/dwarf-forge-lord-l2",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Forge lord",
+          "level": 2,
+          "role": "commander",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-forge-lord-l2.png",
+          "attacks": [
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "dwarf-forge-lord-l3",
+          "key": "dwarves/dwarf-forge-lord-l3",
+          "kind": "unit",
+          "faction": "dwarves",
+          "name": "Forge king",
+          "level": 3,
+          "role": "commander",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/dwarves/dwarf-forge-lord-l3.png",
+          "attacks": [
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "proposed": true
+            }
+          ]
+        }
+      ],
+      "definedCount": 0
+    },
+    {
+      "id": "elves",
+      "name": "Elves",
+      "units": [
+        {
+          "id": "elf-spearman",
+          "key": "elves/elf-spearman",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Spearman",
+          "level": 1,
+          "role": "elf-spearman",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-spearman.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-spearman-l2",
+          "key": "elves/elf-spearman-l2",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Warden",
+          "level": 2,
+          "role": "Warden",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-spearman-l2.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-spearman-l3",
+          "key": "elves/elf-spearman-l3",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Warden",
+          "level": 3,
+          "role": "Warden",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-spearman-l3.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-jumper-l2",
+          "key": "elves/elf-jumper-l2",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Jumper",
+          "level": 2,
+          "role": "Jumper",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-jumper-l2.png",
+          "attacks": [
+            {
+              "id": "blade",
+              "name": "Blade",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-jumper-l3",
+          "key": "elves/elf-jumper-l3",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Jumper",
+          "level": 3,
+          "role": "Jumper",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-jumper-l3.png",
+          "attacks": [
+            {
+              "id": "blade",
+              "name": "Blade",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-flanker",
+          "key": "elves/elf-flanker",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Two knifer",
+          "level": 1,
+          "role": "elf-flanker",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-flanker.png",
+          "attacks": [
+            {
+              "id": "blade",
+              "name": "Blade",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-flanker-l2",
+          "key": "elves/elf-flanker-l2",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Duelist",
+          "level": 2,
+          "role": "Duelist",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-flanker-l2.png",
+          "attacks": [
+            {
+              "id": "blade",
+              "name": "Blade",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-flanker-l3",
+          "key": "elves/elf-flanker-l3",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Duelist",
+          "level": 3,
+          "role": "Duelist",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-flanker-l3.png",
+          "attacks": [
+            {
+              "id": "blade",
+              "name": "Blade",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-bladedancer-l2",
+          "key": "elves/elf-bladedancer-l2",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Swordsman",
+          "level": 2,
+          "role": "Swordsman",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-bladedancer-l2.png",
+          "attacks": [
+            {
+              "id": "blade",
+              "name": "Blade",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-bladedancer-l3",
+          "key": "elves/elf-bladedancer-l3",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Swordsman",
+          "level": 3,
+          "role": "Swordsman",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-bladedancer-l3.png",
+          "attacks": [
+            {
+              "id": "blade",
+              "name": "Blade",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-archer",
+          "key": "elves/elf-archer",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Archer",
+          "level": 1,
+          "role": "elf-archer",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-archer.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-archer-l2",
+          "key": "elves/elf-archer-l2",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Shadow stalker",
+          "level": 2,
+          "role": "Shadow stalker",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-archer-l2.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-archer-l3",
+          "key": "elves/elf-archer-l3",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Shadow stalker",
+          "level": 3,
+          "role": "Shadow stalker",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-archer-l3.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-deer-archer",
+          "key": "elves/elf-deer-archer",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Deer rider",
+          "level": 1,
+          "role": "elf-deer-archer",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-deer-archer.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-deer-archer-l2",
+          "key": "elves/elf-deer-archer-l2",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Shadow rider",
+          "level": 2,
+          "role": "Shadow rider",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-deer-archer-l2.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-deer-archer-l3",
+          "key": "elves/elf-deer-archer-l3",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Shadow rider",
+          "level": 3,
+          "role": "Shadow rider",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-deer-archer-l3.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "proposed": true
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-caster",
+          "key": "elves/elf-caster",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Grove caster",
+          "level": 1,
+          "role": "elf-caster",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-caster.png",
+          "attacks": [
+            {
+              "id": "arcane-spell",
+              "name": "Arcane spell",
+              "proposed": true
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-caster-l2",
+          "key": "elves/elf-caster-l2",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Grove healer",
+          "level": 2,
+          "role": "Healer",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-caster-l2.png",
+          "attacks": [
+            {
+              "id": "arcane-spell",
+              "name": "Arcane spell",
+              "proposed": true
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-caster-l3",
+          "key": "elves/elf-caster-l3",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Grove healer",
+          "level": 3,
+          "role": "Healer",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-caster-l3.png",
+          "attacks": [
+            {
+              "id": "arcane-spell",
+              "name": "Arcane spell",
+              "proposed": true
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-killing-caster-l2",
+          "key": "elves/elf-killing-caster-l2",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Thorn caster",
+          "level": 2,
+          "role": "Thorn caster",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-killing-caster-l2.png",
+          "attacks": [
+            {
+              "id": "arcane-spell",
+              "name": "Arcane spell",
+              "proposed": true
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-killing-caster-l3",
+          "key": "elves/elf-killing-caster-l3",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Thorn caster",
+          "level": 3,
+          "role": "Thorn caster",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-killing-caster-l3.png",
+          "attacks": [
+            {
+              "id": "arcane-spell",
+              "name": "Arcane spell",
+              "proposed": true
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-banner-lord",
+          "key": "elves/elf-banner-lord",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Banner captain",
+          "level": 1,
+          "role": "commander",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-banner-lord.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-banner-lord-l2",
+          "key": "elves/elf-banner-lord-l2",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Banner lord",
+          "level": 2,
+          "role": "commander",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-banner-lord-l2.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "elf-banner-lord-l3",
+          "key": "elves/elf-banner-lord-l3",
+          "kind": "unit",
+          "faction": "elves",
+          "name": "Banner sovereign",
+          "level": 3,
+          "role": "commander",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/elves/elf-banner-lord-l3.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "proposed": true
+            }
+          ]
+        }
+      ],
+      "definedCount": 0
+    },
+    {
+      "id": "humans",
+      "name": "Humans",
+      "units": [
+        {
+          "id": "leather-swordsman",
+          "key": "humans/leather-swordsman",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Leather swordsman",
+          "level": 1,
+          "role": "leather-swordsman",
+          "gameplayId": "swordsman",
+          "defined": true,
+          "artwork": "workbench/units/humans/leather-swordsman.png",
+          "attacks": [
+            {
+              "id": "sword",
+              "name": "Sword",
+              "damage": 3,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "swordsman",
+          "key": "humans/swordsman",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Swordsman",
+          "level": 2,
+          "role": "Sword infantry",
+          "gameplayId": "soldier",
+          "defined": true,
+          "artwork": "workbench/units/humans/swordsman.png",
+          "attacks": [
+            {
+              "id": "sword",
+              "name": "Sword",
+              "damage": 4,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "mace",
+              "name": "Mace",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "champion",
+          "key": "humans/champion",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Champion",
+          "level": 3,
+          "role": "Sword infantry",
+          "gameplayId": "champion",
+          "defined": true,
+          "artwork": "workbench/units/humans/champion.png",
+          "attacks": [
+            {
+              "id": "sword",
+              "name": "Sword",
+              "damage": 5,
+              "count": 3,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            },
+            {
+              "id": "mace",
+              "name": "Mace",
+              "damage": 9,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "hammerman",
+          "key": "humans/hammerman",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Hammerman",
+          "level": 2,
+          "role": "Hammer infantry",
+          "gameplayId": "hammerman",
+          "defined": true,
+          "artwork": "workbench/units/humans/hammerman.png",
+          "attacks": [
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "damage": 14,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 4
+            }
+          ]
+        },
+        {
+          "id": "warhammer",
+          "key": "humans/warhammer",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Warhammer",
+          "level": 3,
+          "role": "Hammer infantry",
+          "gameplayId": "warhammer",
+          "defined": true,
+          "artwork": "workbench/units/humans/warhammer.png",
+          "attacks": [
+            {
+              "id": "hammer",
+              "name": "Hammer",
+              "damage": 22,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 6
+            }
+          ]
+        },
+        {
+          "id": "leather-spearman",
+          "key": "humans/leather-spearman",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Leather spearman",
+          "level": 1,
+          "role": "leather-spearman",
+          "gameplayId": "spearman",
+          "defined": true,
+          "artwork": "workbench/units/humans/leather-spearman.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 3,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "spearman",
+          "key": "humans/spearman",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Spearman",
+          "level": 2,
+          "role": "Spear infantry",
+          "gameplayId": "warden",
+          "defined": true,
+          "artwork": "workbench/units/humans/spearman.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 4,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "shieldbash",
+              "name": "Shield bash",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "sentinel",
+          "key": "humans/sentinel",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Sentinel",
+          "level": 3,
+          "role": "Spear infantry",
+          "gameplayId": "sentinel",
+          "defined": true,
+          "artwork": "workbench/units/humans/sentinel.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 5,
+              "count": 3,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            },
+            {
+              "id": "shieldbash",
+              "name": "Shieldbash",
+              "damage": 8,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "halberdier",
+          "key": "humans/halberdier",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Halberdier",
+          "level": 2,
+          "role": "Halberd infantry",
+          "gameplayId": "halberdier",
+          "defined": true,
+          "artwork": "workbench/units/humans/halberdier.png",
+          "attacks": [
+            {
+              "id": "halberd",
+              "name": "Halberd",
+              "damage": 15,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 4
+            },
+            {
+              "id": "axe",
+              "name": "Axe",
+              "damage": 13,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 3
+            }
+          ]
+        },
+        {
+          "id": "halberd-master",
+          "key": "humans/halberd-master",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Halberd master",
+          "level": 3,
+          "role": "Halberd infantry",
+          "gameplayId": "halberd-master",
+          "defined": true,
+          "artwork": "workbench/units/humans/halberd-master.png",
+          "attacks": [
+            {
+              "id": "halberd",
+              "name": "Halberd",
+              "damage": 21,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 5
+            },
+            {
+              "id": "axe",
+              "name": "Axe",
+              "damage": 19,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 5
+            }
+          ]
+        },
+        {
+          "id": "scout",
+          "key": "humans/scout",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Scout",
+          "level": 1,
+          "role": "scout",
+          "gameplayId": "scout",
+          "defined": true,
+          "artwork": "workbench/units/humans/scout.png",
+          "attacks": [
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "sling",
+              "name": "Sling",
+              "damage": 2,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "unit-archer",
+              "count": 1,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "ranger",
+          "key": "humans/ranger",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Ranger",
+          "level": 2,
+          "role": "Flanker",
+          "gameplayId": "ranger",
+          "defined": true,
+          "artwork": "workbench/units/humans/ranger.png",
+          "attacks": [
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 3,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "sling",
+              "name": "Sling",
+              "damage": 2,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 2,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "shadowblade",
+          "key": "humans/shadowblade",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Shadowblade",
+          "level": 3,
+          "role": "Flanker",
+          "gameplayId": "shadowblade",
+          "defined": true,
+          "artwork": "workbench/units/humans/shadowblade.png",
+          "attacks": [
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 3,
+              "count": 3,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            },
+            {
+              "id": "sling",
+              "name": "Sling",
+              "damage": 3,
+              "count": 2,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 3
+            }
+          ]
+        },
+        {
+          "id": "slinger",
+          "key": "humans/slinger",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Slinger",
+          "level": 2,
+          "role": "Slinger",
+          "gameplayId": "slinger",
+          "defined": true,
+          "artwork": "workbench/units/humans/slinger.png",
+          "attacks": [
+            {
+              "id": "sling",
+              "name": "Sling",
+              "damage": 4,
+              "count": 3,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 4
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 3,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "fireslinger",
+          "key": "humans/fireslinger",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Fireslinger",
+          "level": 3,
+          "role": "Slinger",
+          "gameplayId": "fireslinger",
+          "defined": true,
+          "artwork": "workbench/units/humans/fireslinger.png",
+          "attacks": [
+            {
+              "id": "firepot",
+              "name": "Firepot",
+              "damage": 6,
+              "count": 3,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 6
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 4,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "archer",
+          "key": "humans/archer",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Archer",
+          "level": 1,
+          "role": "archer",
+          "gameplayId": "archer",
+          "defined": true,
+          "artwork": "workbench/units/humans/archer.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "damage": 3,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 2,
+              "spread": 3
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 4,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "marksman",
+          "key": "humans/marksman",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Marksman",
+          "level": 2,
+          "role": "Bow",
+          "gameplayId": "marksman",
+          "defined": true,
+          "artwork": "workbench/units/humans/marksman.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "damage": 4,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 3,
+              "spread": 4
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 4,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "sharpshooter",
+          "key": "humans/sharpshooter",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Sharpshooter",
+          "level": 3,
+          "role": "Bow",
+          "gameplayId": "sharpshooter",
+          "defined": true,
+          "artwork": "workbench/units/humans/sharpshooter.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "damage": 5,
+              "count": 3,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 5
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 6,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "crossbowman",
+          "key": "humans/crossbowman",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Crossbowman",
+          "level": 2,
+          "role": "Crossbow",
+          "gameplayId": "crossbowman",
+          "defined": true,
+          "artwork": "workbench/units/humans/crossbowman.png",
+          "attacks": [
+            {
+              "id": "crossbow",
+              "name": "Crossbow",
+              "damage": 10,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 10
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 5,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "arbalester",
+          "key": "humans/arbalester",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Arbalester",
+          "level": 3,
+          "role": "Crossbow",
+          "gameplayId": "arbalester",
+          "defined": true,
+          "artwork": "workbench/units/humans/arbalester.png",
+          "attacks": [
+            {
+              "id": "arbalest",
+              "name": "Arbalest",
+              "damage": 14,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 14
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 7,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "adept",
+          "key": "humans/adept",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Adept",
+          "level": 1,
+          "role": "adept",
+          "gameplayId": "adept",
+          "defined": true,
+          "artwork": "workbench/units/humans/adept.png",
+          "attacks": [
+            {
+              "id": "spark",
+              "name": "Spark",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 2,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "storm-mage",
+          "key": "humans/storm-mage",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Storm mage",
+          "level": 2,
+          "role": "Storm mage",
+          "gameplayId": "mage",
+          "defined": true,
+          "artwork": "workbench/units/humans/storm-mage.png",
+          "attacks": [
+            {
+              "id": "spark",
+              "name": "Spark",
+              "damage": 9,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 4,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "archmage",
+          "key": "humans/archmage",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Archmage",
+          "level": 3,
+          "role": "Storm mage",
+          "gameplayId": "archmage",
+          "defined": true,
+          "artwork": "workbench/units/humans/archmage.png",
+          "attacks": [
+            {
+              "id": "spark",
+              "name": "Spark",
+              "damage": 13,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 6,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "healer",
+          "key": "humans/healer",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Healer",
+          "level": 2,
+          "role": "Healer",
+          "gameplayId": "healer",
+          "defined": true,
+          "artwork": "workbench/units/humans/healer.png",
+          "attacks": [
+            {
+              "id": "light",
+              "name": "Light",
+              "damage": 4,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 3,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "high-healer",
+          "key": "humans/high-healer",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "High healer",
+          "level": 3,
+          "role": "Healer",
+          "gameplayId": "high-healer",
+          "defined": true,
+          "artwork": "workbench/units/humans/high-healer.png",
+          "attacks": [
+            {
+              "id": "light",
+              "name": "Light",
+              "damage": 6,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 5,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "rider",
+          "key": "humans/rider",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Mounted spearman",
+          "level": 1,
+          "role": "rider",
+          "gameplayId": "rider",
+          "defined": true,
+          "artwork": "workbench/units/humans/rider.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 12,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 3
+            }
+          ]
+        },
+        {
+          "id": "lancer",
+          "key": "humans/lancer",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Lancer",
+          "level": 2,
+          "role": "Mounted spearman",
+          "gameplayId": "lancer",
+          "defined": true,
+          "artwork": "workbench/units/humans/lancer.png",
+          "attacks": [
+            {
+              "id": "lance",
+              "name": "Lance",
+              "damage": 17,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 4
+            }
+          ]
+        },
+        {
+          "id": "knight",
+          "key": "humans/knight",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Knight",
+          "level": 3,
+          "role": "Mounted spearman",
+          "gameplayId": "knight",
+          "defined": true,
+          "artwork": "workbench/units/humans/knight.png",
+          "attacks": [
+            {
+              "id": "lance",
+              "name": "Lance",
+              "damage": 21,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 5
+            },
+            {
+              "id": "sword",
+              "name": "Sword",
+              "damage": 5,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "horse-archer",
+          "key": "humans/horse-archer",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Horse archer",
+          "level": 1,
+          "role": "horse-archer",
+          "gameplayId": "horse-archer",
+          "defined": true,
+          "artwork": "workbench/units/humans/horse-archer.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "damage": 3,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 3
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 4,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "horse-bowman",
+          "key": "humans/horse-bowman",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Horse bowman",
+          "level": 2,
+          "role": "Mounted archer",
+          "gameplayId": "horse-bowman",
+          "defined": true,
+          "artwork": "workbench/units/humans/horse-bowman.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "damage": 4,
+              "count": 3,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 4
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 6,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "horse-marksman",
+          "key": "humans/horse-marksman",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Horse marksman",
+          "level": 3,
+          "role": "Mounted archer",
+          "gameplayId": "horse-marksman",
+          "defined": true,
+          "artwork": "workbench/units/humans/horse-marksman.png",
+          "attacks": [
+            {
+              "id": "bow",
+              "name": "Bow",
+              "damage": 5,
+              "count": 3,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 5
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 8,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "captives",
+          "key": "humans/captives",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Captive villagers",
+          "level": 1,
+          "role": "captives",
+          "gameplayId": "captives",
+          "defined": true,
+          "artwork": "workbench/units/humans/captives.png",
+          "attacks": []
+        },
+        {
+          "id": "commander",
+          "key": "humans/commander",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Commander",
+          "level": 1,
+          "role": "commander",
+          "gameplayId": "commander",
+          "defined": true,
+          "artwork": "workbench/units/humans/commander.png",
+          "attacks": [
+            {
+              "id": "sword",
+              "name": "Sword",
+              "damage": 4,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "mace",
+              "name": "Mace",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "marshal",
+          "key": "humans/marshal",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Marshal",
+          "level": 2,
+          "role": "commander",
+          "gameplayId": "marshal",
+          "defined": true,
+          "artwork": "workbench/units/humans/marshal.png",
+          "attacks": [
+            {
+              "id": "sword",
+              "name": "Sword",
+              "damage": 5,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "mace",
+              "name": "Mace",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "grand-marshal",
+          "key": "humans/grand-marshal",
+          "kind": "unit",
+          "faction": "humans",
+          "name": "Grand Marshal",
+          "level": 3,
+          "role": "commander",
+          "gameplayId": "grand-marshal",
+          "defined": true,
+          "artwork": "workbench/units/humans/grand-marshal.png",
+          "attacks": [
+            {
+              "id": "sword",
+              "name": "Sword",
+              "damage": 6,
+              "count": 3,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            },
+            {
+              "id": "mace",
+              "name": "Mace",
+              "damage": 9,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        }
+      ],
+      "definedCount": 35
+    },
+    {
+      "id": "merfolk",
+      "name": "Merfolk",
+      "units": [
+        {
+          "id": "harpooner",
+          "key": "merfolk/harpooner",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Harpooner",
+          "level": 1,
+          "role": "harpooner",
+          "gameplayId": "harpooner",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/harpooner.png",
+          "attacks": [
+            {
+              "id": "harpoon",
+              "name": "Harpoon",
+              "damage": 6,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 6
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "tidehunter",
+          "key": "merfolk/tidehunter",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Tide hunter",
+          "level": 2,
+          "role": "Harpooner",
+          "gameplayId": "tidehunter",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/tidehunter.png",
+          "attacks": [
+            {
+              "id": "harpoon",
+              "name": "Harpoon",
+              "damage": 9,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 9
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 3,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "merfolk-harpoon-master",
+          "key": "merfolk/merfolk-harpoon-master",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Harpoon master",
+          "level": 3,
+          "role": "Harpooner",
+          "gameplayId": "merfolk-harpoon-master",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-harpoon-master.png",
+          "attacks": [
+            {
+              "id": "harpoon",
+              "name": "Harpoon",
+              "damage": 12,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 12
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 4,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "merfolk-netter-l2",
+          "key": "merfolk/merfolk-netter-l2",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Netter",
+          "level": 2,
+          "role": "Netter",
+          "gameplayId": "merfolk-netter-l2",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-netter-l2.png",
+          "attacks": [
+            {
+              "id": "weighted-net",
+              "name": "Weighted Net",
+              "damage": 5,
+              "count": 2,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 5
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 3,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "merfolk-netter-l3",
+          "key": "merfolk/merfolk-netter-l3",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Netter veteran",
+          "level": 3,
+          "role": "Netter",
+          "gameplayId": "merfolk-netter-l3",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-netter-l3.png",
+          "attacks": [
+            {
+              "id": "weighted-net",
+              "name": "Weighted Net",
+              "damage": 6,
+              "count": 3,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 6
+            },
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 4,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "reefguard",
+          "key": "merfolk/reefguard",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Reef guard",
+          "level": 1,
+          "role": "reefguard",
+          "gameplayId": "reefguard",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/reefguard.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Reef spear",
+              "damage": 4,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "tail",
+              "name": "Tail strike",
+              "damage": 5,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "tridentguard",
+          "key": "merfolk/tridentguard",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Trident guard",
+          "level": 2,
+          "role": "Reef guard",
+          "gameplayId": "tridentguard",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/tridentguard.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Trident",
+              "damage": 5,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "shellclub",
+              "name": "Shell club",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "merfolk-reef-champion",
+          "key": "merfolk/merfolk-reef-champion",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Reef champion",
+          "level": 3,
+          "role": "Reef guard",
+          "gameplayId": "merfolk-reef-champion",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-reef-champion.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 5,
+              "count": 3,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            },
+            {
+              "id": "shellclub",
+              "name": "Shellclub",
+              "damage": 7,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "merfolk-trident-l2",
+          "key": "merfolk/merfolk-trident-l2",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Two handed trident",
+          "level": 2,
+          "role": "Two handed trident",
+          "gameplayId": "merfolk-trident-l2",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-trident-l2.png",
+          "attacks": [
+            {
+              "id": "trident",
+              "name": "Trident",
+              "damage": 16,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 4
+            }
+          ]
+        },
+        {
+          "id": "merfolk-trident-l3",
+          "key": "merfolk/merfolk-trident-l3",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Trident veteran",
+          "level": 3,
+          "role": "Two handed trident",
+          "gameplayId": "merfolk-trident-l3",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-trident-l3.png",
+          "attacks": [
+            {
+              "id": "trident",
+              "name": "Trident",
+              "damage": 22,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 6
+            }
+          ]
+        },
+        {
+          "id": "wavemender",
+          "key": "merfolk/wavemender",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Wavemender",
+          "level": 1,
+          "role": "wavemender",
+          "gameplayId": "wavemender",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/wavemender.png",
+          "attacks": [
+            {
+              "id": "surge",
+              "name": "Surge",
+              "damage": 3,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 2,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "tidesage",
+          "key": "merfolk/tidesage",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Tide sage",
+          "level": 2,
+          "role": "Support mage",
+          "gameplayId": "tidesage",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/tidesage.png",
+          "attacks": [
+            {
+              "id": "surge",
+              "name": "Surge",
+              "damage": 4,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 2,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "merfolk-tide-oracle",
+          "key": "merfolk/merfolk-tide-oracle",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Tide oracle",
+          "level": 3,
+          "role": "Support mage",
+          "gameplayId": "merfolk-tide-oracle",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-tide-oracle.png",
+          "attacks": [
+            {
+              "id": "surge",
+              "name": "Surge",
+              "damage": 6,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 4,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "merfolk-tidecrusher-l2",
+          "key": "merfolk/merfolk-tidecrusher-l2",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Tide crusher",
+          "level": 2,
+          "role": "Crushing mage",
+          "gameplayId": "merfolk-tidecrusher-l2",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-tidecrusher-l2.png",
+          "attacks": [
+            {
+              "id": "crushing-wave",
+              "name": "Crushing Wave",
+              "damage": 12,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 4,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "merfolk-tidecrusher-l3",
+          "key": "merfolk/merfolk-tidecrusher-l3",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Tide breaker",
+          "level": 3,
+          "role": "Crushing mage",
+          "gameplayId": "merfolk-tidecrusher-l3",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-tidecrusher-l3.png",
+          "attacks": [
+            {
+              "id": "crushing-wave",
+              "name": "Crushing Wave",
+              "damage": 16,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 6,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "merfolk-maceguard",
+          "key": "merfolk/merfolk-maceguard",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Macer",
+          "level": 1,
+          "role": "merfolk-maceguard",
+          "gameplayId": "merfolk-maceguard",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-maceguard.png",
+          "attacks": [
+            {
+              "id": "mace",
+              "name": "Shell mace",
+              "damage": 5,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "merfolk-maceguard-l2",
+          "key": "merfolk/merfolk-maceguard-l2",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Macer",
+          "level": 2,
+          "role": "Macer",
+          "gameplayId": "merfolk-maceguard-l2",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-maceguard-l2.png",
+          "attacks": [
+            {
+              "id": "mace",
+              "name": "Shell mace",
+              "damage": 7,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "merfolk-maceguard-l3",
+          "key": "merfolk/merfolk-maceguard-l3",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Macer veteran",
+          "level": 3,
+          "role": "Macer",
+          "gameplayId": "merfolk-maceguard-l3",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-maceguard-l3.png",
+          "attacks": [
+            {
+              "id": "mace",
+              "name": "Mace",
+              "damage": 8,
+              "count": 3,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "tidekeeper",
+          "key": "merfolk/tidekeeper",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Tidekeeper",
+          "level": 1,
+          "role": "commander",
+          "gameplayId": "tidekeeper",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/tidekeeper.png",
+          "attacks": [
+            {
+              "id": "trident",
+              "name": "Trident",
+              "damage": 3,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "tidebolt",
+              "name": "Tide bolt",
+              "damage": 5,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "tideseer",
+          "key": "merfolk/tideseer",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Tide seer",
+          "level": 2,
+          "role": "commander",
+          "gameplayId": "tideseer",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/tideseer.png",
+          "attacks": [
+            {
+              "id": "trident",
+              "name": "Trident",
+              "damage": 4,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "tidebolt",
+              "name": "Tide bolt",
+              "damage": 8,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "merfolk-tide-sovereign",
+          "key": "merfolk/merfolk-tide-sovereign",
+          "kind": "unit",
+          "faction": "merfolk",
+          "name": "Tide sovereign",
+          "level": 3,
+          "role": "commander",
+          "gameplayId": "merfolk-tide-sovereign",
+          "defined": true,
+          "artwork": "workbench/units/merfolk/merfolk-tide-sovereign.png",
+          "attacks": [
+            {
+              "id": "trident",
+              "name": "Trident",
+              "damage": 5,
+              "count": 3,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            },
+            {
+              "id": "tidebolt",
+              "name": "Tidebolt",
+              "damage": 11,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            }
+          ]
+        }
+      ],
+      "definedCount": 21
+    },
+    {
+      "id": "skeletons",
+      "name": "Skeletons",
+      "units": [
+        {
+          "id": "skeleton",
+          "key": "skeletons/skeleton",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Skeleton",
+          "level": 1,
+          "role": "skeleton",
+          "gameplayId": "skeleton",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton.png",
+          "attacks": [
+            {
+              "id": "rustblade",
+              "name": "Rustblade",
+              "damage": 4,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            },
+            {
+              "id": "shieldbash",
+              "name": "Shield bash",
+              "damage": 6,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "revenant",
+          "key": "skeletons/revenant",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Revenant",
+          "level": 2,
+          "role": "Shield servant",
+          "gameplayId": "revenant",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/revenant.png",
+          "attacks": [
+            {
+              "id": "rustblade",
+              "name": "Rustblade",
+              "damage": 5,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            },
+            {
+              "id": "boneclub",
+              "name": "Boneclub",
+              "damage": 10,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 3
+            }
+          ]
+        },
+        {
+          "id": "skeleton-dreadguard",
+          "key": "skeletons/skeleton-dreadguard",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Dreadguard",
+          "level": 3,
+          "role": "Shield servant",
+          "gameplayId": "skeleton-dreadguard",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-dreadguard.png",
+          "attacks": [
+            {
+              "id": "rustblade",
+              "name": "Rustblade",
+              "damage": 5,
+              "count": 3,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            },
+            {
+              "id": "boneclub",
+              "name": "Boneclub",
+              "damage": 13,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 3
+            }
+          ]
+        },
+        {
+          "id": "skeleton-flanker-l2",
+          "key": "skeletons/skeleton-flanker-l2",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Knife servant",
+          "level": 2,
+          "role": "Twin knives",
+          "gameplayId": "skeleton-flanker-l2",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-flanker-l2.png",
+          "attacks": [
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 4,
+              "count": 3,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "skeleton-flanker-l3",
+          "key": "skeletons/skeleton-flanker-l3",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Knife shade",
+          "level": 3,
+          "role": "Twin knives",
+          "gameplayId": "skeleton-flanker-l3",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-flanker-l3.png",
+          "attacks": [
+            {
+              "id": "knife",
+              "name": "Knife",
+              "damage": 5,
+              "count": 4,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "skeleton-impact-caster",
+          "key": "skeletons/skeleton-impact-caster",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Caster",
+          "level": 1,
+          "role": "skeleton-impact-caster",
+          "gameplayId": "skeleton-impact-caster",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-impact-caster.png",
+          "attacks": [
+            {
+              "id": "boneburst",
+              "name": "Bone burst",
+              "damage": 7,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Bone staff",
+              "damage": 2,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "skeleton-impact-caster-l2",
+          "key": "skeletons/skeleton-impact-caster-l2",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Staff servant",
+          "level": 2,
+          "role": "Staff caster",
+          "gameplayId": "skeleton-impact-caster-l2",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-impact-caster-l2.png",
+          "attacks": [
+            {
+              "id": "boneburst",
+              "name": "Bone burst",
+              "damage": 11,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Bone staff",
+              "damage": 4,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "skeleton-impact-caster-l3",
+          "key": "skeletons/skeleton-impact-caster-l3",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Staff shade",
+          "level": 3,
+          "role": "Staff caster",
+          "gameplayId": "skeleton-impact-caster-l3",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-impact-caster-l3.png",
+          "attacks": [
+            {
+              "id": "boneburst",
+              "name": "Boneburst",
+              "damage": 15,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "damage": 6,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "skeleton-scythe-caster-l2",
+          "key": "skeletons/skeleton-scythe-caster-l2",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Scythe servant",
+          "level": 2,
+          "role": "Vampire",
+          "gameplayId": "skeleton-scythe-caster-l2",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-scythe-caster-l2.png",
+          "attacks": [
+            {
+              "id": "soul-drain",
+              "name": "Soul Drain",
+              "damage": 8,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "drain": 50,
+              "spread": 1
+            },
+            {
+              "id": "scythe",
+              "name": "Scythe",
+              "damage": 10,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "drain": 50,
+              "spread": 3
+            }
+          ]
+        },
+        {
+          "id": "skeleton-scythe-caster-l3",
+          "key": "skeletons/skeleton-scythe-caster-l3",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Scythe shade",
+          "level": 3,
+          "role": "Vampire",
+          "gameplayId": "skeleton-scythe-caster-l3",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-scythe-caster-l3.png",
+          "attacks": [
+            {
+              "id": "soul-drain",
+              "name": "Soul Drain",
+              "damage": 12,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "drain": 50,
+              "spread": 1
+            },
+            {
+              "id": "scythe",
+              "name": "Scythe",
+              "damage": 18,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "drain": 50,
+              "spread": 5
+            }
+          ]
+        },
+        {
+          "id": "skeleton-rider",
+          "key": "skeletons/skeleton-rider",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Grave rider",
+          "level": 1,
+          "role": "skeleton-rider",
+          "gameplayId": "skeleton-rider",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-rider.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 11,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 3
+            }
+          ]
+        },
+        {
+          "id": "skeleton-rider-l2",
+          "key": "skeletons/skeleton-rider-l2",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Death rider",
+          "level": 2,
+          "role": "Mounted spear",
+          "gameplayId": "skeleton-rider-l2",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-rider-l2.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 15,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 4
+            }
+          ]
+        },
+        {
+          "id": "skeleton-rider-l3",
+          "key": "skeletons/skeleton-rider-l3",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Hollow rider",
+          "level": 3,
+          "role": "Mounted spear",
+          "gameplayId": "skeleton-rider-l3",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-rider-l3.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 19,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 5
+            }
+          ]
+        },
+        {
+          "id": "bonearcher",
+          "key": "skeletons/bonearcher",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Bone archer",
+          "level": 1,
+          "role": "bonearcher",
+          "gameplayId": "bonearcher",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/bonearcher.png",
+          "attacks": [
+            {
+              "id": "bonebow",
+              "name": "Bone bow",
+              "damage": 3,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 2,
+              "spread": 3
+            },
+            {
+              "id": "shard",
+              "name": "Shard",
+              "damage": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "deatharcher",
+          "key": "skeletons/deatharcher",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Death archer",
+          "level": 2,
+          "role": "Archer",
+          "gameplayId": "deatharcher",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/deatharcher.png",
+          "attacks": [
+            {
+              "id": "bonebow",
+              "name": "Bone bow",
+              "damage": 4,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 3,
+              "spread": 4
+            },
+            {
+              "id": "shard",
+              "name": "Shard",
+              "damage": 4,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "skeleton-bow-master",
+          "key": "skeletons/skeleton-bow-master",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Hollow archer",
+          "level": 3,
+          "role": "Archer",
+          "gameplayId": "skeleton-bow-master",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-bow-master.png",
+          "attacks": [
+            {
+              "id": "bonebow",
+              "name": "Bonebow",
+              "damage": 5,
+              "count": 3,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 5
+            },
+            {
+              "id": "shard",
+              "name": "Shard",
+              "damage": 6,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "skeleton-axeman",
+          "key": "skeletons/skeleton-axeman",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Grave axeman",
+          "level": 1,
+          "role": "skeleton-axeman",
+          "gameplayId": "skeleton-axeman",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-axeman.png",
+          "attacks": [
+            {
+              "id": "axe",
+              "name": "Axe",
+              "damage": 10,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 3
+            }
+          ]
+        },
+        {
+          "id": "skeleton-axeman-l2",
+          "key": "skeletons/skeleton-axeman-l2",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Death axeman",
+          "level": 2,
+          "role": "Axe servant",
+          "gameplayId": "skeleton-axeman-l2",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-axeman-l2.png",
+          "attacks": [
+            {
+              "id": "axe",
+              "name": "Axe",
+              "damage": 15,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 4
+            }
+          ]
+        },
+        {
+          "id": "skeleton-axeman-l3",
+          "key": "skeletons/skeleton-axeman-l3",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Hollow axeman",
+          "level": 3,
+          "role": "Axe servant",
+          "gameplayId": "skeleton-axeman-l3",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/skeleton-axeman-l3.png",
+          "attacks": [
+            {
+              "id": "axe",
+              "name": "Axe",
+              "damage": 18,
+              "count": 1,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 5
+            }
+          ]
+        },
+        {
+          "id": "ghost",
+          "key": "skeletons/ghost",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Ghost",
+          "level": 1,
+          "role": "ghost",
+          "gameplayId": "ghost",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/ghost.png",
+          "attacks": [
+            {
+              "id": "spectral-touch",
+              "name": "Spectral touch",
+              "damage": 3,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "spectral-orb",
+              "name": "Spectral orb",
+              "damage": 3,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "wraith",
+          "key": "skeletons/wraith",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Wraith",
+          "level": 2,
+          "role": "Spectral scout",
+          "gameplayId": "wraith",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/wraith.png",
+          "attacks": [
+            {
+              "id": "spectral-touch",
+              "name": "Spectral touch",
+              "damage": 4,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            },
+            {
+              "id": "spectral-orb",
+              "name": "Spectral orb",
+              "damage": 3,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 2,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "spectre",
+          "key": "skeletons/spectre",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Spectre",
+          "level": 3,
+          "role": "Spectral scout",
+          "gameplayId": "spectre",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/spectre.png",
+          "attacks": [
+            {
+              "id": "spectral-touch",
+              "name": "Spectral touch",
+              "damage": 4,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 3,
+              "spread": 1
+            },
+            {
+              "id": "spectral-orb",
+              "name": "Spectral orb",
+              "damage": 4,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 2,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "lich-commander-l1",
+          "key": "skeletons/lich-commander-l1",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Grave Adept",
+          "level": 1,
+          "role": "Skeleton commander",
+          "gameplayId": "necromancer",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/lich-commander-l1.png",
+          "attacks": [
+            {
+              "id": "gravebolt",
+              "name": "Grave bolt",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            },
+            {
+              "id": "bonestaff",
+              "name": "Bone staff",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "lich-commander-l2",
+          "key": "skeletons/lich-commander-l2",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Lich",
+          "level": 2,
+          "role": "Skeleton commander",
+          "gameplayId": "lich",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/lich-commander-l2.png",
+          "attacks": [
+            {
+              "id": "gravebolt",
+              "name": "Grave bolt",
+              "damage": 8,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            },
+            {
+              "id": "bonestaff",
+              "name": "Bone staff",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "lich-commander-l3",
+          "key": "skeletons/lich-commander-l3",
+          "kind": "unit",
+          "faction": "skeletons",
+          "name": "Lich Sovereign",
+          "level": 3,
+          "role": "Skeleton commander",
+          "gameplayId": "lich-commander-l3",
+          "defined": true,
+          "artwork": "workbench/units/skeletons/lich-commander-l3.png",
+          "attacks": [
+            {
+              "id": "gravebolt",
+              "name": "Gravebolt",
+              "damage": 12,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            },
+            {
+              "id": "bonestaff",
+              "name": "Bonestaff",
+              "damage": 8,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        }
+      ],
+      "definedCount": 25
+    },
+    {
+      "id": "undead-animals",
+      "name": "Undead Animals",
+      "units": [
+        {
+          "id": "skeletal-hound",
+          "key": "undead-animals/skeletal-hound",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Skeletal hound",
+          "level": 1,
+          "role": "skeletal-hound",
+          "gameplayId": "skeletal-hound",
+          "defined": true,
+          "artwork": "workbench/units/undead-animals/skeletal-hound.png",
+          "attacks": [
+            {
+              "id": "fangs",
+              "name": "Fangs",
+              "damage": 4,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "skeletal-hound-l2",
+          "key": "undead-animals/skeletal-hound-l2",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Skeletal hound L2",
+          "level": 2,
+          "role": "Skeletal hound L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/skeletal-hound-l2.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "skeletal-hound-l3",
+          "key": "undead-animals/skeletal-hound-l3",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Skeletal hound L3",
+          "level": 3,
+          "role": "Skeletal hound L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/skeletal-hound-l3.png",
+          "attacks": [
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "corpse-vulture",
+          "key": "undead-animals/corpse-vulture",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Corpse vulture",
+          "level": 1,
+          "role": "corpse-vulture",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/corpse-vulture.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "corpse-vulture-l2",
+          "key": "undead-animals/corpse-vulture-l2",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Corpse vulture L2",
+          "level": 2,
+          "role": "Corpse vulture L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/corpse-vulture-l2.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "corpse-vulture-l3",
+          "key": "undead-animals/corpse-vulture-l3",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Corpse vulture L3",
+          "level": 3,
+          "role": "Corpse vulture L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/corpse-vulture-l3.png",
+          "attacks": [
+            {
+              "id": "talons",
+              "name": "Talons",
+              "proposed": true
+            },
+            {
+              "id": "beak",
+              "name": "Beak",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "skeletal-horse",
+          "key": "undead-animals/skeletal-horse",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Skeletal horse",
+          "level": 1,
+          "role": "skeletal-horse",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/skeletal-horse.png",
+          "attacks": [
+            {
+              "id": "trample",
+              "name": "Trample",
+              "proposed": true
+            },
+            {
+              "id": "hooves",
+              "name": "Hooves",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "skeletal-horse-l2",
+          "key": "undead-animals/skeletal-horse-l2",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Skeletal horse L2",
+          "level": 2,
+          "role": "Skeletal horse L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/skeletal-horse-l2.png",
+          "attacks": [
+            {
+              "id": "trample",
+              "name": "Trample",
+              "proposed": true
+            },
+            {
+              "id": "hooves",
+              "name": "Hooves",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "skeletal-horse-l3",
+          "key": "undead-animals/skeletal-horse-l3",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Skeletal horse L3",
+          "level": 3,
+          "role": "Skeletal horse L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/skeletal-horse-l3.png",
+          "attacks": [
+            {
+              "id": "trample",
+              "name": "Trample",
+              "proposed": true
+            },
+            {
+              "id": "hooves",
+              "name": "Hooves",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-bear",
+          "key": "undead-animals/zombie-bear",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Zombie bear",
+          "level": 1,
+          "role": "zombie-bear",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/zombie-bear.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-bear-l2",
+          "key": "undead-animals/zombie-bear-l2",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Zombie bear L2",
+          "level": 2,
+          "role": "Zombie bear L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/zombie-bear-l2.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-bear-l3",
+          "key": "undead-animals/zombie-bear-l3",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Zombie bear L3",
+          "level": 3,
+          "role": "Zombie bear L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/zombie-bear-l3.png",
+          "attacks": [
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "bone-dragon",
+          "key": "undead-animals/bone-dragon",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Bone dragon",
+          "level": 1,
+          "role": "bone-dragon",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/bone-dragon.png",
+          "attacks": [
+            {
+              "id": "fire-breath",
+              "name": "Fire breath",
+              "proposed": true
+            },
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "bone-dragon-l2",
+          "key": "undead-animals/bone-dragon-l2",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Bone dragon L2",
+          "level": 2,
+          "role": "Bone dragon L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/bone-dragon-l2.png",
+          "attacks": [
+            {
+              "id": "fire-breath",
+              "name": "Fire breath",
+              "proposed": true
+            },
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "bone-dragon-l3",
+          "key": "undead-animals/bone-dragon-l3",
+          "kind": "unit",
+          "faction": "undead-animals",
+          "name": "Bone dragon L3",
+          "level": 3,
+          "role": "Bone dragon L2",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/undead-animals/bone-dragon-l3.png",
+          "attacks": [
+            {
+              "id": "fire-breath",
+              "name": "Fire breath",
+              "proposed": true
+            },
+            {
+              "id": "claws",
+              "name": "Claws",
+              "proposed": true
+            }
+          ]
+        }
+      ],
+      "definedCount": 1
+    },
+    {
+      "id": "woodland",
+      "name": "Woodland",
+      "units": [
+        {
+          "id": "wolf",
+          "key": "woodland/wolf",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Wolf",
+          "level": 1,
+          "role": "wolf",
+          "gameplayId": "wolf",
+          "defined": true,
+          "artwork": "workbench/units/woodland/wolf.png",
+          "attacks": [
+            {
+              "id": "fangs",
+              "name": "Fangs",
+              "damage": 4,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "direwolf",
+          "key": "woodland/direwolf",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Dire wolf",
+          "level": 2,
+          "role": "wolf",
+          "gameplayId": "direwolf",
+          "defined": true,
+          "artwork": "workbench/units/woodland/direwolf.png",
+          "attacks": [
+            {
+              "id": "fangs",
+              "name": "Fangs",
+              "damage": 5,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "woodland-alpha-wolf",
+          "key": "woodland/woodland-alpha-wolf",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Alpha wolf",
+          "level": 3,
+          "role": "wolf",
+          "gameplayId": "woodland-alpha-wolf",
+          "defined": true,
+          "artwork": "workbench/units/woodland/woodland-alpha-wolf.png",
+          "attacks": [
+            {
+              "id": "fangs",
+              "name": "Fangs",
+              "damage": 7,
+              "count": 2,
+              "damageType": "blade",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "boar",
+          "key": "woodland/boar",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Boar",
+          "level": 1,
+          "role": "boar",
+          "gameplayId": "boar",
+          "defined": true,
+          "artwork": "workbench/units/woodland/boar.png",
+          "attacks": [
+            {
+              "id": "trample",
+              "name": "Trample",
+              "damage": 8,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            },
+            {
+              "id": "tusks",
+              "name": "Tusks",
+              "damage": 4,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "greatboar",
+          "key": "woodland/greatboar",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Great boar",
+          "level": 2,
+          "role": "boar",
+          "gameplayId": "greatboar",
+          "defined": true,
+          "artwork": "workbench/units/woodland/greatboar.png",
+          "attacks": [
+            {
+              "id": "trample",
+              "name": "Trample",
+              "damage": 12,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 3
+            },
+            {
+              "id": "tusks",
+              "name": "Tusks",
+              "damage": 6,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 2,
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "woodland-ancient-boar",
+          "key": "woodland/woodland-ancient-boar",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Ancient boar",
+          "level": 3,
+          "role": "boar",
+          "gameplayId": "woodland-ancient-boar",
+          "defined": true,
+          "artwork": "workbench/units/woodland/woodland-ancient-boar.png",
+          "attacks": [
+            {
+              "id": "trample",
+              "name": "Trample",
+              "damage": 16,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 4
+            },
+            {
+              "id": "tusks",
+              "name": "Tusks",
+              "damage": 8,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "thorncaller",
+          "key": "woodland/thorncaller",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Thorncaller",
+          "level": 1,
+          "role": "thorncaller",
+          "gameplayId": "thorncaller",
+          "defined": true,
+          "artwork": "workbench/units/woodland/thorncaller.png",
+          "attacks": [
+            {
+              "id": "thorns",
+              "name": "Thorns",
+              "damage": 6,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 1
+            },
+            {
+              "id": "rootstaff",
+              "name": "Root staff",
+              "damage": 4,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "briarweaver",
+          "key": "woodland/briarweaver",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Beekeeper",
+          "level": 2,
+          "role": "Damage mage",
+          "gameplayId": "briarweaver",
+          "defined": true,
+          "artwork": "workbench/units/woodland/briarweaver.png",
+          "attacks": [
+            {
+              "id": "thorns",
+              "name": "Thorns",
+              "damage": 5,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 1
+            },
+            {
+              "id": "rootstaff",
+              "name": "Rootstaff",
+              "damage": 4,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            },
+            {
+              "id": "root-crush",
+              "name": "Crushing roots",
+              "damage": 8,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "woodland-thorn-oracle",
+          "key": "woodland/woodland-thorn-oracle",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Bloomweaver",
+          "level": 3,
+          "role": "Damage mage",
+          "gameplayId": "woodland-thorn-oracle",
+          "defined": true,
+          "artwork": "workbench/units/woodland/woodland-thorn-oracle.png",
+          "attacks": [
+            {
+              "id": "thorns",
+              "name": "Thorns",
+              "damage": 6,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 1
+            },
+            {
+              "id": "rootstaff",
+              "name": "Rootstaff",
+              "damage": 6,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            },
+            {
+              "id": "root-crush",
+              "name": "Crushing roots",
+              "damage": 12,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "woodland-bramble-warden",
+          "key": "woodland/woodland-bramble-warden",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Bramble warden",
+          "level": 2,
+          "role": "Thorn support",
+          "gameplayId": "woodland-bramble-warden",
+          "defined": true,
+          "artwork": "workbench/units/woodland/woodland-bramble-warden.png",
+          "attacks": [
+            {
+              "id": "thorns",
+              "name": "Thorns",
+              "damage": 4,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 1
+            },
+            {
+              "id": "rootstaff",
+              "name": "Rootstaff",
+              "damage": 4,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "woodland-thornbinder",
+          "key": "woodland/woodland-thornbinder",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Thornbinder",
+          "level": 3,
+          "role": "Thorn support",
+          "gameplayId": "woodland-thornbinder",
+          "defined": true,
+          "artwork": "workbench/units/woodland/woodland-thornbinder.png",
+          "attacks": [
+            {
+              "id": "thorns",
+              "name": "Thorns",
+              "damage": 6,
+              "count": 1,
+              "damageType": "pierce",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 1
+            },
+            {
+              "id": "rootstaff",
+              "name": "Rootstaff",
+              "damage": 6,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "fox-spearguard",
+          "key": "woodland/fox-spearguard",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Thornshield",
+          "level": 1,
+          "role": "fox-spearguard",
+          "gameplayId": "fox-spearguard",
+          "defined": true,
+          "artwork": "workbench/units/woodland/fox-spearguard.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 3,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "fox-spearguard-l2",
+          "key": "woodland/fox-spearguard-l2",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Thornshield L2",
+          "level": 2,
+          "role": "Thornshield L2",
+          "gameplayId": "fox-spearguard-l2",
+          "defined": true,
+          "artwork": "workbench/units/woodland/fox-spearguard-l2.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 4,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "fox-spearguard-l3",
+          "key": "woodland/fox-spearguard-l3",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Thornshield L3",
+          "level": 3,
+          "role": "Thornshield L2",
+          "gameplayId": "fox-spearguard-l3",
+          "defined": true,
+          "artwork": "workbench/units/woodland/fox-spearguard-l3.png",
+          "attacks": [
+            {
+              "id": "spear",
+              "name": "Spear",
+              "damage": 5,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "treant",
+          "key": "woodland/treant",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Treant",
+          "level": 1,
+          "role": "treant",
+          "gameplayId": "treant",
+          "defined": true,
+          "artwork": "workbench/units/woodland/treant.png",
+          "attacks": [
+            {
+              "id": "bough",
+              "name": "Bough",
+              "damage": 10,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 3
+            },
+            {
+              "id": "spikes",
+              "name": "Spikes",
+              "damage": 5,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "treant-l2",
+          "key": "woodland/treant-l2",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Treant L2",
+          "level": 2,
+          "role": "Treant L2",
+          "gameplayId": "treant-l2",
+          "defined": true,
+          "artwork": "workbench/units/woodland/treant-l2.png",
+          "attacks": [
+            {
+              "id": "bough",
+              "name": "Bough",
+              "damage": 14,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 4
+            },
+            {
+              "id": "spikes",
+              "name": "Spikes",
+              "damage": 7,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "treant-l3",
+          "key": "woodland/treant-l3",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Treant L3",
+          "level": 3,
+          "role": "Treant L2",
+          "gameplayId": "treant-l3",
+          "defined": true,
+          "artwork": "workbench/units/woodland/treant-l3.png",
+          "attacks": [
+            {
+              "id": "bough",
+              "name": "Bough",
+              "damage": 18,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 5
+            },
+            {
+              "id": "spikes",
+              "name": "Spikes",
+              "damage": 9,
+              "count": 2,
+              "damageType": "pierce",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 2
+            }
+          ]
+        },
+        {
+          "id": "wildkeeper",
+          "key": "woodland/wildkeeper",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Wildkeeper",
+          "level": 1,
+          "role": "commander",
+          "gameplayId": "wildkeeper",
+          "defined": true,
+          "artwork": "workbench/units/woodland/wildkeeper.png",
+          "attacks": [
+            {
+              "id": "bough",
+              "name": "Bough",
+              "damage": 6,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 2
+            },
+            {
+              "id": "stones",
+              "name": "Stones",
+              "damage": 4,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 4
+            }
+          ]
+        },
+        {
+          "id": "grovewarden",
+          "key": "woodland/grovewarden",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Grovewarden",
+          "level": 2,
+          "role": "commander",
+          "gameplayId": "grovewarden",
+          "defined": true,
+          "artwork": "workbench/units/woodland/grovewarden.png",
+          "attacks": [
+            {
+              "id": "bough",
+              "name": "Bough",
+              "damage": 8,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "count": 1,
+              "spread": 2
+            },
+            {
+              "id": "stones",
+              "name": "Stones",
+              "damage": 4,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "count": 1,
+              "spread": 4
+            }
+          ]
+        },
+        {
+          "id": "woodland-grove-oracle",
+          "key": "woodland/woodland-grove-oracle",
+          "kind": "unit",
+          "faction": "woodland",
+          "name": "Grove oracle",
+          "level": 3,
+          "role": "commander",
+          "gameplayId": "woodland-grove-oracle",
+          "defined": true,
+          "artwork": "workbench/units/woodland/woodland-grove-oracle.png",
+          "attacks": [
+            {
+              "id": "bough",
+              "name": "Bough",
+              "damage": 11,
+              "count": 1,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 3
+            },
+            {
+              "id": "stones",
+              "name": "Stones",
+              "damage": 7,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-magic",
+              "spread": 7
+            }
+          ]
+        }
+      ],
+      "definedCount": 20
+    },
+    {
+      "id": "zombies",
+      "name": "Zombies",
+      "units": [
+        {
+          "id": "zombie-walker",
+          "key": "zombies/zombie-walker",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Thin walker",
+          "level": 1,
+          "role": "zombie-walker",
+          "gameplayId": "zombie-walker",
+          "defined": true,
+          "artwork": "workbench/units/zombies/zombie-walker.png",
+          "attacks": [
+            {
+              "id": "grasp",
+              "name": "Grasping hands",
+              "damage": 4,
+              "count": 2,
+              "damageType": "impact",
+              "category": "melee",
+              "range": 1,
+              "sound": "attack-melee",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "zombie-fighter",
+          "key": "zombies/zombie-fighter",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Thin fighter",
+          "level": 2,
+          "role": "Armed melee",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/zombies/zombie-fighter.png",
+          "attacks": [
+            {
+              "id": "blade",
+              "name": "Blade",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-cleaver",
+          "key": "zombies/zombie-cleaver",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Cleaver fighter",
+          "level": 3,
+          "role": "Armed melee",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/zombies/zombie-cleaver.png",
+          "attacks": [
+            {
+              "id": "cleaver",
+              "name": "Cleaver",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-decay-caster",
+          "key": "zombies/zombie-decay-caster",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Thin caster",
+          "level": 2,
+          "role": "Disease and debuffs",
+          "gameplayId": "zombie-decay-caster",
+          "defined": true,
+          "artwork": "workbench/units/zombies/zombie-decay-caster.png",
+          "attacks": [
+            {
+              "id": "mire-bolt",
+              "name": "Mire bolt",
+              "damage": 5,
+              "count": 1,
+              "damageType": "impact",
+              "category": "ranged",
+              "range": 2,
+              "sound": "attack-bow",
+              "spread": 1
+            }
+          ]
+        },
+        {
+          "id": "zombie-plague-carrier",
+          "key": "zombies/zombie-plague-carrier",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Plague carrier",
+          "level": 3,
+          "role": "Disease and debuffs",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/zombies/zombie-plague-carrier.png",
+          "attacks": [
+            {
+              "id": "grasping-hands",
+              "name": "Grasping hands",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-shambler",
+          "key": "zombies/zombie-shambler",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Shambler",
+          "level": 2,
+          "role": "Unarmed melee",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/zombies/zombie-shambler.png",
+          "attacks": [
+            {
+              "id": "grasping-hands",
+              "name": "Grasping hands",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-ghoul",
+          "key": "zombies/zombie-ghoul",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Ghoul",
+          "level": 3,
+          "role": "Unarmed melee",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/zombies/zombie-ghoul.png",
+          "attacks": [
+            {
+              "id": "grasping-hands",
+              "name": "Grasping hands",
+              "proposed": true
+            },
+            {
+              "id": "bite",
+              "name": "Bite",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-corruption-mage-l1",
+          "key": "zombies/zombie-corruption-mage-l1",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Corruption mage",
+          "level": 1,
+          "role": "commander",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/zombies/zombie-corruption-mage-l1.png",
+          "attacks": [
+            {
+              "id": "corruption-spell",
+              "name": "Corruption spell",
+              "proposed": true
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-corruption-mage",
+          "key": "zombies/zombie-corruption-mage",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Corruption mage",
+          "level": 2,
+          "role": "commander",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/zombies/zombie-corruption-mage.png",
+          "attacks": [
+            {
+              "id": "corruption-spell",
+              "name": "Corruption spell",
+              "proposed": true
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "proposed": true
+            }
+          ]
+        },
+        {
+          "id": "zombie-corruption-archmage",
+          "key": "zombies/zombie-corruption-archmage",
+          "kind": "unit",
+          "faction": "zombies",
+          "name": "Corruption archmage",
+          "level": 3,
+          "role": "commander",
+          "gameplayId": null,
+          "defined": false,
+          "artwork": "workbench/units/zombies/zombie-corruption-archmage.png",
+          "attacks": [
+            {
+              "id": "corruption-spell",
+              "name": "Corruption spell",
+              "proposed": true
+            },
+            {
+              "id": "staff",
+              "name": "Staff",
+              "proposed": true
+            }
+          ]
+        }
+      ],
+      "definedCount": 2
+    }
+  ],
+  "terrains": [
+    {
+      "id": "road",
+      "key": "terrain/road",
+      "kind": "terrain",
+      "name": "Road",
+      "role": "road",
+      "artwork": "workbench/terrain/road.png",
+      "description": "Normal movement. No protection."
+    },
+    {
+      "id": "plains",
+      "key": "terrain/plains",
+      "kind": "terrain",
+      "name": "Plains",
+      "role": "plains",
+      "artwork": "workbench/terrain/plains.png",
+      "description": "Normal movement. No protection."
+    },
+    {
+      "id": "forest",
+      "key": "terrain/forest",
+      "kind": "terrain",
+      "name": "Forest",
+      "role": "forest",
+      "artwork": "workbench/terrain/forest.png",
+      "description": "Costs 2 movement; ranged damage reduced by 1."
+    },
+    {
+      "id": "hill",
+      "key": "terrain/hill",
+      "kind": "terrain",
+      "name": "Hills",
+      "role": "hill",
+      "artwork": "workbench/terrain/hill.png",
+      "description": "Costs 2 movement; all damage reduced by 1."
+    },
+    {
+      "id": "water",
+      "key": "terrain/water",
+      "kind": "terrain",
+      "name": "Water",
+      "role": "water",
+      "artwork": "workbench/terrain/water.png",
+      "description": "Impassable to land units."
+    },
+    {
+      "id": "bridge",
+      "key": "terrain/bridge",
+      "kind": "terrain",
+      "name": "Bridge",
+      "role": "bridge",
+      "artwork": "workbench/terrain/bridge.png",
+      "description": "A crossing over water. Normal movement; no protection."
+    },
+    {
+      "id": "ford",
+      "key": "terrain/ford",
+      "kind": "terrain",
+      "name": "Shallow water",
+      "role": "ford",
+      "artwork": "workbench/terrain/ford.png",
+      "description": "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage."
+    },
+    {
+      "id": "village",
+      "key": "terrain/village",
+      "kind": "terrain",
+      "name": "Village",
+      "role": "village",
+      "artwork": "workbench/terrain/village.png",
+      "description": "+2 gold per turn. Heals a friendly occupant by 4 HP."
+    },
+    {
+      "id": "keep",
+      "key": "terrain/keep",
+      "kind": "terrain",
+      "name": "Keep",
+      "role": "keep",
+      "artwork": "workbench/terrain/keep.png",
+      "description": "Your commander can recruit into adjacent empty hexes. Blocks ranged attacks through the tile."
+    },
+    {
+      "id": "marsh",
+      "key": "terrain/marsh",
+      "kind": "terrain",
+      "name": "Marsh",
+      "role": "marsh",
+      "artwork": "workbench/terrain/marsh.png",
+      "description": "Mud slows land units and exposes them to 1 extra damage. Merfolk move easily here and take 1 less damage."
+    },
+    {
+      "id": "ruins",
+      "key": "terrain/ruins",
+      "kind": "terrain",
+      "name": "Ruins",
+      "role": "ruins",
+      "artwork": "workbench/terrain/ruins.png",
+      "description": "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them."
+    },
+    {
+      "id": "fort",
+      "key": "terrain/fort",
+      "kind": "terrain",
+      "name": "Fort",
+      "role": "fort",
+      "artwork": "workbench/terrain/fort.png",
+      "description": "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing."
+    },
+    {
+      "id": "grove",
+      "key": "terrain/grove",
+      "kind": "terrain",
+      "name": "Sacred grove",
+      "role": "grove",
+      "artwork": "workbench/terrain/grove.png",
+      "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 4 HP, but provides no income."
+    },
+    {
+      "id": "landing",
+      "key": "terrain/landing",
+      "kind": "terrain",
+      "name": "Ferry landing",
+      "role": "landing",
+      "artwork": "workbench/terrain/landing.png",
+      "description": "A jetty on the riverbank. Normal movement; no protection."
+    },
+    {
+      "id": "ferry",
+      "key": "terrain/ferry",
+      "kind": "terrain",
+      "name": "Moored ferry",
+      "role": "ferry",
+      "artwork": "workbench/terrain/ferry.png",
+      "description": "A boat moored beside a riverbank jetty. Normal movement; no protection. Boarding does not move units across the river."
+    },
+    {
+      "id": "house",
+      "key": "terrain/house",
+      "kind": "terrain",
+      "name": "House",
+      "role": "house",
+      "artwork": "workbench/terrain/house.png",
+      "description": "A single home. Normal movement; no protection, income or healing."
+    },
+    {
+      "id": "mountain",
+      "key": "terrain/mountain",
+      "kind": "terrain",
+      "name": "Mountains",
+      "role": "mountain",
+      "artwork": "workbench/terrain/mountain.png",
+      "description": "A sheer mountain ridge, impassable to land units. Blocks ranged attacks through the tile."
+    },
+    {
+      "id": "cave",
+      "key": "terrain/cave",
+      "kind": "terrain",
+      "name": "Quarry cave",
+      "role": "cave",
+      "artwork": "workbench/terrain/cave.png",
+      "description": "A sheltered entrance at the foot of a mountain. Costs 2 movement; no protection. The mountain blocks ranged attacks through the tile. Scenario objectives specify what can be found inside."
+    },
+    {
+      "id": "burned-village",
+      "key": "terrain/burned-village",
+      "kind": "terrain",
+      "name": "Burned village",
+      "role": "burned-village",
+      "artwork": "workbench/terrain/burned-village.png",
+      "description": "Charred homes on open ground. No income, healing or protection."
+    },
+    {
+      "id": "signpost",
+      "key": "terrain/signpost",
+      "kind": "terrain",
+      "name": "Road sign",
+      "role": "signpost",
+      "artwork": "workbench/terrain/signpost.png",
+      "description": "A wooden waymarker beside the road. Normal movement; no protection."
+    },
+    {
+      "id": "castle-wall",
+      "key": "terrain/castle-wall",
+      "kind": "terrain",
+      "name": "Castle courtyard",
+      "role": "fortification",
+      "artwork": "workbench/terrain/castle-wall.png",
+      "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment."
+    },
+    {
+      "id": "castle-bell",
+      "key": "terrain/castle-bell",
+      "kind": "terrain",
+      "name": "Bell keep",
+      "role": "keep",
+      "artwork": "workbench/terrain/castle-bell.png",
+      "description": "An enclosed fortified keep. Its owner\u2019s leader can recruit into adjacent empty passable hexes. All incoming damage reduced by 1. No income or healing."
+    },
+    {
+      "id": "monastery",
+      "key": "terrain/monastery",
+      "kind": "terrain",
+      "name": "Hill monastery",
+      "role": "monastery",
+      "artwork": "workbench/terrain/monastery.png",
+      "description": "A hilltop sanctuary. Costs 1 movement and shelters against ranged attacks. Scenario rituals use this site."
+    },
+    {
+      "id": "church",
+      "key": "terrain/church",
+      "kind": "terrain",
+      "name": "Church",
+      "role": "church",
+      "artwork": "workbench/terrain/church.png",
+      "description": "A quiet church. Normal movement; no protection. Scenario discoveries may leave equipment here."
+    },
+    {
+      "id": "graveyard",
+      "key": "terrain/graveyard",
+      "kind": "terrain",
+      "name": "Burial ground",
+      "role": "graveyard",
+      "artwork": "workbench/terrain/graveyard.png",
+      "description": "Old burial stones. Normal movement; no protection."
+    },
+    {
+      "id": "ritual-star",
+      "key": "terrain/ritual-star",
+      "kind": "terrain",
+      "name": "Ritual mark",
+      "role": "ritual-star",
+      "artwork": "workbench/terrain/ritual-star.png",
+      "description": "A charged ritual mark. Captives still standing here can be consumed by the bell."
+    },
+    {
+      "id": "ritual-spent",
+      "key": "terrain/ritual-spent",
+      "kind": "terrain",
+      "name": "Spent ritual mark",
+      "role": "ritual-spent",
+      "artwork": "workbench/terrain/ritual-spent.png",
+      "description": "The ritual has burned out. It cannot feed the bell again."
+    }
+  ]
+}
