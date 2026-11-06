@@ -10,7 +10,7 @@ export function creaturePick(entity) {
     alternatives,
   });
   if (/^stag(?:-l[23])?$/.test(id))
-    return pick("edits/deer-trot-short-v1", "Short Trot hoof contact for deer selection.", false, ["ezduzziteh/horse-trotting/Trot.ogg", grunt(1)]);
+    return pick("edits/horse-0286-trim-v1", "The riders’ trimmed 0286 horse vocal for deer selection.", false, ["edits/deer-trot-short-v1", "ezduzziteh/horse-trotting/Trot.ogg", grunt(1)]);
   if (/^(bone-dragon|dragon|giant-bat)(?:-l[23])?$/.test(id))
     return pick(cloth(2), "Cloth 2 as leathery wing handling.", true, [
       grunt(4),

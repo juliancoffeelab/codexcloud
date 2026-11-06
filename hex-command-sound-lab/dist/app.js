@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=elf-roles-1";
+import { buildActions } from "./matching.js?v=deer-rider-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -1547,6 +1547,20 @@ async function start() {
       localStorage.setItem("hex-sound-before-wildkeeper-cloth-v1", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-wildkeeper-cloth-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-deer-rider-v1")) {
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!/^beasts\/stag(?:-l[23])?\//.test(key)
+          || choice.id !== "edits/deer-trot-short-v1") continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: "edits/horse-0286-trim-v1", take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-deer-rider-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-deer-rider-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

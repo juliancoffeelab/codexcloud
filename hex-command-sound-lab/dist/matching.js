@@ -1,6 +1,6 @@
 import { applyCuratedPicks } from "./curation-picks.js?v=elf-roles-1";
 import { weaponSelection } from "./weapon-selection.js?v=curation-1";
-import { creaturePick } from "./creature-picks.js?v=terrain-recut-2";
+import { creaturePick } from "./creature-picks.js?v=deer-rider-1";
 import { terrainPicks } from "./terrain-picks.js?v=terrain-recut-2";
 // Explicit semantic families keep mechanical actions separate from animal voices.
 // Recommendations are curated source IDs; alternatives include every matching recording.

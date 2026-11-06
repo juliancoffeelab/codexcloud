@@ -415,3 +415,8 @@ sword/spear swap. Jumpers use the current spear palette. Authored audition
 labels/icons explicitly identify Knives/Spear despite the source roster generic
 Blade attack key; stable keys preserve assignments. Spectral Touch on Ghost,
 Wraith and Spectre uses Spell 02.
+
+Deer/stag selection now matches riders exactly: trimmed horse vocal 0286,
+replacing Trot. Saved deer Trot choices migrate with backup; original Trot and
+its short edit remain available as alternatives. Physical deer attacks continue
+to follow the selection palette.

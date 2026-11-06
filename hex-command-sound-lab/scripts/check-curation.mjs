@@ -71,6 +71,8 @@ for (const faction of workbench.factions)
     for (const attack of unit.attacks)
       if (/arquebus|pistol|musket|gunshot/i.test(attack.name))
         assert.equal(attacks.find(row => row.key === `attack-${attack.id}`).suggested[0], "impact-sounds/impactPlate_medium_000");
+    if (/^stag(?:-l[23])?$/.test(unit.id))
+      assert.equal(tap.suggested[0], "edits/horse-0286-trim-v1");
     if (/^giant-wasp/.test(unit.id))
       assert(tap.suggested[0].includes("alien_03"));
     if (/^giant-spider/.test(unit.id))
