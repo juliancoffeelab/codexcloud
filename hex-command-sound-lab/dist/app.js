@@ -59,11 +59,15 @@ async function start() {
   const cache = new AudioCache(() => context);
   const expanded = new Set();
   let dockEntity;
-  let hitOnTap = false;
+  let unitTapMode = "selection";
   try {
-    hitOnTap = localStorage.getItem("hex-sound-hit-on-tap") === "true";
+    const savedMode = localStorage.getItem("hex-sound-unit-tap-mode");
+    unitTapMode = ["selection", "hurt", "attack"].includes(savedMode)
+      ? savedMode
+      : localStorage.getItem("hex-sound-hit-on-tap") === "true"
+        ? "hurt"
+        : "selection";
   } catch {}
-  $("#hit-on-tap").checked = hitOnTap;
   const secondaryOpen = new Set();
   let audioEnabled = false,
     tapStarted = 0;
@@ -166,6 +170,12 @@ async function start() {
   }
   function keyFor(action) {
     return `${unit.key}/${action.key}`;
+  }
+  function unitTapAction(entity, rows) {
+    if (entity.kind === "terrain" || unitTapMode === "selection")
+      return rows.find((row) => row.key === "tap");
+    if (unitTapMode === "hurt") return rows.find((row) => row.key === "hit");
+    return rows.find((row) => row.key.startsWith("attack-"));
   }
   function chosenFor(action) {
     const saved = assignments[keyFor(action)];
@@ -299,13 +309,13 @@ async function start() {
       })
       .map((tile) => {
         const entity = entityByKey.get(tile.dataset.unit);
-        const cueKey = hitOnTap && entity.kind === "unit" ? "hit" : "tap";
-        const tap = buildActions(entity, catalog).find(
-          (row) => row.key === cueKey,
-        );
-        return byId.get(
-          assignments[`${entity.key}/${cueKey}`]?.id || tap?.suggested[0],
-        );
+        const action = unitTapAction(entity, buildActions(entity, catalog));
+        return action
+          ? byId.get(
+              assignments[`${entity.key}/${action.key}`]?.id ||
+                action.suggested[0],
+            )
+          : undefined;
       });
     void cache.warm(
       [...defaults, ...visible, ...nearby].filter(Boolean),
@@ -484,12 +494,14 @@ async function start() {
     else rememberedUnit = key;
     renderUnit();
     if (audition) {
-      const ref = chosenFor(
-        currentRows().find(
-          (a) => a.key === (hitOnTap && unit.kind === "unit" ? "hit" : "tap"),
-        ) || currentRows()[0],
-      );
+      const action = unitTapAction(unit, currentRows());
+      const ref = action && chosenFor(action);
       if (ref) void play([ref]);
+      else
+        $("#playing").textContent =
+          unitTapMode === "attack"
+            ? "No main attack sound assigned to this unit."
+            : "No sound assigned.";
     }
   }
   function soundCard(id, action, isSuggested) {
@@ -612,7 +624,7 @@ async function start() {
       b.setAttribute("aria-pressed", String(selected));
       b.setAttribute(
         "aria-label",
-        `Select and hear ${hitOnTap && unit.kind === "unit" ? "hit on " : ""}${b.dataset.unit}`,
+        `Select and hear ${unit.kind === "unit" ? `${unitTapMode} on ` : ""}${b.dataset.unit}`,
       );
     });
     const root = $("#action-cards");
@@ -711,10 +723,13 @@ async function start() {
     $("#dock-meta").textContent =
       unit.kind === "terrain"
         ? "Tap a tile to hear it"
-        : hitOnTap
-          ? "Unit taps play hit sounds"
-          : "Unit taps play selection sounds";
-    $("#hit-toggle").hidden = unit.kind === "terrain";
+        : `Unit taps play ${unitTapMode === "attack" ? "the main attack" : unitTapMode} sounds`;
+    $("#tap-mode").hidden = unit.kind === "terrain";
+    for (const button of document.querySelectorAll("[data-tap-mode]")) {
+      const active = button.dataset.tapMode === unitTapMode;
+      button.classList.toggle("selected", active);
+      button.setAttribute("aria-pressed", String(active));
+    }
     const root = $("#sound-rows");
     // Save horizontal positions before updating choices, without moving the panel.
     for (const strip of root.querySelectorAll(".action-sounds"))
@@ -725,7 +740,9 @@ async function start() {
       unit.kind === "unit"
         ? [
             ...rows.filter((row) => row.key.startsWith("attack-")),
-            ...rows.filter((row) => row.key === (hitOnTap ? "hit" : "tap")),
+            ...rows.filter(
+              (row) => row.key === (unitTapMode === "hurt" ? "hit" : "tap"),
+            ),
             ...rows.filter((row) => row.key === "move"),
           ]
         : rows;
@@ -882,8 +899,8 @@ async function start() {
           "",
           action.key === "move"
             ? "Move · shared board click"
-            : hitOnTap
-              ? "Hit alternatives"
+            : unitTapMode === "hurt"
+              ? "Hurt alternatives"
               : "Selection alternatives",
         );
         details.append(summary, row);
@@ -990,13 +1007,15 @@ async function start() {
   $("#unit-select").onchange = (e) => pickUnit(e.target.value);
   $("#entity-search").oninput = populateUnits;
   $("#extras").onchange = () => renderUnit();
-  $("#hit-on-tap").onchange = () => {
-    hitOnTap = $("#hit-on-tap").checked;
-    try {
-      localStorage.setItem("hex-sound-hit-on-tap", String(hitOnTap));
-    } catch {}
-    renderUnit();
-  };
+  for (const button of document.querySelectorAll("[data-tap-mode]")) {
+    button.onclick = () => {
+      unitTapMode = button.dataset.tapMode;
+      try {
+        localStorage.setItem("hex-sound-unit-tap-mode", unitTapMode);
+      } catch {}
+      renderUnit();
+    };
+  }
   $("#sound-rows").addEventListener("scroll", () => {
     clearTimeout(mapWarmTimer);
     mapWarmTimer = setTimeout(warmSelection, 100);

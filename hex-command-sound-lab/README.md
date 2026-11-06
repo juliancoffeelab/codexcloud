@@ -33,11 +33,14 @@ contains all 27 tiles. Pan sideways and tap a sprite to hear its selection cue.
 There is no search, large unit description card, generic Play button or Detailed
 view. Named weapon attacks occupy the primary sound rows. Selection alternatives
 are collapsed below the attacks; the shared Move click is collapsed at the very
-bottom. Unit taps already play selection. **Hit on tap** switches those taps to
-the unit's hit cue instead, and exposes Hit alternatives in place of Selection
-alternatives. The switch persists locally and is hidden for terrain, whose tile
-sounds remain directly available. There is no Extra sounds button or separate
-primary Hit row. Attack buttons use the game's exact damage-type icon mapping
+bottom. The three-way **Selection / Hurt / Main attack** control chooses what
+unit taps play. Main attack means the first attack in the unit's authored list,
+using its saved sound or suggested default; a unit without an assigned main
+attack reports the gap instead of substituting another cue. The mode persists
+locally and migrates the previous Hit on tap switch to Hurt. Terrain taps stay
+unchanged and hide the unit-specific control. Hurt mode exposes collapsed hurt
+alternatives; the other modes keep selection alternatives below the attacks.
+There is no Extra sounds button or separate primary Hit row. Attack buttons use the game's exact damage-type icon mapping
 and weapon name from its attack list, including pierce icons for bows rather
 than a generic ranged-target replacement. Swipe each row to compare recordings;
 Use saves its take. Suggested/Other/Saved groups remain distinct. Library/Sources

@@ -10,7 +10,7 @@
     />
     <title>Hexcommand — Sound Lab</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="style.css?v=attack-focus-1" />
+    <link rel="stylesheet" href="style.css?v=three-tap-1" />
   </head>
   <body class="field-mode" data-view="units">
     <header>
@@ -90,10 +90,19 @@
               <h2 id="dock-name"></h2>
               <p id="dock-meta"></p>
             </div>
-            <label id="hit-toggle" class="hit-toggle"
-              ><input id="hit-on-tap" type="checkbox" role="switch" /> Hit on
-              tap</label
+            <div
+              id="tap-mode"
+              role="group"
+              aria-label="Sound played when tapping a unit"
             >
+              <button data-tap-mode="selection" aria-pressed="true">
+                Selection
+              </button>
+              <button data-tap-mode="hurt" aria-pressed="false">Hurt</button>
+              <button data-tap-mode="attack" aria-pressed="false">
+                Main attack
+              </button>
+            </div>
           </div>
           <div id="sound-rows"></div>
         </section>
@@ -277,6 +286,6 @@
         /><output id="volume-value">55%</output></label
       >
     </div>
-    <script type="module" src="app.js?v=attack-focus-1"></script>
+    <script type="module" src="app.js?v=three-tap-1"></script>
   </body>
 </html>
