@@ -70,8 +70,8 @@ Selection and hit suggestions use `item_wood_03` for solid skeletons, belt
 handling for level-one frontline infantry, chain effects for higher-tier
 armored infantry, and `cloth3` for lighter humanoids. Other plausible equipment
 and impact recordings remain available. Bow users have nocking candidates for
-selection and attack feedback, with releases/flight as alternatives. A nocking
-attack cue is explicitly a handling proxy rather than a recorded release.
+selection and recorded English Longbow Shoot for attacks. Crossbows use
+Crossbow Shoot; flight and handling recordings remain alternatives.
 Merfolk selection defaults to `clothBelt2` across the roster.
 Personal Use assignments take precedence over these editorial suggestions.
 

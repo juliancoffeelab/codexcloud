@@ -451,9 +451,9 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         old("attack-bow"),
       );
       possible = union(possible, bowHandling);
-      suggested = nocking;
+      suggested = weapon(/^English Longbow Shoot$/);
       note =
-        "Arrow nocking as a quieter attack-feedback candidate. This depicts handling rather than the release; shot and flight recordings remain alternatives.";
+        "Recorded bow release; arrow flight and nocking remain alternatives.";
     } else if (/fire/.test(name)) {
       possible = fire;
       suggested = fx(/^spell_fire_0[12]$/);
