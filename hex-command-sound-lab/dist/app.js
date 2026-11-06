@@ -1,8 +1,8 @@
-import { DEATH_SOUNDS } from "./death-picks.js?v=death-four-1";
+import { DEATH_SOUNDS } from "./death-picks.js?v=death-materials-2";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=death-four-1";
+import { buildActions } from "./matching.js?v=death-materials-2";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -17,10 +17,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=snake-texture-2"),
+    loadJSON("catalog.json?v=death-materials-2"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=event-ranges-1"),
+    loadJSON("playback-levels.json?v=death-materials-2"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1657,6 +1657,29 @@ async function start() {
       localStorage.setItem("hex-sound-before-four-deaths-v1", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-four-deaths-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-death-materials-v2")) {
+      const previous = new Set([
+        "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
+        "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
+        "edits/ghost-grunt-02-trim-v1",
+        "impact-sounds/impactPlank_medium_004",
+        "rpg-audio/metalPot3",
+      ]), backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!key.endsWith("/death") || !previous.has(choice.id)) continue;
+        const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
+        if (entity?.kind !== "unit") continue;
+        const death = buildActions(entity, catalog).find(row => row.key === "death");
+        if (choice.id === death.suggested[0]) continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: death.suggested[0], take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-death-materials-v2", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-death-materials-v2", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

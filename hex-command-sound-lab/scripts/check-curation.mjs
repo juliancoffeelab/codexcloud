@@ -111,11 +111,17 @@ for (const faction of workbench.factions)
     if (/^(wildkeeper|grovewarden)$/.test(unit.id)) assert.equal(death.deathGroup, "flesh");
     if (/^treant(?:-l[23])?$/.test(unit.id)) assert.equal(death.deathGroup, "wood");
     if (/^(ghost|spectre|wraith)$/.test(unit.id)) assert.equal(death.deathGroup, "spirit");
+    if (/^(elf-deer-archer|dwarf-(?:pistol-)?goat-rider)(?:-l[23])?$/.test(unit.id) || /^stag(?:-l[23])?$/.test(unit.id))
+      assert.equal(death.deathGroup, "flesh", `${unit.key}: nonhorse mounts never get horse death`);
+    if (/^(rider|lancer|knight|horse-archer|horse-bowman|horse-marksman)$/.test(unit.id))
+      assert.equal(death.deathGroup, "horse");
+    if (unit.faction === "zombies") assert.equal(death.deathGroup, "zombie");
+    if (/wolf/.test(unit.id)) assert.equal(death.deathGroup, "wolf");
     assert.equal(death.alternatives.length, 0);
     assert(death.hypothetical, `${unit.key}: death must stay a proposal`);
     units++;
   }
-assert.equal(deathIds.size, 4, "Exactly four shared death recordings");
+assert.equal(deathIds.size, 8, "Eight requested shared death groups");
 for (const [id, wanted] of [
   ["forest", "edits/forest-book-03-short-v1"],
   ["grove", "edits/grove-short-magic-v2"],

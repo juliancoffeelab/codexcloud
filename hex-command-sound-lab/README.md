@@ -525,26 +525,40 @@ AudioParam gains for octopus selection/attack, Stones as weapon/road, doors,
 quarry/bell and raw/matched toggling. Base/library gains and audio bytes remain
 unchanged. Timing, curation and playback-level checks pass.
 
-### Four shared death auditions
+### Shared death auditions
 
-The compact fixed tap switch is now Selection / Attack 1 / Attack 2 / Death.
-Death mode persists across reloads and uses one of four shared, already-trimmed
-recordings: Flesh = Grunt 1, Bones = Eat 1, Spirit = the processed Grunt 2 body,
-Wood = Plank medium 004. All 238 unit entries have one death audition; there are
-no armor, size, species, layering or random-variation branches. Wildkeeper and
-Grovewarden mages use Flesh; only treants use Wood. Skeletal animals use Bones.
-`dist/death-picks.js` is the single four-pick mapping. Death is soundboard-only;
-Original Game comparison has no assigned historical death cue. Terrain taps keep
-their normal behavior regardless of the remembered unit mode.
+The compact fixed tap switch is Selection / Attack 1 / Attack 2 / Death.
+Death mode persists across reloads; terrain taps are unaffected. Original Game
+comparison has no historical death cue. These are soundboard auditions only.
 
-Axes, poleaxes and halberds now use the exact werewolf claw swish
+| Group | Shared recording |
+| --- | --- |
+| Ordinary living units | Cough 02 |
+| Skeletals | Eat 01 |
+| Ghosts/spirits | Scream 02 body, with opening cough removed |
+| Treants | Creak 1 |
+| Living horses | Short opening of 0284 |
+| Wolves/werewolves | Howl |
+| Zombies / nonskeletal undead animals | Hurt 05 |
+| Heavy armored foot units | Metal Pot 3 |
+
+`dist/death-picks.js` is the single mapping. There is one recording per group,
+with no layering or random variants. Living horses use an explicit list of human
+horse cavalry IDs, not generic rider/mounted tags or the horse-like selection
+sound. Deer, stags and goat riders use Cough 02. Skeletal horses use Eat 01.
+Horse-mounted knights use the horse group; Metal Pot 3 is for explicitly marked
+heavy foot armor, based on the sprites rather than every shield/helmet wearer.
+Wildkeeper/Grovewarden remain ordinary living mages, not treants.
+
+The 0284 edit keeps 0.035–0.535 seconds with a faded release. The ghost edit keeps
+0.14–0.80 seconds of Scream 02, after its opening burst/cough, with onset/release
+fades. Originals remain in Library. Old shared death defaults migrate with local
+backups. All 238 units have exactly one recommendation; all eight groups are
+checked. Catalog: 550 recordings / 1,362 takes; 31 derived auditions.
+
+Axes, poleaxes and halberds use the exact werewolf claw swish
 (`edits/knife-slice-2-no-hit-v1`). Pickaxes remain Mining 001. Old saved Metal 01
-axe defaults and the former nonshared knight death pick migrate with local
-backups; earlier audio remains in Library. No audio files or gains changed.
-
-Death auditions participate in the palette/timing reports as a separate group;
-all four measure -26.29 dBFS at the 55% matched reference volume. There are still
-548 recordings / 1,360 takes. All-unit curation checks enforce exactly four death
-IDs and one recommendation per unit. Touch Chromium at 320px verifies four buttons
-on one row without text overflow, all four deaths completing playback, persisted
-Death mode, saved-pick migrations, axe swish, pickaxe mining and unaffected terrain.
+axe defaults migrate with a backup. Death samples use their normal matched base
+levels, with timing/context reports and ZIP regenerated. Touch Chromium at 320px
+checks the fixed four-button row, every death group, strict horse/deer/goat and
+undead-horse distinctions, saved migrations, persisted mode and completed playback.

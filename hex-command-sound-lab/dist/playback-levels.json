@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "b4f41683e8cb356f69162b1efc9a1f7793afff62d2ef52935bc357e22ddec500",
+  "catalogSha256": "01bcd40bde9c2631ae4f22ba76ae7669df4fff1558f7e9171f576e3952aff7ad",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -14557,6 +14557,50 @@
           "full": 3.87,
           "takes": [
             3.87
+          ]
+        }
+      }
+    },
+    "edits/horse-0284-death-start-v1": {
+      "full": -6.2,
+      "takes": [
+        -6.2
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -6.2,
+          "takes": [
+            -6.2
+          ]
+        },
+        "terrain": {
+          "full": -9.19,
+          "takes": [
+            -9.19
+          ]
+        }
+      }
+    },
+    "edits/ghost-scream-02-no-cough-v1": {
+      "full": -11.41,
+      "takes": [
+        -11.41
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -11.41,
+          "takes": [
+            -11.41
+          ]
+        },
+        "terrain": {
+          "full": -14.4,
+          "takes": [
+            -14.4
           ]
         }
       }

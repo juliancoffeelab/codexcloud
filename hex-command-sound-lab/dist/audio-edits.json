@@ -545,6 +545,34 @@
         "lowpass=f=4200"
       ],
       "preserveLevel": false
+    },
+    {
+      "id": "edits/horse-0284-death-start-v1",
+      "sourceId": "denischardonnet/horse-vocals/0284.mp3",
+      "sourceHash": "3a84d208b1b98ee8927ab60f9c5028635a593d3877ac3889508d1d71300f5e0c",
+      "name": "Horse death \u00b7 short 0284 beginning",
+      "intent": "Short opening portion of 0284 for living horse deaths only; deer/goat mounts are excluded.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.035:duration=0.5",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.01",
+        "afade=t=out:st=0.420:d=0.08"
+      ]
+    },
+    {
+      "id": "edits/ghost-scream-02-no-cough-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/scream_02.ogg",
+      "sourceHash": "73aedfbcc7e5b3004507d5a79e95ae53954026036bf8d6f65aa0a4ca298dd372",
+      "name": "Ghost death \u00b7 Scream 02 without opening cough",
+      "intent": "Keep the scream body after the user-identified opening cough, with a fading release.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.14:duration=0.66",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.01",
+        "afade=t=out:st=0.560:d=0.1"
+      ]
     }
   ]
 }

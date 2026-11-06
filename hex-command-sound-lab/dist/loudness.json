@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "b4f41683e8cb356f69162b1efc9a1f7793afff62d2ef52935bc357e22ddec500",
+  "catalogSha256": "01bcd40bde9c2631ae4f22ba76ae7669df4fff1558f7e9171f576e3952aff7ad",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -66289,6 +66289,160 @@
               "combinedPlaybackGainDb": -1.32,
               "playbackPeakDbFS": -18.09,
               "playbackRmsDbFS": -33.85,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/horse-0284-death-start-v1",
+      "name": "Horse death \u00b7 short 0284 beginning",
+      "pack": "audition-edits",
+      "path": "audio/listening/867adc774f3010bba321.mp3",
+      "listeningSha256": "4b06342c9592df299a412217c7bef44579e251054b2d01e299c54e75bd16c3b4",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -11.39,
+      "full": {
+        "duration": 0.5,
+        "peakDbFS": -7.77,
+        "rmsDbFS": -20.05,
+        "strongest50msRmsDbFS": -14.9,
+        "leadingBelow55Ms": 1.1,
+        "playbackPeakDbFS": -19.16,
+        "playbackRmsDbFS": -31.44,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -11.39,
+          "duration": 0.5,
+          "peakDbFS": -7.77,
+          "rmsDbFS": -20.05,
+          "strongest50msRmsDbFS": -14.9,
+          "leadingBelow55Ms": 1.1,
+          "playbackPeakDbFS": -19.16,
+          "playbackRmsDbFS": -31.44,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -11.39,
+            "playbackPeakDbFS": -19.16,
+            "playbackRmsDbFS": -31.44,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -11.39,
+              "playbackPeakDbFS": -19.16,
+              "playbackRmsDbFS": -31.44,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -14.38,
+            "playbackPeakDbFS": -22.15,
+            "playbackRmsDbFS": -34.43,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -14.38,
+              "playbackPeakDbFS": -22.15,
+              "playbackRmsDbFS": -34.43,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/ghost-scream-02-no-cough-v1",
+      "name": "Ghost death \u00b7 Scream 02 without opening cough",
+      "pack": "audition-edits",
+      "path": "audio/listening/6f4bcd658c4e02d8d7b2.mp3",
+      "listeningSha256": "f48614175b42d2deeca1f450b368d01878d36e0837fa91b056c111a467e8e219",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -16.6,
+      "full": {
+        "duration": 0.66,
+        "peakDbFS": 1.81,
+        "rmsDbFS": -13.59,
+        "strongest50msRmsDbFS": -9.69,
+        "leadingBelow55Ms": 0.0,
+        "playbackPeakDbFS": -14.79,
+        "playbackRmsDbFS": -30.19,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 4,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -16.6,
+          "duration": 0.66,
+          "peakDbFS": 1.81,
+          "rmsDbFS": -13.59,
+          "strongest50msRmsDbFS": -9.69,
+          "leadingBelow55Ms": 0.0,
+          "playbackPeakDbFS": -14.79,
+          "playbackRmsDbFS": -30.19,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 4,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -16.6,
+            "playbackPeakDbFS": -14.79,
+            "playbackRmsDbFS": -30.19,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -16.6,
+              "playbackPeakDbFS": -14.79,
+              "playbackRmsDbFS": -30.19,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -19.59,
+            "playbackPeakDbFS": -17.78,
+            "playbackRmsDbFS": -33.18,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -19.59,
+              "playbackPeakDbFS": -17.78,
+              "playbackRmsDbFS": -33.18,
               "playbackStrongest50msRmsDbFS": -29.28,
               "flags": []
             }

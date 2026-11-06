@@ -18,5 +18,5 @@ for(const entity of [...workbench.factions.flatMap(f=>f.units),...workbench.terr
   }
  }
 const list=[...refs.values()];
-fs.writeFileSync(root+'palette-refs.json',JSON.stringify({scope:'Suggested cues including suggested recording variations; includes four shared death auditions; excludes hidden hurt and other hypothetical actions. Personal saved choices may differ.',refs:list},null,2)+'\n');
+fs.writeFileSync(root+'palette-refs.json',JSON.stringify({scope:'Suggested cues including suggested recording variations; includes shared death auditions; excludes hidden hurt and other hypothetical actions. Personal saved choices may differ.',refs:list},null,2)+'\n');
 console.log(`${list.length} distinct suggested cue/take references.`);

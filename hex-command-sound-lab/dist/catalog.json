@@ -18404,5 +18404,91 @@
       "preserveLevel": false
     },
     "preserveLevel": false
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/horse-0284-death-start-v1",
+    "name": "Horse death \u00b7 short 0284 beginning",
+    "path": "audio/listening/867adc774f3010bba321.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://bigsoundbank.com/neighing-of-a-horse-1-s0284.html",
+    "creator": "DenisChardonnet; distributed by Joseph SARDIN / BigSoundBank",
+    "kind": "processed-natural-recording",
+    "notes": "Short opening portion of 0284 for living horse deaths only; deer/goat mounts are excluded. Per-take level matching follows the live-game reference.",
+    "sourcePath": "denischardonnet/horse-vocals/0284.mp3",
+    "sourceHash": "3a84d208b1b98ee8927ab60f9c5028635a593d3877ac3889508d1d71300f5e0c",
+    "duration": 0.5,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.5
+      }
+    ],
+    "originalKind": "natural-animal-recording",
+    "derivedFrom": "denischardonnet/horse-vocals/0284.mp3",
+    "processingRecipe": {
+      "id": "edits/horse-0284-death-start-v1",
+      "sourceId": "denischardonnet/horse-vocals/0284.mp3",
+      "sourceHash": "3a84d208b1b98ee8927ab60f9c5028635a593d3877ac3889508d1d71300f5e0c",
+      "name": "Horse death \u00b7 short 0284 beginning",
+      "intent": "Short opening portion of 0284 for living horse deaths only; deer/goat mounts are excluded.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.035:duration=0.5",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.01",
+        "afade=t=out:st=0.420:d=0.08"
+      ]
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/ghost-scream-02-no-cough-v1",
+    "name": "Ghost death \u00b7 Scream 02 without opening cough",
+    "path": "audio/listening/6f4bcd658c4e02d8d7b2.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Keep the scream body after the user-identified opening cough, with a fading release. Per-take level matching follows the live-game reference.",
+    "sourcePath": "rubberduck/80-cc0-creature-sfx/scream_02.ogg",
+    "sourceHash": "73aedfbcc7e5b3004507d5a79e95ae53954026036bf8d6f65aa0a4ca298dd372",
+    "duration": 0.66,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.66
+      }
+    ],
+    "originalKind": "designed-effects",
+    "derivedFrom": "rubberduck/80-cc0-creature-sfx/scream_02.ogg",
+    "processingRecipe": {
+      "id": "edits/ghost-scream-02-no-cough-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/scream_02.ogg",
+      "sourceHash": "73aedfbcc7e5b3004507d5a79e95ae53954026036bf8d6f65aa0a4ca298dd372",
+      "name": "Ghost death \u00b7 Scream 02 without opening cough",
+      "intent": "Keep the scream body after the user-identified opening cough, with a fading release.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.14:duration=0.66",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.01",
+        "afade=t=out:st=0.560:d=0.1"
+      ]
+    },
+    "preserveLevel": false
   }
 ]

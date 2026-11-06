@@ -1,13 +1,13 @@
 {
-  "paletteReferences": 92,
+  "paletteReferences": 99,
   "paletteInternalQuietIssues": [],
   "method": "Conservative edge-silence audit for every playable take; originals stay intact.\n\n5ms RMS frames; gate 45dB below that take's strongest frame (floor -80dBFS).\nRetain 5ms before activity and 12ms after. Only remove >=20ms of edge quiet.\nInternal quiet is reported, never spliced out. Requires Python 3, Node and FFmpeg.",
   "applied": true,
-  "recordings": 548,
-  "takes": 1360,
+  "recordings": 550,
+  "takes": 1362,
   "changedRecordings": 349,
   "changedTakes": 467,
-  "catalogSha256": "b4f41683e8cb356f69162b1efc9a1f7793afff62d2ef52935bc357e22ddec500",
+  "catalogSha256": "01bcd40bde9c2631ae4f22ba76ae7669df4fff1558f7e9171f576e3952aff7ad",
   "entries": [
     {
       "id": "antumdeluge/fire-crackling/fire-1.wav",
@@ -2990,11 +2990,6 @@
               "levelClass": "attack"
             },
             {
-              "entity": "woodland/treant",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "woodland/treant-l2",
               "action": "attack-bough",
               "levelClass": "attack"
@@ -3005,11 +3000,6 @@
               "levelClass": "attack"
             },
             {
-              "entity": "woodland/treant-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "woodland/treant-l3",
               "action": "attack-bough",
               "levelClass": "attack"
@@ -3018,11 +3008,6 @@
               "entity": "woodland/treant-l3",
               "action": "attack-spikes",
               "levelClass": "attack"
-            },
-            {
-              "entity": "woodland/treant-l3",
-              "action": "death",
-              "levelClass": null
             }
           ]
         }
@@ -5989,7 +5974,29 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": []
+      "paletteReferences": [
+        {
+          "id": "rpg-audio/creak1",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "woodland/treant",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/treant-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/treant-l3",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "rpg-audio/creak2",
@@ -7056,7 +7063,79 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": []
+      "paletteReferences": [
+        {
+          "id": "rpg-audio/metalPot3",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "dwarves/dwarf-axeguard-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-axe-pick-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-axe-pick-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-hammerer-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-hammerer-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-poleaxe-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-poleaxe-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/champion",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/warhammer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/sentinel",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/halberd-master",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/marshal",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/grand-marshal",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "rpg-audio/Preview",
@@ -8391,7 +8470,814 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": []
+      "paletteReferences": [
+        {
+          "id": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "beasts/basilisk",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/basilisk-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/basilisk-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/bear",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/bear-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/bear-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/crocodile",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/crocodile-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/crocodile-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/dragon",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/dragon-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/dragon-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-bat",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-bat-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-bat-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-crab",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-crab-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-crab-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-owl",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-owl-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-owl-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-raven",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-raven-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-raven-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-snake",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-snake-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-snake-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-spider",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-spider-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-spider-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-tortoise",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-tortoise-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-tortoise-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-wasp",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-wasp-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/giant-wasp-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/gryphon",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/gryphon-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/gryphon-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/lynx",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/lynx-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/lynx-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/octopus",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/octopus-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/octopus-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/ray",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/ray-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/ray-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/sea-serpent",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/sea-serpent-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/sea-serpent-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/shark",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/shark-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/shark-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/stag",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/stag-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "beasts/stag-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-axeguard",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-axeguard-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-pickaxe",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-crossbow",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-crossbow-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-crossbow-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-arquebus-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-arquebus-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-runesmith",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-thundersmith-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-thundersmith-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-stonespell-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-stonespell-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-goat-rider",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-goat-rider-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-goat-rider-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-pistol-goat-rider-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-pistol-goat-rider-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-forge-lord",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-forge-lord-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "dwarves/dwarf-forge-lord-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-spearman",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-spearman-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-spearman-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-jumper-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-jumper-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-flanker",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-flanker-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-flanker-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-bladedancer-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-bladedancer-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-archer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-archer-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-archer-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-deer-archer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-deer-archer-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-deer-archer-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-caster",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-caster-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-caster-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-killing-caster-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-killing-caster-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-banner-lord",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-banner-lord-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "elves/elf-banner-lord-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/leather-swordsman",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/swordsman",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/hammerman",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/leather-spearman",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/spearman",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/halberdier",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/scout",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/ranger",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/shadowblade",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/slinger",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/fireslinger",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/archer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/marksman",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/sharpshooter",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/crossbowman",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/arbalester",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/adept",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/storm-mage",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/archmage",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/healer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/high-healer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/captives",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/commander",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/harpooner",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tidehunter",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-harpoon-master",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-netter-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-netter-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/reefguard",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tridentguard",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-reef-champion",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-trident-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-trident-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/wavemender",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tidesage",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tide-oracle",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tidecrusher-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tidecrusher-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-maceguard",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-maceguard-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-maceguard-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tidekeeper",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/tideseer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "merfolk/merfolk-tide-sovereign",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/boar",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/greatboar",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/woodland-ancient-boar",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/thorncaller",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/briarweaver",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/woodland-thorn-oracle",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/woodland-bramble-warden",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/woodland-thornbinder",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/fox-spearguard",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/fox-spearguard-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/fox-spearguard-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/wildkeeper",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/grovewarden",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/woodland-grove-oracle",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "rubberduck/80-cc0-creature-sfx/cough_03.ogg",
@@ -9055,34 +9941,9 @@
           "take": 0,
           "uses": [
             {
-              "entity": "beasts/basilisk",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/basilisk-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/basilisk-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/bear",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "beasts/bear-l2",
               "action": "attack-bite",
               "levelClass": "attack"
-            },
-            {
-              "entity": "beasts/bear-l2",
-              "action": "death",
-              "levelClass": null
             },
             {
               "entity": "beasts/bear-l3",
@@ -9090,184 +9951,9 @@
               "levelClass": "attack"
             },
             {
-              "entity": "beasts/bear-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/crocodile",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/crocodile-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/crocodile-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/dragon",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/dragon-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/dragon-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-bat",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-bat-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-bat-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-crab",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-crab-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-crab-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-owl",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-owl-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-owl-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-raven",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-raven-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-raven-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-snake",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-snake-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-snake-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-spider",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-spider-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-spider-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-tortoise",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-tortoise-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-tortoise-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-wasp",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-wasp-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/giant-wasp-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/gryphon",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/gryphon-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/gryphon-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "beasts/lynx",
               "action": "attack-bite",
               "levelClass": "attack"
-            },
-            {
-              "entity": "beasts/lynx",
-              "action": "death",
-              "levelClass": null
             },
             {
               "entity": "beasts/lynx-l2",
@@ -9275,64 +9961,9 @@
               "levelClass": "attack"
             },
             {
-              "entity": "beasts/lynx-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "beasts/lynx-l3",
               "action": "attack-bite",
               "levelClass": "attack"
-            },
-            {
-              "entity": "beasts/lynx-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/octopus",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/octopus-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/octopus-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/ray",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/ray-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/ray-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/sea-serpent",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/sea-serpent-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/sea-serpent-l3",
-              "action": "death",
-              "levelClass": null
             },
             {
               "entity": "beasts/shark",
@@ -9340,19 +9971,9 @@
               "levelClass": "attack"
             },
             {
-              "entity": "beasts/shark",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "beasts/shark-l2",
               "action": "attack-bite",
               "levelClass": "attack"
-            },
-            {
-              "entity": "beasts/shark-l2",
-              "action": "death",
-              "levelClass": null
             },
             {
               "entity": "beasts/shark-l3",
@@ -9360,626 +9981,6 @@
               "levelClass": "attack"
             },
             {
-              "entity": "beasts/shark-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/stag",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/stag-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "beasts/stag-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "cursed/werewolf",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "cursed/werewolf-ironfang",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "cursed/werewolf-pack-king",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-axeguard",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-axeguard-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-axeguard-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-axe-pick-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-axe-pick-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-pickaxe",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-hammerer-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-hammerer-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-poleaxe-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-poleaxe-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-crossbow",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-crossbow-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-crossbow-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-arquebus-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-arquebus-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-runesmith",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-thundersmith-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-thundersmith-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-stonespell-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-stonespell-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-goat-rider",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-goat-rider-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-goat-rider-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-pistol-goat-rider-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-pistol-goat-rider-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-forge-lord",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-forge-lord-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-forge-lord-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-spearman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-spearman-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-spearman-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-jumper-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-jumper-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-flanker",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-flanker-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-flanker-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-bladedancer-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-bladedancer-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-archer",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-archer-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-archer-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-deer-archer",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-deer-archer-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-deer-archer-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-caster",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-caster-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-caster-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-killing-caster-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-killing-caster-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-banner-lord",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-banner-lord-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "elves/elf-banner-lord-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/leather-swordsman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/swordsman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/champion",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/hammerman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/warhammer",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/leather-spearman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/spearman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/sentinel",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/halberdier",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/halberd-master",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/scout",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/ranger",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/shadowblade",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/slinger",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/fireslinger",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/archer",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/marksman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/sharpshooter",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/crossbowman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/arbalester",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/adept",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/storm-mage",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/archmage",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/healer",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/high-healer",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/rider",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/lancer",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/knight",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/horse-archer",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/horse-bowman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/horse-marksman",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/captives",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/commander",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/marshal",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "humans/grand-marshal",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/harpooner",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/tidehunter",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-harpoon-master",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-netter-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-netter-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/reefguard",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/tridentguard",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-reef-champion",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-trident-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-trident-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/wavemender",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/tidesage",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-tide-oracle",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-tidecrusher-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-tidecrusher-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-maceguard",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-maceguard-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-maceguard-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/tidekeeper",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/tideseer",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "merfolk/merfolk-tide-sovereign",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "undead-animals/corpse-vulture",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "undead-animals/corpse-vulture-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "undead-animals/corpse-vulture-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "undead-animals/zombie-bear",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "undead-animals/zombie-bear-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "undead-animals/zombie-bear-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/wolf",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/direwolf",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/woodland-alpha-wolf",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "woodland/boar",
               "action": "attack-trample",
               "levelClass": "attack"
@@ -9988,11 +9989,6 @@
               "entity": "woodland/boar",
               "action": "attack-tusks",
               "levelClass": "attack"
-            },
-            {
-              "entity": "woodland/boar",
-              "action": "death",
-              "levelClass": null
             },
             {
               "entity": "woodland/greatboar",
@@ -10005,11 +10001,6 @@
               "levelClass": "attack"
             },
             {
-              "entity": "woodland/greatboar",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "woodland/woodland-ancient-boar",
               "action": "attack-trample",
               "levelClass": "attack"
@@ -10018,116 +10009,6 @@
               "entity": "woodland/woodland-ancient-boar",
               "action": "attack-tusks",
               "levelClass": "attack"
-            },
-            {
-              "entity": "woodland/woodland-ancient-boar",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/thorncaller",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/briarweaver",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/woodland-thorn-oracle",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/woodland-bramble-warden",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/woodland-thornbinder",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/fox-spearguard",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/fox-spearguard-l2",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/fox-spearguard-l3",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/wildkeeper",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/grovewarden",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "woodland/woodland-grove-oracle",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-walker",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-fighter",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-cleaver",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-decay-caster",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-plague-carrier",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-shambler",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-ghoul",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-corruption-mage-l1",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-corruption-mage",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "zombies/zombie-corruption-archmage",
-              "action": "death",
-              "levelClass": null
             }
           ]
         }
@@ -10425,7 +10306,44 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": []
+      "paletteReferences": [
+        {
+          "id": "rubberduck/80-cc0-creature-sfx/howl.ogg",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "cursed/werewolf",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "cursed/werewolf-ironfang",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "cursed/werewolf-pack-king",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/wolf",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/direwolf",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "woodland/woodland-alpha-wolf",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "rubberduck/80-cc0-creature-sfx/hurt_01.ogg",
@@ -10580,7 +10498,94 @@
           "reviewedOverride": null
         }
       ],
-      "paletteReferences": []
+      "paletteReferences": [
+        {
+          "id": "rubberduck/80-cc0-creature-sfx/hurt_05.ogg",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "undead-animals/corpse-vulture",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "undead-animals/corpse-vulture-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "undead-animals/corpse-vulture-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "undead-animals/zombie-bear",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "undead-animals/zombie-bear-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "undead-animals/zombie-bear-l3",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-walker",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-fighter",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-cleaver",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-decay-caster",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-plague-carrier",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-shambler",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-ghoul",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-corruption-mage-l1",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-corruption-mage",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "zombies/zombie-corruption-archmage",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "rubberduck/80-cc0-creature-sfx/misc_01.ogg",
@@ -43359,28 +43364,13 @@
               "levelClass": null
             },
             {
-              "entity": "skeletons/ghost",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "skeletons/wraith",
               "action": "tap",
               "levelClass": null
             },
             {
-              "entity": "skeletons/wraith",
-              "action": "death",
-              "levelClass": null
-            },
-            {
               "entity": "skeletons/spectre",
               "action": "tap",
-              "levelClass": null
-            },
-            {
-              "entity": "skeletons/spectre",
-              "action": "death",
               "levelClass": null
             }
           ]
@@ -44256,6 +44246,127 @@
               "entity": "beasts/sea-serpent-l3",
               "action": "attack-bite",
               "levelClass": "attack"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "edits/horse-0284-death-start-v1",
+      "name": "Horse death \u00b7 short 0284 beginning",
+      "listeningSha256": "4b06342c9592df299a412217c7bef44579e251054b2d01e299c54e75bd16c3b4",
+      "originalRanges": [
+        {
+          "start": 0,
+          "duration": 0.5
+        }
+      ],
+      "appliedRanges": [
+        {
+          "start": 0,
+          "duration": 0.5
+        }
+      ],
+      "takes": [
+        {
+          "take": 1,
+          "leadingQuietMs": 0.0,
+          "trailingQuietMs": 1.1,
+          "trimmedLeadingMs": 0,
+          "trimmedTrailingMs": 0,
+          "gateDbFS": -58.5,
+          "internalQuiet": [],
+          "remainingInternalQuiet": [],
+          "reviewedOverride": null
+        }
+      ],
+      "paletteReferences": [
+        {
+          "id": "edits/horse-0284-death-start-v1",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "humans/rider",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/lancer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/knight",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/horse-archer",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/horse-bowman",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "humans/horse-marksman",
+              "action": "death",
+              "levelClass": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "edits/ghost-scream-02-no-cough-v1",
+      "name": "Ghost death \u00b7 Scream 02 without opening cough",
+      "listeningSha256": "f48614175b42d2deeca1f450b368d01878d36e0837fa91b056c111a467e8e219",
+      "originalRanges": [
+        {
+          "start": 0,
+          "duration": 0.66
+        }
+      ],
+      "appliedRanges": [
+        {
+          "start": 0,
+          "duration": 0.66
+        }
+      ],
+      "takes": [
+        {
+          "take": 1,
+          "leadingQuietMs": 0.0,
+          "trailingQuietMs": 6.5,
+          "trimmedLeadingMs": 0,
+          "trimmedTrailingMs": 0,
+          "gateDbFS": -53.0,
+          "internalQuiet": [],
+          "remainingInternalQuiet": [],
+          "reviewedOverride": null
+        }
+      ],
+      "paletteReferences": [
+        {
+          "id": "edits/ghost-scream-02-no-cough-v1",
+          "take": 0,
+          "uses": [
+            {
+              "entity": "skeletons/ghost",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "skeletons/wraith",
+              "action": "death",
+              "levelClass": null
+            },
+            {
+              "entity": "skeletons/spectre",
+              "action": "death",
+              "levelClass": null
             }
           ]
         }

@@ -23,10 +23,10 @@
       }
     },
     "death": {
-      "choices": 4,
+      "choices": 8,
       "min": -26.29,
-      "average": -26.29,
-      "max": -26.29,
+      "average": -26.16,
+      "max": -25.29,
       "referenceRange": null
     },
     "movement": {
@@ -3965,12 +3965,12 @@
       ]
     },
     {
-      "id": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
-      "name": "grunt_01",
+      "id": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "name": "cough_02",
       "take": 1,
       "context": "death",
       "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -16.08,
+      "playbackPeakDbFS": -15.16,
       "inRange": true,
       "uses": [
         {
@@ -4259,21 +4259,6 @@
           "levelClass": null
         },
         {
-          "entity": "cursed/werewolf",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "cursed/werewolf-ironfang",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "cursed/werewolf-pack-king",
-          "action": "death",
-          "levelClass": null
-        },
-        {
           "entity": "dwarves/dwarf-axeguard",
           "action": "death",
           "levelClass": null
@@ -4284,42 +4269,7 @@
           "levelClass": null
         },
         {
-          "entity": "dwarves/dwarf-axeguard-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "dwarves/dwarf-axe-pick-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
           "entity": "dwarves/dwarf-pickaxe",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "dwarves/dwarf-hammerer-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "dwarves/dwarf-hammerer-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "dwarves/dwarf-poleaxe-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "dwarves/dwarf-poleaxe-l3",
           "action": "death",
           "levelClass": null
         },
@@ -4544,17 +4494,7 @@
           "levelClass": null
         },
         {
-          "entity": "humans/champion",
-          "action": "death",
-          "levelClass": null
-        },
-        {
           "entity": "humans/hammerman",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "humans/warhammer",
           "action": "death",
           "levelClass": null
         },
@@ -4569,17 +4509,7 @@
           "levelClass": null
         },
         {
-          "entity": "humans/sentinel",
-          "action": "death",
-          "levelClass": null
-        },
-        {
           "entity": "humans/halberdier",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "humans/halberd-master",
           "action": "death",
           "levelClass": null
         },
@@ -4659,52 +4589,12 @@
           "levelClass": null
         },
         {
-          "entity": "humans/rider",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "humans/lancer",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "humans/knight",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "humans/horse-archer",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "humans/horse-bowman",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "humans/horse-marksman",
-          "action": "death",
-          "levelClass": null
-        },
-        {
           "entity": "humans/captives",
           "action": "death",
           "levelClass": null
         },
         {
           "entity": "humans/commander",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "humans/marshal",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "humans/grand-marshal",
           "action": "death",
           "levelClass": null
         },
@@ -4814,51 +4704,6 @@
           "levelClass": null
         },
         {
-          "entity": "undead-animals/corpse-vulture",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "undead-animals/corpse-vulture-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "undead-animals/corpse-vulture-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "undead-animals/zombie-bear",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "undead-animals/zombie-bear-l2",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "undead-animals/zombie-bear-l3",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "woodland/wolf",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "woodland/direwolf",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "woodland/woodland-alpha-wolf",
-          "action": "death",
-          "levelClass": null
-        },
-        {
           "entity": "woodland/boar",
           "action": "death",
           "levelClass": null
@@ -4927,137 +4772,6 @@
           "entity": "woodland/woodland-grove-oracle",
           "action": "death",
           "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-walker",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-fighter",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-cleaver",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-decay-caster",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-plague-carrier",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-shambler",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-ghoul",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-corruption-mage-l1",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-corruption-mage",
-          "action": "death",
-          "levelClass": null
-        },
-        {
-          "entity": "zombies/zombie-corruption-archmage",
-          "action": "death",
-          "levelClass": null
-        }
-      ]
-    },
-    {
-      "id": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
-      "name": "grunt_01",
-      "take": 1,
-      "context": "attack",
-      "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -16.08,
-      "inRange": true,
-      "uses": [
-        {
-          "entity": "beasts/bear-l2",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "beasts/bear-l3",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "beasts/lynx",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "beasts/lynx-l2",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "beasts/lynx-l3",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "beasts/shark",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "beasts/shark-l2",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "beasts/shark-l3",
-          "action": "attack-bite",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "woodland/boar",
-          "action": "attack-trample",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "woodland/boar",
-          "action": "attack-tusks",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "woodland/greatboar",
-          "action": "attack-trample",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "woodland/greatboar",
-          "action": "attack-tusks",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "woodland/woodland-ancient-boar",
-          "action": "attack-trample",
-          "levelClass": "attack"
-        },
-        {
-          "entity": "woodland/woodland-ancient-boar",
-          "action": "attack-tusks",
-          "levelClass": "attack"
         }
       ]
     },
@@ -5243,6 +4957,87 @@
         {
           "entity": "undead-animals/bone-dragon-l3",
           "action": "attack-claws",
+          "levelClass": "attack"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
+      "name": "grunt_01",
+      "take": 1,
+      "context": "attack",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -16.08,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "beasts/bear-l2",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "beasts/bear-l3",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "beasts/lynx",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "beasts/lynx-l2",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "beasts/lynx-l3",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "beasts/shark",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "beasts/shark-l2",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "beasts/shark-l3",
+          "action": "attack-bite",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "woodland/boar",
+          "action": "attack-trample",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "woodland/boar",
+          "action": "attack-tusks",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "woodland/greatboar",
+          "action": "attack-trample",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "woodland/greatboar",
+          "action": "attack-tusks",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "woodland/woodland-ancient-boar",
+          "action": "attack-trample",
+          "levelClass": "attack"
+        },
+        {
+          "entity": "woodland/woodland-ancient-boar",
+          "action": "attack-tusks",
           "levelClass": "attack"
         }
       ]
@@ -6186,6 +5981,47 @@
       ]
     },
     {
+      "id": "rubberduck/80-cc0-creature-sfx/howl.ogg",
+      "name": "howl",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -21.66,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "cursed/werewolf",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "cursed/werewolf-ironfang",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "cursed/werewolf-pack-king",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "woodland/wolf",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "woodland/direwolf",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "woodland/woodland-alpha-wolf",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
       "id": "rpg-audio/beltHandle1",
       "name": "beltHandle1",
       "take": 1,
@@ -6782,6 +6618,82 @@
         {
           "entity": "humans/grand-marshal",
           "action": "tap",
+          "levelClass": null
+        }
+      ]
+    },
+    {
+      "id": "rpg-audio/metalPot3",
+      "name": "metalPot3",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -25.29,
+      "playbackPeakDbFS": -17.86,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "dwarves/dwarf-axeguard-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "dwarves/dwarf-axe-pick-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "dwarves/dwarf-hammerer-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "dwarves/dwarf-poleaxe-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/champion",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/warhammer",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/sentinel",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/halberd-master",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/marshal",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/grand-marshal",
+          "action": "death",
           "levelClass": null
         }
       ]
@@ -9005,6 +8917,47 @@
       ]
     },
     {
+      "id": "edits/horse-0284-death-start-v1",
+      "name": "Horse death \u00b7 short 0284 beginning",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -19.16,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "humans/rider",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/lancer",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/knight",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/horse-archer",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/horse-bowman",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "humans/horse-marksman",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
       "id": "rpg-audio/clothBelt2",
       "name": "clothBelt2",
       "take": 1,
@@ -9699,12 +9652,12 @@
       ]
     },
     {
-      "id": "edits/ghost-grunt-02-trim-v1",
-      "name": "Ghost \u00b7 Grunt 2 without scratchy ending",
+      "id": "edits/ghost-scream-02-no-cough-v1",
+      "name": "Ghost death \u00b7 Scream 02 without opening cough",
       "take": 1,
       "context": "death",
       "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -22.21,
+      "playbackPeakDbFS": -14.79,
       "inRange": true,
       "uses": [
         {
@@ -9719,6 +9672,97 @@
         },
         {
           "entity": "skeletons/spectre",
+          "action": "death",
+          "levelClass": null
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-creature-sfx/hurt_05.ogg",
+      "name": "hurt_05",
+      "take": 1,
+      "context": "death",
+      "playbackStrongest50msRmsDbFS": -26.29,
+      "playbackPeakDbFS": -17.28,
+      "inRange": true,
+      "uses": [
+        {
+          "entity": "undead-animals/corpse-vulture",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "undead-animals/corpse-vulture-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-walker",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-fighter",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-cleaver",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-decay-caster",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-plague-carrier",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-shambler",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-ghoul",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage-l1",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-corruption-mage",
+          "action": "death",
+          "levelClass": null
+        },
+        {
+          "entity": "zombies/zombie-corruption-archmage",
           "action": "death",
           "levelClass": null
         }
@@ -9807,12 +9851,12 @@
       ]
     },
     {
-      "id": "impact-sounds/impactPlank_medium_004",
-      "name": "impactPlank_medium_004",
+      "id": "rpg-audio/creak1",
+      "name": "creak1",
       "take": 1,
       "context": "death",
       "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -13.76,
+      "playbackPeakDbFS": -17.09,
       "inRange": true,
       "uses": [
         {
