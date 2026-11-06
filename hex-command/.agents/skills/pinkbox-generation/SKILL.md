@@ -54,7 +54,7 @@ floor is selected; inspect the sheet for other ground decorations before generat
 Terrain scratch palettes carry resolved
 floor colors for preview; canonical ground shades remain in
 `pixel/art/terrain/floors.json`, as described in
-[terrain artwork](../../../docs/terrain-artwork.md).
+[floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
 
 Unit-only options are `--flying` / `--no-flying`, `--body-guide X Y W H` and
 `--staff-guide X Y W H`. Grounded body guides end at row 63. Guides are removable

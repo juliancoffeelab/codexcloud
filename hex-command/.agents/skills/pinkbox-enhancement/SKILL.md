@@ -68,7 +68,7 @@ when its material colors must stay fixed.
 ## Terrain and integration
 
 For terrain floor recoloring, change the selected shared palette or a tile's
-floor selection as described in [terrain artwork](../../../docs/terrain-artwork.md).
+floor selection as described in [floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
 The matrix stays unchanged; inspect affected tiles after rebuilding artwork.
 Terrain/prop fill candidates preserve the matrix filename and carry resolved
 floor colors for scratch previews. Before integration, keep canonical `G`/`g`

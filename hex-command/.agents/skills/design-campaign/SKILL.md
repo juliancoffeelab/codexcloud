@@ -24,6 +24,21 @@ behavior and consequences. Several systems responding to the same fact should
 share that fact. Do not invent additional conditions beyond the intended design.
 A named content instance does not require custom engine behavior.
 
+For event fields and execution semantics, consult
+`rust/catalog/src/data/events.rs`, `rust/battle/src/logic/events.rs` and the
+implemented campaign `scripts.json` files. Use explicit flags for remembered
+story facts; event IDs are not flags. Deleting a rescued or sacrificed unit does
+not emit a combat death. Account for pending spawns when clearing an encounter.
+AI intent describes planning work; authored events execute gameplay. Distinguish
+permanent objective achievement from a requirement's current satisfaction.
+
+When changing rosters, diplomacy, recruitment or named participants, read
+[faction and identity authoring](references/factions.md).
+When revising Green Accord or Lantern Road, reconcile the change with its
+campaign-local story contract:
+[Green Accord](../../../rust/data/game/campaigns/green-accord/design.md) or
+[Lantern Road](../../../rust/data/game/campaigns/lantern-road/design.md).
+
 ## Premise, discovery and writing
 
 Establish what happened, what the player knows, why it matters, and why the next

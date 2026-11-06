@@ -50,8 +50,8 @@ counts such as `3/4` over percentages that obscure the sample size.
 3. For a campaign workload, include **the campaign table**, campaigns as rows and simulation-player
    tactics as columns. Cells are completion counts such as `16/20`, without
    percentages. Split campaigns with multiple player diplomacy modes into
-   separate labeled rows, such as Ashen Oath (pragmatic) and Ashen Oath
-   (restrained); never pool these modes. Also split named objective routes such as flight and fight
+   separate labeled rows, such as Ashen Oath (unrestricted) and Ashen Oath
+   (diplomatic); never pool these modes. Also split named objective routes such as flight and fight
    into separate labeled rows. Name the fixed Classic opponent.
 4. Add important findings and limitations. For scoped requests, show that scope.
 

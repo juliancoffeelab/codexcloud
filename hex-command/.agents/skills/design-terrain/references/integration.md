@@ -15,7 +15,7 @@ format just to select its sprite.
    rules, AI, UI and inherited race/unit modifiers use roles, not artwork IDs or
    per-variant exceptions. New roles must define exhaustive behavior. Sprite
    selection and frozen historical migrations continue using concrete IDs. Add the ID to `Terrain` and
-   `as_str()` in `rust/src/data/ids.rs` and `TerrainType` in `src/game/types.ts`.
+   `as_str()` in `rust/catalog/src/data/ids.rs` and `TerrainType` in `src/game/types.ts`.
    Check race/unit `terrainModifiers` if the terrain needs special treatment;
    do not inherit another terrain's behavior merely because its artwork is similar.
 2. Add native `<mask>.txt` sources for connected terrain, or `tile.txt` only
@@ -32,7 +32,7 @@ format just to select its sprite.
 3. If directional frames are needed, follow bridge/ford: add source matrices,
    register their allowed stems in `scripts/build-pixel-art.py`, and select them
    in `src/presentation/terrain-connections.ts`. Match connection validation in
-   `rust/src/data/state.rs`. Connection edges must have a stated meaning: for
+   `rust/catalog/src/data/state.rs`. Connection edges must have a stated meaning: for
    landing/ferry, the single `e` or `w` connection identifies the landward bank;
    `1.txt` faces east and `8.txt` faces west. Key directional layouts by the
    same source stems. Extend the existing generic directional checks as needed.

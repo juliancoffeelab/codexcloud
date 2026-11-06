@@ -5,17 +5,13 @@ description: Use for an intended live human playtest, or immediately when the us
 
 # Deploy
 
-Commit and push completed requested repository changes by default. Deployment
-is only for an explicit request to deploy/update the live game, or a task that
-explicitly intends a live build for a human to playtest. Merely editing playable
-content, running simulations, or pushing changes does not establish that intent.
-Without it, finish with the pushed changes; do not enter this workflow. Honor
-local-only requests, unpublished releases, and deployment holds.
+Enter this workflow for an explicit live deployment request or an intended live
+human playtest. For a save-only release request, use
+[publish](../publish/SKILL.md). Follow [AGENTS.md](../../../AGENTS.md) for the
+repository delivery policy.
 
 For an intended human playtest, complete relevant implementation validation and
-commit/push required changes before entering this workflow. Reviews,
-documentation, tooling-only work, drafts, renders, and simulations do not trigger
-deployment on their own.
+commit/push required changes before entering this workflow.
 
 An explicit deploy request enters this workflow immediately. Do not add
 implementation validation or repeat previous checks before invoking it.

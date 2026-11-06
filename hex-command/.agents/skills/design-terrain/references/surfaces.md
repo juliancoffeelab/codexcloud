@@ -33,3 +33,23 @@ placed through `layouts.json`. Roads and villages use finished directional
 frames, some with ground baked into their source. Respect these formats while
 designing new pieces toward separate layers. Do not claim all foreground already
 has a procedural generator.
+
+## Floor palettes
+
+`pixel/art/terrain/floors.json` owns shared `G`/`g` base and shade colors. A tile's
+explicit `floor` selects them; without a floor they are transparent, including
+in canonical artwork references. Keep these symbols out of local material
+palettes. Other material symbols retain their colors when the floor changes.
+Scratch previews may resolve floor colors locally; canonical integration keeps
+them in `floors.json`.
+
+Palette colors use straight RGBA, including partial alpha for spectral materials.
+Native composition uses source-over blending without resizing. Preserve material
+alpha across faction variants.
+
+Choose floors and foreground independently. Landing and ferry jetties meet the
+landward bank over water; the ferry boat is artwork, not unit transport. Cave
+occupants and rewards come from scenario scripts, not the cave terrain. A ruined
+house retains the intact building's painted footprint, and a burned village can
+retain ordinary ground and vegetation. These are composition decisions, not
+reasons to introduce terrain-specific runtime effects.

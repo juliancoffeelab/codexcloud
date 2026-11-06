@@ -46,3 +46,6 @@ settings, through Rust. Do not bypass Rust by importing JSON or injecting game
 data through generated frontend modules. Pure rendering details such as terrain
 colors and shading may live in the frontend. Devtool scripts may read source data
 directly.
+
+For runtime renderer changes or GPU performance analysis, read
+[battlefield rendering](references/rendering.md).

@@ -2,7 +2,7 @@
 
 `rust/data/game/recruitment.json` contains `standard` and
 `aggressivePredictor` profiles. Read effective values from that file and report metadata. Each accepts the camelCase fields below;
-omitted fields use the defaults in `rust/src/data/recruitment.rs`. Unknown
+omitted fields use the defaults in `rust/catalog/src/data/recruitment.rs`. Unknown
 fields, negative coefficients and nonpositive endurance normalization fail
 catalog validation. Catalog fingerprints include this document. Reports also record the effective
 profiles in `recruitmentProfiles`, retained in analysis metadata.

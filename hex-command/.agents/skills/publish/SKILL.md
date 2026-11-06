@@ -5,10 +5,8 @@ description: Use when the user requests preparation and saving of an unpublished
 
 # Release preparation
 
-This is the save-only workflow. Use it when the user requests an unpublished
-release. Completed repository work is committed and pushed by default; it does
-not trigger release preparation or deployment. For an intended live human
-playtest or an explicit deployment request, use the
+Use this save-only workflow when the user requests an unpublished release.
+For an intended live human playtest or an explicit deployment request, use the
 [deploy skill](../deploy/SKILL.md).
 
 Invoke `node scripts/site-operation.mjs prepare` through the exact
@@ -30,6 +28,5 @@ Leave uncommitted implementation changes alone; neither a clean-tree check nor
 automatic implementation commits belong to release preparation.
 
 Completion is a returned receipt identifying the saved version and source commit.
-Report that it is unpublished. Reviews, documentation/instruction-only changes,
-drafts and simulations do not trigger preparation. An explicit deploy request
-goes directly to the deploy operation, without a separate preparation invocation.
+Report that it is unpublished. An explicit deploy request goes directly to the
+deploy operation, without a separate preparation invocation.
