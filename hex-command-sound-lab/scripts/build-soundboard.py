@@ -5,7 +5,7 @@ Requires Python 3.11+, FFmpeg and FFprobe. Originals are never changed.
 """
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
-import hashlib,json,re,subprocess,zipfile,shutil
+import hashlib,json,re,subprocess,zipfile,shutil,sys
 ROOT=Path(__file__).resolve().parents[1]
 VENDOR=ROOT/'vendor/sfx'; OUT=ROOT/'dist'
 SCHEME='mp3-mono-44100-96k-v1'
@@ -72,6 +72,8 @@ for item in old.values():
  item['duration']=float(run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',str(OUT/item['path'])]).strip())
  result.append(item)
 (OUT/'catalog.json').write_text(json.dumps(result,indent=2)+'\n')
+subprocess.run([sys.executable,str(ROOT/'scripts/build-edits.py')],check=True)
+result=json.loads((OUT/'catalog.json').read_text())
 (OUT/'sources.json').write_text(json.dumps(sources,indent=2)+'\n')
 (OUT/'coverage.json').write_text((VENDOR/'coverage.json').read_text())
 (OUT/'roster.json').write_text((VENDOR/'roster.json').read_text())
@@ -82,11 +84,11 @@ for key,p in packs.items():
  d=VENDOR/key
  for name in ['SOURCE.txt','CREDITS.txt','License.txt']:
   if (d/name).exists():shutil.copy(d/name,OUT/'licenses/packs'/f'{key.replace("/","--")}--{name}')
-(OUT/'provenance.json').write_text(json.dumps({'originals':'vendor/sfx/ in the repository; all originals unchanged','processing':SCHEME,'takeDetection':'silencedetect -42 dB, 0.25 s; fallback -30 dB if no silence; approximate boundaries only','playbackGain':'Optional per-recording peak gain toward -3 dBFS, capped at +18/-12 dB','sourceManifest':'sources.json','sourceHashes':'catalog.json sourceHash'},indent=2)+'\n')
+(OUT/'provenance.json').write_text(json.dumps({'originals':'vendor/sfx/ in the repository; all originals unchanged','processing':SCHEME,'takeDetection':'silencedetect -42 dB, 0.25 s; fallback -30 dB if no silence; approximate boundaries only','playbackGain':'Optional per-recording peak gain toward -3 dBFS, capped at +18/-12 dB','sourceManifest':'sources.json','sourceHashes':'catalog.json sourceHash','auditionEdits':'audio-edits.json; derived edits keep their intended gain when level matching is enabled'},indent=2)+'\n')
 with zipfile.ZipFile(OUT/'sound-library.zip','w',zipfile.ZIP_DEFLATED) as z:
  for path in sorted({item['path'] for item in result}):z.write(OUT/path,path)
  for f in (OUT/'licenses').rglob('*'):
   if f.is_file():z.write(f,f.relative_to(OUT))
- for name in ['catalog.json','sources.json','coverage.json','roster.json','provenance.json','workbench.json']:
+ for name in ['catalog.json','sources.json','coverage.json','roster.json','provenance.json','workbench.json','audio-edits.json']:
   if (OUT/name).exists():z.write(OUT/name,name)
 print(json.dumps(dict(recordings=len(result),cc0=len(inventory),takes=sum(len(x.get('takes',[])) or 1 for x in result),listeningMiB=round(sum((OUT/x['path']).stat().st_size for x in result)/1048576,2)),indent=2))

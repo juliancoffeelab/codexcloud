@@ -114,6 +114,24 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       tap = material(/^impactBell_heavy_000$/);
       tapPossible = union(material(/^impactBell/), old("terrain-keep"));
     }
+    const plainsEdit = catalog.filter(
+      (x) => x.id === "edits/plains-grass-003-soft-v1",
+    );
+    let surfaceSuggestion = named(
+      ground,
+      /^footstep_.*_000$|^terrain-water-1$|^burble_01$/,
+    );
+    let surfacePossible = ground;
+    if (id === "road") {
+      tap = fx(/^stones_01$/);
+      tapPossible = union(tapPossible, stone);
+      surfaceSuggestion = tap;
+    } else if (id === "plains") {
+      tap = plainsEdit.length ? plainsEdit : material(/^footstep_grass_003$/);
+      tapPossible = union(tapPossible, ground, tap);
+      surfaceSuggestion = tap;
+      surfacePossible = union(ground, tap);
+    }
     const impact = wooden
       ? wood
       : building || /hill|mountain|road/.test(id)
@@ -125,7 +143,11 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       row(
         "tap",
         "Tap / tile selection",
-        "A short cue when selecting this tile.",
+        id === "road"
+          ? "Stones 01 for road selection."
+          : id === "plains"
+            ? "Grass 003 with a strong bass cut and lower level."
+            : "A short cue when selecting this tile.",
         tap,
         tapPossible,
       ),
@@ -133,12 +155,15 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
         "move",
         "Movement / surface contact",
         "The surface beneath a moving unit.",
-        named(ground, /^footstep_.*_000$|^terrain-water-1$|^burble_01$/),
-        ground,
+        surfaceSuggestion,
+        surfacePossible,
         {
-          caveat: water
-            ? "Generated water cue and designed burble proxies; no field-recorded splashes in this collection."
-            : "",
+          caveat:
+            id === "plains"
+              ? "Processed audition: less bass and intentionally quieter. Match levels does not boost it back up; the unprocessed grass 003 stays in alternatives."
+              : water
+                ? "Generated water cue and designed burble proxies; no field-recorded splashes in this collection."
+                : "",
         },
       ),
       row(

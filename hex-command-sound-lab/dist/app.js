@@ -1,4 +1,4 @@
-import { buildActions } from "./matching.js?v=material-picks-1";
+import { buildActions } from "./matching.js?v=terrain-picks-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -13,13 +13,14 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo] = await Promise.all([
-    loadJSON("catalog.json?v=full-collection-1"),
+    loadJSON("catalog.json?v=terrain-picks-1"),
     loadJSON("workbench.json?v=factions-1"),
     loadJSON("sources.json"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
     "recorded-foley": "Recorded Foley",
+    "processed-foley": "Processed Foley",
     "recorded-weapons": "Recorded weapons",
     "natural-animal-recording": "Natural animal recording",
     "designed-effects": "Designed effect",
@@ -871,7 +872,8 @@ async function start() {
   };
   for (const pack of sourceInfo.packs) {
     const entries = catalog.filter(
-      (x) => x.source === pack.source_url && x.pack !== "current",
+      (x) =>
+        x.source === pack.source_url && x.pack !== "current" && !x.derivedFrom,
     );
     const card = el("article");
     card.append(
@@ -892,6 +894,33 @@ async function start() {
       $("#search").value = "";
       $("#favorites-only").checked = false;
       visibleCount = 60;
+      showView("library");
+    };
+    card.append(browse);
+    $("#source-cards").append(card);
+  }
+  const edits = catalog.filter((x) => x.derivedFrom);
+  if (edits.length) {
+    const card = el("article");
+    card.append(
+      el("span", "tag", `PROCESSED AUDITIONS · ${edits.length}`),
+      el("h3", "", "Listening edits"),
+      el(
+        "p",
+        "",
+        "Non-destructive audition copies. Each retains its original source/hash and a reproducible recipe. Intentionally quieter edits are not boosted by Match levels.",
+      ),
+    );
+    const link = el("a", "", "Processing recipes ↓");
+    link.href = "audio-edits.json";
+    link.download = "audio-edits.json";
+    card.append(link);
+    const browse = el("button", "primary", "Compare audition edits");
+    browse.onclick = () => {
+      packSelect.value = "audition-edits";
+      $("#category").value = "all";
+      $("#search").value = "";
+      $("#favorites-only").checked = false;
       showView("library");
     };
     card.append(browse);

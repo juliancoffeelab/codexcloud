@@ -58,7 +58,7 @@ repository projects, an execution environment, or external downloads.
   license and take boundaries. Browser storage is local to that device.
 - Original game mode remains available for archived-family comparison. It does
   not imply that unreleased units had historical sound assignments.
-- Full library retains all 518 recordings. Filter by source, category, name or
+- Full library retains all 518 original listening entries plus labeled processed auditions. Filter by source, category, name or
   recording type; Show every recording removes the initial result-page limit.
 - Multi-take weapon boundaries are approximate. Full recordings preserve the
   entire session. Stop or Escape cancels playback and pending sequences; the
@@ -73,6 +73,18 @@ and impact recordings remain available. Bow users have nocking candidates for
 selection and attack feedback, with releases/flight as alternatives. A nocking
 attack cue is explicitly a handling proxy rather than a recorded release.
 Personal Use assignments take precedence over these editorial suggestions.
+
+## Terrain audition edits
+
+Road selection and surface contact suggest `stones_01`. Plains suggests a
+processed `footstep_grass_003` copy; its unprocessed source remains an alternative.
+`audio-edits.json` records source hashes and exact FFmpeg filter recipes.
+`build-soundboard.py` invokes `scripts/build-edits.py` to regenerate them and
+include them in the catalog and download ZIP. Edits render from verified vendor
+originals, not from previously compressed listening copies. Their original
+provenance remains attached. Intentional attenuation is retained even when
+Match levels is enabled; otherwise peak matching would undo the requested mix.
+The originals and their existing catalog IDs remain untouched.
 
 ## Refreshing faction and terrain snapshots
 

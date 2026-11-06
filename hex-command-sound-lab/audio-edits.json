@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "edits": [
+    {
+      "id": "edits/plains-grass-003-soft-v1",
+      "sourceId": "impact-sounds/footstep_grass_003",
+      "sourceHash": "0546e1d8ab2def714425701a18bd34c5ee2794b12e858e5b595aabcf38a34137",
+      "name": "footstep_grass_003 · soft bass-cut audition",
+      "intent": "Quieter plains tap and foot-contact candidate with substantially less low-end weight. Original remains available.",
+      "filters": [
+        "highpass=f=220:p=2",
+        "bass=g=-6:f=250:w=0.8",
+        "lowpass=f=6500",
+        "volume=-9dB",
+        "afade=t=in:d=0.004",
+        "afade=t=out:st=0.6493:d=0.02"
+      ]
+    }
+  ]
+}

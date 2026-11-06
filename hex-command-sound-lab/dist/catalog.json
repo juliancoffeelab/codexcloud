@@ -15766,5 +15766,47 @@
     "kind": "current-game-synthesis",
     "gainDb": 0,
     "duration": 0.847
+  },
+  {
+    "takeMethod": "silence42-fallback30-v2",
+    "id": "edits/plains-grass-003-soft-v1",
+    "name": "footstep_grass_003 \u00b7 soft bass-cut audition",
+    "path": "audio/listening/2a75dbabede7d55f93a3.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/impact-sounds",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-foley",
+    "notes": "Quieter plains tap and foot-contact candidate with substantially less low-end weight. Original remains available. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "kenney/impact-sounds/Audio/footstep_grass_003.ogg",
+    "sourceHash": "0546e1d8ab2def714425701a18bd34c5ee2794b12e858e5b595aabcf38a34137",
+    "duration": 0.7053,
+    "gainDb": 0,
+    "categories": [
+      "movement"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.6693
+      }
+    ],
+    "derivedFrom": "impact-sounds/footstep_grass_003",
+    "processingRecipe": {
+      "id": "edits/plains-grass-003-soft-v1",
+      "sourceId": "impact-sounds/footstep_grass_003",
+      "sourceHash": "0546e1d8ab2def714425701a18bd34c5ee2794b12e858e5b595aabcf38a34137",
+      "name": "footstep_grass_003 \u00b7 soft bass-cut audition",
+      "intent": "Quieter plains tap and foot-contact candidate with substantially less low-end weight. Original remains available.",
+      "filters": [
+        "highpass=f=220:p=2",
+        "bass=g=-6:f=250:w=0.8",
+        "lowpass=f=6500",
+        "volume=-9dB",
+        "afade=t=in:d=0.004",
+        "afade=t=out:st=0.6493:d=0.02"
+      ]
+    }
   }
 ]

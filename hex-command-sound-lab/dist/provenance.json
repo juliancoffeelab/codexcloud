@@ -4,5 +4,6 @@
   "takeDetection": "silencedetect -42 dB, 0.25 s; fallback -30 dB if no silence; approximate boundaries only",
   "playbackGain": "Optional per-recording peak gain toward -3 dBFS, capped at +18/-12 dB",
   "sourceManifest": "sources.json",
-  "sourceHashes": "catalog.json sourceHash"
+  "sourceHashes": "catalog.json sourceHash",
+  "auditionEdits": "audio-edits.json; derived edits keep their intended gain when level matching is enabled"
 }
