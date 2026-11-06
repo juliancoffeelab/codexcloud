@@ -141,7 +141,7 @@ export const terrainPicks = {
   },
   "ritual-star": {
     tap: cue(
-      [edit("ritual-fout-03-soft-v1")],
+      [edit("ritual-fout-03-short-v1")],
       "A short quiet fout-03 ritual cue; the full original is an alternative.",
       ["dark", "magic"],
     ),

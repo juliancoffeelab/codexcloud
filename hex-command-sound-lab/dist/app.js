@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=merfolk-mace-1";
+import { buildActions } from "./matching.js?v=short-cues-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -15,10 +15,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=bow-review-1"),
+    loadJSON("catalog.json?v=short-cues-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json"),
-    loadJSON("playback-levels.json?v=bow-review-1"),
+    loadJSON("playback-levels.json?v=short-cues-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -67,11 +67,9 @@ async function start() {
   let unitTapMode = "selection";
   try {
     const savedMode = localStorage.getItem("hex-sound-unit-tap-mode");
-    unitTapMode = ["selection", "hurt", "attack"].includes(savedMode)
+    unitTapMode = ["selection", "attack"].includes(savedMode)
       ? savedMode
-      : localStorage.getItem("hex-sound-hit-on-tap") === "true"
-        ? "hurt"
-        : "selection";
+      : "selection";
   } catch {}
   const secondaryOpen = new Set();
   let audioEnabled = false,
@@ -123,7 +121,7 @@ async function start() {
     }
   }
   function currentRows() {
-    const rows = buildActions(unit, catalog, { extras: $("#extras").checked });
+    const rows = buildActions(unit, catalog, { extras: $("#extras").checked }).filter(row => row.key !== "hit");
     if (mode !== "current") return rows;
     if (unit.kind === "unit" && !unit.defined)
       return [
@@ -1487,6 +1485,23 @@ async function start() {
       localStorage.setItem("hex-sound-before-bow-review-v1", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-bow-review-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-short-fout-v1")) {
+      const replacements = {
+        "qubodup/3-dark-magic-spells/dark_magic/fout-01.flac": "edits/fout-01-short-v1",
+        "edits/ritual-fout-03-soft-v1": "edits/ritual-fout-03-short-v1",
+      };
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!replacements[choice.id] || choice.take === null) continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: replacements[choice.id], take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-short-fout-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-short-fout-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

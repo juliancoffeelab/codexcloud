@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "915134809dfe58d84b5d604bca89ec3c126c6bde453de34b021f01debff730bf",
+  "catalogSha256": "3c2775253ad08dcf4f0c9c9e70a8e78468f759885733b8f9b0625dc18fb63b75",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -33400,6 +33400,84 @@
           "flags": [
             "quiet-at-playback-setting"
           ]
+        }
+      ]
+    },
+    {
+      "id": "edits/fout-01-short-v1",
+      "name": "Fout 01 \u00b7 short attack",
+      "pack": "audition-edits",
+      "path": "audio/listening/04d2a97a1f2ef8080629.mp3",
+      "listeningSha256": "b64825379333d5b7d83365e77684c4d1fb69578827f856c66eb29e7f3cb5915d",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -17.31,
+      "full": {
+        "duration": 0.48,
+        "peakDbFS": -0.71,
+        "rmsDbFS": -10.78,
+        "strongest50msRmsDbFS": -8.98,
+        "leadingBelow55Ms": 0.1,
+        "playbackPeakDbFS": -18.02,
+        "playbackRmsDbFS": -28.09,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -17.31,
+          "duration": 0.48,
+          "peakDbFS": -0.71,
+          "rmsDbFS": -10.78,
+          "strongest50msRmsDbFS": -8.98,
+          "leadingBelow55Ms": 0.1,
+          "playbackPeakDbFS": -18.02,
+          "playbackRmsDbFS": -28.09,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/ritual-fout-03-short-v1",
+      "name": "Ritual \u00b7 short quiet fout 03",
+      "pack": "audition-edits",
+      "path": "audio/listening/c72782b8bce19380ab56.mp3",
+      "listeningSha256": "62f99cf47a948d1a38a9be369a8733c41d78576f75aed9278ca40aca416deb63",
+      "intentionallyQuietEdit": true,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -5.19,
+      "full": {
+        "duration": 0.45,
+        "peakDbFS": -20.17,
+        "rmsDbFS": -31.76,
+        "strongest50msRmsDbFS": -29.5,
+        "leadingBelow55Ms": 1.0,
+        "playbackPeakDbFS": -25.36,
+        "playbackRmsDbFS": -36.95,
+        "playbackStrongest50msRmsDbFS": -34.69,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -5.19,
+          "duration": 0.45,
+          "peakDbFS": -20.17,
+          "rmsDbFS": -31.76,
+          "strongest50msRmsDbFS": -29.5,
+          "leadingBelow55Ms": 1.0,
+          "playbackPeakDbFS": -25.36,
+          "playbackRmsDbFS": -36.95,
+          "playbackStrongest50msRmsDbFS": -34.69,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
         }
       ]
     }

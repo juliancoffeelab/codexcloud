@@ -1885,3 +1885,7 @@ edits/spear-sabre-one-shot-v1,Spear–sabre · single contact,audition-edits,ful
 edits/spear-sabre-one-shot-v1,Spear–sabre · single contact,audition-edits,take-1,0,0.3347,-5.49,-28.95,-23.6,-2.69,-8.18,-31.64,-26.29,10.5,,False
 edits/forest-book-03-soft-v1,Forest · distorted quiet Book 03,audition-edits,full,,1.0971,-27.18,-38.46,-34.81,-5.19,-32.37,-43.65,-40.0,1.4,quiet-at-playback-setting,True
 edits/forest-book-03-soft-v1,Forest · distorted quiet Book 03,audition-edits,take-1,0,1.0971,-27.18,-38.46,-34.81,-5.19,-32.37,-43.65,-40.0,1.4,quiet-at-playback-setting,True
+edits/fout-01-short-v1,Fout 01 · short attack,audition-edits,full,,0.48,-0.71,-10.78,-8.98,-17.31,-18.02,-28.09,-26.29,0.1,,False
+edits/fout-01-short-v1,Fout 01 · short attack,audition-edits,take-1,0,0.48,-0.71,-10.78,-8.98,-17.31,-18.02,-28.09,-26.29,0.1,,False
+edits/ritual-fout-03-short-v1,Ritual · short quiet fout 03,audition-edits,full,,0.45,-20.17,-31.76,-29.5,-5.19,-25.36,-36.95,-34.69,1.0,,True
+edits/ritual-fout-03-short-v1,Ritual · short quiet fout 03,audition-edits,take-1,0,0.45,-20.17,-31.76,-29.5,-5.19,-25.36,-36.95,-34.69,1.0,,True

@@ -355,3 +355,10 @@ and 1,349 playable takes, with fresh per-take loudness measurements and gains.
 Merfolk maceguard levels 1–3 suggest **Mace Spear Haft, take 12**
 (6.7898–7.0720 s) for their stone-headed mace attacks. Per-action preferred takes
 apply to unit taps and audition cards; personal saved choices still take precedence.
+
+Hurt auditions are deferred: the tap switch offers Selection / Main attack, and
+hit rows are hidden without removing source recordings or saved choices. Fout 01
+uses a 0.48-second faded attack edit; ritual Fout 03 uses a 0.45-second quiet edit.
+Originals remain available. `node scripts/check-cue-durations.mjs` audits actual
+default take lengths over 0.5 seconds; Sources links its 25-cue report. Other long
+cues remain unchanged pending listening review. Catalog: 539 recordings / 1,351 takes.

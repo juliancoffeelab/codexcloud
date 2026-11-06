@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "915134809dfe58d84b5d604bca89ec3c126c6bde453de34b021f01debff730bf",
+  "catalogSha256": "3c2775253ad08dcf4f0c9c9e70a8e78468f759885733b8f9b0625dc18fb63b75",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -5126,6 +5126,22 @@
       "gameRelativeGain": false
     },
     "edits/forest-book-03-soft-v1": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
+      "gameRelativeGain": false
+    },
+    "edits/fout-01-short-v1": {
+      "full": -12.12,
+      "takes": [
+        -12.12
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "edits/ritual-fout-03-short-v1": {
       "full": 0,
       "takes": [
         0

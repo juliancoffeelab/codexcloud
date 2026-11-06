@@ -17592,5 +17592,102 @@
       }
     },
     "preserveLevel": true
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/fout-01-short-v1",
+    "name": "Fout 01 \u00b7 short attack",
+    "path": "audio/listening/04d2a97a1f2ef8080629.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/3-dark-magic-spells",
+    "creator": "qubodup",
+    "kind": "processed-effect",
+    "notes": "Short magic attack body with a faded tail; full source retained. Per-take level matching follows the live-game reference.",
+    "sourcePath": "qubodup/3-dark-magic-spells/dark_magic/fout-01.flac",
+    "sourceHash": "47a79f97cb3ac35219d02c0c0b7a2aeb09b260ce9eed3d316728be867e6ac0a9",
+    "duration": 0.48,
+    "gainDb": 0,
+    "categories": [
+      "attack",
+      "magic"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.48
+      }
+    ],
+    "originalKind": "synthesized-upstream-effects",
+    "derivedFrom": "qubodup/3-dark-magic-spells/dark_magic/fout-01.flac",
+    "processingRecipe": {
+      "id": "edits/fout-01-short-v1",
+      "sourceId": "qubodup/3-dark-magic-spells/dark_magic/fout-01.flac",
+      "sourceHash": "47a79f97cb3ac35219d02c0c0b7a2aeb09b260ce9eed3d316728be867e6ac0a9",
+      "name": "Fout 01 \u00b7 short attack",
+      "intent": "Short magic attack body with a faded tail; full source retained.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.30:duration=0.48",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.012",
+        "afade=t=out:st=0.36:d=0.12"
+      ]
+    },
+    "preserveLevel": false
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/ritual-fout-03-short-v1",
+    "name": "Ritual \u00b7 short quiet fout 03",
+    "path": "audio/listening/c72782b8bce19380ab56.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/3-dark-magic-spells",
+    "creator": "qubodup",
+    "kind": "processed-effect",
+    "notes": "Shortened ritual cue, preserving the quiet processed texture. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac",
+    "sourceHash": "ec55b77eb3096dcc083d219254d0a37a0ecf071477d7c47bc363092c2ca02d0d",
+    "duration": 0.45,
+    "gainDb": 0,
+    "categories": [
+      "attack",
+      "magic"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.45
+      }
+    ],
+    "originalKind": "synthesized-upstream-effects",
+    "derivedFrom": "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac",
+    "processingRecipe": {
+      "id": "edits/ritual-fout-03-short-v1",
+      "sourceId": "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac",
+      "sourceHash": "ec55b77eb3096dcc083d219254d0a37a0ecf071477d7c47bc363092c2ca02d0d",
+      "name": "Ritual \u00b7 short quiet fout 03",
+      "intent": "Shortened ritual cue, preserving the quiet processed texture.",
+      "filters": [
+        "atrim=start=0.9:duration=0.85",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=160:p=2",
+        "lowpass=f=5000",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.815:d=0.035",
+        "volume=-22.7dB",
+        "atrim=duration=0.45",
+        "afade=t=out:st=0.33:d=0.12"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -5,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
+    }
   }
 ]

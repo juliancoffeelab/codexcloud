@@ -1,7 +1,7 @@
-import { applyCuratedPicks } from "./curation-picks.js?v=merfolk-mace-1";
+import { applyCuratedPicks } from "./curation-picks.js?v=short-cues-1";
 import { weaponSelection } from "./weapon-selection.js?v=curation-1";
 import { creaturePick } from "./creature-picks.js?v=curation-1";
-import { terrainPicks } from "./terrain-picks.js?v=curation-1";
+import { terrainPicks } from "./terrain-picks.js?v=short-cues-1";
 // Explicit semantic families keep mechanical actions separate from animal voices.
 // Recommendations are curated source IDs; alternatives include every matching recording.
 export function buildActions(entity, catalog, { extras = false } = {}) {
@@ -444,7 +444,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
       note = "Designed fire attack, with crackle layers as alternatives.";
     } else if (/grave|corruption|mire|soul/.test(name)) {
       possible = union(dark, magic, fx(/^creature_slime/));
-      suggested = named(dark, /fout-01$/);
+      suggested = edited("fout-01-short-v1");
       note = "Dark casting textures; slime is a wet layer candidate.";
     } else if (
       /spark|light|bolt|surge|orb|burst|rune|spell|crushing (wave|root)/.test(
