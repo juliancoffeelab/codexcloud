@@ -346,3 +346,12 @@ own identities and move undo. Automatic turn snapshots still contain no undo;
 current recovery remains separate. No old representation is accepted by runtime
 readers or writers. Manual saves are exempt from age-based automatic retention,
 but explicit individual or campaign deletion has no exemptions.
+
+## Version 37 and history index 4: one snapshot-only history format
+
+The explicit 36→37 conversion removes the historical manual-recovery variant.
+Both automatic and explicit checkpoints use turn snapshots with no undo field.
+A required manual boolean identifies explicit saves for retention and display;
+it does not change the payload contract. Current recovery keeps its undo.
+Index 3→4 makes the same metadata conversion. Older shapes are interpreted only
+inside the version conversions; normal code accepts only the target model.

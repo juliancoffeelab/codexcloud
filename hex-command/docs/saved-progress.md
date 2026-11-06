@@ -12,7 +12,7 @@ chapter. Games on the same map remain separate and show their opening save time
 (or earliest retained save time if the opening was removed). Current recovery is
 not listed as a second historical checkpoint.
 Deletes require confirmation. Settings also exposes Save game, which creates a
-manual checkpoint of the exact position and available move undo. Manual saves
+manual turn snapshot without move undo. Manual saves
 are labelled in history and are exempt from automatic pruning.
 
 A failed write leaves the previous committed recovery available. A dialog explains
@@ -77,7 +77,8 @@ running and automatically attempts to save pending progress. The storage-full
 warning clears only when saving succeeds; no success banner is added.
 
 History writers accept opaque turn-boundary or explicitly requested manual
-snapshots, never a current recovery or arbitrary serialized bytes. Current recovery
+turn snapshots, all using the same snapshot-only format without undo. They reject
+current recoveries and arbitrary serialized bytes. Current recovery
 has a separate metadata query and is never an entry in the history index.
 
 Each record carries stable run, continuation, checkpoint and parent identities.
@@ -87,9 +88,10 @@ state or network-dependent code is part of local persistence today.
 
 ## Save migrations
 
-The current battle envelope is version 36 and the history index is version 3.
-The explicit 35→36 and index 2→3 steps retain existing facts and introduce the
-manual-checkpoint variant.
+The current battle envelope is version 37 and the history index is version 4.
+The explicit 36→37 and index 3→4 steps collapse the earlier manual variant into
+the shared turn-snapshot format, discard historical undo, and record manual status
+only as retention/presentation metadata. Current recovery retains its undo.
 The explicit 34→35 conversion resolves missing identities, setup, experience and
 combat RNG from frozen defaults. It removes the old imported-position variant and
 discards old undo. Native restoration validates the converted state without

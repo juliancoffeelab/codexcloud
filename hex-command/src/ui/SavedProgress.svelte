@@ -1,7 +1,7 @@
 <script lang="ts">
   import DialogWindow from "./DialogWindow.svelte";
   import type { BattleView, BattleCommands } from "../controller/view";
-  import type { CurrentEntry, HistoryEntry } from "../save/metadata";
+  import type { CurrentEntry, TurnEntry } from "../save/metadata";
   import {
     runName,
     chapter,
@@ -24,7 +24,7 @@
     run?: string;
     onNavigate?: (inGame: boolean) => void;
   } = $props();
-  let entries = $state<HistoryEntry[]>([]);
+  let entries = $state<TurnEntry[]>([]);
   let recovery = $state<CurrentEntry>();
   const games = $derived(savedGames([...entries, ...(recovery ? [recovery] : [])]));
   const game = $derived(games.find((game) => game.id === run));
@@ -42,7 +42,7 @@
   }>();
   const historical = $derived(entries.filter((entry) => entry.runId === run).sort(saveOrder));
   const groups = $derived(chapterGroups(historical.slice(0, limit)));
-  function firstSaved(entry: HistoryEntry | CurrentEntry): string {
+  function firstSaved(entry: TurnEntry | CurrentEntry): string {
     return `${entry.kind === "turn" && entry.missionStart && entry.ordinal === 1 ? "Started" : "Earliest save"} ${saveTime(entry.savedAt)}`;
   }
   function refresh() {
@@ -88,7 +88,7 @@
   export function back() {
     changeRun("");
   }
-  async function remove(entry: HistoryEntry) {
+  async function remove(entry: TurnEntry) {
     if (confirm(`Delete turn ${entry.round} from ${chapter(entry).name}?`))
       await perform(() => actions.deleteSavedProgress(entry.id));
   }
@@ -144,7 +144,7 @@
                   onclick={() => (selected = selected === entry.id ? "" : entry.id)}
                 >
                   <span class="turn">
-                    Turn {entry.round}{#if entry.kind === "manual"}<span class="manual-label">
+                    Turn {entry.round}{#if entry.manual}<span class="manual-label">
                         · Manual save
                       </span>{/if}
                   </span>

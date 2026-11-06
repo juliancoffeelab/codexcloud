@@ -65,7 +65,7 @@ export interface BattleCommands {
   ): Promise<GameSnapshot>;
   setSound(enabled: boolean): Promise<void>;
   downloadDebugReport(): void;
-  savedProgress(): import("../save/metadata").HistoryEntry[];
+  savedProgress(): import("../save/metadata").TurnEntry[];
   saveGame(): Promise<void>;
   savedRecovery(): import("../save/metadata").CurrentEntry | undefined;
   restoreProgress(id: string): Promise<void>;

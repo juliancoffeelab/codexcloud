@@ -1,14 +1,14 @@
 import {
   currentHistoryIndex,
   currentRecovery,
-  currentHistorical,
+  currentTurn,
   HISTORY_VERSION,
   type HistoryIndex,
-  type HistoricalSave,
+  type TurnSave,
 } from "./schema";
 import { readSave, SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
-import { TurnStartCheckpoint, ManualCheckpoint } from "./write";
-import type { CurrentEntry, HistoryEntry } from "./metadata";
+import { TurnCheckpoint } from "./write";
+import type { CurrentEntry, TurnEntry } from "./metadata";
 
 function index(): HistoryIndex {
   const text = localStorage.getItem(HISTORY_KEY);
@@ -24,17 +24,14 @@ export function currentProgress(): CurrentEntry | undefined {
   return text === null ? undefined : currentRecovery(JSON.parse(text)).progress.entry;
 }
 /** History never includes the current recovery. */
-export function listProgress(): HistoryEntry[] {
+export function listProgress(): TurnEntry[] {
   return index().entries.sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id));
 }
-/** Only turn-boundary snapshots can create historical records. Caller holds the storage lock. */
-export function addTurn(checkpoint: TurnStartCheckpoint): void {
-  insertCheckpoint(checkpoint.entry, TurnStartCheckpoint.text(checkpoint));
+/** History accepts only snapshot-only values, never a recovery or arbitrary bytes. */
+export function addTurn(checkpoint: TurnCheckpoint): void {
+  insertCheckpoint(checkpoint.entry, TurnCheckpoint.text(checkpoint));
 }
-export function addManual(checkpoint: ManualCheckpoint): void {
-  insertCheckpoint(checkpoint.entry, ManualCheckpoint.text(checkpoint));
-}
-function insertCheckpoint(entry: HistoryEntry, text: string): void {
+function insertCheckpoint(entry: TurnEntry, text: string): void {
   const value = index(),
     key = historyPayloadKey(entry.id);
   const previous = localStorage.getItem(key);
@@ -58,7 +55,7 @@ export function progressText(id: string): string {
   if (text === null) throw new Error("This saved checkpoint is no longer available.");
   return text;
 }
-function removeWhere(value: HistoryIndex, predicate: (entry: HistoryEntry) => boolean): void {
+function removeWhere(value: HistoryIndex, predicate: (entry: TurnEntry) => boolean): void {
   const removed = value.entries.filter(predicate),
     ids = new Set(removed.map((entry) => entry.id));
   if (!removed.length) return;
@@ -81,19 +78,18 @@ export function deleteRun(runId: string): void {
 export function pruneProgress(runId?: string, now = Date.now()): void {
   const value = index(),
     keep = new Set<string>(),
-    latest = new Map<string, HistoryEntry>(),
-    buckets = new Map<string, HistoryEntry>();
+    latest = new Map<string, TurnEntry>(),
+    buckets = new Map<string, TurnEntry>();
   const minute = 60_000,
     hour = 60 * minute,
     day = 24 * hour;
-  const newer = (a: HistoryEntry, b: HistoryEntry) =>
+  const newer = (a: TurnEntry, b: TurnEntry) =>
     a.savedAt > b.savedAt || (a.savedAt === b.savedAt && a.id < b.id);
   for (const entry of value.entries) {
     if (runId && entry.runId !== runId) continue;
     const previous = latest.get(entry.runId);
-    if (entry.kind === "turn" && (!previous || newer(entry, previous)))
-      latest.set(entry.runId, entry);
-    if (entry.kind === "manual" || entry.missionStart) {
+    if (!entry.manual && (!previous || newer(entry, previous))) latest.set(entry.runId, entry);
+    if (entry.manual || entry.missionStart) {
       keep.add(entry.id);
       continue;
     }
@@ -121,8 +117,8 @@ export function pruneProgress(runId?: string, now = Date.now()): void {
   removeWhere(value, (entry) => (!runId || entry.runId === runId) && !keep.has(entry.id));
 }
 /** Migration may replace an existing turn payload, but cannot add records or recoveries. */
-export function updateProgress(save: HistoricalSave): void {
-  currentHistorical(save);
+export function updateProgress(save: TurnSave): void {
+  currentTurn(save);
   const id = save.progress.entry.id;
   if (!index().entries.some((entry) => entry.id === id))
     throw new Error("Saved turn is unavailable.");

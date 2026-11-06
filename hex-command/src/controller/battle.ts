@@ -7,14 +7,13 @@ import { tick } from "svelte";
 import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle, restoreBattleText, loadProgressHistory } from "../save/load";
-import { serializeBattle, TurnStartCheckpoint, ManualCheckpoint } from "../save/write";
+import { serializeBattle, TurnCheckpoint } from "../save/write";
 import { storeSave, NEW_GAME_KEY, needsNewGame } from "../save/storage";
 import { withProgressLock } from "../save/transaction";
 import { saveFailure, type SaveFailure } from "../save/failure";
 import { captureBrowserSaves } from "../save/debug";
 import {
   addTurn,
-  addManual,
   currentProgress,
   listProgress,
   progressText,
@@ -29,9 +28,9 @@ import {
   progressId,
   progressIdentity,
   type ProgressIdentity,
-  type HistoryEntry,
+  type TurnEntry,
 } from "../save/metadata";
-import { currentHistorical } from "../save/schema";
+import { currentTurn } from "../save/schema";
 import { LiveGame, nativeValue } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { currentArtwork } from "../presentation/art";
@@ -93,8 +92,8 @@ export class BattleController {
   private saveFailure: SaveFailure | null = null;
   private historyError: string | null = null;
   private historyMaintenanceError: string | null = null;
-  private pendingCheckpoint?: TurnStartCheckpoint;
-  private pendingManual?: ManualCheckpoint;
+  private pendingCheckpoint?: TurnCheckpoint;
+  private pendingExplicit?: TurnCheckpoint;
   private awaitingNewGame = false;
   private preserveStoredRecovery = false;
   private historyStart: boolean;
@@ -374,7 +373,7 @@ export class BattleController {
       this.historyMaintenanceError = String(error);
     }
     try {
-      const checkpoint = TurnStartCheckpoint.capture(
+      const checkpoint = TurnCheckpoint.capture(
         this.#game,
         next,
         missionStart,
@@ -405,7 +404,7 @@ export class BattleController {
     }
   }
 
-  savedProgress(): HistoryEntry[] {
+  savedProgress(): TurnEntry[] {
     return listProgress();
   }
   savedRecovery() {
@@ -417,9 +416,9 @@ export class BattleController {
       throw new Error(
         "Free storage and reload to finish updating saved progress before switching runs.",
       );
-    if (this.pendingManual) {
-      addManual(this.pendingManual);
-      this.pendingManual = undefined;
+    if (this.pendingExplicit) {
+      addTurn(this.pendingExplicit);
+      this.pendingExplicit = undefined;
     }
     if (this.pendingCheckpoint) {
       const pending = this.pendingCheckpoint;
@@ -437,9 +436,9 @@ export class BattleController {
 
   private restoreCheckpoint(id: string): void {
     this.requireSession();
-    const restored = restoreBattleText(this.nativeFactory, progressText(id), "history");
+    const restored = restoreBattleText(this.nativeFactory, progressText(id), "turn");
     try {
-      const turn = currentHistorical(restored.save);
+      const turn = currentTurn(restored.save);
       if (restored.migrated) updateProgress(turn);
       this.finishPendingHistory();
       const original = turn.progress.entry;
@@ -454,7 +453,7 @@ export class BattleController {
         JSON.stringify({
           ...restored.save,
           pendingEnemy: false,
-          undo: restored.save.undo ?? [],
+          undo: [],
           progress: { entry },
         }),
       );
@@ -468,7 +467,7 @@ export class BattleController {
       this.publish({ renderBattle: false });
       throw error;
     }
-    this.installRestored(restored.game, restored.undo ?? [], restored.pendingEnemy);
+    this.installRestored(restored.game, [], restored.pendingEnemy);
   }
 
   private installRestored(
@@ -514,7 +513,7 @@ export class BattleController {
       this.sessionVersion++;
       this.awaitingNewGame = true;
       this.pendingCheckpoint = undefined;
-      this.pendingManual = undefined;
+      this.pendingExplicit = undefined;
       this.pendingEnemyReplay = false;
       this.preserveStoredRecovery = false;
       this.history.clear();
@@ -534,14 +533,17 @@ export class BattleController {
       this.requireSession();
       this.requireSettled();
       try {
-        const point = ManualCheckpoint.capture(
+        const point = TurnCheckpoint.capture(
           this.#game,
           { ...this.progress, checkpointId: progressId() },
-          this.history.saved(this.#game),
+          false,
+          this.progress.checkpointId,
+          true,
         );
-        this.pendingManual = point;
-        addManual(point);
-        this.pendingManual = undefined;
+        if (!point) throw new Error("Wait for the enemy turn to finish before saving.");
+        this.pendingExplicit = point;
+        addTurn(point);
+        this.pendingExplicit = undefined;
         this.persist();
         if (this.saveError) throw new Error(this.saveError);
       } catch (error) {
@@ -599,10 +601,10 @@ export class BattleController {
         return;
       }
     }
-    if (this.pendingManual) {
+    if (this.pendingExplicit) {
       try {
-        addManual(this.pendingManual);
-        this.pendingManual = undefined;
+        addTurn(this.pendingExplicit);
+        this.pendingExplicit = undefined;
       } catch (error) {
         this.failedSave(error);
         this.publish({ renderBattle: false });
@@ -1054,7 +1056,7 @@ export class BattleController {
     if (this.#game !== replacement) this.#game.dispose();
     this.#game = replacement;
     this.awaitingNewGame = false;
-    this.pendingManual = undefined;
+    this.pendingExplicit = undefined;
     this.pendingCheckpoint = undefined;
     this.historyError = null;
     this.historyStart = false;

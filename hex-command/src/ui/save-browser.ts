@@ -1,7 +1,7 @@
 import { CAMPAIGNS } from "../game/campaign-data";
 import { MAPS } from "../game/maps";
 import type { CampaignId, MapId } from "../game/types";
-import type { SaveInfo, HistoryEntry } from "../save/metadata";
+import type { SaveInfo, TurnEntry } from "../save/metadata";
 
 export function runName(entry: SaveInfo): string {
   return CAMPAIGNS[entry.run as CampaignId]?.name ?? MAPS[entry.run as MapId]?.name ?? "Saved game";
@@ -63,8 +63,8 @@ export function savedGames<T extends SaveInfo>(sources: readonly T[]) {
   return [...games.values()].sort((a, b) => saveOrder(a.latest, b.latest));
 }
 /** Group adjacent chapters only; revisiting a chapter creates another heading. */
-export function chapterGroups(entries: readonly HistoryEntry[]) {
-  const groups: { mission: string; number: number; name: string; entries: HistoryEntry[] }[] = [];
+export function chapterGroups(entries: readonly TurnEntry[]) {
+  const groups: { mission: string; number: number; name: string; entries: TurnEntry[] }[] = [];
   for (const entry of entries) {
     const previous = groups.at(-1);
     if (previous?.mission === entry.mission) previous.entries.push(entry);

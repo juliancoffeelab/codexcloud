@@ -20,12 +20,9 @@ export interface CurrentEntry extends SaveInfo {
 }
 export interface TurnEntry extends SaveInfo {
   kind: "turn";
+  manual: boolean;
   parentId?: string;
 }
-export interface ManualEntry extends SaveInfo {
-  kind: "manual";
-}
-export type HistoryEntry = TurnEntry | ManualEntry;
 export const progressId = (): string => crypto.randomUUID();
 export function progressIdentity(entry: ProgressIdentity): ProgressIdentity {
   return {
@@ -64,21 +61,14 @@ export function describeTurn(
   identity: ProgressIdentity,
   missionStart: boolean,
   parentId: string,
+  manual: boolean,
 ): TurnEntry {
   return {
     ...describe(game, identity),
     id: identity.checkpointId,
     kind: "turn",
+    manual,
     missionStart,
     parentId,
-  };
-}
-
-export function describeManual(game: LiveGame, identity: ProgressIdentity): ManualEntry {
-  return {
-    ...describe(game, identity),
-    id: identity.checkpointId,
-    kind: "manual",
-    missionStart: false,
   };
 }
