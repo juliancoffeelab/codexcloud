@@ -562,3 +562,7 @@ axe defaults migrate with a backup. Death samples use their normal matched base
 levels, with timing/context reports and ZIP regenerated. Touch Chromium at 320px
 checks the fixed four-button row, every death group, strict horse/deer/goat and
 undead-horse distinctions, saved migrations, persisted mode and completed playback.
+
+L2 dwarf Shieldguard (`dwarf-axeguard-l2`) shares Metal Pot 3 death with the
+other armored L2 dwarves and its L3 upgrade. A saved Cough 02 death choice for
+this unit migrates with a local backup.

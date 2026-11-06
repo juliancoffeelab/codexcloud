@@ -16,7 +16,7 @@ const LIVING_HORSE_UNITS = new Set([
 // Visible heavy metal infantry, rather than every shield/guard/mage/helmet wearer.
 const HEAVY_ARMOR_UNITS = new Set([
   "champion", "warhammer", "sentinel", "halberd-master", "marshal", "grand-marshal",
-  "dwarf-axeguard-l3", "dwarf-axe-pick-l2", "dwarf-axe-pick-l3",
+  "dwarf-axeguard-l2", "dwarf-axeguard-l3", "dwarf-axe-pick-l2", "dwarf-axe-pick-l3",
   "dwarf-hammerer-l2", "dwarf-hammerer-l3", "dwarf-poleaxe-l2", "dwarf-poleaxe-l3",
 ]);
 export function deathPick(entity, { bone, spirit }) {

@@ -159,6 +159,10 @@
       "duration": 0.7004,
       "uses": [
         {
+          "entity": "dwarves/dwarf-axeguard-l2",
+          "action": "death"
+        },
+        {
           "entity": "dwarves/dwarf-axeguard-l3",
           "action": "death"
         },

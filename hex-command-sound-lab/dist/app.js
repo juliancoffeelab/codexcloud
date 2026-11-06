@@ -1,8 +1,8 @@
-import { DEATH_SOUNDS } from "./death-picks.js?v=death-materials-2";
+import { DEATH_SOUNDS } from "./death-picks.js?v=shieldguard-pot-1";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=death-materials-2";
+import { buildActions } from "./matching.js?v=shieldguard-pot-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -1680,6 +1680,17 @@ async function start() {
       localStorage.setItem("hex-sound-before-death-materials-v2", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-death-materials-v2", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-shieldguard-pot-v1")) {
+      const key = "dwarves/dwarf-axeguard-l2/death", choice = assignments[key];
+      if (choice?.id === "rubberduck/80-cc0-creature-sfx/cough_02.ogg") {
+        localStorage.setItem("hex-sound-before-shieldguard-pot-v1", JSON.stringify({ [key]: choice }));
+        assignments[key] = { ...choice, id: "rpg-audio/metalPot3", take: 0 };
+        saveAssignments();
+      }
+      localStorage.setItem("hex-sound-shieldguard-pot-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

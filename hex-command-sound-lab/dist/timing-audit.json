@@ -7069,6 +7069,11 @@
           "take": 0,
           "uses": [
             {
+              "entity": "dwarves/dwarf-axeguard-l2",
+              "action": "death",
+              "levelClass": null
+            },
+            {
               "entity": "dwarves/dwarf-axeguard-l3",
               "action": "death",
               "levelClass": null
@@ -8762,11 +8767,6 @@
             },
             {
               "entity": "dwarves/dwarf-axeguard",
-              "action": "death",
-              "levelClass": null
-            },
-            {
-              "entity": "dwarves/dwarf-axeguard-l2",
               "action": "death",
               "levelClass": null
             },
