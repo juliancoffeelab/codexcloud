@@ -1,8 +1,8 @@
-import { DEATH_SOUNDS } from "./death-picks.js?v=shieldguard-pot-1";
+import { DEATH_SOUNDS } from "./death-picks.js?v=cough-timbres-1";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=shieldguard-pot-1";
+import { buildActions } from "./matching.js?v=cough-timbres-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -17,10 +17,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=death-materials-2"),
+    loadJSON("catalog.json?v=cough-timbres-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=death-materials-2"),
+    loadJSON("playback-levels.json?v=cough-timbres-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1691,6 +1691,23 @@ async function start() {
         saveAssignments();
       }
       localStorage.setItem("hex-sound-shieldguard-pot-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-death-cough-timbres-v1")) {
+      const variants = new Set([DEATH_SOUNDS.dwarf, DEATH_SOUNDS.elf, DEATH_SOUNDS.beast]), backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!key.endsWith("/death") || choice.id !== DEATH_SOUNDS.flesh) continue;
+        const entity = entityByKey.get(key.slice(0, key.lastIndexOf("/")));
+        if (entity?.kind !== "unit") continue;
+        const death = buildActions(entity, catalog).find(row => row.key === "death");
+        if (!variants.has(death.suggested[0])) continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: death.suggested[0], take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-death-cough-timbres-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-death-cough-timbres-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

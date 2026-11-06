@@ -1,4 +1,4 @@
-// One shared recording per requested death group; no layers or random variants.
+// One shared recording per death/timbre group; no runtime layers or random variants.
 export const DEATH_SOUNDS = Object.freeze({
   flesh: "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
   bones: "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
@@ -8,6 +8,9 @@ export const DEATH_SOUNDS = Object.freeze({
   wolf: "rubberduck/80-cc0-creature-sfx/howl.ogg",
   zombie: "rubberduck/80-cc0-creature-sfx/hurt_05.ogg",
   armor: "rpg-audio/metalPot3",
+  dwarf: "edits/death-cough-dwarf-v1",
+  elf: "edits/death-cough-elf-v1",
+  beast: "edits/death-cough-beast-v1",
 });
 // Species-specific, deliberately not a generic mounted/rider/selection-sound test.
 const LIVING_HORSE_UNITS = new Set([
@@ -25,6 +28,10 @@ export function deathPick(entity, { bone, spirit }) {
     : /^treant(?:-l[23])?$/.test(entity.id) ? "wood"
     : /wolf/.test(entity.id) ? "wolf"
     : entity.faction === "humans" && LIVING_HORSE_UNITS.has(entity.id) ? "horse"
-    : HEAVY_ARMOR_UNITS.has(entity.id) ? "armor" : "flesh";
+    : HEAVY_ARMOR_UNITS.has(entity.id) ? "armor"
+    : entity.faction === "dwarves" ? "dwarf"
+    : entity.faction === "elves" ? "elf"
+    : entity.faction === "beasts" || /^(boar|greatboar|woodland-ancient-boar)$/.test(entity.id) ? "beast"
+    : "flesh";
   return { group, sound: DEATH_SOUNDS[group] };
 }

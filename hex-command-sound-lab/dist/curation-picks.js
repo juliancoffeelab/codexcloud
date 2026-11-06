@@ -1,4 +1,4 @@
-import { deathPick } from "./death-picks.js?v=shieldguard-pot-1";
+import { deathPick } from "./death-picks.js?v=cough-timbres-1";
 // Authored audition choices. Death rows are candidates, not live-game events.
 export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   const byId = new Map(catalog.map((sound) => [sound.id, sound]));

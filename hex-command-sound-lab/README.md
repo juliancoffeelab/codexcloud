@@ -533,7 +533,7 @@ comparison has no historical death cue. These are soundboard auditions only.
 
 | Group | Shared recording |
 | --- | --- |
-| Ordinary living units | Cough 02 |
+| Ordinary living units | Cough 02, with shared dwarf/elf/beast timbres below |
 | Skeletals | Eat 01 |
 | Ghosts/spirits | Scream 02 body, with opening cough removed |
 | Treants | Creak 1 |
@@ -553,8 +553,8 @@ Wildkeeper/Grovewarden remain ordinary living mages, not treants.
 The 0284 edit keeps 0.035–0.535 seconds with a faded release. The ghost edit keeps
 0.14–0.80 seconds of Scream 02, after its opening burst/cough, with onset/release
 fades. Originals remain in Library. Old shared death defaults migrate with local
-backups. All 238 units have exactly one recommendation; all eight groups are
-checked. Catalog: 550 recordings / 1,362 takes; 31 derived auditions.
+backups. All 238 units have exactly one recommendation; all death groups are
+checked. Catalog: 553 recordings / 1,365 takes; 34 derived auditions.
 
 Axes, poleaxes and halberds use the exact werewolf claw swish
 (`edits/knife-slice-2-no-hit-v1`). Pickaxes remain Mining 001. Old saved Metal 01
@@ -566,3 +566,21 @@ undead-horse distinctions, saved migrations, persisted mode and completed playba
 L2 dwarf Shieldguard (`dwarf-axeguard-l2`) shares Metal Pot 3 death with the
 other armored L2 dwarves and its L3 upgrade. A saved Cough 02 death choice for
 this unit migrates with a local backup.
+
+### Cough death timbres
+
+Ordinary cough deaths use three shared processed versions: dwarves are pitched
+down two semitones with a 180Hz bass lift; elves are pitched up one semitone;
+Beasts and Woodland boars use a recognizable dry cough mixed with a pitched-down,
+driven tanh-saturated, low-passed and modulated growl derived from the same source.
+The growl branch has makeup gain before the 55/45 dry/growl blend so both parts
+are audible. All three recipes leave encoding headroom, then participate in normal
+reference-level matching; timbre rather than quieter/louder playback differentiates
+them. These are three fixed shared recordings, not per-unit random variations.
+
+Specific death groups retain priority: armor (including L2 Shieldguard), living
+horses only, bones, zombies, wolves and treants keep their existing picks. Deer
+and goat riders get their ordinary cough family's timbre, never the horse cue.
+Humans and ordinary Woodland humanoids keep the original Cough 02. Old saved
+plain cough choices migrate to the applicable processed cough with local backups.
+Eight base death categories now use eleven shared recordings in total.

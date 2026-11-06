@@ -573,6 +573,47 @@
         "afade=t=in:d=0.01",
         "afade=t=out:st=0.560:d=0.1"
       ]
+    },
+    {
+      "id": "edits/death-cough-dwarf-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "sourceHash": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+      "name": "Dwarf death \u00b7 bassy Cough 02",
+      "intent": "Lower Cough 02 by two semitones and add low-end weight; normalize to the ordinary reference level.",
+      "preserveLevel": false,
+      "filters": [
+        "aresample=44100",
+        "asetrate=39290",
+        "aresample=44100",
+        "bass=g=4:f=180:w=1",
+        "lowpass=f=6500",
+        "volume=-6dB"
+      ]
+    },
+    {
+      "id": "edits/death-cough-elf-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "sourceHash": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+      "name": "Elf death \u00b7 slightly higher Cough 02",
+      "intent": "Raise Cough 02 by one semitone, retaining its basic character and normal matched level.",
+      "preserveLevel": false,
+      "filters": [
+        "aresample=44100",
+        "asetrate=46722",
+        "aresample=44100",
+        "volume=-6dB"
+      ]
+    },
+    {
+      "id": "edits/death-cough-beast-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "sourceHash": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+      "name": "Beast death \u00b7 cough and growl",
+      "intent": "Blend the recognizable cough with a lower, driven, softly saturated and modulated growl derived from the same recording; normal matched level.",
+      "preserveLevel": false,
+      "filters": [
+        "aresample=44100,asplit=2[dry][wet];[wet]asetrate=35003,aresample=44100,highpass=f=70,bass=g=4:f=150:w=1,volume=14dB,asoftclip=type=tanh:threshold=0.08:output=0.7,lowpass=f=2800,tremolo=f=32:d=0.45,volume=18dB[growl];[dry][growl]amix=inputs=2:weights='0.55 0.45':normalize=0:duration=longest:dropout_transition=0,volume=-6dB"
+      ]
     }
   ]
 }

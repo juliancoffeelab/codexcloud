@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "01bcd40bde9c2631ae4f22ba76ae7669df4fff1558f7e9171f576e3952aff7ad",
+  "catalogSha256": "7ccb61f745484f4e64331400d5f3afc654ee70f5f08656471b89d6649823253a",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -66443,6 +66443,237 @@
               "combinedPlaybackGainDb": -19.59,
               "playbackPeakDbFS": -17.78,
               "playbackRmsDbFS": -33.18,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/death-cough-dwarf-v1",
+      "name": "Dwarf death \u00b7 bassy Cough 02",
+      "pack": "audition-edits",
+      "path": "audio/listening/050242606d8000329a32.mp3",
+      "listeningSha256": "06268eb45ef5ff9edd604c91f15812ff7ed59c3becb47cb8ba63753094b71d0c",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -11.87,
+      "full": {
+        "duration": 0.3929,
+        "peakDbFS": -4.04,
+        "rmsDbFS": -22.56,
+        "strongest50msRmsDbFS": -14.42,
+        "leadingBelow55Ms": 5.2,
+        "playbackPeakDbFS": -15.91,
+        "playbackRmsDbFS": -34.43,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -11.87,
+          "duration": 0.3662,
+          "peakDbFS": -4.04,
+          "rmsDbFS": -22.26,
+          "strongest50msRmsDbFS": -14.42,
+          "leadingBelow55Ms": 5.2,
+          "playbackPeakDbFS": -15.91,
+          "playbackRmsDbFS": -34.13,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -11.87,
+            "playbackPeakDbFS": -15.91,
+            "playbackRmsDbFS": -34.43,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -11.87,
+              "playbackPeakDbFS": -15.91,
+              "playbackRmsDbFS": -34.13,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -14.86,
+            "playbackPeakDbFS": -18.9,
+            "playbackRmsDbFS": -37.42,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -14.86,
+              "playbackPeakDbFS": -18.9,
+              "playbackRmsDbFS": -37.12,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/death-cough-elf-v1",
+      "name": "Elf death \u00b7 slightly higher Cough 02",
+      "pack": "audition-edits",
+      "path": "audio/listening/2d2afab2442f76ec8df9.mp3",
+      "listeningSha256": "87d2abf9ba7726ffe8578582508c71b8c0149578a5cac80f1e786bf457f370dd",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -11.72,
+      "full": {
+        "duration": 0.3302,
+        "peakDbFS": -3.52,
+        "rmsDbFS": -22.32,
+        "strongest50msRmsDbFS": -14.57,
+        "leadingBelow55Ms": 3.8,
+        "playbackPeakDbFS": -15.24,
+        "playbackRmsDbFS": -34.04,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -11.72,
+          "duration": 0.3302,
+          "peakDbFS": -3.52,
+          "rmsDbFS": -22.32,
+          "strongest50msRmsDbFS": -14.57,
+          "leadingBelow55Ms": 3.8,
+          "playbackPeakDbFS": -15.24,
+          "playbackRmsDbFS": -34.04,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -11.72,
+            "playbackPeakDbFS": -15.24,
+            "playbackRmsDbFS": -34.04,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -11.72,
+              "playbackPeakDbFS": -15.24,
+              "playbackRmsDbFS": -34.04,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -14.71,
+            "playbackPeakDbFS": -18.23,
+            "playbackRmsDbFS": -37.03,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -14.71,
+              "playbackPeakDbFS": -18.23,
+              "playbackRmsDbFS": -37.03,
+              "playbackStrongest50msRmsDbFS": -29.28,
+              "flags": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "edits/death-cough-beast-v1",
+      "name": "Beast death \u00b7 cough and growl",
+      "pack": "audition-edits",
+      "path": "audio/listening/4918bea2e2ad3f53a95b.mp3",
+      "listeningSha256": "09067d040b54b4e190c26248e079439c00badf4f290d1e069be89f35e1a61030",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -7.2,
+      "full": {
+        "duration": 0.4408,
+        "peakDbFS": -7.53,
+        "rmsDbFS": -24.55,
+        "strongest50msRmsDbFS": -19.09,
+        "leadingBelow55Ms": 0.6,
+        "playbackPeakDbFS": -14.73,
+        "playbackRmsDbFS": -31.75,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -7.2,
+          "duration": 0.4408,
+          "peakDbFS": -7.53,
+          "rmsDbFS": -24.55,
+          "strongest50msRmsDbFS": -19.09,
+          "leadingBelow55Ms": 0.6,
+          "playbackPeakDbFS": -14.73,
+          "playbackRmsDbFS": -31.75,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ],
+      "contexts": {
+        "attack": {
+          "full": {
+            "combinedPlaybackGainDb": -7.2,
+            "playbackPeakDbFS": -14.73,
+            "playbackRmsDbFS": -31.75,
+            "playbackStrongest50msRmsDbFS": -26.29,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -7.2,
+              "playbackPeakDbFS": -14.73,
+              "playbackRmsDbFS": -31.75,
+              "playbackStrongest50msRmsDbFS": -26.29,
+              "flags": []
+            }
+          ]
+        },
+        "terrain": {
+          "full": {
+            "combinedPlaybackGainDb": -10.19,
+            "playbackPeakDbFS": -17.72,
+            "playbackRmsDbFS": -34.74,
+            "playbackStrongest50msRmsDbFS": -29.28,
+            "flags": []
+          },
+          "takes": [
+            {
+              "combinedPlaybackGainDb": -10.19,
+              "playbackPeakDbFS": -17.72,
+              "playbackRmsDbFS": -34.74,
               "playbackStrongest50msRmsDbFS": -29.28,
               "flags": []
             }

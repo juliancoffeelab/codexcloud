@@ -5735,3 +5735,21 @@ edits/ghost-scream-02-no-cough-v1,Ghost death · Scream 02 without opening cough
 edits/ghost-scream-02-no-cough-v1,Ghost death · Scream 02 without opening cough,audition-edits,attack,take-1,0,0.66,1.81,-13.59,-9.69,-16.6,-14.79,-30.19,-26.29,0.0,,False
 edits/ghost-scream-02-no-cough-v1,Ghost death · Scream 02 without opening cough,audition-edits,terrain,full,,0.66,1.81,-13.59,-9.69,-19.59,-17.78,-33.18,-29.28,0.0,,False
 edits/ghost-scream-02-no-cough-v1,Ghost death · Scream 02 without opening cough,audition-edits,terrain,take-1,0,0.66,1.81,-13.59,-9.69,-19.59,-17.78,-33.18,-29.28,0.0,,False
+edits/death-cough-dwarf-v1,Dwarf death · bassy Cough 02,audition-edits,base,full,,0.3929,-4.04,-22.56,-14.42,-11.87,-15.91,-34.43,-26.29,5.2,,False
+edits/death-cough-dwarf-v1,Dwarf death · bassy Cough 02,audition-edits,base,take-1,0,0.3662,-4.04,-22.26,-14.42,-11.87,-15.91,-34.13,-26.29,5.2,,False
+edits/death-cough-dwarf-v1,Dwarf death · bassy Cough 02,audition-edits,attack,full,,0.3929,-4.04,-22.56,-14.42,-11.87,-15.91,-34.43,-26.29,5.2,,False
+edits/death-cough-dwarf-v1,Dwarf death · bassy Cough 02,audition-edits,attack,take-1,0,0.3662,-4.04,-22.26,-14.42,-11.87,-15.91,-34.13,-26.29,5.2,,False
+edits/death-cough-dwarf-v1,Dwarf death · bassy Cough 02,audition-edits,terrain,full,,0.3929,-4.04,-22.56,-14.42,-14.86,-18.9,-37.42,-29.28,5.2,,False
+edits/death-cough-dwarf-v1,Dwarf death · bassy Cough 02,audition-edits,terrain,take-1,0,0.3662,-4.04,-22.26,-14.42,-14.86,-18.9,-37.12,-29.28,5.2,,False
+edits/death-cough-elf-v1,Elf death · slightly higher Cough 02,audition-edits,base,full,,0.3302,-3.52,-22.32,-14.57,-11.72,-15.24,-34.04,-26.29,3.8,,False
+edits/death-cough-elf-v1,Elf death · slightly higher Cough 02,audition-edits,base,take-1,0,0.3302,-3.52,-22.32,-14.57,-11.72,-15.24,-34.04,-26.29,3.8,,False
+edits/death-cough-elf-v1,Elf death · slightly higher Cough 02,audition-edits,attack,full,,0.3302,-3.52,-22.32,-14.57,-11.72,-15.24,-34.04,-26.29,3.8,,False
+edits/death-cough-elf-v1,Elf death · slightly higher Cough 02,audition-edits,attack,take-1,0,0.3302,-3.52,-22.32,-14.57,-11.72,-15.24,-34.04,-26.29,3.8,,False
+edits/death-cough-elf-v1,Elf death · slightly higher Cough 02,audition-edits,terrain,full,,0.3302,-3.52,-22.32,-14.57,-14.71,-18.23,-37.03,-29.28,3.8,,False
+edits/death-cough-elf-v1,Elf death · slightly higher Cough 02,audition-edits,terrain,take-1,0,0.3302,-3.52,-22.32,-14.57,-14.71,-18.23,-37.03,-29.28,3.8,,False
+edits/death-cough-beast-v1,Beast death · cough and growl,audition-edits,base,full,,0.4408,-7.53,-24.55,-19.09,-7.2,-14.73,-31.75,-26.29,0.6,,False
+edits/death-cough-beast-v1,Beast death · cough and growl,audition-edits,base,take-1,0,0.4408,-7.53,-24.55,-19.09,-7.2,-14.73,-31.75,-26.29,0.6,,False
+edits/death-cough-beast-v1,Beast death · cough and growl,audition-edits,attack,full,,0.4408,-7.53,-24.55,-19.09,-7.2,-14.73,-31.75,-26.29,0.6,,False
+edits/death-cough-beast-v1,Beast death · cough and growl,audition-edits,attack,take-1,0,0.4408,-7.53,-24.55,-19.09,-7.2,-14.73,-31.75,-26.29,0.6,,False
+edits/death-cough-beast-v1,Beast death · cough and growl,audition-edits,terrain,full,,0.4408,-7.53,-24.55,-19.09,-10.19,-17.72,-34.74,-29.28,0.6,,False
+edits/death-cough-beast-v1,Beast death · cough and growl,audition-edits,terrain,take-1,0,0.4408,-7.53,-24.55,-19.09,-10.19,-17.72,-34.74,-29.28,0.6,,False

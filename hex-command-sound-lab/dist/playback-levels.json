@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "01bcd40bde9c2631ae4f22ba76ae7669df4fff1558f7e9171f576e3952aff7ad",
+  "catalogSha256": "7ccb61f745484f4e64331400d5f3afc654ee70f5f08656471b89d6649823253a",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -14601,6 +14601,72 @@
           "full": -14.4,
           "takes": [
             -14.4
+          ]
+        }
+      }
+    },
+    "edits/death-cough-dwarf-v1": {
+      "full": -6.68,
+      "takes": [
+        -6.68
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -6.68,
+          "takes": [
+            -6.68
+          ]
+        },
+        "terrain": {
+          "full": -9.67,
+          "takes": [
+            -9.67
+          ]
+        }
+      }
+    },
+    "edits/death-cough-elf-v1": {
+      "full": -6.53,
+      "takes": [
+        -6.53
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -6.53,
+          "takes": [
+            -6.53
+          ]
+        },
+        "terrain": {
+          "full": -9.52,
+          "takes": [
+            -9.52
+          ]
+        }
+      }
+    },
+    "edits/death-cough-beast-v1": {
+      "full": -2.01,
+      "takes": [
+        -2.01
+      ],
+      "preserved": false,
+      "gameRelativeGain": false,
+      "contexts": {
+        "attack": {
+          "full": -2.01,
+          "takes": [
+            -2.01
+          ]
+        },
+        "terrain": {
+          "full": -5.0,
+          "takes": [
+            -5.0
           ]
         }
       }
