@@ -309,33 +309,6 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
     /^(English Longbow|Scythian Recurve) (Nock Arrow|Set Arrow|Draw)$/,
   );
 
-  const movement = mounted
-    ? find("ezduzziteh/horse-trotting", /Trot/)
-    : flying
-      ? union(cloth, spirit ? old("unit-commander") : [])
-      : aquatic
-        ? union(old("terrain-water"), creature(/^burble_/))
-        : slither
-          ? union(cloth, old("terrain-forest"), old("terrain-plains"))
-          : tree
-            ? union(wood, material(/^footstep_wood/))
-            : union(material(/^footstep_/), rpg(/^footstep/));
-  const recommendedMove = mounted
-    ? movement
-    : flying
-      ? named(movement, /cloth2$|unit-commander-1$/)
-      : aquatic
-        ? named(movement, /terrain-water-1$/)
-        : slither
-          ? named(movement, /^cloth2$/)
-          : tree
-            ? named(movement, /^creak1$|^impactWood_heavy_000$/)
-            : named(
-                movement,
-                armored
-                  ? /^footstep_concrete_00[01]$/
-                  : /^footstep_grass_00[01]$/,
-              );
   let tapPossible, tap;
   if (bone) {
     tapPossible = union(fx(/^item_wood_|^wood_|^chain_/), rpg(/^cloth/));
@@ -424,24 +397,9 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
     row(
       "move",
       "Movement",
-      mounted
-        ? "Mounted movement."
-        : flying
-          ? "Wing or spectral movement textures."
-          : aquatic
-            ? "Water movement textures."
-            : "Foot contact, with alternatives for different surfaces.",
-      recommendedMove,
-      movement,
-      {
-        caveat: mounted
-          ? "Trot is Foley; deer/goat uses a hoof-movement proxy."
-          : flying
-            ? "Cloth is a wing-motion proxy; no authentic wing recordings."
-            : aquatic
-              ? "Generated water and designed textures; no recorded swim cycle."
-              : "",
-      },
+      "A single board-piece click when the figurine finishes moving.",
+      old("select"),
+      [],
     ),
   ];
   for (const attack of entity.attacks) {
@@ -729,7 +687,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
     action.suggested = action.suggested.filter((id) => !excluded(id));
     action.alternatives = action.alternatives.filter((id) => !excluded(id));
     if (!palette) continue;
-    if (action.key === "tap" || (action.key === "move" && palette.move)) {
+    if (action.key === "tap") {
       const previous = [...action.suggested, ...action.alternatives];
       action.suggested = ids([palette.sound]).map((x) => x.id);
       action.alternatives = [

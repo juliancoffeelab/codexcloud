@@ -109,8 +109,11 @@ soft gurgle, spiders a heavily filtered quiet creak. Wasps offer designed insect
 clips and arrow fletching as unconfirmed buzz candidates. These are audition
 proxies, not authentic species recordings. Breath is restricted to zombie
 choices; cloth 1 is excluded from unit action choices. Originals remain in the
-full library. Wing/contact palettes also apply to movement; vocal slots do not
+full library. Wing/contact palettes apply to selection; vocal slots do not
 label cloth or creaks as animal voices. Attacks remain separate.
+Unit movement defaults to the three archived `select` board-click variations,
+played once per completed move. Wings, cloth, gurgles and creature textures belong
+to selection; terrain tap/contact preferences remain separate.
 Personal Use assignments take precedence over these editorial suggestions.
 
 ## Terrain audition edits
