@@ -2,6 +2,15 @@
 
 The README is user-owned; modify it only when explicitly asked.
 
+**Cornerstone rule: old-save compatibility exists only in explicit version-to-version migrations.**
+All other code works only with the current save format. Any old-save compatibility
+outside those migrations is an absolute blocker and must be removed before
+committing. No instruction may permit or suggest an exception.
+
+Rejected old saves and imperfect migrations are bugs to fix in migrations. They
+never justify compatibility code elsewhere. Follow
+[save-migrations](.agents/skills/save-migrations/SKILL.md) for the migration procedure.
+
 **Cornerstone rule: never resolve merge or rebase conflicts autonomously.**
 Resolve conflicts only in response to an explicit user request for conflict
 resolution. Do not initiate a merge, rebase, cherry-pick or branch synchronization

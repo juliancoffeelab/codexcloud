@@ -31,20 +31,13 @@ updates may migrate the underlying state and discard undo.
 Historical payloads are immutable turn-start checkpoints, including opening
 mission dialogue and campaign progress. Completed battles remain recoverable as
 the current continuation; they do not create a mid-turn historical checkpoint.
-Each inactive continuation also retains its latest recovery, including undo. This
-is one recovery per continuation, not an automatic history of mid-turn actions.
-On startup, history initialization distinguishes a fresh game, a known saved run,
-and an autosave without history identity. The last case records the available
-position as a distinct `resume` checkpoint before gameplay can overwrite recovery.
-It preserves the actual native checkpoint, seed, setup, and available undo; it does
-not reconstruct or label an unavailable historical opening. Migration to envelope
-version 33 added this record kind without running historical gameplay. Already lost
-checkpoints cannot be recovered from a later save. Adoption points are retained by
-automatic pruning and remain manually deletable.
+There is one exact-state current save, including undo. Starting another run or
+loading earlier progress replaces it; it must not archive the outgoing recovery.
+Previously recorded turn starts remain accessible when play continues differently.
 
-Starting another run or loading earlier progress parks the outgoing recovery
-before replacing the current one. Loading creates a distinct continuation, so
-playing differently cannot overwrite a previously reached continuation.
+Old saved data is handled exclusively by explicit version-to-version migrations.
+Runtime initialization must not adopt an old save into historical records or
+invent an unavailable turn start.
 
 ## Storage and retention
 
@@ -64,8 +57,7 @@ the debug report. It retains every one of the latest
 stable turn ordinal at intervals of 2, 4, 8 and so on in progressively older age
 bands. Mission starts are always exempt from automatic thinning. Whole-run cleanup protects only the currently played recovery. Historical turn
 starts, including the current turn’s start and mission starts, can be deleted
-manually. Automatic thinning preserves mission starts. Inactive continuation
-recoveries can also be deleted explicitly. Retained payloads are complete native snapshots, so a
+manually. Automatic thinning preserves mission starts. Retained payloads are complete native snapshots, so a
 missing ancestor does not prevent loading them.
 
 Each record carries stable run, continuation, checkpoint and parent identities.
@@ -73,7 +65,7 @@ These identities and self-contained payloads leave room for a future player-priv
 sync transport with divergent continuations. No sync, account credentials, planner
 state or network-dependent code is part of local persistence today.
 
-## Compatibility
+## Save migrations
 
 The battle envelope is version 34. The pure v32-to-v33 conversion extends the
 envelope for adopted positions without changing native game state. The v30-to-v31 conversion added optional

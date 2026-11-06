@@ -5,13 +5,15 @@ description: Use when changing save loading, save formats, migration code, histo
 
 # Save migrations
 
+Follow the [old-save cornerstone rule](../../../AGENTS.md): explicit
+version-to-version migrations are the only permitted old-save handling.
+
 Read this skill before changing save loading, save formats, migration code or
 historical conversion fixtures, including changes proposed during data-ownership
 audits.
 
-Backfilling or defaulting fields to make older saves compatible is migration work,
-regardless of whether it is called restoration, initialization or authored-default
-resolution.
+Missing or changed fields in old saves are handled by those version conversions,
+never by restoration, initialization or runtime defaults.
 
 ## Isolation
 
@@ -34,9 +36,8 @@ contract for field shapes and the current version.
 only resolved game state and the AI seed. They never contain planner workspaces,
 queued actions or selected but unapplied commands.
 
-The optional envelope `setup` records the opening side and enemy AI selection
-(policy and optional planner/recruiter overrides). Saves without it retain Classic
-AI. These are user preferences, not planner workspaces; they persist across
+The envelope `setup` records the opening side and enemy AI selection
+(policy and optional planner/recruiter overrides). These preferences persist across
 campaign missions and retries. Configured skirmish faction IDs live in native
 `state.armies` so recruitment survives native state restoration. Campaigns retain
 their authored pools.
@@ -58,8 +59,7 @@ from its pre-turn checkpoint. A single `localStorage.setItem` replaces the compl
 envelope; failed writes leave the previous checkpoint intact. Storage is optional,
 so persistence cannot be guaranteed when the browser refuses writes.
 
-Add one-step pure conversions under `src/save/migrations/` when the format
-changes. Normal writes and the controller accept only the current format.
+Add one-step pure conversions under `src/save/migrations/` when the format changes.
 
 Migrations run in JavaScript and may only manipulate data. They must not execute
 game commands, run simulations, invoke AI planners or reconstruct historical
@@ -76,5 +76,5 @@ with a fresh battle. Disabled or full browser storage does not stop play.
 
 ## Historical reference
 
-See [save migration history](references/history.md) for version-specific
-compatibility notes and individual conversion details.
+See [save migration history](references/history.md) for version-to-version
+conversion details.

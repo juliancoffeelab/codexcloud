@@ -1,9 +1,9 @@
 # Save migration history
 
-Version-specific compatibility notes for the save format. Consult the relevant
+Version-to-version save conversions. Consult the relevant
 section when changing or investigating a historical conversion.
 
-## Version-one compatibility
+## Version-one migration
 
 Both previous formats were version one. TS snapshots have a top-level `version`
 and store ownership without terrain. Native envelopes have `engine: "rust-wasm"`
