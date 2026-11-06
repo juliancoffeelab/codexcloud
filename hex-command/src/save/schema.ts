@@ -28,7 +28,7 @@ export interface HistoryIndex {
 export const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 function validEntry(value: unknown): value is CurrentEntry | TurnEntry {
-  if (!isRecord(value) || !["turn", "recovery"].includes(String(value.kind))) return false;
+  if (!isRecord(value) || !["turn", "flash"].includes(String(value.kind))) return false;
   const keys = [
     "id",
     "runId",
@@ -88,9 +88,9 @@ export function currentSave(value: unknown): BattleSave {
     throw new Error("Invalid current save envelope");
   return value as unknown as BattleSave;
 }
-export function currentRecovery(value: unknown): CurrentSave {
+export function currentFlashSave(value: unknown): CurrentSave {
   const save = currentSave(value);
-  if (save.progress.entry.kind !== "recovery") throw new Error("Expected the current recovery");
+  if (save.progress.entry.kind !== "flash") throw new Error("Expected the current flash save");
   return save as CurrentSave;
 }
 export function currentTurn(value: unknown): TurnSave {
@@ -104,7 +104,7 @@ export function currentHistoryIndex(value: unknown): HistoryIndex {
     value.version !== HISTORY_VERSION ||
     Object.keys(value).some((key) => key !== "version" && key !== "entries") ||
     !Array.isArray(value.entries) ||
-    value.entries.some((entry) => !validEntry(entry) || entry.kind === "recovery") ||
+    value.entries.some((entry) => !validEntry(entry) || entry.kind === "flash") ||
     new Set(value.entries.map((entry) => entry.id)).size !== value.entries.length
   )
     throw new Error(

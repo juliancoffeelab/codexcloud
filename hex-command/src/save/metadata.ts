@@ -16,7 +16,7 @@ export interface SaveInfo extends ProgressIdentity {
   missionStart: boolean;
 }
 export interface CurrentEntry extends SaveInfo {
-  kind: "recovery";
+  kind: "flash";
 }
 export interface TurnEntry extends SaveInfo {
   kind: "turn";
@@ -48,11 +48,11 @@ function describe(
     side: game.turn,
   };
 }
-export function describeRecovery(game: LiveGame, identity: ProgressIdentity): CurrentEntry {
+export function describeFlashSave(game: LiveGame, identity: ProgressIdentity): CurrentEntry {
   return {
     ...describe(game, identity),
     id: identity.branchId,
-    kind: "recovery",
+    kind: "flash",
     missionStart: false,
   };
 }

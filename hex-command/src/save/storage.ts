@@ -121,7 +121,7 @@ export async function readSession(): Promise<{ text: string | null; chooseNewGam
 export async function readSave(): Promise<string | null> {
   return (await readSession()).text;
 }
-/** Recovery and the idle/new-game choice change together. */
+/** The flash save and the idle/new-game choice change together. */
 export async function storeSave(text: string): Promise<void> {
   await repository([], "readwrite", (tx) => {
     tx.objectStore(STATE).put(text, CURRENT);

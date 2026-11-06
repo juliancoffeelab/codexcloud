@@ -1,7 +1,7 @@
 # Browser persistence
 
 Read when changing loading integration, normal save writes or interrupted-turn
-recovery. Read `src/save/schema.ts` for current envelope fields and
+flash save. Read `src/save/schema.ts` for current envelope fields and
 `src/save/` for the storage implementation.
 
 Opening side, AI selection and configured skirmish armies are durable user setup,

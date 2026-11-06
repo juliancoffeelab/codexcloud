@@ -4,7 +4,7 @@ import type { CurrentSave, TurnSave } from "./schema";
 import { validSetup } from "../game/setup";
 import { storeSave } from "./storage";
 import {
-  describeRecovery,
+  describeFlashSave,
   describeTurn,
   newRun,
   type ProgressIdentity,
@@ -70,7 +70,7 @@ export class TurnCheckpoint {
 export async function saveBattle(game: LiveGame, pendingEnemy = false): Promise<void> {
   const text = serializeBattle(game, pendingEnemy, {
     undo: [],
-    progress: { entry: describeRecovery(game, newRun()) },
+    progress: { entry: describeFlashSave(game, newRun()) },
   });
   if (text) {
     try {

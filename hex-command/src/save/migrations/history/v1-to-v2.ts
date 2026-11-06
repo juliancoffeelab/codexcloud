@@ -1,6 +1,6 @@
 import { isRecord } from "../../schema";
 
-/** Retire parked recoveries and import-generated positions; preserve real turn starts. */
+/** Retire parked current-state snapshots and import-generated positions; preserve real turn starts. */
 export function migrateHistoryV1ToV2(value: Record<string, unknown>): {
   value: unknown;
   removedIds: string[];

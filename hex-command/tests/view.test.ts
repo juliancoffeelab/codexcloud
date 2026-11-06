@@ -163,7 +163,7 @@ test("Command facade forwards calls without exposing reads", async () => {
       objectives: null,
       units: [],
     }),
-    savedRecovery: async () => undefined,
+    savedFlashSave: async () => undefined,
     restoreProgress: async () => {},
     deleteSavedProgress: async () => {},
     deleteSavedRun: async () => {},

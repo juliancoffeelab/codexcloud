@@ -198,7 +198,7 @@ test("An invalid native checkpoint is wiped and leaves a playable battle", async
 });
 
 test("Reloading during an enemy turn replays the whole phase from its boundary", async () => {
-  // Node has no image decoder; artwork failure must not affect turn recovery.
+  // Node has no image decoder; artwork failure must not affect turn persistence.
   vi.stubGlobal(
     "Image",
     class {

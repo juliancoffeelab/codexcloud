@@ -1,11 +1,11 @@
 import { currentTurn, type TurnSave } from "./schema";
 import { CURRENT, NEW_GAME, STATE, ENTRIES, TURNS, repository, request } from "./storage";
-import { readCurrentRecovery, recoveryEntry } from "./load";
+import { readCurrentFlashSave, flashSaveEntry } from "./load";
 import { TurnCheckpoint } from "./write";
 import type { CurrentEntry, TurnEntry } from "./metadata";
 
 export function currentProgress(): Promise<CurrentEntry | undefined> {
-  return readCurrentRecovery();
+  return readCurrentFlashSave();
 }
 /** Metadata is separate from payloads: listing never deserializes battlefields. */
 export async function listProgress(): Promise<TurnEntry[]> {
@@ -43,13 +43,13 @@ export async function deleteRun(runId: string): Promise<void> {
   await repository([ENTRIES, TURNS], "readwrite", async (tx) => {
     const state = tx.objectStore(STATE);
     const raw = await request<string | undefined>(state.get(CURRENT));
-    const ownsRecovery = raw !== undefined && recoveryEntry(raw).runId === runId;
+    const ownsFlashSave = raw !== undefined && flashSaveEntry(raw).runId === runId;
     const ids = await request(tx.objectStore(ENTRIES).index("runId").getAllKeys(runId));
     for (const id of ids) {
       tx.objectStore(ENTRIES).delete(id);
       tx.objectStore(TURNS).delete(id);
     }
-    if (ownsRecovery) {
+    if (ownsFlashSave) {
       state.delete(CURRENT);
       state.put(true, NEW_GAME);
     }

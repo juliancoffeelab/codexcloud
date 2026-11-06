@@ -44,7 +44,7 @@ its old implementation. `src/save/schema.ts` owns the current envelope and
    and relevant existing suites; a conversion change does not waive its test
    value-over-burden rule. Confirm input purity and rejection of malformed
    affected shapes instead of inventing state to make them load.
-4. For loading integration, writes or interrupted-turn recovery, read
+4. For loading integration, writes or interrupted-turn persistence, read
    [browser persistence](references/persistence.md). Normal writes and controllers
    accept only the current format; loading is the sole migration entry point.
 

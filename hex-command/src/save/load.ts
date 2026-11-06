@@ -4,7 +4,7 @@ import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migrations";
 import { wipeSave, storeSave, readSave, readSession } from "./storage";
 import { importLocalStorage, pendingImport } from "./import";
-import { currentRecovery, currentTurn } from "./schema";
+import { currentFlashSave, currentTurn } from "./schema";
 import type { CurrentEntry } from "./metadata";
 import type { BattleSave } from "./schema";
 
@@ -15,7 +15,7 @@ export interface LoadedBattle {
   undo?: import("../game/undo").SavedUndoEntry[];
   notice?: string;
   storageFailure?: string;
-  retainedRecovery?: CurrentEntry;
+  retainedFlashSave?: CurrentEntry;
   chooseNewGame?: boolean;
   importPending?: boolean;
 }
@@ -24,12 +24,12 @@ function decodeBattleText(raw: string) {
   return migrateSave(JSON.parse(raw));
 }
 /** Read ownership without requiring a migration write or starting a battle. */
-export function recoveryEntry(raw: string): CurrentEntry {
-  return currentRecovery(decodeBattleText(raw).save).progress.entry;
+export function flashSaveEntry(raw: string): CurrentEntry {
+  return currentFlashSave(decodeBattleText(raw).save).progress.entry;
 }
-export async function readCurrentRecovery(): Promise<CurrentEntry | undefined> {
+export async function readCurrentFlashSave(): Promise<CurrentEntry | undefined> {
   const raw = await readSave();
-  return raw === null ? undefined : recoveryEntry(raw);
+  return raw === null ? undefined : flashSaveEntry(raw);
 }
 /** Validate without leaving a battle handle alive during the storage transaction. */
 export async function initializeRepository(factory: GameEngineFactory): Promise<void> {
@@ -37,19 +37,19 @@ export async function initializeRepository(factory: GameEngineFactory): Promise<
     const restored = restoreBattleText(
       factory,
       JSON.stringify(save),
-      save.progress.entry.kind === "turn" ? "turn" : "recovery",
+      save.progress.entry.kind === "turn" ? "turn" : "flash",
     );
     restored.game.dispose();
   });
 }
-/** Migration is data-only. Validate both recovery and move undo through the native engine. */
+/** Migration is data-only. Validate both the flash save and move undo through the native engine. */
 export function restoreBattleText(
   factory: GameEngineFactory,
   raw: string,
-  kind: "recovery" | "turn" = "recovery",
+  kind: "flash" | "turn" = "flash",
 ): LoadedBattle & { save: BattleSave; migrated: boolean } {
   const { save: converted, migrated } = decodeBattleText(raw);
-  const save = kind === "recovery" ? currentRecovery(converted) : currentTurn(converted);
+  const save = kind === "flash" ? currentFlashSave(converted) : currentTurn(converted);
   if (save.undo?.length) {
     if (save.pendingEnemy) throw new Error("Pending enemy turns cannot retain move undo.");
     nativeValue(factory.validateUndo(save.checkpoint.state, save.undo));
@@ -63,12 +63,12 @@ export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBatt
   try {
     await initializeRepository(factory);
   } catch (error) {
-    let retainedRecovery: CurrentEntry | undefined;
+    let retainedFlashSave: CurrentEntry | undefined;
     let chooseNewGame = false;
     try {
       const data = await pendingImport();
       if (!data) return loadBattle(factory);
-      retainedRecovery = data.current?.progress.entry;
+      retainedFlashSave = data.current?.progress.entry;
       chooseNewGame = data.chooseNewGame;
     } catch {
       /* Preserve malformed source for diagnostics. */
@@ -77,7 +77,7 @@ export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBatt
       game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
       pendingEnemy: false,
       storageFailure: `${String(error)}\n${error instanceof Error ? (error.stack ?? "") : ""}`,
-      retainedRecovery,
+      retainedFlashSave,
       chooseNewGame,
       importPending: true,
     };
@@ -103,7 +103,7 @@ export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBatt
             game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
             pendingEnemy: false,
             storageFailure: String(error),
-            retainedRecovery: currentRecovery(restored.save).progress.entry,
+            retainedFlashSave: currentFlashSave(restored.save).progress.entry,
             notice:
               "Saved progress needs an update, but storage refused the write. Free storage in Saved progress, then reload to restore it.",
           };

@@ -27,21 +27,21 @@ a quiet action after that playthrough's turns. Settings also exposes Save game,
 which records a turn snapshot without move undo. Manual saves are labelled and
 are exempt from automatic pruning.
 
-A failed write leaves the previous committed recovery available. A dialog explains
+A failed write leaves the previous committed flash save available. A dialog explains
 whether storage is full, access is blocked, or an internal error occurred. Capacity
 failures offer save management; cleanup automatically saves pending progress when
 possible. The player may acknowledge a failure and continue without repeated
 interruptions for the same condition. There is no manual retry control. Other
 failures provide appropriate browser guidance or access to the debug report.
 
-## Recovery and history
+## Flash save and history
 
-The IndexedDB `state.current` record is the atomic current recovery envelope. Completed player
+The IndexedDB `state.current` record is the atomic flash save envelope. Completed player
 actions write the complete native checkpoint together with compact backward
 changes for the available move undo. Unchanged terrain and rosters are stored
 once. Combat, recruitment, promotion, item drops and turn changes retain
 their existing undo barriers. UI selection and AI planner workspaces are not
-saved. An enemy turn retains the pre-turn recovery with `pendingEnemy: true`
+saved. An enemy turn retains the pre-turn flash save with `pendingEnemy: true`
 throughout its actions, then writes the fully resolved result. Enemy-first games
 retain the untouched opening enemy state. Reload resumes from these safe points;
 updates may migrate the underlying state and discard undo.
@@ -49,9 +49,9 @@ updates may migrate the underlying state and discard undo.
 Automatic historical payloads are immutable turn-start checkpoints, including opening
 mission dialogue and campaign progress. Completed battles remain recoverable as
 the current continuation; they do not create a mid-turn historical checkpoint.
-There is one exact-state current recovery, including undo, alongside any
+There is one exact-state current flash save, including undo, alongside any
 explicitly requested manual checkpoints. Starting another run or
-loading earlier progress replaces it; it must not archive the outgoing recovery.
+loading earlier progress replaces it; it must not archive the outgoing flash save.
 Previously recorded turn starts remain accessible when play continues differently.
 
 Old saved data is handled exclusively by explicit version-to-version migrations.
@@ -64,18 +64,18 @@ invent an unavailable turn start.
 operations live in `src/save/progress.ts`. The `hex-command-saves` database has
 separate `state`, `entries` and `turns` stores. Metadata indexes support game and
 save-time queries without deserializing battlefields. The dialog renders thirty
-entries at a time. Recovery writes do not scan or rewrite historical payloads.
+entries at a time. Flash save writes do not scan or rewrite historical payloads.
 
 History insertion, replacement and deletion update metadata and payloads in one
-transaction. Whole-campaign deletion checks recovery ownership and removes the
-matching recovery in that same transaction. Recovery writes clear the idle choice
+transaction. Whole-campaign deletion checks flash save ownership and removes the
+matching flash save in that same transaction. Flash save writes clear the idle choice
 atomically. Transactions request strict durability; callers report success after
 commit. Action checkpoints are captured before queuing, so a delayed write cannot
 serialize a later action or another session. Enemy work waits for its boundary
 write attempt before proceeding.
 
 Tabs share database transactions without owning gameplay. The last committed
-recovery write wins. History transactions operate on current database records,
+flash save write wins. History transactions operate on current database records,
 so competing additions cannot overwrite an entire stale index. A locally deleted
 active game cancels that session's pending work. Another active tab may still save
 its own game afterward; there is no tab-control or takeover protocol.
@@ -84,13 +84,13 @@ Automatic thinning uses save time across branches within each game. The latest
 five minutes remain dense, followed by one save per five minutes up to an hour,
 one per hour up to a day, one per day up to a week, and one per week up to thirty
 days. Older ordinary turn saves expire. Chapter starts, manual saves, the latest
-automatic turn in each game, and the sole current recovery remain untouched by
+automatic turn in each game, and the sole current flash save remain untouched by
 automatic cleanup. Retention maintenance runs before and after turn insertion so
 eligible old history can free space before a new payload is written. No-op
 maintenance does not rewrite unchanged records.
 
 Individual historical saves can be deleted manually. Delete campaign saves
-removes the selected playthrough's entire history and any stored current recovery
+removes the selected playthrough's entire history and any stored current flash save
 belonging to it, with no protected checkpoints. If it is the locally played game,
 a prominent red warning explains that deletion ends play and opens the existing
 New game UI. Confirming cancels pending work and prevents autosaves from recreating
@@ -101,7 +101,7 @@ warning clears only when saving succeeds; no success banner is added.
 
 History writers accept opaque turn-boundary or explicitly requested manual
 turn snapshots, all using the same snapshot-only format without undo. They reject
-current recoveries and arbitrary serialized bytes. Current recovery
+current flash saves and arbitrary serialized bytes. Current flash save
 has a separate metadata query and is never a historical turn entry.
 
 Each record carries stable run, continuation, checkpoint and parent identities.
@@ -115,21 +115,23 @@ The current battle envelope is version 37. The imported localStorage history
 index reaches version 4 before being split into IndexedDB records.
 The explicit 36→37 and index 3→4 steps collapse the earlier manual variant into
 the shared turn-snapshot format, discard historical undo, and record manual status
-only as retention/presentation metadata. Current recovery retains its undo.
+only as retention/presentation metadata. Current flash save retains its undo.
 The explicit 34→35 conversion resolves missing identities, setup, experience and
 combat RNG from frozen defaults. It removes the old imported-position variant and
 discards old undo. Native restoration validates the converted state without
 repairing it or consulting historical formats.
 
 The explicit history-index 1→2 conversion retains genuine turn starts and removes
-archived recoveries and imported positions. Retired payloads are excluded from the IndexedDB import. Automatic history
-cleanup leaves the sole current recovery untouched. Conversion never reconstructs
+archived flash saves and imported positions. Retired payloads are excluded from the IndexedDB import. Automatic history
+cleanup leaves the sole current flash save untouched. Conversion never reconstructs
 unavailable turn starts.
 
 Storage version 1→2 imports localStorage through an explicit pure conversion in
 `src/save/migrations/storage-v1-to-v2.ts`. Existing save-envelope and index
-migrations run first. Native validation checks every retained checkpoint and
-recovery undo before writing. All imported records and the initialization marker
+migrations produce current envelopes. The storage conversion renames the former
+current-save discriminator to `"flash"`, without changing the envelope version.
+Native validation checks every retained checkpoint and
+flash save undo before writing. All imported records and the initialization marker
 commit in a single transaction. No source record is removed before that commit.
 An empty database is also initialized explicitly: its lack of current play is
 still authoritative. A short-lived Web Lock serializes source import and source
@@ -144,7 +146,7 @@ There is no forced reload, reconciliation or localStorage gameplay backend.
 
 A failed import leaves the original source intact and the database uninitialized.
 The loading boundary exposes canonical migration metadata for cleanup; source
-cleanup is restricted to migration recovery, then import is retried. Normal
+cleanup is restricted to migration cleanup, then import is retried. Normal
 repository operations refuse an uninitialized database. A failed conversion or
 native validation retains the source for diagnosis. Failed writes keep prior
 committed data. Debug reports include raw records from every IndexedDB store and
@@ -152,7 +154,7 @@ any remaining import source.
 
 Subsequent stored-envelope conversions still use the loading boundary and commit
 before installing the restored game. Cleanup resolves ownership before mutation.
-Deleting another campaign retries retained recovery; deleting its own campaign
+Deleting another campaign retries retained flash save; deleting its own campaign
 ends the session and opens New game. Opening save management dismisses any pending
 Load confirmation. No historical shape is interpreted by gameplay, browsing or
 repository operations. Conversion code and frozen historical data remain under

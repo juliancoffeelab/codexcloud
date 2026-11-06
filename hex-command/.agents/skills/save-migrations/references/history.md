@@ -57,7 +57,7 @@ Older native saves may contain resolved state halfway through an enemy phase.
 They have no pre-turn state to roll back to: completed actions remain, while
 unexecuted actions are discarded. Their converted data is persisted immediately
 after validation, without playing any remaining enemy actions.
-This is recovery of a historical format, not permission to save partial phases.
+This restores a historical format, not permission to save partial phases.
 New saves must persist only the boundaries of the entire enemy turn, even when
 that turn contains many units and commands.
 
@@ -323,18 +323,18 @@ Both version-31 families, later saved-progress checkpoints and earlier versions
 therefore converge on one format. Native validation follows conversion. Run and
 checkpoint identities, setup, seed, units, treasury and flag history are retained.
 Older undo is discarded. Historical payloads migrate through the same loading
-entry point as recovery; the history index remains unchanged.
+entry point as flash save; the history index remains unchanged.
 
-## Version 35: current recovery and turn-only history
+## Version 35: current flash save and turn-only history
 
 The 34→35 conversion makes setup and save identities explicit, supplies frozen
 combat RNG and unit-experience defaults where absent, and discards old undo.
-A current imported-position marker becomes recovery metadata; it is not a turn
+A current imported-position marker becomes flash save metadata; it is not a turn
 start. Normal restoration neither fills old fields nor clamps saved hit points.
 
 History index version 1→2 is a separate explicit data conversion. It keeps actual
-turn-start entries and retires archived recovery and imported-position entries.
-Their payloads are deleted after committing the converted index. Current recovery
+turn-start entries and retires archived flash save and imported-position entries.
+Their payloads are deleted after committing the converted index. Current flash save
 lives at its separate fixed key and is not deleted. Missing metadata on an old
 current save does not create historical records.
 
@@ -343,26 +343,28 @@ current save does not create historical records.
 The explicit 35→36 and history-index 2→3 steps preserve existing checkpoint facts
 and metadata. The target model adds explicitly requested manual saves with their
 own identities and move undo. Automatic turn snapshots still contain no undo;
-current recovery remains separate. No old representation is accepted by runtime
+current flash save remains separate. No old representation is accepted by runtime
 readers or writers. Manual saves are exempt from age-based automatic retention,
 but explicit individual or campaign deletion has no exemptions.
 
 ## Version 37 and history index 4: one snapshot-only history format
 
-The explicit 36→37 conversion removes the historical manual-recovery variant.
+The explicit 36→37 conversion removes the historical manual snapshot variant.
 Both automatic and explicit checkpoints use turn snapshots with no undo field.
 A required manual boolean identifies explicit saves for retention and display;
-it does not change the payload contract. Current recovery keeps its undo.
+it does not change the payload contract. Current flash save keeps its undo.
 Index 3→4 makes the same metadata conversion. Older shapes are interpreted only
 inside the version conversions; normal code accepts only the target model.
 
 ## Storage version 2: IndexedDB
 
-`storage-v1-to-v2.ts` converts the localStorage recovery and history into current
-recovery, metadata and snapshot records. It runs envelope/index migrations without
+`storage-v1-to-v2.ts` converts the localStorage flash save and history into current
+flash save, metadata and snapshot records. It runs envelope/index migrations without
 changing native facts or creating missing history. Native validation precedes the
 single import transaction. The initialization marker commits with all records;
 localStorage remains untouched until success. Initialized IndexedDB wins over
 later localStorage writes, including writes from tabs running an older build.
+Storage conversion changes the former `"recovery"` discriminator to `"flash"`.
+Conversions from earlier envelopes also produce the current flash-save shape.
 The native save envelope remains version 37; the IndexedDB database schema starts
 at version 1, independently of save-envelope and storage-source versions.

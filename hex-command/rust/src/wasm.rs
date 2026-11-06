@@ -210,7 +210,7 @@ impl NativeEngineFactory {
     pub fn restore(&mut self, saved: Ts<SavedGame>) -> Result<Ts<BattleResponse>, JsError> {
         encode(decode::<SavedGame>(saved).and_then(|saved| self.restore_saved(saved)))
     }
-    /// Validate compact recovery history without constructing battles or presentation views.
+    /// Validate compact flash-save undo history without constructing battles or presentation views.
     #[wasm_bindgen(js_name = validateUndo)]
     pub fn validate_undo(&self, request: Ts<UndoValidation>) -> Result<Ts<UnitResponse>, JsError> {
         encode(

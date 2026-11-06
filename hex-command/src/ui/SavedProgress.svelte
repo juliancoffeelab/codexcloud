@@ -13,7 +13,7 @@
   }: { actions: BattleCommands; view: BattleView; onLoad?: () => void } = $props();
   let browser: HTMLElement;
   let entries = $state<TurnEntry[]>([]);
-  let recovery = $state<CurrentEntry>();
+  let flashSave = $state<CurrentEntry>();
   let failure = $state("");
   let busy = $state(false);
   let expanded = $state<Record<string, boolean>>({});
@@ -22,7 +22,7 @@
   let summaryErrors = $state<Record<string, string>>({});
   let reading = $state<Record<string, boolean>>({});
   let generation = 0;
-  const games = $derived(savedGames([...entries, ...(recovery ? [recovery] : [])]));
+  const games = $derived(savedGames([...entries, ...(flashSave ? [flashSave] : [])]));
   const histories = $derived.by(() => {
     const result = new Map<string, TurnEntry[]>();
     for (const entry of entries) {
@@ -69,11 +69,11 @@
     const requestGeneration = generation;
     const [history, current] = await Promise.all([
       actions.savedProgress(),
-      actions.savedRecovery(),
+      actions.savedFlashSave(),
     ]);
     if (requestGeneration !== generation) return;
     entries = history;
-    recovery = current;
+    flashSave = current;
   }
   export async function open() {
     confirmation?.close();
@@ -82,7 +82,7 @@
     clearTimeout(armTimer);
     generation++;
     entries = [];
-    recovery = undefined;
+    flashSave = undefined;
     expanded = {};
     limits = {};
     summaries = {};
@@ -136,7 +136,7 @@
       name: runName(game.latest),
       started: firstSaved(game.earliest),
       current: view.activeRunId === id,
-      count: (histories.get(id)?.length ?? 0) + (recovery?.runId === id ? 1 : 0),
+      count: (histories.get(id)?.length ?? 0) + (flashSave?.runId === id ? 1 : 0),
     });
   }
   async function confirmAction() {
