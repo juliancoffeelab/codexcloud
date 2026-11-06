@@ -6,9 +6,7 @@ description: Use for an intended live human playtest, or immediately when the us
 # Deploy
 
 Enter this workflow for an explicit live deployment request or an intended live
-human playtest. For a save-only release request, use
-[publish](../publish/SKILL.md). Follow [AGENTS.md](../../../AGENTS.md) for the
-repository delivery policy.
+human playtest. Follow [AGENTS.md](../../../AGENTS.md) for repository delivery policy.
 
 For an intended human playtest, complete relevant implementation validation and
 commit/push required changes before entering this workflow.
@@ -25,7 +23,7 @@ Site. Preview configuration and saved releases are separate; never substitute th
 main Site when a preview is requested.
 
 Invoke the selected command through the exact
-[operation transport](../publish/operations.md#code-mode-invocation).
+[operation transport](operations.md#code-mode-invocation).
 It resolves the exact committed release internally, reusing its saved version
 when available and building only when necessary. It passes that receipt directly
 to deployment and waits for the terminal result. Those operations own source synchronization,

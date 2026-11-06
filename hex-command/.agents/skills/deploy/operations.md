@@ -1,12 +1,9 @@
 # Sites operation transport
 
-Use this recipe when invoking preparation or deployment. It is the host adapter
-for `scripts/site-operation.mjs`, not a preliminary inspection step. Work from the
-game root. This document owns the calling convention; the skill selects the mode.
-
-- `prepare` returns an unpublished release receipt.
-- `deploy` resolves the exact `HEAD` release, reusing an exact saved version or
-  preparing it when necessary, then deploys that version and returns the result.
+Use this recipe to invoke `node scripts/site-operation.mjs deploy` from the game
+root. It is the host adapter, not a preliminary inspection step. The operation
+resolves the exact `HEAD` release, reusing its saved version or preparing it when
+necessary, then deploys that version and returns the result.
 
 The module API is `runSiteOperation(tools, {mode, cwd, message?, preview?})`.
 `preview` is a positive PR number (CLI `--preview 59`). Bare `--preview`, booleans,
@@ -20,9 +17,8 @@ checkout to rediscover the same identity. Creation races/timeouts are reconciled
 through discovery rather than blindly creating another Site. Known identities
 are checked against the requested PR before any source push.
 
-Plain `prepare`/`deploy` continues to use the committed `.openai/hosting.json`.
-The old shared preview manifest is no longer used. Neither main nor other PRs'
-previews are updated by a numbered preview operation.
+Plain `deploy` uses the committed `.openai/hosting.json`. A numbered preview
+operation leaves the main Site and other PR previews alone.
 
 `tools` supplies the enabled execution and native Sites functions by name. Internally,
 `prepareSite(tools, {cwd, message?})` returns a receipt with `project_id`,
@@ -46,20 +42,18 @@ source synchronization, build, packaging or save is repeated. A cache miss
 fetches audience and credentials concurrently, installs locked dependencies only
 when needed, builds and packages once. Owner-private deployments use the native
 combined save-and-deploy operation when available, avoiding a separate save/deploy
-round trip; save-only requests never use it. Cache failures
-do not block publication. A deleted saved version is rebuilt, never replaced
+round trip. Cache failures do not block publication. A deleted saved version is rebuilt, never replaced
 with an older release. Transient native failures retry the same operation once.
 No tests, formatting, quality gates or post-deployment browser checks run here.
 
 ## Code-mode invocation
 
-Run the following in `functions.exec`. Set `mode` to the skill’s operation and
-`cwd` to the game checkout. The snippet relays JSON-lines messages until the
+Run the following in `functions.exec`, with `cwd` set to the game checkout. The snippet relays JSON-lines messages until the
 operation finishes; it does not read helper implementations. Transport polling
 is distinct from deciding or polling deployment status, which the operation owns.
 
 ```js
-const mode = "deploy"; // "prepare" for an unpublished release
+const mode = "deploy";
 const cwd = "/workspace/codexcloud/hex-command";
 const preview = undefined; // a positive PR number, e.g. 59, for its independent preview
 let cell = await tools.exec_command({

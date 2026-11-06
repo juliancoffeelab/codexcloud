@@ -47,8 +47,7 @@ Use [testing](../.agents/skills/testing/SKILL.md) for validation scope and test 
 - [Combat simulation](../.agents/skills/combat-simulation/SKILL.md) for AI,
   balance experiments and reports.
 - [Save migrations](../.agents/skills/save-migrations/SKILL.md) for persistence.
-- [Deploy](../.agents/skills/deploy/SKILL.md) for live publication;
-  [publish](../.agents/skills/publish/SKILL.md) for an unpublished release.
+- [Deploy](../.agents/skills/deploy/SKILL.md) for live publication.
 - [Live play](../.agents/skills/live-play/SKILL.md) for explicitly authorized
   browser gameplay.
 

@@ -42,8 +42,6 @@ implementation, checks, commits or deployment only when the user asks to continu
 - [battlefield-contract](.agents/skills/battlefield-contract/SKILL.md): Use when changing unit artwork, terrain authoring, battlefield rendering or runtime game-data ownership.
 - [save-migrations](.agents/skills/save-migrations/SKILL.md): Use when changing or
   auditing save loading, save formats, migrations, or their data and dependencies.
-- [publish](.agents/skills/publish/SKILL.md): Use when the user requests an
-  unpublished release.
 - [deploy](.agents/skills/deploy/SKILL.md): Use for an intended live human playtest, or when
   the user asks to deploy, publish or update the live game.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
