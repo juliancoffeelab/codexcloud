@@ -11,21 +11,21 @@ const companion = (game: Game) =>
   required(game.units.find((unit) => unit.side === "player" && unit.character === "lark"));
 
 // Dain's death changes this debrief and future missions, but retry rewinds current-stage deaths.
-test("Companion deaths persist but retry restores incoming companions", () => {
+test("Companion deaths persist but retry restores incoming companions", async () => {
   const game = Game.startCampaign("green-accord", 1);
   game.units = game.units.filter((unit) => unit.character !== "dain");
   game.round = 4;
   game.gold.player = 23;
-  saveBattle(game);
-  const restored = loadBattle().game;
+  await saveBattle(game);
+  const restored = (await loadBattle()).game;
   assert.equal(restored.mapId, game.mapId);
   assert.equal(restored.round, 4);
   assert.equal(restored.gold.player, 23);
   assert.deepEqual(restored.units, game.units);
   assert(restored.campaign?.flags["dain-dead"]?.at(-1)?.state);
   assert(restored.retryCampaignMission().units.some((unit) => unit.character === "dain"));
-  saveBattle(restored);
-  assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
+  await saveBattle(restored);
+  assert.deepEqual((await loadBattle()).game.snapshot(), restored.snapshot());
 });
 
 // A legacy victory cannot resurrect Lark; surviving Lark keeps the already earned victory.
@@ -37,11 +37,11 @@ for (const mission of [0, 2]) {
     game.campaign!.completed = mission === 2;
     game.round = 9;
     game.gold.player = 31;
-    saveBattle(game);
-    assert.equal(loadBattle().game.winner, "player");
+    await saveBattle(game);
+    assert.equal((await loadBattle()).game.winner, "player");
     game.units = game.units.filter((unit) => unit.character !== "lark");
-    saveBattle(game);
-    const restored = loadBattle().game;
+    await saveBattle(game);
+    const restored = (await loadBattle()).game;
     assert.equal(restored.mapId, game.mapId);
     assert.equal(restored.winner, "enemy");
     assert.equal(restored.campaign?.completed, false);
@@ -58,8 +58,8 @@ for (const mission of [0, 2]) {
     );
     assert.throws(() => restored.nextCampaignMission([]), /NoNextMission/);
     assert.equal(companion(restored.retryCampaignMission()).character, "lark");
-    saveBattle(restored);
-    assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
+    await saveBattle(restored);
+    assert.deepEqual((await loadBattle()).game.snapshot(), restored.snapshot());
   });
 }
 

@@ -23,7 +23,7 @@
   let screen = $state<Screen>("hub");
   let body = $state<HTMLDivElement>();
   let frame: { focusHeading(): void };
-  let savedGames: { open(): void };
+  let savedGames: { open(): Promise<void> };
   let saving = $state(false);
   let saved = $state(false);
   async function saveGame() {
@@ -53,7 +53,7 @@
     rememberPosition();
     const previous = screen;
     screen = next;
-    if (next === "saves") savedGames.open();
+    if (next === "saves") void savedGames.open();
     await tick();
     if (!dialog?.open || screen !== next || !body) return;
     body.scrollTop = positions.get(next) ?? 0;
@@ -76,7 +76,7 @@
   }
   export function openSavedGames() {
     screen = "saves";
-    savedGames.open();
+    void savedGames.open();
     dialog?.showModal();
     void tick().then(() => {
       if (screen === "saves" && dialog?.open && body) {

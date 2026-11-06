@@ -67,14 +67,14 @@ export class TurnCheckpoint {
   }
 }
 /** Write a new current snapshot. This API never inserts historical records. */
-export function saveBattle(game: LiveGame, pendingEnemy = false): void {
+export async function saveBattle(game: LiveGame, pendingEnemy = false): Promise<void> {
   const text = serializeBattle(game, pendingEnemy, {
     undo: [],
     progress: { entry: describeRecovery(game, newRun()) },
   });
   if (text) {
     try {
-      storeSave(text);
+      await storeSave(text);
     } catch {
       /* Storage is optional for direct consumers. */
     }

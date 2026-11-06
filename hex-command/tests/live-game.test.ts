@@ -1,3 +1,4 @@
+import { readSave, storeSave } from "../src/save/storage";
 import { loadBattle as loadLiveBattle } from "../src/save/load";
 import { saveBattle as writeBattle } from "../src/save/write";
 import assert from "node:assert/strict";
@@ -30,9 +31,9 @@ afterEach(() => {
   factory.dispose();
 });
 
-test("Live controller uses native movement/undo and keeps previous UI queries immutable", () => {
-  saveBattle(developerFixture());
-  const controller = new BattleController(async () => {}, factory);
+test("Live controller uses native movement/undo and keeps previous UI queries immutable", async () => {
+  await saveBattle(developerFixture());
+  const controller = await BattleController.create(async () => {}, factory);
   let published: BattleView | undefined;
   const unsubscribe = controller.view.subscribe((view) => {
     published = view;
@@ -50,7 +51,8 @@ test("Live controller uses native movement/undo and keeps previous UI queries im
   assert.throws(() => Object.assign(previous.gold, { player: 99 }), TypeError);
   controller.undoMove();
   assert.deepEqual(controller.snapshot(), opening);
-  const restored = loadLiveBattle(factory);
+  await controller.saved();
+  const restored = await loadLiveBattle(factory);
   assert.deepEqual(restored.game.snapshot(), opening);
   restored.game.dispose();
   controller.dispose();
@@ -62,10 +64,11 @@ test("A native enemy turn cancelled by map selection never acts on the new battl
   const pause = new Promise<void>((resolve) => {
     resume = resolve;
   });
-  const controller = new BattleController(() => pause, factory);
+  const controller = await BattleController.create(() => pause, factory);
   const opening = controller.snapshot();
   const pending = controller.endTurn();
-  const checkpoint = loadLiveBattle(factory);
+  await controller.saved();
+  const checkpoint = await loadLiveBattle(factory);
   assert(checkpoint.pendingEnemy);
   assert.deepEqual(checkpoint.game.snapshot(), opening);
   checkpoint.game.dispose();
@@ -77,10 +80,10 @@ test("A native enemy turn cancelled by map selection never acts on the new battl
   controller.dispose();
 });
 
-test("Native combat inspection feeds UI damage breakdowns and old saves migrate once", () => {
+test("Native combat inspection feeds UI damage breakdowns and old saves migrate once", async () => {
   const old = developerFixture();
-  saveBattle(old);
-  const game = loadLiveBattle(factory).game;
+  await saveBattle(old);
+  const game = (await loadLiveBattle(factory)).game;
   assert.deepEqual(game.snapshot(), old.snapshot());
   const actor = required(game.units.find((unit) => unit.side === "player"));
   const target = required(game.targets(actor.id)[0]);
@@ -92,15 +95,15 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   const remaining = after?.hp ?? 0;
   assert(remaining >= Math.max(0, target.hp - required(forecast.damageDetail.maximum)));
   assert(remaining <= Math.max(0, target.hp - required(forecast.damageDetail.minimum)));
-  writeBattle(game);
-  assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
-  const restored = loadLiveBattle(factory).game;
+  await writeBattle(game);
+  assert.equal(JSON.parse((await readSave())!).version, SAVE_VERSION);
+  const restored = (await loadLiveBattle(factory)).game;
   assert.deepEqual(restored.snapshot(), game.snapshot());
   restored.dispose();
   game.dispose();
 });
 
-test("Campaign dialogue and retry controls dispatch through native hooks", () => {
+test("Campaign dialogue and retry controls dispatch through native hooks", async () => {
   const game = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
   const opening = game.captureState();
   game.advanceDialogue();
@@ -113,42 +116,42 @@ test("Campaign dialogue and retry controls dispatch through native hooks", () =>
   game.dispose();
 });
 
-test("Supported legacy woodland revisions migrate without losing campaign progress", () => {
+test("Supported legacy woodland revisions migrate without losing campaign progress", async () => {
   const old = Game.startCampaign("green-accord");
   old.mapRevision = 1;
   old.round = 3;
   old.gold.player = 19;
-  saveBattle(old);
-  const restored = loadLiveBattle(factory);
+  await saveBattle(old);
+  const restored = await loadLiveBattle(factory);
   assert.equal(restored.notice, undefined);
   assert.equal(restored.game.mapRevision, 2);
   assert.equal(restored.game.round, 3);
   assert.equal(restored.game.gold.player, 19);
   assert.deepEqual(restored.game.captureState().units, old.units);
-  writeBattle(restored.game);
-  const reloaded = loadLiveBattle(factory);
+  await writeBattle(restored.game);
+  const reloaded = await loadLiveBattle(factory);
   assert.deepEqual(reloaded.game.snapshot(), restored.game.snapshot());
   reloaded.game.dispose();
   restored.game.dispose();
 });
 
-test("A failed legacy import is wiped and cannot prevent startup", () => {
-  saveBattle(new Game("mirror"));
-  const restored = loadLiveBattle({
+test("A failed legacy import is wiped and cannot prevent startup", async () => {
+  await saveBattle(new Game("mirror"));
+  const restored = await loadLiveBattle({
     ...factory,
     restore: () => ({ ok: false, error: { code: "invalidRequest", message: "Rejected" } }),
   });
   assert(restored.notice);
   assert.equal(restored.game.turn, "player");
-  assert.equal(localStorage.getItem(SAVE_KEY), null);
+  assert.equal(await readSave(), null);
   restored.game.dispose();
 });
 
-test("Rejected native campaign data leaves the WASM factory usable", () => {
+test("Rejected native campaign data leaves the WASM factory usable", async () => {
   const game = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
-  writeBattle(game);
+  await writeBattle(game);
   game.dispose();
-  const checkpoint = JSON.parse(localStorage.getItem(SAVE_KEY)!);
+  const checkpoint = JSON.parse((await readSave())!);
   const corruptions = [
     () => {
       checkpoint.checkpoint.state.campaign.fallenCompanions = ["Captain Nera"];
@@ -160,8 +163,8 @@ test("Rejected native campaign data leaves the WASM factory usable", () => {
   ];
   for (const corrupt of corruptions) {
     corrupt();
-    localStorage.setItem(SAVE_KEY, JSON.stringify(checkpoint));
-    const restored = loadLiveBattle(factory);
+    await storeSave(JSON.stringify(checkpoint));
+    const restored = await loadLiveBattle(factory);
     assert(restored.notice);
     restored.game.dispose();
   }
@@ -172,25 +175,25 @@ test("Rejected native campaign data leaves the WASM factory usable", () => {
 });
 
 test("Live enemy planning finishes a phase and saves the resulting player turn", async () => {
-  const controller = new BattleController(async () => {}, factory);
+  const controller = await BattleController.create(async () => {}, factory);
   await controller.endTurn();
   const after = controller.snapshot();
   assert.equal(after.turn, "player");
   assert.equal(after.round, 2);
-  const restored = loadLiveBattle(factory);
+  const restored = await loadLiveBattle(factory);
   assert.equal(restored.pendingEnemy, false);
   assert.deepEqual(restored.game.snapshot(), after);
   restored.game.dispose();
   controller.dispose();
 });
 
-test("An invalid native checkpoint is wiped and leaves a playable battle", () => {
+test("An invalid native checkpoint is wiped and leaves a playable battle", async () => {
   const rejected = { version: 999, checkpoint: {}, pendingEnemy: false };
-  localStorage.setItem(SAVE_KEY, JSON.stringify(rejected));
-  const restored = loadLiveBattle(factory);
+  await storeSave(JSON.stringify(rejected));
+  const restored = await loadLiveBattle(factory);
   assert(restored.notice);
   assert.equal(restored.game.turn, "player");
-  assert.equal(localStorage.getItem(SAVE_KEY), null);
+  assert.equal(await readSave(), null);
   restored.game.dispose();
 });
 
@@ -206,11 +209,11 @@ test("Reloading during an enemy turn replays the whole phase from its boundary",
     },
   );
   const game = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
-  writeBattle(game, true);
+  await writeBattle(game, true);
   game.endTurn();
   const phaseSnapshot = game.snapshot();
   game.enemyStep();
-  writeBattle(game);
+  await writeBattle(game);
   for (let steps = 0; game.turn === "enemy"; steps++) {
     assert(steps < 100, "planner must finish this small phase");
     game.enemyStep();
@@ -221,7 +224,7 @@ test("Reloading during an enemy turn replays the whole phase from its boundary",
   const paused = new Promise<void>((resolve) => {
     release = resolve;
   });
-  const controller = new BattleController(() => paused, factory);
+  const controller = await BattleController.create(() => paused, factory);
   let completed!: () => void;
   const completion = new Promise<void>((resolve) => {
     completed = resolve;
@@ -241,7 +244,7 @@ test("Reloading during an enemy turn replays the whole phase from its boundary",
     "replay must reproduce the complete enemy phase",
   );
   await Promise.resolve();
-  const restored = loadLiveBattle(factory);
+  const restored = await loadLiveBattle(factory);
   assert.equal(restored.pendingEnemy, false);
   assert.deepEqual(restored.game.snapshot(), controller.snapshot());
   restored.game.dispose();

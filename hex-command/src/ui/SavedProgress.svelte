@@ -65,11 +65,17 @@
   function firstSaved(entry: TurnEntry | CurrentEntry): string {
     return `${entry.kind === "turn" && entry.missionStart && entry.ordinal === 1 ? "Started" : "Earliest save"} ${saveTime(entry.savedAt)}`;
   }
-  function refresh() {
-    entries = actions.savedProgress();
-    recovery = actions.savedRecovery();
+  async function refresh() {
+    const requestGeneration = generation;
+    const [history, current] = await Promise.all([
+      actions.savedProgress(),
+      actions.savedRecovery(),
+    ]);
+    if (requestGeneration !== generation) return;
+    entries = history;
+    recovery = current;
   }
-  export function open() {
+  export async function open() {
     confirmation?.close();
     pending = undefined;
     confirmationReady = false;
@@ -85,7 +91,7 @@
       details.open = false;
     });
     try {
-      refresh();
+      await refresh();
     } catch {
       failure =
         "Saved games could not be read. Download a debug report from Settings so we can investigate.";
@@ -140,7 +146,7 @@
       if (action.kind === "load") await actions.restoreProgress(action.entry.id);
       else if (action.kind === "turn") await actions.deleteSavedProgress(action.entry.id);
       else await actions.deleteSavedRun(action.id);
-      refresh();
+      await refresh();
       confirmation?.close();
       if (action.kind === "load") onLoad();
     } catch {

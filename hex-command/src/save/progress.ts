@@ -1,84 +1,63 @@
-import {
-  currentHistoryIndex,
-  currentTurn,
-  HISTORY_VERSION,
-  type HistoryIndex,
-  type TurnSave,
-} from "./schema";
-import { SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
-import { readCurrentRecovery } from "./load";
+import { currentTurn, type TurnSave } from "./schema";
+import { CURRENT, NEW_GAME, STATE, ENTRIES, TURNS, repository, request } from "./storage";
+import { readCurrentRecovery, recoveryEntry } from "./load";
 import { TurnCheckpoint } from "./write";
 import type { CurrentEntry, TurnEntry } from "./metadata";
 
-function index(): HistoryIndex {
-  const text = localStorage.getItem(HISTORY_KEY);
-  return text === null
-    ? { version: HISTORY_VERSION, entries: [] }
-    : currentHistoryIndex(JSON.parse(text));
-}
-function commit(value: HistoryIndex): void {
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(value));
-}
-export function currentProgress(): CurrentEntry | undefined {
+export function currentProgress(): Promise<CurrentEntry | undefined> {
   return readCurrentRecovery();
 }
-/** History never includes the current recovery. */
-export function listProgress(): TurnEntry[] {
-  return index().entries.sort((a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id));
+/** Metadata is separate from payloads: listing never deserializes battlefields. */
+export async function listProgress(): Promise<TurnEntry[]> {
+  return repository([ENTRIES], "readonly", async (tx) =>
+    (await request<TurnEntry[]>(tx.objectStore(ENTRIES).getAll())).sort(
+      (a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id),
+    ),
+  );
 }
-/** History accepts only snapshot-only values, never a recovery or arbitrary bytes. */
-export function addTurn(checkpoint: TurnCheckpoint): void {
-  insertCheckpoint(checkpoint.entry, TurnCheckpoint.text(checkpoint));
-}
-function insertCheckpoint(entry: TurnEntry, text: string): void {
-  const value = index(),
-    key = historyPayloadKey(entry.id);
-  const previous = localStorage.getItem(key);
-  localStorage.setItem(key, text);
-  try {
-    commit({
-      version: HISTORY_VERSION,
-      entries: [...value.entries.filter((item) => item.id !== entry.id), entry],
-    });
-  } catch (error) {
-    if (previous === null) localStorage.removeItem(key);
-    else localStorage.setItem(key, previous);
-    throw error;
-  }
-}
-/** Raw bytes go straight to the versioned migration loader, not a runtime format adapter. */
-export function progressText(id: string): string {
-  if (!index().entries.some((entry) => entry.id === id))
-    throw new Error("Saved turn is unavailable.");
-  const text = localStorage.getItem(historyPayloadKey(id));
-  if (text === null) throw new Error("This saved checkpoint is no longer available.");
-  return text;
-}
-function removeWhere(value: HistoryIndex, predicate: (entry: TurnEntry) => boolean): void {
-  const removed = value.entries.filter(predicate),
-    ids = new Set(removed.map((entry) => entry.id));
-  if (!removed.length) return;
-  commit({
-    version: HISTORY_VERSION,
-    entries: value.entries.filter((entry) => !ids.has(entry.id)),
+/** Metadata and payload become visible in the same transaction. */
+export async function addTurn(checkpoint: TurnCheckpoint): Promise<void> {
+  const text = TurnCheckpoint.text(checkpoint);
+  await repository([ENTRIES, TURNS], "readwrite", (tx) => {
+    tx.objectStore(ENTRIES).put(checkpoint.entry);
+    tx.objectStore(TURNS).put(text, checkpoint.entry.id);
   });
-  for (const entry of removed) localStorage.removeItem(historyPayloadKey(entry.id));
 }
-export function deleteProgress(id: string): void {
-  if (!index().entries.some((entry) => entry.id === id))
-    throw new Error("Saved turn is unavailable.");
-  removeWhere(index(), (entry) => entry.id === id);
+/** Raw bytes go straight to the versioned migration loader. */
+export async function progressText(id: string): Promise<string> {
+  return repository([TURNS], "readonly", async (tx) => {
+    const text = await request<string | undefined>(tx.objectStore(TURNS).get(id));
+    if (text === undefined) throw new Error("Saved turn is unavailable.");
+    return text;
+  });
 }
-export function deleteRun(runId: string): void {
-  // Resolve ownership before any mutation, even when migration could not be committed.
-  const ownsRecovery = currentProgress()?.runId === runId;
-  removeWhere(index(), (entry) => entry.runId === runId);
-  if (ownsRecovery) localStorage.removeItem(SAVE_KEY);
+export async function deleteProgress(id: string): Promise<void> {
+  await repository([ENTRIES, TURNS], "readwrite", async (tx) => {
+    if (!(await request(tx.objectStore(ENTRIES).get(id))))
+      throw new Error("Saved turn is unavailable.");
+    tx.objectStore(ENTRIES).delete(id);
+    tx.objectStore(TURNS).delete(id);
+  });
+}
+export async function deleteRun(runId: string): Promise<void> {
+  await repository([ENTRIES, TURNS], "readwrite", async (tx) => {
+    const state = tx.objectStore(STATE);
+    const raw = await request<string | undefined>(state.get(CURRENT));
+    const ownsRecovery = raw !== undefined && recoveryEntry(raw).runId === runId;
+    const ids = await request(tx.objectStore(ENTRIES).index("runId").getAllKeys(runId));
+    for (const id of ids) {
+      tx.objectStore(ENTRIES).delete(id);
+      tx.objectStore(TURNS).delete(id);
+    }
+    if (ownsRecovery) {
+      state.delete(CURRENT);
+      state.put(true, NEW_GAME);
+    }
+  });
 }
 /** Recent saves are dense; old branches share their game's age-based allowance. */
-export function pruneProgress(runId?: string, now = Date.now()): void {
-  const value = index(),
-    keep = new Set<string>(),
+function retained(entries: TurnEntry[], runId: string | undefined, now: number): Set<string> {
+  const keep = new Set<string>(),
     latest = new Map<string, TurnEntry>(),
     buckets = new Map<string, TurnEntry>();
   const minute = 60_000,
@@ -86,7 +65,7 @@ export function pruneProgress(runId?: string, now = Date.now()): void {
     day = 24 * hour;
   const newer = (a: TurnEntry, b: TurnEntry) =>
     a.savedAt > b.savedAt || (a.savedAt === b.savedAt && a.id < b.id);
-  for (const entry of value.entries) {
+  for (const entry of entries) {
     if (runId && entry.runId !== runId) continue;
     const previous = latest.get(entry.runId);
     if (!entry.manual && (!previous || newer(entry, previous))) latest.set(entry.runId, entry);
@@ -115,13 +94,32 @@ export function pruneProgress(runId?: string, now = Date.now()): void {
     if (!retained || newer(entry, retained)) buckets.set(key, entry);
   }
   for (const entry of [...latest.values(), ...buckets.values()]) keep.add(entry.id);
-  removeWhere(value, (entry) => (!runId || entry.runId === runId) && !keep.has(entry.id));
+  return keep;
 }
-/** Migration may replace an existing turn payload, but cannot add records or recoveries. */
-export function updateProgress(save: TurnSave): void {
+
+/** Selection and removal share a transaction with competing inserts/deletes. */
+export async function pruneProgress(runId?: string, now = Date.now()): Promise<void> {
+  await repository([ENTRIES, TURNS], "readwrite", async (tx) => {
+    const store = tx.objectStore(ENTRIES);
+    const entries: TurnEntry[] = await request(
+      runId ? store.index("runId").getAll(runId) : store.getAll(),
+    );
+    const keep = retained(entries, runId, now);
+    for (const entry of entries)
+      if (!keep.has(entry.id)) {
+        store.delete(entry.id);
+        tx.objectStore(TURNS).delete(entry.id);
+      }
+  });
+}
+/** Conversion replaces only an existing turn, atomically with its metadata. */
+export async function updateProgress(save: TurnSave): Promise<void> {
   currentTurn(save);
-  const id = save.progress.entry.id;
-  if (!index().entries.some((entry) => entry.id === id))
-    throw new Error("Saved turn is unavailable.");
-  localStorage.setItem(historyPayloadKey(id), JSON.stringify(save));
+  await repository([ENTRIES, TURNS], "readwrite", async (tx) => {
+    const entry = save.progress.entry;
+    if (!(await request(tx.objectStore(ENTRIES).get(entry.id))))
+      throw new Error("Saved turn is unavailable.");
+    tx.objectStore(ENTRIES).put(entry);
+    tx.objectStore(TURNS).put(JSON.stringify(save), entry.id);
+  });
 }

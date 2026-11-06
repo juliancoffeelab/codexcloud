@@ -1,3 +1,4 @@
+import { readSave as readStoredSave, storeSave } from "../src/save/storage";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { currentArtwork } from "../src/presentation/art";
@@ -9,7 +10,7 @@ import {
 import { createTestFactory } from "./native-fixture";
 import { Game, TYPES, developerFixture } from "./game-fixture";
 import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
-import { SAVE_KEY, saveBattle, loadBattle } from "./legacy-save";
+import { SAVE_KEY, saveBattle, loadBattle as loadStoredBattle } from "./legacy-save";
 import { required, TestStorage, mockSpriteCanvas } from "./helpers";
 import { battlefieldTiles } from "../src/ui/battlefield-view";
 import { unitPanelView } from "../src/ui/unit-panel-view";
@@ -55,8 +56,8 @@ function pauseTurn(callToPause = 1) {
 // The developer layout uses ordinary selection, movement, combat, turns and persistence.
 test("Developer map supports normal actions and persistence", async () => {
   storage.clear();
-  saveBattle(developerFixture());
-  const controller = createController(immediatePause);
+  await saveBattle(developerFixture());
+  const controller = await createController(immediatePause);
   const observed = observe(controller);
   const opening = controller.snapshot();
   const player = required(opening.units.find((unit) => unit.side === "player"));
@@ -79,17 +80,17 @@ test("Developer map supports normal actions and persistence", async () => {
   assert.equal(unitPanelView(observed.view).kind, "combat");
   controller.attack(player.id, enemy.id);
   assert(required(controller.snapshot().units.find((unit) => unit.id === enemy.id)).hp < enemy.hp);
-  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
+  assert.deepEqual((await loadBattle()).game.snapshot(), controller.snapshot());
   await controller.commands.endTurn();
   assert(controller.snapshot().round > opening.round || controller.snapshot().winner);
-  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
+  assert.deepEqual((await loadBattle()).game.snapshot(), controller.snapshot());
   controller.dispose();
   observed.unsubscribe();
   storage.clear();
 });
 
-test("Inspection switches tiles and closes when the inspected unit or terrain is tapped again", () => {
-  const controller = createController(immediatePause);
+test("Inspection switches tiles and closes when the inspected unit or terrain is tapped again", async () => {
+  const controller = await createController(immediatePause);
   const observed = observe(controller);
   const opening = controller.snapshot();
   const player = required(opening.units.find((unit) => unit.side === "player"));
@@ -102,7 +103,7 @@ test("Inspection switches tiles and closes when the inspected unit or terrain is
       (tile) => tile.id !== empty.id && !opening.units.some((u) => u.tile === tile.id),
     ),
   );
-  const saved = storage.getItem(SAVE_KEY);
+  const saved = await readSave();
   const game = observed.view.game;
   controller.commands.choose(enemy.tile);
   assert.equal(observed.view.selected, enemy.id);
@@ -128,13 +129,13 @@ test("Inspection switches tiles and closes when the inspected unit or terrain is
   assert.equal(observed.view.target, null);
   assert.equal(observed.view.game, game);
   assert.deepEqual(controller.snapshot(), opening);
-  assert.equal(storage.getItem(SAVE_KEY), saved);
+  assert.equal(await readSave(), saved);
   observed.unsubscribe();
 });
 
-test("Click-away dismissal preserves movement, attack targeting and undo", () => {
-  saveBattle(developerFixture());
-  const controller = createController(immediatePause);
+test("Click-away dismissal preserves movement, attack targeting and undo", async () => {
+  await saveBattle(developerFixture());
+  const controller = await createController(immediatePause);
   const observed = observe(controller);
   const opening = controller.snapshot();
   const player = required(opening.units.find((unit) => unit.side === "player"));
@@ -164,7 +165,7 @@ test("Click-away dismissal preserves movement, attack targeting and undo", () =>
 // Dialogue navigation persists its cursor without advancing gameplay or reopening finished lines.
 test("Dialogue navigation persists its cursor without advancing gameplay", async () => {
   storage.clear();
-  const controller = createController(immediatePause);
+  const controller = await createController(immediatePause);
   const observed = observe(controller);
   await controller.commands.startCampaign("green-accord");
   const opening = observed.view;
@@ -185,20 +186,21 @@ test("Dialogue navigation persists its cursor without advancing gameplay", async
   assert.throws(() => controller.undoMove(), /Finish the conversation/);
   assert.deepEqual(controller.snapshot(), onSecondLine);
 
-  const restored = createController(immediatePause);
+  const restored = await createController(immediatePause);
   assert.equal(required(restored.snapshot().campaign).dialogueIndex, 1);
   restored.commands.previousDialogue();
   assert.equal(required(restored.snapshot().campaign).dialogueIndex, 0);
-  const rewound = createController(immediatePause);
+  const rewound = await createController(immediatePause);
   assert.equal(required(rewound.snapshot().campaign).dialogueIndex, 0);
   while (dialoguePending(rewound.snapshot().campaign)) rewound.commands.advanceDialogue();
   const finished = rewound.snapshot();
   const finishedView = observe(rewound);
+  await rewound.saved();
   const finishedPublication = finishedView.view;
-  const finishedSave = storage.getItem(SAVE_KEY);
+  const finishedSave = await readSave();
   rewound.commands.advanceDialogue();
   assert.equal(finishedView.view, finishedPublication, "finished dialogue is a true no-op");
-  assert.equal(storage.getItem(SAVE_KEY), finishedSave);
+  assert.equal(await readSave(), finishedSave);
   rewound.commands.previousDialogue();
   assert.deepEqual(rewound.snapshot(), finished, "back cannot reopen a completed conversation");
   await rewound.reset();
@@ -218,18 +220,18 @@ test("Dialogue navigation persists its cursor without advancing gameplay", async
 test("Stray dialogue cannot overwrite a paused turn checkpoint", async () => {
   storage.clear();
   const paused = pauseTurn();
-  const controller = createController(paused.pause);
+  const controller = await createController(paused.pause);
   const observed = observe(controller);
   const beforeTurn = controller.snapshot();
   const pending = controller.endTurn();
-  const checkpoint = storage.getItem(SAVE_KEY);
+  const checkpoint = await readSave();
   const enemyView = observed.view;
   controller.commands.advanceDialogue();
   controller.commands.advanceDialogue(true);
   controller.commands.previousDialogue();
   assert.equal(observed.view, enemyView, "absent dialogue cannot publish an unrelated revision");
-  assert.equal(storage.getItem(SAVE_KEY), checkpoint);
-  const loaded = loadBattle();
+  assert.equal(await readSave(), checkpoint);
+  const loaded = await loadBattle();
   assert(loaded.pendingEnemy);
   assert.deepEqual(loaded.game.snapshot(), beforeTurn);
   controller.dispose();
@@ -252,9 +254,9 @@ test("Completed vigil publishes and persists its outcome", async () => {
   required(fixture.tile(goal.tile)).owner = "player";
   fixture.round = 3;
   required(fixture.campaign).vigil = { heldTurns: 2, lastCountedRound: 3 };
-  saveBattle(fixture);
-  assert.equal(loadBattle().game.mapId, fixture.mapId);
-  const controller = createController(immediatePause);
+  await saveBattle(fixture);
+  assert.equal((await loadBattle()).game.mapId, fixture.mapId);
+  const controller = await createController(immediatePause);
   const observed = observe(controller);
   await controller.endTurn();
   assert.equal(observed.view.game.winner, "player");
@@ -262,7 +264,7 @@ test("Completed vigil publishes and persists its outcome", async () => {
   assert(dialoguePending(observed.view.game.campaign));
   controller.commands.advanceDialogue();
   assert.equal(
-    required(loadBattle().game.campaign).dialogueIndex,
+    required((await loadBattle()).game.campaign).dialogueIndex,
     required(observed.view.game.campaign).dialogueIndex,
   );
   controller.dispose();
@@ -285,28 +287,28 @@ test("Finished enemy-turn battles persist outcome dialogue", async () => {
   leader.tile = "hex-0763-c9e627d16e";
   leader.hp = 1;
   enemy.tile = "hex-0859-8a12839c45";
-  saveBattle(fixture);
-  const controller = createController(immediatePause);
+  await saveBattle(fixture);
+  const controller = await createController(immediatePause);
   await controller.endTurn();
   assert.equal(controller.snapshot().turn, "enemy");
   assert.equal(controller.snapshot().winner, "enemy");
   assert(dialoguePending(controller.snapshot().campaign));
   controller.commands.advanceDialogue();
-  assert.deepEqual(loadBattle().game.snapshot(), controller.snapshot());
+  assert.deepEqual((await loadBattle()).game.snapshot(), controller.snapshot());
   controller.dispose();
   storage.clear();
 });
 
 // Rejected replacement must not spend undo history or cancel an enemy turn.
 test("Rejected replacement preserves undo and pending turns", async () => {
-  const controller = createController(immediatePause);
+  const controller = await createController(immediatePause);
   const observed = observe(controller);
   controller.move("u3", "hex-0738-f0cce97107");
   const before = controller.snapshot();
-  const saved = storage.getItem(SAVE_KEY);
+  const saved = await readSave();
   assert.throws(() => controller.reset("unknown"), /Unknown battlefield/);
   assert.deepEqual(controller.snapshot(), before);
-  assert.equal(storage.getItem(SAVE_KEY), saved);
+  assert.equal(await readSave(), saved);
   assert(observed.view.canUndo);
   controller.undoMove();
   const turn = controller.endTurn();
@@ -321,7 +323,7 @@ test("Rejected replacement preserves undo and pending turns", async () => {
 // Revisions are immutable, and all availability belongs to the published revision.
 test("Publications are immutable and availability follows the revision", async () => {
   storage.clear();
-  const controller = createController(immediatePause);
+  const controller = await createController(immediatePause);
   const observed = observe(controller);
   const opening = observed.view;
   assert.equal(Reflect.get(controller, "game"), undefined);
@@ -381,9 +383,9 @@ test("Browser commands are player-only and previews cannot mutate rules", async 
   storage.clear();
   const fixture = new Game();
   const enemy = fixture.addUnit("soldier", "enemy", "hex-0408-edbae05560");
-  saveBattle(fixture);
+  await saveBattle(fixture);
   const paused = pauseTurn();
-  const controller = createController(paused.pause);
+  const controller = await createController(paused.pause);
   const observed = observe(controller);
   const preview = required(controller.actions("u2").attacks[0]);
   const weapon = required(preview.weapons[0]);
@@ -414,15 +416,15 @@ test("Browser commands are player-only and previews cannot mutate rules", async 
 test("Unmounted sessions cannot overwrite replacements", async () => {
   storage.clear();
   const paused = pauseTurn();
-  const previous = createController(paused.pause);
+  const previous = await createController(paused.pause);
   const pending = previous.endTurn();
   previous.dispose();
-  const replacement = createController(immediatePause);
+  const replacement = await createController(immediatePause);
   await replacement.reset("river-valley");
-  const saved = storage.getItem(SAVE_KEY);
+  const saved = await readSave();
   paused.release();
   await pending;
-  assert.equal(storage.getItem(SAVE_KEY), saved);
+  assert.equal(await readSave(), saved);
   assert.equal(replacement.snapshot().mapId, "river-valley");
   assert.equal(replacement.snapshot().round, 1);
   assert.throws(() => previous.reset(), /session has closed/);
@@ -433,8 +435,8 @@ test("Unmounted sessions cannot overwrite replacements", async () => {
 // A replay is consumed once, and replacement before initialization discards it.
 test("Replay is consumed once and replacement discards pending initialization", async () => {
   storage.clear();
-  saveBattle(new Game(), true);
-  const replacement = createController(immediatePause);
+  await saveBattle(new Game(), true);
+  const replacement = await createController(immediatePause);
   const observed = observe(replacement);
   await replacement.reset("river-valley");
   await replacement.initialize();
@@ -445,17 +447,17 @@ test("Replay is consumed once and replacement discards pending initialization", 
   replacement.dispose();
   observed.unsubscribe();
 
-  saveBattle(new Game(), true);
+  await saveBattle(new Game(), true);
   const paused = pauseTurn();
-  const replay = createController(paused.pause);
+  const replay = await createController(paused.pause);
   await replay.initialize();
   await replay.initialize();
   assert.equal(replay.snapshot().turn, "enemy");
-  const checkpoint = storage.getItem(SAVE_KEY);
+  const checkpoint = await readSave();
   replay.commands.advanceDialogue();
   replay.commands.previousDialogue();
-  assert.equal(storage.getItem(SAVE_KEY), checkpoint);
-  assert(loadBattle().pendingEnemy);
+  assert.equal(await readSave(), checkpoint);
+  assert((await loadBattle()).pendingEnemy);
   let unsubscribe = () => {};
   const finished = new Promise<void>((resolve) => {
     unsubscribe = replay.view.subscribe((view) => {
@@ -469,14 +471,14 @@ test("Replay is consumed once and replacement discards pending initialization", 
   await finished;
   assert.equal(replay.snapshot().turn, "player");
   assert.equal(replay.snapshot().round, 2);
-  const saved = JSON.parse(required(storage.getItem(SAVE_KEY))) as { pendingEnemy: boolean };
+  const saved = JSON.parse(required(await readSave())) as { pendingEnemy: boolean };
   assert.equal(saved.pendingEnemy, false);
   replay.dispose();
 });
 
 test("Artwork URLs are published immediately and ignore retired style preferences", async () => {
   storage.setItem("hex-command-art-style", "low-poly");
-  const controller = createController(immediatePause);
+  const controller = await createController(immediatePause);
   const observed = observe(controller);
   assert(Object.isFrozen(observed.view.artwork.frames));
   assert(observed.view.artwork.frames.player_thorncaller?.url.includes("assets/sprites/"));
@@ -487,9 +489,22 @@ test("Artwork URLs are published immediately and ignore retired style preference
   observed.unsubscribe();
 });
 
+async function settleWrites() {
+  await Promise.all(controllers.map((controller) => controller.saved()));
+}
+async function readSave() {
+  await settleWrites();
+  return readStoredSave();
+}
+async function loadBattle() {
+  await settleWrites();
+  return loadStoredBattle();
+}
+
 const controllers: Controller[] = [];
-function createController(pause?: ConstructorParameters<typeof Controller>[0]) {
-  const controller = new BattleController(pause, createTestFactory());
+async function createController(pause?: Parameters<typeof Controller.create>[0]) {
+  await settleWrites();
+  const controller = await BattleController.create(pause, createTestFactory());
   controllers.push(controller);
   return controller;
 }

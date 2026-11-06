@@ -26,8 +26,8 @@ test("Saved armies retain progress while terrain migrates", async () => {
   game.round = 4;
   game.gold.player = 23;
   game.record("Ongoing battle.");
-  saveBattle(game, true);
-  const loaded = loadBattle();
+  await saveBattle(game, true);
+  const loaded = await loadBattle();
   assert.deepEqual(loaded.game.snapshot(), game.snapshot());
   assert.equal(loaded.pendingEnemy, true);
   assert.equal(loaded.game.nextId, game.nextId);

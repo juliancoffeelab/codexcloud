@@ -1,59 +1,34 @@
-import { SAVE_KEY } from "./storage";
+import { STATE, ENTRIES, TURNS, transaction, request } from "./storage";
+import { captureImportSource } from "./import";
 
-interface StorageDiagnosticError {
-  operation: "access" | "length" | "key" | "read";
-  key?: string;
-  index?: number;
-  detail: string;
-}
 export interface BrowserSaveDiagnostics {
-  /** Exact stored strings; null means a successful read found no value. Failed reads are omitted. */
-  values: Record<string, string | null>;
-  errors: StorageDiagnosticError[];
+  indexedDB?: Record<string, Record<string, unknown>>;
+  localStorage?: Record<string, string | null>;
+  errors: { operation: string; detail: string }[];
 }
-
-/** Read only game-owned persistence, independently of parsing, migration, or index validity. */
-export function captureBrowserSaves(): BrowserSaveDiagnostics {
-  const report: BrowserSaveDiagnostics = { values: {}, errors: [] };
-  const error = (
-    operation: StorageDiagnosticError["operation"],
-    reason: unknown,
-    context: { key?: string; index?: number } = {},
-  ) =>
-    report.errors.push({
-      operation,
-      ...context,
-      detail: reason instanceof Error ? (reason.stack ?? reason.message) : String(reason),
-    });
-  let storage: Storage;
+/** Raw repository records, including orphans, without parsing or migration. */
+export async function captureBrowserSaves(): Promise<BrowserSaveDiagnostics> {
+  const report: BrowserSaveDiagnostics = { errors: [] };
   try {
-    storage = localStorage;
-  } catch (reason) {
-    error("access", reason);
-    return report;
-  }
-
-  const keys = new Set([SAVE_KEY, "hex-command-progress-index", `${SAVE_KEY}-unrestored`]);
-  // Enumerate storage itself rather than the progress index, retaining orphan payloads.
-  try {
-    const length = storage.length;
-    for (let index = 0; index < length; index++) {
-      try {
-        const key = storage.key(index);
-        if (key?.startsWith("hex-command-progress:")) keys.add(key);
-      } catch (reason) {
-        error("key", reason, { index });
+    report.indexedDB = await transaction([STATE, ENTRIES, TURNS], "readonly", async (tx) => {
+      const stores: Record<string, Record<string, unknown>> = {};
+      for (const name of [STATE, ENTRIES, TURNS]) {
+        const store = tx.objectStore(name);
+        const [keys, values] = await Promise.all([
+          request(store.getAllKeys()),
+          request(store.getAll()),
+        ]);
+        stores[name] = Object.fromEntries(keys.map((key, i) => [String(key), values[i]]));
       }
-    }
-  } catch (reason) {
-    error("length", reason);
+      return stores;
+    });
+  } catch (error) {
+    report.errors.push({ operation: "indexedDB", detail: String(error) });
   }
-  for (const key of keys) {
-    try {
-      report.values[key] = storage.getItem(key);
-    } catch (reason) {
-      error("read", reason, { key });
-    }
+  try {
+    report.localStorage = captureImportSource();
+  } catch (error) {
+    report.errors.push({ operation: "localStorage migration source", detail: String(error) });
   }
   return report;
 }

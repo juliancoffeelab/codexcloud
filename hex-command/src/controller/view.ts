@@ -64,11 +64,11 @@ export interface BattleCommands {
     options?: { armies?: [string, string]; setup: SessionSetup },
   ): Promise<GameSnapshot>;
   setSound(enabled: boolean): Promise<void>;
-  downloadDebugReport(): void;
-  savedProgress(): import("../save/metadata").TurnEntry[];
+  downloadDebugReport(): Promise<void>;
+  savedProgress(): Promise<import("../save/metadata").TurnEntry[]>;
   saveGame(): Promise<void>;
   savedSummary(id: string): Promise<import("../save/summary").SaveSummary>;
-  savedRecovery(): import("../save/metadata").CurrentEntry | undefined;
+  savedRecovery(): Promise<import("../save/metadata").CurrentEntry | undefined>;
   restoreProgress(id: string): Promise<void>;
   deleteSavedProgress(id: string): Promise<void>;
   deleteSavedRun(id: string): Promise<void>;

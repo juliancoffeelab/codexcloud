@@ -2,8 +2,8 @@ import { decodeUndo } from "./undo";
 import { LiveGame, nativeValue } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migrations";
-import { wipeSave, storeSave, readSave, SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
-import { migrateHistoryIndex } from "./migrations/history";
+import { wipeSave, storeSave, readSave, needsNewGame } from "./storage";
+import { importLocalStorage, pendingImport } from "./import";
 import { currentRecovery, currentTurn } from "./schema";
 import type { CurrentEntry } from "./metadata";
 import type { BattleSave } from "./schema";
@@ -16,15 +16,31 @@ export interface LoadedBattle {
   notice?: string;
   storageFailure?: string;
   retainedRecovery?: CurrentEntry;
+  chooseNewGame?: boolean;
+  importPending?: boolean;
 }
 /** Canonical decoding belongs to the loading boundary, independent of committing it. */
 function decodeBattleText(raw: string) {
   return migrateSave(JSON.parse(raw));
 }
 /** Read ownership without requiring a migration write or starting a battle. */
-export function readCurrentRecovery(): CurrentEntry | undefined {
-  const raw = readSave();
-  return raw === null ? undefined : currentRecovery(decodeBattleText(raw).save).progress.entry;
+export function recoveryEntry(raw: string): CurrentEntry {
+  return currentRecovery(decodeBattleText(raw).save).progress.entry;
+}
+export async function readCurrentRecovery(): Promise<CurrentEntry | undefined> {
+  const raw = await readSave();
+  return raw === null ? undefined : recoveryEntry(raw);
+}
+/** Validate without leaving a battle handle alive during the storage transaction. */
+export async function initializeRepository(factory: GameEngineFactory): Promise<void> {
+  await importLocalStorage((save) => {
+    const restored = restoreBattleText(
+      factory,
+      JSON.stringify(save),
+      save.progress.entry.kind === "turn" ? "turn" : "recovery",
+    );
+    restored.game.dispose();
+  });
 }
 /** Migration is data-only. Validate both recovery and move undo through the native engine. */
 export function restoreBattleText(
@@ -43,11 +59,32 @@ export function restoreBattleText(
   return { game, pendingEnemy: save.pendingEnemy, save, migrated, undo };
 }
 /** Parse, migrate, validate natively, then persist the successfully restored format. */
-export function loadBattle(factory: GameEngineFactory): LoadedBattle {
+export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBattle> {
+  try {
+    await initializeRepository(factory);
+  } catch (error) {
+    let retainedRecovery: CurrentEntry | undefined;
+    let chooseNewGame = false;
+    try {
+      const data = pendingImport();
+      retainedRecovery = data.current?.progress.entry;
+      chooseNewGame = data.chooseNewGame;
+    } catch {
+      /* Preserve malformed source for diagnostics. */
+    }
+    return {
+      game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
+      pendingEnemy: false,
+      storageFailure: `${String(error)}\n${error instanceof Error ? (error.stack ?? "") : ""}`,
+      retainedRecovery,
+      chooseNewGame,
+      importPending: true,
+    };
+  }
   let raw: string | null = null;
   let storageFailure: string | undefined;
   try {
-    raw = localStorage.getItem(SAVE_KEY);
+    raw = await readSave();
   } catch (error) {
     storageFailure = String(error);
   }
@@ -57,7 +94,7 @@ export function loadBattle(factory: GameEngineFactory): LoadedBattle {
       // Storage errors must not turn a valid restored battle into a fresh battle.
       if (restored.migrated) {
         try {
-          storeSave(JSON.stringify(restored.save));
+          await storeSave(JSON.stringify(restored.save));
         } catch (error) {
           restored.game.dispose();
           return {
@@ -72,7 +109,7 @@ export function loadBattle(factory: GameEngineFactory): LoadedBattle {
       }
       return restored;
     } catch (error) {
-      wipeSave();
+      await wipeSave();
       return {
         game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
         pendingEnemy: false,
@@ -84,15 +121,6 @@ export function loadBattle(factory: GameEngineFactory): LoadedBattle {
     game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
     pendingEnemy: false,
     storageFailure,
+    chooseNewGame: await needsNewGame(),
   };
-}
-
-/** Called under the history lock before current-format repository access. */
-export function loadProgressHistory(): void {
-  const text = localStorage.getItem(HISTORY_KEY);
-  if (text === null) return;
-  const { index, migrated, removedIds } = migrateHistoryIndex(JSON.parse(text));
-  if (!migrated) return;
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(index));
-  for (const id of removedIds) localStorage.removeItem(historyPayloadKey(id));
 }
