@@ -235,6 +235,45 @@
         "targetOffsetDb": -5,
         "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
       }
+    },
+    {
+      "id": "edits/snake-belt-soft-v1",
+      "sourceId": "rpg-audio/clothBelt2",
+      "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+      "name": "Snake \u00b7 quiet rough belt",
+      "intent": "Merfolk belt texture softened and lightly saturated for snake handling; an audition proxy.",
+      "filters": [
+        "highpass=f=180",
+        "lowpass=f=3600",
+        "asoftclip=type=tanh:threshold=0.15:output=0.8",
+        "volume=-12dB"
+      ]
+    },
+    {
+      "id": "edits/spider-creak-soft-v1",
+      "sourceId": "rpg-audio/creak1",
+      "sourceHash": "8a346186fd297254248cab8e8117060a52a5cf2a84f603153a762108550ea95e",
+      "name": "Spider \u00b7 tiny filtered creak",
+      "intent": "Heavily softened, pitch-shifted creak as an abstract spider contact; not a natural spider recording.",
+      "filters": [
+        "asetrate=33075",
+        "aresample=44100",
+        "highpass=f=500",
+        "lowpass=f=2200",
+        "volume=-25dB"
+      ]
+    },
+    {
+      "id": "edits/octopus-gurgle-soft-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+      "sourceHash": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+      "name": "Octopus \u00b7 soft gurgle",
+      "intent": "Softened designed gurgle for octopus selection and movement.",
+      "filters": [
+        "highpass=f=130",
+        "lowpass=f=3200",
+        "volume=-10dB"
+      ]
     }
   ]
 }

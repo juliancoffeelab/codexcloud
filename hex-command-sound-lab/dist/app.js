@@ -1,4 +1,4 @@
-import { buildActions } from "./matching.js?v=creature-grunts-1";
+import { buildActions } from "./matching.js?v=beast-palette-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);

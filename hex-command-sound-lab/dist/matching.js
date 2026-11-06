@@ -1,3 +1,4 @@
+import { creaturePick } from "./creature-picks.js?v=beast-palette-1";
 import { terrainPicks } from "./terrain-picks.js?v=terrain-batch-1";
 // Explicit semantic families keep mechanical actions separate from animal voices.
 // Recommendations are curated source IDs; alternatives include every matching recording.
@@ -67,7 +68,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
   );
   const body = creature(/^(eat_|grunt_|hurt_|breath$)/);
   const ghostVoice = find("sorth/ghost-voice-pack", /output/);
-  const cloth = rpg(/^cloth[1-4]$|^clothBelt/);
+  const cloth = rpg(/^cloth[2-4]$|^clothBelt/);
   if (entity.kind === "terrain") {
     const id = entity.id,
       water = /water|ford|marsh|landing|ferry/.test(id),
@@ -322,11 +323,11 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
   const recommendedMove = mounted
     ? movement
     : flying
-      ? named(movement, /cloth[12]$|unit-commander-1$/)
+      ? named(movement, /cloth2$|unit-commander-1$/)
       : aquatic
         ? named(movement, /terrain-water-1$/)
         : slither
-          ? named(movement, /^cloth[12]$/)
+          ? named(movement, /^cloth2$/)
           : tree
             ? named(movement, /^creak1$|^impactWood_heavy_000$/)
             : named(
@@ -353,7 +354,7 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
     tap = creature(/^breath$/);
   } else if (spirit) {
     tapPossible = union(cloth, old("unit-commander"));
-    tap = rpg(/^cloth1$/);
+    tap = rpg(/^cloth2$/);
   } else {
     tapPossible = union(
       subtle,
@@ -713,6 +714,39 @@ export function buildActions(entity, catalog, { extras = false } = {}) {
           { hypothetical: true },
         ),
       );
+    }
+  }
+  const palette = creaturePick(entity);
+  const ids = (values) => catalog.filter((x) => values.includes(x.id));
+  for (const action of result) {
+    const excluded = (id) => {
+      const sound = catalog.find((x) => x.id === id);
+      return (
+        sound?.name === "cloth1" ||
+        (faction !== "zombies" && sound?.name === "breath")
+      );
+    };
+    action.suggested = action.suggested.filter((id) => !excluded(id));
+    action.alternatives = action.alternatives.filter((id) => !excluded(id));
+    if (!palette) continue;
+    if (action.key === "tap" || (action.key === "move" && palette.move)) {
+      const previous = [...action.suggested, ...action.alternatives];
+      action.suggested = ids([palette.sound]).map((x) => x.id);
+      action.alternatives = [
+        ...new Set([...previous, ...palette.alternatives]),
+      ].filter((id) => id !== palette.sound && !excluded(id));
+      action.description = palette.note;
+      action.caveat = "Audition texture, not an authentic species recording.";
+    }
+    if (action.key === "voice" && !/grunt_/.test(palette.sound)) {
+      action.suggested = [];
+      action.caveat =
+        "No species-specific voice selected; selection uses a handling texture.";
+    } else if (action.key === "voice") {
+      action.alternatives = [
+        ...new Set([...action.suggested, ...action.alternatives]),
+      ].filter((id) => id !== palette.sound && !excluded(id));
+      action.suggested = [palette.sound];
     }
   }
   return result;

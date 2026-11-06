@@ -73,9 +73,16 @@ and impact recordings remain available. Bow users have nocking candidates for
 selection and recorded English Longbow Shoot for attacks. Crossbows use
 Crossbow Shoot; flight and handling recordings remain alternatives.
 Merfolk selection defaults to `clothBelt2` across the roster.
-Bears use `grunt_01` for selection and optional voice. Treants, Wildkeeper,
-Grovewarden, zombie Shambler and Ghoul use `grunt_04`; other creature voice
-sets exclude that reserved grunt. These are designed vocal proxies.
+Creature selection palettes live in `dist/creature-picks.js`: compact mammals and
+several aquatic beasts use grunt 1; heavy reptiles, crab/tortoise and zombie bears
+use grunt 4. Treants and zombie Shambler/Ghoul retain grunt 4. Leathery fliers use
+cloth 2, birds/gryphons cloth 3, snakes a quiet saturated clothBelt2, octopus a
+soft gurgle, spiders a heavily filtered quiet creak. Wasps offer designed insect
+clips and arrow fletching as unconfirmed buzz candidates. These are audition
+proxies, not authentic species recordings. Breath is restricted to zombie
+choices; cloth 1 is excluded from unit action choices. Originals remain in the
+full library. Wing/contact palettes also apply to movement; vocal slots do not
+label cloth or creaks as animal voices. Attacks remain separate.
 Personal Use assignments take precedence over these editorial suggestions.
 
 ## Terrain audition edits

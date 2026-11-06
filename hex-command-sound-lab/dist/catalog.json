@@ -16314,5 +16314,129 @@
         "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
       }
     }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/snake-belt-soft-v1",
+    "name": "Snake \u00b7 quiet rough belt",
+    "path": "audio/listening/433834312c359fa8bd4b.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/rpg-audio",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-foley",
+    "notes": "Merfolk belt texture softened and lightly saturated for snake handling; an audition proxy. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "kenney/rpg-audio/Audio/clothBelt2.ogg",
+    "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+    "duration": 0.7533,
+    "gainDb": 0,
+    "categories": [
+      "equipment",
+      "movement"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.7533
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "rpg-audio/clothBelt2",
+    "processingRecipe": {
+      "id": "edits/snake-belt-soft-v1",
+      "sourceId": "rpg-audio/clothBelt2",
+      "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+      "name": "Snake \u00b7 quiet rough belt",
+      "intent": "Merfolk belt texture softened and lightly saturated for snake handling; an audition proxy.",
+      "filters": [
+        "highpass=f=180",
+        "lowpass=f=3600",
+        "asoftclip=type=tanh:threshold=0.15:output=0.8",
+        "volume=-12dB"
+      ]
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/spider-creak-soft-v1",
+    "name": "Spider \u00b7 tiny filtered creak",
+    "path": "audio/listening/ba579d1780e07d0171a2.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://kenney.nl/assets/rpg-audio",
+    "creator": "Kenney Vleugels (Kenney.nl)",
+    "kind": "processed-foley",
+    "notes": "Heavily softened, pitch-shifted creak as an abstract spider contact; not a natural spider recording. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "kenney/rpg-audio/Audio/creak1.ogg",
+    "sourceHash": "8a346186fd297254248cab8e8117060a52a5cf2a84f603153a762108550ea95e",
+    "duration": 0.9593,
+    "gainDb": 0,
+    "categories": [
+      "equipment"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.9593
+      }
+    ],
+    "originalKind": "recorded-foley",
+    "derivedFrom": "rpg-audio/creak1",
+    "processingRecipe": {
+      "id": "edits/spider-creak-soft-v1",
+      "sourceId": "rpg-audio/creak1",
+      "sourceHash": "8a346186fd297254248cab8e8117060a52a5cf2a84f603153a762108550ea95e",
+      "name": "Spider \u00b7 tiny filtered creak",
+      "intent": "Heavily softened, pitch-shifted creak as an abstract spider contact; not a natural spider recording.",
+      "filters": [
+        "asetrate=33075",
+        "aresample=44100",
+        "highpass=f=500",
+        "lowpass=f=2200",
+        "volume=-25dB"
+      ]
+    }
+  },
+  {
+    "takeMethod": "authored-edit",
+    "id": "edits/octopus-gurgle-soft-v1",
+    "name": "Octopus \u00b7 soft gurgle",
+    "path": "audio/listening/0be0e800ed863a6d6371.mp3",
+    "pack": "audition-edits",
+    "packLabel": "Audition edits",
+    "license": "CC0-1.0",
+    "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+    "creator": "rubberduck",
+    "kind": "processed-effect",
+    "notes": "Softened designed gurgle for octopus selection and movement. Level matching does not boost this deliberately quiet edit.",
+    "sourcePath": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+    "sourceHash": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+    "duration": 0.9916,
+    "gainDb": 0,
+    "categories": [
+      "voice"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.9916
+      }
+    ],
+    "originalKind": "designed-effects",
+    "derivedFrom": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+    "processingRecipe": {
+      "id": "edits/octopus-gurgle-soft-v1",
+      "sourceId": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+      "sourceHash": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+      "name": "Octopus \u00b7 soft gurgle",
+      "intent": "Softened designed gurgle for octopus selection and movement.",
+      "filters": [
+        "highpass=f=130",
+        "lowpass=f=3200",
+        "volume=-10dB"
+      ]
+    }
   }
 ]
