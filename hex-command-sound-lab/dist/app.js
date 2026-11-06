@@ -1,8 +1,8 @@
-import { DEATH_SOUNDS } from "./death-picks.js?v=bear-original-groans-3";
+import { DEATH_SOUNDS } from "./death-picks.js?v=bear-roar3-approved-1";
 import { eventLevelClass, playbackGainForRef } from "./event-levels.js?v=event-ranges-1";
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=bear-original-groans-3";
+import { buildActions } from "./matching.js?v=bear-roar3-approved-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -17,10 +17,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=bear-original-groans-3"),
+    loadJSON("catalog.json?v=bear-roar3-approved-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=bear-original-groans-3"),
+    loadJSON("playback-levels.json?v=bear-roar3-approved-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1764,6 +1764,17 @@ async function start() {
         saveAssignments();
       }
       localStorage.setItem("hex-sound-bear-original-groans-v3", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-bear-roar3-approved-v1")) {
+      const key = "beasts/bear/death", old = assignments[key];
+      if (old && ["rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg", "edits/bear-death-long-decay-v1", "edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1"].includes(old.id)) {
+        localStorage.setItem("hex-sound-before-bear-roar3-approved-v1", JSON.stringify({ [key]: old }));
+        assignments[key] = { ...old, id: "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg", take: 0 };
+        saveAssignments();
+      }
+      localStorage.setItem("hex-sound-bear-roar3-approved-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

@@ -111,7 +111,7 @@ for (const faction of workbench.factions)
     assert(death, `${unit.key}: missing shared death`);
     for (const id of death.suggested) deathIds.add(id);
     if (death.deathGroup === "beast") {
-      assert.deepEqual(death.suggested, [...(unit.key === "beasts/bear" ? ["rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg", "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg"] : []), ...tap.suggested.map(id => beastDeathId(id, tap.preferredTakes?.[id] ?? 0))]);
+      assert.deepEqual(death.suggested, [...(unit.key === "beasts/bear" ? ["rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg", "rubberduck/80-cc0-rpg-sfx/creature_roar_02.ogg"] : []), ...tap.suggested.map(id => beastDeathId(id, tap.preferredTakes?.[id] ?? 0))]);
       for (const ref of death.selectionDeaths) assert.equal(byId.get(ref.deathId).derivedFrom, ref.id);
     } else {
       assert.equal(death.suggested.length, 1);

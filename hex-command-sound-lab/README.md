@@ -593,7 +593,7 @@ Ten static death/timbre recordings plus ten shared selection-derived beast clips
 The base bear now offers the two longer original RPG Creature Roar 02/03 takes
 (about 0.90/0.87 seconds), followed by its previous short death. There is no new
 time stretching, pitch effect or reverb. Death-mode map taps default to Creature
-Roar 02; saved earlier short/subtle defaults migrate once with a local backup.
+Roar 03 (user approved); saved earlier short/subtle defaults migrate once with a local backup.
 The subtle stretched first attempt remains archived in Library only. Other
 beasts and the bear selection sound remain unchanged. These are alternatives
-for listening review, not a claim that a natural dying groan has been found.
+for listening review, Creature Roar 03 is the approved bear death and reference for future beast death comparisons.

@@ -163,5 +163,9 @@
   ],
   "attacks": {
     "giant-bat": "rpg-audio/drawKnife1"
+  },
+  "death": {
+    "bear": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
+    "reference": "User-approved longer dying creature sound; bear only, other beast groups unchanged."
   }
 }
