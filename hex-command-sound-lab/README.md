@@ -376,3 +376,7 @@ beast attacks reuse selection textures; dragon fire keeps Spell Fire 07. Boars
 follow the same grunt/roar split. Firearms use Impact Plate medium 000; all treant
 attacks use Impact Plank medium 004; Thornshield levels 1–3 select Roar 3. Saved
 personal assignments retain priority. Duration audit and ZIP refreshed.
+
+Living tree selection (Wildkeeper, Grovewarden and all three treants) uses
+Roar 3 consistently. Old saved Grunt 4 selection choices migrate with a backup;
+attack mappings remain unchanged.

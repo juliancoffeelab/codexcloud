@@ -67,8 +67,8 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     if (actions.some(row => row.key === "voice"))
       choose("voice", [roar], "Roar 3 creature response.");
   }
-  if (/^fox-spearguard(?:-l[23])?$/.test(entity.id))
-    choose("tap", [roar], "Roar 3 for Thornshield selection.");
+  if (/^(?:fox-spearguard|treant)(?:-l[23])?$|^(wildkeeper|grovewarden)$/.test(entity.id))
+    choose("tap", [roar], "Roar 3 for Thornshield and living tree selection.");
   for (const attack of entity.attacks || []) {
     const key = `attack-${attack.id}`;
     if (/arquebus|pistol|musket|gunshot/i.test(attack.name)) {

@@ -805,26 +805,6 @@
           "action": "tap"
         },
         {
-          "entity": "woodland/treant",
-          "action": "tap"
-        },
-        {
-          "entity": "woodland/treant-l2",
-          "action": "tap"
-        },
-        {
-          "entity": "woodland/treant-l3",
-          "action": "tap"
-        },
-        {
-          "entity": "woodland/wildkeeper",
-          "action": "tap"
-        },
-        {
-          "entity": "woodland/grovewarden",
-          "action": "tap"
-        },
-        {
           "entity": "zombies/zombie-cleaver",
           "action": "tap"
         },

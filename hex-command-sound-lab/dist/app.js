@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=beast-attacks-1";
+import { buildActions } from "./matching.js?v=tree-selection-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -1519,6 +1519,20 @@ async function start() {
       localStorage.setItem("hex-sound-before-terrain-recut-v2", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-terrain-recut-v2", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-tree-selection-v1")) {
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        if (!/^woodland\/(?:treant(?:-l[23])?|wildkeeper|grovewarden)\/(?:tap|voice)$/.test(key)
+          || choice.id !== "rubberduck/80-cc0-creature-sfx/grunt_04.ogg") continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: "rubberduck/80-cc0-creature-sfx/roar_03.ogg", take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-tree-selection-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-tree-selection-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

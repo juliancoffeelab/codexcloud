@@ -42,7 +42,7 @@ for (const faction of workbench.factions)
       assert(attacks.every(row => row.suggested[0].endsWith("/spit_01.ogg")));
     if (/^treant(?:-l[23])?$/.test(unit.id))
       assert(attacks.every(row => row.suggested[0] === "impact-sounds/impactPlank_medium_004"));
-    if (/^fox-spearguard(?:-l[23])?$/.test(unit.id))
+    if (/^(?:fox-spearguard|treant)(?:-l[23])?$|^(wildkeeper|grovewarden)$/.test(unit.id))
       assert(tap.suggested[0].endsWith("/roar_03.ogg"));
     for (const attack of unit.attacks)
       if (/arquebus|pistol|musket|gunshot/i.test(attack.name))
