@@ -1,35 +1,9 @@
 # Hex Command instructions
 
-The README is user-owned; modify it only when explicitly asked.
-
-**Cornerstone rule: never resolve merge or rebase conflicts autonomously.**
-Resolve conflicts only in response to an explicit user request for conflict
-resolution. Do not initiate a merge, rebase, cherry-pick or branch synchronization
-to address known conflicts without that explicit request. Requests to implement,
-integrate, push, publish or prepare a PR do not imply permission to resolve
-conflicts. If conflicts block requested work, report them and stop the affected
-operation.
-
-Commit and push completed requested changes by default through the current
-feature branch and pull request. Honor explicit requests to keep changes local
-or hold a push. For unfinished work, commit and push after more than 10 minutes
-unless the user requests otherwise; report check status and remaining work.
-Continue on the current branch and PR unless asked to change branches. New
-branches start from the freshly fetched upstream default branch (`main`), never
-a stale local copy.
-
-Keep temporary data, experiments and diagnostics in ignored `tmp/`, outside
-tracked content. Tracked Markdown must contain permanent information; keep
-current-work tracking and diagnostics out of tracked Markdown files.
-
 Startup should be fast and show as much of final UI to the user as possible as
 early as possible, by lazy-loading unnecessary parts.
 The data should be prefetched, user must never wait for the data loading.
 Loading failures must provide a full backtrace and a way to restart cleanly.
-
-When the user interrupts ongoing work, stop that work and keep it paused. Address
-only the interruption and explicitly requested follow-up. Resume the earlier
-implementation, checks, commits or deployment only when the user asks to continue.
 
 # Skills
 

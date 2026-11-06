@@ -6,7 +6,7 @@ description: Use for an intended live human playtest, or immediately when the us
 # Deploy
 
 Enter this workflow for an explicit live deployment request or an intended live
-human playtest. Follow [AGENTS.md](../../../AGENTS.md) for repository delivery policy.
+human playtest. Follow [repository AGENTS.md](../../../../AGENTS.md) for delivery policy.
 
 For an intended human playtest, complete relevant implementation validation and
 commit/push required changes before entering this workflow.
