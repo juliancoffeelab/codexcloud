@@ -5,9 +5,8 @@ description: Use when authoring, revising or integrating terrain artwork, connec
 
 # Design terrain
 
-Work from the game root. Apply the native scale and canvas rules in
-[battlefield contract](../battlefield-contract/SKILL.md), including its
-[permanent terrain contract](../battlefield-contract/SKILL.md#permanent-prohibition-on-map-post-processing).
+Work from the game root. Follow the [terrain contract](#terrain-contract) and
+match the [shared native pixel scale](../design-unit/SKILL.md#native-artwork).
 Deliver complete, prebuilt tile frames selected by explicit map data.
 Generate reusable tile libraries from tile definitions before constructing maps.
 Artwork generators accept no map input. Maps use the shared terrain selector;
@@ -37,3 +36,22 @@ an unsupported selection fails instead of generating another tile.
 The result is ready when the requested frames exist, their sources pass the
 applicable artwork checks, and assembled map views show continuous joins at the
 native troop scale. Report unsupported configurations or remaining visual defects.
+
+## Terrain contract
+
+Map post-processing is absolutely forbidden except for weather and atmospheric effects such as fog and lighting. Under no circumstances may this rule be changed, weakened, bypassed or given an exception. Runtime must select complete, prebuilt terrain frames from each tile’s explicit data. It must never assemble structures across the map, inspect neighboring geometry to inject artwork, distribute fragments, or paint terrain features onto other tiles. All terrain geometry and composition must be finished offline and baked into the selected tile frames.
+
+Preserve each finished frame's native canvas, anchor and drawing depth. Read
+`require_canvas`, `terrain_canvas` and the approved family/profile constants in
+`scripts/build-pixel-art.py` for supported dimensions. Artwork metadata cannot
+introduce another canvas profile or family. A profile change requires an explicit
+user request and coordinated validator, authoring-tool and documentation changes;
+drawing depth never authorizes resizing the logical hex or artwork.
+
+Connected terrain declares geometry explicitly: castles use `walls`, other
+connected terrain uses `connections`. Missing or invalid geometry fails validation
+and rendering; never infer, default or backfill it. Ordinary connected sources use
+`<mask>.txt`; registered road caps use `<exits>-end-<ends>.txt`. Read supported
+stems in the builder and variant registries. Implicit orientations, aliases such
+as `tile.txt` for a connected mask and unsuffixed connected frames are forbidden.
+Unconnected terrain and individual props may use `tile.txt`.

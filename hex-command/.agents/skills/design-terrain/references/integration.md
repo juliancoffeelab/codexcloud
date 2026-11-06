@@ -24,7 +24,7 @@ format just to select its sprite.
    Keep foreground pieces
    in `pixel/art/terrain/props/<id>/<piece>/` and compose them in `layouts.json`.
    Ordinary props fit inside their hex. Complete terrain frames follow the
-   [shared canvas contract](../../battlefield-contract/SKILL.md#terrain-canvas),
+   [shared canvas contract](../SKILL.md#terrain-contract),
    enforced by `scripts/build-pixel-art.py`. The build bakes complete frames;
    runtime does not draw props outside them.
 3. If directional frames are needed, follow bridge/ford: add source matrices,

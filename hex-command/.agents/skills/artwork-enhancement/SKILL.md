@@ -5,7 +5,8 @@ description: Use to revise approved pixel artwork, including manual edits, recol
 
 # Artwork enhancement
 
-Apply the [battlefield contract](../battlefield-contract/SKILL.md) for native scale, canvas and grounding.
+For units and portraits, follow [native artwork](../design-unit/SKILL.md#native-artwork).
+For terrain/props, follow the [terrain contract](../design-terrain/SKILL.md#terrain-contract).
 
 Work from the game root with Python 3 and Pillow. Save the approved matrix and
 palette as an exact baseline in `tmp/`.
@@ -70,7 +71,7 @@ follow [floor palettes](../design-terrain/references/surfaces.md#floor-palettes)
 Inspect affected tiles after rebuilding artwork.
 
 Use [pixel cleaning](../pixel-cleaning/SKILL.md) before showing the result and
-[lineup previews](../pixel-lineup/SKILL.md) for progression. Show clean matrix
+[lineup previews](../design-unit/SKILL.md#preview-existing-artwork) for progression. Show clean matrix
 renders in the requested faction and keep diagnostics internal unless requested.
 When integration is part of the task, replace the canonical matrix and palette,
 then rebuild and check artwork. For helper changes or fill/template bugs, read

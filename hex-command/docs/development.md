@@ -42,8 +42,6 @@ Use [testing](../.agents/skills/testing/SKILL.md) for validation scope and test 
   objectives, events and story.
 - [Unit design](../.agents/skills/design-unit/SKILL.md) and
   [terrain design](../.agents/skills/design-terrain/SKILL.md) for artwork.
-- [Battlefield contract](../.agents/skills/battlefield-contract/SKILL.md) for
-  native scale, rendering and runtime data boundaries.
 - [Combat simulation](../.agents/skills/combat-simulation/SKILL.md) for AI,
   balance experiments and reports.
 - [Save migrations](../.agents/skills/save-migrations/SKILL.md) for persistence.
@@ -74,6 +72,8 @@ npm run map:benchmark -- --software --lights=128 --units=64
 ```
 
 Synthetic light/unit counts change presentation only. Software GPU results do
-not establish hardware frame rates. Use the
-[renderer reference](../.agents/skills/battlefield-contract/references/rendering.md)
-when changing the rendering implementation or interpreting GPU completion.
+not establish hardware frame rates. Normal draw readiness, completed GPU work,
+an animation-frame opportunity and physical display scanout are distinct.
+Completed benchmark mode waits for a GPU fence and includes polling overhead;
+optional asynchronous GPU queries measure execution separately. Trace recording
+must not add completion fences.

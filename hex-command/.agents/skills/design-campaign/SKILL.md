@@ -6,8 +6,8 @@ description: Use to design or revise campaigns and scenarios, including their wr
 # Design campaign
 
 Design the situation, player decisions and supporting systems together. Make one
-scenario work well before expanding a campaign. For runtime mechanics or rendering
-changes, apply [battlefield-contract](../battlefield-contract/SKILL.md).
+scenario work well before expanding a campaign. For runtime changes, follow the game-data ownership rule in
+[project instructions](../../../AGENTS.md).
 
 ## Shared mechanics and authoring
 

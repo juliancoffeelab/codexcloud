@@ -7,7 +7,7 @@ Review the changed area against the previous map. Use the unit/terrain design
 skills for artwork and the normal game renderer for geometry and connections.
 Inspect Rust schemas and existing scenario logic before claiming support;
 separate existing capabilities, missing shared mechanics and undecided values.
-Apply [battlefield-contract](../battlefield-contract/SKILL.md) for runtime data ownership.
+Follow [project instructions](../../../AGENTS.md) for runtime data ownership.
 
 ## Completion
 
