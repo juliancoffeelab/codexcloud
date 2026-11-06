@@ -212,10 +212,10 @@ test("A native rejection retains source data for explicit repair", async () => {
     ...factory,
     restore: () => ({ ok: false, error: { code: "invalidSave", message: "Rejected" } }),
   });
-  assert(restored.importFailure);
+  assert(restored.problem);
   assert.equal(restored.game.mapId, "mirror");
   assert.equal(await readSave(), raw);
-  await repairImport(restored.importFailure!, { kind: "all" });
+  await repairImport(restored.problem!, { kind: "all" });
   await saveBattle(restored.game);
   assert.equal(JSON.parse((await readSave())!).version, SAVE_VERSION);
   restored.game.dispose();
@@ -231,7 +231,7 @@ for (const raw of [
   test(`Rejected save ${raw} remains repairable while fresh play is available`, async () => {
     await storeSave(raw);
     const restored = await loadBattle(createTestFactory());
-    assert(restored.importFailure);
+    assert(restored.problem);
     assert.equal(await readSave(), raw);
     assert.equal(restored.game.round, 1);
     restored.game.move("u3", "hex-0738-f0cce97107");
@@ -311,10 +311,10 @@ test("Mid-turn writes retain the pre-turn checkpoint", async () => {
 test("Explicit source reset allows saving after rejection", async () => {
   await storeSave("{broken");
   const restored = await loadBattle(createTestFactory());
-  assert(restored.importFailure);
+  assert(restored.problem);
   assert.equal(await readSave(), "{broken");
   restored.game.move("u3", "hex-0738-f0cce97107");
-  await repairImport(restored.importFailure!, { kind: "all" });
+  await repairImport(restored.problem!, { kind: "all" });
   await saveBattle(restored.game);
   assert.equal(JSON.parse((await readSave())!).version, SAVE_VERSION);
   restored.game.dispose();

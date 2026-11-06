@@ -145,7 +145,7 @@ test("A rejected historical save is retained without preventing fresh play", asy
     ...factory,
     restore: () => ({ ok: false, error: { code: "invalidRequest", message: "Rejected" } }),
   });
-  assert(restored.importFailure);
+  assert(restored.problem);
   assert.equal(restored.game.turn, "player");
   assert.equal(await readSave(), original);
   restored.game.dispose();
@@ -169,7 +169,7 @@ test("Rejected native campaign data leaves the WASM factory usable", async () =>
     corrupt();
     await storeSave(JSON.stringify(checkpoint));
     const restored = await loadLiveBattle(factory);
-    assert(restored.importFailure);
+    assert(restored.problem);
     restored.game.dispose();
   }
   const next = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
@@ -195,7 +195,7 @@ test("An invalid native checkpoint is retained for repair alongside a fresh batt
   const rejected = { version: 999, checkpoint: {}, pendingEnemy: false };
   await storeSave(JSON.stringify(rejected));
   const restored = await loadLiveBattle(factory);
-  assert(restored.importFailure);
+  assert(restored.problem);
   assert.equal(restored.game.turn, "player");
   assert.equal(await readSave(), JSON.stringify(rejected));
   restored.game.dispose();
@@ -303,7 +303,7 @@ test("Import repair removes a corrupt historical payload and preserves playable 
     );
     await controller.repairSavedData({ kind: "record", key });
     assert.equal(localStorage.getItem("hex-command-battle"), raw);
-    assert.equal(await controller.retryImport(), true);
+    assert.equal(await controller.retrySavedProgress(), true);
     assert.deepEqual(controller.snapshot(), game.snapshot());
     assert.deepEqual(JSON.parse(required(await readSave())).checkpoint, expected);
     assert.deepEqual(
@@ -341,9 +341,9 @@ test("Unavailable storage with no source saves allows a new campaign and player 
       destination,
     );
     assert.equal(localStorage.length, 0);
-    let failure: BattleView["importFailure"];
-    const unsubscribe = controller.view.subscribe((view) => (failure = view.importFailure));
-    assert.equal(failure, null);
+    let failure: BattleView["loadProblem"];
+    const unsubscribe = controller.view.subscribe((view) => (failure = view.loadProblem));
+    assert.equal(failure?.kind, "blocked");
     unsubscribe();
   } finally {
     controller.dispose();

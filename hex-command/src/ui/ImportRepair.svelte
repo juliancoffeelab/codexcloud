@@ -2,73 +2,87 @@
   import { onDestroy } from "svelte";
   import DialogWindow from "./DialogWindow.svelte";
   import SaveIcon from "./SaveIcon.svelte";
-  import { runName } from "./save-browser";
+  import { runName, saveTime } from "./save-browser";
+  import {
+    repairModel,
+    issueText,
+    indexMessage,
+    recordName,
+    campaignConfirmation,
+    recordConfirmation,
+    type RepairConfirmation,
+  } from "./repair-view";
   import type { BattleView, BattleCommands } from "../controller/view";
   import type {
-    ImportFailure,
+    LoadProblem,
     RepairInventory,
     RepairRecord,
     RepairTarget,
   } from "../save/repair-types";
+  import type { CurrentEntry } from "../save/metadata";
   let {
     view,
     actions,
     onNewGame,
-  }: { view: BattleView; actions: BattleCommands; onNewGame: () => void } = $props();
-  let dialog = $state<HTMLDialogElement>();
-  let confirmation = $state<HTMLDialogElement>();
-  let shown = $state.raw<ImportFailure | null>(null);
-  let reviewing = $state(false);
-  let inventory = $state<RepairInventory>({ records: [], errors: [], authoritative: false });
-  let busy = $state(false);
-  let error = $state("");
+    onManage,
+  }: { view: BattleView; actions: BattleCommands; onNewGame: () => void; onManage: () => void } =
+    $props();
+  let dialog = $state<HTMLDialogElement>(),
+    confirmation = $state<HTMLDialogElement>();
+  let shown = $state.raw<LoadProblem | null>(null);
+  let reviewing = $state(false),
+    busy = $state(false),
+    error = $state("");
+  let inventory = $state<RepairInventory>({
+    records: [],
+    errors: [],
+    authoritative: false,
+    completedElsewhere: false,
+  });
   let pending = $state<{
-    target: RepairTarget | { kind: "import" };
-    label: string;
-    copy: string;
+    target: RepairTarget | { kind: "resume"; expected: CurrentEntry | null };
+    message: RepairConfirmation;
   }>();
   let armed = $state(false);
   let timer: ReturnType<typeof setTimeout>;
-  const unknownFlash = $derived(
-    inventory.records.find((record) => record.kind === "flash" && !record.runId),
+  const model = $derived(repairModel(inventory, view.loadProblem));
+  const kind = $derived(view.loadProblem?.kind);
+  const title = $derived(
+    reviewing
+      ? model.ready
+        ? "Saved games are ready"
+        : "Repair saved games"
+      : kind === "read"
+        ? "Couldn’t read saved progress"
+        : kind === "full"
+          ? "Not enough space"
+          : kind === "blocked"
+            ? "Storage access is blocked"
+            : "Repair saved games",
   );
-  const campaigns = $derived.by(() => {
-    const groups = new Map<string, { name: string; records: RepairRecord[] }>();
-    for (const record of inventory.records)
-      if (record.runId) {
-        const group = groups.get(record.runId) ?? {
-          name: record.entry ? runName(record.entry) : (record.runName ?? record.runId),
-          records: [],
-        };
-        group.records.push(record);
-        groups.set(record.runId, group);
-      }
-    return [...groups].map(([id, group]) => ({ id, ...group }));
-  });
-  const unknown = $derived(inventory.records.filter((record) => !record.runId));
   $effect(() => {
-    const failure = view.importFailure;
-    if (!failure) {
+    const problem = view.loadProblem;
+    if (!problem) {
       confirmation?.close();
       dialog?.close();
       shown = null;
-    } else if (failure !== shown) {
-      shown = failure;
+    } else if (problem !== shown) {
+      if (problem.kind === "ready" && shown?.kind !== "ready") {
+        confirmation?.close();
+        pending = undefined;
+      }
+      shown = problem;
       if (!dialog?.open) {
-        reviewing = false;
+        reviewing = problem.kind === "data" || problem.kind === "ready";
         dialog?.showModal();
+        if (reviewing) void refreshSafely();
       }
     }
   });
   async function refresh() {
     inventory = await actions.repairInventory();
   }
-  export async function open() {
-    confirmation?.close();
-    pending = undefined;
-    error = "";
-    reviewing = true;
-    dialog?.showModal();
+  async function refreshSafely() {
     busy = true;
     try {
       await refresh();
@@ -78,45 +92,92 @@
       busy = false;
     }
   }
-  function ask(target: RepairTarget | { kind: "import" }, label: string, copy: string) {
-    pending = { target, label, copy };
+  export async function open() {
+    confirmation?.close();
+    pending = undefined;
+    clearTimeout(timer);
+    error = "";
+    reviewing = true;
+    if (!dialog?.open) dialog?.showModal();
+    await refreshSafely();
+  }
+  function ask(target: NonNullable<typeof pending>["target"], message: RepairConfirmation) {
+    if (busy) return;
+    pending = { target, message };
     armed = false;
     clearTimeout(timer);
     timer = setTimeout(() => (armed = true), 350);
     confirmation?.showModal();
     confirmation?.querySelector<HTMLButtonElement>(".cancel")?.focus();
   }
+  function resume() {
+    const flash = model.flash?.entry?.kind === "flash" ? model.flash.entry : null;
+    ask(
+      { kind: "resume", expected: flash },
+      {
+        title: flash ? "Restore saved game?" : "Finish and choose new game?",
+        subject: flash ? `${runName(flash)} · ${saveTime(flash.savedAt)}` : undefined,
+        copy: flash
+          ? "Your current unsaved play will be replaced by this flash save."
+          : "There is no flash save to restore. This finishes the update and opens New game, replacing any current unsaved play.",
+        action: flash ? "Restore saved game" : "Finish update",
+        destructive: false,
+      },
+    );
+  }
+  function rebuild() {
+    ask(
+      { kind: "index" },
+      {
+        title: "Rebuild save list?",
+        copy: "Rebuild the list from identifiable snapshots. Unidentified saves and conflicting campaign claims will remain for explicit cleanup.",
+        action: "Rebuild save list",
+        destructive: false,
+      },
+    );
+  }
+  function reset() {
+    ask(
+      { kind: "all" },
+      {
+        title: "Delete all retained saves?",
+        copy: "All retained saves will be deleted, including flash saves, unidentified saves and save-list entries.",
+        action: "Delete all retained saves",
+        destructive: true,
+      },
+    );
+  }
   async function confirmAction() {
-    if (!pending || !armed || busy) return;
-    if (pending.target.kind === "import") {
-      confirmation?.close();
-      await retry();
-      return;
-    }
+    if (!pending || busy || !armed) return;
+    const action = pending;
     busy = true;
     error = "";
     try {
-      await actions.repairSavedData(pending.target);
-      confirmation?.close();
+      if (action.target.kind === "resume") {
+        confirmation?.close();
+        if (!(await actions.retrySavedProgress(action.target.expected))) await refresh();
+      } else {
+        await actions.repairSavedData(action.target);
+        confirmation?.close();
+        await refresh();
+      }
     } catch (e) {
       error = String(e);
-    } finally {
       try {
         await refresh();
-      } catch (e) {
-        error += `\n${String(e)}`;
+      } catch {
+        /* Original failure remains available. */
       }
+    } finally {
       busy = false;
     }
   }
-  async function retry() {
+  async function readAgain() {
     busy = true;
     error = "";
     try {
-      if (!(await actions.retryImport())) {
-        await refresh();
-        error = "Import is still blocked. Review the remaining records and error details.";
-      }
+      if (!(await actions.retrySavedProgress()))
+        error = "Saved progress still couldn’t be read. Stored data has not been replaced.";
     } catch (e) {
       error = String(e);
     } finally {
@@ -127,147 +188,192 @@
     dialog?.close();
     onNewGame();
   }
+  function manage() {
+    dialog?.close();
+    onManage();
+  }
   onDestroy(() => clearTimeout(timer));
 </script>
 
-{#snippet row(record: RepairRecord)}
-  <div class="record" data-repair-key={record.key}>
-    <div class="record-copy">
-      <strong>{record.label}</strong>
-      {#if record.error}<p class="damage">{record.error}</p>{:else}<p>Readable saved data</p>{/if}
-      <details class="key">
-        <summary>Storage record</summary>
-        <code>{record.key}</code>
-      </details>
+{#snippet technical(record: RepairRecord)}
+  <details class="technical">
+    <summary>Technical details</summary>
+    <code>{record.key}</code>
+    {#if record.error}<pre>{record.error}</pre>{/if}
+  </details>
+{/snippet}
+{#snippet row(record: RepairRecord, attention = false)}
+  <div
+    class:issue={attention}
+    class:warning={attention && record.kind === "flash" && record.ownership !== "known"}
+    class="record"
+    data-repair-key={record.key}
+  >
+    <div class="record-top">
+      <div class="copy">
+        {#if attention && record.entry}<p class="campaign-context">{runName(record.entry)}</p>{/if}
+        <strong>{recordName(record)}</strong>
+        {#if record.entry}<p class="time">{saveTime(record.entry.savedAt)}</p>{/if}
+        {#if record.issue}<p class="damage">{issueText(record)}</p>{/if}
+      </div>
+      {#if record.kind !== "index" && !(record.kind === "flash" && record.ownership !== "known") && record.ownership !== "conflicting"}
+        <button
+          class="trash"
+          disabled={busy}
+          aria-label={record.issue === "missing_snapshot"
+            ? `Remove ${recordName(record)} from list`
+            : `Delete ${recordName(record)}`}
+          onclick={() => ask({ kind: "record", key: record.key }, recordConfirmation(record))}
+        >
+          <SaveIcon name="trash" />
+        </button>
+      {/if}
     </div>
-    {#if record.kind === "index"}
+    {#if record.kind === "flash" && record.ownership !== "known"}
+      <p>
+        Deleting a campaign will leave this flash save untouched. We strongly recommend deleting it
+        separately.
+      </p>
       <button
-        class="quiet"
+        class="delete-link"
         disabled={busy}
-        onclick={() =>
-          ask(
-            { kind: "index" },
-            "Rebuild history list?",
-            "Rebuild the list from identifiable snapshots. Unidentified records remain available for manual cleanup.",
-          )}
+        onclick={() => ask({ kind: "record", key: record.key }, recordConfirmation(record))}
       >
-        Rebuild history list
+        <SaveIcon name="trash" />Delete flash save
       </button>
-    {:else}
+    {:else if record.ownership === "conflicting"}
+      <p>
+        It is listed under {Array.from(new Set(record.claims.map(runName)))
+          .sort()
+          .join(" and ")}. It will be kept when either campaign is deleted.
+      </p>
       <button
-        class="delete"
+        class="delete-link"
         disabled={busy}
-        aria-label={`Delete ${record.label}`}
-        onclick={() =>
-          ask(
-            { kind: "record", key: record.key },
-            `Delete ${record.label}?`,
-            "This source record will be deleted. Other records will remain. This cannot be undone.",
-          )}
+        onclick={() => ask({ kind: "record", key: record.key }, recordConfirmation(record))}
       >
-        <SaveIcon name="trash" />
+        <SaveIcon name="trash" />Delete unidentified turn save
       </button>
+    {:else if record.kind === "index"}
+      <p>{indexMessage(record)}</p>
+      <button class="rebuild" disabled={busy} onclick={rebuild}>Rebuild save list</button>
     {/if}
+    {@render technical(record)}
   </div>
 {/snippet}
 <DialogWindow
-  title="Saved data needs repair"
+  {title}
   bind:dialog
   width="540px"
   tall={reviewing}
   canDismiss={!busy}
+  className="repair-window"
 >
-  <p>
-    Existing saves could not be imported. They have been retained. Saving is paused until the data
-    is repaired or explicitly deleted.
-  </p>
-  {#if !reviewing}
-    <button class="primary" onclick={() => open()}>Review saved data</button>
-  {:else}
-    {#if inventory.authoritative}<p>
-        Another tab completed the import. Import the saved game here to continue.
-      </p>{/if}
-    {#each inventory.errors as issue}<p class="damage" role="alert">{issue}</p>{/each}
-    {#if unknownFlash}<p class="warning">
-        <strong>Flash save ownership is unknown.</strong>
-        Campaign deletion will leave it untouched. We strongly recommend deleting this unidentified flash
-        save before continuing.
-      </p>{/if}
-    {#each campaigns as campaign (campaign.id)}
-      <details class="campaign" open data-repair-run={campaign.id}>
-        <summary>{campaign.name}</summary>
-        {#each campaign.records as record (record.key)}{@render row(record)}{/each}
-        <button
-          class="delete-campaign"
-          disabled={busy}
-          onclick={() =>
-            ask(
-              { kind: "campaign", runId: campaign.id },
-              "Delete campaign source saves?",
-              `Delete all source records known to belong to ${campaign.name}, including its flash save when ownership is known. ${unknownFlash ? "The unidentified flash save will remain; we strongly recommend deleting it separately. " : ""}This cannot be undone.`,
-            )}
-        >
-          <SaveIcon name="trash" />Delete campaign source saves
+  <div class="repair-scroll">
+    {#if !reviewing}
+      {#if kind === "read"}<p>
+          The browser couldn’t read saved progress. We don’t know whether a flash save is available.
+        </p>
+        <p class="status-note">Saved data has been left untouched. Automatic saving is paused.</p>
+        <button class="primary" disabled={busy} onclick={readAgain}>Try reading again</button>
+      {:else if kind === "full"}<p>
+          There isn’t enough space to finish updating saved games. Delete saves you no longer need,
+          then finish the update.
+        </p>
+      {:else if kind === "blocked"}<p>
+          The browser refused access to saved data. Allow storage in your browser’s site settings,
+          or play without saving.
+        </p>{/if}
+      <button class:primary={kind === "full"} class="review" disabled={busy} onclick={() => open()}>
+        Review saved games
+      </button>
+      <button class="play" disabled={busy} onclick={play}>New game without saving</button>
+    {:else}
+      <p class="intro" role="status">
+        {busy && !inventory.records.length ? "Checking retained saves…" : model.summary}
+      </p>
+      {#if model.attention.length}<p class="section-label">Needs attention</p>
+        {#each model.attention as record (record.key)}{@render row(record, true)}{/each}{/if}
+      {#if model.campaigns.length}<p class="section-label">
+          {model.attention.length ? "Also retained" : "Saved games"}
+        </p>
+        {#each model.campaigns as campaign (campaign.id)}<details
+            class="campaign"
+            data-repair-run={campaign.id}
+          >
+            <summary>
+              <span>
+                {campaign.name}
+                <small>
+                  {campaign.records.filter((r) => r.kind === "turn").length} turn saves{campaign.records.some(
+                    (r) => r.kind === "flash",
+                  )
+                    ? " · Flash save"
+                    : ""}
+                </small>
+              </span>
+            </summary>
+            {#each campaign.records.filter((record) => !record.issue) as record (record.key)}{@render row(
+                record,
+              )}{/each}
+            {#if !model.ready}<button
+                class="delete-link"
+                disabled={busy}
+                onclick={() =>
+                  ask(
+                    { kind: "campaign", runId: campaign.id },
+                    campaignConfirmation(inventory, campaign.id),
+                  )}
+              >
+                <SaveIcon name="trash" />Delete campaign saves
+              </button>{/if}
+          </details>{/each}
+      {/if}
+    {/if}
+    {#if error}<p class="damage" role="alert">{error}</p>{/if}
+    <details class="technical failure">
+      <summary>Technical details</summary>
+      <pre>{view.loadProblem?.detail}</pre>
+      {#each inventory.errors as issue}<pre>{issue}</pre>{/each}
+    </details>
+  </div>
+  {#if reviewing}<footer>
+      {#if model.hint}<p class="hint">{model.hint}</p>{/if}
+      <button class="primary" disabled={busy || !model.canContinue} onclick={resume}>
+        {model.continuation}
+      </button>
+      {#if model.ready}<button class="review" disabled={busy} onclick={manage}>
+          Saved games
+        </button>{/if}
+      <button class="play" disabled={busy} onclick={play}>New game without saving</button>
+      <div class="support">
+        <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
+        <button class="delete-link" disabled={busy || model.ready} onclick={reset}>
+          <SaveIcon name="trash" />Delete all retained saves
         </button>
-      </details>
-    {/each}
-    {#if unknown.length}<h3>Other source records</h3>
-      {#each unknown as record (record.key)}{@render row(record)}{/each}{/if}
-    {#if !inventory.records.length && !inventory.errors.length && !inventory.authoritative}<p>
-        No source saves remain. You can finish import and choose a new game.
-      </p>{/if}
-    <button
-      class="primary"
-      disabled={busy}
-      onclick={() =>
-        ask(
-          { kind: "import" },
-          "Import retained saves?",
-          "Importing replaces any current unsaved game with the retained flash save. If no flash save remains, New game opens.",
-        )}
-    >
-      Import remaining saves
-    </button>
-    <button
-      class="delete-all"
-      disabled={busy || inventory.authoritative}
-      onclick={() =>
-        ask(
-          { kind: "all" },
-          "Delete all source saves?",
-          "All retained source saves, including unidentified records and the flash save, will be deleted. This cannot be undone.",
-        )}
-    >
-      <SaveIcon name="trash" />Delete all source saves
-    </button>
-  {/if}
-  {#if error}<p class="damage" role="alert">{error}</p>{/if}
-  <button class="play" disabled={busy} onclick={play}>Choose a new game without saving</button>
-  <button class="debug" onclick={() => actions.downloadDebugReport()}>Download debug report</button>
-  <details class="failure">
-    <summary>Import error details</summary>
-    <pre>{view.importFailure?.detail}</pre>
-  </details>
+      </div>
+    </footer>{/if}
 </DialogWindow>
 <DialogWindow
-  title={pending?.label ?? "Confirm source deletion"}
+  title={pending?.message.title ?? "Confirm saved-game action"}
   bind:dialog={confirmation}
   width="400px"
   canDismiss={!busy}
 >
-  <p>{pending?.copy}</p>
+  {#if pending?.message.subject}<p class="subject">{pending.message.subject}</p>{/if}
+  <p>{pending?.message.copy}</p>
+  {#if pending?.message.notice}<p class="notice" class:warning={pending.message.warning}>
+      {pending.message.notice}
+    </p>{/if}
+  {#if pending?.message.destructive}<p class="irreversible">This cannot be undone.</p>{/if}
   {#if error}<p class="damage" role="alert">{error}</p>{/if}
   <button
-    class="confirm-delete"
-    class:destructive={pending?.target.kind !== "import" && pending?.target.kind !== "index"}
+    class="confirm"
+    class:destructive={pending?.message.destructive}
     disabled={busy || !armed}
     onclick={confirmAction}
   >
-    {pending?.target.kind === "import"
-      ? "Import and continue"
-      : pending?.target.kind === "index"
-        ? "Rebuild history list"
-        : "Delete source data"}
+    {pending?.message.action}
   </button>
   <button class="cancel" disabled={busy} onclick={() => confirmation?.close()}>Cancel</button>
 </DialogWindow>
@@ -275,121 +381,221 @@
 <style>
   p {
     font:
-      14px/1.5 system-ui,
+      13px/1.5 system-ui,
       sans-serif;
     color: var(--muted);
     overflow-wrap: anywhere;
+    margin: 0 0 12px;
   }
-  .damage {
-    color: #e6a698;
+  .intro {
+    color: #d4dbc6;
+    font-size: 14px;
   }
-  .warning {
-    padding: 12px;
-    border: 1px solid #bc8650;
-    color: #e1c492;
-  }
-  .warning strong {
-    display: block;
-  }
-  .campaign {
-    border-top: 1px solid var(--line);
-    padding: 16px 0;
-  }
-  .campaign > summary {
-    font:
-      600 20px/1.4 Georgia,
-      serif;
-    cursor: pointer;
+  .section-label {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+    margin: 21px 0 10px;
   }
   .record {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 0;
+    padding: 12px 0;
     border-bottom: 1px solid var(--line);
   }
-  .record-copy {
-    flex: 1;
+  .record-top {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .copy {
     min-width: 0;
+    flex: 1;
   }
   .record strong {
     font:
-      15px/1.4 system-ui,
-      sans-serif;
+      15px/1.4 Georgia,
+      serif;
   }
-  .record p {
+  .time,
+  .campaign-context {
+    font-size: 11px;
+    margin: 4px 0;
+  }
+  .damage {
+    color: #e2aa96;
     font-size: 12px;
-    margin: 5px 0;
   }
-  .key {
+  .issue {
+    border: 1px solid #745744;
+    border-left: 3px solid #b77a64;
+    border-radius: 4px;
+    padding: 13px 12px;
+    margin: 0 0 13px;
+    background: #b77a6408;
+  }
+  .issue.warning {
+    border-color: #8e7c44;
+    border-left-color: #cbb16b;
+    background: #cbb16b08;
+  }
+  .issue.warning strong {
+    color: #dfc889;
+  }
+  .trash {
+    background: none;
+    border: 0;
+    color: #d09a86;
+    padding: 10px;
+  }
+  .delete-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 0;
+    background: none;
+    color: #d19a87;
+    font-size: 12px;
+    padding: 8px 0;
+  }
+  .technical {
     font:
       11px/1.4 system-ui,
       sans-serif;
     color: var(--muted);
+    margin-top: 10px;
   }
-  code {
+  .technical summary {
+    cursor: pointer;
+  }
+  code,
+  pre {
     overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    font-size: 11px;
   }
-  .delete {
-    padding: 8px;
-    border: 0;
-    color: #d09686;
-    background: none;
+  .campaign {
+    border-top: 1px solid var(--line);
   }
-  .delete-campaign,
-  .delete-all {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    color: #dc9c8b;
+  .campaign > summary {
+    cursor: pointer;
+    font:
+      600 19px/1.3 Georgia,
+      serif;
+    padding: 15px 0;
+  }
+  .campaign small {
+    display: block;
+    font:
+      11px/1.4 system-ui,
+      sans-serif;
+    color: var(--muted);
+    margin-top: 5px;
+  }
+  .rebuild,
+  .review {
     background: none;
-    border: 0;
-    margin: 12px 0;
-    padding: 8px 0;
+    border: 1px solid #68734f;
+    border-radius: 4px;
+    min-height: 40px;
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+  .rebuild {
+    width: 100%;
   }
   .primary,
   .play,
-  .debug,
-  .confirm-delete,
-  .cancel {
+  .confirm,
+  .cancel,
+  .review {
     display: block;
     width: 100%;
-    margin: 12px 0;
-    min-height: 42px;
+    min-height: 43px;
+    margin: 10px 0;
+    font-size: 13px;
   }
-  .primary {
+  .primary,
+  .confirm {
     background: var(--gold);
     color: var(--bg);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .primary:disabled {
+    background: #505b3c;
+    color: #aab197;
+    border-color: #5f6b49;
+  }
+  .confirm.destructive {
+    background: #a45141;
+    border-color: #bc7460;
+    color: #fff0e5;
   }
   .play {
-    color: #db9888;
+    background: none;
     border: 0;
+    color: #d19a87;
+    font-size: 12px;
+  }
+  .cancel {
     background: none;
+    border: 1px solid #66724e;
+    border-radius: 4px;
   }
-  .debug {
-    background: none;
+  .subject {
+    font:
+      600 19px/1.4 Georgia,
+      serif;
+    color: #ece6d1;
   }
-  .confirm-delete {
-    background: var(--gold);
-    color: var(--bg);
+  .notice,
+  .status-note {
+    padding: 11px 12px;
+    border-left: 2px solid #859467;
+    background: #8594670a;
+    color: #c8d0b9;
   }
-  .confirm-delete.destructive {
-    background: #a64e40;
-    color: #fff2eb;
-    border-color: #c07763;
+  .notice.warning {
+    border-color: #d1b567;
+    color: #dfc68a;
+  }
+  .irreversible {
+    font-size: 12px;
   }
   .failure {
-    margin: 16px 0;
-    font:
-      12px/1.4 system-ui,
-      sans-serif;
+    margin: 17px 0;
+  }
+  .hint {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+  .support {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .support button {
+    padding: 5px 0;
+    border: 0;
+    background: none;
+    font-size: 10px;
     color: var(--muted);
   }
-  pre {
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
+  .support .delete-link {
+    color: #cb9681;
   }
-  .quiet {
-    font-size: 12px;
+  .support :global(svg) {
+    width: 13px;
+    height: 13px;
+  }
+  footer {
+    position: sticky;
+    bottom: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    margin: 14px -28px -24px;
+    padding: 11px 28px 14px;
+    z-index: 1;
   }
 </style>

@@ -26,16 +26,44 @@ function discardSource(): void {
 export async function withImportLock<T>(work: () => Promise<T>): Promise<T> {
   return await navigator.locks.request("hex-command-storage-import", work);
 }
+/** Stage information prevents a storage read failure being mistaken for bad contents. */
+export class ImportStageError extends Error {
+  constructor(
+    readonly stage: "access" | "data" | "commit",
+    readonly original: unknown,
+  ) {
+    super(String(original), { cause: original });
+  }
+}
 export function importLocalStorage(validate: (save: BattleSave) => void): Promise<void> {
   return withImportLock(async () => {
-    if (await initialized()) {
-      discardSource();
-      return;
+    try {
+      if (await initialized()) {
+        discardSource();
+        return;
+      }
+    } catch (error) {
+      throw new ImportStageError("access", error);
     }
-    const converted = migrateStorageV1ToV2(readImportSource());
-    if (converted.current) validate(converted.current);
-    for (const save of converted.turns) validate(save);
-    await initializeStorage(converted);
+    let source: LocalSource;
+    try {
+      source = readImportSource();
+    } catch (error) {
+      throw new ImportStageError("access", error);
+    }
+    let converted: ReturnType<typeof migrateStorageV1ToV2>;
+    try {
+      converted = migrateStorageV1ToV2(source);
+      if (converted.current) validate(converted.current);
+      for (const save of converted.turns) validate(save);
+    } catch (error) {
+      throw new ImportStageError("data", error);
+    }
+    try {
+      await initializeStorage(converted);
+    } catch (error) {
+      throw new ImportStageError("commit", error);
+    }
     discardSource();
   });
 }

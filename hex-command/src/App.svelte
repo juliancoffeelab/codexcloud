@@ -176,4 +176,10 @@
 
 <SaveFailure view={$view} {actions} onManage={() => settings.openSavedGames()} />
 
-<ImportRepair bind:this={repair} view={$view} {actions} onNewGame={openMapPicker} />
+<ImportRepair
+  bind:this={repair}
+  view={$view}
+  {actions}
+  onNewGame={openMapPicker}
+  onManage={() => settings.openSavedGames()}
+/>

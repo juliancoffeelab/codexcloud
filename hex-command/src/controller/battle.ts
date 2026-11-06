@@ -10,7 +10,7 @@ import { loadBattle, restoreBattleText, type LoadedBattle } from "../save/load";
 import { serializeBattle, TurnCheckpoint } from "../save/write";
 import { storeSave } from "../save/storage";
 import { inspectImport, repairImport } from "../save/repair";
-import type { ImportFailure, RepairTarget } from "../save/repair-types";
+import type { LoadProblem, RepairTarget } from "../save/repair-types";
 import { summarizeSave } from "../save/summary";
 import { saveFailure, type SaveFailure } from "../save/failure";
 import { captureBrowserSaves } from "../save/debug";
@@ -97,7 +97,7 @@ export class BattleController {
   private pendingCheckpoint?: TurnCheckpoint;
   private pendingExplicit?: TurnCheckpoint;
   private awaitingNewGame = false;
-  private importFailure: ImportFailure | null = null;
+  private loadProblem: LoadProblem | null = null;
   private historyStart: boolean;
   private enemyRecordings: EnemyTurnRecording[] = [];
   private initialized = false;
@@ -130,17 +130,15 @@ export class BattleController {
   ) {
     const game = restored.game;
     this.#game = game;
-    this.awaitingNewGame = !restored.save && !!restored.chooseNewGame;
-    this.importFailure = restored.importFailure ?? null;
+    this.awaitingNewGame = restored.status === "empty" && restored.chooseNewGame;
+    this.loadProblem = restored.status === "blocked" ? restored.problem : null;
     this.pendingEnemyReplay = restored.pendingEnemy;
     const identity = restored.save?.progress.entry;
     this.progress = identity ? progressIdentity(identity) : newRun();
-    this.historyStart = !restored.save;
+    this.historyStart = restored.status === "empty";
     this.history.restore(game, restored.undo ?? []);
-    if (this.importFailure) this.persistence = "Saved data needs repair";
-    if (restored.storageFailure) {
-      this.failedSave(restored.storageFailure);
-    } else if (restored.save) this.persistence = "Saved locally";
+    if (this.loadProblem) this.persistence = "Saved data needs repair";
+    if (restored.status === "restored") this.persistence = "Saved locally";
     this.state = {
       selected: null,
       target: null,
@@ -228,14 +226,14 @@ export class BattleController {
       needsNewGame: this.awaitingNewGame,
       canSave:
         !this.awaitingNewGame &&
-        !this.importFailure &&
+        !this.loadProblem &&
         !this.settling() &&
         (this.#game.turn === "player" || !!this.#game.winner),
       activeRunId: this.awaitingNewGame ? null : this.progress.runId,
       persistence: this.persistence,
       saveError: this.saveError,
       saveFailure: this.saveFailure,
-      importFailure: this.importFailure,
+      loadProblem: this.loadProblem,
       sessionVersion: this.sessionVersion,
       opponent: opponentSummary(this.#game.setup.enemy),
       combat: this.#game.combat,
@@ -285,7 +283,7 @@ export class BattleController {
             this.pendingEnemyReplay || (this.#game.turn === "enemy" && !this.#game.winner),
           pendingEnemyReplay: this.pendingEnemyReplay,
           pendingCheckpoint: this.pendingCheckpoint ?? null,
-          importFailure: this.importFailure,
+          loadProblem: this.loadProblem,
           initialCheckpoint: this.historyStart,
           initialized: this.initialized,
           sessionVersion: this.sessionVersion,
@@ -355,7 +353,7 @@ export class BattleController {
 
   /** Capture synchronously so queued writes never serialize a later game or undo stack. */
   private flashSaveWrite(pendingEnemy = false): () => Promise<void> {
-    if (this.awaitingNewGame || this.importFailure) return async () => {};
+    if (this.awaitingNewGame || this.loadProblem) return async () => {};
     const session = this.sessionVersion;
     let text: string | undefined;
     try {
@@ -395,7 +393,7 @@ export class BattleController {
   }
 
   private async turnCheckpoint(missionStart = false): Promise<void> {
-    if (this.awaitingNewGame || this.importFailure) return;
+    if (this.awaitingNewGame || this.loadProblem) return;
     const previous = this.progress;
     const next = {
       ...progressIdentity(previous),
@@ -441,7 +439,7 @@ export class BattleController {
   }
 
   private requireManagedSaves(): void {
-    if (this.importFailure)
+    if (this.loadProblem && this.loadProblem.kind !== "ready")
       throw new Error("Use Repair saved data before opening normal save management.");
   }
   async savedProgress(): Promise<TurnEntry[]> {
@@ -468,7 +466,7 @@ export class BattleController {
   }
   private async finishPendingHistory(): Promise<void> {
     // A fresh in-memory game may run while retained source waits for repair.
-    if (this.importFailure) return;
+    if (this.loadProblem) return;
     try {
       if (this.pendingExplicit) {
         await addTurn(this.pendingExplicit);
@@ -488,9 +486,9 @@ export class BattleController {
   }
 
   repairInventory() {
-    return this.storageUpdate(() => {
-      if (!this.importFailure) throw new Error("There is no blocked import to repair.");
-      return inspectImport(this.importFailure, (save) => {
+    return this.storageUpdate(async () => {
+      if (!this.loadProblem) throw new Error("There is no blocked saved data to inspect.");
+      const inventory = await inspectImport(this.loadProblem, (save) => {
         const restored = restoreBattleText(
           this.nativeFactory,
           JSON.stringify(save),
@@ -498,35 +496,55 @@ export class BattleController {
         );
         restored.game.dispose();
       });
+      if (
+        inventory.authoritative &&
+        !inventory.errors.length &&
+        inventory.records.every((record) => !record.issue) &&
+        this.loadProblem.kind !== "ready"
+      ) {
+        this.loadProblem = { kind: "ready", source: "indexedDB", detail: "" };
+        this.publish({ renderBattle: false });
+      }
+      return inventory;
     });
   }
   repairSavedData(target: RepairTarget) {
     return this.storageUpdate(async () => {
-      if (!this.importFailure) throw new Error("There is no blocked import to repair.");
-      await repairImport(this.importFailure, target);
+      if (!this.loadProblem) throw new Error("There is no blocked import to repair.");
+      await repairImport(this.loadProblem, target);
     });
   }
-  retryImport(): Promise<boolean> {
+  retrySavedProgress(expected?: import("../save/metadata").CurrentEntry | null): Promise<boolean> {
     return this.storageUpdate(async () => {
-      if (!this.importFailure) return true;
+      if (!this.loadProblem) return true;
       const restored = await loadBattle(this.nativeFactory);
-      if (restored.storageFailure && !restored.importFailure) {
+      if (restored.status === "blocked") {
         restored.game.dispose();
-        this.importFailure = null;
-        this.failedSave(restored.storageFailure);
-        this.publish({ renderBattle: false });
-        return true;
-      }
-      if (restored.importFailure) {
-        restored.game.dispose();
-        this.importFailure = restored.importFailure;
+        this.loadProblem = restored.problem;
         this.publish({ renderBattle: false });
         return false;
       }
-      this.importFailure = null;
+      if (expected !== undefined) {
+        const actual = restored.status === "restored" ? restored.save.progress.entry : null;
+        const sorted = (value: unknown) =>
+          JSON.stringify(
+            value === null
+              ? null
+              : Object.entries(value as Record<string, unknown>).sort(([a], [b]) =>
+                  a.localeCompare(b),
+                ),
+          );
+        if (sorted(actual) !== sorted(expected)) {
+          restored.game.dispose();
+          throw new Error(
+            "Saved progress changed in another tab. Review the latest details before continuing.",
+          );
+        }
+      }
+      this.loadProblem = null;
       this.pendingExplicit = this.pendingCheckpoint = undefined;
       this.historyError = null;
-      if (restored.save) {
+      if (restored.status === "restored") {
         this.progress = progressIdentity(restored.save.progress.entry);
         this.historyStart = false;
         this.installRestored(restored.game, restored.undo ?? [], restored.pendingEnemy);
@@ -575,7 +593,7 @@ export class BattleController {
       this.progress = identity;
       this.pendingCheckpoint = undefined;
       this.historyError = null;
-      this.importFailure = null;
+      this.loadProblem = null;
     } catch (error) {
       restored.game.dispose();
       this.failedSave(error);
@@ -634,7 +652,7 @@ export class BattleController {
       this.pendingCheckpoint = undefined;
       this.pendingExplicit = undefined;
       this.pendingEnemyReplay = false;
-      this.importFailure = null;
+      this.loadProblem = null;
       this.history.clear();
       this.saveFailure = null;
       this.saveError = this.historyError = null;
@@ -647,7 +665,7 @@ export class BattleController {
     return this.storageUpdate(async () => {
       this.requireSession();
       this.requireSettled();
-      if (this.importFailure)
+      if (this.loadProblem)
         throw new Error("Finish updating saved progress before making a manual save.");
       try {
         const point = TurnCheckpoint.capture(
@@ -1156,6 +1174,7 @@ export class BattleController {
 
   private async replaceGame(replacement: LiveGame, newRunRequested = false) {
     if (newRunRequested) {
+      if (this.loadProblem?.kind === "ready") this.loadProblem = null;
       try {
         await this.finishPendingHistory();
       } catch (error) {
@@ -1272,7 +1291,7 @@ export class BattleController {
     const session = this.sessionVersion;
     this.settlingSession = session;
     this.initialization = this.storageUpdate(async () => {
-      if (!this.awaitingNewGame && !this.importFailure) {
+      if (!this.awaitingNewGame && !this.loadProblem) {
         if (this.historyStart) await this.turnCheckpoint(!this.pendingEnemyReplay);
         await this.persist(this.pendingEnemyReplay);
       }

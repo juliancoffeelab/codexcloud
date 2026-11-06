@@ -20,7 +20,7 @@ import {
   type LocalSource,
 } from "./migrations/storage-v1-to-v2";
 import type { BattleSave } from "./schema";
-import type { ImportFailure, RepairInventory, RepairTarget } from "./repair-types";
+import type { LoadProblem, RepairInventory, RepairTarget } from "./repair-types";
 
 /** Raw target-store inspection bypasses normal repository validation. */
 async function databaseSource(tx: IDBTransaction): Promise<LocalSource> {
@@ -43,28 +43,28 @@ async function databaseSource(tx: IDBTransaction): Promise<LocalSource> {
   return source;
 }
 export function inspectImport(
-  failure: ImportFailure,
+  failure: LoadProblem,
   validate: (save: BattleSave) => void,
 ): Promise<RepairInventory> {
   return withImportLock(async () => {
     const errors: string[] = [];
-    let authoritative = false;
+    let authoritative = failure.source === "indexedDB";
+    let completedElsewhere = false;
     if (failure.source === "localStorage") {
       try {
         authoritative = await initialized();
+        completedElsewhere = authoritative;
       } catch (error) {
-        errors.push(`Save storage is unavailable: ${String(error)}`);
+        errors.push(String(error));
       }
-      if (authoritative) return { records: [], errors, authoritative };
     }
     let source: LocalSource;
     try {
-      source =
-        failure.source === "localStorage"
-          ? readImportSource()
-          : await transaction([STATE, ENTRIES, TURNS], "readonly", databaseSource);
+      source = authoritative
+        ? await transaction([STATE, ENTRIES, TURNS], "readonly", databaseSource)
+        : readImportSource();
     } catch (error) {
-      return { records: [], errors: [...errors, String(error)], authoritative };
+      return { records: [], errors: [...errors, String(error)], authoritative, completedElsewhere };
     }
     const records = inspectStorageV1ToV2(source);
     for (const record of records) {
@@ -72,16 +72,19 @@ export function inspectImport(
         try {
           validate(record.save);
         } catch (error) {
-          record.error = String(error);
+          if (!record.issue) record.issue = "invalid_battle";
+          record.error = [record.error, String(error)]
+            .filter((value) => value !== undefined)
+            .join("\n");
         }
         delete record.save;
       }
     }
-    return { records, errors, authoritative };
+    return { records, errors, authoritative, completedElsewhere };
   });
 }
 /** Destructive repair never requires a valid battlefield or a successful full import. */
-export function repairImport(failure: ImportFailure, target: RepairTarget): Promise<void> {
+export function repairImport(failure: LoadProblem, target: RepairTarget): Promise<void> {
   return withImportLock(async () => {
     if (failure.source === "localStorage") {
       // Another tab's completed import wins. Do not mutate it through source repair.

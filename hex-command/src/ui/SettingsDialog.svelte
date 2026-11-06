@@ -51,7 +51,7 @@
     onNewBattle();
   }
   async function navigate(next: Screen) {
-    if (next === "saves" && view.importFailure) {
+    if (next === "saves" && view.loadProblem && view.loadProblem.kind !== "ready") {
       onRepair();
       return;
     }
@@ -80,7 +80,7 @@
     });
   }
   export function openSavedGames() {
-    if (view.importFailure) {
+    if (view.loadProblem && view.loadProblem.kind !== "ready") {
       onRepair();
       return;
     }
@@ -154,7 +154,12 @@
           {:else}Policy: {view.opponent.policy}{/if}
         </p>
       </details>
-      {@render entry(view.importFailure ? "Repair saved data" : "Saved games", "saves")}
+      {@render entry(
+        view.loadProblem && view.loadProblem.kind !== "ready"
+          ? "Repair saved games"
+          : "Saved games",
+        "saves",
+      )}
       <button class="new-game" disabled={saving || saved || !view.canSave} onclick={saveGame}>
         {saving ? "Saving…" : saved ? "Saved" : "Save game"}
       </button>

@@ -3,21 +3,50 @@ import { LiveGame, nativeValue } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migrations";
 import { storeSave, readSave, readSession } from "./storage";
-import { importLocalStorage, readImportSource } from "./import";
-import type { ImportFailure } from "./repair-types";
+import { importLocalStorage, readImportSource, ImportStageError } from "./import";
+import type { LoadProblem } from "./repair-types";
+import { saveFailure } from "./failure";
 import { currentFlashSave, currentTurn } from "./schema";
 import type { CurrentEntry } from "./metadata";
 import type { BattleSave } from "./schema";
 
-export interface LoadedBattle {
+interface BattleState {
   game: LiveGame;
   pendingEnemy: boolean;
-  save?: BattleSave;
-  undo?: import("../game/undo").SavedUndoEntry[];
   notice?: string;
-  storageFailure?: string;
-  chooseNewGame?: boolean;
-  importFailure?: ImportFailure;
+}
+export interface RestoredBattle extends BattleState {
+  status: "restored";
+  save: BattleSave;
+  undo: import("../game/undo").SavedUndoEntry[];
+}
+/** An unsuccessful read can never be represented as a confirmed empty repository. */
+export type LoadedBattle = BattleState &
+  (
+    | (RestoredBattle & { problem?: never; chooseNewGame?: never })
+    | { status: "empty"; chooseNewGame: boolean; save?: never; undo?: never; problem?: never }
+    | { status: "blocked"; problem: LoadProblem; save?: never; undo?: never; chooseNewGame?: never }
+  );
+function blocked(
+  factory: GameEngineFactory,
+  source: LoadProblem["source"],
+  kind: LoadProblem["kind"],
+  error: unknown,
+): LoadedBattle {
+  return {
+    status: "blocked",
+    game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
+    pendingEnemy: false,
+    problem: {
+      source,
+      kind,
+      detail: `${String(error)}\n${error instanceof Error ? (error.stack ?? "") : ""}`,
+    },
+  };
+}
+function accessKind(error: unknown): "read" | "blocked" | "full" {
+  const failure = saveFailure(error);
+  return failure.kind === "internal" ? "read" : failure.kind;
 }
 /** Canonical decoding belongs to the loading boundary, independent of committing it. */
 function decodeBattleText(raw: string) {
@@ -47,7 +76,7 @@ export function restoreBattleText(
   factory: GameEngineFactory,
   raw: string,
   kind: "flash" | "turn" = "flash",
-): LoadedBattle & { save: BattleSave; migrated: boolean } {
+): RestoredBattle & { migrated: boolean } {
   const { save: converted, migrated } = decodeBattleText(raw);
   const save = kind === "flash" ? currentFlashSave(converted) : currentTurn(converted);
   if (save.undo?.length) {
@@ -56,72 +85,50 @@ export function restoreBattleText(
   }
   const undo = decodeUndo(save.checkpoint.state, save.undo ?? []);
   const game = LiveGame.restore(factory, save.checkpoint, save.setup);
-  return { game, pendingEnemy: save.pendingEnemy, save, migrated, undo };
+  return { status: "restored", game, pendingEnemy: save.pendingEnemy, save, migrated, undo };
 }
 /** Parse, migrate, validate natively, then persist the successfully restored format. */
 export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBattle> {
   try {
     await initializeRepository(factory);
   } catch (error) {
-    const detail = `${String(error)}\n${error instanceof Error ? (error.stack ?? "") : ""}`;
-    let hasSource = true;
+    const stage = error instanceof ImportStageError ? error.stage : "access";
+    const reason = error instanceof ImportStageError ? error.original : error;
+    let source: LoadProblem["source"] = "indexedDB";
     try {
-      hasSource = Object.keys(readImportSource()).some(
-        (key) => key !== "hex-command-choose-new-game",
-      );
+      if (Object.keys(readImportSource()).some((key) => key !== "hex-command-choose-new-game"))
+        source = "localStorage";
     } catch {
-      /* Presence is unknown. Preserve it. */
+      source = "localStorage";
     }
+    return blocked(factory, source, stage === "data" ? "data" : accessKind(reason), reason);
+  }
+  let session: Awaited<ReturnType<typeof readSession>>;
+  try {
+    session = await readSession();
+  } catch (error) {
+    return blocked(factory, "indexedDB", accessKind(error), error);
+  }
+  if (session.text === null)
     return {
+      status: "empty",
       game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
       pendingEnemy: false,
-      ...(hasSource
-        ? { importFailure: { source: "localStorage" as const, detail } }
-        : { storageFailure: detail }),
+      chooseNewGame: session.chooseNewGame,
     };
-  }
-  let raw: string | null = null;
-  let storageFailure: string | undefined;
-  let chooseNewGame = false;
+  let restored: ReturnType<typeof restoreBattleText>;
   try {
-    ({ text: raw, chooseNewGame } = await readSession());
+    restored = restoreBattleText(factory, session.text);
   } catch (error) {
-    storageFailure = String(error);
+    return blocked(factory, "indexedDB", "data", error);
   }
-  if (raw !== null) {
+  if (restored.migrated) {
     try {
-      const restored = restoreBattleText(factory, raw);
-      // Storage errors must not turn a valid restored battle into a fresh battle.
-      if (restored.migrated) {
-        try {
-          await storeSave(JSON.stringify(restored.save));
-        } catch (error) {
-          restored.game.dispose();
-          return {
-            game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
-            pendingEnemy: false,
-            importFailure: { source: "indexedDB", detail: String(error) },
-            notice:
-              "Saved progress could not be updated. Review retained data in Repair saved data.",
-          };
-        }
-      }
-      return restored;
+      await storeSave(JSON.stringify(restored.save));
     } catch (error) {
-      return {
-        game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
-        pendingEnemy: false,
-        importFailure: {
-          source: "indexedDB",
-          detail: `${String(error)}\n${error instanceof Error ? (error.stack ?? "") : ""}`,
-        },
-      };
+      restored.game.dispose();
+      return blocked(factory, "indexedDB", accessKind(error), error);
     }
   }
-  return {
-    game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
-    pendingEnemy: false,
-    storageFailure,
-    chooseNewGame,
-  };
+  return restored;
 }
