@@ -922,12 +922,36 @@
           "action": "tap"
         },
         {
+          "entity": "undead-animals/zombie-bear",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/zombie-bear",
+          "action": "attack-bite"
+        },
+        {
           "entity": "undead-animals/zombie-bear-l2",
           "action": "tap"
         },
         {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l2",
+          "action": "attack-bite"
+        },
+        {
           "entity": "undead-animals/zombie-bear-l3",
           "action": "tap"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "attack-claws"
+        },
+        {
+          "entity": "undead-animals/zombie-bear-l3",
+          "action": "attack-bite"
         },
         {
           "entity": "zombies/zombie-cleaver",

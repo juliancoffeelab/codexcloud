@@ -387,3 +387,8 @@ Human/elf swords use the former spear contact; spears/lances use the former swor
 blade choices. Knives stay unchanged. Dwarven axe/pickaxe/hammer/spear/shield attacks
 use Mining 001; ranged weapons and spells retain their picks. Human mace/hammer
 attacks share Merfolk Mace Spear Haft take 12.
+
+Undead Animals physical attacks reuse their selection palettes across all 18
+entries: bone-contact item Wood 03 for skeletal animals, Grunt 4 for zombie bears,
+Cloth 3 for corpse vultures. Bone-dragon fire retains Spell Fire 07. Curation
+checks explicitly cover the separate undead faction as well as living beasts.

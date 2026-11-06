@@ -27,7 +27,7 @@ for (const faction of workbench.factions)
       assert(!action.suggested.some((id) => action.alternatives.includes(id)));
       if (action.key.startsWith("attack-")) {
         assert(
-          unit.key.startsWith("beasts/") || /^(boar|greatboar|woodland-ancient-boar)$/.test(unit.id) || !action.suggested.some((id) => /alien_|grunt_|horse-vocals/.test(id)),
+          ["beasts", "undead-animals"].includes(unit.faction) || /^(boar|greatboar|woodland-ancient-boar)$/.test(unit.id) || !action.suggested.some((id) => /alien_|grunt_|horse-vocals/.test(id)),
         );
         if (/fire/i.test(action.title))
           assert(action.suggested.every((id) => id.includes("spell_fire_07")));
@@ -39,6 +39,12 @@ for (const faction of workbench.factions)
     }
     if (/^(wildkeeper|grovewarden)$/.test(unit.id))
       assert.equal(tap.suggested[0], "rpg-audio/cloth3");
+    if (unit.faction === "undead-animals")
+      for (const attack of unit.attacks) {
+        if (/fire|magic|spell/i.test(attack.name)) continue;
+        assert.deepEqual(actions.find(row => row.key === `attack-${attack.id}`).suggested,
+          tap.suggested, `${unit.key}: undead animal attack follows its selection palette`);
+      }
     const attacks = actions.filter(row => row.key.startsWith("attack-"));
     if (/^giant-(wasp|spider)(?:-l[23])?$/.test(unit.id))
       assert(attacks.every(row => row.suggested[0].endsWith("/spit_01.ogg")));

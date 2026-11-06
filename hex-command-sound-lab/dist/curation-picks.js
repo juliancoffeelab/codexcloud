@@ -92,6 +92,12 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     } else if (/^treant(?:-l[23])?$/.test(entity.id)) {
       choose(key, ["impact-sounds/impactPlank_medium_004"],
         "Impact Plank medium 004 for treant attacks.");
+    } else if (entity.faction === "undead-animals" && !/fire|magic|spell/i.test(attack.name)) {
+      const sound = tap?.suggested[0];
+      if (sound) {
+        const row = choose(key, [sound], "Undead animal physical attack reuses its skeletal, zombie or wing selection texture.");
+        row.caveat = "Audition proxy for the undead animal attack.";
+      }
     } else if (isBeast && !/fire|magic|spell/i.test(attack.name)) {
       const sound = /^giant-(wasp|spider)(?:-l[23])?$/.test(entity.id)
         ? creatureSound("spit_01")
