@@ -81,7 +81,7 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     } else if ((entity.faction === "zombies" || /^zombie-bear/.test(entity.id)) && /bite/.test(name)) {
       choose(key, [creatureSound("grunt_05")], "Grunt 5 for the zombie bite.");
     } else if (/claw/.test(name)) {
-      choose(key, ["rpg-audio/knifeSlice2"], "Knife Slice 2 as the claw-slash texture.");
+      choose(key, ["edits/knife-slice-2-no-hit-v1"], "Knife Slice 2 swish with its opening hit removed.");
     } else if (/wolf/.test(entity.id) && /bite|fang/.test(name)) {
       choose(key, ["qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac"], "Snarl for wolf and werewolf bites.");
     } else if (entity.faction === "elves" && /^(elf-flanker(?:-l[23])?|elf-jumper-l[23])$/.test(entity.id) && attack.id === "blade") {
@@ -96,13 +96,16 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
     } else if (attack.id === "root-crush") {
       choose(key, ["rubberduck/80-cc0-rpg-sfx/spell_02.ogg"], "Spell 02 for Crushing Roots.");
     } else if (/axe|halberd/.test(name) && !/pickaxe/.test(name)) {
-      choose(key, ["rubberduck/80-cc0-rpg-sfx/metal_01.ogg"],
-        "Metal 01 for axe-family attacks, including poleaxes and halberds.");
+      choose(key, ["edits/metal-01-soft-onset-v1"],
+        "Metal 01 without its opening hit for axe-family attacks, including poleaxes and halberds.");
     } else if (["humans", "elves"].includes(entity.faction) && /^(sword|blade)$/.test(name)) {
       choose(key, ["edits/spear-sabre-one-shot-v1"], "Sword attack using the former spear contact.");
     } else if (["humans", "elves"].includes(entity.faction) && /^(spear|lance)$/.test(name)) {
       choose(key, [1,2,3].map(n => `rubberduck/80-cc0-rpg-sfx/blade_0${n}.ogg`),
         "Spear attack using the former sword blade sounds.");
+    } else if (/^skeleton-rider(?:-l[23])?$/.test(entity.id) && /spear/.test(name)) {
+      choose(key, [1,2,3].map(n => `rubberduck/80-cc0-rpg-sfx/blade_0${n}.ogg`),
+        "Skeleton rider spear attack using the current spear palette.");
     } else if (entity.faction === "humans" && /mace|hammer/.test(name)) {
       const id = "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav";
       const row = choose(key, [id], "Mace Spear Haft, take 12, shared with Merfolk macers.");

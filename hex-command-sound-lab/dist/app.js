@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=fish-slap-1";
+import { buildActions } from "./matching.js?v=soft-onsets-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -15,10 +15,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=fish-slap-1"),
+    loadJSON("catalog.json?v=soft-onsets-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
     loadJSON("sources.json?v=fish-slap-1"),
-    loadJSON("playback-levels.json?v=fish-slap-1"),
+    loadJSON("playback-levels.json?v=soft-onsets-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {
@@ -1561,6 +1561,28 @@ async function start() {
       localStorage.setItem("hex-sound-before-deer-rider-v1", JSON.stringify(backup));
       saveAssignments();
       localStorage.setItem("hex-sound-deer-rider-v1", "true");
+    }
+  } catch {}
+  try {
+    if (!localStorage.getItem("hex-sound-soft-onsets-v1")) {
+      const replacements = {
+        "rpg-audio/knifeSlice2": "edits/knife-slice-2-no-hit-v1",
+        "rubberduck/80-cc0-rpg-sfx/metal_01.ogg": "edits/metal-01-soft-onset-v1",
+        "edits/burned-fire-recut-v2": "edits/burned-fire-soft-onset-v3",
+      };
+      const backup = {};
+      for (const [key, choice] of Object.entries(assignments)) {
+        const rider = /^skeletons\/skeleton-rider(?:-l[23])?\/attack-spear$/.test(key)
+          && choice.id === "edits/spear-sabre-one-shot-v1";
+        const replacement = rider ? "rubberduck/80-cc0-rpg-sfx/blade_01.ogg"
+          : replacements[choice.id];
+        if (!replacement) continue;
+        backup[key] = choice;
+        assignments[key] = { ...choice, id: replacement, take: 0 };
+      }
+      localStorage.setItem("hex-sound-before-soft-onsets-v1", JSON.stringify(backup));
+      saveAssignments();
+      localStorage.setItem("hex-sound-soft-onsets-v1", "true");
     }
   } catch {}
   setFaction(activeFaction.id);

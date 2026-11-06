@@ -56,7 +56,7 @@ for (const faction of workbench.factions)
     for (const attack of unit.attacks) {
       const row = actions.find(row => row.key === `attack-${attack.id}`);
       if (/tail.*strike/i.test(attack.name)) assert.equal(row.suggested[0], "kyles/fish-slap/fish_drop1.ogg");
-      if (/claw/i.test(attack.name)) assert.equal(row.suggested[0], "rpg-audio/knifeSlice2");
+      if (/claw/i.test(attack.name)) assert.equal(row.suggested[0], "edits/knife-slice-2-no-hit-v1");
       if (/wolf/.test(unit.id) && /bite|fang/i.test(attack.name))
         assert.equal(row.suggested[0], "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac");
       if (unit.faction === "zombies" || /^zombie-bear/.test(unit.id)) {
@@ -64,6 +64,9 @@ for (const faction of workbench.factions)
         if (/grasp|hands/i.test(attack.name)) assert(row.suggested[0].endsWith("/burp_02.ogg"));
       }
     }
+    if (/^skeleton-rider(?:-l[23])?$/.test(unit.id))
+      assert.equal(actions.find(row => row.key === "attack-spear").suggested[0],
+        "rubberduck/80-cc0-rpg-sfx/blade_01.ogg");
     const attacks = actions.filter(row => row.key.startsWith("attack-"));
     if (/^giant-(wasp|spider)(?:-l[23])?$/.test(unit.id))
       assert(attacks.every(row => row.suggested[0].endsWith("/spit_01.ogg")));
@@ -78,7 +81,7 @@ for (const faction of workbench.factions)
     for (const attack of unit.attacks)
       if (/axe|halberd/i.test(attack.name) && !/pickaxe/i.test(attack.name))
         assert.equal(attacks.find(row => row.key === `attack-${attack.id}`).suggested[0],
-          "rubberduck/80-cc0-rpg-sfx/metal_01.ogg");
+          "edits/metal-01-soft-onset-v1");
     for (const attack of unit.attacks)
       if (/arquebus|pistol|musket|gunshot/i.test(attack.name))
         assert.equal(attacks.find(row => row.key === `attack-${attack.id}`).suggested[0], "impact-sounds/impactPlate_medium_000");

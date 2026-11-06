@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "8a2428c14a6605dc7c94d68259839c34c4dc5bf90675991b349570de0dd9b5e7",
+  "catalogSha256": "7f1d40194959d9bbadf7fbe8037ed8beaf8d352a168251642d0062bab38335d1",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -33638,6 +33638,127 @@
           "playbackStrongest50msRmsDbFS": -26.29,
           "decodedSamplesAtOrAboveFullScale": 0,
           "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/knife-slice-2-no-hit-v1",
+      "name": "Knife Slice 2 \u00b7 swish without opening hit",
+      "pack": "audition-edits",
+      "path": "audio/listening/6c48d692f5c2e390fc93.mp3",
+      "listeningSha256": "d51421705afafd8de1efb978c084a6fc0751ba4414bb5dbf8d3169ff480ccabd",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -17.06,
+      "full": {
+        "duration": 0.29,
+        "peakDbFS": 2.0,
+        "rmsDbFS": -14.79,
+        "strongest50msRmsDbFS": -9.23,
+        "leadingBelow55Ms": 0.0,
+        "playbackPeakDbFS": -15.06,
+        "playbackRmsDbFS": -31.85,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 14,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -17.06,
+          "duration": 0.29,
+          "peakDbFS": 2.0,
+          "rmsDbFS": -14.79,
+          "strongest50msRmsDbFS": -9.23,
+          "leadingBelow55Ms": 0.0,
+          "playbackPeakDbFS": -15.06,
+          "playbackRmsDbFS": -31.85,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 14,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/metal-01-soft-onset-v1",
+      "name": "Metal 01 \u00b7 ring without opening hit",
+      "pack": "audition-edits",
+      "path": "audio/listening/de656ba448472289783f.mp3",
+      "listeningSha256": "150e6e13c834df56510272838352a3ca630c6f8fcac5dd1b118e9d75dfad8d9c",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -4.69,
+      "full": {
+        "duration": 0.2444,
+        "peakDbFS": -9.13,
+        "rmsDbFS": -27.3,
+        "strongest50msRmsDbFS": -21.6,
+        "leadingBelow55Ms": 0.1,
+        "playbackPeakDbFS": -13.82,
+        "playbackRmsDbFS": -31.99,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -4.69,
+          "duration": 0.2444,
+          "peakDbFS": -9.13,
+          "rmsDbFS": -27.3,
+          "strongest50msRmsDbFS": -21.6,
+          "leadingBelow55Ms": 0.1,
+          "playbackPeakDbFS": -13.82,
+          "playbackRmsDbFS": -31.99,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "edits/burned-fire-soft-onset-v3",
+      "name": "Burned settlement \u00b7 fire without opening pop",
+      "pack": "audition-edits",
+      "path": "audio/listening/8084fe3905c5eb6a4c28.mp3",
+      "listeningSha256": "5ce8169285d5d03e0e996f6b0173a3f6edc6fe396edea74581c6b0df898e9700",
+      "intentionallyQuietEdit": true,
+      "catalogGainDb": 0,
+      "combinedPlaybackGainDb": -5.19,
+      "full": {
+        "duration": 0.45,
+        "peakDbFS": -16.3,
+        "rmsDbFS": -41.27,
+        "strongest50msRmsDbFS": -36.74,
+        "leadingBelow55Ms": 10.3,
+        "playbackPeakDbFS": -21.49,
+        "playbackRmsDbFS": -46.46,
+        "playbackStrongest50msRmsDbFS": -41.93,
+        "decodedSamplesAtOrAboveFullScale": 0,
+        "flags": [
+          "quiet-at-playback-setting"
+        ]
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -5.19,
+          "duration": 0.45,
+          "peakDbFS": -16.3,
+          "rmsDbFS": -41.27,
+          "strongest50msRmsDbFS": -36.74,
+          "leadingBelow55Ms": 10.3,
+          "playbackPeakDbFS": -21.49,
+          "playbackRmsDbFS": -46.46,
+          "playbackStrongest50msRmsDbFS": -41.93,
+          "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": [
+            "quiet-at-playback-setting"
+          ]
         }
       ]
     }

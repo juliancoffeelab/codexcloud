@@ -458,6 +458,56 @@
         "afade=t=in:d=0.008",
         "afade=t=out:st=0.32:d=0.08"
       ]
+    },
+    {
+      "id": "edits/knife-slice-2-no-hit-v1",
+      "sourceId": "rpg-audio/knifeSlice2",
+      "sourceHash": "6c2064d0ef988d1ec3d56868e823ea8823a5cac00f2742560052633529407def",
+      "name": "Knife Slice 2 \u00b7 swish without opening hit",
+      "intent": "Remove the user-identified opening impact; retain the trailing texture with click-free fades. Original remains available.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.12:duration=0.29",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.230:d=0.06"
+      ]
+    },
+    {
+      "id": "edits/metal-01-soft-onset-v1",
+      "sourceId": "rubberduck/80-cc0-rpg-sfx/metal_01.ogg",
+      "sourceHash": "433d7adf123f9de425047f6dec3f7b4da510c0fd0208d4893a22be8bd22d9e34",
+      "name": "Metal 01 \u00b7 ring without opening hit",
+      "intent": "Remove the user-identified opening impact; retain the trailing texture with click-free fades. Original remains available.",
+      "preserveLevel": false,
+      "filters": [
+        "atrim=start=0.235:duration=0.24",
+        "asetpts=PTS-STARTPTS",
+        "afade=t=in:d=0.015",
+        "afade=t=out:st=0.180:d=0.06"
+      ]
+    },
+    {
+      "id": "edits/burned-fire-soft-onset-v3",
+      "sourceId": "antumdeluge/fire-crackling/fire-1.wav",
+      "sourceHash": "26702de8a195bcbafeae72034861d875a1b7917168a25106f4e1957ecdddf7e5",
+      "name": "Burned settlement \u00b7 fire without opening pop",
+      "intent": "Move past the opening pop, with a longer fade into a quieter fire excerpt.",
+      "filters": [
+        "atrim=start=1.82:duration=0.45",
+        "asetpts=PTS-STARTPTS",
+        "highpass=f=160:p=2",
+        "lowpass=f=3500",
+        "afade=t=in:d=0.10",
+        "afade=t=out:st=0.25:d=0.20",
+        "volume=2.0dB"
+      ],
+      "levelReference": {
+        "id": "current/terrain-keep-1",
+        "referenceRmsDb": -28.1,
+        "targetOffsetDb": -7,
+        "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+      }
     }
   ]
 }

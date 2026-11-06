@@ -106,12 +106,12 @@ export const terrainPicks = {
   },
   "burned-village": {
     tap: cue(
-      [edit("burned-fire-recut-v2")],
+      [edit("burned-fire-soft-onset-v3")],
       "Soft crackling fire for the burned settlement.",
       ["fire"],
     ),
     ambience: cue(
-      [edit("burned-fire-recut-v2")],
+      [edit("burned-fire-soft-onset-v3")],
       "A short quiet crackle texture, not an automatic loop.",
       ["fire"],
     ),

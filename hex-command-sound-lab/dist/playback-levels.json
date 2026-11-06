@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "8a2428c14a6605dc7c94d68259839c34c4dc5bf90675991b349570de0dd9b5e7",
+  "catalogSha256": "7f1d40194959d9bbadf7fbe8037ed8beaf8d352a168251642d0062bab38335d1",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -5179,6 +5179,30 @@
         -1.18
       ],
       "preserved": false,
+      "gameRelativeGain": false
+    },
+    "edits/knife-slice-2-no-hit-v1": {
+      "full": -11.87,
+      "takes": [
+        -11.87
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "edits/metal-01-soft-onset-v1": {
+      "full": 0.5,
+      "takes": [
+        0.5
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "edits/burned-fire-soft-onset-v3": {
+      "full": 0,
+      "takes": [
+        0
+      ],
+      "preserved": true,
       "gameRelativeGain": false
     }
   }

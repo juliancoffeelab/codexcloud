@@ -1897,3 +1897,9 @@ edits/burned-fire-recut-v2,Burned settlement · smooth fire recut,audition-edits
 edits/burned-fire-recut-v2,Burned settlement · smooth fire recut,audition-edits,take-1,0,0.45,-11.59,-36.49,-30.78,-5.19,-16.78,-41.68,-35.97,4.0,,True
 edits/deer-trot-short-v1,Deer · short trot contact,audition-edits,full,,0.4,-8.12,-26.54,-19.92,-6.37,-14.49,-32.91,-26.29,4.9,,False
 edits/deer-trot-short-v1,Deer · short trot contact,audition-edits,take-1,0,0.4,-8.12,-26.54,-19.92,-6.37,-14.49,-32.91,-26.29,4.9,,False
+edits/knife-slice-2-no-hit-v1,Knife Slice 2 · swish without opening hit,audition-edits,full,,0.29,2.0,-14.79,-9.23,-17.06,-15.06,-31.85,-26.29,0.0,,False
+edits/knife-slice-2-no-hit-v1,Knife Slice 2 · swish without opening hit,audition-edits,take-1,0,0.29,2.0,-14.79,-9.23,-17.06,-15.06,-31.85,-26.29,0.0,,False
+edits/metal-01-soft-onset-v1,Metal 01 · ring without opening hit,audition-edits,full,,0.2444,-9.13,-27.3,-21.6,-4.69,-13.82,-31.99,-26.29,0.1,,False
+edits/metal-01-soft-onset-v1,Metal 01 · ring without opening hit,audition-edits,take-1,0,0.2444,-9.13,-27.3,-21.6,-4.69,-13.82,-31.99,-26.29,0.1,,False
+edits/burned-fire-soft-onset-v3,Burned settlement · fire without opening pop,audition-edits,full,,0.45,-16.3,-41.27,-36.74,-5.19,-21.49,-46.46,-41.93,10.3,quiet-at-playback-setting,True
+edits/burned-fire-soft-onset-v3,Burned settlement · fire without opening pop,audition-edits,take-1,0,0.45,-16.3,-41.27,-36.74,-5.19,-21.49,-46.46,-41.93,10.3,quiet-at-playback-setting,True

@@ -433,3 +433,11 @@ commit 50b07c1ae8f3a978e11a062509b06babc5669ce5. Full source is Freesound
 recording. Credits, source URL, acquisition URL and hashes are tracked under
 vendor/sfx/kyles/fish-slap and the recovery manifest. No runtime fetch is needed.
 Catalog: 543 recordings / 1,355 takes; 468 locked CC0 inputs.
+
+Knife Slice 2 claw attacks now use a separate 0.29-second swish edit from
+0.12–0.41 s, excluding the first impact. Axe-family Metal 01 uses the ringing
+body from 0.235–0.475 s with fades (about 0.24 s). Burned settlements use a new
+1.82–2.27 s fire excerpt with a 0.10-second onset fade and 0.20-second release.
+Originals and earlier edits remain available. Skeleton riders at all three levels
+use the current spear blade palette. Old saved defaults for these changes migrate
+with backups. Catalog: 546 recordings / 1,358 takes; 27 separate audition edits.
