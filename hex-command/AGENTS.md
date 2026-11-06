@@ -18,9 +18,6 @@ Continue on the current branch and PR unless asked to change branches. New
 branches start from the freshly fetched upstream default branch (`main`), never
 a stale local copy.
 
-Diagnose the underlying cause and fix the general rule or mechanism instead of
-special-casing the current scenario. Keep changes quick to make and review.
-
 Keep temporary data, experiments and diagnostics in ignored `tmp/`, outside
 tracked content. Tracked Markdown must contain permanent information; keep
 current-work tracking and diagnostics out of tracked Markdown files.
