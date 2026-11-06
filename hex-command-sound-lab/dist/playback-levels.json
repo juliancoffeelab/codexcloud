@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "baf80b5e3f7694ddbf4b9e746923121e70d1af8370b3be230a9a78a174ecf591",
+  "catalogSha256": "8a2428c14a6605dc7c94d68259839c34c4dc5bf90675991b349570de0dd9b5e7",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -4569,6 +4569,14 @@
         -2.25,
         1.38,
         2.37
+      ],
+      "preserved": false,
+      "gameRelativeGain": false
+    },
+    "kyles/fish-slap/fish_drop1.ogg": {
+      "full": -4.42,
+      "takes": [
+        -4.42
       ],
       "preserved": false,
       "gameRelativeGain": false

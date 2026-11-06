@@ -74,7 +74,9 @@ export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   for (const attack of entity.attacks || []) {
     const key = `attack-${attack.id}`;
     const name = attack.name.toLowerCase();
-    if ((entity.faction === "zombies" || /^zombie-bear/.test(entity.id)) && /grasp|hands/.test(name)) {
+    if (/tail.*strike/i.test(attack.name)) {
+      choose(key, ["kyles/fish-slap/fish_drop1.ogg"], "Short recorded fish slap for Tail Strike.");
+    } else if ((entity.faction === "zombies" || /^zombie-bear/.test(entity.id)) && /grasp|hands/.test(name)) {
       choose(key, [creatureSound("burp_02")], "Burp 2 for the zombie grasping-hands attack.");
     } else if ((entity.faction === "zombies" || /^zombie-bear/.test(entity.id)) && /bite/.test(name)) {
       choose(key, [creatureSound("grunt_05")], "Grunt 5 for the zombie bite.");

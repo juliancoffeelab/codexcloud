@@ -189,6 +189,21 @@
         "https://bigsoundbank.com/breath-of-a-horse-2-s0286.html",
         "https://bigsoundbank.com/licenses.html"
       ]
+    },
+    {
+      "id": "kyles/fish-slap",
+      "creator": "kyles; upstream excerpt edited by sadboysuss",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "source_url": "https://freesound.org/people/kyles/sounds/450830/",
+      "retrieved": "2026-11-06",
+      "upstream_revision": "50b07c1ae8f3a978e11a062509b06babc5669ce5",
+      "kind": "recorded-foley",
+      "notes": "Short fish impact excerpt from the CC0 fish slap recording. Vendored unchanged from the pinned tgstation mirror; original Freesound full session is not bundled.",
+      "required": false,
+      "evidence": "kyles/fish-slap/SOURCE.txt",
+      "license_text": "CC0-1.0.txt",
+      "mirror": "https://github.com/tgstation/tgstation"
     }
   ],
   "downloads": [
@@ -1653,6 +1668,13 @@
       "format": "file",
       "sha256": "9801f871af4f6805842457c4c5578daf42725fe1c1cc5dec40a2a6c1ee2bc12d",
       "bytes": 36607
+    },
+    {
+      "id": "kyles/fish-slap/fish_drop1.ogg",
+      "url": "https://raw.githubusercontent.com/tgstation/tgstation/50b07c1ae8f3a978e11a062509b06babc5669ce5/sound/mobs/non-humanoids/fish/fish_drop1.ogg",
+      "format": "file",
+      "sha256": "69f3432e2433dbc626dcc100918d6ea098b7d1cb2c2c07e462d4178aac28200c",
+      "bytes": 5932
     }
   ],
   "license_text_source": {
@@ -1817,6 +1839,16 @@
       "path": "still-north-media/weapon-textures/SOURCE.txt",
       "bytes": 2991,
       "sha256": "02177c658e1cc729e7bbd25feec4f59a0a837f444be017d90a2885a5b417d421"
+    },
+    {
+      "path": "kyles/fish-slap/SOURCE.txt",
+      "bytes": 689,
+      "sha256": "9ff4022cea6db5544d71c206cf9659263139e3daa3ab87050eb396d97d49848c"
+    },
+    {
+      "path": "kyles/fish-slap/CREDITS.txt",
+      "bytes": 653,
+      "sha256": "45aab554b39ecf32623a1633d19e9759e0a43d67f2e5510646dd7ec8522a07a3"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "baf80b5e3f7694ddbf4b9e746923121e70d1af8370b3be230a9a78a174ecf591",
+  "catalogSha256": "8a2428c14a6605dc7c94d68259839c34c4dc5bf90675991b349570de0dd9b5e7",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -30603,6 +30603,45 @@
           "playbackRmsDbFS": -32.39,
           "playbackStrongest50msRmsDbFS": -26.29,
           "decodedSamplesAtOrAboveFullScale": 0,
+          "flags": []
+        }
+      ]
+    },
+    {
+      "id": "kyles/fish-slap/fish_drop1.ogg",
+      "name": "Fish slap",
+      "pack": "kyles/fish-slap",
+      "path": "audio/listening/fa66f4c229cff21e09b7.mp3",
+      "listeningSha256": "7bc6d3c0a3390d505c4cfbf63400f768d7398216e0fae86052d11a98e33efcc4",
+      "intentionallyQuietEdit": false,
+      "catalogGainDb": -3.0,
+      "combinedPlaybackGainDb": -9.61,
+      "full": {
+        "duration": 0.3854,
+        "peakDbFS": 1.66,
+        "rmsDbFS": -25.45,
+        "strongest50msRmsDbFS": -16.68,
+        "leadingBelow55Ms": 3.6,
+        "playbackPeakDbFS": -7.95,
+        "playbackRmsDbFS": -35.06,
+        "playbackStrongest50msRmsDbFS": -26.29,
+        "decodedSamplesAtOrAboveFullScale": 2,
+        "flags": []
+      },
+      "takes": [
+        {
+          "take": 1,
+          "start": 0,
+          "combinedPlaybackGainDb": -9.61,
+          "duration": 0.3641,
+          "peakDbFS": 1.66,
+          "rmsDbFS": -25.21,
+          "strongest50msRmsDbFS": -16.68,
+          "leadingBelow55Ms": 3.6,
+          "playbackPeakDbFS": -7.95,
+          "playbackRmsDbFS": -34.82,
+          "playbackStrongest50msRmsDbFS": -26.29,
+          "decodedSamplesAtOrAboveFullScale": 2,
           "flags": []
         }
       ]

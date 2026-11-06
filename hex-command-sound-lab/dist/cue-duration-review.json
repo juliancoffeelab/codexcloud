@@ -286,24 +286,12 @@
           "action": "tap"
         },
         {
-          "entity": "beasts/ray",
-          "action": "attack-tail-strike"
-        },
-        {
           "entity": "beasts/ray-l2",
           "action": "tap"
         },
         {
-          "entity": "beasts/ray-l2",
-          "action": "attack-tail-strike"
-        },
-        {
           "entity": "beasts/ray-l3",
           "action": "tap"
-        },
-        {
-          "entity": "beasts/ray-l3",
-          "action": "attack-tail-strike"
         }
       ]
     },

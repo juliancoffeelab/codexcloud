@@ -1,6 +1,6 @@
 import { iconMarkup, speakerMarkup } from "./icons.js?v=direct-tap-1";
 import { AudioCache } from "./audio-cache.js?v=map-dock-1";
-import { buildActions } from "./matching.js?v=wolf-zombie-1";
+import { buildActions } from "./matching.js?v=fish-slap-1";
 const $ = (selector) => document.querySelector(selector);
 const loadJSON = async (url) => {
   const response = await fetch(url);
@@ -15,10 +15,10 @@ try {
 }
 async function start() {
   const [catalog, workbench, sourceInfo, playbackLevels] = await Promise.all([
-    loadJSON("catalog.json?v=terrain-recut-2"),
+    loadJSON("catalog.json?v=fish-slap-1"),
     loadJSON("workbench.json?v=terrain-portraits-1"),
-    loadJSON("sources.json"),
-    loadJSON("playback-levels.json?v=terrain-recut-2"),
+    loadJSON("sources.json?v=fish-slap-1"),
+    loadJSON("playback-levels.json?v=fish-slap-1"),
   ]);
   const byId = new Map(catalog.map((item) => [item.id, item]));
   const kindNames = {

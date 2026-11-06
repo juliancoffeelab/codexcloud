@@ -3750,5 +3750,15 @@
     "member": "Spear Swing.wav",
     "bytes": 2729092,
     "sha256": "a6faa99aa8d9a020b14f3ea27e422921c9fc336ff4d5870a14bf24a94bc0d016"
+  },
+  {
+    "path": "kyles/fish-slap/fish_drop1.ogg",
+    "pack": "kyles/fish-slap",
+    "artifact": "kyles/fish-slap/fish_drop1.ogg",
+    "member": null,
+    "bytes": 5932,
+    "sha256": "69f3432e2433dbc626dcc100918d6ea098b7d1cb2c2c07e462d4178aac28200c",
+    "name": "Fish slap",
+    "download_url": "https://raw.githubusercontent.com/tgstation/tgstation/50b07c1ae8f3a978e11a062509b06babc5669ce5/sound/mobs/non-humanoids/fish/fish_drop1.ogg"
   }
 ]

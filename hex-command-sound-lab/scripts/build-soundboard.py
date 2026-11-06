@@ -22,7 +22,7 @@ def build(entry):
  path=entry['path'];src=VENDOR/path;pack=packs[entry['pack']];info=validation[path]
  if hashlib.sha256(src.read_bytes()).hexdigest()!=entry['sha256']:raise ValueError(f'Original hash mismatch: {path}')
  digest=hashlib.sha256((entry['sha256']+SCHEME).encode()).hexdigest()[:20]
- dest=OUT/'audio/listening'/f'{digest}.mp3';name=src.stem
+ dest=OUT/'audio/listening'/f'{digest}.mp3';name=entry.get('name',src.stem)
  # Retain existing Kenney favorite identifiers.
  family={'kenney/impact-sounds':'impact-sounds','kenney/rpg-audio':'rpg-audio'}.get(entry['pack'],entry['pack'])
  id=f'{family}/{name}' if family in ('impact-sounds','rpg-audio') else f'{entry["pack"]}/{path.split(entry["pack"]+"/",1)[1]}'

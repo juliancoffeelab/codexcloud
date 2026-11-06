@@ -425,3 +425,11 @@ Wolves and werewolves bite with Dog Snarl. All claw attacks use Knife Slice 2.
 Zombie grasping hands use Burp 2; zombie bites (including zombie bears) use
 Grunt 5. These specific attack choices supersede selection-reuse placeholders;
 selection and weapon/spell mappings remain unchanged.
+
+Tail Strike on Reef guard and ray levels 1–3 uses a short fish impact by kyles
+(CC0), excerpt edited by sadboysuss, vendored byte-for-byte from pinned tgstation
+commit 50b07c1ae8f3a978e11a062509b06babc5669ce5. Full source is Freesound
+450830; the bundled 0.364125-second OGG is the upstream excerpt, not the full
+recording. Credits, source URL, acquisition URL and hashes are tracked under
+vendor/sfx/kyles/fish-slap and the recovery manifest. No runtime fetch is needed.
+Catalog: 543 recordings / 1,355 takes; 468 locked CC0 inputs.

@@ -15876,6 +15876,32 @@
     ]
   },
   {
+    "takeMethod": "silence42-fallback30-v2",
+    "id": "kyles/fish-slap/fish_drop1.ogg",
+    "name": "Fish slap",
+    "path": "audio/listening/fa66f4c229cff21e09b7.mp3",
+    "pack": "kyles/fish-slap",
+    "packLabel": "kyles \u00b7 fish-slap",
+    "license": "CC0-1.0",
+    "source": "https://freesound.org/people/kyles/sounds/450830/",
+    "creator": "kyles; upstream excerpt edited by sadboysuss",
+    "kind": "recorded-foley",
+    "notes": "Short fish impact excerpt from the CC0 fish slap recording. Vendored unchanged from the pinned tgstation mirror; original Freesound full session is not bundled.",
+    "sourcePath": "kyles/fish-slap/fish_drop1.ogg",
+    "sourceHash": "69f3432e2433dbc626dcc100918d6ea098b7d1cb2c2c07e462d4178aac28200c",
+    "duration": 0.3641,
+    "gainDb": -3.0,
+    "categories": [
+      "equipment"
+    ],
+    "takes": [
+      {
+        "start": 0,
+        "duration": 0.3641
+      }
+    ]
+  },
+  {
     "id": "current/attack-bow-1",
     "name": "attack-bow-1",
     "path": "audio/current/attack-bow-1.wav",

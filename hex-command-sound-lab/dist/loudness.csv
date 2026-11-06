@@ -1745,6 +1745,8 @@ still-north-media/weapon-textures/part-2/Spear Swing.wav,Spear Swing,still-north
 still-north-media/weapon-textures/part-2/Spear Swing.wav,Spear Swing,still-north-media/weapon-textures,take-4,2.32,0.2453,-11.81,-24.56,-18.85,-7.44,-19.25,-32.0,-26.29,0.0,,False
 still-north-media/weapon-textures/part-2/Spear Swing.wav,Spear Swing,still-north-media/weapon-textures,take-5,3.1549,0.2393,-16.34,-28.25,-22.48,-3.81,-20.15,-32.06,-26.29,0.0,,False
 still-north-media/weapon-textures/part-2/Spear Swing.wav,Spear Swing,still-north-media/weapon-textures,take-6,4.0715,0.29,-15.46,-29.57,-23.47,-2.82,-18.28,-32.39,-26.29,0.2,,False
+kyles/fish-slap/fish_drop1.ogg,Fish slap,kyles/fish-slap,full,,0.3854,1.66,-25.45,-16.68,-9.61,-7.95,-35.06,-26.29,3.6,,False
+kyles/fish-slap/fish_drop1.ogg,Fish slap,kyles/fish-slap,take-1,0,0.3641,1.66,-25.21,-16.68,-9.61,-7.95,-34.82,-26.29,3.6,,False
 current/attack-bow-1,attack-bow-1,current,full,,0.533,-5.02,-22.55,-13.38,-10.75,-15.77,-33.3,-24.13,6.2,,False
 current/attack-bow-1,attack-bow-1,current,take-1,0,0.533,-5.02,-22.55,-13.38,-10.75,-15.77,-33.3,-24.13,6.2,,False
 current/attack-bow-2,attack-bow-2,current,full,,0.55,-6.53,-24.58,-15.76,-10.75,-17.28,-35.33,-26.51,7.5,,False

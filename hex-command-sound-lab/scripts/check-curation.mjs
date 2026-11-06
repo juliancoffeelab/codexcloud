@@ -55,6 +55,7 @@ for (const faction of workbench.factions)
         "rubberduck/80-cc0-rpg-sfx/spell_02.ogg");
     for (const attack of unit.attacks) {
       const row = actions.find(row => row.key === `attack-${attack.id}`);
+      if (/tail.*strike/i.test(attack.name)) assert.equal(row.suggested[0], "kyles/fish-slap/fish_drop1.ogg");
       if (/claw/i.test(attack.name)) assert.equal(row.suggested[0], "rpg-audio/knifeSlice2");
       if (/wolf/.test(unit.id) && /bite|fang/i.test(attack.name))
         assert.equal(row.suggested[0], "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac");
