@@ -75,7 +75,6 @@ for (const [cols, rows] of [
     assert.equal(restored.game.mapId, "developer");
     assert.deepEqual(nativeValue(restored.game.checkpoint()), migrated.save.checkpoint);
     assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
-    assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
     const incomplete = structuredClone(old);
     incomplete.checkpoint.state.tiles.pop();
     assert.throws(() => migrateSave(incomplete), /Incomplete historical developer map/);
@@ -87,10 +86,12 @@ for (const [cols, rows] of [
   });
 }
 
-test("Version-three ordinary battles receive only an envelope update", () => {
+test("Version-three ordinary battles retain their native state through migration", () => {
   const current = checkpoint({ kind: "scenario", map: "mirror" });
   const old = { version: 3, checkpoint: historicalTiles(current), pendingEnemy: false };
-  assert.deepEqual(migrateSave(old).save, { ...old, checkpoint: current, version: SAVE_VERSION });
+  const migrated = migrateSave(old).save;
+  assert.deepEqual(migrated.checkpoint, current);
+  assert.equal(migrated.version, SAVE_VERSION);
 });
 
 test("Live WASM catalog contains no historical save metadata", () => {
@@ -164,7 +165,8 @@ test("Version-one TS migration is pure, defaults experience and preserves progre
   assert.equal(migrated.checkpoint.state.units[0]!.experience, 7);
   assert.equal(migrated.checkpoint.state.units[1]!.experience, 0);
   assert.equal(migrated.checkpoint.state.campaign?.mission, old.state.campaign?.mission);
-  const game = LiveGame.restore(createTestFactory(), migrateSave(migrated).save.checkpoint);
+  const converted = migrateSave(migrated).save;
+  const game = LiveGame.restore(createTestFactory(), converted.checkpoint, converted.setup);
   assert.equal(game.round, 4);
   assert.equal(game.unit(old.state.units[0]!.id)?.hp, 5);
   game.dispose();
@@ -191,7 +193,6 @@ test("Migration chain distinguishes the original native envelope and rewrites on
   assert.equal(latest.checkpoint.seed, 42);
   assert.equal(latest.checkpoint.version, undefined);
   assert.equal(migrateSave(latest).migrated, false);
-  assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
   restored.game.dispose();
 });
 
@@ -207,10 +208,8 @@ test("A native rejection wipes the save without committing migration", () => {
   assert(restored.notice);
   assert.equal(restored.game.mapId, "mirror");
   assert.equal(localStorage.getItem(SAVE_KEY), null);
-  assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
   saveBattle(restored.game);
   assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
-  assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
   restored.game.dispose();
 });
 
@@ -225,7 +224,6 @@ for (const raw of [
     localStorage.setItem(SAVE_KEY, raw);
     const restored = loadBattle(createTestFactory());
     assert(restored.notice);
-    assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
     assert.equal(localStorage.getItem(SAVE_KEY), null);
     assert.equal(restored.game.round, 1);
     restored.game.move("u3", "hex-0738-f0cce97107");
@@ -302,13 +300,11 @@ test("Mid-turn writes retain the pre-turn checkpoint", () => {
   game.dispose();
 });
 
-test("Rejected saves clear obsolete backups and leave saving enabled", () => {
+test("Rejected saves leave saving enabled", () => {
   localStorage.setItem(SAVE_KEY, "{broken");
-  localStorage.setItem(`${SAVE_KEY}-unrestored`, "old backup");
   const restored = loadBattle(createTestFactory());
   assert(restored.notice);
   assert.equal(localStorage.getItem(SAVE_KEY), null);
-  assert.equal(localStorage.getItem(`${SAVE_KEY}-unrestored`), null);
   restored.game.move("u3", "hex-0738-f0cce97107");
   saveBattle(restored.game);
   assert.equal(JSON.parse(localStorage.getItem(SAVE_KEY)!).version, SAVE_VERSION);
@@ -369,7 +365,7 @@ test("Tagged wave IDs survive import regardless of authored list ordering", () =
   assert.equal(importWaveMarker("wave:0", waves), "wave:north-binding-rise");
   assert.equal(importWaveMarker("wave:2", waves), "wave:masters-boar");
   assert(!converted.checkpoint.state.campaign!.scripts!.active.includes("north-binding-rise"));
-  const restored = LiveGame.restore(createTestFactory(), converted.checkpoint);
+  const restored = LiveGame.restore(createTestFactory(), converted.checkpoint, converted.setup);
   assert(!restored.campaign!.scripts!.active.includes("north-binding-rise"));
   restored.dispose();
 });
@@ -388,7 +384,7 @@ test("Legacy pre-rescue hold clocks reset, while earned victories stay completed
     0,
   );
   assert(!converted.checkpoint.state.campaign!.marks.includes("event:rescue"));
-  const restored = LiveGame.restore(createTestFactory(), converted.checkpoint);
+  const restored = LiveGame.restore(createTestFactory(), converted.checkpoint, converted.setup);
   assert.equal(restored.campaign!.scripts!.holds.find((h) => h.event === "goal-1")?.turns ?? 0, 0);
   restored.dispose();
   old.state.winner = "player";
@@ -396,7 +392,7 @@ test("Legacy pre-rescue hold clocks reset, while earned victories stay completed
   const finished = migrateSave(old).save;
   assert.equal(finished.checkpoint.state.winner, "player");
   assert(finished.checkpoint.state.campaign!.flags.rescue?.at(-1)?.state);
-  const earned = LiveGame.restore(createTestFactory(), finished.checkpoint);
+  const earned = LiveGame.restore(createTestFactory(), finished.checkpoint, finished.setup);
   assert.equal(earned.winner, "player");
   earned.dispose();
 });
@@ -417,7 +413,7 @@ for (const dead of [false, true]) {
       !dead,
     );
     assert(!converted.checkpoint.state.campaign!.marks.includes("dain-fell"));
-    const restored = LiveGame.restore(createTestFactory(), converted.checkpoint);
+    const restored = LiveGame.restore(createTestFactory(), converted.checkpoint, converted.setup);
     assert.equal(
       restored.units.some((unit) => unit.character === "dain"),
       !dead,

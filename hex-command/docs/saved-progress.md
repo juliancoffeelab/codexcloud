@@ -52,13 +52,16 @@ and current recovery replacement is an atomic browser storage write.
 
 Automatic thinning runs at turn boundaries. It is optional maintenance: a failure
 does not invalidate an already committed checkpoint, and its error is included in
-the debug report. It retains every one of the latest
-24 turn checkpoints in each continuation. Older checkpoints are selected by a
+the debug report. It retains every one of the latest 24 turn checkpoints in each continuation. Older checkpoints are selected by a
 stable turn ordinal at intervals of 2, 4, 8 and so on in progressively older age
-bands. Mission starts are always exempt from automatic thinning. Whole-run cleanup protects only the currently played recovery. Historical turn
-starts, including the current turn’s start and mission starts, can be deleted
-manually. Automatic thinning preserves mission starts. Retained payloads are complete native snapshots, so a
-missing ancestor does not prevent loading them.
+bands. Mission starts are always exempt from automatic thinning. Whole-run cleanup
+protects only the current recovery. Historical turn starts, including the current
+turn’s start and mission starts, can be deleted manually. Retained payloads are
+complete native snapshots, so a missing ancestor does not prevent loading them.
+
+History accepts only immutable snapshots captured at real turn boundaries; its
+writer cannot accept a current save or arbitrary serialized bytes. Current recovery
+has a separate metadata query and is never an entry in the history index.
 
 Each record carries stable run, continuation, checkpoint and parent identities.
 These identities and self-contained payloads leave room for a future player-private
@@ -67,15 +70,22 @@ state or network-dependent code is part of local persistence today.
 
 ## Save migrations
 
-The battle envelope is version 34. The pure v32-to-v33 conversion extends the
-envelope for adopted positions without changing native game state. The v30-to-v31 conversion added optional
-progress metadata and move undo. The pure v31-to-v32 conversion preserves the
-battle and progress metadata while discarding the older full-world undo copies.
-Version 32 stores backward data changes for each available move.
-Earlier versions continue through the existing migration chain. Current recovery
-and selected historical payloads pass through that same loading entry point:
-parse, migrate, validate in Rust, then atomically commit the validated conversion
-before using it. Migration code remains isolated under `src/save/migrations/`.
+The current battle envelope is version 35 and the history index is version 2.
+The explicit 34→35 conversion resolves missing identities, setup, experience and
+combat RNG from frozen defaults. It removes the old imported-position variant and
+discards old undo. Native restoration validates the converted state without
+repairing it or consulting historical formats.
+
+The explicit history-index 1→2 conversion retains genuine turn starts and removes
+archived recoveries and imported positions. Their payloads are removed only after
+the converted index is committed. The sole current recovery is untouched by history
+cleanup. This conversion runs under the same short-lived history lock as normal
+history transactions; it never reconstructs unavailable turn starts.
+
+Older turn payloads pass through the versioned migration chain when selected,
+then their converted current-format payload is committed before restoration.
+No historical shape is interpreted by gameplay, browsing or repository operations.
+Conversion code and frozen historical data remain under `src/save/migrations/`.
 
 Undo validation transfers the current state and compact changes to Rust once.
 Rust reconstructs and validates every earlier state against the native rules
@@ -86,7 +96,6 @@ the changes between older undo entries and refreshes only the latest backward
 changes against current play, including any intervening dialogue changes. Undo
 uses native restoration before applying a prior state, preserving validation at
 both loading and execution.
-
 
 Version 34 integrates objective history from the independently developed objective
 branch. It preserves that branch’s already-recorded completed/revealed arrays,

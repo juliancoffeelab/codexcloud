@@ -1,3 +1,4 @@
+import { DEFAULT_SETUP } from "../src/game/setup";
 import { LiveGame, nativeValue } from "../src/game/live-game";
 import { TYPES } from "../src/game/catalog";
 import type { GameState, Unit, Tile, CampaignId, UnitType, Side, MapId } from "../src/game/types";
@@ -58,7 +59,7 @@ export class Game implements GameState {
             map,
             ...(revision === undefined ? {} : { revision }),
           })
-        : LiveGame.restore(createTestFactory(), map);
+        : LiveGame.restore(createTestFactory(), map, DEFAULT_SETUP);
     this.restoreData(this.#native.captureState());
   }
   static startCampaign(id: CampaignId, mission = 0): Game {

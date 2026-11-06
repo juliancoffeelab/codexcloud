@@ -2,7 +2,9 @@ import { decodeUndo } from "./undo";
 import { LiveGame, nativeValue } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migrations";
-import { wipeSave, storeSave, SAVE_KEY } from "./storage";
+import { wipeSave, storeSave, SAVE_KEY, HISTORY_KEY, historyPayloadKey } from "./storage";
+import { migrateHistoryIndex } from "./migrations/history";
+import { currentRecovery, currentTurn } from "./schema";
 import type { BattleSave } from "./schema";
 
 export interface LoadedBattle {
@@ -17,9 +19,11 @@ export interface LoadedBattle {
 export function restoreBattleText(
   factory: GameEngineFactory,
   raw: string,
+  kind: "recovery" | "turn" = "recovery",
 ): LoadedBattle & { save: BattleSave; migrated: boolean } {
-  const { save, migrated } = migrateSave(JSON.parse(raw));
-  if (migrated) delete save.undo;
+  const converted = migrateSave(JSON.parse(raw));
+  const save = kind === "recovery" ? currentRecovery(converted.save) : currentTurn(converted.save);
+  const migrated = converted.migrated;
   if (save.undo?.length) {
     if (save.pendingEnemy) throw new Error("Pending enemy turns cannot retain move undo.");
     nativeValue(factory.validateUndo(save.checkpoint.state, save.undo));
@@ -70,4 +74,14 @@ export function loadBattle(factory: GameEngineFactory): LoadedBattle {
     pendingEnemy: false,
     storageFailure,
   };
+}
+
+/** Called under the history lock before current-format repository access. */
+export function loadProgressHistory(): void {
+  const text = localStorage.getItem(HISTORY_KEY);
+  if (text === null) return;
+  const { index, migrated, removedIds } = migrateHistoryIndex(JSON.parse(text));
+  if (!migrated) return;
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(index));
+  for (const id of removedIds) localStorage.removeItem(historyPayloadKey(id));
 }

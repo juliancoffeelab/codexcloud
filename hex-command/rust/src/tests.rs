@@ -36,7 +36,7 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
     for seed in 0..32 {
         let mut state = Game::new(&rules, "mirror").state();
         state.units.clear();
-        state.combat_rng = Some(seed);
+        state.combat_rng = seed;
         state.gold = Gold::two(0, 0);
         let mut add = |side, tile: &str, hp| {
             let id = state.next_id;

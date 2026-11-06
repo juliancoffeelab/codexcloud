@@ -203,7 +203,7 @@ impl InitialState {
             tiles: self.tiles,
             units,
             campaign: None,
-            combat_rng: None,
+            combat_rng: 0x6d2b79f5,
             last_combat: None,
         })
     }

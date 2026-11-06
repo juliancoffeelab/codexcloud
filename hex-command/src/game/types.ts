@@ -184,7 +184,6 @@ export interface Unit {
     (Omit<import("../../rust/pkg/hex_command").Item, "attacks"> & { attacks: Weapon[] })[]
   >;
   aiGroup?: string;
-  /** Missing on pre-progression saves, which load as zero. */
   experience?: number;
   id: string;
   type: UnitType;

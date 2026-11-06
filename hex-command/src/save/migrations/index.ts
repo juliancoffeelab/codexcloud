@@ -1,3 +1,4 @@
+import { migrateV34ToV35 } from "./v34-to-v35";
 import { migrateV33ToV34 } from "./v33-to-v34";
 import { migrateV32ToV33 } from "./v32-to-v33";
 import { migrateV31ToV32 } from "./v31-to-v32";
@@ -41,17 +42,20 @@ export interface MigrationResult {
 export function migrateSave(input: unknown): MigrationResult {
   if (!isRecord(input)) throw new Error("Invalid saved battle");
   let value = input;
-  // The first native envelope placed version one inside its checkpoint.
-  if (value.version === undefined && value.engine === "rust-wasm") value = { ...value, version: 1 };
+  const originalVersion = value.version;
+  // Route the original native envelope directly through its explicit v1→v2 step.
+  if (value.version === undefined && value.engine === "rust-wasm") value = migrateV1ToV2(value);
   if (
     !Number.isSafeInteger(value.version) ||
     Number(value.version) < 1 ||
     Number(value.version) > SAVE_VERSION
   )
     throw new Error(`Unsupported save version ${String(value.version)}`);
-  const originalVersion = value.version;
   while (value.version !== SAVE_VERSION) {
     switch (value.version) {
+      case 34:
+        value = migrateV34ToV35(value);
+        break;
       case 33:
         value = migrateV33ToV34(value);
         break;

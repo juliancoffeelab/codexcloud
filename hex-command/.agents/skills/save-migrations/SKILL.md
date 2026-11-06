@@ -71,8 +71,7 @@ gameplay after restoration.
 Loading is the sole migration entry point: parse, convert, validate through Rust,
 then atomically replace the stored envelope before returning the restored battle.
 This write is independent of gameplay saving and enemy-turn completion. Invalid
-saves and obsolete rejected-save backups are discarded; play and saving resume
-with a fresh battle. Disabled or full browser storage does not stop play.
+saves are discarded; play and saving resume with a fresh battle. Disabled or full browser storage does not stop play.
 
 ## Historical reference
 

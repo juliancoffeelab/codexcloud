@@ -14,16 +14,8 @@ impl std::fmt::Display for StateError {
 }
 impl std::error::Error for StateError {}
 impl<'catalog> Game<'catalog> {
-    /// Restore against current unit limits, then validate the roster and references.
-    pub(crate) fn try_from_state(
-        rules: &'catalog Rules,
-        mut state: State,
-    ) -> Result<Self, StateError> {
-        for unit in &mut state.units {
-            if let Some(&kind) = rules.types.get(&unit.r#type) {
-                unit.hp = unit.hp.min(rules.units[kind].hp);
-            }
-        }
+    /// Validate current state before constructing runtime indexes.
+    pub(crate) fn try_from_state(rules: &'catalog Rules, state: State) -> Result<Self, StateError> {
         validate_state(rules, &state)?;
         Ok(Self::from_state(rules, state))
     }
@@ -234,7 +226,11 @@ pub fn validate_state_geometry_with_campaign(
         if unit.hp <= 0 || unit.hp > rules.units[kind].hp {
             return Err(fail("invalid unit hit points"));
         }
-        if unit.experience.unwrap_or(0) > rules.units[kind].experience_needed.unwrap_or(0) {
+        if unit
+            .experience
+            .ok_or_else(|| fail("missing unit experience"))?
+            > rules.units[kind].experience_needed.unwrap_or(0)
+        {
             return Err(fail("invalid unit experience"));
         }
     }

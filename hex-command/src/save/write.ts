@@ -1,42 +1,76 @@
 import { nativeValue, type LiveGame } from "../game/live-game";
 import { SAVE_VERSION } from "./schema";
+import type { CurrentSave, BattleSave } from "./schema";
 import { validSetup } from "../game/setup";
 import { storeSave } from "./storage";
+import {
+  describeRecovery,
+  describeTurn,
+  newRun,
+  type ProgressIdentity,
+  type TurnEntry,
+} from "./metadata";
 
-/** All writes use the latest envelope; this path contains no compatibility handling. */
-export function serializeBattle(
-  game: LiveGame,
-  pendingEnemy = false,
-  extra: Pick<import("./schema").BattleSave, "undo" | "progress"> = {},
-): string | undefined {
+function serialize(game: LiveGame, metadata: Omit<BattleSave, "checkpoint">): string | undefined {
   if (game.turn === "enemy" && !game.winner && !(game.round === 1 && game.setup.first === "enemy"))
     return;
   if (
-    typeof pendingEnemy !== "boolean" ||
     !validSetup(game.setup) ||
-    (pendingEnemy && (game.turn !== "player" || game.winner !== null))
+    (metadata.pendingEnemy && (game.turn !== "player" || game.winner !== null))
   )
     throw new Error("Invalid current save envelope");
-  // Rust serializes its complete canonical SavedGame. Do not materialize,
-  // clone/freeze and stringify the full map again just to write those bytes.
   const checkpoint = nativeValue(game.serializedCheckpoint());
-  const metadata = JSON.stringify({
-    version: SAVE_VERSION,
-    pendingEnemy,
-    setup: game.setup,
-    ...extra,
-  });
-  return `${metadata.slice(0, -1)},"checkpoint":${checkpoint}}`;
+  const text = JSON.stringify(metadata);
+  return `${text.slice(0, -1)},"checkpoint":${checkpoint}}`;
 }
-
-/** Compatibility writer; gameplay exposes failures through its persistence status. */
+export function serializeBattle(
+  game: LiveGame,
+  pendingEnemy: boolean,
+  extra: Pick<CurrentSave, "undo" | "progress">,
+): string | undefined {
+  return serialize(game, { version: SAVE_VERSION, setup: game.setup, pendingEnemy, ...extra });
+}
+/** The only history-write value: captured at the controller's turn boundaries. */
+export class TurnStartCheckpoint {
+  readonly #text: string;
+  private constructor(
+    readonly entry: TurnEntry,
+    text: string,
+  ) {
+    this.#text = text;
+    Object.freeze(this);
+  }
+  static capture(
+    game: LiveGame,
+    identity: ProgressIdentity,
+    missionStart: boolean,
+    parentId: string,
+  ): TurnStartCheckpoint | undefined {
+    const entry = Object.freeze(describeTurn(game, identity, missionStart, parentId));
+    const text = serialize(game, {
+      version: SAVE_VERSION,
+      setup: game.setup,
+      pendingEnemy: false,
+      progress: { entry },
+    });
+    return text ? new TurnStartCheckpoint(entry, text) : undefined;
+  }
+  /** Runtime nominal check also rejects arbitrary objects presented as snapshots. */
+  static text(checkpoint: TurnStartCheckpoint): string {
+    return checkpoint.#text;
+  }
+}
+/** Write a new current snapshot. This API never inserts historical records. */
 export function saveBattle(game: LiveGame, pendingEnemy = false): void {
-  const text = serializeBattle(game, pendingEnemy);
+  const text = serializeBattle(game, pendingEnemy, {
+    undo: [],
+    progress: { entry: describeRecovery(game, newRun()) },
+  });
   if (text) {
     try {
       storeSave(text);
     } catch {
-      /* Direct consumers may play without storage. */
+      /* Storage is optional for direct consumers. */
     }
   }
 }

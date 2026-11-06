@@ -9,7 +9,7 @@ import type {
   SavedGame,
   Start,
 } from "../../rust/pkg/hex_command";
-import { DEFAULT_SETUP, type SessionSetup } from "./setup";
+import { DEFAULT_SETUP, validSetup, type SessionSetup } from "./setup";
 import type { GameEngine, GameEngineFactory } from "./native-engine";
 import type { GameView } from "./view";
 import type {
@@ -93,11 +93,7 @@ export class LiveGame {
   ): LiveGame {
     return new LiveGame(factory, nativeValue(factory.create(start, 17)), structuredClone(setup));
   }
-  static restore(
-    factory: GameEngineFactory,
-    saved: SavedGame,
-    setup: SessionSetup = DEFAULT_SETUP,
-  ): LiveGame {
+  static restore(factory: GameEngineFactory, saved: SavedGame, setup: SessionSetup): LiveGame {
     return new LiveGame(factory, nativeValue(factory.restore(saved)), structuredClone(setup));
   }
   private refresh(view: Immutable<EngineView>): void {

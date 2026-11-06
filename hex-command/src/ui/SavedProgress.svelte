@@ -1,30 +1,36 @@
 <script lang="ts">
   import type { BattleView, BattleCommands } from "../controller/view";
-  import type { ProgressEntry } from "../save/progress";
+  import type { CurrentEntry, TurnEntry } from "../save/metadata";
   import { runName, chapter, roman, saveTime } from "./save-browser";
   let {
     view,
     actions,
     onLoad = () => {},
   }: { view: BattleView; actions: BattleCommands; onLoad?: () => void } = $props();
-  let entries = $state<ProgressEntry[]>([]);
+  let entries = $state<TurnEntry[]>([]);
+  let recovery = $state<CurrentEntry>();
+  const sources = $derived(
+    [...entries, ...(recovery ? [recovery] : [])].sort(
+      (a, b) => b.savedAt - a.savedAt || a.id.localeCompare(b.id),
+    ),
+  );
   let failure = $state("");
   let busy = $state(false);
   let run = $state("");
   let selected = $state("");
   let limit = $state(30);
   let managing = $state(false);
-  const runs = $derived([...new Map(entries.map((entry) => [entry.runId, entry])).values()]);
+  const runs = $derived([...new Map(sources.map((entry) => [entry.runId, entry])).values()]);
   const choices = $derived(
     runs.map((entry) => ({
       value: entry.runId,
       label: runName(entry),
-      description: `Last saved ${saveTime(Math.max(...entries.filter((item) => item.runId === entry.runId).map((item) => item.savedAt)))}`,
+      description: `Last saved ${saveTime(Math.max(...sources.filter((item) => item.runId === entry.runId).map((item) => item.savedAt)))}`,
     })),
   );
-  const historical = $derived(entries.filter((entry) => entry.runId === run && !entry.current));
+  const historical = $derived(entries.filter((entry) => entry.runId === run));
   const groups = $derived.by(() => {
-    const result = new Map<string, { number: number; name: string; entries: ProgressEntry[] }>();
+    const result = new Map<string, { number: number; name: string; entries: TurnEntry[] }>();
     for (const entry of historical.slice(0, limit)) {
       const info = chapter(entry);
       const key = `${info.number}:${info.name}`;
@@ -36,8 +42,9 @@
   });
   function refresh() {
     entries = actions.savedProgress();
-    if (!entries.some((entry) => entry.runId === run))
-      run = entries.find((entry) => entry.current)?.runId ?? entries[0]?.runId ?? "";
+    recovery = actions.savedRecovery();
+    if (!sources.some((entry) => entry.runId === run))
+      run = recovery?.runId ?? entries[0]?.runId ?? "";
     if (!entries.some((entry) => entry.id === selected)) selected = "";
   }
   export function open() {
@@ -74,12 +81,12 @@
     limit = 30;
     managing = false;
   }
-  async function remove(entry: ProgressEntry) {
+  async function remove(entry: TurnEntry) {
     if (confirm(`Delete turn ${entry.round} from ${chapter(entry).name}?`))
       await perform(() => actions.deleteSavedProgress(entry.id));
   }
   async function removeRun() {
-    const current = entries.some((entry) => entry.runId === run && entry.current);
+    const current = recovery?.runId === run;
     const name = choices.find((choice) => choice.value === run)?.label ?? "this game";
     if (
       confirm(
@@ -134,9 +141,7 @@
                 Prune older saves
               </button>
               <button class="delete-button" disabled={busy} onclick={removeRun}>
-                {entries.some((entry) => entry.runId === run && entry.current)
-                  ? "Delete other saves"
-                  : "Delete all saves"}
+                {recovery?.runId === run ? "Delete other saves" : "Delete all saves"}
               </button>
             </div>{/if}
           <div class="save-history">
@@ -161,9 +166,7 @@
                       >
                         <span class="turn">Turn {entry.round}</span>
                         <span class="save-time">
-                          {entry.kind !== "turn" ? "Saved position · " : ""}{saveTime(
-                            entry.savedAt,
-                          )}
+                          {saveTime(entry.savedAt)}
                         </span>
                       </button>
                       {#if selected === entry.id}<div class="row-actions">

@@ -1,4 +1,6 @@
 export const SAVE_KEY = "hex-command-battle";
+export const HISTORY_KEY = "hex-command-progress-index";
+export const historyPayloadKey = (id: string): string => `hex-command-progress:${id}`;
 
 /** Browser storage is optional; failure must leave the current battle playable. */
 export function readSave(): string | null {
@@ -11,11 +13,10 @@ export function readSave(): string | null {
 export function storeSave(text: string): void {
   localStorage.setItem(SAVE_KEY, text);
 }
-/** Failed migration or validation discards the save; historical backups are obsolete. */
+/** Failed validation discards only the current save. */
 export function wipeSave(): void {
   try {
     localStorage.removeItem(SAVE_KEY);
-    localStorage.removeItem(`${SAVE_KEY}-unrestored`);
   } catch {
     /* Disabled browser storage must not stop a fresh game. */
   }

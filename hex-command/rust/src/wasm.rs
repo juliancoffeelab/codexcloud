@@ -196,7 +196,7 @@ impl NativeEngineFactory {
         let result = decode::<Start>(start)
             .and_then(|start| self.start(start))
             .map(|mut state| {
-                state.combat_rng = Some(seed);
+                state.combat_rng = seed;
                 let board = Board::new(&state.tiles);
                 let game = Game::from_state_with_board(&self.rules, state, board.clone());
                 let cache = game.runtime_cache();

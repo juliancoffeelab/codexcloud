@@ -25,6 +25,7 @@ function fixture() {
     gold: { player: 3, enemy: 3 },
     winner: null,
     nextId: 2,
+    combatRng: 17,
     log: ["Ready"],
     tiles: [{ id: "hex-0001-7256137ec1", col: 0, row: 0, terrain: "keep", owner: "player" }],
     units: [

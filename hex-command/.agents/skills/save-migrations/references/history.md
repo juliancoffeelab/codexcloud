@@ -324,3 +324,16 @@ therefore converge on one format. Native validation follows conversion. Run and
 checkpoint identities, setup, seed, units, treasury and flag history are retained.
 Older undo is discarded. Historical payloads migrate through the same loading
 entry point as recovery; the history index remains unchanged.
+
+## Version 35: current recovery and turn-only history
+
+The 34→35 conversion makes setup and save identities explicit, supplies frozen
+combat RNG and unit-experience defaults where absent, and discards old undo.
+A current imported-position marker becomes recovery metadata; it is not a turn
+start. Normal restoration neither fills old fields nor clamps saved hit points.
+
+History index version 1→2 is a separate explicit data conversion. It keeps actual
+turn-start entries and retires archived recovery and imported-position entries.
+Their payloads are deleted after committing the converted index. Current recovery
+lives at its separate fixed key and is not deleted. Missing metadata on an old
+current save does not create historical records.

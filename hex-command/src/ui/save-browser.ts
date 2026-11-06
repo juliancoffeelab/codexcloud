@@ -1,12 +1,12 @@
 import { CAMPAIGNS } from "../game/campaign-data";
 import { MAPS } from "../game/maps";
 import type { CampaignId, MapId } from "../game/types";
-import type { ProgressEntry } from "../save/progress";
+import type { SaveInfo } from "../save/metadata";
 
-export function runName(entry: ProgressEntry): string {
+export function runName(entry: SaveInfo): string {
   return CAMPAIGNS[entry.run as CampaignId]?.name ?? MAPS[entry.run as MapId]?.name ?? "Saved game";
 }
-export function chapter(entry: ProgressEntry): { number: number; name: string } {
+export function chapter(entry: SaveInfo): { number: number; name: string } {
   const match = /^Mission (\d+) · (.+)$/.exec(entry.mission);
   const map = (match?.[2] ?? entry.mission) as MapId;
   return { number: match ? Number(match[1]) : 0, name: MAPS[map]?.name ?? runName(entry) };
