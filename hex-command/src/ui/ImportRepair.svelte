@@ -22,7 +22,11 @@
   let inventory = $state<RepairInventory>({ records: [], errors: [], authoritative: false });
   let busy = $state(false);
   let error = $state("");
-  let pending = $state<{ target: RepairTarget; label: string; copy: string }>();
+  let pending = $state<{
+    target: RepairTarget | { kind: "import" };
+    label: string;
+    copy: string;
+  }>();
   let armed = $state(false);
   let timer: ReturnType<typeof setTimeout>;
   const unknownFlash = $derived(
@@ -74,7 +78,7 @@
       busy = false;
     }
   }
-  function ask(target: RepairTarget, label: string, copy: string) {
+  function ask(target: RepairTarget | { kind: "import" }, label: string, copy: string) {
     pending = { target, label, copy };
     armed = false;
     clearTimeout(timer);
@@ -82,17 +86,26 @@
     confirmation?.showModal();
     confirmation?.querySelector<HTMLButtonElement>(".cancel")?.focus();
   }
-  async function remove() {
+  async function confirmAction() {
     if (!pending || !armed || busy) return;
+    if (pending.target.kind === "import") {
+      confirmation?.close();
+      await retry();
+      return;
+    }
     busy = true;
     error = "";
     try {
       await actions.repairSavedData(pending.target);
       confirmation?.close();
-      await refresh();
     } catch (e) {
       error = String(e);
     } finally {
+      try {
+        await refresh();
+      } catch (e) {
+        error += `\n${String(e)}`;
+      }
       busy = false;
     }
   }
@@ -177,7 +190,7 @@
     {#each inventory.errors as issue}<p class="damage" role="alert">{issue}</p>{/each}
     {#if unknownFlash}<p class="warning">
         <strong>Flash save ownership is unknown.</strong>
-         Campaign deletion will leave it untouched. We strongly recommend deleting this unidentified flash
+        Campaign deletion will leave it untouched. We strongly recommend deleting this unidentified flash
         save before continuing.
       </p>{/if}
     {#each campaigns as campaign (campaign.id)}
@@ -203,7 +216,18 @@
     {#if !inventory.records.length && !inventory.errors.length && !inventory.authoritative}<p>
         No source saves remain. You can finish import and choose a new game.
       </p>{/if}
-    <button class="primary" disabled={busy} onclick={retry}>Import remaining saves</button>
+    <button
+      class="primary"
+      disabled={busy}
+      onclick={() =>
+        ask(
+          { kind: "import" },
+          "Import retained saves?",
+          "Importing replaces any current unsaved game with the retained flash save. If no flash save remains, New game opens.",
+        )}
+    >
+      Import remaining saves
+    </button>
     <button
       class="delete-all"
       disabled={busy || inventory.authoritative}
@@ -233,8 +257,17 @@
 >
   <p>{pending?.copy}</p>
   {#if error}<p class="damage" role="alert">{error}</p>{/if}
-  <button class="confirm-delete" disabled={busy || !armed} onclick={remove}>
-    {pending?.target.kind === "index" ? "Rebuild history list" : "Delete source data"}
+  <button
+    class="confirm-delete"
+    class:destructive={pending?.target.kind !== "import" && pending?.target.kind !== "index"}
+    disabled={busy || !armed}
+    onclick={confirmAction}
+  >
+    {pending?.target.kind === "import"
+      ? "Import and continue"
+      : pending?.target.kind === "index"
+        ? "Rebuild history list"
+        : "Delete source data"}
   </button>
   <button class="cancel" disabled={busy} onclick={() => confirmation?.close()}>Cancel</button>
 </DialogWindow>
@@ -337,6 +370,10 @@
     background: none;
   }
   .confirm-delete {
+    background: var(--gold);
+    color: var(--bg);
+  }
+  .confirm-delete.destructive {
     background: #a64e40;
     color: #fff2eb;
     border-color: #c07763;

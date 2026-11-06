@@ -128,11 +128,6 @@ export async function storeSave(text: string): Promise<void> {
     tx.objectStore(STATE).delete(NEW_GAME);
   });
 }
-export async function wipeSave(): Promise<void> {
-  await repository([], "readwrite", (tx) => {
-    tx.objectStore(STATE).delete(CURRENT);
-  });
-}
 /** The marker and every imported record commit together; a competing initializer wins. */
 export async function initializeStorage(data: {
   current?: CurrentSave;

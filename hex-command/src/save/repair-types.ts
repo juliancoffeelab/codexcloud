@@ -1,4 +1,3 @@
-import type { BattleSave } from "./schema";
 import type { CurrentEntry, TurnEntry } from "./metadata";
 
 export interface ImportFailure {
@@ -13,8 +12,6 @@ export interface RepairRecord {
   runName?: string;
   entry?: CurrentEntry | TurnEntry;
   error?: string;
-  /** Converted data is temporary repair input, never a gameplay repository. */
-  save?: BattleSave;
 }
 export interface RepairInventory {
   records: RepairRecord[];

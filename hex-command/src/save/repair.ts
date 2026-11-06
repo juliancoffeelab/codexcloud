@@ -12,8 +12,8 @@ import {
   STORAGE_VERSION,
 } from "./storage";
 import {
-  inspectStorageV1,
-  repairStorageV1,
+  inspectStorageV1ToV2,
+  repairStorageV1ToV2,
   SAVE_KEY,
   HISTORY_KEY,
   historyPayloadKey,
@@ -26,7 +26,14 @@ import type { ImportFailure, RepairInventory, RepairTarget } from "./repair-type
 async function databaseSource(tx: IDBTransaction): Promise<LocalSource> {
   const source: LocalSource = {};
   source[SAVE_KEY] = (await request(tx.objectStore(STATE).get(CURRENT))) ?? null;
-  const entries = await request(tx.objectStore(ENTRIES).getAll());
+  const entries = (await request(tx.objectStore(ENTRIES).getAll())).map((entry) => {
+    try {
+      JSON.stringify(entry);
+      return entry;
+    } catch {
+      return { unreadable: true };
+    }
+  });
   source[HISTORY_KEY] = JSON.stringify({ version: 4, entries });
   const store = tx.objectStore(TURNS);
   const [keys, values] = await Promise.all([request(store.getAllKeys()), request(store.getAll())]);
@@ -59,7 +66,7 @@ export function inspectImport(
     } catch (error) {
       return { records: [], errors: [...errors, String(error)], authoritative };
     }
-    const records = inspectStorageV1(source);
+    const records = inspectStorageV1ToV2(source);
     for (const record of records) {
       if (record.save) {
         try {
@@ -89,7 +96,7 @@ export function repairImport(failure: ImportFailure, target: RepairTarget): Prom
           "Import finished in another tab. Import the saved game here before deleting anything.",
         );
       const source = readImportSource();
-      const plan = repairStorageV1(source, target);
+      const plan = repairStorageV1ToV2(source, target);
       // Deletes require no additional quota; a failed index update remains repairable.
       for (const key of plan.deleted) localStorage.removeItem(key);
       for (const [key, value] of Object.entries(plan.writes))
@@ -106,7 +113,7 @@ export function repairImport(failure: ImportFailure, target: RepairTarget): Prom
         return;
       }
       const source = await databaseSource(tx);
-      const plan = repairStorageV1(source, target);
+      const plan = repairStorageV1ToV2(source, target);
       for (const key of plan.deleted) {
         if (key === SAVE_KEY) {
           tx.objectStore(STATE).delete(CURRENT);
@@ -117,7 +124,7 @@ export function repairImport(failure: ImportFailure, target: RepairTarget): Prom
           tx.objectStore(ENTRIES).delete(id);
         }
       }
-      if (plan.writes[HISTORY_KEY]) {
+      if (target.kind === "index" && plan.writes[HISTORY_KEY]) {
         const entries = JSON.parse(plan.writes[HISTORY_KEY]!).entries;
         tx.objectStore(ENTRIES).clear();
         for (const entry of entries) tx.objectStore(ENTRIES).put(entry);

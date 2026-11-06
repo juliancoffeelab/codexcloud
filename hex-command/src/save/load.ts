@@ -2,7 +2,7 @@ import { decodeUndo } from "./undo";
 import { LiveGame, nativeValue } from "../game/live-game";
 import type { GameEngineFactory } from "../game/native-engine";
 import { migrateSave } from "./migrations";
-import { wipeSave, storeSave, readSave, readSession } from "./storage";
+import { storeSave, readSave, readSession } from "./storage";
 import { importLocalStorage, readImportSource } from "./import";
 import type { ImportFailure } from "./repair-types";
 import { currentFlashSave, currentTurn } from "./schema";
@@ -102,17 +102,19 @@ export async function loadBattle(factory: GameEngineFactory): Promise<LoadedBatt
             pendingEnemy: false,
             importFailure: { source: "indexedDB", detail: String(error) },
             notice:
-              "Saved progress needs an update, but storage refused the write. Free storage in Saved progress, then reload to restore it.",
+              "Saved progress could not be updated. Review retained data in Repair saved data.",
           };
         }
       }
       return restored;
     } catch (error) {
-      await wipeSave();
       return {
         game: LiveGame.create(factory, { kind: "scenario", map: "mirror" }),
         pendingEnemy: false,
-        notice: `The saved battle could not be loaded and was cleared. A new battle is ready.\n${error instanceof Error ? (error.stack ?? error.message) : String(error)}`,
+        importFailure: {
+          source: "indexedDB",
+          detail: `${String(error)}\n${error instanceof Error ? (error.stack ?? "") : ""}`,
+        },
       };
     }
   }

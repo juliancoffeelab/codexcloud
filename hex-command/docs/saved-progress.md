@@ -144,21 +144,42 @@ them as saves. Old tabs can continue running, but their later localStorage write
 are discarded on reload. Other preferences, such as sound, remain independent.
 There is no forced reload, reconciliation or localStorage gameplay backend.
 
-A failed import leaves the original source intact and the database uninitialized.
-The loading boundary exposes canonical migration metadata for cleanup; source
-cleanup is restricted to migration cleanup, then import is retried. Normal
-repository operations refuse an uninitialized database. A failed conversion or
-native validation retains the source for diagnosis. Failed writes keep prior
-committed data. Debug reports include raw records from every IndexedDB store and
-any remaining import source.
+A failed import leaves the source intact and the database uninitialized. It opens
+**Saved data needs repair**, independently of ordinary save-write errors. Normal
+Saved games only reads the initialized target repository; it never becomes an
+adapter for unmigrated source data.
+
+Repair inventories each source record independently. Readable metadata can identify
+a campaign even when its snapshot is malformed. Unreadable records remain visible
+by storage key. Individual deletion does not decode a battlefield. Campaign deletion
+removes only records whose ownership is established, including its flash save when
+known. An unidentified flash save remains untouched, with a warning strongly
+recommending explicit deletion. Conflicting identities are treated as unknown.
+
+A damaged or missing history list can be rebuilt from identifiable snapshots.
+Unlisted and unidentified payloads are retained for explicit cleanup rather than
+silently lost on import. Delete all source saves provides a confirmed reset path.
+All destructive actions require confirmation. Cleanup does not import implicitly;
+Import remaining saves confirms replacement of any current unsaved play, retries
+conversion and native validation, then installs the
+retained flash save or opens the existing New game UI when none remains. A tab
+whose import completed elsewhere must reopen the authoritative data before repair
+can delete anything.
+
+Choose a new game without saving keeps source records untouched and permits normal
+in-memory gameplay while repair is pending. Source repair and normal gameplay
+remain separate: automatic writes stay suspended until import completes. If storage
+is unavailable with no source saves, the ordinary storage error explains the lack
+of saving, and campaigns, scenarios and player actions remain usable. Pending
+history writes are best-effort when switching games; they cannot veto fresh play.
 
 Subsequent stored-envelope conversions still use the loading boundary and commit
-before installing the restored game. Cleanup resolves ownership before mutation.
-Deleting another campaign retries retained flash save; deleting its own campaign
-ends the session and opens New game. Opening save management dismisses any pending
-Load confirmation. No historical shape is interpreted by gameplay, browsing or
-repository operations. Conversion code and frozen historical data remain under
-`src/save/migrations/`.
+before installing restored play. Their failed writes can use the separate repair
+interface, including atomic target-store cleanup. Debug reports retain raw source
+and target records. No historical shape is interpreted by gameplay or normal save
+management. Data-only repair decoding stays inside the explicit storage migration;
+`src/save/repair.ts` owns its I/O and exposes record identities and diagnostics,
+never playable historical snapshots.
 
 Undo validation transfers the current state and compact changes to Rust once.
 Rust reconstructs and validates every earlier state against the native rules

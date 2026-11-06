@@ -27,7 +27,7 @@ so persistence cannot be guaranteed when the browser refuses writes.
 Loading is the sole migration entry point: parse, convert, validate through Rust,
 then atomically replace the stored envelope before returning the restored battle.
 This write is independent of gameplay saving and enemy-turn completion. Invalid
-saves are discarded; play and saving resume with a fresh battle. Disabled or full
+stored data is retained for explicit repair; fresh in-memory play remains available. Disabled or full
 browser storage does not stop play.
 
 ## Storage transition
@@ -37,8 +37,13 @@ Storage v1→v2 converts localStorage records to IndexedDB. Pure conversion live
 Validate all converted retained saves natively, then commit records and the
 initialization marker together. Remove the source only after commit. An
 initialized database is authoritative even when empty: discard subsequent
-localStorage saves without reimporting them. Failed import retains the source;
-cleanup tools may operate on canonical migration output and retry import, while
-normal gameplay repository operations require initialized IndexedDB. Source import
-and source cleanup share a short-lived Web Lock across tabs; failed-import tabs
-recheck initialization before touching the source.
+localStorage saves without reimporting them. Failed import retains the source and
+enters the separate repair interface. Repair inventories and deletes source
+records without requiring complete conversion or valid battlefield payloads.
+Ownership uncertainty remains explicit; unidentified flash data is deleted only
+by an explicit action. Normal save management accepts initialized, migrated data
+only. Source import and repair share a short-lived Web Lock across tabs and recheck
+initialization before touching source records. Fresh in-memory play remains
+available while source data awaits repair; its automatic writes stay suspended.
+Storage unavailability without source saves is an ordinary save error and cannot
+block starting or playing a campaign.

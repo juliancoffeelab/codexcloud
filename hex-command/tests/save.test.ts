@@ -1,3 +1,4 @@
+import { repairImport } from "../src/save/repair";
 import { readSave, storeSave } from "../src/save/storage";
 import { historicalCharacters, historicalTiles } from "./legacy-save";
 import { Game } from "./game-fixture";
@@ -196,7 +197,7 @@ test("Migration chain distinguishes the original native envelope and rewrites on
   restored.game.dispose();
 });
 
-test("A native rejection wipes the save without committing migration", async () => {
+test("A native rejection retains source data for explicit repair", async () => {
   const old = oldSnapshot();
   const raw = JSON.stringify(old, null, 2);
   await storeSave(raw);
@@ -205,9 +206,10 @@ test("A native rejection wipes the save without committing migration", async () 
     ...factory,
     restore: () => ({ ok: false, error: { code: "invalidSave", message: "Rejected" } }),
   });
-  assert(restored.notice);
+  assert(restored.importFailure);
   assert.equal(restored.game.mapId, "mirror");
-  assert.equal(await readSave(), null);
+  assert.equal(await readSave(), raw);
+  await repairImport(restored.importFailure!, { kind: "all" });
   await saveBattle(restored.game);
   assert.equal(JSON.parse((await readSave())!).version, SAVE_VERSION);
   restored.game.dispose();
@@ -220,11 +222,11 @@ for (const raw of [
   JSON.stringify({ version: 0 }),
   JSON.stringify({ version: 1, engine: "unknown" }),
 ]) {
-  test(`Rejected save ${raw} is wiped and leaves a fresh playable battle`, async () => {
+  test(`Rejected save ${raw} remains repairable while fresh play is available`, async () => {
     await storeSave(raw);
     const restored = await loadBattle(createTestFactory());
-    assert(restored.notice);
-    assert.equal(await readSave(), null);
+    assert(restored.importFailure);
+    assert.equal(await readSave(), raw);
     assert.equal(restored.game.round, 1);
     restored.game.move("u3", "hex-0738-f0cce97107");
     restored.game.dispose();
@@ -300,12 +302,13 @@ test("Mid-turn writes retain the pre-turn checkpoint", async () => {
   game.dispose();
 });
 
-test("Rejected saves leave saving enabled", async () => {
+test("Explicit source reset allows saving after rejection", async () => {
   await storeSave("{broken");
   const restored = await loadBattle(createTestFactory());
-  assert(restored.notice);
-  assert.equal(await readSave(), null);
+  assert(restored.importFailure);
+  assert.equal(await readSave(), "{broken");
   restored.game.move("u3", "hex-0738-f0cce97107");
+  await repairImport(restored.importFailure!, { kind: "all" });
   await saveBattle(restored.game);
   assert.equal(JSON.parse((await readSave())!).version, SAVE_VERSION);
   restored.game.dispose();

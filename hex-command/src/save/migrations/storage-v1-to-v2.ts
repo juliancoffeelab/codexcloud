@@ -1,3 +1,6 @@
+import type { BattleSave } from "../schema";
+import type { RepairRecord } from "../repair-types";
+type SourceRecord = RepairRecord & { save?: BattleSave };
 import { migrateSave } from "./index";
 import { migrateHistoryIndex } from "./history";
 import { currentFlashSave, currentTurn, isRecord } from "../schema";
@@ -32,9 +35,11 @@ function importedSave(raw: string) {
 
 export function migrateStorageV1ToV2(source: LocalSource) {
   const raw = source[SAVE_KEY];
-  const current = raw ? currentFlashSave(importedSave(raw)) : undefined;
+  const current =
+    raw !== undefined && raw !== null ? currentFlashSave(importedSave(raw)) : undefined;
   const text = source[HISTORY_KEY];
-  const history = text ? migrateHistoryIndex(JSON.parse(text)) : undefined;
+  const history =
+    text !== undefined && text !== null ? migrateHistoryIndex(JSON.parse(text)) : undefined;
   const entries = history?.index.entries ?? [];
   const indexed = new Set(entries.map((entry) => historyPayloadKey(entry.id)));
   const retired = new Set(history?.removedIds.map(historyPayloadKey) ?? []);
@@ -58,12 +63,12 @@ export function migrateStorageV1ToV2(source: LocalSource) {
 }
 
 /** Repair reads each record independently; no complete conversion is required for deletion. */
-export function inspectStorageV1(source: LocalSource): import("../repair-types").RepairRecord[] {
-  const records: import("../repair-types").RepairRecord[] = [];
+export function inspectStorageV1ToV2(source: LocalSource): SourceRecord[] {
+  const records: SourceRecord[] = [];
   const metadata = new Map<string, import("../metadata").TurnEntry>();
   const index = source[HISTORY_KEY];
   if (index !== undefined && index !== null) {
-    const record: import("../repair-types").RepairRecord = {
+    const record: SourceRecord = {
       key: HISTORY_KEY,
       kind: "index",
       label: "History list",
@@ -107,7 +112,7 @@ export function inspectStorageV1(source: LocalSource): import("../repair-types")
     const isFlash = key === SAVE_KEY;
     const id = key.slice("hex-command-progress:".length);
     const hint = isFlash ? undefined : metadata.get(id);
-    const record: import("../repair-types").RepairRecord = {
+    const record: SourceRecord = {
       key,
       kind: isFlash ? "flash" : "turn",
       label: isFlash ? "Flash save" : hint ? `Turn ${hint.round}` : `Unidentified save · ${id}`,
@@ -155,11 +160,11 @@ export function inspectStorageV1(source: LocalSource): import("../repair-types")
 }
 
 /** Repair edits only explicit source records and their references; payload validity is irrelevant. */
-export function repairStorageV1(
+export function repairStorageV1ToV2(
   source: LocalSource,
   target: import("../repair-types").RepairTarget,
 ) {
-  const records = inspectStorageV1(source);
+  const records = inspectStorageV1ToV2(source);
   const selected =
     target.kind === "all"
       ? Object.keys(source)

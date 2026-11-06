@@ -1,3 +1,6 @@
+import { IDBFactory } from "fake-indexeddb";
+import { TurnCheckpoint, serializeBattle } from "../src/save/write";
+import { describeFlashSave, newRun, progressId } from "../src/save/metadata";
 import { readSave, storeSave } from "../src/save/storage";
 import { loadBattle as loadLiveBattle } from "../src/save/load";
 import { saveBattle as writeBattle } from "../src/save/write";
@@ -5,7 +8,7 @@ import assert from "node:assert/strict";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import { NativeEngineFactory } from "../rust/pkg/hex_command";
 import { createNativeEngineFactory } from "../src/game/native-engine";
-import { LiveGame } from "../src/game/live-game";
+import { LiveGame, nativeValue } from "../src/game/live-game";
 import { BattleController } from "../src/controller/battle";
 import { Game, developerFixture } from "./game-fixture";
 import { saveBattle, SAVE_KEY } from "./legacy-save";
@@ -135,15 +138,16 @@ test("Supported legacy woodland revisions migrate without losing campaign progre
   restored.game.dispose();
 });
 
-test("A failed legacy import is wiped and cannot prevent startup", async () => {
+test("A rejected historical save is retained without preventing fresh play", async () => {
   await saveBattle(new Game("mirror"));
+  const original = await readSave();
   const restored = await loadLiveBattle({
     ...factory,
     restore: () => ({ ok: false, error: { code: "invalidRequest", message: "Rejected" } }),
   });
-  assert(restored.notice);
+  assert(restored.importFailure);
   assert.equal(restored.game.turn, "player");
-  assert.equal(await readSave(), null);
+  assert.equal(await readSave(), original);
   restored.game.dispose();
 });
 
@@ -165,7 +169,7 @@ test("Rejected native campaign data leaves the WASM factory usable", async () =>
     corrupt();
     await storeSave(JSON.stringify(checkpoint));
     const restored = await loadLiveBattle(factory);
-    assert(restored.notice);
+    assert(restored.importFailure);
     restored.game.dispose();
   }
   const next = LiveGame.create(factory, { kind: "campaign", id: "lantern-road" });
@@ -187,13 +191,13 @@ test("Live enemy planning finishes a phase and saves the resulting player turn",
   controller.dispose();
 });
 
-test("An invalid native checkpoint is wiped and leaves a playable battle", async () => {
+test("An invalid native checkpoint is retained for repair alongside a fresh battle", async () => {
   const rejected = { version: 999, checkpoint: {}, pendingEnemy: false };
   await storeSave(JSON.stringify(rejected));
   const restored = await loadLiveBattle(factory);
-  assert(restored.notice);
+  assert(restored.importFailure);
   assert.equal(restored.game.turn, "player");
-  assert.equal(await readSave(), null);
+  assert.equal(await readSave(), JSON.stringify(rejected));
   restored.game.dispose();
 });
 
@@ -250,4 +254,98 @@ test("Reloading during an enemy turn replays the whole phase from its boundary",
   restored.game.dispose();
   controller.dispose();
   unsubscribe();
+});
+
+test("Import repair removes a corrupt historical payload and preserves playable flash data", async () => {
+  vi.stubGlobal("indexedDB", new IDBFactory());
+  const game = LiveGame.create(factory, { kind: "scenario", map: "mirror" });
+  const identity = newRun();
+  const good = required(
+    TurnCheckpoint.capture(
+      game,
+      { ...identity, checkpointId: progressId(), ordinal: 1 },
+      true,
+      identity.checkpointId,
+    ),
+  );
+  const bad = required(
+    TurnCheckpoint.capture(
+      game,
+      { ...identity, checkpointId: progressId(), ordinal: 2 },
+      false,
+      good.entry.id,
+    ),
+  );
+  const flash = JSON.parse(
+    required(
+      serializeBattle(game, false, {
+        undo: [],
+        progress: { entry: describeFlashSave(game, identity) },
+      }),
+    ),
+  );
+  const expected = nativeValue(game.checkpoint());
+  flash.progress.entry.kind = "recovery";
+  const raw = JSON.stringify(flash);
+  localStorage.setItem("hex-command-battle", raw);
+  localStorage.setItem(
+    "hex-command-progress-index",
+    JSON.stringify({ version: 4, entries: [good.entry, bad.entry] }),
+  );
+  localStorage.setItem(`hex-command-progress:${good.entry.id}`, TurnCheckpoint.text(good));
+  const key = `hex-command-progress:${bad.entry.id}`;
+  localStorage.setItem(key, "{broken payload");
+  const controller = await BattleController.create(async () => {}, factory);
+  try {
+    await assert.rejects(controller.savedProgress(), /Repair saved data/);
+    assert(
+      (await controller.repairInventory()).records.find((record) => record.key === key)?.error,
+    );
+    await controller.repairSavedData({ kind: "record", key });
+    assert.equal(localStorage.getItem("hex-command-battle"), raw);
+    assert.equal(await controller.retryImport(), true);
+    assert.deepEqual(controller.snapshot(), game.snapshot());
+    assert.deepEqual(JSON.parse(required(await readSave())).checkpoint, expected);
+    assert.deepEqual(
+      (await controller.savedProgress()).map((entry) => entry.id),
+      [good.entry.id],
+    );
+  } finally {
+    controller.dispose();
+    game.dispose();
+  }
+});
+
+test("Unavailable storage with no source saves allows a new campaign and player actions", async () => {
+  vi.stubGlobal("indexedDB", {
+    open: () => {
+      throw new DOMException("Storage disabled", "SecurityError");
+    },
+  });
+  const controller = await BattleController.create(async () => {}, factory);
+  try {
+    await controller.initialize();
+    await controller.startCampaign("lantern-road");
+    controller.advanceDialogue(true);
+    const actor = required(
+      controller
+        .snapshot()
+        .units.find((unit) => unit.side === "player" && controller.actions(unit.id).moves.length),
+    );
+    const destination = required(controller.actions(actor.id).moves[0]).tile;
+    controller.move(actor.id, destination);
+    await controller.saved();
+    assert.equal(controller.snapshot().campaign?.id, "lantern-road");
+    assert.equal(
+      required(controller.snapshot().units.find((unit) => unit.id === actor.id)).tile,
+      destination,
+    );
+    assert.equal(localStorage.length, 0);
+    let failure: BattleView["importFailure"];
+    const unsubscribe = controller.view.subscribe((view) => (failure = view.importFailure));
+    assert.equal(failure, null);
+    unsubscribe();
+  } finally {
+    controller.dispose();
+  }
 });
