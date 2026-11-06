@@ -21,7 +21,8 @@ and their procedures in skills; list their invocation conditions below.
 
 ## Failures
 
-Diagnose agent failures through instructions, workflow, tooling or architecture.
+Diagnose agent failures in this order: architecture, existing code, then skills
+and other instructions. Prioritize proposed remedies in the same order.
 “I failed to apply/follow the instruction” is not a diagnosis. When the user asks
 what caused an agent failure, use [agent-failure](.agents/skills/agent-failure/SKILL.md).
 
