@@ -108,7 +108,7 @@ Creature selection palettes live in `dist/creature-picks.js`: compact mammals an
 several aquatic beasts use grunt 1; heavy reptiles, crab/tortoise and zombie bears
 use grunt 4. Treants and zombie Shambler/Ghoul retain grunt 4. Leathery fliers use
 cloth 2, birds/gryphons cloth 3, snakes a quiet saturated clothBelt2, octopus a
-soft gurgle, spiders a heavily filtered quiet creak. Wasps offer designed insect
+soft gurgle, spiders `bug_01` with the quiet creak as an alternative. Wasps offer designed insect
 clips and arrow fletching as unconfirmed buzz candidates. These are audition
 proxies, not authentic species recordings. Breath is restricted to zombie
 choices; cloth 1 is excluded from unit action choices. Originals remain in the

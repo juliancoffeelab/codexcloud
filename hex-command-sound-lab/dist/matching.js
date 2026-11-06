@@ -1,4 +1,4 @@
-import { creaturePick } from "./creature-picks.js?v=beast-palette-1";
+import { creaturePick } from "./creature-picks.js?v=spider-bug-1";
 import { terrainPicks } from "./terrain-picks.js?v=terrain-batch-1";
 // Explicit semantic families keep mechanical actions separate from animal voices.
 // Recommendations are curated source IDs; alternatives include every matching recording.

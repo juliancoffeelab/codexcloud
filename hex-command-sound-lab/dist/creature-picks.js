@@ -31,10 +31,17 @@ export function creaturePick(entity) {
     );
   if (/^giant-spider(?:-l[23])?$/.test(id))
     return pick(
-      "edits/spider-creak-soft-v1",
-      "Very quiet filtered creak for spider contact.",
+      "rubberduck/80-cc0-creature-sfx/bug_01.ogg",
+      "Designed bug texture for spider selection.",
       true,
-      ["rpg-audio/creak1", "rpg-audio/creak2"],
+      [
+        "edits/spider-creak-soft-v1",
+        "rubberduck/80-cc0-creature-sfx/bug_02.ogg",
+        "rubberduck/80-cc0-creature-sfx/bug_03.ogg",
+        "rubberduck/80-cc0-creature-sfx/bug_04.ogg",
+        "rpg-audio/creak1",
+        "rpg-audio/creak2",
+      ],
     );
   if (/^giant-wasp(?:-l[23])?$/.test(id))
     return pick(
