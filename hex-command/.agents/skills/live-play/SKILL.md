@@ -1,7 +1,6 @@
 ---
 name: live-play
-description: Play the actual game in an isolated browser with the native AI and a disposable Playwright probe.
-disable-model-invocation: true
+description: Use only for explicitly user-authorized browser gameplay with the actual game. Ordinary implementation, review, simulation or deployment requests do not trigger it.
 ---
 
 # Live play
