@@ -15,7 +15,7 @@ Routine implementation, pushes and deployment do not invoke this skill.
 
 Identify the PR head and inspect existing review/check results, the changed-file
 list and commit history. Reuse evidence for unchanged content; check whether later
-changes invalidate it. Assess these four conditions:
+changes invalidate it. Assess these five conditions:
 
 - **Independent review:** at least one reviewer other than the implementer covered
   the final substantive change, with findings resolved or given an evidenced
@@ -26,6 +26,10 @@ changes invalidate it. Assess these four conditions:
   handoffs and progress reports have not leaked into tracked files. Retained
   documents have an intentional permanent purpose; guidance is current and avoids
   duplicated rules or copies of readily discoverable code/config.
+- **PR description:** reflects the final change and material lessons established
+  during implementation or review: the root cause, why the chosen fix addresses
+  it, and what validation proves or leaves uncertain. Claims match the evidence
+  and current scope; routine changes need only the relevant detail.
 - **History:** each commit has a clear reason to remain separate and an accurate
   message. Unrelated changes, accidental artifacts and obscuring WIP/fixup/revert
   chains were addressed.
@@ -44,13 +48,15 @@ identified head, or the time budget is reached.
 
 ## Return the verdict
 
-Every verdict must identify the PR head and include all four checklist items.
+Every verdict must identify the PR head and include all five checklist items.
 Mark each ✅ supported, ❌ failed or ❓ unverified, followed by concrete evidence:
 
 - **Independent review:** reviewer identity, reviewed revision/scope, and the
   disposition of findings, including evidence for fixes made after review.
 - **Markdowns:** name added, changed and deleted Markdown/guidance files and
   summarize their purpose and hygiene review. Say “none” when there are none.
+- **PR description:** summarize whether the description captures the final scope
+  and material lessons, and identify missing or unsupported claims.
 - **History:** number of PR commits, why each remains separate, and whether
   messages and sequence are coherent. Identify cleanup needed and any reliance
   on squash merging explicitly.
@@ -58,7 +64,7 @@ Mark each ✅ supported, ❌ failed or ❓ unverified, followed by concrete evid
   evidence and quick checks from checks run during this audit. Name missing,
   failed or stale checks.
 
-Report **ready** only when all four items are ✅. Otherwise report **not ready**
+Report **ready** only when all five items are ✅. Otherwise report **not ready**
 and give the next action for each ❌ or ❓. A proposed squash merge does not count
 as completed history cleanup. Keep the checklist in the response or PR metadata,
 without adding a tracked gate report file.
@@ -69,6 +75,6 @@ expected-head guard where supported. A moved head needs reassessment; a blocked
 gate returns its verdict without starting preparation. Confirm a successful merge
 with the hosting service.
 
-**Complete when:** the user has the verdict, all four checklist items and any
+**Complete when:** the user has the verdict, all checklist items and any
 blockers; an authorized merge
 is complete only after hosting-service confirmation.
