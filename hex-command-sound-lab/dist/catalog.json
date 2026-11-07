@@ -18802,15 +18802,15 @@
   {
     "takeMethod": "authored-edit",
     "id": "edits/merfolk-selection-underwater-v1",
-    "name": "Merfolk selection \u00b7 underwater Cloth Belt 2",
-    "path": "audio/listening/cd984a2c2df514136c6a.mp3",
+    "name": "Merfolk selection \u00b7 underwater Cloth Belt 2 \u00b7 light",
+    "path": "audio/listening/92f9ddb59a047beb28f0.mp3",
     "pack": "audition-edits",
     "packLabel": "Audition edits",
     "license": "CC0-1.0",
     "source": "https://kenney.nl/assets/rpg-audio",
     "creator": "Kenney Vleugels (Kenney.nl)",
     "kind": "processed-foley",
-    "notes": "Same chosen recording/take underwater: softened onset, two low-pass stages and broad low-mid resonance; no alternate source, pitch processing, delay or reverb. Original remains beside it for comparison. Normal reference-level matching. Per-take level matching follows the live-game reference.",
+    "notes": "Lighter underwater treatment of the same chosen take: 80% gently filtered signal mixed with 20% dry detail, a small low-mid lift and normal short edge fades. Original beside it for comparison; normal reference loudness. No substituted source, pitch processing, delay or reverb. Per-take level matching follows the live-game reference.",
     "sourcePath": "kenney/rpg-audio/Audio/clothBelt2.ogg",
     "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
     "duration": 0.5758,
@@ -18822,7 +18822,7 @@
     "takes": [
       {
         "start": 0,
-        "duration": 0.5208
+        "duration": 0.5308
       }
     ],
     "originalKind": "recorded-foley",
@@ -18831,19 +18831,11 @@
       "id": "edits/merfolk-selection-underwater-v1",
       "sourceId": "rpg-audio/clothBelt2",
       "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
-      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2",
-      "intent": "Same chosen recording/take underwater: softened onset, two low-pass stages and broad low-mid resonance; no alternate source, pitch processing, delay or reverb. Original remains beside it for comparison. Normal reference-level matching.",
+      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2 \u00b7 light",
+      "intent": "Lighter underwater treatment of the same chosen take: 80% gently filtered signal mixed with 20% dry detail, a small low-mid lift and normal short edge fades. Original beside it for comparison; normal reference loudness. No substituted source, pitch processing, delay or reverb.",
       "preserveLevel": false,
       "filters": [
-        "atrim=start=0:duration=0.5757",
-        "asetpts=PTS-STARTPTS",
-        "volume=-6dB",
-        "highpass=f=55",
-        "lowpass=f=950:p=2",
-        "lowpass=f=1500:p=2",
-        "equalizer=f=220:t=q:w=0.8:g=3",
-        "afade=t=in:d=0.014",
-        "afade=t=out:st=0.5577:d=0.018"
+        "atrim=start=0:duration=0.5757,asetpts=PTS-STARTPTS,volume=-6dB,asplit=2[dry][wet];[wet]highpass=f=45,lowpass=f=2200:p=2,equalizer=f=220:t=q:w=0.8:g=1[water];[dry][water]amix=inputs=2:weights='0.2 0.8':normalize=0,afade=t=in:d=0.005,afade=t=out:st=0.5677:d=0.008"
       ]
     },
     "preserveLevel": false
@@ -18851,15 +18843,15 @@
   {
     "takeMethod": "authored-edit",
     "id": "edits/merfolk-death-underwater-v1",
-    "name": "Merfolk death \u00b7 underwater Cough 02",
-    "path": "audio/listening/c3472e6c12499ac18694.mp3",
+    "name": "Merfolk death \u00b7 underwater Cough 02 \u00b7 light",
+    "path": "audio/listening/f39ab3f2943a95788f35.mp3",
     "pack": "audition-edits",
     "packLabel": "Audition edits",
     "license": "CC0-1.0",
     "source": "https://opengameart.org/content/80-cc0-creature-sfx",
     "creator": "rubberduck",
     "kind": "processed-effect",
-    "notes": "Same chosen recording/take underwater: softened onset, two low-pass stages and broad low-mid resonance; no alternate source, pitch processing, delay or reverb. Original remains beside it for comparison. Normal reference-level matching. Per-take level matching follows the live-game reference.",
+    "notes": "Lighter underwater treatment of the same chosen take: 80% gently filtered signal mixed with 20% dry detail, a small low-mid lift and normal short edge fades. Original beside it for comparison; normal reference loudness. No substituted source, pitch processing, delay or reverb. Per-take level matching follows the live-game reference.",
     "sourcePath": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
     "sourceHash": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
     "duration": 0.3263,
@@ -18879,19 +18871,11 @@
       "id": "edits/merfolk-death-underwater-v1",
       "sourceId": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
       "sourceHash": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
-      "name": "Merfolk death \u00b7 underwater Cough 02",
-      "intent": "Same chosen recording/take underwater: softened onset, two low-pass stages and broad low-mid resonance; no alternate source, pitch processing, delay or reverb. Original remains beside it for comparison. Normal reference-level matching.",
+      "name": "Merfolk death \u00b7 underwater Cough 02 \u00b7 light",
+      "intent": "Lighter underwater treatment of the same chosen take: 80% gently filtered signal mixed with 20% dry detail, a small low-mid lift and normal short edge fades. Original beside it for comparison; normal reference loudness. No substituted source, pitch processing, delay or reverb.",
       "preserveLevel": false,
       "filters": [
-        "atrim=start=0:duration=0.3263",
-        "asetpts=PTS-STARTPTS",
-        "volume=-6dB",
-        "highpass=f=55",
-        "lowpass=f=950:p=2",
-        "lowpass=f=1500:p=2",
-        "equalizer=f=220:t=q:w=0.8:g=3",
-        "afade=t=in:d=0.014",
-        "afade=t=out:st=0.3083:d=0.018"
+        "atrim=start=0:duration=0.3263,asetpts=PTS-STARTPTS,volume=-6dB,asplit=2[dry][wet];[wet]highpass=f=45,lowpass=f=2200:p=2,equalizer=f=220:t=q:w=0.8:g=1[water];[dry][water]amix=inputs=2:weights='0.2 0.8':normalize=0,afade=t=in:d=0.005,afade=t=out:st=0.3183:d=0.008"
       ]
     },
     "preserveLevel": false

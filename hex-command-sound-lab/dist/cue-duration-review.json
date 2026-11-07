@@ -923,48 +923,11 @@
       ]
     },
     {
-      "id": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
-      "name": "spell_fire_07",
-      "take": 1,
-      "start": 0,
-      "duration": 0.5208,
-      "uses": [
-        {
-          "entity": "beasts/dragon",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "beasts/dragon-l2",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "beasts/dragon-l3",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "humans/fireslinger",
-          "action": "attack-firepot"
-        },
-        {
-          "entity": "undead-animals/bone-dragon",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "undead-animals/bone-dragon-l2",
-          "action": "attack-fire-breath"
-        },
-        {
-          "entity": "undead-animals/bone-dragon-l3",
-          "action": "attack-fire-breath"
-        }
-      ]
-    },
-    {
       "id": "edits/merfolk-selection-underwater-v1",
-      "name": "Merfolk selection · underwater Cloth Belt 2",
+      "name": "Merfolk selection · underwater Cloth Belt 2 · light",
       "take": 1,
       "start": 0,
-      "duration": 0.5208,
+      "duration": 0.5308,
       "uses": [
         {
           "entity": "merfolk/harpooner",
@@ -1049,6 +1012,43 @@
         {
           "entity": "merfolk/merfolk-tide-sovereign",
           "action": "tap"
+        }
+      ]
+    },
+    {
+      "id": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
+      "name": "spell_fire_07",
+      "take": 1,
+      "start": 0,
+      "duration": 0.5208,
+      "uses": [
+        {
+          "entity": "beasts/dragon",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "beasts/dragon-l2",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "beasts/dragon-l3",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "humans/fireslinger",
+          "action": "attack-firepot"
+        },
+        {
+          "entity": "undead-animals/bone-dragon",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l2",
+          "action": "attack-fire-breath"
+        },
+        {
+          "entity": "undead-animals/bone-dragon-l3",
+          "action": "attack-fire-breath"
         }
       ]
     },

@@ -1,4 +1,4 @@
-import { deathPick, beastDeathId, DEATH_SOUNDS } from "./death-picks.js?v=merfolk-underwater-1";
+import { deathPick, beastDeathId, DEATH_SOUNDS } from "./death-picks.js?v=merfolk-underwater-light-2";
 // Authored audition choices. Death rows are candidates, not live-game events.
 export function applyCuratedPicks(entity, actions, catalog, { bone, spirit }) {
   const byId = new Map(catalog.map((sound) => [sound.id, sound]));

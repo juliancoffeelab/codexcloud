@@ -5771,18 +5771,18 @@ edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,au
 edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,audition-edits,attack,take-1,0,0.6057,-10.34,-29.25,-22.58,-3.71,-14.05,-32.96,-26.29,24.7,,False
 edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,audition-edits,terrain,full,,0.8246,-10.34,-30.59,-22.58,-6.7,-17.04,-37.29,-29.28,24.7,,False
 edits/bear-death-long-decay-v1,Bear death · sustained dying growl · compare,audition-edits,terrain,take-1,0,0.6057,-10.34,-29.25,-22.58,-6.7,-17.04,-35.95,-29.28,24.7,,False
-edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2,audition-edits,base,full,,0.5758,-19.51,-40.98,-35.29,9.0,-10.51,-31.98,-26.29,12.1,,False
-edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2,audition-edits,base,take-1,0,0.5208,-19.51,-40.55,-35.29,9.0,-10.51,-31.55,-26.29,12.1,,False
-edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2,audition-edits,attack,full,,0.5758,-19.51,-40.98,-35.29,9.0,-10.51,-31.98,-26.29,12.1,,False
-edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2,audition-edits,attack,take-1,0,0.5208,-19.51,-40.55,-35.29,9.0,-10.51,-31.55,-26.29,12.1,,False
-edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2,audition-edits,terrain,full,,0.5758,-19.51,-40.98,-35.29,6.01,-13.5,-34.97,-29.28,12.1,,False
-edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2,audition-edits,terrain,take-1,0,0.5208,-19.51,-40.55,-35.29,6.01,-13.5,-34.54,-29.28,12.1,,False
-edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02,audition-edits,base,full,,0.3263,-2.25,-21.38,-13.66,-12.63,-14.88,-34.01,-26.29,8.0,,False
-edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02,audition-edits,base,take-1,0,0.3263,-2.25,-21.38,-13.66,-12.63,-14.88,-34.01,-26.29,8.0,,False
-edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02,audition-edits,attack,full,,0.3263,-2.25,-21.38,-13.66,-12.63,-14.88,-34.01,-26.29,8.0,,False
-edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02,audition-edits,attack,take-1,0,0.3263,-2.25,-21.38,-13.66,-12.63,-14.88,-34.01,-26.29,8.0,,False
-edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02,audition-edits,terrain,full,,0.3263,-2.25,-21.38,-13.66,-15.62,-17.87,-37.0,-29.28,8.0,,False
-edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02,audition-edits,terrain,take-1,0,0.3263,-2.25,-21.38,-13.66,-15.62,-17.87,-37.0,-29.28,8.0,,False
+edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2 · light,audition-edits,base,full,,0.5758,-15.14,-40.16,-33.85,7.56,-7.58,-32.6,-26.29,9.7,,False
+edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2 · light,audition-edits,base,take-1,0,0.5308,-15.14,-39.81,-33.85,7.56,-7.58,-32.25,-26.29,9.7,,False
+edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2 · light,audition-edits,attack,full,,0.5758,-15.14,-40.16,-33.85,7.56,-7.58,-32.6,-26.29,9.7,,False
+edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2 · light,audition-edits,attack,take-1,0,0.5308,-15.14,-39.81,-33.85,7.56,-7.58,-32.25,-26.29,9.7,,False
+edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2 · light,audition-edits,terrain,full,,0.5758,-15.14,-40.16,-33.85,4.57,-10.57,-35.59,-29.28,9.7,,False
+edits/merfolk-selection-underwater-v1,Merfolk selection · underwater Cloth Belt 2 · light,audition-edits,terrain,take-1,0,0.5308,-15.14,-39.81,-33.85,4.57,-10.57,-35.24,-29.28,9.7,,False
+edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02 · light,audition-edits,base,full,,0.3263,-3.43,-22.39,-14.66,-11.63,-15.06,-34.02,-26.29,4.9,,False
+edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02 · light,audition-edits,base,take-1,0,0.3263,-3.43,-22.39,-14.66,-11.63,-15.06,-34.02,-26.29,4.9,,False
+edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02 · light,audition-edits,attack,full,,0.3263,-3.43,-22.39,-14.66,-11.63,-15.06,-34.02,-26.29,4.9,,False
+edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02 · light,audition-edits,attack,take-1,0,0.3263,-3.43,-22.39,-14.66,-11.63,-15.06,-34.02,-26.29,4.9,,False
+edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02 · light,audition-edits,terrain,full,,0.3263,-3.43,-22.39,-14.66,-14.62,-18.05,-37.01,-29.28,4.9,,False
+edits/merfolk-death-underwater-v1,Merfolk death · underwater Cough 02 · light,audition-edits,terrain,take-1,0,0.3263,-3.43,-22.39,-14.66,-14.62,-18.05,-37.01,-29.28,4.9,,False
 edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1,Beast death · roar_03 · fade,audition-edits,base,full,,0.5474,-6.55,-25.11,-17.82,-8.47,-15.02,-33.58,-26.29,23.8,,False
 edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1,Beast death · roar_03 · fade,audition-edits,base,take-1,0,0.3911,-6.55,-23.65,-17.82,-8.47,-15.02,-32.12,-26.29,23.8,,False
 edits/beast-death/rubberduck/80-cc0-creature-sfx/roar_03.ogg/take-1,Beast death · roar_03 · fade,audition-edits,attack,full,,0.5474,-6.55,-25.11,-17.82,-8.47,-15.02,-33.58,-26.29,23.8,,False

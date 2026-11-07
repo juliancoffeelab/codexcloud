@@ -9668,11 +9668,11 @@
     },
     {
       "id": "edits/merfolk-selection-underwater-v1",
-      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2",
+      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2 \u00b7 light",
       "take": 1,
       "context": "selection",
       "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -10.51,
+      "playbackPeakDbFS": -7.58,
       "inRange": true,
       "uses": [
         {
@@ -9900,11 +9900,11 @@
     },
     {
       "id": "edits/merfolk-death-underwater-v1",
-      "name": "Merfolk death \u00b7 underwater Cough 02",
+      "name": "Merfolk death \u00b7 underwater Cough 02 \u00b7 light",
       "take": 1,
       "context": "death",
       "playbackStrongest50msRmsDbFS": -26.29,
-      "playbackPeakDbFS": -14.88,
+      "playbackPeakDbFS": -15.06,
       "inRange": true,
       "uses": [
         {

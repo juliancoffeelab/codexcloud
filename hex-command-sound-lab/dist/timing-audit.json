@@ -7,7 +7,7 @@
   "takes": 1380,
   "changedRecordings": 362,
   "changedTakes": 480,
-  "catalogSha256": "2c086b230b5e49dbde12b240e4f15ba7cb31662c23135cc4e8b683eb63199b9a",
+  "catalogSha256": "fd15b4fb297cc55814d3e88835e53586d80a0608275ebc0ed0d4cde6e08ed2df",
   "entries": [
     {
       "id": "antumdeluge/fire-crackling/fire-1.wav",
@@ -44653,8 +44653,8 @@
     },
     {
       "id": "edits/merfolk-selection-underwater-v1",
-      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2",
-      "listeningSha256": "bdcf960c73cc0c85ffa681ed8dc84a8b2da4181a315a0d87c7c5158f5b681d47",
+      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2 \u00b7 light",
+      "listeningSha256": "471f598a9ac5f95dda6caa808664af6da9dee463ae99b7165e358c30bc6a4c57",
       "originalRanges": [
         {
           "start": 0,
@@ -44664,17 +44664,17 @@
       "appliedRanges": [
         {
           "start": 0,
-          "duration": 0.5208
+          "duration": 0.5308
         }
       ],
       "takes": [
         {
           "take": 1,
           "leadingQuietMs": 5.0,
-          "trailingQuietMs": 66.9,
+          "trailingQuietMs": 56.9,
           "trimmedLeadingMs": 0,
-          "trimmedTrailingMs": 54.9,
-          "gateDbFS": -74.9,
+          "trimmedTrailingMs": 44.9,
+          "gateDbFS": -72.6,
           "internalQuiet": [],
           "remainingInternalQuiet": [],
           "reviewedOverride": null
@@ -44796,8 +44796,8 @@
     },
     {
       "id": "edits/merfolk-death-underwater-v1",
-      "name": "Merfolk death \u00b7 underwater Cough 02",
-      "listeningSha256": "9b3515226a4d296a4ec80a560ba0b2aed39d03a243abc0a1ed7e5f42bde5118c",
+      "name": "Merfolk death \u00b7 underwater Cough 02 \u00b7 light",
+      "listeningSha256": "cfdb9a788b34daa9ee7ca3a877953f97a9603d8bada685fa75252e02c8676399",
       "originalRanges": [
         {
           "start": 0,
@@ -44814,10 +44814,10 @@
         {
           "take": 1,
           "leadingQuietMs": 5.0,
-          "trailingQuietMs": 17.0,
+          "trailingQuietMs": 12.0,
           "trimmedLeadingMs": 0,
           "trimmedTrailingMs": 0,
-          "gateDbFS": -54.0,
+          "gateDbFS": -55.2,
           "internalQuiet": [],
           "remainingInternalQuiet": [],
           "reviewedOverride": null

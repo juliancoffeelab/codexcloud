@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "2c086b230b5e49dbde12b240e4f15ba7cb31662c23135cc4e8b683eb63199b9a",
+  "catalogSha256": "fd15b4fb297cc55814d3e88835e53586d80a0608275ebc0ed0d4cde6e08ed2df",
   "volumePercent": 55,
   "matchLevels": true,
   "sampleRate": 44100,
@@ -66914,21 +66914,21 @@
     },
     {
       "id": "edits/merfolk-selection-underwater-v1",
-      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2",
+      "name": "Merfolk selection \u00b7 underwater Cloth Belt 2 \u00b7 light",
       "pack": "audition-edits",
-      "path": "audio/listening/cd984a2c2df514136c6a.mp3",
-      "listeningSha256": "bdcf960c73cc0c85ffa681ed8dc84a8b2da4181a315a0d87c7c5158f5b681d47",
+      "path": "audio/listening/92f9ddb59a047beb28f0.mp3",
+      "listeningSha256": "471f598a9ac5f95dda6caa808664af6da9dee463ae99b7165e358c30bc6a4c57",
       "intentionallyQuietEdit": false,
       "catalogGainDb": 0,
-      "combinedPlaybackGainDb": 9.0,
+      "combinedPlaybackGainDb": 7.56,
       "full": {
         "duration": 0.5758,
-        "peakDbFS": -19.51,
-        "rmsDbFS": -40.98,
-        "strongest50msRmsDbFS": -35.29,
-        "leadingBelow55Ms": 12.1,
-        "playbackPeakDbFS": -10.51,
-        "playbackRmsDbFS": -31.98,
+        "peakDbFS": -15.14,
+        "rmsDbFS": -40.16,
+        "strongest50msRmsDbFS": -33.85,
+        "leadingBelow55Ms": 9.7,
+        "playbackPeakDbFS": -7.58,
+        "playbackRmsDbFS": -32.6,
         "playbackStrongest50msRmsDbFS": -26.29,
         "decodedSamplesAtOrAboveFullScale": 0,
         "flags": []
@@ -66937,14 +66937,14 @@
         {
           "take": 1,
           "start": 0,
-          "combinedPlaybackGainDb": 9.0,
-          "duration": 0.5208,
-          "peakDbFS": -19.51,
-          "rmsDbFS": -40.55,
-          "strongest50msRmsDbFS": -35.29,
-          "leadingBelow55Ms": 12.1,
-          "playbackPeakDbFS": -10.51,
-          "playbackRmsDbFS": -31.55,
+          "combinedPlaybackGainDb": 7.56,
+          "duration": 0.5308,
+          "peakDbFS": -15.14,
+          "rmsDbFS": -39.81,
+          "strongest50msRmsDbFS": -33.85,
+          "leadingBelow55Ms": 9.7,
+          "playbackPeakDbFS": -7.58,
+          "playbackRmsDbFS": -32.25,
           "playbackStrongest50msRmsDbFS": -26.29,
           "decodedSamplesAtOrAboveFullScale": 0,
           "flags": []
@@ -66953,17 +66953,17 @@
       "contexts": {
         "attack": {
           "full": {
-            "combinedPlaybackGainDb": 9.0,
-            "playbackPeakDbFS": -10.51,
-            "playbackRmsDbFS": -31.98,
+            "combinedPlaybackGainDb": 7.56,
+            "playbackPeakDbFS": -7.58,
+            "playbackRmsDbFS": -32.6,
             "playbackStrongest50msRmsDbFS": -26.29,
             "flags": []
           },
           "takes": [
             {
-              "combinedPlaybackGainDb": 9.0,
-              "playbackPeakDbFS": -10.51,
-              "playbackRmsDbFS": -31.55,
+              "combinedPlaybackGainDb": 7.56,
+              "playbackPeakDbFS": -7.58,
+              "playbackRmsDbFS": -32.25,
               "playbackStrongest50msRmsDbFS": -26.29,
               "flags": []
             }
@@ -66971,17 +66971,17 @@
         },
         "terrain": {
           "full": {
-            "combinedPlaybackGainDb": 6.01,
-            "playbackPeakDbFS": -13.5,
-            "playbackRmsDbFS": -34.97,
+            "combinedPlaybackGainDb": 4.57,
+            "playbackPeakDbFS": -10.57,
+            "playbackRmsDbFS": -35.59,
             "playbackStrongest50msRmsDbFS": -29.28,
             "flags": []
           },
           "takes": [
             {
-              "combinedPlaybackGainDb": 6.01,
-              "playbackPeakDbFS": -13.5,
-              "playbackRmsDbFS": -34.54,
+              "combinedPlaybackGainDb": 4.57,
+              "playbackPeakDbFS": -10.57,
+              "playbackRmsDbFS": -35.24,
               "playbackStrongest50msRmsDbFS": -29.28,
               "flags": []
             }
@@ -66991,21 +66991,21 @@
     },
     {
       "id": "edits/merfolk-death-underwater-v1",
-      "name": "Merfolk death \u00b7 underwater Cough 02",
+      "name": "Merfolk death \u00b7 underwater Cough 02 \u00b7 light",
       "pack": "audition-edits",
-      "path": "audio/listening/c3472e6c12499ac18694.mp3",
-      "listeningSha256": "9b3515226a4d296a4ec80a560ba0b2aed39d03a243abc0a1ed7e5f42bde5118c",
+      "path": "audio/listening/f39ab3f2943a95788f35.mp3",
+      "listeningSha256": "cfdb9a788b34daa9ee7ca3a877953f97a9603d8bada685fa75252e02c8676399",
       "intentionallyQuietEdit": false,
       "catalogGainDb": 0,
-      "combinedPlaybackGainDb": -12.63,
+      "combinedPlaybackGainDb": -11.63,
       "full": {
         "duration": 0.3263,
-        "peakDbFS": -2.25,
-        "rmsDbFS": -21.38,
-        "strongest50msRmsDbFS": -13.66,
-        "leadingBelow55Ms": 8.0,
-        "playbackPeakDbFS": -14.88,
-        "playbackRmsDbFS": -34.01,
+        "peakDbFS": -3.43,
+        "rmsDbFS": -22.39,
+        "strongest50msRmsDbFS": -14.66,
+        "leadingBelow55Ms": 4.9,
+        "playbackPeakDbFS": -15.06,
+        "playbackRmsDbFS": -34.02,
         "playbackStrongest50msRmsDbFS": -26.29,
         "decodedSamplesAtOrAboveFullScale": 0,
         "flags": []
@@ -67014,14 +67014,14 @@
         {
           "take": 1,
           "start": 0,
-          "combinedPlaybackGainDb": -12.63,
+          "combinedPlaybackGainDb": -11.63,
           "duration": 0.3263,
-          "peakDbFS": -2.25,
-          "rmsDbFS": -21.38,
-          "strongest50msRmsDbFS": -13.66,
-          "leadingBelow55Ms": 8.0,
-          "playbackPeakDbFS": -14.88,
-          "playbackRmsDbFS": -34.01,
+          "peakDbFS": -3.43,
+          "rmsDbFS": -22.39,
+          "strongest50msRmsDbFS": -14.66,
+          "leadingBelow55Ms": 4.9,
+          "playbackPeakDbFS": -15.06,
+          "playbackRmsDbFS": -34.02,
           "playbackStrongest50msRmsDbFS": -26.29,
           "decodedSamplesAtOrAboveFullScale": 0,
           "flags": []
@@ -67030,17 +67030,17 @@
       "contexts": {
         "attack": {
           "full": {
-            "combinedPlaybackGainDb": -12.63,
-            "playbackPeakDbFS": -14.88,
-            "playbackRmsDbFS": -34.01,
+            "combinedPlaybackGainDb": -11.63,
+            "playbackPeakDbFS": -15.06,
+            "playbackRmsDbFS": -34.02,
             "playbackStrongest50msRmsDbFS": -26.29,
             "flags": []
           },
           "takes": [
             {
-              "combinedPlaybackGainDb": -12.63,
-              "playbackPeakDbFS": -14.88,
-              "playbackRmsDbFS": -34.01,
+              "combinedPlaybackGainDb": -11.63,
+              "playbackPeakDbFS": -15.06,
+              "playbackRmsDbFS": -34.02,
               "playbackStrongest50msRmsDbFS": -26.29,
               "flags": []
             }
@@ -67048,17 +67048,17 @@
         },
         "terrain": {
           "full": {
-            "combinedPlaybackGainDb": -15.62,
-            "playbackPeakDbFS": -17.87,
-            "playbackRmsDbFS": -37.0,
+            "combinedPlaybackGainDb": -14.62,
+            "playbackPeakDbFS": -18.05,
+            "playbackRmsDbFS": -37.01,
             "playbackStrongest50msRmsDbFS": -29.28,
             "flags": []
           },
           "takes": [
             {
-              "combinedPlaybackGainDb": -15.62,
-              "playbackPeakDbFS": -17.87,
-              "playbackRmsDbFS": -37.0,
+              "combinedPlaybackGainDb": -14.62,
+              "playbackPeakDbFS": -18.05,
+              "playbackRmsDbFS": -37.01,
               "playbackStrongest50msRmsDbFS": -29.28,
               "flags": []
             }

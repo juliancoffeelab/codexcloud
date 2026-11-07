@@ -642,8 +642,9 @@ for a direct comparison. Attacks and other factions retain their current sounds.
 Saved earlier merfolk defaults migrate once with a local backup; custom source
 choices are preserved.
 
-Both edits retain the audited original take, with 55Hz high-pass, 950/1500Hz
-low-pass stages, a broad +3dB resonance at 220Hz, and short onset/release fades.
+Both edits retain the audited original take. The lighter revision blends 80%
+filtered signal (45Hz high-pass, one 2200Hz low-pass and +1dB at 220Hz) with 20%
+dry detail. Standard 5ms onset / 8ms release fades restore the original attack.
 There is no added delay, reverb, pitch effect or substituted recording. The
 originals remain unchanged. Edits are rendered ahead, decoded by the existing
 cache and matched with the standard playback-level pipeline, so the effect adds
@@ -651,6 +652,6 @@ no runtime audio processing. Optional pitch alterations still affect the chosen
 processed take only. Exact recording buttons play the labelled wet/dry version.
 
 Recipes and source hashes are in `audio-edits.json`. Spectral checks confirm
-strong high-frequency suppression; touch Chromium verifies all 42 merfolk
+a lighter reduction of high frequencies, retaining substantially more detail than the original underwater preset; touch Chromium verifies all 42 merfolk
 selection/death map taps, dry comparison, default migrations and unaffected
 human choices. This remains a Sound Lab audition, not a game integration.

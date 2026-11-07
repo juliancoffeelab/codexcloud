@@ -1,5 +1,5 @@
 {
-  "catalogSha256": "2c086b230b5e49dbde12b240e4f15ba7cb31662c23135cc4e8b683eb63199b9a",
+  "catalogSha256": "fd15b4fb297cc55814d3e88835e53586d80a0608275ebc0ed0d4cde6e08ed2df",
   "targetStrongest50msRmsDbFS": -21.1,
   "reference": {
     "gameRevision": "6ea83474e5c24f1338597a1c3174e126ac45c484",
@@ -14738,45 +14738,45 @@
       }
     },
     "edits/merfolk-selection-underwater-v1": {
-      "full": 14.19,
+      "full": 12.75,
       "takes": [
-        14.19
+        12.75
       ],
       "preserved": false,
       "gameRelativeGain": false,
       "contexts": {
         "attack": {
-          "full": 14.19,
+          "full": 12.75,
           "takes": [
-            14.19
+            12.75
           ]
         },
         "terrain": {
-          "full": 11.2,
+          "full": 9.76,
           "takes": [
-            11.2
+            9.76
           ]
         }
       }
     },
     "edits/merfolk-death-underwater-v1": {
-      "full": -7.44,
+      "full": -6.44,
       "takes": [
-        -7.44
+        -6.44
       ],
       "preserved": false,
       "gameRelativeGain": false,
       "contexts": {
         "attack": {
-          "full": -7.44,
+          "full": -6.44,
           "takes": [
-            -7.44
+            -6.44
           ]
         },
         "terrain": {
-          "full": -10.43,
+          "full": -9.43,
           "takes": [
-            -10.43
+            -9.43
           ]
         }
       }
