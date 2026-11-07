@@ -179,7 +179,7 @@
   {/if}
   {#each games as game (game.id)}
     {@const history = histories.get(game.id) ?? []}
-    <details class="campaign" data-run-id={game.id}>
+    <details class="campaign" data-run-id={game.id} open>
       <summary class="campaign-toggle">
         <span class="campaign-copy">
           <span class="campaign-name">{runName(game.latest)}</span>
