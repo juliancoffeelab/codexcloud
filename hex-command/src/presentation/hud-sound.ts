@@ -46,7 +46,7 @@ export function createHudAudio(enabled: () => boolean) {
       try {
         context ??= new AudioContext({ latencyHint: "interactive" });
         const owner = context;
-        const url = `${import.meta.env?.BASE_URL ?? "/"}assets/audio/select-1.wav?v=6ad634f16189`;
+        const url = `${import.meta.env?.BASE_URL ?? "/"}assets/audio/select-1.wav?v=3a6cff557cea`;
         let prepared: AudioBuffer;
         try {
           const response = await fetch(url, {
