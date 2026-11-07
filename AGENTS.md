@@ -60,6 +60,7 @@ When the user asks what caused an agent failure, use
 
 # Skills
 
+- [review](.agents/skills/review/SKILL.md): Use when your task is to review a proposed or existing change.
 - [merge-gate](.agents/skills/merge-gate/SKILL.md): Use when asked whether a PR is ready to merge or asked to merge it.
 - [writing-for-agents](.agents/skills/writing-for-agents/SKILL.md): Use when creating or editing skills or modifying agent instructions.
 - [design-audit](.agents/skills/design-audit/SKILL.md): User-invoked requirements, design, and plan-audit workflow.
