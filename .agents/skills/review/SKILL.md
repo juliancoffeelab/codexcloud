@@ -56,5 +56,9 @@ findings remain, and identify what was reviewed and any checks actually run.
 Keep the review in the response or requested PR review, rather than adding a report
 file to the repository.
 
+End every review with **Intent, Correctness, Simplicity and Repository burden**,
+each marked **✅ no issue found / ❌ finding / ❓ unresolved**. Give a concrete
+reason and relevant scope limits for each; ✅ applies only to the reviewed scope.
+
 **Complete when:** the reader can act on each finding and understand the review's
-scope and limits.
+scope and limits, and all four checklist results are reported.
