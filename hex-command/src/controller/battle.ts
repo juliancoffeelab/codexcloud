@@ -4,7 +4,7 @@ import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
+import { TYPES, TERRAIN, unitWeapons, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle, restoreBattleText, type LoadedBattle } from "../save/load";
 import { serializeBattle, TurnCheckpoint } from "../save/write";
@@ -792,10 +792,13 @@ export class BattleController {
       this.afterRender(animateTurn);
     }
 
-    // One cue per action, with combat taking precedence over movement/capture.
+    // Combat feedback takes precedence; only resolved, previously visible deaths add a tail.
     if (changes.attacked) {
       const combat = this.#game.combat;
       const attacker = combat?.units[0] ?? changes.attacker;
+      const weapon = attacker
+        ? unitWeapons(attacker).find((weapon) => weapon.id === this.#game.lastCombat?.attackId)
+        : undefined;
       const health = combat?.strikes.at(-1)?.health;
       const deaths =
         combat && health
@@ -811,6 +814,8 @@ export class BattleController {
           attackType: attacker?.type,
           attackId: this.#game.lastCombat?.attackId,
           attackSound: this.#game.lastCombat?.sound,
+          attackCategory: weapon?.category,
+          attackDamageType: weapon?.damageType,
         },
         deaths,
       );
