@@ -386,6 +386,8 @@ impl<'catalog> Game<'catalog> {
                     playback.push(crate::model::CombatStrike {
                         side: actor.side,
                         weapon: attack.name.clone(),
+                        weapon_id: attack.id.clone(),
+                        unit_id: format!("u{}", actor.id),
                         roll_min: attack.damage - attack.spread,
                         roll_max: attack.damage + attack.spread,
                         raw,

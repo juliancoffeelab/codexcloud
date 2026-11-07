@@ -5,7 +5,7 @@ import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { TYPES, TERRAIN, unitWeapons, type Tile, type Unit } from "../game/catalog";
+import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle, restoreBattleText, type LoadedBattle } from "../save/load";
 import { serializeBattle, TurnCheckpoint } from "../save/write";
@@ -43,9 +43,6 @@ import {
   unlockSound,
   playSound,
   playHudSound,
-  playInteraction,
-  playCombat,
-  playMovement,
   cancelSound,
 } from "../presentation/sound";
 import { animateTile, animateTurn, type MotionKind } from "../presentation/motion";
@@ -379,10 +376,11 @@ export class BattleController {
             { ...previous, combatPlayback: undefined },
             combat,
             this.gameView,
-            (frame, strike) => {
+            (frame) => {
               if (this.disposed || this.combatPlayback?.frame !== frame) return;
               this.publish({ renderBattle: false, gameChanged: false });
-              if (strike) this.playStrikeFeedback(frame);
+              if (frame.complete && frame.game.winner && !frame.before.game.winner)
+                playSound(frame.game.winner === "player" ? "victory" : "defeat");
             },
             typeof matchMedia === "undefined" ||
               matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -820,38 +818,13 @@ export class BattleController {
   }
 
   private playSelectionFeedback(tileId: string) {
-    this.animateTileAfterRender(tileId, "select");
     const tile = this.#game.tile(tileId);
-    playInteraction({
-      unitType: this.#game.at(tileId)?.type,
-      terrain: tile?.terrain,
-    });
+    const sound = { unitType: this.#game.at(tileId)?.type, terrain: tile?.terrain };
+    this.afterRender(() => animateTile(tileId, "select", sound));
   }
 
   private combatPlaybackPending() {
     return !!this.combatPlayback && !this.combatPlayback.frame.complete;
-  }
-
-  private playStrikeFeedback(frame: import("./combat-playback").CombatPlaybackFrame) {
-    const hit = frame.combat.strikes[frame.shown - 1]!;
-    const actor = frame.combat.units.find((unit) => unit.side === hit.side)!;
-    const weapon = unitWeapons(actor).find((weapon) => weapon.name === hit.weapon);
-    const previous =
-      frame.combat.strikes[frame.shown - 2]?.health ?? frame.combat.units.map((unit) => unit.hp);
-    const deaths = frame.combat.units.filter(
-      (unit, i) => frame.before.game.unit(unit.id) && previous[i]! > 0 && hit.health[i]! <= 0,
-    );
-    this.animateTileAfterRender(cellKey(actor.tile), "attack");
-    playCombat(
-      {
-        attackType: actor.type,
-        attackId: weapon?.id,
-        attackSound: weapon?.sound,
-        attackCategory: weapon?.category,
-        attackDamageType: weapon?.damageType,
-      },
-      deaths.map((unit) => unit.type),
-    );
   }
 
   private playBattleFeedback() {
@@ -864,8 +837,7 @@ export class BattleController {
 
     const changes = describeChanges(previous, current);
     for (const [tile, kind] of changes.tileEffects) {
-      if (kind === "attack" && this.combatPlaybackPending()) continue;
-      this.animateTileAfterRender(tile, kind);
+      if (kind !== "attack" || !this.#game.combat) this.animateTileAfterRender(tile, kind);
     }
     for (const tile of changes.capturedTiles) {
       this.animateTileAfterRender(tile, "capture");
@@ -874,44 +846,17 @@ export class BattleController {
       this.afterRender(animateTurn);
     }
 
-    if (this.combatPlaybackPending()) return;
-
-    // Combat feedback takes precedence; only resolved, previously visible deaths add a tail.
-    if (changes.attacked) {
-      const combat = this.#game.combat;
-      const attacker = combat?.units[0] ?? changes.attacker;
-      const weapon = attacker
-        ? unitWeapons(attacker).find((weapon) => weapon.id === this.#game.lastCombat?.attackId)
-        : undefined;
-      const health = combat?.strikes.at(-1)?.health;
-      const deaths =
-        combat && health
-          ? combat.units
-              .filter(
-                (unit, i) =>
-                  health[i]! <= 0 && previous.units.some((visible) => visible.id === unit.id),
-              )
-              .map((unit) => unit.type)
-          : [];
-      playCombat(
-        {
-          attackType: attacker?.type,
-          attackId: this.#game.lastCombat?.attackId,
-          attackSound: this.#game.lastCombat?.sound,
-          attackCategory: weapon?.category,
-          attackDamageType: weapon?.damageType,
-        },
-        deaths,
-      );
-    } else if (changes.newWinner) {
+    // Phaser owns movement and combat presentation, including their audio clock.
+    if (this.combatPlaybackPending() || changes.attacked || changes.movedUnit) return;
+    if (changes.newWinner) {
       playSound(changes.newWinner === "player" ? "victory" : "defeat");
     } else if (changes.recruited || changes.advanced) {
       playSound("recruit");
-    } else if (changes.movedUnit) {
-      playMovement();
     } else if (changes.capturedTiles.length > 0) {
       const tile = this.#game.tile(changes.capturedTiles[0]!);
-      playInteraction({ terrain: tile?.terrain });
+      this.afterRender(() =>
+        animateTile(changes.capturedTiles[0]!, "capture", { terrain: tile?.terrain }),
+      );
     }
   }
 
@@ -990,8 +935,7 @@ export class BattleController {
   private selectTarget(target: Unit) {
     this.state.target = target.id;
     this.publish({ gameChanged: false });
-    this.animateTileAfterRender(cellKey(target.tile), "select");
-    playSound("select");
+    this.afterRender(() => animateTile(cellKey(target.tile), "select", {}));
     this.message("Tap a weapon to attack. Use the magnifying glass for damage details.");
   }
 

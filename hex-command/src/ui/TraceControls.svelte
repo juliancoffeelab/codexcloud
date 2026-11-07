@@ -59,6 +59,7 @@
     Stop recording
   </button>
   <button
+    data-activation="release"
     onclick={() => void download()}
     disabled={trace.status === "empty" || trace.status === "stopping"}
   >

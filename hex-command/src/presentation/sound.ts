@@ -1,3 +1,4 @@
+import { traceInstant } from "./performance-trace";
 import paletteData from "./audio-palette.json";
 import type { UnitType } from "../game/types";
 
@@ -18,7 +19,7 @@ interface PaletteUnit {
   attacks: Record<string, string | null>;
 }
 const palette: {
-  clips: Record<string, { file: string }>;
+  clips: Record<string, { file: string; impactMs: number }>;
   units: Record<string, PaletteUnit>;
   terrain: Record<string, string | null>;
   fallbackAttacks: Record<string, string>;
@@ -50,6 +51,27 @@ import { errorDetails } from "../error-details";
 const STORAGE_KEY = "hex-command-sound-enabled";
 const VOLUME = 0.29;
 const AUDIO_REVISION = "phaser-palette-4";
+// Measured strongest 5 ms RMS windows; recordings and their gains are unchanged.
+const legacyImpactMs: Record<string, number> = {
+  "attack-bow": 134.7,
+  "attack-melee": 39.9,
+  bell: 24.9,
+  defeat: 274.4,
+  recruit: 84.8,
+  select: 5.0,
+  "terrain-forest": 29.9,
+  "terrain-hill": 54.9,
+  "terrain-keep": 19.9,
+  "terrain-plains": 15.0,
+  "terrain-village": 10.0,
+  "terrain-water": 10.0,
+  turn: 189.6,
+  "unit-archer": 29.9,
+  "unit-commander": 39.9,
+  "unit-scout": 19.9,
+  "unit-soldier": 5.0,
+  victory: 404.1,
+};
 /** Actions available as soon as a battlefield is interactive, including a
  * first-action win/loss. Contextual narrative cues remain in their own plan. */
 export const battlefieldActionFamilies = [
@@ -257,78 +279,104 @@ export function createSound() {
       if (!unlocking || !(await unlocking)) return false;
     }
     if (!enabled || owner !== game || currentRequest !== voiceRequest) return false;
-    let offset = 0,
+    let at = performance.now(),
       started = false;
-    for (let i = 0; i < cues.length; i++) {
-      const family = cues[i]!;
-      const clip = paletteClip(family);
-      if (!clip && !families.has(family)) continue;
-      const key = clip ? family : `${family}-1`;
-      if (!owner.cache.audio.exists(key)) {
-        audioReadiness.set({
-          ready: false,
-          error: errorDetails(new Error(`Prepared audio missing: ${key}`)),
-        });
-        continue;
-      }
+    for (const [i, family] of cues.entries()) {
       const spread =
         pitchSpread ?? (family === "select" ? 0.35 : channel === "combat" && i > 0 ? 1.2 : 0.8);
-      const rate = 2 ** ((variation(family) * spread) / 12);
-      const sound = manager.add(key, {
-        volume: clip ? 1 : VOLUME * (family === "select" ? 0.25 : 1),
-        rate,
-      });
-      const voice = { sound, channel };
-      if (voices.size >= 12) {
-        const oldest = voices.values().next().value;
-        if (oldest) {
-          oldest.sound.destroy();
-          voices.delete(oldest);
-        }
-      }
-      voices.add(voice);
-      sound.once("complete", () => {
-        sound.destroy();
-        voices.delete(voice);
-      });
-      if (sound.play({ delay: offset })) {
-        started = true;
-        // Shape Phaser's own voice gain; keep loading and sources owned by Phaser.
-        const native = sound as Phaser.Sound.WebAudioSound;
-        if (native.volumeNode && manager.context) {
-          const gain = native.volumeNode.gain;
-          const at = native.startTime;
-          const duration = sound.duration / rate;
-          const volume = clip ? 1 : VOLUME * (family === "select" ? 0.25 : 1);
-          gain.setValueAtTime(0, at);
-          gain.linearRampToValueAtTime(volume, at + Math.min(0.005, duration / 4));
-          gain.setValueAtTime(volume, at + duration - Math.min(0.008, duration / 4));
-          gain.linearRampToValueAtTime(0, at + duration);
-        }
-      } else {
-        sound.destroy();
-        voices.delete(voice);
-      }
-      offset += Math.min(sound.duration / rate, 0.18);
+      const timing = scheduleCue(family, at, channel, false, spread);
+      started ||= timing.played;
+      at = Math.min(timing.endAt, at + 180);
     }
     return started;
   }
   function playSound(family: string) {
     return playSequence([family]);
   }
-  function playMovement() {
-    return playSequence([palette.movement], "feedback", 0.35);
+  /** Schedule the recording ahead of its audible anchor, on Phaser's own voice.
+   * Output timestamps map the audio device clock to performance time when exposed.
+   * No file decoding or catalogue work happens on this path. */
+  function scheduleCue(
+    family: string,
+    impactAt: number,
+    channel: "feedback" | "combat",
+    useImpact = true,
+    pitchSpread = 0.8,
+  ): { impactAt: number; endAt: number; played: boolean } {
+    if (!enabled || !game || !ready) return { impactAt, endAt: impactAt, played: false };
+    const manager = game.sound as Phaser.Sound.WebAudioSoundManager;
+    const context = manager.context;
+    if (!context || context.state !== "running")
+      return { impactAt, endAt: impactAt, played: false };
+    const clip = paletteClip(family);
+    if (!clip && !families.has(family)) throw new Error(`Unknown audio family: ${family}`);
+    const key = clip ? family : `${family}-1`;
+    if (!game.cache.audio.exists(key)) {
+      audioReadiness.set({
+        ready: false,
+        error: errorDetails(new Error(`Prepared audio missing: ${key}`)),
+      });
+      return { impactAt, endAt: impactAt, played: false };
+    }
+    if (channel === "feedback") stopNative("feedback");
+    const rate = 2 ** ((variation(family) * pitchSpread) / 12);
+    const anchor = useImpact ? (clip?.impactMs ?? legacyImpactMs[family]!) / rate : 0;
+    const now = performance.now();
+    const output = context.getOutputTimestamp?.();
+    const mapped = output && (output.contextTime ?? 0) > 0 && (output.performanceTime ?? 0) > 0;
+    const clockAt = mapped ? output.contextTime! : context.currentTime;
+    const performanceAt = mapped ? output.performanceTime! : now;
+    const requestedStart = clockAt + (impactAt - performanceAt - anchor) / 1000;
+    const start = Math.max(context.currentTime, requestedStart);
+    const volume = clip ? 1 : VOLUME * (family === "select" ? 0.25 : 1);
+    const sound = manager.add(key, { volume, rate });
+    const voice = { sound, channel };
+    if (voices.size >= 12) {
+      const oldest = voices.values().next().value;
+      if (oldest) {
+        oldest.sound.destroy();
+        voices.delete(oldest);
+      }
+    }
+    voices.add(voice);
+    sound.once("complete", () => {
+      sound.destroy();
+      voices.delete(voice);
+    });
+    if (!sound.play({ delay: Math.max(0, start - context.currentTime) })) {
+      sound.destroy();
+      voices.delete(voice);
+      return { impactAt, endAt: impactAt, played: false };
+    }
+    const native = sound as Phaser.Sound.WebAudioSound;
+    const duration = sound.duration / rate;
+    const gain = native.volumeNode?.gain;
+    gain?.setValueAtTime(0, native.startTime);
+    gain?.linearRampToValueAtTime(volume, native.startTime + Math.min(0.005, duration / 4));
+    gain?.setValueAtTime(volume, native.startTime + duration - Math.min(0.008, duration / 4));
+    gain?.linearRampToValueAtTime(0, native.startTime + duration);
+    const audibleStart = performanceAt + (native.startTime - clockAt) * 1000;
+    const actualImpact = audibleStart + anchor;
+    traceInstant("Audio cue scheduled", {
+      family,
+      requestedImpact: impactAt,
+      impactAt: actualImpact,
+      sourceStart: native.startTime,
+      rate,
+      anchor,
+      outputTimestamp: !!mapped,
+    });
+    return { impactAt: actualImpact, endAt: audibleStart + duration * 1000, played: true };
   }
-  function playCombat(attack: InteractionSound, deaths: readonly UnitType[]) {
-    return playSequence(
-      [
-        soundForInteraction(attack),
-        ...deaths
-          .map((type) => palette.units[type]?.death)
-          .filter((cue): cue is string => Boolean(cue)),
-      ],
-      "combat",
-    );
+  function scheduleMovement(landingAt: number) {
+    return scheduleCue(palette.movement, landingAt, "feedback", true, 0.35);
+  }
+  function scheduleDeath(type: UnitType, at: number) {
+    const cue = palette.units[type]?.death;
+    return cue ? scheduleCue(cue, at, "combat", false, 1.2) : { impactAt: at, endAt: at };
+  }
+  function cancelCombatSound() {
+    stopNative("combat");
   }
   return {
     prepareHudSound,
@@ -338,8 +386,10 @@ export function createSound() {
     prepareSounds,
     soundForInteraction,
     playInteraction,
-    playCombat,
-    playMovement,
+    scheduleCue,
+    scheduleMovement,
+    scheduleDeath,
+    cancelCombatSound,
     cancelSound,
     setSoundEnabled,
     unlockSound,
@@ -356,8 +406,10 @@ export const {
   prepareSounds,
   soundForInteraction,
   playInteraction,
-  playCombat,
-  playMovement,
+  scheduleCue,
+  scheduleMovement,
+  scheduleDeath,
+  cancelCombatSound,
   cancelSound,
   setSoundEnabled,
   unlockSound,

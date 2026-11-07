@@ -60,9 +60,11 @@ test("Shuffle bags avoid repeats, reuse preload and stop voices when muted", asy
       audio: { exists: (key: string) => audioSamples.some((sample) => sample.key === key) },
     },
     sound: {
-      context: { state: "running" },
+      context: { state: "running", currentTime: 0 },
       add(key: string, config: { rate: number }) {
         return {
+          duration: 0.1,
+          startTime: 0,
           once() {},
           destroy() {
             stopped++;

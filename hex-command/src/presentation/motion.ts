@@ -1,3 +1,5 @@
+import type { InteractionSound } from "./sound";
+
 // Feedback is triggered after an action renders, never by rendering itself.
 export type MotionKind = "select" | "move" | "attack" | "recruit" | "capture";
 interface PulseRecord {
@@ -32,12 +34,14 @@ function pulse(element: Element | null, kind: MotionKind | "turn") {
   active.set(element, record);
 }
 
-export function animateTile(tileId: string, kind: MotionKind) {
+export function animateTile(tileId: string, kind: MotionKind, sound?: InteractionSound) {
   if (!tileKinds.has(kind) || typeof document === "undefined") return;
   const battlefield = document.querySelector("#map[data-phaser-battlefield]");
   if (battlefield) {
     battlefield.dispatchEvent(
-      new CustomEvent("battlefieldmotion", { detail: { tile: tileId, kind } }),
+      new CustomEvent("battlefieldmotion", {
+        detail: { tile: tileId, kind, ...(sound && { sound }) },
+      }),
     );
     return;
   }

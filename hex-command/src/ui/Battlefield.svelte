@@ -2,6 +2,7 @@
   import { errorDetails } from "../error-details";
   import { onMount } from "svelte";
   import type { HudArtworkCache } from "../presentation/hud-artwork";
+  import type { InteractionSound } from "../presentation/sound";
   import type { MotionKind } from "../presentation/motion";
   import type { BattleCommands, BattleView } from "../controller/view";
   import BattlefieldWindow from "./BattlefieldWindow.svelte";
@@ -105,8 +106,10 @@
     const node = host?.closest("#map");
     if (!node) return;
     const handle = (event: Event) => {
-      const { tile, kind } = (event as CustomEvent<{ tile: string; kind: MotionKind }>).detail;
-      runtime?.scene.pulse(tile, kind);
+      const { tile, kind, sound } = (
+        event as CustomEvent<{ tile: string; kind: MotionKind; sound?: InteractionSound }>
+      ).detail;
+      runtime?.scene.pulse(tile, kind, sound);
     };
     node.addEventListener("battlefieldmotion", handle);
     return () => node.removeEventListener("battlefieldmotion", handle);

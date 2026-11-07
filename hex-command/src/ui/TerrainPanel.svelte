@@ -28,6 +28,7 @@
               data-recruit={recruit.type}
               title={recruit.description}
               disabled={!recruit.enabled}
+              data-activation="release"
               onclick={() => actions.recruitHere(recruit.type, panel.tile.id)}
             >
               <span>

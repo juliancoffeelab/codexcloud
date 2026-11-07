@@ -22,8 +22,6 @@ vi.mock("../src/presentation/sound", () => ({
   cancelSound: () => {},
   playSound: () => {},
   playInteraction: () => {},
-  playCombat: () => {},
-  playMovement: () => {},
   setSoundEnabled: () => {},
   unlockSound: async () => {},
 }));

@@ -54,7 +54,13 @@
       <span><b id="villages">{ownedVillages ?? "—"}</b>/<span id="village-total">{totalVillages ?? "—"}</span></span>
     </span>
   </div>
-  <button id="end-turn" class="primary" disabled={!canEndTurn} onclick={onEndTurn}>
+  <button
+    id="end-turn"
+    class="primary"
+    disabled={!canEndTurn}
+    data-activation="release"
+    onclick={onEndTurn}
+  >
     <span id="turn-label">{turnLabel}</span>
     <span id="round" class="round" title={round == null ? "Round loading" : `Round ${round}`}>
       Turn {round ?? "—"}

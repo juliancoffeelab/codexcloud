@@ -44,7 +44,7 @@
   {:else if failure?.kind === "blocked"}
     <button class="primary" onclick={() => dialog.close()}>Close</button>
   {:else}
-    <button class="primary" onclick={() => actions.downloadDebugReport()}>
+    <button class="primary" data-activation="release" onclick={() => actions.downloadDebugReport()}>
       Download debug report
     </button>
     <button class="quiet-close" onclick={() => dialog.close()}>Close</button>

@@ -167,7 +167,9 @@
 <section class="saved-games-browser" bind:this={browser} aria-label="Saved games" aria-busy={busy}>
   {#if failure && !confirmation?.open}
     <p role="alert" class="save-alert">{failure}</p>
-    <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
+    <button data-activation="release" onclick={() => actions.downloadDebugReport()}>
+      Download debug report
+    </button>
   {/if}
   {#if view.saveFailure?.kind === "full"}
     <p class="space-warning" role="status">
@@ -314,6 +316,7 @@
       class="confirm-action"
       class:destructive={pending.kind !== "load"}
       disabled={busy || !confirmationReady}
+      data-activation="release"
       onclick={confirmAction}
     >
       {confirmationAction}

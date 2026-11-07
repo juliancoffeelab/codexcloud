@@ -38,7 +38,7 @@
     {/each}
     <p>{details.ability.description}</p>
     {#each details.promotions as promotion (promotion.type)}
-      <button class="primary" onclick={() => onAdvance(promotion.type)}>
+      <button class="primary" data-activation="release" onclick={() => onAdvance(promotion.type)}>
         Advance to {promotion.name} · {promotion.hp} HP
       </button>
       <p>{promotion.description}</p>
