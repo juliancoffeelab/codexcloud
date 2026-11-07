@@ -444,6 +444,13 @@ fn phase(
 }
 /// Execute one arena until victory or its cap, retaining every phase and endpoint.
 pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, SimulationError> {
+    run_arena_capturing(rules, config, None)
+}
+pub(super) fn run_arena_capturing(
+    rules: &Rules,
+    config: ArenaConfig,
+    mut capture: Option<&mut super::phase_fixtures::Capture>,
+) -> Result<ArenaResult, SimulationError> {
     let mut tactics = [
         PresetTactic::from_blocks(
             config
@@ -514,6 +521,9 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
                     4.0,
                 ));
             }
+        }
+        if let Some(capture) = capture.as_deref_mut() {
+            capture.observe(&game, Some(&goals));
         }
         let record = phase(
             &mut game,
@@ -590,6 +600,14 @@ pub fn run_campaign(
     config: CampaignConfig,
     definition: &Campaign,
 ) -> Result<CampaignResult, SimulationError> {
+    run_campaign_capturing(rules, config, definition, None)
+}
+pub(super) fn run_campaign_capturing(
+    rules: &Rules,
+    config: CampaignConfig,
+    definition: &Campaign,
+    mut capture: Option<&mut super::phase_fixtures::Capture>,
+) -> Result<CampaignResult, SimulationError> {
     validate_limits(config.max_rounds, config.recruit_limit)?;
     if definition.id != config.campaign {
         return Err(SimulationError::InvalidConfig(
@@ -636,6 +654,9 @@ pub fn run_campaign(
             };
             let side = game.turn();
             let objective_goals = super::objectives::player_goals(&game, &config.objective);
+            if let Some(capture) = capture.as_deref_mut() {
+                capture.observe(&game, objective_goals.as_deref());
+            }
             phases.push(phase(
                 &mut game,
                 &mut recording,

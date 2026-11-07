@@ -10,6 +10,7 @@ pub mod error;
 pub mod leader_audit;
 pub mod matches;
 mod objectives;
+mod phase_fixtures;
 pub mod records;
 pub mod report;
 pub mod schedule;

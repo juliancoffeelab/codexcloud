@@ -65,3 +65,31 @@ campaign; the rest of the catalog remains shared. Each game reads one supplied
 campaign definition throughout restore, retry, combat and mission progression.
 Routes add no playable menus, choices, commands or save fields. The browser retains
 its authored goals.
+
+## Fixed-position planner timing
+
+`scripts/benchmark-policy-phases.py --report <report.json> --out <directory>`
+uses the report as a configuration source. It runs fresh native matches once and
+captures selected planner-entry positions with `--capture-stdio`; it does not
+reconstruct or claim to reproduce the report's historical checkpoints. Additional
+campaign configurations can come from `--campaigns <details.jsonl.gz>`. Every
+provided diplomacy mode and objective route is retained. One seed is selected per
+distinct configuration. `--rounds` and `--side` select capture boundaries; output
+coverage identifies requested and reached positions.
+
+For comparisons across builds, generate fixtures once, then pass
+`--fixtures <first-output>/positions.json` to each benchmark run. Do not regenerate
+positions separately with each planner revision. The artifact contains complete
+native state (including combat RNG), AI seed, effective objectives, configured
+recruitment budget, diplomacy, arena configuration or campaign route, and source
+fingerprints. A null recruitment budget means per-controller policy defaults;
+zero means no recruiting. Benchmark planner/recruiter overrides are intentional.
+The comparison keeps the former one-recruit budget by default; `--recruits N`
+changes it, while `--recruits source` retains the captured configured budgets.
+
+Snapshots are captured after turn preparation and before planning. Replay must
+use neither `beginTurn` nor `advanceTurn`, which would repeat income, healing and
+event effects. Capture is optional, separate from ordinary journals and outside
+measured decision intervals. Timing output records the frozen fixture digest and
+both source and tested-engine fingerprints. Changes in those fingerprints are
+not evidence of an identical historical replay or a performance improvement.

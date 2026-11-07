@@ -135,6 +135,9 @@ struct SimulationArgs {
     /// Read and write saved-position phase profiling requests/results.
     #[arg(long, group = "protocol")]
     phase_stdio: bool,
+    /// Capture selected planner-entry positions from fresh native matches.
+    #[arg(long, group = "protocol")]
+    capture_stdio: bool,
     /// Print the compiled content and engine SHA256 fingerprints.
     #[arg(long, group = "protocol")]
     fingerprint: bool,
@@ -367,31 +370,39 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
     }
     Ok(())
 }
-#[derive(serde::Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct PhaseRequest {
-    /// Include selected adaptive recruiter score components before running this phase.
-    #[serde(default)]
-    inspect_recruitment: bool,
-    #[serde(default = "super::types::authored_objective")]
-    objective: String,
-    #[serde(default)]
-    blocks: Option<crate::ai::Blocks>,
-    state: crate::data::State,
-    policy: crate::ai::Policy,
-    seed: u32,
-    #[serde(default)]
-    recruitment_limit: usize,
-    #[serde(default)]
-    goals: Option<Vec<crate::data::Objective>>,
-    #[serde(default)]
-    diplomacy: crate::ai::Diplomacy,
-    #[serde(default)]
-    advance_turn: bool,
-    #[serde(default)]
-    begin_turn: bool,
-    #[serde(default)]
-    arena: Option<super::types::ArenaConfig>,
+use super::phase_fixtures::{Capture, CaptureRequest, PhaseRequest};
+/// Generate a small independent artifact, without changing normal journal records.
+fn capture_stdio(rules: &Rules) -> Result<(), SimulationError> {
+    let mut output = io::BufWriter::new(io::stdout().lock());
+    let mut definitions = CampaignDefinitions::new(rules);
+    for line in io::stdin().lock().lines() {
+        let line = line?;
+        if line.trim().is_empty() {
+            continue;
+        }
+        let request: CaptureRequest = serde_json::from_str(&line)?;
+        let config = request.config.clone();
+        let rounds = request.rounds.clone();
+        let side = request.side;
+        definitions.prepare_match(&config)?;
+        let mut capture = Capture::new(request)?;
+        match config.clone() {
+            MatchConfig::Arena(c) => {
+                matches::run_arena_capturing(rules, c, Some(&mut capture))?;
+            }
+            MatchConfig::Campaign(c) => {
+                let definition = definitions.get(&c.campaign, &c.objective)?;
+                matches::run_campaign_capturing(rules, c, definition, Some(&mut capture))?;
+            }
+        }
+        serde_json::to_writer(
+            &mut output,
+            &json!({"format":"hex-phase-fixtures-v1","fingerprints":fingerprints(rules),"config":config,"requestedRounds":rounds,"side":side,"positions":capture.positions}),
+        )?;
+        writeln!(output)?;
+        output.flush()?;
+    }
+    Ok(())
 }
 /// Replay one own phase from a saved position, for fixed-input policy profiling.
 fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
@@ -460,7 +471,9 @@ fn saved_phase(
     } else if request.advance_turn {
         game.end_turn();
     }
-    if request.recruitment_limit > 1_000_000
+    if request
+        .recruitment_limit
+        .is_some_and(|limit| limit > 1_000_000)
         || request.goals.iter().flatten().any(|goal| {
             !goal.weight.is_finite()
                 || goal.weight <= 0.0
@@ -966,6 +979,9 @@ pub fn run(args: &[String]) -> Result<(), SimulationError> {
     if args.stdio {
         return stdio(&rules);
     }
+    if args.capture_stdio {
+        return capture_stdio(&rules);
+    }
     if args.phase_stdio {
         return phase_stdio(&rules);
     }
@@ -1082,6 +1098,110 @@ mod tests {
         let mut invalid = request(state);
         invalid.advance_turn = true;
         assert!(saved_phase(&rules, &mut definitions, invalid).is_err());
+    }
+    #[test]
+    fn selected_capture_preserves_run_and_restores_planner_entry() {
+        let rules = Rules::load().unwrap();
+        let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
+            "seed":7,"maxRounds":2,"recruitLimit":null,"landscape":"open",
+            "first":"enemy","player":"classic","enemy":"classic",
+            "armies":{"player":"human","enemy":"skeletons"}
+        }))
+        .unwrap();
+        let expected = matches::run_arena(&rules, config.clone()).unwrap();
+        let mut capture = Capture::new(CaptureRequest {
+            config: MatchConfig::Arena(config.clone()),
+            rounds: vec![1, 2],
+            side: crate::data::Side::Player,
+        })
+        .unwrap();
+        let actual = matches::run_arena_capturing(&rules, config, Some(&mut capture)).unwrap();
+        assert_eq!(
+            serde_json::to_value(&actual).unwrap(),
+            serde_json::to_value(&expected).unwrap()
+        );
+        assert!(!capture.positions.is_empty());
+        let mut definitions = CampaignDefinitions::new(&rules);
+        for position in capture.positions {
+            let request = position.request;
+            assert!(!request.begin_turn && !request.advance_turn);
+            let phase = actual
+                .phases
+                .iter()
+                .find(|p| p.round == request.state.round && p.side == request.state.turn)
+                .unwrap();
+            assert_eq!(
+                serde_json::to_value(&request.state.units).unwrap(),
+                serde_json::to_value(&phase.before).unwrap()
+            );
+            let result = saved_phase(&rules, &mut definitions, request.clone()).unwrap();
+            assert_eq!(
+                result,
+                saved_phase(&rules, &mut definitions, request).unwrap()
+            );
+            assert_eq!(
+                result["records"]["actions"],
+                serde_json::to_value(&phase.records.actions).unwrap()
+            );
+            assert_eq!(
+                result["final"]["units"],
+                serde_json::to_value(&phase.units).unwrap()
+            );
+            assert_eq!(
+                result["final"]["gold"],
+                serde_json::to_value(&phase.gold).unwrap()
+            );
+        }
+    }
+    #[test]
+    fn campaign_capture_keeps_route_and_separate_rng_at_planner_entry() {
+        let rules = Rules::load().unwrap();
+        let mut definitions = CampaignDefinitions::new(&rules);
+        let config: super::super::types::CampaignConfig = serde_json::from_value(json!({
+            "seed":7,"maxRounds":3,"recruitLimit":0,"campaign":"lantern-road",
+            "objective":"fight","diplomacy":"diplomatic","player":"classic","enemy":"classic"
+        }))
+        .unwrap();
+        definitions
+            .prepare_match(&MatchConfig::Campaign(config.clone()))
+            .unwrap();
+        let definition = definitions
+            .get(&config.campaign, &config.objective)
+            .unwrap();
+        let mut game = crate::logic::Game::start_campaign_from_definition(
+            &rules,
+            definition,
+            1,
+            vec![],
+            0,
+            crate::data::FlagHistory::new(),
+            vec![],
+            vec![],
+        );
+        game.set_combat_rng(789);
+        game.dismiss_all_dialogue();
+        let mut capture = Capture::new(CaptureRequest {
+            config: MatchConfig::Campaign(config),
+            rounds: vec![1],
+            side: crate::data::Side::Player,
+        })
+        .unwrap();
+        capture.observe(&game, None);
+        let request = capture.positions.pop().unwrap().request;
+        assert_eq!(
+            serde_json::to_value(&request.state).unwrap(),
+            serde_json::to_value(game.state()).unwrap()
+        );
+        assert_eq!(request.seed, 7);
+        assert_eq!(request.state.combat_rng, 789);
+        let correct = saved_phase(&rules, &mut definitions, request.clone()).unwrap();
+        assert_eq!(
+            correct,
+            saved_phase(&rules, &mut definitions, request.clone()).unwrap()
+        );
+        let mut wrong = request;
+        wrong.objective = "authored".into();
+        assert!(saved_phase(&rules, &mut definitions, wrong).is_err());
     }
     #[test]
     fn append_failure_drains_in_flight_workers() {

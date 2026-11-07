@@ -1,7 +1,11 @@
-"""Compare policy decision CPU on identical saved positions, independently of game duration."""
+"""Compare planner decision CPU using frozen native planner-entry checkpoints.
+
+--report selects source configurations, not historical journal snapshots. Capture
+runs fresh matches once. Use --fixtures positions.json to reuse the exact inputs
+with another binary; its engine fingerprint is recorded separately.
+"""
 
 import argparse
-import copy
 import gzip
 import hashlib
 import json
@@ -10,164 +14,120 @@ import pathlib
 import subprocess
 import time
 
-from simulation_journal import decode_detail
-
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+FORMAT = "hex-phase-fixtures-v1"
 
 
-def fixtures(report, campaigns):
-    saved = json.loads(report.read_text())
-    result = []
+def configurations(report, campaigns):
+    """Select representative configurations; all game interpretation stays native."""
     seen = set()
-    readers = {}
-    try:
-        for outcome in saved["outcomes"]:
-            c = outcome["config"]
-            if (
-                outcome["kind"] != "arena"
-                or c["player"] not in ["mixed", "balanced"]
-                or c["enemy"] != c["player"]
-            ):
-                continue
-            c = {**c, "player": "balanced", "enemy": "balanced"}
-            key = (c["armies"]["player"], c["landscape"])
-            cap = outcome["winner"] is None
-            tag = (key, "cap" if cap else "initial")
-            if tag in seen:
-                continue
-            seen.add(tag)
-            ref = outcome["detail"]
-            path = report.parent / ref["file"]
-            if path not in readers:
-                readers[path] = path.open("rb")
-            f = readers[path]
-            f.seek(ref["offset"])
-            raw = f.read(ref["bytes"])
-            assert hashlib.sha256(raw).hexdigest() == ref["sha256"]
-            detail = decode_detail(raw, ref["file"])
-
-            def after(index, label):
-                phase = detail["phases"][index]
-                snapshot = copy.deepcopy(detail["initial"])
-                snapshot.update(
-                    units=phase["units"],
-                    round=phase["round"],
-                    turn=phase["side"],
-                    gold=phase["gold"],
-                    winner=None,
-                    lastCombat=None,
-                )
-                known = [
-                    int(u["id"][1:])
-                    for p in detail["phases"][: index + 1]
-                    for u in p["before"] + p["units"] + p["losses"]
-                ]
-                snapshot["nextId"] = max(snapshot["nextId"], max(known, default=0) + 1)
-                owners = {x["tile"]: x["owner"] for x in phase["ownership"]}
-                for tile in snapshot["tiles"]:
-                    tile["owner"] = owners[tile["id"]]
-                result.append(
-                    dict(
-                        label=f"{key[0]}/{key[1]}/{label}",
-                        state=snapshot,
-                        arena=c,
-                        seed=c["seed"],
-                        goals=detail["phases"][index + 1]["objectives"],
-                        advanceTurn=True,
-                        diplomacy="pragmatic",
-                        recruitmentLimit=1,
-                        campaign=False,
-                    )
-                )
-
-            if cap:
-                # Replay the last recorded player phase of a capped game, using
-                # the preceding enemy boundary and its actual next-phase goals.
-                candidates = [
-                    i
-                    for i, p in enumerate(detail["phases"][:-1])
-                    if p["side"] == "enemy"
-                    and detail["phases"][i + 1]["side"] == "player"
-                ]
-                if candidates:
-                    after(candidates[-1], "late-cap")
-            else:
-                result.append(
-                    dict(
-                        label=f"{key[0]}/{key[1]}/initial",
-                        state=detail["initial"],
-                        arena=c,
-                        seed=c["seed"],
-                        goals=detail["phases"][0]["objectives"],
-                        advanceTurn=False,
-                        beginTurn=True,
-                        diplomacy="pragmatic",
-                        recruitmentLimit=1,
-                        campaign=False,
-                    )
-                )
-                for desired in (4, 10, 20):
-                    candidates = [
-                        i
-                        for i, p in enumerate(detail["phases"][:-1])
-                        if p["side"] == "enemy"
-                        and p["round"] >= desired
-                        and detail["phases"][i + 1]["side"] == "player"
-                    ]
-                    if candidates:
-                        after(candidates[0], f"round-{desired}")
-    finally:
-        for f in readers.values():
-            f.close()
+    result = []
+    source = json.loads(report.read_text())
+    candidates = [outcome["config"] for outcome in source["outcomes"]]
     if campaigns:
-        seen = set()
-        with gzip.open(campaigns, "rt") as f:
-            for line in f:
-                detail = json.loads(line)
-                c = detail["config"]
-                if c["diplomacy"] != "restrained":
-                    continue
-                for mission in detail["missions"]:
-                    if mission["id"] in seen:
-                        continue
-                    seen.add(mission["id"])
-                    result.append(
-                        dict(
-                            label=mission["id"],
-                            state=mission["initial"],
-                            seed=c["seed"],
-                            goals=None,
-                            advanceTurn=False,
-                            diplomacy="restrained",
-                            recruitmentLimit=1,
-                            campaign=True,
-                        )
-                    )
+        with gzip.open(campaigns, "rt") as stream:
+            candidates.extend(json.loads(line)["config"] for line in stream if line.strip())
+    for config in candidates:
+        # One seed for each distinct matchup/route, not one fresh simulation per seed.
+        key = json.dumps({k: v for k, v in config.items() if k != "seed"}, sort_keys=True)
+        if key not in seen:
+            seen.add(key)
+            result.append(config)
+    if not result:
+        raise ValueError("Requested source contains no match configurations")
     return result
+
+
+def capture(binary, data_dir, configs, rounds, side):
+    artifacts = []
+    # Independent of measurement processes: capture CPU is never counted as decisions.
+    with subprocess.Popen(
+        [str(binary), "--data-dir", str(data_dir), "--capture-stdio"],
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=None, text=True,
+    ) as child:
+        try:
+            for config in configs:
+                selected = [r for r in rounds if r <= config["maxRounds"]]
+                if not selected:
+                    raise ValueError("No requested capture rounds are within the source match cap")
+                request = dict(config=config, rounds=selected, side=side)
+                child.stdin.write(json.dumps(request, separators=(",", ":")) + "\n")
+                child.stdin.flush()
+                raw = child.stdout.readline()
+                if not raw:
+                    raise RuntimeError("Native checkpoint capture stopped before producing a result")
+                artifact = json.loads(raw)
+                if artifact["format"] != FORMAT or not artifact["positions"]:
+                    raise ValueError("Native capture produced no requested planner-entry positions")
+                artifacts.append(artifact)
+            child.stdin.close()
+            if child.wait() != 0:
+                raise RuntimeError("Native checkpoint capture failed")
+        finally:
+            if child.poll() is None:
+                child.terminate()
+                child.wait()
+    return dict(format=FORMAT, selection=dict(rounds=rounds, side=side), captures=artifacts)
+
+
+def positions(artifact):
+    if artifact.get("format") != FORMAT or not artifact.get("captures"):
+        raise ValueError("Expected a nonempty native phase-fixture artifact")
+    result = []
+    for captured in artifact["captures"]:
+        if captured["format"] != FORMAT or not captured["positions"]:
+            raise ValueError("Empty or unsupported native capture")
+        for position in captured["positions"]:
+            request = position["request"]
+            if request.get("beginTurn") or request.get("advanceTurn"):
+                raise ValueError("A planner-entry fixture must not repeat turn preparation")
+            result.append(position)
+    return result
+
+
+def recruitment_budget(value):
+    if value == "source":
+        return None
+    try:
+        count = int(value)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("Use a nonnegative recruit count or 'source'") from error
+    if not 0 <= count <= 1_000_000:
+        raise argparse.ArgumentTypeError("Recruit count must be between 0 and 1000000")
+    return count
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--report", type=pathlib.Path, required=True)
-    p.add_argument("--campaigns", type=pathlib.Path)
-    p.add_argument(
-        "--binary",
-        type=pathlib.Path,
-        default=ROOT / "rust/target/release/hex-command-sim",
-    )
+    inputs = p.add_mutually_exclusive_group(required=True)
+    inputs.add_argument("--report", type=pathlib.Path)
+    inputs.add_argument("--fixtures", type=pathlib.Path, help="Reuse a previously captured positions.json")
+    p.add_argument("--campaigns", type=pathlib.Path, help="Additional configuration source (.jsonl.gz)")
+    p.add_argument("--binary", type=pathlib.Path, default=ROOT / "rust/target/release/hex-command-sim")
+    p.add_argument("--data-dir", type=pathlib.Path, default=ROOT / "rust/data")
+    p.add_argument("--rounds", type=int, nargs="+", default=[1, 4, 10, 20])
+    p.add_argument("--side", choices=["player", "enemy"], default="player")
+    p.add_argument("--recruits", type=recruitment_budget, default=1, help="Comparison budget (default 1); source retains captured policy defaults")
     p.add_argument("--repeat", type=int, default=20)
     p.add_argument("--out", type=pathlib.Path, required=True)
     args = p.parse_args()
     if args.repeat < 1:
         p.error("--repeat must be positive")
+    if not args.rounds or len(args.rounds) > 32 or len(set(args.rounds)) != len(args.rounds) or min(args.rounds) < 1:
+        p.error("--rounds needs 1–32 distinct positive numbers")
+    if args.fixtures and args.campaigns:
+        p.error("--campaigns is a capture source and cannot be used with --fixtures")
+    binary = args.binary.resolve()
+    data_dir = args.data_dir.resolve()
+    artifact = (json.loads(args.fixtures.read_text()) if args.fixtures else
+                capture(binary, data_dir, configurations(args.report, args.campaigns), args.rounds, args.side))
+    samples = positions(artifact)
     args.out.mkdir(parents=True, exist_ok=False)
-    positions = fixtures(args.report, args.campaigns)
-    (args.out / "positions.json").write_text(
-        json.dumps(positions, separators=(",", ":")) + "\n"
-    )
+    encoded = json.dumps(artifact, separators=(",", ":")) + "\n"
+    (args.out / "positions.json").write_text(encoded)
     metrics = []
     for scope in ["arena", "campaign"]:
-        selected = [x for x in positions if x["campaign"] == (scope == "campaign")]
+        selected = [x for x in samples if x["campaign"] == (scope == "campaign")]
         if not selected:
             continue
         for planner in ["full", "queued"]:
@@ -178,36 +138,21 @@ def main():
             actions = 0
             with (
                 (args.out / (label + ".log")).open("wb") as log,
-                gzip.open(
-                    args.out / (label + ".jsonl.gz"), "wb", compresslevel=1
-                ) as output,
+                gzip.open(args.out / (label + ".jsonl.gz"), "wb", compresslevel=1) as output,
             ):
                 child = subprocess.Popen(
-                    [
-                        str(args.binary.resolve()),
-                        "--data-dir",
-                        str(ROOT / "rust/data"),
-                        "--phase-stdio",
-                    ],
-                    stdin=subprocess.PIPE,
-                    stdout=subprocess.PIPE,
-                    stderr=log,
+                    [str(binary), "--data-dir", str(data_dir), "--phase-stdio"],
+                    stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log,
                     env={**os.environ, "HEX_COMMAND_AI_PROFILE": "1"},
                 )
                 try:
                     for _ in range(args.repeat):
                         for position in selected:
-                            request = {
-                                k: v
-                                for k, v in position.items()
-                                if k not in ["label", "campaign"]
-                            }
-                            request["policy"] = policy
-                            request["blocks"] = dict(recruiter="balanced", campaign="mission", planner=planner)
-                            child.stdin.write(
-                                json.dumps(request, separators=(",", ":")).encode()
-                                + b"\n"
-                            )
+                            request = {**position["request"], "policy": policy,
+                                       "blocks": dict(recruiter="balanced", campaign="mission", planner=planner)}
+                            if args.recruits is not None:
+                                request["recruitmentLimit"] = args.recruits
+                            child.stdin.write(json.dumps(request, separators=(",", ":")).encode() + b"\n")
                             child.stdin.flush()
                             raw = child.stdout.readline()
                             if not raw:
@@ -223,43 +168,23 @@ def main():
                     if child.poll() is None:
                         child.terminate()
                         child.wait()
-            profile = [
-                json.loads(line[len("AI_PROFILE ") :])
-                for line in (args.out / (label + ".log")).read_text().splitlines()
-                if line.startswith("AI_PROFILE ")
-            ]
+            profile = [json.loads(line[len("AI_PROFILE "):])
+                       for line in (args.out / (label + ".log")).read_text().splitlines()
+                       if line.startswith("AI_PROFILE ")]
             if len(profile) != 1:
                 raise ValueError("Native profile missing")
-            seconds = sum(
-                row["seconds"] for row in profile[0]["rows"] if row["policy"] == policy
-            )
-            metrics.append(
-                dict(
-                    scope=scope,
-                    policy=policy,
-                    planner=planner,
-                    positions=len(selected),
-                    repetitions=args.repeat,
-                    phases=phases,
-                    actions=actions,
-                    decisionSeconds=seconds,
-                    secondsPerPhase=seconds / phases,
-                    clock=profile[0]["clock"],
-                    commandSeconds=time.perf_counter() - started,
-                )
-            )
+            seconds = sum(row["seconds"] for row in profile[0]["rows"] if row["policy"] == policy)
+            metrics.append(dict(scope=scope, policy=policy, planner=planner, positions=len(selected),
+                                repetitions=args.repeat, phases=phases, actions=actions,
+                                decisionSeconds=seconds, secondsPerPhase=seconds / phases,
+                                clock=profile[0]["clock"], commandSeconds=time.perf_counter() - started))
     result = dict(
-        method="identical saved tactical states: initial turn-start, reconstructed mid/late arena boundaries with recorded next-phase objectives, and complete campaign chapter starts; one own phase per policy",
-        fingerprints=json.loads(
-            subprocess.check_output(
-                [
-                    str(args.binary.resolve()),
-                    "--data-dir",
-                    str(ROOT / "rust/data"),
-                    "--fingerprint",
-                ]
-            )
-        ),
+        method="identical frozen native planner-entry checkpoints; no Python state reconstruction or replayed turn preparation",
+        recruitmentBudget="source" if args.recruits is None else args.recruits,
+        fixtureSha256=hashlib.sha256(encoded.encode()).hexdigest(),
+        sourceFingerprints=[c["fingerprints"] for c in artifact["captures"]],
+        fingerprints=json.loads(subprocess.check_output([str(binary), "--data-dir", str(data_dir), "--fingerprint"])),
+        coverage=[dict(config=c["config"], requestedRounds=c["requestedRounds"], side=c["side"], positions=[p["label"] for p in c["positions"]]) for c in artifact["captures"]],
         metrics=metrics,
     )
     (args.out / "timing.json").write_text(json.dumps(result, indent=2) + "\n")
