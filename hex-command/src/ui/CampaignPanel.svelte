@@ -197,11 +197,11 @@
               </label>
             {/each}
           </div>
-          <button class="primary" onclick={next}>
+          <button class="primary" data-activation="release" onclick={next}>
             Continue to {definition.missions[campaign.mission + 1]?.map.name}
           </button>
         {:else if view.game.winner === "enemy"}
-          <button class="primary" onclick={retry}>Retry mission</button>
+          <button class="primary" data-activation="release" onclick={retry}>Retry mission</button>
         {:else}
           <button class="primary" onclick={onNewCampaign}>Choose another campaign</button>
         {/if}

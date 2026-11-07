@@ -312,7 +312,9 @@
       Enemy-turn recordings start when you open the game and clear when you reload or change
       missions. The report includes all saved runs and enemies hidden by fog.
     </p>
-    <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
+    <button data-activation="release" onclick={() => actions.downloadDebugReport()}>
+      Download debug report
+    </button>
     <h3>Performance trace</h3>
     <TraceControls {view} onStart={close} />
     <h3>Bell Night — Survey</h3>
@@ -321,13 +323,17 @@
       targets in one hit. Recruit dragons or ordinary troops, capture village lamps, explore fog,
       and accumulate red death lights. This replaces the current battle.
     </p>
-    <button onclick={() => void startDebug("bell-night")}>Start Bell Night</button>
+    <button data-activation="release" onclick={() => void startDebug("bell-night")}>
+      Start Bell Night
+    </button>
     <h3>Mirror Night</h3>
     <p>
       Start a new Mirror battle at night: explore fog, capture villages to light their lamps, and
       leave a red light at every death. This replaces the current battle.
     </p>
-    <button onclick={() => void startDebug("mirror-night")}>Start Mirror Night</button>
+    <button data-activation="release" onclick={() => void startDebug("mirror-night")}>
+      Start Mirror Night
+    </button>
   </div>
 </DialogWindow>
 

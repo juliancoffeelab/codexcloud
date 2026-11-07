@@ -2212,3 +2212,9 @@ select {
     sans-serif;
   color: var(--muted);
 }
+
+button[data-pressed]:not(:disabled),
+button:active:not(:disabled) {
+  border-color: var(--gold);
+  background: #d8ba6f22;
+}

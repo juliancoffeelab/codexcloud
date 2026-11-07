@@ -24,6 +24,7 @@
       data-attack={choice.id}
       aria-label={choice.buttonLabel}
       disabled={busy || !choice.available}
+      data-activation="release"
       onclick={() => onAttack(choice.id)}
     >
       <span class="attack-heading" class:paired={choice.available}>

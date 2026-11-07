@@ -2,6 +2,7 @@
   import { flushSync, onMount } from "svelte";
   import type { ApplicationBoot } from "./boot";
   import { errorDetails } from "./error-details";
+  import { installPressActivation } from "./ui/press";
   import BattleBar from "./ui/BattleBar.svelte";
   import BattlefieldWindow from "./ui/BattlefieldWindow.svelte";
 
@@ -10,6 +11,7 @@
   let failure = $state<string>();
 
   onMount(() => {
+    const detachPress = installPressActivation(document);
     let current = true;
     void boot.ready
       .then((ready) => {
@@ -27,6 +29,7 @@
         if (current) failure = errorDetails(error);
       });
     return () => {
+      detachPress();
       current = false;
       boot.dispose();
     };
@@ -48,7 +51,13 @@
           {#if failure}
             <div class="startup-failure" role="alert">
               <p>The game could not start. Reloading keeps your saved battle.</p>
-              <button class="quiet" onclick={() => window.location.reload()}>Reload game</button>
+              <button
+                data-activation="release"
+                class="quiet"
+                onclick={() => window.location.reload()}
+              >
+                Reload game
+              </button>
               <details>
                 <summary>Error details</summary>
                 <pre>{failure}</pre>

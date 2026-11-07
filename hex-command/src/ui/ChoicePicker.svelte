@@ -99,7 +99,7 @@
     <h2>{label}</h2>
     <button class="setup-close" aria-label="Close picker" onclick={() => dialog.close()}>×</button>
   </header>
-  <div class="choice-list" role="listbox" aria-label={label}>
+  <div class="choice-list" data-touch-scroll role="listbox" aria-label={label}>
     {#each choices as choice, index}
       <button
         class="choice-row"

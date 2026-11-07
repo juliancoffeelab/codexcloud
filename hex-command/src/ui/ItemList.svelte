@@ -30,6 +30,7 @@
             <button
               class="item-drop"
               aria-label={`Drop ${item.name}`}
+              data-activation="release"
               onclick={() => onDrop?.(item.id)}
             >
               Drop

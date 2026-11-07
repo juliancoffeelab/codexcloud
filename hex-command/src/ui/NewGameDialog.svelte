@@ -297,7 +297,9 @@
   {#if error}<p role="alert">{error}</p>{/if}
   <div class="setup-actions">
     <button class="quiet" onclick={() => dialog?.close()}>Keep playing</button>
-    <button class="primary" disabled={starting} onclick={requestStart}>Start {mode}</button>
+    <button class="primary" disabled={starting} data-activation="release" onclick={requestStart}>
+      Start {mode}
+    </button>
   </div>
 </DialogWindow>
 <dialog
@@ -311,7 +313,9 @@
   <p id="replace-description">Your current battle will remain available in Saved progress.</p>
   <div class="setup-actions">
     <button class="quiet" onclick={() => confirmation.close()}>Cancel</button>
-    <button class="primary" disabled={starting} onclick={start}>Start new game</button>
+    <button class="primary" disabled={starting} data-activation="release" onclick={start}>
+      Start new game
+    </button>
   </div>
 </dialog>
 

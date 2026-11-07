@@ -9,41 +9,47 @@ export interface CombatPlaybackFrame {
   readonly shown: number;
   readonly complete: boolean;
   readonly game: GameView;
+  readonly advance: (index: number) => boolean;
+  readonly finish: () => void;
+  readonly skip: () => void;
 }
 
-/** One presentation clock for every surface; the engine state is already committed. */
+/** Published combat phases. Phaser advances them; Rust has already committed the result. */
 export class CombatPlayback {
   frame: CombatPlaybackFrame;
   readonly finished: Promise<void>;
   private release!: () => void;
   private cancelled = false;
-  private timer?: ReturnType<typeof setTimeout>;
 
   constructor(
     before: BattleView,
     combat: NonNullable<BattleView["combat"]>,
     private readonly resolved: GameView,
-    private readonly publish: (frame: CombatPlaybackFrame, strike: boolean) => void,
+    private readonly publish: (frame: CombatPlaybackFrame) => void,
     reducedMotion: boolean,
   ) {
     this.finished = new Promise((resolve) => (this.release = resolve));
-    this.frame = { before, combat, shown: 0, complete: false, game: before.game };
+    this.frame = {
+      before,
+      combat,
+      shown: 0,
+      complete: false,
+      game: before.game,
+      advance: (index) => this.advance(index),
+      finish: () => this.complete(),
+      skip: () => this.complete(true),
+    };
     if (reducedMotion || !combat.strikes.length) {
       this.frame = { ...this.frame, shown: combat.strikes.length, complete: true, game: resolved };
       this.release();
-    } else this.timer = setTimeout(() => this.advance(), 200);
+    }
   }
 
-  private advance() {
-    if (this.cancelled) return;
+  private advance(index: number): boolean {
+    if (this.cancelled || this.frame.complete || index !== this.frame.shown) return false;
     const { before, combat, shown } = this.frame;
     const hit = combat.strikes[shown];
-    if (!hit) {
-      this.frame = { ...this.frame, complete: true, game: this.resolved };
-      this.release();
-      this.publish(this.frame, false);
-      return;
-    }
+    if (!hit) return false;
     const units = before.game.units.flatMap((unit) => {
       const index = combat.units.findIndex((actor) => actor.id === unit.id);
       if (index < 0) return [unit];
@@ -59,13 +65,29 @@ export class CombatPlayback {
         tile == null ? undefined : units.find((unit) => cellKey(unit.tile) === cellKey(tile)),
     });
     this.frame = { ...this.frame, shown: shown + 1, game };
-    this.publish(this.frame, true);
-    if (!this.cancelled) this.timer = setTimeout(() => this.advance(), 550);
+    this.publish(this.frame);
+    return true;
+  }
+
+  private complete(skip = false) {
+    if (
+      this.cancelled ||
+      this.frame.complete ||
+      (!skip && this.frame.shown !== this.frame.combat.strikes.length)
+    )
+      return;
+    this.frame = {
+      ...this.frame,
+      shown: this.frame.combat.strikes.length,
+      complete: true,
+      game: this.resolved,
+    };
+    this.release();
+    this.publish(this.frame);
   }
 
   cancel() {
     this.cancelled = true;
-    clearTimeout(this.timer);
     this.release();
   }
 }

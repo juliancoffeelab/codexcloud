@@ -77,7 +77,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
       </button>{/if}
   </header>
-  <div class="window-content" bind:this={body}>{@render children()}</div>
+  <div class="window-content" data-touch-scroll bind:this={body}>{@render children()}</div>
 </dialog>
 
 <style>

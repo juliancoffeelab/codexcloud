@@ -1,253 +1,336 @@
 {
   "clips": {
     "beast-roar": {
-      "file": "palette/beast-roar.mp3"
+      "file": "palette/beast-roar.mp3",
+      "impactMs": 149.7
     },
     "dying-creature-groan": {
-      "file": "palette/dying-creature-groan.mp3"
+      "file": "palette/dying-creature-groan.mp3",
+      "impactMs": 289.3
     },
     "deep-monster-grunt": {
-      "file": "palette/deep-monster-grunt.mp3"
+      "file": "palette/deep-monster-grunt.mp3",
+      "impactMs": 104.8
     },
     "blade-swish": {
-      "file": "palette/blade-swish.mp3"
+      "file": "palette/blade-swish.mp3",
+      "impactMs": 174.6
     },
     "beast-grunt": {
-      "file": "palette/beast-grunt.mp3"
+      "file": "palette/beast-grunt.mp3",
+      "impactMs": 269.4
     },
     "leather-rustle": {
-      "file": "palette/leather-rustle.mp3"
+      "file": "palette/leather-rustle.mp3",
+      "impactMs": 109.8
     },
     "fire-spell-burst": {
-      "file": "palette/fire-spell-burst.mp3"
+      "file": "palette/fire-spell-burst.mp3",
+      "impactMs": 264.4
     },
     "flier-cry": {
-      "file": "palette/flier-cry.mp3"
+      "file": "palette/flier-cry.mp3",
+      "impactMs": 54.9
     },
     "knife-draw": {
-      "file": "palette/knife-draw.mp3"
+      "file": "palette/knife-draw.mp3",
+      "impactMs": 159.6
     },
     "bone-crunch": {
-      "file": "palette/bone-crunch.mp3"
+      "file": "palette/bone-crunch.mp3",
+      "impactMs": 74.8
     },
     "light-cloth-rustle": {
-      "file": "palette/light-cloth-rustle.mp3"
+      "file": "palette/light-cloth-rustle.mp3",
+      "impactMs": 164.6
     },
     "reptile-scale-rustle": {
-      "file": "palette/reptile-scale-rustle.mp3"
+      "file": "palette/reptile-scale-rustle.mp3",
+      "impactMs": 119.7
     },
     "spider-leg-rustle": {
-      "file": "palette/spider-leg-rustle.mp3"
+      "file": "palette/spider-leg-rustle.mp3",
+      "impactMs": 419.1
     },
     "slimy-squelch": {
-      "file": "palette/slimy-squelch.mp3"
+      "file": "palette/slimy-squelch.mp3",
+      "impactMs": 134.7
     },
     "creature-spit": {
-      "file": "palette/creature-spit.mp3"
+      "file": "palette/creature-spit.mp3",
+      "impactMs": 69.8
     },
     "insect-buzz": {
-      "file": "palette/insect-buzz.mp3"
+      "file": "palette/insect-buzz.mp3",
+      "impactMs": 249.4
     },
     "aquatic-gurgle-selection": {
-      "file": "palette/aquatic-gurgle-selection.mp3"
+      "file": "palette/aquatic-gurgle-selection.mp3",
+      "impactMs": 159.6
     },
     "aquatic-gurgle-attack": {
-      "file": "palette/aquatic-gurgle-attack.mp3"
+      "file": "palette/aquatic-gurgle-attack.mp3",
+      "impactMs": 159.6
     },
     "aquatic-creature-call": {
-      "file": "palette/aquatic-creature-call.mp3"
+      "file": "palette/aquatic-creature-call.mp3",
+      "impactMs": 274.4
     },
     "watery-squish": {
-      "file": "palette/watery-squish.mp3"
+      "file": "palette/watery-squish.mp3",
+      "impactMs": 184.6
     },
     "fish-slap": {
-      "file": "palette/fish-slap.mp3"
+      "file": "palette/fish-slap.mp3",
+      "impactMs": 24.9
     },
     "horse-call": {
-      "file": "palette/horse-call.mp3"
+      "file": "palette/horse-call.mp3",
+      "impactMs": 139.7
     },
     "dog-grumble": {
-      "file": "palette/dog-grumble.mp3"
+      "file": "palette/dog-grumble.mp3",
+      "impactMs": 204.5
     },
     "wolf-howl": {
-      "file": "palette/wolf-howl.mp3"
+      "file": "palette/wolf-howl.mp3",
+      "impactMs": 139.7
     },
     "dog-snarl": {
-      "file": "palette/dog-snarl.mp3"
+      "file": "palette/dog-snarl.mp3",
+      "impactMs": 169.6
     },
     "belt-handling": {
-      "file": "palette/belt-handling.mp3"
+      "file": "palette/belt-handling.mp3",
+      "impactMs": 114.7
     },
     "dwarf-cough": {
-      "file": "palette/dwarf-cough.mp3"
+      "file": "palette/dwarf-cough.mp3",
+      "impactMs": 34.9
     },
     "mining-strike": {
-      "file": "palette/mining-strike.mp3"
+      "file": "palette/mining-strike.mp3",
+      "impactMs": 10.0
     },
     "chainmail-rattle": {
-      "file": "palette/chainmail-rattle.mp3"
+      "file": "palette/chainmail-rattle.mp3",
+      "impactMs": 174.6
     },
     "metal-armour-clatter": {
-      "file": "palette/metal-armour-clatter.mp3"
+      "file": "palette/metal-armour-clatter.mp3",
+      "impactMs": 39.9
     },
     "crossbow-bolt-pass": {
-      "file": "palette/crossbow-bolt-pass.mp3"
+      "file": "palette/crossbow-bolt-pass.mp3",
+      "impactMs": 24.9
     },
     "blade-contact": {
-      "file": "palette/blade-contact.mp3"
+      "file": "palette/blade-contact.mp3",
+      "impactMs": 89.8
     },
     "metal-latch": {
-      "file": "palette/metal-latch.mp3"
+      "file": "palette/metal-latch.mp3",
+      "impactMs": 44.9
     },
     "metal-plate-impact": {
-      "file": "palette/metal-plate-impact.mp3"
+      "file": "palette/metal-plate-impact.mp3",
+      "impactMs": 0.0
     },
     "arcane-pulse-attack": {
-      "file": "palette/arcane-pulse-attack.mp3"
+      "file": "palette/arcane-pulse-attack.mp3",
+      "impactMs": 104.8
     },
     "elf-cough": {
-      "file": "palette/elf-cough.mp3"
+      "file": "palette/elf-cough.mp3",
+      "impactMs": 29.9
     },
     "dagger-draw": {
-      "file": "palette/dagger-draw.mp3"
+      "file": "palette/dagger-draw.mp3",
+      "impactMs": 119.7
     },
     "sabre-draw": {
-      "file": "palette/sabre-draw.mp3"
+      "file": "palette/sabre-draw.mp3",
+      "impactMs": 124.7
     },
     "spear-on-sabre": {
-      "file": "palette/spear-on-sabre.mp3"
+      "file": "palette/spear-on-sabre.mp3",
+      "impactMs": 15.0
     },
     "scythian-bow-shot": {
-      "file": "palette/scythian-bow-shot.mp3"
+      "file": "palette/scythian-bow-shot.mp3",
+      "impactMs": 49.9
     },
     "wooden-staff-impact": {
-      "file": "palette/wooden-staff-impact.mp3"
+      "file": "palette/wooden-staff-impact.mp3",
+      "impactMs": 19.9
     },
     "cough": {
-      "file": "palette/cough.mp3"
+      "file": "palette/cough.mp3",
+      "impactMs": 34.9
     },
     "mace-on-spear-haft": {
-      "file": "palette/mace-on-spear-haft.mp3"
+      "file": "palette/mace-on-spear-haft.mp3",
+      "impactMs": 15.0
     },
     "book-shut": {
-      "file": "palette/book-shut.mp3"
+      "file": "palette/book-shut.mp3",
+      "impactMs": 39.9
     },
     "small-leather-handling": {
-      "file": "palette/small-leather-handling.mp3"
+      "file": "palette/small-leather-handling.mp3",
+      "impactMs": 149.7
     },
     "horse-dying-call": {
-      "file": "palette/horse-dying-call.mp3"
+      "file": "palette/horse-dying-call.mp3",
+      "impactMs": 309.3
     },
     "underwater-belt-rustle": {
-      "file": "palette/underwater-belt-rustle.mp3"
+      "file": "palette/underwater-belt-rustle.mp3",
+      "impactMs": 104.8
     },
     "underwater-cough": {
-      "file": "palette/underwater-cough.mp3"
+      "file": "palette/underwater-cough.mp3",
+      "impactMs": 34.9
     },
     "scythian-arrow-pass": {
-      "file": "palette/scythian-arrow-pass.mp3"
+      "file": "palette/scythian-arrow-pass.mp3",
+      "impactMs": 39.9
     },
     "mace-on-spear-blade": {
-      "file": "palette/mace-on-spear-blade.mp3"
+      "file": "palette/mace-on-spear-blade.mp3",
+      "impactMs": 15.0
     },
     "wooden-rattle-unit": {
-      "file": "palette/wooden-rattle-unit.mp3"
+      "file": "palette/wooden-rattle-unit.mp3",
+      "impactMs": 94.8
     },
     "dark-magic-burst": {
-      "file": "palette/dark-magic-burst.mp3"
+      "file": "palette/dark-magic-burst.mp3",
+      "impactMs": 179.6
     },
     "ghost-groan": {
-      "file": "palette/ghost-groan.mp3"
+      "file": "palette/ghost-groan.mp3",
+      "impactMs": 219.5
     },
     "ghost-scream": {
-      "file": "palette/ghost-scream.mp3"
+      "file": "palette/ghost-scream.mp3",
+      "impactMs": 104.8
     },
     "spectral-magic": {
-      "file": "palette/spectral-magic.mp3"
+      "file": "palette/spectral-magic.mp3",
+      "impactMs": 44.9
     },
     "zombie-death-grunt": {
-      "file": "palette/zombie-death-grunt.mp3"
+      "file": "palette/zombie-death-grunt.mp3",
+      "impactMs": 99.8
     },
     "monstrous-bite-grunt": {
-      "file": "palette/monstrous-bite-grunt.mp3"
+      "file": "palette/monstrous-bite-grunt.mp3",
+      "impactMs": 119.7
     },
     "wooden-creak": {
-      "file": "palette/wooden-creak.mp3"
+      "file": "palette/wooden-creak.mp3",
+      "impactMs": 374.1
     },
     "wooden-plank-impact": {
-      "file": "palette/wooden-plank-impact.mp3"
+      "file": "palette/wooden-plank-impact.mp3",
+      "impactMs": 0.0
     },
     "solid-wood-impact": {
-      "file": "palette/solid-wood-impact.mp3"
+      "file": "palette/solid-wood-impact.mp3",
+      "impactMs": 0.0
     },
     "stone-scatter-attack": {
-      "file": "palette/stone-scatter-attack.mp3"
+      "file": "palette/stone-scatter-attack.mp3",
+      "impactMs": 54.9
     },
     "ragged-breath": {
-      "file": "palette/ragged-breath.mp3"
+      "file": "palette/ragged-breath.mp3",
+      "impactMs": 59.9
     },
     "burp": {
-      "file": "palette/burp.mp3"
+      "file": "palette/burp.mp3",
+      "impactMs": 324.3
     },
     "stone-scatter-terrain": {
-      "file": "palette/stone-scatter-terrain.mp3"
+      "file": "palette/stone-scatter-terrain.mp3",
+      "impactMs": 54.9
     },
     "soft-grass-footstep": {
-      "file": "palette/soft-grass-footstep.mp3"
+      "file": "palette/soft-grass-footstep.mp3",
+      "impactMs": 0.0
     },
     "enchanted-forest-rustle": {
-      "file": "palette/enchanted-forest-rustle.mp3"
+      "file": "palette/enchanted-forest-rustle.mp3",
+      "impactMs": 54.9
     },
     "hill-wind": {
-      "file": "palette/hill-wind.mp3"
+      "file": "palette/hill-wind.mp3",
+      "impactMs": 54.9
     },
     "water-ripple": {
-      "file": "palette/water-ripple.mp3"
+      "file": "palette/water-ripple.mp3",
+      "impactMs": 10.0
     },
     "village-contact": {
-      "file": "palette/village-contact.mp3"
+      "file": "palette/village-contact.mp3",
+      "impactMs": 10.0
     },
     "light-metal-contact": {
-      "file": "palette/light-metal-contact.mp3"
+      "file": "palette/light-metal-contact.mp3",
+      "impactMs": 15.0
     },
     "wooden-fort-contact": {
-      "file": "palette/wooden-fort-contact.mp3"
+      "file": "palette/wooden-fort-contact.mp3",
+      "impactMs": 10.0
     },
     "sacred-grove-magic": {
-      "file": "palette/sacred-grove-magic.mp3"
+      "file": "palette/sacred-grove-magic.mp3",
+      "impactMs": 174.6
     },
     "door-movement": {
-      "file": "palette/door-movement.mp3"
+      "file": "palette/door-movement.mp3",
+      "impactMs": 204.5
     },
     "distant-mining": {
-      "file": "palette/distant-mining.mp3"
+      "file": "palette/distant-mining.mp3",
+      "impactMs": 10.0
     },
     "quarry-strike": {
-      "file": "palette/quarry-strike.mp3"
+      "file": "palette/quarry-strike.mp3",
+      "impactMs": 24.9
     },
     "quiet-fire-crackle": {
-      "file": "palette/quiet-fire-crackle.mp3"
+      "file": "palette/quiet-fire-crackle.mp3",
+      "impactMs": 194.6
     },
     "plain-ground-contact": {
-      "file": "palette/plain-ground-contact.mp3"
+      "file": "palette/plain-ground-contact.mp3",
+      "impactMs": 15.0
     },
     "courtyard-cue": {
-      "file": "palette/courtyard-cue.mp3"
+      "file": "palette/courtyard-cue.mp3",
+      "impactMs": 19.9
     },
     "heavy-bell": {
-      "file": "palette/heavy-bell.mp3"
+      "file": "palette/heavy-bell.mp3",
+      "impactMs": 0.0
     },
     "wooden-rattle-terrain": {
-      "file": "palette/wooden-rattle-terrain.mp3"
+      "file": "palette/wooden-rattle-terrain.mp3",
+      "impactMs": 94.8
     },
     "ritual-magic": {
-      "file": "palette/ritual-magic.mp3"
+      "file": "palette/ritual-magic.mp3",
+      "impactMs": 274.4
     },
     "arcane-pulse-terrain": {
-      "file": "palette/arcane-pulse-terrain.mp3"
+      "file": "palette/arcane-pulse-terrain.mp3",
+      "impactMs": 104.8
     },
     "wooden-figurine-move": {
-      "file": "palette/wooden-figurine-move.mp3"
+      "file": "palette/wooden-figurine-move.mp3",
+      "impactMs": 24.9
     }
   },
   "units": {

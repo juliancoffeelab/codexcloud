@@ -191,7 +191,7 @@
       <div class="workspace" class:map-only={!inspectionOpen}>
         <Battlefield {previews} view={$view} {actions} {battlefield} {showCommanderArrow} />
         {#if inspectionOpen}
-          <aside aria-label="Unit and terrain details">
+          <aside data-touch-scroll aria-label="Unit and terrain details">
             <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
             <TerrainPanel view={$view} {actions} {previews} />
             <GroundItemsPanel view={$view} />

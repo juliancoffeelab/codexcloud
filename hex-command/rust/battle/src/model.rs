@@ -144,6 +144,9 @@ pub struct CombatAnimation {
 pub struct CombatStrike {
     pub side: crate::data::Side,
     pub weapon: String,
+    /// Stable presentation identity; weapon remains the display label.
+    pub weapon_id: String,
+    pub unit_id: String,
     pub roll_min: i32,
     pub roll_max: i32,
     pub raw: i32,

@@ -301,7 +301,9 @@
           The browser couldn’t read saved progress. We don’t know whether a flash save is available.
         </p>
         <p class="status-note">Saved data has been left untouched. Automatic saving is paused.</p>
-        <button class="primary" disabled={busy} onclick={readAgain}>Try reading again</button>
+        <button class="primary" disabled={busy} data-activation="release" onclick={readAgain}>
+          Try reading again
+        </button>
       {:else if kind === "full"}<p>
           There isn’t enough space to finish updating saved games. Delete saves you no longer need,
           then finish the update.
@@ -379,7 +381,9 @@
         {model.ready ? "New game" : "New game without saving"}
       </button>
       <div class="support">
-        <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
+        <button data-activation="release" onclick={() => actions.downloadDebugReport()}>
+          Download debug report
+        </button>
         <button class="delete-link" disabled={busy || model.ready} onclick={reset}>
           <SaveIcon name="trash" />Delete all retained saves
         </button>
@@ -403,6 +407,7 @@
     class="confirm"
     class:destructive={pending?.message.destructive}
     disabled={busy || !armed}
+    data-activation="release"
     onclick={confirmAction}
   >
     {pending?.message.action}

@@ -28,6 +28,17 @@
       "range": 1,
       "sound": "attack-melee",
       "spread": 0
+    },
+    {
+      "id": "survey-claws",
+      "name": "Survey claws",
+      "damage": 2,
+      "count": 6,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 0
     }
   ],
   "damageModifiers": {
@@ -36,7 +47,7 @@
     "impact": 0
   },
   "ability": "Survey flight",
-  "description": "Debug survey flier: crosses every terrain and defeats targets in one hit. Recruited only in Bell Night.",
+  "description": "Debug survey flier: crosses every terrain, defeats targets in one hit, or exercises repeated strikes with Survey claws. Recruited only in Bell Night.",
   "level": 1,
   "family": "giant-bat",
   "experienceNeeded": 0,
