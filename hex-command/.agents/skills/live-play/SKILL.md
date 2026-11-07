@@ -1,54 +1,90 @@
 ---
 name: live-play
-description: Use only for explicitly user-authorized browser gameplay with the actual game. Ordinary implementation, review, simulation or deployment requests do not trigger it.
+description: Use only when the user explicitly authorizes playing Hex Command in a browser; exercise the player UI through a game session.
 ---
 
 # Live play
 
-Use only when the user explicitly authorizes real browser gameplay. Ordinary
-implementation, review, simulation or deployment requests do not authorize it.
-A natural-language gameplay request can supply authorization; the skill name
-alone still needs a gameplay scope. Use a local Vite server; the harness does not
-support production bundles.
+Play Hex Command through the interface a player uses. Establish whether the
+requested game or workflow can actually be played, and describe its usability.
+Implementation, review and deployment requests alone do not authorize gameplay.
 
-1. Establish the campaign/scenario, assertions and execution limits from the
-   request and record them in the disposable probe. Read
-   [testing](../testing/SKILL.md). For loading investigations, also read
-   [save-migrations](../save-migrations/SKILL.md) and the
-   [loading-probe reference](references/harness.md#saved-progress-and-loading-probes).
-2. Start Vite using the project build/toolchain guidance on a separate port from
-   concurrent work. Copy [campaign.mjs](scripts/campaign.mjs) into ignored `tmp/`
-   and adapt that copy. Use an isolated context and generated progress; identify
-   synthetic historical fixtures when relevant. For custom policies, recalls,
-   hooks or adapter changes, read the [harness reference](references/harness.md).
-3. Run from the game root, setting `CHROMIUM_PATH` for an installed system browser
-   when necessary.
-   Give every run a fresh artifact directory. Defaults are bounded, not a victory
-   guarantee; configure the requested limits and assertions before execution.
-4. Stop when the assertions observe their target transitions or a bounded failure
-   captures enough evidence to identify the blocker. Always close the harness in
-   `finally`. An operation timeout does not cancel browser evaluation: capture
-   available diagnostics and close the browser instead of continuing that session.
-5. Distinguish campaign completion, AI defeat, application/harness failure and
-   exhausted limits. Report findings and validation limits. Fix application code
-   only when authorized; preserve current-run evidence under ignored `tmp/`.
+Every change to the live game goes through normal player input. Observations
+and AI advice leave that game unchanged. Applying commands directly to the live
+controller or engine, or bypassing presentation, invalidates a UI playthrough.
+State assertions and DOM checks support the session; they do not replace playing it.
 
-```sh
-# From hex-command; use a fresh artifacts directory for every run.
-CHROMIUM_PATH=/usr/bin/chromium \
-  LIVE_PLAY_URL=http://127.0.0.1:5191 \
-  LIVE_PLAY_ARTIFACTS=tmp/live-play/run-1 \
-  ENEMY_PAUSE_SCALE=0 PLAYER_AI_POLICY=classic CAMPAIGNS=mirror-night \
-  node tmp/live-play/campaign.mjs
-```
+## 1. Define the session
 
-Use normal game commands; never manufacture units, resources, objectives or wins.
-Use UI interactions for UI assertions and controller/engine inspection for state
-assertions. A visible turn number or clean console alone does not prove a loading
-or gameplay claim. Loading checks compare full native checkpoints including seed,
-UI and supported historical identities before and after restoration/reload.
+Identify the requested URL/revision, scenario, browser, input method and endpoint.
+For an unqualified playtest, exercise the UI through an ordinary battle to its
+end screen. A focused request can end at its specified workflow. Set execution
+bounds and record the scope in ignored `tmp/`.
 
-Artifacts contain decisions/revisions, terminal states, screenshots, checkpoints,
-supported progress metadata, console errors and isolated storage. The total
-deadline closes the browser even if AI computation hangs. Renderer failure may
-prevent a final screenshot; preserve earlier checkpoints and logs in that case.
+**Complete when:** the intended player journey, endpoint and bounds are explicit;
+a short interaction probe cannot be mistaken for a complete game.
+
+## 2. Enter through the UI
+
+Use the requested preview or a local game and the available browser tooling.
+Start an isolated session unless saved-progress restoration is part of the scope.
+Choose the scenario, settings and any authored debug content through the game's
+controls. For Playwright, canvas input, diagnostics or special input requirements,
+read [browser play](references/browser-play.md). For AI-guided decisions, read
+[AI-assisted UI play](references/ai-assisted-play.md). For save-loading investigations,
+also read [save-migrations](../save-migrations/SKILL.md).
+
+**Complete when:** the game is ready through the same entry path a player uses,
+and its initial screen and session configuration are recorded.
+
+## 3. Play and observe
+
+Repeat this loop through the requested endpoint:
+
+1. Read the visible board and HUD and choose a useful next action, using a Rust
+   AI recommendation when helpful.
+2. Perform it with the requested input method, using normal hit testing.
+3. Observe the visible result, feedback and the next available action. Confirm
+   that the chosen unit, target and controls agree before continuing.
+
+Play the connected workflow: choosing a unit, moving or attacking, inspecting
+results, choosing the next unit, recruiting, ending turns and navigating dialogs
+as the session requires. Notice blocked controls, confusing state, unexpected
+camera/layout changes, missing feedback and delays as well as gameplay outcomes.
+Record meaningful actions and their visible results as you go. Keep normal
+presentation timing so the session exercises the experience being reported.
+Read-only state can confirm legality or an outcome.
+
+**Complete when:** the requested endpoint is visibly reached, or a concrete
+player-facing blocker, defeat or execution limit is captured. A battle's result
+and whether the interface worked are separate findings.
+
+## 4. If blocked, investigate
+
+Capture the attempted input, screen, expected result and actual response. Inspect
+available diagnostics to distinguish a gameplay restriction from a UI failure.
+Reproduce through the same controls when useful; retain evidence from the blocked
+attempt. Continue through normal controls if the restriction has a legitimate
+player-facing resolution. Otherwise report the blocker at that point.
+
+Keep scratch probes and evidence in ignored `tmp/`, following
+[testing](../testing/SKILL.md). Source changes and synthetic storage/fault fixtures
+need their own authorized scope; a modified run is separate diagnostic evidence.
+
+**Complete when:** the obstruction has an evidenced explanation or a clearly
+stated unresolved cause. An internal workaround never completes the UI journey.
+
+## 5. Report what was played
+
+Identify the tested revision/URL, browser and input method, scenario, meaningful
+UI workflows exercised and terminal outcome: requested endpoint reached, player
+blocked, defeat, execution limit or tooling failure. Link relevant screenshots,
+recordings and action notes. Distinguish observed behavior from diagnostic
+inferences and name unexercised paths or device limitations.
+
+Claim a completed game only after its terminal result was reached through the UI;
+claim a completed campaign only after its missions and final transition were.
+Close the owned browser session and any owned local server.
+
+**Complete when:** the report shows how far a player got, what prevented further
+play if anything, and what the evidence actually establishes.
