@@ -1,4 +1,4 @@
-import type { Immutable, UnitView } from "../game/view";
+import type { GameView, Immutable, UnitView } from "../game/view";
 import type { BattleView } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/catalog";
 import type { TerrainType, UnitDefinition, UnitType } from "../game/types";
@@ -27,7 +27,14 @@ type UnitPanelView =
   | { kind: "hidden" }
   | { kind: "outcome"; title: string; description: string }
   | { kind: "details"; details: UnitDetailsView }
-  | { kind: "combat"; attacker: UnitView; defender: UnitView; detailsResetKey: string };
+  | {
+      kind: "combat";
+      attacker: UnitView;
+      defender: UnitView;
+      detailsResetKey: string;
+      game: GameView;
+      playback?: NonNullable<BattleView["combatPlayback"]>;
+    };
 
 function actionStatus(unit: UnitView): string {
   if (unit.attacked) return "Turn finished";
@@ -37,7 +44,19 @@ function actionStatus(unit: UnitView): string {
 
 /** Resolve what the selected-unit panel should show before rendering its markup. */
 export function unitPanelView(view: BattleView): UnitPanelView {
-  const { game } = view;
+  const { game, combatPlayback: playback } = view;
+
+  // Active strikes take precedence. Retained results yield to a finished battle.
+  if (playback && (!playback.complete || !game.winner)) {
+    return {
+      kind: "combat",
+      attacker: playback.combat.units[0],
+      defender: playback.combat.units[1],
+      detailsResetKey: "playback",
+      game: playback.before.game,
+      playback,
+    };
+  }
 
   if (game.campaign && game.winner) return { kind: "hidden" };
   if (game.winner === "player") {
@@ -63,6 +82,7 @@ export function unitPanelView(view: BattleView): UnitPanelView {
   if (canChooseAttack && targetUnit && game.targets(selectedUnit.id).includes(targetUnit)) {
     return {
       kind: "combat",
+      game,
       attacker: selectedUnit,
       defender: targetUnit,
       // Any battlefield redraw closes the optional damage calculations.

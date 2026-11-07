@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick, onDestroy } from "svelte";
+  import { tick } from "svelte";
   import type { BattleCommands, BattleView } from "../controller/view";
   import { unitPanelView } from "./unit-panel-view";
   import UnitCard from "./UnitCard.svelte";
@@ -14,37 +14,16 @@
   }
 
   let { view, actions, onNewBattle }: Props = $props();
-  let frozen = $state.raw<BattleView | null>(null);
-  let health = $state.raw<readonly [number, number] | undefined>();
-  let result = $state.raw<BattleView["combat"]>(null);
-  let shown = $state(0);
-  let complete = $state(false);
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const display = $derived(frozen ?? view);
-  const panel = $derived(unitPanelView(display));
+  const panel = $derived(unitPanelView(view));
+  const playback = $derived(panel.kind === "combat" ? panel.playback : undefined);
+  const result = $derived(playback?.combat);
+  const resolving = $derived(!!playback && !playback.complete);
+  const health = $derived(playback?.combat.strikes[playback.shown - 1]?.health);
+  const shown = $derived(playback?.shown ?? 0);
+  const complete = $derived(playback?.complete ?? false);
 
-  function finishAttack() {
-    clearTimeout(timer);
-    frozen = null;
-    health = undefined;
-    result = null;
-    shown = 0;
-    complete = false;
-  }
-  onDestroy(finishAttack);
-
-  $effect(() => {
-    if (
-      frozen &&
-      (view.selected !== frozen.selected ||
-        view.inspectedTile !== frozen.inspectedTile ||
-        view.game.mapId !== frozen.game.mapId)
-    ) {
-      finishAttack();
-    }
-  });
   let panelElement: HTMLElement | undefined;
-  const inspection = $derived([display.selected, display.target, display.inspectedTile].join("|"));
+  const inspection = $derived([view.selected, view.target, view.inspectedTile].join("|"));
 
   $effect(() => {
     inspection;
@@ -62,38 +41,7 @@
   });
 
   function attackWithWeapon(weaponId: string): void {
-    if (frozen) return;
-    const before = view;
-    frozen = before;
-    actions.attackSelected(weaponId);
-    void tick().then(() => {
-      if (frozen !== before) return;
-      const combat = view.combat;
-      if (!combat || combat === before.combat) {
-        finishAttack();
-        return;
-      }
-      result = combat;
-      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        health = combat.strikes.at(-1)?.health;
-        shown = combat.strikes.length;
-        complete = true;
-        return;
-      }
-      let index = 0;
-      const advance = () => {
-        const hit = combat.strikes[index++];
-        if (!hit) {
-          timer = undefined;
-          complete = true;
-          return;
-        }
-        health = hit.health;
-        shown = index;
-        timer = setTimeout(advance, 550);
-      };
-      timer = setTimeout(advance, 200);
-    });
+    if (!resolving) actions.attackSelected(weaponId);
   }
 </script>
 
@@ -101,7 +49,7 @@
   bind:this={panelElement}
   id="unit-panel"
   class="panel"
-  class:resolving={!!frozen}
+  class:resolving
   aria-label="Selected unit"
   hidden={panel.kind === "hidden"}
 >
@@ -115,15 +63,15 @@
     <div class="duel">
       <UnitCard
         unit={panel.attacker}
-        faction={display.game.faction(panel.attacker.id)}
-        artwork={display.artwork}
+        faction={panel.game.faction(panel.attacker.id)}
+        artwork={view.artwork}
         hp={health?.[0]}
       />
       <span class="duel-divider" aria-hidden="true">⚔</span>
       <UnitCard
         unit={panel.defender}
-        faction={display.game.faction(panel.defender.id)}
-        artwork={display.artwork}
+        faction={panel.game.faction(panel.defender.id)}
+        artwork={view.artwork}
         hp={health?.[1]}
       />
     </div>
@@ -132,11 +80,11 @@
     {:else}
       {#key panel.detailsResetKey}
         <AttackChoices
-          game={display.game}
+          game={panel.game}
           attacker={panel.attacker}
           target={panel.defender}
           onAttack={attackWithWeapon}
-          busy={!!frozen}
+          busy={resolving}
         />
       {/key}
     {/if}
@@ -145,9 +93,7 @@
       details={panel.details}
       artwork={view.artwork}
       onAdvance={(type) => actions.advanceUnit(panel.details.unit.id, type)}
-      onDrop={panel.details.faction.controllable &&
-      display.game.turn === "player" &&
-      !display.game.winner
+      onDrop={panel.details.faction.controllable && view.game.turn === "player" && !view.game.winner
         ? (item) => actions.dropItem(panel.details.unit.id, item)
         : undefined}
     />

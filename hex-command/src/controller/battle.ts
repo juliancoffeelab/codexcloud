@@ -48,6 +48,7 @@ import {
   cancelSound,
 } from "../presentation/sound";
 import { animateTile, animateTurn, type MotionKind } from "../presentation/motion";
+import { CombatPlayback } from "./combat-playback";
 import { describeChanges } from "./feedback";
 import type { GameView } from "../game/view";
 import {
@@ -114,6 +115,10 @@ export class BattleController {
   private state: SessionState;
   private store: Writable<BattleView>;
   private gameView: GameView;
+  private combatPlayback?: CombatPlayback;
+  private playbackContext?: Pick<BattleView, "sessionVersion" | "selected" | "inspectedTile">;
+  private lastPublishedView?: BattleView;
+  private presentedCombat: BattleView["combat"];
   readonly view: Readable<BattleView>;
   readonly commands: BattleCommands;
 
@@ -152,7 +157,8 @@ export class BattleController {
       sound: soundEnabled(),
     };
     this.gameView = game.publishedView();
-    this.store = writable(this.currentView());
+    this.lastPublishedView = this.currentView();
+    this.store = writable(this.lastPublishedView);
     this.view = { subscribe: this.store.subscribe };
     this.previousFeedbackState = game.publishedSnapshot();
     this.commands = createBattleCommands(this);
@@ -160,6 +166,7 @@ export class BattleController {
 
   /** Stop outstanding turn and preference work when this play session unmounts. */
   dispose(): void {
+    this.combatPlayback?.cancel();
     this.disposed = true;
     this.sessionVersion++;
     cancelSound();
@@ -203,6 +210,7 @@ export class BattleController {
   private active() {
     return (
       !this.awaitingNewGame &&
+      !this.combatPlaybackPending() &&
       !this.settling() &&
       this.#game.turn === "player" &&
       !this.#game.winner &&
@@ -223,7 +231,9 @@ export class BattleController {
   private currentView(): BattleView {
     return Object.freeze({
       ...this.state,
-      game: this.gameView,
+      game: this.combatPlaybackPending() ? this.combatPlayback!.frame.game : this.gameView,
+      combatPlayback: this.combatPlayback?.frame,
+      status: this.combatPlaybackPending() ? "Resolving combat…" : this.state.status,
       needsNewGame: this.awaitingNewGame,
       canSave:
         !this.awaitingNewGame &&
@@ -337,8 +347,51 @@ export class BattleController {
     if (gameChanged) {
       this.gameView = this.#game.publishedView();
     }
+    const before = this.combatPlayback && this.playbackContext;
+    if (
+      before &&
+      (before.sessionVersion !== this.sessionVersion ||
+        before.selected !== this.state.selected ||
+        before.inspectedTile !== this.state.inspectedTile)
+    ) {
+      this.combatPlayback?.cancel();
+      this.combatPlayback = undefined;
+    }
+    const combat = this.#game.combat;
+    if (gameChanged && combat !== this.presentedCombat) {
+      this.presentedCombat = combat;
+      this.combatPlayback?.cancel();
+      this.combatPlayback = undefined;
+      if (combat) {
+        const previous = this.lastPublishedView;
+        if (
+          previous &&
+          previous.sessionVersion === this.sessionVersion &&
+          previous.game.mapId === this.gameView.mapId
+        ) {
+          this.playbackContext = {
+            sessionVersion: this.sessionVersion,
+            selected: this.state.selected,
+            inspectedTile: this.state.inspectedTile,
+          };
+          this.combatPlayback = new CombatPlayback(
+            { ...previous, combatPlayback: undefined },
+            combat,
+            this.gameView,
+            (frame, strike) => {
+              if (this.disposed || this.combatPlayback?.frame !== frame) return;
+              this.publish({ renderBattle: false, gameChanged: false });
+              if (strike) this.playStrikeFeedback(frame);
+            },
+            typeof matchMedia === "undefined" ||
+              matchMedia("(prefers-reduced-motion: reduce)").matches,
+          );
+        }
+      }
+    }
+    this.lastPublishedView = this.currentView();
     // Subscribers see a complete view immediately; Svelte batches its DOM work.
-    this.store.set(this.currentView());
+    this.store.set(this.lastPublishedView);
     if (renderBattle) {
       this.playBattleFeedback();
     }
@@ -774,6 +827,32 @@ export class BattleController {
     });
   }
 
+  private combatPlaybackPending() {
+    return !!this.combatPlayback && !this.combatPlayback.frame.complete;
+  }
+
+  private playStrikeFeedback(frame: import("./combat-playback").CombatPlaybackFrame) {
+    const hit = frame.combat.strikes[frame.shown - 1]!;
+    const actor = frame.combat.units.find((unit) => unit.side === hit.side)!;
+    const weapon = unitWeapons(actor).find((weapon) => weapon.name === hit.weapon);
+    const previous =
+      frame.combat.strikes[frame.shown - 2]?.health ?? frame.combat.units.map((unit) => unit.hp);
+    const deaths = frame.combat.units.filter(
+      (unit, i) => frame.before.game.unit(unit.id) && previous[i]! > 0 && hit.health[i]! <= 0,
+    );
+    this.animateTileAfterRender(actor.tile, "attack");
+    playCombat(
+      {
+        attackType: actor.type,
+        attackId: weapon?.id,
+        attackSound: weapon?.sound,
+        attackCategory: weapon?.category,
+        attackDamageType: weapon?.damageType,
+      },
+      deaths.map((unit) => unit.type),
+    );
+  }
+
   private playBattleFeedback() {
     const current = this.#game.publishedSnapshot();
     const previous = this.previousFeedbackState;
@@ -784,6 +863,7 @@ export class BattleController {
 
     const changes = describeChanges(previous, current);
     for (const [tile, kind] of changes.tileEffects) {
+      if (kind === "attack" && this.combatPlaybackPending()) continue;
       this.animateTileAfterRender(tile, kind);
     }
     for (const tile of changes.capturedTiles) {
@@ -792,6 +872,8 @@ export class BattleController {
     if (changes.turnChanged) {
       this.afterRender(animateTurn);
     }
+
+    if (this.combatPlaybackPending()) return;
 
     // Combat feedback takes precedence; only resolved, previously visible deaths add a tail.
     if (changes.attacked) {
@@ -1061,10 +1143,9 @@ export class BattleController {
   }
 
   /** Use the pacing window for the next read-only decision; actions keep their deadlines. */
-  private async prepareDuringPause(ms: number, turnSessionVersion: number, publish = false) {
+  private async prepareDuringPause(ms: number, turnSessionVersion: number) {
     const waiting = this.pause(ms);
     try {
-      if (publish) this.publish();
       await tick();
       if (
         !this.disposed &&
@@ -1102,8 +1183,12 @@ export class BattleController {
       this.enemyRecordings = this.enemyRecordings.slice(-5);
       while (this.#game.turn === "enemy" && !this.#game.winner) {
         recording.commands.push(this.#game.enemyStep());
+        if ((this.#game.turn !== "enemy" || this.#game.winner) && !this.#game.combat) break;
+        this.publish();
+        if (this.combatPlaybackPending()) await this.combatPlayback!.finished;
+        if (this.disposed || turnSessionVersion !== this.sessionVersion) return;
         if (this.#game.turn !== "enemy" || this.#game.winner) break;
-        await this.prepareDuringPause(enemyActionDelay, turnSessionVersion, true);
+        await this.prepareDuringPause(enemyActionDelay, turnSessionVersion);
         if (turnSessionVersion !== this.sessionVersion) return;
       }
       recording.completed = true;
