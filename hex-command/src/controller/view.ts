@@ -75,6 +75,8 @@ export interface BattleCommands {
   savedSummary(id: string): Promise<import("../save/summary").SaveSummary>;
   savedFlashSave(): Promise<import("../save/metadata").CurrentEntry | undefined>;
   restoreProgress(id: string): Promise<void>;
+  battlefieldFailed(error: unknown): void;
+  prepareReload(source: "checkpoint" | "turn-start"): Promise<void>;
   deleteSavedProgress(id: string): Promise<void>;
   deleteSavedRun(id: string): Promise<void>;
   pruneSavedRun(id: string): Promise<void>;
@@ -91,6 +93,8 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
     savedSummary: controller.savedSummary.bind(controller),
     savedFlashSave: controller.savedFlashSave.bind(controller),
     restoreProgress: controller.restoreProgress.bind(controller),
+    battlefieldFailed: controller.battlefieldFailed.bind(controller),
+    prepareReload: controller.prepareReload.bind(controller),
     deleteSavedProgress: controller.deleteSavedProgress.bind(controller),
     deleteSavedRun: controller.deleteSavedRun.bind(controller),
     pruneSavedRun: controller.pruneSavedRun.bind(controller),

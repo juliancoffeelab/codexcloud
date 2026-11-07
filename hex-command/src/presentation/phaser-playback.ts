@@ -25,7 +25,7 @@ type PlaybackState =
   | { kind: "complete"; combat: Combat };
 
 /** Phaser owns the schedule; the controller retains the acknowledged strike
- * cursor across renderer failures. Waiting never acknowledges or skips a phase. */
+ * cursor. Waiting never acknowledges or skips a phase. */
 export class BattlefieldPlayback {
   private state: PlaybackState = { kind: "idle" };
   constructor(
@@ -70,18 +70,6 @@ export class BattlefieldPlayback {
       }
       if (source.complete) {
         this.state = { kind: "complete", combat };
-        // Reduced motion already published the resolved world. Preserve its cue
-        // without replaying each intentionally omitted visual phase.
-        if (combat.strikes[0]) {
-          scheduleCue(this.family(combat, 0), performance.now(), "combat", false, 0.8, {
-            owner,
-            key: "strike:0",
-          });
-          const health = combat.strikes.at(-1)!.health;
-          for (let i = 0; i < combat.units.length; i++)
-            if (health[i]! <= 0 && visible.has(combat.units[i]!.id))
-              scheduleDeath(combat.units[i]!.type, performance.now(), owner, combat.units[i]!.id);
-        }
         return;
       }
       const health = source.shown

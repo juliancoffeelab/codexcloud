@@ -65,6 +65,36 @@ test("Live controller uses native movement/undo and keeps previous UI queries im
   unsubscribe();
 });
 
+test("Page recovery keeps the latest checkpoint or stages the turn start without resuming play", async () => {
+  const controller = await BattleController.create(async () => {}, factory);
+  try {
+    await assert.rejects(controller.prepareReload("checkpoint"), /No saved checkpoint/);
+    await controller.initialize();
+    const start = JSON.parse(required(await readSave()));
+    const actor = required(controller.snapshot().units.find((unit) => unit.side === "player"));
+    controller.move(actor.id, required(controller.actions(actor.id).moves[0]).tile);
+    await controller.saved();
+    const latest = required(await readSave());
+    const stopped = controller.snapshot();
+    controller.battlefieldFailed(new Error("Renderer stopped"));
+    await assert.rejects(controller.endTurn(), /Wait for your turn/);
+    await controller.prepareReload("checkpoint");
+    assert.equal(await readSave(), latest);
+    await controller.prepareReload("turn-start");
+    const staged = JSON.parse(required(await readSave()));
+    assert.deepEqual(staged.checkpoint, start.checkpoint);
+    assert.deepEqual(staged.setup, start.setup);
+    assert.deepEqual(staged.undo, []);
+    assert.deepEqual(controller.snapshot(), stopped);
+    const loaded = await loadLiveBattle(factory);
+    assert.equal(loaded.status, "restored");
+    assert.deepEqual(JSON.parse(nativeValue(loaded.game.serializedCheckpoint())), start.checkpoint);
+    loaded.game.dispose();
+  } finally {
+    controller.dispose();
+  }
+});
+
 test("A native enemy turn cancelled by map selection never acts on the new battle", async () => {
   let resume!: () => void;
   const pause = new Promise<void>((resolve) => {

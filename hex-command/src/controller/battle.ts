@@ -109,6 +109,7 @@ export class BattleController {
   private readonly history = createMoveUndo();
   private sessionVersion = 0;
   private disposed = false;
+  private battlefieldStopped = false;
   private previousFeedbackState: ReturnType<LiveGame["publishedSnapshot"]> | null = null;
   private state: SessionState;
   private store: Writable<BattleView>;
@@ -211,6 +212,7 @@ export class BattleController {
   private active() {
     return (
       !this.awaitingNewGame &&
+      !this.battlefieldStopped &&
       !this.settling() &&
       this.#game.turn === "player" &&
       !this.#game.winner &&
@@ -610,7 +612,44 @@ export class BattleController {
     return this.storageUpdate(() => this.restoreCheckpoint(id));
   }
 
-  private async restoreCheckpoint(id: string): Promise<void> {
+  battlefieldFailed(error: unknown): void {
+    if (this.battlefieldStopped) return;
+    this.battlefieldStopped = true;
+    this.actionPresentation?.fail(error);
+    this.combatPlayback?.cancel();
+    cancelSound();
+    this.publish({ renderBattle: false });
+  }
+
+  /** Prepare durable state only; recovery always boots a fresh page/controller. */
+  prepareReload(source: "checkpoint" | "turn-start"): Promise<void> {
+    return this.storageUpdate(async () => {
+      this.requireManagedSaves();
+      const entry = await currentProgress();
+      if (!entry)
+        throw new Error("No saved checkpoint is available. Reloading would lose this game.");
+      if (entry.runId !== this.progress.runId || entry.branchId !== this.progress.branchId)
+        throw new Error(
+          "The saved checkpoint belongs to another game or branch. Open Saved games to choose it explicitly.",
+        );
+      if (source === "turn-start") {
+        const turns = new Map((await listProgress()).map((turn) => [turn.id, turn]));
+        let turn = turns.get(entry.checkpointId);
+        const seen = new Set<string>();
+        while (turn?.manual && turn.parentId && !seen.has(turn.id)) {
+          seen.add(turn.id);
+          turn = turns.get(turn.parentId);
+        }
+        if (!turn || turn.manual || turn.runId !== entry.runId)
+          throw new Error(
+            "The start of this turn is unavailable. Choose another turn in Saved games.",
+          );
+        await this.restoreCheckpoint(turn.id, "reload");
+      }
+    });
+  }
+
+  private async restoreCheckpoint(id: string, mode: "play" | "reload" = "play"): Promise<void> {
     this.requireSession();
     this.requireManagedSaves();
     const restored = restoreBattleText(this.nativeFactory, await progressText(id), "turn");
@@ -644,7 +683,8 @@ export class BattleController {
       this.publish({ renderBattle: false });
       throw error;
     }
-    this.installRestored(restored.game, [], restored.pendingEnemy);
+    if (mode === "reload") restored.game.dispose();
+    else this.installRestored(restored.game, [], restored.pendingEnemy);
   }
 
   private installRestored(
@@ -1101,6 +1141,7 @@ export class BattleController {
       await tick();
       if (
         !this.disposed &&
+        !this.battlefieldStopped &&
         turnSessionVersion === this.sessionVersion &&
         this.#game.turn === "enemy" &&
         !this.#game.winner
@@ -1119,10 +1160,11 @@ export class BattleController {
     this.settlingSession = turnSessionVersion;
     try {
       await boundary;
-      if (this.disposed || turnSessionVersion !== this.sessionVersion) return;
+      if (this.battlefieldStopped || this.disposed || turnSessionVersion !== this.sessionVersion)
+        return;
       if (!this.#game.winner) this.message("The enemy is planning its moves…");
 
-      if (turnSessionVersion !== this.sessionVersion) {
+      if (this.battlefieldStopped || turnSessionVersion !== this.sessionVersion) {
         return;
       }
       const recording: EnemyTurnRecording = {
@@ -1134,9 +1176,8 @@ export class BattleController {
       this.enemyRecordings.push(recording);
       this.enemyRecordings = this.enemyRecordings.slice(-5);
       while (this.#game.turn === "enemy" && !this.#game.winner) {
-        const before = this.gameView;
         const command = this.#game.enemyStep();
-        const action = new ActionPresentation(before, this.#game.combat);
+        const action = new ActionPresentation(this.#game.combat);
         this.actionPresentation = action;
         try {
           recording.commands.push(command);
@@ -1150,18 +1191,19 @@ export class BattleController {
         } finally {
           if (this.actionPresentation === action) this.actionPresentation = undefined;
         }
-        if (this.disposed || turnSessionVersion !== this.sessionVersion) return;
+        if (this.battlefieldStopped || this.disposed || turnSessionVersion !== this.sessionVersion)
+          return;
         if (this.#game.turn !== "enemy" || this.#game.winner) break;
         await this.prepareDuringPause(enemyActionDelay, turnSessionVersion);
-        if (turnSessionVersion !== this.sessionVersion) return;
+        if (this.battlefieldStopped || turnSessionVersion !== this.sessionVersion) return;
       }
       recording.completed = true;
       await this.storageUpdate(async () => {
-        if (turnSessionVersion !== this.sessionVersion) return;
+        if (this.battlefieldStopped || turnSessionVersion !== this.sessionVersion) return;
         if (!this.#game.winner) await this.turnCheckpoint();
         await this.persist();
       });
-      if (turnSessionVersion !== this.sessionVersion) return;
+      if (this.battlefieldStopped || turnSessionVersion !== this.sessionVersion) return;
       if (!this.#game.winner)
         this.message("Your turn. Capture villages, recruit reinforcements, or attack.");
       return this.snapshot();

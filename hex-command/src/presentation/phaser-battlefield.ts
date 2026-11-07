@@ -6,8 +6,6 @@ import { BattlefieldResources } from "./phaser-resources";
 import {
   watchSoundOwner,
   soundPending,
-  pauseSoundOwner,
-  resumeSoundOwner,
   type SoundOwner,
   audioReadiness,
   attachSound,
@@ -34,7 +32,7 @@ import {
 } from "./phaser-atmosphere";
 import { BattlefieldActorLightingPipeline } from "./phaser-actor-lighting";
 import { BattlefieldLightingPipeline } from "./phaser-lighting";
-import { installBattlefieldInput, type BattlefieldCameraState } from "./phaser-camera";
+import { installBattlefieldInput } from "./phaser-camera";
 import { lightPosition } from "./battlefield-lighting";
 import { measureTrace, traceConfiguration, traceInstant } from "./performance-trace";
 import type { MotionKind } from "./motion";
@@ -138,7 +136,6 @@ export class BattlefieldScene extends Phaser.Scene {
   private actionLease?: ReturnType<typeof claimAction>;
   private actionFinished = false;
   private unwatchAction?: () => void;
-  private resumedAction = false;
   private get actionOwner(): SoundOwner {
     return this.action ?? this.frame!.view.game;
   }
@@ -152,10 +149,6 @@ export class BattlefieldScene extends Phaser.Scene {
       this.lastVisual?.game !== this.frame?.view.game
     )
       return;
-    if (!this.resumedAction) {
-      this.resumedAction = true;
-      resumeSoundOwner(this.action);
-    }
     // A panel cannot erase the exchange that this action still owes the player.
     if (
       this.action.combat &&
@@ -246,14 +239,12 @@ export class BattlefieldScene extends Phaser.Scene {
   >();
   private hasFrame = false;
   private playbackFrame?: BattleView["combatPlayback"];
-  cameraSnapshot?: { identity: string; state: BattlefieldCameraState };
 
   constructor(
     private actions: () => BattleCommands,
     private describe: (label: string) => void,
     private previews: HudArtworkCache,
     private progress: (state: BattlefieldProgress) => void,
-    private restoreCamera?: { identity: string; state: BattlefieldCameraState },
   ) {
     super("battlefield");
   }
@@ -264,17 +255,8 @@ export class BattlefieldScene extends Phaser.Scene {
     const cleanup = () => {
       if (cleaned) return;
       cleaned = true;
-      if (this.controls)
-        this.cameraSnapshot = {
-          identity: this.identity,
-          state: this.controls.snapshot(),
-        };
       this.ready = false;
-      this.actionLease?.detach();
       this.unwatchAction?.();
-      if (this.action && !this.actionFinished) pauseSoundOwner(this.action);
-      // Retry owns resuming a pending exchange. Teardown must not release the
-      // enemy turn while there is no renderer to present its next command.
       this.playback.stop();
       this.playbackFrame = undefined;
       this.game.events.off(Phaser.Core.Events.BLUR, this.cancelPresentation, this);
@@ -356,9 +338,7 @@ export class BattlefieldScene extends Phaser.Scene {
     if (this.input.manager.mouse) this.input.manager.mouse.preventDefaultWheel = false;
     const onContextLost = () =>
       (this.game as BattlefieldGame).fail(
-        new Error(
-          "The battlefield WebGL context was lost. Retry map rendering to restart cleanly.",
-        ),
+        new Error("The battlefield WebGL context was lost. Reload the game to restart cleanly."),
       );
     this.game.canvas.addEventListener("webglcontextlost", onContextLost);
     this.events.once(Phaser.Scenes.Events.DESTROY, () =>
@@ -391,16 +371,7 @@ export class BattlefieldScene extends Phaser.Scene {
       renderer.pipelines.add(name, pipeline);
     }
     this.textures.addUint8Array("battlefield-white", new Uint8Array([255, 255, 255, 255]), 1, 1);
-    this.controls = installBattlefieldInput(
-      this,
-      () => this.frame,
-      this.actions,
-      this.restoreCamera?.identity ===
-        `${this.frame?.view.sessionVersion}:${this.frame?.view.game.mapId}`
-        ? this.restoreCamera.state
-        : undefined,
-      this.invalidate,
-    );
+    this.controls = installBattlefieldInput(this, () => this.frame, this.actions, this.invalidate);
     this.game.events.on(Phaser.Core.Events.BLUR, this.cancelPresentation, this);
     this.game.events.on(Phaser.Core.Events.POST_STEP, this.animateActors, this);
     let renderStart: { id: number; time: number } | undefined;
@@ -425,10 +396,6 @@ export class BattlefieldScene extends Phaser.Scene {
         traceInstant("Battlefield first complete frame", { scene: this.identity });
       }
       if (this.presented && !this.loading && !this.failed) {
-        if (this.action && !this.resumedAction) {
-          this.resumedAction = true;
-          resumeSoundOwner(this.action);
-        }
         this.playback.ready();
         this.acknowledgeAction();
       }
@@ -476,11 +443,9 @@ export class BattlefieldScene extends Phaser.Scene {
     }
     if (previous?.tiles !== tiles) this.tilesById = new Map(tiles.map((tile) => [tile.id, tile]));
     if (this.action !== view.actionPresentation) {
-      this.actionLease?.detach();
       this.unwatchAction?.();
       this.action = view.actionPresentation;
       this.actionFinished = false;
-      this.resumedAction = false;
       this.actionLease = this.action ? claimAction(this.action) : undefined;
       this.unwatchAction = this.action ? watchSoundOwner(this.action, this.invalidate) : undefined;
     }
@@ -539,10 +504,7 @@ export class BattlefieldScene extends Phaser.Scene {
   private reset(identity: string) {
     this.identity = identity;
     this.playback.stop();
-    // A completed result restored into a new renderer is history, not a new cue.
-    // An unfinished exchange must instead wait and resume its retained cursor.
-    const source = this.frame!.view.combatPlayback;
-    this.playbackFrame = source?.complete ? source : undefined;
+    this.playbackFrame = undefined;
     this.planKey = "";
     this.requiredAudio.clear();
     this.presented = false;
@@ -598,7 +560,6 @@ export class BattlefieldScene extends Phaser.Scene {
       this.frame!.tiles,
       this.resources,
     );
-    this.restoreCamera = undefined;
     this.controls.layout();
   }
   private refresh() {
@@ -908,30 +869,7 @@ export class BattlefieldScene extends Phaser.Scene {
         root.add([base, image]);
         actor = { data: unit, root, image, base, indicators };
         this.actors.set(unit.id, actor);
-        const before = this.action?.before.unit(unit.id);
-        const from = before ? this.tilesById.get(cellKey(before.tile)) : undefined;
-        if (
-          from &&
-          (from.x !== unit.x || from.y !== unit.y) &&
-          !this.actionLease?.motionDone(`move:${unit.id}`)
-        ) {
-          const duration = this.frame!.reducedMotion ? 0 : 240;
-          if (!movement) {
-            const start = performance.now();
-            movement = {
-              start,
-              end: scheduleMovement(start + duration, this.actionOwner).impactAt,
-            };
-          }
-          root.setPosition(from.x, from.y);
-          if (duration)
-            this.transition(actor, "move", movement.end - movement.start, movement.start);
-        } else if (
-          (this.hasFrame || (this.action && !before)) &&
-          !this.frame!.reducedMotion &&
-          !this.actionLease?.motionDone(`spawn:${unit.id}`)
-        )
-          this.transition(actor, "spawn", 220);
+        if (this.hasFrame && !this.frame!.reducedMotion) this.transition(actor, "spawn", 220);
       } else {
         if (actor.data.x !== unit.x || actor.data.y !== unit.y) {
           const duration = this.frame!.reducedMotion ? 0 : 240;
@@ -1068,8 +1006,6 @@ export class BattlefieldScene extends Phaser.Scene {
       if (state) {
         state.t = t;
         if (t >= 1) {
-          if (state.owner === this.action)
-            this.actionLease?.finishMotion(`${state.kind}:${unit.id}`);
           actor.transition = undefined;
         }
       }
@@ -1328,7 +1264,7 @@ export class BattlefieldScene extends Phaser.Scene {
   }
 }
 
-/** Ordinary single Game lifecycle; the boot owner retains this retry handle. */
+/** One Phaser Game owns the battlefield until disposal or full-page recovery. */
 export function preparePhaserBattlefield() {
   let game: BattlefieldGame | undefined;
   let scene: BattlefieldScene | undefined;
@@ -1341,7 +1277,7 @@ export function preparePhaserBattlefield() {
       previews: HudArtworkCache,
       progress: (state: BattlefieldProgress) => void,
     ) {
-      scene = new BattlefieldScene(actions, describe, previews, progress, scene?.cameraSnapshot);
+      scene = new BattlefieldScene(actions, describe, previews, progress);
       const owner = new BattlefieldGame(
         {
           type: Phaser.WEBGL,
@@ -1404,7 +1340,7 @@ export function preparePhaserBattlefield() {
           ready: false,
           error: errorDetails(
             new Error(
-              "Battlefield audio is unavailable because its renderer stopped. Retry map rendering to restore its native audio owner.",
+              "Battlefield audio is unavailable because its renderer stopped. Reload the game to restore audio.",
             ),
           ),
         });

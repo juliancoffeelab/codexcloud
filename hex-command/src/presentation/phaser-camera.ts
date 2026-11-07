@@ -7,18 +7,11 @@ import { battlefieldSpriteSize, mapDimensions } from "../ui/geometry";
 
 import { BattlefieldPicking } from "./phaser-picking";
 
-export interface BattlefieldCameraState {
-  zoom: number;
-  left: number;
-  top: number;
-}
-
 /** A fixed viewport: gestures move the camera, never document layout or scrolling. */
 export function installBattlefieldInput(
   scene: Phaser.Scene,
   current: () => PhaserBattlefieldFrame | undefined,
   actions: () => BattleCommands,
-  restore?: BattlefieldCameraState,
   invalidate: () => void = () => {},
 ) {
   const picking = new BattlefieldPicking(scene.cameras.main);
@@ -57,11 +50,10 @@ export function installBattlefieldInput(
     const event = pointer.event as MouseEvent;
     return { x: event.clientX, y: event.clientY };
   };
-  let restoring = !!restore;
-  let zoom = restore?.zoom ?? 1,
+  let zoom = 1,
     displayScale = 1,
-    left = restore?.left ?? 0,
-    top = restore?.top ?? 0;
+    left = 0,
+    top = 0;
   let pendingTop: number | undefined;
   let viewportWidth = 1,
     viewportHeight = 1,
@@ -804,7 +796,7 @@ export function installBattlefieldInput(
       pendingReveal = { ids: [commanderTile.id], center: true };
       layoutPending = true;
     },
-    snapshot(): BattlefieldCameraState {
+    snapshot() {
       return { zoom, left, top };
     },
     reset(ids: string[]) {
@@ -813,18 +805,6 @@ export function installBattlefieldInput(
       cancel("scene reset");
       inspection = "";
       inspectionView = undefined;
-      if (restoring && restore) {
-        restoring = false;
-        inspectionView = current()?.view;
-        inspection = inspectionView ? inspectionTiles(inspectionView).join("|") : "";
-        zoom = restore.zoom;
-        left = restore.left;
-        top = restore.top;
-        layoutReady = false;
-        pendingReveal = undefined;
-        layoutPending = true;
-        return;
-      }
       zoom = 1;
       left = top = 0;
       layoutReady = false;

@@ -132,13 +132,8 @@ export function createSound() {
     channel: "feedback" | "combat";
     owner: SoundOwner;
     key?: string;
-    family: string;
-    rate: number;
-    volume: number;
-    seek: number;
   };
   const voices = new Set<Voice>();
-  const paused = new Set<Omit<Voice, "sound">>();
   const requests = new Set<{ owner: SoundOwner; cancelled: boolean }>();
   const watchers = new Map<SoundOwner, Set<() => void>>();
   function notify(owner: SoundOwner) {
@@ -155,7 +150,7 @@ export function createSound() {
   }
   function soundPending(owner: SoundOwner) {
     return (
-      [...voices, ...paused].some((voice) => voice.owner === owner) ||
+      [...voices].some((voice) => voice.owner === owner) ||
       [...requests].some((request) => request.owner === owner && !request.cancelled)
     );
   }
@@ -169,41 +164,6 @@ export function createSound() {
       for (const request of requests) if (request.owner === owner) request.cancelled = true;
     for (const voice of voices)
       if (voice.owner === owner && (key === undefined || voice.key === key)) removeVoice(voice);
-    for (const voice of paused)
-      if (voice.owner === owner && (key === undefined || voice.key === key)) paused.delete(voice);
-    notify(owner);
-  }
-  /** A renderer restart retains unfinished action audio, not an unrelated UI voice. */
-  function pauseSoundOwner(owner: SoundOwner) {
-    for (const voice of voices)
-      if (voice.owner === owner) {
-        const seek = (voice.sound as Phaser.Sound.WebAudioSound).seek;
-        const { sound, ...record } = voice;
-        paused.add({ ...record, seek: Number.isFinite(seek) ? seek : voice.seek });
-        voices.delete(voice);
-        voice.sound.destroy();
-      }
-    notify(owner);
-  }
-  function resumeSoundOwner(owner: SoundOwner) {
-    if (!game || !ready) return;
-    for (const voice of paused)
-      if (voice.owner === owner) {
-        const manager = game.sound as Phaser.Sound.WebAudioSoundManager;
-        const key = paletteClip(voice.family) ? voice.family : `${voice.family}-1`;
-        if (!game.cache.audio.exists(key))
-          throw new Error(`Cannot resume prepared action cue: ${key}`);
-        const sound = manager.add(key, { volume: voice.volume, rate: voice.rate });
-        const resumed = { ...voice, sound };
-        voices.add(resumed);
-        paused.delete(voice);
-        sound.once("complete", () => removeVoice(resumed));
-        if (!sound.play({ seek: voice.seek })) {
-          removeVoice(resumed);
-          paused.add(voice);
-          throw new Error(`Cannot resume action cue: ${key}`);
-        }
-      }
     notify(owner);
   }
   let voiceRequest = 0;
@@ -326,10 +286,6 @@ export function createSound() {
   function cancelSound() {
     hud?.stop();
     stopNative();
-    for (const voice of paused) {
-      paused.delete(voice);
-      notify(voice.owner);
-    }
   }
   function setSoundEnabled(value: boolean) {
     enabled = Boolean(value);
@@ -443,10 +399,6 @@ export function createSound() {
       channel,
       owner,
       key: ownership.key,
-      family,
-      rate,
-      volume,
-      seek: 0,
     };
     voices.add(voice);
     notify(owner);
@@ -493,8 +445,6 @@ export function createSound() {
   return {
     watchSoundOwner,
     soundPending,
-    pauseSoundOwner,
-    resumeSoundOwner,
     stopSoundOwner,
     prepareHudSound,
     playHudSound,
@@ -518,8 +468,6 @@ export function createSound() {
 export const {
   watchSoundOwner,
   soundPending,
-  pauseSoundOwner,
-  resumeSoundOwner,
   stopSoundOwner,
   prepareHudSound,
   playHudSound,
