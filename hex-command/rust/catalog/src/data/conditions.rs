@@ -1,5 +1,5 @@
 //! Shared state predicates for events, lighting and terrain visibility.
-use super::{Event, Side, Tile};
+use super::{Event, Side, Tile, TileRef};
 use serde::{Deserialize, Serialize};
 
 /// Unit allegiance selectors are distinct from the two turn/ownership phases.
@@ -36,7 +36,7 @@ impl From<Side> for ConditionSide {
 pub enum Condition {
     Owner {
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        tile: Option<String>,
+        tile: Option<TileRef>,
         /// Exact faction identifier (the authoring key predates faction economies).
         side: String,
     },
@@ -45,7 +45,7 @@ pub enum Condition {
         #[cfg_attr(feature = "wasm", tsify(optional))]
         unit_types: Vec<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        tile: Option<String>,
+        tile: Option<TileRef>,
         radius: u16,
         side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
@@ -112,7 +112,7 @@ pub struct ConditionRule {
 impl Condition {
     /// Bind contextual tile predicates for tooling that needs explicit destinations.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn contextualized(&self, target: &str) -> Self {
+    pub fn contextualized(&self, target: &TileRef) -> Self {
         let mut condition = self.clone();
         match &mut condition {
             Self::Owner { tile, .. } | Self::Proximity { tile, .. } => {
@@ -240,7 +240,7 @@ impl Condition {
     ) -> Result<(), String> {
         match self {
             Self::Owner { tile, .. } | Self::Proximity { tile, .. } => match tile {
-                Some(id) if !tiles.iter().any(|tile| tile.id == *id) => {
+                Some(id) if !tiles.iter().any(|tile| tile.matches_reference(id)) => {
                     return Err(format!("condition references unknown tile: {id}"));
                 }
                 None if !contextual => return Err("condition requires a target tile".into()),

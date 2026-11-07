@@ -1,3 +1,4 @@
+import { cellKey } from "../game/hex";
 import { traceCommand } from "../presentation/performance-trace";
 import type { SessionSetup, OpponentSummary } from "../game/setup";
 import type { GameView, UnitView, Immutable } from "../game/view";
@@ -153,14 +154,17 @@ export function recruitmentContext(
   );
   const commander =
     commanders.find((unit) =>
-      keeps.some((keep) => keep.id === unit.tile && keep.owner === game.faction(unit.id).id),
+      keeps.some(
+        (keep) => keep.id === cellKey(unit.tile) && keep.owner === game.faction(unit.id).id,
+      ),
     ) ?? commanders.find((unit) => keeps.some((keep) => keep.owner === game.faction(unit.id).id));
   return Object.freeze({
     commander,
     stationed:
       !!commander &&
       keeps.some(
-        (keep) => keep.id === commander.tile && keep.owner === game.faction(commander.id).id,
+        (keep) =>
+          keep.id === cellKey(commander.tile) && keep.owner === game.faction(commander.id).id,
       ),
   });
 }

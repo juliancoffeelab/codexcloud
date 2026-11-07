@@ -3,7 +3,7 @@ import { validSetup, type SessionSetup } from "../game/setup";
 import type { SavedGame, UndoStep } from "../../rust/pkg/hex_command";
 import type { CurrentEntry, TurnEntry } from "./metadata";
 
-export const SAVE_VERSION = 37;
+export const SAVE_VERSION = 39;
 export const HISTORY_VERSION = 4;
 interface SaveBase {
   version: typeof SAVE_VERSION;

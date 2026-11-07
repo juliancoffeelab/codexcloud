@@ -14,17 +14,26 @@
           "type": "swordsman",
           "role": "leader",
           "character": "nera",
-          "tile": "hex-0028-a81ab6c878"
+          "tile": {
+            "col": 0,
+            "row": 5
+          }
         },
         {
           "type": "scout",
           "character": "ivo",
-          "tile": "hex-0027-5828930a2c"
+          "tile": {
+            "col": 0,
+            "row": 4
+          }
         },
         {
           "type": "adept",
           "character": "oren",
-          "tile": "hex-0029-15d660627f"
+          "tile": {
+            "col": 0,
+            "row": 6
+          }
         }
       ],
       "relations": {
@@ -54,14 +63,20 @@
         {
           "type": "skeleton",
           "aiGroup": "captive-guard",
-          "tile": "hex-0957-c94afbbfa1"
+          "tile": {
+            "col": 7,
+            "row": 6
+          }
         },
         {
           "type": "necromancer",
           "role": "leader",
           "aiGroup": "tollkeeper",
           "character": "tollkeeper",
-          "tile": "hex-0254-415f24444c"
+          "tile": {
+            "col": 15,
+            "row": 7
+          }
         }
       ],
       "relations": {
@@ -87,7 +102,10 @@
           "type": "captives",
           "role": "captive",
           "character": "villagers",
-          "tile": "hex-0989-f27f4a3764"
+          "tile": {
+            "col": 8,
+            "row": 6
+          }
         }
       ]
     },
@@ -121,7 +139,10 @@
           "items": ["healing-bottle"],
           "role": "leader",
           "character": "edrin",
-          "tile": "hex-0133-99da47f9af"
+          "tile": {
+            "col": 12,
+            "row": 12
+          }
         }
       ]
     }

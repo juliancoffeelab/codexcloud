@@ -12,7 +12,7 @@ import { required } from "./helpers";
 
 function viewFixture() {
   const live = new Game();
-  const enemy = live.addUnit("soldier", "enemy", "hex-0408-edbae05560");
+  const enemy = live.addUnit("soldier", "enemy", "2,3");
   const view = live.publishedView();
   const originalState = view.snapshot();
   const originalTiles = structuredClone(view.tiles);
@@ -48,10 +48,7 @@ test("Published views expose immutable plain data without commands", async () =>
     assert(Object.isFrozen(value));
   }
   assert.throws(() => Object.assign(required(view.unit("u2")), { hp: 0 }), TypeError);
-  assert.throws(
-    () => Object.assign(required(view.tile("hex-0738-f0cce97107")), { owner: "enemy" }),
-    TypeError,
-  );
+  assert.throws(() => Object.assign(required(view.tile("3,1")), { owner: "enemy" }), TypeError);
   assert.equal(Reflect.set(view.gold, "player", 0), false);
   assert.equal(Reflect.set(view.log, "0", "Changed from outside"), false);
   assert.equal(Reflect.set(view.units, "length", 0), false);
@@ -94,7 +91,7 @@ test("Mutable query maps cannot alter published state", async () => {
   const reachable = view.reachable("u3");
   const expectedReachable = [...reachable];
   Map.prototype.clear.call(reachable);
-  Map.prototype.set.call(reachable, "hex-0001-7256137ec1", 99);
+  Map.prototype.set.call(reachable, "0,0", 99);
   assert.deepEqual([...view.reachable("u3")], expectedReachable);
   assert.deepEqual(view.snapshot(), originalState);
 });
@@ -102,35 +99,35 @@ test("Mutable query maps cannot alter published state", async () => {
 // Later engine actions and direct fixture changes cannot rewrite an old publication.
 test("Later engine mutations cannot rewrite an older publication", async () => {
   const { live, view, originalState, originalTiles } = viewFixture();
-  live.move("u3", "hex-0738-f0cce97107");
+  live.move("u3", "3,1");
   live.gold.player = 0;
   live.log[0] = "Later event";
   required(live.unit("u2")).hp = 1;
-  required(live.tile("hex-0738-f0cce97107")).terrain = "forest";
+  required(live.tile("3,1")).terrain = "forest";
   assert.deepEqual(view.snapshot(), originalState);
   assert.deepEqual(view.tiles, originalTiles);
-  assert.equal(required(view.unit("u3")).tile, "hex-0045-b0e58b1f93");
+  assert.deepEqual(required(view.unit("u3")).tile, { col: 1, row: 2 });
   assert.equal(view.gold.player, 12);
   assert.equal(
     required(view.unit("u2")).hp,
     required(originalState.units.find((u) => u.id === "u2")).hp,
   );
-  assert.equal(required(view.tile("hex-0738-f0cce97107")).terrain, "village");
+  assert.equal(required(view.tile("3,1")).terrain, "village");
 });
 
 test("Recruitment context is frozen and follows current selection", async () => {
   const { view } = viewFixture();
-  const context = required(recruitmentContext(view, null, "hex-0013-23f615dae8"));
+  const context = required(recruitmentContext(view, null, "0,2"));
   assert(Object.isFrozen(context));
   assert.equal(context.commander, view.unit("u1"));
   assert.equal(context.stationed, true);
-  assert.equal(recruitmentContext(view, "u1", "hex-0013-23f615dae8"), null);
+  assert.equal(recruitmentContext(view, "u1", "0,2"), null);
 });
 
 // The command facade forwards calls while omitting controller reads and mutation access.
 test("Command facade forwards calls without exposing reads", async () => {
   const { live, view } = viewFixture();
-  const context = required(recruitmentContext(view, null, "hex-0013-23f615dae8"));
+  const context = required(recruitmentContext(view, null, "0,2"));
   const chosen: string[] = [];
   const controller = {
     game: live,
@@ -181,18 +178,18 @@ test("Command facade forwards calls without exposing reads", async () => {
   assert(Object.isFrozen(commands));
   for (const read of ["game", "canUndo", "recruitmentContext"])
     assert.equal(read in commands, false);
-  commands.choose("hex-0738-f0cce97107");
-  assert.deepEqual(chosen, ["hex-0738-f0cce97107"]);
+  commands.choose("3,1");
+  assert.deepEqual(chosen, ["3,1"]);
 });
 
 // Compile-time contract checks are intentionally never executed.
 function enforceViewContract(published: BattleView, operations: BattleCommands): void {
   // @ts-expect-error Published games cannot execute engine commands.
-  published.game.move("u3", "hex-0738-f0cce97107");
+  published.game.move("u3", "3,1");
   // @ts-expect-error Unit health is read-only.
   required(published.game.unit("u2")).hp = 0;
   // @ts-expect-error Tile ownership is read-only.
-  required(published.game.tile("hex-0738-f0cce97107")).owner = "enemy";
+  required(published.game.tile("3,1")).owner = "enemy";
   // @ts-expect-error Gold is read-only.
   published.game.gold.player = 0;
   // @ts-expect-error Published arrays cannot be modified.
@@ -200,7 +197,7 @@ function enforceViewContract(published: BattleView, operations: BattleCommands):
   // @ts-expect-error Published logs cannot be modified.
   published.game.log[0] = "Changed";
   // @ts-expect-error Query maps expose only read operations to TypeScript callers.
-  published.game.reachable("u3").set("hex-0001-7256137ec1", 1);
+  published.game.reachable("u3").set("0,0", 1);
   // @ts-expect-error Undo availability belongs to the published view.
   operations.canUndo();
   // @ts-expect-error Components cannot reach the mutable engine through commands.

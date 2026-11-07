@@ -65,13 +65,13 @@ pub struct Sides<T> {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Capturable tile ownership at a phase boundary.
 pub struct Ownership {
-    pub tile: String,
+    pub tile: Hex,
     pub owner: Option<String>,
 }
 /// Tile identities are shared once per chapter; boundary snapshots copy only owners.
 #[derive(Clone, Debug)]
 pub struct OwnershipSnapshot {
-    pub tiles: Arc<Vec<String>>,
+    pub tiles: Arc<Vec<Hex>>,
     pub owners: Vec<Option<String>>,
 }
 impl Serialize for OwnershipSnapshot {
@@ -79,7 +79,7 @@ impl Serialize for OwnershipSnapshot {
         use serde::ser::SerializeSeq;
         #[derive(Serialize)]
         struct Entry<'a> {
-            tile: &'a str,
+            tile: &'a Hex,
             owner: Option<&'a str>,
         }
         let mut sequence = serializer.serialize_seq(Some(self.owners.len()))?;

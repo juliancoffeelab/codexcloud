@@ -1,5 +1,5 @@
 //! Authored scenario lighting, loaded and validated with the Rust catalog.
-use super::{ConditionRule, Event, Tile};
+use super::{ConditionRule, Event, Hex, Tile};
 use serde::{Deserialize, Serialize};
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -170,5 +170,5 @@ impl BattlefieldLighting {
 )]
 pub struct BattlefieldPresentation {
     pub lighting: BattlefieldLighting,
-    pub fog: Vec<String>,
+    pub fog: Vec<Hex>,
 }

@@ -368,3 +368,21 @@ Storage conversion changes the former `"recovery"` discriminator to `"flash"`.
 Conversions from earlier envelopes also produce the current flash-save shape.
 The native save envelope remains version 37; the IndexedDB database schema starts
 at version 1, independently of save-envelope and storage-source versions.
+
+## Version 38: coordinate addresses and named landmarks
+
+The 37→38 conversion replaces opaque cell IDs with addresses derived from the
+saved cells' own coordinates. Frozen map-scoped data adds optional landmark names.
+Unit positions, ground items, fog/light memory, event marks, pending spawn areas
+and backward changes retain their positions. The two Ashen seal event/flag IDs
+receive readable names while preserving completion and flag histories. Surface
+facts, treasury, units, turn, RNG and checkpoint metadata remain unchanged.
+
+## Version 39: structured geometric addresses
+
+The 38→39 conversion changes resolved unit, item and mark positions and pending
+spawn areas into `{col,row}` objects. Authored fog/light targets use explicit
+`{location}` or `{hex}` references. Backward changes undergo the same conversion
+using their state paths, including single-field patches and whole records. Text,
+cell presentation keys, IDs, flag histories and all other resolved facts retain
+their meaning. IndexedDB storage and history-index versions are unchanged.

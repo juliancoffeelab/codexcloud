@@ -1,3 +1,4 @@
+import { cellKey, sameHex } from "../game/hex";
 import type { GameSnapshot, Unit } from "../game/types";
 import type { Immutable } from "../game/immutable";
 import type { MotionKind } from "../presentation/motion";
@@ -14,19 +15,19 @@ export function describeChanges(before: Immutable<GameSnapshot>, after: Immutabl
   for (const unit of after.units) {
     const previous = previousUnits.get(unit.id);
     if (!previous) {
-      tileEffects.set(unit.tile, "recruit");
+      tileEffects.set(cellKey(unit.tile), "recruit");
       recruited ||= unit.moved && unit.attacked;
     } else {
       if (previous.type !== unit.type) {
         advanced = true;
-        tileEffects.set(unit.tile, "recruit");
+        tileEffects.set(cellKey(unit.tile), "recruit");
       }
-      if (previous.tile !== unit.tile) {
-        tileEffects.set(unit.tile, "move");
+      if (!sameHex(previous.tile, unit.tile)) {
+        tileEffects.set(cellKey(unit.tile), "move");
         movedUnit = unit;
       }
       if (previous.hp > unit.hp) {
-        tileEffects.set(unit.tile, "attack");
+        tileEffects.set(cellKey(unit.tile), "attack");
         attacked = true;
       }
     }
@@ -34,7 +35,7 @@ export function describeChanges(before: Immutable<GameSnapshot>, after: Immutabl
   }
 
   for (const fallen of previousUnits.values()) {
-    tileEffects.set(fallen.tile, "attack");
+    tileEffects.set(cellKey(fallen.tile), "attack");
     attacked = true;
   }
 

@@ -11,19 +11,70 @@ use serde::{Deserialize, Serialize};
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct UnitId(pub u32);
-/// Authored tile identifier.
+/// A geometric cell address. Never an authored location name.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct Hex {
+    pub col: i32,
+    pub row: i32,
+}
+impl Hex {
+    pub const fn new(col: i32, row: i32) -> Self {
+        Self { col, row }
+    }
+}
+impl std::fmt::Display for Hex {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{},{}", self.col, self.row)
+    }
+}
+/// An explicit authored reference. Runtime positions never use this type.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub enum TileRef {
+    Location(String),
+    Hex(Hex),
+    Binding(TileBinding),
+}
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub enum TileBinding {
+    Unit,
+    Mark,
+    Death,
+}
+impl std::fmt::Display for TileRef {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{self:?}")
+    }
+}
+/// Geometric command address, separate from authored references.
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(transparent)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
-pub struct TileId(pub String);
-impl From<&str> for TileId {
-    fn from(value: &str) -> Self {
-        Self(value.to_owned())
+pub struct TileId(pub Hex);
+impl From<Hex> for TileId {
+    fn from(value: Hex) -> Self {
+        Self(value)
     }
 }
 /// Authored unittype identifier.

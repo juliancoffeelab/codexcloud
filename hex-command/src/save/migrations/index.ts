@@ -1,3 +1,5 @@
+import { migrateV38ToV39 } from "./v38-to-v39";
+import { migrateV37ToV38 } from "./v37-to-v38";
 import { migrateV36ToV37 } from "./v36-to-v37";
 import { migrateV35ToV36 } from "./v35-to-v36";
 import { migrateV34ToV35 } from "./v34-to-v35";
@@ -55,6 +57,12 @@ export function migrateSave(input: unknown): MigrationResult {
     throw new Error(`Unsupported save version ${String(value.version)}`);
   while (value.version !== SAVE_VERSION) {
     switch (value.version) {
+      case 38:
+        value = migrateV38ToV39(value);
+        break;
+      case 37:
+        value = migrateV37ToV38(value);
+        break;
       case 36:
         value = migrateV36ToV37(value);
         break;

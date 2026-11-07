@@ -1,3 +1,4 @@
+import { cellKey } from "../game/hex";
 import Phaser from "phaser";
 import type { PhaserBattlefieldFrame } from "./phaser-battlefield";
 import type { BattleCommands } from "../controller/view";
@@ -77,8 +78,8 @@ export function installBattlefieldInput(
   let inspectionView: PhaserBattlefieldFrame["view"] | undefined;
   const inspectionTiles = (view: PhaserBattlefieldFrame["view"]) =>
     [
-      view.game.unit(view.selected)?.tile,
-      view.game.unit(view.target)?.tile,
+      cellKey(view.game.unit(view.selected)?.tile),
+      cellKey(view.game.unit(view.target)?.tile),
       view.inspectedTile,
     ].flatMap((id) => (id ? [id] : []));
   let surfaceWidth = 0,
@@ -585,7 +586,7 @@ export function installBattlefieldInput(
       const visibleUnit =
         occupant &&
         !(
-          frame.view.game.presentation.fog.includes(tile.id) &&
+          frame.view.game.presentation.fog.map((hex) => cellKey(hex)).includes(tile.id) &&
           occupant.faction.relation === "hostile"
         );
       const radius = visibleUnit ? battlefieldSpriteSize / 2 : 30.625;
@@ -631,7 +632,7 @@ export function installBattlefieldInput(
       const commander = commanderGame.units.find(
         (unit) => unit.role === "leader" && commanderGame!.faction(unit.id).controllable,
       );
-      commanderTile = frame.tiles.find((tile) => tile.id === commander?.tile);
+      commanderTile = frame.tiles.find((tile) => tile.id === cellKey(commander?.tile));
     }
     let hint: number | null = null;
     if (commanderTile && viewportWidth > 0 && viewportHeight > 0) {

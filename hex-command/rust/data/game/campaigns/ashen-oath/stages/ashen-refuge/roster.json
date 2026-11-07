@@ -24,19 +24,31 @@
           "type": "necromancer",
           "role": "leader",
           "character": "orin",
-          "tile": "hex-0059-de5770129b"
+          "tile": {
+            "col": 1,
+            "row": 4
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0891-b20a50ef8c"
+          "tile": {
+            "col": 5,
+            "row": 4
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0412-0c9247ea66"
+          "tile": {
+            "col": 2,
+            "row": 5
+          }
         },
         {
           "type": "bonearcher",
-          "tile": "hex-0408-edbae05560"
+          "tile": {
+            "col": 2,
+            "row": 3
+          }
         }
       ],
       "relations": {
@@ -64,19 +76,31 @@
           "type": "commander",
           "role": "leader",
           "character": "dain",
-          "tile": "hex-1019-90a76d4969"
+          "tile": {
+            "col": 9,
+            "row": 4
+          }
         },
         {
           "type": "soldier",
-          "tile": "hex-0952-a980626eda"
+          "tile": {
+            "col": 7,
+            "row": 3
+          }
         },
         {
           "type": "warden",
-          "tile": "hex-0956-1372406dd4"
+          "tile": {
+            "col": 7,
+            "row": 5
+          }
         },
         {
           "type": "adept",
-          "tile": "hex-0987-a19805d204"
+          "tile": {
+            "col": 8,
+            "row": 4
+          }
         }
       ],
       "relations": {

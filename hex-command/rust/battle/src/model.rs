@@ -126,7 +126,7 @@ pub struct DispatchUpdate {
 #[cfg_attr(feature = "wasm", tsify(hashmap_as_object))]
 pub struct BoardInspection {
     pub costs: std::collections::BTreeMap<String, std::collections::BTreeMap<String, Option<u16>>>,
-    pub neighbors: std::collections::BTreeMap<String, Vec<String>>,
+    pub neighbors: std::collections::BTreeMap<String, Vec<Hex>>,
 }
 
 /// One resolved exchange for presentation; never retained in a checkpoint.
@@ -238,7 +238,7 @@ pub struct UnitActions {
     pub reachable: Vec<ReachableTile>,
     pub attacks: Vec<AttackDetails>,
     pub promotions: Vec<String>,
-    pub recruitment: std::collections::BTreeMap<String, Vec<String>>,
+    pub recruitment: std::collections::BTreeMap<String, Vec<Hex>>,
 }
 
 /// Detached rule queries, computed in Rust once per state publication.

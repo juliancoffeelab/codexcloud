@@ -35,7 +35,10 @@
         {
           "type": "commander",
           "role": "leader",
-          "tile": "hex-0063-800f0fce01"
+          "tile": {
+            "col": 1,
+            "row": 8
+          }
         }
       ],
       "relations": {
@@ -77,7 +80,10 @@
         {
           "type": "commander",
           "role": "leader",
-          "tile": "hex-0159-d132ac6136"
+          "tile": {
+            "col": 12,
+            "row": 8
+          }
         }
       ],
       "relations": {

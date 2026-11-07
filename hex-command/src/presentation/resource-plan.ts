@@ -1,3 +1,4 @@
+import type { TileRef } from "../../rust/pkg/hex_command";
 import type { BattleView } from "../controller/view";
 import { artFrameKey, itemFrame } from "./art";
 import { TYPES, unitWeapons } from "../game/catalog";
@@ -134,13 +135,13 @@ export function resourcePlan(view: BattleView) {
         height: image.height,
       });
     };
-    const changes: { tile: string; terrain: TerrainType }[] = [];
+    const changes: { tile: TileRef; terrain: TerrainType }[] = [];
     const visit = (value: unknown): void => {
       if (Array.isArray(value)) return value.forEach(visit);
       if (!value || typeof value !== "object") return;
       for (const [key, child] of Object.entries(value)) {
         if (key === "setTerrain") {
-          changes.push(child as { tile: string; terrain: TerrainType });
+          changes.push(child as { tile: TileRef; terrain: TerrainType });
         } else visit(child);
       }
     };
@@ -148,7 +149,11 @@ export function resourcePlan(view: BattleView) {
     if (!changes.length) return;
     tiles.forEach(frame);
     for (const change of changes) {
-      const literal = tiles.find((t) => t.id === change.tile);
+      const literal = tiles.find((t) =>
+        "hex" in change.tile
+          ? t.col === change.tile.hex.col && t.row === change.tile.hex.row
+          : "location" in change.tile && t.location === change.tile.location,
+      );
       for (const tile of literal ? [literal] : tiles)
         frame({
           ...tile,

@@ -94,7 +94,7 @@ test("Terrain floor, arrangement and orientation resolve directly to complete PN
   for (const terrain of ["road", "forest", "ford", "village"] as const) {
     for (const floor of Object.keys(pixelFloorColors)) {
       const tile = {
-        id: "hex-0763-c9e627d16e",
+        id: "3,4",
         col: 3,
         row: 4,
         terrain,
@@ -137,7 +137,7 @@ test("Prop arrangements stay stable per map tile and vary between locations", ()
     assert(choices.size > 1);
   }
   assert.deepEqual(
-    terrainProps({ terrain: "road", id: "hex-0034-53333de58a", connections: ["e", "w"] }, "sample"),
+    terrainProps({ terrain: "road", id: "1,1", connections: ["e", "w"] }, "sample"),
     [],
   );
 });
@@ -150,7 +150,7 @@ test("Directional props select arrangements for the same orientation as the base
   ] as const) {
     const tile = {
       terrain: "ford" as const,
-      id: "hex-0845-9e38fcb018",
+      id: "4,2",
       connections: [...connections],
     };
     const frame = terrainArtNames(tile)[0]!;

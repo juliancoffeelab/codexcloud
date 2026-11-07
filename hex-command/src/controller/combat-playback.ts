@@ -1,3 +1,4 @@
+import { cellKey } from "../game/hex";
 import type { BattleView } from "./view";
 import type { GameView } from "../game/view";
 import { immutable } from "../game/immutable";
@@ -54,7 +55,8 @@ export class CombatPlayback {
       ...before.game,
       units,
       unit: (id: string | null | undefined) => units.find((unit) => unit.id === id),
-      at: (tile: string | null | undefined) => units.find((unit) => unit.tile === tile),
+      at: (tile: Parameters<GameView["at"]>[0]) =>
+        tile == null ? undefined : units.find((unit) => cellKey(unit.tile) === cellKey(tile)),
     });
     this.frame = { ...this.frame, shown: shown + 1, game };
     this.publish(this.frame, true);

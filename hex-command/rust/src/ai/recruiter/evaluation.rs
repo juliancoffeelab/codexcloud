@@ -698,6 +698,7 @@ fn marginal_healing(demand: f64, covered: i32, candidate: i32) -> f64 {
 mod tests {
     use super::*;
     use crate::ai::recruiter::fixtures;
+    use crate::data::Hex;
     #[test]
     fn movement_controls_are_optional_separate_and_share_a_cap() {
         let (mut rules, target, enemy) = thorn_fixture();
@@ -711,8 +712,8 @@ mod tests {
                 .unwrap()
                 .role = Some(Role::Leader);
         });
-        let a = game.site("hex-0059-de5770129b");
-        let b = game.site("hex-0987-a19805d204");
+        let a = game.site(&Hex::new(1, 4));
+        let b = game.site(&Hex::new(8, 4));
         fixtures::units(&mut game, |units| {
             units.iter_mut().find(|u| u.id == target_id).unwrap().tile = a;
         });
@@ -830,9 +831,9 @@ mod tests {
         fixtures::units(&mut game, |units| {
             units.clear();
         });
-        let tile = game.site("hex-0859-8a12839c45");
+        let tile = game.site(&Hex::new(4, 4));
         let target = fixtures::add(&mut game, target, Side::Player, tile);
-        let tile = game.site("hex-0891-b20a50ef8c");
+        let tile = game.site(&Hex::new(5, 4));
         let enemy = fixtures::add(&mut game, enemy, Side::Enemy, tile);
         (game, target, enemy)
     }
@@ -928,12 +929,12 @@ mod tests {
         // Situational never reads the hidden future recruit pool.
         assert_eq!(anticipated.2, neutral.2);
         for site in [
-            "hex-0888-a99d723b63",
-            "hex-0920-dffef5f471",
-            "hex-0923-ec307e92cf",
-            "hex-0924-5cbf18fdd5",
+            Hex::new(5, 3),
+            Hex::new(6, 3),
+            Hex::new(6, 4),
+            Hex::new(6, 5),
         ] {
-            let tile = game.site(site);
+            let tile = game.site(&site);
             fixtures::add(&mut game, observed, Side::Enemy, tile);
         }
         let observed_with_prior = assess(&game);
@@ -964,7 +965,7 @@ mod tests {
                     .role = Some(Role::Leader);
             });
             if aura {
-                let tile = game.site("hex-0763-c9e627d16e");
+                let tile = game.site(&Hex::new(3, 4));
                 fixtures::add(&mut game, target, Side::Player, tile);
             }
             game.configure_arena(Some([vec![], vec![melee]]), None);
@@ -1004,11 +1005,11 @@ mod tests {
                 tile.terrain = "plains".into();
             }
         });
-        let tile = game.site("hex-0763-c9e627d16e");
+        let tile = game.site(&Hex::new(3, 4));
         fixtures::terrain(&mut game, tile, forest);
         let mut health = Vec::new();
-        for site in ["hex-0059-de5770129b", "hex-0987-a19805d204"] {
-            let tile = game.site(site);
+        for site in [Hex::new(1, 4), Hex::new(8, 4)] {
+            let tile = game.site(&site);
             let index = game.index(enemy).unwrap();
             fixtures::units(&mut game, |units| {
                 units[index].tile = tile;
@@ -1170,19 +1171,19 @@ mod tests {
                 tile.owner = Some("player".into());
             }
         });
-        let ally_tile = game.site("hex-0763-c9e627d16e");
+        let ally_tile = game.site(&Hex::new(3, 4));
         let ally_kind = game.unit(target).unwrap().kind;
         fixtures::add(&mut game, ally_kind, Side::Player, ally_tile);
-        let other_tile = game.site("hex-0988-17596734c1");
+        let other_tile = game.site(&Hex::new(8, 5));
         let other = fixtures::add(&mut game, other, Side::Enemy, other_tile);
         let mut samples = Vec::new();
         for (first, second) in [
-            ("hex-0891-b20a50ef8c", "hex-0988-17596734c1"),
-            ("hex-0987-a19805d204", "hex-0892-f4d2ec09d8"),
-            ("hex-0984-954a3b23d6", "hex-0988-17596734c1"),
+            (Hex::new(5, 4), Hex::new(8, 5)),
+            (Hex::new(8, 4), Hex::new(5, 5)),
+            (Hex::new(8, 3), Hex::new(8, 5)),
         ] {
             for (id, site) in [(enemy, first), (other, second)] {
-                let tile = game.site(site);
+                let tile = game.site(&site);
                 let index = game.index(id).unwrap();
                 fixtures::units(&mut game, |units| {
                     units[index].tile = tile;
@@ -1211,8 +1212,8 @@ mod tests {
                 rules.units[target].r#move = movement;
                 rules.units[target].healing = healing;
                 let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
-                let start = game.site("hex-0059-de5770129b");
-                let end = game.site("hex-0987-a19805d204");
+                let start = game.site(&Hex::new(1, 4));
+                let end = game.site(&Hex::new(8, 4));
                 fixtures::units(&mut game, |units| {
                     for unit in units {
                         unit.tile = if unit.id == target_id { start } else { end };
@@ -1220,7 +1221,7 @@ mod tests {
                 });
                 assert_eq!(game.unit(enemy_id).unwrap().tile, end);
                 if healing > 0 {
-                    let tile = game.site("hex-0923-ec307e92cf");
+                    let tile = game.site(&Hex::new(6, 4));
                     let ally = fixtures::add(&mut game, target, Side::Player, tile);
                     fixtures::units(&mut game, |units| {
                         units.iter_mut().find(|u| u.id == ally).unwrap().hp = 50;

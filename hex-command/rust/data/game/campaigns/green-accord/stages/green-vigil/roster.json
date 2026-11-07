@@ -24,21 +24,33 @@
           "type": "wildkeeper",
           "role": "leader",
           "character": "alder",
-          "tile": "hex-0411-28541665a4"
+          "tile": {
+            "col": 2,
+            "row": 4
+          }
         },
         {
           "type": "thorncaller",
           "character": "lark",
-          "tile": "hex-0408-edbae05560"
+          "tile": {
+            "col": 2,
+            "row": 3
+          }
         },
         {
           "type": "boar",
-          "tile": "hex-0923-ec307e92cf"
+          "tile": {
+            "col": 6,
+            "row": 4
+          }
         },
         {
           "type": "warden",
           "character": "dain",
-          "tile": "hex-0892-f4d2ec09d8"
+          "tile": {
+            "col": 5,
+            "row": 5
+          }
         }
       ],
       "relations": {
@@ -66,19 +78,31 @@
           "type": "commander",
           "role": "leader",
           "character": "overseer",
-          "tile": "hex-0123-676aacd816"
+          "tile": {
+            "col": 11,
+            "row": 4
+          }
         },
         {
           "type": "warden",
-          "tile": "hex-1005-f091a76e9d"
+          "tile": {
+            "col": 9,
+            "row": 2
+          }
         },
         {
           "type": "archer",
-          "tile": "hex-0987-a19805d204"
+          "tile": {
+            "col": 8,
+            "row": 4
+          }
         },
         {
           "type": "soldier",
-          "tile": "hex-0093-9d334ed661"
+          "tile": {
+            "col": 10,
+            "row": 6
+          }
         }
       ],
       "relations": {

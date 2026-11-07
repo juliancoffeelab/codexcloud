@@ -33,30 +33,48 @@
           "type": "tidekeeper",
           "role": "leader",
           "character": "mira",
-          "tile": "hex-0045-b0e58b1f93"
+          "tile": {
+            "col": 1,
+            "row": 2
+          }
         },
         {
           "type": "reefguard",
-          "tile": "hex-0397-b042f4a1af"
+          "tile": {
+            "col": 2,
+            "row": 2
+          }
         },
         {
           "type": "harpooner",
-          "tile": "hex-0056-2e6c8414fc"
+          "tile": {
+            "col": 1,
+            "row": 3
+          }
         },
         {
           "type": "wavemender",
-          "tile": "hex-0408-edbae05560"
+          "tile": {
+            "col": 2,
+            "row": 3
+          }
         },
         {
           "type": "harpooner",
           "role": "courier",
           "character": "edda",
-          "tile": "hex-0760-150b2b6a75"
+          "tile": {
+            "col": 3,
+            "row": 3
+          }
         },
         {
           "type": "spearman",
           "character": "tomas",
-          "tile": "hex-0845-9e38fcb018"
+          "tile": {
+            "col": 4,
+            "row": 2
+          }
         }
       ],
       "relations": {
@@ -87,19 +105,31 @@
           "type": "commander",
           "role": "leader",
           "character": "cale",
-          "tile": "hex-0077-1134d4f5cb"
+          "tile": {
+            "col": 10,
+            "row": 2
+          }
         },
         {
           "type": "soldier",
-          "tile": "hex-0987-a19805d204"
+          "tile": {
+            "col": 8,
+            "row": 4
+          }
         },
         {
           "type": "archer",
-          "tile": "hex-0988-17596734c1"
+          "tile": {
+            "col": 8,
+            "row": 5
+          }
         },
         {
           "type": "spearman",
-          "tile": "hex-0941-278b487380"
+          "tile": {
+            "col": 7,
+            "row": 2
+          }
         }
       ],
       "relations": {

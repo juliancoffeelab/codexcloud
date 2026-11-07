@@ -1,10 +1,11 @@
 <script lang="ts">
+  import { cellKey } from "../game/hex";
   import type { BattleView } from "../controller/view";
   import ItemList from "./ItemList.svelte";
   let { view }: { view: BattleView } = $props();
   const items = $derived(
     view.game.groundItems
-      .filter((ground) => ground.tile === view.inspectedTile)
+      .filter((ground) => cellKey(ground.tile) === view.inspectedTile)
       .map((ground) => ground.item),
   );
 </script>

@@ -1,3 +1,4 @@
+import type { Hex, TileRef } from "../../rust/pkg/hex_command";
 import type { CombatStrike, HpForecast, UnitRole } from "../../rust/pkg/hex_command";
 
 export type Side = "player" | "enemy";
@@ -167,6 +168,7 @@ export interface Coordinates {
 }
 export type HexDirection = "e" | "se" | "sw" | "w" | "nw" | "ne";
 export interface Tile extends Coordinates {
+  location?: string;
   id: string;
   terrain: TerrainType;
   owner: string | null;
@@ -190,7 +192,7 @@ export interface Unit {
   id: string;
   type: UnitType;
   side: Side;
-  tile: string;
+  tile: Hex;
   hp: number;
   moved: boolean;
   attacked: boolean;
@@ -275,7 +277,7 @@ export interface TerrainOverride extends Coordinates {
   light?: import("../../rust/pkg/hex_command").TileLight;
 }
 export interface StartingUnit {
-  tile: string;
+  tile: Hex;
   aiGroup?: string;
   type: UnitType;
   side: Side;
@@ -389,37 +391,19 @@ export interface DialogueLine {
   portrait: DialoguePortrait;
   text: string;
 }
-export type MissionGoal = (
-  | { kind: "escort"; label: string; tile: string }
-  | { kind: "escape"; label: string; tile: string }
-  | { kind: "control"; label: string; tiles: string[] }
-  | {
-      kind: "hold";
-      label: string;
-      tile: string;
-      turns: number;
-      earliestRound: number;
-      startEvent?: string;
-      companion?: string;
-      unitTypes?: string[];
-      once?: boolean;
-    }
-  | { kind: "vigil"; label: string; tile: string; turns: number; companion: string }
-  | { kind: "refuge"; label: string; tile: string; turns: number }
-  | { kind: "seal"; label: string; tiles: string[]; unitType?: UnitType }
-  | { kind: "event"; label: string; tile?: string; event: string }
-  | { kind: "defeat"; label: string }
-) & { visibleWhen?: import("../../rust/pkg/hex_command").Condition };
+/** Catalog goals use the generated Rust contract, including every authored target. */
+export type MissionGoal = import("../../rust/pkg/hex_command").Goal;
+
 export interface MissionEvent {
   id: string;
   recruitment?: Record<string, import("../../rust/pkg/hex_command").FactionRecruit[]>;
   spawn?: import("../../rust/pkg/hex_command").SpawnGroup;
   trigger:
     | { kind: "condition"; condition: import("../../rust/pkg/hex_command").Condition }
-    | { kind: "visit"; tile: string }
+    | { kind: "visit"; tile: TileRef }
     | { kind: "round"; round: number }
-    | { kind: "held"; tile: string; turns: number }
-    | { kind: "control"; tile: string; round?: number };
+    | { kind: "held"; tile: TileRef; turns: number }
+    | { kind: "control"; tile: TileRef; round?: number };
   requiresEvent?: string;
   unlessEvent?: string;
   beforeRound?: number;
@@ -445,7 +429,7 @@ export interface MissionDefinition {
   briefing: import("../../rust/pkg/hex_command").ConditionalText;
   debrief?: import("../../rust/pkg/hex_command").ConditionalText;
   requiredCompanions?: string[];
-  arrivals?: { character: string; tile: string }[];
+  arrivals?: { character: string; tile: Hex }[];
   hints: import("../../rust/pkg/hex_command").ConditionalHint[];
   goals: MissionGoal[];
   optionalGoals?: MissionGoal[];
@@ -454,7 +438,7 @@ export interface MissionDefinition {
   /** Occupying guards patrol their control objectives instead of raiding the starting camp. */
   defendObjectives?: boolean;
   /** An enemy leader guards this post and its immediate approaches; retreat remains free. */
-  enemyLeaderPost?: string;
+  enemyLeaderPost?: TileRef;
   intro: import("../../rust/pkg/hex_command").Speech[];
   victory: import("../../rust/pkg/hex_command").Speech[];
   events: MissionEvent[];

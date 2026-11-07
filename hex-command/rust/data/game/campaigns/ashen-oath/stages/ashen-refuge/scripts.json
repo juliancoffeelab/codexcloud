@@ -58,7 +58,9 @@
       "id": "medicine",
       "when": {
         "stand": {
-          "tile": "hex-0737-cb60354473",
+          "tile": {
+            "location": "medicine-cache"
+          },
           "side": "player",
           "through": true
         }
@@ -78,7 +80,9 @@
         "label": "Bring medicine to the villagers",
         "intent": {
           "goTo": {
-            "tile": "hex-0737-cb60354473",
+            "tile": {
+              "location": "medicine-cache"
+            },
             "side": "player"
           }
         },
@@ -87,7 +91,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0737-cb60354473"]
+          "tiles": [
+            {
+              "location": "medicine-cache"
+            }
+          ]
         }
       }
     },
@@ -103,7 +111,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0994-37e28411df",
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 1
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -115,7 +128,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-1022-0164b0319d",
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 7
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -141,7 +159,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-1016-9e0db09d3e",
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 3
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -161,7 +184,9 @@
         "all": [
           {
             "own": {
-              "tile": "hex-0891-b20a50ef8c",
+              "tile": {
+                "location": "refuge"
+              },
               "faction": "player",
               "turns": 6
             }
@@ -231,7 +256,9 @@
             "all": [
               {
                 "own": {
-                  "tile": "hex-0891-b20a50ef8c",
+                  "tile": {
+                    "location": "refuge"
+                  },
                   "faction": "player",
                   "turns": 5
                 }
@@ -296,7 +323,9 @@
         "label": "Defend the refuge until the villagers intervene",
         "intent": {
           "own": {
-            "tile": "hex-0891-b20a50ef8c",
+            "tile": {
+              "location": "refuge"
+            },
             "faction": "player",
             "turns": 6
           }
@@ -306,7 +335,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0891-b20a50ef8c"]
+          "tiles": [
+            {
+              "location": "refuge"
+            }
+          ]
         }
       }
     },
@@ -372,7 +405,7 @@
             {
               "speaker": "Village elder",
               "portrait": "worker",
-              "text": "The herbs will still save lives. Take these six coins. But after the bloodshed, medicine alone cannot stop the patrol’s battle with you."
+              "text": "The herbs will still save lives. Take these six coins. But after the bloodshed, medicine alone cannot stop the patrol\u2019s battle with you."
             }
           ]
         },

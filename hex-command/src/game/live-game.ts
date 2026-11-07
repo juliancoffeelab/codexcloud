@@ -1,3 +1,4 @@
+import { cellKey, type Hex } from "./hex";
 import { TERRAIN } from "./catalog";
 import type {
   BattleInspection,
@@ -111,7 +112,7 @@ export class LiveGame {
       this.tilesById = new Map(
         (view.state.tiles as unknown as Tile[]).map((tile) => [tile.id, tile]),
       );
-    // Authored string IDs cross into the existing presentation vocabulary here.
+    // Cell keys belong to presentation; native positions remain structured hexes.
     this.state = view.state as unknown as GameState;
     const previousPresentation = this.resolvedPresentation;
     this.resolvedPresentation = immutable({
@@ -149,21 +150,21 @@ export class LiveGame {
         ];
       }),
     );
-    const fog = new Set(this.presentation.fog);
+    const fog = new Set(this.presentation.fog.map((hex) => cellKey(hex)));
     const previousUnits = this.unitsById;
     this.visibleUnits = this.state.units
-      .filter((unit) => this.choices(unit.id)?.faction.controllable || !fog.has(unit.tile))
+      .filter((unit) => this.choices(unit.id)?.faction.controllable || !fog.has(cellKey(unit.tile)))
       .map((source) => {
         const name = this.choices(source.id)?.name;
         const unit = name ? { ...source, name } : source;
         const previous = previousUnits?.get(unit.id);
         return previous && sameData(previous, unit) ? previous : unit;
       });
-    this.visibleGroundItems = this.state.groundItems.filter((item) => !fog.has(item.tile));
+    this.visibleGroundItems = this.state.groundItems.filter((item) => !fog.has(cellKey(item.tile)));
     this.unitsById = new Map(this.visibleUnits.map((unit) => [unit.id, unit]));
     this.unitsByTile = new Map();
     for (const unit of this.visibleUnits)
-      if (!this.unitsByTile.has(unit.tile)) this.unitsByTile.set(unit.tile, unit);
+      if (!this.unitsByTile.has(cellKey(unit.tile))) this.unitsByTile.set(cellKey(unit.tile), unit);
   }
   private dispatch(command: Immutable<Command>, expectedRevision?: number): void {
     const result = nativeValue(this.engine.dispatch(command, expectedRevision));
@@ -171,6 +172,11 @@ export class LiveGame {
     // Dispatch already owns the matching view. Reading it again resolves fog,
     // serializes and clones the complete battlefield a second time per action.
     this.refresh(result.view);
+  }
+  private cell(address: string | Readonly<Hex>): Hex {
+    const tile = this.tile(address);
+    if (!tile) throw new Error("Unknown hex");
+    return { col: tile.col, row: tile.row };
   }
   private id(id: string): number {
     if (!/^u[1-9]\d*$/.test(id)) throw new Error("Unknown unit.");
@@ -228,17 +234,17 @@ export class LiveGame {
   get lastCombat() {
     return this.state.lastCombat;
   }
-  tile(id: string | null | undefined): Tile | undefined {
-    return id == null ? undefined : this.tilesById.get(id);
+  tile(id: string | Readonly<Hex> | null | undefined): Tile | undefined {
+    return id == null ? undefined : this.tilesById.get(cellKey(id));
   }
   unit(id: string | null | undefined): Unit | undefined {
     return id == null ? undefined : this.unitsById.get(id);
   }
-  at(id: string | null | undefined): Unit | undefined {
-    return id == null ? undefined : this.unitsByTile.get(id);
+  at(id: string | Readonly<Hex> | null | undefined): Unit | undefined {
+    return id == null ? undefined : this.unitsByTile.get(cellKey(id));
   }
-  neighbors(id: string): Tile[] {
-    return (this.geometry.neighbors[id] ?? []).map((tile) => this.tile(tile)!);
+  neighbors(id: string | Readonly<Hex>): Tile[] {
+    return (this.geometry.neighbors[cellKey(id)] ?? []).map((tile) => this.tile(tile)!);
   }
   cost(unit: Pick<Unit, "type">, tile: Pick<Tile, "terrain">): number {
     return this.geometry.costs[unit.type]?.[tile.terrain] ?? Infinity;
@@ -247,7 +253,9 @@ export class LiveGame {
     return id == null ? undefined : this.inspectedUnits.get(id);
   }
   reachable(id: string | null | undefined): Map<string, number> {
-    return new Map(this.choices(id)?.reachable.map(({ tile, cost }) => [tile, cost]) ?? []);
+    return new Map(
+      this.choices(id)?.reachable.map(({ tile, cost }) => [cellKey(tile), cost]) ?? [],
+    );
   }
   targets(id: string | null | undefined): Unit[] {
     if (!this.unit(id) || this.unit(id)?.attacked || this.winner) return [];
@@ -299,8 +307,8 @@ export class LiveGame {
   income(faction: string): number {
     return this.inspection.income[faction] ?? 0;
   }
-  move(id: string, tile: string): Unit {
-    this.dispatch({ kind: "move", unit: this.id(id), tile });
+  move(id: string, tile: string | Readonly<Hex>): Unit {
+    this.dispatch({ kind: "move", unit: this.id(id), tile: this.cell(tile) });
     return this.unit(id)!;
   }
   attack(id: string, target: string, weapon?: string) {
@@ -308,8 +316,8 @@ export class LiveGame {
     if (!selected) throw new Error("That attack cannot reach this enemy.");
     this.dispatch({ kind: "attack", unit: this.id(id), target: this.id(target), weapon: selected });
   }
-  recruit(id: string, type: UnitType, tile: string): void {
-    this.dispatch({ kind: "recruit", unit: this.id(id), type, tile });
+  recruit(id: string, type: UnitType, tile: string | Readonly<Hex>): void {
+    this.dispatch({ kind: "recruit", unit: this.id(id), type, tile: this.cell(tile) });
   }
   advanceUnit(id: string, type: UnitType): void {
     this.dispatch({ kind: "advance", unit: this.id(id), type });
@@ -437,7 +445,7 @@ export class LiveGame {
       unit: detached.unit.bind(detached),
       faction: detached.faction.bind(detached),
       at: detached.at.bind(detached),
-      neighbors: (id: string) => immutable(detached.neighbors(id)),
+      neighbors: (id: string | Readonly<Hex>) => immutable(detached.neighbors(id)),
       cost: detached.cost.bind(detached),
       reachable: detached.reachable.bind(detached),
       targets: (id: string | null | undefined) => immutable(detached.targets(id)),

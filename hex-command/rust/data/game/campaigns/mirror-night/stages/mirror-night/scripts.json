@@ -11,7 +11,9 @@
         {
           "createMark": {
             "type": "death-light",
-            "tile": "$event.deathTile",
+            "tile": {
+              "binding": "death"
+            },
             "light": {
               "radius": 62,
               "power": 0.75,

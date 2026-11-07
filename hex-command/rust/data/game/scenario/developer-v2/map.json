@@ -5,7 +5,6 @@
   "rows": 32,
   "tiles": [
     {
-      "id": "hex-0001-7256137ec1",
       "col": 0,
       "row": 0,
       "terrain": "plains",
@@ -13,7 +12,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0033-68054f369c",
       "col": 1,
       "row": 0,
       "terrain": "forest",
@@ -21,7 +19,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0385-50a8d92c35",
       "col": 2,
       "row": 0,
       "terrain": "hill",
@@ -29,7 +26,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0737-cb60354473",
       "col": 3,
       "row": 0,
       "terrain": "water",
@@ -37,7 +33,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0833-1f9dd812f2",
       "col": 4,
       "row": 0,
       "terrain": "bridge",
@@ -46,7 +41,6 @@
       "connections": ["e", "w"]
     },
     {
-      "id": "hex-0865-d8854a2b06",
       "col": 5,
       "row": 0,
       "terrain": "ford",
@@ -55,7 +49,6 @@
       "connections": ["e", "w"]
     },
     {
-      "id": "hex-0897-9650de66eb",
       "col": 6,
       "row": 0,
       "terrain": "plains",
@@ -63,7 +56,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0929-0ac4230de7",
       "col": 7,
       "row": 0,
       "terrain": "house",
@@ -71,7 +63,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0961-40ae417c00",
       "col": 8,
       "row": 0,
       "terrain": "plains",
@@ -79,7 +70,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0993-de1c375c60",
       "col": 9,
       "row": 0,
       "terrain": "landing",
@@ -88,7 +78,6 @@
       "connections": ["w"]
     },
     {
-      "id": "hex-0065-086c5dd6fd",
       "col": 10,
       "row": 0,
       "terrain": "water",
@@ -96,7 +85,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0097-540f6cc533",
       "col": 11,
       "row": 0,
       "terrain": "landing",
@@ -105,7 +93,6 @@
       "connections": ["e"]
     },
     {
-      "id": "hex-0129-7c8659226d",
       "col": 12,
       "row": 0,
       "terrain": "plains",
@@ -113,7 +100,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0161-381529c4ee",
       "col": 13,
       "row": 0,
       "terrain": "plains",
@@ -121,7 +107,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0193-576f4de2bd",
       "col": 14,
       "row": 0,
       "terrain": "plains",
@@ -129,7 +114,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0225-bf82384d54",
       "col": 15,
       "row": 0,
       "terrain": "ferry",
@@ -138,7 +122,6 @@
       "connections": ["w"]
     },
     {
-      "id": "hex-0257-3bd9c27839",
       "col": 16,
       "row": 0,
       "terrain": "water",
@@ -146,7 +129,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0289-0646356c88",
       "col": 17,
       "row": 0,
       "terrain": "ferry",
@@ -155,7 +137,6 @@
       "connections": ["e"]
     },
     {
-      "id": "hex-0321-e9fba8e4ed",
       "col": 18,
       "row": 0,
       "terrain": "plains",
@@ -163,7 +144,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0353-aa67c822ea",
       "col": 19,
       "row": 0,
       "terrain": "plains",
@@ -171,7 +151,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0417-8aeb23018e",
       "col": 20,
       "row": 0,
       "terrain": "mountain",
@@ -179,7 +158,6 @@
       "floor": "mountain-rock"
     },
     {
-      "id": "hex-0449-4294fb0077",
       "col": 21,
       "row": 0,
       "terrain": "cave",
@@ -187,7 +165,6 @@
       "floor": "mountain-rock"
     },
     {
-      "id": "hex-0481-f8a5012e90",
       "col": 22,
       "row": 0,
       "terrain": "burned-village",
@@ -195,7 +172,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0513-07d632cd78",
       "col": 23,
       "row": 0,
       "terrain": "plains",
@@ -203,7 +179,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0545-95bcd5e0b2",
       "col": 24,
       "row": 0,
       "terrain": "signpost",
@@ -212,7 +187,6 @@
       "connections": ["e", "w"]
     },
     {
-      "id": "hex-0577-d174d72813",
       "col": 25,
       "row": 0,
       "terrain": "castle-wall",
@@ -221,7 +195,6 @@
       "walls": ["e", "se", "sw", "w", "nw", "ne"]
     },
     {
-      "id": "hex-0609-8fc6d81060",
       "col": 26,
       "row": 0,
       "terrain": "castle-wall",
@@ -230,7 +203,6 @@
       "walls": ["sw", "nw"]
     },
     {
-      "id": "hex-0641-fa7ea3f3ae",
       "col": 27,
       "row": 0,
       "terrain": "castle-bell",
@@ -239,7 +211,6 @@
       "walls": ["e", "se", "sw", "w", "nw", "ne"]
     },
     {
-      "id": "hex-0673-f2fc5cfabb",
       "col": 28,
       "row": 0,
       "terrain": "plains",
@@ -247,7 +218,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0705-05a3528e4c",
       "col": 29,
       "row": 0,
       "terrain": "plains",
@@ -255,7 +225,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0769-d2b715bcc8",
       "col": 30,
       "row": 0,
       "terrain": "plains",
@@ -263,7 +232,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0801-80e0deb85e",
       "col": 31,
       "row": 0,
       "terrain": "plains",
@@ -271,7 +239,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0002-ea8b98a12d",
       "col": 0,
       "row": 1,
       "terrain": "village",
@@ -280,7 +247,6 @@
       "connections": []
     },
     {
-      "id": "hex-0034-53333de58a",
       "col": 1,
       "row": 1,
       "terrain": "keep",
@@ -288,7 +254,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0386-9dcf2ec127",
       "col": 2,
       "row": 1,
       "terrain": "marsh",
@@ -296,7 +261,6 @@
       "floor": "marsh"
     },
     {
-      "id": "hex-0738-f0cce97107",
       "col": 3,
       "row": 1,
       "terrain": "ruins",
@@ -304,7 +268,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0834-6c48b28b5d",
       "col": 4,
       "row": 1,
       "terrain": "fort",
@@ -312,7 +275,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0866-c54da0213d",
       "col": 5,
       "row": 1,
       "terrain": "grove",
@@ -320,7 +282,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0898-eed2a38c9d",
       "col": 6,
       "row": 1,
       "terrain": "plains",
@@ -328,7 +289,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0930-69fa019ca8",
       "col": 7,
       "row": 1,
       "terrain": "plains",
@@ -336,7 +296,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0962-2fdf7fc34b",
       "col": 8,
       "row": 1,
       "terrain": "plains",
@@ -344,7 +303,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0994-37e28411df",
       "col": 9,
       "row": 1,
       "terrain": "plains",
@@ -352,7 +310,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0066-be276ac684",
       "col": 10,
       "row": 1,
       "terrain": "plains",
@@ -360,7 +317,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0098-b1326129be",
       "col": 11,
       "row": 1,
       "terrain": "plains",
@@ -368,7 +324,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0130-cb5c0e2a48",
       "col": 12,
       "row": 1,
       "terrain": "plains",
@@ -376,7 +331,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0162-beb4690177",
       "col": 13,
       "row": 1,
       "terrain": "plains",
@@ -384,7 +338,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0194-b86f7c62fc",
       "col": 14,
       "row": 1,
       "terrain": "plains",
@@ -392,7 +345,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0226-aa2c4ca8b2",
       "col": 15,
       "row": 1,
       "terrain": "plains",
@@ -400,7 +352,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0258-2862bbdfdc",
       "col": 16,
       "row": 1,
       "terrain": "plains",
@@ -408,7 +359,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0290-accfd45172",
       "col": 17,
       "row": 1,
       "terrain": "plains",
@@ -416,7 +366,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0322-5b3a6ef014",
       "col": 18,
       "row": 1,
       "terrain": "plains",
@@ -424,7 +373,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0354-a86203c1c6",
       "col": 19,
       "row": 1,
       "terrain": "plains",
@@ -432,7 +380,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0418-934a2789d2",
       "col": 20,
       "row": 1,
       "terrain": "plains",
@@ -440,7 +387,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0450-f625e67f04",
       "col": 21,
       "row": 1,
       "terrain": "plains",
@@ -448,7 +394,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0482-3cdf4edd99",
       "col": 22,
       "row": 1,
       "terrain": "plains",
@@ -456,7 +401,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0514-b19f5da2d3",
       "col": 23,
       "row": 1,
       "terrain": "plains",
@@ -464,7 +408,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0546-8fe446e806",
       "col": 24,
       "row": 1,
       "terrain": "monastery",
@@ -472,7 +415,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0578-ec14117f5f",
       "col": 25,
       "row": 1,
       "terrain": "church",
@@ -480,7 +422,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0610-c0d713b6e0",
       "col": 26,
       "row": 1,
       "terrain": "graveyard",
@@ -488,7 +429,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0642-acc4372765",
       "col": 27,
       "row": 1,
       "terrain": "ritual-star",
@@ -496,7 +436,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0674-d568325e84",
       "col": 28,
       "row": 1,
       "terrain": "ritual-spent",
@@ -504,7 +443,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0706-f7d1aa954f",
       "col": 29,
       "row": 1,
       "terrain": "plains",
@@ -512,7 +450,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0770-f6014f9faa",
       "col": 30,
       "row": 1,
       "terrain": "plains",
@@ -520,7 +457,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0802-d309d576fa",
       "col": 31,
       "row": 1,
       "terrain": "plains",
@@ -528,7 +464,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0013-23f615dae8",
       "col": 0,
       "row": 2,
       "terrain": "road",
@@ -537,7 +472,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0045-b0e58b1f93",
       "col": 1,
       "row": 2,
       "terrain": "road",
@@ -546,7 +480,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0397-b042f4a1af",
       "col": 2,
       "row": 2,
       "terrain": "road",
@@ -555,7 +488,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0749-0fa856724a",
       "col": 3,
       "row": 2,
       "terrain": "road",
@@ -564,7 +496,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0845-9e38fcb018",
       "col": 4,
       "row": 2,
       "terrain": "road",
@@ -573,7 +504,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0877-678535c7d6",
       "col": 5,
       "row": 2,
       "terrain": "road",
@@ -582,7 +512,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0909-61c988dee7",
       "col": 6,
       "row": 2,
       "terrain": "plains",
@@ -590,7 +519,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0941-278b487380",
       "col": 7,
       "row": 2,
       "terrain": "plains",
@@ -598,7 +526,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0973-079cfc7b3c",
       "col": 8,
       "row": 2,
       "terrain": "road",
@@ -607,7 +534,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1005-f091a76e9d",
       "col": 9,
       "row": 2,
       "terrain": "road",
@@ -616,7 +542,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0077-1134d4f5cb",
       "col": 10,
       "row": 2,
       "terrain": "road",
@@ -625,7 +550,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0109-c0c2c6f13a",
       "col": 11,
       "row": 2,
       "terrain": "plains",
@@ -633,7 +557,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0141-c95b832274",
       "col": 12,
       "row": 2,
       "terrain": "plains",
@@ -641,7 +564,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0173-ba18cfe312",
       "col": 13,
       "row": 2,
       "terrain": "plains",
@@ -649,7 +571,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0205-020a5ceb25",
       "col": 14,
       "row": 2,
       "terrain": "plains",
@@ -657,7 +578,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0237-8a5ad13328",
       "col": 15,
       "row": 2,
       "terrain": "plains",
@@ -665,7 +585,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0269-3db2763bbd",
       "col": 16,
       "row": 2,
       "terrain": "plains",
@@ -673,7 +592,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0301-0e466e2256",
       "col": 17,
       "row": 2,
       "terrain": "plains",
@@ -681,7 +599,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0333-1049602cb1",
       "col": 18,
       "row": 2,
       "terrain": "plains",
@@ -689,7 +606,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0365-4dbf8fc966",
       "col": 19,
       "row": 2,
       "terrain": "plains",
@@ -697,7 +613,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0429-a7aefddb8b",
       "col": 20,
       "row": 2,
       "terrain": "plains",
@@ -705,7 +620,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0461-3b9a490160",
       "col": 21,
       "row": 2,
       "terrain": "plains",
@@ -713,7 +627,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0493-f5fb23fa04",
       "col": 22,
       "row": 2,
       "terrain": "plains",
@@ -721,7 +634,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0525-08e7ff9423",
       "col": 23,
       "row": 2,
       "terrain": "plains",
@@ -729,7 +641,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0557-446ed66da2",
       "col": 24,
       "row": 2,
       "terrain": "plains",
@@ -737,7 +648,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0589-293ee970c1",
       "col": 25,
       "row": 2,
       "terrain": "plains",
@@ -745,7 +655,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0621-5ae4e6dd08",
       "col": 26,
       "row": 2,
       "terrain": "plains",
@@ -753,7 +662,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0653-e86f318460",
       "col": 27,
       "row": 2,
       "terrain": "plains",
@@ -761,7 +669,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0685-7d43bc7b1e",
       "col": 28,
       "row": 2,
       "terrain": "plains",
@@ -769,7 +676,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0717-2e4746281c",
       "col": 29,
       "row": 2,
       "terrain": "plains",
@@ -777,7 +683,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0781-181958dd5d",
       "col": 30,
       "row": 2,
       "terrain": "plains",
@@ -785,7 +690,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0813-26cc44e0a1",
       "col": 31,
       "row": 2,
       "terrain": "plains",
@@ -793,7 +697,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0024-b598c83bd2",
       "col": 0,
       "row": 3,
       "terrain": "plains",
@@ -801,7 +704,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0056-2e6c8414fc",
       "col": 1,
       "row": 3,
       "terrain": "plains",
@@ -809,7 +711,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0408-edbae05560",
       "col": 2,
       "row": 3,
       "terrain": "road",
@@ -818,7 +719,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0760-150b2b6a75",
       "col": 3,
       "row": 3,
       "terrain": "plains",
@@ -826,7 +726,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0856-a2b6e60ea7",
       "col": 4,
       "row": 3,
       "terrain": "plains",
@@ -834,7 +733,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0888-a99d723b63",
       "col": 5,
       "row": 3,
       "terrain": "plains",
@@ -842,7 +740,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0920-dffef5f471",
       "col": 6,
       "row": 3,
       "terrain": "plains",
@@ -850,7 +747,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0952-a980626eda",
       "col": 7,
       "row": 3,
       "terrain": "road",
@@ -859,7 +755,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0984-954a3b23d6",
       "col": 8,
       "row": 3,
       "terrain": "plains",
@@ -867,7 +762,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1016-9e0db09d3e",
       "col": 9,
       "row": 3,
       "terrain": "plains",
@@ -875,7 +769,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0088-d3b4c2a321",
       "col": 10,
       "row": 3,
       "terrain": "road",
@@ -884,7 +777,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0120-1cceeb6609",
       "col": 11,
       "row": 3,
       "terrain": "plains",
@@ -892,7 +784,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0152-5fa472486b",
       "col": 12,
       "row": 3,
       "terrain": "plains",
@@ -900,7 +791,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0184-a8e8282394",
       "col": 13,
       "row": 3,
       "terrain": "plains",
@@ -908,7 +798,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0216-e97c8ffe68",
       "col": 14,
       "row": 3,
       "terrain": "plains",
@@ -916,7 +805,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0248-d63aa418aa",
       "col": 15,
       "row": 3,
       "terrain": "plains",
@@ -924,7 +812,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0280-b99109ea15",
       "col": 16,
       "row": 3,
       "terrain": "plains",
@@ -932,7 +819,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0312-5c692fb7e8",
       "col": 17,
       "row": 3,
       "terrain": "plains",
@@ -940,7 +826,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0344-484f72bf97",
       "col": 18,
       "row": 3,
       "terrain": "plains",
@@ -948,7 +833,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0376-4467b62a97",
       "col": 19,
       "row": 3,
       "terrain": "plains",
@@ -956,7 +840,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0440-32397e11cd",
       "col": 20,
       "row": 3,
       "terrain": "plains",
@@ -964,7 +847,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0472-a96d3ae453",
       "col": 21,
       "row": 3,
       "terrain": "plains",
@@ -972,7 +854,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0504-ff75c44ab3",
       "col": 22,
       "row": 3,
       "terrain": "plains",
@@ -980,7 +861,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0536-1dc6ad9f7b",
       "col": 23,
       "row": 3,
       "terrain": "plains",
@@ -988,7 +868,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0568-9ca98fb32f",
       "col": 24,
       "row": 3,
       "terrain": "plains",
@@ -996,7 +875,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0600-3de7070d7a",
       "col": 25,
       "row": 3,
       "terrain": "plains",
@@ -1004,7 +882,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0632-13bb171d67",
       "col": 26,
       "row": 3,
       "terrain": "plains",
@@ -1012,7 +889,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0664-c5eb2bcc5e",
       "col": 27,
       "row": 3,
       "terrain": "plains",
@@ -1020,7 +896,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0696-bc9537b9d3",
       "col": 28,
       "row": 3,
       "terrain": "plains",
@@ -1028,7 +903,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0728-8ae7b9ac0c",
       "col": 29,
       "row": 3,
       "terrain": "plains",
@@ -1036,7 +910,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0792-905555a7dd",
       "col": 30,
       "row": 3,
       "terrain": "plains",
@@ -1044,7 +917,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0824-4d8dfa455c",
       "col": 31,
       "row": 3,
       "terrain": "plains",
@@ -1052,7 +924,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0027-5828930a2c",
       "col": 0,
       "row": 4,
       "terrain": "plains",
@@ -1060,7 +931,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0059-de5770129b",
       "col": 1,
       "row": 4,
       "terrain": "plains",
@@ -1068,7 +938,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0411-28541665a4",
       "col": 2,
       "row": 4,
       "terrain": "road",
@@ -1077,7 +946,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0763-c9e627d16e",
       "col": 3,
       "row": 4,
       "terrain": "plains",
@@ -1085,7 +953,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0859-8a12839c45",
       "col": 4,
       "row": 4,
       "terrain": "plains",
@@ -1093,7 +960,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0891-b20a50ef8c",
       "col": 5,
       "row": 4,
       "terrain": "plains",
@@ -1101,7 +967,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0923-ec307e92cf",
       "col": 6,
       "row": 4,
       "terrain": "plains",
@@ -1109,7 +974,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0955-5859c768ff",
       "col": 7,
       "row": 4,
       "terrain": "road",
@@ -1118,7 +982,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0987-a19805d204",
       "col": 8,
       "row": 4,
       "terrain": "plains",
@@ -1126,7 +989,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1019-90a76d4969",
       "col": 9,
       "row": 4,
       "terrain": "plains",
@@ -1134,7 +996,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0091-76683d32ca",
       "col": 10,
       "row": 4,
       "terrain": "plains",
@@ -1142,7 +1003,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0123-676aacd816",
       "col": 11,
       "row": 4,
       "terrain": "road",
@@ -1151,7 +1011,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0155-5d3e2bd499",
       "col": 12,
       "row": 4,
       "terrain": "plains",
@@ -1159,7 +1018,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0187-8d8ab817b0",
       "col": 13,
       "row": 4,
       "terrain": "plains",
@@ -1167,7 +1025,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0219-ecce6200a2",
       "col": 14,
       "row": 4,
       "terrain": "plains",
@@ -1175,7 +1032,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0251-ac4b6cf907",
       "col": 15,
       "row": 4,
       "terrain": "plains",
@@ -1183,7 +1039,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0283-5270ee2fe5",
       "col": 16,
       "row": 4,
       "terrain": "plains",
@@ -1191,7 +1046,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0315-78c42b3a84",
       "col": 17,
       "row": 4,
       "terrain": "plains",
@@ -1199,7 +1053,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0347-806685278e",
       "col": 18,
       "row": 4,
       "terrain": "plains",
@@ -1207,7 +1060,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0379-fe6753e749",
       "col": 19,
       "row": 4,
       "terrain": "plains",
@@ -1215,7 +1067,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0443-b8175ddbc4",
       "col": 20,
       "row": 4,
       "terrain": "plains",
@@ -1223,7 +1074,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0475-533ea4fc56",
       "col": 21,
       "row": 4,
       "terrain": "plains",
@@ -1231,7 +1081,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0507-58cb41ca51",
       "col": 22,
       "row": 4,
       "terrain": "plains",
@@ -1239,7 +1088,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0539-3f961bf4b7",
       "col": 23,
       "row": 4,
       "terrain": "plains",
@@ -1247,7 +1095,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0571-c558e25411",
       "col": 24,
       "row": 4,
       "terrain": "plains",
@@ -1255,7 +1102,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0603-99a7db7b44",
       "col": 25,
       "row": 4,
       "terrain": "plains",
@@ -1263,7 +1109,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0635-d73be53038",
       "col": 26,
       "row": 4,
       "terrain": "plains",
@@ -1271,7 +1116,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0667-5e5592c44c",
       "col": 27,
       "row": 4,
       "terrain": "plains",
@@ -1279,7 +1123,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0699-45e20269ef",
       "col": 28,
       "row": 4,
       "terrain": "plains",
@@ -1287,7 +1130,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0731-29d123af0d",
       "col": 29,
       "row": 4,
       "terrain": "plains",
@@ -1295,7 +1137,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0795-b5d060da43",
       "col": 30,
       "row": 4,
       "terrain": "plains",
@@ -1303,7 +1144,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0827-2cb91d359b",
       "col": 31,
       "row": 4,
       "terrain": "plains",
@@ -1311,7 +1151,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0028-a81ab6c878",
       "col": 0,
       "row": 5,
       "terrain": "plains",
@@ -1319,7 +1158,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0060-946ce75068",
       "col": 1,
       "row": 5,
       "terrain": "plains",
@@ -1327,7 +1165,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0412-0c9247ea66",
       "col": 2,
       "row": 5,
       "terrain": "road",
@@ -1336,7 +1173,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0764-1e6853c01c",
       "col": 3,
       "row": 5,
       "terrain": "plains",
@@ -1344,7 +1180,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0860-3735600481",
       "col": 4,
       "row": 5,
       "terrain": "plains",
@@ -1352,7 +1187,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0892-f4d2ec09d8",
       "col": 5,
       "row": 5,
       "terrain": "plains",
@@ -1360,7 +1194,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0924-5cbf18fdd5",
       "col": 6,
       "row": 5,
       "terrain": "plains",
@@ -1368,7 +1201,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0956-1372406dd4",
       "col": 7,
       "row": 5,
       "terrain": "road",
@@ -1377,7 +1209,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0988-17596734c1",
       "col": 8,
       "row": 5,
       "terrain": "plains",
@@ -1385,7 +1216,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1020-0cc9631714",
       "col": 9,
       "row": 5,
       "terrain": "plains",
@@ -1393,7 +1223,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0092-2cbe4dcb7c",
       "col": 10,
       "row": 5,
       "terrain": "road",
@@ -1402,7 +1231,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0124-7838ad1797",
       "col": 11,
       "row": 5,
       "terrain": "plains",
@@ -1410,7 +1238,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0156-8ab8d06e5a",
       "col": 12,
       "row": 5,
       "terrain": "plains",
@@ -1418,7 +1245,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0188-58d896051f",
       "col": 13,
       "row": 5,
       "terrain": "plains",
@@ -1426,7 +1252,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0220-71856b5fe2",
       "col": 14,
       "row": 5,
       "terrain": "plains",
@@ -1434,7 +1259,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0252-5c08da56f2",
       "col": 15,
       "row": 5,
       "terrain": "plains",
@@ -1442,7 +1266,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0284-919549e3bc",
       "col": 16,
       "row": 5,
       "terrain": "plains",
@@ -1450,7 +1273,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0316-e66cc1373e",
       "col": 17,
       "row": 5,
       "terrain": "plains",
@@ -1458,7 +1280,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0348-aad6fc71ea",
       "col": 18,
       "row": 5,
       "terrain": "plains",
@@ -1466,7 +1287,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0380-71b0ab39e2",
       "col": 19,
       "row": 5,
       "terrain": "plains",
@@ -1474,7 +1294,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0444-7f9879166b",
       "col": 20,
       "row": 5,
       "terrain": "plains",
@@ -1482,7 +1301,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0476-aa57f89866",
       "col": 21,
       "row": 5,
       "terrain": "plains",
@@ -1490,7 +1308,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0508-ad32d05df3",
       "col": 22,
       "row": 5,
       "terrain": "plains",
@@ -1498,7 +1315,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0540-3febfe4206",
       "col": 23,
       "row": 5,
       "terrain": "plains",
@@ -1506,7 +1322,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0572-16f8762767",
       "col": 24,
       "row": 5,
       "terrain": "plains",
@@ -1514,7 +1329,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0604-d7dbe05039",
       "col": 25,
       "row": 5,
       "terrain": "plains",
@@ -1522,7 +1336,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0636-7c3af957ab",
       "col": 26,
       "row": 5,
       "terrain": "plains",
@@ -1530,7 +1343,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0668-d2669b131b",
       "col": 27,
       "row": 5,
       "terrain": "plains",
@@ -1538,7 +1350,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0700-2d6d9e62f0",
       "col": 28,
       "row": 5,
       "terrain": "plains",
@@ -1546,7 +1357,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0732-ea4e2aeb52",
       "col": 29,
       "row": 5,
       "terrain": "plains",
@@ -1554,7 +1364,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0796-520397eed6",
       "col": 30,
       "row": 5,
       "terrain": "plains",
@@ -1562,7 +1371,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0828-9e86e3ba36",
       "col": 31,
       "row": 5,
       "terrain": "plains",
@@ -1570,7 +1378,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0029-15d660627f",
       "col": 0,
       "row": 6,
       "terrain": "plains",
@@ -1578,7 +1385,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0061-365e46c4de",
       "col": 1,
       "row": 6,
       "terrain": "plains",
@@ -1586,7 +1392,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0413-a7f6b5f93d",
       "col": 2,
       "row": 6,
       "terrain": "plains",
@@ -1594,7 +1399,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0765-3a0bcc5d48",
       "col": 3,
       "row": 6,
       "terrain": "road",
@@ -1603,7 +1407,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0861-b81de56c08",
       "col": 4,
       "row": 6,
       "terrain": "plains",
@@ -1611,7 +1414,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0893-940b4e4db1",
       "col": 5,
       "row": 6,
       "terrain": "plains",
@@ -1619,7 +1421,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0925-815fb4de6a",
       "col": 6,
       "row": 6,
       "terrain": "plains",
@@ -1627,7 +1428,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0957-c94afbbfa1",
       "col": 7,
       "row": 6,
       "terrain": "plains",
@@ -1635,7 +1435,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0989-f27f4a3764",
       "col": 8,
       "row": 6,
       "terrain": "road",
@@ -1644,7 +1443,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1021-41d4e1cc9b",
       "col": 9,
       "row": 6,
       "terrain": "road",
@@ -1653,7 +1451,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0093-9d334ed661",
       "col": 10,
       "row": 6,
       "terrain": "road",
@@ -1662,7 +1459,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0125-7bcb954eb7",
       "col": 11,
       "row": 6,
       "terrain": "plains",
@@ -1670,7 +1466,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0157-85cb4b44b0",
       "col": 12,
       "row": 6,
       "terrain": "plains",
@@ -1678,7 +1473,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0189-ef2f157224",
       "col": 13,
       "row": 6,
       "terrain": "plains",
@@ -1686,7 +1480,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0221-de4fa51c64",
       "col": 14,
       "row": 6,
       "terrain": "plains",
@@ -1694,7 +1487,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0253-f447b7e61e",
       "col": 15,
       "row": 6,
       "terrain": "plains",
@@ -1702,7 +1494,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0285-49166a1e1d",
       "col": 16,
       "row": 6,
       "terrain": "plains",
@@ -1710,7 +1501,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0317-021b2dc36e",
       "col": 17,
       "row": 6,
       "terrain": "plains",
@@ -1718,7 +1508,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0349-81ea4642c3",
       "col": 18,
       "row": 6,
       "terrain": "plains",
@@ -1726,7 +1515,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0381-44c4fac61a",
       "col": 19,
       "row": 6,
       "terrain": "plains",
@@ -1734,7 +1522,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0445-7a5ae04ae9",
       "col": 20,
       "row": 6,
       "terrain": "plains",
@@ -1742,7 +1529,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0477-0b5144e7b1",
       "col": 21,
       "row": 6,
       "terrain": "plains",
@@ -1750,7 +1536,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0509-8c38d5d34a",
       "col": 22,
       "row": 6,
       "terrain": "plains",
@@ -1758,7 +1543,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0541-039f504f5c",
       "col": 23,
       "row": 6,
       "terrain": "plains",
@@ -1766,7 +1550,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0573-adbbb67ced",
       "col": 24,
       "row": 6,
       "terrain": "plains",
@@ -1774,7 +1557,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0605-a1a50188de",
       "col": 25,
       "row": 6,
       "terrain": "plains",
@@ -1782,7 +1564,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0637-f209faacbf",
       "col": 26,
       "row": 6,
       "terrain": "plains",
@@ -1790,7 +1571,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0669-cc26831b61",
       "col": 27,
       "row": 6,
       "terrain": "plains",
@@ -1798,7 +1578,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0701-7201530fa9",
       "col": 28,
       "row": 6,
       "terrain": "plains",
@@ -1806,7 +1585,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0733-977fcdc9d2",
       "col": 29,
       "row": 6,
       "terrain": "plains",
@@ -1814,7 +1592,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0797-53f9001ae0",
       "col": 30,
       "row": 6,
       "terrain": "plains",
@@ -1822,7 +1599,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0829-7d01b8c15b",
       "col": 31,
       "row": 6,
       "terrain": "plains",
@@ -1830,7 +1606,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0030-0a7169bf92",
       "col": 0,
       "row": 7,
       "terrain": "plains",
@@ -1838,7 +1613,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0062-bb3c3143b5",
       "col": 1,
       "row": 7,
       "terrain": "plains",
@@ -1846,7 +1620,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0414-7d6a56c9b3",
       "col": 2,
       "row": 7,
       "terrain": "plains",
@@ -1854,7 +1627,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0766-4907292e1d",
       "col": 3,
       "row": 7,
       "terrain": "plains",
@@ -1862,7 +1634,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0862-3ea2b77194",
       "col": 4,
       "row": 7,
       "terrain": "plains",
@@ -1870,7 +1641,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0894-59c2dceed8",
       "col": 5,
       "row": 7,
       "terrain": "plains",
@@ -1878,7 +1648,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0926-0e03033d23",
       "col": 6,
       "row": 7,
       "terrain": "plains",
@@ -1886,7 +1655,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0958-45e861932f",
       "col": 7,
       "row": 7,
       "terrain": "plains",
@@ -1894,7 +1662,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0990-b0c69351ef",
       "col": 8,
       "row": 7,
       "terrain": "plains",
@@ -1902,7 +1669,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1022-0164b0319d",
       "col": 9,
       "row": 7,
       "terrain": "plains",
@@ -1910,7 +1676,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0094-9cab0ab0d2",
       "col": 10,
       "row": 7,
       "terrain": "plains",
@@ -1918,7 +1683,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0126-1b9b97e69c",
       "col": 11,
       "row": 7,
       "terrain": "plains",
@@ -1926,7 +1690,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0158-2325c06ef6",
       "col": 12,
       "row": 7,
       "terrain": "plains",
@@ -1934,7 +1697,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0190-2e619349a3",
       "col": 13,
       "row": 7,
       "terrain": "plains",
@@ -1942,7 +1704,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0222-38c4b50445",
       "col": 14,
       "row": 7,
       "terrain": "plains",
@@ -1950,7 +1711,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0254-415f24444c",
       "col": 15,
       "row": 7,
       "terrain": "plains",
@@ -1958,7 +1718,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0286-57919573c2",
       "col": 16,
       "row": 7,
       "terrain": "plains",
@@ -1966,7 +1725,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0318-011d721365",
       "col": 17,
       "row": 7,
       "terrain": "plains",
@@ -1974,7 +1732,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0350-448d0ca7b6",
       "col": 18,
       "row": 7,
       "terrain": "plains",
@@ -1982,7 +1739,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0382-b14d136f5e",
       "col": 19,
       "row": 7,
       "terrain": "plains",
@@ -1990,7 +1746,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0446-9439e63570",
       "col": 20,
       "row": 7,
       "terrain": "plains",
@@ -1998,7 +1753,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0478-3a669794ba",
       "col": 21,
       "row": 7,
       "terrain": "plains",
@@ -2006,7 +1760,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0510-a8d9467b46",
       "col": 22,
       "row": 7,
       "terrain": "plains",
@@ -2014,7 +1767,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0542-012bc2012d",
       "col": 23,
       "row": 7,
       "terrain": "plains",
@@ -2022,7 +1774,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0574-b845634c28",
       "col": 24,
       "row": 7,
       "terrain": "plains",
@@ -2030,7 +1781,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0606-f8d642b72e",
       "col": 25,
       "row": 7,
       "terrain": "plains",
@@ -2038,7 +1788,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0638-d4e3a37e3f",
       "col": 26,
       "row": 7,
       "terrain": "plains",
@@ -2046,7 +1795,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0670-3f6cc7677d",
       "col": 27,
       "row": 7,
       "terrain": "plains",
@@ -2054,7 +1802,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0702-086a5ac363",
       "col": 28,
       "row": 7,
       "terrain": "plains",
@@ -2062,7 +1809,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0734-b1a5022828",
       "col": 29,
       "row": 7,
       "terrain": "plains",
@@ -2070,7 +1816,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0798-98f64faec4",
       "col": 30,
       "row": 7,
       "terrain": "plains",
@@ -2078,7 +1823,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0830-77c554aa8a",
       "col": 31,
       "row": 7,
       "terrain": "plains",
@@ -2086,7 +1830,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0031-ae6a776b34",
       "col": 0,
       "row": 8,
       "terrain": "plains",
@@ -2094,7 +1837,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0063-800f0fce01",
       "col": 1,
       "row": 8,
       "terrain": "road",
@@ -2103,7 +1845,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0415-b41f9070d5",
       "col": 2,
       "row": 8,
       "terrain": "bridge",
@@ -2112,7 +1853,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0767-3b53c1c4da",
       "col": 3,
       "row": 8,
       "terrain": "road",
@@ -2121,7 +1861,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0863-f5faa8d578",
       "col": 4,
       "row": 8,
       "terrain": "road",
@@ -2130,7 +1869,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0895-10e4ec4d94",
       "col": 5,
       "row": 8,
       "terrain": "ford",
@@ -2139,7 +1877,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0927-02b39c9b8e",
       "col": 6,
       "row": 8,
       "terrain": "plains",
@@ -2147,7 +1884,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0959-77a6a62a36",
       "col": 7,
       "row": 8,
       "terrain": "plains",
@@ -2155,7 +1891,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0991-65cb6c3674",
       "col": 8,
       "row": 8,
       "terrain": "plains",
@@ -2163,7 +1898,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1023-f2f1852ae2",
       "col": 9,
       "row": 8,
       "terrain": "plains",
@@ -2171,7 +1905,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0095-8f095f9e93",
       "col": 10,
       "row": 8,
       "terrain": "plains",
@@ -2179,7 +1912,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0127-849459c3b2",
       "col": 11,
       "row": 8,
       "terrain": "plains",
@@ -2187,7 +1919,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0159-d132ac6136",
       "col": 12,
       "row": 8,
       "terrain": "plains",
@@ -2195,7 +1926,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0191-245d1573b9",
       "col": 13,
       "row": 8,
       "terrain": "plains",
@@ -2203,7 +1933,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0223-33a9629ed8",
       "col": 14,
       "row": 8,
       "terrain": "plains",
@@ -2211,7 +1940,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0255-c493068084",
       "col": 15,
       "row": 8,
       "terrain": "plains",
@@ -2219,7 +1947,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0287-ea07c321d3",
       "col": 16,
       "row": 8,
       "terrain": "plains",
@@ -2227,7 +1954,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0319-08df480e03",
       "col": 17,
       "row": 8,
       "terrain": "plains",
@@ -2235,7 +1961,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0351-a9a9e23b4b",
       "col": 18,
       "row": 8,
       "terrain": "plains",
@@ -2243,7 +1968,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0383-47e390fa8b",
       "col": 19,
       "row": 8,
       "terrain": "plains",
@@ -2251,7 +1975,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0447-7c44ee2e5d",
       "col": 20,
       "row": 8,
       "terrain": "plains",
@@ -2259,7 +1982,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0479-222abcd467",
       "col": 21,
       "row": 8,
       "terrain": "plains",
@@ -2267,7 +1989,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0511-f2412123e1",
       "col": 22,
       "row": 8,
       "terrain": "plains",
@@ -2275,7 +1996,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0543-1a35f808f0",
       "col": 23,
       "row": 8,
       "terrain": "plains",
@@ -2283,7 +2003,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0575-b307beee07",
       "col": 24,
       "row": 8,
       "terrain": "plains",
@@ -2291,7 +2010,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0607-51c5f2d125",
       "col": 25,
       "row": 8,
       "terrain": "plains",
@@ -2299,7 +2017,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0639-52d332b697",
       "col": 26,
       "row": 8,
       "terrain": "plains",
@@ -2307,7 +2024,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0671-df3b3da226",
       "col": 27,
       "row": 8,
       "terrain": "plains",
@@ -2315,7 +2031,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0703-42afaf9b6f",
       "col": 28,
       "row": 8,
       "terrain": "plains",
@@ -2323,7 +2038,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0735-0931d34ea3",
       "col": 29,
       "row": 8,
       "terrain": "plains",
@@ -2331,7 +2045,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0799-759443202c",
       "col": 30,
       "row": 8,
       "terrain": "plains",
@@ -2339,7 +2052,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0831-0f3626c326",
       "col": 31,
       "row": 8,
       "terrain": "plains",
@@ -2347,7 +2059,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0032-885bfd5174",
       "col": 0,
       "row": 9,
       "terrain": "plains",
@@ -2355,7 +2066,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0064-f0696e660a",
       "col": 1,
       "row": 9,
       "terrain": "road",
@@ -2364,7 +2074,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0416-499b3d4ebc",
       "col": 2,
       "row": 9,
       "terrain": "road",
@@ -2373,7 +2082,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0768-7e23d46daa",
       "col": 3,
       "row": 9,
       "terrain": "road",
@@ -2382,7 +2090,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0864-a20aeacbbc",
       "col": 4,
       "row": 9,
       "terrain": "plains",
@@ -2390,7 +2097,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0896-7050ad5a1a",
       "col": 5,
       "row": 9,
       "terrain": "road",
@@ -2399,7 +2105,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0928-d045e196f8",
       "col": 6,
       "row": 9,
       "terrain": "plains",
@@ -2407,7 +2112,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0960-d0f39b7308",
       "col": 7,
       "row": 9,
       "terrain": "plains",
@@ -2415,7 +2119,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0992-f53867adc7",
       "col": 8,
       "row": 9,
       "terrain": "road",
@@ -2424,7 +2127,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1024-1f392012be",
       "col": 9,
       "row": 9,
       "terrain": "bridge",
@@ -2433,7 +2135,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0096-c02cbc4fed",
       "col": 10,
       "row": 9,
       "terrain": "road",
@@ -2442,7 +2143,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0128-bfe9f9622b",
       "col": 11,
       "row": 9,
       "terrain": "plains",
@@ -2450,7 +2150,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0160-1ee1cb508b",
       "col": 12,
       "row": 9,
       "terrain": "plains",
@@ -2458,7 +2157,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0192-0239378fea",
       "col": 13,
       "row": 9,
       "terrain": "plains",
@@ -2466,7 +2164,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0224-a0ee2a8828",
       "col": 14,
       "row": 9,
       "terrain": "plains",
@@ -2474,7 +2171,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0256-aaa4fcb236",
       "col": 15,
       "row": 9,
       "terrain": "plains",
@@ -2482,7 +2178,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0288-395fc17fc4",
       "col": 16,
       "row": 9,
       "terrain": "plains",
@@ -2490,7 +2185,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0320-a99b12320e",
       "col": 17,
       "row": 9,
       "terrain": "plains",
@@ -2498,7 +2192,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0352-1f3e270f14",
       "col": 18,
       "row": 9,
       "terrain": "plains",
@@ -2506,7 +2199,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0384-f7415670d2",
       "col": 19,
       "row": 9,
       "terrain": "plains",
@@ -2514,7 +2206,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0448-5d21ff344e",
       "col": 20,
       "row": 9,
       "terrain": "plains",
@@ -2522,7 +2213,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0480-fd9239f7cf",
       "col": 21,
       "row": 9,
       "terrain": "plains",
@@ -2530,7 +2220,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0512-0e26cd32a1",
       "col": 22,
       "row": 9,
       "terrain": "plains",
@@ -2538,7 +2227,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0544-5be4d1e46c",
       "col": 23,
       "row": 9,
       "terrain": "plains",
@@ -2546,7 +2234,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0576-3367dfe9d5",
       "col": 24,
       "row": 9,
       "terrain": "plains",
@@ -2554,7 +2241,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0608-38dfaebf8f",
       "col": 25,
       "row": 9,
       "terrain": "plains",
@@ -2562,7 +2248,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0640-ed9b60a64d",
       "col": 26,
       "row": 9,
       "terrain": "plains",
@@ -2570,7 +2255,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0672-2ef7945423",
       "col": 27,
       "row": 9,
       "terrain": "plains",
@@ -2578,7 +2262,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0704-9acbecccac",
       "col": 28,
       "row": 9,
       "terrain": "plains",
@@ -2586,7 +2269,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0736-6c838740a4",
       "col": 29,
       "row": 9,
       "terrain": "plains",
@@ -2594,7 +2276,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0800-f8a44ad8d2",
       "col": 30,
       "row": 9,
       "terrain": "plains",
@@ -2602,7 +2283,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0832-e1b62c57b4",
       "col": 31,
       "row": 9,
       "terrain": "plains",
@@ -2610,7 +2290,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0003-09573364f8",
       "col": 0,
       "row": 10,
       "terrain": "plains",
@@ -2618,7 +2297,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0035-897537cb8f",
       "col": 1,
       "row": 10,
       "terrain": "plains",
@@ -2626,7 +2304,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0387-b2259d2fb3",
       "col": 2,
       "row": 10,
       "terrain": "bridge",
@@ -2635,7 +2312,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0739-14062b312d",
       "col": 3,
       "row": 10,
       "terrain": "plains",
@@ -2643,7 +2319,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0835-42aa3f9842",
       "col": 4,
       "row": 10,
       "terrain": "plains",
@@ -2651,7 +2326,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0867-1772ad8e2e",
       "col": 5,
       "row": 10,
       "terrain": "ford",
@@ -2660,7 +2334,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0899-ad0a9f843c",
       "col": 6,
       "row": 10,
       "terrain": "plains",
@@ -2668,7 +2341,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0931-48cdae2442",
       "col": 7,
       "row": 10,
       "terrain": "plains",
@@ -2676,7 +2348,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0963-08c4eb0b71",
       "col": 8,
       "row": 10,
       "terrain": "bridge",
@@ -2685,7 +2356,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0995-3a3f0aa41b",
       "col": 9,
       "row": 10,
       "terrain": "water",
@@ -2693,7 +2363,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0067-b949671d54",
       "col": 10,
       "row": 10,
       "terrain": "water",
@@ -2701,7 +2370,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0099-667f9d3977",
       "col": 11,
       "row": 10,
       "terrain": "bridge",
@@ -2710,7 +2378,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0131-cdff51851c",
       "col": 12,
       "row": 10,
       "terrain": "plains",
@@ -2718,7 +2385,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0163-569c36574f",
       "col": 13,
       "row": 10,
       "terrain": "plains",
@@ -2726,7 +2392,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0195-bc763373a2",
       "col": 14,
       "row": 10,
       "terrain": "plains",
@@ -2734,7 +2399,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0227-684dbbaf70",
       "col": 15,
       "row": 10,
       "terrain": "plains",
@@ -2742,7 +2406,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0259-f8efd33d85",
       "col": 16,
       "row": 10,
       "terrain": "plains",
@@ -2750,7 +2413,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0291-9fd69564c9",
       "col": 17,
       "row": 10,
       "terrain": "plains",
@@ -2758,7 +2420,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0323-cf4945b8a9",
       "col": 18,
       "row": 10,
       "terrain": "plains",
@@ -2766,7 +2427,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0355-3f598bb97a",
       "col": 19,
       "row": 10,
       "terrain": "plains",
@@ -2774,7 +2434,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0419-e68afd5c35",
       "col": 20,
       "row": 10,
       "terrain": "plains",
@@ -2782,7 +2441,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0451-47e114eddf",
       "col": 21,
       "row": 10,
       "terrain": "plains",
@@ -2790,7 +2448,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0483-8ac4d9c206",
       "col": 22,
       "row": 10,
       "terrain": "plains",
@@ -2798,7 +2455,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0515-4b47e24381",
       "col": 23,
       "row": 10,
       "terrain": "plains",
@@ -2806,7 +2462,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0547-306e04c955",
       "col": 24,
       "row": 10,
       "terrain": "plains",
@@ -2814,7 +2469,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0579-e20854bafc",
       "col": 25,
       "row": 10,
       "terrain": "plains",
@@ -2822,7 +2476,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0611-f655cec759",
       "col": 26,
       "row": 10,
       "terrain": "plains",
@@ -2830,7 +2483,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0643-856edcf890",
       "col": 27,
       "row": 10,
       "terrain": "plains",
@@ -2838,7 +2490,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0675-9865848d8a",
       "col": 28,
       "row": 10,
       "terrain": "plains",
@@ -2846,7 +2497,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0707-4268a85e35",
       "col": 29,
       "row": 10,
       "terrain": "plains",
@@ -2854,7 +2504,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0771-76b44a122b",
       "col": 30,
       "row": 10,
       "terrain": "plains",
@@ -2862,7 +2511,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0803-d91c4eb1dc",
       "col": 31,
       "row": 10,
       "terrain": "plains",
@@ -2870,7 +2518,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0004-0bcf36e139",
       "col": 0,
       "row": 11,
       "terrain": "plains",
@@ -2878,7 +2525,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0036-49a79b212e",
       "col": 1,
       "row": 11,
       "terrain": "road",
@@ -2887,7 +2533,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0388-54b62ebacb",
       "col": 2,
       "row": 11,
       "terrain": "plains",
@@ -2895,7 +2540,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0740-ffb5eaebdf",
       "col": 3,
       "row": 11,
       "terrain": "plains",
@@ -2903,7 +2547,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0836-42950299de",
       "col": 4,
       "row": 11,
       "terrain": "road",
@@ -2912,7 +2555,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0868-0e4e37203a",
       "col": 5,
       "row": 11,
       "terrain": "plains",
@@ -2920,7 +2562,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0900-78380433d3",
       "col": 6,
       "row": 11,
       "terrain": "plains",
@@ -2928,7 +2569,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0932-13617d9242",
       "col": 7,
       "row": 11,
       "terrain": "road",
@@ -2937,7 +2577,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0964-716120f6be",
       "col": 8,
       "row": 11,
       "terrain": "water",
@@ -2945,7 +2584,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0996-b7584a42f0",
       "col": 9,
       "row": 11,
       "terrain": "water",
@@ -2953,7 +2591,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0068-9e63bb6de4",
       "col": 10,
       "row": 11,
       "terrain": "water",
@@ -2961,7 +2598,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0100-91773deff8",
       "col": 11,
       "row": 11,
       "terrain": "road",
@@ -2970,7 +2606,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0132-b4813872a6",
       "col": 12,
       "row": 11,
       "terrain": "plains",
@@ -2978,7 +2613,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0164-be922a1a81",
       "col": 13,
       "row": 11,
       "terrain": "plains",
@@ -2986,7 +2620,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0196-e5b512d671",
       "col": 14,
       "row": 11,
       "terrain": "plains",
@@ -2994,7 +2627,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0228-bcfecd1fa8",
       "col": 15,
       "row": 11,
       "terrain": "plains",
@@ -3002,7 +2634,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0260-9c8ae4f458",
       "col": 16,
       "row": 11,
       "terrain": "plains",
@@ -3010,7 +2641,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0292-189617d5fd",
       "col": 17,
       "row": 11,
       "terrain": "plains",
@@ -3018,7 +2648,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0324-d7a99edd37",
       "col": 18,
       "row": 11,
       "terrain": "plains",
@@ -3026,7 +2655,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0356-9c41a8c3a3",
       "col": 19,
       "row": 11,
       "terrain": "plains",
@@ -3034,7 +2662,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0420-64e5601fe8",
       "col": 20,
       "row": 11,
       "terrain": "plains",
@@ -3042,7 +2669,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0452-b47b257c52",
       "col": 21,
       "row": 11,
       "terrain": "plains",
@@ -3050,7 +2676,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0484-f75014facf",
       "col": 22,
       "row": 11,
       "terrain": "plains",
@@ -3058,7 +2683,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0516-4675c56ffe",
       "col": 23,
       "row": 11,
       "terrain": "plains",
@@ -3066,7 +2690,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0548-9becdf63da",
       "col": 24,
       "row": 11,
       "terrain": "plains",
@@ -3074,7 +2697,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0580-53ad7b14db",
       "col": 25,
       "row": 11,
       "terrain": "plains",
@@ -3082,7 +2704,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0612-2643d83e4e",
       "col": 26,
       "row": 11,
       "terrain": "plains",
@@ -3090,7 +2711,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0644-3258ffcb23",
       "col": 27,
       "row": 11,
       "terrain": "plains",
@@ -3098,7 +2718,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0676-e1822c26ae",
       "col": 28,
       "row": 11,
       "terrain": "plains",
@@ -3106,7 +2725,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0708-e800a06d77",
       "col": 29,
       "row": 11,
       "terrain": "plains",
@@ -3114,7 +2732,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0772-890c92cd9e",
       "col": 30,
       "row": 11,
       "terrain": "plains",
@@ -3122,7 +2739,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0804-7cfe97c3fb",
       "col": 31,
       "row": 11,
       "terrain": "plains",
@@ -3130,7 +2746,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0005-57ac29f345",
       "col": 0,
       "row": 12,
       "terrain": "plains",
@@ -3138,7 +2753,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0037-481d368fff",
       "col": 1,
       "row": 12,
       "terrain": "plains",
@@ -3146,7 +2760,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0389-009ea39d70",
       "col": 2,
       "row": 12,
       "terrain": "bridge",
@@ -3155,7 +2768,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0741-bc963af854",
       "col": 3,
       "row": 12,
       "terrain": "plains",
@@ -3163,7 +2775,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0837-f0316a8e2e",
       "col": 4,
       "row": 12,
       "terrain": "plains",
@@ -3171,7 +2782,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0869-d398d64d73",
       "col": 5,
       "row": 12,
       "terrain": "ford",
@@ -3180,7 +2790,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0901-ec48d5047f",
       "col": 6,
       "row": 12,
       "terrain": "plains",
@@ -3188,7 +2797,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0933-28d5db641f",
       "col": 7,
       "row": 12,
       "terrain": "plains",
@@ -3196,7 +2804,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0965-a5cef1e31d",
       "col": 8,
       "row": 12,
       "terrain": "bridge",
@@ -3205,7 +2812,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0997-23ad2602f0",
       "col": 9,
       "row": 12,
       "terrain": "water",
@@ -3213,7 +2819,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0069-c2c36638a8",
       "col": 10,
       "row": 12,
       "terrain": "water",
@@ -3221,7 +2826,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0101-0061999dcd",
       "col": 11,
       "row": 12,
       "terrain": "bridge",
@@ -3230,7 +2834,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0133-99da47f9af",
       "col": 12,
       "row": 12,
       "terrain": "plains",
@@ -3238,7 +2841,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0165-7fc215ecc5",
       "col": 13,
       "row": 12,
       "terrain": "plains",
@@ -3246,7 +2848,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0197-08c243d1ee",
       "col": 14,
       "row": 12,
       "terrain": "plains",
@@ -3254,7 +2855,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0229-9ae8fd5e6f",
       "col": 15,
       "row": 12,
       "terrain": "plains",
@@ -3262,7 +2862,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0261-92bfd31fb2",
       "col": 16,
       "row": 12,
       "terrain": "plains",
@@ -3270,7 +2869,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0293-609fdbf2e9",
       "col": 17,
       "row": 12,
       "terrain": "plains",
@@ -3278,7 +2876,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0325-2c51359da3",
       "col": 18,
       "row": 12,
       "terrain": "plains",
@@ -3286,7 +2883,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0357-c68852e372",
       "col": 19,
       "row": 12,
       "terrain": "plains",
@@ -3294,7 +2890,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0421-9fea0a883b",
       "col": 20,
       "row": 12,
       "terrain": "plains",
@@ -3302,7 +2897,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0453-5d76a2bb0b",
       "col": 21,
       "row": 12,
       "terrain": "plains",
@@ -3310,7 +2904,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0485-6edc9d487c",
       "col": 22,
       "row": 12,
       "terrain": "plains",
@@ -3318,7 +2911,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0517-9c29fb9a37",
       "col": 23,
       "row": 12,
       "terrain": "plains",
@@ -3326,7 +2918,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0549-2373570a98",
       "col": 24,
       "row": 12,
       "terrain": "plains",
@@ -3334,7 +2925,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0581-996a7a51b5",
       "col": 25,
       "row": 12,
       "terrain": "plains",
@@ -3342,7 +2932,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0613-ad9d7ec380",
       "col": 26,
       "row": 12,
       "terrain": "plains",
@@ -3350,7 +2939,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0645-26cbbced71",
       "col": 27,
       "row": 12,
       "terrain": "plains",
@@ -3358,7 +2946,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0677-a3cd37d112",
       "col": 28,
       "row": 12,
       "terrain": "plains",
@@ -3366,7 +2953,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0709-518be593c9",
       "col": 29,
       "row": 12,
       "terrain": "plains",
@@ -3374,7 +2960,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0773-a2e42fbaa8",
       "col": 30,
       "row": 12,
       "terrain": "plains",
@@ -3382,7 +2967,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0805-d5c0018e53",
       "col": 31,
       "row": 12,
       "terrain": "plains",
@@ -3390,7 +2974,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0006-9d59bdc908",
       "col": 0,
       "row": 13,
       "terrain": "plains",
@@ -3398,7 +2981,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0038-764a820476",
       "col": 1,
       "row": 13,
       "terrain": "plains",
@@ -3406,7 +2988,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0390-91a94587ad",
       "col": 2,
       "row": 13,
       "terrain": "road",
@@ -3415,7 +2996,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0742-5ef24eb759",
       "col": 3,
       "row": 13,
       "terrain": "plains",
@@ -3423,7 +3003,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0838-470a0619e4",
       "col": 4,
       "row": 13,
       "terrain": "plains",
@@ -3431,7 +3010,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0870-d9d594c45e",
       "col": 5,
       "row": 13,
       "terrain": "road",
@@ -3440,7 +3018,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0902-826a3f2a10",
       "col": 6,
       "row": 13,
       "terrain": "plains",
@@ -3448,7 +3025,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0934-12d62c5dc5",
       "col": 7,
       "row": 13,
       "terrain": "plains",
@@ -3456,7 +3032,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0966-736422d47a",
       "col": 8,
       "row": 13,
       "terrain": "road",
@@ -3465,7 +3040,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0998-fd1378a678",
       "col": 9,
       "row": 13,
       "terrain": "bridge",
@@ -3474,7 +3048,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0070-6e8ca69657",
       "col": 10,
       "row": 13,
       "terrain": "road",
@@ -3483,7 +3056,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0102-20e64861a0",
       "col": 11,
       "row": 13,
       "terrain": "plains",
@@ -3491,7 +3063,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0134-f8a3eeb246",
       "col": 12,
       "row": 13,
       "terrain": "plains",
@@ -3499,7 +3070,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0166-5326f76b1c",
       "col": 13,
       "row": 13,
       "terrain": "plains",
@@ -3507,7 +3077,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0198-570bc25c83",
       "col": 14,
       "row": 13,
       "terrain": "plains",
@@ -3515,7 +3084,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0230-b7321b808c",
       "col": 15,
       "row": 13,
       "terrain": "plains",
@@ -3523,7 +3091,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0262-bd85bec024",
       "col": 16,
       "row": 13,
       "terrain": "plains",
@@ -3531,7 +3098,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0294-54a53a50f1",
       "col": 17,
       "row": 13,
       "terrain": "plains",
@@ -3539,7 +3105,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0326-dc47768c6c",
       "col": 18,
       "row": 13,
       "terrain": "plains",
@@ -3547,7 +3112,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0358-7f78f7b6ca",
       "col": 19,
       "row": 13,
       "terrain": "plains",
@@ -3555,7 +3119,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0422-6a48fe5f70",
       "col": 20,
       "row": 13,
       "terrain": "plains",
@@ -3563,7 +3126,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0454-20b394508c",
       "col": 21,
       "row": 13,
       "terrain": "plains",
@@ -3571,7 +3133,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0486-e4f11eae93",
       "col": 22,
       "row": 13,
       "terrain": "plains",
@@ -3579,7 +3140,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0518-36eb1a539d",
       "col": 23,
       "row": 13,
       "terrain": "plains",
@@ -3587,7 +3147,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0550-1b0bf4bf88",
       "col": 24,
       "row": 13,
       "terrain": "plains",
@@ -3595,7 +3154,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0582-630fae25c9",
       "col": 25,
       "row": 13,
       "terrain": "plains",
@@ -3603,7 +3161,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0614-f4d7bb2a38",
       "col": 26,
       "row": 13,
       "terrain": "plains",
@@ -3611,7 +3168,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0646-04cb4c75aa",
       "col": 27,
       "row": 13,
       "terrain": "plains",
@@ -3619,7 +3175,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0678-189d7de3f7",
       "col": 28,
       "row": 13,
       "terrain": "plains",
@@ -3627,7 +3182,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0710-570c6eff91",
       "col": 29,
       "row": 13,
       "terrain": "plains",
@@ -3635,7 +3189,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0774-5ef3f53a02",
       "col": 30,
       "row": 13,
       "terrain": "plains",
@@ -3643,7 +3196,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0806-2eec97fae5",
       "col": 31,
       "row": 13,
       "terrain": "plains",
@@ -3651,7 +3203,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0007-6884ee640d",
       "col": 0,
       "row": 14,
       "terrain": "plains",
@@ -3659,7 +3210,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0039-0c6e3f605a",
       "col": 1,
       "row": 14,
       "terrain": "plains",
@@ -3667,7 +3217,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0391-7830dad07e",
       "col": 2,
       "row": 14,
       "terrain": "road",
@@ -3676,7 +3225,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0743-f215d527c5",
       "col": 3,
       "row": 14,
       "terrain": "road",
@@ -3685,7 +3233,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0839-4831ed5685",
       "col": 4,
       "row": 14,
       "terrain": "plains",
@@ -3693,7 +3240,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0871-aa876e67c0",
       "col": 5,
       "row": 14,
       "terrain": "plains",
@@ -3701,7 +3247,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0903-21075a5f1b",
       "col": 6,
       "row": 14,
       "terrain": "plains",
@@ -3709,7 +3254,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0935-2983054353",
       "col": 7,
       "row": 14,
       "terrain": "plains",
@@ -3717,7 +3261,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0967-2cdc707183",
       "col": 8,
       "row": 14,
       "terrain": "plains",
@@ -3725,7 +3268,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0999-1253e3612b",
       "col": 9,
       "row": 14,
       "terrain": "plains",
@@ -3733,7 +3275,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0071-4646b8eeeb",
       "col": 10,
       "row": 14,
       "terrain": "plains",
@@ -3741,7 +3282,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0103-14bf456d9c",
       "col": 11,
       "row": 14,
       "terrain": "plains",
@@ -3749,7 +3289,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0135-b7e06c6b02",
       "col": 12,
       "row": 14,
       "terrain": "plains",
@@ -3757,7 +3296,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0167-82889057ba",
       "col": 13,
       "row": 14,
       "terrain": "plains",
@@ -3765,7 +3303,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0199-cac07ffcd8",
       "col": 14,
       "row": 14,
       "terrain": "plains",
@@ -3773,7 +3310,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0231-baa8ab9719",
       "col": 15,
       "row": 14,
       "terrain": "plains",
@@ -3781,7 +3317,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0263-77dfff0ab9",
       "col": 16,
       "row": 14,
       "terrain": "plains",
@@ -3789,7 +3324,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0295-e54b3b8a27",
       "col": 17,
       "row": 14,
       "terrain": "plains",
@@ -3797,7 +3331,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0327-75e4fc333f",
       "col": 18,
       "row": 14,
       "terrain": "plains",
@@ -3805,7 +3338,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0359-6242f5cb8c",
       "col": 19,
       "row": 14,
       "terrain": "plains",
@@ -3813,7 +3345,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0423-42e3736ffa",
       "col": 20,
       "row": 14,
       "terrain": "plains",
@@ -3821,7 +3352,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0455-24b44c8485",
       "col": 21,
       "row": 14,
       "terrain": "plains",
@@ -3829,7 +3359,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0487-8ed9d4fb2b",
       "col": 22,
       "row": 14,
       "terrain": "plains",
@@ -3837,7 +3366,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0519-f9b660ddad",
       "col": 23,
       "row": 14,
       "terrain": "plains",
@@ -3845,7 +3373,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0551-2d12a1807b",
       "col": 24,
       "row": 14,
       "terrain": "plains",
@@ -3853,7 +3380,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0583-3cf478ea0b",
       "col": 25,
       "row": 14,
       "terrain": "plains",
@@ -3861,7 +3387,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0615-1f52a88f3d",
       "col": 26,
       "row": 14,
       "terrain": "plains",
@@ -3869,7 +3394,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0647-1a5530b9eb",
       "col": 27,
       "row": 14,
       "terrain": "plains",
@@ -3877,7 +3401,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0679-b4099fbec7",
       "col": 28,
       "row": 14,
       "terrain": "plains",
@@ -3885,7 +3408,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0711-c0051b39e3",
       "col": 29,
       "row": 14,
       "terrain": "plains",
@@ -3893,7 +3415,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0775-49e3534f0d",
       "col": 30,
       "row": 14,
       "terrain": "plains",
@@ -3901,7 +3422,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0807-6c9698e3f8",
       "col": 31,
       "row": 14,
       "terrain": "plains",
@@ -3909,7 +3429,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0008-bc0d15fd92",
       "col": 0,
       "row": 15,
       "terrain": "plains",
@@ -3917,7 +3436,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0040-96d61ed1d9",
       "col": 1,
       "row": 15,
       "terrain": "road",
@@ -3926,7 +3444,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0392-805fe97f80",
       "col": 2,
       "row": 15,
       "terrain": "road",
@@ -3935,7 +3452,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0744-08b59842e0",
       "col": 3,
       "row": 15,
       "terrain": "road",
@@ -3944,7 +3460,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0840-2894b03b52",
       "col": 4,
       "row": 15,
       "terrain": "plains",
@@ -3952,7 +3467,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0872-87809ea219",
       "col": 5,
       "row": 15,
       "terrain": "plains",
@@ -3960,7 +3474,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0904-4d48bf4901",
       "col": 6,
       "row": 15,
       "terrain": "plains",
@@ -3968,7 +3481,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0936-4360ed1b2b",
       "col": 7,
       "row": 15,
       "terrain": "plains",
@@ -3976,7 +3488,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0968-c4ae3317ab",
       "col": 8,
       "row": 15,
       "terrain": "plains",
@@ -3984,7 +3495,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1000-e739a7979e",
       "col": 9,
       "row": 15,
       "terrain": "plains",
@@ -3992,7 +3502,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0072-2f078c7250",
       "col": 10,
       "row": 15,
       "terrain": "plains",
@@ -4000,7 +3509,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0104-ac3fb7a5a3",
       "col": 11,
       "row": 15,
       "terrain": "plains",
@@ -4008,7 +3516,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0136-c89eef7043",
       "col": 12,
       "row": 15,
       "terrain": "plains",
@@ -4016,7 +3523,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0168-4639eef5e3",
       "col": 13,
       "row": 15,
       "terrain": "plains",
@@ -4024,7 +3530,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0200-de043be4a4",
       "col": 14,
       "row": 15,
       "terrain": "plains",
@@ -4032,7 +3537,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0232-cded548fe8",
       "col": 15,
       "row": 15,
       "terrain": "plains",
@@ -4040,7 +3544,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0264-4f1088d9d9",
       "col": 16,
       "row": 15,
       "terrain": "plains",
@@ -4048,7 +3551,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0296-d1a110b02a",
       "col": 17,
       "row": 15,
       "terrain": "plains",
@@ -4056,7 +3558,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0328-31fa315a7e",
       "col": 18,
       "row": 15,
       "terrain": "plains",
@@ -4064,7 +3565,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0360-ea8a50802c",
       "col": 19,
       "row": 15,
       "terrain": "plains",
@@ -4072,7 +3572,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0424-7191c40b74",
       "col": 20,
       "row": 15,
       "terrain": "plains",
@@ -4080,7 +3579,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0456-90c7d67b37",
       "col": 21,
       "row": 15,
       "terrain": "plains",
@@ -4088,7 +3586,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0488-5c4cb57420",
       "col": 22,
       "row": 15,
       "terrain": "plains",
@@ -4096,7 +3593,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0520-571ea85932",
       "col": 23,
       "row": 15,
       "terrain": "plains",
@@ -4104,7 +3600,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0552-83671e0f80",
       "col": 24,
       "row": 15,
       "terrain": "plains",
@@ -4112,7 +3607,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0584-4a05bc94b5",
       "col": 25,
       "row": 15,
       "terrain": "plains",
@@ -4120,7 +3614,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0616-621de9dcd8",
       "col": 26,
       "row": 15,
       "terrain": "plains",
@@ -4128,7 +3621,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0648-00bce70671",
       "col": 27,
       "row": 15,
       "terrain": "plains",
@@ -4136,7 +3628,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0680-1ab2391f45",
       "col": 28,
       "row": 15,
       "terrain": "plains",
@@ -4144,7 +3635,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0712-6f25ebb5d4",
       "col": 29,
       "row": 15,
       "terrain": "plains",
@@ -4152,7 +3642,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0776-f90f866dc1",
       "col": 30,
       "row": 15,
       "terrain": "plains",
@@ -4160,7 +3649,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0808-fc5377793a",
       "col": 31,
       "row": 15,
       "terrain": "plains",
@@ -4168,7 +3656,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0009-0be6d2acd0",
       "col": 0,
       "row": 16,
       "terrain": "plains",
@@ -4176,7 +3663,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0041-429fa6f0d6",
       "col": 1,
       "row": 16,
       "terrain": "plains",
@@ -4184,7 +3670,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0393-d01d98fbaa",
       "col": 2,
       "row": 16,
       "terrain": "road",
@@ -4193,7 +3678,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0745-4cb1b24324",
       "col": 3,
       "row": 16,
       "terrain": "road",
@@ -4202,7 +3686,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0841-4d667d096f",
       "col": 4,
       "row": 16,
       "terrain": "plains",
@@ -4210,7 +3693,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0873-2c324054c1",
       "col": 5,
       "row": 16,
       "terrain": "plains",
@@ -4218,7 +3700,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0905-21011c58dd",
       "col": 6,
       "row": 16,
       "terrain": "plains",
@@ -4226,7 +3707,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0937-83e7e9b732",
       "col": 7,
       "row": 16,
       "terrain": "plains",
@@ -4234,7 +3714,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0969-f2e515b5d9",
       "col": 8,
       "row": 16,
       "terrain": "road",
@@ -4243,7 +3722,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1001-d6c1f6b1b7",
       "col": 9,
       "row": 16,
       "terrain": "ford",
@@ -4252,7 +3730,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0073-47c9c32394",
       "col": 10,
       "row": 16,
       "terrain": "road",
@@ -4261,7 +3738,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0105-5c6c9c60fe",
       "col": 11,
       "row": 16,
       "terrain": "plains",
@@ -4269,7 +3745,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0137-3f900cda57",
       "col": 12,
       "row": 16,
       "terrain": "plains",
@@ -4277,7 +3752,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0169-9a3e30baf7",
       "col": 13,
       "row": 16,
       "terrain": "plains",
@@ -4285,7 +3759,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0201-8d0fc49c82",
       "col": 14,
       "row": 16,
       "terrain": "plains",
@@ -4293,7 +3766,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0233-922ea6941e",
       "col": 15,
       "row": 16,
       "terrain": "plains",
@@ -4301,7 +3773,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0265-cdcc67576c",
       "col": 16,
       "row": 16,
       "terrain": "plains",
@@ -4309,7 +3780,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0297-3e2e3d29a4",
       "col": 17,
       "row": 16,
       "terrain": "plains",
@@ -4317,7 +3787,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0329-1a2d877de4",
       "col": 18,
       "row": 16,
       "terrain": "plains",
@@ -4325,7 +3794,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0361-68116da35d",
       "col": 19,
       "row": 16,
       "terrain": "plains",
@@ -4333,7 +3801,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0425-192c03f683",
       "col": 20,
       "row": 16,
       "terrain": "plains",
@@ -4341,7 +3808,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0457-9297a04177",
       "col": 21,
       "row": 16,
       "terrain": "plains",
@@ -4349,7 +3815,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0489-d03df50309",
       "col": 22,
       "row": 16,
       "terrain": "plains",
@@ -4357,7 +3822,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0521-16f408bc59",
       "col": 23,
       "row": 16,
       "terrain": "plains",
@@ -4365,7 +3829,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0553-67a28e3042",
       "col": 24,
       "row": 16,
       "terrain": "plains",
@@ -4373,7 +3836,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0585-87c719b08f",
       "col": 25,
       "row": 16,
       "terrain": "plains",
@@ -4381,7 +3843,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0617-4f45f81f3b",
       "col": 26,
       "row": 16,
       "terrain": "plains",
@@ -4389,7 +3850,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0649-c84662b6da",
       "col": 27,
       "row": 16,
       "terrain": "plains",
@@ -4397,7 +3857,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0681-073f14abef",
       "col": 28,
       "row": 16,
       "terrain": "plains",
@@ -4405,7 +3864,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0713-ff25b766fd",
       "col": 29,
       "row": 16,
       "terrain": "plains",
@@ -4413,7 +3871,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0777-b113ab532b",
       "col": 30,
       "row": 16,
       "terrain": "plains",
@@ -4421,7 +3878,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0809-7dbd85256e",
       "col": 31,
       "row": 16,
       "terrain": "plains",
@@ -4429,7 +3885,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0010-98367b32ca",
       "col": 0,
       "row": 17,
       "terrain": "plains",
@@ -4437,7 +3892,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0042-3103f25c56",
       "col": 1,
       "row": 17,
       "terrain": "plains",
@@ -4445,7 +3899,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0394-7889695a30",
       "col": 2,
       "row": 17,
       "terrain": "plains",
@@ -4453,7 +3906,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0746-8d990f3ec1",
       "col": 3,
       "row": 17,
       "terrain": "plains",
@@ -4461,7 +3913,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0842-fca025bd59",
       "col": 4,
       "row": 17,
       "terrain": "plains",
@@ -4469,7 +3920,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0874-bb2a1cbb44",
       "col": 5,
       "row": 17,
       "terrain": "plains",
@@ -4477,7 +3927,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0906-0c2621d28b",
       "col": 6,
       "row": 17,
       "terrain": "plains",
@@ -4485,7 +3934,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0938-07624dd897",
       "col": 7,
       "row": 17,
       "terrain": "ford",
@@ -4494,7 +3942,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0970-1648be2ff5",
       "col": 8,
       "row": 17,
       "terrain": "water",
@@ -4502,7 +3949,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-1002-8dbacb3e12",
       "col": 9,
       "row": 17,
       "terrain": "water",
@@ -4510,7 +3956,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0074-e437cd045c",
       "col": 10,
       "row": 17,
       "terrain": "ford",
@@ -4519,7 +3964,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0106-d3bb52c863",
       "col": 11,
       "row": 17,
       "terrain": "plains",
@@ -4527,7 +3971,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0138-5d06e00a9a",
       "col": 12,
       "row": 17,
       "terrain": "plains",
@@ -4535,7 +3978,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0170-104931e747",
       "col": 13,
       "row": 17,
       "terrain": "plains",
@@ -4543,7 +3985,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0202-72c208d39c",
       "col": 14,
       "row": 17,
       "terrain": "plains",
@@ -4551,7 +3992,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0234-3bb95f843f",
       "col": 15,
       "row": 17,
       "terrain": "plains",
@@ -4559,7 +3999,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0266-208ce10ff2",
       "col": 16,
       "row": 17,
       "terrain": "plains",
@@ -4567,7 +4006,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0298-c502431924",
       "col": 17,
       "row": 17,
       "terrain": "plains",
@@ -4575,7 +4013,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0330-4c0ab293f3",
       "col": 18,
       "row": 17,
       "terrain": "plains",
@@ -4583,7 +4020,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0362-b9b6688c01",
       "col": 19,
       "row": 17,
       "terrain": "plains",
@@ -4591,7 +4027,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0426-815de4abba",
       "col": 20,
       "row": 17,
       "terrain": "plains",
@@ -4599,7 +4034,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0458-ca50d4ffdb",
       "col": 21,
       "row": 17,
       "terrain": "plains",
@@ -4607,7 +4041,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0490-a52bb126c2",
       "col": 22,
       "row": 17,
       "terrain": "plains",
@@ -4615,7 +4048,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0522-ef72b4f8c4",
       "col": 23,
       "row": 17,
       "terrain": "plains",
@@ -4623,7 +4055,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0554-5e54824f91",
       "col": 24,
       "row": 17,
       "terrain": "plains",
@@ -4631,7 +4062,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0586-f9a2fc58ef",
       "col": 25,
       "row": 17,
       "terrain": "plains",
@@ -4639,7 +4069,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0618-6a0ae81e41",
       "col": 26,
       "row": 17,
       "terrain": "plains",
@@ -4647,7 +4076,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0650-046e781f4a",
       "col": 27,
       "row": 17,
       "terrain": "plains",
@@ -4655,7 +4083,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0682-3c07cb7fdb",
       "col": 28,
       "row": 17,
       "terrain": "plains",
@@ -4663,7 +4090,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0714-3ebc5f521e",
       "col": 29,
       "row": 17,
       "terrain": "plains",
@@ -4671,7 +4097,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0778-309f3df29e",
       "col": 30,
       "row": 17,
       "terrain": "plains",
@@ -4679,7 +4104,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0810-8ca7892727",
       "col": 31,
       "row": 17,
       "terrain": "plains",
@@ -4687,7 +4111,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0011-5d0f5c6ae3",
       "col": 0,
       "row": 18,
       "terrain": "plains",
@@ -4695,7 +4118,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0043-cc2388bbb8",
       "col": 1,
       "row": 18,
       "terrain": "plains",
@@ -4703,7 +4125,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0395-f9b1a8bf44",
       "col": 2,
       "row": 18,
       "terrain": "plains",
@@ -4711,7 +4132,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0747-86b32e3b57",
       "col": 3,
       "row": 18,
       "terrain": "plains",
@@ -4719,7 +4139,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0843-493479e702",
       "col": 4,
       "row": 18,
       "terrain": "plains",
@@ -4727,7 +4146,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0875-31d56a8fb8",
       "col": 5,
       "row": 18,
       "terrain": "plains",
@@ -4735,7 +4153,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0907-2b2cf87092",
       "col": 6,
       "row": 18,
       "terrain": "plains",
@@ -4743,7 +4160,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0939-6d1046d12a",
       "col": 7,
       "row": 18,
       "terrain": "road",
@@ -4752,7 +4168,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0971-3589ba8714",
       "col": 8,
       "row": 18,
       "terrain": "water",
@@ -4760,7 +4175,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-1003-9c4d916c5d",
       "col": 9,
       "row": 18,
       "terrain": "water",
@@ -4768,7 +4182,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0075-d291a18fff",
       "col": 10,
       "row": 18,
       "terrain": "water",
@@ -4776,7 +4189,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0107-31c1d0bd47",
       "col": 11,
       "row": 18,
       "terrain": "road",
@@ -4785,7 +4197,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0139-69bb22309f",
       "col": 12,
       "row": 18,
       "terrain": "plains",
@@ -4793,7 +4204,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0171-3b2e9304d7",
       "col": 13,
       "row": 18,
       "terrain": "plains",
@@ -4801,7 +4211,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0203-f25b37284f",
       "col": 14,
       "row": 18,
       "terrain": "plains",
@@ -4809,7 +4218,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0235-98d2fbb850",
       "col": 15,
       "row": 18,
       "terrain": "plains",
@@ -4817,7 +4225,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0267-86333efa52",
       "col": 16,
       "row": 18,
       "terrain": "plains",
@@ -4825,7 +4232,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0299-92986746fb",
       "col": 17,
       "row": 18,
       "terrain": "plains",
@@ -4833,7 +4239,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0331-a409c19dfb",
       "col": 18,
       "row": 18,
       "terrain": "plains",
@@ -4841,7 +4246,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0363-03a57d9aac",
       "col": 19,
       "row": 18,
       "terrain": "plains",
@@ -4849,7 +4253,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0427-59cef2ad9a",
       "col": 20,
       "row": 18,
       "terrain": "plains",
@@ -4857,7 +4260,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0459-d7c8432047",
       "col": 21,
       "row": 18,
       "terrain": "plains",
@@ -4865,7 +4267,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0491-8d2849e7c2",
       "col": 22,
       "row": 18,
       "terrain": "plains",
@@ -4873,7 +4274,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0523-b76a5709d4",
       "col": 23,
       "row": 18,
       "terrain": "plains",
@@ -4881,7 +4281,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0555-95a37e9b47",
       "col": 24,
       "row": 18,
       "terrain": "plains",
@@ -4889,7 +4288,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0587-73a92cafeb",
       "col": 25,
       "row": 18,
       "terrain": "plains",
@@ -4897,7 +4295,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0619-bce7009b8b",
       "col": 26,
       "row": 18,
       "terrain": "plains",
@@ -4905,7 +4302,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0651-f478ec2cfd",
       "col": 27,
       "row": 18,
       "terrain": "plains",
@@ -4913,7 +4309,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0683-4f347c62dc",
       "col": 28,
       "row": 18,
       "terrain": "plains",
@@ -4921,7 +4316,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0715-a21d6ae70d",
       "col": 29,
       "row": 18,
       "terrain": "plains",
@@ -4929,7 +4323,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0779-581a2bd9c1",
       "col": 30,
       "row": 18,
       "terrain": "plains",
@@ -4937,7 +4330,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0811-ea0b5d9947",
       "col": 31,
       "row": 18,
       "terrain": "plains",
@@ -4945,7 +4337,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0012-1cf41019c0",
       "col": 0,
       "row": 19,
       "terrain": "plains",
@@ -4953,7 +4344,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0044-3038c75185",
       "col": 1,
       "row": 19,
       "terrain": "plains",
@@ -4961,7 +4351,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0396-480aa73877",
       "col": 2,
       "row": 19,
       "terrain": "plains",
@@ -4969,7 +4358,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0748-a6c6403395",
       "col": 3,
       "row": 19,
       "terrain": "plains",
@@ -4977,7 +4365,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0844-2368204768",
       "col": 4,
       "row": 19,
       "terrain": "plains",
@@ -4985,7 +4372,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0876-64c20fcb81",
       "col": 5,
       "row": 19,
       "terrain": "plains",
@@ -4993,7 +4379,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0908-f6bcddee19",
       "col": 6,
       "row": 19,
       "terrain": "plains",
@@ -5001,7 +4386,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0940-c5ad633b5f",
       "col": 7,
       "row": 19,
       "terrain": "ford",
@@ -5010,7 +4394,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0972-e645283c94",
       "col": 8,
       "row": 19,
       "terrain": "water",
@@ -5018,7 +4401,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-1004-ad2dcc6405",
       "col": 9,
       "row": 19,
       "terrain": "water",
@@ -5026,7 +4408,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0076-472151524c",
       "col": 10,
       "row": 19,
       "terrain": "ford",
@@ -5035,7 +4416,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0108-2a7069772c",
       "col": 11,
       "row": 19,
       "terrain": "plains",
@@ -5043,7 +4423,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0140-9331b16706",
       "col": 12,
       "row": 19,
       "terrain": "plains",
@@ -5051,7 +4430,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0172-7c97ebbb63",
       "col": 13,
       "row": 19,
       "terrain": "plains",
@@ -5059,7 +4437,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0204-e484ca21e3",
       "col": 14,
       "row": 19,
       "terrain": "plains",
@@ -5067,7 +4444,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0236-a0c08ef984",
       "col": 15,
       "row": 19,
       "terrain": "plains",
@@ -5075,7 +4451,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0268-7a07779037",
       "col": 16,
       "row": 19,
       "terrain": "plains",
@@ -5083,7 +4458,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0300-df2bb42d8c",
       "col": 17,
       "row": 19,
       "terrain": "plains",
@@ -5091,7 +4465,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0332-00748e8da9",
       "col": 18,
       "row": 19,
       "terrain": "plains",
@@ -5099,7 +4472,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0364-e736debf50",
       "col": 19,
       "row": 19,
       "terrain": "plains",
@@ -5107,7 +4479,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0428-4c3c7a2a7c",
       "col": 20,
       "row": 19,
       "terrain": "plains",
@@ -5115,7 +4486,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0460-7dd28da385",
       "col": 21,
       "row": 19,
       "terrain": "plains",
@@ -5123,7 +4493,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0492-e1619f4523",
       "col": 22,
       "row": 19,
       "terrain": "plains",
@@ -5131,7 +4500,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0524-05d2a72edc",
       "col": 23,
       "row": 19,
       "terrain": "plains",
@@ -5139,7 +4507,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0556-3da362e566",
       "col": 24,
       "row": 19,
       "terrain": "plains",
@@ -5147,7 +4514,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0588-b477568184",
       "col": 25,
       "row": 19,
       "terrain": "plains",
@@ -5155,7 +4521,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0620-07bf882029",
       "col": 26,
       "row": 19,
       "terrain": "plains",
@@ -5163,7 +4528,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0652-4312f7bc63",
       "col": 27,
       "row": 19,
       "terrain": "plains",
@@ -5171,7 +4535,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0684-e8630557c0",
       "col": 28,
       "row": 19,
       "terrain": "plains",
@@ -5179,7 +4542,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0716-59af4fe062",
       "col": 29,
       "row": 19,
       "terrain": "plains",
@@ -5187,7 +4549,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0780-9dc260ef1f",
       "col": 30,
       "row": 19,
       "terrain": "plains",
@@ -5195,7 +4556,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0812-6b4330f5fb",
       "col": 31,
       "row": 19,
       "terrain": "plains",
@@ -5203,7 +4563,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0014-07a8d4cec1",
       "col": 0,
       "row": 20,
       "terrain": "plains",
@@ -5211,7 +4570,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0046-f2a54c5674",
       "col": 1,
       "row": 20,
       "terrain": "plains",
@@ -5219,7 +4577,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0398-2777e24ac0",
       "col": 2,
       "row": 20,
       "terrain": "plains",
@@ -5227,7 +4584,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0750-add04ae96b",
       "col": 3,
       "row": 20,
       "terrain": "plains",
@@ -5235,7 +4591,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0846-4bad5fd833",
       "col": 4,
       "row": 20,
       "terrain": "plains",
@@ -5243,7 +4598,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0878-87af33d9e6",
       "col": 5,
       "row": 20,
       "terrain": "plains",
@@ -5251,7 +4605,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0910-f00414d212",
       "col": 6,
       "row": 20,
       "terrain": "plains",
@@ -5259,7 +4612,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0942-eb24aff93c",
       "col": 7,
       "row": 20,
       "terrain": "plains",
@@ -5267,7 +4619,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0974-43f108abf0",
       "col": 8,
       "row": 20,
       "terrain": "road",
@@ -5276,7 +4627,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1006-d584b25796",
       "col": 9,
       "row": 20,
       "terrain": "ford",
@@ -5285,7 +4635,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0078-e1988ee851",
       "col": 10,
       "row": 20,
       "terrain": "road",
@@ -5294,7 +4643,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0110-21c2bd4e05",
       "col": 11,
       "row": 20,
       "terrain": "plains",
@@ -5302,7 +4650,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0142-a3ef30fee6",
       "col": 12,
       "row": 20,
       "terrain": "plains",
@@ -5310,7 +4657,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0174-93d7f87036",
       "col": 13,
       "row": 20,
       "terrain": "plains",
@@ -5318,7 +4664,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0206-e74dd7b4ad",
       "col": 14,
       "row": 20,
       "terrain": "plains",
@@ -5326,7 +4671,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0238-8f1addc018",
       "col": 15,
       "row": 20,
       "terrain": "plains",
@@ -5334,7 +4678,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0270-e4c611c682",
       "col": 16,
       "row": 20,
       "terrain": "plains",
@@ -5342,7 +4685,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0302-038d587948",
       "col": 17,
       "row": 20,
       "terrain": "plains",
@@ -5350,7 +4692,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0334-50e5d1b8b8",
       "col": 18,
       "row": 20,
       "terrain": "plains",
@@ -5358,7 +4699,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0366-1af98276cb",
       "col": 19,
       "row": 20,
       "terrain": "plains",
@@ -5366,7 +4706,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0430-448f75e40c",
       "col": 20,
       "row": 20,
       "terrain": "plains",
@@ -5374,7 +4713,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0462-b9ea0d8e80",
       "col": 21,
       "row": 20,
       "terrain": "plains",
@@ -5382,7 +4720,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0494-27a3629680",
       "col": 22,
       "row": 20,
       "terrain": "plains",
@@ -5390,7 +4727,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0526-be8af7eeca",
       "col": 23,
       "row": 20,
       "terrain": "plains",
@@ -5398,7 +4734,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0558-b7b34477ee",
       "col": 24,
       "row": 20,
       "terrain": "plains",
@@ -5406,7 +4741,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0590-22fcd4b1d3",
       "col": 25,
       "row": 20,
       "terrain": "plains",
@@ -5414,7 +4748,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0622-23e747412d",
       "col": 26,
       "row": 20,
       "terrain": "plains",
@@ -5422,7 +4755,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0654-9913c52ae1",
       "col": 27,
       "row": 20,
       "terrain": "plains",
@@ -5430,7 +4762,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0686-af7b01d41d",
       "col": 28,
       "row": 20,
       "terrain": "plains",
@@ -5438,7 +4769,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0718-73222281fc",
       "col": 29,
       "row": 20,
       "terrain": "plains",
@@ -5446,7 +4776,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0782-e7daa3c5ff",
       "col": 30,
       "row": 20,
       "terrain": "plains",
@@ -5454,7 +4783,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0814-a927aedded",
       "col": 31,
       "row": 20,
       "terrain": "plains",
@@ -5462,7 +4790,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0015-d462365ab7",
       "col": 0,
       "row": 21,
       "terrain": "plains",
@@ -5470,7 +4797,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0047-7187247eb1",
       "col": 1,
       "row": 21,
       "terrain": "plains",
@@ -5478,7 +4804,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0399-84455b73d8",
       "col": 2,
       "row": 21,
       "terrain": "plains",
@@ -5486,7 +4811,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0751-dfd7fdc6b3",
       "col": 3,
       "row": 21,
       "terrain": "plains",
@@ -5494,7 +4818,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0847-17e30ba0e1",
       "col": 4,
       "row": 21,
       "terrain": "plains",
@@ -5502,7 +4825,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0879-12ca8b4dc1",
       "col": 5,
       "row": 21,
       "terrain": "plains",
@@ -5510,7 +4832,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0911-e070c67cdd",
       "col": 6,
       "row": 21,
       "terrain": "plains",
@@ -5518,7 +4839,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0943-09ec7bd162",
       "col": 7,
       "row": 21,
       "terrain": "plains",
@@ -5526,7 +4846,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0975-475056ac4a",
       "col": 8,
       "row": 21,
       "terrain": "plains",
@@ -5534,7 +4853,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1007-f8b6d84c2f",
       "col": 9,
       "row": 21,
       "terrain": "plains",
@@ -5542,7 +4860,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0079-19d66977fd",
       "col": 10,
       "row": 21,
       "terrain": "plains",
@@ -5550,7 +4867,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0111-ee70a9dbae",
       "col": 11,
       "row": 21,
       "terrain": "plains",
@@ -5558,7 +4874,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0143-6dc7760b5b",
       "col": 12,
       "row": 21,
       "terrain": "plains",
@@ -5566,7 +4881,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0175-73d5fd430e",
       "col": 13,
       "row": 21,
       "terrain": "plains",
@@ -5574,7 +4888,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0207-99b0e7b216",
       "col": 14,
       "row": 21,
       "terrain": "plains",
@@ -5582,7 +4895,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0239-60b48b66b5",
       "col": 15,
       "row": 21,
       "terrain": "plains",
@@ -5590,7 +4902,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0271-0e938d35c5",
       "col": 16,
       "row": 21,
       "terrain": "plains",
@@ -5598,7 +4909,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0303-38d49b7fe9",
       "col": 17,
       "row": 21,
       "terrain": "plains",
@@ -5606,7 +4916,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0335-920afd2d7e",
       "col": 18,
       "row": 21,
       "terrain": "plains",
@@ -5614,7 +4923,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0367-e63f6d5dbd",
       "col": 19,
       "row": 21,
       "terrain": "plains",
@@ -5622,7 +4930,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0431-8863570987",
       "col": 20,
       "row": 21,
       "terrain": "plains",
@@ -5630,7 +4937,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0463-45024c86f0",
       "col": 21,
       "row": 21,
       "terrain": "plains",
@@ -5638,7 +4944,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0495-52a130bcfc",
       "col": 22,
       "row": 21,
       "terrain": "plains",
@@ -5646,7 +4951,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0527-06a200cbb3",
       "col": 23,
       "row": 21,
       "terrain": "plains",
@@ -5654,7 +4958,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0559-6edc009e77",
       "col": 24,
       "row": 21,
       "terrain": "plains",
@@ -5662,7 +4965,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0591-7ded092a8c",
       "col": 25,
       "row": 21,
       "terrain": "plains",
@@ -5670,7 +4972,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0623-ef6fb44076",
       "col": 26,
       "row": 21,
       "terrain": "plains",
@@ -5678,7 +4979,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0655-6c91ca2f10",
       "col": 27,
       "row": 21,
       "terrain": "plains",
@@ -5686,7 +4986,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0687-deceeb4ab6",
       "col": 28,
       "row": 21,
       "terrain": "plains",
@@ -5694,7 +4993,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0719-e154063b38",
       "col": 29,
       "row": 21,
       "terrain": "plains",
@@ -5702,7 +5000,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0783-4301e51f00",
       "col": 30,
       "row": 21,
       "terrain": "plains",
@@ -5710,7 +5007,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0815-98a38ab711",
       "col": 31,
       "row": 21,
       "terrain": "plains",
@@ -5718,7 +5014,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0016-8295ecb67d",
       "col": 0,
       "row": 22,
       "terrain": "plains",
@@ -5726,7 +5021,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0048-a204d1c966",
       "col": 1,
       "row": 22,
       "terrain": "plains",
@@ -5734,7 +5028,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0400-76e3d70bbb",
       "col": 2,
       "row": 22,
       "terrain": "plains",
@@ -5742,7 +5035,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0752-aaafec83df",
       "col": 3,
       "row": 22,
       "terrain": "plains",
@@ -5750,7 +5042,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0848-6db89c3fdf",
       "col": 4,
       "row": 22,
       "terrain": "plains",
@@ -5758,7 +5049,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0880-eed66b7f87",
       "col": 5,
       "row": 22,
       "terrain": "plains",
@@ -5766,7 +5056,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0912-1bfd0ab371",
       "col": 6,
       "row": 22,
       "terrain": "plains",
@@ -5774,7 +5063,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0944-7d777615ab",
       "col": 7,
       "row": 22,
       "terrain": "plains",
@@ -5782,7 +5070,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0976-93593daac0",
       "col": 8,
       "row": 22,
       "terrain": "plains",
@@ -5790,7 +5077,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1008-3b9863ee9b",
       "col": 9,
       "row": 22,
       "terrain": "plains",
@@ -5798,7 +5084,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0080-8f0f03ea16",
       "col": 10,
       "row": 22,
       "terrain": "plains",
@@ -5806,7 +5091,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0112-9f73c60771",
       "col": 11,
       "row": 22,
       "terrain": "plains",
@@ -5814,7 +5098,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0144-32fb90d8c4",
       "col": 12,
       "row": 22,
       "terrain": "plains",
@@ -5822,7 +5105,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0176-da92709716",
       "col": 13,
       "row": 22,
       "terrain": "plains",
@@ -5830,7 +5112,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0208-7f633101be",
       "col": 14,
       "row": 22,
       "terrain": "plains",
@@ -5838,7 +5119,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0240-e42abd5d0d",
       "col": 15,
       "row": 22,
       "terrain": "plains",
@@ -5846,7 +5126,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0272-f0c194d3c0",
       "col": 16,
       "row": 22,
       "terrain": "plains",
@@ -5854,7 +5133,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0304-7bd76f9d5a",
       "col": 17,
       "row": 22,
       "terrain": "plains",
@@ -5862,7 +5140,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0336-064048e423",
       "col": 18,
       "row": 22,
       "terrain": "plains",
@@ -5870,7 +5147,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0368-39e4c26ef7",
       "col": 19,
       "row": 22,
       "terrain": "plains",
@@ -5878,7 +5154,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0432-84de22575e",
       "col": 20,
       "row": 22,
       "terrain": "plains",
@@ -5886,7 +5161,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0464-b6bd8f2cb7",
       "col": 21,
       "row": 22,
       "terrain": "plains",
@@ -5894,7 +5168,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0496-f24cc35bd4",
       "col": 22,
       "row": 22,
       "terrain": "plains",
@@ -5902,7 +5175,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0528-7c7798bde7",
       "col": 23,
       "row": 22,
       "terrain": "plains",
@@ -5910,7 +5182,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0560-abfdc336c0",
       "col": 24,
       "row": 22,
       "terrain": "plains",
@@ -5918,7 +5189,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0592-c6dcb2087e",
       "col": 25,
       "row": 22,
       "terrain": "plains",
@@ -5926,7 +5196,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0624-aef2126170",
       "col": 26,
       "row": 22,
       "terrain": "plains",
@@ -5934,7 +5203,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0656-a1936960e2",
       "col": 27,
       "row": 22,
       "terrain": "plains",
@@ -5942,7 +5210,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0688-1e032e1275",
       "col": 28,
       "row": 22,
       "terrain": "plains",
@@ -5950,7 +5217,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0720-f757b6ade9",
       "col": 29,
       "row": 22,
       "terrain": "plains",
@@ -5958,7 +5224,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0784-73d1e11916",
       "col": 30,
       "row": 22,
       "terrain": "plains",
@@ -5966,7 +5231,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0816-c50b8328fd",
       "col": 31,
       "row": 22,
       "terrain": "plains",
@@ -5974,7 +5238,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0017-6913165ecf",
       "col": 0,
       "row": 23,
       "terrain": "plains",
@@ -5982,7 +5245,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0049-5f679f3db4",
       "col": 1,
       "row": 23,
       "terrain": "plains",
@@ -5990,7 +5252,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0401-d3ba3a61f1",
       "col": 2,
       "row": 23,
       "terrain": "plains",
@@ -5998,7 +5259,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0753-c3466ccd11",
       "col": 3,
       "row": 23,
       "terrain": "plains",
@@ -6006,7 +5266,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0849-4163a814de",
       "col": 4,
       "row": 23,
       "terrain": "plains",
@@ -6014,7 +5273,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0881-bcd6ab4f32",
       "col": 5,
       "row": 23,
       "terrain": "plains",
@@ -6022,7 +5280,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0913-c3e592c6b9",
       "col": 6,
       "row": 23,
       "terrain": "plains",
@@ -6030,7 +5287,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0945-88b807506b",
       "col": 7,
       "row": 23,
       "terrain": "plains",
@@ -6038,7 +5294,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0977-539e7eb64e",
       "col": 8,
       "row": 23,
       "terrain": "plains",
@@ -6046,7 +5301,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1009-8c5b6c0261",
       "col": 9,
       "row": 23,
       "terrain": "plains",
@@ -6054,7 +5308,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0081-de0a576330",
       "col": 10,
       "row": 23,
       "terrain": "plains",
@@ -6062,7 +5315,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0113-73cde26719",
       "col": 11,
       "row": 23,
       "terrain": "plains",
@@ -6070,7 +5322,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0145-fb22ef6521",
       "col": 12,
       "row": 23,
       "terrain": "plains",
@@ -6078,7 +5329,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0177-7f73cc2480",
       "col": 13,
       "row": 23,
       "terrain": "plains",
@@ -6086,7 +5336,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0209-4a8fe82b11",
       "col": 14,
       "row": 23,
       "terrain": "plains",
@@ -6094,7 +5343,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0241-58fa7caf48",
       "col": 15,
       "row": 23,
       "terrain": "plains",
@@ -6102,7 +5350,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0273-18b2e82646",
       "col": 16,
       "row": 23,
       "terrain": "plains",
@@ -6110,7 +5357,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0305-1dc7017832",
       "col": 17,
       "row": 23,
       "terrain": "plains",
@@ -6118,7 +5364,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0337-5157644d2e",
       "col": 18,
       "row": 23,
       "terrain": "plains",
@@ -6126,7 +5371,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0369-aa987af1cb",
       "col": 19,
       "row": 23,
       "terrain": "plains",
@@ -6134,7 +5378,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0433-76af4fe08e",
       "col": 20,
       "row": 23,
       "terrain": "plains",
@@ -6142,7 +5385,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0465-d534bcd5e7",
       "col": 21,
       "row": 23,
       "terrain": "plains",
@@ -6150,7 +5392,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0497-116b401db1",
       "col": 22,
       "row": 23,
       "terrain": "plains",
@@ -6158,7 +5399,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0529-bd08736779",
       "col": 23,
       "row": 23,
       "terrain": "plains",
@@ -6166,7 +5406,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0561-828a5c00ae",
       "col": 24,
       "row": 23,
       "terrain": "plains",
@@ -6174,7 +5413,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0593-ff0bc0aed0",
       "col": 25,
       "row": 23,
       "terrain": "plains",
@@ -6182,7 +5420,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0625-f82ee2d21c",
       "col": 26,
       "row": 23,
       "terrain": "plains",
@@ -6190,7 +5427,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0657-bae6e4c8aa",
       "col": 27,
       "row": 23,
       "terrain": "plains",
@@ -6198,7 +5434,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0689-69d41a1283",
       "col": 28,
       "row": 23,
       "terrain": "plains",
@@ -6206,7 +5441,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0721-aefc096435",
       "col": 29,
       "row": 23,
       "terrain": "plains",
@@ -6214,7 +5448,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0785-1317928976",
       "col": 30,
       "row": 23,
       "terrain": "plains",
@@ -6222,7 +5455,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0817-41d69293b8",
       "col": 31,
       "row": 23,
       "terrain": "plains",
@@ -6230,7 +5462,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0018-5b03752adf",
       "col": 0,
       "row": 24,
       "terrain": "plains",
@@ -6238,7 +5469,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0050-c090dc2177",
       "col": 1,
       "row": 24,
       "terrain": "plains",
@@ -6246,7 +5476,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0402-80cd3ec3ba",
       "col": 2,
       "row": 24,
       "terrain": "plains",
@@ -6254,7 +5483,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0754-89bdf1088c",
       "col": 3,
       "row": 24,
       "terrain": "plains",
@@ -6262,7 +5490,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0850-ffd4e945af",
       "col": 4,
       "row": 24,
       "terrain": "plains",
@@ -6270,7 +5497,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0882-0d4b5468d7",
       "col": 5,
       "row": 24,
       "terrain": "plains",
@@ -6278,7 +5504,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0914-e43b75c7c2",
       "col": 6,
       "row": 24,
       "terrain": "plains",
@@ -6286,7 +5511,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0946-db5227efb0",
       "col": 7,
       "row": 24,
       "terrain": "plains",
@@ -6294,7 +5518,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0978-400784d8b0",
       "col": 8,
       "row": 24,
       "terrain": "plains",
@@ -6302,7 +5525,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1010-7fc2b6f99d",
       "col": 9,
       "row": 24,
       "terrain": "plains",
@@ -6310,7 +5532,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0082-d662ffafb8",
       "col": 10,
       "row": 24,
       "terrain": "plains",
@@ -6318,7 +5539,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0114-6693fceeda",
       "col": 11,
       "row": 24,
       "terrain": "plains",
@@ -6326,7 +5546,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0146-5e9fd277cd",
       "col": 12,
       "row": 24,
       "terrain": "plains",
@@ -6334,7 +5553,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0178-e0456501d9",
       "col": 13,
       "row": 24,
       "terrain": "plains",
@@ -6342,7 +5560,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0210-6a2d66922f",
       "col": 14,
       "row": 24,
       "terrain": "plains",
@@ -6350,7 +5567,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0242-f1002fd06b",
       "col": 15,
       "row": 24,
       "terrain": "plains",
@@ -6358,7 +5574,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0274-1ee2104507",
       "col": 16,
       "row": 24,
       "terrain": "plains",
@@ -6366,7 +5581,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0306-70c3a2b815",
       "col": 17,
       "row": 24,
       "terrain": "plains",
@@ -6374,7 +5588,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0338-9e5c832e0c",
       "col": 18,
       "row": 24,
       "terrain": "plains",
@@ -6382,7 +5595,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0370-2ea3384e41",
       "col": 19,
       "row": 24,
       "terrain": "plains",
@@ -6390,7 +5602,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0434-3f96a59074",
       "col": 20,
       "row": 24,
       "terrain": "plains",
@@ -6398,7 +5609,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0466-c05c9df81e",
       "col": 21,
       "row": 24,
       "terrain": "plains",
@@ -6406,7 +5616,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0498-f385eaabc7",
       "col": 22,
       "row": 24,
       "terrain": "plains",
@@ -6414,7 +5623,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0530-79ceda7a61",
       "col": 23,
       "row": 24,
       "terrain": "plains",
@@ -6422,7 +5630,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0562-0a15192085",
       "col": 24,
       "row": 24,
       "terrain": "plains",
@@ -6430,7 +5637,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0594-3cbe7324a1",
       "col": 25,
       "row": 24,
       "terrain": "plains",
@@ -6438,7 +5644,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0626-ba6ae783d2",
       "col": 26,
       "row": 24,
       "terrain": "plains",
@@ -6446,7 +5651,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0658-abcf08b2b2",
       "col": 27,
       "row": 24,
       "terrain": "plains",
@@ -6454,7 +5658,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0690-0ead5eff00",
       "col": 28,
       "row": 24,
       "terrain": "plains",
@@ -6462,7 +5665,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0722-dd34028376",
       "col": 29,
       "row": 24,
       "terrain": "plains",
@@ -6470,7 +5672,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0786-da63fd6151",
       "col": 30,
       "row": 24,
       "terrain": "plains",
@@ -6478,7 +5679,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0818-9faa66b3f7",
       "col": 31,
       "row": 24,
       "terrain": "plains",
@@ -6486,7 +5686,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0019-59e50836a3",
       "col": 0,
       "row": 25,
       "terrain": "plains",
@@ -6494,7 +5693,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0051-510529f8a5",
       "col": 1,
       "row": 25,
       "terrain": "plains",
@@ -6502,7 +5700,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0403-0d5ab5606b",
       "col": 2,
       "row": 25,
       "terrain": "plains",
@@ -6510,7 +5707,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0755-75d558f388",
       "col": 3,
       "row": 25,
       "terrain": "plains",
@@ -6518,7 +5714,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0851-0e0dc21b05",
       "col": 4,
       "row": 25,
       "terrain": "plains",
@@ -6526,7 +5721,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0883-70ce15150a",
       "col": 5,
       "row": 25,
       "terrain": "plains",
@@ -6534,7 +5728,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0915-074b0a35bd",
       "col": 6,
       "row": 25,
       "terrain": "plains",
@@ -6542,7 +5735,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0947-8da0c92af8",
       "col": 7,
       "row": 25,
       "terrain": "plains",
@@ -6550,7 +5742,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0979-7fdc491a30",
       "col": 8,
       "row": 25,
       "terrain": "plains",
@@ -6558,7 +5749,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1011-7a35da24e3",
       "col": 9,
       "row": 25,
       "terrain": "plains",
@@ -6566,7 +5756,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0083-1592ae33c3",
       "col": 10,
       "row": 25,
       "terrain": "plains",
@@ -6574,7 +5763,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0115-f7812dfd6e",
       "col": 11,
       "row": 25,
       "terrain": "plains",
@@ -6582,7 +5770,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0147-b89f1fe0b0",
       "col": 12,
       "row": 25,
       "terrain": "plains",
@@ -6590,7 +5777,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0179-4fba3491f7",
       "col": 13,
       "row": 25,
       "terrain": "plains",
@@ -6598,7 +5784,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0211-93f917c594",
       "col": 14,
       "row": 25,
       "terrain": "plains",
@@ -6606,7 +5791,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0243-6cdd082261",
       "col": 15,
       "row": 25,
       "terrain": "plains",
@@ -6614,7 +5798,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0275-31d9c72a5e",
       "col": 16,
       "row": 25,
       "terrain": "plains",
@@ -6622,7 +5805,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0307-34fe47a6d8",
       "col": 17,
       "row": 25,
       "terrain": "plains",
@@ -6630,7 +5812,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0339-0797836b31",
       "col": 18,
       "row": 25,
       "terrain": "plains",
@@ -6638,7 +5819,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0371-a9cd928bae",
       "col": 19,
       "row": 25,
       "terrain": "plains",
@@ -6646,7 +5826,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0435-0cf229d7ae",
       "col": 20,
       "row": 25,
       "terrain": "plains",
@@ -6654,7 +5833,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0467-e97afc2818",
       "col": 21,
       "row": 25,
       "terrain": "plains",
@@ -6662,7 +5840,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0499-7182692a0a",
       "col": 22,
       "row": 25,
       "terrain": "plains",
@@ -6670,7 +5847,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0531-8805c61ffe",
       "col": 23,
       "row": 25,
       "terrain": "plains",
@@ -6678,7 +5854,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0563-b0058b4847",
       "col": 24,
       "row": 25,
       "terrain": "plains",
@@ -6686,7 +5861,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0595-787b88e0bc",
       "col": 25,
       "row": 25,
       "terrain": "plains",
@@ -6694,7 +5868,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0627-bd7fca76c0",
       "col": 26,
       "row": 25,
       "terrain": "plains",
@@ -6702,7 +5875,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0659-c211d323b8",
       "col": 27,
       "row": 25,
       "terrain": "plains",
@@ -6710,7 +5882,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0691-7961ae4839",
       "col": 28,
       "row": 25,
       "terrain": "plains",
@@ -6718,7 +5889,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0723-70e6c58a08",
       "col": 29,
       "row": 25,
       "terrain": "plains",
@@ -6726,7 +5896,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0787-931f303c70",
       "col": 30,
       "row": 25,
       "terrain": "plains",
@@ -6734,7 +5903,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0819-59b5dce586",
       "col": 31,
       "row": 25,
       "terrain": "plains",
@@ -6742,7 +5910,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0020-5c1fa8e91a",
       "col": 0,
       "row": 26,
       "terrain": "plains",
@@ -6750,7 +5917,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0052-1079370ada",
       "col": 1,
       "row": 26,
       "terrain": "plains",
@@ -6758,7 +5924,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0404-ad087500c3",
       "col": 2,
       "row": 26,
       "terrain": "plains",
@@ -6766,7 +5931,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0756-87a3dbdc69",
       "col": 3,
       "row": 26,
       "terrain": "plains",
@@ -6774,7 +5938,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0852-261e53112f",
       "col": 4,
       "row": 26,
       "terrain": "plains",
@@ -6782,7 +5945,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0884-ec45be2f64",
       "col": 5,
       "row": 26,
       "terrain": "plains",
@@ -6790,7 +5952,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0916-6ab88199b8",
       "col": 6,
       "row": 26,
       "terrain": "plains",
@@ -6798,7 +5959,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0948-f5352cb426",
       "col": 7,
       "row": 26,
       "terrain": "plains",
@@ -6806,7 +5966,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0980-5c34a0ad6d",
       "col": 8,
       "row": 26,
       "terrain": "plains",
@@ -6814,7 +5973,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1012-454f755799",
       "col": 9,
       "row": 26,
       "terrain": "plains",
@@ -6822,7 +5980,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0084-fcb4477837",
       "col": 10,
       "row": 26,
       "terrain": "plains",
@@ -6830,7 +5987,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0116-7f08c9f57c",
       "col": 11,
       "row": 26,
       "terrain": "plains",
@@ -6838,7 +5994,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0148-0cea0f5d7f",
       "col": 12,
       "row": 26,
       "terrain": "plains",
@@ -6846,7 +6001,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0180-75fd90d650",
       "col": 13,
       "row": 26,
       "terrain": "plains",
@@ -6854,7 +6008,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0212-82c4676094",
       "col": 14,
       "row": 26,
       "terrain": "plains",
@@ -6862,7 +6015,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0244-f7ac451976",
       "col": 15,
       "row": 26,
       "terrain": "plains",
@@ -6870,7 +6022,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0276-6195d131c7",
       "col": 16,
       "row": 26,
       "terrain": "plains",
@@ -6878,7 +6029,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0308-fb6097c887",
       "col": 17,
       "row": 26,
       "terrain": "plains",
@@ -6886,7 +6036,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0340-a3a14de9dc",
       "col": 18,
       "row": 26,
       "terrain": "plains",
@@ -6894,7 +6043,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0372-b9b9adf914",
       "col": 19,
       "row": 26,
       "terrain": "plains",
@@ -6902,7 +6050,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0436-584f2423ed",
       "col": 20,
       "row": 26,
       "terrain": "plains",
@@ -6910,7 +6057,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0468-bc3f47d1dc",
       "col": 21,
       "row": 26,
       "terrain": "plains",
@@ -6918,7 +6064,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0500-3a6e8b5dba",
       "col": 22,
       "row": 26,
       "terrain": "plains",
@@ -6926,7 +6071,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0532-ae103b0642",
       "col": 23,
       "row": 26,
       "terrain": "plains",
@@ -6934,7 +6078,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0564-1c5174d191",
       "col": 24,
       "row": 26,
       "terrain": "plains",
@@ -6942,7 +6085,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0596-68cb097c58",
       "col": 25,
       "row": 26,
       "terrain": "plains",
@@ -6950,7 +6092,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0628-f33507b639",
       "col": 26,
       "row": 26,
       "terrain": "plains",
@@ -6958,7 +6099,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0660-bae5d42012",
       "col": 27,
       "row": 26,
       "terrain": "plains",
@@ -6966,7 +6106,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0692-6ef9caa776",
       "col": 28,
       "row": 26,
       "terrain": "plains",
@@ -6974,7 +6113,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0724-f10d0f565e",
       "col": 29,
       "row": 26,
       "terrain": "plains",
@@ -6982,7 +6120,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0788-c2f221f6f2",
       "col": 30,
       "row": 26,
       "terrain": "plains",
@@ -6990,7 +6127,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0820-4725a2da1f",
       "col": 31,
       "row": 26,
       "terrain": "plains",
@@ -6998,7 +6134,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0021-d60c67fe2d",
       "col": 0,
       "row": 27,
       "terrain": "plains",
@@ -7006,7 +6141,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0053-b1d495dd62",
       "col": 1,
       "row": 27,
       "terrain": "plains",
@@ -7014,7 +6148,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0405-26822d5413",
       "col": 2,
       "row": 27,
       "terrain": "plains",
@@ -7022,7 +6155,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0757-6e3a3369bc",
       "col": 3,
       "row": 27,
       "terrain": "plains",
@@ -7030,7 +6162,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0853-6dfcc5e52c",
       "col": 4,
       "row": 27,
       "terrain": "plains",
@@ -7038,7 +6169,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0885-e20695dcb4",
       "col": 5,
       "row": 27,
       "terrain": "plains",
@@ -7046,7 +6176,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0917-6f654e0cde",
       "col": 6,
       "row": 27,
       "terrain": "plains",
@@ -7054,7 +6183,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0949-c66f9e14ae",
       "col": 7,
       "row": 27,
       "terrain": "plains",
@@ -7062,7 +6190,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0981-a5389e7d26",
       "col": 8,
       "row": 27,
       "terrain": "plains",
@@ -7070,7 +6197,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1013-509f5d7865",
       "col": 9,
       "row": 27,
       "terrain": "plains",
@@ -7078,7 +6204,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0085-392b912c69",
       "col": 10,
       "row": 27,
       "terrain": "plains",
@@ -7086,7 +6211,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0117-30d9eaa781",
       "col": 11,
       "row": 27,
       "terrain": "plains",
@@ -7094,7 +6218,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0149-e2911ff10b",
       "col": 12,
       "row": 27,
       "terrain": "plains",
@@ -7102,7 +6225,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0181-92a1349b0d",
       "col": 13,
       "row": 27,
       "terrain": "plains",
@@ -7110,7 +6232,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0213-b8f3d05446",
       "col": 14,
       "row": 27,
       "terrain": "plains",
@@ -7118,7 +6239,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0245-d4c27f7aaf",
       "col": 15,
       "row": 27,
       "terrain": "plains",
@@ -7126,7 +6246,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0277-45f38f7ea5",
       "col": 16,
       "row": 27,
       "terrain": "plains",
@@ -7134,7 +6253,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0309-1d9cd3ba40",
       "col": 17,
       "row": 27,
       "terrain": "plains",
@@ -7142,7 +6260,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0341-f3a217e108",
       "col": 18,
       "row": 27,
       "terrain": "plains",
@@ -7150,7 +6267,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0373-37662de4e5",
       "col": 19,
       "row": 27,
       "terrain": "plains",
@@ -7158,7 +6274,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0437-1d72469071",
       "col": 20,
       "row": 27,
       "terrain": "plains",
@@ -7166,7 +6281,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0469-1d145e6cb3",
       "col": 21,
       "row": 27,
       "terrain": "plains",
@@ -7174,7 +6288,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0501-2a7855741b",
       "col": 22,
       "row": 27,
       "terrain": "plains",
@@ -7182,7 +6295,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0533-09409203b9",
       "col": 23,
       "row": 27,
       "terrain": "plains",
@@ -7190,7 +6302,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0565-e267fa5677",
       "col": 24,
       "row": 27,
       "terrain": "plains",
@@ -7198,7 +6309,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0597-527b217f54",
       "col": 25,
       "row": 27,
       "terrain": "plains",
@@ -7206,7 +6316,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0629-bb25fc3cc8",
       "col": 26,
       "row": 27,
       "terrain": "plains",
@@ -7214,7 +6323,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0661-23ac9d092f",
       "col": 27,
       "row": 27,
       "terrain": "plains",
@@ -7222,7 +6330,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0693-9af58fdac0",
       "col": 28,
       "row": 27,
       "terrain": "plains",
@@ -7230,7 +6337,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0725-77e73e24fb",
       "col": 29,
       "row": 27,
       "terrain": "plains",
@@ -7238,7 +6344,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0789-2b280ed7be",
       "col": 30,
       "row": 27,
       "terrain": "plains",
@@ -7246,7 +6351,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0821-8e02b9ab5e",
       "col": 31,
       "row": 27,
       "terrain": "plains",
@@ -7254,7 +6358,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0022-8d9daa2d60",
       "col": 0,
       "row": 28,
       "terrain": "plains",
@@ -7262,7 +6365,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0054-537df2e7f8",
       "col": 1,
       "row": 28,
       "terrain": "plains",
@@ -7270,7 +6372,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0406-3648c0a830",
       "col": 2,
       "row": 28,
       "terrain": "plains",
@@ -7278,7 +6379,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0758-c625adf0a8",
       "col": 3,
       "row": 28,
       "terrain": "plains",
@@ -7286,7 +6386,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0854-0d5a7a4c42",
       "col": 4,
       "row": 28,
       "terrain": "plains",
@@ -7294,7 +6393,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0886-9e096480a3",
       "col": 5,
       "row": 28,
       "terrain": "plains",
@@ -7302,7 +6400,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0918-5a5a3ec805",
       "col": 6,
       "row": 28,
       "terrain": "plains",
@@ -7310,7 +6407,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0950-f86d2ed145",
       "col": 7,
       "row": 28,
       "terrain": "plains",
@@ -7318,7 +6414,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0982-225e86f3f1",
       "col": 8,
       "row": 28,
       "terrain": "plains",
@@ -7326,7 +6421,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1014-268b05cd2d",
       "col": 9,
       "row": 28,
       "terrain": "plains",
@@ -7334,7 +6428,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0086-ac419bfab3",
       "col": 10,
       "row": 28,
       "terrain": "plains",
@@ -7342,7 +6435,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0118-44061b57ce",
       "col": 11,
       "row": 28,
       "terrain": "plains",
@@ -7350,7 +6442,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0150-9c59a3885e",
       "col": 12,
       "row": 28,
       "terrain": "plains",
@@ -7358,7 +6449,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0182-df42ef8f32",
       "col": 13,
       "row": 28,
       "terrain": "plains",
@@ -7366,7 +6456,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0214-13d0e858ac",
       "col": 14,
       "row": 28,
       "terrain": "plains",
@@ -7374,7 +6463,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0246-b1f38ef796",
       "col": 15,
       "row": 28,
       "terrain": "plains",
@@ -7382,7 +6470,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0278-f7d404db1c",
       "col": 16,
       "row": 28,
       "terrain": "plains",
@@ -7390,7 +6477,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0310-7d1e98aba0",
       "col": 17,
       "row": 28,
       "terrain": "plains",
@@ -7398,7 +6484,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0342-ca7fd7079a",
       "col": 18,
       "row": 28,
       "terrain": "plains",
@@ -7406,7 +6491,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0374-23bd07cc6a",
       "col": 19,
       "row": 28,
       "terrain": "plains",
@@ -7414,7 +6498,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0438-4b75c39b09",
       "col": 20,
       "row": 28,
       "terrain": "plains",
@@ -7422,7 +6505,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0470-935779ef37",
       "col": 21,
       "row": 28,
       "terrain": "plains",
@@ -7430,7 +6512,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0502-981fa90b9b",
       "col": 22,
       "row": 28,
       "terrain": "plains",
@@ -7438,7 +6519,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0534-e54163837a",
       "col": 23,
       "row": 28,
       "terrain": "plains",
@@ -7446,7 +6526,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0566-631a3c42be",
       "col": 24,
       "row": 28,
       "terrain": "plains",
@@ -7454,7 +6533,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0598-c4ab674149",
       "col": 25,
       "row": 28,
       "terrain": "plains",
@@ -7462,7 +6540,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0630-858aeea493",
       "col": 26,
       "row": 28,
       "terrain": "plains",
@@ -7470,7 +6547,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0662-635e7f2626",
       "col": 27,
       "row": 28,
       "terrain": "plains",
@@ -7478,7 +6554,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0694-266a15cbdd",
       "col": 28,
       "row": 28,
       "terrain": "plains",
@@ -7486,7 +6561,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0726-95a56631ac",
       "col": 29,
       "row": 28,
       "terrain": "plains",
@@ -7494,7 +6568,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0790-e61f79d29c",
       "col": 30,
       "row": 28,
       "terrain": "plains",
@@ -7502,7 +6575,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0822-b2a915e614",
       "col": 31,
       "row": 28,
       "terrain": "plains",
@@ -7510,7 +6582,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0023-03c9359343",
       "col": 0,
       "row": 29,
       "terrain": "plains",
@@ -7518,7 +6589,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0055-97d81be534",
       "col": 1,
       "row": 29,
       "terrain": "plains",
@@ -7526,7 +6596,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0407-14079a8a10",
       "col": 2,
       "row": 29,
       "terrain": "plains",
@@ -7534,7 +6603,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0759-776b5ae2a3",
       "col": 3,
       "row": 29,
       "terrain": "plains",
@@ -7542,7 +6610,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0855-3e1bbb781d",
       "col": 4,
       "row": 29,
       "terrain": "plains",
@@ -7550,7 +6617,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0887-5bdd42d8c4",
       "col": 5,
       "row": 29,
       "terrain": "plains",
@@ -7558,7 +6624,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0919-f9d0f19911",
       "col": 6,
       "row": 29,
       "terrain": "plains",
@@ -7566,7 +6631,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0951-0159502f19",
       "col": 7,
       "row": 29,
       "terrain": "plains",
@@ -7574,7 +6638,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0983-e50a47e930",
       "col": 8,
       "row": 29,
       "terrain": "plains",
@@ -7582,7 +6645,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1015-2c4bd13b51",
       "col": 9,
       "row": 29,
       "terrain": "plains",
@@ -7590,7 +6652,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0087-9e49db62b9",
       "col": 10,
       "row": 29,
       "terrain": "plains",
@@ -7598,7 +6659,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0119-3f619831cf",
       "col": 11,
       "row": 29,
       "terrain": "plains",
@@ -7606,7 +6666,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0151-50c42b87ba",
       "col": 12,
       "row": 29,
       "terrain": "plains",
@@ -7614,7 +6673,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0183-56f637e9e6",
       "col": 13,
       "row": 29,
       "terrain": "plains",
@@ -7622,7 +6680,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0215-0bd6a878df",
       "col": 14,
       "row": 29,
       "terrain": "plains",
@@ -7630,7 +6687,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0247-4576043846",
       "col": 15,
       "row": 29,
       "terrain": "plains",
@@ -7638,7 +6694,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0279-ab509cf2cc",
       "col": 16,
       "row": 29,
       "terrain": "plains",
@@ -7646,7 +6701,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0311-1cbeb358fd",
       "col": 17,
       "row": 29,
       "terrain": "plains",
@@ -7654,7 +6708,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0343-c75e56e67d",
       "col": 18,
       "row": 29,
       "terrain": "plains",
@@ -7662,7 +6715,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0375-5e701e0885",
       "col": 19,
       "row": 29,
       "terrain": "plains",
@@ -7670,7 +6722,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0439-8aca95cb70",
       "col": 20,
       "row": 29,
       "terrain": "plains",
@@ -7678,7 +6729,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0471-4c74ad52eb",
       "col": 21,
       "row": 29,
       "terrain": "plains",
@@ -7686,7 +6736,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0503-b16c9246fc",
       "col": 22,
       "row": 29,
       "terrain": "plains",
@@ -7694,7 +6743,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0535-d086e0292e",
       "col": 23,
       "row": 29,
       "terrain": "plains",
@@ -7702,7 +6750,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0567-db81bf2579",
       "col": 24,
       "row": 29,
       "terrain": "plains",
@@ -7710,7 +6757,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0599-28d1f436f5",
       "col": 25,
       "row": 29,
       "terrain": "plains",
@@ -7718,7 +6764,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0631-08a712b9fe",
       "col": 26,
       "row": 29,
       "terrain": "plains",
@@ -7726,7 +6771,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0663-997fbb203d",
       "col": 27,
       "row": 29,
       "terrain": "plains",
@@ -7734,7 +6778,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0695-a7e51a8ae0",
       "col": 28,
       "row": 29,
       "terrain": "plains",
@@ -7742,7 +6785,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0727-5b235237c8",
       "col": 29,
       "row": 29,
       "terrain": "plains",
@@ -7750,7 +6792,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0791-58bfc8b418",
       "col": 30,
       "row": 29,
       "terrain": "plains",
@@ -7758,7 +6799,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0823-ad020fcc71",
       "col": 31,
       "row": 29,
       "terrain": "plains",
@@ -7766,7 +6806,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0025-afe47ca30a",
       "col": 0,
       "row": 30,
       "terrain": "plains",
@@ -7774,7 +6813,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0057-d3b9e7112a",
       "col": 1,
       "row": 30,
       "terrain": "plains",
@@ -7782,7 +6820,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0409-d1048e79dd",
       "col": 2,
       "row": 30,
       "terrain": "plains",
@@ -7790,7 +6827,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0761-7421f975ca",
       "col": 3,
       "row": 30,
       "terrain": "plains",
@@ -7798,7 +6834,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0857-01de1eeea9",
       "col": 4,
       "row": 30,
       "terrain": "plains",
@@ -7806,7 +6841,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0889-77f53a556a",
       "col": 5,
       "row": 30,
       "terrain": "plains",
@@ -7814,7 +6848,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0921-9095d880ce",
       "col": 6,
       "row": 30,
       "terrain": "plains",
@@ -7822,7 +6855,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0953-f4d73a5fc4",
       "col": 7,
       "row": 30,
       "terrain": "plains",
@@ -7830,7 +6862,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0985-e8d6c36595",
       "col": 8,
       "row": 30,
       "terrain": "plains",
@@ -7838,7 +6869,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1017-a510d86215",
       "col": 9,
       "row": 30,
       "terrain": "plains",
@@ -7846,7 +6876,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0089-5bebb0fc9b",
       "col": 10,
       "row": 30,
       "terrain": "plains",
@@ -7854,7 +6883,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0121-5c5b9ace0f",
       "col": 11,
       "row": 30,
       "terrain": "plains",
@@ -7862,7 +6890,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0153-cb8390c8d7",
       "col": 12,
       "row": 30,
       "terrain": "plains",
@@ -7870,7 +6897,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0185-d9cab2a7a7",
       "col": 13,
       "row": 30,
       "terrain": "plains",
@@ -7878,7 +6904,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0217-56691b6733",
       "col": 14,
       "row": 30,
       "terrain": "plains",
@@ -7886,7 +6911,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0249-429ef6e31c",
       "col": 15,
       "row": 30,
       "terrain": "plains",
@@ -7894,7 +6918,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0281-707575fc84",
       "col": 16,
       "row": 30,
       "terrain": "plains",
@@ -7902,7 +6925,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0313-a3cd4ab602",
       "col": 17,
       "row": 30,
       "terrain": "plains",
@@ -7910,7 +6932,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0345-67c037299b",
       "col": 18,
       "row": 30,
       "terrain": "plains",
@@ -7918,7 +6939,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0377-7a83ce8804",
       "col": 19,
       "row": 30,
       "terrain": "plains",
@@ -7926,7 +6946,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0441-9e41bd6b3d",
       "col": 20,
       "row": 30,
       "terrain": "plains",
@@ -7934,7 +6953,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0473-1f14673a16",
       "col": 21,
       "row": 30,
       "terrain": "plains",
@@ -7942,7 +6960,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0505-5c4d32aaee",
       "col": 22,
       "row": 30,
       "terrain": "plains",
@@ -7950,7 +6967,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0537-40c49d4e65",
       "col": 23,
       "row": 30,
       "terrain": "plains",
@@ -7958,7 +6974,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0569-cf6dd7c4a7",
       "col": 24,
       "row": 30,
       "terrain": "plains",
@@ -7966,7 +6981,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0601-6dc17a41b9",
       "col": 25,
       "row": 30,
       "terrain": "plains",
@@ -7974,7 +6988,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0633-ce4e8f8d31",
       "col": 26,
       "row": 30,
       "terrain": "plains",
@@ -7982,7 +6995,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0665-e6c25e29f2",
       "col": 27,
       "row": 30,
       "terrain": "plains",
@@ -7990,7 +7002,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0697-490cfcd52f",
       "col": 28,
       "row": 30,
       "terrain": "plains",
@@ -7998,7 +7009,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0729-1916a12bf3",
       "col": 29,
       "row": 30,
       "terrain": "plains",
@@ -8006,7 +7016,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0793-37ac835cef",
       "col": 30,
       "row": 30,
       "terrain": "plains",
@@ -8014,7 +7023,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0825-c74c8a7235",
       "col": 31,
       "row": 30,
       "terrain": "plains",
@@ -8022,7 +7030,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0026-fb8343fedb",
       "col": 0,
       "row": 31,
       "terrain": "plains",
@@ -8030,7 +7037,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0058-9b9abcd9cc",
       "col": 1,
       "row": 31,
       "terrain": "plains",
@@ -8038,7 +7044,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0410-aa9cb11664",
       "col": 2,
       "row": 31,
       "terrain": "plains",
@@ -8046,7 +7051,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0762-e0c8977c08",
       "col": 3,
       "row": 31,
       "terrain": "plains",
@@ -8054,7 +7058,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0858-c0d2949d06",
       "col": 4,
       "row": 31,
       "terrain": "plains",
@@ -8062,7 +7065,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0890-e27890eeb8",
       "col": 5,
       "row": 31,
       "terrain": "plains",
@@ -8070,7 +7072,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0922-20287b7cf6",
       "col": 6,
       "row": 31,
       "terrain": "plains",
@@ -8078,7 +7079,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0954-79d38e4c86",
       "col": 7,
       "row": 31,
       "terrain": "plains",
@@ -8086,7 +7086,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0986-bfaf39c933",
       "col": 8,
       "row": 31,
       "terrain": "plains",
@@ -8094,7 +7093,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1018-3d4104015c",
       "col": 9,
       "row": 31,
       "terrain": "plains",
@@ -8102,7 +7100,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0090-634649c783",
       "col": 10,
       "row": 31,
       "terrain": "plains",
@@ -8110,7 +7107,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0122-d2e04cc7a5",
       "col": 11,
       "row": 31,
       "terrain": "plains",
@@ -8118,7 +7114,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0154-6865c22baa",
       "col": 12,
       "row": 31,
       "terrain": "plains",
@@ -8126,7 +7121,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0186-b8833b1da2",
       "col": 13,
       "row": 31,
       "terrain": "plains",
@@ -8134,7 +7128,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0218-3b212b9817",
       "col": 14,
       "row": 31,
       "terrain": "plains",
@@ -8142,7 +7135,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0250-e558ed33b3",
       "col": 15,
       "row": 31,
       "terrain": "plains",
@@ -8150,7 +7142,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0282-c1cb2efbc4",
       "col": 16,
       "row": 31,
       "terrain": "plains",
@@ -8158,7 +7149,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0314-db7b54305c",
       "col": 17,
       "row": 31,
       "terrain": "plains",
@@ -8166,7 +7156,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0346-35cf007ce3",
       "col": 18,
       "row": 31,
       "terrain": "plains",
@@ -8174,7 +7163,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0378-72d9ea3eb2",
       "col": 19,
       "row": 31,
       "terrain": "plains",
@@ -8182,7 +7170,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0442-0c8b90bd20",
       "col": 20,
       "row": 31,
       "terrain": "plains",
@@ -8190,7 +7177,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0474-3b968971a9",
       "col": 21,
       "row": 31,
       "terrain": "plains",
@@ -8198,7 +7184,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0506-da07819840",
       "col": 22,
       "row": 31,
       "terrain": "plains",
@@ -8206,7 +7191,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0538-dca4402b2f",
       "col": 23,
       "row": 31,
       "terrain": "plains",
@@ -8214,7 +7198,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0570-496b29c956",
       "col": 24,
       "row": 31,
       "terrain": "plains",
@@ -8222,7 +7205,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0602-97b1205efa",
       "col": 25,
       "row": 31,
       "terrain": "plains",
@@ -8230,7 +7212,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0634-d69eb8538e",
       "col": 26,
       "row": 31,
       "terrain": "plains",
@@ -8238,7 +7219,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0666-486e99c881",
       "col": 27,
       "row": 31,
       "terrain": "plains",
@@ -8246,7 +7226,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0698-2a7cb1d81c",
       "col": 28,
       "row": 31,
       "terrain": "plains",
@@ -8254,7 +7233,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0730-39f61996ce",
       "col": 29,
       "row": 31,
       "terrain": "plains",
@@ -8262,7 +7240,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0794-3d4c34b530",
       "col": 30,
       "row": 31,
       "terrain": "plains",
@@ -8270,7 +7247,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0826-1ce94a7823",
       "col": 31,
       "row": 31,
       "terrain": "plains",

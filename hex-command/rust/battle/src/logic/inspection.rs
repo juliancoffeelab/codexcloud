@@ -108,7 +108,7 @@ impl Game<'_> {
                 .enumerate()
                 .map(|(index, id)| {
                     (
-                        id.clone(),
+                        id.to_string(),
                         self.board.adjacent[index]
                             .iter()
                             .map(|&next| self.board.ids[next].clone())

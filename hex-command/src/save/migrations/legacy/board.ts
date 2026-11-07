@@ -1,11 +1,14 @@
 import type { LegacyCampaignState } from "./campaign-state";
 import { MAPS, TYPES, TERRAIN_ORDER } from "./frozen";
-import type { GameState, MapId, Tile, Unit } from "../../../game/types";
+import type { GameState, MapId, Tile, Unit as CurrentUnit } from "../../../game/types";
 import { LEGACY_ASHEN_REFUGE } from "./layouts";
 
+export type Unit = Omit<CurrentUnit, "tile"> & { tile: string };
+
 /** Reconstructed data plus lookup helpers; deliberately has no gameplay commands. */
-export type LegacyState = Omit<GameState, "groundItems" | "campaign"> & {
+export type LegacyState = Omit<GameState, "groundItems" | "campaign" | "units"> & {
   campaign?: LegacyCampaignState;
+  units: Unit[];
 };
 export interface LegacyBoard extends LegacyState {
   tile(id: string): Tile | undefined;

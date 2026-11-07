@@ -314,7 +314,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         self.engine().index(id)
     }
     #[inline]
-    pub fn site(&self, id: &str) -> usize {
+    pub fn site(&self, id: &Hex) -> usize {
         self.engine().site(id)
     }
     #[inline]
@@ -601,12 +601,12 @@ pub struct CampaignObjective<'a> {
     pub satisfied: bool,
     pub intent: CampaignIntent,
     pub selector: Option<&'a UnitMatch>,
-    pub tiles: Vec<String>,
+    pub tiles: Vec<Hex>,
 }
 pub struct CampaignGroup<'a> {
     pub id: &'a str,
     pub active: bool,
-    pub hold: Option<(&'a [String], u16)>,
+    pub hold: Option<(Vec<Hex>, u16)>,
 }
 
 /// Authored battle/campaign observations, without AI decisions or mutable state.
@@ -647,7 +647,7 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
             .map_or(&[], |m| m.required_companions.as_slice())
     }
     #[inline]
-    pub fn enemy_leader_post(&self) -> Option<&str> {
+    pub fn enemy_leader_post(&self) -> Option<Hex> {
         if self.view.turn() != Side::Enemy {
             return None;
         }
@@ -655,7 +655,8 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
             .engine()
             .mission
             .as_ref()
-            .and_then(|m| m.enemy_leader_post.as_deref())
+            .and_then(|m| m.enemy_leader_post.as_ref())
+            .map(|target| self.view.engine().board.ids[self.view.engine().reference_site(target)])
     }
     #[inline]
     pub fn defend_objectives(&self) -> bool {
@@ -687,7 +688,12 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
                         .as_ref()
                         .is_none_or(|condition| game.event_condition_met(condition)) =>
                     {
-                        Some((area.as_slice(), *attack_radius))
+                        Some((
+                            area.iter()
+                                .map(|name| game.board.ids[game.reference_site(name)].clone())
+                                .collect(),
+                            *attack_radius,
+                        ))
                     }
                     _ => None,
                 };

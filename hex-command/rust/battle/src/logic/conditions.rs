@@ -50,14 +50,13 @@ impl ConditionContext for LiveContext<'_, '_> {
     fn factions(&self) -> &[Faction] {
         self.factions
     }
-    fn owns(&self, id: &str, side: &str) -> bool {
+    fn owns(&self, id: &TileRef, side: &str) -> bool {
         self.board
-            .indices
-            .get(id)
-            .is_some_and(|&i| self.owners[i].as_deref() == Some(side))
+            .resolve(id)
+            .is_some_and(|i| self.owners[i].as_deref() == Some(side))
     }
-    fn position(&self, id: &str) -> Option<(i32, i32)> {
-        self.board.indices.get(id).map(|&i| self.board.positions[i])
+    fn position(&self, id: &TileRef) -> Option<(i32, i32)> {
+        self.board.resolve(id).map(|i| self.board.positions[i])
     }
     fn visible_at(&self, position: (i32, i32)) -> bool {
         self.board
@@ -70,7 +69,7 @@ impl ConditionContext for LiveContext<'_, '_> {
                         || crate::data::presentation::matches_fog(
                             &rule.condition,
                             self,
-                            Some(&self.board.ids[tile]),
+                            Some(&TileRef::Hex(self.board.ids[tile])),
                         )
                 })
             })
@@ -139,10 +138,10 @@ impl ConditionContext for LiveContext<'_, '_> {
     }
 }
 impl PresentationContext for LiveContext<'_, '_> {
-    fn fog_index(&self, id: &str) -> usize {
+    fn fog_index(&self, id: &Hex) -> usize {
         self.board.indices[id]
     }
-    fn fog_remembered(&self, id: &str) -> bool {
+    fn fog_remembered(&self, id: &Hex) -> bool {
         let i = self.fog_index(id);
         self.fog_memory
             .get(i / 64)
@@ -159,7 +158,7 @@ impl PresentationContext for LiveContext<'_, '_> {
             .map(|m| &m.lighting)
             .unwrap_or(&DEFAULT)
     }
-    fn visit_lights(&self, mut visitor: impl FnMut(&str, i32, i32, &TileLight)) {
+    fn visit_lights(&self, mut visitor: impl FnMut(&Hex, i32, i32, &TileLight)) {
         for (i, light) in self.light.iter().enumerate() {
             if let Some(light) = light {
                 let (col, row) = self.board.positions[i];
@@ -167,7 +166,7 @@ impl PresentationContext for LiveContext<'_, '_> {
             }
         }
     }
-    fn visit_fog(&self, mut visitor: impl FnMut(&str, &ConditionRule)) {
+    fn visit_fog(&self, mut visitor: impl FnMut(&Hex, &ConditionRule)) {
         for (i, rule) in self.fog.iter().enumerate() {
             if let Some(rule) = rule {
                 visitor(&self.board.ids[i], rule);

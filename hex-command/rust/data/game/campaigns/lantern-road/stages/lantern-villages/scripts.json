@@ -4,7 +4,14 @@
       "id": "captive-guard",
       "order": {
         "kind": "hold",
-        "area": ["hex-0957-c94afbbfa1"],
+        "area": [
+          {
+            "hex": {
+              "col": 7,
+              "row": 6
+            }
+          }
+        ],
         "attackRadius": 1,
         "when": {
           "kind": "hasUnits",
@@ -20,7 +27,11 @@
       "id": "tollkeeper",
       "order": {
         "kind": "hold",
-        "area": ["hex-0254-415f24444c"],
+        "area": [
+          {
+            "location": "tollkeeper-keep"
+          }
+        ],
         "attackRadius": 1,
         "when": {
           "kind": "hasUnits",
@@ -33,7 +44,14 @@
       "id": "swamp-commander",
       "order": {
         "kind": "hold",
-        "area": ["hex-0133-99da47f9af"],
+        "area": [
+          {
+            "hex": {
+              "col": 12,
+              "row": 12
+            }
+          }
+        ],
         "attackRadius": 2
       }
     }
@@ -63,7 +81,9 @@
       "id": "village-contact",
       "when": {
         "proximity": {
-          "tile": "hex-0386-9dcf2ec127",
+          "tile": {
+            "location": "shelter"
+          },
           "radius": 1,
           "side": "player"
         }
@@ -73,13 +93,45 @@
           "spawn": {
             "faction": "player",
             "area": [
-              "hex-0386-9dcf2ec127",
-              "hex-0385-50a8d92c35",
-              "hex-0034-53333de58a",
-              "hex-0397-b042f4a1af",
-              "hex-0738-f0cce97107",
-              "hex-0033-68054f369c",
-              "hex-0749-0fa856724a"
+              {
+                "location": "shelter"
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 0
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 1
+                }
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 2
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 1
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 0
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 2
+                }
+              }
             ],
             "units": [
               {
@@ -112,7 +164,7 @@
           "say": [
             {
               "portrait": "warden",
-              "text": "Easy. Living faces—I’d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by.",
+              "text": "Easy. Living faces\u2014I\u2019d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by.",
               "character": "sella"
             },
             {
@@ -122,17 +174,17 @@
             },
             {
               "portrait": "warden",
-              "text": "They emptied the roadside villages. There are prisoners at the old pass fort, waiting to be marched east. We haven’t the strength to fetch them.",
+              "text": "They emptied the roadside villages. There are prisoners at the old pass fort, waiting to be marched east. We haven\u2019t the strength to fetch them.",
               "character": "sella"
             },
             {
               "portrait": "swordsman",
-              "text": "Then we’ll bring them here. Can you keep them safe?",
+              "text": "Then we\u2019ll bring them here. Can you keep them safe?",
               "character": "nera"
             },
             {
               "portrait": "warden",
-              "text": "We can. I’ll go with you. There are a few here who can take up arms; give us somewhere to muster.",
+              "text": "We can. I\u2019ll go with you. There are a few here who can take up arms; give us somewhere to muster.",
               "character": "sella"
             }
           ]
@@ -148,7 +200,9 @@
         "label": "Find a safe foothold",
         "intent": {
           "approach": {
-            "tile": "hex-0386-9dcf2ec127",
+            "tile": {
+              "location": "shelter"
+            },
             "radius": 1,
             "side": "player"
           }
@@ -165,7 +219,9 @@
         "all": [
           {
             "owner": {
-              "tile": "hex-0045-b0e58b1f93",
+              "tile": {
+                "location": "player-camp"
+              },
               "faction": "player"
             }
           },
@@ -183,7 +239,11 @@
         "label": "Investigate the area",
         "optional": false,
         "intent": {
-          "capture": ["hex-0045-b0e58b1f93"]
+          "capture": [
+            {
+              "location": "player-camp"
+            }
+          ]
         },
         "visibleWhen": {
           "flag": "village-contact"
@@ -225,17 +285,17 @@
           "say": [
             {
               "portrait": "adept",
-              "text": "That child by the hearth—those marks on the slate aren’t letters. Who taught you to draw them?",
+              "text": "That child by the hearth\u2014those marks on the slate aren\u2019t letters. Who taught you to draw them?",
               "character": "oren"
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Nobody. They appear when I’m trying to remember things."
+              "text": "Nobody. They appear when I\u2019m trying to remember things."
             },
             {
               "portrait": "adept",
-              "text": "A little training, then. We haven’t an academy to hand, but this is better than leaving a gift untended. Stay with me; I’ll show you how to keep it from burning your fingers.",
+              "text": "A little training, then. We haven\u2019t an academy to hand, but this is better than leaving a gift untended. Stay with me; I\u2019ll show you how to keep it from burning your fingers.",
               "character": "oren"
             }
           ]
@@ -261,7 +321,7 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "The ferryman’s purse will buy a few more hands. Let’s make his coins count.",
+              "text": "The ferryman\u2019s purse will buy a few more hands. Let\u2019s make his coins count.",
               "character": "nera"
             }
           ]
@@ -299,7 +359,9 @@
             "all": [
               {
                 "proximity": {
-                  "tile": "hex-0989-f27f4a3764",
+                  "tile": {
+                    "location": "captive-camp"
+                  },
                   "radius": 2,
                   "side": "player"
                 }
@@ -373,7 +435,7 @@
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Please—before it’s too late!"
+              "text": "Please\u2014before it\u2019s too late!"
             },
             {
               "speaker": "Skeleton guard",
@@ -412,17 +474,17 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "Keep your heads down. We’re getting you out.",
+              "text": "Keep your heads down. We\u2019re getting you out.",
               "character": "nera"
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "They said another column was coming for us. Please—don’t let them take us."
+              "text": "They said another column was coming for us. Please\u2014don\u2019t let them take us."
             },
             {
               "portrait": "swordsman",
-              "text": "Stay together. We’ll get you somewhere safe.",
+              "text": "Stay together. We\u2019ll get you somewhere safe.",
               "character": "nera"
             }
           ]
@@ -463,13 +525,13 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "There’s a village hidden in the western woods. Stay together. We’ll take you there.",
+              "text": "There\u2019s a village hidden in the western woods. Stay together. We\u2019ll take you there.",
               "character": "nera"
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "They took the others down the road. My brother, the children—everyone who could still walk."
+              "text": "They took the others down the road. My brother, the children\u2014everyone who could still walk."
             },
             {
               "speaker": "Villager",
@@ -523,14 +585,14 @@
               "dialogue": [
                 {
                   "portrait": "adept",
-                  "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it’s too late. We must leave this road by the end of turn 30.",
+                  "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it\u2019s too late. We must leave this road by the end of turn 30.",
                   "character": "oren"
                 }
               ],
               "alternative": [
                 {
                   "portrait": "swordsman",
-                  "text": "They’re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays—we have to reach them while they’re still alive. We must leave this road by the end of turn 30.",
+                  "text": "They\u2019re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays\u2014we have to reach them while they\u2019re still alive. We must leave this road by the end of turn 30.",
                   "character": "nera"
                 }
               ]
@@ -556,7 +618,9 @@
               },
               {
                 "proximity": {
-                  "tile": "hex-0254-415f24444c",
+                  "tile": {
+                    "location": "tollkeeper-keep"
+                  },
                   "radius": 3,
                   "side": "player"
                 }
@@ -570,7 +634,7 @@
           "say": [
             {
               "portrait": "necromancer",
-              "text": "Living soldiers on my road? You’ll pay for every step. Come closer—I’ll take the toll in bones.",
+              "text": "Living soldiers on my road? You\u2019ll pay for every step. Come closer\u2014I\u2019ll take the toll in bones.",
               "character": "tollkeeper"
             }
           ]
@@ -586,322 +650,549 @@
         "any": [
           {
             "stand": {
-              "tile": "hex-0285-49166a1e1d",
+              "tile": {
+                "hex": {
+                  "col": 16,
+                  "row": 6
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0254-415f24444c",
+              "tile": {
+                "location": "tollkeeper-keep"
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0191-245d1573b9",
+              "tile": {
+                "hex": {
+                  "col": 13,
+                  "row": 8
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0223-33a9629ed8",
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 8
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0255-c493068084",
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 8
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0960-d0f39b7308",
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 9
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0992-f53867adc7",
+              "tile": {
+                "hex": {
+                  "col": 8,
+                  "row": 9
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-1024-1f392012be",
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 9
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0096-c02cbc4fed",
+              "tile": {
+                "hex": {
+                  "col": 10,
+                  "row": 9
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0128-bfe9f9622b",
+              "tile": {
+                "hex": {
+                  "col": 11,
+                  "row": 9
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0192-0239378fea",
+              "tile": {
+                "hex": {
+                  "col": 13,
+                  "row": 9
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0256-aaa4fcb236",
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 9
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0288-395fc17fc4",
+              "tile": {
+                "hex": {
+                  "col": 16,
+                  "row": 9
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0320-a99b12320e",
+              "tile": {
+                "hex": {
+                  "col": 17,
+                  "row": 9
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0867-1772ad8e2e",
+              "tile": {
+                "hex": {
+                  "col": 5,
+                  "row": 10
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0899-ad0a9f843c",
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 10
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0931-48cdae2442",
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 10
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0963-08c4eb0b71",
+              "tile": {
+                "hex": {
+                  "col": 8,
+                  "row": 10
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0995-3a3f0aa41b",
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 10
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0099-667f9d3977",
+              "tile": {
+                "hex": {
+                  "col": 11,
+                  "row": 10
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0131-cdff51851c",
+              "tile": {
+                "hex": {
+                  "col": 12,
+                  "row": 10
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0195-bc763373a2",
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 10
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0291-9fd69564c9",
+              "tile": {
+                "hex": {
+                  "col": 17,
+                  "row": 10
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0900-78380433d3",
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0932-13617d9242",
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0964-716120f6be",
+              "tile": {
+                "hex": {
+                  "col": 8,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0068-9e63bb6de4",
+              "tile": {
+                "hex": {
+                  "col": 10,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0100-91773deff8",
+              "tile": {
+                "hex": {
+                  "col": 11,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0132-b4813872a6",
+              "tile": {
+                "hex": {
+                  "col": 12,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0196-e5b512d671",
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0228-bcfecd1fa8",
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0292-189617d5fd",
+              "tile": {
+                "hex": {
+                  "col": 17,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0324-d7a99edd37",
+              "tile": {
+                "hex": {
+                  "col": 18,
+                  "row": 11
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0901-ec48d5047f",
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0933-28d5db641f",
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0965-a5cef1e31d",
+              "tile": {
+                "hex": {
+                  "col": 8,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0997-23ad2602f0",
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0069-c2c36638a8",
+              "tile": {
+                "hex": {
+                  "col": 10,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0101-0061999dcd",
+              "tile": {
+                "hex": {
+                  "col": 11,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0133-99da47f9af",
+              "tile": {
+                "hex": {
+                  "col": 12,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0165-7fc215ecc5",
+              "tile": {
+                "hex": {
+                  "col": 13,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0197-08c243d1ee",
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0229-9ae8fd5e6f",
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0261-92bfd31fb2",
+              "tile": {
+                "hex": {
+                  "col": 16,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0293-609fdbf2e9",
+              "tile": {
+                "hex": {
+                  "col": 17,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
           },
           {
             "stand": {
-              "tile": "hex-0325-2c51359da3",
+              "tile": {
+                "hex": {
+                  "col": 18,
+                  "row": 12
+                }
+              },
               "side": "player",
               "through": true
             }
@@ -948,7 +1239,7 @@
           "say": [
             {
               "portrait": "adept",
-              "text": "That smell. Something’s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire.",
+              "text": "That smell. Something\u2019s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire.",
               "character": "oren"
             },
             {
@@ -974,7 +1265,9 @@
         "all": [
           {
             "stand": {
-              "tile": "hex-0386-9dcf2ec127",
+              "tile": {
+                "location": "shelter"
+              },
               "side": "player",
               "through": false,
               "character": "villagers"
@@ -997,12 +1290,12 @@
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Inside. There’s broth, and room enough if we move the tables."
+              "text": "Inside. There\u2019s broth, and room enough if we move the tables."
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Thank you. The others are still out there. Please don’t leave them to the dead."
+              "text": "Thank you. The others are still out there. Please don\u2019t leave them to the dead."
             },
             {
               "portrait": "swordsman",
@@ -1012,11 +1305,11 @@
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "They’ll have your message. I’ll keep these people safe."
+              "text": "They\u2019ll have your message. I\u2019ll keep these people safe."
             },
             {
               "portrait": "swordsman",
-              "text": "We can move on now, or finish the dead here so they can’t follow us. But every fight costs us time.",
+              "text": "We can move on now, or finish the dead here so they can\u2019t follow us. But every fight costs us time.",
               "character": "nera"
             }
           ]
@@ -1033,7 +1326,9 @@
         "optional": false,
         "intent": {
           "escort": {
-            "tile": "hex-0386-9dcf2ec127",
+            "tile": {
+              "location": "shelter"
+            },
             "character": "villagers",
             "side": "player"
           }
@@ -1092,7 +1387,9 @@
         "all": [
           {
             "stand": {
-              "tile": "hex-0289-0646356c88",
+              "tile": {
+                "location": "exit"
+              },
               "side": "player",
               "character": "nera",
               "through": true
@@ -1116,7 +1413,9 @@
         "optional": false,
         "intent": {
           "escape": {
-            "tile": "hex-0289-0646356c88",
+            "tile": {
+              "location": "exit"
+            },
             "side": "player",
             "character": "nera"
           }
@@ -1165,12 +1464,12 @@
             },
             {
               "portrait": "swordsman",
-              "text": "Oren…",
+              "text": "Oren\u2026",
               "character": "nera"
             },
             {
               "portrait": "adept",
-              "text": "He spent his life keeping people out of graves. Let’s leave him in peace, and see that those villagers get home.",
+              "text": "He spent his life keeping people out of graves. Let\u2019s leave him in peace, and see that those villagers get home.",
               "character": "oren"
             }
           ]
@@ -1200,7 +1499,7 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "There’s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done.",
+              "text": "There\u2019s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done.",
               "character": "nera"
             }
           ]
@@ -1289,7 +1588,7 @@
               "alternative": [
                 {
                   "portrait": "swordsman",
-                  "text": "They’ve started. We cannot lose another moment. Hurry!",
+                  "text": "They\u2019ve started. We cannot lose another moment. Hurry!",
                   "character": "nera"
                 }
               ]

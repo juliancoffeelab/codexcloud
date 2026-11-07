@@ -83,6 +83,9 @@ impl Serialize for Canonical<'_, Tile> {
                 &serde_json::to_value(light).map_err(serde::ser::Error::custom)?,
             )?;
         }
+        if let Some(location) = &t.location {
+            map.serialize_entry("location", location)?;
+        }
         map.serialize_entry("owner", &t.owner)?;
         map.serialize_entry("row", &t.row)?;
         map.serialize_entry("terrain", &t.terrain)?;

@@ -6,10 +6,10 @@ import type {
   CampaignVeteran,
   RecruitType,
   Side,
-  Unit,
   UnitType,
   VillageState,
 } from "../../../game/types";
+import type { Unit } from "./board";
 import { legacyBoard, boardState, type LegacyBoard, type LegacyState } from "./board";
 const record = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;

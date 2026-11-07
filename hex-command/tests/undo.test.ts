@@ -17,21 +17,21 @@ for (const owner of [null, "enemy", "player"] as const) {
       const game = new Game();
       const undo = createMoveUndo();
       const scout = playerUnit(game, "scout");
-      required(game.tile("hex-0738-f0cce97107")).owner = owner;
+      required(game.tile("3,1")).owner = owner;
       game.log = Array.from({ length: 8 }, (_, i) => `Earlier event ${i}`);
       scout.hp = 5;
       const before = snapshot(game);
-      const moved = undo.move(game, scout.id, "hex-0738-f0cce97107");
+      const moved = undo.move(game, scout.id, "3,1");
       assert.equal(moved, scout);
       assert.equal(scout.moved, true);
-      assert.equal(required(game.tile("hex-0738-f0cce97107")).owner, "player");
+      assert.equal(required(game.tile("3,1")).owner, "player");
       assert.equal(undo.canUndo(game), true);
-      assert.deepEqual(undo.undo(game), { unitId: scout.id, tileId: "hex-0045-b0e58b1f93" });
+      assert.deepEqual(undo.undo(game), { unitId: scout.id, tileId: "1,2" });
       assert.deepEqual(snapshot(game), before);
       assert.ok(game instanceof Game);
       assert.equal(undo.canUndo(game), false);
       // Restored units are fresh references; another capture still works normally.
-      undo.move(game, scout.id, "hex-0738-f0cce97107");
+      undo.move(game, scout.id, "3,1");
       assert.equal(required(game.unit(scout.id)).moved, true);
     },
   );
@@ -44,16 +44,16 @@ test("Multiple moves unwind in reverse order", async () => {
   const soldier = playerUnit(game, "soldier");
   const scout = playerUnit(game, "scout");
   const before = snapshot(game);
-  undo.move(game, soldier.id, "hex-0408-edbae05560");
+  undo.move(game, soldier.id, "2,3");
   const afterFirst = snapshot(game);
-  undo.move(game, scout.id, "hex-0738-f0cce97107");
-  assert.throws(() => undo.move(game, scout.id, "hex-0397-b042f4a1af"), /IllegalMove/);
-  assert.deepEqual(undo.undo(game), { unitId: scout.id, tileId: "hex-0045-b0e58b1f93" });
+  undo.move(game, scout.id, "3,1");
+  assert.throws(() => undo.move(game, scout.id, "2,2"), /IllegalMove/);
+  assert.deepEqual(undo.undo(game), { unitId: scout.id, tileId: "1,2" });
   assert.deepEqual(snapshot(game), afterFirst);
-  assert.deepEqual(undo.undo(game), { unitId: soldier.id, tileId: "hex-0056-2e6c8414fc" });
+  assert.deepEqual(undo.undo(game), { unitId: soldier.id, tileId: "1,3" });
   assert.deepEqual(snapshot(game), before);
   assert.equal(undo.undo(game), null);
-  assert.throws(() => undo.move(game, soldier.id, "hex-0001-7256137ec1"), /IllegalMove/);
+  assert.throws(() => undo.move(game, soldier.id, "0,0"), /IllegalMove/);
   assert.equal(undo.canUndo(game), false);
 });
 
@@ -64,7 +64,7 @@ for (const change of ["enemy", "winner", "round", "game"]) {
     async () => {
       const game = new Game();
       const undo = createMoveUndo();
-      undo.move(game, playerUnit(game, "scout").id, "hex-0738-f0cce97107");
+      undo.move(game, playerUnit(game, "scout").id, "3,1");
       let current = game;
       if (change === "enemy") game.turn = "enemy";
       if (change === "winner") game.winner = "player";
@@ -87,7 +87,7 @@ test("Enemy moves are never added to player undo", async () => {
   const undo = createMoveUndo();
   game.turn = "enemy";
   const scout = required(game.units.find((unit) => unit.side === "enemy" && unit.type === "scout"));
-  undo.move(game, scout.id, "hex-0930-69fa019ca8");
+  undo.move(game, scout.id, "7,1");
   assert.equal(undo.canUndo(game), false);
   game.turn = "player";
   assert.equal(undo.undo(game), null);

@@ -66,6 +66,7 @@ mod tests {
     use super::*;
     use crate::ai::campaigner::mission::{CampaignInput, MissionPolicy};
     use crate::ai::recruiter::fixtures;
+    use crate::data::Hex;
     use crate::{
         ai::{Diplomacy, PlanningWorkspace, choose_game_command},
         data::*,
@@ -172,7 +173,7 @@ mod tests {
             .into_iter()
             .find(|g| g.id == "required:refuge-war")
             .unwrap();
-        assert!(!required.tiles.contains(&"hex-0923-ec307e92cf".to_owned()));
+        assert!(!required.tiles.contains(&Hex::new(6, 4).to_owned()));
         assert!(
             required
                 .tiles

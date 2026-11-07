@@ -681,5 +681,5 @@ fn terrain_replaced(old: &State, board: &Rc<Board>, game: &Game<'_>) -> bool {
                 .tiles
                 .iter()
                 .zip(&game.board().ids)
-                .any(|(a, b)| a.id != *b))
+                .any(|(a, b)| a.hex() != *b))
 }

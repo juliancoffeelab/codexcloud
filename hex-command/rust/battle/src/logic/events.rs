@@ -60,25 +60,28 @@ impl Game<'_> {
                 .collect(),
         })
     }
-    fn bound_tile(&self, value: &str, bindings: &Bindings) -> String {
+    pub(crate) fn reference_site(&self, target: &TileRef) -> usize {
+        self.board
+            .resolve(target)
+            .expect("validated authored target")
+    }
+    fn bound_tile(&self, value: &TileRef, bindings: &Bindings) -> Hex {
         match value {
-            "$mark.tile" => bindings
-                .mark
-                .as_ref()
-                .expect("validated mark binding")
-                .tile
-                .clone(),
-            "$unit.tile" => {
-                self.board.ids[bindings.unit.as_ref().expect("validated unit binding").tile].clone()
+            TileRef::Binding(TileBinding::Mark) => {
+                bindings.mark.as_ref().expect("validated mark binding").tile
             }
-            "$event.deathTile" => self.board.ids[bindings
-                .death
-                .as_ref()
-                .expect("validated death binding")
-                .unit
-                .tile]
-                .clone(),
-            _ => value.to_owned(),
+            TileRef::Binding(TileBinding::Unit) => {
+                self.board.ids[bindings.unit.as_ref().expect("validated unit binding").tile]
+            }
+            TileRef::Binding(TileBinding::Death) => {
+                self.board.ids[bindings
+                    .death
+                    .as_ref()
+                    .expect("validated death binding")
+                    .unit
+                    .tile]
+            }
+            _ => self.board.ids[self.reference_site(value)],
         }
     }
     pub(crate) fn script_speech(&self, nodes: &[Speech], out: &mut Vec<Dialogue>) {
@@ -579,7 +582,7 @@ impl Game<'_> {
                                 && crate::data::presentation::matches(
                                     &rule.condition,
                                     &self.condition_context(),
-                                    Some(&mark.tile),
+                                    Some(&TileRef::Hex(mark.tile)),
                                 )
                         }))
                 .then_some(index)
@@ -607,7 +610,7 @@ impl Game<'_> {
                                 crate::data::presentation::matches(
                                     &rule.condition,
                                     &self.condition_context(),
-                                    Some(&m.tile),
+                                    Some(&TileRef::Hex(m.tile)),
                                 )
                             })
                     })
@@ -618,9 +621,9 @@ impl Game<'_> {
             })
             .collect()
     }
-    pub(crate) fn approach_tiles(&self, selection: &ProximitySelection) -> Vec<String> {
+    pub(crate) fn approach_tiles(&self, selection: &ProximitySelection) -> Vec<Hex> {
         let origins: Vec<_> = if let Some(t) = &selection.tile {
-            vec![self.site(t)]
+            vec![self.reference_site(t)]
         } else {
             self.units
                 .iter()
@@ -668,15 +671,41 @@ impl Game<'_> {
                 }
                 let satisfied = facts.objective_satisfied(state, id);
                 let (intent, selector, tiles) = match &objective.intent {
-                    EventIntent::Hold(v) => (Kind::Hold, Some(&v.units), vec![v.tile.clone()]),
-                    EventIntent::Escort(v) => (Kind::Escort, Some(&v.units), vec![v.tile.clone()]),
-                    EventIntent::GoTo(v) => (Kind::GoTo, Some(&v.units), vec![v.tile.clone()]),
-                    EventIntent::Escape(v) => (Kind::Escape, Some(&v.units), vec![v.tile.clone()]),
+                    EventIntent::Hold(v) => (
+                        Kind::Hold,
+                        Some(&v.units),
+                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                    ),
+                    EventIntent::Escort(v) => (
+                        Kind::Escort,
+                        Some(&v.units),
+                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                    ),
+                    EventIntent::GoTo(v) => (
+                        Kind::GoTo,
+                        Some(&v.units),
+                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                    ),
+                    EventIntent::Escape(v) => (
+                        Kind::Escape,
+                        Some(&v.units),
+                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                    ),
                     EventIntent::Approach(v) => {
                         (Kind::Approach, Some(&v.units), self.approach_tiles(v))
                     }
-                    EventIntent::Own(v) => (Kind::Own, None, vec![v.tile.clone()]),
-                    EventIntent::Capture(v) => (Kind::Capture, None, v.clone()),
+                    EventIntent::Own(v) => (
+                        Kind::Own,
+                        None,
+                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                    ),
+                    EventIntent::Capture(v) => (
+                        Kind::Capture,
+                        None,
+                        v.iter()
+                            .map(|t| self.board.ids[self.reference_site(t)])
+                            .collect(),
+                    ),
                     EventIntent::Defeat(v) => (
                         Kind::Defeat,
                         Some(v),
@@ -770,13 +799,21 @@ impl Game<'_> {
         let done = EventFacts::new(self).objective_satisfied(state, event.objective_id());
         let available = self.objective_available(event);
         let (tiles, total) = match &objective.intent {
-            EventIntent::Hold(v) => (vec![v.tile.clone()], v.turns),
+            EventIntent::Hold(v) => (vec![self.board.ids[self.reference_site(&v.tile)]], v.turns),
             EventIntent::Escort(v) | EventIntent::GoTo(v) | EventIntent::Escape(v) => {
-                (vec![v.tile.clone()], 1)
+                (vec![self.board.ids[self.reference_site(&v.tile)]], 1)
             }
             EventIntent::Approach(v) => (self.approach_tiles(v), 1),
-            EventIntent::Own(v) => (vec![v.tile.clone()], v.turns.unwrap_or(1)),
-            EventIntent::Capture(v) => (v.clone(), v.len() as u32),
+            EventIntent::Own(v) => (
+                vec![self.board.ids[self.reference_site(&v.tile)]],
+                v.turns.unwrap_or(1),
+            ),
+            EventIntent::Capture(v) => (
+                v.iter()
+                    .map(|t| self.board.ids[self.reference_site(t)])
+                    .collect(),
+                v.len() as u32,
+            ),
             EventIntent::Defeat(v) => (
                 self.units
                     .iter()
@@ -791,7 +828,7 @@ impl Game<'_> {
         } else if let EventIntent::Capture(tiles) = &objective.intent {
             tiles
                 .iter()
-                .filter(|t| self.owners[self.site(t)].as_deref() == Some("player"))
+                .filter(|t| self.owners[self.reference_site(t)].as_deref() == Some("player"))
                 .count() as u32
         } else if matches!(
             &objective.intent,
@@ -814,14 +851,18 @@ impl Game<'_> {
             .player_marker
             .as_ref()
             .map_or_else(Vec::new, |marker| {
-                let destinations = if let Some(select) = &marker.units {
+                let destinations: Vec<Hex> = if let Some(select) = &marker.units {
                     self.units
                         .iter()
                         .filter(|unit| self.script_unit_matches(select, unit))
                         .map(|unit| self.board.ids[unit.tile].clone())
                         .collect()
                 } else {
-                    marker.tiles.clone()
+                    marker
+                        .tiles
+                        .iter()
+                        .map(|name| self.board.ids[self.reference_site(name)].clone())
+                        .collect()
                 };
                 destinations
                     .into_iter()
@@ -921,7 +962,7 @@ pub(super) fn validate_event_state(
     }) {
         return Err("permanent achievement cannot be completed and failed".into());
     }
-    let tiles: HashSet<_> = battle.tiles.iter().map(|t| t.id.as_str()).collect();
+    let tiles: HashSet<_> = battle.tiles.iter().map(Tile::hex).collect();
     let mut counters = HashSet::new();
     for clock in &state.holds {
         let Some(event) = mission.scripted_events.iter().find(|e| e.id == clock.event) else {
@@ -949,7 +990,7 @@ pub(super) fn validate_event_state(
         if mark.id == 0
             || mark.id >= state.next_mark
             || !ids.insert(mark.id)
-            || !tiles.contains(mark.tile.as_str())
+            || !tiles.contains(&mark.tile)
         {
             return Err("invalid map mark".into());
         }
@@ -961,7 +1002,7 @@ pub(super) fn validate_event_state(
     for pending in &state.pending {
         if pending.area.is_empty()
             || pending.units.is_empty()
-            || pending.area.iter().any(|t| !tiles.contains(t.as_str()))
+            || pending.area.iter().any(|t| !tiles.contains(t))
             || !battle.factions.iter().any(|f| f.id == pending.faction)
         {
             return Err("invalid pending event spawn".into());

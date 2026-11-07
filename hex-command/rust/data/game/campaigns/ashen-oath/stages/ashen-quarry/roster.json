@@ -24,23 +24,38 @@
           "type": "necromancer",
           "role": "leader",
           "character": "orin",
-          "tile": "hex-0056-2e6c8414fc"
+          "tile": {
+            "col": 1,
+            "row": 3
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0408-edbae05560"
+          "tile": {
+            "col": 2,
+            "row": 3
+          }
         },
         {
           "type": "bonearcher",
-          "tile": "hex-0397-b042f4a1af"
+          "tile": {
+            "col": 2,
+            "row": 2
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0411-28541665a4"
+          "tile": {
+            "col": 2,
+            "row": 4
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0045-b0e58b1f93"
+          "tile": {
+            "col": 1,
+            "row": 2
+          }
         }
       ],
       "relations": {
@@ -68,11 +83,17 @@
           "type": "commander",
           "role": "leader",
           "character": "ledgerkeeper",
-          "tile": "hex-0124-7838ad1797"
+          "tile": {
+            "col": 11,
+            "row": 5
+          }
         },
         {
           "type": "swordsman",
-          "tile": "hex-1020-0cc9631714"
+          "tile": {
+            "col": 9,
+            "row": 5
+          }
         }
       ],
       "relations": {

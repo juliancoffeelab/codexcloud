@@ -1,3 +1,4 @@
+import { cellKey } from "../game/hex";
 import Phaser from "phaser";
 import { BattlefieldVisibility } from "./phaser-visibility";
 import { BattlefieldResources } from "./phaser-resources";
@@ -417,8 +418,8 @@ export class BattlefieldScene extends Phaser.Scene {
     );
     const commander = units.find((unit) => unit.role === "leader") ?? units[0];
     this.controls.reset([
-      ...units.filter((unit) => unit !== commander).map((unit) => unit.tile),
-      ...(commander ? [commander.tile] : []),
+      ...units.filter((unit) => unit !== commander).map((unit) => cellKey(unit.tile)),
+      ...(commander ? [cellKey(commander.tile)] : []),
     ]);
     for (const actor of this.actors.values()) {
       actor.indicators.destroy();
@@ -511,7 +512,7 @@ export class BattlefieldScene extends Phaser.Scene {
       this.describeInspection();
       return false;
     }
-    const fog = new Set(frame.view.game.presentation.fog);
+    const fog = new Set(frame.view.game.presentation.fog.map((hex) => cellKey(hex)));
     // Conceal immediately, even while a newly published sprite is still loading.
     for (const [id, actor] of this.actors)
       if (!frame.view.game.unit(id)) {
@@ -533,7 +534,10 @@ export class BattlefieldScene extends Phaser.Scene {
         actor.destroy();
         this.dying.delete(actor);
       }
-    this.atmosphere!.update(frame.view.game.presentation.fog, frame.tiles);
+    this.atmosphere!.update(
+      frame.view.game.presentation.fog.map((hex) => cellKey(hex)),
+      frame.tiles,
+    );
     if (
       this.sceneGame !== frame.view.game ||
       this.sceneArtwork !== frame.view.artwork ||
@@ -846,7 +850,7 @@ export class BattlefieldScene extends Phaser.Scene {
         alpha = t;
         y -= (1 - t) * 10;
       } else if (state?.kind === "hit") x += Math.sin(t * Math.PI * 6) * (1 - t) * 4;
-      const pulse = this.pulses.get(unit.tile);
+      const pulse = this.pulses.get(cellKey(unit.tile));
       if (pulse?.kind === "attack") x += Math.sin(pulse.t * Math.PI) * 7;
       const flash = state?.kind === "hit" ? Math.sin(t * Math.PI) * 0.5 : 0;
       const shade = Math.round(255 * (1 - flash));
@@ -984,7 +988,7 @@ export class BattlefieldScene extends Phaser.Scene {
     }
   }
   private drawOwners(tileId?: string) {
-    const fog = new Set(this.frame!.view.game.presentation.fog);
+    const fog = new Set(this.frame!.view.game.presentation.fog.map((hex) => cellKey(hex)));
     const tiles = tileId ? [this.tilesById.get(tileId)!].filter(Boolean) : this.frame!.tiles;
     if (!tileId) {
       const live = new Set(
@@ -1043,7 +1047,7 @@ export class BattlefieldScene extends Phaser.Scene {
       ? this.tilesById.get(frame.view.inspectedTile)
       : undefined;
     const label = tile
-      ? frame.view.game.presentation.fog.includes(tile.id)
+      ? frame.view.game.presentation.fog.map((hex) => cellKey(hex)).includes(tile.id)
         ? `Fog-covered terrain, column ${tile.col + 1}, row ${tile.row + 1}`
         : tile.label
       : "Battlefield";

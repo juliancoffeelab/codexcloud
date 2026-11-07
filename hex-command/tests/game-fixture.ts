@@ -1,3 +1,4 @@
+import { cellKey, type Hex } from "../src/game/hex";
 import { DEFAULT_SETUP } from "../src/game/setup";
 import { LiveGame, nativeValue } from "../src/game/live-game";
 import { TYPES } from "../src/game/catalog";
@@ -113,21 +114,21 @@ export class Game implements GameState {
     this.#native.restoreState(state);
     this.restoreData(structuredClone(state));
   }
-  tile(id: string | null | undefined) {
-    return this.tiles.find((tile) => tile.id === id);
+  tile(id: string | Readonly<Hex> | null | undefined) {
+    return id == null ? undefined : this.tiles.find((tile) => tile.id === cellKey(id));
   }
   unit(id: string | null | undefined) {
     return this.units.find((unit) => unit.id === id);
   }
-  at(id: string | null | undefined) {
-    return this.units.find((unit) => unit.tile === id);
+  at(id: string | Readonly<Hex> | null | undefined) {
+    return id == null ? undefined : this.units.find((unit) => cellKey(unit.tile) === cellKey(id));
   }
-  addUnit(type: UnitType, side: Side, tile: string): Unit {
+  addUnit(type: UnitType, side: Side, tile: string | Readonly<Hex>): Unit {
     const unit = {
       id: `u${this.nextId++}`,
       type,
       side,
-      tile,
+      tile: { col: this.tile(tile)!.col, row: this.tile(tile)!.row },
       hp: TYPES[type].hp,
       experience: 0,
       moved: false,

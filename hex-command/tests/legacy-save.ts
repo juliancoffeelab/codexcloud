@@ -23,9 +23,21 @@ export function historicalTiles<T>(input: T): T {
     if (typeof v === "string")
       return v.replace(/hex-[0-9]{4}-[a-f0-9]{10}/g, (id) => reverse.get(id) ?? id);
     if (Array.isArray(v)) return v.map(convert);
+    if (v && typeof v === "object") {
+      const item = v as Record<string, unknown>;
+      if (
+        Object.keys(item).length === 2 &&
+        typeof item.col === "number" &&
+        typeof item.row === "number"
+      )
+        return `${item.col},${item.row}`;
+      if (Object.keys(item).length === 1 && "hex" in item) return convert(item.hex);
+    }
     if (v && typeof v === "object")
       return Object.fromEntries(
-        Object.entries(v).map(([k, value]) => [String(convert(k)), convert(value)]),
+        Object.entries(v)
+          .filter(([key]) => key !== "location")
+          .map(([k, value]) => [String(convert(k)), convert(value)]),
       );
     return v;
   };

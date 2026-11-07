@@ -19,7 +19,7 @@ pub struct StartingUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub faction: Option<String>,
-    pub tile: String,
+    pub tile: Hex,
     pub r#type: String,
     pub side: Side,
     #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
@@ -81,7 +81,7 @@ pub struct ItemReward {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Evacuation {
-    pub tile: String,
+    pub tile: TileRef,
     pub units: UnitFilter,
 }
 /// An authored objective. Each variant requires the fields its rule consumes.
@@ -113,7 +113,7 @@ pub enum Goal {
         )]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         visible_when: Option<Condition>,
-        tile: String,
+        tile: TileRef,
     },
     Escape {
         label: String,
@@ -124,7 +124,7 @@ pub enum Goal {
         )]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         visible_when: Option<Condition>,
-        tile: String,
+        tile: TileRef,
     },
     Control {
         label: String,
@@ -135,7 +135,7 @@ pub enum Goal {
         )]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         visible_when: Option<Condition>,
-        tiles: Vec<String>,
+        tiles: Vec<TileRef>,
     },
     Seal {
         label: String,
@@ -146,7 +146,7 @@ pub enum Goal {
         )]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         visible_when: Option<Condition>,
-        tiles: Vec<String>,
+        tiles: Vec<TileRef>,
         #[serde(rename = "unitType")]
         unit_type: Option<String>,
     },
@@ -159,7 +159,7 @@ pub enum Goal {
         )]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         visible_when: Option<Condition>,
-        tile: Option<String>,
+        tile: Option<TileRef>,
         event: String,
     },
     Hold {
@@ -171,7 +171,7 @@ pub enum Goal {
         )]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         visible_when: Option<Condition>,
-        tile: String,
+        tile: TileRef,
         turns: u32,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         companion: Option<String>,
@@ -194,7 +194,7 @@ pub enum Goal {
         )]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         visible_when: Option<Condition>,
-        tile: String,
+        tile: TileRef,
         turns: u32,
         companion: String,
     },
@@ -207,7 +207,7 @@ pub enum Goal {
         )]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         visible_when: Option<Condition>,
-        tile: String,
+        tile: TileRef,
         turns: u32,
     },
 }
@@ -258,7 +258,7 @@ impl Goal {
     }
     /// Borrow the single site required by this objective or trigger, when present.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn tile(&self) -> Option<&String> {
+    pub fn tile(&self) -> Option<&TileRef> {
         match self {
             Self::Escort { tile, .. }
             | Self::Escape { tile, .. }
@@ -271,7 +271,7 @@ impl Goal {
     }
     /// Borrow the ordered sites of a multiple-site objective.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn tiles(&self) -> &[String] {
+    pub fn tiles(&self) -> &[TileRef] {
         match self {
             Self::Control { tiles, .. } | Self::Seal { tiles, .. } => tiles,
             _ => &[],
@@ -279,7 +279,7 @@ impl Goal {
     }
     /// Materialize the applicable tile IDs in their authored order.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn sites(&self) -> Vec<String> {
+    pub fn sites(&self) -> Vec<TileRef> {
         self.tile()
             .map(|t| vec![t.clone()])
             .unwrap_or_else(|| self.tiles().to_vec())
@@ -346,11 +346,11 @@ impl Goal {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub enum Trigger {
-    Visit { tile: String },
+    Visit { tile: TileRef },
     Condition { condition: Condition },
     Round { round: u32 },
-    Held { tile: String, turns: u32 },
-    Control { tile: String, round: Option<u32> },
+    Held { tile: TileRef, turns: u32 },
+    Control { tile: TileRef, round: Option<u32> },
 }
 /// A stable member identity prevents repeated or skipped spawns after restoration.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -386,7 +386,7 @@ pub struct SpawnGroup {
     #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
     pub ai_group: Option<String>,
-    pub area: Vec<String>,
+    pub area: Vec<TileRef>,
     pub units: Vec<SpawnUnit>,
 }
 /// A once-per-mission scripted event gated by a typed trigger and prior markers.
@@ -465,7 +465,7 @@ pub struct Wave {
     pub units: Vec<StartingUnit>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub requires_unsealed: Option<String>,
+    pub requires_unsealed: Option<TileRef>,
 }
 /// A named survivor enters the next mission automatically, outside recall slots.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -477,7 +477,7 @@ pub struct Wave {
 )]
 pub struct CompanionArrival {
     pub character: String,
-    pub tile: String,
+    pub tile: Hex,
 }
 
 /// The peaceful and escalated outcomes of a refuge-defense mission.
@@ -554,7 +554,7 @@ pub enum GroupOrder {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         when: Option<Condition>,
-        area: Vec<String>,
+        area: Vec<TileRef>,
         #[serde(rename = "attackRadius")]
         attack_radius: u16,
     },
@@ -631,7 +631,7 @@ pub struct Mission {
     pub defend_objectives: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "wasm", tsify(optional))]
-    pub enemy_leader_post: Option<String>,
+    pub enemy_leader_post: Option<TileRef>,
     pub intro: Vec<Speech>,
     pub victory: Vec<Speech>,
     pub events: Vec<Event>,
@@ -729,7 +729,7 @@ impl Trigger {
     }
     /// Borrow the single site required by this objective or trigger, when present.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn tile(&self) -> Option<&String> {
+    pub fn tile(&self) -> Option<&TileRef> {
         match self {
             Self::Visit { tile } | Self::Held { tile, .. } | Self::Control { tile, .. } => {
                 Some(tile)

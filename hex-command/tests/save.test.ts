@@ -235,7 +235,7 @@ for (const raw of [
     assert(restored.problem);
     assert.equal(await readSave(), raw);
     assert.equal(restored.game.round, 1);
-    restored.game.move("u3", "hex-0738-f0cce97107");
+    restored.game.move("u3", "3,1");
     restored.game.dispose();
   });
 }
@@ -314,7 +314,7 @@ test("Explicit source reset allows saving after rejection", async () => {
   const restored = await loadBattle(createTestFactory());
   assert(restored.problem);
   assert.equal(await readSave(), "{broken");
-  restored.game.move("u3", "hex-0738-f0cce97107");
+  restored.game.move("u3", "3,1");
   await repairImport(restored.problem!, { kind: "all" });
   await saveBattle(restored.game);
   assert.equal(JSON.parse((await readSave())!).version, SAVE_VERSION);
@@ -322,7 +322,7 @@ test("Explicit source reset allows saving after rejection", async () => {
 });
 
 for (const [id, chapter, type, tile, numericMarks] of [
-  ["ashen-oath", 2, "boar", "hex-1019-90a76d4969", ["wave:0", "wave:1"]],
+  ["ashen-oath", 2, "boar", "9,4", ["wave:0", "wave:1"]],
 ] as const) {
   test(`Legacy ${id} delayed waves retain wounded troops and cannot deploy twice`, async () => {
     const game = Game.startCampaign(id, chapter);
@@ -385,7 +385,7 @@ test("Legacy pre-rescue hold clocks reset, while earned victories stay completed
   const old = oldSnapshot(game.captureState());
   old.state.round = 4;
   old.state.campaign!.holds = historicalTiles({
-    "hex-0891-b20a50ef8c": { heldTurns: 2, lastCountedRound: 4 },
+    "5,4": { heldTurns: 2, lastCountedRound: 4 },
   });
   const converted = migrateSave(old).save;
   assert.equal(

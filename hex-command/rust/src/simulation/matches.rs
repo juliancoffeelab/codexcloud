@@ -18,7 +18,7 @@ use std::sync::Arc;
 struct RecordingCache {
     units: FxHashMap<Unit, Arc<PublicUnit>>,
     ownership: FxHashMap<Vec<Option<String>>, Arc<OwnershipSnapshot>>,
-    tiles: Option<Arc<Vec<String>>>,
+    tiles: Option<Arc<Vec<Hex>>>,
 }
 impl RecordingCache {
     fn units(&mut self, game: &Game<'_>) -> Result<Vec<Arc<PublicUnit>>, SimulationError> {
@@ -98,8 +98,7 @@ pub(crate) fn create_arena<'catalog>(
                     && tile.owner.as_deref() == Some(side.faction_id())
             })
             .ok_or("Arena requires an owned keep for each side")?
-            .id
-            .clone();
+            .hex();
         let rule = &rules.units[rules.types[leader]];
         starting_cost[side.index()] += rule.cost;
         state.units.push(PublicUnit {
@@ -468,7 +467,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
         .unwrap_or(&rules.arena.territory);
     let hold_turns = landscape.hold_turns;
     let mut held = [0u32; 2];
-    let mut visits: [HashSet<String>; 2] = Default::default();
+    let mut visits: [HashSet<Hex>; 2] = Default::default();
     let mut phases = vec![];
     let mut recording = RecordingCache::default();
     let mut reason = "cap";

@@ -10,8 +10,8 @@ import { required, TestStorage } from "./helpers";
 test("Combat XP and promotion preserve wounds, identity and immutable publications", async () => {
   const game = new Game();
   game.units = [];
-  const attacker = game.addUnit("swordsman", "player", "hex-0760-150b2b6a75");
-  const defender = game.addUnit("archer", "enemy", "hex-0856-a2b6e60ea7");
+  const attacker = game.addUnit("swordsman", "player", "3,3");
+  const defender = game.addUnit("archer", "enemy", "4,3");
   const promotion = required(TYPES.swordsman.advancesTo?.[0]);
   const threshold = required(TYPES.swordsman.experienceNeeded);
   attacker.hp = TYPES.swordsman.hp - 4;

@@ -1,3 +1,4 @@
+import { cellKey } from "../src/game/hex";
 import { IDBFactory } from "fake-indexeddb";
 import { TurnCheckpoint, serializeBattle } from "../src/save/write";
 import { describeFlashSave, newRun, progressId } from "../src/save/metadata";
@@ -50,7 +51,7 @@ test("Live controller uses native movement/undo and keeps previous UI queries im
   const tile = required([...moves.keys()][0]);
   controller.move(actor.id, tile);
   assert(required(published).canUndo);
-  assert.equal(previous.unit(actor.id)?.tile, actor.tile);
+  assert.deepEqual(previous.unit(actor.id)?.tile, actor.tile);
   assert.deepEqual(previous.reachable(actor.id), moves);
   assert(Object.isFrozen(previous.neighbors(actor.tile)));
   assert.throws(() => Object.assign(previous.gold, { player: 99 }), TypeError);
@@ -287,6 +288,7 @@ test("Import repair removes a corrupt historical payload and preserves playable 
     ),
   );
   const expected = nativeValue(game.checkpoint());
+  flash.version = 37;
   flash.progress.entry.kind = "recovery";
   const raw = JSON.stringify(flash);
   localStorage.setItem("hex-command-battle", raw);
@@ -339,7 +341,7 @@ test("Unavailable storage with no source saves allows a new campaign and player 
     await controller.saved();
     assert.equal(controller.snapshot().campaign?.id, "lantern-road");
     assert.equal(
-      required(controller.snapshot().units.find((unit) => unit.id === actor.id)).tile,
+      cellKey(required(controller.snapshot().units.find((unit) => unit.id === actor.id)).tile),
       destination,
     );
     assert.equal(localStorage.length, 0);

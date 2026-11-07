@@ -35,8 +35,8 @@ pub struct ConditionUnit<'a> {
 /// Conditions query current facts without materializing a serializable battlefield.
 pub trait ConditionContext {
     fn factions(&self) -> &[Faction];
-    fn owns(&self, id: &str, side: &str) -> bool;
-    fn position(&self, id: &str) -> Option<(i32, i32)>;
+    fn owns(&self, id: &TileRef, side: &str) -> bool;
+    fn position(&self, id: &TileRef) -> Option<(i32, i32)>;
     fn visible_at(&self, position: (i32, i32)) -> bool;
     fn any_unit(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
     fn any_pending(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
@@ -48,15 +48,15 @@ impl ConditionContext for PresentationInput {
     fn factions(&self) -> &[Faction] {
         &self.factions
     }
-    fn owns(&self, id: &str, side: &str) -> bool {
+    fn owns(&self, id: &TileRef, side: &str) -> bool {
         self.tiles
             .iter()
-            .any(|t| t.id == id && t.owner.as_deref() == Some(side))
+            .any(|t| t.matches_reference(id) && t.owner.as_deref() == Some(side))
     }
-    fn position(&self, id: &str) -> Option<(i32, i32)> {
+    fn position(&self, id: &TileRef) -> Option<(i32, i32)> {
         self.tiles
             .iter()
-            .find(|t| t.id == id)
+            .find(|t| t.matches_reference(id))
             .map(|t| (t.col, t.row))
     }
     fn visible_at(&self, position: (i32, i32)) -> bool {
@@ -70,7 +70,7 @@ impl ConditionContext for PresentationInput {
                             .memory
                             .iter()
                             .any(|key| key.strip_prefix("fog:") == Some(tile.id.as_str())))
-                        || matches_fog(&rule.condition, self, Some(&tile.id))
+                        || matches_fog(&rule.condition, self, Some(&TileRef::Hex(tile.hex())))
                 })
             })
     }
@@ -83,7 +83,7 @@ impl ConditionContext for PresentationInput {
                 kind: &u.r#type,
                 character: u.character.as_deref(),
                 ai_group: u.ai_group.as_deref(),
-                position: self.position(&u.tile),
+                position: Some((u.tile.col, u.tile.row)),
             })
         })
     }
@@ -111,21 +111,25 @@ impl ConditionContext for PresentationInput {
     }
 }
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
-pub fn matches(condition: &Condition, input: &impl ConditionContext, target: Option<&str>) -> bool {
+pub fn matches(
+    condition: &Condition,
+    input: &impl ConditionContext,
+    target: Option<&TileRef>,
+) -> bool {
     evaluate(condition, input, target, true)
 }
 /// Visibility predicates cannot recursively query their own fog rules.
 pub fn matches_fog(
     condition: &Condition,
     input: &impl ConditionContext,
-    target: Option<&str>,
+    target: Option<&TileRef>,
 ) -> bool {
     evaluate(condition, input, target, false)
 }
 fn evaluate(
     condition: &Condition,
     input: &impl ConditionContext,
-    target: Option<&str>,
+    target: Option<&TileRef>,
     allow_visibility: bool,
 ) -> bool {
     let unit_matches =
@@ -138,7 +142,7 @@ fn evaluate(
         };
     match condition {
         Condition::Owner { tile, side } => tile
-            .as_deref()
+            .as_ref()
             .or(target)
             .is_some_and(|id| input.owns(id, side)),
         Condition::Proximity {
@@ -149,8 +153,7 @@ fn evaluate(
             unit_types,
             character,
         } => {
-            let Some(position) = tile.as_deref().or(target).and_then(|id| input.position(id))
-            else {
+            let Some(position) = tile.as_ref().or(target).and_then(|id| input.position(id)) else {
                 return false;
             };
             input.any_unit(|unit| {
@@ -210,10 +213,10 @@ fn evaluate(
 /// Presentation rules read the same borrowed context as gameplay conditions.
 pub trait PresentationContext: ConditionContext {
     fn lighting(&self) -> &MapLighting;
-    fn visit_lights(&self, visitor: impl FnMut(&str, i32, i32, &TileLight));
-    fn visit_fog(&self, visitor: impl FnMut(&str, &ConditionRule));
-    fn fog_index(&self, id: &str) -> usize;
-    fn fog_remembered(&self, id: &str) -> bool;
+    fn visit_lights(&self, visitor: impl FnMut(&Hex, i32, i32, &TileLight));
+    fn visit_fog(&self, visitor: impl FnMut(&Hex, &ConditionRule));
+    fn fog_index(&self, id: &Hex) -> usize;
+    fn fog_remembered(&self, id: &Hex) -> bool;
 }
 /// Render current facts without cloning or updating durable condition memory.
 pub fn render(input: &impl PresentationContext, memory: &[String]) -> BattlefieldPresentation {
@@ -221,8 +224,8 @@ pub fn render(input: &impl PresentationContext, memory: &[String]) -> Battlefiel
     let mut lights = Vec::new();
     input.visit_lights(|id, col, row, light| {
         let active = light.when.as_ref().is_none_or(|rule| {
-            (rule.remember && memory.iter().any(|m| m.strip_prefix("light:") == Some(id)))
-                || matches(&rule.condition, input, Some(id))
+            (rule.remember && memory.iter().any(|m| m == &format!("light:{id}")))
+                || matches(&rule.condition, input, Some(&TileRef::Hex(*id)))
         });
         if active {
             lights.push(light.at(col, row));
@@ -231,8 +234,8 @@ pub fn render(input: &impl PresentationContext, memory: &[String]) -> Battlefiel
     let mut fog = Vec::new();
     input.visit_fog(|id, rule| {
         let remembered = rule.remember && input.fog_remembered(id);
-        if !remembered && !matches(&rule.condition, input, Some(id)) {
-            fog.push(id.to_owned());
+        if !remembered && !matches(&rule.condition, input, Some(&TileRef::Hex(*id))) {
+            fog.push(*id);
         }
     });
     BattlefieldPresentation {
@@ -252,8 +255,8 @@ pub fn discover(
     let mut added = Vec::new();
     input.visit_lights(|id, _, _, light| {
         if let Some(rule) = light.when.as_ref().filter(|r| r.remember) {
-            if !memory.iter().any(|m| m.strip_prefix("light:") == Some(id))
-                && matches(&rule.condition, input, Some(id))
+            if !memory.iter().any(|m| m == &format!("light:{id}"))
+                && matches(&rule.condition, input, Some(&TileRef::Hex(*id)))
             {
                 added.push(format!("light:{id}"));
             }
@@ -263,7 +266,8 @@ pub fn discover(
         if rule.remember {
             let i = input.fog_index(id);
             let bit = 1u64 << (i % 64);
-            if known[i / 64] & bit == 0 && matches(&rule.condition, input, Some(id)) {
+            if known[i / 64] & bit == 0 && matches(&rule.condition, input, Some(&TileRef::Hex(*id)))
+            {
                 added.push(format!("fog:{id}"));
                 known[i / 64] |= bit;
             }
@@ -276,7 +280,7 @@ pub fn discover(
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
 pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<String>) {
     let mut memory = input.memory.clone();
-    let mut rule_met = |rule: &ConditionRule, key: String, target: &str| {
+    let mut rule_met = |rule: &ConditionRule, key: String, target: &TileRef| {
         let satisfied = matches(&rule.condition, input, Some(target));
         if rule.remember {
             if memory.contains(&key) {
@@ -298,7 +302,13 @@ pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<Strin
                 light
                     .when
                     .as_ref()
-                    .is_none_or(|rule| rule_met(rule, format!("light:{}", tile.id), &tile.id))
+                    .is_none_or(|rule| {
+                        rule_met(
+                            rule,
+                            format!("light:{}", tile.id),
+                            &TileRef::Hex(tile.hex()),
+                        )
+                    })
                     .then(|| light.at(tile.col, tile.row))
             })
             .collect(),
@@ -307,11 +317,11 @@ pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<Strin
         .tiles
         .iter()
         .filter(|tile| {
-            tile.fog
-                .as_ref()
-                .is_some_and(|rule| !rule_met(rule, format!("fog:{}", tile.id), &tile.id))
+            tile.fog.as_ref().is_some_and(|rule| {
+                !rule_met(rule, format!("fog:{}", tile.id), &TileRef::Hex(tile.hex()))
+            })
         })
-        .map(|tile| tile.id.clone())
+        .map(Tile::hex)
         .collect();
     (BattlefieldPresentation { lighting, fog }, memory)
 }

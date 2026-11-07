@@ -43,7 +43,9 @@
       "id": "nets",
       "when": {
         "stand": {
-          "tile": "hex-0894-59c2dceed8",
+          "tile": {
+            "location": "nets-cache"
+          },
           "side": "player",
           "through": true
         }
@@ -75,7 +77,9 @@
         "label": "Recover provisions from the southern fishing hamlet",
         "intent": {
           "goTo": {
-            "tile": "hex-0894-59c2dceed8",
+            "tile": {
+              "location": "nets-cache"
+            },
             "side": "player"
           }
         },
@@ -84,7 +88,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0894-59c2dceed8"]
+          "tiles": [
+            {
+              "location": "nets-cache"
+            }
+          ]
         }
       }
     },
@@ -119,25 +127,43 @@
       "objective": {
         "label": "Open both sounding outworks",
         "intent": {
-          "capture": ["hex-0909-61c988dee7", "hex-0988-17596734c1"]
+          "capture": [
+            {
+              "location": "northern-fort"
+            },
+            {
+              "location": "southern-fort"
+            }
+          ]
         },
         "visibleWhen": {
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0909-61c988dee7", "hex-0988-17596734c1"]
+          "tiles": [
+            {
+              "location": "northern-fort"
+            },
+            {
+              "location": "southern-fort"
+            }
+          ]
         },
         "satisfiedWhen": {
           "all": [
             {
               "own": {
-                "tile": "hex-0909-61c988dee7",
+                "tile": {
+                  "location": "northern-fort"
+                },
                 "faction": "player"
               }
             },
             {
               "own": {
-                "tile": "hex-0988-17596734c1",
+                "tile": {
+                  "location": "southern-fort"
+                },
                 "faction": "player"
               }
             }
@@ -193,7 +219,9 @@
         "label": "Bring pilot Edda to the fishing village",
         "intent": {
           "escort": {
-            "tile": "hex-1016-9e0db09d3e",
+            "tile": {
+              "location": "refuge"
+            },
             "character": "edda",
             "side": "player"
           }
@@ -202,11 +230,17 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-1016-9e0db09d3e"]
+          "tiles": [
+            {
+              "location": "refuge"
+            }
+          ]
         },
         "satisfiedWhen": {
           "stand": {
-            "tile": "hex-1016-9e0db09d3e",
+            "tile": {
+              "location": "refuge"
+            },
             "character": "edda",
             "side": "player"
           }

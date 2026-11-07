@@ -1,3 +1,4 @@
+import { cellKey } from "../game/hex";
 import type { TileView } from "../game/view";
 import type { RecruitmentContext, BattleView } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/catalog";
@@ -86,7 +87,8 @@ function recruitmentView(view: BattleView, tile: TileView, context: RecruitmentC
 
 export function terrainPanelView(view: BattleView) {
   const tile = view.game.tile(view.inspectedTile);
-  if (!tile || view.game.presentation?.fog.includes(tile.id)) return null;
+  if (!tile || view.game.presentation?.fog.map((hex) => cellKey(hex)).includes(tile.id))
+    return null;
 
   const hasOwnership =
     TERRAIN[tile.terrain].role === "keep" ||
@@ -104,13 +106,22 @@ export function terrainPanelView(view: BattleView) {
   const seal =
     mission &&
     [...mission.goals, ...(mission.optionalGoals ?? [])].find(
-      (goal) => goal.kind === "seal" && goal.tiles.includes(tile.id),
+      (goal) =>
+        goal.kind === "seal" &&
+        goal.tiles.some((target) =>
+          "hex" in target
+            ? cellKey(target.hex) === tile.id
+            : "location" in target && target.location === tile.location,
+        ),
     );
   if (seal?.kind === "seal") {
+    const unitName =
+      seal.unitType && Object.entries(TYPES).find(([id]) => id === seal.unitType)?.[1].name;
+    if (seal.unitType && !unitName) throw new Error(`Unknown sealing unit type: ${seal.unitType}`);
     facts.push(
       campaign!.marks.includes(`sealed:${tile.id}`)
         ? "Binding stone sealed; it will not raise the dead"
-        : `Enter with ${seal.unitType ? `a friendly ${TYPES[seal.unitType].name.toLowerCase()}` : "a friendly unit"} to seal this binding stone`,
+        : `Enter with ${seal.unitType ? `a friendly ${unitName!.toLowerCase()}` : "a friendly unit"} to seal this binding stone`,
     );
   }
 

@@ -60,7 +60,12 @@
         {
           "spawn": {
             "faction": "player",
-            "tile": "hex-0411-28541665a4",
+            "tile": {
+              "hex": {
+                "col": 2,
+                "row": 4
+              }
+            },
             "radius": 0,
             "units": [
               {
@@ -72,7 +77,12 @@
         {
           "spawn": {
             "faction": "player",
-            "tile": "hex-0056-2e6c8414fc",
+            "tile": {
+              "hex": {
+                "col": 1,
+                "row": 3
+              }
+            },
             "radius": 0,
             "units": [
               {
@@ -103,7 +113,9 @@
       "id": "names",
       "when": {
         "stand": {
-          "tile": "hex-0129-7c8659226d",
+          "tile": {
+            "location": "names-cache"
+          },
           "side": "player",
           "through": true
         }
@@ -135,7 +147,9 @@
         "label": "Recover the stolen names from the old archive",
         "intent": {
           "goTo": {
-            "tile": "hex-0129-7c8659226d",
+            "tile": {
+              "location": "names-cache"
+            },
             "side": "player"
           }
         },
@@ -144,7 +158,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0129-7c8659226d"]
+          "tiles": [
+            {
+              "location": "names-cache"
+            }
+          ]
         }
       }
     },
@@ -160,7 +178,7 @@
           },
           {
             "not": {
-              "flag": "sealed-hex-0941-278b487380"
+              "flag": "northern-seal-closed"
             }
           }
         ]
@@ -169,7 +187,9 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0941-278b487380",
+            "tile": {
+              "location": "northern-seal"
+            },
             "radius": 2,
             "units": [
               {
@@ -195,7 +215,7 @@
           },
           {
             "not": {
-              "flag": "sealed-hex-0957-c94afbbfa1"
+              "flag": "southern-seal-closed"
             }
           }
         ]
@@ -204,7 +224,9 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0957-c94afbbfa1",
+            "tile": {
+              "location": "southern-seal"
+            },
             "radius": 2,
             "units": [
               {
@@ -230,7 +252,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-1019-90a76d4969",
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 4
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -245,23 +272,27 @@
       ]
     },
     {
-      "id": "sealed-hex-0941-278b487380",
+      "id": "northern-seal-closed",
       "when": {
         "stand": {
-          "tile": "hex-0941-278b487380",
+          "tile": {
+            "location": "northern-seal"
+          },
           "side": "player"
         }
       },
       "actions": [
         {
-          "setFlag": "sealed-hex-0941-278b487380"
+          "setFlag": "northern-seal-closed"
         }
       ],
       "objective": {
         "label": "Break the binding stone",
         "intent": {
           "goTo": {
-            "tile": "hex-0941-278b487380",
+            "tile": {
+              "location": "northern-seal"
+            },
             "side": "player"
           }
         },
@@ -269,28 +300,36 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0941-278b487380"]
+          "tiles": [
+            {
+              "location": "northern-seal"
+            }
+          ]
         }
       }
     },
     {
-      "id": "sealed-hex-0957-c94afbbfa1",
+      "id": "southern-seal-closed",
       "when": {
         "stand": {
-          "tile": "hex-0957-c94afbbfa1",
+          "tile": {
+            "location": "southern-seal"
+          },
           "side": "player"
         }
       },
       "actions": [
         {
-          "setFlag": "sealed-hex-0957-c94afbbfa1"
+          "setFlag": "southern-seal-closed"
         }
       ],
       "objective": {
         "label": "Break the binding stone",
         "intent": {
           "goTo": {
-            "tile": "hex-0957-c94afbbfa1",
+            "tile": {
+              "location": "southern-seal"
+            },
             "side": "player"
           }
         },
@@ -298,7 +337,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0957-c94afbbfa1"]
+          "tiles": [
+            {
+              "location": "southern-seal"
+            }
+          ]
         }
       }
     },
@@ -307,10 +350,10 @@
       "when": {
         "all": [
           {
-            "flag": "sealed-hex-0941-278b487380"
+            "flag": "northern-seal-closed"
           },
           {
-            "flag": "sealed-hex-0957-c94afbbfa1"
+            "flag": "southern-seal-closed"
           }
         ]
       },

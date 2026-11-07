@@ -8,7 +8,7 @@ const unit: Unit = {
   id: "u1",
   type: "scout",
   side: "player",
-  tile: "hex-0001-7256137ec1",
+  tile: { col: 0, row: 0 },
   hp: 1,
   moved: false,
   attacked: false,

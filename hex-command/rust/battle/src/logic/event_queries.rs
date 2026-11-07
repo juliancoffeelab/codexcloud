@@ -43,11 +43,11 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
     pub(super) fn turn(&self) -> Side {
         self.turn
     }
-    pub(super) fn owned_by(&self, tile: &str, faction: &str) -> bool {
+    pub(super) fn owned_by(&self, tile: &TileRef, faction: &str) -> bool {
         self.owners[self.site(tile)].as_deref() == Some(faction)
     }
-    fn site(&self, id: &str) -> usize {
-        self.board.indices[id]
+    fn site(&self, id: &TileRef) -> usize {
+        self.board.resolve(id).expect("validated event location")
     }
     fn faction(&self, id: &str) -> Option<&Faction> {
         self.factions.iter().find(|f| f.id == id)
@@ -90,7 +90,7 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
         }
         std::slice::from_ref(&unit.tile)
     }
-    pub(super) fn stands(&self, select: &UnitMatch, tile: &str, through: bool) -> bool {
+    pub(super) fn stands(&self, select: &UnitMatch, tile: &TileRef, through: bool) -> bool {
         let target = self.site(tile);
         self.units.iter().any(|u| {
             self.script_unit_matches(select, u)
@@ -160,7 +160,7 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
                     && v.defending.is_none_or(|value| value == d.defending)
             }),
             When::Left(v) => self.event_departure.as_ref().is_some_and(|u| {
-                self.board.ids[u.tile] == v.tile && self.script_unit_matches(&v.units, u)
+                u.tile == self.site(&v.tile) && self.script_unit_matches(&v.units, u)
             }),
             When::Turn(turn) => {
                 tick && self.round == turn.number()

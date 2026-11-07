@@ -24,6 +24,7 @@ struct MapDocument {
     map_revision: u32,
     cols: i32,
     rows: i32,
+    #[serde(deserialize_with = "authored_tiles")]
     tiles: Vec<Tile>,
     #[serde(default)]
     lighting: MapLighting,
@@ -36,6 +37,42 @@ struct MapDocument {
     #[serde(rename = "revision")]
     _revision: Option<u32>,
 }
+/// Authoring names are optional; transport cells always have coordinate addresses.
+/// This conversion runs only while loading source content, never while restoring saves.
+fn authored_tiles<'de, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> Result<Vec<Tile>, D::Error> {
+    use serde::de::Error;
+    let tiles = Vec::<serde_json::Map<String, serde_json::Value>>::deserialize(deserializer)?;
+    tiles
+        .into_iter()
+        .map(|mut tile| {
+            if tile.contains_key("location") {
+                return Err(D::Error::custom(
+                    "map tiles use optional id, not runtime location",
+                ));
+            }
+            if let Some(id) = tile.remove("id") {
+                let name = id
+                    .as_str()
+                    .ok_or_else(|| D::Error::custom("tile id must be a name"))?;
+                identifier(name, "map tile").map_err(D::Error::custom)?;
+                tile.insert("location".into(), id);
+            }
+            let col = tile
+                .get("col")
+                .and_then(|v| v.as_i64())
+                .ok_or_else(|| D::Error::custom("tile requires integer col"))?;
+            let row = tile
+                .get("row")
+                .and_then(|v| v.as_i64())
+                .ok_or_else(|| D::Error::custom("tile requires integer row"))?;
+            tile.insert("id".into(), format!("{col},{row}").into());
+            serde_json::from_value(serde_json::Value::Object(tile)).map_err(D::Error::custom)
+        })
+        .collect()
+}
+
 impl MapDocument {
     fn initial(self, roster: InitialRoster) -> InitialState {
         InitialState {
@@ -158,7 +195,7 @@ struct StageObjectives {
     required_companions: Vec<String>,
     #[serde(default)]
     defend_objectives: bool,
-    enemy_leader_post: Option<String>,
+    enemy_leader_post: Option<TileRef>,
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -182,7 +219,7 @@ struct StageScripts {
     #[serde(default)]
     defend_objectives: bool,
     #[serde(default)]
-    enemy_leader_post: Option<String>,
+    enemy_leader_post: Option<TileRef>,
 }
 
 /// Component references are local to their descriptor, with traversal rejected.
@@ -441,7 +478,7 @@ pub fn map_metadata(
                 let tile = state
                     .tiles
                     .iter()
-                    .find(|tile| tile.id == unit.tile)
+                    .find(|tile| tile.hex() == unit.tile)
                     .ok_or_else(|| {
                         ContentError::new(descriptor, format!("invalid unit placement {}", unit.id))
                     })?;
@@ -449,7 +486,7 @@ pub fn map_metadata(
                     items: unit.items.clone(),
                     ai_group: unit.ai_group.clone(),
                     faction: unit.faction.clone(),
-                    tile: tile.id.clone(),
+                    tile: tile.hex(),
                     r#type: unit.r#type.clone(),
                     side: unit.side,
                     character: unit.character.clone(),

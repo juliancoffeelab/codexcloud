@@ -24,20 +24,32 @@
           "type": "wildkeeper",
           "role": "leader",
           "character": "alder",
-          "tile": "hex-0059-de5770129b"
+          "tile": {
+            "col": 1,
+            "row": 4
+          }
         },
         {
           "type": "wolf",
-          "tile": "hex-0408-edbae05560"
+          "tile": {
+            "col": 2,
+            "row": 3
+          }
         },
         {
           "type": "boar",
-          "tile": "hex-0411-28541665a4"
+          "tile": {
+            "col": 2,
+            "row": 4
+          }
         },
         {
           "type": "thorncaller",
           "character": "lark",
-          "tile": "hex-0412-0c9247ea66"
+          "tile": {
+            "col": 2,
+            "row": 5
+          }
         }
       ],
       "relations": {
@@ -68,23 +80,38 @@
           "type": "commander",
           "role": "leader",
           "character": "dain",
-          "tile": "hex-1019-90a76d4969"
+          "tile": {
+            "col": 9,
+            "row": 4
+          }
         },
         {
           "type": "spearman",
-          "tile": "hex-0952-a980626eda"
+          "tile": {
+            "col": 7,
+            "row": 3
+          }
         },
         {
           "type": "spearman",
-          "tile": "hex-0957-c94afbbfa1"
+          "tile": {
+            "col": 7,
+            "row": 6
+          }
         },
         {
           "type": "archer",
-          "tile": "hex-0909-61c988dee7"
+          "tile": {
+            "col": 6,
+            "row": 2
+          }
         },
         {
           "type": "archer",
-          "tile": "hex-0956-1372406dd4"
+          "tile": {
+            "col": 7,
+            "row": 5
+          }
         }
       ],
       "relations": {

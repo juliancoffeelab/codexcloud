@@ -56,7 +56,9 @@
       "id": "boat",
       "when": {
         "stand": {
-          "tile": "hex-0414-7d6a56c9b3",
+          "tile": {
+            "location": "boat-cache"
+          },
           "side": "player",
           "through": true
         }
@@ -88,7 +90,9 @@
         "label": "Recover the southern ferry's supplies",
         "intent": {
           "goTo": {
-            "tile": "hex-0414-7d6a56c9b3",
+            "tile": {
+              "location": "boat-cache"
+            },
             "side": "player"
           }
         },
@@ -97,7 +101,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0414-7d6a56c9b3"]
+          "tiles": [
+            {
+              "location": "boat-cache"
+            }
+          ]
         }
       }
     },
@@ -132,25 +140,43 @@
       "objective": {
         "label": "Control both sluice gates",
         "intent": {
-          "capture": ["hex-0973-079cfc7b3c", "hex-0988-17596734c1"]
+          "capture": [
+            {
+              "location": "northern-sluice"
+            },
+            {
+              "location": "southern-sluice"
+            }
+          ]
         },
         "visibleWhen": {
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0973-079cfc7b3c", "hex-0988-17596734c1"]
+          "tiles": [
+            {
+              "location": "northern-sluice"
+            },
+            {
+              "location": "southern-sluice"
+            }
+          ]
         },
         "satisfiedWhen": {
           "all": [
             {
               "own": {
-                "tile": "hex-0973-079cfc7b3c",
+                "tile": {
+                  "location": "northern-sluice"
+                },
                 "faction": "player"
               }
             },
             {
               "own": {
-                "tile": "hex-0988-17596734c1",
+                "tile": {
+                  "location": "southern-sluice"
+                },
                 "faction": "player"
               }
             }
@@ -206,7 +232,9 @@
         "label": "Bring Edda to the release beacon",
         "intent": {
           "escort": {
-            "tile": "hex-1019-90a76d4969",
+            "tile": {
+              "location": "refuge"
+            },
             "character": "edda",
             "side": "player"
           }
@@ -215,11 +243,17 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-1019-90a76d4969"]
+          "tiles": [
+            {
+              "location": "refuge"
+            }
+          ]
         },
         "satisfiedWhen": {
           "stand": {
-            "tile": "hex-1019-90a76d4969",
+            "tile": {
+              "location": "refuge"
+            },
             "character": "edda",
             "side": "player"
           }

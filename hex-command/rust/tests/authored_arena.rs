@@ -1,3 +1,4 @@
+use hex_command_core::data::Hex;
 use hex_command_core::{
     ai::Policy,
     data::{LandscapeConfig, Rules, Side},
@@ -20,8 +21,7 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
             .iter()
             .find(|t| t.terrain == "village")
             .unwrap()
-            .id
-            .clone(),
+            .hex(),
     ];
     rules.arena.landscapes.push(LandscapeConfig {
         id: "authored-fixture".into(),
@@ -62,7 +62,7 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
             .iter()
             .find(|t| t.terrain == "keep" && t.owner.as_deref() == Some(unit.side.faction_id()))
             .unwrap();
-        assert_eq!(unit.tile, keep.id);
+        assert_eq!(unit.tile, keep.hex());
     }
     assert_eq!(result.phases[0].objectives[0].tiles, targets);
 }
@@ -94,12 +94,12 @@ fn arena_only_scenarios_are_loaded_without_playable_metadata() {
 #[test]
 fn invalid_authored_layout_and_capture_references_are_rejected() {
     for (map, targets, message) in [
+        ("missing-layout", vec![Hex::new(0, 0)], "unknown arena map"),
         (
-            "missing-layout",
-            vec!["hex-0001-7256137ec1"],
-            "unknown arena map",
+            "mirror",
+            vec![Hex::new(999, 999)],
+            "outside its authored map",
         ),
-        ("mirror", vec!["999,999"], "outside its authored map"),
     ] {
         let mut bundle = hex_command_core::data::catalog::embedded_bundle();
         let mut arena: serde_json::Value =
