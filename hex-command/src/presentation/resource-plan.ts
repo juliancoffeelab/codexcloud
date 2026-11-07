@@ -1,6 +1,6 @@
 import type { BattleView } from "../controller/view";
 import { artFrameKey, itemFrame } from "./art";
-import { TYPES, TERRAIN } from "../game/catalog";
+import { TYPES, unitWeapons } from "../game/catalog";
 import { CAMPAIGNS } from "../game/campaign-data";
 import { MAPS } from "../game/maps";
 import { AUTHORED_ITEMS } from "../game/authored-content";
@@ -10,7 +10,12 @@ import { terrainPortraits } from "./terrain-portraits";
 import { terrainTexture } from "./terrain-texture";
 import { terrainTileView } from "./terrain-map";
 import type { TileView } from "../game/view";
-import { audioSamples, battlefieldActionFamilies, soundForInteraction } from "./sound";
+import {
+  audioSamples,
+  battlefieldActionFamilies,
+  battleSounds,
+  soundForInteraction,
+} from "./sound";
 import { missionSounds } from "./campaign-sound";
 
 export interface Resource {
@@ -26,12 +31,23 @@ export interface Resource {
 /** Sounds for interactions with the currently published map, excluding future content. */
 export function currentMapAudio(view: BattleView) {
   const families = new Set<string>(battlefieldActionFamilies);
-  for (const unit of view.game.units) {
-    families.add(soundForInteraction({ unitType: unit.type }));
-    families.add(soundForInteraction({ attackType: unit.type }));
-  }
-  for (const tile of view.game.tiles)
-    families.add(soundForInteraction({ terrain: TERRAIN[tile.terrain].role }));
+  for (const cue of battleSounds(
+    view.game.units.map((unit) => unit.type),
+    view.game.tiles.map((tile) => tile.terrain),
+  ))
+    families.add(cue);
+  // Equipment attacks use material cues rather than the unit's authored attacks.
+  for (const unit of view.game.units)
+    for (const weapon of unitWeapons(unit))
+      families.add(
+        soundForInteraction({
+          attackType: unit.type,
+          attackId: weapon.id,
+          attackSound: weapon.sound,
+          attackCategory: weapon.category,
+          attackDamageType: weapon.damageType,
+        }),
+      );
   return audioSamples.filter((sample) => families.has(sample.family));
 }
 
@@ -79,11 +95,7 @@ export function resourcePlan(view: BattleView) {
         const key = artFrameKey("units", type, palette);
         if (artwork.frames[key]) image(key, priority);
       }
-    audio(
-      [...types].map((type) => soundForInteraction({ unitType: type as UnitType })),
-      priority,
-    );
-    audio(["attack-bow", "attack-melee"], priority);
+    audio(battleSounds(types, []), priority);
   };
   const contentTypes = (content: unknown, includeRecruitment = false) => {
     const found = new Set<string>();
@@ -172,7 +184,7 @@ export function resourcePlan(view: BattleView) {
   audio(
     [
       ...battlefieldActionFamilies,
-      ...[...terrains].map((terrain) => soundForInteraction({ terrain: TERRAIN[terrain].role })),
+      ...[...terrains].map((terrain) => soundForInteraction({ terrain })),
     ],
     1,
   );
@@ -235,7 +247,7 @@ export function resourcePlan(view: BattleView) {
     units(contentTypes(next, true), 4, nextPalettes);
     audio(missionSounds(next), 4);
     audio(
-      next.map.terrain.map((tile) => soundForInteraction({ terrain: TERRAIN[tile.terrain].role })),
+      next.map.terrain.map((tile) => soundForInteraction({ terrain: tile.terrain })),
       4,
     );
   }
@@ -248,7 +260,12 @@ export function resourcePlan(view: BattleView) {
     if (/^(player|enemy|passive|green|portrait)_/.test(key)) image(key, 5);
   for (const terrain of Object.keys(terrainPortraits) as TerrainType[])
     image(terrainPreviewFrame({ terrain }, artwork).key!, 5);
-  for (const sample of audioSamples) add({ ...sample, kind: "audio", priority: 5 });
+  for (const sample of audioSamples)
+    if (
+      sample.family.startsWith("palette:") ||
+      (battlefieldActionFamilies as readonly string[]).includes(sample.family)
+    )
+      add({ ...sample, kind: "audio", priority: 5 });
   // Interleave audio/images within a priority instead of serializing whole categories.
   const ordered: Resource[] = [];
   for (let priority = 1; priority <= 5; priority++) {
@@ -272,6 +289,7 @@ export function resourcePlanKey(view: BattleView) {
     view.sessionVersion,
     view.game.mapId,
     view.game.factions,
+    currentMapAudio(view).map((sample) => sample.key),
     [...new Set(view.game.units.map((u) => u.type))],
     [...new Set(view.game.tiles.map((t) => t.terrain))],
     view.game.factions.map((f) => view.game.recruitmentOptions(f.id)),
