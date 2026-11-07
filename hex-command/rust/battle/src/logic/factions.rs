@@ -168,7 +168,7 @@ impl Game<'_> {
                 crate::logic::conditions::matches(
                     &rule.when.condition,
                     &input,
-                    Some(&self.board.ids[unit.tile]),
+                    Some(&TileRef::Hex(self.board.ids[unit.tile])),
                 )
                 .then(|| {
                     let phase = self.faction(&rule.to).map(|f| f.phase).unwrap_or_else(|| {

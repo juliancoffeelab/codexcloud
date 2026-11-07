@@ -128,7 +128,14 @@ pub fn validate_state_geometry_with_campaign(
     let authored_tiles: HashSet<_> = authored
         .tiles
         .iter()
-        .map(|tile| (tile.id.as_str(), tile.col, tile.row))
+        .map(|tile| {
+            (
+                tile.id.as_str(),
+                tile.location.as_deref(),
+                tile.col,
+                tile.row,
+            )
+        })
         .collect();
     let mut tiles = HashSet::new();
     let mut positions = HashSet::new();
@@ -139,7 +146,12 @@ pub fn validate_state_geometry_with_campaign(
         if !tiles.insert(tile.id.as_str()) || !positions.insert((tile.col, tile.row)) {
             return Err(fail("duplicate tile identity or coordinate"));
         }
-        if !authored_tiles.contains(&(tile.id.as_str(), tile.col, tile.row)) {
+        if !authored_tiles.contains(&(
+            tile.id.as_str(),
+            tile.location.as_deref(),
+            tile.col,
+            tile.row,
+        )) {
             return Err(fail("invalid tile identity or coordinate"));
         }
         if tile.col < 0 || tile.col >= state.cols || tile.row < 0 || tile.row >= state.rows {
@@ -188,7 +200,7 @@ pub fn validate_state_geometry_with_campaign(
         }
     }
     for ground in &state.ground_items {
-        if !tiles.contains(ground.tile.as_str()) {
+        if !positions.contains(&(ground.tile.col, ground.tile.row)) {
             return Err(fail("invalid ground item tile"));
         }
         ground
@@ -210,7 +222,7 @@ pub fn validate_state_geometry_with_campaign(
         if !ids.insert(id) || id >= state.next_id {
             return Err(fail("duplicate unit identity or invalid nextId"));
         }
-        if !tiles.contains(unit.tile.as_str()) || !occupied.insert(unit.tile.as_str()) {
+        if !positions.contains(&(unit.tile.col, unit.tile.row)) || !occupied.insert(unit.tile) {
             return Err(fail("invalid unit position"));
         }
         let kind = *rules
@@ -264,7 +276,7 @@ pub fn validate_state_geometry_with_campaign(
         if mission
             .all_goals()
             .flat_map(Goal::sites)
-            .any(|site| !tiles.contains(site.as_str()))
+            .any(|site| !state.tiles.iter().any(|t| t.matches_reference(&site)))
         {
             return Err(fail("missing objective tile"));
         }
@@ -290,7 +302,10 @@ pub fn validate_state_geometry_with_campaign(
                 .as_ref()
                 .ok_or_else(|| fail("event does not evacuate units"))?;
             if !campaign.marked_prefixed("event:", &record.event)
-                || unit.tile != effect.tile
+                || !state
+                    .tiles
+                    .iter()
+                    .any(|t| t.hex() == unit.tile && t.matches_reference(&effect.tile))
                 || unit.side != effect.units.side
                 || effect
                     .units

@@ -1,3 +1,4 @@
+import { cellKey } from "../game/hex";
 import { DEFAULT_SETUP, opponentSummary, type SessionSetup } from "../game/setup";
 import { BATTLE_MAPS } from "../game/maps";
 import { dialoguePending } from "../game/campaign-progress";
@@ -840,7 +841,7 @@ export class BattleController {
     const deaths = frame.combat.units.filter(
       (unit, i) => frame.before.game.unit(unit.id) && previous[i]! > 0 && hit.health[i]! <= 0,
     );
-    this.animateTileAfterRender(actor.tile, "attack");
+    this.animateTileAfterRender(cellKey(actor.tile), "attack");
     playCombat(
       {
         attackType: actor.type,
@@ -989,7 +990,7 @@ export class BattleController {
   private selectTarget(target: Unit) {
     this.state.target = target.id;
     this.publish({ gameChanged: false });
-    this.animateTileAfterRender(target.tile, "select");
+    this.animateTileAfterRender(cellKey(target.tile), "select");
     playSound("select");
     this.message("Tap a weapon to attack. Use the magnifying glass for damage details.");
   }
@@ -998,7 +999,7 @@ export class BattleController {
     this.state.selected = unit.id;
     this.state.target = null;
     this.publish({ gameChanged: false });
-    this.playSelectionFeedback(unit.tile);
+    this.playSelectionFeedback(cellKey(unit.tile));
 
     if (!this.#game.faction(unit.id).controllable) {
       this.message(
@@ -1020,7 +1021,7 @@ export class BattleController {
     this.state.target = null;
     this.publish({ gameChanged: false });
     this.playSelectionFeedback(tile.id);
-    if (this.#game.presentation.fog.includes(tile.id)) {
+    if (this.#game.presentation.fog.map((hex) => cellKey(hex)).includes(tile.id)) {
       this.message("Unexplored terrain.");
       return;
     }
@@ -1032,7 +1033,7 @@ export class BattleController {
     this.requirePlayerActor(unitId);
     this.history.move(this.#game, unitId, tileId);
     this.state.selected = unitId;
-    this.state.inspectedTile = this.#game.unit(unitId)?.tile ?? this.state.inspectedTile;
+    this.state.inspectedTile = cellKey(this.#game.unit(unitId)?.tile) ?? this.state.inspectedTile;
     this.state.target = null;
     this.commitAction();
     return this.snapshot();
@@ -1053,7 +1054,7 @@ export class BattleController {
     this.history.clear();
     this.state.selected = unitId;
     if (inspectActor) {
-      this.state.inspectedTile = this.#game.unit(unitId)?.tile ?? this.state.inspectedTile;
+      this.state.inspectedTile = cellKey(this.#game.unit(unitId)?.tile) ?? this.state.inspectedTile;
     }
     this.state.target = null;
     this.commitAction();

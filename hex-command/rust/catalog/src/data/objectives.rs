@@ -16,7 +16,7 @@ pub struct Progress {
     pub current: u32,
     pub total: u32,
     pub done: bool,
-    pub tiles: Vec<String>,
+    pub tiles: Vec<Hex>,
 }
 /// A weighted planning target with optional actor, family and defense constraints.
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -29,7 +29,7 @@ pub struct Progress {
 )]
 pub struct Objective {
     pub id: String,
-    pub tiles: Vec<String>,
+    pub tiles: Vec<Hex>,
     pub weight: f64,
     pub kind: ObjectiveKind,
     #[cfg_attr(feature = "wasm", tsify(optional))]
@@ -61,7 +61,7 @@ impl Objective {
 pub struct ObjectiveStatus {
     /// Resolved battlefield marker destinations, including partial completion.
     #[serde(rename = "activeTiles")]
-    pub active_tiles: Vec<String>,
+    pub active_tiles: Vec<Hex>,
     pub visible: bool,
     pub available: bool,
     pub progress: Progress,

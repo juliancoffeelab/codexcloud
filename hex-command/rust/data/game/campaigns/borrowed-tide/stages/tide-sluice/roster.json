@@ -36,30 +36,48 @@
           "type": "tidekeeper",
           "role": "leader",
           "character": "mira",
-          "tile": "hex-0045-b0e58b1f93"
+          "tile": {
+            "col": 1,
+            "row": 2
+          }
         },
         {
           "type": "reefguard",
-          "tile": "hex-0397-b042f4a1af"
+          "tile": {
+            "col": 2,
+            "row": 2
+          }
         },
         {
           "type": "harpooner",
-          "tile": "hex-0056-2e6c8414fc"
+          "tile": {
+            "col": 1,
+            "row": 3
+          }
         },
         {
           "type": "wavemender",
-          "tile": "hex-0408-edbae05560"
+          "tile": {
+            "col": 2,
+            "row": 3
+          }
         },
         {
           "type": "harpooner",
           "role": "courier",
           "character": "edda",
-          "tile": "hex-0760-150b2b6a75"
+          "tile": {
+            "col": 3,
+            "row": 3
+          }
         },
         {
           "type": "spearman",
           "character": "tomas",
-          "tile": "hex-0834-6c48b28b5d"
+          "tile": {
+            "col": 4,
+            "row": 1
+          }
         }
       ],
       "relations": {
@@ -90,23 +108,38 @@
           "type": "commander",
           "role": "leader",
           "character": "vale",
-          "tile": "hex-0098-b1326129be"
+          "tile": {
+            "col": 11,
+            "row": 1
+          }
         },
         {
           "type": "soldier",
-          "tile": "hex-0973-079cfc7b3c"
+          "tile": {
+            "col": 8,
+            "row": 2
+          }
         },
         {
           "type": "warden",
-          "tile": "hex-0988-17596734c1"
+          "tile": {
+            "col": 8,
+            "row": 5
+          }
         },
         {
           "type": "archer",
-          "tile": "hex-1016-9e0db09d3e"
+          "tile": {
+            "col": 9,
+            "row": 3
+          }
         },
         {
           "type": "scout",
-          "tile": "hex-0989-f27f4a3764"
+          "tile": {
+            "col": 8,
+            "row": 6
+          }
         }
       ],
       "relations": {

@@ -28,18 +28,27 @@
       "units": [
         {
           "type": "commander",
-          "tile": "hex-0415-b41f9070d5",
+          "tile": {
+            "col": 2,
+            "row": 8
+          },
           "role": "leader",
           "character": "survey-captain",
           "items": ["healing-bottle"]
         },
         {
           "type": "dragon",
-          "tile": "hex-0416-499b3d4ebc"
+          "tile": {
+            "col": 2,
+            "row": 9
+          }
         },
         {
           "type": "scout",
-          "tile": "hex-0064-f0696e660a"
+          "tile": {
+            "col": 1,
+            "row": 9
+          }
         }
       ],
       "relations": {
@@ -68,86 +77,146 @@
       "units": [
         {
           "type": "lich",
-          "tile": "hex-0101-0061999dcd",
+          "tile": {
+            "col": 11,
+            "row": 12
+          },
           "character": "survey-rival",
           "role": "leader"
         },
         {
           "type": "necromancer",
-          "tile": "hex-0431-8863570987",
+          "tile": {
+            "col": 20,
+            "row": 21
+          },
           "role": "leader"
         },
         {
           "type": "skeleton",
-          "tile": "hex-0835-42aa3f9842"
+          "tile": {
+            "col": 4,
+            "row": 10
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0899-ad0a9f843c"
+          "tile": {
+            "col": 6,
+            "row": 10
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0964-716120f6be"
+          "tile": {
+            "col": 8,
+            "row": 11
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0069-c2c36638a8"
+          "tile": {
+            "col": 10,
+            "row": 12
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0134-f8a3eeb246"
+          "tile": {
+            "col": 12,
+            "row": 13
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0199-cac07ffcd8"
+          "tile": {
+            "col": 14,
+            "row": 14
+          }
         },
         {
           "type": "bonearcher",
-          "tile": "hex-0233-922ea6941e"
+          "tile": {
+            "col": 15,
+            "row": 16
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0267-86333efa52"
+          "tile": {
+            "col": 16,
+            "row": 18
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0334-50e5d1b8b8"
+          "tile": {
+            "col": 18,
+            "row": 20
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0430-448f75e40c"
+          "tile": {
+            "col": 20,
+            "row": 20
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0092-2cbe4dcb7c"
+          "tile": {
+            "col": 10,
+            "row": 5
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0220-71856b5fe2"
+          "tile": {
+            "col": 14,
+            "row": 5
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0351-a9a9e23b4b"
+          "tile": {
+            "col": 18,
+            "row": 8
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0905-21011c58dd"
+          "tile": {
+            "col": 6,
+            "row": 16
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0846-4bad5fd833"
+          "tile": {
+            "col": 4,
+            "row": 20
+          }
         },
         {
           "type": "bonearcher",
-          "tile": "hex-0111-ee70a9dbae"
+          "tile": {
+            "col": 11,
+            "row": 21
+          }
         },
         {
           "type": "bonearcher",
-          "tile": "hex-0955-5859c768ff"
+          "tile": {
+            "col": 7,
+            "row": 4
+          }
         },
         {
           "type": "skeleton",
-          "tile": "hex-0440-32397e11cd"
+          "tile": {
+            "col": 20,
+            "row": 3
+          }
         }
       ],
       "relations": {

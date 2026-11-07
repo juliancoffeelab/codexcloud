@@ -4,7 +4,23 @@
       "id": "north-watch",
       "order": {
         "kind": "hold",
-        "area": ["hex-0124-7838ad1797", "hex-0092-2cbe4dcb7c", "hex-0093-9d334ed661"],
+        "area": [
+          {
+            "location": "northern-ritual-mark"
+          },
+          {
+            "hex": {
+              "col": 10,
+              "row": 5
+            }
+          },
+          {
+            "hex": {
+              "col": 10,
+              "row": 6
+            }
+          }
+        ],
         "attackRadius": 2,
         "when": {
           "kind": "hasUnits",
@@ -17,7 +33,23 @@
       "id": "east-watch",
       "order": {
         "kind": "hold",
-        "area": ["hex-0355-3f598bb97a", "hex-0384-f7415670d2", "hex-0323-cf4945b8a9"],
+        "area": [
+          {
+            "location": "eastern-ritual-mark"
+          },
+          {
+            "hex": {
+              "col": 19,
+              "row": 9
+            }
+          },
+          {
+            "hex": {
+              "col": 18,
+              "row": 10
+            }
+          }
+        ],
         "attackRadius": 2,
         "when": {
           "kind": "hasUnits",
@@ -30,7 +62,23 @@
       "id": "south-watch",
       "order": {
         "kind": "hold",
-        "area": ["hex-0142-a3ef30fee6", "hex-0174-93d7f87036", "hex-0140-9331b16706"],
+        "area": [
+          {
+            "location": "southern-ritual-mark"
+          },
+          {
+            "hex": {
+              "col": 13,
+              "row": 20
+            }
+          },
+          {
+            "hex": {
+              "col": 12,
+              "row": 19
+            }
+          }
+        ],
         "attackRadius": 2,
         "when": {
           "kind": "hasUnits",
@@ -59,7 +107,9 @@
         {
           "createMark": {
             "type": "captive-death",
-            "tile": "$event.deathTile",
+            "tile": {
+              "binding": "death"
+            },
             "light": {
               "radius": 62,
               "power": 0.75,
@@ -214,7 +264,9 @@
       "id": "monastery-start",
       "when": {
         "stand": {
-          "tile": "hex-0892-f4d2ec09d8",
+          "tile": {
+            "location": "monastery"
+          },
           "side": "player",
           "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"],
           "through": false
@@ -225,11 +277,36 @@
           "spawn": {
             "faction": "enemy",
             "area": [
-              "hex-0956-1372406dd4",
-              "hex-0925-815fb4de6a",
-              "hex-0924-5cbf18fdd5",
-              "hex-0893-940b4e4db1",
-              "hex-0957-c94afbbfa1"
+              {
+                "hex": {
+                  "col": 7,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 6,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 6,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 7,
+                  "row": 6
+                }
+              }
             ],
             "aiGroup": "monastery-wolves",
             "units": [
@@ -247,7 +324,7 @@
             {
               "speaker": "The company",
               "portrait": "adept",
-              "text": "The stones answer the mage’s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
+              "text": "The stones answer the mage\u2019s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
             },
             {
               "portrait": "adept",
@@ -270,7 +347,9 @@
         "all": [
           {
             "held": {
-              "tile": "hex-0892-f4d2ec09d8",
+              "tile": {
+                "location": "monastery"
+              },
               "turns": 3,
               "side": "player",
               "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
@@ -292,7 +371,7 @@
           ]
         },
         {
-          "log": "The hill ritual clears the valley’s fog."
+          "log": "The hill ritual clears the valley\u2019s fog."
         },
         {
           "setFlag": "fog-cleared"
@@ -303,7 +382,9 @@
         "optional": true,
         "intent": {
           "hold": {
-            "tile": "hex-0892-f4d2ec09d8",
+            "tile": {
+              "location": "monastery"
+            },
             "side": "player",
             "turns": 3,
             "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
@@ -366,7 +447,7 @@
             },
             {
               "portrait": "swordsman",
-              "text": "You’ll have no more of them.",
+              "text": "You\u2019ll have no more of them.",
               "character": "nera"
             }
           ]
@@ -394,7 +475,7 @@
             },
             {
               "portrait": "adept",
-              "text": "The bell is gathering strength. Get the prisoners off those marks—cutting their bonds won’t be enough.",
+              "text": "The bell is gathering strength. Get the prisoners off those marks\u2014cutting their bonds won\u2019t be enough.",
               "character": "oren"
             }
           ]
@@ -411,7 +492,9 @@
       "id": "church-sighted",
       "when": {
         "proximity": {
-          "tile": "hex-0327-75e4fc333f",
+          "tile": {
+            "location": "church"
+          },
           "side": "player",
           "radius": 2
         }
@@ -438,7 +521,9 @@
       "id": "church-armor",
       "when": {
         "stand": {
-          "tile": "hex-0327-75e4fc333f",
+          "tile": {
+            "location": "church"
+          },
           "side": "player",
           "through": false
         }
@@ -447,7 +532,9 @@
         {
           "give": {
             "item": "church-mail",
-            "tile": "hex-0327-75e4fc333f",
+            "tile": {
+              "location": "church"
+            },
             "side": "player"
           }
         },
@@ -479,7 +566,9 @@
         "all": [
           {
             "proximity": {
-              "tile": "hex-0124-7838ad1797",
+              "tile": {
+                "location": "northern-ritual-mark"
+              },
               "side": "player",
               "radius": 3
             }
@@ -498,7 +587,7 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Here! Please—before it rings again!"
+              "text": "Here! Please\u2014before it rings again!"
             }
           ]
         },
@@ -552,7 +641,9 @@
         "optional": true,
         "intent": {
           "goTo": {
-            "tile": "hex-0124-7838ad1797",
+            "tile": {
+              "location": "northern-ritual-mark"
+            },
             "side": "player"
           }
         },
@@ -571,7 +662,9 @@
         "all": [
           {
             "proximity": {
-              "tile": "hex-0355-3f598bb97a",
+              "tile": {
+                "location": "eastern-ritual-mark"
+              },
               "side": "player",
               "radius": 3
             }
@@ -590,7 +683,7 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Here! Please—before it rings again!"
+              "text": "Here! Please\u2014before it rings again!"
             }
           ]
         },
@@ -644,7 +737,9 @@
         "optional": true,
         "intent": {
           "goTo": {
-            "tile": "hex-0355-3f598bb97a",
+            "tile": {
+              "location": "eastern-ritual-mark"
+            },
             "side": "player"
           }
         },
@@ -663,7 +758,9 @@
         "all": [
           {
             "proximity": {
-              "tile": "hex-0142-a3ef30fee6",
+              "tile": {
+                "location": "southern-ritual-mark"
+              },
               "side": "player",
               "radius": 3
             }
@@ -682,7 +779,7 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Here! Please—before it rings again!"
+              "text": "Here! Please\u2014before it rings again!"
             }
           ]
         },
@@ -736,7 +833,9 @@
         "optional": true,
         "intent": {
           "goTo": {
-            "tile": "hex-0142-a3ef30fee6",
+            "tile": {
+              "location": "southern-ritual-mark"
+            },
             "side": "player"
           }
         },
@@ -788,7 +887,7 @@
           "say": [
             {
               "portrait": "lich",
-              "text": "Bring them back. Alive or dead—their blood will serve the ritual just the same.",
+              "text": "Bring them back. Alive or dead\u2014their blood will serve the ritual just the same.",
               "character": "bellwarden"
             }
           ]
@@ -817,11 +916,36 @@
           "spawn": {
             "faction": "enemy",
             "area": [
-              "hex-0394-7889695a30",
-              "hex-0042-3103f25c56",
-              "hex-0043-cc2388bbb8",
-              "hex-0395-f9b1a8bf44",
-              "hex-0746-8d990f3ec1"
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 17
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 17
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 18
+                }
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 18
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 17
+                }
+              }
             ],
             "units": [
               {
@@ -841,7 +965,7 @@
           "say": [
             {
               "portrait": "scout",
-              "text": "The dead from the pass—they’ve followed us!",
+              "text": "The dead from the pass\u2014they\u2019ve followed us!",
               "character": "ivo"
             },
             {
@@ -868,7 +992,9 @@
           },
           {
             "proximity": {
-              "tile": "hex-0124-7838ad1797",
+              "tile": {
+                "location": "northern-ritual-mark"
+              },
               "radius": 3,
               "side": "player"
             }
@@ -926,7 +1052,9 @@
           "forEachUnit": {
             "select": {
               "role": "captive",
-              "tile": "hex-0124-7838ad1797"
+              "tile": {
+                "location": "northern-ritual-mark"
+              }
             },
             "actions": [
               {
@@ -939,7 +1067,9 @@
                 "spawn": {
                   "faction": "enemy",
                   "aiGroup": "bell-raised",
-                  "tile": "hex-0124-7838ad1797",
+                  "tile": {
+                    "location": "northern-ritual-mark"
+                  },
                   "radius": 2,
                   "units": ["skeleton", "skeleton", "bonearcher"]
                 }
@@ -957,7 +1087,9 @@
                 "spawn": {
                   "faction": "enemy",
                   "aiGroup": "bell-raised",
-                  "tile": "$mark.tile",
+                  "tile": {
+                    "binding": "mark"
+                  },
                   "radius": 2,
                   "units": ["skeleton", "skeleton", "bonearcher"]
                 }
@@ -970,7 +1102,9 @@
         },
         {
           "setTerrain": {
-            "tile": "hex-0124-7838ad1797",
+            "tile": {
+              "location": "northern-ritual-mark"
+            },
             "terrain": "ritual-spent"
           }
         },
@@ -1009,7 +1143,9 @@
           "forEachUnit": {
             "select": {
               "role": "captive",
-              "tile": "hex-0355-3f598bb97a"
+              "tile": {
+                "location": "eastern-ritual-mark"
+              }
             },
             "actions": [
               {
@@ -1022,7 +1158,9 @@
                 "spawn": {
                   "faction": "enemy",
                   "aiGroup": "bell-raised",
-                  "tile": "hex-0355-3f598bb97a",
+                  "tile": {
+                    "location": "eastern-ritual-mark"
+                  },
                   "radius": 2,
                   "units": ["skeleton", "skeleton", "bonearcher"]
                 }
@@ -1040,7 +1178,9 @@
                 "spawn": {
                   "faction": "enemy",
                   "aiGroup": "bell-raised",
-                  "tile": "$mark.tile",
+                  "tile": {
+                    "binding": "mark"
+                  },
                   "radius": 2,
                   "units": ["skeleton", "skeleton", "bonearcher"]
                 }
@@ -1053,7 +1193,9 @@
         },
         {
           "setTerrain": {
-            "tile": "hex-0355-3f598bb97a",
+            "tile": {
+              "location": "eastern-ritual-mark"
+            },
             "terrain": "ritual-spent"
           }
         },
@@ -1087,7 +1229,9 @@
           "forEachUnit": {
             "select": {
               "role": "captive",
-              "tile": "hex-0142-a3ef30fee6"
+              "tile": {
+                "location": "southern-ritual-mark"
+              }
             },
             "actions": [
               {
@@ -1100,7 +1244,9 @@
                 "spawn": {
                   "faction": "enemy",
                   "aiGroup": "bell-raised",
-                  "tile": "hex-0142-a3ef30fee6",
+                  "tile": {
+                    "location": "southern-ritual-mark"
+                  },
                   "radius": 2,
                   "units": ["skeleton", "skeleton", "bonearcher"]
                 }
@@ -1118,7 +1264,9 @@
                 "spawn": {
                   "faction": "enemy",
                   "aiGroup": "bell-raised",
-                  "tile": "$mark.tile",
+                  "tile": {
+                    "binding": "mark"
+                  },
                   "radius": 2,
                   "units": ["skeleton", "skeleton", "bonearcher"]
                 }
@@ -1131,7 +1279,9 @@
         },
         {
           "setTerrain": {
-            "tile": "hex-0142-a3ef30fee6",
+            "tile": {
+              "location": "southern-ritual-mark"
+            },
             "terrain": "ritual-spent"
           }
         },
@@ -1192,7 +1342,12 @@
       "actions": [
         {
           "spawn": {
-            "tile": "hex-0030-0a7169bf92",
+            "tile": {
+              "hex": {
+                "col": 0,
+                "row": 7
+              }
+            },
             "faction": "player",
             "radius": 2,
             "units": [
@@ -1204,7 +1359,12 @@
         },
         {
           "spawn": {
-            "tile": "hex-0031-ae6a776b34",
+            "tile": {
+              "hex": {
+                "col": 0,
+                "row": 8
+              }
+            },
             "faction": "player",
             "radius": 2,
             "units": [
@@ -1216,7 +1376,12 @@
         },
         {
           "spawn": {
-            "tile": "hex-0032-885bfd5174",
+            "tile": {
+              "hex": {
+                "col": 0,
+                "row": 9
+              }
+            },
             "faction": "player",
             "radius": 2,
             "units": [
@@ -1235,7 +1400,7 @@
             },
             {
               "portrait": "swordsman",
-              "text": "Good timing. Join the company—we need to silence that bell.",
+              "text": "Good timing. Join the company\u2014we need to silence that bell.",
               "character": "nera"
             }
           ]
@@ -1252,7 +1417,9 @@
         "all": [
           {
             "left": {
-              "tile": "hex-0892-f4d2ec09d8",
+              "tile": {
+                "location": "monastery"
+              },
               "side": "player",
               "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
             }
@@ -1272,13 +1439,13 @@
               "dialogue": [
                 {
                   "character": "oren",
-                  "text": "The connection broke. I’ll have to start again."
+                  "text": "The connection broke. I\u2019ll have to start again."
                 }
               ],
               "alternative": [
                 {
                   "character": "nera",
-                  "text": "We’ll have to try again."
+                  "text": "We\u2019ll have to try again."
                 }
               ]
             }

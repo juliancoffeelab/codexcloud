@@ -19,7 +19,7 @@ import { pixelSprites } from "../src/presentation/pixel-art";
 import type { GameView, TileView } from "../src/game/view";
 
 type MapSource = Pick<GameView, "mapId" | "cols" | "rows"> & {
-  tiles: TileView[];
+  tiles: (Omit<TileView, "id" | "location"> & { id?: string })[];
   mapRevision?: number;
 };
 const virtualId = "virtual:terrain-prebuilt";
@@ -73,7 +73,14 @@ export function terrainPrebuild(): Plugin {
       for (const descriptor of descriptors) {
         const stage = await read<{ map: string; scripts?: string }>(descriptor);
         const map = await read<MapSource>(resolve(dirname(descriptor), stage.map));
-        const state = map;
+        const state = {
+          ...map,
+          tiles: map.tiles.map((tile) => ({
+            ...tile,
+            id: `${tile.col},${tile.row}`,
+            location: tile.id,
+          })),
+        };
         const key = terrainMapKey(state),
           assetKey = terrainAssetKey(`${state.mapId}:${state.mapRevision ?? 1}`);
         if (identities.has(assetKey) && identities.get(assetKey) !== key)

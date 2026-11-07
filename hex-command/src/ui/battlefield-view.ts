@@ -1,3 +1,4 @@
+import { cellKey } from "../game/hex";
 import type { GameView, UnitView, TileView } from "../game/view";
 import type { Artwork } from "../presentation/art";
 import type { FrameImage } from "../presentation/art";
@@ -145,9 +146,11 @@ export function battlefieldTiles(
     selectedUnit &&
     game.faction(selectedUnit.id).controllable;
   const reachableTiles = canAct ? game.reachable(selected) : new Map<string, number>();
-  const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
+  const targetTiles = new Set(
+    canAct ? game.targets(selected).map((unit) => cellKey(unit.tile)) : [],
+  );
   const overlays = new Set([...reachableTiles.keys(), ...targetTiles]);
-  if (selectedUnit) overlays.add(selectedUnit.tile);
+  if (selectedUnit) overlays.add(cellKey(selectedUnit.tile));
   if (recruitTileId) overlays.add(recruitTileId);
   for (const id of overlays) reuse?.nextOverlayIds?.add(id);
   const changedOverlays = new Set([...overlays, ...(reuse?.overlayIds ?? [])]);
@@ -156,12 +159,12 @@ export function battlefieldTiles(
   for (const status of [...(game.objectives?.goals ?? []), ...(game.objectives?.optional ?? [])]) {
     if (!status.visible) continue;
     for (const tile of status.activeTiles) {
-      const labels = objectiveTiles.get(tile) ?? [];
+      const labels = objectiveTiles.get(cellKey(tile)) ?? [];
       labels.push(status.progress.label);
-      objectiveTiles.set(tile, labels);
+      objectiveTiles.set(cellKey(tile), labels);
     }
   }
-  const occupants = new Map(game.units.map((unit) => [unit.tile, unit]));
+  const occupants = new Map(game.units.map((unit) => [cellKey(unit.tile), unit]));
   const terrainViews =
     terrain ??
     new Map(game.tiles.map((tile) => [tile.id, terrainTileView(tile, game.mapId, artwork)]));
@@ -175,7 +178,7 @@ export function battlefieldTiles(
       const classes = old.view.classes
         .split(" ")
         .filter((value) => !["selected", "reachable", "target", "recruitable"].includes(value));
-      if (selectedUnit?.tile === tile.id) classes.push("selected");
+      if (cellKey(selectedUnit?.tile) === tile.id) classes.push("selected");
       if (reachableTiles.has(tile.id)) classes.push("reachable");
       if (targetTiles.has(tile.id)) classes.push("target");
       if (tile.id === recruitTileId) classes.push("recruitable");
@@ -209,7 +212,7 @@ export function battlefieldTiles(
       "hex",
       objectiveTiles.has(tile.id) ? "objective" : "",
       `terrain-${tile.terrain}`,
-      selectedUnit?.tile === tile.id ? "selected" : "",
+      cellKey(selectedUnit?.tile) === tile.id ? "selected" : "",
       reachable ? "reachable" : "",
       target ? "target" : "",
       tile.id === recruitTileId ? "recruitable" : "",

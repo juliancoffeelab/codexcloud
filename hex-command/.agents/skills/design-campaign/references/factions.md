@@ -36,8 +36,9 @@ names and promoted unit types are not identity. Leadership is an instance's
 `role: "leader"`, independent of its unit type. Preserve character identity,
 progression and equipment across promotion and chapter transitions.
 
-Use map-scoped tile IDs for placements and references. Coordinates describe
-geometry: moving or changing a tile retains its ID. A placement references
-`tile`, not copied `col`/`row` coordinates. Keep character and tile references
-consistent across scripts, roster, objectives and companion arrivals; validate
-through `npm run content:check`.
+Give script landmarks readable, map-scoped `id` names (for example `monastery`
+or `northern-ritual-mark`). Ordinary cells omit `id`. Placements and movement
+use `{ "col": 0, "row": 1 }` coordinates. Event targets, including spawn regions,
+explicitly use `{ "hex": { "col": 0, "row": 1 } }` or `{ "location": "monastery" }`. Moving a
+landmark keeps its name. Runtime tile `id` is a presentation lookup key; `location`
+carries its optional authored name. Validate references through the Rust catalog.

@@ -566,6 +566,7 @@ pub(in crate::ai) fn report(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::data::Hex;
     use crate::logic::Game;
 
     fn small_battle(rules: &Rules) -> Game<'_> {
@@ -576,7 +577,7 @@ mod tests {
             .iter_mut()
             .find(|u| u.side == Side::Player)
             .unwrap();
-        actor.tile = "hex-0056-2e6c8414fc".into();
+        actor.tile = Hex::new(1, 3).into();
         actor.hp = 1;
         actor.moved = true;
         let mut threat = actor.clone();
@@ -584,7 +585,7 @@ mod tests {
         state.next_id += 1;
         threat.side = Side::Enemy;
         threat.r#type = "swordsman".into();
-        threat.tile = "hex-0408-edbae05560".into();
+        threat.tile = Hex::new(2, 3).into();
         threat.hp = 1;
         threat.moved = false;
         threat.character = None;
@@ -595,7 +596,7 @@ mod tests {
         state.next_id += 1;
         helper.side = Side::Player;
         helper.r#type = "archer".into();
-        helper.tile = "hex-0760-150b2b6a75".into();
+        helper.tile = Hex::new(3, 3).into();
         helper.hp = rules.units[rules.types["archer"]].hp;
         helper.moved = false;
         helper.attacked = false;

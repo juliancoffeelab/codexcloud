@@ -16,7 +16,7 @@ pub enum TargetKind {
 pub struct Target {
     pub id: String,
     pub kind: TargetKind,
-    pub tiles: Vec<String>,
+    pub tiles: Vec<Hex>,
     pub weight: f64,
     pub actor: Option<String>,
     pub family: Option<Family>,
@@ -44,7 +44,7 @@ impl From<crate::data::Objective> for Target {
         }
     }
 }
-pub(in crate::ai) fn target(id: &str, kind: TargetKind, tiles: Vec<String>, weight: f64) -> Target {
+pub(in crate::ai) fn target(id: &str, kind: TargetKind, tiles: Vec<Hex>, weight: f64) -> Target {
     Target {
         id: id.into(),
         kind,

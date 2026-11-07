@@ -32,7 +32,7 @@ mod actor_tests {
 pub fn objective(
     id: &str,
     kind: crate::data::ObjectiveKind,
-    tiles: Vec<String>,
+    tiles: Vec<Hex>,
     weight: f64,
 ) -> crate::data::Objective {
     crate::data::Objective {
@@ -441,7 +441,7 @@ mod target_tests {
         let target = crate::ai::orders::target(
             "territory",
             ObjectiveKind::Capture,
-            vec!["a".into(), "b".into()],
+            vec![Hex::new(0, 0), Hex::new(1, 0)],
             24.0,
         );
         let once = individual(vec![target]);

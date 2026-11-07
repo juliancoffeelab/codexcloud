@@ -87,10 +87,11 @@ pub(crate) fn play_blocks(
     policy: Policy,
     blocks: Option<Blocks>,
     seed: u32,
-    limit: usize,
+    limit: impl Into<Option<usize>>,
     goals: Option<&[Objective]>,
     diplomacy: Diplomacy,
 ) -> Result<(), CommandError> {
+    let limit = limit.into();
     if !game.factions().is_empty() && game.active_faction().is_none() {
         let controllers = automatic_factions(game);
         for (index, (faction, authored_policy)) in controllers.into_iter().enumerate() {
@@ -125,8 +126,12 @@ pub(crate) fn play_blocks(
     if game.winner().is_some() {
         return Ok(());
     }
-    let mut workspace =
-        PlanningWorkspace::new(seed, limit, goals.map(<[Objective]>::to_vec), diplomacy);
+    let mut workspace = PlanningWorkspace::new(
+        seed,
+        limit.or_else(|| policy.default_recruitment_limit()),
+        goals.map(<[Objective]>::to_vec),
+        diplomacy,
+    );
     let mut tactic = tactic::Tactic::new(blocks.recruiter, blocks.campaign, blocks.planner);
     loop {
         let plan = {

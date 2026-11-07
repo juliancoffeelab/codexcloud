@@ -69,7 +69,9 @@
       "id": "ledger",
       "when": {
         "stand": {
-          "tile": "hex-0891-b20a50ef8c",
+          "tile": {
+            "location": "wreck"
+          },
           "side": "player",
           "through": true
         }
@@ -95,7 +97,9 @@
         "label": "Recover the original ledger from the wreck",
         "intent": {
           "goTo": {
-            "tile": "hex-0891-b20a50ef8c",
+            "tile": {
+              "location": "wreck"
+            },
             "side": "player"
           }
         },
@@ -103,7 +107,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0891-b20a50ef8c"]
+          "tiles": [
+            {
+              "location": "wreck"
+            }
+          ]
         }
       }
     },
@@ -113,7 +121,9 @@
         "all": [
           {
             "own": {
-              "tile": "hex-0891-b20a50ef8c",
+              "tile": {
+                "location": "wreck"
+              },
               "faction": "player"
             }
           },
@@ -148,7 +158,9 @@
         "all": [
           {
             "own": {
-              "tile": "hex-0891-b20a50ef8c",
+              "tile": {
+                "location": "wreck"
+              },
               "faction": "player"
             }
           },
@@ -219,7 +231,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0066-be276ac684",
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 1
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -231,7 +248,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0124-7838ad1797",
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 5
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -249,7 +271,9 @@
       "id": "goal-1",
       "when": {
         "own": {
-          "tile": "hex-0891-b20a50ef8c",
+          "tile": {
+            "location": "wreck"
+          },
           "faction": "player",
           "turns": 3,
           "when": {
@@ -266,7 +290,9 @@
         "label": "Defend the wreck through 3 enemy turns during the rescue",
         "intent": {
           "own": {
-            "tile": "hex-0891-b20a50ef8c",
+            "tile": {
+              "location": "wreck"
+            },
             "faction": "player",
             "turns": 3,
             "when": {
@@ -278,7 +304,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0891-b20a50ef8c"]
+          "tiles": [
+            {
+              "location": "wreck"
+            }
+          ]
         }
       }
     },

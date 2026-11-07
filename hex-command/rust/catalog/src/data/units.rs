@@ -349,7 +349,7 @@ pub struct PublicUnit {
     pub id: String,
     pub r#type: String,
     pub side: Side,
-    pub tile: String,
+    pub tile: Hex,
     pub hp: i32,
     pub moved: bool,
     pub attacked: bool,

@@ -12,6 +12,11 @@ DIMS = ('race', 'policy', 'opponentPolicy', 'map')
 UNIT_KINDS = {'warrior': 'infantry', 'flank': 'flank', 'ranger': 'ranger', 'healer': 'support'}
 
 
+def cell_key(tile):
+    """Hashable analysis key for current structured hexes and historical journals."""
+    return f"{tile['col']},{tile['row']}" if isinstance(tile, dict) else tile
+
+
 def damage_order(row):
     kind = row.get('unitKind', 'unknown')
     return ((*UNIT_KINDS.values(), 'unknown').index(kind), row['family'],
@@ -19,8 +24,8 @@ def damage_order(row):
 
 
 def adjacent(a, b, positions):
-    x, y = positions[a]
-    u, v = positions[b]
+    x, y = positions[cell_key(a)]
+    u, v = positions[cell_key(b)]
     q, r = x - y // 2 - u + v // 2, y - v
     return abs(q) + abs(r) + abs(q + r) == 2
 

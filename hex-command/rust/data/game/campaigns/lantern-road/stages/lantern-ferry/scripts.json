@@ -42,7 +42,9 @@
       "id": "contact-route-scout",
       "when": {
         "proximity": {
-          "tile": "hex-0893-940b4e4db1",
+          "tile": {
+            "location": "route-scout"
+          },
           "radius": 1,
           "side": "player"
         }
@@ -52,13 +54,45 @@
           "spawn": {
             "faction": "player",
             "area": [
-              "hex-0893-940b4e4db1",
-              "hex-0860-3735600481",
-              "hex-0892-f4d2ec09d8",
-              "hex-0861-b81de56c08",
-              "hex-0925-815fb4de6a",
-              "hex-0862-3ea2b77194",
-              "hex-0894-59c2dceed8"
+              {
+                "location": "route-scout"
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 6,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 7
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 7
+                }
+              }
             ],
             "units": [
               {
@@ -72,7 +106,7 @@
             {
               "speaker": "Scout",
               "portrait": "scout",
-              "text": "You’re the patrol? We’ve been checking the western woods. Nobody has come back across the ford. I’ll show you the way."
+              "text": "You\u2019re the patrol? We\u2019ve been checking the western woods. Nobody has come back across the ford. I\u2019ll show you the way."
             }
           ]
         },
@@ -88,7 +122,9 @@
         "optional": true,
         "intent": {
           "approach": {
-            "tile": "hex-0893-940b4e4db1",
+            "tile": {
+              "location": "route-scout"
+            },
             "radius": 1,
             "side": "player"
           }
@@ -103,7 +139,9 @@
       "id": "contact-western-scout",
       "when": {
         "proximity": {
-          "tile": "hex-0412-0c9247ea66",
+          "tile": {
+            "location": "western-scout"
+          },
           "radius": 1,
           "side": "player"
         }
@@ -113,13 +151,45 @@
           "spawn": {
             "faction": "player",
             "area": [
-              "hex-0412-0c9247ea66",
-              "hex-0411-28541665a4",
-              "hex-0763-c9e627d16e",
-              "hex-0060-946ce75068",
-              "hex-0764-1e6853c01c",
-              "hex-0413-a7f6b5f93d",
-              "hex-0765-3a0bcc5d48"
+              {
+                "location": "western-scout"
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 6
+                }
+              }
             ],
             "units": [
               {
@@ -133,7 +203,7 @@
             {
               "speaker": "Scout",
               "portrait": "scout",
-              "text": "No sign of raiders on this bank. Whatever stopped the ferry is across the river. I’m coming with you."
+              "text": "No sign of raiders on this bank. Whatever stopped the ferry is across the river. I\u2019m coming with you."
             }
           ]
         },
@@ -149,7 +219,9 @@
         "optional": true,
         "intent": {
           "approach": {
-            "tile": "hex-0412-0c9247ea66",
+            "tile": {
+              "location": "western-scout"
+            },
             "radius": 1,
             "side": "player"
           }
@@ -164,7 +236,9 @@
       "id": "contact-northern-scout",
       "when": {
         "proximity": {
-          "tile": "hex-0856-a2b6e60ea7",
+          "tile": {
+            "location": "northern-scout"
+          },
           "radius": 1,
           "side": "player"
         }
@@ -174,13 +248,45 @@
           "spawn": {
             "faction": "player",
             "area": [
-              "hex-0856-a2b6e60ea7",
-              "hex-0845-9e38fcb018",
-              "hex-0877-678535c7d6",
-              "hex-0760-150b2b6a75",
-              "hex-0888-a99d723b63",
-              "hex-0859-8a12839c45",
-              "hex-0891-b20a50ef8c"
+              {
+                "location": "northern-scout"
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 2
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 2
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 3
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 3
+                }
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 4
+                }
+              }
             ],
             "units": [
               {
@@ -194,7 +300,7 @@
             {
               "speaker": "Scout",
               "portrait": "scout",
-              "text": "The mountain path is quiet. The old quarry cave isn’t. We heard something breathing in there. Leave it alone if you’re in a hurry."
+              "text": "The mountain path is quiet. The old quarry cave isn\u2019t. We heard something breathing in there. Leave it alone if you\u2019re in a hurry."
             }
           ]
         },
@@ -210,7 +316,9 @@
         "optional": true,
         "intent": {
           "approach": {
-            "tile": "hex-0856-a2b6e60ea7",
+            "tile": {
+              "location": "northern-scout"
+            },
             "radius": 1,
             "side": "player"
           }
@@ -225,7 +333,9 @@
       "id": "quarry-bear",
       "when": {
         "proximity": {
-          "tile": "hex-0737-cb60354473",
+          "tile": {
+            "location": "quarry"
+          },
           "radius": 1,
           "side": "player"
         }
@@ -234,7 +344,23 @@
         {
           "spawn": {
             "faction": "wildlife",
-            "area": ["hex-0386-9dcf2ec127", "hex-0737-cb60354473", "hex-0738-f0cce97107"],
+            "area": [
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 1
+                }
+              },
+              {
+                "location": "quarry"
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 1
+                }
+              }
+            ],
             "aiGroup": "animals",
             "units": [
               {
@@ -256,7 +382,9 @@
         "optional": true,
         "intent": {
           "approach": {
-            "tile": "hex-0737-cb60354473",
+            "tile": {
+              "location": "quarry"
+            },
             "radius": 1,
             "side": "player"
           }
@@ -271,7 +399,9 @@
       "id": "western-ford",
       "when": {
         "stand": {
-          "tile": "hex-0956-1372406dd4",
+          "tile": {
+            "location": "western-ford"
+          },
           "side": "player",
           "through": true
         }
@@ -280,7 +410,26 @@
         {
           "spawn": {
             "faction": "wildlife",
-            "area": ["hex-0187-8d8ab817b0", "hex-0220-71856b5fe2", "hex-0222-38c4b50445"],
+            "area": [
+              {
+                "hex": {
+                  "col": 13,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 14,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 14,
+                  "row": 7
+                }
+              }
+            ],
             "aiGroup": "animals",
             "units": [
               {
@@ -321,7 +470,9 @@
       "id": "eastern-ford",
       "when": {
         "stand": {
-          "tile": "hex-0319-08df480e03",
+          "tile": {
+            "location": "eastern-ford"
+          },
           "side": "player",
           "through": true
         }
@@ -339,25 +490,29 @@
       "id": "house-visit",
       "when": {
         "stand": {
-          "tile": "hex-0323-cf4945b8a9",
+          "tile": {
+            "location": "ferryman-house"
+          },
           "side": "player",
           "through": true
         }
       },
       "actions": [
         {
-          "log": "The patrol enters the ferryman’s house and lights its lantern"
+          "log": "The patrol enters the ferryman\u2019s house and lights its lantern"
         },
         {
           "setFlag": "house-visit"
         }
       ],
       "objective": {
-        "label": "Reach the ferryman’s house",
+        "label": "Reach the ferryman\u2019s house",
         "optional": false,
         "intent": {
           "goTo": {
-            "tile": "hex-0323-cf4945b8a9",
+            "tile": {
+              "location": "ferryman-house"
+            },
             "side": "player"
           }
         },
@@ -365,7 +520,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0323-cf4945b8a9"]
+          "tiles": [
+            {
+              "location": "ferryman-house"
+            }
+          ]
         }
       }
     },
@@ -375,7 +534,9 @@
         "all": [
           {
             "stand": {
-              "tile": "hex-0319-08df480e03",
+              "tile": {
+                "location": "eastern-ford"
+              },
               "side": "player",
               "through": true
             }
@@ -399,7 +560,7 @@
             {
               "speaker": "Ferryman",
               "portrait": "worker",
-              "text": "Over here! They’re at the door! For the love of anything living, get them away from the door!"
+              "text": "Over here! They\u2019re at the door! For the love of anything living, get them away from the door!"
             },
             {
               "portrait": "swordsman",
@@ -409,7 +570,7 @@
           ]
         },
         {
-          "log": "A cry from the ferryman’s house"
+          "log": "A cry from the ferryman\u2019s house"
         },
         {
           "setFlag": "ford-shout"
@@ -420,7 +581,9 @@
         "optional": true,
         "intent": {
           "goTo": {
-            "tile": "hex-0319-08df480e03",
+            "tile": {
+              "location": "eastern-ford"
+            },
             "side": "player"
           }
         },
@@ -480,7 +643,9 @@
         "all": [
           {
             "stand": {
-              "tile": "hex-0323-cf4945b8a9",
+              "tile": {
+                "location": "ferryman-house"
+              },
               "side": "player"
             }
           },
@@ -509,7 +674,7 @@
             },
             {
               "portrait": "swordsman",
-              "text": "Stay inside. We’ll light the villages and see what’s left.",
+              "text": "Stay inside. We\u2019ll light the villages and see what\u2019s left.",
               "character": "nera"
             },
             {
@@ -527,7 +692,7 @@
                 },
                 {
                   "portrait": "adept",
-                  "text": "A lich. Those villages weren’t attacked for their coin.",
+                  "text": "A lich. Those villages weren\u2019t attacked for their coin.",
                   "character": "oren"
                 },
                 {
@@ -553,7 +718,9 @@
         "all": [
           {
             "stand": {
-              "tile": "hex-0323-cf4945b8a9",
+              "tile": {
+                "location": "ferryman-house"
+              },
               "side": "player"
             }
           },
@@ -567,7 +734,7 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "The door is broken. We’re too late.",
+              "text": "The door is broken. We\u2019re too late.",
               "character": "nera"
             },
             {
@@ -577,7 +744,7 @@
             },
             {
               "portrait": "swordsman",
-              "text": "We’re lighting it. Then we follow the road.",
+              "text": "We\u2019re lighting it. Then we follow the road.",
               "character": "nera"
             }
           ]
@@ -597,7 +764,9 @@
       "id": "village-1",
       "when": {
         "stand": {
-          "tile": "hex-0476-aa57f89866",
+          "tile": {
+            "location": "northern-village"
+          },
           "side": "player",
           "through": true
         }
@@ -607,13 +776,45 @@
           "spawn": {
             "faction": "wildlife",
             "area": [
-              "hex-0444-7f9879166b",
-              "hex-0475-533ea4fc56",
-              "hex-0476-aa57f89866",
-              "hex-0477-0b5144e7b1",
-              "hex-0507-58cb41ca51",
-              "hex-0508-ad32d05df3",
-              "hex-0509-8c38d5d34a"
+              {
+                "hex": {
+                  "col": 20,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 21,
+                  "row": 4
+                }
+              },
+              {
+                "location": "northern-village"
+              },
+              {
+                "hex": {
+                  "col": 21,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 22,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 22,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 22,
+                  "row": 6
+                }
+              }
             ],
             "aiGroup": "animals",
             "units": [
@@ -638,7 +839,9 @@
       "id": "village-2",
       "when": {
         "stand": {
-          "tile": "hex-0453-5d76a2bb0b",
+          "tile": {
+            "location": "southern-village"
+          },
           "side": "player",
           "through": true
         }
@@ -648,13 +851,45 @@
           "spawn": {
             "faction": "wildlife",
             "area": [
-              "hex-0421-9fea0a883b",
-              "hex-0420-64e5601fe8",
-              "hex-0453-5d76a2bb0b",
-              "hex-0422-6a48fe5f70",
-              "hex-0452-b47b257c52",
-              "hex-0485-6edc9d487c",
-              "hex-0454-20b394508c"
+              {
+                "hex": {
+                  "col": 20,
+                  "row": 12
+                }
+              },
+              {
+                "hex": {
+                  "col": 20,
+                  "row": 11
+                }
+              },
+              {
+                "location": "southern-village"
+              },
+              {
+                "hex": {
+                  "col": 20,
+                  "row": 13
+                }
+              },
+              {
+                "hex": {
+                  "col": 21,
+                  "row": 11
+                }
+              },
+              {
+                "hex": {
+                  "col": 22,
+                  "row": 12
+                }
+              },
+              {
+                "hex": {
+                  "col": 21,
+                  "row": 13
+                }
+              }
             ],
             "aiGroup": "animals",
             "units": [
@@ -697,7 +932,7 @@
             },
             {
               "portrait": "adept",
-              "text": "Cellar spiders. We raised them at the Collegium. All the food in the world wouldn’t make them grow like this.",
+              "text": "Cellar spiders. We raised them at the Collegium. All the food in the world wouldn\u2019t make them grow like this.",
               "character": "oren"
             }
           ]
@@ -727,13 +962,27 @@
         "label": "Light and secure the eastern villages",
         "optional": false,
         "intent": {
-          "capture": ["hex-0476-aa57f89866", "hex-0453-5d76a2bb0b"]
+          "capture": [
+            {
+              "location": "northern-village"
+            },
+            {
+              "location": "southern-village"
+            }
+          ]
         },
         "visibleWhen": {
           "flag": "house-visit"
         },
         "playerMarker": {
-          "tiles": ["hex-0476-aa57f89866", "hex-0453-5d76a2bb0b"]
+          "tiles": [
+            {
+              "location": "northern-village"
+            },
+            {
+              "location": "southern-village"
+            }
+          ]
         },
         "satisfiedWhen": {
           "all": [
@@ -748,13 +997,17 @@
             },
             {
               "owner": {
-                "tile": "hex-0476-aa57f89866",
+                "tile": {
+                  "location": "northern-village"
+                },
                 "faction": "player"
               }
             },
             {
               "owner": {
-                "tile": "hex-0453-5d76a2bb0b",
+                "tile": {
+                  "location": "southern-village"
+                },
                 "faction": "player"
               }
             },
@@ -787,7 +1040,7 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "Quarry tools. This hammer still has a sound head. I’ll take it.",
+              "text": "Quarry tools. This hammer still has a sound head. I\u2019ll take it.",
               "character": "nera"
             }
           ]

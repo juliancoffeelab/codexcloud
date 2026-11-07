@@ -122,11 +122,11 @@ impl CampaignBlock {
                         inactive.push(UnitId(unit.id));
                         continue;
                     }
-                    if let Some((area, attack_radius)) = group.hold {
+                    if let Some((area, attack_radius)) = &group.hold {
                         scoped.push(ScopedOrder {
                             actor: UnitId(unit.id),
                             area: area.iter().cloned().map(TileId).collect(),
-                            attack_radius,
+                            attack_radius: *attack_radius,
                         });
                         let mut target = objective(
                             &format!("group:{}:{}", group.id, unit.id),

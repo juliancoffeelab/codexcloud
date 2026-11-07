@@ -38,7 +38,7 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
         state.units.clear();
         state.combat_rng = seed;
         state.gold = Gold::two(0, 0);
-        let mut add = |side, tile: &str, hp| {
+        let mut add = |side, tile: Hex, hp| {
             let id = state.next_id;
             state.next_id += 1;
             state.units.push(PublicUnit {
@@ -60,8 +60,8 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
             });
             id
         };
-        let a = add(Side::Player, "hex-0408-edbae05560", rules.units[kind].hp);
-        let b = add(Side::Enemy, "hex-0760-150b2b6a75", 4);
+        let a = add(Side::Player, Hex::new(2, 3), rules.units[kind].hp);
+        let b = add(Side::Enemy, Hex::new(3, 3), 4);
         let mut game = Game::try_from_state(&rules, state).unwrap();
         let actor = game.unit(a).unwrap();
         let target = game.unit(b).unwrap();
@@ -112,7 +112,7 @@ fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
         tile.terrain = "plains".into();
         tile.owner = None;
     }
-    let mut add = |kind: &str, side, tile: &str, hp| {
+    let mut add = |kind: &str, side, tile: Hex, hp| {
         let id = state.next_id;
         state.next_id += 1;
         state.units.push(PublicUnit {
@@ -134,11 +134,11 @@ fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
         });
         id
     };
-    let scout = add("scout", Side::Player, "hex-0408-edbae05560", 5);
+    let scout = add("scout", Side::Player, Hex::new(2, 3), 5);
     let bow = add(
         "archer",
         Side::Enemy,
-        "hex-0760-150b2b6a75",
+        Hex::new(3, 3),
         rules.units[rules.types["archer"]].hp,
     );
     let mut game = Game::try_from_state(&rules, state).unwrap();

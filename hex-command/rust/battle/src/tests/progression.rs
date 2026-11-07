@@ -4,8 +4,8 @@ use super::*;
 #[test]
 fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let mut rules = Rules::load().unwrap();
-    let tile = "hex-0891-b20a50ef8c";
-    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":tile,"character":"edda","turns":3,"when":{"own":{"tile":tile,"faction":"player"}}}},"objective":{"label":"Defend","intent":{"hold":{"tile":tile,"character":"edda","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
+    let tile = Hex::new(5, 4);
+    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":{"hex":tile},"character":"edda","turns":3,"when":{"own":{"tile":{"hex":tile},"faction":"player"}}}},"objective":{"label":"Defend","intent":{"hold":{"tile":{"hex":tile},"character":"edda","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
     rules.campaigns.get_mut("borrowed-tide").unwrap().missions[1].scripted_events =
         vec![event.clone()];
     let mut game = Game::start_campaign(
@@ -18,7 +18,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
         vec![],
         vec![],
     );
-    let wreck = game.site(tile);
+    let wreck = game.site(&tile);
     game.owners[wreck] = Some("player".into());
     game.units.retain(|u| u.side == Side::Player);
     game.roster_changed();
@@ -98,8 +98,8 @@ fn authored_progression_ladders_are_acyclic_and_preserve_race_and_increase_level
 #[test]
 fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
     let mut game = flat();
-    let id = add(&mut game, "swordsman", Side::Player, "hex-0760-150b2b6a75");
-    let target = add(&mut game, "archer", Side::Enemy, "hex-0856-a2b6e60ea7");
+    let id = add(&mut game, "swordsman", Side::Player, Hex::new(3, 3));
+    let target = add(&mut game, "archer", Side::Enemy, Hex::new(4, 3));
     let index = game.index(id).unwrap();
     game.units[index].hp -= 4;
     let target_index = game.index(target).unwrap();

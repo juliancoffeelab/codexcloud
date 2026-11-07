@@ -9,13 +9,13 @@ use arrow_array::{
 };
 use arrow_buffer::{NullBuffer, OffsetBuffer};
 use arrow_ipc::{reader::StreamReader, writer::StreamWriter};
-use arrow_schema::{Field, Schema};
+use arrow_schema::{DataType, Field, Schema};
 use rustc_hash::FxHashMap;
 use serde::Serialize;
 use serde_json::{Map, Value};
 use std::{io::Cursor, sync::Arc};
 
-pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v3";
+pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v4";
 
 #[derive(Serialize)]
 struct PhaseHeader<'a> {
@@ -97,9 +97,20 @@ fn unit_column(
                 "enemy"
             }
         }))),
-        Arc::new(StringArray::from_iter_values(
-            values.iter().map(|u| u.tile.as_str()),
-        )),
+        Arc::new(StructArray::from(vec![
+            (
+                Arc::new(Field::new("col", DataType::Int32, false)),
+                Arc::new(Int32Array::from_iter_values(
+                    values.iter().map(|u| u.tile.col),
+                )) as ArrayRef,
+            ),
+            (
+                Arc::new(Field::new("row", DataType::Int32, false)),
+                Arc::new(Int32Array::from_iter_values(
+                    values.iter().map(|u| u.tile.row),
+                )) as ArrayRef,
+            ),
+        ])),
         Arc::new(Int32Array::from_iter_values(values.iter().map(|u| u.hp))),
         Arc::new(BooleanArray::from_iter(
             values.iter().map(|u| Some(u.moved)),
@@ -294,6 +305,13 @@ fn unit_dictionary(array: &dyn Array) -> Result<Vec<Value>, SimulationError> {
                     arrow_schema::DataType::Boolean => {
                         Value::from(column::<BooleanArray>(values.as_ref())?.value(row))
                     }
+                    arrow_schema::DataType::Struct(_) if field.name() == "tile" => {
+                        let hex = column::<StructArray>(values.as_ref())?;
+                        serde_json::json!({
+                            "col": column::<Int32Array>(hex.column_by_name("col").ok_or("Missing hex col")?.as_ref())?.value(row),
+                            "row": column::<Int32Array>(hex.column_by_name("row").ok_or("Missing hex row")?.as_ref())?.value(row),
+                        })
+                    }
                     _ => return Err("Unexpected unit field type".into()),
                 };
                 if field.name() == "items_json" {
@@ -313,7 +331,12 @@ fn unit_dictionary(array: &dyn Array) -> Result<Vec<Value>, SimulationError> {
         })
         .collect()
 }
-fn owners(array: &ListArray, index: usize, tiles: &Value) -> Result<Value, SimulationError> {
+fn owners(
+    array: &ListArray,
+    index: usize,
+    tiles: &Value,
+    structured_positions: bool,
+) -> Result<Value, SimulationError> {
     if index >= array.len() || array.is_null(index) {
         return Err("Invalid ownership index".into());
     }
@@ -341,7 +364,14 @@ fn owners(array: &ListArray, index: usize, tiles: &Value) -> Result<Value, Simul
     let values = tiles
         .iter()
         .zip(owners)
-        .map(|(tile, owner)| serde_json::json!({"tile":tile["id"], "owner":owner}))
+        .map(|(tile, owner)| {
+            let address = if structured_positions {
+                serde_json::json!({"col":tile["col"],"row":tile["row"]})
+            } else {
+                tile["id"].clone()
+            };
+            serde_json::json!({"tile":address, "owner":owner})
+        })
         .collect();
     Ok(Value::Array(values))
 }
@@ -364,20 +394,16 @@ fn roster(array: &ListArray, row: usize, dictionary: &[Value]) -> Result<Value, 
 }
 pub(crate) fn decode(bytes: &[u8]) -> Result<Value, SimulationError> {
     let mut reader = StreamReader::try_new(Cursor::new(bytes), None)?;
-    if !reader
+    let structured_positions = match reader
         .schema()
         .metadata()
         .get("hex-command.detail-format")
         .map(String::as_str)
-        .is_some_and(|name| {
-            matches!(
-                name,
-                "arrow-ipc-snapshot-dictionaries-v2" | "arrow-ipc-snapshot-dictionaries-v3"
-            )
-        })
     {
-        return Err("Unknown Arrow gameplay format".into());
-    }
+        Some("arrow-ipc-snapshot-dictionaries-v2" | "arrow-ipc-snapshot-dictionaries-v3") => false,
+        Some(FORMAT) => true,
+        _ => return Err("Unknown Arrow gameplay format".into()),
+    };
     let batch = reader.next().ok_or("Missing Arrow gameplay batch")??;
     if reader.next().is_some() || batch.num_columns() != 8 || batch.num_rows() == 0 {
         return Err("Invalid Arrow gameplay batch".into());
@@ -414,7 +440,12 @@ pub(crate) fn decode(bytes: &[u8]) -> Result<Value, SimulationError> {
                 .and_then(|initial| initial.get("tiles"))
                 .ok_or("Invalid campaign chapter index")?
         };
-        phase["ownership"] = owners(ownership_dictionary, ownership.value(row) as usize, tiles)?;
+        phase["ownership"] = owners(
+            ownership_dictionary,
+            ownership.value(row) as usize,
+            tiles,
+            structured_positions,
+        )?;
         let target = if arena {
             if chapters.value(row) != 0 {
                 return Err("Invalid arena chapter index".into());

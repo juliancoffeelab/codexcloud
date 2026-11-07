@@ -9,15 +9,15 @@ import { repairImport } from "../src/save/repair";
 import { readSave, storeSave } from "../src/save/storage";
 import { historicalCharacters, historicalTiles } from "./legacy-save";
 import { Game } from "./game-fixture";
-import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
-import { importWaveMarker } from "../src/save/migrations/legacy/snapshot";
+import { CAMPAIGNS } from "@hex-command/save-migrations/legacy/catalog";
+import { importWaveMarker } from "@hex-command/save-migrations/legacy/snapshot";
 import assert from "node:assert/strict";
 import { beforeEach, test, vi } from "vitest";
 import { LiveGame, nativeValue } from "../src/game/live-game";
 import { loadBattle } from "../src/save/load";
 import { migrateSave } from "../src/save/migrations";
-import historicalLeaderTypes from "../src/save/migrations/legacy/data/type-leaders-v5.json";
-import { migrateV1ToV2 } from "../src/save/migrations/v1-to-v2";
+import historicalLeaderTypes from "@hex-command/save-migrations/legacy/data/type-leaders-v5.json";
+import { migrateV1ToV2 } from "@hex-command/save-migrations/steps/v1-to-v2";
 import { SAVE_VERSION } from "../src/save/schema";
 import { saveBattle } from "../src/save/write";
 import { createTestFactory } from "./native-fixture";
@@ -235,7 +235,7 @@ for (const raw of [
     assert(restored.problem);
     assert.equal(await readSave(), raw);
     assert.equal(restored.game.round, 1);
-    restored.game.move("u3", "hex-0738-f0cce97107");
+    restored.game.move("u3", "3,1");
     restored.game.dispose();
   });
 }
@@ -314,7 +314,7 @@ test("Explicit source reset allows saving after rejection", async () => {
   const restored = await loadBattle(createTestFactory());
   assert(restored.problem);
   assert.equal(await readSave(), "{broken");
-  restored.game.move("u3", "hex-0738-f0cce97107");
+  restored.game.move("u3", "3,1");
   await repairImport(restored.problem!, { kind: "all" });
   await saveBattle(restored.game);
   assert.equal(JSON.parse((await readSave())!).version, SAVE_VERSION);
@@ -322,7 +322,7 @@ test("Explicit source reset allows saving after rejection", async () => {
 });
 
 for (const [id, chapter, type, tile, numericMarks] of [
-  ["ashen-oath", 2, "boar", "hex-1019-90a76d4969", ["wave:0", "wave:1"]],
+  ["ashen-oath", 2, "boar", "9,4", ["wave:0", "wave:1"]],
 ] as const) {
   test(`Legacy ${id} delayed waves retain wounded troops and cannot deploy twice`, async () => {
     const game = Game.startCampaign(id, chapter);
@@ -385,7 +385,7 @@ test("Legacy pre-rescue hold clocks reset, while earned victories stay completed
   const old = oldSnapshot(game.captureState());
   old.state.round = 4;
   old.state.campaign!.holds = historicalTiles({
-    "hex-0891-b20a50ef8c": { heldTurns: 2, lastCountedRound: 4 },
+    "5,4": { heldTurns: 2, lastCountedRound: 4 },
   });
   const converted = migrateSave(old).save;
   assert.equal(

@@ -30,7 +30,9 @@
       "id": "ledger",
       "when": {
         "stand": {
-          "tile": "hex-0892-f4d2ec09d8",
+          "tile": {
+            "location": "ledger-cache"
+          },
           "side": "player",
           "through": true
         }
@@ -55,14 +57,16 @@
           "setFlag": "ledger"
         },
         {
-          "log": "Recover the forgotten workers’ ledger"
+          "log": "Recover the forgotten workers\u2019 ledger"
         }
       ],
       "objective": {
-        "label": "Recover the forgotten workers’ ledger",
+        "label": "Recover the forgotten workers\u2019 ledger",
         "intent": {
           "goTo": {
-            "tile": "hex-0892-f4d2ec09d8",
+            "tile": {
+              "location": "ledger-cache"
+            },
             "side": "player"
           }
         },
@@ -71,7 +75,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0892-f4d2ec09d8"]
+          "tiles": [
+            {
+              "location": "ledger-cache"
+            }
+          ]
         }
       }
     },
@@ -87,7 +95,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0125-7bcb954eb7",
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 6
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -99,7 +112,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0093-9d334ed661",
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 6
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -117,7 +135,9 @@
       "id": "goal-0",
       "when": {
         "stand": {
-          "tile": "hex-0098-b1326129be",
+          "tile": {
+            "location": "exit"
+          },
           "role": "leader",
           "side": "player"
         }
@@ -131,7 +151,9 @@
         "label": "Bring Orin to the northern quarry gate",
         "intent": {
           "escape": {
-            "tile": "hex-0098-b1326129be",
+            "tile": {
+              "location": "exit"
+            },
             "role": "leader",
             "side": "player"
           }
@@ -140,7 +162,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0098-b1326129be"]
+          "tiles": [
+            {
+              "location": "exit"
+            }
+          ]
         }
       }
     },
@@ -167,5 +193,7 @@
     }
   ],
   "requiredCompanions": [],
-  "enemyLeaderPost": "hex-0124-7838ad1797"
+  "enemyLeaderPost": {
+    "location": "enemy-keep"
+  }
 }

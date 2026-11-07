@@ -9,21 +9,29 @@ use std::rc::Rc;
 
 #[derive(Debug)]
 pub struct Board {
-    pub ids: Vec<String>,
+    pub ids: Vec<Hex>,
+    pub locations: Vec<Option<String>>,
     pub positions: Vec<(i32, i32)>,
-    pub indices: HashMap<String, usize>,
+    pub indices: HashMap<Hex, usize>,
+    named_locations: HashMap<String, usize>,
     pub adjacent: Vec<Vec<usize>>,
     pub adjacent_bits: Vec<u128>,
     pub distances: Vec<u16>,
 }
 impl Board {
     pub fn new(tiles: &[Tile]) -> Rc<Self> {
-        let ids: Vec<String> = tiles.iter().map(|tile| tile.id.clone()).collect();
+        let ids: Vec<Hex> = tiles.iter().map(Tile::hex).collect();
         let positions: Vec<_> = tiles.iter().map(|tile| (tile.col, tile.row)).collect();
+        let locations = tiles.iter().map(|tile| tile.location.clone()).collect();
         let indices = ids
             .iter()
             .enumerate()
             .map(|(index, id)| (id.clone(), index))
+            .collect();
+        let named_locations = tiles
+            .iter()
+            .enumerate()
+            .filter_map(|(index, tile)| tile.location.as_ref().map(|name| (name.clone(), index)))
             .collect();
         let adjacent: Vec<Vec<usize>> = (0..tiles.len())
             .map(|first| {
@@ -53,12 +61,23 @@ impl Board {
             .collect();
         Rc::new(Self {
             ids,
+            locations,
             positions,
             indices,
+            named_locations,
             adjacent,
             adjacent_bits,
             distances,
         })
+    }
+    /// Resolve a source location reference; command lookup uses coordinate indices only.
+    #[inline]
+    pub(crate) fn resolve(&self, reference: &TileRef) -> Option<usize> {
+        match reference {
+            TileRef::Hex(hex) => self.indices.get(hex).copied(),
+            TileRef::Location(name) => self.named_locations.get(name).copied(),
+            TileRef::Binding(_) => None,
+        }
     }
     pub fn distance(&self, first: usize, second: usize) -> u16 {
         self.distances[first * self.ids.len() + second]
@@ -71,7 +90,7 @@ pub fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
 }
 // A generated layout is reused by many policy/race pairings. These caches
 // depend on catalog rules, geometry and terrain, never on a game's mutable state.
-type TerrainKey = (String, Vec<(String, i32, i32, String)>);
+type TerrainKey = (String, Vec<(String, Option<String>, i32, i32, String)>);
 #[derive(Clone)]
 struct SharedTerrain {
     board: Rc<Board>,
@@ -229,7 +248,15 @@ impl<'catalog> Game<'catalog> {
             state
                 .tiles
                 .iter()
-                .map(|t| (t.id.clone(), t.col, t.row, t.terrain.clone()))
+                .map(|t| {
+                    (
+                        t.id.clone(),
+                        t.location.clone(),
+                        t.col,
+                        t.row,
+                        t.terrain.clone(),
+                    )
+                })
                 .collect(),
         );
         let cached = TERRAIN_POOL.with_borrow(|(pool, _)| pool.get(&key).cloned());
@@ -389,7 +416,9 @@ impl<'catalog> Game<'catalog> {
             for key in &state.condition_memory {
                 if let Some(&i) = key
                     .strip_prefix("fog:")
-                    .and_then(|id| board.indices.get(id))
+                    .and_then(|id| id.split_once(','))
+                    .and_then(|(col, row)| Some(Hex::new(col.parse().ok()?, row.parse().ok()?)))
+                    .and_then(|hex| board.indices.get(&hex))
                 {
                     fog_memory[i / 64] |= 1u64 << (i % 64);
                 }
@@ -599,6 +628,7 @@ impl<'catalog> Game<'catalog> {
         for (i, tile) in tiles.iter_mut().enumerate() {
             let Tile {
                 id: _,
+                location: _,
                 col,
                 row,
                 terrain,
@@ -644,7 +674,8 @@ impl<'catalog> Game<'catalog> {
             .iter()
             .enumerate()
             .map(|(index, id)| Tile {
-                id: id.clone(),
+                id: id.to_string(),
+                location: self.board.locations[index].clone(),
                 col: self.board.positions[index].0,
                 row: self.board.positions[index].1,
                 terrain: self.rules.terrain_names[self.terrain[index]].clone(),
@@ -712,8 +743,8 @@ impl<'catalog> Game<'catalog> {
             .unwrap()
     }
     #[inline]
-    pub(crate) fn site(&self, id: &str) -> usize {
-        self.board.indices[id]
+    pub(crate) fn site(&self, id: &Hex) -> usize {
+        *self.board.indices.get(id).expect("validated hex")
     }
     pub(crate) fn character_name(&self, id: &str) -> Option<&str> {
         self.campaign_definition

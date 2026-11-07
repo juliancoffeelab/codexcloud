@@ -37,7 +37,12 @@ impl HexDirection {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Tile {
+    /// Coordinate address (`col,row`), used by commands and snapshots.
     pub id: String,
+    /// Optional authored landmark identity; ordinary cells have none.
+    #[cfg_attr(feature = "wasm", tsify(optional))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub location: Option<String>,
     pub col: i32,
     pub row: i32,
     pub terrain: String,
@@ -69,6 +74,17 @@ pub struct Tile {
     pub light: Option<std::sync::Arc<TileLight>>,
 }
 impl Tile {
+    pub fn hex(&self) -> Hex {
+        Hex::new(self.col, self.row)
+    }
+    pub fn matches_reference(&self, reference: &TileRef) -> bool {
+        match reference {
+            TileRef::Location(name) => self.location.as_ref() == Some(name),
+            TileRef::Hex(hex) => (self.col, self.row) == (hex.col, hex.row),
+            TileRef::Binding(_) => false,
+        }
+    }
+
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn valid_connections(&self) -> bool {
         if matches!(self.terrain.as_str(), "castle-wall" | "castle-bell") {
@@ -146,7 +162,7 @@ impl Tile {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct GroundItem {
-    pub tile: String,
+    pub tile: Hex,
     pub item: Item,
 }
 

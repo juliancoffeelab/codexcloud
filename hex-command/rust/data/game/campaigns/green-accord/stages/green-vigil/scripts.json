@@ -89,7 +89,12 @@
         {
           "spawn": {
             "faction": "player",
-            "tile": "hex-0892-f4d2ec09d8",
+            "tile": {
+              "hex": {
+                "col": 5,
+                "row": 5
+              }
+            },
             "radius": 0,
             "units": [
               {
@@ -120,7 +125,9 @@
       "id": "owl-cache",
       "when": {
         "stand": {
-          "tile": "hex-0897-9650de66eb",
+          "tile": {
+            "location": "owl-cache"
+          },
           "side": "player",
           "through": true
         }
@@ -152,7 +159,9 @@
         "label": "Recover the northern guard-post supplies",
         "intent": {
           "goTo": {
-            "tile": "hex-0897-9650de66eb",
+            "tile": {
+              "location": "owl-cache"
+            },
             "side": "player"
           }
         },
@@ -161,7 +170,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0897-9650de66eb"]
+          "tiles": [
+            {
+              "location": "owl-cache"
+            }
+          ]
         }
       }
     },
@@ -177,7 +190,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0098-b1326129be",
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 1
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -189,7 +207,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0126-1b9b97e69c",
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 7
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -215,7 +238,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0088-d3b4c2a321",
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 3
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -227,7 +255,12 @@
         {
           "spawn": {
             "faction": "enemy",
-            "tile": "hex-0092-2cbe4dcb7c",
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 5
+              }
+            },
             "radius": 2,
             "units": [
               {
@@ -245,13 +278,17 @@
       "id": "goal-0",
       "when": {
         "held": {
-          "tile": "hex-0923-ec307e92cf",
+          "tile": {
+            "location": "grove"
+          },
           "turns": 3,
           "character": "lark",
           "side": "player",
           "when": {
             "own": {
-              "tile": "hex-0923-ec307e92cf",
+              "tile": {
+                "location": "grove"
+              },
               "faction": "player"
             }
           }
@@ -266,7 +303,9 @@
         "label": "Protect Lark in the central grove through three enemy turns",
         "intent": {
           "hold": {
-            "tile": "hex-0923-ec307e92cf",
+            "tile": {
+              "location": "grove"
+            },
             "turns": 3,
             "character": "lark",
             "side": "player"
@@ -276,7 +315,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0923-ec307e92cf"]
+          "tiles": [
+            {
+              "location": "grove"
+            }
+          ]
         }
       }
     },

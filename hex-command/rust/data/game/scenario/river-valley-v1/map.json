@@ -8,7 +8,6 @@
   "rows": 16,
   "tiles": [
     {
-      "id": "hex-0001-7256137ec1",
       "col": 0,
       "row": 0,
       "terrain": "hill",
@@ -16,7 +15,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0033-68054f369c",
       "col": 1,
       "row": 0,
       "terrain": "hill",
@@ -24,7 +22,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0385-50a8d92c35",
       "col": 2,
       "row": 0,
       "terrain": "hill",
@@ -32,7 +29,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0737-cb60354473",
       "col": 3,
       "row": 0,
       "terrain": "hill",
@@ -40,7 +36,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0833-1f9dd812f2",
       "col": 4,
       "row": 0,
       "terrain": "plains",
@@ -48,7 +43,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0865-d8854a2b06",
       "col": 5,
       "row": 0,
       "terrain": "plains",
@@ -56,7 +50,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0897-9650de66eb",
       "col": 6,
       "row": 0,
       "terrain": "water",
@@ -64,7 +57,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0929-0ac4230de7",
       "col": 7,
       "row": 0,
       "terrain": "water",
@@ -72,7 +64,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0961-40ae417c00",
       "col": 8,
       "row": 0,
       "terrain": "water",
@@ -80,7 +71,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0993-de1c375c60",
       "col": 9,
       "row": 0,
       "terrain": "forest",
@@ -88,7 +78,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0065-086c5dd6fd",
       "col": 10,
       "row": 0,
       "terrain": "forest",
@@ -96,7 +85,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0097-540f6cc533",
       "col": 11,
       "row": 0,
       "terrain": "forest",
@@ -104,7 +92,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0129-7c8659226d",
       "col": 12,
       "row": 0,
       "terrain": "forest",
@@ -112,7 +99,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0161-381529c4ee",
       "col": 13,
       "row": 0,
       "terrain": "forest",
@@ -120,7 +106,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0002-ea8b98a12d",
       "col": 0,
       "row": 1,
       "terrain": "forest",
@@ -128,7 +113,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0034-53333de58a",
       "col": 1,
       "row": 1,
       "terrain": "forest",
@@ -136,7 +120,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0386-9dcf2ec127",
       "col": 2,
       "row": 1,
       "terrain": "plains",
@@ -144,7 +127,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0738-f0cce97107",
       "col": 3,
       "row": 1,
       "terrain": "plains",
@@ -152,7 +134,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0834-6c48b28b5d",
       "col": 4,
       "row": 1,
       "terrain": "hill",
@@ -160,7 +141,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0866-c54da0213d",
       "col": 5,
       "row": 1,
       "terrain": "plains",
@@ -168,7 +148,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0898-eed2a38c9d",
       "col": 6,
       "row": 1,
       "terrain": "water",
@@ -176,7 +155,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0930-69fa019ca8",
       "col": 7,
       "row": 1,
       "terrain": "water",
@@ -184,7 +162,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0962-2fdf7fc34b",
       "col": 8,
       "row": 1,
       "terrain": "water",
@@ -192,7 +169,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0994-37e28411df",
       "col": 9,
       "row": 1,
       "terrain": "plains",
@@ -200,7 +176,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0066-be276ac684",
       "col": 10,
       "row": 1,
       "terrain": "forest",
@@ -208,7 +183,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0098-b1326129be",
       "col": 11,
       "row": 1,
       "terrain": "village",
@@ -217,7 +191,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0130-cb5c0e2a48",
       "col": 12,
       "row": 1,
       "terrain": "forest",
@@ -225,7 +198,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0162-beb4690177",
       "col": 13,
       "row": 1,
       "terrain": "forest",
@@ -233,7 +205,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0013-23f615dae8",
       "col": 0,
       "row": 2,
       "terrain": "forest",
@@ -241,7 +212,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0045-b0e58b1f93",
       "col": 1,
       "row": 2,
       "terrain": "forest",
@@ -249,7 +219,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0397-b042f4a1af",
       "col": 2,
       "row": 2,
       "terrain": "village",
@@ -258,7 +227,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0749-0fa856724a",
       "col": 3,
       "row": 2,
       "terrain": "forest",
@@ -266,7 +234,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0845-9e38fcb018",
       "col": 4,
       "row": 2,
       "terrain": "hill",
@@ -274,7 +241,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0877-678535c7d6",
       "col": 5,
       "row": 2,
       "terrain": "hill",
@@ -282,7 +248,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0909-61c988dee7",
       "col": 6,
       "row": 2,
       "terrain": "plains",
@@ -290,7 +255,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0941-278b487380",
       "col": 7,
       "row": 2,
       "terrain": "water",
@@ -298,7 +262,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0973-079cfc7b3c",
       "col": 8,
       "row": 2,
       "terrain": "water",
@@ -306,7 +269,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-1005-f091a76e9d",
       "col": 9,
       "row": 2,
       "terrain": "forest",
@@ -314,7 +276,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0077-1134d4f5cb",
       "col": 10,
       "row": 2,
       "terrain": "forest",
@@ -322,7 +283,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0109-c0c2c6f13a",
       "col": 11,
       "row": 2,
       "terrain": "road",
@@ -331,7 +291,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0141-c95b832274",
       "col": 12,
       "row": 2,
       "terrain": "forest",
@@ -339,7 +298,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0173-ba18cfe312",
       "col": 13,
       "row": 2,
       "terrain": "water",
@@ -347,7 +305,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0024-b598c83bd2",
       "col": 0,
       "row": 3,
       "terrain": "forest",
@@ -355,7 +312,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0056-2e6c8414fc",
       "col": 1,
       "row": 3,
       "terrain": "forest",
@@ -363,7 +319,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0408-edbae05560",
       "col": 2,
       "row": 3,
       "terrain": "road",
@@ -372,7 +327,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0760-150b2b6a75",
       "col": 3,
       "row": 3,
       "terrain": "grove",
@@ -380,7 +334,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0856-a2b6e60ea7",
       "col": 4,
       "row": 3,
       "terrain": "forest",
@@ -388,7 +341,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0888-a99d723b63",
       "col": 5,
       "row": 3,
       "terrain": "plains",
@@ -396,7 +348,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0920-dffef5f471",
       "col": 6,
       "row": 3,
       "terrain": "plains",
@@ -404,7 +355,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0952-a980626eda",
       "col": 7,
       "row": 3,
       "terrain": "water",
@@ -412,7 +362,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0984-954a3b23d6",
       "col": 8,
       "row": 3,
       "terrain": "plains",
@@ -420,7 +369,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1016-9e0db09d3e",
       "col": 9,
       "row": 3,
       "terrain": "forest",
@@ -428,7 +376,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0088-d3b4c2a321",
       "col": 10,
       "row": 3,
       "terrain": "plains",
@@ -436,7 +383,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0120-1cceeb6609",
       "col": 11,
       "row": 3,
       "terrain": "ford",
@@ -445,7 +391,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0152-5fa472486b",
       "col": 12,
       "row": 3,
       "terrain": "water",
@@ -453,7 +398,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0184-a8e8282394",
       "col": 13,
       "row": 3,
       "terrain": "plains",
@@ -461,7 +405,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0027-5828930a2c",
       "col": 0,
       "row": 4,
       "terrain": "forest",
@@ -469,7 +412,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0059-de5770129b",
       "col": 1,
       "row": 4,
       "terrain": "forest",
@@ -477,7 +419,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0411-28541665a4",
       "col": 2,
       "row": 4,
       "terrain": "road",
@@ -486,7 +427,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0763-c9e627d16e",
       "col": 3,
       "row": 4,
       "terrain": "plains",
@@ -494,7 +434,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0859-8a12839c45",
       "col": 4,
       "row": 4,
       "terrain": "forest",
@@ -502,7 +441,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0891-b20a50ef8c",
       "col": 5,
       "row": 4,
       "terrain": "forest",
@@ -510,7 +448,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0923-ec307e92cf",
       "col": 6,
       "row": 4,
       "terrain": "plains",
@@ -518,7 +455,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0955-5859c768ff",
       "col": 7,
       "row": 4,
       "terrain": "water",
@@ -526,7 +462,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0987-a19805d204",
       "col": 8,
       "row": 4,
       "terrain": "water",
@@ -534,7 +469,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-1019-90a76d4969",
       "col": 9,
       "row": 4,
       "terrain": "water",
@@ -542,7 +476,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0091-76683d32ca",
       "col": 10,
       "row": 4,
       "terrain": "water",
@@ -550,7 +483,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0123-676aacd816",
       "col": 11,
       "row": 4,
       "terrain": "water",
@@ -558,7 +490,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0155-5d3e2bd499",
       "col": 12,
       "row": 4,
       "terrain": "road",
@@ -567,7 +498,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0187-8d8ab817b0",
       "col": 13,
       "row": 4,
       "terrain": "forest",
@@ -575,7 +505,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0028-a81ab6c878",
       "col": 0,
       "row": 5,
       "terrain": "forest",
@@ -583,7 +512,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0060-946ce75068",
       "col": 1,
       "row": 5,
       "terrain": "forest",
@@ -591,7 +519,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0412-0c9247ea66",
       "col": 2,
       "row": 5,
       "terrain": "road",
@@ -600,7 +527,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0764-1e6853c01c",
       "col": 3,
       "row": 5,
       "terrain": "village",
@@ -609,7 +535,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0860-3735600481",
       "col": 4,
       "row": 5,
       "terrain": "road",
@@ -618,7 +543,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0892-f4d2ec09d8",
       "col": 5,
       "row": 5,
       "terrain": "road",
@@ -627,7 +551,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0924-5cbf18fdd5",
       "col": 6,
       "row": 5,
       "terrain": "road",
@@ -636,7 +559,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0956-1372406dd4",
       "col": 7,
       "row": 5,
       "terrain": "bridge",
@@ -645,7 +567,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0988-17596734c1",
       "col": 8,
       "row": 5,
       "terrain": "road",
@@ -654,7 +575,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1020-0cc9631714",
       "col": 9,
       "row": 5,
       "terrain": "road",
@@ -663,7 +583,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0092-2cbe4dcb7c",
       "col": 10,
       "row": 5,
       "terrain": "village",
@@ -672,7 +591,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0124-7838ad1797",
       "col": 11,
       "row": 5,
       "terrain": "road",
@@ -681,7 +599,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0156-8ab8d06e5a",
       "col": 12,
       "row": 5,
       "terrain": "plains",
@@ -689,7 +606,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0188-58d896051f",
       "col": 13,
       "row": 5,
       "terrain": "forest",
@@ -697,7 +613,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0029-15d660627f",
       "col": 0,
       "row": 6,
       "terrain": "plains",
@@ -705,7 +620,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0061-365e46c4de",
       "col": 1,
       "row": 6,
       "terrain": "plains",
@@ -713,7 +627,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0413-a7f6b5f93d",
       "col": 2,
       "row": 6,
       "terrain": "plains",
@@ -721,7 +634,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0765-3a0bcc5d48",
       "col": 3,
       "row": 6,
       "terrain": "road",
@@ -730,7 +642,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0861-b81de56c08",
       "col": 4,
       "row": 6,
       "terrain": "plains",
@@ -738,7 +649,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0893-940b4e4db1",
       "col": 5,
       "row": 6,
       "terrain": "plains",
@@ -746,7 +656,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0925-815fb4de6a",
       "col": 6,
       "row": 6,
       "terrain": "plains",
@@ -754,7 +663,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0957-c94afbbfa1",
       "col": 7,
       "row": 6,
       "terrain": "water",
@@ -762,7 +670,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0989-f27f4a3764",
       "col": 8,
       "row": 6,
       "terrain": "plains",
@@ -770,7 +677,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1021-41d4e1cc9b",
       "col": 9,
       "row": 6,
       "terrain": "plains",
@@ -778,7 +684,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0093-9d334ed661",
       "col": 10,
       "row": 6,
       "terrain": "plains",
@@ -786,7 +691,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0125-7bcb954eb7",
       "col": 11,
       "row": 6,
       "terrain": "road",
@@ -795,7 +699,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0157-85cb4b44b0",
       "col": 12,
       "row": 6,
       "terrain": "forest",
@@ -803,7 +706,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0189-ef2f157224",
       "col": 13,
       "row": 6,
       "terrain": "forest",
@@ -811,7 +713,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0030-0a7169bf92",
       "col": 0,
       "row": 7,
       "terrain": "plains",
@@ -819,7 +720,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0062-bb3c3143b5",
       "col": 1,
       "row": 7,
       "terrain": "plains",
@@ -827,7 +727,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0414-7d6a56c9b3",
       "col": 2,
       "row": 7,
       "terrain": "road",
@@ -836,7 +735,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0766-4907292e1d",
       "col": 3,
       "row": 7,
       "terrain": "plains",
@@ -844,7 +742,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0862-3ea2b77194",
       "col": 4,
       "row": 7,
       "terrain": "fort",
@@ -852,7 +749,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0894-59c2dceed8",
       "col": 5,
       "row": 7,
       "terrain": "marsh",
@@ -860,7 +756,6 @@
       "floor": "marsh"
     },
     {
-      "id": "hex-0926-0e03033d23",
       "col": 6,
       "row": 7,
       "terrain": "water",
@@ -868,7 +763,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0958-45e861932f",
       "col": 7,
       "row": 7,
       "terrain": "water",
@@ -876,7 +770,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0990-b0c69351ef",
       "col": 8,
       "row": 7,
       "terrain": "plains",
@@ -884,7 +777,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1022-0164b0319d",
       "col": 9,
       "row": 7,
       "terrain": "ruins",
@@ -892,7 +784,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0094-9cab0ab0d2",
       "col": 10,
       "row": 7,
       "terrain": "plains",
@@ -900,7 +791,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0126-1b9b97e69c",
       "col": 11,
       "row": 7,
       "terrain": "road",
@@ -909,7 +799,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0158-2325c06ef6",
       "col": 12,
       "row": 7,
       "terrain": "plains",
@@ -917,7 +806,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0190-2e619349a3",
       "col": 13,
       "row": 7,
       "terrain": "hill",
@@ -925,7 +813,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0031-ae6a776b34",
       "col": 0,
       "row": 8,
       "terrain": "plains",
@@ -933,7 +820,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0063-800f0fce01",
       "col": 1,
       "row": 8,
       "terrain": "keep",
@@ -941,7 +827,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0415-b41f9070d5",
       "col": 2,
       "row": 8,
       "terrain": "road",
@@ -951,7 +836,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0767-3b53c1c4da",
       "col": 3,
       "row": 8,
       "terrain": "plains",
@@ -959,7 +843,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0863-f5faa8d578",
       "col": 4,
       "row": 8,
       "terrain": "plains",
@@ -967,7 +850,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0895-10e4ec4d94",
       "col": 5,
       "row": 8,
       "terrain": "marsh",
@@ -975,7 +857,6 @@
       "floor": "marsh"
     },
     {
-      "id": "hex-0927-02b39c9b8e",
       "col": 6,
       "row": 8,
       "terrain": "water",
@@ -983,7 +864,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0959-77a6a62a36",
       "col": 7,
       "row": 8,
       "terrain": "plains",
@@ -991,7 +871,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0991-65cb6c3674",
       "col": 8,
       "row": 8,
       "terrain": "plains",
@@ -999,7 +878,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1023-f2f1852ae2",
       "col": 9,
       "row": 8,
       "terrain": "plains",
@@ -1007,7 +885,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0095-8f095f9e93",
       "col": 10,
       "row": 8,
       "terrain": "plains",
@@ -1015,7 +892,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0127-849459c3b2",
       "col": 11,
       "row": 8,
       "terrain": "road",
@@ -1025,7 +901,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0159-d132ac6136",
       "col": 12,
       "row": 8,
       "terrain": "keep",
@@ -1033,7 +908,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0191-245d1573b9",
       "col": 13,
       "row": 8,
       "terrain": "hill",
@@ -1041,7 +915,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0032-885bfd5174",
       "col": 0,
       "row": 9,
       "terrain": "plains",
@@ -1049,7 +922,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0064-f0696e660a",
       "col": 1,
       "row": 9,
       "terrain": "plains",
@@ -1057,7 +929,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0416-499b3d4ebc",
       "col": 2,
       "row": 9,
       "terrain": "road",
@@ -1066,7 +937,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0768-7e23d46daa",
       "col": 3,
       "row": 9,
       "terrain": "plains",
@@ -1074,7 +944,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0864-a20aeacbbc",
       "col": 4,
       "row": 9,
       "terrain": "plains",
@@ -1082,7 +951,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0896-7050ad5a1a",
       "col": 5,
       "row": 9,
       "terrain": "plains",
@@ -1090,7 +958,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0928-d045e196f8",
       "col": 6,
       "row": 9,
       "terrain": "water",
@@ -1098,7 +965,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0960-d0f39b7308",
       "col": 7,
       "row": 9,
       "terrain": "marsh",
@@ -1106,7 +972,6 @@
       "floor": "marsh"
     },
     {
-      "id": "hex-0992-f53867adc7",
       "col": 8,
       "row": 9,
       "terrain": "plains",
@@ -1114,7 +979,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-1024-1f392012be",
       "col": 9,
       "row": 9,
       "terrain": "fort",
@@ -1122,7 +986,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0096-c02cbc4fed",
       "col": 10,
       "row": 9,
       "terrain": "plains",
@@ -1130,7 +993,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0128-bfe9f9622b",
       "col": 11,
       "row": 9,
       "terrain": "road",
@@ -1139,7 +1001,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0160-1ee1cb508b",
       "col": 12,
       "row": 9,
       "terrain": "plains",
@@ -1147,7 +1008,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0192-0239378fea",
       "col": 13,
       "row": 9,
       "terrain": "hill",
@@ -1155,7 +1015,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0003-09573364f8",
       "col": 0,
       "row": 10,
       "terrain": "plains",
@@ -1163,7 +1022,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0035-897537cb8f",
       "col": 1,
       "row": 10,
       "terrain": "plains",
@@ -1171,7 +1029,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0387-b2259d2fb3",
       "col": 2,
       "row": 10,
       "terrain": "road",
@@ -1180,7 +1037,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0739-14062b312d",
       "col": 3,
       "row": 10,
       "terrain": "road",
@@ -1189,7 +1045,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0835-42aa3f9842",
       "col": 4,
       "row": 10,
       "terrain": "road",
@@ -1198,7 +1053,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0867-1772ad8e2e",
       "col": 5,
       "row": 10,
       "terrain": "road",
@@ -1207,7 +1061,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0899-ad0a9f843c",
       "col": 6,
       "row": 10,
       "terrain": "ford",
@@ -1216,7 +1069,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0931-48cdae2442",
       "col": 7,
       "row": 10,
       "terrain": "road",
@@ -1225,7 +1077,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0963-08c4eb0b71",
       "col": 8,
       "row": 10,
       "terrain": "road",
@@ -1234,7 +1085,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0995-3a3f0aa41b",
       "col": 9,
       "row": 10,
       "terrain": "road",
@@ -1243,7 +1093,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0067-b949671d54",
       "col": 10,
       "row": 10,
       "terrain": "plains",
@@ -1251,7 +1100,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0099-667f9d3977",
       "col": 11,
       "row": 10,
       "terrain": "road",
@@ -1260,7 +1108,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0131-cdff51851c",
       "col": 12,
       "row": 10,
       "terrain": "hill",
@@ -1268,7 +1115,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0163-569c36574f",
       "col": 13,
       "row": 10,
       "terrain": "hill",
@@ -1276,7 +1122,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0004-0bcf36e139",
       "col": 0,
       "row": 11,
       "terrain": "forest",
@@ -1284,7 +1129,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0036-49a79b212e",
       "col": 1,
       "row": 11,
       "terrain": "forest",
@@ -1292,7 +1136,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0388-54b62ebacb",
       "col": 2,
       "row": 11,
       "terrain": "plains",
@@ -1300,7 +1143,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0740-ffb5eaebdf",
       "col": 3,
       "row": 11,
       "terrain": "road",
@@ -1309,7 +1151,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0836-42950299de",
       "col": 4,
       "row": 11,
       "terrain": "plains",
@@ -1317,7 +1158,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0868-0e4e37203a",
       "col": 5,
       "row": 11,
       "terrain": "plains",
@@ -1325,7 +1165,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0900-78380433d3",
       "col": 6,
       "row": 11,
       "terrain": "water",
@@ -1333,7 +1172,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0932-13617d9242",
       "col": 7,
       "row": 11,
       "terrain": "plains",
@@ -1341,7 +1179,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0964-716120f6be",
       "col": 8,
       "row": 11,
       "terrain": "plains",
@@ -1349,7 +1186,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0996-b7584a42f0",
       "col": 9,
       "row": 11,
       "terrain": "village",
@@ -1358,7 +1194,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0068-9e63bb6de4",
       "col": 10,
       "row": 11,
       "terrain": "road",
@@ -1367,7 +1202,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0100-91773deff8",
       "col": 11,
       "row": 11,
       "terrain": "road",
@@ -1376,7 +1210,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0132-b4813872a6",
       "col": 12,
       "row": 11,
       "terrain": "hill",
@@ -1384,7 +1217,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0164-be922a1a81",
       "col": 13,
       "row": 11,
       "terrain": "hill",
@@ -1392,7 +1224,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0005-57ac29f345",
       "col": 0,
       "row": 12,
       "terrain": "forest",
@@ -1400,7 +1231,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0037-481d368fff",
       "col": 1,
       "row": 12,
       "terrain": "forest",
@@ -1408,7 +1238,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0389-009ea39d70",
       "col": 2,
       "row": 12,
       "terrain": "forest",
@@ -1416,7 +1245,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0741-bc963af854",
       "col": 3,
       "row": 12,
       "terrain": "road",
@@ -1425,7 +1253,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0837-f0316a8e2e",
       "col": 4,
       "row": 12,
       "terrain": "ruins",
@@ -1433,7 +1260,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0869-d398d64d73",
       "col": 5,
       "row": 12,
       "terrain": "marsh",
@@ -1441,7 +1267,6 @@
       "floor": "marsh"
     },
     {
-      "id": "hex-0901-ec48d5047f",
       "col": 6,
       "row": 12,
       "terrain": "water",
@@ -1449,7 +1274,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0933-28d5db641f",
       "col": 7,
       "row": 12,
       "terrain": "water",
@@ -1457,7 +1281,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0965-a5cef1e31d",
       "col": 8,
       "row": 12,
       "terrain": "plains",
@@ -1465,7 +1288,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0997-23ad2602f0",
       "col": 9,
       "row": 12,
       "terrain": "road",
@@ -1474,7 +1296,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0069-c2c36638a8",
       "col": 10,
       "row": 12,
       "terrain": "plains",
@@ -1482,7 +1303,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0101-0061999dcd",
       "col": 11,
       "row": 12,
       "terrain": "forest",
@@ -1490,7 +1310,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0133-99da47f9af",
       "col": 12,
       "row": 12,
       "terrain": "forest",
@@ -1498,7 +1317,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0165-7fc215ecc5",
       "col": 13,
       "row": 12,
       "terrain": "forest",
@@ -1506,7 +1324,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0006-9d59bdc908",
       "col": 0,
       "row": 13,
       "terrain": "forest",
@@ -1514,7 +1331,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0038-764a820476",
       "col": 1,
       "row": 13,
       "terrain": "forest",
@@ -1522,7 +1338,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0390-91a94587ad",
       "col": 2,
       "row": 13,
       "terrain": "forest",
@@ -1530,7 +1345,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0742-5ef24eb759",
       "col": 3,
       "row": 13,
       "terrain": "road",
@@ -1539,7 +1353,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0838-470a0619e4",
       "col": 4,
       "row": 13,
       "terrain": "plains",
@@ -1547,7 +1360,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0870-d9d594c45e",
       "col": 5,
       "row": 13,
       "terrain": "marsh",
@@ -1555,7 +1367,6 @@
       "floor": "marsh"
     },
     {
-      "id": "hex-0902-826a3f2a10",
       "col": 6,
       "row": 13,
       "terrain": "marsh",
@@ -1563,7 +1374,6 @@
       "floor": "marsh"
     },
     {
-      "id": "hex-0934-12d62c5dc5",
       "col": 7,
       "row": 13,
       "terrain": "water",
@@ -1571,7 +1381,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0966-736422d47a",
       "col": 8,
       "row": 13,
       "terrain": "plains",
@@ -1579,7 +1388,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0998-fd1378a678",
       "col": 9,
       "row": 13,
       "terrain": "village",
@@ -1588,7 +1396,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0070-6e8ca69657",
       "col": 10,
       "row": 13,
       "terrain": "forest",
@@ -1596,7 +1403,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0102-20e64861a0",
       "col": 11,
       "row": 13,
       "terrain": "forest",
@@ -1604,7 +1410,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0134-f8a3eeb246",
       "col": 12,
       "row": 13,
       "terrain": "forest",
@@ -1612,7 +1417,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0166-5326f76b1c",
       "col": 13,
       "row": 13,
       "terrain": "forest",
@@ -1620,7 +1424,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0007-6884ee640d",
       "col": 0,
       "row": 14,
       "terrain": "forest",
@@ -1628,7 +1431,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0039-0c6e3f605a",
       "col": 1,
       "row": 14,
       "terrain": "forest",
@@ -1636,7 +1438,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0391-7830dad07e",
       "col": 2,
       "row": 14,
       "terrain": "forest",
@@ -1644,7 +1445,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0743-f215d527c5",
       "col": 3,
       "row": 14,
       "terrain": "plains",
@@ -1652,7 +1452,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0839-4831ed5685",
       "col": 4,
       "row": 14,
       "terrain": "village",
@@ -1661,7 +1460,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0871-aa876e67c0",
       "col": 5,
       "row": 14,
       "terrain": "road",
@@ -1670,7 +1468,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0903-21075a5f1b",
       "col": 6,
       "row": 14,
       "terrain": "road",
@@ -1679,7 +1476,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0935-2983054353",
       "col": 7,
       "row": 14,
       "terrain": "ford",
@@ -1688,7 +1484,6 @@
       "floor": "shallow-water"
     },
     {
-      "id": "hex-0967-2cdc707183",
       "col": 8,
       "row": 14,
       "terrain": "road",
@@ -1697,7 +1492,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0999-1253e3612b",
       "col": 9,
       "row": 14,
       "terrain": "road",
@@ -1706,7 +1500,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0071-4646b8eeeb",
       "col": 10,
       "row": 14,
       "terrain": "forest",
@@ -1714,7 +1507,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0103-14bf456d9c",
       "col": 11,
       "row": 14,
       "terrain": "grove",
@@ -1722,7 +1514,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0135-b7e06c6b02",
       "col": 12,
       "row": 14,
       "terrain": "forest",
@@ -1730,7 +1521,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0167-82889057ba",
       "col": 13,
       "row": 14,
       "terrain": "forest",
@@ -1738,7 +1528,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0008-bc0d15fd92",
       "col": 0,
       "row": 15,
       "terrain": "forest",
@@ -1746,7 +1535,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0040-96d61ed1d9",
       "col": 1,
       "row": 15,
       "terrain": "forest",
@@ -1754,7 +1542,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0392-805fe97f80",
       "col": 2,
       "row": 15,
       "terrain": "forest",
@@ -1762,7 +1549,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0744-08b59842e0",
       "col": 3,
       "row": 15,
       "terrain": "forest",
@@ -1770,7 +1556,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0840-2894b03b52",
       "col": 4,
       "row": 15,
       "terrain": "plains",
@@ -1778,7 +1563,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0872-87809ea219",
       "col": 5,
       "row": 15,
       "terrain": "plains",
@@ -1786,7 +1570,6 @@
       "floor": "green-plain"
     },
     {
-      "id": "hex-0904-4d48bf4901",
       "col": 6,
       "row": 15,
       "terrain": "marsh",
@@ -1794,7 +1577,6 @@
       "floor": "marsh"
     },
     {
-      "id": "hex-0936-4360ed1b2b",
       "col": 7,
       "row": 15,
       "terrain": "water",
@@ -1802,7 +1584,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-0968-c4ae3317ab",
       "col": 8,
       "row": 15,
       "terrain": "water",
@@ -1810,7 +1591,6 @@
       "floor": "dark-water"
     },
     {
-      "id": "hex-1000-e739a7979e",
       "col": 9,
       "row": 15,
       "terrain": "marsh",
@@ -1818,7 +1598,6 @@
       "floor": "marsh"
     },
     {
-      "id": "hex-0072-2f078c7250",
       "col": 10,
       "row": 15,
       "terrain": "forest",
@@ -1826,7 +1605,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0104-ac3fb7a5a3",
       "col": 11,
       "row": 15,
       "terrain": "forest",
@@ -1834,7 +1612,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0136-c89eef7043",
       "col": 12,
       "row": 15,
       "terrain": "forest",
@@ -1842,7 +1619,6 @@
       "floor": "green-forest"
     },
     {
-      "id": "hex-0168-4639eef5e3",
       "col": 13,
       "row": 15,
       "terrain": "forest",

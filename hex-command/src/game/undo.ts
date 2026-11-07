@@ -1,3 +1,4 @@
+import { cellKey } from "../game/hex";
 import { stateChanges } from "../save/undo";
 import type { UndoStep, UndoChange } from "../../rust/pkg/hex_command";
 import type { LiveGame } from "./live-game";
@@ -74,7 +75,7 @@ export function createMoveUndo(): MoveUndo {
     game.restoreState(previous.state);
     return {
       unitId: previous.unitId,
-      tileId: game.unit(previous.unitId)!.tile,
+      tileId: cellKey(game.unit(previous.unitId)!.tile),
     };
   }
 

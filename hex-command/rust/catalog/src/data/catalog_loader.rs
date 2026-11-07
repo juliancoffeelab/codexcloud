@@ -100,7 +100,7 @@ struct InitialUnit {
     id: Option<String>,
     r#type: String,
     side: Option<Side>,
-    tile: String,
+    tile: Hex,
     hp: Option<i32>,
     character: Option<String>,
     role: Option<Role>,
@@ -157,10 +157,12 @@ impl InitialState {
                     .ok_or_else(|| ContentError::new(path, "initial unit identifier overflow"))?,
             );
             validate_equipment(&unit.items, &rule.attacks, path)?;
-            let tile = unit.tile;
-            if !self.tiles.iter().any(|t| t.id == tile) {
-                return Err(ContentError::new(path, "initial unit is outside its board"));
-            }
+            let tile = self
+                .tiles
+                .iter()
+                .find(|t| t.hex() == unit.tile)
+                .ok_or_else(|| ContentError::new(path, "initial unit is outside its board"))?
+                .hex();
             units.push(PublicUnit {
                 faction: unit.faction,
                 items: unit.items,
@@ -736,10 +738,13 @@ fn insert_map(
         ));
     }
     unique(state.tiles.iter().map(|t| t.id.as_str()), path)?;
+    unique(
+        state.tiles.iter().filter_map(|t| t.location.as_deref()),
+        path,
+    )?;
     unique(state.units.iter().map(|u| u.id.as_str()), path)?;
-    unique(state.units.iter().map(|u| u.tile.as_str()), path)?;
+    unique(state.units.iter().map(|u| u.tile), path)?;
     let mut coordinates = HashSet::new();
-    let tiles: HashSet<&str> = state.tiles.iter().map(|t| t.id.as_str()).collect();
     for tile in &state.tiles {
         if !tile.valid_connections() {
             return Err(ContentError::new(
@@ -753,7 +758,15 @@ fn insert_map(
                 format!("unknown terrain {}", tile.terrain),
             ));
         }
-        identifier(&tile.id, path)?;
+        if tile.id != format!("{},{}", tile.col, tile.row) {
+            return Err(ContentError::new(
+                path,
+                "tile address must match its coordinates",
+            ));
+        }
+        if let Some(location) = &tile.location {
+            identifier(location, path)?;
+        }
         if tile.col < 0
             || tile.col >= state.cols
             || tile.row < 0
@@ -768,7 +781,7 @@ fn insert_map(
     }
     for unit in &state.units {
         reference(&unit.r#type, types, path)?;
-        if !tiles.contains(unit.tile.as_str()) || unit.hp <= 0 {
+        if !state.tiles.iter().any(|t| t.hex() == unit.tile) || unit.hp <= 0 {
             return Err(ContentError::new(
                 path,
                 format!("invalid unit placement {}", unit.id),
@@ -982,9 +995,8 @@ fn validate_mission(
     terrains: &HashMap<String, usize>,
     path: &str,
 ) -> Result<(), ContentError> {
-    let tiles: HashSet<&str> = state.tiles.iter().map(|t| t.id.as_str()).collect();
-    let tile_ref = |id: &str| -> Result<(), ContentError> {
-        if !tiles.contains(id) {
+    let tile_ref = |id: &TileRef| -> Result<(), ContentError> {
+        if !state.tiles.iter().any(|t| t.matches_reference(id)) {
             return Err(ContentError::new(path, format!("unknown tile {id}")));
         }
         Ok(())
@@ -1209,7 +1221,7 @@ fn validate_mission(
                     if area.is_empty() {
                         return Err(ContentError::new(path, "hold area must not be empty"));
                     }
-                    unique(area.iter().map(String::as_str), path)?;
+                    unique(area.iter(), path)?;
                     for tile in area {
                         tile_ref(tile)?;
                     }
@@ -1248,7 +1260,7 @@ fn validate_mission(
             }
             reference(&unit.r#type, types, path)?;
             validate_equipment(&unit.items, &units[types[&unit.r#type]].attacks, path)?;
-            tile_ref(&unit.tile)?;
+            tile_ref(&TileRef::Hex(unit.tile))?;
         }
         Ok(())
     };
@@ -1380,7 +1392,7 @@ fn validate_mission(
                     "spawn area and units must not be empty",
                 ));
             }
-            unique(group.area.iter().map(String::as_str), path)?;
+            unique(group.area.iter(), path)?;
             unique(group.units.iter().map(|unit| unit.id.as_str()), path)?;
             for tile in &group.area {
                 tile_ref(tile)?;
@@ -1423,7 +1435,7 @@ fn validate_mission(
         if arrival.character.is_empty() {
             return Err(ContentError::new(path, "empty automatic companion name"));
         }
-        tile_ref(&arrival.tile)?;
+        tile_ref(&TileRef::Hex(arrival.tile))?;
     }
     for goal in mission.all_goals() {
         if let Goal::Hold { unit_types, .. } = goal {
@@ -1434,7 +1446,7 @@ fn validate_mission(
     }
     for event in &mission.events {
         for item in &event.ground_items {
-            tile_ref(&item.tile)?;
+            tile_ref(&TileRef::Hex(item.tile))?;
             item.item.validate(path)?;
         }
         if let Trigger::Held { turns, .. } = event.trigger {
@@ -1496,7 +1508,7 @@ fn validate_simulation(
     }
     let path = "simulation/arena.json";
     unique(arena.landscapes.iter().map(|l| l.id.as_str()), path)?;
-    unique(arena.territory.iter().map(String::as_str), path)?;
+    unique(arena.territory.iter(), path)?;
     if arena.landscapes.is_empty()
         || arena.territory.is_empty()
         || arena.starting_budget <= 0
@@ -1517,7 +1529,7 @@ fn validate_simulation(
             return Err(ContentError::new(path, "invalid landscape or holdTurns"));
         }
         let territory = landscape.territory.as_ref().unwrap_or(&arena.territory);
-        unique(territory.iter().map(String::as_str), path)?;
+        unique(territory.iter(), path)?;
         if territory.is_empty() {
             return Err(ContentError::new(path, "arena territory must not be empty"));
         }
@@ -1531,7 +1543,7 @@ fn validate_simulation(
                 .ok_or_else(|| ContentError::new(path, format!("unknown arena map {id}")))?;
             if territory
                 .iter()
-                .any(|id| !map.tiles.iter().any(|tile| &tile.id == id))
+                .any(|id| !map.tiles.iter().any(|tile| tile.hex() == *id))
             {
                 return Err(ContentError::new(
                     path,
@@ -1566,7 +1578,7 @@ fn validate_simulation(
         .map(|(_, state)| state)
         .ok_or_else(|| ContentError::new(path, "missing arena template"))?;
     for tile in &arena.territory {
-        if !template.tiles.iter().any(|t| &t.id == tile) {
+        if !template.tiles.iter().any(|t| t.hex() == *tile) {
             return Err(ContentError::new(
                 path,
                 format!("unknown arena territory tile {tile}"),
@@ -1811,7 +1823,7 @@ mod tests {
         let mut bundle = test_bundle();
         let path = "game/scenario/mirror-v1/roster.json";
         let mut roster: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
-        roster["factions"][0]["units"][0]["tile"] = serde_json::json!("missing-tile");
+        roster["factions"][0]["units"][0]["tile"] = serde_json::json!({"col":-1,"row":-1});
         bundle.insert(path.to_owned(), serde_json::to_string(&roster).unwrap());
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
         assert_eq!(error.path, "game/scenario/mirror-v1/roster.json");

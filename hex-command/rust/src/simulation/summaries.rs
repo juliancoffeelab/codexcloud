@@ -321,6 +321,7 @@ pub fn compact_summary(
 mod tests {
     use super::*;
     use crate::ai::Policy;
+    use crate::data::Hex;
     use crate::data::{Gold, Records};
     use serde_json::json;
     #[test]
@@ -333,7 +334,7 @@ mod tests {
             };
             let unit = |id, kind, side| {
                 serde_json::from_value::<PublicUnit>(json!({
-                "id":id,"type":kind,"side":side,"tile":"hex-0001-7256137ec1","hp":20,"moved":true,"attacked":true
+                "id":id,"type":kind,"side":side,"tile":Hex::new(0, 0),"hp":20,"moved":true,"attacked":true
             }))
             .unwrap()
             };
@@ -346,7 +347,7 @@ mod tests {
             phase.records.losses = vec![unit("u2", "guard", "enemy")];
             phase.records.combats = vec![
             serde_json::from_value(json!({
-                "unit":"u1","target":"u2","weapon":"hit","from":"hex-0001-7256137ec1","targetTile":"hex-0002-ea8b98a12d",
+                "unit":"u1","target":"u2","weapon":"hit","from":Hex::new(0, 0),"targetTile":Hex::new(0, 1),
                 "damage":8,"retaliation":reflected_or_weapon,"count":2,"damagePerHit":4,"retaliationCount":reply_count,
                 "retaliationPerHit":4,"mediationAtRisk":false
             }))
@@ -414,7 +415,7 @@ mod tests {
                         ActionRecord::Recruit {
                             unit: "u1".into(),
                             unit_type: "archer".into(),
-                            tile: "hex-0001-7256137ec1".into(),
+                            tile: Hex::new(0, 0).into(),
                             cost: Some(7),
                         },
                         ActionRecord::Advance {

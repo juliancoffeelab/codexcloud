@@ -171,6 +171,7 @@ impl Game<'_> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::data::Hex;
     #[test]
     fn threat_masks_cover_machine_word_boundaries_and_large_maps() {
         for size in [64, 128, 129, 257] {
@@ -200,8 +201,8 @@ mod tests {
         for tile in 0..game.terrain.len() {
             game.set_terrain(tile, rules.terrains["plains"]);
         }
-        let from = game.site("hex-0763-c9e627d16e");
-        let target = game.site("hex-0891-b20a50ef8c");
+        let from = game.site(&Hex::new(3, 4));
+        let target = game.site(&Hex::new(5, 4));
         let original = game.attack_origins(Category::Ranged, 2);
         assert!(original[target].contains(from));
         let mut forecast = game.fork();

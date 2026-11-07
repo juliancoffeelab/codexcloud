@@ -13,17 +13,17 @@
     "ai:analyze": "python3 .agents/skills/combat-simulation/scripts/report-combat.py",
     "predev": "npm run wasm:build && npm run art:build",
     "dev": "vite --host 0.0.0.0",
-    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.tests.json",
+    "check": "npm run migrations:check && svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.tests.json",
     "precheck": "npm run wasm:build",
-    "check:ui": "svelte-check --tsconfig ./tsconfig.json",
+    "check:ui": "npm run migrations:check && svelte-check --tsconfig ./tsconfig.json",
     "precheck:ui": "npm run wasm:build",
-    "check:types": "tsc -p tsconfig.tests.json",
+    "check:types": "npm run migrations:check && tsc -p tsconfig.tests.json",
     "precheck:types": "npm run wasm:build",
     "verify": "node --import tsx scripts/verify.ts",
     "prebuild": "npm run wasm:build:release && npm run art:build",
-    "build": "vite build",
+    "build": "npm run migrations:check && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "node --import tsx scripts/test-budget.ts",
+    "test": "npm run migrations:check && node --import tsx scripts/test-budget.ts",
     "test:watch": "vitest --watch",
     "ai:rust:build": "node --import tsx scripts/build-simulation.ts",
     "check:rust": "node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts cargo test --locked --manifest-path rust/Cargo.toml --workspace --features wasm",
@@ -35,11 +35,15 @@
     "check:wasm": "npm run wasm:build && tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution Bundler rust/pkg/hex_command.d.ts",
     "toolchain:setup": "node --import tsx .agents/skills/rust-toolchain/scripts/setup-toolchain-shell.ts",
     "release:prepare": "python3 scripts/prepare-site.py",
-    "probe:battlefield": "node scripts/probe-battlefield.js"
+    "probe:battlefield": "node scripts/probe-battlefield.js",
+    "migrations:check": "node scripts/check-migrations.mjs",
+    "migrations:check-isolation": "node scripts/check-migrations-isolated.mjs",
+    "migrations:generate": "node --import tsx scripts/generate-migration-readers.ts"
   },
   "dependencies": {
     "phaser": "^3.90.0",
-    "svelte": "^5.0.0"
+    "svelte": "^5.0.0",
+    "@hex-command/save-migrations": "1.0.0"
   },
   "devDependencies": {
     "@napi-rs/canvas": "^1.0.11",
@@ -58,5 +62,8 @@
     "vitest": "^5.0.3",
     "wasm-pack": "0.15.0",
     "fake-indexeddb": "^6.2.7"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

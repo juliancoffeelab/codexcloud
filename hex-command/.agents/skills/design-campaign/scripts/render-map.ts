@@ -1,3 +1,4 @@
+import { cellKey, type Hex } from "../../../../src/game/hex";
 /** Offline draft preview; renders supplied data and never runs scenario logic. */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -33,7 +34,7 @@ interface Position {
   row: number;
 }
 interface Unit {
-  tile?: string;
+  tile?: Hex;
   col?: number;
   row?: number;
   faction?: ArtworkFaction;
@@ -97,8 +98,9 @@ if (
 )
   throw new Error("Expected a mapId, positive integer cols/rows and tiles array");
 const ids = new Set<string>();
+const names = new Map<string, string>();
 const positions = new Set<string>();
-for (const tile of map.tiles) {
+for (const [index, tile] of map.tiles.entries()) {
   if (
     !Number.isInteger(tile.col) ||
     !Number.isInteger(tile.row) ||
@@ -106,13 +108,16 @@ for (const tile of map.tiles) {
     tile.col >= map.cols ||
     tile.row < 0 ||
     tile.row >= map.rows ||
-    !tile.id ||
-    !/^[a-z0-9-]+$/.test(tile.id) ||
-    positions.has(`${tile.col},${tile.row}`) ||
-    ids.has(tile.id)
+    (tile.id !== undefined && (!/^[a-z0-9-]+$/.test(tile.id) || names.has(tile.id))) ||
+    positions.has(`${tile.col},${tile.row}`)
   )
     throw new Error(`Invalid or duplicate tile: ${tile.id}`);
-  ids.add(tile.id);
+  const address = `${tile.col},${tile.row}`;
+  if (tile.id !== undefined) {
+    names.set(tile.id, address);
+  }
+  map.tiles[index] = { ...tile, location: tile.id, id: address };
+  ids.add(address);
   positions.add(`${tile.col},${tile.row}`);
 }
 if (ids.size !== map.cols * map.rows) throw new Error("Supply the complete draft tile grid");
@@ -151,10 +156,10 @@ async function sprite(key: string) {
 initSync({ module: await readFile(resolve(root, "rust/pkg/hex_command_bg.wasm")) });
 const units = (overlay.units ?? map.units ?? []).map((unit) => {
   const tile = unit.tile
-    ? map.tiles.find((tile) => tile.id === unit.tile)
+    ? map.tiles.find((tile) => tile.id === cellKey(unit.tile!))
     : map.tiles.find((tile) => tile.col === unit.col && tile.row === unit.row);
   if (!tile) throw new Error("Unit placement is outside the draft map");
-  return { ...unit, tile: tile.id, col: tile.col, row: tile.row };
+  return { ...unit, tile: { col: tile.col, row: tile.row }, col: tile.col, row: tile.row };
 });
 const resolved = previewPresentation({
   tiles: map.tiles,
@@ -166,7 +171,7 @@ const resolved = previewPresentation({
   round: overlay.round ?? 1,
 } as PresentationInput);
 const lighting = resolved.lighting;
-const fog = new Set(resolved.fog);
+const fog = new Set(resolved.fog.map((hex) => cellKey(hex)));
 const artwork = { frames: { ...baseArtwork.frames, ...candidates } };
 const terrainDefinitions = JSON.parse(
   await readFile(resolve(root, "rust/data/game/terrain.json"), "utf8"),
@@ -266,7 +271,7 @@ paintFog(
 );
 // Match Battlefield.svelte: tile order, feet at center + 20, then a separate
 // indicator layer above every sprite. Draft placements depict full-health units.
-const occupants = new Map(units.map((unit) => [unit.tile, unit]));
+const occupants = new Map(units.map((unit) => [cellKey(unit.tile!), unit]));
 const visibleUnits = map.tiles.flatMap((tile) => {
   const unit = occupants.get(tile.id);
   return unit && !(unit.side === "enemy" && fog.has(tile.id)) ? [unit] : [];

@@ -16,7 +16,7 @@ import shutil
 import subprocess
 import tempfile
 
-from unit_usage import adjacent, journals
+from unit_usage import adjacent, journals, cell_key
 
 
 def catalog(root):
@@ -86,7 +86,7 @@ def before_state(detail, index, units):
             state['gold'][phase['side']] += units[action['type']]['cost']
     ownership = (detail['phases'][index - 1]['ownership'] if index else
                  [{'tile': t['id'], 'owner': t.get('owner')} for t in state['tiles']])
-    owners = {t['tile']: t['owner'] for t in ownership}
+    owners = {cell_key(t['tile']): t['owner'] for t in ownership}
     for tile in state['tiles']:
         tile['owner'] = owners[tile['id']]
     known = [int(u['id'][1:]) for p in detail['phases'][:index]
@@ -123,8 +123,8 @@ def threatened(state, units, covered):
     """Conservative geometric reach; blockers and terrain may prevent an attack."""
     positions = {t['id']: (t['col'], t['row']) for t in state['tiles']}
     def distance(a, b):
-        x, y = positions[a]
-        u, v = positions[b]
+        x, y = positions[cell_key(a)]
+        u, v = positions[cell_key(b)]
         q, r = x - y // 2 - u + v // 2, y - v
         return (abs(q) + abs(r) + abs(q + r)) // 2
     for enemy in state['units']:

@@ -18,6 +18,11 @@ FIELDS = ('unitTurns', 'hpDamageDealt', 'hpDamageTaken', 'weaponHPDamageDealt', 
 DIMS = ('kind', 'campaign', 'diplomacy', 'objective', 'mission', 'race', 'policy', 'opponentPolicy', 'map', 'family')
 
 
+def cell_key(tile):
+    """Hashable analysis key for current structured hexes and historical journals."""
+    return f"{tile['col']},{tile['row']}" if isinstance(tile, dict) else tile
+
+
 def analyze(inputs, journals, value=True, leaders=True):
     counts = defaultdict(Counter)
     unit_counts = defaultdict(Counter)
@@ -60,7 +65,7 @@ def analyze(inputs, journals, value=True, leaders=True):
             for phase in chapter['phases']:
                 for objective in phase.get('objectives', []):
                     if objective.get('kind') == 'capture':
-                        objective_tiles[phase['side']].update(objective['tiles'])
+                        objective_tiles[phase['side']].update(cell_key(t) for t in objective['tiles'])
 
             def policy(side):
                 blocks = config.get(side + 'Blocks')
@@ -87,7 +92,7 @@ def analyze(inputs, journals, value=True, leaders=True):
                     for unit in phase['units']:
                         if unit['side'] == side:
                             add(unit, unitTurns=1)
-                            tile = unit['tile']
+                            tile = cell_key(unit['tile'])
                             if tiles[tile]['terrain'] in CAPTURABLE:
                                 add(unit, capturableOccupationTurns=1)
                             if tile in objective_tiles[side]:
@@ -105,7 +110,7 @@ def analyze(inputs, journals, value=True, leaders=True):
                             investments[recruits[0]['id']] = action['cost'] if action.get('cost') is not None else replacement_cost(recruits[0])
                         elif action['kind'] == 'move':
                             unit = lookup[action['unit']]
-                            tile = action['tile']
+                            tile = cell_key(action['tile'])
                             if tiles[tile]['terrain'] in CAPTURABLE and (owners[tile] is None or hostile(faction_id(unit), owners[tile])):
                                 owners[tile] = faction_id(unit)
                                 captors[tile] = dict(unit)
@@ -148,7 +153,7 @@ def analyze(inputs, journals, value=True, leaders=True):
                             for source in sources:
                                 reflected = effective * thorns['auraDamage'] / raw / len(sources)
                                 add(lookup[source], hpDamageDealt=reflected, thornHPDamageDealt=reflected)
-                    observed_owners = {o['tile']: o['owner'] for o in phase['ownership']}
+                    observed_owners = {cell_key(o['tile']): o['owner'] for o in phase['ownership']}
                     for tile, captor in captors.items():
                         if observed_owners.get(tile) == faction_id(captor) and captor['side'] == side:
                             add(captor, ownedTileTurns=1,

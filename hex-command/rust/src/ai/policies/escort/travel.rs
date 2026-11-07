@@ -298,6 +298,7 @@ impl Workspace {
 mod tests {
     use super::*;
     use crate::ai::orders::{DutyReport, PlanningStatus};
+    use crate::data::Hex;
     use crate::logic::Game;
 
     #[test]
@@ -311,13 +312,13 @@ mod tests {
             .find(|u| u.side == Side::Player)
             .unwrap();
         let actor_id = actor.id.strip_prefix('u').unwrap().parse::<u32>().unwrap();
-        actor.tile = "hex-0056-2e6c8414fc".into();
+        actor.tile = Hex::new(1, 3).into();
         let mut guard = actor.clone();
         let guard_id = state.next_id;
         guard.id = format!("u{guard_id}");
         state.next_id += 1;
         guard.r#type = "archer".into();
-        guard.tile = "hex-0760-150b2b6a75".into();
+        guard.tile = Hex::new(3, 3).into();
         guard.hp = rules.units[rules.types["archer"]].hp;
         guard.character = None;
         guard.role = None;
@@ -328,13 +329,13 @@ mod tests {
         enemy.r#type = "swordsman".into();
         enemy.hp = rules.units[rules.types["swordsman"]].hp;
         enemy.side = Side::Enemy;
-        enemy.tile = "hex-0888-a99d723b63".into();
+        enemy.tile = Hex::new(5, 3).into();
         state.units.extend([guard, enemy]);
         for tile in &mut state.tiles {
             tile.connections = None;
             tile.dead_ends = None;
             tile.walls = None;
-            tile.terrain = if tile.row == 3 || tile.id == "hex-0749-0fa856724a" {
+            tile.terrain = if tile.row == 3 || tile.hex() == Hex::new(3, 2) {
                 "plains".into()
             } else {
                 "water".into()
@@ -342,8 +343,8 @@ mod tests {
         }
         let game = Game::try_from_state(&rules, state).unwrap();
         let actor = actor_id;
-        let actor_tile = game.site("hex-0056-2e6c8414fc");
-        let branch = game.site("hex-0749-0fa856724a");
+        let actor_tile = game.site(&Hex::new(1, 3));
+        let branch = game.site(&Hex::new(3, 2));
         let report = PlanningReport {
             duties: vec![DutyReport {
                 id: "protect:escort".into(),
@@ -357,7 +358,7 @@ mod tests {
         };
         let mut escort = Workspace::default();
         escort.prepare(game.phase_forecasts(), &report, &TacticalOrders::default());
-        let screen = game.site("hex-0856-a2b6e60ea7");
+        let screen = game.site(&Hex::new(4, 3));
         assert!(game.board().distance(screen, actor_tile) > 1);
         assert!(escort.position(guard_id, screen) > escort.position(guard_id, branch));
         let enemy = game.unit(enemy_id).unwrap();

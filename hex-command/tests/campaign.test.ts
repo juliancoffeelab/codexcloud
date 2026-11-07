@@ -1,15 +1,14 @@
 import { readSave, storeSave } from "../src/save/storage";
-import tileHistory from "../src/save/migrations/legacy/data/tiles-v26.json";
-import characterHistory from "../src/save/migrations/legacy/data/characters-v25.json";
+import characterHistory from "@hex-command/save-migrations/legacy/data/characters-v25.json";
 import { createTestFactory } from "./native-fixture";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture";
 import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
 import { loadBattle, saveBattle, SAVE_KEY } from "./legacy-save";
-import { CAMPAIGNS as MIGRATION_CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
-import { LEGACY_ASHEN_REFUGE } from "../src/save/migrations/legacy/layouts";
-import { legacyBoard } from "../src/save/migrations/legacy/board";
+import { CAMPAIGNS as MIGRATION_CAMPAIGNS } from "@hex-command/save-migrations/legacy/catalog";
+import { LEGACY_ASHEN_REFUGE } from "@hex-command/save-migrations/legacy/layouts";
+import { legacyBoard } from "@hex-command/save-migrations/legacy/board";
 import { BattleController, type BattleView } from "../src/controller/battle";
 import { required, TestStorage } from "./helpers";
 
@@ -20,10 +19,8 @@ test("Legacy refuge retains company and ownership", async () => {
   const current = Game.startCampaign("ashen-oath", 1);
   const legacy = new Game("ashen-refuge");
   const board = legacyBoard("ashen-refuge", 1);
-  legacy.tiles = board.tiles.map((tile) => ({
-    ...tile,
-    id: tileHistory["ashen-refuge"][tile.id as keyof (typeof tileHistory)["ashen-refuge"]],
-  }));
+  // Historical refuge tiles have no fog/light conditions.
+  legacy.tiles = board.tiles.map(({ fog: _fog, light: _light, ...tile }) => ({ ...tile }));
   legacy.units = [];
   legacy.nextId = 1;
   for (const unit of LEGACY_ASHEN_REFUGE.units)
@@ -53,8 +50,8 @@ test("Legacy refuge retains company and ownership", async () => {
   ).map((line) => ({ ...line }));
   legacy.round = 2;
   legacy.gold.player = 32;
-  legacy.tile("hex-0891-b20a50ef8c")!.owner = "player";
-  legacy.tile("hex-0866-c54da0213d")!.owner = "player";
+  legacy.tile("5,4")!.owner = "player";
+  legacy.tile("5,1")!.owner = "player";
   await saveBattle(legacy);
   const oldSave = JSON.parse((await readSave())!);
   oldSave.state.mapRevision = 1;
@@ -65,9 +62,9 @@ test("Legacy refuge retains company and ownership", async () => {
   assert.equal(restored.round, 2);
   assert.equal(restored.gold.player, 32);
   assert.deepEqual(restored.units, legacy.units);
-  assert.equal(restored.tile("hex-0738-f0cce97107")?.owner, "player");
-  assert.equal(restored.tile("hex-0766-4907292e1d")?.terrain, "village");
-  assert.equal(restored.tile("hex-0866-c54da0213d")?.terrain, "plains");
+  assert.equal(restored.tile("3,1")?.owner, "player");
+  assert.equal(restored.tile("3,7")?.terrain, "village");
+  assert.equal(restored.tile("5,1")?.terrain, "plains");
   await saveBattle(restored);
   assert.deepEqual((await loadBattle()).game.snapshot(), restored.snapshot());
 });

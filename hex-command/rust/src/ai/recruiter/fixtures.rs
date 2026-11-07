@@ -39,7 +39,7 @@ pub(in crate::ai) fn units(game: &mut Game<'_>, change: impl FnOnce(&mut Vec<Uni
                 id: format!("u{}", u.id),
                 r#type: rules.units[u.kind].id.clone(),
                 side: u.side,
-                tile: state.tiles[u.tile].id.clone(),
+                tile: state.tiles[u.tile].hex(),
                 hp: u.hp,
                 moved: u.moved,
                 attacked: u.attacked,

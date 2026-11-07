@@ -376,7 +376,7 @@ mod tests {
         orders.reserved = game
             .placement_tiles(&leader, a, true)
             .iter()
-            .map(|&t| game.board().ids[t].as_str().into())
+            .map(|&t| game.board().ids[t].into())
             .collect();
         assert_eq!(selected(&game, &orders), None);
         orders.reserved.clear();

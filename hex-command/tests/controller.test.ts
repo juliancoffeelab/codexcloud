@@ -1,3 +1,4 @@
+import { cellKey } from "../src/game/hex";
 import { readSave as readStoredSave, storeSave } from "../src/save/storage";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
@@ -62,21 +63,21 @@ test("Developer map supports normal actions and persistence", async () => {
   const opening = controller.snapshot();
   const player = required(opening.units.find((unit) => unit.side === "player"));
   const enemy = required(opening.units.find((unit) => unit.side === "enemy"));
-  controller.commands.choose(player.tile);
+  controller.commands.choose(cellKey(player.tile));
   const panel = unitPanelView(observed.view);
   assert.equal(panel.kind, "details");
   if (panel.kind === "details") assert.equal(panel.details.actionStatus, "Ready");
-  assert(controller.actions(player.id).moves.some((move) => move.tile === "hex-0013-23f615dae8"));
+  assert(controller.actions(player.id).moves.some((move) => move.tile === "0,2"));
   assert(
     battlefieldTiles(observed.view.game, player.id, currentArtwork(), null).some((tile) =>
       tile.classes.includes("reachable"),
     ),
   );
-  controller.move(player.id, "hex-0013-23f615dae8");
+  controller.move(player.id, "0,2");
   assert(observed.view.canUndo);
   controller.undoMove();
   assert.deepEqual(controller.snapshot(), opening);
-  controller.commands.choose(enemy.tile);
+  controller.commands.choose(cellKey(enemy.tile));
   assert.equal(unitPanelView(observed.view).kind, "combat");
   controller.attack(player.id, enemy.id);
   assert(required(controller.snapshot().units.find((unit) => unit.id === enemy.id)).hp < enemy.hp);
@@ -96,18 +97,20 @@ test("Inspection switches tiles and closes when the inspected unit or terrain is
   const player = required(opening.units.find((unit) => unit.side === "player"));
   const enemy = required(opening.units.find((unit) => unit.side === "enemy"));
   const empty = required(
-    observed.view.game.tiles.find((tile) => !opening.units.some((u) => u.tile === tile.id)),
+    observed.view.game.tiles.find(
+      (tile) => !opening.units.some((u) => cellKey(u.tile) === tile.id),
+    ),
   );
   const other = required(
     observed.view.game.tiles.find(
-      (tile) => tile.id !== empty.id && !opening.units.some((u) => u.tile === tile.id),
+      (tile) => tile.id !== empty.id && !opening.units.some((u) => cellKey(u.tile) === tile.id),
     ),
   );
   const saved = await readSave();
   const game = observed.view.game;
-  controller.commands.choose(enemy.tile);
+  controller.commands.choose(cellKey(enemy.tile));
   assert.equal(observed.view.selected, enemy.id);
-  controller.commands.choose(enemy.tile);
+  controller.commands.choose(cellKey(enemy.tile));
   assert.equal(observed.view.selected, null);
   assert.equal(observed.view.inspectedTile, null);
   controller.commands.choose(empty.id);
@@ -116,11 +119,11 @@ test("Inspection switches tiles and closes when the inspected unit or terrain is
   assert.equal(observed.view.inspectedTile, other.id);
   controller.commands.choose(other.id);
   assert.equal(observed.view.inspectedTile, null);
-  controller.commands.choose(player.tile);
-  controller.commands.choose(player.tile);
+  controller.commands.choose(cellKey(player.tile));
+  controller.commands.choose(cellKey(player.tile));
   assert.equal(observed.view.selected, null);
   assert.equal(observed.view.inspectedTile, null);
-  controller.commands.choose(enemy.tile);
+  controller.commands.choose(cellKey(enemy.tile));
   controller.commands.choose(empty.id);
   assert.equal(observed.view.selected, null);
   assert.equal(observed.view.inspectedTile, empty.id);
@@ -140,9 +143,9 @@ test("Click-away dismissal preserves movement, attack targeting and undo", async
   const opening = controller.snapshot();
   const player = required(opening.units.find((unit) => unit.side === "player"));
   const move = required(controller.actions(player.id).moves[0]);
-  controller.commands.choose(player.tile);
-  controller.commands.choose(move.tile);
-  assert.equal(observed.view.game.unit(player.id)?.tile, move.tile);
+  controller.commands.choose(cellKey(player.tile));
+  controller.commands.choose(cellKey(move.tile));
+  assert.equal(cellKey(observed.view.game.unit(player.id)?.tile), move.tile);
   assert.equal(observed.view.inspectedTile, move.tile);
   assert(observed.view.canUndo);
   controller.commands.clearSelection(true);
@@ -152,9 +155,9 @@ test("Click-away dismissal preserves movement, attack targeting and undo", async
   assert.deepEqual(controller.snapshot(), opening);
   const target = required(controller.actions(player.id).attacks[0]);
   const targetTile = required(observed.view.game.unit(target.id)).tile;
-  controller.commands.choose(targetTile);
+  controller.commands.choose(cellKey(targetTile));
   assert.equal(unitPanelView(observed.view).kind, "combat");
-  controller.commands.choose(targetTile);
+  controller.commands.choose(cellKey(targetTile));
   assert.equal(observed.view.selected, null);
   assert.equal(observed.view.target, null);
   assert.equal(observed.view.inspectedTile, null);
@@ -179,7 +182,7 @@ test("Dialogue navigation persists its cursor without advancing gameplay", async
   assert.equal(observed.view.renderRevision, opening.renderRevision);
   const onSecondLine = controller.snapshot();
   assert.throws(
-    () => controller.move(required(onSecondLine.units[0]).id, "hex-0749-0fa856724a"),
+    () => controller.move(required(onSecondLine.units[0]).id, "3,2"),
     /Wait for your turn/,
   );
   await assert.rejects(controller.endTurn(), /Wait for your turn/);
@@ -246,10 +249,10 @@ test("Completed vigil publishes and persists its outcome", async () => {
   const fixture = Game.startCampaign("green-accord", 1);
   fixture.advanceDialogue(true);
   fixture.units = fixture.units.filter((unit) => unit.side === "player");
-  const goal = { tile: "hex-0923-ec307e92cf" };
+  const goal = { tile: { col: 6, row: 4 } };
   const lark = required(fixture.units.find((unit) => unit.character === "lark"));
   const occupant = fixture.at(goal.tile);
-  if (occupant && occupant.id !== lark.id) occupant.tile = "hex-0891-b20a50ef8c";
+  if (occupant && occupant.id !== lark.id) occupant.tile = { col: 5, row: 4 };
   lark.tile = goal.tile;
   required(fixture.tile(goal.tile)).owner = "player";
   fixture.round = 3;
@@ -283,10 +286,10 @@ test("Finished enemy-turn battles persist outcome dialogue", async () => {
     fixture.units.find((unit) => unit.side === "player" && unit.role === "leader"),
   );
   // Use a frontline attacker so leader recruitment restraint cannot alter this defeat fixture.
-  const enemy = fixture.addUnit("soldier", "enemy", "hex-0859-8a12839c45");
-  leader.tile = "hex-0763-c9e627d16e";
+  const enemy = fixture.addUnit("soldier", "enemy", "4,4");
+  leader.tile = { col: 3, row: 4 };
   leader.hp = 1;
-  enemy.tile = "hex-0859-8a12839c45";
+  enemy.tile = { col: 4, row: 4 };
   await saveBattle(fixture);
   const controller = await createController(immediatePause);
   await controller.endTurn();
@@ -303,7 +306,7 @@ test("Finished enemy-turn battles persist outcome dialogue", async () => {
 test("Rejected replacement preserves undo and pending turns", async () => {
   const controller = await createController(immediatePause);
   const observed = observe(controller);
-  controller.move("u3", "hex-0738-f0cce97107");
+  controller.move("u3", "3,1");
   const before = controller.snapshot();
   const saved = await readSave();
   assert.throws(() => controller.reset("unknown"), /Unknown battlefield/);
@@ -330,12 +333,9 @@ test("Publications are immutable and availability follows the revision", async (
   assert.equal(Reflect.get(controller.commands, "active"), undefined);
   assert.equal(Reflect.get(opening.game, "move"), undefined);
   assert(Object.isFrozen(controller.commands));
-  assert.equal(
-    Reflect.set(required(opening.game.unit("u3")), "tile", "hex-0738-f0cce97107"),
-    false,
-  );
+  assert.equal(Reflect.set(required(opening.game.unit("u3")), "tile", "3,1"), false);
 
-  controller.choose("hex-0045-b0e58b1f93");
+  controller.choose("1,2");
   assert.equal(observed.view.game, opening.game, "selection must not rebuild the game view");
   controller.message("Inspect the field.");
   assert.equal(observed.view.game, opening.game, "status reuses the published game");
@@ -344,13 +344,13 @@ test("Publications are immutable and availability follows the revision", async (
   controller.clearSelection();
   assert.equal(observed.view.game, opening.game, "deselection must not rebuild the game view");
 
-  controller.move("u3", "hex-0738-f0cce97107");
+  controller.move("u3", "3,1");
   assert.notEqual(observed.view.game, opening.game, "engine actions publish a fresh game");
-  assert.equal(opening.game.unit("u3")?.tile, "hex-0045-b0e58b1f93");
-  assert.equal(observed.view.game.unit("u3")?.tile, "hex-0738-f0cce97107");
+  assert.deepEqual(opening.game.unit("u3")?.tile, { col: 1, row: 2 });
+  assert.deepEqual(observed.view.game.unit("u3")?.tile, { col: 3, row: 1 });
   assert(observed.view.canUndo);
   assert.equal(observed.view.selected, "u3");
-  assert.equal(observed.view.inspectedTile, "hex-0738-f0cce97107");
+  assert.equal(observed.view.inspectedTile, "3,1");
   const movedGame = observed.view.game;
   controller.message("Inspect the field.");
   assert.equal(observed.view.game, movedGame, "metadata safely reuses an immutable revision");
@@ -358,13 +358,13 @@ test("Publications are immutable and availability follows the revision", async (
   assert.equal(Reflect.set(observed.view, "selected", "u6"), false);
 
   controller.undoMove();
-  assert.equal(observed.view.game.unit("u3")?.tile, "hex-0045-b0e58b1f93");
+  assert.deepEqual(observed.view.game.unit("u3")?.tile, { col: 1, row: 2 });
   assert.equal(observed.view.canUndo, false);
-  controller.choose("hex-0045-b0e58b1f93"); // Clear the restored scout selection.
-  controller.choose("hex-0013-23f615dae8");
+  controller.choose("1,2"); // Clear the restored scout selection.
+  controller.choose("0,2");
   assert(observed.view.recruitment?.stationed);
   assert.equal(observed.view.recruitment?.commander?.id, "u1");
-  assert.equal(observed.view.inspectedTile, "hex-0013-23f615dae8");
+  assert.equal(observed.view.inspectedTile, "0,2");
   const inspected = observed.view;
   await controller.endTurn();
   assert.equal(inspected.game.turn, "player");
@@ -380,7 +380,7 @@ test("Publications are immutable and availability follows the revision", async (
 test("Browser commands are player-only and previews cannot mutate rules", async () => {
   storage.clear();
   const fixture = new Game();
-  const enemy = fixture.addUnit("soldier", "enemy", "hex-0408-edbae05560");
+  const enemy = fixture.addUnit("soldier", "enemy", "2,3");
   await saveBattle(fixture);
   const paused = pauseTurn();
   const controller = await createController(paused.pause);
@@ -391,17 +391,14 @@ test("Browser commands are player-only and previews cannot mutate rules", async 
   weapon.attack.damage = 999;
   assert.equal(TYPES.soldier.attacks[0].damage, damage);
 
-  assert.throws(() => controller.move(enemy.id, "hex-0397-b042f4a1af"), /cannot act/);
+  assert.throws(() => controller.move(enemy.id, "2,2"), /cannot act/);
   const pending = controller.endTurn();
   const enemyTurn = controller.snapshot();
   assert.equal(observed.view.game.turn, "enemy");
   assert.equal(observed.view.canUndo, false);
-  assert.throws(() => controller.move(enemy.id, "hex-0397-b042f4a1af"), /Wait for your turn/);
+  assert.throws(() => controller.move(enemy.id, "2,2"), /Wait for your turn/);
   assert.throws(() => controller.attack(enemy.id, "u2"), /Wait for your turn/);
-  assert.throws(
-    () => controller.recruit("u4", "soldier", "hex-0077-1134d4f5cb"),
-    /Wait for your turn/,
-  );
+  assert.throws(() => controller.recruit("u4", "soldier", "10,2"), /Wait for your turn/);
   assert.deepEqual(controller.snapshot(), enemyTurn);
   paused.release();
   await pending;
@@ -426,7 +423,7 @@ test("Unmounted sessions cannot overwrite replacements", async () => {
   assert.equal(replacement.snapshot().mapId, "river-valley");
   assert.equal(replacement.snapshot().round, 1);
   assert.throws(() => previous.reset(), /session has closed/);
-  assert.throws(() => previous.move("u3", "hex-0738-f0cce97107"), /session has closed/);
+  assert.throws(() => previous.move("u3", "3,1"), /session has closed/);
   replacement.dispose();
 });
 

@@ -102,7 +102,12 @@
         {
           "spawn": {
             "faction": "player",
-            "tile": "hex-0763-c9e627d16e",
+            "tile": {
+              "hex": {
+                "col": 3,
+                "row": 4
+              }
+            },
             "radius": 0,
             "units": [
               {
@@ -139,7 +144,9 @@
       "id": "old-trail",
       "when": {
         "stand": {
-          "tile": "hex-0897-9650de66eb",
+          "tile": {
+            "location": "old-trail"
+          },
           "side": "player",
           "through": true
         }
@@ -171,7 +178,9 @@
         "label": "Recover provisions from the old crossing post",
         "intent": {
           "goTo": {
-            "tile": "hex-0897-9650de66eb",
+            "tile": {
+              "location": "old-trail"
+            },
             "side": "player"
           }
         },
@@ -180,7 +189,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0897-9650de66eb"]
+          "tiles": [
+            {
+              "location": "old-trail"
+            }
+          ]
         }
       }
     },
@@ -215,19 +228,29 @@
       "objective": {
         "label": "Secure the fort beside the bridge",
         "intent": {
-          "capture": ["hex-0955-5859c768ff"]
+          "capture": [
+            {
+              "location": "fort"
+            }
+          ]
         },
         "visibleWhen": {
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0955-5859c768ff"]
+          "tiles": [
+            {
+              "location": "fort"
+            }
+          ]
         },
         "satisfiedWhen": {
           "all": [
             {
               "own": {
-                "tile": "hex-0955-5859c768ff",
+                "tile": {
+                  "location": "fort"
+                },
                 "faction": "player"
               }
             }
@@ -283,7 +306,9 @@
         "label": "Bring Lark to the northern village",
         "intent": {
           "escort": {
-            "tile": "hex-0130-cb5c0e2a48",
+            "tile": {
+              "location": "refuge"
+            },
             "character": "lark",
             "side": "player"
           }
@@ -292,11 +317,17 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0130-cb5c0e2a48"]
+          "tiles": [
+            {
+              "location": "refuge"
+            }
+          ]
         },
         "satisfiedWhen": {
           "stand": {
-            "tile": "hex-0130-cb5c0e2a48",
+            "tile": {
+              "location": "refuge"
+            },
             "character": "lark",
             "side": "player"
           }

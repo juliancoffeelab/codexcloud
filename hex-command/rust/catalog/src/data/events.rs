@@ -34,7 +34,7 @@ pub struct UnitMatch {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct SiteSelection {
-    pub tile: String,
+    pub tile: TileRef,
     #[serde(flatten)]
     pub units: UnitMatch,
     #[serde(default)]
@@ -49,7 +49,7 @@ pub struct SiteSelection {
 )]
 pub struct ProximitySelection {
     #[serde(default)]
-    pub tile: Option<String>,
+    pub tile: Option<TileRef>,
     #[serde(default)]
     pub target: Option<UnitMatch>,
     pub radius: u16,
@@ -68,7 +68,7 @@ pub struct ProximitySelection {
 pub struct HoldSelection {
     #[serde(skip)]
     pub predicate: u32,
-    pub tile: String,
+    pub tile: TileRef,
     pub turns: u32,
     #[serde(default)]
     pub when: Option<Box<When>>,
@@ -84,7 +84,7 @@ pub struct HoldSelection {
 )]
 #[serde(deny_unknown_fields)]
 pub struct OwnerSelection {
-    pub tile: String,
+    pub tile: TileRef,
     pub faction: String,
 }
 
@@ -98,7 +98,7 @@ pub struct OwnerSelection {
 pub struct OwnSelection {
     #[serde(skip)]
     pub predicate: u32,
-    pub tile: String,
+    pub tile: TileRef,
     pub faction: String,
     #[serde(default)]
     pub turns: Option<u32>,
@@ -296,9 +296,9 @@ pub enum SpawnEntry {
 pub struct ScriptSpawn {
     pub faction: String,
     #[serde(default)]
-    pub tile: Option<String>,
+    pub tile: Option<TileRef>,
     #[serde(default)]
-    pub area: Vec<String>,
+    pub area: Vec<TileRef>,
     #[serde(default = "spawn_radius")]
     pub radius: u16,
     #[serde(default, rename = "aiGroup")]
@@ -315,7 +315,7 @@ pub struct ScriptSpawn {
 pub struct GiveItem {
     pub item: String,
     #[serde(default)]
-    pub tile: Option<String>,
+    pub tile: Option<TileRef>,
     #[serde(flatten)]
     pub units: UnitMatch,
 }
@@ -329,7 +329,7 @@ pub struct GiveItem {
 #[serde(deny_unknown_fields)]
 pub struct PlaceItem {
     pub item: String,
-    pub tile: String,
+    pub tile: TileRef,
 }
 
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
@@ -366,7 +366,7 @@ pub enum UnitReference {
 pub struct MarkSpec {
     #[serde(rename = "type")]
     pub kind: String,
-    pub tile: String,
+    pub tile: TileRef,
     #[serde(default)]
     pub light: Option<TileLight>,
 }
@@ -441,7 +441,7 @@ impl FlagUpdate {
 )]
 #[serde(deny_unknown_fields)]
 pub struct TerrainChange {
-    pub tile: String,
+    pub tile: TileRef,
     pub terrain: String,
 }
 
@@ -514,7 +514,7 @@ pub enum EventIntent {
     GoTo(SiteSelection),
     Escape(SiteSelection),
     Approach(ProximitySelection),
-    Capture(Vec<String>),
+    Capture(Vec<TileRef>),
     Defeat(UnitMatch),
 }
 
@@ -528,7 +528,7 @@ pub enum EventIntent {
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct PlayerMarker {
     #[serde(default)]
-    pub tiles: Vec<String>,
+    pub tiles: Vec<TileRef>,
     #[serde(default)]
     pub units: Option<UnitMatch>,
     #[serde(default)]
@@ -594,7 +594,7 @@ pub struct MapMark {
     pub id: u32,
     #[serde(rename = "type")]
     pub kind: String,
-    pub tile: String,
+    pub tile: Hex,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub light: Option<TileLight>,
 }
@@ -621,7 +621,7 @@ pub struct EventHold {
 )]
 #[serde(deny_unknown_fields)]
 pub struct PendingEventSpawn {
-    pub area: Vec<String>,
+    pub area: Vec<Hex>,
     pub faction: String,
     #[serde(default, rename = "aiGroup")]
     pub ai_group: Option<String>,
@@ -673,7 +673,7 @@ impl SpawnEntry {
 }
 pub struct EventClock<'a> {
     pub predicate: u32,
-    pub tile: &'a str,
+    pub tile: &'a TileRef,
     pub turns: u32,
     pub units: Option<&'a UnitMatch>,
     pub faction: Option<&'a str>,
@@ -842,8 +842,8 @@ impl ScriptEvent {
         use super::catalog::{identifier, unique};
         identifier(&self.id, path)?;
         let fail = |s: String| ContentError::new(path, s);
-        let tile = |id: &str| -> Result<(), ContentError> {
-            if tiles.iter().any(|t| t.id == id) {
+        let tile = |id: &TileRef| -> Result<(), ContentError> {
+            if tiles.iter().any(|t| t.matches_reference(id)) {
                 Ok(())
             } else {
                 Err(fail(format!("unknown event tile {id}")))
@@ -865,7 +865,7 @@ impl ScriptEvent {
         };
         fn when(
             value: &When,
-            tile: &impl Fn(&str) -> Result<(), ContentError>,
+            tile: &impl Fn(&TileRef) -> Result<(), ContentError>,
             faction: &impl Fn(&str) -> Result<(), ContentError>,
             path: &str,
         ) -> Result<(), ContentError> {
@@ -948,7 +948,7 @@ impl ScriptEvent {
         }
         fn actions(
             values: &[EventAction],
-            tile: &impl Fn(&str) -> Result<(), ContentError>,
+            tile: &impl Fn(&TileRef) -> Result<(), ContentError>,
             faction: &impl Fn(&str) -> Result<(), ContentError>,
             item: &impl Fn(&str) -> Result<(), ContentError>,
             path: &str,
@@ -956,19 +956,19 @@ impl ScriptEvent {
             bound_mark: bool,
             death: bool,
         ) -> Result<(), ContentError> {
-            let reference = |s: &str| -> Result<(), ContentError> {
+            let reference = |s: &TileRef| -> Result<(), ContentError> {
                 match s {
-                    "$unit.tile" if !bound_unit => {
+                    TileRef::Binding(TileBinding::Unit) if !bound_unit => {
                         Err(ContentError::new(path, "unbound unit tile"))
                     }
-                    "$mark.tile" if !bound_mark => {
+                    TileRef::Binding(TileBinding::Mark) if !bound_mark => {
                         Err(ContentError::new(path, "unbound mark tile"))
                     }
-                    "$event.deathTile" if !death => Err(ContentError::new(
+                    TileRef::Binding(TileBinding::Death) if !death => Err(ContentError::new(
                         path,
                         "death tile requires a killed condition",
                     )),
-                    "$unit.tile" | "$mark.tile" | "$event.deathTile" => Ok(()),
+                    TileRef::Binding(_) => Ok(()),
                     _ => tile(s),
                 }
             };
@@ -991,7 +991,14 @@ impl ScriptEvent {
                         for t in &v.area {
                             reference(t)?;
                         }
-                        unique(v.area.iter().map(String::as_str), path)?;
+                        if v.area
+                            .iter()
+                            .collect::<std::collections::HashSet<_>>()
+                            .len()
+                            != v.area.len()
+                        {
+                            return Err(ContentError::new(path, "duplicate spawn target"));
+                        }
                         for u in &v.units {
                             for id in &u.member().items {
                                 item(id)?;
@@ -1334,7 +1341,7 @@ impl When {
 )]
 pub struct LoopSelection {
     #[serde(default)]
-    pub tile: Option<String>,
+    pub tile: Option<TileRef>,
     #[serde(flatten)]
     pub units: UnitMatch,
 }

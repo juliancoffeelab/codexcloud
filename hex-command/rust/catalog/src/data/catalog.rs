@@ -41,7 +41,7 @@ pub struct LandscapeConfig {
     /// Optional authored scenario layout, shared with the playable map.
     pub map: Option<String>,
     /// Capture targets for this layout; omitted uses the generated-arena defaults.
-    pub territory: Option<Vec<String>>,
+    pub territory: Option<Vec<Hex>>,
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -53,7 +53,7 @@ pub struct LandscapeConfig {
 )]
 pub struct ArenaDefaults {
     pub landscapes: Vec<LandscapeConfig>,
-    pub territory: Vec<String>,
+    pub territory: Vec<Hex>,
     /// Minimum total gold value per side, including its leader.
     pub starting_budget: i32,
     pub default_max_rounds: u32,
@@ -218,15 +218,19 @@ pub fn identifier(id: &str, path: &str) -> Result<(), ContentError> {
 
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
 
-pub fn unique<'a>(ids: impl IntoIterator<Item = &'a str>, path: &str) -> Result<(), ContentError> {
+pub fn unique<T: Eq + std::hash::Hash + std::fmt::Display>(
+    ids: impl IntoIterator<Item = T>,
+    path: &str,
+) -> Result<(), ContentError> {
     let mut seen = HashSet::new();
     for id in ids {
-        if !seen.insert(id) {
+        if seen.contains(&id) {
             return Err(ContentError::new(
                 path,
                 format!("duplicate identifier {id}"),
             ));
         }
+        seen.insert(id);
     }
     Ok(())
 }

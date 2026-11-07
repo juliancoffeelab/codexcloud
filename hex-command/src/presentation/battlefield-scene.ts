@@ -1,3 +1,4 @@
+import { cellKey } from "../game/hex";
 import type { BattlefieldTileView } from "../ui/battlefield-view";
 import type { GameView } from "../game/view";
 import { currentArtwork, itemFrame } from "./art";
@@ -31,14 +32,14 @@ export function battlefieldScene(
   reducedMotion: boolean,
   key: string,
 ): BattlefieldScene {
-  const fog = new Set(game.presentation.fog);
+  const fog = new Set(game.presentation.fog.map((hex) => cellKey(hex)));
   const centers = new Map(tiles.map((tile) => [tile.id, tile]));
   const piles = new Map<string, Array<(typeof game.groundItems)[number]>>();
   for (const item of game.groundItems) {
-    let pile = piles.get(item.tile);
+    let pile = piles.get(cellKey(item.tile));
     if (!pile) {
       pile = [];
-      piles.set(item.tile, pile);
+      piles.set(cellKey(item.tile), pile);
     }
     pile.push(item);
   }
@@ -87,6 +88,6 @@ export function battlefieldScene(
         };
       });
     }),
-    fog: game.presentation.fog,
+    fog: game.presentation.fog.map((hex) => cellKey(hex)),
   };
 }

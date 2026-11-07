@@ -18,7 +18,7 @@ pub struct ArmyStrength {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LeaderState {
-    pub tile: String,
+    pub tile: Hex,
     pub hp: i32,
     pub max_hp: i32,
 }
@@ -37,7 +37,7 @@ pub struct Exposure {
     pub before_damage: i32,
     pub chosen_tile_damage: Option<i32>,
     pub min_damage: i32,
-    pub min_tile: String,
+    pub min_tile: Hex,
     pub reachable_tiles: usize,
     pub safe_tiles: usize,
     pub chosen_tile_reachable: bool,

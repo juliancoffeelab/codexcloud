@@ -92,7 +92,9 @@
       "id": "lost-tools",
       "when": {
         "stand": {
-          "tile": "hex-0898-eed2a38c9d",
+          "tile": {
+            "location": "tools-cache"
+          },
           "side": "player",
           "through": true
         }
@@ -102,7 +104,7 @@
           "say": [
             {
               "portrait": "thorncaller",
-              "text": "The missing crew refused to cut the sacred grove until their overdue wages were paid. Then they were ordered to report to the Rootbinder at the Overseer’s river works. Their pay was never collected.",
+              "text": "The missing crew refused to cut the sacred grove until their overdue wages were paid. Then they were ordered to report to the Rootbinder at the Overseer\u2019s river works. Their pay was never collected.",
               "character": "lark"
             },
             {
@@ -116,14 +118,16 @@
           "setFlag": "lost-tools"
         },
         {
-          "log": "Recover the workers’ pay ledger"
+          "log": "Recover the workers\u2019 pay ledger"
         }
       ],
       "objective": {
-        "label": "Recover the workers’ pay ledger",
+        "label": "Recover the workers\u2019 pay ledger",
         "intent": {
           "goTo": {
-            "tile": "hex-0898-eed2a38c9d",
+            "tile": {
+              "location": "tools-cache"
+            },
             "side": "player"
           }
         },
@@ -131,7 +135,11 @@
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0898-eed2a38c9d"]
+          "tiles": [
+            {
+              "location": "tools-cache"
+            }
+          ]
         }
       }
     },
@@ -148,25 +156,43 @@
       "objective": {
         "label": "Capture both logging camps",
         "intent": {
-          "capture": ["hex-0952-a980626eda", "hex-0956-1372406dd4"]
+          "capture": [
+            {
+              "location": "northern-fort"
+            },
+            {
+              "location": "southern-fort"
+            }
+          ]
         },
         "visibleWhen": {
           "always": true
         },
         "playerMarker": {
-          "tiles": ["hex-0952-a980626eda", "hex-0956-1372406dd4"]
+          "tiles": [
+            {
+              "location": "northern-fort"
+            },
+            {
+              "location": "southern-fort"
+            }
+          ]
         },
         "satisfiedWhen": {
           "all": [
             {
               "owner": {
-                "tile": "hex-0952-a980626eda",
+                "tile": {
+                  "location": "northern-fort"
+                },
                 "faction": "player"
               }
             },
             {
               "owner": {
-                "tile": "hex-0956-1372406dd4",
+                "tile": {
+                  "location": "southern-fort"
+                },
                 "faction": "player"
               }
             }

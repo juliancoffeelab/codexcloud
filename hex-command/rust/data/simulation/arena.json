@@ -20,10 +20,36 @@
       "id": "wood-edge",
       "holdTurns": 4,
       "map": "wood-edge",
-      "territory": ["hex-0859-8a12839c45", "hex-0845-9e38fcb018", "hex-0861-b81de56c08"]
+      "territory": [
+        {
+          "col": 4,
+          "row": 4
+        },
+        {
+          "col": 4,
+          "row": 2
+        },
+        {
+          "col": 4,
+          "row": 6
+        }
+      ]
     }
   ],
-  "territory": ["hex-0859-8a12839c45", "hex-0749-0fa856724a", "hex-0893-940b4e4db1"],
+  "territory": [
+    {
+      "col": 4,
+      "row": 4
+    },
+    {
+      "col": 3,
+      "row": 2
+    },
+    {
+      "col": 5,
+      "row": 6
+    }
+  ],
   "startingBudget": 36,
   "defaultMaxRounds": 30,
   "policies": ["classic", "rush", "balanced", "rotated", "situational"]

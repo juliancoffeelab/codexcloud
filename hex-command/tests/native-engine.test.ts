@@ -27,13 +27,13 @@ function fixture() {
     nextId: 2,
     combatRng: 17,
     log: ["Ready"],
-    tiles: [{ id: "hex-0001-7256137ec1", col: 0, row: 0, terrain: "keep", owner: "player" }],
+    tiles: [{ id: "0,0", col: 0, row: 0, terrain: "keep", owner: "player" }],
     units: [
       {
         id: "u1",
         type: "commander",
         side: "player",
-        tile: "hex-0001-7256137ec1",
+        tile: { col: 0, row: 0 },
         hp: 30,
         moved: false,
         attacked: false,

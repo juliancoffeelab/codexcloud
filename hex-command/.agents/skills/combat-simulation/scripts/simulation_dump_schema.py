@@ -11,9 +11,11 @@ INTEGER = pa.int64()
 BOOLEAN = pa.bool_()
 NUMBER = pa.float64()
 STRINGS = pa.list_(STRING)
+HEX = pa.struct([("col", INTEGER), ("row", INTEGER)])
+HEXES = pa.list_(HEX)
 
 UNIT = pa.struct([
-    ("id", STRING), ("type", STRING), ("side", STRING), ("tile", STRING),
+    ("id", STRING), ("type", STRING), ("side", STRING), ("tile", HEX),
     ("hp", INTEGER), ("moved", BOOLEAN), ("attacked", BOOLEAN),
     ("experience", INTEGER), ("name", STRING), ("role", STRING),
     ("retreating", BOOLEAN), ("rebuilding", BOOLEAN),
@@ -56,14 +58,14 @@ STATE = pa.struct([
 ])
 PROGRESS = pa.struct([
     ("label", STRING), ("current", INTEGER), ("total", INTEGER),
-    ("done", BOOLEAN), ("tiles", STRINGS),
+    ("done", BOOLEAN), ("tiles", HEXES),
 ])
 OBJECTIVE = pa.struct([
-    ("id", STRING), ("tiles", STRINGS), ("weight", NUMBER), ("kind", STRING),
+    ("id", STRING), ("tiles", HEXES), ("weight", NUMBER), ("kind", STRING),
     ("actor", STRING), ("family", STRING), ("hold", BOOLEAN),
 ])
 ACTION = pa.struct([
-    ("kind", STRING), ("unit", STRING), ("tile", STRING),
+    ("kind", STRING), ("unit", STRING), ("tile", HEX),
     ("target", STRING), ("weapon", STRING), ("type", STRING),
 ])
 DAMAGE_MITIGATION = pa.struct([
@@ -72,8 +74,8 @@ DAMAGE_MITIGATION = pa.struct([
     ("effectiveArmourPrevented", INTEGER), ("effectiveTerrainPrevented", INTEGER),
 ])
 COMBAT = pa.struct([
-    ("unit", STRING), ("target", STRING), ("weapon", STRING), ("from", STRING),
-    ("targetTile", STRING), ("damage", INTEGER), ("retaliation", INTEGER),
+    ("unit", STRING), ("target", STRING), ("weapon", STRING), ("from", HEX),
+    ("targetTile", HEX), ("damage", INTEGER), ("retaliation", INTEGER),
     ("count", INTEGER), ("damagePerHit", INTEGER),
     ("rawRolls", pa.list_(INTEGER)), ("rolls", pa.list_(INTEGER)),
     ("responseRawRolls", pa.list_(INTEGER)), ("responseRolls", pa.list_(INTEGER)),
@@ -82,12 +84,12 @@ COMBAT = pa.struct([
     ("thorns", pa.struct([("damage",INTEGER),("auraDamage",INTEGER),("effectiveDamage",INTEGER),("auraSources",STRINGS)])),
     ("mitigation", pa.struct([("attack", DAMAGE_MITIGATION), ("retaliation", DAMAGE_MITIGATION)])),
 ])
-OWNERSHIP = pa.struct([("tile", STRING), ("owner", STRING)])
+OWNERSHIP = pa.struct([("tile", HEX), ("owner", STRING)])
 ARMY_STRENGTH = pa.struct([
     ("units", INTEGER), ("cost", INTEGER), ("hp", INTEGER),
     ("maxHp", INTEGER), ("hpValue", pa.float64()),
 ])
-LEADER_STATE = pa.struct([("tile", STRING), ("hp", INTEGER), ("maxHp", INTEGER)])
+LEADER_STATE = pa.struct([("tile", HEX), ("hp", INTEGER), ("maxHp", INTEGER)])
 LEADER_AUDIT = pa.struct([
     ("leader", STRING), ("side", STRING), ("before", LEADER_STATE), ("after", LEADER_STATE),
     ("armyBefore", ARMY_STRENGTH), ("armyAfter", ARMY_STRENGTH),
@@ -98,7 +100,7 @@ LEADER_AUDIT = pa.struct([
     ])),
     ("exposure", pa.struct([
         ("beforeDamage", INTEGER), ("chosenTileDamage", INTEGER),
-        ("minDamage", INTEGER), ("minTile", STRING),
+        ("minDamage", INTEGER), ("minTile", HEX),
         ("reachableTiles", INTEGER), ("safeTiles", INTEGER),
         ("chosenTileReachable", BOOLEAN), ("afterDamage", INTEGER),
     ])),

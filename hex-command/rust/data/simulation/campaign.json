@@ -51,7 +51,9 @@
                     "all": [
                       {
                         "stand": {
-                          "tile": "hex-0289-0646356c88",
+                          "tile": {
+                            "location": "exit"
+                          },
                           "side": "player",
                           "character": "nera",
                           "through": true

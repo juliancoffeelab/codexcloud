@@ -18,7 +18,7 @@ use std::sync::Arc;
 struct RecordingCache {
     units: FxHashMap<Unit, Arc<PublicUnit>>,
     ownership: FxHashMap<Vec<Option<String>>, Arc<OwnershipSnapshot>>,
-    tiles: Option<Arc<Vec<String>>>,
+    tiles: Option<Arc<Vec<Hex>>>,
 }
 impl RecordingCache {
     fn units(&mut self, game: &Game<'_>) -> Result<Vec<Arc<PublicUnit>>, SimulationError> {
@@ -98,8 +98,7 @@ pub(crate) fn create_arena<'catalog>(
                     && tile.owner.as_deref() == Some(side.faction_id())
             })
             .ok_or("Arena requires an owned keep for each side")?
-            .id
-            .clone();
+            .hex();
         let rule = &rules.units[rules.types[leader]];
         starting_cost[side.index()] += rule.cost;
         state.units.push(PublicUnit {
@@ -445,6 +444,13 @@ fn phase(
 }
 /// Execute one arena until victory or its cap, retaining every phase and endpoint.
 pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, SimulationError> {
+    run_arena_capturing(rules, config, None)
+}
+pub(super) fn run_arena_capturing(
+    rules: &Rules,
+    config: ArenaConfig,
+    mut capture: Option<&mut super::phase_fixtures::Capture>,
+) -> Result<ArenaResult, SimulationError> {
     let mut tactics = [
         PresetTactic::from_blocks(
             config
@@ -468,7 +474,7 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
         .unwrap_or(&rules.arena.territory);
     let hold_turns = landscape.hold_turns;
     let mut held = [0u32; 2];
-    let mut visits: [HashSet<String>; 2] = Default::default();
+    let mut visits: [HashSet<Hex>; 2] = Default::default();
     let mut phases = vec![];
     let mut recording = RecordingCache::default();
     let mut reason = "cap";
@@ -515,6 +521,9 @@ pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, Simu
                     4.0,
                 ));
             }
+        }
+        if let Some(capture) = capture.as_deref_mut() {
+            capture.observe(&game, Some(&goals));
         }
         let record = phase(
             &mut game,
@@ -591,6 +600,14 @@ pub fn run_campaign(
     config: CampaignConfig,
     definition: &Campaign,
 ) -> Result<CampaignResult, SimulationError> {
+    run_campaign_capturing(rules, config, definition, None)
+}
+pub(super) fn run_campaign_capturing(
+    rules: &Rules,
+    config: CampaignConfig,
+    definition: &Campaign,
+    mut capture: Option<&mut super::phase_fixtures::Capture>,
+) -> Result<CampaignResult, SimulationError> {
     validate_limits(config.max_rounds, config.recruit_limit)?;
     if definition.id != config.campaign {
         return Err(SimulationError::InvalidConfig(
@@ -637,6 +654,9 @@ pub fn run_campaign(
             };
             let side = game.turn();
             let objective_goals = super::objectives::player_goals(&game, &config.objective);
+            if let Some(capture) = capture.as_deref_mut() {
+                capture.observe(&game, objective_goals.as_deref());
+            }
             phases.push(phase(
                 &mut game,
                 &mut recording,

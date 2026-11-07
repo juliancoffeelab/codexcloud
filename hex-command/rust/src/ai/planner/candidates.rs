@@ -135,7 +135,7 @@ pub(in crate::ai) fn prepare(
             .filter(|g| g.weight >= 24.0 && g.kind == ObjectiveKind::Capture)
         {
             for site in &goal.tiles {
-                cache.blockers[game.site(site)] = true;
+                cache.blockers[game.site(&site)] = true;
             }
         }
         cache.rebuild_intents.clear();

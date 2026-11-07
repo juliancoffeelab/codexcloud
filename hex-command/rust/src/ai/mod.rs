@@ -178,6 +178,7 @@ fn advance_command(game: &context::BattleView<'_, '_>, unit: u32, kind: usize) -
 #[cfg(test)]
 mod courier_tests {
     use super::*;
+    use crate::data::Hex;
     use crate::{ai::recruiter::fixtures, logic::Game};
 
     #[test]
@@ -236,17 +237,17 @@ mod courier_tests {
             .enumerate()
             .map(|(i, id)| (id.clone(), i))
             .collect();
-        let target = game.site("hex-1016-9e0db09d3e");
-        let blocker_tile = game.site("hex-1019-90a76d4969");
+        let target = game.site(&Hex::new(9, 3));
+        let blocker_tile = game.site(&Hex::new(9, 4));
         fixtures::units(&mut game, |units| {
             units.retain(|u| [1, 2, 4, 5].contains(&u.id));
             for (id, tile) in [
-                (1, "hex-0988-17596734c1"),
-                (2, "hex-0952-a980626eda"),
-                (4, "hex-0984-954a3b23d6"),
-                (5, "hex-0987-a19805d204"),
+                (1, Hex::new(8, 5)),
+                (2, Hex::new(7, 3)),
+                (4, Hex::new(8, 3)),
+                (5, Hex::new(8, 4)),
             ] {
-                let tile = *sites.get(tile).unwrap();
+                let tile = *sites.get(&tile).unwrap();
                 units.iter_mut().find(|u| u.id == id).unwrap().tile = tile;
             }
             // Keep allies stationary for this turn: the courier must take a detour.
@@ -292,10 +293,7 @@ mod courier_tests {
         };
         assert!(is_command_move(&command), "{command:?}");
         game.execute(command).unwrap();
-        assert_ne!(
-            game.board().ids[game.unit(5).unwrap().tile],
-            "hex-0987-a19805d204"
-        );
+        assert_ne!(game.board().ids[game.unit(5).unwrap().tile], Hex::new(8, 4));
     }
 
     #[test]
@@ -332,11 +330,11 @@ mod courier_tests {
             fixtures::edit(&mut game, |state| {
                 state.units.retain(|u| u.side == Side::Player);
                 for (id, tile) in [
-                    (1, "hex-0988-17596734c1"),
-                    (2, "hex-0952-a980626eda"),
-                    (3, "hex-1019-90a76d4969"),
-                    (4, "hex-0984-954a3b23d6"),
-                    (5, "hex-0987-a19805d204"),
+                    (1, Hex::new(8, 5)),
+                    (2, Hex::new(7, 3)),
+                    (3, Hex::new(9, 4)),
+                    (4, Hex::new(8, 3)),
+                    (5, Hex::new(8, 4)),
                 ] {
                     let tile = tile.to_owned();
                     state
@@ -346,10 +344,14 @@ mod courier_tests {
                         .unwrap()
                         .tile = tile;
                 }
-                for tile in ["hex-0909-61c988dee7", "hex-0988-17596734c1"] {
+                for tile in [Hex::new(6, 2), Hex::new(8, 5)] {
                     let tile = tile.to_owned();
-                    state.tiles.iter_mut().find(|t| t.id == tile).unwrap().owner =
-                        Some("player".into());
+                    state
+                        .tiles
+                        .iter_mut()
+                        .find(|t| t.hex() == tile)
+                        .unwrap()
+                        .owner = Some("player".into());
                 }
             });
             let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Diplomatic);
@@ -369,10 +371,7 @@ mod courier_tests {
                 "{policy:?}: {:?}",
                 game.public_units()
             );
-            assert_eq!(
-                game.board().ids[game.unit(5).unwrap().tile],
-                "hex-1016-9e0db09d3e"
-            );
+            assert_eq!(game.board().ids[game.unit(5).unwrap().tile], Hex::new(9, 3));
         }
     }
 }

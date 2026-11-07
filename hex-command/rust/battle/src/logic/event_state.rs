@@ -9,7 +9,7 @@ struct ClockSlot(usize);
 struct ClockDescriptor {
     slot: ClockSlot,
     predicate: u32,
-    tile: String,
+    tile: TileRef,
     turns: u32,
     units: Option<UnitMatch>,
     faction: Option<String>,
@@ -43,7 +43,7 @@ impl CompiledMission {
                         ClockDescriptor {
                             slot,
                             predicate: hold.predicate,
-                            tile: hold.tile.into(),
+                            tile: hold.tile.clone(),
                             turns: hold.turns,
                             units: hold.units.cloned(),
                             faction: hold.faction.map(str::to_owned),

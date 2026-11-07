@@ -9,6 +9,7 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
         let mut state = flat().state();
         state.tiles = (0..size)
             .map(|tile| Tile {
+                location: None,
                 fog: None,
                 light: None,
                 id: format!("{},{}", tile % 9, tile / 9),
@@ -76,19 +77,19 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
 #[test]
 fn moves_obey_turns_actions_occupancy_and_passability() {
     let mut game = flat();
-    let actor = add(&mut game, "swordsman", Side::Player, "hex-0408-edbae05560");
-    add(&mut game, "scout", Side::Enemy, "hex-0760-150b2b6a75");
-    let water = game.site("hex-0397-b042f4a1af");
+    let actor = add(&mut game, "swordsman", Side::Player, Hex::new(2, 3));
+    add(&mut game, "scout", Side::Enemy, Hex::new(3, 3));
+    let water = game.site(&Hex::new(2, 2));
     game.set_terrain(water, game.rules.terrains["water"]);
     assert!(
         !game
             .reachable(game.unit(actor).unwrap())
             .iter()
-            .any(|&(tile, _)| tile == water || tile == game.site("hex-0760-150b2b6a75"))
+            .any(|&(tile, _)| tile == water || tile == game.site(&Hex::new(3, 3)))
     );
     let movement = Command::Move {
         unit: UnitId(actor),
-        tile: "hex-0056-2e6c8414fc".into(),
+        tile: Hex::new(1, 3).into(),
     };
     game.execute(movement.clone()).unwrap();
     assert!(game.reachable(game.unit(actor).unwrap()).is_empty());
@@ -111,13 +112,13 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
     for tile in 0..game.terrain.len() {
         game.set_terrain(tile, water);
     }
-    let start = game.site("hex-0001-7256137ec1");
+    let start = game.site(&Hex::new(0, 0));
     game.set_terrain(start, game.rules.terrains["plains"]);
     for col in 1..=5 {
         let tile = game.site_at(col, 0);
         game.set_terrain(tile, game.rules.terrains[terrain]);
     }
-    let id = add(&mut game, kind, Side::Player, "hex-0001-7256137ec1");
+    let id = add(&mut game, kind, Side::Player, Hex::new(0, 0));
     let allowance = game.rules.units[game.kind(kind)].r#move;
     let goal = game.site_at(allowance as i32, 0);
     assert!(
@@ -127,7 +128,7 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
     );
     game.execute(Command::Move {
         unit: UnitId(id),
-        tile: game.board.ids[goal].as_str().into(),
+        tile: game.board.ids[goal].into(),
     })
     .unwrap();
     assert_eq!(game.unit(id).unwrap().tile, goal);
@@ -139,7 +140,7 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
     game.roster_changed();
     assert!(game.reachable(game.unit(id).unwrap()).is_empty());
     game.units[index].attacked = false;
-    add(&mut game, "wolf", Side::Enemy, "hex-0033-68054f369c");
+    add(&mut game, "wolf", Side::Enemy, Hex::new(1, 0));
     assert!(game.reachable(game.unit(id).unwrap()).is_empty());
 }
 

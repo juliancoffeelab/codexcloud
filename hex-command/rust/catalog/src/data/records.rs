@@ -19,9 +19,9 @@ pub enum ActionRecord {
     },
     Move {
         unit: String,
-        tile: String,
+        tile: Hex,
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
-        path: Vec<String>,
+        path: Vec<Hex>,
     },
     Attack {
         unit: String,
@@ -32,7 +32,7 @@ pub enum ActionRecord {
         unit: String,
         #[serde(rename = "type")]
         unit_type: String,
-        tile: String,
+        tile: Hex,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         #[cfg_attr(feature = "wasm", tsify(optional))]
         cost: Option<i32>,
@@ -122,8 +122,8 @@ pub struct CombatRecord {
     pub unit: String,
     pub target: String,
     pub weapon: String,
-    pub from: String,
-    pub target_tile: String,
+    pub from: Hex,
+    pub target_tile: Hex,
     pub damage: i32,
     pub retaliation: i32,
     #[serde(default)]
@@ -208,11 +208,12 @@ pub struct Records {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::data::Hex;
     #[test]
     fn combat_records_preserve_frozen_omissions_and_current_zero_strike_values() {
         let frozen = serde_json::json!({
-            "unit": "u1", "target": "u2", "weapon": "hit", "from": "0,0",
-            "targetTile": "0,1", "damage": 0, "retaliation": 0,
+            "unit": "u1", "target": "u2", "weapon": "hit", "from": Hex::new(0, 0),
+            "targetTile": Hex::new(0, 1), "damage": 0, "retaliation": 0,
             "mediationAtRisk": false
         });
         let mut current = frozen.clone();
