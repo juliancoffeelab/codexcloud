@@ -14,26 +14,16 @@
   }
 
   let { view, actions, onNewBattle }: Props = $props();
-  const playback = $derived(view.combatPlayback);
+  const panel = $derived(unitPanelView(view));
+  const playback = $derived(panel.kind === "combat" ? panel.playback : undefined);
   const result = $derived(playback?.combat);
-  const frozen = $derived(playback && !playback.complete);
+  const resolving = $derived(!!playback && !playback.complete);
   const health = $derived(playback?.combat.strikes[playback.shown - 1]?.health);
   const shown = $derived(playback?.shown ?? 0);
   const complete = $derived(playback?.complete ?? false);
-  const display = $derived(playback?.before ?? view);
-  const panel = $derived(
-    playback
-      ? {
-          kind: "combat" as const,
-          attacker: playback.combat.units[0],
-          defender: playback.combat.units[1],
-          detailsResetKey: "playback",
-        }
-      : unitPanelView(display),
-  );
 
   let panelElement: HTMLElement | undefined;
-  const inspection = $derived([display.selected, display.target, display.inspectedTile].join("|"));
+  const inspection = $derived([view.selected, view.target, view.inspectedTile].join("|"));
 
   $effect(() => {
     inspection;
@@ -51,7 +41,7 @@
   });
 
   function attackWithWeapon(weaponId: string): void {
-    if (!frozen) actions.attackSelected(weaponId);
+    if (!resolving) actions.attackSelected(weaponId);
   }
 </script>
 
@@ -59,7 +49,7 @@
   bind:this={panelElement}
   id="unit-panel"
   class="panel"
-  class:resolving={!!frozen}
+  class:resolving
   aria-label="Selected unit"
   hidden={panel.kind === "hidden"}
 >
@@ -73,15 +63,15 @@
     <div class="duel">
       <UnitCard
         unit={panel.attacker}
-        faction={display.game.faction(panel.attacker.id)}
-        artwork={display.artwork}
+        faction={panel.game.faction(panel.attacker.id)}
+        artwork={view.artwork}
         hp={health?.[0]}
       />
       <span class="duel-divider" aria-hidden="true">⚔</span>
       <UnitCard
         unit={panel.defender}
-        faction={display.game.faction(panel.defender.id)}
-        artwork={display.artwork}
+        faction={panel.game.faction(panel.defender.id)}
+        artwork={view.artwork}
         hp={health?.[1]}
       />
     </div>
@@ -90,11 +80,11 @@
     {:else}
       {#key panel.detailsResetKey}
         <AttackChoices
-          game={display.game}
+          game={panel.game}
           attacker={panel.attacker}
           target={panel.defender}
           onAttack={attackWithWeapon}
-          busy={!!frozen}
+          busy={resolving}
         />
       {/key}
     {/if}
@@ -103,9 +93,7 @@
       details={panel.details}
       artwork={view.artwork}
       onAdvance={(type) => actions.advanceUnit(panel.details.unit.id, type)}
-      onDrop={panel.details.faction.controllable &&
-      display.game.turn === "player" &&
-      !display.game.winner
+      onDrop={panel.details.faction.controllable && view.game.turn === "player" && !view.game.winner
         ? (item) => actions.dropItem(panel.details.unit.id, item)
         : undefined}
     />
