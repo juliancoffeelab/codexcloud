@@ -13,6 +13,8 @@ Every change to the live game goes through normal player input. Observations
 and AI advice leave that game unchanged. Applying commands directly to the live
 controller or engine, or bypassing presentation, invalidates a UI playthrough.
 State assertions and DOM checks support the session; they do not replace playing it.
+The user can request a separate [engine-probe](../engine-probe/SKILL.md) for a
+engine end-to-end probe; it does not complete this UI journey.
 
 ## 1. Define the session
 

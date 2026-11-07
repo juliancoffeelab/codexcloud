@@ -17,6 +17,7 @@ For battlefield rendering changes, preserve the
 # Skills
 
 - [live-play](.agents/skills/live-play/SKILL.md): Playtest through the player UI only when the user explicitly authorizes browser gameplay.
+- [engine-probe](.agents/skills/engine-probe/SKILL.md): Use for user-requested extensive engine end-to-end probes without complete UI coverage.
 
 - [testing](.agents/skills/testing/SKILL.md): Use for bug fixes, test changes and implementation validation.
 - [save-migrations](.agents/skills/save-migrations/SKILL.md): Use when changing or

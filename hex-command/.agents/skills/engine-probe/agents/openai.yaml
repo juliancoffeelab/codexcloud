@@ -1,0 +1,5 @@
+interface:
+  display_name: "Engine Probe"
+  short_description: "Extensive end-to-end probes through the Rust engine"
+policy:
+  allow_implicit_invocation: true
