@@ -256,32 +256,28 @@
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "basilisk-l2": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "basilisk-l3": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "bear": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "claws": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "bear-l2": {
       "selection": "palette:beast-roar",
@@ -289,8 +285,7 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "bear-l3": {
       "selection": "palette:beast-roar",
@@ -298,32 +293,28 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "crocodile": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "crocodile-l2": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "crocodile-l3": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "dragon": {
       "selection": "palette:leather-rustle",
@@ -331,8 +322,7 @@
       "attacks": {
         "fire-breath": "palette:fire-spell-burst",
         "claws": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:fire-spell-burst"
+      }
     },
     "dragon-l2": {
       "selection": "palette:leather-rustle",
@@ -340,8 +330,7 @@
       "attacks": {
         "fire-breath": "palette:fire-spell-burst",
         "claws": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:fire-spell-burst"
+      }
     },
     "dragon-l3": {
       "selection": "palette:leather-rustle",
@@ -349,56 +338,49 @@
       "attacks": {
         "fire-breath": "palette:fire-spell-burst",
         "claws": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:fire-spell-burst"
+      }
     },
     "giant-bat": {
       "selection": "palette:leather-rustle",
       "death": "palette:flier-cry",
       "attacks": {
         "bite": "palette:knife-draw"
-      },
-      "primaryAttack": "palette:knife-draw"
+      }
     },
     "giant-bat-l2": {
       "selection": "palette:leather-rustle",
       "death": "palette:flier-cry",
       "attacks": {
         "bite": "palette:knife-draw"
-      },
-      "primaryAttack": "palette:knife-draw"
+      }
     },
     "giant-bat-l3": {
       "selection": "palette:leather-rustle",
       "death": "palette:flier-cry",
       "attacks": {
         "bite": "palette:knife-draw"
-      },
-      "primaryAttack": "palette:knife-draw"
+      }
     },
     "giant-crab": {
       "selection": "palette:beast-roar",
       "death": "palette:bone-crunch",
       "attacks": {
         "pincers": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "giant-crab-l2": {
       "selection": "palette:beast-roar",
       "death": "palette:bone-crunch",
       "attacks": {
         "pincers": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "giant-crab-l3": {
       "selection": "palette:beast-roar",
       "death": "palette:bone-crunch",
       "attacks": {
         "pincers": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "giant-owl": {
       "selection": "palette:light-cloth-rustle",
@@ -406,8 +388,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "giant-owl-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -415,8 +396,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "giant-owl-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -424,8 +404,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "giant-raven": {
       "selection": "palette:light-cloth-rustle",
@@ -433,8 +412,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "giant-raven-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -442,8 +420,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "giant-raven-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -451,104 +428,91 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "giant-snake": {
       "selection": "palette:reptile-scale-rustle",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:reptile-scale-rustle"
-      },
-      "primaryAttack": "palette:reptile-scale-rustle"
+      }
     },
     "giant-snake-l2": {
       "selection": "palette:reptile-scale-rustle",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:reptile-scale-rustle"
-      },
-      "primaryAttack": "palette:reptile-scale-rustle"
+      }
     },
     "giant-snake-l3": {
       "selection": "palette:reptile-scale-rustle",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:reptile-scale-rustle"
-      },
-      "primaryAttack": "palette:reptile-scale-rustle"
+      }
     },
     "giant-spider": {
       "selection": "palette:spider-leg-rustle",
       "death": "palette:slimy-squelch",
       "attacks": {
         "bite": "palette:creature-spit"
-      },
-      "primaryAttack": "palette:creature-spit"
+      }
     },
     "giant-spider-l2": {
       "selection": "palette:spider-leg-rustle",
       "death": "palette:slimy-squelch",
       "attacks": {
         "bite": "palette:creature-spit"
-      },
-      "primaryAttack": "palette:creature-spit"
+      }
     },
     "giant-spider-l3": {
       "selection": "palette:spider-leg-rustle",
       "death": "palette:slimy-squelch",
       "attacks": {
         "bite": "palette:creature-spit"
-      },
-      "primaryAttack": "palette:creature-spit"
+      }
     },
     "giant-tortoise": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "giant-tortoise-l2": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "giant-tortoise-l3": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:deep-monster-grunt"
-      },
-      "primaryAttack": "palette:deep-monster-grunt"
+      }
     },
     "giant-wasp": {
       "selection": "palette:insect-buzz",
       "death": "palette:slimy-squelch",
       "attacks": {
         "sting": "palette:creature-spit"
-      },
-      "primaryAttack": "palette:creature-spit"
+      }
     },
     "giant-wasp-l2": {
       "selection": "palette:insect-buzz",
       "death": "palette:slimy-squelch",
       "attacks": {
         "sting": "palette:creature-spit"
-      },
-      "primaryAttack": "palette:creature-spit"
+      }
     },
     "giant-wasp-l3": {
       "selection": "palette:insect-buzz",
       "death": "palette:slimy-squelch",
       "attacks": {
         "sting": "palette:creature-spit"
-      },
-      "primaryAttack": "palette:creature-spit"
+      }
     },
     "gryphon": {
       "selection": "palette:light-cloth-rustle",
@@ -556,8 +520,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "gryphon-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -565,8 +528,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "gryphon-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -574,8 +536,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "lynx": {
       "selection": "palette:beast-roar",
@@ -583,8 +544,7 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "lynx-l2": {
       "selection": "palette:beast-roar",
@@ -592,8 +552,7 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "lynx-l3": {
       "selection": "palette:beast-roar",
@@ -601,104 +560,91 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "octopus": {
       "selection": "palette:aquatic-gurgle-selection",
       "death": "palette:slimy-squelch",
       "attacks": {
         "tentacles": "palette:aquatic-gurgle-attack"
-      },
-      "primaryAttack": "palette:aquatic-gurgle-attack"
+      }
     },
     "octopus-l2": {
       "selection": "palette:aquatic-gurgle-selection",
       "death": "palette:slimy-squelch",
       "attacks": {
         "tentacles": "palette:aquatic-gurgle-attack"
-      },
-      "primaryAttack": "palette:aquatic-gurgle-attack"
+      }
     },
     "octopus-l3": {
       "selection": "palette:aquatic-gurgle-selection",
       "death": "palette:slimy-squelch",
       "attacks": {
         "tentacles": "palette:aquatic-gurgle-attack"
-      },
-      "primaryAttack": "palette:aquatic-gurgle-attack"
+      }
     },
     "ray": {
       "selection": "palette:aquatic-creature-call",
       "death": "palette:watery-squish",
       "attacks": {
         "tail-strike": "palette:fish-slap"
-      },
-      "primaryAttack": "palette:fish-slap"
+      }
     },
     "ray-l2": {
       "selection": "palette:aquatic-creature-call",
       "death": "palette:watery-squish",
       "attacks": {
         "tail-strike": "palette:fish-slap"
-      },
-      "primaryAttack": "palette:fish-slap"
+      }
     },
     "ray-l3": {
       "selection": "palette:aquatic-creature-call",
       "death": "palette:watery-squish",
       "attacks": {
         "tail-strike": "palette:fish-slap"
-      },
-      "primaryAttack": "palette:fish-slap"
+      }
     },
     "sea-serpent": {
       "selection": "palette:reptile-scale-rustle",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:reptile-scale-rustle"
-      },
-      "primaryAttack": "palette:reptile-scale-rustle"
+      }
     },
     "sea-serpent-l2": {
       "selection": "palette:reptile-scale-rustle",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:reptile-scale-rustle"
-      },
-      "primaryAttack": "palette:reptile-scale-rustle"
+      }
     },
     "sea-serpent-l3": {
       "selection": "palette:reptile-scale-rustle",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:reptile-scale-rustle"
-      },
-      "primaryAttack": "palette:reptile-scale-rustle"
+      }
     },
     "shark": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:beast-grunt"
+      }
     },
     "shark-l2": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:beast-grunt"
+      }
     },
     "shark-l3": {
       "selection": "palette:beast-roar",
       "death": "palette:dying-creature-groan",
       "attacks": {
         "bite": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:beast-grunt"
+      }
     },
     "stag": {
       "selection": "palette:horse-call",
@@ -706,8 +652,7 @@
       "attacks": {
         "trample": "palette:horse-call",
         "antlers": "palette:horse-call"
-      },
-      "primaryAttack": "palette:horse-call"
+      }
     },
     "stag-l2": {
       "selection": "palette:horse-call",
@@ -715,8 +660,7 @@
       "attacks": {
         "trample": "palette:horse-call",
         "antlers": "palette:horse-call"
-      },
-      "primaryAttack": "palette:horse-call"
+      }
     },
     "stag-l3": {
       "selection": "palette:horse-call",
@@ -724,8 +668,7 @@
       "attacks": {
         "trample": "palette:horse-call",
         "antlers": "palette:horse-call"
-      },
-      "primaryAttack": "palette:horse-call"
+      }
     },
     "werewolf": {
       "selection": "palette:dog-grumble",
@@ -733,8 +676,7 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:dog-snarl"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "werewolf-ironfang": {
       "selection": "palette:dog-grumble",
@@ -742,8 +684,7 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:dog-snarl"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "werewolf-pack-king": {
       "selection": "palette:dog-grumble",
@@ -751,8 +692,7 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:dog-snarl"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "dwarf-axeguard": {
       "selection": "palette:belt-handling",
@@ -760,8 +700,7 @@
       "attacks": {
         "axe": "palette:blade-swish",
         "shield-bash": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "dwarf-axeguard-l2": {
       "selection": "palette:chainmail-rattle",
@@ -769,8 +708,7 @@
       "attacks": {
         "axe": "palette:blade-swish",
         "shield-bash": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "dwarf-axeguard-l3": {
       "selection": "palette:chainmail-rattle",
@@ -778,8 +716,7 @@
       "attacks": {
         "axe": "palette:blade-swish",
         "shield-bash": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "dwarf-axe-pick-l2": {
       "selection": "palette:chainmail-rattle",
@@ -787,8 +724,7 @@
       "attacks": {
         "pickaxe": "palette:mining-strike",
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-axe-pick-l3": {
       "selection": "palette:chainmail-rattle",
@@ -796,8 +732,7 @@
       "attacks": {
         "pickaxe": "palette:mining-strike",
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-pickaxe": {
       "selection": "palette:belt-handling",
@@ -805,24 +740,21 @@
       "attacks": {
         "pickaxe": "palette:mining-strike",
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-hammerer-l2": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:metal-armour-clatter",
       "attacks": {
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-hammerer-l3": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:metal-armour-clatter",
       "attacks": {
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-poleaxe-l2": {
       "selection": "palette:chainmail-rattle",
@@ -830,8 +762,7 @@
       "attacks": {
         "poleaxe": "palette:blade-swish",
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "dwarf-poleaxe-l3": {
       "selection": "palette:chainmail-rattle",
@@ -839,8 +770,7 @@
       "attacks": {
         "poleaxe": "palette:blade-swish",
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "dwarf-crossbow": {
       "selection": "palette:light-cloth-rustle",
@@ -848,8 +778,7 @@
       "attacks": {
         "crossbow": "palette:crossbow-bolt-pass",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:crossbow-bolt-pass"
+      }
     },
     "dwarf-crossbow-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -857,8 +786,7 @@
       "attacks": {
         "crossbow": "palette:crossbow-bolt-pass",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:crossbow-bolt-pass"
+      }
     },
     "dwarf-crossbow-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -866,8 +794,7 @@
       "attacks": {
         "crossbow": "palette:crossbow-bolt-pass",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:crossbow-bolt-pass"
+      }
     },
     "dwarf-arquebus-l2": {
       "selection": "palette:metal-latch",
@@ -875,8 +802,7 @@
       "attacks": {
         "arquebus": "palette:metal-plate-impact",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:metal-plate-impact"
+      }
     },
     "dwarf-arquebus-l3": {
       "selection": "palette:metal-latch",
@@ -884,8 +810,7 @@
       "attacks": {
         "arquebus": "palette:metal-plate-impact",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:metal-plate-impact"
+      }
     },
     "dwarf-runesmith": {
       "selection": "palette:light-cloth-rustle",
@@ -893,8 +818,7 @@
       "attacks": {
         "rune-stone": "palette:arcane-pulse-attack",
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "dwarf-thundersmith-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -902,8 +826,7 @@
       "attacks": {
         "rune-spark": "palette:arcane-pulse-attack",
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "dwarf-thundersmith-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -911,8 +834,7 @@
       "attacks": {
         "rune-spark": "palette:arcane-pulse-attack",
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "dwarf-stonespell-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -920,8 +842,7 @@
       "attacks": {
         "rune-stone": "palette:arcane-pulse-attack",
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "dwarf-stonespell-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -929,32 +850,28 @@
       "attacks": {
         "rune-stone": "palette:arcane-pulse-attack",
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "dwarf-goat-rider": {
       "selection": "palette:horse-call",
       "death": "palette:dwarf-cough",
       "attacks": {
         "spear": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-goat-rider-l2": {
       "selection": "palette:horse-call",
       "death": "palette:dwarf-cough",
       "attacks": {
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-goat-rider-l3": {
       "selection": "palette:horse-call",
       "death": "palette:dwarf-cough",
       "attacks": {
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-pistol-goat-rider-l2": {
       "selection": "palette:horse-call",
@@ -962,8 +879,7 @@
       "attacks": {
         "pistol": "palette:metal-plate-impact",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:metal-plate-impact"
+      }
     },
     "dwarf-pistol-goat-rider-l3": {
       "selection": "palette:horse-call",
@@ -971,112 +887,98 @@
       "attacks": {
         "pistol": "palette:metal-plate-impact",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:metal-plate-impact"
+      }
     },
     "dwarf-forge-lord": {
       "selection": "palette:belt-handling",
       "death": "palette:dwarf-cough",
       "attacks": {
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-forge-lord-l2": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:dwarf-cough",
       "attacks": {
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "dwarf-forge-lord-l3": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:dwarf-cough",
       "attacks": {
         "hammer": "palette:mining-strike"
-      },
-      "primaryAttack": "palette:mining-strike"
+      }
     },
     "elf-spearman": {
       "selection": "palette:belt-handling",
       "death": "palette:elf-cough",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-spearman-l2": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:elf-cough",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-spearman-l3": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:elf-cough",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-jumper-l2": {
       "selection": "palette:crossbow-bolt-pass",
       "death": "palette:elf-cough",
       "attacks": {
         "blade": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-jumper-l3": {
       "selection": "palette:crossbow-bolt-pass",
       "death": "palette:elf-cough",
       "attacks": {
         "blade": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-flanker": {
       "selection": "palette:dagger-draw",
       "death": "palette:elf-cough",
       "attacks": {
         "blade": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-flanker-l2": {
       "selection": "palette:dagger-draw",
       "death": "palette:elf-cough",
       "attacks": {
         "blade": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-flanker-l3": {
       "selection": "palette:dagger-draw",
       "death": "palette:elf-cough",
       "attacks": {
         "blade": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-bladedancer-l2": {
       "selection": "palette:sabre-draw",
       "death": "palette:elf-cough",
       "attacks": {
         "blade": "palette:spear-on-sabre"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "elf-bladedancer-l3": {
       "selection": "palette:sabre-draw",
       "death": "palette:elf-cough",
       "attacks": {
         "blade": "palette:spear-on-sabre"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "elf-archer": {
       "selection": "palette:light-cloth-rustle",
@@ -1084,8 +986,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "elf-archer-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -1093,8 +994,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "elf-archer-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -1102,8 +1002,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "elf-deer-archer": {
       "selection": "palette:light-cloth-rustle",
@@ -1111,8 +1010,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "elf-deer-archer-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -1120,8 +1018,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "elf-deer-archer-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -1129,8 +1026,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "elf-caster": {
       "selection": "palette:light-cloth-rustle",
@@ -1138,8 +1034,7 @@
       "attacks": {
         "arcane-spell": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "elf-caster-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -1147,8 +1042,7 @@
       "attacks": {
         "arcane-spell": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "elf-caster-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -1156,8 +1050,7 @@
       "attacks": {
         "arcane-spell": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "elf-killing-caster-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -1165,8 +1058,7 @@
       "attacks": {
         "arcane-spell": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "elf-killing-caster-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -1174,40 +1066,35 @@
       "attacks": {
         "arcane-spell": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "elf-banner-lord": {
       "selection": "palette:belt-handling",
       "death": "palette:elf-cough",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-banner-lord-l2": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:elf-cough",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "elf-banner-lord-l3": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:elf-cough",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "swordsman": {
       "selection": "palette:belt-handling",
       "death": "palette:cough",
       "attacks": {
         "sword": "palette:spear-on-sabre"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "soldier": {
       "selection": "palette:chainmail-rattle",
@@ -1215,8 +1102,7 @@
       "attacks": {
         "sword": "palette:spear-on-sabre",
         "mace": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "champion": {
       "selection": "palette:chainmail-rattle",
@@ -1224,32 +1110,28 @@
       "attacks": {
         "sword": "palette:spear-on-sabre",
         "mace": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "hammerman": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:cough",
       "attacks": {
         "hammer": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:mace-on-spear-haft"
+      }
     },
     "warhammer": {
       "selection": "palette:chainmail-rattle",
       "death": "palette:metal-armour-clatter",
       "attacks": {
         "hammer": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:mace-on-spear-haft"
+      }
     },
     "spearman": {
       "selection": "palette:belt-handling",
       "death": "palette:cough",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "warden": {
       "selection": "palette:chainmail-rattle",
@@ -1257,8 +1139,7 @@
       "attacks": {
         "spear": "palette:blade-contact",
         "shieldbash": "palette:metal-plate-impact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "sentinel": {
       "selection": "palette:chainmail-rattle",
@@ -1266,8 +1147,7 @@
       "attacks": {
         "spear": "palette:blade-contact",
         "shieldbash": "palette:metal-plate-impact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "halberdier": {
       "selection": "palette:chainmail-rattle",
@@ -1275,8 +1155,7 @@
       "attacks": {
         "halberd": "palette:blade-swish",
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "halberd-master": {
       "selection": "palette:chainmail-rattle",
@@ -1284,8 +1163,7 @@
       "attacks": {
         "halberd": "palette:blade-swish",
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "scout": {
       "selection": "palette:dagger-draw",
@@ -1293,8 +1171,7 @@
       "attacks": {
         "knife": "palette:blade-contact",
         "sling": "palette:book-shut"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "ranger": {
       "selection": "palette:dagger-draw",
@@ -1302,8 +1179,7 @@
       "attacks": {
         "knife": "palette:blade-contact",
         "sling": "palette:book-shut"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "shadowblade": {
       "selection": "palette:dagger-draw",
@@ -1311,8 +1187,7 @@
       "attacks": {
         "knife": "palette:blade-contact",
         "sling": "palette:book-shut"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "slinger": {
       "selection": "palette:small-leather-handling",
@@ -1320,8 +1195,7 @@
       "attacks": {
         "sling": "palette:book-shut",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:book-shut"
+      }
     },
     "fireslinger": {
       "selection": "palette:small-leather-handling",
@@ -1329,8 +1203,7 @@
       "attacks": {
         "firepot": "palette:fire-spell-burst",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:fire-spell-burst"
+      }
     },
     "archer": {
       "selection": "palette:light-cloth-rustle",
@@ -1338,8 +1211,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "marksman": {
       "selection": "palette:light-cloth-rustle",
@@ -1347,8 +1219,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "sharpshooter": {
       "selection": "palette:light-cloth-rustle",
@@ -1356,8 +1227,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "crossbowman": {
       "selection": "palette:light-cloth-rustle",
@@ -1365,8 +1235,7 @@
       "attacks": {
         "crossbow": "palette:crossbow-bolt-pass",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:crossbow-bolt-pass"
+      }
     },
     "arbalester": {
       "selection": "palette:light-cloth-rustle",
@@ -1374,8 +1243,7 @@
       "attacks": {
         "arbalest": "palette:crossbow-bolt-pass",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:crossbow-bolt-pass"
+      }
     },
     "adept": {
       "selection": "palette:light-cloth-rustle",
@@ -1383,8 +1251,7 @@
       "attacks": {
         "spark": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "mage": {
       "selection": "palette:light-cloth-rustle",
@@ -1392,8 +1259,7 @@
       "attacks": {
         "spark": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "archmage": {
       "selection": "palette:light-cloth-rustle",
@@ -1401,8 +1267,7 @@
       "attacks": {
         "spark": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "healer": {
       "selection": "palette:light-cloth-rustle",
@@ -1410,8 +1275,7 @@
       "attacks": {
         "light": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "high-healer": {
       "selection": "palette:light-cloth-rustle",
@@ -1419,24 +1283,21 @@
       "attacks": {
         "light": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "rider": {
       "selection": "palette:horse-call",
       "death": "palette:horse-dying-call",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "lancer": {
       "selection": "palette:horse-call",
       "death": "palette:horse-dying-call",
       "attacks": {
         "lance": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "knight": {
       "selection": "palette:horse-call",
@@ -1444,8 +1305,7 @@
       "attacks": {
         "lance": "palette:blade-contact",
         "sword": "palette:spear-on-sabre"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "horse-archer": {
       "selection": "palette:light-cloth-rustle",
@@ -1453,8 +1313,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "horse-bowman": {
       "selection": "palette:light-cloth-rustle",
@@ -1462,8 +1321,7 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "horse-marksman": {
       "selection": "palette:light-cloth-rustle",
@@ -1471,14 +1329,12 @@
       "attacks": {
         "bow": "palette:scythian-bow-shot",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "captives": {
       "selection": "palette:light-cloth-rustle",
       "death": "palette:cough",
-      "attacks": {},
-      "primaryAttack": null
+      "attacks": {}
     },
     "commander": {
       "selection": "palette:belt-handling",
@@ -1486,8 +1342,7 @@
       "attacks": {
         "sword": "palette:spear-on-sabre",
         "mace": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "marshal": {
       "selection": "palette:chainmail-rattle",
@@ -1495,8 +1350,7 @@
       "attacks": {
         "sword": "palette:spear-on-sabre",
         "mace": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "grand-marshal": {
       "selection": "palette:chainmail-rattle",
@@ -1504,8 +1358,7 @@
       "attacks": {
         "sword": "palette:spear-on-sabre",
         "mace": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "harpooner": {
       "selection": "palette:underwater-belt-rustle",
@@ -1513,8 +1366,7 @@
       "attacks": {
         "harpoon": "palette:spear-on-sabre",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "tidehunter": {
       "selection": "palette:underwater-belt-rustle",
@@ -1522,8 +1374,7 @@
       "attacks": {
         "harpoon": "palette:spear-on-sabre",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "merfolk-harpoon-master": {
       "selection": "palette:underwater-belt-rustle",
@@ -1531,8 +1382,7 @@
       "attacks": {
         "harpoon": "palette:spear-on-sabre",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "merfolk-netter-l2": {
       "selection": "palette:underwater-belt-rustle",
@@ -1540,8 +1390,7 @@
       "attacks": {
         "weighted-net": "palette:scythian-arrow-pass",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-arrow-pass"
+      }
     },
     "merfolk-netter-l3": {
       "selection": "palette:underwater-belt-rustle",
@@ -1549,8 +1398,7 @@
       "attacks": {
         "weighted-net": "palette:scythian-arrow-pass",
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:scythian-arrow-pass"
+      }
     },
     "reefguard": {
       "selection": "palette:underwater-belt-rustle",
@@ -1558,8 +1406,7 @@
       "attacks": {
         "spear": "palette:spear-on-sabre",
         "tail": "palette:fish-slap"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "tridentguard": {
       "selection": "palette:underwater-belt-rustle",
@@ -1567,8 +1414,7 @@
       "attacks": {
         "spear": "palette:spear-on-sabre",
         "shellclub": "palette:mace-on-spear-blade"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "merfolk-reef-champion": {
       "selection": "palette:underwater-belt-rustle",
@@ -1576,24 +1422,21 @@
       "attacks": {
         "spear": "palette:spear-on-sabre",
         "shellclub": "palette:mace-on-spear-blade"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "merfolk-trident-l2": {
       "selection": "palette:underwater-belt-rustle",
       "death": "palette:underwater-cough",
       "attacks": {
         "trident": "palette:spear-on-sabre"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "merfolk-trident-l3": {
       "selection": "palette:underwater-belt-rustle",
       "death": "palette:underwater-cough",
       "attacks": {
         "trident": "palette:spear-on-sabre"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "wavemender": {
       "selection": "palette:underwater-belt-rustle",
@@ -1601,8 +1444,7 @@
       "attacks": {
         "surge": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "tidesage": {
       "selection": "palette:underwater-belt-rustle",
@@ -1610,8 +1452,7 @@
       "attacks": {
         "surge": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "merfolk-tide-oracle": {
       "selection": "palette:underwater-belt-rustle",
@@ -1619,8 +1460,7 @@
       "attacks": {
         "surge": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "merfolk-tidecrusher-l2": {
       "selection": "palette:underwater-belt-rustle",
@@ -1628,8 +1468,7 @@
       "attacks": {
         "crushing-wave": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "merfolk-tidecrusher-l3": {
       "selection": "palette:underwater-belt-rustle",
@@ -1637,32 +1476,28 @@
       "attacks": {
         "crushing-wave": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "merfolk-maceguard": {
       "selection": "palette:underwater-belt-rustle",
       "death": "palette:underwater-cough",
       "attacks": {
         "mace": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:mace-on-spear-haft"
+      }
     },
     "merfolk-maceguard-l2": {
       "selection": "palette:underwater-belt-rustle",
       "death": "palette:underwater-cough",
       "attacks": {
         "mace": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:mace-on-spear-haft"
+      }
     },
     "merfolk-maceguard-l3": {
       "selection": "palette:underwater-belt-rustle",
       "death": "palette:underwater-cough",
       "attacks": {
         "mace": "palette:mace-on-spear-haft"
-      },
-      "primaryAttack": "palette:mace-on-spear-haft"
+      }
     },
     "tidekeeper": {
       "selection": "palette:underwater-belt-rustle",
@@ -1670,8 +1505,7 @@
       "attacks": {
         "trident": "palette:spear-on-sabre",
         "tidebolt": "palette:arcane-pulse-attack"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "tideseer": {
       "selection": "palette:underwater-belt-rustle",
@@ -1679,8 +1513,7 @@
       "attacks": {
         "trident": "palette:spear-on-sabre",
         "tidebolt": "palette:arcane-pulse-attack"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "merfolk-tide-sovereign": {
       "selection": "palette:underwater-belt-rustle",
@@ -1688,8 +1521,7 @@
       "attacks": {
         "trident": "palette:spear-on-sabre",
         "tidebolt": "palette:arcane-pulse-attack"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "skeleton": {
       "selection": "palette:wooden-rattle-unit",
@@ -1697,8 +1529,7 @@
       "attacks": {
         "rustblade": "palette:blade-contact",
         "shieldbash": "palette:metal-plate-impact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "revenant": {
       "selection": "palette:wooden-rattle-unit",
@@ -1706,8 +1537,7 @@
       "attacks": {
         "rustblade": "palette:blade-contact",
         "boneclub": "palette:mace-on-spear-blade"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "skeleton-dreadguard": {
       "selection": "palette:wooden-rattle-unit",
@@ -1715,24 +1545,21 @@
       "attacks": {
         "rustblade": "palette:blade-contact",
         "boneclub": "palette:mace-on-spear-blade"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "skeleton-flanker-l2": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "skeleton-flanker-l3": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "knife": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "skeleton-impact-caster": {
       "selection": "palette:wooden-rattle-unit",
@@ -1740,8 +1567,7 @@
       "attacks": {
         "boneburst": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "skeleton-impact-caster-l2": {
       "selection": "palette:wooden-rattle-unit",
@@ -1749,8 +1575,7 @@
       "attacks": {
         "boneburst": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "skeleton-impact-caster-l3": {
       "selection": "palette:wooden-rattle-unit",
@@ -1758,8 +1583,7 @@
       "attacks": {
         "boneburst": "palette:arcane-pulse-attack",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:arcane-pulse-attack"
+      }
     },
     "skeleton-scythe-caster-l2": {
       "selection": "palette:wooden-rattle-unit",
@@ -1767,8 +1591,7 @@
       "attacks": {
         "soul-drain": "palette:dark-magic-burst",
         "scythe": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:dark-magic-burst"
+      }
     },
     "skeleton-scythe-caster-l3": {
       "selection": "palette:wooden-rattle-unit",
@@ -1776,32 +1599,28 @@
       "attacks": {
         "soul-drain": "palette:dark-magic-burst",
         "scythe": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:dark-magic-burst"
+      }
     },
     "skeleton-rider": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "skeleton-rider-l2": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "skeleton-rider-l3": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "spear": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "bonearcher": {
       "selection": "palette:light-cloth-rustle",
@@ -1809,8 +1628,7 @@
       "attacks": {
         "bonebow": "palette:scythian-bow-shot",
         "shard": "palette:scythian-arrow-pass"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "deatharcher": {
       "selection": "palette:light-cloth-rustle",
@@ -1818,8 +1636,7 @@
       "attacks": {
         "bonebow": "palette:scythian-bow-shot",
         "shard": "palette:scythian-arrow-pass"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "skeleton-bow-master": {
       "selection": "palette:light-cloth-rustle",
@@ -1827,32 +1644,28 @@
       "attacks": {
         "bonebow": "palette:scythian-bow-shot",
         "shard": "palette:scythian-arrow-pass"
-      },
-      "primaryAttack": "palette:scythian-bow-shot"
+      }
     },
     "skeleton-axeman": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "skeleton-axeman-l2": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "skeleton-axeman-l3": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "axe": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "ghost": {
       "selection": "palette:ghost-groan",
@@ -1860,8 +1673,7 @@
       "attacks": {
         "spectral-touch": "palette:spectral-magic",
         "spectral-orb": "palette:arcane-pulse-attack"
-      },
-      "primaryAttack": "palette:spectral-magic"
+      }
     },
     "wraith": {
       "selection": "palette:ghost-groan",
@@ -1869,8 +1681,7 @@
       "attacks": {
         "spectral-touch": "palette:spectral-magic",
         "spectral-orb": "palette:arcane-pulse-attack"
-      },
-      "primaryAttack": "palette:spectral-magic"
+      }
     },
     "spectre": {
       "selection": "palette:ghost-groan",
@@ -1878,8 +1689,7 @@
       "attacks": {
         "spectral-touch": "palette:spectral-magic",
         "spectral-orb": "palette:arcane-pulse-attack"
-      },
-      "primaryAttack": "palette:spectral-magic"
+      }
     },
     "necromancer": {
       "selection": "palette:wooden-rattle-unit",
@@ -1887,8 +1697,7 @@
       "attacks": {
         "gravebolt": "palette:dark-magic-burst",
         "bonestaff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:dark-magic-burst"
+      }
     },
     "lich": {
       "selection": "palette:wooden-rattle-unit",
@@ -1896,8 +1705,7 @@
       "attacks": {
         "gravebolt": "palette:dark-magic-burst",
         "bonestaff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:dark-magic-burst"
+      }
     },
     "lich-commander-l3": {
       "selection": "palette:wooden-rattle-unit",
@@ -1905,32 +1713,28 @@
       "attacks": {
         "gravebolt": "palette:dark-magic-burst",
         "bonestaff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:dark-magic-burst"
+      }
     },
     "skeletal-hound": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "fangs": "palette:wooden-rattle-unit"
-      },
-      "primaryAttack": "palette:wooden-rattle-unit"
+      }
     },
     "skeletal-hound-l2": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "bite": "palette:wooden-rattle-unit"
-      },
-      "primaryAttack": "palette:wooden-rattle-unit"
+      }
     },
     "skeletal-hound-l3": {
       "selection": "palette:wooden-rattle-unit",
       "death": "palette:bone-crunch",
       "attacks": {
         "bite": "palette:wooden-rattle-unit"
-      },
-      "primaryAttack": "palette:wooden-rattle-unit"
+      }
     },
     "corpse-vulture": {
       "selection": "palette:light-cloth-rustle",
@@ -1938,8 +1742,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "corpse-vulture-l2": {
       "selection": "palette:light-cloth-rustle",
@@ -1947,8 +1750,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "corpse-vulture-l3": {
       "selection": "palette:light-cloth-rustle",
@@ -1956,8 +1758,7 @@
       "attacks": {
         "talons": "palette:light-cloth-rustle",
         "beak": "palette:light-cloth-rustle"
-      },
-      "primaryAttack": "palette:light-cloth-rustle"
+      }
     },
     "skeletal-horse": {
       "selection": "palette:wooden-rattle-unit",
@@ -1965,8 +1766,7 @@
       "attacks": {
         "trample": "palette:wooden-rattle-unit",
         "hooves": "palette:wooden-rattle-unit"
-      },
-      "primaryAttack": "palette:wooden-rattle-unit"
+      }
     },
     "skeletal-horse-l2": {
       "selection": "palette:wooden-rattle-unit",
@@ -1974,8 +1774,7 @@
       "attacks": {
         "trample": "palette:wooden-rattle-unit",
         "hooves": "palette:wooden-rattle-unit"
-      },
-      "primaryAttack": "palette:wooden-rattle-unit"
+      }
     },
     "skeletal-horse-l3": {
       "selection": "palette:wooden-rattle-unit",
@@ -1983,8 +1782,7 @@
       "attacks": {
         "trample": "palette:wooden-rattle-unit",
         "hooves": "palette:wooden-rattle-unit"
-      },
-      "primaryAttack": "palette:wooden-rattle-unit"
+      }
     },
     "zombie-bear": {
       "selection": "palette:deep-monster-grunt",
@@ -1992,8 +1790,7 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:monstrous-bite-grunt"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "zombie-bear-l2": {
       "selection": "palette:deep-monster-grunt",
@@ -2001,8 +1798,7 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:monstrous-bite-grunt"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "zombie-bear-l3": {
       "selection": "palette:deep-monster-grunt",
@@ -2010,8 +1806,7 @@
       "attacks": {
         "claws": "palette:blade-swish",
         "bite": "palette:monstrous-bite-grunt"
-      },
-      "primaryAttack": "palette:blade-swish"
+      }
     },
     "bone-dragon": {
       "selection": "palette:wooden-rattle-unit",
@@ -2019,8 +1814,7 @@
       "attacks": {
         "fire-breath": "palette:fire-spell-burst",
         "claws": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:fire-spell-burst"
+      }
     },
     "bone-dragon-l2": {
       "selection": "palette:wooden-rattle-unit",
@@ -2028,8 +1822,7 @@
       "attacks": {
         "fire-breath": "palette:fire-spell-burst",
         "claws": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:fire-spell-burst"
+      }
     },
     "bone-dragon-l3": {
       "selection": "palette:wooden-rattle-unit",
@@ -2037,32 +1830,28 @@
       "attacks": {
         "fire-breath": "palette:fire-spell-burst",
         "claws": "palette:blade-swish"
-      },
-      "primaryAttack": "palette:fire-spell-burst"
+      }
     },
     "wolf": {
       "selection": "palette:dog-grumble",
       "death": "palette:wolf-howl",
       "attacks": {
         "fangs": "palette:dog-snarl"
-      },
-      "primaryAttack": "palette:dog-snarl"
+      }
     },
     "direwolf": {
       "selection": "palette:dog-grumble",
       "death": "palette:wolf-howl",
       "attacks": {
         "fangs": "palette:dog-snarl"
-      },
-      "primaryAttack": "palette:dog-snarl"
+      }
     },
     "woodland-alpha-wolf": {
       "selection": "palette:dog-grumble",
       "death": "palette:wolf-howl",
       "attacks": {
         "fangs": "palette:dog-snarl"
-      },
-      "primaryAttack": "palette:dog-snarl"
+      }
     },
     "boar": {
       "selection": "palette:beast-roar",
@@ -2070,8 +1859,7 @@
       "attacks": {
         "trample": "palette:beast-grunt",
         "tusks": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:beast-grunt"
+      }
     },
     "greatboar": {
       "selection": "palette:beast-roar",
@@ -2079,8 +1867,7 @@
       "attacks": {
         "trample": "palette:beast-grunt",
         "tusks": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:beast-grunt"
+      }
     },
     "woodland-ancient-boar": {
       "selection": "palette:beast-roar",
@@ -2088,8 +1875,7 @@
       "attacks": {
         "trample": "palette:beast-grunt",
         "tusks": "palette:beast-grunt"
-      },
-      "primaryAttack": "palette:beast-grunt"
+      }
     },
     "thorncaller": {
       "selection": "palette:light-cloth-rustle",
@@ -2097,8 +1883,7 @@
       "attacks": {
         "thorns": "palette:scythian-arrow-pass",
         "rootstaff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:scythian-arrow-pass"
+      }
     },
     "briarweaver": {
       "selection": "palette:light-cloth-rustle",
@@ -2107,8 +1892,7 @@
         "thorns": "palette:scythian-arrow-pass",
         "rootstaff": "palette:wooden-staff-impact",
         "root-crush": "palette:spectral-magic"
-      },
-      "primaryAttack": "palette:scythian-arrow-pass"
+      }
     },
     "woodland-thorn-oracle": {
       "selection": "palette:light-cloth-rustle",
@@ -2117,8 +1901,7 @@
         "thorns": "palette:scythian-arrow-pass",
         "rootstaff": "palette:wooden-staff-impact",
         "root-crush": "palette:spectral-magic"
-      },
-      "primaryAttack": "palette:scythian-arrow-pass"
+      }
     },
     "woodland-bramble-warden": {
       "selection": "palette:light-cloth-rustle",
@@ -2126,8 +1909,7 @@
       "attacks": {
         "thorns": "palette:scythian-arrow-pass",
         "rootstaff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:scythian-arrow-pass"
+      }
     },
     "woodland-thornbinder": {
       "selection": "palette:light-cloth-rustle",
@@ -2135,32 +1917,28 @@
       "attacks": {
         "thorns": "palette:scythian-arrow-pass",
         "rootstaff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:scythian-arrow-pass"
+      }
     },
     "fox-spearguard": {
       "selection": "palette:dog-grumble",
       "death": "palette:cough",
       "attacks": {
         "spear": "palette:spear-on-sabre"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "fox-spearguard-l2": {
       "selection": "palette:dog-grumble",
       "death": "palette:cough",
       "attacks": {
         "spear": "palette:spear-on-sabre"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "fox-spearguard-l3": {
       "selection": "palette:dog-grumble",
       "death": "palette:cough",
       "attacks": {
         "spear": "palette:spear-on-sabre"
-      },
-      "primaryAttack": "palette:spear-on-sabre"
+      }
     },
     "treant": {
       "selection": "palette:beast-roar",
@@ -2168,8 +1946,7 @@
       "attacks": {
         "bough": "palette:wooden-plank-impact",
         "spikes": "palette:wooden-plank-impact"
-      },
-      "primaryAttack": "palette:wooden-plank-impact"
+      }
     },
     "treant-l2": {
       "selection": "palette:beast-roar",
@@ -2177,8 +1954,7 @@
       "attacks": {
         "bough": "palette:wooden-plank-impact",
         "spikes": "palette:wooden-plank-impact"
-      },
-      "primaryAttack": "palette:wooden-plank-impact"
+      }
     },
     "treant-l3": {
       "selection": "palette:beast-roar",
@@ -2186,8 +1962,7 @@
       "attacks": {
         "bough": "palette:wooden-plank-impact",
         "spikes": "palette:wooden-plank-impact"
-      },
-      "primaryAttack": "palette:wooden-plank-impact"
+      }
     },
     "wildkeeper": {
       "selection": "palette:light-cloth-rustle",
@@ -2195,8 +1970,7 @@
       "attacks": {
         "bough": "palette:solid-wood-impact",
         "stones": "palette:stone-scatter-attack"
-      },
-      "primaryAttack": "palette:solid-wood-impact"
+      }
     },
     "grovewarden": {
       "selection": "palette:light-cloth-rustle",
@@ -2204,8 +1978,7 @@
       "attacks": {
         "bough": "palette:solid-wood-impact",
         "stones": "palette:stone-scatter-attack"
-      },
-      "primaryAttack": "palette:solid-wood-impact"
+      }
     },
     "woodland-grove-oracle": {
       "selection": "palette:light-cloth-rustle",
@@ -2213,40 +1986,35 @@
       "attacks": {
         "bough": "palette:solid-wood-impact",
         "stones": "palette:stone-scatter-attack"
-      },
-      "primaryAttack": "palette:solid-wood-impact"
+      }
     },
     "zombie-walker": {
       "selection": "palette:ragged-breath",
       "death": "palette:zombie-death-grunt",
       "attacks": {
         "grasp": "palette:burp"
-      },
-      "primaryAttack": "palette:burp"
+      }
     },
     "zombie-fighter": {
       "selection": "palette:ragged-breath",
       "death": "palette:zombie-death-grunt",
       "attacks": {
         "blade": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "zombie-cleaver": {
       "selection": "palette:deep-monster-grunt",
       "death": "palette:zombie-death-grunt",
       "attacks": {
         "cleaver": "palette:blade-contact"
-      },
-      "primaryAttack": "palette:blade-contact"
+      }
     },
     "zombie-decay-caster": {
       "selection": "palette:ragged-breath",
       "death": "palette:zombie-death-grunt",
       "attacks": {
         "mire-bolt": "palette:dark-magic-burst"
-      },
-      "primaryAttack": "palette:dark-magic-burst"
+      }
     },
     "zombie-plague-carrier": {
       "selection": "palette:deep-monster-grunt",
@@ -2254,8 +2022,7 @@
       "attacks": {
         "grasping-hands": "palette:burp",
         "bite": "palette:monstrous-bite-grunt"
-      },
-      "primaryAttack": "palette:burp"
+      }
     },
     "zombie-shambler": {
       "selection": "palette:deep-monster-grunt",
@@ -2263,8 +2030,7 @@
       "attacks": {
         "grasping-hands": "palette:burp",
         "bite": "palette:monstrous-bite-grunt"
-      },
-      "primaryAttack": "palette:burp"
+      }
     },
     "zombie-ghoul": {
       "selection": "palette:deep-monster-grunt",
@@ -2272,8 +2038,7 @@
       "attacks": {
         "grasping-hands": "palette:burp",
         "bite": "palette:monstrous-bite-grunt"
-      },
-      "primaryAttack": "palette:burp"
+      }
     },
     "zombie-corruption-mage-l1": {
       "selection": "palette:ragged-breath",
@@ -2281,8 +2046,7 @@
       "attacks": {
         "corruption-spell": "palette:dark-magic-burst",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:dark-magic-burst"
+      }
     },
     "zombie-corruption-mage": {
       "selection": "palette:ragged-breath",
@@ -2290,8 +2054,7 @@
       "attacks": {
         "corruption-spell": "palette:dark-magic-burst",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:dark-magic-burst"
+      }
     },
     "zombie-corruption-archmage": {
       "selection": "palette:ragged-breath",
@@ -2299,8 +2062,7 @@
       "attacks": {
         "corruption-spell": "palette:dark-magic-burst",
         "staff": "palette:wooden-staff-impact"
-      },
-      "primaryAttack": "palette:dark-magic-burst"
+      }
     }
   },
   "terrain": {
