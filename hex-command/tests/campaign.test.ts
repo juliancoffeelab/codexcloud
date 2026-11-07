@@ -1,3 +1,4 @@
+import { readSave, storeSave } from "../src/save/storage";
 import tileHistory from "../src/save/migrations/legacy/data/tiles-v26.json";
 import characterHistory from "../src/save/migrations/legacy/data/characters-v25.json";
 import { createTestFactory } from "./native-fixture";
@@ -54,11 +55,11 @@ test("Legacy refuge retains company and ownership", async () => {
   legacy.gold.player = 32;
   legacy.tile("hex-0891-b20a50ef8c")!.owner = "player";
   legacy.tile("hex-0866-c54da0213d")!.owner = "player";
-  saveBattle(legacy);
-  const oldSave = JSON.parse(localStorage.getItem(SAVE_KEY)!);
+  await saveBattle(legacy);
+  const oldSave = JSON.parse((await readSave())!);
   oldSave.state.mapRevision = 1;
-  localStorage.setItem(SAVE_KEY, JSON.stringify(oldSave));
-  const restored = loadBattle().game;
+  await storeSave(JSON.stringify(oldSave));
+  const restored = (await loadBattle()).game;
   assert.equal(restored.mapId, "ashen-refuge");
   assert.equal(restored.mapRevision, 2);
   assert.equal(restored.round, 2);
@@ -67,18 +68,18 @@ test("Legacy refuge retains company and ownership", async () => {
   assert.equal(restored.tile("hex-0738-f0cce97107")?.owner, "player");
   assert.equal(restored.tile("hex-0766-4907292e1d")?.terrain, "village");
   assert.equal(restored.tile("hex-0866-c54da0213d")?.terrain, "plains");
-  saveBattle(restored);
-  assert.deepEqual(loadBattle().game.snapshot(), restored.snapshot());
+  await saveBattle(restored);
+  assert.deepEqual((await loadBattle()).game.snapshot(), restored.snapshot());
 });
 // Interrupted enemy checkpoints replay waves and campaign ownership deterministically.
 test("Interrupted wave checkpoint replays once", async () => {
   const game = Game.startCampaign("ashen-oath", 0);
   game.advanceDialogue(true);
   game.round = 6;
-  saveBattle(game, true);
-  assert.equal(loadBattle().pendingEnemy, true);
-  const first = new BattleController(async () => {}, createTestFactory());
-  const replay = new BattleController(async () => {}, createTestFactory());
+  await saveBattle(game, true);
+  assert.equal((await loadBattle()).pendingEnemy, true);
+  const first = await BattleController.create(async () => {}, createTestFactory());
+  const replay = await BattleController.create(async () => {}, createTestFactory());
   await first.endTurn();
   await replay.endTurn();
   assert.deepEqual(replay.snapshot(), first.snapshot());
@@ -91,7 +92,7 @@ test("Interrupted wave checkpoint replays once", async () => {
 test("Replacing a paused session cancels it and dialogue gates commands", async () => {
   storage.clear();
   let release: (() => void) | undefined;
-  const controller = new BattleController(
+  const controller = await BattleController.create(
     () =>
       new Promise<void>((resolve) => {
         release = resolve;
@@ -101,7 +102,7 @@ test("Replacing a paused session cancels it and dialogue gates commands", async 
   let latest: BattleView | undefined;
   const unsubscribe = controller.view.subscribe((view) => (latest = view));
   const oldTurn = controller.endTurn();
-  controller.commands.startCampaign("green-accord");
+  await controller.commands.startCampaign("green-accord");
   required(release)();
   await oldTurn;
   assert.equal(latest?.game.mapId, "green-border");

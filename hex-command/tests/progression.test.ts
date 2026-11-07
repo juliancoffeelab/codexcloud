@@ -1,3 +1,4 @@
+import { readSave, storeSave } from "../src/save/storage";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { describeChanges } from "../src/controller/feedback";
@@ -58,13 +59,13 @@ test("Progressed campaign units persist and invalid XP is rejected", async () =>
   pilot.experience = 7;
   campaign.winner = "player";
   const next = campaign.nextCampaignMission([recruit.id]);
-  saveBattle(next);
-  assert.equal(loadBattle().game.campaign?.id, "borrowed-tide");
-  assert.deepEqual(loadBattle().game.units, next.units);
-  const saved = JSON.parse(required(localStorage.getItem(SAVE_KEY)));
+  await saveBattle(next);
+  assert.equal((await loadBattle()).game.campaign?.id, "borrowed-tide");
+  assert.deepEqual((await loadBattle()).game.units, next.units);
+  const saved = JSON.parse(required(await readSave()));
   saved.checkpoint.state.units[0].experience = -1;
-  localStorage.setItem(SAVE_KEY, JSON.stringify(saved));
-  assert.equal(loadBattle().game.mapId, "mirror");
+  await storeSave(JSON.stringify(saved));
+  assert.equal((await loadBattle()).game.mapId, "mirror");
 });
 test("Promoted skirmish leaders survive reload", async () => {
   const classic = new Game();
@@ -72,9 +73,9 @@ test("Promoted skirmish leaders survive reload", async () => {
   const promotion = required(TYPES[commander.type].advancesTo?.[0]);
   commander.experience = required(TYPES[commander.type].experienceNeeded);
   classic.advanceUnit(commander.id, promotion);
-  saveBattle(classic);
+  await saveBattle(classic);
   assert.equal(
-    loadBattle().game.unit("u1")?.type,
+    (await loadBattle()).game.unit("u1")?.type,
     promotion,
     "Promoted leaders survive reload outside campaigns",
   );
@@ -98,8 +99,8 @@ for (const [chapter, oldName, officerName] of [
       oldCoast.campaign!.dialogue = [
         required(CAMPAIGNS["borrowed-tide"].missions[chapter]!.legacyDialogue?.[0]),
       ];
-      saveBattle(oldCoast);
-      const migrated = loadBattle().game;
+      await saveBattle(oldCoast);
+      const migrated = (await loadBattle()).game;
       assert.equal(migrated.campaign?.id, "borrowed-tide");
       const { name: _legacyName, ...identity } = officer;
       assert.deepEqual(migrated.unit(officer.id), identity);

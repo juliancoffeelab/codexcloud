@@ -6,8 +6,8 @@ import { saveBattle as writeCurrent } from "../src/save/write";
 import { createTestFactory } from "./native-fixture";
 import type { SavedGame } from "../rust/pkg/hex_command";
 export { importWaveMarker } from "../src/save/migrations/legacy/snapshot";
-export { SAVE_KEY } from "../src/save/storage";
-import { SAVE_KEY } from "../src/save/storage";
+export { SAVE_KEY } from "../src/save/migrations/storage-v1-to-v2";
+import { storeSave } from "../src/save/storage";
 import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
 import tileHistory from "../src/save/migrations/legacy/data/tiles-v26.json";
 import historical from "../src/save/migrations/legacy/data/characters-v25.json";
@@ -95,9 +95,9 @@ export function historicalCharacters<T>(input: T): T {
   return state as T;
 }
 export const SAVE_VERSION = 1;
-export function saveBattle(game: Game | LiveGame, pendingEnemy = false): void {
+export async function saveBattle(game: Game | LiveGame, pendingEnemy = false): Promise<void> {
   if (!(game instanceof Game)) {
-    writeCurrent(game, pendingEnemy);
+    await writeCurrent(game, pendingEnemy);
     return;
   }
   const {
@@ -113,8 +113,7 @@ export function saveBattle(game: Game | LiveGame, pendingEnemy = false): void {
   const sites = tiles
     .filter((tile) => ["grove", "fort", "ruins"].includes(tile.terrain))
     .map(({ id, owner }) => ({ id, owner }));
-  localStorage.setItem(
-    SAVE_KEY,
+  await storeSave(
     JSON.stringify({
       version: 1,
       campaignDeploymentFormat: "named-waves-v1",
@@ -123,8 +122,8 @@ export function saveBattle(game: Game | LiveGame, pendingEnemy = false): void {
     }),
   );
 }
-export function loadBattle() {
-  const loaded = loadCurrent(createTestFactory());
+export async function loadBattle() {
+  const loaded = await loadCurrent(createTestFactory());
   try {
     return {
       game: Game.fromCheckpoint(

@@ -105,16 +105,20 @@ export async function openHarness(options = {}) {
       { name, args },
     );
   const checkpoint = async (name) => {
-    const data = await evaluate(() => {
+    const data = await evaluate(async () => {
       const { controller, game } = globalThis.__livePlay;
+      let entries = null;
+      let entriesError;
+      if (typeof controller.savedProgress === "function") {
+        try { entries = await controller.savedProgress(); }
+        catch (error) { entriesError = String(error); }
+      }
       return {
         snapshot: controller.snapshot(),
         native: game().checkpoint(),
-        entries:
-          typeof controller.savedProgress === "function" ? controller.savedProgress() : null,
-        storage: Object.fromEntries(
-          Object.entries(localStorage).filter(([key]) => key.startsWith("hex-command")),
-        ),
+        entries,
+        entriesError,
+        storage: await (await import("/src/save/debug.ts")).captureBrowserSaves(),
       };
     });
     await writeFile(`${directory}/${name}.json`, JSON.stringify(data, null, 2));

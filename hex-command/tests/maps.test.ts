@@ -1,3 +1,4 @@
+import { readSave, storeSave } from "../src/save/storage";
 import { historicalTiles } from "./legacy-save";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import { required, TestStorage } from "./helpers.ts";
@@ -6,7 +7,7 @@ import { pixelSprites } from "../src/presentation/pixel-art";
 
 const { Game, TYPES, developerFixture } = await import("./game-fixture.ts");
 
-test("Developer map shows every playable type and reserves space for the pixel collection", () => {
+test("Developer map shows every playable type and reserves space for the pixel collection", async () => {
   const game = new Game("developer");
   for (const type of Object.keys(TYPES))
     for (const side of ["player", "enemy"])
@@ -52,8 +53,8 @@ const { loadBattle, saveBattle, SAVE_KEY, SAVE_VERSION } = await import("./legac
 
 test("Developer saves remain noncampaign and round-trip", async () => {
   const showcase = developerFixture();
-  saveBattle(showcase);
-  const loaded = loadBattle();
+  await saveBattle(showcase);
+  const loaded = await loadBattle();
   assert.deepEqual(loaded.game.snapshot(), showcase.snapshot());
   assert.equal(loaded.pendingEnemy, false);
   assert.equal(loaded.game.campaign, undefined);
@@ -64,9 +65,9 @@ test("Moved developer sites persist ownership", async () => {
   const destination = "hex-0866-c54da0213d";
   game.move(unit.id, destination);
   assert.equal(required(game.tile(destination)).owner, "player");
-  saveBattle(game);
-  assert.deepEqual(loadBattle().game.snapshot(), game.snapshot());
-  assert.equal(required(loadBattle().game.tile(destination)).owner, "player");
+  await saveBattle(game);
+  assert.deepEqual((await loadBattle()).game.snapshot(), game.snapshot());
+  assert.equal(required((await loadBattle()).game.tile(destination)).owner, "player");
 });
 test("Ordinary skirmishes do not publish site ownership overrides", async () => {
   assert.equal(new Game("mirror").snapshot().sites, undefined);
@@ -86,8 +87,8 @@ test("Legacy developer saves gain neutral sites without resetting units", async 
   const units = structuredClone(validSave.state.units);
   const legacySave = historicalTiles(validSave);
   delete legacySave.state.sites;
-  localStorage.setItem(SAVE_KEY, JSON.stringify(legacySave));
-  const legacy = loadBattle().game;
+  await storeSave(JSON.stringify(legacySave));
+  const legacy = (await loadBattle()).game;
   assert.equal(legacy.mapId, "developer");
   assert.deepEqual(legacy.units, units);
   assert(required(legacy.snapshot().sites).every((site) => site.owner === null));
@@ -100,8 +101,8 @@ test("Campaign saves still require site ownership", async () => {
     state: { ...campaign.snapshot(), nextId: campaign.nextId, log: campaign.log },
   };
   delete missingCampaignSites.state.sites;
-  localStorage.setItem(SAVE_KEY, JSON.stringify(missingCampaignSites));
-  assert.equal(loadBattle().game.mapId, "mirror", "Campaign sites remain mandatory");
+  await storeSave(JSON.stringify(missingCampaignSites));
+  assert.equal((await loadBattle()).game.mapId, "mirror", "Campaign sites remain mandatory");
 });
 const invalidCases: [string, (save: ReturnType<typeof validDeveloperSave>) => void][] = [
   [
@@ -162,11 +163,11 @@ const invalidCases: [string, (save: ReturnType<typeof validDeveloperSave>) => vo
     },
   ],
 ];
-test.each(invalidCases)("Invalid developer save is rejected: %s", (_label, invalidate) => {
+test.each(invalidCases)("Invalid developer save is rejected: %s", async (_label, invalidate) => {
   const invalid = validDeveloperSave();
   invalidate(invalid);
-  localStorage.setItem(SAVE_KEY, JSON.stringify(invalid));
-  assert.equal(loadBattle().game.mapId, "mirror");
+  await storeSave(JSON.stringify(invalid));
+  assert.equal((await loadBattle()).game.mapId, "mirror");
 });
 
 beforeEach(() => {

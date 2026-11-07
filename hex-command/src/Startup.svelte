@@ -3,15 +3,19 @@
   import type { createBattleApplication } from "./battle-app";
   import BattleBar from "./ui/BattleBar.svelte";
 
-  let application = $state<ReturnType<typeof createBattleApplication>>();
+  let application = $state<Awaited<ReturnType<typeof createBattleApplication>>>();
   let failure = $state<string>();
 
   onMount(() => {
     let current = true;
     void import("./battle-app")
-      .then((module) => {
+      .then(async (module) => {
         if (!current) return;
-        const ready = module.createBattleApplication();
+        const ready = await module.createBattleApplication();
+        if (!current) {
+          ready.controller.dispose();
+          return;
+        }
         try {
           flushSync(() => (application = ready));
         } catch (error) {

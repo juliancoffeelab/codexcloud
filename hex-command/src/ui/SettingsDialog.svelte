@@ -1,49 +1,185 @@
 <script lang="ts">
+  import { tick } from "svelte";
+  import DialogWindow from "./DialogWindow.svelte";
   import TraceControls from "./TraceControls.svelte";
+  import SavedProgress from "./SavedProgress.svelte";
   import type { BattleView, BattleCommands } from "../controller/view";
   interface Props {
     view: BattleView;
     actions: BattleCommands;
     dialog?: HTMLDialogElement;
     onNewBattle: () => void;
+    onRepair: () => void;
   }
-  let { view, actions, dialog = $bindable(), onNewBattle }: Props = $props();
-  function closeOnBackdropClick(event: MouseEvent) {
-    if (!dialog || event.target !== dialog) return;
-    const bounds = dialog.getBoundingClientRect();
-    const clickedOutside =
-      event.clientX < bounds.left ||
-      event.clientX > bounds.right ||
-      event.clientY < bounds.top ||
-      event.clientY > bounds.bottom;
-    if (clickedOutside) dialog.close();
+  let { view, actions, dialog = $bindable(), onNewBattle, onRepair }: Props = $props();
+  type Screen = "hub" | "saves" | "manual" | "conversations" | "journal" | "debug";
+  const titles: Record<Screen, string> = {
+    hub: "Settings",
+    saves: "Saved games",
+    manual: "Field manual",
+    conversations: "Campaign conversations",
+    journal: "Battle journal",
+    debug: "Debug tools",
+  };
+  let screen = $state<Screen>("hub");
+  let body = $state<HTMLDivElement>();
+  let frame: { focusHeading(): void };
+  let savedGames: { open(): Promise<void> };
+  let saving = $state(false);
+  let saved = $state(false);
+  async function saveGame() {
+    saving = true;
+    try {
+      await actions.saveGame();
+      saved = true;
+    } catch {
+      /* The controller exposes the save-failure dialog. */
+    } finally {
+      saving = false;
+    }
+  }
+  const positions = new Map<Screen, number>();
+  function rememberPosition() {
+    positions.set(screen, body?.scrollTop ?? 0);
+  }
+  function close() {
+    rememberPosition();
+    dialog?.close();
+  }
+  function newBattle() {
+    rememberPosition();
+    onNewBattle();
+  }
+  async function navigate(next: Screen) {
+    if (next === "saves" && view.loadProblem && view.loadProblem.kind !== "ready") {
+      onRepair();
+      return;
+    }
+    rememberPosition();
+    const previous = screen;
+    screen = next;
+    if (next === "saves") void savedGames.open();
+    await tick();
+    if (!dialog?.open || screen !== next || !body) return;
+    body.scrollTop = positions.get(next) ?? 0;
+    if (next === "hub") {
+      body
+        .querySelector<HTMLButtonElement>(`[data-window="${previous}"]`)
+        ?.focus({ preventScroll: true });
+    } else frame.focusHeading();
+  }
+  export function open(focusId?: string) {
+    screen = "hub";
+    saved = false;
+    dialog?.showModal();
+    void tick().then(() => {
+      if (screen === "hub" && dialog?.open && body) {
+        body.scrollTop = positions.get("hub") ?? 0;
+        if (focusId) body.querySelector<HTMLElement>(`#${focusId}`)?.focus({ preventScroll: true });
+      }
+    });
+  }
+  export function openSavedGames() {
+    if (view.loadProblem && view.loadProblem.kind !== "ready") {
+      onRepair();
+      return;
+    }
+    screen = "saves";
+    void savedGames.open();
+    dialog?.showModal();
+    void tick().then(() => {
+      if (screen === "saves" && dialog?.open && body) {
+        body.scrollTop = positions.get("saves") ?? 0;
+        frame.focusHeading();
+      }
+    });
+  }
+  async function startMirror() {
+    try {
+      await actions.startCampaign("mirror-night");
+      close();
+    } catch (error) {
+      actions.error(error);
+    }
   }
 </script>
 
-<dialog bind:this={dialog} id="settings-dialog" onclick={closeOnBackdropClick}>
-  <div class="settings-heading">
-    <h2>Settings</h2>
-    <button
-      id="close-settings"
-      class="icon-button"
-      aria-label="Close settings"
-      onclick={() => dialog?.close()}
-    >
-      ×
-    </button>
+{#snippet chevron()}
+  <svg class="chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" /></svg>
+{/snippet}
+{#snippet entry(label: string, target: Screen)}
+  <button class="setting-row" data-window={target} onclick={() => navigate(target)}>
+    <span class="label">{label}</span>
+    {@render chevron()}
+  </button>
+{/snippet}
+<DialogWindow
+  bind:this={frame}
+  bind:dialog
+  bind:body
+  onBeforeClose={rememberPosition}
+  id="settings-dialog"
+  title={titles[screen]}
+  width={screen === "hub" ? "420px" : screen === "saves" ? "500px" : "680px"}
+  tall={screen !== "hub"}
+  onBack={screen === "hub"
+    ? undefined
+    : () => {
+        void navigate("hub");
+      }}
+>
+  <div class="settings-hub" hidden={screen !== "hub"}>
+    <section>
+      <h3 class="group-label">Game</h3>
+      <label class="setting-row sound-row" for="sound-effects">
+        <span class="label">Sound effects</span>
+        <input
+          id="sound-effects"
+          type="checkbox"
+          checked={view.sound}
+          onchange={(event) => void actions.setSound(event.currentTarget.checked)}
+        />
+      </label>
+      <details class="difficulty" id="opponent-difficulty">
+        <summary class="setting-row">
+          <span class="label">Opponent difficulty</span>
+          <span class="value">{view.opponent.difficulty}</span>
+          {@render chevron()}
+        </summary>
+        <p class="difficulty-details">
+          {#if view.opponent.planner && view.opponent.recruiter}
+            Planner: {view.opponent.planner}
+            <br />
+            Recruiter: {view.opponent.recruiter}
+          {:else}Policy: {view.opponent.policy}{/if}
+        </p>
+      </details>
+      {@render entry(
+        view.loadProblem && view.loadProblem.kind !== "ready"
+          ? "Repair saved games"
+          : "Saved games",
+        "saves",
+      )}
+      <button class="new-game" disabled={saving || saved || !view.canSave} onclick={saveGame}>
+        {saving ? "Saving…" : saved ? "Saved" : "Save game"}
+      </button>
+      <button id="new-game" class="new-game" onclick={newBattle}>New game</button>
+    </section>
+    <section>
+      <h3 class="group-label">Reference</h3>
+      {@render entry("Field manual", "manual")}
+      {#if view.game.campaign}{@render entry("Campaign conversations", "conversations")}{/if}
+      {@render entry("Battle journal", "journal")}
+    </section>
+    <section>
+      <h3 class="group-label">Advanced</h3>
+      {@render entry("Debug tools", "debug")}
+    </section>
   </div>
-  <label class="sound-control" for="sound-effects">
-    <span>Sound effects</span>
-    <input
-      id="sound-effects"
-      type="checkbox"
-      checked={view.sound}
-      onchange={(event) => void actions.setSound(event.currentTarget.checked)}
-    />
-  </label>
-  <button id="new-game" class="primary" onclick={onNewBattle}>New game</button>
-  <details class="panel">
-    <summary>Field manual</summary>
+  <div hidden={screen !== "saves"}>
+    <SavedProgress bind:this={savedGames} {view} {actions} onLoad={close} />
+  </div>
+  <div class="reference" hidden={screen !== "manual"}>
     <div class="manual">
       <p>Each unit moves once and attacks once. Attacking ends its turn.</p>
       <!-- Keep punctuation adjacent to the inline emphasis. -->
@@ -106,62 +242,168 @@
         selection.
       </p>
     </div>
-  </details>
-  {#if view.game.campaign}
-    <details class="panel">
-      <summary>Campaign conversations</summary>
-      {#each view.game.campaign.dialogue.slice(0, view.game.campaign.dialogueIndex) as line}<p>
+  </div>
+  <div class="reference conversations" hidden={screen !== "conversations"}>
+    {#if view.game.campaign}
+      {#each view.game.campaign.dialogue.slice(0, view.game.campaign.dialogueIndex) as line}
+        <p>
           <strong>{line.speaker}</strong>
+          <br />
           {line.text}
-        </p>{/each}
-    </details>
-  {/if}
-  <details class="dispatch">
-    <summary>Battle journal</summary>
+        </p>
+      {:else}<p>No conversations yet.</p>{/each}
+    {/if}
+  </div>
+  <div class="reference" hidden={screen !== "journal"}>
     <ol id="log">
-      {#each view.game.log as text}<li>{text}</li>{/each}
+      {#each view.game.log as text}<li>{text}</li>{:else}<li>No entries yet.</li>{/each}
     </ol>
-  </details>
-  <details class="panel" id="opponent-difficulty">
-    <summary>Opponent difficulty · {view.opponent.difficulty}</summary>
+  </div>
+  <div class="reference" id="battle-debug" hidden={screen !== "debug"}>
     <p>
-      {#if view.opponent.planner && view.opponent.recruiter}
-        Planner: {view.opponent.planner}
-        <br />
-        Recruiter: {view.opponent.recruiter}
-      {:else}
-        Policy: {view.opponent.policy}
-      {/if}
-    </p>
-  </details>
-  <details class="panel" id="battle-debug">
-    <summary>Debug tools</summary>
-    <p>
-      Download the current battle and the last five enemy turns to help investigate AI behavior.
+      Download the current battle, the last five enemy turns, and saved progress from this browser
+      to help investigate issues.
     </p>
     <p>
-      Turn history starts when you open the game and clears when you reload or change missions. The
-      report includes enemies hidden by fog.
+      Enemy-turn recordings start when you open the game and clear when you reload or change
+      missions. The report includes all saved runs and enemies hidden by fog.
     </p>
     <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
     <h3>Performance trace</h3>
-    <TraceControls {view} onStart={() => dialog?.close()} />
+    <TraceControls {view} onStart={close} />
     <h3>Mirror Night</h3>
     <p>
       Start a new Mirror battle at night: explore fog, capture villages to light their lamps, and
       leave a red light at every death. This replaces the current battle.
     </p>
-    <button
-      onclick={() => {
-        try {
-          actions.startCampaign("mirror-night");
-          dialog?.close();
-        } catch (error) {
-          actions.error(error);
-        }
-      }}
-    >
-      Start Mirror Night
-    </button>
-  </details>
-</dialog>
+    <button onclick={startMirror}>Start Mirror Night</button>
+  </div>
+</DialogWindow>
+
+<style>
+  .settings-hub {
+    padding-top: 8px;
+    font-family: system-ui, sans-serif;
+  }
+  .group-label {
+    color: #919b87;
+    font:
+      600 10px/1.4 system-ui,
+      sans-serif;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 18px 0 3px;
+  }
+  .setting-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    width: 100%;
+    margin: 0;
+    padding: 10px 0;
+    text-align: left;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid #39413688;
+    border-radius: 0;
+    color: #e1e3d6;
+    font:
+      14px/1.45 system-ui,
+      sans-serif;
+  }
+  section > .setting-row:last-child {
+    border-bottom: 0;
+  }
+  .label {
+    flex: 1;
+  }
+  .value {
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .chevron {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: #a8ae97;
+    stroke-width: 1.6;
+    flex-shrink: 0;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  button.setting-row:hover {
+    color: var(--gold);
+  }
+  .sound-row {
+    cursor: pointer;
+  }
+  .sound-row input {
+    appearance: none;
+    width: 23px;
+    height: 23px;
+    margin: 0 1px 0 0;
+    border: 1px solid #8f885c;
+    border-radius: 4px;
+    background: #151e15;
+    display: grid;
+    place-items: center;
+  }
+  .sound-row input:checked {
+    background: #cfb76d;
+    border-color: #cfb76d;
+  }
+  .sound-row input:checked::after {
+    content: "";
+    width: 11px;
+    height: 6px;
+    border-left: 2.5px solid #24291b;
+    border-bottom: 2.5px solid #24291b;
+    transform: rotate(-45deg) translateY(-1px);
+  }
+  .difficulty {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .difficulty summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  .difficulty summary::-webkit-details-marker {
+    display: none;
+  }
+  .difficulty[open] .chevron {
+    transform: rotate(90deg);
+  }
+  .difficulty-details {
+    margin: 0;
+    padding: 5px 0 12px;
+    font-size: 12px;
+  }
+  .new-game {
+    min-height: 44px;
+    width: 100%;
+    margin: 12px 0 4px;
+    border: 1px solid #7f744d;
+    border-radius: 4px;
+    background: #d8ba6f08;
+    color: #dfcc95;
+    font-weight: 500;
+  }
+  .new-game:hover {
+    background: #d8ba6f12;
+  }
+  .reference {
+    padding-top: 4px;
+  }
+  .reference h3 {
+    font:
+      20px/1.25 Georgia,
+      serif;
+    margin: 24px 0 12px;
+  }
+  .conversations strong {
+    color: var(--text);
+  }
+</style>

@@ -31,9 +31,7 @@ impl Serialize for Canonical<'_, State> {
             map.serialize_entry("campaign", &value)?;
         }
         map.serialize_entry("cols", &s.cols)?;
-        if let Some(rng) = s.combat_rng {
-            map.serialize_entry("combatRng", &rng)?;
-        }
+        map.serialize_entry("combatRng", &s.combat_rng)?;
         if !s.condition_memory.is_empty() {
             map.serialize_entry("conditionMemory", &s.condition_memory)?;
         }

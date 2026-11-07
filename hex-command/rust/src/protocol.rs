@@ -115,6 +115,37 @@ pub struct SavedGame {
     pub state: State,
 }
 
+/// A data-only backward change; this never records a command or planner state.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[serde(tag = "op", rename_all = "camelCase", deny_unknown_fields)]
+pub enum UndoChange {
+    Set {
+        path: Vec<String>,
+        #[cfg_attr(feature = "wasm", tsify(type = "unknown"))]
+        value: serde_json::Value,
+    },
+    Remove {
+        path: Vec<String>,
+    },
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct UndoStep {
+    pub round: u32,
+    pub unit_id: String,
+    pub changes: Vec<UndoChange>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[serde(deny_unknown_fields)]
+pub struct UndoValidation {
+    pub state: State,
+    /// Oldest first; validation walks backwards from the current state.
+    pub history: Vec<UndoStep>,
+}
+
 /// Factory-local battle identity and its initial published snapshot.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", derive(tsify::Tsify))]

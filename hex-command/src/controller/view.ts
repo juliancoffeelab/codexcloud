@@ -21,6 +21,9 @@ export interface RecruitmentContext {
 /** Every display decision belongs to one published revision. */
 export interface BattleView {
   readonly game: GameView;
+  readonly needsNewGame: boolean;
+  readonly canSave: boolean;
+  readonly activeRunId: string | null;
   readonly selected: string | null;
   readonly target: string | null;
   readonly focusedTile: string;
@@ -28,6 +31,10 @@ export interface BattleView {
   readonly renderRevision: number;
   readonly sessionVersion: number;
   readonly status: string;
+  readonly persistence: string;
+  readonly saveError: string | null;
+  readonly loadProblem?: import("../save/repair-types").LoadProblem | null;
+  readonly saveFailure?: import("../save/failure").SaveFailure | null;
   readonly artwork: Artwork;
   readonly sound: boolean;
   readonly opponent: OpponentSummary;
@@ -39,9 +46,9 @@ export interface BattleView {
 
 /** Components can issue commands, but cannot read hidden controller state. */
 export interface BattleCommands {
-  startCampaign(id: CampaignId, setup?: SessionSetup): GameSnapshot;
-  nextMission(recallIds: string[]): GameSnapshot;
-  retryMission(): GameSnapshot;
+  startCampaign(id: CampaignId, setup?: SessionSetup): Promise<GameSnapshot>;
+  nextMission(recallIds: string[]): Promise<GameSnapshot>;
+  retryMission(): Promise<GameSnapshot>;
   advanceDialogue(skip?: boolean): void;
   previousDialogue(): void;
   choose(tileId: string): void;
@@ -53,14 +60,39 @@ export interface BattleCommands {
   dropItem(unitId: string, itemId: string): void;
   endTurn(): Promise<GameSnapshot | undefined>;
   undoMove(): GameSnapshot;
-  reset(mapId?: string, options?: { armies?: [string, string]; setup: SessionSetup }): GameSnapshot;
+  reset(
+    mapId?: string,
+    options?: { armies?: [string, string]; setup: SessionSetup },
+  ): Promise<GameSnapshot>;
   setSound(enabled: boolean): Promise<void>;
-  downloadDebugReport(): void;
+  downloadDebugReport(): Promise<void>;
+  repairInventory(): Promise<import("../save/repair-types").RepairInventory>;
+  repairSavedData(target: import("../save/repair-types").RepairTarget): Promise<void>;
+  retrySavedProgress(expected?: import("../save/metadata").CurrentEntry | null): Promise<boolean>;
+  savedProgress(): Promise<import("../save/metadata").TurnEntry[]>;
+  saveGame(): Promise<void>;
+  savedSummary(id: string): Promise<import("../save/summary").SaveSummary>;
+  savedFlashSave(): Promise<import("../save/metadata").CurrentEntry | undefined>;
+  restoreProgress(id: string): Promise<void>;
+  deleteSavedProgress(id: string): Promise<void>;
+  deleteSavedRun(id: string): Promise<void>;
+  pruneSavedRun(id: string): Promise<void>;
   error(error: unknown): void;
 }
 
 export function createBattleCommands(controller: BattleCommands): BattleCommands {
   return Object.freeze({
+    repairInventory: controller.repairInventory.bind(controller),
+    repairSavedData: controller.repairSavedData.bind(controller),
+    retrySavedProgress: controller.retrySavedProgress.bind(controller),
+    savedProgress: controller.savedProgress.bind(controller),
+    saveGame: controller.saveGame.bind(controller),
+    savedSummary: controller.savedSummary.bind(controller),
+    savedFlashSave: controller.savedFlashSave.bind(controller),
+    restoreProgress: controller.restoreProgress.bind(controller),
+    deleteSavedProgress: controller.deleteSavedProgress.bind(controller),
+    deleteSavedRun: controller.deleteSavedRun.bind(controller),
+    pruneSavedRun: controller.pruneSavedRun.bind(controller),
     startCampaign: traceCommand("action.startCampaign", controller.startCampaign.bind(controller)),
     nextMission: traceCommand("action.nextMission", controller.nextMission.bind(controller)),
     retryMission: traceCommand("action.retryMission", controller.retryMission.bind(controller)),

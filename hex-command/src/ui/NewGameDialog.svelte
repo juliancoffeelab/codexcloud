@@ -9,8 +9,9 @@
   import { preloadTerrainMap } from "../presentation/terrain-preload";
   import ChoicePicker, { type Choice } from "./ChoicePicker.svelte";
   import MapThumbnail from "./MapThumbnail.svelte";
+  import DialogWindow from "./DialogWindow.svelte";
   let { view, actions }: { view: BattleView; actions: BattleCommands } = $props();
-  let dialog: HTMLDialogElement;
+  let dialog = $state<HTMLDialogElement>();
   let confirmation: HTMLDialogElement;
   let mode = $state<"skirmish" | "campaign">("skirmish");
   let mapId = $state("mirror");
@@ -22,6 +23,7 @@
   let recruiter = $state("situational");
   let first = $state("random");
   let error = $state("");
+  let returnToSettings = $state<(() => void) | undefined>();
   const factions: Choice[] = [
     { value: "human", label: "Humans", sprite: "commander" },
     { value: "woodland", label: "Woodland", sprite: "wildkeeper" },
@@ -57,21 +59,30 @@
     difficulty =
       DIFFICULTIES.find((d) => d.planner === planner && d.recruiter === recruiter)?.id ?? "custom";
   }
-  export function open(tab: "skirmish" | "campaign") {
+  export function open(tab: "skirmish" | "campaign", onBack?: () => void) {
+    returnToSettings = onBack;
     mode = tab;
     if (tab === "campaign" && difficulty === "custom") setDifficulty("situational");
     error = "";
     mapId = BATTLE_MAPS.some((m) => m.id === view.game.mapId) ? view.game.mapId : "mirror";
-    dialog.showModal();
+    dialog?.showModal();
     preloadTerrainMap(mode === "campaign" ? campaign.missions[0]!.map.id : mapId);
   }
   function requestStart() {
-    if (view.game.mapId !== "developer" && !view.game.winner && view.completedTurns > 1) {
+    if (
+      !view.needsNewGame &&
+      view.game.mapId !== "developer" &&
+      !view.game.winner &&
+      view.completedTurns > 1
+    ) {
       confirmation.showModal();
       confirmation.querySelector<HTMLButtonElement>(".quiet")?.focus();
     } else start();
   }
-  function start() {
+  let starting = $state(false);
+  async function start() {
+    if (starting) return;
+    starting = true;
     confirmation.close();
     const policy = (difficulty === "custom" ? "predictor" : difficulty) as AiOptions["policy"];
     const setup: SessionSetup = {
@@ -98,28 +109,37 @@
       },
     };
     try {
-      if (mode === "campaign") actions.startCampaign(campaignId as CampaignId, setup);
+      if (mode === "campaign") await actions.startCampaign(campaignId as CampaignId, setup);
       else {
         preloadTerrainMap(mapId);
-        actions.reset(mapId, {
+        await actions.reset(mapId, {
           armies: mapId === "developer" ? undefined : [player, opponent],
           setup,
         });
       }
-      dialog.close();
+      dialog?.close();
     } catch (e) {
       error = e instanceof Error ? e.message : String(e);
+    } finally {
+      starting = false;
     }
   }
 </script>
 
-<dialog class="new-game-dialog" aria-label="New game" bind:this={dialog}>
-  <header class="setup-heading">
-    <h2>New game</h2>
-    <button class="setup-close" aria-label="Close new game" onclick={() => dialog.close()}>
-      ×
-    </button>
-  </header>
+<DialogWindow
+  title="New game"
+  canDismiss={!view.needsNewGame}
+  className="new-game-dialog"
+  bind:dialog
+  width="520px"
+  tall
+  onBack={returnToSettings
+    ? () => {
+        dialog?.close();
+        returnToSettings?.();
+      }
+    : undefined}
+>
   <nav class="setup-tabs" aria-label="Game mode">
     <button
       aria-pressed={mode === "skirmish"}
@@ -276,10 +296,10 @@
   {/if}
   {#if error}<p role="alert">{error}</p>{/if}
   <div class="setup-actions">
-    <button class="quiet" onclick={() => dialog.close()}>Keep playing</button>
-    <button class="primary" onclick={requestStart}>Start {mode}</button>
+    <button class="quiet" onclick={() => dialog?.close()}>Keep playing</button>
+    <button class="primary" disabled={starting} onclick={requestStart}>Start {mode}</button>
   </div>
-</dialog>
+</DialogWindow>
 <dialog
   class="replace-game-dialog"
   role="alertdialog"
@@ -288,17 +308,15 @@
   bind:this={confirmation}
 >
   <h2 id="replace-title">Leave your current battle?</h2>
-  <p id="replace-description">Your unfinished battle will be lost.</p>
+  <p id="replace-description">Your current battle will remain available in Saved progress.</p>
   <div class="setup-actions">
-    <button
-      class="quiet"
-      onclick={() => {
-        confirmation.close();
-        dialog.close();
-      }}
-    >
-      Keep playing
-    </button>
-    <button class="primary" onclick={start}>Start new game</button>
+    <button class="quiet" onclick={() => confirmation.close()}>Cancel</button>
+    <button class="primary" disabled={starting} onclick={start}>Start new game</button>
   </div>
 </dialog>
+
+<style>
+  .setup-tabs {
+    margin-top: 18px;
+  }
+</style>

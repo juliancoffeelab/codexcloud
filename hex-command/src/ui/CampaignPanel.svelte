@@ -57,17 +57,21 @@
         ? [...recall, id]
         : recall;
   }
-  function next() {
+  async function next() {
     try {
-      actions.nextMission(recall.filter((id) => survivors.some((unit) => unit.id === id)));
+      await actions.nextMission(recall.filter((id) => survivors.some((unit) => unit.id === id)));
       expanded = false;
     } catch (error) {
       actions.error(error);
     }
   }
-  function retry() {
-    actions.retryMission();
-    expanded = false;
+  async function retry() {
+    try {
+      await actions.retryMission();
+      expanded = false;
+    } catch (error) {
+      actions.error(error);
+    }
   }
 </script>
 

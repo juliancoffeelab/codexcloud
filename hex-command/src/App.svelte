@@ -16,6 +16,10 @@
   import UnitPanel from "./ui/UnitPanel.svelte";
   import TerrainPanel from "./ui/TerrainPanel.svelte";
   import GroundItemsPanel from "./ui/GroundItemsPanel.svelte";
+  import SaveFailure from "./ui/SaveFailure.svelte";
+  import ImportRepair from "./ui/ImportRepair.svelte";
+  let repair: { open(): Promise<void> };
+  let settings: { open(focusId?: string): void; openSavedGames(): void };
   import SettingsDialog from "./ui/SettingsDialog.svelte";
   let { controller }: { controller: BattleController } = $props();
   const view = $derived(controller.view);
@@ -58,7 +62,13 @@
     briefingExpanded = false;
   });
   let settingsDialog = $state<HTMLDialogElement>();
-  let newGame: { open: (mode: "skirmish" | "campaign") => void };
+  let newGame: { open: (mode: "skirmish" | "campaign", onBack?: () => void) => void };
+  $effect(() => {
+    if ($view.needsNewGame) {
+      settingsDialog?.close();
+      newGame?.open("campaign");
+    }
+  });
   function openCampaignPicker() {
     settingsDialog?.close();
     newGame.open("campaign");
@@ -68,8 +78,12 @@
     newGame.open("skirmish");
   }
   function openSettings() {
-    settingsDialog?.showModal();
+    settings.open();
     playSound("select");
+  }
+  function openNewGameFromSettings() {
+    settingsDialog?.close();
+    newGame.open("skirmish", () => settings.open("new-game"));
   }
   function globalKeydown(event: KeyboardEvent) {
     if (event.key === "Escape" && !document.querySelector("dialog[open]"))
@@ -118,34 +132,54 @@
 </script>
 
 <svelte:document onkeydown={globalKeydown} onclick={clickAway} />
-<main class="battle-layout">
-  <TurnBar
-    view={$view}
-    {actions}
-    onSettings={openSettings}
-    {briefingExpanded}
-    onBriefing={() => (briefingExpanded = !briefingExpanded)}
-  />
-  <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
-  <div class="battle-content">
-    <CampaignPanel
+{#if !$view.needsNewGame}<main class="battle-layout">
+    <TurnBar
       view={$view}
       {actions}
-      bind:expanded={briefingExpanded}
-      onNewCampaign={openCampaignPicker}
+      onSettings={openSettings}
+      {briefingExpanded}
+      onBriefing={() => (briefingExpanded = !briefingExpanded)}
     />
-    <div class="workspace" class:map-only={!inspectionOpen}>
-      <Battlefield view={$view} {actions} />
-      {#if inspectionOpen}
-        <aside aria-label="Unit and terrain details">
-          <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
-          <TerrainPanel view={$view} {actions} {previews} />
-          <GroundItemsPanel view={$view} />
-        </aside>
-      {/if}
+    <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
+    <div class="battle-content">
+      <CampaignPanel
+        view={$view}
+        {actions}
+        bind:expanded={briefingExpanded}
+        onNewCampaign={openCampaignPicker}
+      />
+      <div class="workspace" class:map-only={!inspectionOpen}>
+        <Battlefield view={$view} {actions} />
+        {#if inspectionOpen}
+          <aside aria-label="Unit and terrain details">
+            <UnitPanel view={$view} {actions} onNewBattle={openMapPicker} />
+            <TerrainPanel view={$view} {actions} {previews} />
+            <GroundItemsPanel view={$view} />
+          </aside>
+        {/if}
+      </div>
     </div>
-  </div>
-</main>
-<SettingsDialog view={$view} {actions} bind:dialog={settingsDialog} onNewBattle={openMapPicker} />
-<Dialogue view={$view} {actions} />
+  </main>{/if}
+<SettingsDialog
+  view={$view}
+  {actions}
+  bind:dialog={settingsDialog}
+  bind:this={settings}
+  onNewBattle={openNewGameFromSettings}
+  onRepair={() => {
+    settingsDialog?.close();
+    void repair.open();
+  }}
+/>
+{#if !$view.needsNewGame}<Dialogue view={$view} {actions} />{/if}
 <NewGameDialog bind:this={newGame} view={$view} {actions} />
+
+<SaveFailure view={$view} {actions} onManage={() => settings.openSavedGames()} />
+
+<ImportRepair
+  bind:this={repair}
+  view={$view}
+  {actions}
+  onNewGame={openMapPicker}
+  onManage={() => settings.openSavedGames()}
+/>

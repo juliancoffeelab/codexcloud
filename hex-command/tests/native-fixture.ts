@@ -18,6 +18,7 @@ export function createTestFactory(): GameEngineFactory {
   return {
     catalog: () => factory.catalog(),
     create: (...args) => track(factory.create(...args)),
+    validateUndo: (...args) => factory.validateUndo(...args),
     restore: (...args) => track(factory.restore(...args)),
     dispose: () => {
       for (const handle of handles) handle.dispose();

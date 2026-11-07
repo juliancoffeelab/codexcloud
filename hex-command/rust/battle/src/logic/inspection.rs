@@ -44,7 +44,6 @@ impl Game<'_> {
             active_tiles: vec![],
             visible: true,
             available: true,
-            achieved: self.winner.is_some() && alive,
             progress: Progress {
                 label,
                 current: u32::from(self.winner.is_some() && alive),

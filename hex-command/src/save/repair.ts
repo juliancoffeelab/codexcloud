@@ -1,0 +1,145 @@
+import { readImportSource, withImportLock } from "./import";
+import {
+  initialized,
+  transaction,
+  request,
+  STATE,
+  ENTRIES,
+  TURNS,
+  CURRENT,
+  INITIALIZED,
+  NEW_GAME,
+  STORAGE_VERSION,
+} from "./storage";
+import {
+  inspectStorageV1ToV2,
+  repairStorageV1ToV2,
+  SAVE_KEY,
+  HISTORY_KEY,
+  historyPayloadKey,
+  type LocalSource,
+} from "./migrations/storage-v1-to-v2";
+import type { BattleSave } from "./schema";
+import type { LoadProblem, RepairInventory, RepairTarget } from "./repair-types";
+
+/** Raw target-store inspection bypasses normal repository validation. */
+async function databaseSource(tx: IDBTransaction): Promise<LocalSource> {
+  const source: LocalSource = {};
+  source[SAVE_KEY] = (await request(tx.objectStore(STATE).get(CURRENT))) ?? null;
+  const entries = (await request(tx.objectStore(ENTRIES).getAll())).map((entry) => {
+    try {
+      JSON.stringify(entry);
+      return entry;
+    } catch {
+      return { unreadable: true };
+    }
+  });
+  source[HISTORY_KEY] = JSON.stringify({ version: 4, entries });
+  const store = tx.objectStore(TURNS);
+  const [keys, values] = await Promise.all([request(store.getAllKeys()), request(store.getAll())]);
+  keys.forEach((key, i) => {
+    source[historyPayloadKey(String(key))] = values[i];
+  });
+  return source;
+}
+export function inspectImport(
+  failure: LoadProblem,
+  validate: (save: BattleSave) => void,
+): Promise<RepairInventory> {
+  return withImportLock(async () => {
+    const errors: string[] = [];
+    let authoritative = false;
+    let completedElsewhere = false;
+    try {
+      authoritative = await initialized();
+      completedElsewhere = failure.source === "localStorage" && authoritative;
+    } catch (error) {
+      errors.push(String(error));
+    }
+    let source: LocalSource;
+    try {
+      source =
+        failure.source === "indexedDB" || authoritative
+          ? await transaction([STATE, ENTRIES, TURNS], "readonly", databaseSource)
+          : readImportSource();
+    } catch (error) {
+      return { records: [], errors: [...errors, String(error)], authoritative, completedElsewhere };
+    }
+    const records = inspectStorageV1ToV2(source);
+    for (const record of records) {
+      if (record.save) {
+        try {
+          validate(record.save);
+        } catch (error) {
+          if (!record.issue) record.issue = "invalid_battle";
+          record.error = [record.error, String(error)]
+            .filter((value) => value !== undefined)
+            .join("\n");
+        }
+        delete record.save;
+      }
+    }
+    return { records, errors, authoritative, completedElsewhere };
+  });
+}
+/** Destructive repair never requires a valid battlefield or a successful full import. */
+export function repairImport(failure: LoadProblem, target: RepairTarget): Promise<void> {
+  return withImportLock(async () => {
+    if (failure.source === "localStorage") {
+      // Another tab's completed import wins. Do not mutate it through source repair.
+      let authoritative = false;
+      try {
+        authoritative = await initialized();
+      } catch {
+        /* IDB failure must not block source cleanup. */
+      }
+      if (authoritative)
+        throw new Error(
+          "Import finished in another tab. Import the saved game here before deleting anything.",
+        );
+      const source = readImportSource();
+      const plan = repairStorageV1ToV2(source, target);
+      // Deletes require no additional quota; a failed index update remains repairable.
+      for (const key of plan.deleted) localStorage.removeItem(key);
+      for (const [key, value] of Object.entries(plan.writes))
+        if (value !== null) localStorage.setItem(key, value);
+      return;
+    }
+    await transaction([STATE, ENTRIES, TURNS], "readwrite", async (tx) => {
+      if (target.kind === "all") {
+        tx.objectStore(ENTRIES).clear();
+        tx.objectStore(TURNS).clear();
+        tx.objectStore(STATE).clear();
+        tx.objectStore(STATE).put(STORAGE_VERSION, INITIALIZED);
+        tx.objectStore(STATE).put(true, NEW_GAME);
+        return;
+      }
+      const source = await databaseSource(tx);
+      const plan = repairStorageV1ToV2(source, target);
+      for (const key of plan.deleted) {
+        if (key === SAVE_KEY) {
+          tx.objectStore(STATE).delete(CURRENT);
+          tx.objectStore(STATE).put(true, NEW_GAME);
+        } else if (key.startsWith("hex-command-progress:")) {
+          const id = key.slice("hex-command-progress:".length);
+          tx.objectStore(TURNS).delete(id);
+          tx.objectStore(ENTRIES).delete(id);
+        }
+      }
+      if (target.kind === "index" && plan.writes[HISTORY_KEY]) {
+        const entries = JSON.parse(plan.writes[HISTORY_KEY]!).entries;
+        // A conflict can span the original list entry and its payload. Rewriting
+        // both claims under their shared ID would silently choose the last one.
+        const disputed = new Set<IDBValidKey>(
+          inspectStorageV1ToV2(source)
+            .filter((record) => record.ownership === "conflicting")
+            .map((record) => record.key.slice("hex-command-progress:".length)),
+        );
+        const store = tx.objectStore(ENTRIES);
+        for (const key of await request(store.getAllKeys()))
+          if (!disputed.has(key)) store.delete(key);
+        for (const entry of entries) if (!disputed.has(entry.id)) store.put(entry);
+      }
+    });
+  });
+}

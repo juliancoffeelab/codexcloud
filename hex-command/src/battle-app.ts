@@ -5,9 +5,9 @@ import App from "./App.svelte";
 import { BattleController } from "./controller/battle";
 import { GAME_ENGINE_FACTORY } from "./game/authored-content";
 
-export function createBattleApplication() {
+export async function createBattleApplication() {
   try {
-    const controller = new BattleController(undefined, GAME_ENGINE_FACTORY);
+    const controller = await BattleController.create(undefined, GAME_ENGINE_FACTORY);
     const view = get(controller.view);
     preloadTerrainView(view.game, view.artwork);
     return { component: App, controller };

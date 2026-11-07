@@ -267,7 +267,7 @@ mod courier_tests {
                 hp: rules.units[rules.types["reefguard"]].hp,
                 moved: true,
                 attacked: true,
-                experience: None,
+                experience: Some(0),
                 character: None,
                 role: None,
                 retreating: None,

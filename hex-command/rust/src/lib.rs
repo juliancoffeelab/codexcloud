@@ -10,6 +10,8 @@ pub mod protocol;
 #[cfg(not(target_arch = "wasm32"))]
 pub mod simulation;
 #[cfg(feature = "wasm")]
+mod undo;
+#[cfg(feature = "wasm")]
 pub mod wasm;
 
 #[cfg(test)]

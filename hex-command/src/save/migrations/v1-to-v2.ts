@@ -3,7 +3,7 @@ import { MAPS } from "./legacy/frozen";
 import { importLegacySnapshot } from "./legacy/snapshot";
 import { isRecord, type BattleSave } from "../schema";
 
-export type VersionTwoSave = Omit<BattleSave, "version"> & { version: 2 };
+export type VersionTwoSave = Pick<BattleSave, "checkpoint" | "pendingEnemy"> & { version: 2 };
 
 /** Both original browser formats were version one; the engine tag distinguishes them. */
 export function migrateV1ToV2(value: Record<string, unknown>): VersionTwoSave {

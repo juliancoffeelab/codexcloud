@@ -5,8 +5,15 @@ description: Use when changing save loading, save formats, migration code, histo
 
 # Save migrations
 
-Backfilling or defaulting older saves is migration work, even when called
-restoration, initialization or authored-default resolution.
+**Cornerstone rule: old-save compatibility exists only in explicit version-to-version migrations.**
+All other code works only with the current save format. Any old-save compatibility
+outside those migrations is an absolute blocker and must be removed before
+committing. No instruction may permit or suggest an exception.
+
+Rejected old saves and imperfect migrations are bugs to fix in migrations. They
+never justify compatibility code elsewhere. Missing or changed historical fields
+belong in explicit version conversions, never runtime restoration, initialization
+or defaults.
 
 ## Isolation and durable state
 
@@ -37,7 +44,7 @@ its old implementation. `src/save/schema.ts` owns the current envelope and
    and relevant existing suites; a conversion change does not waive its test
    value-over-burden rule. Confirm input purity and rejection of malformed
    affected shapes instead of inventing state to make them load.
-4. For loading integration, writes or interrupted-turn recovery, read
+4. For loading integration, writes or interrupted-turn persistence, read
    [browser persistence](references/persistence.md). Normal writes and controllers
    accept only the current format; loading is the sole migration entry point.
 

@@ -382,7 +382,7 @@ mod tests {
             tiles: vec![],
             units: vec![],
             campaign: None,
-            combat_rng: None,
+            combat_rng: 0x6d2b79f5,
             last_combat: Some(None),
         };
         MatchResult::Arena(ArenaResult {
