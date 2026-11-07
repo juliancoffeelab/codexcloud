@@ -53,6 +53,8 @@ import type { GameView } from "../game/view";
 import {
   createBattleCommands,
   recruitmentContext,
+  detailsFocus,
+  type BattleDetails,
   type BattleView,
   type BattleCommands,
   type RecruitType,
@@ -67,9 +69,7 @@ interface PublishOptions {
 }
 
 interface SessionState {
-  selected: string | null;
-  target: string | null;
-  inspectedTile: string | null;
+  details: BattleDetails<CombatPlayback>;
   renderRevision: number;
   status: string;
   sound: boolean;
@@ -146,9 +146,7 @@ export class BattleController {
     if (this.loadProblem) this.persistence = "Saved data needs repair";
     if (restored.status === "restored") this.persistence = "Saved locally";
     this.state = {
-      selected: null,
-      target: null,
-      inspectedTile: null,
+      details: { kind: "none" },
       renderRevision: 0,
       status:
         ("notice" in restored && restored.notice) ||
@@ -230,11 +228,32 @@ export class BattleController {
     }
   }
 
+  private get focus() {
+    return detailsFocus(this.state.details, this.gameView);
+  }
+
   private currentView(): BattleView {
+    const current = this.state.details;
+    const details: BattleDetails = Object.freeze(
+      current.kind === "combat-report"
+        ? {
+            ...current,
+            report: Object.freeze({
+              combat: current.report.frame.combat,
+              shown: current.report.frame.shown,
+              complete: current.report.frame.complete,
+              game: current.report.frame.before.game,
+            }),
+          }
+        : { ...current },
+    );
     return Object.freeze({
       ...this.state,
+      ...this.focus,
+      details,
       actionPresentation: this.actionPresentation?.token,
       game: this.combatPlaybackPending() ? this.combatPlayback!.frame.game : this.gameView,
+      interactionGame: this.gameView,
       combatPlayback: this.combatPlayback?.frame,
       status: this.combatPlaybackPending() ? "Resolving combat…" : this.state.status,
       needsNewGame: this.awaitingNewGame,
@@ -263,7 +282,7 @@ export class BattleController {
         !this.settling() &&
         !dialoguePending(this.#game.campaign) &&
         this.history.canUndo(this.#game),
-      recruitment: recruitmentContext(this.gameView, this.state.selected, this.state.inspectedTile),
+      recruitment: recruitmentContext(this.gameView, this.focus.selected, this.focus.inspectedTile),
     });
   }
 
@@ -346,6 +365,7 @@ export class BattleController {
           ? "Victory! The enemy commander has fallen. The field is yours."
           : "Your commander has fallen. Start a new battle and try a different approach.");
     }
+    const focus = this.focus;
     // Selection and preferences reuse the detached game until an engine action.
     if (gameChanged) {
       this.gameView = this.#game.publishedView();
@@ -376,6 +396,12 @@ export class BattleController {
                 );
             },
           );
+          this.state.details = {
+            kind: "combat-report",
+            report: this.combatPlayback,
+            selected: focus.selected,
+            tileId: focus.inspectedTile,
+          };
         }
       }
     }
@@ -703,7 +729,7 @@ export class BattleController {
     this.pendingEnemyReplay = pendingEnemy;
     this.enemyRecordings = [];
     this.previousFeedbackState = null;
-    this.state.selected = this.state.target = this.state.inspectedTile = null;
+    this.state.details = { kind: "none" };
     this.state.status = "Saved progress restored. Recorded turn starts remain in Saved games.";
     this.persistence = "Saved locally";
     this.saveError = null;
@@ -742,7 +768,7 @@ export class BattleController {
       this.history.clear();
       this.saveFailure = null;
       this.saveError = this.historyError = null;
-      this.state.selected = this.state.target = this.state.inspectedTile = null;
+      this.state.details = { kind: "none" };
       cancelSound();
       this.publish({ renderBattle: false });
     });
@@ -907,17 +933,15 @@ export class BattleController {
   clearSelection(clearInspection = false) {
     this.requireSession();
     if (
-      !this.state.selected &&
-      !this.state.target &&
-      !(clearInspection && this.state.inspectedTile)
+      !this.focus.selected &&
+      !this.focus.target &&
+      this.state.details.kind !== "combat-report" &&
+      !(clearInspection && this.focus.inspectedTile)
     ) {
       return;
     }
-    this.state.selected = null;
-    this.state.target = null;
-    if (clearInspection) {
-      this.state.inspectedTile = null;
-    }
+    const tileId = clearInspection ? null : this.focus.inspectedTile;
+    this.state.details = tileId ? { kind: "terrain", tileId } : { kind: "none" };
     this.publish({ gameChanged: false });
     this.message("Selection cleared.");
   }
@@ -929,7 +953,7 @@ export class BattleController {
       return;
     }
     const occupant = this.#game.at(tileId);
-    const unit = this.#game.unit(this.state.selected);
+    const unit = this.#game.unit(this.focus.selected);
     const canMove =
       this.active() &&
       !occupant &&
@@ -937,16 +961,18 @@ export class BattleController {
       this.#game.faction(unit.id).controllable &&
       this.#game.reachable(unit.id).has(tileId);
     if (
-      this.state.inspectedTile &&
-      (tileId === this.state.inspectedTile ||
-        occupant?.id === this.state.selected ||
-        occupant?.id === this.state.target)
+      this.focus.inspectedTile &&
+      (tileId === this.focus.inspectedTile ||
+        occupant?.id === this.focus.selected ||
+        occupant?.id === this.focus.target)
     ) {
       this.clearSelection(true);
       return;
     }
-    this.state.inspectedTile = tileId;
     if (!this.active()) {
+      this.state.details = occupant
+        ? { kind: "unit", unitId: occupant.id }
+        : { kind: "terrain", tileId };
       this.publish({ renderBattle: false });
       this.playSelectionFeedback(tileId);
       return;
@@ -977,7 +1003,9 @@ export class BattleController {
   }
 
   private selectTarget(target: Unit) {
-    this.state.target = target.id;
+    const attackerId = this.focus.selected;
+    if (!attackerId) throw new Error("Choose an attacker first.");
+    this.state.details = { kind: "attack", attackerId, targetId: target.id };
     this.publish({ gameChanged: false });
     this.afterRender(() =>
       animateTile(cellKey(target.tile), "select", { owner: `inspection:${target.id}` }),
@@ -986,8 +1014,7 @@ export class BattleController {
   }
 
   private selectUnit(unit: Unit) {
-    this.state.selected = unit.id;
-    this.state.target = null;
+    this.state.details = { kind: "unit", unitId: unit.id };
     this.publish({ gameChanged: false });
     this.playSelectionFeedback(cellKey(unit.tile));
 
@@ -1007,8 +1034,7 @@ export class BattleController {
   }
 
   private inspectTerrain(tile: Tile) {
-    this.state.selected = null;
-    this.state.target = null;
+    this.state.details = { kind: "terrain", tileId: tile.id };
     this.publish({ gameChanged: false });
     this.playSelectionFeedback(tile.id);
     if (this.#game.presentation.fog.map((hex) => cellKey(hex)).includes(tile.id)) {
@@ -1022,9 +1048,7 @@ export class BattleController {
   move(unitId: string, tileId: string) {
     this.requirePlayerActor(unitId);
     this.history.move(this.#game, unitId, tileId);
-    this.state.selected = unitId;
-    this.state.inspectedTile = cellKey(this.#game.unit(unitId)?.tile) ?? this.state.inspectedTile;
-    this.state.target = null;
+    this.state.details = { kind: "unit", unitId };
     this.commitAction();
     return this.snapshot();
   }
@@ -1042,21 +1066,19 @@ export class BattleController {
     this.requirePlayerActor(unitId);
     this.#game.attack(unitId, targetId, attackId);
     this.history.clear();
-    this.state.selected = unitId;
-    if (inspectActor) {
-      this.state.inspectedTile = cellKey(this.#game.unit(unitId)?.tile) ?? this.state.inspectedTile;
-    }
-    this.state.target = null;
+    this.state.details = inspectActor
+      ? { kind: "unit", unitId }
+      : { kind: "attack", attackerId: unitId, targetId };
     this.commitAction();
     return this.snapshot();
   }
 
   attackSelected(attackId: string) {
     try {
-      if (!this.state.selected || !this.state.target) {
+      if (!this.focus.selected || !this.focus.target) {
         return;
       }
-      this.resolveAttack(this.state.selected, this.state.target, attackId, { inspectActor: false });
+      this.resolveAttack(this.focus.selected, this.focus.target, attackId, { inspectActor: false });
       if (!this.#game.winner) {
         this.message("Attack complete. Select another unit or end your turn.");
       }
@@ -1069,7 +1091,7 @@ export class BattleController {
     this.requirePlayerActor(commanderId);
     this.#game.recruit(commanderId, type, tileId);
     this.history.clear();
-    this.state.inspectedTile = tileId;
+    this.state.details = { kind: "terrain", tileId };
     this.commitAction();
     return this.snapshot();
   }
@@ -1125,8 +1147,8 @@ export class BattleController {
     // Session cancellation wakes a pending action as well as invalidating the loop.
     const turnSessionVersion = this.sessionVersion;
     this.history.clear();
-    this.state.selected = null;
-    this.state.target = null;
+    const tileId = this.focus.inspectedTile;
+    this.state.details = tileId ? { kind: "terrain", tileId } : { kind: "none" };
     // Interrupted enemy turns replay from this player-state checkpoint.
     const boundary = this.queueFlashSave(true);
     this.#game.endTurn();
@@ -1299,9 +1321,7 @@ export class BattleController {
     this.pendingEnemyReplay = false;
     this.enemyRecordings = [];
     this.previousFeedbackState = null;
-    this.state.selected = null;
-    this.state.target = null;
-    this.state.inspectedTile = null;
+    this.state.details = { kind: "none" };
     this.state.status = replacement.campaign
       ? "Follow the mission objectives. Keep your leader safe."
       : initialMessage;
@@ -1322,9 +1342,7 @@ export class BattleController {
     if (!restored) {
       return this.snapshot();
     }
-    this.state.selected = restored.unitId;
-    this.state.target = null;
-    this.state.inspectedTile = restored.tileId;
+    this.state.details = { kind: "unit", unitId: restored.unitId };
     this.previousFeedbackState = null;
     this.commitAction();
     this.animateTileAfterRender(restored.tileId, "move");

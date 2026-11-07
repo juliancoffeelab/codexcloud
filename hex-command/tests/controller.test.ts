@@ -79,7 +79,7 @@ test("Developer map supports normal actions and persistence", async () => {
   controller.undoMove();
   assert.deepEqual(controller.snapshot(), opening);
   controller.commands.choose(cellKey(enemy.tile));
-  assert.equal(unitPanelView(observed.view).kind, "combat");
+  assert.equal(unitPanelView(observed.view).kind, "attack");
   controller.attack(player.id, enemy.id);
   assert(required(controller.snapshot().units.find((unit) => unit.id === enemy.id)).hp < enemy.hp);
   assert.deepEqual((await loadBattle()).game.snapshot(), controller.snapshot());
@@ -89,6 +89,62 @@ test("Developer map supports normal actions and persistence", async () => {
   controller.dispose();
   observed.unsubscribe();
   storage.clear();
+});
+
+test("Details navigation survives late combat updates without controlling playback", async () => {
+  await saveBattle(developerFixture(["archer", "scout"]));
+  const controller = await BattleController.create(immediatePause, createTestFactory());
+  const observed = observe(controller);
+  try {
+    const game = observed.view.interactionGame;
+    const actors = game.units.filter((unit) => game.faction(unit.id).controllable);
+    let pair: { actor: string; other: string; target: string } | undefined;
+    for (const actor of actors) {
+      for (const other of actors.filter((unit) => unit.id !== actor.id)) {
+        const target = game
+          .targets(actor.id)
+          .find((target) => game.targets(other.id).includes(target));
+        if (target) {
+          pair = { actor: actor.id, other: other.id, target: target.id };
+          break;
+        }
+      }
+      if (pair) break;
+    }
+    const { actor, other, target } = required(pair);
+    controller.attack(actor, target);
+    const playback = required(observed.view.combatPlayback);
+    assert.equal(unitPanelView(observed.view).kind, "combat-report");
+    if (observed.view.details.kind === "combat-report") {
+      assert.equal("skip" in observed.view.details.report, false);
+      assert.equal("finish" in observed.view.details.report, false);
+    }
+    assert(playback.advance(0));
+    controller.commands.choose(cellKey(required(game.unit(other)).tile));
+    const inspected = observed.view;
+    assert.equal(inspected.details.kind, "unit");
+    controller.commands.choose(cellKey(required(game.unit(target)).tile));
+    const targeted = observed.view;
+    assert.equal(targeted.details.kind, "attack");
+    assert.equal(observed.view.combatPlayback?.combat, playback.combat);
+    assert.equal(observed.view.combatPlayback?.complete, false);
+    const choices = unitPanelView(observed.view);
+    assert.equal(choices.kind, "attack");
+    if (choices.kind === "attack") {
+      assert.equal(choices.attacker.id, other);
+      assert.equal(choices.defender.id, target);
+      assert.equal(choices.game, observed.view.interactionGame);
+      assert.notEqual(choices.game, observed.view.game);
+    }
+    for (let index = 1; index < playback.combat.strikes.length; index++)
+      assert(playback.advance(index));
+    required(observed.view.combatPlayback).finish();
+    assert.equal(unitPanelView(observed.view).kind, "attack");
+    assert.equal(observed.view.details.kind, "attack");
+  } finally {
+    observed.unsubscribe();
+    controller.dispose();
+  }
 });
 
 test("Inspection switches tiles and closes when the inspected unit or terrain is tapped again", async () => {
@@ -157,7 +213,7 @@ test("Click-away dismissal preserves movement, attack targeting and undo", async
   const target = required(controller.actions(player.id).attacks[0]);
   const targetTile = required(observed.view.game.unit(target.id)).tile;
   controller.commands.choose(cellKey(targetTile));
-  assert.equal(unitPanelView(observed.view).kind, "combat");
+  assert.equal(unitPanelView(observed.view).kind, "attack");
   controller.commands.choose(cellKey(targetTile));
   assert.equal(observed.view.selected, null);
   assert.equal(observed.view.target, null);

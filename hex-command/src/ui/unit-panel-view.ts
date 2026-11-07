@@ -1,5 +1,5 @@
 import type { GameView, Immutable, UnitView } from "../game/view";
-import type { BattleView } from "../controller/view";
+import type { BattleView, CombatReport } from "../controller/view";
 import { TERRAIN, TYPES } from "../game/catalog";
 import type { TerrainType, UnitDefinition, UnitType } from "../game/types";
 import { TERRAIN_ORDER } from "../game/authored-content";
@@ -28,12 +28,18 @@ type UnitPanelView =
   | { kind: "outcome"; title: string; description: string }
   | { kind: "details"; details: UnitDetailsView }
   | {
-      kind: "combat";
+      kind: "attack";
       attacker: UnitView;
       defender: UnitView;
-      detailsResetKey: string;
       game: GameView;
-      playback?: NonNullable<BattleView["combatPlayback"]>;
+      detailsResetKey: string;
+    }
+  | {
+      kind: "combat-report";
+      attacker: UnitView;
+      defender: UnitView;
+      game: GameView;
+      report: CombatReport;
     };
 
 function actionStatus(unit: UnitView): string {
@@ -43,18 +49,20 @@ function actionStatus(unit: UnitView): string {
 }
 
 /** Resolve what the selected-unit panel should show before rendering its markup. */
-export function unitPanelView(view: BattleView): UnitPanelView {
-  const { game, combatPlayback: playback } = view;
+export function unitPanelView(
+  view: Pick<BattleView, "interactionGame" | "details" | "renderRevision">,
+): UnitPanelView {
+  const { interactionGame: game, details } = view;
+  const report = details.kind === "combat-report" ? details.report : undefined;
 
-  // Active strikes take precedence. Retained results yield to a finished battle.
-  if (playback && (!playback.complete || !game.winner)) {
+  // Only the explicitly chosen report follows combat phases; finished battles show their outcome.
+  if (report && (!report.complete || !game.winner)) {
     return {
-      kind: "combat",
-      attacker: playback.combat.units[0],
-      defender: playback.combat.units[1],
-      detailsResetKey: "playback",
-      game: playback.before.game,
-      playback,
+      kind: "combat-report",
+      attacker: report.combat.units[0],
+      defender: report.combat.units[1],
+      game: report.game,
+      report,
     };
   }
 
@@ -74,14 +82,15 @@ export function unitPanelView(view: BattleView): UnitPanelView {
     };
   }
 
-  const selectedUnit = game.unit(view.selected);
+  if (details.kind !== "unit" && details.kind !== "attack") return { kind: "hidden" };
+  const selectedUnit = game.unit(details.kind === "unit" ? details.unitId : details.attackerId);
   if (!selectedUnit) return { kind: "hidden" };
 
-  const targetUnit = game.unit(view.target);
+  const targetUnit = details.kind === "attack" ? game.unit(details.targetId) : undefined;
   const canChooseAttack = game.turn === "player" && game.faction(selectedUnit.id).controllable;
   if (canChooseAttack && targetUnit && game.targets(selectedUnit.id).includes(targetUnit)) {
     return {
-      kind: "combat",
+      kind: "attack",
       game,
       attacker: selectedUnit,
       defender: targetUnit,

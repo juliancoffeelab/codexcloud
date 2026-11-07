@@ -19,13 +19,61 @@ export interface RecruitmentContext {
   readonly stationed: boolean;
 }
 
+/** Data only: displaying a report cannot advance or cancel battlefield effects. */
+export interface CombatReport {
+  readonly combat: NonNullable<BattleView["combat"]>;
+  readonly shown: number;
+  readonly complete: boolean;
+  readonly game: GameView;
+}
+
+export type BattleDetails<Report = CombatReport> =
+  | { readonly kind: "none" }
+  | { readonly kind: "terrain"; readonly tileId: string }
+  | { readonly kind: "unit"; readonly unitId: string }
+  | { readonly kind: "attack"; readonly attackerId: string; readonly targetId: string }
+  | {
+      readonly kind: "combat-report";
+      readonly report: Report;
+      readonly selected: string | null;
+      readonly tileId: string | null;
+    };
+
+/** Compatibility projections for map highlights and contextual terrain; never stored separately. */
+export function detailsFocus(details: BattleDetails<unknown>, game: GameView) {
+  switch (details.kind) {
+    case "none":
+      return { selected: null, target: null, inspectedTile: null };
+    case "terrain":
+      return { selected: null, target: null, inspectedTile: details.tileId };
+    case "unit":
+      return {
+        selected: details.unitId,
+        target: null,
+        inspectedTile: cellKey(game.unit(details.unitId)?.tile) ?? null,
+      };
+    case "attack":
+      return {
+        selected: details.attackerId,
+        target: details.targetId,
+        inspectedTile: cellKey(game.unit(details.targetId)?.tile) ?? null,
+      };
+    case "combat-report":
+      return { selected: details.selected, target: null, inspectedTile: details.tileId };
+  }
+}
+
 /** Every display decision belongs to one published revision. */
 export interface BattleView {
   readonly actionPresentation?: import("./action-presentation").ActionToken;
+  /** The displayed world may be between combat phases. */
   readonly game: GameView;
+  /** Latest Rust state for inspection and legal action previews, independent of visual phases. */
+  readonly interactionGame: GameView;
   readonly needsNewGame: boolean;
   readonly canSave: boolean;
   readonly activeRunId: string | null;
+  readonly details: BattleDetails;
   readonly selected: string | null;
   readonly target: string | null;
   readonly inspectedTile: string | null;

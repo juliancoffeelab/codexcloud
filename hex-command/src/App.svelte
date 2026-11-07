@@ -58,7 +58,7 @@
     ]);
   });
   const inspectionOpen = $derived(
-    !!($view.selected || $view.inspectedTile || ($view.game.winner && !$view.game.campaign)),
+    $view.details.kind !== "none" || !!($view.game.winner && !$view.game.campaign),
   );
   let briefingExpanded = $state(false);
   const missionMapId = $derived($view.game.mapId);
