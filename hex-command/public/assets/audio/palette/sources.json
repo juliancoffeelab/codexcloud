@@ -3898,5 +3898,6 @@
       ]
     }
   },
-  "licenseScope": "License fields describe original source material. Processing and normalization records do not declare a separate project-wide license for newly authored contributions."
+  "licenseScope": "License fields describe original source material. Processing and normalization records do not declare a separate project-wide license for newly authored contributions.",
+  "credits": "CREDITS.txt"
 }

@@ -182,6 +182,15 @@
       {@render entry("Field manual", "manual")}
       {#if view.game.campaign}{@render entry("Campaign conversations", "conversations")}{/if}
       {@render entry("Battle journal", "journal")}
+      <a
+        class="setting-row"
+        href={`${import.meta.env.BASE_URL}assets/audio/palette/CREDITS.txt`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span class="label">Audio credits</span>
+        {@render chevron()}
+      </a>
     </section>
     <section>
       <h3 class="group-label">Advanced</h3>
@@ -345,6 +354,7 @@
     margin: 0;
     padding: 10px 0;
     text-align: left;
+    text-decoration: none;
     background: none;
     border: 0;
     border-bottom: 1px solid #39413688;
@@ -374,7 +384,7 @@
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  button.setting-row:hover {
+  :is(button, a).setting-row:hover {
     color: var(--gold);
   }
   .sound-row {
