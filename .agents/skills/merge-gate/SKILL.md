@@ -26,8 +26,9 @@ changes invalidate it. Assess these four conditions:
   handoffs and progress reports have not leaked into tracked files. Retained
   documents have an intentional permanent purpose; guidance is current and avoids
   duplicated rules or copies of readily discoverable code/config.
-- **History:** each commit has a coherent purpose and accurate message. Unrelated
-  changes, accidental artifacts and obscuring WIP/fixup/revert chains were addressed.
+- **History:** each commit has a clear reason to remain separate and an accurate
+  message. Unrelated changes, accidental artifacts and obscuring WIP/fixup/revert
+  chains were addressed.
 - **Validation:** the affected projects' required checks passed for the current
   source, with commands, results and tested revision available. Reliable local
   results count without CI; absent, failed or stale evidence remains a gap.
@@ -50,7 +51,7 @@ Mark each ✅ supported, ❌ failed or ❓ unverified, followed by concrete evid
   disposition of findings, including evidence for fixes made after review.
 - **Markdowns:** name added, changed and deleted Markdown/guidance files and
   summarize their purpose and hygiene review. Say “none” when there are none.
-- **History:** number of PR commits, what they do, and whether their purposes,
+- **History:** number of PR commits, why each remains separate, and whether
   messages and sequence are coherent. Identify cleanup needed and any reliance
   on squash merging explicitly.
 - **Validation:** exact commands, results and tested revision; distinguish reused

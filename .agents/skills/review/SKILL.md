@@ -33,7 +33,7 @@ changed area has been inspected in its relevant context.
 - **Repository burden:** Does each added file, dependency, rule and test give more
   value than its total cost? Check for duplication, stale guidance and temporary
   requirements, plans or handoffs leaking into maintained content. For skills and
-  agent instructions, use [writing-for-agents](../writing-for-agents/SKILL.md).
+  agent instructions, apply the [instruction checklist](references/agent-instructions.md).
 
 Resolve meaningful uncertainty by the cheapest useful method: source inspection,
 an existing check, manual use or a disposable probe. Follow the affected project's
