@@ -1,0 +1,1853 @@
+{
+  "schema": 1,
+  "license": "CC0-1.0 for imported recordings; archived game cues retain the project license",
+  "conversion": "Audited selected take only; mono 44.1kHz 96kbps MP3; playback gains match approved Sound Lab at 55% to game master 0.29. No take/source rotation.",
+  "clips": {
+    "c2fdf756bcb22f667fc9": {
+      "file": "palette/eec3744ee3c3673efa87.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.4584
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
+      "originalSha256": "983396c808eb658ed3bd223ffaf9ea7f756dba7bc45ecc3fde117083026a4556",
+      "gameGainDb": -6.2807,
+      "levelClass": null,
+      "assetSha256": "5b338290cca47ef399fbf3e120829ab7b36211df2433512e419c7ed22b92ea96"
+    },
+    "c535fbb07e3ea8d120aa": {
+      "file": "palette/b435ef876bc215a76de4.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.87
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
+      "originalSha256": "3571f6372012fdebb2a38ef89e18a6137b3f17d519f1259aafeb166dbdd94195",
+      "gameGainDb": -10.8007,
+      "levelClass": null,
+      "assetSha256": "eedeef01aeec5270aea404f6d4e9144f4b24ff24db39407d74fc0bfae8797d3f"
+    },
+    "7439e556025516dd3513": {
+      "file": "palette/bc86adbf5072da2d2b87.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/grunt_04.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5059
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/grunt_04.ogg",
+      "originalSha256": "4fbc2b361ce055a3b94d43489108582313dd999e5761d4e69d59c9c7abcec295",
+      "gameGainDb": -5.5107,
+      "levelClass": null,
+      "assetSha256": "add1d22606765dd0e9324dff4e15c98ae1fba052cbc6fa53fa5dab6d6c46fc81"
+    },
+    "50806fc7df5e0bccc3cf": {
+      "file": "palette/a3fda4a1fed3500ff14b.mp3",
+      "recording": "edits/knife-slice-2-no-hit-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.29
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/knifeSlice2.ogg",
+      "originalSha256": "6c2064d0ef988d1ec3d56868e823ea8823a5cac00f2742560052633529407def",
+      "processedFrom": "rpg-audio/knifeSlice2",
+      "processingRecipe": {
+        "id": "edits/knife-slice-2-no-hit-v1",
+        "sourceId": "rpg-audio/knifeSlice2",
+        "sourceHash": "6c2064d0ef988d1ec3d56868e823ea8823a5cac00f2742560052633529407def",
+        "name": "Knife Slice 2 \u00b7 swish without opening hit",
+        "intent": "Remove the user-identified opening impact; retain the trailing texture with click-free fades. Original remains available.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0.12:duration=0.29",
+          "asetpts=PTS-STARTPTS",
+          "afade=t=in:d=0.015",
+          "afade=t=out:st=0.230:d=0.06"
+        ]
+      },
+      "gameGainDb": -6.3107,
+      "levelClass": "attack",
+      "assetSha256": "12d1fec07892888384a891d10ddadc596427ab0d4f35b341690c633ef428b73f"
+    },
+    "3e6310e5bc404ae19d74": {
+      "file": "palette/dfe74381e6a57787a6d7.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0.0499,
+        "duration": 0.7054
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
+      "originalSha256": "73ee84f2bb3e1b371a72dd66a09f150c98c9000bcb735c3bdd7f607e59385206",
+      "gameGainDb": -1.4707,
+      "levelClass": "attack",
+      "assetSha256": "0ac76c75dd087fb7089ef69b6ec782d44d596fc189779dd5eaf1b98304c06110"
+    },
+    "7f84ad9347df544dfe68": {
+      "file": "palette/da5cb7087e09692e1259.mp3",
+      "recording": "rpg-audio/cloth2",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.4151
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/cloth2.ogg",
+      "originalSha256": "8a7451193c38bc05483aec25dd193e163a15d44cf7fff04ac7912573231b0201",
+      "gameGainDb": 5.1393,
+      "levelClass": null,
+      "assetSha256": "dc0aee3735db5023dc8a1ae14556aae479dcaa636853879144ea1f8252ba56d3"
+    },
+    "3a2f6220389148df7d39": {
+      "file": "palette/94e4451b6a313203eb9f.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5208
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
+      "originalSha256": "bb13cef9c0b0b4ec7f9335c356b14814c88418abd85dd3747cb62469e9ada93f",
+      "gameGainDb": 8.3293,
+      "levelClass": "attack",
+      "assetSha256": "c0791b4ea690abc4d867bf16e638d262240ff65f839f5f0c48a169e1a9cc0ca3"
+    },
+    "038454dd45347855378b": {
+      "file": "palette/9200f3c12d724251755d.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.461
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg",
+      "originalSha256": "09cdd7df30a0f3918cb8a3ce86b999d260c7f289c2049122b550cab65bf9fa9c",
+      "gameGainDb": -2.5807,
+      "levelClass": null,
+      "assetSha256": "81811fa6d9396886b68fe70ba86d0939f51a8d94c8a850a66d120e4f55011856"
+    },
+    "ce5a4b87904953414717": {
+      "file": "palette/8f3919ef19d89bba4b64.mp3",
+      "recording": "rpg-audio/drawKnife1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.3997
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/drawKnife1.ogg",
+      "originalSha256": "276403e72c3b71c47bc24db3083970c23f8e5551ffa78f436f83483c56f3f0bb",
+      "gameGainDb": 20.7793,
+      "levelClass": "attack",
+      "assetSha256": "ec40ffa7b05b517912b4f08b2c1862b29cc8a1bdfbafc8710b6fc9124b1b3bea"
+    },
+    "ac9f11aa3d1afb1cb5ec": {
+      "file": "palette/db1b85e30e3ad5d5ecd2.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5159
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
+      "originalSha256": "f17305072d3d0ca5556f72db8701866329d33561ca5df086e501f2a52e2022df",
+      "gameGainDb": -0.3107,
+      "levelClass": null,
+      "assetSha256": "9652a7ed0e5e03b20f6a3b109ca5915f924af6cb97081d0f58893efff4c8dcbc"
+    },
+    "cd860a2f955d73aadba4": {
+      "file": "palette/9c295023e7e233e0c7b7.mp3",
+      "recording": "rpg-audio/cloth3",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.4766
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/cloth3.ogg",
+      "originalSha256": "a48632d17a4f1416541d261a32a31612e01267144c407fa3ecab3ff410f0085b",
+      "gameGainDb": 7.7193,
+      "levelClass": null,
+      "assetSha256": "0410601a898e3a84acd528d89e73634dc39d6149064b01628cc4e832f4e629a7"
+    },
+    "489d29a140c68e2945af": {
+      "file": "palette/799f35cf888c7dda3572.mp3",
+      "recording": "edits/snake-belt-texture-v2",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5957
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/clothBelt2.ogg",
+      "originalSha256": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+      "processedFrom": "rpg-audio/clothBelt2",
+      "processingRecipe": {
+        "id": "edits/snake-belt-texture-v2",
+        "sourceId": "rpg-audio/clothBelt2",
+        "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+        "name": "Snake \u00b7 rough belt texture",
+        "intent": "Distinguish snake selection/attacks through a tighter frequency band and saturation, matched to the normal game-reference level instead of deliberate attenuation.",
+        "filters": [
+          "highpass=f=300",
+          "volume=6dB",
+          "asoftclip=type=tanh:threshold=0.12:output=0.8",
+          "lowpass=f=4200"
+        ],
+        "preserveLevel": false
+      },
+      "gameGainDb": 12.4193,
+      "levelClass": "attack",
+      "assetSha256": "6b2edaec5e9a30febe1279766dd4d853a3772dce5cab572fecde8f526e777052"
+    },
+    "ef1ee89ac3b752927fa6": {
+      "file": "palette/277e8a85caa07ad2f954.mp3",
+      "recording": "edits/spider-fletching-take1-short-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5
+      },
+      "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+      "originalSha256": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+      "processedFrom": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+      "processingRecipe": {
+        "id": "edits/spider-fletching-take1-short-v1",
+        "sourceId": "still-north-media/weapon-textures/part-1/Arrow Fletching.wav",
+        "sourceHash": "d19db022f47e4d038b09ac68a9f43b1468bd831b14419219bf6b32cea93a7d9d",
+        "name": "Spider \u00b7 Arrow Fletching take 1 short",
+        "intent": "Shortened take 1 rustle for spider selection. Keep 0.32\u20130.82s of the original, with brief fades; the original take remains available. A 12dB preparation gain keeps this quiet source within the normal playback matching gain budget.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0.32:duration=0.5",
+          "asetpts=PTS-STARTPTS",
+          "volume=12dB",
+          "afade=t=in:d=0.008",
+          "afade=t=out:st=0.450:d=0.05"
+        ]
+      },
+      "gameGainDb": 24.9893,
+      "levelClass": null,
+      "assetSha256": "0aab234d09cb8568b47381a69c6aa862d15714f2aa7dc7bb7e5527ef0759846a"
+    },
+    "bb88422a34ef21ca7d19": {
+      "file": "palette/e85ee80cabff51afbed1.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5657
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
+      "originalSha256": "746d6ef073abfadd43fe184c50c6a2528350d4f566f2c0f54cd51ff0eb665118",
+      "gameGainDb": -2.1607,
+      "levelClass": null,
+      "assetSha256": "3ff5e3c4df7fbeff9710715df6d38c1f4154c82d1225019d40fc550decb18ce0"
+    },
+    "a226691fdd4ffd2f94db": {
+      "file": "palette/02af775e6c21f8c9718e.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/spit_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0.0349,
+        "duration": 0.3712
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/spit_01.ogg",
+      "originalSha256": "11185484afda924711008f5e565d0baa5ebb271457c028b7e19b9ed487f8c6bd",
+      "gameGainDb": 0.1293,
+      "levelClass": "attack",
+      "assetSha256": "565bb7b0a56c7418dc61e02a8b9db28e5803903060b965b493f0c6c656b2aaf1"
+    },
+    "46e40cd3d278b8ca4cf5": {
+      "file": "palette/d2216e88d394f725aafc.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.7254
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
+      "originalSha256": "8e417706c6ca3f7eb99d9500d17bf74ef977d16c540dfa9d695db4721cc30003",
+      "gameGainDb": -5.8007,
+      "levelClass": null,
+      "assetSha256": "aa775a6091cd01896156664e4838a26802862c52714a3ba64ec97f04402d336a"
+    },
+    "018e21316d2e89dce4ed": {
+      "file": "palette/d2fc62f2f0d7019b2256.mp3",
+      "recording": "edits/octopus-gurgle-soft-v1",
+      "take": 1,
+      "range": {
+        "start": 0.0499,
+        "duration": 0.9417
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+      "originalSha256": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+      "processedFrom": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+      "processingRecipe": {
+        "id": "edits/octopus-gurgle-soft-v1",
+        "sourceId": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+        "sourceHash": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+        "name": "Octopus \u00b7 soft gurgle",
+        "intent": "Softened designed gurgle for octopus selection and movement.",
+        "filters": [
+          "highpass=f=130",
+          "lowpass=f=3200",
+          "volume=-10dB"
+        ]
+      },
+      "gameGainDb": 5.5593,
+      "levelClass": null,
+      "assetSha256": "9f75a994ac7a8a3211b85e0679ffe28d3ecd0f829d4aca19b2f928a1f66f18ca"
+    },
+    "56526b8d2c6d61b7b01a": {
+      "file": "palette/d2fc62f2f0d7019b2256.mp3",
+      "recording": "edits/octopus-gurgle-soft-v1",
+      "take": 1,
+      "range": {
+        "start": 0.0499,
+        "duration": 0.9417
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+      "originalSha256": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+      "processedFrom": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+      "processingRecipe": {
+        "id": "edits/octopus-gurgle-soft-v1",
+        "sourceId": "rubberduck/80-cc0-creature-sfx/burble_01.ogg",
+        "sourceHash": "f4c27a1839ef9e82d29e1bb175c0ebf73c65b6839b2914108d0c219fc1f42445",
+        "name": "Octopus \u00b7 soft gurgle",
+        "intent": "Softened designed gurgle for octopus selection and movement.",
+        "filters": [
+          "highpass=f=130",
+          "lowpass=f=3200",
+          "volume=-10dB"
+        ]
+      },
+      "gameGainDb": 9.6093,
+      "levelClass": "attack",
+      "assetSha256": "9f75a994ac7a8a3211b85e0679ffe28d3ecd0f829d4aca19b2f928a1f66f18ca"
+    },
+    "2f2da629aaa8970692cd": {
+      "file": "palette/65ccc1ddc9b9ccb463e8.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5707
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
+      "originalSha256": "a28c192579824352a0177d71d9f2fe32560d17b00fbc16297488bddd07ddcdc9",
+      "gameGainDb": -5.7907,
+      "levelClass": null,
+      "assetSha256": "bd42645df5699c886c6a44e44ab997f0502ce388df61b2949f1d85aef42bf7c6"
+    },
+    "177e34470900c0b68b8f": {
+      "file": "palette/faff3722b84acc6b2a73.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.3861
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg",
+      "originalSha256": "0edd014144dbce5ff0386647c25e0c206ae3b382a16683240ab188bd926da8eb",
+      "gameGainDb": -1.4007,
+      "levelClass": null,
+      "assetSha256": "b84d2985236d6dc40c7042fe90acf5c5143bc925b4a30f9b4ed226cd33f47858"
+    },
+    "1a6ccd21007cc5043ae8": {
+      "file": "palette/c35477d49f4231609b34.mp3",
+      "recording": "kyles/fish-slap/fish_drop1.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.1467
+      },
+      "source": "https://freesound.org/people/kyles/sounds/450830/",
+      "creator": "kyles; upstream excerpt edited by sadboysuss",
+      "license": "CC0-1.0",
+      "sourcePath": "kyles/fish-slap/fish_drop1.ogg",
+      "originalSha256": "69f3432e2433dbc626dcc100918d6ea098b7d1cb2c2c07e462d4178aac28200c",
+      "gameGainDb": 1.1393,
+      "levelClass": "attack",
+      "assetSha256": "2d52d8c3b7868146c973a882eabc51f5e957c7db6289b3876173518f09ce740a"
+    },
+    "a663115431b9ced218f0": {
+      "file": "palette/fc1b81c32543d423d092.mp3",
+      "recording": "edits/horse-0286-trim-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.405
+      },
+      "source": "https://bigsoundbank.com/neighing-of-a-horse-1-s0284.html",
+      "creator": "DenisChardonnet; distributed by Joseph SARDIN / BigSoundBank",
+      "license": "CC0-1.0",
+      "sourcePath": "denischardonnet/horse-vocals/0286.mp3",
+      "originalSha256": "9801f871af4f6805842457c4c5578daf42725fe1c1cc5dec40a2a6c1ee2bc12d",
+      "processedFrom": "denischardonnet/horse-vocals/0286.mp3",
+      "processingRecipe": {
+        "id": "edits/horse-0286-trim-v1",
+        "sourceId": "denischardonnet/horse-vocals/0286.mp3",
+        "sourceHash": "9801f871af4f6805842457c4c5578daf42725fe1c1cc5dec40a2a6c1ee2bc12d",
+        "name": "0286 \u00b7 lead-in trimmed",
+        "intent": "Trim the first 205 ms and the quiet tail; keep the main horse burst. Original retained. The user identified unwanted voice in the lead-in; this cut removes that region rather than attempting voice separation.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0.205:duration=0.405",
+          "asetpts=PTS-STARTPTS",
+          "volume=-3dB",
+          "afade=t=in:d=0.004",
+          "afade=t=out:st=0.393:d=0.012"
+        ]
+      },
+      "gameGainDb": -1.1607,
+      "levelClass": null,
+      "assetSha256": "23cf5a3e4b4edcad1fc569b2a91658983c8ed4d37a797c40995d547febc919a1"
+    },
+    "5cff2015727d5a5b05fb": {
+      "file": "palette/bfaef9652301360208bd.mp3",
+      "recording": "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac",
+      "take": 1,
+      "range": {
+        "start": 0.0349,
+        "duration": 0.5651
+      },
+      "source": "https://opengameart.org/content/dog-snarl-grunt-grumble",
+      "creator": "qubodup",
+      "license": "CC0-1.0",
+      "sourcePath": "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac",
+      "originalSha256": "932580aca34cae6c9e8e54736a765e2688e15e4a949d1b039ff59f0465dcaed8",
+      "gameGainDb": -3.8307,
+      "levelClass": null,
+      "assetSha256": "a765b37746d90caa8cfd9806e502e627018e4cb837b10c1c3d167fe1634039d9"
+    },
+    "9f2719dfc9bc4d177c8d": {
+      "file": "palette/58f7366cce47f4f94d30.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/howl.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5458
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/howl.ogg",
+      "originalSha256": "e63e29a219dfbe64724525600f36db7aab6017145650ffbc92763f87181c7825",
+      "gameGainDb": -11.1207,
+      "levelClass": null,
+      "assetSha256": "4273cf5505da5b5db8d33b710b07f96353e2d2a0b1d0f90bd7f04d29a29cf0a5"
+    },
+    "416489d1ee464859862a": {
+      "file": "palette/3514156a60f5ebe6abc5.mp3",
+      "recording": "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.6655
+      },
+      "source": "https://opengameart.org/content/dog-snarl-grunt-grumble",
+      "creator": "qubodup",
+      "license": "CC0-1.0",
+      "sourcePath": "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
+      "originalSha256": "086614716a3d402c906079ea3ff1820a993a3fb7f6913653f50f1665eb444cab",
+      "gameGainDb": -3.7007,
+      "levelClass": "attack",
+      "assetSha256": "06b215665c8ef99573c1c242671499ffffbe724e9a62255bae10c4f3ff47e453"
+    },
+    "d9e2855603d99027e36d": {
+      "file": "palette/eb49b2cf5bfe8569682d.mp3",
+      "recording": "rpg-audio/beltHandle1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.2564
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/beltHandle1.ogg",
+      "originalSha256": "2ef665bd8b65dbe669f4560be38a6d8f04a162e618b15a49e3e71b58e558aab0",
+      "gameGainDb": 3.7593,
+      "levelClass": null,
+      "assetSha256": "0ab109ceafc910d44224a2ebdc28ce08d3fc26383d1026d9f682cbc5b5b39bef"
+    },
+    "060ee57e392c89dc2612": {
+      "file": "palette/2d9b15798251e8c90ccc.mp3",
+      "recording": "edits/death-cough-dwarf-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.3662
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "originalSha256": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+      "processedFrom": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "processingRecipe": {
+        "id": "edits/death-cough-dwarf-v1",
+        "sourceId": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+        "sourceHash": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+        "name": "Dwarf death \u00b7 bassy Cough 02",
+        "intent": "Lower Cough 02 by two semitones and add low-end weight; normalize to the ordinary reference level.",
+        "preserveLevel": false,
+        "filters": [
+          "aresample=44100",
+          "asetrate=39290",
+          "aresample=44100",
+          "bass=g=4:f=180:w=1",
+          "lowpass=f=6500",
+          "volume=-6dB"
+        ]
+      },
+      "gameGainDb": -1.1207,
+      "levelClass": null,
+      "assetSha256": "689202ba1ec80eff8f2931da36aac04455242c3660596d36cc02f363d5018fc7"
+    },
+    "d8c61eba50b2109dc31e": {
+      "file": "palette/e31af778e77a19f9e49e.mp3",
+      "recording": "impact-sounds/impactMining_001",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5458
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/impactMining_001.ogg",
+      "originalSha256": "61235a18de3f3d92118235398222dbf51d448f1be70b1c8bc962b10b86f2d9c6",
+      "gameGainDb": -8.7507,
+      "levelClass": "attack",
+      "assetSha256": "15e2662489325905cb054bd227edd71d17afcaf1178a959f836be16834264ca3"
+    },
+    "cd9bfc6a3ddcebb9b143": {
+      "file": "palette/9e12fb86dca69c01821c.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/chain_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.4211
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/chain_01.ogg",
+      "originalSha256": "d376caf0f61384b1d2e0b447f64f06be56d0ee0622ba70dd01cfdd78b3a10687",
+      "gameGainDb": -4.7107,
+      "levelClass": null,
+      "assetSha256": "43efff7c0d6deef11ab51c5378fb1229013f6795001648b14a89e8ce28c635d9"
+    },
+    "7d1b3828e8f11adc2b58": {
+      "file": "palette/2f6d4cf819eb2f369a89.mp3",
+      "recording": "rpg-audio/metalPot3",
+      "take": 1,
+      "range": {
+        "start": 0.0249,
+        "duration": 0.7004
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/metalPot3.ogg",
+      "originalSha256": "d306e5b848f6843332d0ca19f8f7dfe5796aeb56d8273902b085df463273f1dc",
+      "gameGainDb": -12.4407,
+      "levelClass": null,
+      "assetSha256": "c505dd74e05a8598047bc67d78ea7879f3cc86950a119f405b966a20508b2a98"
+    },
+    "4a58d311fd56ff1cbc4e": {
+      "file": "palette/99ff775ddb45374b2310.mp3",
+      "recording": "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav",
+      "take": 1,
+      "range": {
+        "start": 0.035,
+        "duration": 0.295
+      },
+      "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav",
+      "originalSha256": "6db46e24f26ba2555049d1d9cc8d57a1fd217abfafa89a3048bb38c9ebb911d5",
+      "gameGainDb": 8.2493,
+      "levelClass": null,
+      "assetSha256": "adaa71ea74c6ddedc6578e30681fd79b27b0855829b0c6541d54b69bc448ce41"
+    },
+    "58f91c21fe4894683a7c": {
+      "file": "palette/61eeae13e0f26c4c2c76.mp3",
+      "recording": "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav",
+      "take": 1,
+      "range": {
+        "start": 0.27,
+        "duration": 0.41
+      },
+      "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav",
+      "originalSha256": "6cd8078bc3b003e0a2180f68268a178a5b114586c17fe30c309f9012bfc36381",
+      "gameGainDb": 11.4293,
+      "levelClass": "attack",
+      "assetSha256": "e0f872a2b80dd2c7b2676e1603681078b27a08b288a6c16bffe1bc6b082dea01"
+    },
+    "ab73784d9d6a79e6b2e0": {
+      "file": "palette/db251c04162fd6bf6345.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/blade_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.2465
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/blade_01.ogg",
+      "originalSha256": "caf7a7cb9b25cda4bd487c1d12d18b74a34bb18c816fd67277cf3c8d7ef32a3a",
+      "gameGainDb": -1.9707,
+      "levelClass": "attack",
+      "assetSha256": "65940ab02e95536f488ef40ed3827c6b449aff62f323ff5d9bb10191a84ddc6a"
+    },
+    "24ca3c7ae37910133029": {
+      "file": "palette/e4cbc56608d434dc4893.mp3",
+      "recording": "rpg-audio/metalLatch",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.1916
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/metalLatch.ogg",
+      "originalSha256": "ba9ba60b172b3ebc131a940f25793cd2e207aca7af73dc80d637277f060f1708",
+      "gameGainDb": -3.9407,
+      "levelClass": null,
+      "assetSha256": "a5a535f7bc61c245e4a8b6f0697d8e53d2470013a15cea780b42315b22a5a6f1"
+    },
+    "e5d976ac476afa23295a": {
+      "file": "palette/1a155052d3caaebf90e0.mp3",
+      "recording": "impact-sounds/impactPlate_medium_000",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5707
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/impactPlate_medium_000.ogg",
+      "originalSha256": "b670d30452983369771081319c268475edaaafe782bf4e8d70bd7eef09d8823c",
+      "gameGainDb": -2.8807,
+      "levelClass": "attack",
+      "assetSha256": "b715aaf6802423591c8d7ae4e4a8bc1f56043ce1316124fed7ba8f6f4adc85d4"
+    },
+    "856b426fa039b885d7a9": {
+      "file": "palette/8e7eb1022157a16fc965.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5308
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
+      "originalSha256": "09821a53c418c5eeeac4fa25bada9d245e822fed302eeeae9ae4151522a45ae5",
+      "gameGainDb": -7.1707,
+      "levelClass": "attack",
+      "assetSha256": "c5745ac8213b73727c787123c82baabd7ae2da954b4a6d6307be24f74a6f7810"
+    },
+    "aff60f2b6fc07087e016": {
+      "file": "palette/41ee8b1a64885c4dba80.mp3",
+      "recording": "edits/death-cough-elf-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.3302
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "originalSha256": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+      "processedFrom": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "processingRecipe": {
+        "id": "edits/death-cough-elf-v1",
+        "sourceId": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+        "sourceHash": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+        "name": "Elf death \u00b7 slightly higher Cough 02",
+        "intent": "Raise Cough 02 by one semitone, retaining its basic character and normal matched level.",
+        "preserveLevel": false,
+        "filters": [
+          "aresample=44100",
+          "asetrate=46722",
+          "aresample=44100",
+          "volume=-6dB"
+        ]
+      },
+      "gameGainDb": -0.9707,
+      "levelClass": null,
+      "assetSha256": "52100b93e340e5eaa98d721584e5749aa794d142b1d5aba47f7dd06900084f69"
+    },
+    "0b42916f951ccb3189f2": {
+      "file": "palette/7d030b4eff5d6d6776bb.mp3",
+      "recording": "still-north-media/weapon-textures/part-2/Dagger Draw Fast.wav",
+      "take": 1,
+      "range": {
+        "start": 0.4712,
+        "duration": 0.3178
+      },
+      "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-textures/part-2/Dagger Draw Fast.wav",
+      "originalSha256": "76aa638694419b8ba8c0795adc1806045af19b8fd92fdff90e9aa4485e09478b",
+      "gameGainDb": 9.1293,
+      "levelClass": null,
+      "assetSha256": "03d23ae443b6477ed66a9bcfede1ec9180d018c574415b26dbca6929695886fa"
+    },
+    "13759e3ffc525ff24299": {
+      "file": "palette/4a323f31c130b5e1aead.mp3",
+      "recording": "still-north-media/weapon-textures/part-2/Sabre Draw Fast.wav",
+      "take": 1,
+      "range": {
+        "start": 0.0748,
+        "duration": 0.9848
+      },
+      "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-textures/part-2/Sabre Draw Fast.wav",
+      "originalSha256": "50b4cdef2a5d3b22ebd17c8a0483e9ea35056574d7c5336e6d6303db34506133",
+      "gameGainDb": 13.0493,
+      "levelClass": null,
+      "assetSha256": "dd3524da71945f5eae21df9e48c2654d2a62a5b7011fb930bcff0a3305798db1"
+    },
+    "2b05640300191fe21abf": {
+      "file": "palette/68506e1c3d34db8a2d9a.mp3",
+      "recording": "edits/spear-sabre-one-shot-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.3347
+      },
+      "source": "https://opengameart.org/node/146863",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-impacts/part-2/Spear Sabre Blade on Blade.wav",
+      "originalSha256": "c971fbe6e7f31bdf6609ff21690e9f33bec70ad47529a46b3a86d9d29e462612",
+      "processedFrom": "still-north-media/weapon-impacts/part-2/Spear Sabre Blade on Blade.wav",
+      "processingRecipe": {
+        "id": "edits/spear-sabre-one-shot-v1",
+        "sourceId": "still-north-media/weapon-impacts/part-2/Spear Sabre Blade on Blade.wav",
+        "sourceHash": "c971fbe6e7f31bdf6609ff21690e9f33bec70ad47529a46b3a86d9d29e462612",
+        "name": "Spear\u2013sabre \u00b7 single contact",
+        "intent": "One isolated blade contact from the approved spear/sabre session, with short edge fades. Contact proxy, not a swing recording.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0.2879:duration=0.3347",
+          "asetpts=PTS-STARTPTS",
+          "afade=t=in:d=0.003",
+          "afade=t=out:st=0.3197:d=0.015"
+        ]
+      },
+      "gameGainDb": 8.0593,
+      "levelClass": "attack",
+      "assetSha256": "9523ff64e3446adbcce4b09077db90b804444cc3dbca26409d31ef231715b0a8"
+    },
+    "753742aae5d40532afd2": {
+      "file": "palette/b4926cd93ea6a6d19e2f.mp3",
+      "recording": "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav",
+      "take": 1,
+      "range": {
+        "start": 0.185,
+        "duration": 0.2233
+      },
+      "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav",
+      "originalSha256": "8d95d06f0c7539f14b5a69fb2818ab42dc985b6966db9856a30a7767f11c259b",
+      "gameGainDb": 7.4293,
+      "levelClass": "attack",
+      "assetSha256": "0189e9c1612ff0536efca07cedea32bf35794996dedcff2c4a8c4d5a0ea0a0fa"
+    },
+    "8a6445db6945744e1cb8": {
+      "file": "palette/4e3d3d9643940c9bdcdb.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/wood_05.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.2215
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/wood_05.ogg",
+      "originalSha256": "767fbe18abd5c37ced7d9fa86b36862f9680abb79bb0acda448f70850675e7bf",
+      "gameGainDb": -0.6907,
+      "levelClass": "attack",
+      "assetSha256": "50aed50b00d9d25e5d88632e34b5e6d321c312ed62ce57e17a8a84c540b8112a"
+    },
+    "c4e45383c51b9aa36e9d": {
+      "file": "palette/b350ef174cf9c375fdd0.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.3263
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "originalSha256": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+      "gameGainDb": -7.0907,
+      "levelClass": null,
+      "assetSha256": "34af5eb53a887a393af31ac28d0547627708cf897ec996ceb0660df79357e2a0"
+    },
+    "789b3b10b654e1bfda79": {
+      "file": "palette/38bee214760d698a18c7.mp3",
+      "recording": "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav",
+      "take": 12,
+      "range": {
+        "start": 6.7898,
+        "duration": 0.2016
+      },
+      "source": "https://opengameart.org/node/146863",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav",
+      "originalSha256": "61104a0c4c06667ba47a0efaae9657f57455b7138420fdb5ac02afaca203cb9f",
+      "gameGainDb": 23.9393,
+      "levelClass": "attack",
+      "assetSha256": "ef24364941fe16a47c6be784ebdd89ea56540a41fb8670243f16ccc9d2e1daae"
+    },
+    "0e3c50d86d5f953b2e42": {
+      "file": "palette/adceda86326f12046afe.mp3",
+      "recording": "rpg-audio/bookClose",
+      "take": 1,
+      "range": {
+        "start": 0.0349,
+        "duration": 0.1957
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/bookClose.ogg",
+      "originalSha256": "81e976532565f4372abd14e83d2684195fa548d0a28d345de221e56052454f32",
+      "gameGainDb": -5.0807,
+      "levelClass": "attack",
+      "assetSha256": "f73f443568cb4ab77ab84bc98be11a335967d371ab03d40f8bd2cccb8f915cf7"
+    },
+    "4d520b7a8999d60ec45a": {
+      "file": "palette/f1faa2ea8b6a81492587.mp3",
+      "recording": "rpg-audio/handleSmallLeather2",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.2764
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/handleSmallLeather2.ogg",
+      "originalSha256": "a66f6db5918ad016c28a9f2768f127a7f39b5fa04481e5a3b4e78ebe2a1c282d",
+      "gameGainDb": 15.7793,
+      "levelClass": null,
+      "assetSha256": "700d48b414c3063ad2b8b30e3da01fc722bc033023d33e242a47979f909af605"
+    },
+    "4ae016755ede852d31e0": {
+      "file": "palette/0c203c20f9d8df988c6e.mp3",
+      "recording": "edits/horse-0284-death-start-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5
+      },
+      "source": "https://bigsoundbank.com/neighing-of-a-horse-1-s0284.html",
+      "creator": "DenisChardonnet; distributed by Joseph SARDIN / BigSoundBank",
+      "license": "CC0-1.0",
+      "sourcePath": "denischardonnet/horse-vocals/0284.mp3",
+      "originalSha256": "3a84d208b1b98ee8927ab60f9c5028635a593d3877ac3889508d1d71300f5e0c",
+      "processedFrom": "denischardonnet/horse-vocals/0284.mp3",
+      "processingRecipe": {
+        "id": "edits/horse-0284-death-start-v1",
+        "sourceId": "denischardonnet/horse-vocals/0284.mp3",
+        "sourceHash": "3a84d208b1b98ee8927ab60f9c5028635a593d3877ac3889508d1d71300f5e0c",
+        "name": "Horse death \u00b7 short 0284 beginning",
+        "intent": "Short opening portion of 0284 for living horse deaths only; deer/goat mounts are excluded.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0.035:duration=0.5",
+          "asetpts=PTS-STARTPTS",
+          "afade=t=in:d=0.01",
+          "afade=t=out:st=0.420:d=0.08"
+        ]
+      },
+      "gameGainDb": -0.6407,
+      "levelClass": null,
+      "assetSha256": "84231693a5fa589e7d9728ca6d54011dcfe67c48e91eeab90f2f8d2c76efa2ca"
+    },
+    "4af95c458de224805922": {
+      "file": "palette/b1b11ffbb42da2facdd0.mp3",
+      "recording": "edits/merfolk-selection-underwater-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5308
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/clothBelt2.ogg",
+      "originalSha256": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+      "processedFrom": "rpg-audio/clothBelt2",
+      "processingRecipe": {
+        "id": "edits/merfolk-selection-underwater-v1",
+        "sourceId": "rpg-audio/clothBelt2",
+        "sourceHash": "d545b1d9f20e6188140aaf551a96f1e82fe0d15f7ca066fac8b065e1231e0038",
+        "name": "Merfolk selection \u00b7 underwater Cloth Belt 2 \u00b7 light",
+        "intent": "Lighter underwater treatment of the same chosen take: 80% gently filtered signal mixed with 20% dry detail, a small low-mid lift and normal short edge fades. Original beside it for comparison; normal reference loudness. No substituted source, pitch processing, delay or reverb.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0:duration=0.5757,asetpts=PTS-STARTPTS,volume=-6dB,asplit=2[dry][wet];[wet]highpass=f=45,lowpass=f=2200:p=2,equalizer=f=220:t=q:w=0.8:g=1[water];[dry][water]amix=inputs=2:weights='0.2 0.8':normalize=0,afade=t=in:d=0.005,afade=t=out:st=0.5677:d=0.008"
+        ]
+      },
+      "gameGainDb": 18.3093,
+      "levelClass": null,
+      "assetSha256": "4c4565d49c7b2112ffe7c4604ff82eda7868f3c5d9620eb7d9f046043f1732fd"
+    },
+    "4be39645eb7969717904": {
+      "file": "palette/26da7ae3bf5fda735095.mp3",
+      "recording": "edits/merfolk-death-underwater-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.3263
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "originalSha256": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+      "processedFrom": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+      "processingRecipe": {
+        "id": "edits/merfolk-death-underwater-v1",
+        "sourceId": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
+        "sourceHash": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
+        "name": "Merfolk death \u00b7 underwater Cough 02 \u00b7 light",
+        "intent": "Lighter underwater treatment of the same chosen take: 80% gently filtered signal mixed with 20% dry detail, a small low-mid lift and normal short edge fades. Original beside it for comparison; normal reference loudness. No substituted source, pitch processing, delay or reverb.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0:duration=0.3263,asetpts=PTS-STARTPTS,volume=-6dB,asplit=2[dry][wet];[wet]highpass=f=45,lowpass=f=2200:p=2,equalizer=f=220:t=q:w=0.8:g=1[water];[dry][water]amix=inputs=2:weights='0.2 0.8':normalize=0,afade=t=in:d=0.005,afade=t=out:st=0.3183:d=0.008"
+        ]
+      },
+      "gameGainDb": -0.8807,
+      "levelClass": null,
+      "assetSha256": "717e59faaef3bad0eb176736394573edc938a5162d7cd7029ded516b1b7847be"
+    },
+    "93b4816f7ecb8ff2db5b": {
+      "file": "palette/9c8c022a4e838dc5b35b.mp3",
+      "recording": "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Pass.wav",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.49
+      },
+      "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Pass.wav",
+      "originalSha256": "386ef860049508743bbae3d85674733564a1a3c055a84530c55d3f529819bef3",
+      "gameGainDb": 22.6693,
+      "levelClass": "attack",
+      "assetSha256": "d0f2f6df19447bc7c8fa51e259ce1509988b21a0ac69e3738cc199542bb2ec4f"
+    },
+    "5968d98e59842a38c439": {
+      "file": "palette/8f86274a70044652a17e.mp3",
+      "recording": "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav",
+      "take": 1,
+      "range": {
+        "start": 0.1347,
+        "duration": 0.4309
+      },
+      "source": "https://opengameart.org/node/146863",
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "sourcePath": "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav",
+      "originalSha256": "453b1ac4db8e941cd6b694f980aab5282712e291dd0205d373fc205a114295f4",
+      "gameGainDb": 12.3293,
+      "levelClass": "attack",
+      "assetSha256": "04cf6f8aae8466aa5e84b9fc8d14292e71aa1d72f9751aa230eb4bf274c964ec"
+    },
+    "33ec234e52cf86420477": {
+      "file": "palette/718e67c5c2f7713ccfd6.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.2964
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
+      "originalSha256": "a1f62c20ac2c294309966037fe66fbd5cddbee5df7ae6d6c29e4b2607a0db1e4",
+      "gameGainDb": -3.0007,
+      "levelClass": null,
+      "assetSha256": "def9f688a35caa709f73b3de907c04ebc989fb3c825ae948d5eccd0f84dc4e9e"
+    },
+    "da6d2d434978508ee055": {
+      "file": "palette/6c3601b54a112e7ff9f9.mp3",
+      "recording": "edits/fout-01-short-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.48
+      },
+      "source": "https://opengameart.org/content/3-dark-magic-spells",
+      "creator": "qubodup",
+      "license": "CC0-1.0",
+      "sourcePath": "qubodup/3-dark-magic-spells/dark_magic/fout-01.flac",
+      "originalSha256": "47a79f97cb3ac35219d02c0c0b7a2aeb09b260ce9eed3d316728be867e6ac0a9",
+      "processedFrom": "qubodup/3-dark-magic-spells/dark_magic/fout-01.flac",
+      "processingRecipe": {
+        "id": "edits/fout-01-short-v1",
+        "sourceId": "qubodup/3-dark-magic-spells/dark_magic/fout-01.flac",
+        "sourceHash": "47a79f97cb3ac35219d02c0c0b7a2aeb09b260ce9eed3d316728be867e6ac0a9",
+        "name": "Fout 01 \u00b7 short attack",
+        "intent": "Short magic attack body with a faded tail; full source retained.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0.30:duration=0.48",
+          "asetpts=PTS-STARTPTS",
+          "afade=t=in:d=0.012",
+          "afade=t=out:st=0.36:d=0.12"
+        ]
+      },
+      "gameGainDb": -6.5607,
+      "levelClass": "attack",
+      "assetSha256": "fac77c2463ecc251d4af340e5572100237f83de6ec619e3c7b423a393a931b85"
+    },
+    "a95dae6e648c7e63a1f0": {
+      "file": "palette/06731ab323a4953276f1.mp3",
+      "recording": "edits/ghost-grunt-02-trim-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.36
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/grunt_02.ogg",
+      "originalSha256": "76d78154f2f22b3f373bd3ec4ff0edabb459322f72adabfa285b738f37987cbb",
+      "processedFrom": "rubberduck/80-cc0-creature-sfx/grunt_02.ogg",
+      "processingRecipe": {
+        "id": "edits/ghost-grunt-02-trim-v1",
+        "sourceId": "rubberduck/80-cc0-creature-sfx/grunt_02.ogg",
+        "sourceHash": "76d78154f2f22b3f373bd3ec4ff0edabb459322f72adabfa285b738f37987cbb",
+        "name": "Ghost \u00b7 Grunt 2 without scratchy ending",
+        "intent": "Keep the tonal body of Grunt 2 and fade before the irregular scratchy tail begins. Designed creature voice used as a ghost proxy.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0:duration=0.36",
+          "asetpts=PTS-STARTPTS",
+          "afade=t=in:d=0.004",
+          "afade=t=out:st=0.31:d=0.05"
+        ]
+      },
+      "gameGainDb": -5.8207,
+      "levelClass": null,
+      "assetSha256": "b6e260d4ca463bb41fb98d11b6802fe5242038d44756242e19cc323a7ba18bb9"
+    },
+    "11306644002105606434": {
+      "file": "palette/89a16afcb818f408515a.mp3",
+      "recording": "edits/ghost-scream-02-no-cough-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.66
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/scream_02.ogg",
+      "originalSha256": "73aedfbcc7e5b3004507d5a79e95ae53954026036bf8d6f65aa0a4ca298dd372",
+      "processedFrom": "rubberduck/80-cc0-creature-sfx/scream_02.ogg",
+      "processingRecipe": {
+        "id": "edits/ghost-scream-02-no-cough-v1",
+        "sourceId": "rubberduck/80-cc0-creature-sfx/scream_02.ogg",
+        "sourceHash": "73aedfbcc7e5b3004507d5a79e95ae53954026036bf8d6f65aa0a4ca298dd372",
+        "name": "Ghost death \u00b7 Scream 02 without opening cough",
+        "intent": "Keep the scream body after the user-identified opening cough, with a fading release.",
+        "preserveLevel": false,
+        "filters": [
+          "atrim=start=0.14:duration=0.66",
+          "asetpts=PTS-STARTPTS",
+          "afade=t=in:d=0.01",
+          "afade=t=out:st=0.560:d=0.1"
+        ]
+      },
+      "gameGainDb": -5.8507,
+      "levelClass": null,
+      "assetSha256": "3d1fc6df259a7d630da2402f434592ffba7117d68a0c3c36a2bfc8c560eb1e93"
+    },
+    "42c97afecf8fbc174dab": {
+      "file": "palette/0191dc32a3d81b0fb915.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.436
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
+      "originalSha256": "bf9c48b76921e56aa266172d969a2c08215d6ce0ffae7c3584f23fa05d3f8bd4",
+      "gameGainDb": -5.9807,
+      "levelClass": "attack",
+      "assetSha256": "5abf1cea31c4cbb4cb6b7dee294d619a556ed8c3c17c0bc08d04bcb6fcc86342"
+    },
+    "45b770ab454d215cccb4": {
+      "file": "palette/a44d87917b48d5523465.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/hurt_05.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.3462
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/hurt_05.ogg",
+      "originalSha256": "4dc63fc62e8604a87baa1f5a74b75d848ccb68ce6e0e34d603dd3cbefc8519ed",
+      "gameGainDb": -6.7507,
+      "levelClass": null,
+      "assetSha256": "217f193d3f18d6fc548a33c9bad3e71c7be3732646960b1e0d18d7fc57ff502e"
+    },
+    "e0dc42474885d93ab31f": {
+      "file": "palette/cffe066a4330f65ef468.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/grunt_05.ogg",
+      "take": 1,
+      "range": {
+        "start": 0.1247,
+        "duration": 0.4311
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/grunt_05.ogg",
+      "originalSha256": "164059a171a8a7d8f1a2fcfdb195a9d50da3ab67bed0b52f4c2c3409fe5df049",
+      "gameGainDb": -3.0807,
+      "levelClass": "attack",
+      "assetSha256": "b812b9f9c56b860373c272dd2d7c5f0d7027c5df4fcf3ad30a861a1329802a55"
+    },
+    "1b10ad758768ecd1748d": {
+      "file": "palette/11f6af7140cb38e37689.mp3",
+      "recording": "rpg-audio/creak1",
+      "take": 1,
+      "range": {
+        "start": 0.0549,
+        "duration": 0.6061
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/creak1.ogg",
+      "originalSha256": "8a346186fd297254248cab8e8117060a52a5cf2a84f603153a762108550ea95e",
+      "gameGainDb": 0.0493,
+      "levelClass": null,
+      "assetSha256": "1e78a98e4f78e5742795b781e9ff562848495ce2704c3ce27485e52e926e88e6"
+    },
+    "f17c65bc67627cca4149": {
+      "file": "palette/604f7e264c91b201b917.mp3",
+      "recording": "impact-sounds/impactPlank_medium_004",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.2
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/impactPlank_medium_004.ogg",
+      "originalSha256": "6a51318c1c63821ea757622b57fafbf44c16c28129f6d39406a784260d87c447",
+      "gameGainDb": -4.7407,
+      "levelClass": "attack",
+      "assetSha256": "e38cc1370d8064e26e4db97f1b4f57ad6514bc1f285b545d11873934ae47095c"
+    },
+    "fd8a1d13d1dfea55bdcf": {
+      "file": "palette/5e26918f45c8c983a435.mp3",
+      "recording": "impact-sounds/impactWood_medium_000",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.3298
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/impactWood_medium_000.ogg",
+      "originalSha256": "1723a9fd25103ed41af06054814e84e65f4a772bac86ab2dc927da93d9592ff5",
+      "gameGainDb": -3.5607,
+      "levelClass": "attack",
+      "assetSha256": "7d1f87f7ff22ea347f3eae95338557471055fda973f76ed3becb6a4a150906e1"
+    },
+    "8526ac1715542e37d2d8": {
+      "file": "palette/cb2ffbb05112d87b30df.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.4909
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
+      "originalSha256": "d11ce95031c2c36ae2a00979620fa95a7a3f5c6d6f2ac86962ed292aa556be8d",
+      "gameGainDb": 1.6693,
+      "levelClass": "attack",
+      "assetSha256": "60329a215d5921d5fd5af5520389f65cfc84b9276fb9971a2e326c1889944361"
+    },
+    "1f51992dc1ab5fc5ce83": {
+      "file": "palette/f5de08578b977501eb7a.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/breath.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5009
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/breath.ogg",
+      "originalSha256": "d6ecfd092c261059701fe81581957ce6e67c1737978449bbd98ec6d4f30abb7f",
+      "gameGainDb": 6.1493,
+      "levelClass": null,
+      "assetSha256": "770bd15cfabe0522095ea4e5ecda1e0c8d7d3a12242b16333d4834f2f2ab186a"
+    },
+    "2a67452288e81877a635": {
+      "file": "palette/9458e3e298e319ac293a.mp3",
+      "recording": "rubberduck/80-cc0-creature-sfx/burp_02.ogg",
+      "take": 1,
+      "range": {
+        "start": 0.0399,
+        "duration": 0.7004
+      },
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-creature-sfx/burp_02.ogg",
+      "originalSha256": "6742601fee1432cee9ab78ec2f07ed5686c9584759887239dfed6cda028ea4e5",
+      "gameGainDb": -8.6307,
+      "levelClass": "attack",
+      "assetSha256": "1c4907762fdfe05721ac320770f3be313e97b8f2aed00898d3ba364f6063482b"
+    },
+    "404742b3fb08fbb7a8fc": {
+      "file": "palette/cb2ffbb05112d87b30df.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.4909
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
+      "originalSha256": "d11ce95031c2c36ae2a00979620fa95a7a3f5c6d6f2ac86962ed292aa556be8d",
+      "gameGainDb": -0.7107,
+      "levelClass": "terrain",
+      "assetSha256": "60329a215d5921d5fd5af5520389f65cfc84b9276fb9971a2e326c1889944361"
+    },
+    "58891746d1c8d3fbef67": {
+      "file": "palette/ed2606907f6cad4b6bad.mp3",
+      "recording": "edits/plains-grass-003-soft-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.1417
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/footstep_grass_003.ogg",
+      "originalSha256": "0546e1d8ab2def714425701a18bd34c5ee2794b12e858e5b595aabcf38a34137",
+      "processedFrom": "impact-sounds/footstep_grass_003",
+      "processingRecipe": {
+        "id": "edits/plains-grass-003-soft-v1",
+        "sourceId": "impact-sounds/footstep_grass_003",
+        "sourceHash": "0546e1d8ab2def714425701a18bd34c5ee2794b12e858e5b595aabcf38a34137",
+        "name": "footstep_grass_003 \u00b7 soft bass-cut audition",
+        "intent": "Quieter plains tap and foot-contact candidate with substantially less low-end weight. Original remains available.",
+        "filters": [
+          "highpass=f=220:p=2",
+          "bass=g=-6:f=250:w=0.8",
+          "lowpass=f=6500",
+          "volume=-9dB",
+          "afade=t=in:d=0.004",
+          "afade=t=out:st=0.6493:d=0.02"
+        ]
+      },
+      "gameGainDb": 5.5593,
+      "levelClass": "terrain",
+      "assetSha256": "af8dd61f11b8c85ed8dd88f2d86f11b6efcfa3342a391a2749a5617115861b40"
+    },
+    "43b8c84c6d50d9faa7f2": {
+      "file": "palette/1bf7f19ac14fd28a288c.mp3",
+      "recording": "edits/forest-book-03-short-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.4402
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/book_03.ogg",
+      "originalSha256": "f72e4af8172ae98eaa350892072120e79eb87f91448b99aeaaf1febe070fbb2e",
+      "processedFrom": "rubberduck/80-cc0-rpg-sfx/book_03.ogg",
+      "processingRecipe": {
+        "id": "edits/forest-book-03-short-v1",
+        "sourceId": "rubberduck/80-cc0-rpg-sfx/book_03.ogg",
+        "sourceHash": "f72e4af8172ae98eaa350892072120e79eb87f91448b99aeaaf1febe070fbb2e",
+        "name": "Forest \u00b7 short quiet Book 03",
+        "intent": "Short forest texture with a gradual fade; retain existing quiet processing.",
+        "preserveLevel": true,
+        "filters": [
+          "atrim=start=0.12:duration=0.8",
+          "asetpts=PTS-STARTPTS",
+          "asetrate=35000",
+          "aresample=44100",
+          "highpass=f=180",
+          "volume=14dB",
+          "asoftclip=type=tanh:threshold=0.25:output=0.7",
+          "lowpass=f=2800",
+          "volume=-12.1dB",
+          "atrim=duration=0.45",
+          "afade=t=in:d=0.02",
+          "afade=t=out:st=0.29:d=0.16"
+        ],
+        "levelReference": {
+          "family": "current/terrain-forest",
+          "targetStrongest50msDbFS": -34.81,
+          "method": "Match the median existing forest cue after its game-relative gain at the board default volume; preserve intentional attenuation."
+        }
+      },
+      "gameGainDb": 5.5593,
+      "levelClass": "terrain",
+      "assetSha256": "fb584b3bec100cf498144345763831dd00557b79f268b9f3ba498b2fe4d04467"
+    },
+    "7af2410fabd7d201f661": {
+      "file": "palette/1c31db129eeb87b6aa9c.mp3",
+      "recording": "current/terrain-hill-1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.403
+      },
+      "source": "Hexcommand scripts/generate-sfx.py",
+      "license": "Existing Hexcommand asset",
+      "gameGainDb": -0.0007,
+      "levelClass": "terrain",
+      "assetSha256": "3c582937d5f28287ecb0c8e58ad1e26c076d90d33d1e3ba7223262f1af33e03a"
+    },
+    "a1c9216caaa716cbbd7d": {
+      "file": "palette/8a8834b515696e4ea9b6.mp3",
+      "recording": "current/terrain-water-1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.2066
+      },
+      "source": "Hexcommand scripts/generate-sfx.py",
+      "license": "Existing Hexcommand asset",
+      "gameGainDb": -0.0007,
+      "levelClass": "terrain",
+      "assetSha256": "389be1c1d584b51ed339431bac221a04c5004919058f10c42002cec51274ae41"
+    },
+    "6c4a106f6897dc5219c1": {
+      "file": "palette/8bd322658dabecc115d6.mp3",
+      "recording": "current/terrain-village-1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.253
+      },
+      "source": "Hexcommand scripts/generate-sfx.py",
+      "license": "Existing Hexcommand asset",
+      "gameGainDb": -0.0007,
+      "levelClass": "terrain",
+      "assetSha256": "d422c8d21287f94619b438fe71b0ef833ffe078ee2980f5326dcc9c409252228"
+    },
+    "8b06cb5fb76a2136238e": {
+      "file": "palette/aaa6c35101a027818936.mp3",
+      "recording": "edits/keep-metal-light-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.2365
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/impactMetal_light_000.ogg",
+      "originalSha256": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d",
+      "processedFrom": "impact-sounds/impactMetal_light_000",
+      "processingRecipe": {
+        "id": "edits/keep-metal-light-v1",
+        "sourceId": "impact-sounds/impactMetal_light_000",
+        "sourceHash": "33b5e6e37c6e9d54e07bf5a89b12c76e879f40c1ea83cdd82714df1d6f9fec6d",
+        "name": "Keep \u00b7 soft light-metal contact",
+        "intent": "Light metal contact matched to the archived keep cue level.",
+        "filters": [
+          "atrim=start=0:duration=0.3515",
+          "asetpts=PTS-STARTPTS",
+          "highpass=f=120:p=2",
+          "lowpass=f=5000",
+          "afade=t=in:d=0.015",
+          "afade=t=out:st=0.3165:d=0.035",
+          "volume=-7.2dB"
+        ],
+        "levelReference": {
+          "id": "current/terrain-keep-1",
+          "referenceRmsDb": -28.1,
+          "targetOffsetDb": 0,
+          "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+        }
+      },
+      "gameGainDb": 1.7493,
+      "levelClass": "terrain",
+      "assetSha256": "959f1ab54f3cc5ae9567c0a9585f2faeaebf727b7424be3f03a1cf4a69dec94f"
+    },
+    "208c2e44527217fc0e2c": {
+      "file": "palette/83464d8d619063487d3a.mp3",
+      "recording": "edits/fort-wood-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.1417
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/impactWood_light_000.ogg",
+      "originalSha256": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3",
+      "processedFrom": "impact-sounds/impactWood_light_000",
+      "processingRecipe": {
+        "id": "edits/fort-wood-v1",
+        "sourceId": "impact-sounds/impactWood_light_000",
+        "sourceHash": "eb45e35b4bed784d3f120de4afec4b0d6ac09d9e143cce8cfcb7d739e1b1f3c3",
+        "name": "Fort \u00b7 quiet wood contact",
+        "intent": "Wood contact matched approximately to the soft keep metal cue.",
+        "filters": [
+          "atrim=start=0:duration=0.2656",
+          "asetpts=PTS-STARTPTS",
+          "highpass=f=90:p=2",
+          "lowpass=f=4000",
+          "afade=t=in:d=0.015",
+          "afade=t=out:st=0.2306:d=0.035",
+          "volume=-0.6dB"
+        ],
+        "levelReference": {
+          "id": "current/terrain-keep-1",
+          "referenceRmsDb": -28.1,
+          "targetOffsetDb": 0,
+          "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+        }
+      },
+      "gameGainDb": 2.4993,
+      "levelClass": "terrain",
+      "assetSha256": "12eb9aeb60cfafd9c21bade9ca4d5d96f1a346b8b68ceb3822527a2f7f4b44c0"
+    },
+    "79a23cccff86b4327237": {
+      "file": "palette/2b28fb23db3b681eb203.mp3",
+      "recording": "edits/grove-short-magic-v2",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.305
+      },
+      "source": "https://opengameart.org/content/magic-spell-sfx",
+      "creator": "JaggedStone",
+      "license": "CC0-1.0",
+      "sourcePath": "jaggedstone/magic-spell-sfx/magical_2.ogg",
+      "originalSha256": "84a70f63f3f21e5ba4a48285b760a663d422ad3feddba2f3cbadd94b76cdc52e",
+      "processedFrom": "jaggedstone/magic-spell-sfx/magical_2.ogg",
+      "processingRecipe": {
+        "id": "edits/grove-short-magic-v2",
+        "sourceId": "jaggedstone/magic-spell-sfx/magical_2.ogg",
+        "sourceHash": "84a70f63f3f21e5ba4a48285b760a663d422ad3feddba2f3cbadd94b76cdc52e",
+        "name": "Sacred grove \u00b7 short quiet magic",
+        "intent": "Shortened sacred grove magic, preserving the previous quiet timbre.",
+        "filters": [
+          "atrim=start=0.05:duration=0.30",
+          "asetpts=PTS-STARTPTS",
+          "highpass=f=220:p=2",
+          "lowpass=f=3500",
+          "afade=t=in:d=0.01",
+          "afade=t=out:st=0.21:d=0.09",
+          "volume=-11.7dB"
+        ],
+        "levelReference": {
+          "id": "current/terrain-keep-1",
+          "referenceRmsDb": -28.1,
+          "targetOffsetDb": -10,
+          "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+        },
+        "preserveLevel": true
+      },
+      "gameGainDb": 5.5593,
+      "levelClass": "terrain",
+      "assetSha256": "45436d2366beb57d6f2fa439c7757514ffdaa88aca5c4b79a3cef9b85efc6285"
+    },
+    "dfb34fb86e2d2cc7519b": {
+      "file": "palette/100c7fb601626addb88d.mp3",
+      "recording": "edits/house-door-soft-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.446
+      },
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/rpg-audio/Audio/doorClose_1.ogg",
+      "originalSha256": "834d29c60a8a8bfb50b158cdb6b7dfa8f02812a408a1ee9703d038dfab0b1aeb",
+      "processedFrom": "rpg-audio/doorClose_1",
+      "processingRecipe": {
+        "id": "edits/house-door-soft-v1",
+        "sourceId": "rpg-audio/doorClose_1",
+        "sourceHash": "834d29c60a8a8bfb50b158cdb6b7dfa8f02812a408a1ee9703d038dfab0b1aeb",
+        "name": "House / church / monastery \u00b7 quiet door",
+        "intent": "A restrained door contact shared by house, church and monastery.",
+        "filters": [
+          "atrim=start=0:duration=0.675",
+          "asetpts=PTS-STARTPTS",
+          "highpass=f=90:p=2",
+          "lowpass=f=4500",
+          "afade=t=in:d=0.015",
+          "afade=t=out:st=0.64:d=0.035",
+          "volume=-11.5dB"
+        ],
+        "levelReference": {
+          "id": "current/terrain-keep-1",
+          "referenceRmsDb": -28.1,
+          "targetOffsetDb": 0,
+          "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+        }
+      },
+      "gameGainDb": -0.1507,
+      "levelClass": "terrain",
+      "assetSha256": "305d87c8d62552a599a4a5f00cff5236d4e311be7185fd39a1b114990f575d87"
+    },
+    "8e4ebe6e7b343e7ecde3": {
+      "file": "palette/47ee2e39407a4da595c7.mp3",
+      "recording": "edits/mountain-mining-soft-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.45
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/impactMining_000.ogg",
+      "originalSha256": "36b4ea107222d073c67ca64dde26944975609202d5090b2f2021213c1a7e35cd",
+      "processedFrom": "impact-sounds/impactMining_000",
+      "processingRecipe": {
+        "id": "edits/mountain-mining-soft-v1",
+        "sourceId": "impact-sounds/impactMining_000",
+        "sourceHash": "36b4ea107222d073c67ca64dde26944975609202d5090b2f2021213c1a7e35cd",
+        "name": "Mountains \u00b7 very quiet mining contact",
+        "intent": "Short mining texture, heavily reduced for mountains.",
+        "filters": [
+          "atrim=start=0:duration=0.45",
+          "asetpts=PTS-STARTPTS",
+          "highpass=f=220:p=2",
+          "lowpass=f=3500",
+          "afade=t=in:d=0.015",
+          "afade=t=out:st=0.415:d=0.035",
+          "volume=-7.0dB"
+        ],
+        "levelReference": {
+          "id": "current/terrain-keep-1",
+          "referenceRmsDb": -28.1,
+          "targetOffsetDb": -9,
+          "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+        }
+      },
+      "gameGainDb": 5.5593,
+      "levelClass": "terrain",
+      "assetSha256": "eb86532e14c6078af48374cd3df43ba2340b1a4c794c71cedbedbef87e95052b"
+    },
+    "5ba8ecfff6a14827467f": {
+      "file": "palette/aaf2c7e3b4eff767009d.mp3",
+      "recording": "edits/quarry-mining-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.6306
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/impactMining_000.ogg",
+      "originalSha256": "36b4ea107222d073c67ca64dde26944975609202d5090b2f2021213c1a7e35cd",
+      "processedFrom": "impact-sounds/impactMining_000",
+      "processingRecipe": {
+        "id": "edits/quarry-mining-v1",
+        "sourceId": "impact-sounds/impactMining_000",
+        "sourceHash": "36b4ea107222d073c67ca64dde26944975609202d5090b2f2021213c1a7e35cd",
+        "name": "Quarry \u00b7 mining contact",
+        "intent": "A more present mining cue than the mountain audition, still at the keep reference level.",
+        "filters": [
+          "atrim=start=0:duration=0.9374",
+          "asetpts=PTS-STARTPTS",
+          "highpass=f=110:p=2",
+          "lowpass=f=5000",
+          "afade=t=in:d=0.015",
+          "afade=t=out:st=0.9024:d=0.035",
+          "volume=-3.2dB"
+        ],
+        "levelReference": {
+          "id": "current/terrain-keep-1",
+          "referenceRmsDb": -28.1,
+          "targetOffsetDb": 0,
+          "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+        }
+      },
+      "gameGainDb": 5.5593,
+      "levelClass": null,
+      "assetSha256": "01c1c504ebd3226766e45f57d96a90c82a4acfdc910651897c4a181d4d79192a"
+    },
+    "dedfeaa0f001aa1742c4": {
+      "file": "palette/45fa5acde224476ceafe.mp3",
+      "recording": "edits/burned-fire-soft-onset-v3",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.45
+      },
+      "source": "https://opengameart.org/content/fire-crackling",
+      "creator": "AntumDeluge",
+      "license": "CC0-1.0",
+      "sourcePath": "antumdeluge/fire-crackling/fire-1.wav",
+      "originalSha256": "26702de8a195bcbafeae72034861d875a1b7917168a25106f4e1957ecdddf7e5",
+      "processedFrom": "antumdeluge/fire-crackling/fire-1.wav",
+      "processingRecipe": {
+        "id": "edits/burned-fire-soft-onset-v3",
+        "sourceId": "antumdeluge/fire-crackling/fire-1.wav",
+        "sourceHash": "26702de8a195bcbafeae72034861d875a1b7917168a25106f4e1957ecdddf7e5",
+        "name": "Burned settlement \u00b7 fire without opening pop",
+        "intent": "Move past the opening pop, with a longer fade into a quieter fire excerpt.",
+        "filters": [
+          "atrim=start=1.82:duration=0.45",
+          "asetpts=PTS-STARTPTS",
+          "highpass=f=160:p=2",
+          "lowpass=f=3500",
+          "afade=t=in:d=0.10",
+          "afade=t=out:st=0.25:d=0.20",
+          "volume=2.0dB"
+        ],
+        "levelReference": {
+          "id": "current/terrain-keep-1",
+          "referenceRmsDb": -28.1,
+          "targetOffsetDb": -7,
+          "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+        }
+      },
+      "gameGainDb": 6.2093,
+      "levelClass": "terrain",
+      "assetSha256": "43da0eeb3f86c54115c613bf8b21a1c96fa1ff0b038f92a384cee5773bc51317"
+    },
+    "0afd3d28fe927744a881": {
+      "file": "palette/2d6cc052878bf7398c44.mp3",
+      "recording": "current/terrain-plains-1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.213
+      },
+      "source": "Hexcommand scripts/generate-sfx.py",
+      "license": "Existing Hexcommand asset",
+      "gameGainDb": -0.0007,
+      "levelClass": "terrain",
+      "assetSha256": "69cd3250c759436441442d50fe5ca1bb92bf845e497dc0b5042c7a82b2d03d02"
+    },
+    "1c229af7248cff8c22f4": {
+      "file": "palette/f50bc07c204559e4ed07.mp3",
+      "recording": "current/terrain-keep-1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.1816
+      },
+      "source": "Hexcommand scripts/generate-sfx.py",
+      "license": "Existing Hexcommand asset",
+      "gameGainDb": -0.0007,
+      "levelClass": "terrain",
+      "assetSha256": "97968366c13d4fe6c1c35739ebd9285eb57fbffc66bc3eb672a6a286465ee039"
+    },
+    "6a215df7cb725eee9e56": {
+      "file": "palette/faee687a3d1adab9e5a4.mp3",
+      "recording": "impact-sounds/impactBell_heavy_000",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 1.1494
+      },
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "sourcePath": "kenney/impact-sounds/Audio/impactBell_heavy_000.ogg",
+      "originalSha256": "94b8bb5f2d43ab65e4bcc32b28562416e9bc2c51d9fd4be1e333660ee52f977f",
+      "gameGainDb": -3.4807,
+      "levelClass": null,
+      "assetSha256": "ff6241d51c1a4ef695e4e44972a68cd9d053b407d50f761ebe48de02fa3d9206"
+    },
+    "69b107702f3d02ae8e8e": {
+      "file": "palette/718e67c5c2f7713ccfd6.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.2964
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
+      "originalSha256": "a1f62c20ac2c294309966037fe66fbd5cddbee5df7ae6d6c29e4b2607a0db1e4",
+      "gameGainDb": -5.9907,
+      "levelClass": "terrain",
+      "assetSha256": "def9f688a35caa709f73b3de907c04ebc989fb3c825ae948d5eccd0f84dc4e9e"
+    },
+    "c02e02577301d78c1651": {
+      "file": "palette/71b13c3e01783632f8bb.mp3",
+      "recording": "edits/ritual-fout-03-short-v1",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.45
+      },
+      "source": "https://opengameart.org/content/3-dark-magic-spells",
+      "creator": "qubodup",
+      "license": "CC0-1.0",
+      "sourcePath": "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac",
+      "originalSha256": "ec55b77eb3096dcc083d219254d0a37a0ecf071477d7c47bc363092c2ca02d0d",
+      "processedFrom": "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac",
+      "processingRecipe": {
+        "id": "edits/ritual-fout-03-short-v1",
+        "sourceId": "qubodup/3-dark-magic-spells/dark_magic/fout-03.flac",
+        "sourceHash": "ec55b77eb3096dcc083d219254d0a37a0ecf071477d7c47bc363092c2ca02d0d",
+        "name": "Ritual \u00b7 short quiet fout 03",
+        "intent": "Shortened ritual cue, preserving the quiet processed texture.",
+        "filters": [
+          "atrim=start=0.9:duration=0.85",
+          "asetpts=PTS-STARTPTS",
+          "highpass=f=160:p=2",
+          "lowpass=f=5000",
+          "afade=t=in:d=0.015",
+          "afade=t=out:st=0.815:d=0.035",
+          "volume=-22.7dB",
+          "atrim=duration=0.45",
+          "afade=t=out:st=0.33:d=0.12"
+        ],
+        "levelReference": {
+          "id": "current/terrain-keep-1",
+          "referenceRmsDb": -28.1,
+          "targetOffsetDb": -5,
+          "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
+        }
+      },
+      "gameGainDb": 5.5593,
+      "levelClass": "terrain",
+      "assetSha256": "23f88b8dd09fd6afdb0604f21579d5ae50856114474cfcda2c725ea3eab84358"
+    },
+    "40fcbdbdc6d925647e3f": {
+      "file": "palette/8e7eb1022157a16fc965.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
+      "take": 1,
+      "range": {
+        "start": 0,
+        "duration": 0.5308
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
+      "originalSha256": "09821a53c418c5eeeac4fa25bada9d245e822fed302eeeae9ae4151522a45ae5",
+      "gameGainDb": -10.1607,
+      "levelClass": "terrain",
+      "assetSha256": "c5745ac8213b73727c787123c82baabd7ae2da954b4a6d6307be24f74a6f7810"
+    }
+  }
+}

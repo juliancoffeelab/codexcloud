@@ -43,6 +43,7 @@ import {
   playSound,
   playHudSound,
   playInteraction,
+  playCombat,
   cancelSound,
 } from "../presentation/sound";
 import { animateTile, animateTurn, type MotionKind } from "../presentation/motion";
@@ -768,7 +769,7 @@ export class BattleController {
     const tile = this.#game.tile(tileId);
     playInteraction({
       unitType: this.#game.at(tileId)?.type,
-      terrain: tile && TERRAIN[tile.terrain].role,
+      terrain: tile?.terrain,
     });
   }
 
@@ -793,21 +794,35 @@ export class BattleController {
 
     // One cue per action, with combat taking precedence over movement/capture.
     if (changes.attacked) {
-      const defaultSound = changes.attacker?.type === "archer" ? "attack-bow" : "attack-melee";
-      playSound(this.#game.lastCombat?.sound || defaultSound);
+      const combat = this.#game.combat;
+      const attacker = combat?.units[0] ?? changes.attacker;
+      const health = combat?.strikes.at(-1)?.health;
+      const deaths =
+        combat && health
+          ? combat.units
+              .filter(
+                (unit, i) =>
+                  health[i]! <= 0 && previous.units.some((visible) => visible.id === unit.id),
+              )
+              .map((unit) => unit.type)
+          : [];
+      playCombat(
+        {
+          attackType: attacker?.type,
+          attackId: this.#game.lastCombat?.attackId,
+          attackSound: this.#game.lastCombat?.sound,
+        },
+        deaths,
+      );
     } else if (changes.newWinner) {
       playSound(changes.newWinner === "player" ? "victory" : "defeat");
     } else if (changes.recruited || changes.advanced) {
       playSound("recruit");
     } else if (changes.movedUnit) {
-      const tile = this.#game.tile(changes.movedUnit.tile);
-      playInteraction({
-        unitType: changes.movedUnit.type,
-        terrain: tile && TERRAIN[tile.terrain].role,
-      });
+      playSound("select");
     } else if (changes.capturedTiles.length > 0) {
       const tile = this.#game.tile(changes.capturedTiles[0]!);
-      playInteraction({ terrain: tile && TERRAIN[tile.terrain].role });
+      playInteraction({ terrain: tile?.terrain });
     }
   }
 

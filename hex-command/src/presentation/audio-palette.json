@@ -1,0 +1,2418 @@
+{
+  "clips": {
+    "c2fdf756bcb22f667fc9": {
+      "file": "palette/eec3744ee3c3673efa87.mp3",
+      "gainDb": -6.2807
+    },
+    "c535fbb07e3ea8d120aa": {
+      "file": "palette/b435ef876bc215a76de4.mp3",
+      "gainDb": -10.8007
+    },
+    "7439e556025516dd3513": {
+      "file": "palette/bc86adbf5072da2d2b87.mp3",
+      "gainDb": -5.5107
+    },
+    "50806fc7df5e0bccc3cf": {
+      "file": "palette/a3fda4a1fed3500ff14b.mp3",
+      "gainDb": -6.3107
+    },
+    "3e6310e5bc404ae19d74": {
+      "file": "palette/dfe74381e6a57787a6d7.mp3",
+      "gainDb": -1.4707
+    },
+    "7f84ad9347df544dfe68": {
+      "file": "palette/da5cb7087e09692e1259.mp3",
+      "gainDb": 5.1393
+    },
+    "3a2f6220389148df7d39": {
+      "file": "palette/94e4451b6a313203eb9f.mp3",
+      "gainDb": 8.3293
+    },
+    "038454dd45347855378b": {
+      "file": "palette/9200f3c12d724251755d.mp3",
+      "gainDb": -2.5807
+    },
+    "ce5a4b87904953414717": {
+      "file": "palette/8f3919ef19d89bba4b64.mp3",
+      "gainDb": 20.7793
+    },
+    "ac9f11aa3d1afb1cb5ec": {
+      "file": "palette/db1b85e30e3ad5d5ecd2.mp3",
+      "gainDb": -0.3107
+    },
+    "cd860a2f955d73aadba4": {
+      "file": "palette/9c295023e7e233e0c7b7.mp3",
+      "gainDb": 7.7193
+    },
+    "489d29a140c68e2945af": {
+      "file": "palette/799f35cf888c7dda3572.mp3",
+      "gainDb": 12.4193
+    },
+    "ef1ee89ac3b752927fa6": {
+      "file": "palette/277e8a85caa07ad2f954.mp3",
+      "gainDb": 24.9893
+    },
+    "bb88422a34ef21ca7d19": {
+      "file": "palette/e85ee80cabff51afbed1.mp3",
+      "gainDb": -2.1607
+    },
+    "a226691fdd4ffd2f94db": {
+      "file": "palette/02af775e6c21f8c9718e.mp3",
+      "gainDb": 0.1293
+    },
+    "46e40cd3d278b8ca4cf5": {
+      "file": "palette/d2216e88d394f725aafc.mp3",
+      "gainDb": -5.8007
+    },
+    "018e21316d2e89dce4ed": {
+      "file": "palette/d2fc62f2f0d7019b2256.mp3",
+      "gainDb": 5.5593
+    },
+    "56526b8d2c6d61b7b01a": {
+      "file": "palette/d2fc62f2f0d7019b2256.mp3",
+      "gainDb": 9.6093
+    },
+    "2f2da629aaa8970692cd": {
+      "file": "palette/65ccc1ddc9b9ccb463e8.mp3",
+      "gainDb": -5.7907
+    },
+    "177e34470900c0b68b8f": {
+      "file": "palette/faff3722b84acc6b2a73.mp3",
+      "gainDb": -1.4007
+    },
+    "1a6ccd21007cc5043ae8": {
+      "file": "palette/c35477d49f4231609b34.mp3",
+      "gainDb": 1.1393
+    },
+    "a663115431b9ced218f0": {
+      "file": "palette/fc1b81c32543d423d092.mp3",
+      "gainDb": -1.1607
+    },
+    "5cff2015727d5a5b05fb": {
+      "file": "palette/bfaef9652301360208bd.mp3",
+      "gainDb": -3.8307
+    },
+    "9f2719dfc9bc4d177c8d": {
+      "file": "palette/58f7366cce47f4f94d30.mp3",
+      "gainDb": -11.1207
+    },
+    "416489d1ee464859862a": {
+      "file": "palette/3514156a60f5ebe6abc5.mp3",
+      "gainDb": -3.7007
+    },
+    "d9e2855603d99027e36d": {
+      "file": "palette/eb49b2cf5bfe8569682d.mp3",
+      "gainDb": 3.7593
+    },
+    "060ee57e392c89dc2612": {
+      "file": "palette/2d9b15798251e8c90ccc.mp3",
+      "gainDb": -1.1207
+    },
+    "d8c61eba50b2109dc31e": {
+      "file": "palette/e31af778e77a19f9e49e.mp3",
+      "gainDb": -8.7507
+    },
+    "cd9bfc6a3ddcebb9b143": {
+      "file": "palette/9e12fb86dca69c01821c.mp3",
+      "gainDb": -4.7107
+    },
+    "7d1b3828e8f11adc2b58": {
+      "file": "palette/2f6d4cf819eb2f369a89.mp3",
+      "gainDb": -12.4407
+    },
+    "4a58d311fd56ff1cbc4e": {
+      "file": "palette/99ff775ddb45374b2310.mp3",
+      "gainDb": 8.2493
+    },
+    "58f91c21fe4894683a7c": {
+      "file": "palette/61eeae13e0f26c4c2c76.mp3",
+      "gainDb": 11.4293
+    },
+    "ab73784d9d6a79e6b2e0": {
+      "file": "palette/db251c04162fd6bf6345.mp3",
+      "gainDb": -1.9707
+    },
+    "24ca3c7ae37910133029": {
+      "file": "palette/e4cbc56608d434dc4893.mp3",
+      "gainDb": -3.9407
+    },
+    "e5d976ac476afa23295a": {
+      "file": "palette/1a155052d3caaebf90e0.mp3",
+      "gainDb": -2.8807
+    },
+    "856b426fa039b885d7a9": {
+      "file": "palette/8e7eb1022157a16fc965.mp3",
+      "gainDb": -7.1707
+    },
+    "aff60f2b6fc07087e016": {
+      "file": "palette/41ee8b1a64885c4dba80.mp3",
+      "gainDb": -0.9707
+    },
+    "0b42916f951ccb3189f2": {
+      "file": "palette/7d030b4eff5d6d6776bb.mp3",
+      "gainDb": 9.1293
+    },
+    "13759e3ffc525ff24299": {
+      "file": "palette/4a323f31c130b5e1aead.mp3",
+      "gainDb": 13.0493
+    },
+    "2b05640300191fe21abf": {
+      "file": "palette/68506e1c3d34db8a2d9a.mp3",
+      "gainDb": 8.0593
+    },
+    "753742aae5d40532afd2": {
+      "file": "palette/b4926cd93ea6a6d19e2f.mp3",
+      "gainDb": 7.4293
+    },
+    "8a6445db6945744e1cb8": {
+      "file": "palette/4e3d3d9643940c9bdcdb.mp3",
+      "gainDb": -0.6907
+    },
+    "c4e45383c51b9aa36e9d": {
+      "file": "palette/b350ef174cf9c375fdd0.mp3",
+      "gainDb": -7.0907
+    },
+    "789b3b10b654e1bfda79": {
+      "file": "palette/38bee214760d698a18c7.mp3",
+      "gainDb": 23.9393
+    },
+    "0e3c50d86d5f953b2e42": {
+      "file": "palette/adceda86326f12046afe.mp3",
+      "gainDb": -5.0807
+    },
+    "4d520b7a8999d60ec45a": {
+      "file": "palette/f1faa2ea8b6a81492587.mp3",
+      "gainDb": 15.7793
+    },
+    "4ae016755ede852d31e0": {
+      "file": "palette/0c203c20f9d8df988c6e.mp3",
+      "gainDb": -0.6407
+    },
+    "4af95c458de224805922": {
+      "file": "palette/b1b11ffbb42da2facdd0.mp3",
+      "gainDb": 18.3093
+    },
+    "4be39645eb7969717904": {
+      "file": "palette/26da7ae3bf5fda735095.mp3",
+      "gainDb": -0.8807
+    },
+    "93b4816f7ecb8ff2db5b": {
+      "file": "palette/9c8c022a4e838dc5b35b.mp3",
+      "gainDb": 22.6693
+    },
+    "5968d98e59842a38c439": {
+      "file": "palette/8f86274a70044652a17e.mp3",
+      "gainDb": 12.3293
+    },
+    "33ec234e52cf86420477": {
+      "file": "palette/718e67c5c2f7713ccfd6.mp3",
+      "gainDb": -3.0007
+    },
+    "da6d2d434978508ee055": {
+      "file": "palette/6c3601b54a112e7ff9f9.mp3",
+      "gainDb": -6.5607
+    },
+    "a95dae6e648c7e63a1f0": {
+      "file": "palette/06731ab323a4953276f1.mp3",
+      "gainDb": -5.8207
+    },
+    "11306644002105606434": {
+      "file": "palette/89a16afcb818f408515a.mp3",
+      "gainDb": -5.8507
+    },
+    "42c97afecf8fbc174dab": {
+      "file": "palette/0191dc32a3d81b0fb915.mp3",
+      "gainDb": -5.9807
+    },
+    "45b770ab454d215cccb4": {
+      "file": "palette/a44d87917b48d5523465.mp3",
+      "gainDb": -6.7507
+    },
+    "e0dc42474885d93ab31f": {
+      "file": "palette/cffe066a4330f65ef468.mp3",
+      "gainDb": -3.0807
+    },
+    "1b10ad758768ecd1748d": {
+      "file": "palette/11f6af7140cb38e37689.mp3",
+      "gainDb": 0.0493
+    },
+    "f17c65bc67627cca4149": {
+      "file": "palette/604f7e264c91b201b917.mp3",
+      "gainDb": -4.7407
+    },
+    "fd8a1d13d1dfea55bdcf": {
+      "file": "palette/5e26918f45c8c983a435.mp3",
+      "gainDb": -3.5607
+    },
+    "8526ac1715542e37d2d8": {
+      "file": "palette/cb2ffbb05112d87b30df.mp3",
+      "gainDb": 1.6693
+    },
+    "1f51992dc1ab5fc5ce83": {
+      "file": "palette/f5de08578b977501eb7a.mp3",
+      "gainDb": 6.1493
+    },
+    "2a67452288e81877a635": {
+      "file": "palette/9458e3e298e319ac293a.mp3",
+      "gainDb": -8.6307
+    },
+    "404742b3fb08fbb7a8fc": {
+      "file": "palette/cb2ffbb05112d87b30df.mp3",
+      "gainDb": -0.7107
+    },
+    "58891746d1c8d3fbef67": {
+      "file": "palette/ed2606907f6cad4b6bad.mp3",
+      "gainDb": 5.5593
+    },
+    "43b8c84c6d50d9faa7f2": {
+      "file": "palette/1bf7f19ac14fd28a288c.mp3",
+      "gainDb": 5.5593
+    },
+    "7af2410fabd7d201f661": {
+      "file": "palette/1c31db129eeb87b6aa9c.mp3",
+      "gainDb": -0.0007
+    },
+    "a1c9216caaa716cbbd7d": {
+      "file": "palette/8a8834b515696e4ea9b6.mp3",
+      "gainDb": -0.0007
+    },
+    "6c4a106f6897dc5219c1": {
+      "file": "palette/8bd322658dabecc115d6.mp3",
+      "gainDb": -0.0007
+    },
+    "8b06cb5fb76a2136238e": {
+      "file": "palette/aaa6c35101a027818936.mp3",
+      "gainDb": 1.7493
+    },
+    "208c2e44527217fc0e2c": {
+      "file": "palette/83464d8d619063487d3a.mp3",
+      "gainDb": 2.4993
+    },
+    "79a23cccff86b4327237": {
+      "file": "palette/2b28fb23db3b681eb203.mp3",
+      "gainDb": 5.5593
+    },
+    "dfb34fb86e2d2cc7519b": {
+      "file": "palette/100c7fb601626addb88d.mp3",
+      "gainDb": -0.1507
+    },
+    "8e4ebe6e7b343e7ecde3": {
+      "file": "palette/47ee2e39407a4da595c7.mp3",
+      "gainDb": 5.5593
+    },
+    "5ba8ecfff6a14827467f": {
+      "file": "palette/aaf2c7e3b4eff767009d.mp3",
+      "gainDb": 5.5593
+    },
+    "dedfeaa0f001aa1742c4": {
+      "file": "palette/45fa5acde224476ceafe.mp3",
+      "gainDb": 6.2093
+    },
+    "0afd3d28fe927744a881": {
+      "file": "palette/2d6cc052878bf7398c44.mp3",
+      "gainDb": -0.0007
+    },
+    "1c229af7248cff8c22f4": {
+      "file": "palette/f50bc07c204559e4ed07.mp3",
+      "gainDb": -0.0007
+    },
+    "6a215df7cb725eee9e56": {
+      "file": "palette/faee687a3d1adab9e5a4.mp3",
+      "gainDb": -3.4807
+    },
+    "69b107702f3d02ae8e8e": {
+      "file": "palette/718e67c5c2f7713ccfd6.mp3",
+      "gainDb": -5.9907
+    },
+    "c02e02577301d78c1651": {
+      "file": "palette/71b13c3e01783632f8bb.mp3",
+      "gainDb": 5.5593
+    },
+    "40fcbdbdc6d925647e3f": {
+      "file": "palette/8e7eb1022157a16fc965.mp3",
+      "gainDb": -10.1607
+    }
+  },
+  "units": {
+    "basilisk": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "basilisk-l2": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "basilisk-l3": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "bear": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "bear-l2": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "bear-l3": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "crocodile": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "crocodile-l2": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "crocodile-l3": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "dragon": {
+      "selection": "palette:7f84ad9347df544dfe68",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "fire-breath": "palette:3a2f6220389148df7d39",
+        "claws": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:3a2f6220389148df7d39"
+    },
+    "dragon-l2": {
+      "selection": "palette:7f84ad9347df544dfe68",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "fire-breath": "palette:3a2f6220389148df7d39",
+        "claws": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:3a2f6220389148df7d39"
+    },
+    "dragon-l3": {
+      "selection": "palette:7f84ad9347df544dfe68",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "fire-breath": "palette:3a2f6220389148df7d39",
+        "claws": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:3a2f6220389148df7d39"
+    },
+    "giant-bat": {
+      "selection": "palette:7f84ad9347df544dfe68",
+      "death": "palette:038454dd45347855378b",
+      "attacks": {
+        "bite": "palette:ce5a4b87904953414717"
+      },
+      "primaryAttack": "palette:ce5a4b87904953414717"
+    },
+    "giant-bat-l2": {
+      "selection": "palette:7f84ad9347df544dfe68",
+      "death": "palette:038454dd45347855378b",
+      "attacks": {
+        "bite": "palette:ce5a4b87904953414717"
+      },
+      "primaryAttack": "palette:ce5a4b87904953414717"
+    },
+    "giant-bat-l3": {
+      "selection": "palette:7f84ad9347df544dfe68",
+      "death": "palette:038454dd45347855378b",
+      "attacks": {
+        "bite": "palette:ce5a4b87904953414717"
+      },
+      "primaryAttack": "palette:ce5a4b87904953414717"
+    },
+    "giant-crab": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "pincers": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "giant-crab-l2": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "pincers": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "giant-crab-l3": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "pincers": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "giant-owl": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:038454dd45347855378b",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "giant-owl-l2": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:038454dd45347855378b",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "giant-owl-l3": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:038454dd45347855378b",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "giant-raven": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:038454dd45347855378b",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "giant-raven-l2": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:038454dd45347855378b",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "giant-raven-l3": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:038454dd45347855378b",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "giant-snake": {
+      "selection": "palette:489d29a140c68e2945af",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:489d29a140c68e2945af"
+      },
+      "primaryAttack": "palette:489d29a140c68e2945af"
+    },
+    "giant-snake-l2": {
+      "selection": "palette:489d29a140c68e2945af",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:489d29a140c68e2945af"
+      },
+      "primaryAttack": "palette:489d29a140c68e2945af"
+    },
+    "giant-snake-l3": {
+      "selection": "palette:489d29a140c68e2945af",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:489d29a140c68e2945af"
+      },
+      "primaryAttack": "palette:489d29a140c68e2945af"
+    },
+    "giant-spider": {
+      "selection": "palette:ef1ee89ac3b752927fa6",
+      "death": "palette:bb88422a34ef21ca7d19",
+      "attacks": {
+        "bite": "palette:a226691fdd4ffd2f94db"
+      },
+      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+    },
+    "giant-spider-l2": {
+      "selection": "palette:ef1ee89ac3b752927fa6",
+      "death": "palette:bb88422a34ef21ca7d19",
+      "attacks": {
+        "bite": "palette:a226691fdd4ffd2f94db"
+      },
+      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+    },
+    "giant-spider-l3": {
+      "selection": "palette:ef1ee89ac3b752927fa6",
+      "death": "palette:bb88422a34ef21ca7d19",
+      "attacks": {
+        "bite": "palette:a226691fdd4ffd2f94db"
+      },
+      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+    },
+    "giant-tortoise": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "giant-tortoise-l2": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "giant-tortoise-l3": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:7439e556025516dd3513"
+      },
+      "primaryAttack": "palette:7439e556025516dd3513"
+    },
+    "giant-wasp": {
+      "selection": "palette:46e40cd3d278b8ca4cf5",
+      "death": "palette:bb88422a34ef21ca7d19",
+      "attacks": {
+        "sting": "palette:a226691fdd4ffd2f94db"
+      },
+      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+    },
+    "giant-wasp-l2": {
+      "selection": "palette:46e40cd3d278b8ca4cf5",
+      "death": "palette:bb88422a34ef21ca7d19",
+      "attacks": {
+        "sting": "palette:a226691fdd4ffd2f94db"
+      },
+      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+    },
+    "giant-wasp-l3": {
+      "selection": "palette:46e40cd3d278b8ca4cf5",
+      "death": "palette:bb88422a34ef21ca7d19",
+      "attacks": {
+        "sting": "palette:a226691fdd4ffd2f94db"
+      },
+      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+    },
+    "gryphon": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "gryphon-l2": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "gryphon-l3": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "lynx": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "lynx-l2": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "lynx-l3": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "octopus": {
+      "selection": "palette:018e21316d2e89dce4ed",
+      "death": "palette:bb88422a34ef21ca7d19",
+      "attacks": {
+        "tentacles": "palette:56526b8d2c6d61b7b01a"
+      },
+      "primaryAttack": "palette:56526b8d2c6d61b7b01a"
+    },
+    "octopus-l2": {
+      "selection": "palette:018e21316d2e89dce4ed",
+      "death": "palette:bb88422a34ef21ca7d19",
+      "attacks": {
+        "tentacles": "palette:56526b8d2c6d61b7b01a"
+      },
+      "primaryAttack": "palette:56526b8d2c6d61b7b01a"
+    },
+    "octopus-l3": {
+      "selection": "palette:018e21316d2e89dce4ed",
+      "death": "palette:bb88422a34ef21ca7d19",
+      "attacks": {
+        "tentacles": "palette:56526b8d2c6d61b7b01a"
+      },
+      "primaryAttack": "palette:56526b8d2c6d61b7b01a"
+    },
+    "ray": {
+      "selection": "palette:2f2da629aaa8970692cd",
+      "death": "palette:177e34470900c0b68b8f",
+      "attacks": {
+        "tail-strike": "palette:1a6ccd21007cc5043ae8"
+      },
+      "primaryAttack": "palette:1a6ccd21007cc5043ae8"
+    },
+    "ray-l2": {
+      "selection": "palette:2f2da629aaa8970692cd",
+      "death": "palette:177e34470900c0b68b8f",
+      "attacks": {
+        "tail-strike": "palette:1a6ccd21007cc5043ae8"
+      },
+      "primaryAttack": "palette:1a6ccd21007cc5043ae8"
+    },
+    "ray-l3": {
+      "selection": "palette:2f2da629aaa8970692cd",
+      "death": "palette:177e34470900c0b68b8f",
+      "attacks": {
+        "tail-strike": "palette:1a6ccd21007cc5043ae8"
+      },
+      "primaryAttack": "palette:1a6ccd21007cc5043ae8"
+    },
+    "sea-serpent": {
+      "selection": "palette:489d29a140c68e2945af",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:489d29a140c68e2945af"
+      },
+      "primaryAttack": "palette:489d29a140c68e2945af"
+    },
+    "sea-serpent-l2": {
+      "selection": "palette:489d29a140c68e2945af",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:489d29a140c68e2945af"
+      },
+      "primaryAttack": "palette:489d29a140c68e2945af"
+    },
+    "sea-serpent-l3": {
+      "selection": "palette:489d29a140c68e2945af",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:489d29a140c68e2945af"
+      },
+      "primaryAttack": "palette:489d29a140c68e2945af"
+    },
+    "shark": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+    },
+    "shark-l2": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+    },
+    "shark-l3": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "bite": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+    },
+    "stag": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "trample": "palette:a663115431b9ced218f0",
+        "antlers": "palette:a663115431b9ced218f0"
+      },
+      "primaryAttack": "palette:a663115431b9ced218f0"
+    },
+    "stag-l2": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "trample": "palette:a663115431b9ced218f0",
+        "antlers": "palette:a663115431b9ced218f0"
+      },
+      "primaryAttack": "palette:a663115431b9ced218f0"
+    },
+    "stag-l3": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "trample": "palette:a663115431b9ced218f0",
+        "antlers": "palette:a663115431b9ced218f0"
+      },
+      "primaryAttack": "palette:a663115431b9ced218f0"
+    },
+    "werewolf": {
+      "selection": "palette:5cff2015727d5a5b05fb",
+      "death": "palette:9f2719dfc9bc4d177c8d",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:416489d1ee464859862a"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "werewolf-ironfang": {
+      "selection": "palette:5cff2015727d5a5b05fb",
+      "death": "palette:9f2719dfc9bc4d177c8d",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:416489d1ee464859862a"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "werewolf-pack-king": {
+      "selection": "palette:5cff2015727d5a5b05fb",
+      "death": "palette:9f2719dfc9bc4d177c8d",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:416489d1ee464859862a"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "dwarf-axeguard": {
+      "selection": "palette:d9e2855603d99027e36d",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "axe": "palette:50806fc7df5e0bccc3cf",
+        "shield-bash": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "dwarf-axeguard-l2": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "axe": "palette:50806fc7df5e0bccc3cf",
+        "shield-bash": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "dwarf-axeguard-l3": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "axe": "palette:50806fc7df5e0bccc3cf",
+        "shield-bash": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "dwarf-axe-pick-l2": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "pickaxe": "palette:d8c61eba50b2109dc31e",
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-axe-pick-l3": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "pickaxe": "palette:d8c61eba50b2109dc31e",
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-pickaxe": {
+      "selection": "palette:d9e2855603d99027e36d",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "pickaxe": "palette:d8c61eba50b2109dc31e",
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-hammerer-l2": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-hammerer-l3": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-poleaxe-l2": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "poleaxe": "palette:50806fc7df5e0bccc3cf",
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "dwarf-poleaxe-l3": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "poleaxe": "palette:50806fc7df5e0bccc3cf",
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "dwarf-crossbow": {
+      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "crossbow": "palette:58f91c21fe4894683a7c",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:58f91c21fe4894683a7c"
+    },
+    "dwarf-crossbow-l2": {
+      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "crossbow": "palette:58f91c21fe4894683a7c",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:58f91c21fe4894683a7c"
+    },
+    "dwarf-crossbow-l3": {
+      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "crossbow": "palette:58f91c21fe4894683a7c",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:58f91c21fe4894683a7c"
+    },
+    "dwarf-arquebus-l2": {
+      "selection": "palette:24ca3c7ae37910133029",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "arquebus": "palette:e5d976ac476afa23295a",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:e5d976ac476afa23295a"
+    },
+    "dwarf-arquebus-l3": {
+      "selection": "palette:24ca3c7ae37910133029",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "arquebus": "palette:e5d976ac476afa23295a",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:e5d976ac476afa23295a"
+    },
+    "dwarf-runesmith": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "rune-stone": "palette:856b426fa039b885d7a9",
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "dwarf-thundersmith-l2": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "rune-spark": "palette:856b426fa039b885d7a9",
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "dwarf-thundersmith-l3": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "rune-spark": "palette:856b426fa039b885d7a9",
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "dwarf-stonespell-l2": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "rune-stone": "palette:856b426fa039b885d7a9",
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "dwarf-stonespell-l3": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "rune-stone": "palette:856b426fa039b885d7a9",
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "dwarf-goat-rider": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "spear": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-goat-rider-l2": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-goat-rider-l3": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-pistol-goat-rider-l2": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "pistol": "palette:e5d976ac476afa23295a",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:e5d976ac476afa23295a"
+    },
+    "dwarf-pistol-goat-rider-l3": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "pistol": "palette:e5d976ac476afa23295a",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:e5d976ac476afa23295a"
+    },
+    "dwarf-forge-lord": {
+      "selection": "palette:d9e2855603d99027e36d",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-forge-lord-l2": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "dwarf-forge-lord-l3": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:060ee57e392c89dc2612",
+      "attacks": {
+        "hammer": "palette:d8c61eba50b2109dc31e"
+      },
+      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+    },
+    "elf-spearman": {
+      "selection": "palette:d9e2855603d99027e36d",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-spearman-l2": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-spearman-l3": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-jumper-l2": {
+      "selection": "palette:58f91c21fe4894683a7c",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "blade": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-jumper-l3": {
+      "selection": "palette:58f91c21fe4894683a7c",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "blade": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-flanker": {
+      "selection": "palette:0b42916f951ccb3189f2",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "blade": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-flanker-l2": {
+      "selection": "palette:0b42916f951ccb3189f2",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "blade": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-flanker-l3": {
+      "selection": "palette:0b42916f951ccb3189f2",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "blade": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-bladedancer-l2": {
+      "selection": "palette:13759e3ffc525ff24299",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "blade": "palette:2b05640300191fe21abf"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "elf-bladedancer-l3": {
+      "selection": "palette:13759e3ffc525ff24299",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "blade": "palette:2b05640300191fe21abf"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "elf-archer": {
+      "selection": "palette:0b42916f951ccb3189f2",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "elf-archer-l2": {
+      "selection": "palette:0b42916f951ccb3189f2",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "elf-archer-l3": {
+      "selection": "palette:0b42916f951ccb3189f2",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "elf-deer-archer": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "elf-deer-archer-l2": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "elf-deer-archer-l3": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "elf-caster": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "arcane-spell": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "elf-caster-l2": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "arcane-spell": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "elf-caster-l3": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "arcane-spell": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "elf-killing-caster-l2": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "arcane-spell": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "elf-killing-caster-l3": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "arcane-spell": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "elf-banner-lord": {
+      "selection": "palette:d9e2855603d99027e36d",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-banner-lord-l2": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "elf-banner-lord-l3": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:aff60f2b6fc07087e016",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "swordsman": {
+      "selection": "palette:d9e2855603d99027e36d",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "sword": "palette:2b05640300191fe21abf"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "soldier": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "sword": "palette:2b05640300191fe21abf",
+        "mace": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "champion": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "sword": "palette:2b05640300191fe21abf",
+        "mace": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "hammerman": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "hammer": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:789b3b10b654e1bfda79"
+    },
+    "warhammer": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "hammer": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:789b3b10b654e1bfda79"
+    },
+    "spearman": {
+      "selection": "palette:d9e2855603d99027e36d",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "warden": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0",
+        "shieldbash": "palette:e5d976ac476afa23295a"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "sentinel": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0",
+        "shieldbash": "palette:e5d976ac476afa23295a"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "halberdier": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "halberd": "palette:50806fc7df5e0bccc3cf",
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "halberd-master": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "halberd": "palette:50806fc7df5e0bccc3cf",
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "scout": {
+      "selection": "palette:0b42916f951ccb3189f2",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "knife": "palette:ab73784d9d6a79e6b2e0",
+        "sling": "palette:0e3c50d86d5f953b2e42"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "ranger": {
+      "selection": "palette:0b42916f951ccb3189f2",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "knife": "palette:ab73784d9d6a79e6b2e0",
+        "sling": "palette:0e3c50d86d5f953b2e42"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "shadowblade": {
+      "selection": "palette:0b42916f951ccb3189f2",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "knife": "palette:ab73784d9d6a79e6b2e0",
+        "sling": "palette:0e3c50d86d5f953b2e42"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "slinger": {
+      "selection": "palette:4d520b7a8999d60ec45a",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "sling": "palette:0e3c50d86d5f953b2e42",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:0e3c50d86d5f953b2e42"
+    },
+    "fireslinger": {
+      "selection": "palette:4d520b7a8999d60ec45a",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "firepot": "palette:3a2f6220389148df7d39",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:3a2f6220389148df7d39"
+    },
+    "archer": {
+      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "marksman": {
+      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "sharpshooter": {
+      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "crossbowman": {
+      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "crossbow": "palette:58f91c21fe4894683a7c",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:58f91c21fe4894683a7c"
+    },
+    "arbalester": {
+      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "arbalest": "palette:58f91c21fe4894683a7c",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:58f91c21fe4894683a7c"
+    },
+    "adept": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "spark": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "mage": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "spark": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "archmage": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "spark": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "healer": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "light": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "high-healer": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "light": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "rider": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:4ae016755ede852d31e0",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "lancer": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:4ae016755ede852d31e0",
+      "attacks": {
+        "lance": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "knight": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:4ae016755ede852d31e0",
+      "attacks": {
+        "lance": "palette:ab73784d9d6a79e6b2e0",
+        "sword": "palette:2b05640300191fe21abf"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "horse-archer": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:4ae016755ede852d31e0",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "horse-bowman": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:4ae016755ede852d31e0",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "horse-marksman": {
+      "selection": "palette:a663115431b9ced218f0",
+      "death": "palette:4ae016755ede852d31e0",
+      "attacks": {
+        "bow": "palette:753742aae5d40532afd2",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "captives": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {},
+      "primaryAttack": null
+    },
+    "commander": {
+      "selection": "palette:d9e2855603d99027e36d",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "sword": "palette:2b05640300191fe21abf",
+        "mace": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "marshal": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "sword": "palette:2b05640300191fe21abf",
+        "mace": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "grand-marshal": {
+      "selection": "palette:cd9bfc6a3ddcebb9b143",
+      "death": "palette:7d1b3828e8f11adc2b58",
+      "attacks": {
+        "sword": "palette:2b05640300191fe21abf",
+        "mace": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "harpooner": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "harpoon": "palette:2b05640300191fe21abf",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "tidehunter": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "harpoon": "palette:2b05640300191fe21abf",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "merfolk-harpoon-master": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "harpoon": "palette:2b05640300191fe21abf",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "merfolk-netter-l2": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "weighted-net": "palette:93b4816f7ecb8ff2db5b",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+    },
+    "merfolk-netter-l3": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "weighted-net": "palette:93b4816f7ecb8ff2db5b",
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+    },
+    "reefguard": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "spear": "palette:2b05640300191fe21abf",
+        "tail": "palette:1a6ccd21007cc5043ae8"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "tridentguard": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "spear": "palette:2b05640300191fe21abf",
+        "shellclub": "palette:5968d98e59842a38c439"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "merfolk-reef-champion": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "spear": "palette:2b05640300191fe21abf",
+        "shellclub": "palette:5968d98e59842a38c439"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "merfolk-trident-l2": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "trident": "palette:2b05640300191fe21abf"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "merfolk-trident-l3": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "trident": "palette:2b05640300191fe21abf"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "wavemender": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "surge": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "tidesage": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "surge": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "merfolk-tide-oracle": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "surge": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "merfolk-tidecrusher-l2": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "crushing-wave": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "merfolk-tidecrusher-l3": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "crushing-wave": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "merfolk-maceguard": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "mace": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:789b3b10b654e1bfda79"
+    },
+    "merfolk-maceguard-l2": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "mace": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:789b3b10b654e1bfda79"
+    },
+    "merfolk-maceguard-l3": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "mace": "palette:789b3b10b654e1bfda79"
+      },
+      "primaryAttack": "palette:789b3b10b654e1bfda79"
+    },
+    "tidekeeper": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "trident": "palette:2b05640300191fe21abf",
+        "tidebolt": "palette:856b426fa039b885d7a9"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "tideseer": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "trident": "palette:2b05640300191fe21abf",
+        "tidebolt": "palette:856b426fa039b885d7a9"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "merfolk-tide-sovereign": {
+      "selection": "palette:4af95c458de224805922",
+      "death": "palette:4be39645eb7969717904",
+      "attacks": {
+        "trident": "palette:2b05640300191fe21abf",
+        "tidebolt": "palette:856b426fa039b885d7a9"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "skeleton": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "rustblade": "palette:ab73784d9d6a79e6b2e0",
+        "shieldbash": "palette:e5d976ac476afa23295a"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "revenant": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "rustblade": "palette:ab73784d9d6a79e6b2e0",
+        "boneclub": "palette:5968d98e59842a38c439"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "skeleton-dreadguard": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "rustblade": "palette:ab73784d9d6a79e6b2e0",
+        "boneclub": "palette:5968d98e59842a38c439"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "skeleton-flanker-l2": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "skeleton-flanker-l3": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "knife": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "skeleton-impact-caster": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "boneburst": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "skeleton-impact-caster-l2": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "boneburst": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "skeleton-impact-caster-l3": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "boneburst": "palette:856b426fa039b885d7a9",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:856b426fa039b885d7a9"
+    },
+    "skeleton-scythe-caster-l2": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "soul-drain": "palette:da6d2d434978508ee055",
+        "scythe": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:da6d2d434978508ee055"
+    },
+    "skeleton-scythe-caster-l3": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "soul-drain": "palette:da6d2d434978508ee055",
+        "scythe": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:da6d2d434978508ee055"
+    },
+    "skeleton-rider": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "skeleton-rider-l2": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "skeleton-rider-l3": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "spear": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "bonearcher": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "bonebow": "palette:753742aae5d40532afd2",
+        "shard": "palette:93b4816f7ecb8ff2db5b"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "deatharcher": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "bonebow": "palette:753742aae5d40532afd2",
+        "shard": "palette:93b4816f7ecb8ff2db5b"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "skeleton-bow-master": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "bonebow": "palette:753742aae5d40532afd2",
+        "shard": "palette:93b4816f7ecb8ff2db5b"
+      },
+      "primaryAttack": "palette:753742aae5d40532afd2"
+    },
+    "skeleton-axeman": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "skeleton-axeman-l2": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "skeleton-axeman-l3": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "axe": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "ghost": {
+      "selection": "palette:a95dae6e648c7e63a1f0",
+      "death": "palette:11306644002105606434",
+      "attacks": {
+        "spectral-touch": "palette:42c97afecf8fbc174dab",
+        "spectral-orb": "palette:856b426fa039b885d7a9"
+      },
+      "primaryAttack": "palette:42c97afecf8fbc174dab"
+    },
+    "wraith": {
+      "selection": "palette:a95dae6e648c7e63a1f0",
+      "death": "palette:11306644002105606434",
+      "attacks": {
+        "spectral-touch": "palette:42c97afecf8fbc174dab",
+        "spectral-orb": "palette:856b426fa039b885d7a9"
+      },
+      "primaryAttack": "palette:42c97afecf8fbc174dab"
+    },
+    "spectre": {
+      "selection": "palette:a95dae6e648c7e63a1f0",
+      "death": "palette:11306644002105606434",
+      "attacks": {
+        "spectral-touch": "palette:42c97afecf8fbc174dab",
+        "spectral-orb": "palette:856b426fa039b885d7a9"
+      },
+      "primaryAttack": "palette:42c97afecf8fbc174dab"
+    },
+    "necromancer": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "gravebolt": "palette:da6d2d434978508ee055",
+        "bonestaff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:da6d2d434978508ee055"
+    },
+    "lich": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "gravebolt": "palette:da6d2d434978508ee055",
+        "bonestaff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:da6d2d434978508ee055"
+    },
+    "lich-commander-l3": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "gravebolt": "palette:da6d2d434978508ee055",
+        "bonestaff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:da6d2d434978508ee055"
+    },
+    "skeletal-hound": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "fangs": "palette:33ec234e52cf86420477"
+      },
+      "primaryAttack": "palette:33ec234e52cf86420477"
+    },
+    "skeletal-hound-l2": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "bite": "palette:33ec234e52cf86420477"
+      },
+      "primaryAttack": "palette:33ec234e52cf86420477"
+    },
+    "skeletal-hound-l3": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "bite": "palette:33ec234e52cf86420477"
+      },
+      "primaryAttack": "palette:33ec234e52cf86420477"
+    },
+    "corpse-vulture": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "corpse-vulture-l2": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "corpse-vulture-l3": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "talons": "palette:cd860a2f955d73aadba4",
+        "beak": "palette:cd860a2f955d73aadba4"
+      },
+      "primaryAttack": "palette:cd860a2f955d73aadba4"
+    },
+    "skeletal-horse": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "trample": "palette:33ec234e52cf86420477",
+        "hooves": "palette:33ec234e52cf86420477"
+      },
+      "primaryAttack": "palette:33ec234e52cf86420477"
+    },
+    "skeletal-horse-l2": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "trample": "palette:33ec234e52cf86420477",
+        "hooves": "palette:33ec234e52cf86420477"
+      },
+      "primaryAttack": "palette:33ec234e52cf86420477"
+    },
+    "skeletal-horse-l3": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "trample": "palette:33ec234e52cf86420477",
+        "hooves": "palette:33ec234e52cf86420477"
+      },
+      "primaryAttack": "palette:33ec234e52cf86420477"
+    },
+    "zombie-bear": {
+      "selection": "palette:7439e556025516dd3513",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:e0dc42474885d93ab31f"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "zombie-bear-l2": {
+      "selection": "palette:7439e556025516dd3513",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:e0dc42474885d93ab31f"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "zombie-bear-l3": {
+      "selection": "palette:7439e556025516dd3513",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "claws": "palette:50806fc7df5e0bccc3cf",
+        "bite": "palette:e0dc42474885d93ab31f"
+      },
+      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+    },
+    "bone-dragon": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "fire-breath": "palette:3a2f6220389148df7d39",
+        "claws": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:3a2f6220389148df7d39"
+    },
+    "bone-dragon-l2": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "fire-breath": "palette:3a2f6220389148df7d39",
+        "claws": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:3a2f6220389148df7d39"
+    },
+    "bone-dragon-l3": {
+      "selection": "palette:33ec234e52cf86420477",
+      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "attacks": {
+        "fire-breath": "palette:3a2f6220389148df7d39",
+        "claws": "palette:50806fc7df5e0bccc3cf"
+      },
+      "primaryAttack": "palette:3a2f6220389148df7d39"
+    },
+    "wolf": {
+      "selection": "palette:5cff2015727d5a5b05fb",
+      "death": "palette:9f2719dfc9bc4d177c8d",
+      "attacks": {
+        "fangs": "palette:416489d1ee464859862a"
+      },
+      "primaryAttack": "palette:416489d1ee464859862a"
+    },
+    "direwolf": {
+      "selection": "palette:5cff2015727d5a5b05fb",
+      "death": "palette:9f2719dfc9bc4d177c8d",
+      "attacks": {
+        "fangs": "palette:416489d1ee464859862a"
+      },
+      "primaryAttack": "palette:416489d1ee464859862a"
+    },
+    "woodland-alpha-wolf": {
+      "selection": "palette:5cff2015727d5a5b05fb",
+      "death": "palette:9f2719dfc9bc4d177c8d",
+      "attacks": {
+        "fangs": "palette:416489d1ee464859862a"
+      },
+      "primaryAttack": "palette:416489d1ee464859862a"
+    },
+    "boar": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "trample": "palette:3e6310e5bc404ae19d74",
+        "tusks": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+    },
+    "greatboar": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "trample": "palette:3e6310e5bc404ae19d74",
+        "tusks": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+    },
+    "woodland-ancient-boar": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c535fbb07e3ea8d120aa",
+      "attacks": {
+        "trample": "palette:3e6310e5bc404ae19d74",
+        "tusks": "palette:3e6310e5bc404ae19d74"
+      },
+      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+    },
+    "thorncaller": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "thorns": "palette:93b4816f7ecb8ff2db5b",
+        "rootstaff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+    },
+    "briarweaver": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "thorns": "palette:93b4816f7ecb8ff2db5b",
+        "rootstaff": "palette:8a6445db6945744e1cb8",
+        "root-crush": "palette:42c97afecf8fbc174dab"
+      },
+      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+    },
+    "woodland-thorn-oracle": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "thorns": "palette:93b4816f7ecb8ff2db5b",
+        "rootstaff": "palette:8a6445db6945744e1cb8",
+        "root-crush": "palette:42c97afecf8fbc174dab"
+      },
+      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+    },
+    "woodland-bramble-warden": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "thorns": "palette:93b4816f7ecb8ff2db5b",
+        "rootstaff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+    },
+    "woodland-thornbinder": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "thorns": "palette:93b4816f7ecb8ff2db5b",
+        "rootstaff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+    },
+    "fox-spearguard": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "spear": "palette:2b05640300191fe21abf"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "fox-spearguard-l2": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "spear": "palette:2b05640300191fe21abf"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "fox-spearguard-l3": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "spear": "palette:2b05640300191fe21abf"
+      },
+      "primaryAttack": "palette:2b05640300191fe21abf"
+    },
+    "treant": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:1b10ad758768ecd1748d",
+      "attacks": {
+        "bough": "palette:f17c65bc67627cca4149",
+        "spikes": "palette:f17c65bc67627cca4149"
+      },
+      "primaryAttack": "palette:f17c65bc67627cca4149"
+    },
+    "treant-l2": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:1b10ad758768ecd1748d",
+      "attacks": {
+        "bough": "palette:f17c65bc67627cca4149",
+        "spikes": "palette:f17c65bc67627cca4149"
+      },
+      "primaryAttack": "palette:f17c65bc67627cca4149"
+    },
+    "treant-l3": {
+      "selection": "palette:c2fdf756bcb22f667fc9",
+      "death": "palette:1b10ad758768ecd1748d",
+      "attacks": {
+        "bough": "palette:f17c65bc67627cca4149",
+        "spikes": "palette:f17c65bc67627cca4149"
+      },
+      "primaryAttack": "palette:f17c65bc67627cca4149"
+    },
+    "wildkeeper": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "bough": "palette:fd8a1d13d1dfea55bdcf",
+        "stones": "palette:8526ac1715542e37d2d8"
+      },
+      "primaryAttack": "palette:fd8a1d13d1dfea55bdcf"
+    },
+    "grovewarden": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "bough": "palette:fd8a1d13d1dfea55bdcf",
+        "stones": "palette:8526ac1715542e37d2d8"
+      },
+      "primaryAttack": "palette:fd8a1d13d1dfea55bdcf"
+    },
+    "woodland-grove-oracle": {
+      "selection": "palette:cd860a2f955d73aadba4",
+      "death": "palette:c4e45383c51b9aa36e9d",
+      "attacks": {
+        "bough": "palette:fd8a1d13d1dfea55bdcf",
+        "stones": "palette:8526ac1715542e37d2d8"
+      },
+      "primaryAttack": "palette:fd8a1d13d1dfea55bdcf"
+    },
+    "zombie-walker": {
+      "selection": "palette:1f51992dc1ab5fc5ce83",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "grasp": "palette:2a67452288e81877a635"
+      },
+      "primaryAttack": "palette:2a67452288e81877a635"
+    },
+    "zombie-fighter": {
+      "selection": "palette:1f51992dc1ab5fc5ce83",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "blade": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "zombie-cleaver": {
+      "selection": "palette:7439e556025516dd3513",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "cleaver": "palette:ab73784d9d6a79e6b2e0"
+      },
+      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+    },
+    "zombie-decay-caster": {
+      "selection": "palette:1f51992dc1ab5fc5ce83",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "mire-bolt": "palette:da6d2d434978508ee055"
+      },
+      "primaryAttack": "palette:da6d2d434978508ee055"
+    },
+    "zombie-plague-carrier": {
+      "selection": "palette:7439e556025516dd3513",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "grasping-hands": "palette:2a67452288e81877a635",
+        "bite": "palette:e0dc42474885d93ab31f"
+      },
+      "primaryAttack": "palette:2a67452288e81877a635"
+    },
+    "zombie-shambler": {
+      "selection": "palette:7439e556025516dd3513",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "grasping-hands": "palette:2a67452288e81877a635",
+        "bite": "palette:e0dc42474885d93ab31f"
+      },
+      "primaryAttack": "palette:2a67452288e81877a635"
+    },
+    "zombie-ghoul": {
+      "selection": "palette:7439e556025516dd3513",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "grasping-hands": "palette:2a67452288e81877a635",
+        "bite": "palette:e0dc42474885d93ab31f"
+      },
+      "primaryAttack": "palette:2a67452288e81877a635"
+    },
+    "zombie-corruption-mage-l1": {
+      "selection": "palette:1f51992dc1ab5fc5ce83",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "corruption-spell": "palette:da6d2d434978508ee055",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:da6d2d434978508ee055"
+    },
+    "zombie-corruption-mage": {
+      "selection": "palette:1f51992dc1ab5fc5ce83",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "corruption-spell": "palette:da6d2d434978508ee055",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:da6d2d434978508ee055"
+    },
+    "zombie-corruption-archmage": {
+      "selection": "palette:1f51992dc1ab5fc5ce83",
+      "death": "palette:45b770ab454d215cccb4",
+      "attacks": {
+        "corruption-spell": "palette:da6d2d434978508ee055",
+        "staff": "palette:8a6445db6945744e1cb8"
+      },
+      "primaryAttack": "palette:da6d2d434978508ee055"
+    }
+  },
+  "terrain": {
+    "road": "palette:404742b3fb08fbb7a8fc",
+    "plains": "palette:58891746d1c8d3fbef67",
+    "forest": "palette:43b8c84c6d50d9faa7f2",
+    "hill": "palette:7af2410fabd7d201f661",
+    "water": "palette:a1c9216caaa716cbbd7d",
+    "bridge": "palette:404742b3fb08fbb7a8fc",
+    "ford": "palette:a1c9216caaa716cbbd7d",
+    "village": "palette:6c4a106f6897dc5219c1",
+    "keep": "palette:8b06cb5fb76a2136238e",
+    "marsh": "palette:a1c9216caaa716cbbd7d",
+    "ruins": "palette:7af2410fabd7d201f661",
+    "fort": "palette:208c2e44527217fc0e2c",
+    "grove": "palette:79a23cccff86b4327237",
+    "landing": "palette:a1c9216caaa716cbbd7d",
+    "ferry": "palette:a1c9216caaa716cbbd7d",
+    "house": "palette:dfb34fb86e2d2cc7519b",
+    "mountain": "palette:8e4ebe6e7b343e7ecde3",
+    "cave": "palette:5ba8ecfff6a14827467f",
+    "burned-village": "palette:dedfeaa0f001aa1742c4",
+    "signpost": "palette:0afd3d28fe927744a881",
+    "castle-wall": "palette:1c229af7248cff8c22f4",
+    "castle-bell": "palette:6a215df7cb725eee9e56",
+    "monastery": "palette:dfb34fb86e2d2cc7519b",
+    "church": "palette:dfb34fb86e2d2cc7519b",
+    "graveyard": "palette:69b107702f3d02ae8e8e",
+    "ritual-star": "palette:c02e02577301d78c1651",
+    "ritual-spent": "palette:40fcbdbdc6d925647e3f"
+  }
+}
