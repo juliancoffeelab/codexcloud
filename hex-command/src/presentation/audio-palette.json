@@ -1,0 +1,2101 @@
+{
+  "clips": {
+    "beast-roar": {
+      "file": "palette/beast-roar.mp3"
+    },
+    "dying-creature-groan": {
+      "file": "palette/dying-creature-groan.mp3"
+    },
+    "deep-monster-grunt": {
+      "file": "palette/deep-monster-grunt.mp3"
+    },
+    "blade-swish": {
+      "file": "palette/blade-swish.mp3"
+    },
+    "beast-grunt": {
+      "file": "palette/beast-grunt.mp3"
+    },
+    "leather-rustle": {
+      "file": "palette/leather-rustle.mp3"
+    },
+    "fire-spell-burst": {
+      "file": "palette/fire-spell-burst.mp3"
+    },
+    "flier-cry": {
+      "file": "palette/flier-cry.mp3"
+    },
+    "knife-draw": {
+      "file": "palette/knife-draw.mp3"
+    },
+    "bone-crunch": {
+      "file": "palette/bone-crunch.mp3"
+    },
+    "light-cloth-rustle": {
+      "file": "palette/light-cloth-rustle.mp3"
+    },
+    "reptile-scale-rustle": {
+      "file": "palette/reptile-scale-rustle.mp3"
+    },
+    "spider-leg-rustle": {
+      "file": "palette/spider-leg-rustle.mp3"
+    },
+    "slimy-squelch": {
+      "file": "palette/slimy-squelch.mp3"
+    },
+    "creature-spit": {
+      "file": "palette/creature-spit.mp3"
+    },
+    "insect-buzz": {
+      "file": "palette/insect-buzz.mp3"
+    },
+    "aquatic-gurgle-selection": {
+      "file": "palette/aquatic-gurgle-selection.mp3"
+    },
+    "aquatic-gurgle-attack": {
+      "file": "palette/aquatic-gurgle-attack.mp3"
+    },
+    "aquatic-creature-call": {
+      "file": "palette/aquatic-creature-call.mp3"
+    },
+    "watery-squish": {
+      "file": "palette/watery-squish.mp3"
+    },
+    "fish-slap": {
+      "file": "palette/fish-slap.mp3"
+    },
+    "horse-call": {
+      "file": "palette/horse-call.mp3"
+    },
+    "dog-grumble": {
+      "file": "palette/dog-grumble.mp3"
+    },
+    "wolf-howl": {
+      "file": "palette/wolf-howl.mp3"
+    },
+    "dog-snarl": {
+      "file": "palette/dog-snarl.mp3"
+    },
+    "belt-handling": {
+      "file": "palette/belt-handling.mp3"
+    },
+    "dwarf-cough": {
+      "file": "palette/dwarf-cough.mp3"
+    },
+    "mining-strike": {
+      "file": "palette/mining-strike.mp3"
+    },
+    "chainmail-rattle": {
+      "file": "palette/chainmail-rattle.mp3"
+    },
+    "metal-armour-clatter": {
+      "file": "palette/metal-armour-clatter.mp3"
+    },
+    "crossbow-bolt-pass": {
+      "file": "palette/crossbow-bolt-pass.mp3"
+    },
+    "blade-contact": {
+      "file": "palette/blade-contact.mp3"
+    },
+    "metal-latch": {
+      "file": "palette/metal-latch.mp3"
+    },
+    "metal-plate-impact": {
+      "file": "palette/metal-plate-impact.mp3"
+    },
+    "arcane-pulse-attack": {
+      "file": "palette/arcane-pulse-attack.mp3"
+    },
+    "elf-cough": {
+      "file": "palette/elf-cough.mp3"
+    },
+    "dagger-draw": {
+      "file": "palette/dagger-draw.mp3"
+    },
+    "sabre-draw": {
+      "file": "palette/sabre-draw.mp3"
+    },
+    "spear-on-sabre": {
+      "file": "palette/spear-on-sabre.mp3"
+    },
+    "scythian-bow-shot": {
+      "file": "palette/scythian-bow-shot.mp3"
+    },
+    "wooden-staff-impact": {
+      "file": "palette/wooden-staff-impact.mp3"
+    },
+    "cough": {
+      "file": "palette/cough.mp3"
+    },
+    "mace-on-spear-haft": {
+      "file": "palette/mace-on-spear-haft.mp3"
+    },
+    "book-shut": {
+      "file": "palette/book-shut.mp3"
+    },
+    "small-leather-handling": {
+      "file": "palette/small-leather-handling.mp3"
+    },
+    "horse-dying-call": {
+      "file": "palette/horse-dying-call.mp3"
+    },
+    "underwater-belt-rustle": {
+      "file": "palette/underwater-belt-rustle.mp3"
+    },
+    "underwater-cough": {
+      "file": "palette/underwater-cough.mp3"
+    },
+    "scythian-arrow-pass": {
+      "file": "palette/scythian-arrow-pass.mp3"
+    },
+    "mace-on-spear-blade": {
+      "file": "palette/mace-on-spear-blade.mp3"
+    },
+    "wooden-rattle-unit": {
+      "file": "palette/wooden-rattle-unit.mp3"
+    },
+    "dark-magic-burst": {
+      "file": "palette/dark-magic-burst.mp3"
+    },
+    "ghost-groan": {
+      "file": "palette/ghost-groan.mp3"
+    },
+    "ghost-scream": {
+      "file": "palette/ghost-scream.mp3"
+    },
+    "spectral-magic": {
+      "file": "palette/spectral-magic.mp3"
+    },
+    "zombie-death-grunt": {
+      "file": "palette/zombie-death-grunt.mp3"
+    },
+    "monstrous-bite-grunt": {
+      "file": "palette/monstrous-bite-grunt.mp3"
+    },
+    "wooden-creak": {
+      "file": "palette/wooden-creak.mp3"
+    },
+    "wooden-plank-impact": {
+      "file": "palette/wooden-plank-impact.mp3"
+    },
+    "solid-wood-impact": {
+      "file": "palette/solid-wood-impact.mp3"
+    },
+    "stone-scatter-attack": {
+      "file": "palette/stone-scatter-attack.mp3"
+    },
+    "ragged-breath": {
+      "file": "palette/ragged-breath.mp3"
+    },
+    "burp": {
+      "file": "palette/burp.mp3"
+    },
+    "stone-scatter-terrain": {
+      "file": "palette/stone-scatter-terrain.mp3"
+    },
+    "soft-grass-footstep": {
+      "file": "palette/soft-grass-footstep.mp3"
+    },
+    "enchanted-forest-rustle": {
+      "file": "palette/enchanted-forest-rustle.mp3"
+    },
+    "hill-wind": {
+      "file": "palette/hill-wind.mp3"
+    },
+    "water-ripple": {
+      "file": "palette/water-ripple.mp3"
+    },
+    "village-contact": {
+      "file": "palette/village-contact.mp3"
+    },
+    "light-metal-contact": {
+      "file": "palette/light-metal-contact.mp3"
+    },
+    "wooden-fort-contact": {
+      "file": "palette/wooden-fort-contact.mp3"
+    },
+    "sacred-grove-magic": {
+      "file": "palette/sacred-grove-magic.mp3"
+    },
+    "door-movement": {
+      "file": "palette/door-movement.mp3"
+    },
+    "distant-mining": {
+      "file": "palette/distant-mining.mp3"
+    },
+    "quarry-strike": {
+      "file": "palette/quarry-strike.mp3"
+    },
+    "quiet-fire-crackle": {
+      "file": "palette/quiet-fire-crackle.mp3"
+    },
+    "plain-ground-contact": {
+      "file": "palette/plain-ground-contact.mp3"
+    },
+    "courtyard-cue": {
+      "file": "palette/courtyard-cue.mp3"
+    },
+    "heavy-bell": {
+      "file": "palette/heavy-bell.mp3"
+    },
+    "wooden-rattle-terrain": {
+      "file": "palette/wooden-rattle-terrain.mp3"
+    },
+    "ritual-magic": {
+      "file": "palette/ritual-magic.mp3"
+    },
+    "arcane-pulse-terrain": {
+      "file": "palette/arcane-pulse-terrain.mp3"
+    },
+    "wooden-figurine-move": {
+      "file": "palette/wooden-figurine-move.mp3"
+    }
+  },
+  "units": {
+    "basilisk": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:deep-monster-grunt"
+      }
+    },
+    "basilisk-l2": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:deep-monster-grunt"
+      }
+    },
+    "basilisk-l3": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:deep-monster-grunt"
+      }
+    },
+    "bear": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "claws": "palette:blade-swish"
+      }
+    },
+    "bear-l2": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
+      }
+    },
+    "bear-l3": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
+      }
+    },
+    "crocodile": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:deep-monster-grunt"
+      }
+    },
+    "crocodile-l2": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:deep-monster-grunt"
+      }
+    },
+    "crocodile-l3": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:deep-monster-grunt"
+      }
+    },
+    "dragon": {
+      "selection": "palette:leather-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
+      }
+    },
+    "dragon-l2": {
+      "selection": "palette:leather-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
+      }
+    },
+    "dragon-l3": {
+      "selection": "palette:leather-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
+      }
+    },
+    "giant-bat": {
+      "selection": "palette:leather-rustle",
+      "death": "palette:flier-cry",
+      "attacks": {
+        "bite": "palette:knife-draw"
+      }
+    },
+    "giant-bat-l2": {
+      "selection": "palette:leather-rustle",
+      "death": "palette:flier-cry",
+      "attacks": {
+        "bite": "palette:knife-draw"
+      }
+    },
+    "giant-bat-l3": {
+      "selection": "palette:leather-rustle",
+      "death": "palette:flier-cry",
+      "attacks": {
+        "bite": "palette:knife-draw"
+      }
+    },
+    "giant-crab": {
+      "selection": "palette:beast-roar",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "pincers": "palette:deep-monster-grunt"
+      }
+    },
+    "giant-crab-l2": {
+      "selection": "palette:beast-roar",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "pincers": "palette:deep-monster-grunt"
+      }
+    },
+    "giant-crab-l3": {
+      "selection": "palette:beast-roar",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "pincers": "palette:deep-monster-grunt"
+      }
+    },
+    "giant-owl": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "giant-owl-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "giant-owl-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "giant-raven": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "giant-raven-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "giant-raven-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "giant-snake": {
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:reptile-scale-rustle"
+      }
+    },
+    "giant-snake-l2": {
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:reptile-scale-rustle"
+      }
+    },
+    "giant-snake-l3": {
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:reptile-scale-rustle"
+      }
+    },
+    "giant-spider": {
+      "selection": "palette:spider-leg-rustle",
+      "death": "palette:slimy-squelch",
+      "attacks": {
+        "bite": "palette:creature-spit"
+      }
+    },
+    "giant-spider-l2": {
+      "selection": "palette:spider-leg-rustle",
+      "death": "palette:slimy-squelch",
+      "attacks": {
+        "bite": "palette:creature-spit"
+      }
+    },
+    "giant-spider-l3": {
+      "selection": "palette:spider-leg-rustle",
+      "death": "palette:slimy-squelch",
+      "attacks": {
+        "bite": "palette:creature-spit"
+      }
+    },
+    "giant-tortoise": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:deep-monster-grunt"
+      }
+    },
+    "giant-tortoise-l2": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:deep-monster-grunt"
+      }
+    },
+    "giant-tortoise-l3": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:deep-monster-grunt"
+      }
+    },
+    "giant-wasp": {
+      "selection": "palette:insect-buzz",
+      "death": "palette:slimy-squelch",
+      "attacks": {
+        "sting": "palette:creature-spit"
+      }
+    },
+    "giant-wasp-l2": {
+      "selection": "palette:insect-buzz",
+      "death": "palette:slimy-squelch",
+      "attacks": {
+        "sting": "palette:creature-spit"
+      }
+    },
+    "giant-wasp-l3": {
+      "selection": "palette:insect-buzz",
+      "death": "palette:slimy-squelch",
+      "attacks": {
+        "sting": "palette:creature-spit"
+      }
+    },
+    "gryphon": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "gryphon-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "gryphon-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "lynx": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
+      }
+    },
+    "lynx-l2": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
+      }
+    },
+    "lynx-l3": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
+      }
+    },
+    "octopus": {
+      "selection": "palette:aquatic-gurgle-selection",
+      "death": "palette:slimy-squelch",
+      "attacks": {
+        "tentacles": "palette:aquatic-gurgle-attack"
+      }
+    },
+    "octopus-l2": {
+      "selection": "palette:aquatic-gurgle-selection",
+      "death": "palette:slimy-squelch",
+      "attacks": {
+        "tentacles": "palette:aquatic-gurgle-attack"
+      }
+    },
+    "octopus-l3": {
+      "selection": "palette:aquatic-gurgle-selection",
+      "death": "palette:slimy-squelch",
+      "attacks": {
+        "tentacles": "palette:aquatic-gurgle-attack"
+      }
+    },
+    "ray": {
+      "selection": "palette:aquatic-creature-call",
+      "death": "palette:watery-squish",
+      "attacks": {
+        "tail-strike": "palette:fish-slap"
+      }
+    },
+    "ray-l2": {
+      "selection": "palette:aquatic-creature-call",
+      "death": "palette:watery-squish",
+      "attacks": {
+        "tail-strike": "palette:fish-slap"
+      }
+    },
+    "ray-l3": {
+      "selection": "palette:aquatic-creature-call",
+      "death": "palette:watery-squish",
+      "attacks": {
+        "tail-strike": "palette:fish-slap"
+      }
+    },
+    "sea-serpent": {
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:reptile-scale-rustle"
+      }
+    },
+    "sea-serpent-l2": {
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:reptile-scale-rustle"
+      }
+    },
+    "sea-serpent-l3": {
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:reptile-scale-rustle"
+      }
+    },
+    "shark": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:beast-grunt"
+      }
+    },
+    "shark-l2": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:beast-grunt"
+      }
+    },
+    "shark-l3": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "bite": "palette:beast-grunt"
+      }
+    },
+    "stag": {
+      "selection": "palette:horse-call",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "trample": "palette:horse-call",
+        "antlers": "palette:horse-call"
+      }
+    },
+    "stag-l2": {
+      "selection": "palette:horse-call",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "trample": "palette:horse-call",
+        "antlers": "palette:horse-call"
+      }
+    },
+    "stag-l3": {
+      "selection": "palette:horse-call",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "trample": "palette:horse-call",
+        "antlers": "palette:horse-call"
+      }
+    },
+    "werewolf": {
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:dog-snarl"
+      }
+    },
+    "werewolf-ironfang": {
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:dog-snarl"
+      }
+    },
+    "werewolf-pack-king": {
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:dog-snarl"
+      }
+    },
+    "dwarf-axeguard": {
+      "selection": "palette:belt-handling",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "axe": "palette:blade-swish",
+        "shield-bash": "palette:mining-strike"
+      }
+    },
+    "dwarf-axeguard-l2": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "axe": "palette:blade-swish",
+        "shield-bash": "palette:mining-strike"
+      }
+    },
+    "dwarf-axeguard-l3": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "axe": "palette:blade-swish",
+        "shield-bash": "palette:mining-strike"
+      }
+    },
+    "dwarf-axe-pick-l2": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "pickaxe": "palette:mining-strike",
+        "axe": "palette:blade-swish"
+      }
+    },
+    "dwarf-axe-pick-l3": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "pickaxe": "palette:mining-strike",
+        "axe": "palette:blade-swish"
+      }
+    },
+    "dwarf-pickaxe": {
+      "selection": "palette:belt-handling",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "pickaxe": "palette:mining-strike",
+        "axe": "palette:blade-swish"
+      }
+    },
+    "dwarf-hammerer-l2": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-hammerer-l3": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-poleaxe-l2": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "poleaxe": "palette:blade-swish",
+        "axe": "palette:blade-swish"
+      }
+    },
+    "dwarf-poleaxe-l3": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "poleaxe": "palette:blade-swish",
+        "axe": "palette:blade-swish"
+      }
+    },
+    "dwarf-crossbow": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "crossbow": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "dwarf-crossbow-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "crossbow": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "dwarf-crossbow-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "crossbow": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "dwarf-arquebus-l2": {
+      "selection": "palette:metal-latch",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "arquebus": "palette:metal-plate-impact",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "dwarf-arquebus-l3": {
+      "selection": "palette:metal-latch",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "arquebus": "palette:metal-plate-impact",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "dwarf-runesmith": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "rune-stone": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-thundersmith-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "rune-spark": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-thundersmith-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "rune-spark": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-stonespell-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "rune-stone": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-stonespell-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "rune-stone": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-goat-rider": {
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "spear": "palette:mining-strike"
+      }
+    },
+    "dwarf-goat-rider-l2": {
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-goat-rider-l3": {
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-pistol-goat-rider-l2": {
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "pistol": "palette:metal-plate-impact",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "dwarf-pistol-goat-rider-l3": {
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "pistol": "palette:metal-plate-impact",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "dwarf-forge-lord": {
+      "selection": "palette:belt-handling",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-forge-lord-l2": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "dwarf-forge-lord-l3": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:dwarf-cough",
+      "attacks": {
+        "hammer": "palette:mining-strike"
+      }
+    },
+    "elf-spearman": {
+      "selection": "palette:belt-handling",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "elf-spearman-l2": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "elf-spearman-l3": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "elf-jumper-l2": {
+      "selection": "palette:crossbow-bolt-pass",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "blade": "palette:blade-contact"
+      }
+    },
+    "elf-jumper-l3": {
+      "selection": "palette:crossbow-bolt-pass",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "blade": "palette:blade-contact"
+      }
+    },
+    "elf-flanker": {
+      "selection": "palette:dagger-draw",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "blade": "palette:blade-contact"
+      }
+    },
+    "elf-flanker-l2": {
+      "selection": "palette:dagger-draw",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "blade": "palette:blade-contact"
+      }
+    },
+    "elf-flanker-l3": {
+      "selection": "palette:dagger-draw",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "blade": "palette:blade-contact"
+      }
+    },
+    "elf-bladedancer-l2": {
+      "selection": "palette:sabre-draw",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "blade": "palette:spear-on-sabre"
+      }
+    },
+    "elf-bladedancer-l3": {
+      "selection": "palette:sabre-draw",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "blade": "palette:spear-on-sabre"
+      }
+    },
+    "elf-archer": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "elf-archer-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "elf-archer-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "elf-deer-archer": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "elf-deer-archer-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "elf-deer-archer-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "elf-caster": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "elf-caster-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "elf-caster-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "elf-killing-caster-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "elf-killing-caster-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "elf-banner-lord": {
+      "selection": "palette:belt-handling",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "elf-banner-lord-l2": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "elf-banner-lord-l3": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:elf-cough",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "swordsman": {
+      "selection": "palette:belt-handling",
+      "death": "palette:cough",
+      "attacks": {
+        "sword": "palette:spear-on-sabre"
+      }
+    },
+    "soldier": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:cough",
+      "attacks": {
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
+      }
+    },
+    "champion": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
+      }
+    },
+    "hammerman": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:cough",
+      "attacks": {
+        "hammer": "palette:mace-on-spear-haft"
+      }
+    },
+    "warhammer": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "hammer": "palette:mace-on-spear-haft"
+      }
+    },
+    "spearman": {
+      "selection": "palette:belt-handling",
+      "death": "palette:cough",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "warden": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:cough",
+      "attacks": {
+        "spear": "palette:blade-contact",
+        "shieldbash": "palette:metal-plate-impact"
+      }
+    },
+    "sentinel": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "spear": "palette:blade-contact",
+        "shieldbash": "palette:metal-plate-impact"
+      }
+    },
+    "halberdier": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:cough",
+      "attacks": {
+        "halberd": "palette:blade-swish",
+        "axe": "palette:blade-swish"
+      }
+    },
+    "halberd-master": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "halberd": "palette:blade-swish",
+        "axe": "palette:blade-swish"
+      }
+    },
+    "scout": {
+      "selection": "palette:dagger-draw",
+      "death": "palette:cough",
+      "attacks": {
+        "knife": "palette:blade-contact",
+        "sling": "palette:book-shut"
+      }
+    },
+    "ranger": {
+      "selection": "palette:dagger-draw",
+      "death": "palette:cough",
+      "attacks": {
+        "knife": "palette:blade-contact",
+        "sling": "palette:book-shut"
+      }
+    },
+    "shadowblade": {
+      "selection": "palette:dagger-draw",
+      "death": "palette:cough",
+      "attacks": {
+        "knife": "palette:blade-contact",
+        "sling": "palette:book-shut"
+      }
+    },
+    "slinger": {
+      "selection": "palette:small-leather-handling",
+      "death": "palette:cough",
+      "attacks": {
+        "sling": "palette:book-shut",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "fireslinger": {
+      "selection": "palette:small-leather-handling",
+      "death": "palette:cough",
+      "attacks": {
+        "firepot": "palette:fire-spell-burst",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "archer": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "marksman": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "sharpshooter": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "crossbowman": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "crossbow": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "arbalester": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "arbalest": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "adept": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "spark": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "mage": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "spark": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "archmage": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "spark": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "healer": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "light": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "high-healer": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "light": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "rider": {
+      "selection": "palette:horse-call",
+      "death": "palette:horse-dying-call",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "lancer": {
+      "selection": "palette:horse-call",
+      "death": "palette:horse-dying-call",
+      "attacks": {
+        "lance": "palette:blade-contact"
+      }
+    },
+    "knight": {
+      "selection": "palette:horse-call",
+      "death": "palette:horse-dying-call",
+      "attacks": {
+        "lance": "palette:blade-contact",
+        "sword": "palette:spear-on-sabre"
+      }
+    },
+    "horse-archer": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:horse-dying-call",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "horse-bowman": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:horse-dying-call",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "horse-marksman": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:horse-dying-call",
+      "attacks": {
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "captives": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {}
+    },
+    "commander": {
+      "selection": "palette:belt-handling",
+      "death": "palette:cough",
+      "attacks": {
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
+      }
+    },
+    "marshal": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
+      }
+    },
+    "grand-marshal": {
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
+      "attacks": {
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
+      }
+    },
+    "harpooner": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "harpoon": "palette:spear-on-sabre",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "tidehunter": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "harpoon": "palette:spear-on-sabre",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "merfolk-harpoon-master": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "harpoon": "palette:spear-on-sabre",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "merfolk-netter-l2": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "weighted-net": "palette:scythian-arrow-pass",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "merfolk-netter-l3": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "weighted-net": "palette:scythian-arrow-pass",
+        "knife": "palette:blade-contact"
+      }
+    },
+    "reefguard": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "spear": "palette:spear-on-sabre",
+        "tail": "palette:fish-slap"
+      }
+    },
+    "tridentguard": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "spear": "palette:spear-on-sabre",
+        "shellclub": "palette:mace-on-spear-blade"
+      }
+    },
+    "merfolk-reef-champion": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "spear": "palette:spear-on-sabre",
+        "shellclub": "palette:mace-on-spear-blade"
+      }
+    },
+    "merfolk-trident-l2": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "trident": "palette:spear-on-sabre"
+      }
+    },
+    "merfolk-trident-l3": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "trident": "palette:spear-on-sabre"
+      }
+    },
+    "wavemender": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "surge": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "tidesage": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "surge": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "merfolk-tide-oracle": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "surge": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "merfolk-tidecrusher-l2": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "crushing-wave": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "merfolk-tidecrusher-l3": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "crushing-wave": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "merfolk-maceguard": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "mace": "palette:mace-on-spear-haft"
+      }
+    },
+    "merfolk-maceguard-l2": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "mace": "palette:mace-on-spear-haft"
+      }
+    },
+    "merfolk-maceguard-l3": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "mace": "palette:mace-on-spear-haft"
+      }
+    },
+    "tidekeeper": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "trident": "palette:spear-on-sabre",
+        "tidebolt": "palette:arcane-pulse-attack"
+      }
+    },
+    "tideseer": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "trident": "palette:spear-on-sabre",
+        "tidebolt": "palette:arcane-pulse-attack"
+      }
+    },
+    "merfolk-tide-sovereign": {
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
+      "attacks": {
+        "trident": "palette:spear-on-sabre",
+        "tidebolt": "palette:arcane-pulse-attack"
+      }
+    },
+    "skeleton": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "rustblade": "palette:blade-contact",
+        "shieldbash": "palette:metal-plate-impact"
+      }
+    },
+    "revenant": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "rustblade": "palette:blade-contact",
+        "boneclub": "palette:mace-on-spear-blade"
+      }
+    },
+    "skeleton-dreadguard": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "rustblade": "palette:blade-contact",
+        "boneclub": "palette:mace-on-spear-blade"
+      }
+    },
+    "skeleton-flanker-l2": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "knife": "palette:blade-contact"
+      }
+    },
+    "skeleton-flanker-l3": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "knife": "palette:blade-contact"
+      }
+    },
+    "skeleton-impact-caster": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "boneburst": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "skeleton-impact-caster-l2": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "boneburst": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "skeleton-impact-caster-l3": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "boneburst": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "skeleton-scythe-caster-l2": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "soul-drain": "palette:dark-magic-burst",
+        "scythe": "palette:blade-contact"
+      }
+    },
+    "skeleton-scythe-caster-l3": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "soul-drain": "palette:dark-magic-burst",
+        "scythe": "palette:blade-contact"
+      }
+    },
+    "skeleton-rider": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "skeleton-rider-l2": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "skeleton-rider-l3": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "spear": "palette:blade-contact"
+      }
+    },
+    "bonearcher": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "bonebow": "palette:scythian-bow-shot",
+        "shard": "palette:scythian-arrow-pass"
+      }
+    },
+    "deatharcher": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "bonebow": "palette:scythian-bow-shot",
+        "shard": "palette:scythian-arrow-pass"
+      }
+    },
+    "skeleton-bow-master": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "bonebow": "palette:scythian-bow-shot",
+        "shard": "palette:scythian-arrow-pass"
+      }
+    },
+    "skeleton-axeman": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "axe": "palette:blade-swish"
+      }
+    },
+    "skeleton-axeman-l2": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "axe": "palette:blade-swish"
+      }
+    },
+    "skeleton-axeman-l3": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "axe": "palette:blade-swish"
+      }
+    },
+    "ghost": {
+      "selection": "palette:ghost-groan",
+      "death": "palette:ghost-scream",
+      "attacks": {
+        "spectral-touch": "palette:spectral-magic",
+        "spectral-orb": "palette:arcane-pulse-attack"
+      }
+    },
+    "wraith": {
+      "selection": "palette:ghost-groan",
+      "death": "palette:ghost-scream",
+      "attacks": {
+        "spectral-touch": "palette:spectral-magic",
+        "spectral-orb": "palette:arcane-pulse-attack"
+      }
+    },
+    "spectre": {
+      "selection": "palette:ghost-groan",
+      "death": "palette:ghost-scream",
+      "attacks": {
+        "spectral-touch": "palette:spectral-magic",
+        "spectral-orb": "palette:arcane-pulse-attack"
+      }
+    },
+    "necromancer": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "gravebolt": "palette:dark-magic-burst",
+        "bonestaff": "palette:wooden-staff-impact"
+      }
+    },
+    "lich": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "gravebolt": "palette:dark-magic-burst",
+        "bonestaff": "palette:wooden-staff-impact"
+      }
+    },
+    "lich-commander-l3": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "gravebolt": "palette:dark-magic-burst",
+        "bonestaff": "palette:wooden-staff-impact"
+      }
+    },
+    "skeletal-hound": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "fangs": "palette:wooden-rattle-unit"
+      }
+    },
+    "skeletal-hound-l2": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "bite": "palette:wooden-rattle-unit"
+      }
+    },
+    "skeletal-hound-l3": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "bite": "palette:wooden-rattle-unit"
+      }
+    },
+    "corpse-vulture": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "corpse-vulture-l2": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "corpse-vulture-l3": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
+      }
+    },
+    "skeletal-horse": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "trample": "palette:wooden-rattle-unit",
+        "hooves": "palette:wooden-rattle-unit"
+      }
+    },
+    "skeletal-horse-l2": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "trample": "palette:wooden-rattle-unit",
+        "hooves": "palette:wooden-rattle-unit"
+      }
+    },
+    "skeletal-horse-l3": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "trample": "palette:wooden-rattle-unit",
+        "hooves": "palette:wooden-rattle-unit"
+      }
+    },
+    "zombie-bear": {
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:monstrous-bite-grunt"
+      }
+    },
+    "zombie-bear-l2": {
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:monstrous-bite-grunt"
+      }
+    },
+    "zombie-bear-l3": {
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "claws": "palette:blade-swish",
+        "bite": "palette:monstrous-bite-grunt"
+      }
+    },
+    "bone-dragon": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
+      }
+    },
+    "bone-dragon-l2": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
+      }
+    },
+    "bone-dragon-l3": {
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
+      "attacks": {
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
+      }
+    },
+    "wolf": {
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
+      "attacks": {
+        "fangs": "palette:dog-snarl"
+      }
+    },
+    "direwolf": {
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
+      "attacks": {
+        "fangs": "palette:dog-snarl"
+      }
+    },
+    "woodland-alpha-wolf": {
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
+      "attacks": {
+        "fangs": "palette:dog-snarl"
+      }
+    },
+    "boar": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "trample": "palette:beast-grunt",
+        "tusks": "palette:beast-grunt"
+      }
+    },
+    "greatboar": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "trample": "palette:beast-grunt",
+        "tusks": "palette:beast-grunt"
+      }
+    },
+    "woodland-ancient-boar": {
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
+      "attacks": {
+        "trample": "palette:beast-grunt",
+        "tusks": "palette:beast-grunt"
+      }
+    },
+    "thorncaller": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact"
+      }
+    },
+    "briarweaver": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact",
+        "root-crush": "palette:spectral-magic"
+      }
+    },
+    "woodland-thorn-oracle": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact",
+        "root-crush": "palette:spectral-magic"
+      }
+    },
+    "woodland-bramble-warden": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact"
+      }
+    },
+    "woodland-thornbinder": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact"
+      }
+    },
+    "fox-spearguard": {
+      "selection": "palette:dog-grumble",
+      "death": "palette:cough",
+      "attacks": {
+        "spear": "palette:spear-on-sabre"
+      }
+    },
+    "fox-spearguard-l2": {
+      "selection": "palette:dog-grumble",
+      "death": "palette:cough",
+      "attacks": {
+        "spear": "palette:spear-on-sabre"
+      }
+    },
+    "fox-spearguard-l3": {
+      "selection": "palette:dog-grumble",
+      "death": "palette:cough",
+      "attacks": {
+        "spear": "palette:spear-on-sabre"
+      }
+    },
+    "treant": {
+      "selection": "palette:beast-roar",
+      "death": "palette:wooden-creak",
+      "attacks": {
+        "bough": "palette:wooden-plank-impact",
+        "spikes": "palette:wooden-plank-impact"
+      }
+    },
+    "treant-l2": {
+      "selection": "palette:beast-roar",
+      "death": "palette:wooden-creak",
+      "attacks": {
+        "bough": "palette:wooden-plank-impact",
+        "spikes": "palette:wooden-plank-impact"
+      }
+    },
+    "treant-l3": {
+      "selection": "palette:beast-roar",
+      "death": "palette:wooden-creak",
+      "attacks": {
+        "bough": "palette:wooden-plank-impact",
+        "spikes": "palette:wooden-plank-impact"
+      }
+    },
+    "wildkeeper": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "bough": "palette:solid-wood-impact",
+        "stones": "palette:stone-scatter-attack"
+      }
+    },
+    "grovewarden": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "bough": "palette:solid-wood-impact",
+        "stones": "palette:stone-scatter-attack"
+      }
+    },
+    "woodland-grove-oracle": {
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
+      "attacks": {
+        "bough": "palette:solid-wood-impact",
+        "stones": "palette:stone-scatter-attack"
+      }
+    },
+    "zombie-walker": {
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "grasp": "palette:burp"
+      }
+    },
+    "zombie-fighter": {
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "blade": "palette:blade-contact"
+      }
+    },
+    "zombie-cleaver": {
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "cleaver": "palette:blade-contact"
+      }
+    },
+    "zombie-decay-caster": {
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "mire-bolt": "palette:dark-magic-burst"
+      }
+    },
+    "zombie-plague-carrier": {
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "grasping-hands": "palette:burp",
+        "bite": "palette:monstrous-bite-grunt"
+      }
+    },
+    "zombie-shambler": {
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "grasping-hands": "palette:burp",
+        "bite": "palette:monstrous-bite-grunt"
+      }
+    },
+    "zombie-ghoul": {
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "grasping-hands": "palette:burp",
+        "bite": "palette:monstrous-bite-grunt"
+      }
+    },
+    "zombie-corruption-mage-l1": {
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "corruption-spell": "palette:dark-magic-burst",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "zombie-corruption-mage": {
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "corruption-spell": "palette:dark-magic-burst",
+        "staff": "palette:wooden-staff-impact"
+      }
+    },
+    "zombie-corruption-archmage": {
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
+      "attacks": {
+        "corruption-spell": "palette:dark-magic-burst",
+        "staff": "palette:wooden-staff-impact"
+      }
+    }
+  },
+  "terrain": {
+    "road": "palette:stone-scatter-terrain",
+    "plains": "palette:soft-grass-footstep",
+    "forest": "palette:enchanted-forest-rustle",
+    "hill": "palette:hill-wind",
+    "water": "palette:water-ripple",
+    "bridge": "palette:stone-scatter-terrain",
+    "ford": "palette:water-ripple",
+    "village": "palette:village-contact",
+    "keep": "palette:light-metal-contact",
+    "marsh": "palette:water-ripple",
+    "ruins": "palette:hill-wind",
+    "fort": "palette:wooden-fort-contact",
+    "grove": "palette:sacred-grove-magic",
+    "landing": "palette:water-ripple",
+    "ferry": "palette:water-ripple",
+    "house": "palette:door-movement",
+    "mountain": "palette:distant-mining",
+    "cave": "palette:quarry-strike",
+    "burned-village": "palette:quiet-fire-crackle",
+    "signpost": "palette:plain-ground-contact",
+    "castle-wall": "palette:courtyard-cue",
+    "castle-bell": "palette:heavy-bell",
+    "monastery": "palette:door-movement",
+    "church": "palette:door-movement",
+    "graveyard": "palette:wooden-rattle-terrain",
+    "ritual-star": "palette:ritual-magic",
+    "ritual-spent": "palette:arcane-pulse-terrain"
+  },
+  "fallbackAttacks": {
+    "melee:impact": "palette:mace-on-spear-haft"
+  },
+  "movement": "palette:wooden-figurine-move"
+}

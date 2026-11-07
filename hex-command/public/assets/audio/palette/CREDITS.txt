@@ -1,0 +1,57 @@
+HEX COMMAND — AUDIO CREDITS
+
+Thank you to the creators who shared their recordings and effects under CC0.
+These voluntary credits recognize their work.
+
+AntumDeluge
+  Fire crackling
+  https://opengameart.org/content/fire-crackling
+
+Ben Jaszczak & Brian Nelson (Still North Media)
+  Medieval weapon impacts
+  https://opengameart.org/node/146863
+  Medieval weapon textures
+  https://opengameart.org/content/medieval-sound-effects-weapon-textures
+
+DenisChardonnet; distributed by Joseph SARDIN / BigSoundBank
+  Horse vocals
+  https://bigsoundbank.com/neighing-of-a-horse-1-s0284.html
+
+JaggedStone
+  Magic spell effects
+  https://opengameart.org/content/magic-spell-sfx
+
+Kenney Vleugels (Kenney.nl)
+  Impact Sounds
+  https://kenney.nl/assets/impact-sounds
+  RPG Audio
+  https://kenney.nl/assets/rpg-audio
+
+kyles; upstream excerpt edited by sadboysuss
+  Fish slap
+  https://freesound.org/people/kyles/sounds/450830/
+
+qubodup
+  Dog snarls, grunts and grumbles
+  https://opengameart.org/content/dog-snarl-grunt-grumble
+  Three dark magic spells
+  https://opengameart.org/content/3-dark-magic-spells
+
+rubberduck
+  Creature sound effects
+  https://opengameart.org/content/80-cc0-creature-sfx
+  RPG sound effects
+  https://opengameart.org/content/80-cc0-rpg-sfx
+
+Original generated cues: Hex Command project.
+
+Recordings were excerpted, edited and levelled for Hex Command.
+Third-party source recordings are released under CC0 1.0:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Complete per-file sources, creators, take ranges, processing and license records:
+sources.json
+Source license evidence: sources.json (sourcePacks)
+CC0 legal text: CC0-1.0.txt
+
+This credit list records authorship; it does not change the license terms.

@@ -43,10 +43,24 @@ identified head, or the time budget is reached.
 
 ## Return the verdict
 
-Report **ready** only when all four conditions are supported. Otherwise report
-**not ready**, name the concrete blockers or unverified conditions, and give the
-next actions. Include the head, evidence used and quick checks run. Keep this
-concise and in the response or PR metadata, rather than adding a gate report file.
+Every verdict must identify the PR head and include all four checklist items.
+Mark each ✅ supported, ❌ failed or ❓ unverified, followed by concrete evidence:
+
+- **Independent review:** reviewer identity, reviewed revision/scope, and the
+  disposition of findings, including evidence for fixes made after review.
+- **Markdowns:** name added, changed and deleted Markdown/guidance files and
+  summarize their purpose and hygiene review. Say “none” when there are none.
+- **History:** number of PR commits, what they do, and whether their purposes,
+  messages and sequence are coherent. Identify cleanup needed and any reliance
+  on squash merging explicitly.
+- **Validation:** exact commands, results and tested revision; distinguish reused
+  evidence and quick checks from checks run during this audit. Name missing,
+  failed or stale checks.
+
+Report **ready** only when all four items are ✅. Otherwise report **not ready**
+and give the next action for each ❌ or ❓. A proposed squash merge does not count
+as completed history cleanup. Keep the checklist in the response or PR metadata,
+without adding a tracked gate report file.
 
 For an explicitly requested merge, follow repository permission and conflict
 rules, confirm the head is unchanged and merge only the ready revision, using an
@@ -54,5 +68,6 @@ expected-head guard where supported. A moved head needs reassessment; a blocked
 gate returns its verdict without starting preparation. Confirm a successful merge
 with the hosting service.
 
-**Complete when:** the user has the verdict and any blockers; an authorized merge
+**Complete when:** the user has the verdict, all four checklist items and any
+blockers; an authorized merge
 is complete only after hosting-service confirmation.

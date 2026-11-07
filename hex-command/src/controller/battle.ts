@@ -4,7 +4,7 @@ import { dialoguePending } from "../game/campaign-progress";
 import type { CampaignId, UnitType } from "../game/types";
 import { writable, type Readable, type Writable } from "svelte/store";
 import { tick } from "svelte";
-import { TYPES, TERRAIN, type Tile, type Unit } from "../game/catalog";
+import { TYPES, TERRAIN, unitWeapons, type Tile, type Unit } from "../game/catalog";
 import { createMoveUndo } from "../game/undo";
 import { loadBattle, restoreBattleText, type LoadedBattle } from "../save/load";
 import { serializeBattle, TurnCheckpoint } from "../save/write";
@@ -43,6 +43,8 @@ import {
   playSound,
   playHudSound,
   playInteraction,
+  playCombat,
+  playMovement,
   cancelSound,
 } from "../presentation/sound";
 import { animateTile, animateTurn, type MotionKind } from "../presentation/motion";
@@ -768,7 +770,7 @@ export class BattleController {
     const tile = this.#game.tile(tileId);
     playInteraction({
       unitType: this.#game.at(tileId)?.type,
-      terrain: tile && TERRAIN[tile.terrain].role,
+      terrain: tile?.terrain,
     });
   }
 
@@ -791,23 +793,42 @@ export class BattleController {
       this.afterRender(animateTurn);
     }
 
-    // One cue per action, with combat taking precedence over movement/capture.
+    // Combat feedback takes precedence; only resolved, previously visible deaths add a tail.
     if (changes.attacked) {
-      const defaultSound = changes.attacker?.type === "archer" ? "attack-bow" : "attack-melee";
-      playSound(this.#game.lastCombat?.sound || defaultSound);
+      const combat = this.#game.combat;
+      const attacker = combat?.units[0] ?? changes.attacker;
+      const weapon = attacker
+        ? unitWeapons(attacker).find((weapon) => weapon.id === this.#game.lastCombat?.attackId)
+        : undefined;
+      const health = combat?.strikes.at(-1)?.health;
+      const deaths =
+        combat && health
+          ? combat.units
+              .filter(
+                (unit, i) =>
+                  health[i]! <= 0 && previous.units.some((visible) => visible.id === unit.id),
+              )
+              .map((unit) => unit.type)
+          : [];
+      playCombat(
+        {
+          attackType: attacker?.type,
+          attackId: this.#game.lastCombat?.attackId,
+          attackSound: this.#game.lastCombat?.sound,
+          attackCategory: weapon?.category,
+          attackDamageType: weapon?.damageType,
+        },
+        deaths,
+      );
     } else if (changes.newWinner) {
       playSound(changes.newWinner === "player" ? "victory" : "defeat");
     } else if (changes.recruited || changes.advanced) {
       playSound("recruit");
     } else if (changes.movedUnit) {
-      const tile = this.#game.tile(changes.movedUnit.tile);
-      playInteraction({
-        unitType: changes.movedUnit.type,
-        terrain: tile && TERRAIN[tile.terrain].role,
-      });
+      playMovement();
     } else if (changes.capturedTiles.length > 0) {
       const tile = this.#game.tile(changes.capturedTiles[0]!);
-      playInteraction({ terrain: tile && TERRAIN[tile.terrain].role });
+      playInteraction({ terrain: tile?.terrain });
     }
   }
 
