@@ -337,8 +337,6 @@ test("Publications are immutable and availability follows the revision", async (
 
   controller.choose("hex-0045-b0e58b1f93");
   assert.equal(observed.view.game, opening.game, "selection must not rebuild the game view");
-  controller.focusTile("hex-0397-b042f4a1af");
-  assert.equal(observed.view.game, opening.game, "keyboard focus reuses the published game");
   controller.message("Inspect the field.");
   assert.equal(observed.view.game, opening.game, "status reuses the published game");
   await controller.setSound(false);

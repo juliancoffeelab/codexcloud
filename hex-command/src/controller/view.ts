@@ -26,7 +26,6 @@ export interface BattleView {
   readonly activeRunId: string | null;
   readonly selected: string | null;
   readonly target: string | null;
-  readonly focusedTile: string;
   readonly inspectedTile: string | null;
   readonly renderRevision: number;
   readonly sessionVersion: number;
@@ -52,7 +51,6 @@ export interface BattleCommands {
   advanceDialogue(skip?: boolean): void;
   previousDialogue(): void;
   choose(tileId: string): void;
-  focusTile(tileId: string): void;
   clearSelection(clearInspection?: boolean): void;
   attackSelected(attackId: string): void;
   recruitHere(type: RecruitType, tileId: string): void;
@@ -105,7 +103,6 @@ export function createBattleCommands(controller: BattleCommands): BattleCommands
       controller.previousDialogue.bind(controller),
     ),
     choose: traceCommand("action.choose", controller.choose.bind(controller)),
-    focusTile: traceCommand("action.focusTile", controller.focusTile.bind(controller)),
     clearSelection: traceCommand(
       "action.clearSelection",
       controller.clearSelection.bind(controller),

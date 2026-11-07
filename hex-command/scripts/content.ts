@@ -63,6 +63,12 @@ for (const path of [
   ...Object.values(manifest.simulation),
 ])
   read(path);
+// Every gameplay item needs an authored image; items never substitute a generic icon.
+for (const path of manifest.items) {
+  const item = read<{ id: string }>(path);
+  if (!existsSync(new URL(`../pixel/art/terrain/props/items/${item.id}/tile.txt`, import.meta.url)))
+    throw new Error(`${path}: missing item artwork for ${item.id}`);
+}
 // Enabled factions must implement their entire authored tree. Standalone
 // scenario wildlife does not enable its entire artwork faction.
 type ContentUnit = { id: string; level: number; family: string; advancesTo: string[] };

@@ -1,0 +1,13 @@
+{
+  "subtitle": "A large battlefield survey.",
+  "briefing": "Explore the Bell valley at night. Your survey dragon can fly across the whole map and defeat a target with one hit. Keep the captain on the keep to recruit. Capture villages to light their lamps; every death leaves a permanent red light. Leave the rival alive until you finish testing.",
+  "hints": [
+    "Fog clears permanently within three hexes of your troops.",
+    "Move to a village, then undo to check ownership and lamps. Exploration remains remembered.",
+    "Recruit survey dragons or ordinary troops, end turns to refresh them, and accumulate death lights.",
+    "Drag to pan; pinch or Control/Command plus wheel to zoom. Keyboard arrows browse hexes."
+  ],
+  "intro": [],
+  "victory": [],
+  "debrief": "The survey is complete. Restart from Settings \u2192 Debug tools."
+}

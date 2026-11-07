@@ -38,3 +38,17 @@ Tests must be small, fast, and lightweight.
 AI, harness and analyzer changes also require the simulation validation described
 in [combat-simulation](../combat-simulation/SKILL.md). Validation for an explicit
 deploy request is owned by the deploy operation; follow [deploy](../deploy/SKILL.md).
+
+## Opt-in battlefield geometry probe
+
+Run the [geometry probe](../../../scripts/probe-battlefield-geometry.js) only when
+the user explicitly requests that probe. Keep it outside `npm test`, `verify`,
+CI and routine validation. After a production build, run:
+
+```sh
+node scripts/probe-battlefield-geometry.js
+```
+
+It checks window and world-projection stability through loading and details
+clipping. Reports include runtime and first-failure artifacts in ignored `tmp/`.
+Use `--help` for build-directory and Chromium executable options.

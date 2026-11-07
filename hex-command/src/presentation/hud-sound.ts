@@ -1,0 +1,121 @@
+import { writable } from "svelte/store";
+import { errorDetails } from "../error-details";
+
+export const hudAudioReadiness = writable<{ ready: boolean; error?: string }>({ ready: false });
+
+/** Authorized HUD-only owner: three short menu cues, decoded before HUD publication. */
+export function createHudAudio(enabled: () => boolean) {
+  let context: AudioContext | undefined;
+  let buffers: AudioBuffer[] = [];
+  let source: AudioBufferSourceNode | undefined;
+  let loading: Promise<void> | undefined;
+  let disposed = false;
+  let request = 0;
+  const abort = new AbortController();
+  const stop = () => {
+    request++;
+    try {
+      source?.stop();
+    } catch {}
+    source?.disconnect();
+    source = undefined;
+  };
+  const unlock = async () => {
+    if (!enabled() || disposed || !context) return false;
+    if (context.state === "closed") context = new AudioContext({ latencyHint: "interactive" });
+    if (context.state !== "running") await context.resume();
+    return !disposed && context.state === "running";
+  };
+  const activate = (event: Event) => {
+    if (!event.isTrusted) return;
+    void unlock().catch((cause) => {
+      if (!disposed)
+        hudAudioReadiness.set({
+          ready: !!buffers.length,
+          error: errorDetails(new Error("Cannot unlock HUD audio", { cause })),
+        });
+    });
+  };
+  const gestures = ["pointerdown", "pointerup", "touchend", "keydown", "click"];
+  for (const type of gestures)
+    document.addEventListener(type, activate, { capture: true, passive: true });
+  const prepare = () => {
+    if (loading) return loading;
+    const attempt = (async () => {
+      hudAudioReadiness.set({ ready: false });
+      try {
+        context ??= new AudioContext({ latencyHint: "interactive" });
+        const owner = context;
+        const prepared = await Promise.all(
+          [1, 2, 3].map(async (variant) => {
+            const url = `${import.meta.env?.BASE_URL ?? "/"}assets/audio/select-${variant}.wav?v=6ad634f16189`;
+            try {
+              const response = await fetch(url, {
+                signal: AbortSignal.any([abort.signal, AbortSignal.timeout(30000)]),
+              });
+              if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+              return await owner.decodeAudioData(await response.arrayBuffer());
+            } catch (cause) {
+              throw new Error(`Cannot prepare HUD cue ${url}`, { cause });
+            }
+          }),
+        );
+        if (disposed) return;
+        buffers = prepared;
+        hudAudioReadiness.set({ ready: true });
+      } catch (cause) {
+        if (!disposed) hudAudioReadiness.set({ ready: false, error: errorDetails(cause) });
+      }
+    })();
+    loading = attempt;
+    void attempt.finally(() => {
+      if (loading === attempt) loading = undefined;
+    });
+    return attempt;
+  };
+  return {
+    prepare,
+    unlock,
+    stop,
+    async play() {
+      if (!enabled() || disposed || !context || !buffers.length) return false;
+      stop();
+      const current = request;
+      try {
+        if (!(await unlock()) || disposed || current !== request || !enabled() || !context)
+          return false;
+      } catch (cause) {
+        if (!disposed)
+          hudAudioReadiness.set({
+            ready: true,
+            error: errorDetails(new Error("Cannot unlock HUD audio for playback", { cause })),
+          });
+        return false;
+      }
+      const voice = context.createBufferSource();
+      const gain = context.createGain();
+      gain.gain.value = 0.29 * 0.25;
+      voice.buffer = buffers[Math.floor(Math.random() * buffers.length)]!;
+      voice.connect(gain);
+      gain.connect(context.destination);
+      voice.onended = () => {
+        voice.disconnect();
+        gain.disconnect();
+        if (source === voice) source = undefined;
+      };
+      source = voice;
+      voice.start();
+      return true;
+    },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      abort.abort();
+      stop();
+      buffers = [];
+      for (const type of gestures) document.removeEventListener(type, activate, true);
+      void context?.close().catch(() => {});
+      context = undefined;
+    },
+  };
+}

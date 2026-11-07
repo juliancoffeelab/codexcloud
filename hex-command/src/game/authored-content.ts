@@ -1,5 +1,5 @@
 /** Browser metadata comes from Rust's validated, resolved WASM catalog. */
-import { loadNativeEngineFactory } from "./native-engine";
+import { engineReady } from "./engine-startup";
 import type {
   CampaignDefinition,
   CampaignId,
@@ -12,17 +12,10 @@ import type {
   UnitType,
 } from "./types";
 
-const loaded = await loadNativeEngineFactory(
-  () => import("../../rust/pkg/hex_command"),
-  undefined,
-  { responseOwnership: "transferred" },
-);
-if (!loaded.ok) throw new Error(`Cannot load game catalog: ${JSON.stringify(loaded.error)}`);
-/** The browser shares this catalog owner with its battle controller. */
-export const GAME_ENGINE_FACTORY = loaded.value;
-const response = GAME_ENGINE_FACTORY.catalog();
+/** Initialized explicitly by the application boot owner. */
+const factory = await engineReady();
+const response = factory.catalog();
 if (!response.ok) {
-  GAME_ENGINE_FACTORY.dispose();
   throw new Error(`Cannot read game catalog: ${JSON.stringify(response.error)}`);
 }
 const catalog = response.value;

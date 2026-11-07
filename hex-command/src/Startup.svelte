@@ -1,87 +1,77 @@
 <script lang="ts">
   import { flushSync, onMount } from "svelte";
-  import type { createBattleApplication } from "./battle-app";
+  import type { ApplicationBoot } from "./boot";
+  import { errorDetails } from "./error-details";
   import BattleBar from "./ui/BattleBar.svelte";
+  import BattlefieldWindow from "./ui/BattlefieldWindow.svelte";
 
-  let application = $state<Awaited<ReturnType<typeof createBattleApplication>>>();
+  let { boot }: { boot: ApplicationBoot } = $props();
+  let application = $state<Awaited<ApplicationBoot["ready"]>>();
   let failure = $state<string>();
 
   onMount(() => {
     let current = true;
-    void import("./battle-app")
-      .then(async (module) => {
+    void boot.ready
+      .then((ready) => {
         if (!current) return;
-        const ready = await module.createBattleApplication();
-        if (!current) {
-          ready.controller.dispose();
-          return;
-        }
         try {
           flushSync(() => (application = ready));
         } catch (error) {
-          ready.controller.dispose();
+          boot.dispose();
           application = undefined;
           throw error;
         }
         window.dispatchEvent(new Event("hex-command-ready"));
       })
       .catch((error: unknown) => {
-        if (current)
-          failure = error instanceof Error ? (error.stack ?? error.message) : String(error);
+        if (current) failure = errorDetails(error);
       });
     return () => {
       current = false;
+      boot.dispose();
     };
   });
 </script>
 
 {#if application}
-  <application.component controller={application.controller} />
+  <application.component
+    controller={application.controller}
+    battlefield={application.battlefield}
+    previews={application.previews}
+  />
 {:else}
   <main class="battle-layout loading-shell" aria-busy={!failure}>
     <BattleBar />
     <div class="battle-content">
       <div class="workspace map-only">
-        <section class="map-section" aria-label="Battlefield loading">
-          <div class="map-scroll loading-map">
-            <div class="loading-message" role="status" aria-live="polite">
-              {#if failure}
-                <p>The game could not start. Reloading keeps your saved battle.</p>
-                <button class="quiet" onclick={() => window.location.reload()}>Reload game</button>
-                <details>
-                  <summary>Error details</summary>
-                  <pre>{failure}</pre>
-                </details>
-              {:else}
-                <p>Loading the game…</p>
-              {/if}
+        <BattlefieldWindow phase={failure ? "ready" : "loading"}>
+          {#if failure}
+            <div class="startup-failure" role="alert">
+              <p>The game could not start. Reloading keeps your saved battle.</p>
+              <button class="quiet" onclick={() => window.location.reload()}>Reload game</button>
+              <details>
+                <summary>Error details</summary>
+                <pre>{failure}</pre>
+              </details>
             </div>
-          </div>
-        </section>
+          {/if}
+        </BattlefieldWindow>
       </div>
     </div>
   </main>
 {/if}
 
 <style>
-  .loading-map {
-    height: calc(100dvh - 120px);
-    display: grid;
-    place-items: center;
-  }
-  .loading-message {
-    max-width: 32rem;
-    padding: 24px;
+  .startup-failure {
+    position: absolute;
+    inset: 24px;
+    overflow: auto;
     color: var(--muted);
     font:
       14px/1.6 system-ui,
       sans-serif;
   }
-  .loading-message button,
-  .loading-message details {
-    margin-top: 14px;
-  }
-  .loading-message pre {
+  .startup-failure pre {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
   }

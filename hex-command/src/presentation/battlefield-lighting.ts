@@ -26,6 +26,58 @@ export function lightingKey(lighting: BattlefieldLighting = daylight): string {
   ]);
 }
 
+/** Compare values rather than array slots: deleting one authored source must
+ * not invalidate every later source. Duplicates retain their multiplicity.
+ * A reorder of an unchanged multiset is included because fixture/halo paint
+ * order is significant. Insert/remove comparisons use counts, never positions. */
+export function changedLights(
+  before: readonly BattlefieldLight[],
+  after: readonly BattlefieldLight[],
+) {
+  const key = (light: BattlefieldLight) =>
+    JSON.stringify([
+      light.col,
+      light.row,
+      light.dx ?? 0,
+      light.dy ?? 0,
+      light.radius,
+      light.power,
+      light.color,
+      light.fixture ?? true,
+    ]);
+  const old = before.map((light) => ({ key: key(light), light })),
+    next = after.map((light) => ({ key: key(light), light }));
+  const counts = (entries: typeof old) => {
+    const result = new Map<string, number>();
+    for (const entry of entries) result.set(entry.key, (result.get(entry.key) ?? 0) + 1);
+    return result;
+  };
+  const oldCounts = counts(old),
+    remaining = new Map(oldCounts),
+    added: BattlefieldLight[] = [];
+  for (const entry of next) {
+    const count = remaining.get(entry.key) ?? 0;
+    if (count) remaining.set(entry.key, count - 1);
+    else added.push(entry.light);
+  }
+  const removed: BattlefieldLight[] = [];
+  for (const entry of old) {
+    const count = remaining.get(entry.key) ?? 0;
+    if (count) {
+      removed.push(entry.light);
+      remaining.set(entry.key, count - 1);
+    }
+  }
+  const reordered = new Map<string, BattlefieldLight>();
+  if (!removed.length && !added.length)
+    for (let i = 0; i < old.length; i++)
+      if (old[i]!.key !== next[i]!.key) {
+        reordered.set(old[i]!.key, old[i]!.light);
+        reordered.set(next[i]!.key, next[i]!.light);
+      }
+  return [...removed, ...added, ...reordered.values()];
+}
+
 export function lightPosition(light: BattlefieldLight) {
   const point = tileCenter(light);
   return { x: point.x + (light.dx ?? 0), y: point.y + (light.dy ?? 0) };

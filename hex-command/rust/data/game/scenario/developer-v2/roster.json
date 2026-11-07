@@ -460,6 +460,10 @@
         {
           "type": "skeletal-hound",
           "tile": "hex-0001-7256137ec1"
+        },
+        {
+          "type": "dragon",
+          "tile": "hex-0888-a99d723b63"
         }
       ],
       "relations": {
@@ -926,6 +930,10 @@
         {
           "type": "skeletal-hound",
           "tile": "hex-0897-9650de66eb"
+        },
+        {
+          "type": "dragon",
+          "tile": "hex-0290-accfd45172"
         }
       ],
       "relations": {

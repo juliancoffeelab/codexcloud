@@ -250,10 +250,11 @@ export async function loadNativeEngineFactory(
   loader: () => Promise<NativeWasmModule>,
   bundle?: Record<string, string>,
   options: NativeBridgeOptions = {},
+  initialization?: Parameters<NativeWasmModule["default"]>[0],
 ): Promise<EngineResult<GameEngineFactory>> {
   try {
     const module = await loader();
-    await module.default();
+    await module.default(initialization);
     return {
       ok: true,
       value: createNativeEngineFactory(new module.NativeEngineFactory(bundle), options),

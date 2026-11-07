@@ -139,7 +139,6 @@ test("Command facade forwards calls without exposing reads", async () => {
     choose(tileId: string) {
       chosen.push(tileId);
     },
-    focusTile: () => {},
     clearSelection: () => {},
     attackSelected: () => {},
     recruitHere: () => {},

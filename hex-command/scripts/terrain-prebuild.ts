@@ -1,10 +1,13 @@
-/** Production-only assets; map JSON and pixel matrices remain the tracked sources. */
+/** Bake presentation assets offline. Runtime map state still comes only from Rust. */
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import type { Canvas } from "@napi-rs/canvas";
+import { createCanvas, loadImage, type Canvas } from "@napi-rs/canvas";
 import type { Plugin } from "vite";
 import { currentArtwork } from "../src/presentation/art";
 import {
+  terrainPageInterior,
+  terrainPageGutter,
   terrainMapKey,
   terrainAssetKey,
   terrainMapDimensions,
@@ -13,98 +16,127 @@ import {
 } from "../src/presentation/terrain-map";
 import { battlefieldSpriteSize, mapDimensions } from "../src/ui/geometry";
 import { pixelSprites } from "../src/presentation/pixel-art";
-import type { GameView } from "../src/game/view";
+import type { GameView, TileView } from "../src/game/view";
 
+type MapSource = Pick<GameView, "mapId" | "cols" | "rows"> & {
+  tiles: TileView[];
+  mapRevision?: number;
+};
 const virtualId = "virtual:terrain-prebuilt";
 
 export function terrainPrebuild(): Plugin {
-  let root: string;
-  let production = false;
+  let root: string, production: boolean;
+  const served = new Map<string, Buffer>();
   return {
     name: "terrain-prebuild",
     configResolved(config) {
       root = config.root;
       production = config.command === "build";
     },
+    configureServer(instance) {
+      instance.middlewares.use((req, res, next) => {
+        const bytes = served.get(req.url?.split("?")[0] ?? "");
+        if (!bytes) return next();
+        res.setHeader("Content-Type", "image/png");
+        res.setHeader("Cache-Control", "no-cache");
+        res.end(bytes);
+      });
+    },
     resolveId(id) {
       if (id === virtualId) return "\0" + virtualId;
     },
     async load(id) {
       if (id !== "\0" + virtualId) return;
-      // Development uses the same authored settings with the asynchronous fallback.
-      const { createCanvas, loadImage } = await import("@napi-rs/canvas");
       const read = async <T>(path: string): Promise<T> => {
         this.addWatchFile(path);
-        return JSON.parse(await readFile(path, "utf8")) as T;
+        return JSON.parse(await readFile(path, "utf8"));
       };
       const content = resolve(root, "rust/data");
       const manifest = await read<{ terrain: string; scenarios: string[]; campaigns: string[] }>(
         resolve(content, "manifest.json"),
       );
-      const terrainDefinitions = await read<
+      const definitions = await read<
         { id: string; role: import("../rust/pkg/hex_command").TerrainRole }[]
       >(resolve(content, manifest.terrain));
-      const terrainRoles = Object.fromEntries(
-        terrainDefinitions.map((definition) => [definition.id, definition.role]),
-      );
+      const roles = Object.fromEntries(definitions.map((t) => [t.id, t.role]));
       const descriptors = manifest.scenarios.map((path) => resolve(content, path));
-      for (const campaign of manifest.campaigns) {
-        const path = resolve(content, campaign);
-        const { stages } = await read<{ stages: string[] }>(path);
-        descriptors.push(...stages.map((stage) => resolve(dirname(path), stage)));
+      for (const path of manifest.campaigns) {
+        const file = resolve(content, path);
+        const campaign = await read<{ stages: string[] }>(file);
+        descriptors.push(...campaign.stages.map((stage) => resolve(dirname(file), stage)));
       }
       this.addWatchFile(resolve(root, "src/presentation/pixel-art.ts"));
-      const artwork = currentArtwork();
-      const frames = new Map<string, Canvas>();
-      const entries: string[] = [];
-      const keys = new Set<string>();
-      const assetKeys = new Map<string, string>();
+      const artwork = currentArtwork(),
+        frames = new Map<string, Canvas>();
+      const entries = new Map<string, string>(),
+        identities = new Map<string, string>();
       for (const descriptor of descriptors) {
-        const { map: mapPath } = await read<{ map: string }>(descriptor);
-        const map = await read<Pick<GameView, "cols" | "rows" | "mapId" | "tiles">>(
-          resolve(dirname(descriptor), mapPath),
-        );
-        if (!production) continue;
-        const key = terrainMapKey(map);
-        if (keys.has(key)) continue;
-        keys.add(key);
-        const assetKey = terrainAssetKey(key);
-        if (assetKeys.has(assetKey) && assetKeys.get(assetKey) !== key)
-          throw new Error(`Terrain image key collision: ${assetKey}`);
-        assetKeys.set(assetKey, key);
+        const stage = await read<{ map: string; scripts?: string }>(descriptor);
+        const map = await read<MapSource>(resolve(dirname(descriptor), stage.map));
+        const state = map;
+        const key = terrainMapKey(state),
+          assetKey = terrainAssetKey(`${state.mapId}:${state.mapRevision ?? 1}`);
+        if (identities.has(assetKey) && identities.get(assetKey) !== key)
+          throw new Error(`Ambiguous prebaked map: ${state.mapId}`);
+        identities.set(assetKey, key);
+        if (entries.has(assetKey)) continue;
         const plan = {
-          ...mapDimensions(map),
+          ...mapDimensions(state),
           pixelScale: 64 / battlefieldSpriteSize,
-          tiles: terrainMapTiles(map.tiles, map.mapId, artwork, terrainRoles),
+          tiles: terrainMapTiles(state.tiles, state.mapId, artwork, roles),
         };
         for (const tile of plan.tiles) {
-          const name = tile.terrainFrame?.url;
-          if (!name) throw new Error(`${map.mapId}/${tile.id}: missing terrain artwork`);
-          if (frames.has(name)) continue;
+          const frame = tile.terrainFrame;
+          if (!frame) throw new Error(`Missing terrain artwork: ${state.mapId}/${tile.id}`);
+          if (frames.has(frame.url)) continue;
           const path = resolve(root, "public", pixelSprites[tile.frameKey]!);
           this.addWatchFile(path);
-          // Keep offline raster clipping identical to the rendering worker.
-          const frame = createCanvas(tile.terrainFrame!.width, tile.terrainFrame!.height);
-          frame.getContext("2d").drawImage(await loadImage(path), 0, 0);
-          frames.set(name, frame);
+          const canvas = createCanvas(frame.width, frame.height);
+          canvas.getContext("2d").drawImage(await loadImage(path), 0, 0);
+          frames.set(frame.url, canvas);
         }
         const dimensions = terrainMapDimensions(plan);
-        const canvas = createCanvas(dimensions.width, dimensions.height);
-        const context = canvas.getContext("2d");
-        context.imageSmoothingEnabled = false;
-        context.scale(plan.pixelScale, plan.pixelScale);
-        paintTerrainTiles(context, plan.tiles, frames);
-        const reference = this.emitFile({
-          type: "asset",
-          name: `terrain-${map.mapId}.png`,
-          source: canvas.toBuffer("image/png"),
-        });
-        entries.push(
-          `${JSON.stringify(terrainAssetKey(key))}: { ...${JSON.stringify(dimensions)}, url: import.meta.ROLLUP_FILE_URL_${reference} }`,
+        const pages: string[] = [];
+        for (let y = 0; y < dimensions.height; y += terrainPageInterior)
+          for (let x = 0; x < dimensions.width; x += terrainPageInterior) {
+            const interiorWidth = Math.min(terrainPageInterior, dimensions.width - x),
+              interiorHeight = Math.min(terrainPageInterior, dimensions.height - y),
+              gutter = terrainPageGutter;
+            const width = interiorWidth + gutter * 2,
+              height = interiorHeight + gutter * 2;
+            const canvas = createCanvas(width, height),
+              ctx = canvas.getContext("2d");
+            ctx.imageSmoothingEnabled = false;
+            ctx.translate(gutter - x, gutter - y);
+            ctx.beginPath();
+            ctx.rect(0, 0, dimensions.width, dimensions.height);
+            ctx.clip();
+            ctx.scale(plan.pixelScale, plan.pixelScale);
+            paintTerrainTiles(ctx, plan.tiles, frames);
+            const bytes = canvas.toBuffer("image/png");
+            let url: string;
+            if (production) {
+              const ref = this.emitFile({
+                type: "asset",
+                name: `terrain-${state.mapId}-${x}-${y}.png`,
+                source: bytes,
+              });
+              url = `import.meta.ROLLUP_FILE_URL_${ref}`;
+            } else {
+              const path = `/@terrain/${createHash("sha256").update(bytes).digest("hex").slice(0, 24)}.png`;
+              served.set(path, bytes);
+              url = JSON.stringify(path);
+            }
+            pages.push(
+              `{...${JSON.stringify({ x, y, interiorWidth, interiorHeight, gutter, width, height })},url:${url}}`,
+            );
+          }
+        entries.set(
+          assetKey,
+          `${JSON.stringify(assetKey)}:{...${JSON.stringify(dimensions)},pages:[${pages.join(",")} ]}`,
         );
       }
-      console.log(`Prebuilt terrain for ${entries.length} authored maps`);
-      return `export default {${entries.join(",\n")}};`;
+      return `export default {${[...entries.values()].join(",\n")}};`;
     },
   };
 }

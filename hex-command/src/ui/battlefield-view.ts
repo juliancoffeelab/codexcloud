@@ -49,6 +49,8 @@ export class BattlefieldViewCache {
   private terrain?: ReadonlyMap<string, TerrainTileView>;
   private mapId?: string;
   private cells?: CachedTile[];
+  private game?: GameView;
+  private overlayIds = new Set<string>();
 
   prepare(
     game: GameView,
@@ -62,14 +64,20 @@ export class BattlefieldViewCache {
       this.artwork === artwork && this.terrain === terrain && this.mapId === game.mapId
         ? this.cells
         : undefined;
+    const nextOverlayIds = new Set<string>();
     const tiles = battlefieldTiles(game, selected, artwork, recruitTileId, terrain, {
       previous,
       next,
+      overlaysOnly: this.game === game && !!previous,
+      overlayIds: this.overlayIds,
+      nextOverlayIds,
     });
     this.artwork = artwork;
     this.terrain = terrain;
     this.mapId = game.mapId;
     this.cells = next;
+    this.game = game;
+    this.overlayIds = nextOverlayIds;
     return tiles;
   }
 }
@@ -122,7 +130,13 @@ export function battlefieldTiles(
   artwork: Artwork,
   recruitTileId: string | null,
   terrain?: ReadonlyMap<string, TerrainTileView>,
-  reuse?: { previous?: readonly CachedTile[]; next: CachedTile[] },
+  reuse?: {
+    previous?: readonly CachedTile[];
+    next: CachedTile[];
+    overlaysOnly?: boolean;
+    overlayIds?: ReadonlySet<string>;
+    nextOverlayIds?: Set<string>;
+  },
 ): BattlefieldTileView[] {
   const selectedUnit = game.unit(selected);
   const canAct =
@@ -132,6 +146,11 @@ export function battlefieldTiles(
     game.faction(selectedUnit.id).controllable;
   const reachableTiles = canAct ? game.reachable(selected) : new Map<string, number>();
   const targetTiles = new Set(canAct ? game.targets(selected).map((unit) => unit.tile) : []);
+  const overlays = new Set([...reachableTiles.keys(), ...targetTiles]);
+  if (selectedUnit) overlays.add(selectedUnit.tile);
+  if (recruitTileId) overlays.add(recruitTileId);
+  for (const id of overlays) reuse?.nextOverlayIds?.add(id);
+  const changedOverlays = new Set([...overlays, ...(reuse?.overlayIds ?? [])]);
 
   const objectiveTiles = new Map<string, string[]>();
   for (const status of [...(game.objectives?.goals ?? []), ...(game.objectives?.optional ?? [])]) {
@@ -147,6 +166,42 @@ export function battlefieldTiles(
     terrain ??
     new Map(game.tiles.map((tile) => [tile.id, terrainTileView(tile, game.mapId, artwork)]));
   return game.tiles.map((tile, index) => {
+    const old = reuse?.previous?.[index];
+    if (reuse?.overlaysOnly && old) {
+      if (!changedOverlays.has(tile.id)) {
+        reuse.next.push(old);
+        return old.view;
+      }
+      const classes = old.view.classes
+        .split(" ")
+        .filter((value) => !["selected", "reachable", "target", "recruitable"].includes(value));
+      if (selectedUnit?.tile === tile.id) classes.push("selected");
+      if (reachableTiles.has(tile.id)) classes.push("reachable");
+      if (targetTiles.has(tile.id)) classes.push("target");
+      if (tile.id === recruitTileId) classes.push("recruitable");
+      // Canonical order keeps unchanged records referentially stable.
+      const nextClasses = classes.sort().join(" ");
+      const same = old.view.classes.split(" ").sort().join(" ") === nextClasses;
+      const next = same
+        ? old
+        : {
+            ...old,
+            view: {
+              ...old.view,
+              classes: nextClasses,
+              label: tileLabel(
+                tile,
+                old.view.occupant?.unit,
+                reachableTiles.has(tile.id),
+                targetTiles.has(tile.id),
+                old.objectives ?? [],
+                old.view.occupant?.faction,
+              ),
+            },
+          };
+      reuse.next.push(next);
+      return next.view;
+    }
     const unit = occupants.get(tile.id);
     const reachable = reachableTiles.has(tile.id);
     const target = targetTiles.has(tile.id);
@@ -164,7 +219,6 @@ export function battlefieldTiles(
 
     const faction = unit ? game.faction(unit.id) : undefined;
     const objectives = objectiveTiles.get(tile.id);
-    const old = reuse?.previous?.[index];
     if (
       old?.source === tile &&
       old.view.occupant?.unit === unit &&

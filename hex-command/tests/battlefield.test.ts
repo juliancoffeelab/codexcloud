@@ -121,7 +121,7 @@ test("Objective markers distinguish achievements from current ownership", async 
 // Controller feedback crosses the presentation boundary as data; unit visuals
 // no longer need a corresponding DOM element.
 const { animateTile } = await import("../src/presentation/motion");
-test("Battlefield feedback sends tile effects to the GPU surface", () => {
+test("Battlefield feedback sends tile effects to the Phaser scene", () => {
   const originalDocument = Object.getOwnPropertyDescriptor(globalThis, "document");
   const events: CustomEvent[] = [];
   try {
@@ -129,7 +129,7 @@ test("Battlefield feedback sends tile effects to the GPU surface", () => {
       configurable: true,
       value: {
         querySelector: (selector: string) =>
-          selector === "#map[data-gpu-battlefield]"
+          selector === "#map[data-phaser-battlefield]"
             ? { dispatchEvent: (event: CustomEvent) => events.push(event) }
             : null,
       },

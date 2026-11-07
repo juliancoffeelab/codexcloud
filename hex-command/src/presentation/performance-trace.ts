@@ -164,7 +164,14 @@ export function startPerformanceTrace(getContext: () => unknown) {
     format: "hex-command-performance",
     version: 1,
     startedAt: new Date().toISOString(),
+    recordingOrigin: config.origin,
+    performanceTimeOrigin: performance.timeOrigin,
     browser: navigator.userAgent,
+    supportedPerformanceEntries: globalThis.PerformanceObserver?.supportedEntryTypes ?? [],
+    assets: performance
+      .getEntriesByType("resource")
+      .filter((entry) => /\/assets\/.*\.(js|css)(\?|$)/.test(entry.name))
+      .map((entry) => entry.name),
     viewport: { width: innerWidth, height: innerHeight, pixelRatio: devicePixelRatio },
     start: getContext(),
   };
@@ -267,6 +274,11 @@ export function stopPerformanceTrace(reason = "Stopped by user"): Promise<void> 
   });
   return stopping;
 }
+/** Opt-in diagnostic consumers can retain a bounded causal window in their own report. */
+export function snapshotPerformanceTrace() {
+  return structuredClone({ events, dropped: state.dropped, status: state.status });
+}
+
 export async function downloadPerformanceTrace() {
   await stopPerformanceTrace();
   if (state.status !== "ready") return;
@@ -279,7 +291,7 @@ export async function downloadPerformanceTrace() {
       dropped: state.dropped,
       stopReason: state.reason,
       gpuTiming:
-        "Optional asynchronous GPU timer queries; no GPU fences. Browser frame intervals are scheduling intervals, not physical display FPS.",
+        "CPU render-submission durations do not measure GPU completion. Browser frame intervals are scheduling intervals, not physical display FPS.",
     },
   };
   const url = URL.createObjectURL(new Blob([JSON.stringify(file)], { type: "application/json" }));
