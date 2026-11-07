@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick, onDestroy } from "svelte";
+  import { tick } from "svelte";
   import type { BattleCommands, BattleView } from "../controller/view";
   import { unitPanelView } from "./unit-panel-view";
   import UnitCard from "./UnitCard.svelte";
@@ -14,35 +14,24 @@
   }
 
   let { view, actions, onNewBattle }: Props = $props();
-  let frozen = $state.raw<BattleView | null>(null);
-  let health = $state.raw<readonly [number, number] | undefined>();
-  let result = $state.raw<BattleView["combat"]>(null);
-  let shown = $state(0);
-  let complete = $state(false);
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const display = $derived(frozen ?? view);
-  const panel = $derived(unitPanelView(display));
+  const playback = $derived(view.combatPlayback);
+  const result = $derived(playback?.combat);
+  const frozen = $derived(playback && !playback.complete);
+  const health = $derived(playback?.combat.strikes[playback.shown - 1]?.health);
+  const shown = $derived(playback?.shown ?? 0);
+  const complete = $derived(playback?.complete ?? false);
+  const display = $derived(playback?.before ?? view);
+  const panel = $derived(
+    playback
+      ? {
+          kind: "combat" as const,
+          attacker: playback.combat.units[0],
+          defender: playback.combat.units[1],
+          detailsResetKey: "playback",
+        }
+      : unitPanelView(display),
+  );
 
-  function finishAttack() {
-    clearTimeout(timer);
-    frozen = null;
-    health = undefined;
-    result = null;
-    shown = 0;
-    complete = false;
-  }
-  onDestroy(finishAttack);
-
-  $effect(() => {
-    if (
-      frozen &&
-      (view.selected !== frozen.selected ||
-        view.inspectedTile !== frozen.inspectedTile ||
-        view.game.mapId !== frozen.game.mapId)
-    ) {
-      finishAttack();
-    }
-  });
   let panelElement: HTMLElement | undefined;
   const inspection = $derived([display.selected, display.target, display.inspectedTile].join("|"));
 
@@ -62,38 +51,7 @@
   });
 
   function attackWithWeapon(weaponId: string): void {
-    if (frozen) return;
-    const before = view;
-    frozen = before;
-    actions.attackSelected(weaponId);
-    void tick().then(() => {
-      if (frozen !== before) return;
-      const combat = view.combat;
-      if (!combat || combat === before.combat) {
-        finishAttack();
-        return;
-      }
-      result = combat;
-      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        health = combat.strikes.at(-1)?.health;
-        shown = combat.strikes.length;
-        complete = true;
-        return;
-      }
-      let index = 0;
-      const advance = () => {
-        const hit = combat.strikes[index++];
-        if (!hit) {
-          timer = undefined;
-          complete = true;
-          return;
-        }
-        health = hit.health;
-        shown = index;
-        timer = setTimeout(advance, 550);
-      };
-      timer = setTimeout(advance, 200);
-    });
+    if (!frozen) actions.attackSelected(weaponId);
   }
 </script>
 

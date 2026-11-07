@@ -40,6 +40,7 @@ export interface BattleView {
   readonly canUndo: boolean;
   readonly completedTurns: number;
   readonly recruitment: RecruitmentContext | null;
+  readonly combatPlayback?: import("./combat-playback").CombatPlaybackFrame | null;
   readonly combat?: Immutable<CombatAnimation> | null;
 }
 

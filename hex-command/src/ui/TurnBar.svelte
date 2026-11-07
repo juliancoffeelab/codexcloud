@@ -48,7 +48,7 @@
   {totalVillages}
   round={game.round}
   {turnLabel}
-  canEndTurn={isPlayerTurn}
+  canEndTurn={isPlayerTurn && (!view.combatPlayback || view.combatPlayback.complete)}
   {canUndo}
   campaign={!!game.campaign}
   {briefingExpanded}
