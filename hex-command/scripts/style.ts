@@ -10,6 +10,8 @@ if (args.length) {
 const cwd = fileURLToPath(new URL("../", import.meta.url));
 const files = [
   "src",
+  "packages",
+  "scripts/check-migrations*.mjs",
   "scripts/*.{ts,js}",
   "tests/*.ts",
   "*.config.ts",

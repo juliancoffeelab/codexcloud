@@ -12,7 +12,7 @@ import { createNativeEngineFactory } from "../src/game/native-engine";
 import { LiveGame, nativeValue } from "../src/game/live-game";
 import { BattleController } from "../src/controller/battle";
 import { Game, developerFixture } from "./game-fixture";
-import { saveBattle, SAVE_KEY } from "./legacy-save";
+import { historicalTiles, saveBattle, SAVE_KEY } from "./legacy-save";
 import { SAVE_VERSION } from "../src/save/schema";
 import { TestStorage, required } from "./helpers";
 import type { BattleView } from "../src/controller/view";
@@ -290,7 +290,7 @@ test("Import repair removes a corrupt historical payload and preserves playable 
   const expected = nativeValue(game.checkpoint());
   flash.version = 37;
   flash.progress.entry.kind = "recovery";
-  const raw = JSON.stringify(flash);
+  const raw = JSON.stringify(historicalTiles(flash));
   localStorage.setItem("hex-command-battle", raw);
   localStorage.setItem(
     "hex-command-progress-index",

@@ -1,14 +1,14 @@
 import { readSave, storeSave } from "../src/save/storage";
-import characterHistory from "../src/save/migrations/legacy/data/characters-v25.json";
+import characterHistory from "@hex-command/save-migrations/legacy/data/characters-v25.json";
 import { createTestFactory } from "./native-fixture";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture";
 import { campaignMission, dialoguePending } from "../src/game/campaign-progress";
 import { loadBattle, saveBattle, SAVE_KEY } from "./legacy-save";
-import { CAMPAIGNS as MIGRATION_CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
-import { LEGACY_ASHEN_REFUGE } from "../src/save/migrations/legacy/layouts";
-import { legacyBoard } from "../src/save/migrations/legacy/board";
+import { CAMPAIGNS as MIGRATION_CAMPAIGNS } from "@hex-command/save-migrations/legacy/catalog";
+import { LEGACY_ASHEN_REFUGE } from "@hex-command/save-migrations/legacy/layouts";
+import { legacyBoard } from "@hex-command/save-migrations/legacy/board";
 import { BattleController, type BattleView } from "../src/controller/battle";
 import { required, TestStorage } from "./helpers";
 
@@ -19,7 +19,8 @@ test("Legacy refuge retains company and ownership", async () => {
   const current = Game.startCampaign("ashen-oath", 1);
   const legacy = new Game("ashen-refuge");
   const board = legacyBoard("ashen-refuge", 1);
-  legacy.tiles = board.tiles.map((tile) => ({ ...tile }));
+  // Historical refuge tiles have no fog/light conditions.
+  legacy.tiles = board.tiles.map(({ fog: _fog, light: _light, ...tile }) => ({ ...tile }));
   legacy.units = [];
   legacy.nextId = 1;
   for (const unit of LEGACY_ASHEN_REFUGE.units)

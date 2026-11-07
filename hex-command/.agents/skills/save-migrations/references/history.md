@@ -9,7 +9,7 @@ Both previous formats were version one. TS snapshots have a top-level `version`
 and store ownership without terrain. Native envelopes have `engine: "rust-wasm"`
 and a version inside `saved`. The v1-to-v2 step distinguishes these formats and
 removes their format markers. Historical layouts, defaults and campaign
-conversions live exclusively under `src/save/migrations/legacy/`.
+conversions live exclusively under `packages/save-migrations/src/legacy/`.
 
 TS saves tagged `campaignDeploymentFormat: "named-waves-v1"` already use authored
 wave IDs. Untagged published saves from `3956f5c` and `7a30040` translate numeric
@@ -30,7 +30,7 @@ Revision-one refuge checkpoints retain their own tiles, ownership and
 units, while their revision tag is changed to the current catalog entry with the
 same geometry. Normal Rust restoration validates the
 result. The catalog accepts only current authored documents; old layouts, marker
-indices and dialogue are stored under `src/save/migrations/legacy/data/`.
+indices and dialogue are stored under `packages/save-migrations/src/legacy/data/`.
 
 ## Version-three migration
 
@@ -375,14 +375,19 @@ The 37→38 conversion replaces opaque cell IDs with addresses derived from the
 saved cells' own coordinates. Frozen map-scoped data adds optional landmark names.
 Unit positions, ground items, fog/light memory, event marks, pending spawn areas
 and backward changes retain their positions. The two Ashen seal event/flag IDs
-receive readable names while preserving completion and flag histories. Surface
+receive readable names while preserving completion and flag histories. Only
+declared reference fields change; prose, equipment strings and save identities
+remain opaque. Undo reconstructs historical states and applies the same typed
+conversion before regenerating backward differences. Surface
 facts, treasury, units, turn, RNG and checkpoint metadata remain unchanged.
 
 ## Version 39: structured geometric addresses
 
 The 38→39 conversion changes resolved unit, item and mark positions and pending
-spawn areas into `{col,row}` objects. Authored fog/light targets use explicit
-`{location}` or `{hex}` references. Backward changes undergo the same conversion
-using their state paths, including single-field patches and whole records. Text,
+spawn areas into `{col,row}` objects. Shared conditions in fog, lights and faction transfers use explicit
+`{location}` or `{hex}` references. Frozen version-38 and version-39 types define
+the conversion. Backward data patches reconstruct historical states, which use
+the same typed conversion before producing new backward differences. This covers
+single-field patches, whole records and removals without guessing types from paths. Text,
 cell presentation keys, IDs, flag histories and all other resolved facts retain
 their meaning. IndexedDB storage and history-index versions are unchanged.

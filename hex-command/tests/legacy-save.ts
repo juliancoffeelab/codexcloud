@@ -5,12 +5,12 @@ import { loadBattle as loadCurrent } from "../src/save/load";
 import { saveBattle as writeCurrent } from "../src/save/write";
 import { createTestFactory } from "./native-fixture";
 import type { SavedGame } from "../rust/pkg/hex_command";
-export { importWaveMarker } from "../src/save/migrations/legacy/snapshot";
+export { importWaveMarker } from "@hex-command/save-migrations/legacy/snapshot";
 export { SAVE_KEY } from "../src/save/migrations/storage-v1-to-v2";
 import { storeSave } from "../src/save/storage";
-import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
-import tileHistory from "../src/save/migrations/legacy/data/tiles-v26.json";
-import historical from "../src/save/migrations/legacy/data/characters-v25.json";
+import { CAMPAIGNS } from "@hex-command/save-migrations/legacy/catalog";
+import tileHistory from "@hex-command/save-migrations/legacy/data/tiles-v26.json";
+import historical from "@hex-command/save-migrations/legacy/data/characters-v25.json";
 
 /** Encode a current geometric fixture in its published coordinate-key format. */
 export function historicalTiles<T>(input: T): T {

@@ -33,7 +33,8 @@ browser storage does not stop play.
 ## Storage transition
 
 Storage v1→v2 converts localStorage records to IndexedDB. Pure conversion lives in
-`src/save/migrations/storage-v1-to-v2.ts`; `src/save/import.ts` owns source I/O.
+`packages/save-migrations/src/storage-v1-to-v2.ts` (application adapter:
+`src/save/migrations/storage-v1-to-v2.ts`); `src/save/import.ts` owns source I/O.
 Validate all converted retained saves natively, then commit records and the
 initialization marker together. Remove the source only after commit. An
 initialized database is authoritative even when empty: discard subsequent

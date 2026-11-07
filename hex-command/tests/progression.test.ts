@@ -3,7 +3,7 @@ import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { describeChanges } from "../src/controller/feedback";
 import { Game, TYPES } from "./game-fixture";
-import { CAMPAIGNS } from "../src/save/migrations/legacy/catalog";
+import { CAMPAIGNS } from "@hex-command/save-migrations/legacy/catalog";
 import { saveBattle, loadBattle, SAVE_KEY } from "./legacy-save";
 import { required, TestStorage } from "./helpers";
 

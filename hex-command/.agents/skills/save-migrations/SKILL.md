@@ -17,23 +17,43 @@ or defaults.
 
 ## Isolation and durable state
 
-Keep pure, versioned JavaScript conversions and frozen historical fixtures under
-`src/save/migrations/`. They manipulate data only: no runtime gameplay imports,
-live catalog queries, game commands, simulations, AI planning or historical
-behavior reconstructed through the current engine. Shared type contracts do not
-authorize runtime behavior dependencies. Historical fixtures stay outside Rust
-catalogs and engine modules. Rust validates the converted state afterward; it
-never performs historical conversion or gameplay during restoration.
+Keep pure, versioned conversions in a self-contained dependency boundary under
+`packages/save-migrations/`. Freeze complete input and output format definitions there,
+including their transitive types, enums, validators, helpers and lookup data.
+Every supported version has a frozen wire contract and a reader for unknown
+input. Migration outputs use the next version’s type; use opaque `unknown` only
+for deliberately uninterpreted payloads such as retired planner state and undo
+replacement values. Every imported dependency must be frozen inside this boundary. Outward imports are forbidden, including type-only imports,
+generated Rust bindings, current save schemas and shared application utilities.
+Historical types must remain independent copies, not aliases or definitions
+derived from current application types. The default `migrations:check` enforces
+this boundary, including type-only imports and package dependencies. The
+`migrations:check-isolation` clean-room build is opt-in; keep it out of default
+checks. Use the existing workspace installation and application compiler, without
+a separate mandatory package build. Historical readers are generated from these
+frozen contracts with `migrations:generate`; default boundary checks verify their
+source fingerprint without regenerating them. Keep the compile-time wire-contract
+comparison in the application adapter, alongside current-format validation.
+
+The application calls into this boundary and owns storage, current-format
+validation and native restoration outside it. Check compatibility with current
+Rust from that application layer or its tests. Conversions manipulate data only:
+no live catalog queries, game commands, simulations, AI planning or historical
+behavior reconstructed through the current engine. Historical fixtures stay
+outside Rust catalogs and engine modules. Native restoration validates the
+converted state without historical conversion or gameplay.
 
 Persist resolved game facts and the AI seed, independent of planner algorithms.
 Exclude search state, queued/unapplied commands, derived caches, forecasts and
 callbacks. Changing an AI algorithm must not require migrating saves or retaining
 its old implementation. `src/save/schema.ts` owns the current envelope and
-`SAVE_VERSION`; native state uses the complete generated Rust battle type.
+`SAVE_VERSION` in the application layer; its native state uses the complete
+generated Rust battle type.
 
 ## Conversion workflow
 
-1. Inspect the current schema and the relevant version section in
+1. Audit the conversion's transitive imports for isolation. Inspect the current
+   schema and the relevant version section in
    [migration history](references/history.md). Use frozen format definitions and
    conversion data, not today's authored catalog, to interpret historical fields.
 2. Add one-step pure conversions for changed formats. Preserve unrelated resolved
@@ -50,7 +70,9 @@ its old implementation. `src/save/schema.ts` owns the current envelope and
 
 ## Completion
 
-For every changed input shape, account for preserved facts and any intentional
+Verify that the conversion's complete dependency closure, including type-only
+dependencies, remains inside the frozen migration boundary. For every changed
+input shape, account for preserved facts and any intentional
 conversion, verify successful native restoration or the expected rejection, and
 confirm the input was not mutated. For loading-path changes, verify atomic
 replacement of the converted envelope before returning the restored battle and
