@@ -14,6 +14,7 @@ const files = [
   "tests/*.ts",
   "*.config.ts",
   "*.json",
+  "*.html",
   "AGENTS.md",
   ".agents/skills/**/*.{md,json,ts}",
   "TODO.md",

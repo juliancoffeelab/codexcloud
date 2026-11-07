@@ -17,7 +17,6 @@ function published(game: Game, selected: string): BattleView {
     selected,
     target: null,
     inspectedTile: required(game.unit(selected)).tile,
-    focusedTile: "hex-0001-7256137ec1",
     renderRevision: 0,
     sessionVersion: 0,
     status: "",

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Item } from "../../rust/pkg/hex_command";
-  import { pixelSprites } from "../presentation/pixel-art";
+  import { currentArtwork, itemFrame } from "../presentation/art";
 
   let {
     items,
@@ -15,15 +15,13 @@
   {#each items as item, index (`${item.id}-${index}`)}
     <li class="item-row">
       <span class="item-icon" aria-hidden="true">
-        {#if pixelSprites[`terrain_prop_items_${item.id}`]}
-          <img
-            class="pixel-art"
-            src={pixelSprites[`terrain_prop_items_${item.id}`]}
-            alt=""
-            width="64"
-            height="64"
-          />
-        {/if}
+        <img
+          class="pixel-art"
+          src={itemFrame(currentArtwork(), item.id).url}
+          alt=""
+          width="64"
+          height="64"
+        />
       </span>
       <div class="item-copy">
         <div class="item-heading">

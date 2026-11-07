@@ -53,27 +53,18 @@ Use [testing](../.agents/skills/testing/SKILL.md) for validation scope and test 
 
 Settings → Debug tools provides **Start recording trace**, **Stop recording**
 and **Download trace**. Start closes Settings; reopen it to stop or download.
-Downloading during capture stops and flushes worker data. Recordings stay in
+Downloading during capture stops and flushes the recording. Recordings stay in
 memory until reload, and starting another replaces the previous recording.
 Nothing is uploaded automatically.
 
-The exported Chrome/Perfetto trace includes engine, browser and worker timings,
+The exported Chrome/Perfetto trace includes engine and browser timings,
 render workload, optional GPU timings and start/end battle state. Inspect its
-reported dropped events and worker flush failures before drawing conclusions.
+reported dropped events and flush failures before drawing conclusions.
 Browser callback intervals are not physical display frame rates; API submission
 time is not GPU execution time.
 
-For an isolated renderer workload, use the optional benchmark outside the default
-checks:
-
-```sh
-npm run map:benchmark -- --headed --lights=128 --units=64
-npm run map:benchmark -- --software --lights=128 --units=64
-```
-
-Synthetic light/unit counts change presentation only. Software GPU results do
-not establish hardware frame rates. Normal draw readiness, completed GPU work,
-an animation-frame opportunity and physical display scanout are distinct.
-Completed benchmark mode waits for a GPU fence and includes polling overhead;
+Software GPU results do not establish hardware frame rates. Draw readiness,
+completed GPU work, an animation-frame opportunity and physical display scanout
+are distinct. Completion measurements using a GPU fence include polling overhead;
 optional asynchronous GPU queries measure execution separately. Trace recording
 must not add completion fences.

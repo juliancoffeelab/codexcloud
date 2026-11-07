@@ -4,7 +4,7 @@
   import { campaignMission, dialoguePending, returnsWithStory } from "../game/campaign-progress";
   import { TYPES, isLeader } from "../game/catalog";
   import { artSprite } from "../presentation/art";
-  import { pixelSprites } from "../presentation/pixel-art";
+  import { itemFrame } from "../presentation/art";
   let {
     view,
     actions,
@@ -174,18 +174,14 @@
                   <strong class="recall-name">
                     {unit.name ?? TYPES[unit.type].name}
                     {#each unit.items ?? [] as item, index (`${item.id}-${index}`)}
-                      {#if pixelSprites[`terrain_prop_items_${item.id}`]}
-                        <img
-                          class="recall-item pixel-art"
-                          src={pixelSprites[`terrain_prop_items_${item.id}`]}
-                          alt={item.name}
-                          title={item.name}
-                          width="32"
-                          height="32"
-                        />
-                      {:else}
-                        <small>{item.name}</small>
-                      {/if}
+                      <img
+                        class="recall-item pixel-art"
+                        src={itemFrame(view.artwork, item.id).url}
+                        alt={item.name}
+                        title={item.name}
+                        width="32"
+                        height="32"
+                      />
                     {/each}
                   </strong>
                   <span>{unit.hp} / {TYPES[unit.type].hp} HP</span>

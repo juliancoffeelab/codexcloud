@@ -41,6 +41,7 @@ import {
   setSoundEnabled,
   unlockSound,
   playSound,
+  playHudSound,
   playInteraction,
   cancelSound,
 } from "../presentation/sound";
@@ -66,7 +67,6 @@ interface PublishOptions {
 interface SessionState {
   selected: string | null;
   target: string | null;
-  focusedTile: string;
   inspectedTile: string | null;
   renderRevision: number;
   status: string;
@@ -142,7 +142,6 @@ export class BattleController {
     this.state = {
       selected: null,
       target: null,
-      focusedTile: game.units.find((u) => u.side === "player")?.tile ?? game.tiles[0]!.id,
       inspectedTile: null,
       renderRevision: 0,
       status:
@@ -618,8 +617,6 @@ export class BattleController {
     this.enemyRecordings = [];
     this.previousFeedbackState = null;
     this.state.selected = this.state.target = this.state.inspectedTile = null;
-    this.state.focusedTile =
-      game.units.find((unit) => unit.side === "player")?.tile ?? game.tiles[0]!.id;
     this.state.status = "Saved progress restored. Recorded turn starts remain in Saved games.";
     this.persistence = "Saved locally";
     this.saveError = null;
@@ -814,13 +811,6 @@ export class BattleController {
     }
   }
 
-  focusTile(tileId: string) {
-    this.requireSession();
-    if (this.state.focusedTile === tileId || !this.#game.tile(tileId)) return;
-    this.state.focusedTile = tileId;
-    this.publish({ renderBattle: false });
-  }
-
   clearSelection(clearInspection = false) {
     this.requireSession();
     if (
@@ -845,7 +835,6 @@ export class BattleController {
     if (!tile) {
       return;
     }
-    this.state.focusedTile = tileId;
     const occupant = this.#game.at(tileId);
     const unit = this.#game.unit(this.state.selected);
     const canMove =
@@ -1199,8 +1188,6 @@ export class BattleController {
     this.state.selected = null;
     this.state.target = null;
     this.state.inspectedTile = null;
-    this.state.focusedTile =
-      this.#game.units.find((unit) => unit.side === "player")?.tile ?? this.#game.tiles[0]!.id;
     this.state.status = replacement.campaign
       ? "Follow the mission objectives. Keep your leader safe."
       : initialMessage;
@@ -1223,7 +1210,6 @@ export class BattleController {
     }
     this.state.selected = restored.unitId;
     this.state.target = null;
-    this.state.focusedTile = restored.tileId;
     this.state.inspectedTile = restored.tileId;
     this.previousFeedbackState = null;
     this.commitAction();
@@ -1280,7 +1266,7 @@ export class BattleController {
         sessionVersion === this.sessionVersion &&
         renderRevision === this.state.renderRevision
       ) {
-        playSound("select");
+        playHudSound();
       }
     }
   }

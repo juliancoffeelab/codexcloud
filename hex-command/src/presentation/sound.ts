@@ -7,18 +7,22 @@ export interface InteractionSound {
   terrain?: import("../../rust/pkg/hex_command").TerrainRole;
 }
 
-interface Voice {
-  source: AudioBufferSourceNode;
-  gain: GainNode;
-}
-type AudioGlobals = typeof globalThis & {
-  webkitAudioContext?: typeof AudioContext;
-};
-
-// Short material-inspired WAVs. Audio is created only after a real gesture.
+import type Phaser from "phaser";
+import { writable } from "svelte/store";
+import { createHudAudio } from "./hud-sound";
+import { errorDetails } from "../error-details";
 const STORAGE_KEY = "hex-command-sound-enabled";
 const VOLUME = 0.29;
 const AUDIO_REVISION = "6ad634f16189";
+/** Actions available as soon as a battlefield is interactive, including a
+ * first-action win/loss. Contextual narrative cues remain in their own plan. */
+export const battlefieldActionFamilies = [
+  "select",
+  "recruit",
+  "turn",
+  "victory",
+  "defeat",
+] as const;
 const warmFamilies = new Set([
   "attack-bow",
   "attack-melee",
@@ -32,44 +36,84 @@ const warmFamilies = new Set([
   "terrain-hill",
   "terrain-plains",
   "terrain-keep",
-  "select",
-  "recruit",
-  "turn",
-  "victory",
-  "defeat",
+  ...battlefieldActionFamilies,
 ]);
 // Narrative cues are valid sounds, but do not belong to global gesture warmup.
 const families = new Set([...warmFamilies, "bell"]);
+export const audioReadiness = writable<{ ready: boolean; error?: string }>({ ready: false });
+export const audioSamples = [...families].flatMap((family) =>
+  [1, 2, 3].map((variant) => ({
+    family,
+    key: `${family}-${variant}`,
+    url: `${import.meta.env?.BASE_URL ?? "/"}assets/audio/${family}-${variant}.wav?v=${AUDIO_REVISION}`,
+  })),
+);
+
 export function createSound() {
   let enabled = true;
   try {
     enabled = localStorage.getItem(STORAGE_KEY) !== "false";
   } catch {}
-  let context: AudioContext | null = null;
-  let master: GainNode | null = null;
-  let unlocking: Promise<void> | null = null;
-  let primed = false,
-    request = 0;
-  const buffers = new Map<string, Promise<AudioBuffer>>();
-  let preparedFamilies = new Set<string>();
-  function warmSounds(requested: Iterable<string>) {
-    if (!enabled || !context || context.state === "closed") return;
-    for (const family of requested) {
-      for (const variant of [1, 2, 3]) void sample(family, variant).catch(() => {});
-    }
-  }
-  /** Set cues for the current scene; queue them until audio is unlocked. */
-  function prepareSounds(requested: Iterable<string>) {
-    preparedFamilies = new Set([...requested].filter((family) => families.has(family)));
-    warmSounds(preparedFamilies);
-  }
+  let game: Phaser.Game | undefined;
+  let hud: ReturnType<typeof createHudAudio> | undefined;
+  let ready = false;
+  let requestPermission: (() => Promise<boolean>) | undefined;
+  let voice: Phaser.Sound.BaseSound | undefined;
+  let voiceRequest = 0;
+  let unlocking: Promise<boolean> | undefined;
   const bags = new Map<string, number[]>();
   const lastVariation = new Map<string, number>();
-  const voices = new Set<Voice>();
   function soundEnabled() {
     return enabled;
   }
-
+  function attachSound(owner: Phaser.Game, permission: () => Promise<boolean>) {
+    voice?.destroy();
+    voice = undefined;
+    game = owner;
+    requestPermission = permission;
+    ready = false;
+    audioReadiness.set({ ready: false });
+    const activate = (event: Event) => {
+      if (!enabled || !event.isTrusted) return;
+      unlocking = permission().catch((cause) => {
+        if (game !== owner) return false;
+        audioReadiness.set({
+          ready,
+          error: errorDetails(
+            new Error(
+              "Browser audio permission could not be resumed. Retry with another gesture.",
+              { cause },
+            ),
+          ),
+        });
+        return false;
+      });
+    };
+    const gestures = ["pointerdown", "pointerup", "touchend", "keydown", "click"];
+    for (const type of gestures)
+      document.addEventListener(type, activate, { capture: true, passive: true });
+    return () => {
+      for (const type of gestures) document.removeEventListener(type, activate, true);
+      if (game === owner) {
+        voice?.destroy();
+        voice = undefined;
+        game = undefined;
+        requestPermission = undefined;
+        unlocking = undefined;
+        voiceRequest++;
+        ready = false;
+      }
+    };
+  }
+  function soundReady(owner: Phaser.Game) {
+    if (game !== owner) return;
+    ready = true;
+    audioReadiness.set({ ready: true });
+  }
+  function prepareSounds(requested: Iterable<string>) {
+    for (const family of requested)
+      if (!families.has(family)) throw new Error(`Unknown audio family: ${family}`);
+  }
   // A tile interaction has exactly one family: attack > occupant > ground.
   function soundForInteraction({ attackType, unitType, terrain }: InteractionSound = {}) {
     if (attackType) return attackType === "archer" ? "attack-bow" : "attack-melee";
@@ -104,72 +148,38 @@ export function createSound() {
     return playSound(soundForInteraction(details));
   }
 
-  function stopVoices() {
-    for (const voice of voices) {
-      try {
-        const now = context!.currentTime;
-        voice.gain.gain.cancelScheduledValues(now);
-        voice.gain.gain.setValueAtTime(voice.gain.gain.value, now);
-        voice.gain.gain.linearRampToValueAtTime(0, now + 0.008);
-        voice.source.stop(now + 0.009);
-      } catch {}
-    }
-    voices.clear();
+  function prepareHudSound() {
+    hud ??= createHudAudio(() => enabled);
+    return hud.prepare();
   }
-  // End session feedback without changing the user's saved sound preference.
+  function playHudSound() {
+    return hud?.play() ?? false;
+  }
+  function disposeHudSound() {
+    hud?.dispose();
+    hud = undefined;
+  }
+  function stopNative() {
+    voiceRequest++;
+    voice?.destroy();
+    voice = undefined;
+  }
   function cancelSound() {
-    request++;
-    stopVoices();
+    hud?.stop();
+    stopNative();
   }
   function setSoundEnabled(value: boolean) {
     enabled = Boolean(value);
-    request++; // Also discard sounds whose samples are still loading.
+    if (!enabled) cancelSound();
     try {
       localStorage.setItem(STORAGE_KEY, String(enabled));
     } catch {}
-    if (!enabled) stopVoices();
-    else warmSounds(preparedFamilies);
   }
   async function unlockSound(event?: Pick<Event, "isTrusted">) {
     if (!enabled || event?.isTrusted === false) return false;
-    try {
-      if (!context || context.state === "closed") {
-        const AudioContextClass =
-          globalThis.AudioContext || (globalThis as AudioGlobals).webkitAudioContext;
-        if (!AudioContextClass) return;
-        context = new AudioContextClass({ latencyHint: "interactive" });
-        primed = false;
-        master = context.createGain();
-        master.gain.value = VOLUME;
-        master.connect(context.destination);
-        // Common feedback is global; narrative cues belong to the selected scene.
-        warmSounds(warmFamilies);
-        warmSounds(preparedFamilies);
-      }
-      if (context.state === "running") unlocking = null;
-      else {
-        // A touch-start resume may remain pending until a completed tap. Retry
-        // inside each trusted gesture instead of letting that promise lock us out.
-        const attempt = context.resume().catch(() => {});
-        unlocking = attempt;
-        void attempt.finally(() => {
-          if (unlocking === attempt) unlocking = null;
-        });
-      }
-      if (!primed) {
-        // Starting a silent source in the gesture also primes mobile audio output.
-        const source = context.createBufferSource();
-        source.buffer = context.createBuffer(1, 1, context.sampleRate);
-        source.connect(master!);
-        source.onended = () => source.disconnect();
-        source.start();
-        primed = true;
-      }
-      if (context.state !== "running" && unlocking) await unlocking;
-      return context.state === "running";
-    } catch {
-      /* Unavailable audio never interrupts a battle. */
-    }
+    const allowed = hud?.unlock() ?? Promise.resolve(false);
+    const native = requestPermission?.() ?? Promise.resolve(false);
+    return (await Promise.all([allowed, native])).some(Boolean);
   }
   function variation(family: string): number {
     let bag = bags.get(family);
@@ -186,56 +196,36 @@ export function createSound() {
     lastVariation.set(family, chosen);
     return chosen;
   }
-  async function sample(family: string, variant: number): Promise<AudioBuffer> {
-    const name = `${family}-${variant}`;
-    if (!buffers.has(name)) {
-      const loading = (async () => {
-        const response = await fetch(
-          `${import.meta.env?.BASE_URL ?? "/"}assets/audio/${name}.wav?v=${AUDIO_REVISION}`,
-        );
-        if (!response.ok) throw Error("Sound unavailable");
-        return await context!.decodeAudioData(await response.arrayBuffer());
-      })().catch((error) => {
-        buffers.delete(name);
-        throw error;
-      });
-      buffers.set(name, loading);
-    }
-    return buffers.get(name)!;
-  }
   async function playSound(family: string) {
-    // Playback cannot construct or resume audio outside a user gesture.
-    if (!enabled || !context || !master || !families.has(family)) return false;
-    const currentRequest = ++request;
-    stopVoices(); // Rapid clicks replace feedback instead of stacking it.
-    try {
-      if (context.state !== "running" && unlocking) await unlocking;
-      if (context.state !== "running") return false;
-      const buffer = await sample(family, variation(family));
-      if (!enabled || currentRequest !== request || context.state !== "running") return false;
-      const source = context.createBufferSource(),
-        gain = context.createGain();
-      source.buffer = buffer;
-      gain.gain.value = family === "select" ? 0.25 : 1;
-      source.connect(gain);
-      gain.connect(master);
-      const voice = { source, gain };
-      voices.add(voice);
-      source.onended = () => {
-        voices.delete(voice);
-        try {
-          source.disconnect();
-          gain.disconnect();
-        } catch {}
-      };
-      source.start();
-      return true;
-    } catch {
+    if (!enabled || !game || !ready || !families.has(family)) return false;
+    const owner = game;
+    const manager = owner.sound as Phaser.Sound.WebAudioSoundManager;
+    stopNative();
+    const currentRequest = voiceRequest;
+    if (manager.context && manager.context.state !== "running") {
+      if (!unlocking || !(await unlocking)) return false;
+    }
+    if (!enabled || owner !== game || currentRequest !== voiceRequest) return false;
+    const key = `${family}-${variation(family)}`;
+    if (!owner.cache.audio.exists(key)) {
+      audioReadiness.set({
+        ready: false,
+        error: errorDetails(new Error(`Prepared audio missing: ${key}`)),
+      });
       return false;
     }
+    voice = manager.add(key, { volume: VOLUME * (family === "select" ? 0.25 : 1) });
+    const current = voice;
+    voice.once("complete", () => {
+      current.destroy();
+      if (voice === current) voice = undefined;
+    });
+    return voice.play();
   }
-
   return {
+    prepareHudSound,
+    playHudSound,
+    disposeHudSound,
     soundEnabled,
     prepareSounds,
     soundForInteraction,
@@ -244,10 +234,14 @@ export function createSound() {
     setSoundEnabled,
     unlockSound,
     playSound,
+    attachSound,
+    soundReady,
   };
 }
-
 export const {
+  prepareHudSound,
+  playHudSound,
+  disposeHudSound,
   soundEnabled,
   prepareSounds,
   soundForInteraction,
@@ -256,4 +250,6 @@ export const {
   setSoundEnabled,
   unlockSound,
   playSound,
+  attachSound,
+  soundReady,
 } = createSound();

@@ -34,7 +34,7 @@ function pulse(element: Element | null, kind: MotionKind | "turn") {
 
 export function animateTile(tileId: string, kind: MotionKind) {
   if (!tileKinds.has(kind) || typeof document === "undefined") return;
-  const battlefield = document.querySelector("#map[data-gpu-battlefield]");
+  const battlefield = document.querySelector("#map[data-phaser-battlefield]");
   if (battlefield) {
     battlefield.dispatchEvent(
       new CustomEvent("battlefieldmotion", { detail: { tile: tileId, kind } }),

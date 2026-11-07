@@ -1,0 +1,158 @@
+{
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 250,
+      "recruits": [
+        {
+          "unit": "dragon"
+        },
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "adept"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "tile": "hex-0415-b41f9070d5",
+          "role": "leader",
+          "character": "survey-captain",
+          "items": ["healing-bottle"]
+        },
+        {
+          "type": "dragon",
+          "tile": "hex-0416-499b3d4ebc"
+        },
+        {
+          "type": "scout",
+          "tile": "hex-0064-f0696e660a"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 200,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-rider"
+        }
+      ],
+      "units": [
+        {
+          "type": "lich",
+          "tile": "hex-0101-0061999dcd",
+          "character": "survey-rival",
+          "role": "leader"
+        },
+        {
+          "type": "necromancer",
+          "tile": "hex-0431-8863570987",
+          "role": "leader"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0835-42aa3f9842"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0899-ad0a9f843c"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0964-716120f6be"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0069-c2c36638a8"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0134-f8a3eeb246"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0199-cac07ffcd8"
+        },
+        {
+          "type": "bonearcher",
+          "tile": "hex-0233-922ea6941e"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0267-86333efa52"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0334-50e5d1b8b8"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0430-448f75e40c"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0092-2cbe4dcb7c"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0220-71856b5fe2"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0351-a9a9e23b4b"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0905-21011c58dd"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0846-4bad5fd833"
+        },
+        {
+          "type": "bonearcher",
+          "tile": "hex-0111-ee70a9dbae"
+        },
+        {
+          "type": "bonearcher",
+          "tile": "hex-0955-5859c768ff"
+        },
+        {
+          "type": "skeleton",
+          "tile": "hex-0440-32397e11cd"
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
+    }
+  ]
+}

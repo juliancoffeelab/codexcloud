@@ -10,8 +10,20 @@
     dialog?: HTMLDialogElement;
     onNewBattle: () => void;
     onRepair: () => void;
+    showCommanderArrow: boolean;
+    commanderArrowError: string;
+    onCommanderArrowChange: (enabled: boolean) => void;
   }
-  let { view, actions, dialog = $bindable(), onNewBattle, onRepair }: Props = $props();
+  let {
+    view,
+    actions,
+    dialog = $bindable(),
+    onNewBattle,
+    onRepair,
+    showCommanderArrow,
+    commanderArrowError,
+    onCommanderArrowChange,
+  }: Props = $props();
   type Screen = "hub" | "saves" | "manual" | "conversations" | "journal" | "debug";
   const titles: Record<Screen, string> = {
     hub: "Settings",
@@ -94,9 +106,9 @@
       }
     });
   }
-  async function startMirror() {
+  async function startDebug(id: "mirror-night" | "bell-night") {
     try {
-      await actions.startCampaign("mirror-night");
+      await actions.startCampaign(id);
       close();
     } catch (error) {
       actions.error(error);
@@ -173,6 +185,29 @@
     </section>
     <section>
       <h3 class="group-label">Advanced</h3>
+
+      <label class="setting-row sound-row">
+        <span>Show commander return arrow</span>
+        <input
+          type="checkbox"
+          checked={showCommanderArrow}
+          onchange={(event) => onCommanderArrowChange(event.currentTarget.checked)}
+        />
+      </label>
+      <p>Show a return arrow when your commander is outside the map view.</p>
+      {#if commanderArrowError}
+        <div role="alert">
+          <p>
+            The commander arrow preference could not be read or saved. Changes apply to this
+            session.
+          </p>
+          <pre>{commanderArrowError}</pre>
+          <button onclick={() => onCommanderArrowChange(showCommanderArrow)}>
+            Retry saving preference
+          </button>
+        </div>
+      {/if}
+
       {@render entry("Debug tools", "debug")}
     </section>
   </div>
@@ -238,7 +273,7 @@
         objectives and protect your leader. Groves heal their owner’s occupants; forts protect
         against all attacks; ruins shelter against ranged attacks. Marsh slows heavy units. Bones
         resist arrows but are weak against impact; wolves are fast but vulnerable to pierce damage.
-        Keyboard: Tab to the map, use arrow keys to browse hexes, Enter to select. Escape clears
+        Keyboard: focus the map to zoom with plus/minus or reset zoom with zero. Escape clears
         selection.
       </p>
     </div>
@@ -271,12 +306,19 @@
     <button onclick={() => actions.downloadDebugReport()}>Download debug report</button>
     <h3>Performance trace</h3>
     <TraceControls {view} onStart={close} />
+    <h3>Bell Night — Survey</h3>
+    <p>
+      Explore the 23×25 Bell valley with a survey dragon that flies across the map and defeats
+      targets in one hit. Recruit dragons or ordinary troops, capture village lamps, explore fog,
+      and accumulate red death lights. This replaces the current battle.
+    </p>
+    <button onclick={() => void startDebug("bell-night")}>Start Bell Night</button>
     <h3>Mirror Night</h3>
     <p>
       Start a new Mirror battle at night: explore fog, capture villages to light their lamps, and
       leave a red light at every death. This replaces the current battle.
     </p>
-    <button onclick={startMirror}>Start Mirror Night</button>
+    <button onclick={() => void startDebug("mirror-night")}>Start Mirror Night</button>
   </div>
 </DialogWindow>
 

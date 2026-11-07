@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { errorDetails } from "../error-details";
   import type { FrameImage } from "../presentation/art";
-  import type { TerrainPreviewCache } from "../presentation/terrain-preview";
-  let { frame, cache }: { frame: Readonly<FrameImage>; cache: TerrainPreviewCache } = $props();
+  import type { HudArtworkCache } from "../presentation/hud-artwork";
+  let { frame, cache }: { frame: Readonly<FrameImage>; cache: HudArtworkCache } = $props();
   let host: HTMLDivElement;
   let loading = $state(false);
   let error = $state<string>();
@@ -33,7 +34,7 @@
         .catch((reason) => {
           if (!active) return;
           loading = false;
-          error = String(reason);
+          error = errorDetails(reason);
         });
     }
     return () => {

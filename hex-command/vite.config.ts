@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
 import { terrainPrebuild } from "./scripts/terrain-prebuild";
+import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { fileURLToPath } from "node:url";
 

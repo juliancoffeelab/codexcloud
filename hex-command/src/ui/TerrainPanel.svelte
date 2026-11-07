@@ -1,13 +1,14 @@
 <script lang="ts">
   import type { BattleCommands, BattleView } from "../controller/view";
-  import { terrainPreviewFrame, type TerrainPreviewCache } from "../presentation/terrain-preview";
+  import { terrainPreviewFrame } from "../presentation/terrain-preview";
+  import type { HudArtworkCache } from "../presentation/hud-artwork";
   import TerrainPreview from "./TerrainPreview.svelte";
   import { terrainPanelView } from "./terrain-view";
 
   interface Props {
     view: BattleView;
     actions: BattleCommands;
-    previews: TerrainPreviewCache;
+    previews: HudArtworkCache;
   }
   let { view, actions, previews }: Props = $props();
 

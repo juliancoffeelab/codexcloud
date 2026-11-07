@@ -1,18 +1,12 @@
-/** Loaded behind the mounted shell; the validated catalog owns WASM initialization. */
-import { get } from "svelte/store";
-import { preloadTerrainView } from "./presentation/terrain-preload";
+/** Construct only after the boot owner has initialized the validated Rust catalog. */
 import App from "./App.svelte";
 import { BattleController } from "./controller/battle";
-import { GAME_ENGINE_FACTORY } from "./game/authored-content";
+import type { GameEngineFactory } from "./game/native-engine";
 
-export async function createBattleApplication() {
-  try {
-    const controller = await BattleController.create(undefined, GAME_ENGINE_FACTORY);
-    const view = get(controller.view);
-    preloadTerrainView(view.game, view.artwork);
-    return { component: App, controller };
-  } catch (error) {
-    GAME_ENGINE_FACTORY.dispose();
-    throw error;
-  }
+import { HudArtworkCache } from "./presentation/hud-artwork";
+
+export async function createBattleApplication(factory: GameEngineFactory) {
+  const controller = await BattleController.create(undefined, factory);
+  const previews = new HudArtworkCache();
+  return { component: App, controller, previews };
 }

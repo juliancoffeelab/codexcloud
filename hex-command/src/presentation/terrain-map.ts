@@ -8,7 +8,19 @@ import type { FrameImage } from "./art";
 export { terrainMapDimensions, terrainDrawingOrder, paintTerrainTiles } from "./terrain-painter";
 export type { TerrainMapTile, TerrainMapPlan } from "./terrain-painter";
 
-export interface TerrainMapSprite extends FrameImage {
+export const terrainPageInterior = 1020;
+export const terrainPageGutter = 2;
+export interface TerrainPage extends FrameImage {
+  readonly x: number;
+  readonly y: number;
+  readonly interiorWidth: number;
+  readonly interiorHeight: number;
+  readonly gutter: number;
+}
+export interface TerrainMapSprite {
+  readonly width: number;
+  readonly height: number;
+  readonly pages: readonly TerrainPage[];
   readonly displayWidth: number;
   readonly displayHeight: number;
 }
@@ -80,18 +92,6 @@ export function terrainMapKey(
   ]);
 }
 
-/** Opaque asset identity; generated image indexes must not export scenario definitions. */
-export function terrainAssetKey(key: string): string {
-  let first = 2166136261;
-  let second = 2246822519;
-  for (let index = 0; index < key.length; index++) {
-    const code = key.charCodeAt(index);
-    first = Math.imul(first ^ code, 16777619);
-    second = Math.imul(second ^ code, 3266489917);
-  }
-  return [first, second].map((value) => (value >>> 0).toString(16).padStart(8, "0")).join("");
-}
-
 export type TerrainTileView = ReturnType<typeof terrainTileView>;
 type TerrainGame = Pick<GameView, "mapId" | "cols" | "rows" | "tiles">;
 
@@ -151,4 +151,15 @@ export class TerrainViewCache {
     this.artwork = artwork;
     return this.scene!;
   }
+}
+/** Opaque asset identity; generated image indexes must not export scenario definitions. */
+export function terrainAssetKey(key: string): string {
+  let first = 2166136261;
+  let second = 2246822519;
+  for (let index = 0; index < key.length; index++) {
+    const code = key.charCodeAt(index);
+    first = Math.imul(first ^ code, 16777619);
+    second = Math.imul(second ^ code, 3266489917);
+  }
+  return [first, second].map((value) => (value >>> 0).toString(16).padStart(8, "0")).join("");
 }
