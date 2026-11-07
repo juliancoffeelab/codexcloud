@@ -17,8 +17,9 @@ checkout to rediscover the same identity. Creation races/timeouts are reconciled
 through discovery rather than blindly creating another Site. Known identities
 are checked against the requested PR before any source push.
 
-Plain `deploy` uses the committed `.openai/hosting.json`. A numbered preview
-operation leaves the main Site and other PR previews alone.
+Default to a numbered PR preview; plain `deploy` uses the committed
+`.openai/hosting.json` only for an explicitly requested live/main deployment.
+A numbered preview operation leaves the main Site and other PR previews alone.
 
 `tools` supplies the enabled execution and native Sites functions by name. Internally,
 `prepareSite(tools, {cwd, message?})` returns a receipt with `project_id`,
@@ -55,7 +56,7 @@ is distinct from deciding or polling deployment status, which the operation owns
 ```js
 const mode = "deploy";
 const cwd = "/workspace/codexcloud/hex-command";
-const preview = undefined; // a positive PR number, e.g. 59, for its independent preview
+const preview = 59; // replace with the current PR number; undefined only for explicit live/main deployment
 let cell = await tools.exec_command({
   cmd: `node scripts/site-operation.mjs ${mode}${preview === undefined ? "" : ` --preview ${preview}`}`,
   workdir: cwd,
