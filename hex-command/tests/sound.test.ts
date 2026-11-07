@@ -91,3 +91,51 @@ test("Shuffle bags avoid repeats, reuse preload and stop voices when muted", asy
   assert.equal(stored.get("hex-command-sound-enabled"), "false");
   detach();
 });
+
+test("Owner replacement leaves other actions playing and completion includes every owned voice", async () => {
+  const audio = createSound();
+  const created: { key: string; destroyed: boolean; complete: () => void }[] = [];
+  const game = {
+    cache: { audio: { exists: () => true } },
+    sound: {
+      context: { state: "running", currentTime: 0 },
+      add(key: string) {
+        const record = { key, destroyed: false, complete: () => {} };
+        created.push(record);
+        return {
+          duration: 1,
+          startTime: 0,
+          once(event: string, callback: () => void) {
+            if (event === "complete") record.complete = callback;
+          },
+          destroy() {
+            record.destroyed = true;
+          },
+          play() {
+            return true;
+          },
+        };
+      },
+    },
+  } as unknown as Phaser.Game;
+  vi.stubGlobal("document", { addEventListener() {}, removeEventListener() {} });
+  const detach = audio.attachSound(game, async () => true);
+  audio.soundReady(game);
+  const action = {};
+  audio.scheduleMovement(performance.now() + 240, action);
+  audio.scheduleDeath("soldier", performance.now(), action, "victim");
+  assert(audio.soundPending(action));
+  await audio.playInteraction({ unitType: "soldier", owner: "inspection:a" });
+  const firstInspection = created.at(-1)!;
+  await audio.playInteraction({ unitType: "soldier", owner: "inspection:b" });
+  await audio.playInteraction({ unitType: "soldier", owner: "inspection:a" });
+  assert(firstInspection.destroyed);
+  assert(!created[0]!.destroyed);
+  assert(!created[1]!.destroyed);
+  assert(!created[3]!.destroyed);
+  created[0]!.complete();
+  assert(audio.soundPending(action));
+  created[1]!.complete();
+  assert(!audio.soundPending(action));
+  detach();
+});

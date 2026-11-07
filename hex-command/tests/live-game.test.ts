@@ -1,3 +1,4 @@
+import { headlessPresentation } from "./helpers";
 import { cellKey } from "../src/game/hex";
 import { IDBFactory } from "fake-indexeddb";
 import { TurnCheckpoint, serializeBattle } from "../src/save/write";
@@ -38,6 +39,7 @@ afterEach(() => {
 test("Live controller uses native movement/undo and keeps previous UI queries immutable", async () => {
   await saveBattle(developerFixture());
   const controller = await BattleController.create(async () => {}, factory);
+  headlessPresentation(controller);
   let published: BattleView | undefined;
   const unsubscribe = controller.view.subscribe((view) => {
     published = view;
@@ -69,6 +71,7 @@ test("A native enemy turn cancelled by map selection never acts on the new battl
     resume = resolve;
   });
   const controller = await BattleController.create(() => pause, factory);
+  headlessPresentation(controller);
   const opening = controller.snapshot();
   const pending = controller.endTurn();
   await controller.saved();
@@ -181,6 +184,7 @@ test("Rejected native campaign data leaves the WASM factory usable", async () =>
 
 test("Live enemy planning finishes a phase and saves the resulting player turn", async () => {
   const controller = await BattleController.create(async () => {}, factory);
+  headlessPresentation(controller);
   await controller.endTurn();
   const after = controller.snapshot();
   assert.equal(after.turn, "player");
@@ -230,12 +234,13 @@ test("Reloading during an enemy turn replays the whole phase from its boundary",
     release = resolve;
   });
   const controller = await BattleController.create(() => paused, factory);
+  headlessPresentation(controller);
   let completed!: () => void;
   const completion = new Promise<void>((resolve) => {
     completed = resolve;
   });
   const unsubscribe = controller.view.subscribe((view) => {
-    if (view.game.turn === "player" && view.game.round === 2) completed();
+    if (view.game.turn === "player" && view.game.round === 2 && view.canSave) completed();
   });
   await controller.initialize();
   await controller.initialize();
@@ -298,6 +303,7 @@ test("Import repair removes a corrupt historical payload and preserves playable 
   const key = `hex-command-progress:${bad.entry.id}`;
   localStorage.setItem(key, "{broken payload");
   const controller = await BattleController.create(async () => {}, factory);
+  headlessPresentation(controller);
   try {
     await assert.rejects(controller.savedProgress(), /Repair saved data/);
     assert(
@@ -325,6 +331,7 @@ test("Unavailable storage with no source saves allows a new campaign and player 
     },
   });
   const controller = await BattleController.create(async () => {}, factory);
+  headlessPresentation(controller);
   try {
     await controller.initialize();
     await controller.startCampaign("lantern-road");
@@ -355,6 +362,7 @@ test("Unavailable storage with no source saves allows a new campaign and player 
 for (const mode of ["exception", "abort"] as const) {
   test(`A failed flash read (${mode}) cannot authorize fresh-game writes`, async () => {
     const original = await BattleController.create(async () => {}, factory);
+    headlessPresentation(original);
     await original.initialize();
     const opening = original.snapshot();
     const actor = required(
@@ -387,6 +395,7 @@ for (const mode of ["exception", "abort"] as const) {
     let controller: BattleController | undefined;
     try {
       controller = await BattleController.create(async () => {}, factory);
+      headlessPresentation(controller);
       await controller.initialize();
       assert(injected);
       assert.equal(await readSave(), stored);

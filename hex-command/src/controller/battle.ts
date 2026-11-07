@@ -46,6 +46,7 @@ import {
   cancelSound,
 } from "../presentation/sound";
 import { animateTile, animateTurn, type MotionKind } from "../presentation/motion";
+import { ActionPresentation } from "./action-presentation";
 import { CombatPlayback } from "./combat-playback";
 import { describeChanges } from "./feedback";
 import type { GameView } from "../game/view";
@@ -83,8 +84,7 @@ interface EnemyTurnRecording {
 
 const initialMessage = "Select a unit. Capture villages. Defeat the red commander.";
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
-const enemyThinkingDelay = 350;
-const enemyActionDelay = 230;
+const enemyActionDelay = 80;
 
 export class BattleController {
   #game: LiveGame;
@@ -114,7 +114,7 @@ export class BattleController {
   private store: Writable<BattleView>;
   private gameView: GameView;
   private combatPlayback?: CombatPlayback;
-  private playbackContext?: Pick<BattleView, "sessionVersion" | "selected" | "inspectedTile">;
+  private actionPresentation?: ActionPresentation;
   private lastPublishedView?: BattleView;
   private presentedCombat: BattleView["combat"];
   readonly view: Readable<BattleView>;
@@ -164,8 +164,11 @@ export class BattleController {
 
   /** Stop outstanding turn and preference work when this play session unmounts. */
   dispose(): void {
+    this.actionPresentation?.cancel("disposed");
     this.combatPlayback?.cancel();
     this.disposed = true;
+
+    this.actionPresentation = undefined;
     this.sessionVersion++;
     cancelSound();
     this.soundRequestVersion++;
@@ -208,7 +211,6 @@ export class BattleController {
   private active() {
     return (
       !this.awaitingNewGame &&
-      !this.combatPlaybackPending() &&
       !this.settling() &&
       this.#game.turn === "player" &&
       !this.#game.winner &&
@@ -229,6 +231,7 @@ export class BattleController {
   private currentView(): BattleView {
     return Object.freeze({
       ...this.state,
+      actionPresentation: this.actionPresentation?.token,
       game: this.combatPlaybackPending() ? this.combatPlayback!.frame.game : this.gameView,
       combatPlayback: this.combatPlayback?.frame,
       status: this.combatPlaybackPending() ? "Resolving combat…" : this.state.status,
@@ -345,16 +348,6 @@ export class BattleController {
     if (gameChanged) {
       this.gameView = this.#game.publishedView();
     }
-    const before = this.combatPlayback && this.playbackContext;
-    if (
-      before &&
-      (before.sessionVersion !== this.sessionVersion ||
-        before.selected !== this.state.selected ||
-        before.inspectedTile !== this.state.inspectedTile)
-    ) {
-      this.combatPlayback?.cancel();
-      this.combatPlayback = undefined;
-    }
     const combat = this.#game.combat;
     if (gameChanged && combat !== this.presentedCombat) {
       this.presentedCombat = combat;
@@ -367,11 +360,6 @@ export class BattleController {
           previous.sessionVersion === this.sessionVersion &&
           previous.game.mapId === this.gameView.mapId
         ) {
-          this.playbackContext = {
-            sessionVersion: this.sessionVersion,
-            selected: this.state.selected,
-            inspectedTile: this.state.inspectedTile,
-          };
           this.combatPlayback = new CombatPlayback(
             { ...previous, combatPlayback: undefined },
             combat,
@@ -380,10 +368,11 @@ export class BattleController {
               if (this.disposed || this.combatPlayback?.frame !== frame) return;
               this.publish({ renderBattle: false, gameChanged: false });
               if (frame.complete && frame.game.winner && !frame.before.game.winner)
-                playSound(frame.game.winner === "player" ? "victory" : "defeat");
+                playSound(
+                  frame.game.winner === "player" ? "victory" : "defeat",
+                  this.actionPresentation?.token ?? frame.combat,
+                );
             },
-            typeof matchMedia === "undefined" ||
-              matchMedia("(prefers-reduced-motion: reduce)").matches,
           );
         }
       }
@@ -603,6 +592,8 @@ export class BattleController {
         this.installRestored(restored.game, restored.undo ?? [], restored.pendingEnemy);
       } else {
         restored.game.dispose();
+        this.actionPresentation?.cancel("session-replaced");
+        this.actionPresentation = undefined;
         this.sessionVersion++;
         this.awaitingNewGame = true;
         this.history.clear();
@@ -662,6 +653,8 @@ export class BattleController {
     pendingEnemy: boolean,
   ): void {
     cancelSound();
+    this.actionPresentation?.cancel("session-replaced");
+    this.actionPresentation = undefined;
     this.sessionVersion++;
     this.#game.dispose();
     this.#game = game;
@@ -698,6 +691,8 @@ export class BattleController {
       }
       await deleteRun(id);
       // Invalidate in-flight enemy work before it can publish another checkpoint.
+      this.actionPresentation?.cancel("session-replaced");
+      this.actionPresentation = undefined;
       this.sessionVersion++;
       this.awaitingNewGame = true;
       this.pendingCheckpoint = undefined;
@@ -793,6 +788,8 @@ export class BattleController {
   }
 
   private commitAction() {
+    // Humans may supersede presentation; Rust has already resolved that exchange.
+    if (!this.settling()) this.combatPlayback?.frame.skip();
     // The save writer owns turn-boundary rules, including enemy-first openings.
     void this.queueFlashSave();
     this.publish();
@@ -819,7 +816,11 @@ export class BattleController {
 
   private playSelectionFeedback(tileId: string) {
     const tile = this.#game.tile(tileId);
-    const sound = { unitType: this.#game.at(tileId)?.type, terrain: tile?.terrain };
+    const sound = {
+      unitType: this.#game.at(tileId)?.type,
+      terrain: tile?.terrain,
+      owner: `inspection:${this.#game.at(tileId)?.id ?? tileId}`,
+    };
     this.afterRender(() => animateTile(tileId, "select", sound));
   }
 
@@ -849,9 +850,12 @@ export class BattleController {
     // Phaser owns movement and combat presentation, including their audio clock.
     if (this.combatPlaybackPending() || changes.attacked || changes.movedUnit) return;
     if (changes.newWinner) {
-      playSound(changes.newWinner === "player" ? "victory" : "defeat");
+      playSound(
+        changes.newWinner === "player" ? "victory" : "defeat",
+        this.actionPresentation?.token ?? this.gameView,
+      );
     } else if (changes.recruited || changes.advanced) {
-      playSound("recruit");
+      playSound("recruit", this.actionPresentation?.token ?? this.gameView);
     } else if (changes.capturedTiles.length > 0) {
       const tile = this.#game.tile(changes.capturedTiles[0]!);
       this.afterRender(() =>
@@ -935,7 +939,9 @@ export class BattleController {
   private selectTarget(target: Unit) {
     this.state.target = target.id;
     this.publish({ gameChanged: false });
-    this.afterRender(() => animateTile(cellKey(target.tile), "select", {}));
+    this.afterRender(() =>
+      animateTile(cellKey(target.tile), "select", { owner: `inspection:${target.id}` }),
+    );
     this.message("Tap a weapon to attack. Use the magnifying glass for damage details.");
   }
 
@@ -1075,7 +1081,8 @@ export class BattleController {
     if (!this.active()) {
       throw new Error("Wait for your turn.");
     }
-    // Resetting or closing the session cancels this turn after its next pause.
+    this.combatPlayback?.frame.skip();
+    // Session cancellation wakes a pending action as well as invalidating the loop.
     const turnSessionVersion = this.sessionVersion;
     this.history.clear();
     this.state.selected = null;
@@ -1114,7 +1121,7 @@ export class BattleController {
       await boundary;
       if (this.disposed || turnSessionVersion !== this.sessionVersion) return;
       if (!this.#game.winner) this.message("The enemy is planning its moves…");
-      await this.prepareDuringPause(enemyThinkingDelay, turnSessionVersion);
+
       if (turnSessionVersion !== this.sessionVersion) {
         return;
       }
@@ -1127,10 +1134,22 @@ export class BattleController {
       this.enemyRecordings.push(recording);
       this.enemyRecordings = this.enemyRecordings.slice(-5);
       while (this.#game.turn === "enemy" && !this.#game.winner) {
-        recording.commands.push(this.#game.enemyStep());
-        if ((this.#game.turn !== "enemy" || this.#game.winner) && !this.#game.combat) break;
-        this.publish();
-        if (this.combatPlaybackPending()) await this.combatPlayback!.finished;
+        const before = this.gameView;
+        const command = this.#game.enemyStep();
+        const action = new ActionPresentation(before, this.#game.combat);
+        this.actionPresentation = action;
+        try {
+          recording.commands.push(command);
+          this.publish();
+          const outcome = await action.finished;
+          if (outcome.kind === "cancelled") return;
+          if (outcome.kind === "failed") throw outcome.error;
+        } catch (error) {
+          action.fail(error);
+          throw error;
+        } finally {
+          if (this.actionPresentation === action) this.actionPresentation = undefined;
+        }
         if (this.disposed || turnSessionVersion !== this.sessionVersion) return;
         if (this.#game.turn !== "enemy" || this.#game.winner) break;
         await this.prepareDuringPause(enemyActionDelay, turnSessionVersion);
@@ -1224,6 +1243,8 @@ export class BattleController {
       this.progress = newRun();
     }
     cancelSound();
+    this.actionPresentation?.cancel("session-replaced");
+    this.actionPresentation = undefined;
     this.sessionVersion++;
     this.history.clear();
     if (this.#game !== replacement) this.#game.dispose();

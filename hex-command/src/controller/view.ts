@@ -21,6 +21,7 @@ export interface RecruitmentContext {
 
 /** Every display decision belongs to one published revision. */
 export interface BattleView {
+  readonly actionPresentation?: import("./action-presentation").ActionToken;
   readonly game: GameView;
   readonly needsNewGame: boolean;
   readonly canSave: boolean;

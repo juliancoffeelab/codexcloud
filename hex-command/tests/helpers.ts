@@ -1,3 +1,5 @@
+import { claimAction } from "../src/controller/action-presentation";
+import type { BattleView } from "../src/controller/view";
 import assert from "node:assert/strict";
 
 /** Record the canvas extraction boundary without a browser or network. */
@@ -123,4 +125,14 @@ export function storageWithValue(read: () => string, write: (value: string) => v
       write(value);
     },
   };
+}
+
+/** Explicit presenter for controller-only tests: omit visual/audio effects. */
+export function headlessPresentation(controller: {
+  view: { subscribe(run: (view: BattleView) => void): () => void };
+}) {
+  return controller.view.subscribe((view) => {
+    if (view.combatPlayback && !view.combatPlayback.complete) view.combatPlayback.skip();
+    if (view.actionPresentation) claimAction(view.actionPresentation).complete();
+  });
 }

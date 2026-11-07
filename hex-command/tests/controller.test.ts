@@ -1,3 +1,4 @@
+import { headlessPresentation } from "./helpers";
 import { cellKey } from "../src/game/hex";
 import { readSave as readStoredSave, storeSave } from "../src/save/storage";
 import { test, beforeEach, afterEach, vi } from "vitest";
@@ -456,7 +457,7 @@ test("Replay is consumed once and replacement discards pending initialization", 
   let unsubscribe = () => {};
   const finished = new Promise<void>((resolve) => {
     unsubscribe = replay.view.subscribe((view) => {
-      if (view.game.turn === "player") {
+      if (view.game.turn === "player" && view.canSave) {
         unsubscribe();
         resolve();
       }
@@ -500,6 +501,7 @@ const controllers: Controller[] = [];
 async function createController(pause?: Parameters<typeof Controller.create>[0]) {
   await settleWrites();
   const controller = await BattleController.create(pause, createTestFactory());
+  headlessPresentation(controller);
   controllers.push(controller);
   return controller;
 }

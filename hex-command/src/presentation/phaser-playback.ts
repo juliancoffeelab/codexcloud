@@ -1,6 +1,6 @@
 import { TYPES, unitWeapons } from "../game/catalog";
 import type { CombatPlaybackFrame } from "../controller/combat-playback";
-import { cancelCombatSound, scheduleCue, scheduleDeath, soundForInteraction } from "./sound";
+import { scheduleCue, scheduleDeath, soundForInteraction } from "./sound";
 
 type Combat = CombatPlaybackFrame["combat"];
 type Event = { at: number; run: () => void };
@@ -8,6 +8,7 @@ type Pending = {
   source: CombatPlaybackFrame;
   visible: ReadonlySet<string>;
   reduced: boolean;
+  owner: object;
 };
 type Playing = Pending & {
   kind: "playing";
@@ -38,6 +39,7 @@ export class BattlefieldPlayback {
     source: CombatPlaybackFrame | null | undefined,
     visible: ReadonlySet<string>,
     reduced: boolean,
+    owner: object = source?.combat ?? {},
   ) {
     if (!source) {
       this.stop();
@@ -50,7 +52,7 @@ export class BattlefieldPlayback {
     )
       return;
     if (state.kind !== "waiting" || state.source.combat !== source.combat) this.stop();
-    this.state = { kind: "waiting", source, visible, reduced };
+    this.state = { kind: "waiting", source, visible, reduced, owner };
     this.invalidate();
   }
 
@@ -58,7 +60,7 @@ export class BattlefieldPlayback {
   ready() {
     const pending = this.state;
     if (pending.kind !== "waiting") return;
-    const { source, visible, reduced } = pending;
+    const { source, visible, reduced, owner } = pending;
     const combat = source.combat;
     try {
       if (!combat.units.some((unit) => visible.has(unit.id))) {
@@ -71,11 +73,14 @@ export class BattlefieldPlayback {
         // Reduced motion already published the resolved world. Preserve its cue
         // without replaying each intentionally omitted visual phase.
         if (combat.strikes[0]) {
-          scheduleCue(this.family(combat, 0), performance.now(), "combat", false);
+          scheduleCue(this.family(combat, 0), performance.now(), "combat", false, 0.8, {
+            owner,
+            key: "strike:0",
+          });
           const health = combat.strikes.at(-1)!.health;
           for (let i = 0; i < combat.units.length; i++)
             if (health[i]! <= 0 && visible.has(combat.units[i]!.id))
-              scheduleDeath(combat.units[i]!.type, performance.now());
+              scheduleDeath(combat.units[i]!.type, performance.now(), owner, combat.units[i]!.id);
         }
         return;
       }
@@ -87,6 +92,7 @@ export class BattlefieldPlayback {
         source,
         visible,
         reduced,
+        owner,
         health,
         events: [],
         next: 0,
@@ -96,7 +102,7 @@ export class BattlefieldPlayback {
       for (let i = 0; i < combat.units.length; i++)
         if (health[i]! <= 0) playback.deathAt.set(combat.units[i]!.id, -Infinity);
       this.state = playback;
-      this.scheduleStrike(playback, source.shown, performance.now() + (reduced ? 0 : 200));
+      this.scheduleStrike(playback, source.shown, performance.now() + (reduced ? 0 : 120));
     } catch (error) {
       this.stop();
       this.fail(error);
@@ -112,12 +118,11 @@ export class BattlefieldPlayback {
       return;
     }
     const actor = combat.units.find((unit) => unit.id === strike.unitId)!;
-    const strikeAt = scheduleCue(
-      this.family(combat, index),
-      at,
-      "combat",
-      !playback.reduced,
-    ).impactAt;
+    const timing = scheduleCue(this.family(combat, index), at, "combat", !playback.reduced, 0.8, {
+      owner: playback.owner,
+      key: `strike:${index}`,
+    });
+    const strikeAt = timing.impactAt;
     playback.events = [];
     playback.next = 0;
     if (!playback.reduced)
@@ -135,7 +140,11 @@ export class BattlefieldPlayback {
         playback.health = strike.health;
         this.impact(combat, index, strikeAt);
         if (index + 1 < combat.strikes.length)
-          this.scheduleStrike(playback, index + 1, strikeAt + (playback.reduced ? 0 : 550));
+          this.scheduleStrike(
+            playback,
+            index + 1,
+            strikeAt + (playback.reduced && !timing.played ? 0 : 550),
+          );
         else playback.completeAt = strikeAt + (playback.reduced ? 0 : 300);
       },
     });
@@ -143,7 +152,8 @@ export class BattlefieldPlayback {
       const unit = combat.units[i]!;
       if (strike.health[i]! > 0 || playback.deathAt.has(unit.id)) continue;
       playback.deathAt.set(unit.id, strikeAt);
-      if (playback.visible.has(unit.id)) scheduleDeath(unit.type, strikeAt);
+      if (playback.visible.has(unit.id))
+        scheduleDeath(unit.type, strikeAt, playback.owner, unit.id);
     }
     this.invalidate();
   }
@@ -194,7 +204,6 @@ export class BattlefieldPlayback {
 
   /** Release this renderer's resources without changing controller progress. */
   stop() {
-    if (this.state.kind === "playing") cancelCombatSound();
     this.state = { kind: "idle" };
   }
   /** An explicit request to omit presentation, e.g. leaving the foreground. */

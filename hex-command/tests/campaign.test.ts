@@ -10,6 +10,7 @@ import { CAMPAIGNS as MIGRATION_CAMPAIGNS } from "@hex-command/save-migrations/l
 import { LEGACY_ASHEN_REFUGE } from "@hex-command/save-migrations/legacy/layouts";
 import { legacyBoard } from "@hex-command/save-migrations/legacy/board";
 import { BattleController, type BattleView } from "../src/controller/battle";
+import { headlessPresentation } from "./helpers";
 import { required, TestStorage } from "./helpers";
 
 const storage = new TestStorage();
@@ -77,6 +78,8 @@ test("Interrupted wave checkpoint replays once", async () => {
   assert.equal((await loadBattle()).pendingEnemy, true);
   const first = await BattleController.create(async () => {}, createTestFactory());
   const replay = await BattleController.create(async () => {}, createTestFactory());
+  headlessPresentation(first);
+  headlessPresentation(replay);
   await first.endTurn();
   await replay.endTurn();
   assert.deepEqual(replay.snapshot(), first.snapshot());
@@ -89,16 +92,21 @@ test("Interrupted wave checkpoint replays once", async () => {
 test("Replacing a paused session cancels it and dialogue gates commands", async () => {
   storage.clear();
   let release: (() => void) | undefined;
+  let pauseReached!: () => void;
+  const paused = new Promise<void>((resolve) => (pauseReached = resolve));
   const controller = await BattleController.create(
     () =>
       new Promise<void>((resolve) => {
         release = resolve;
+        pauseReached();
       }),
     createTestFactory(),
   );
+  headlessPresentation(controller);
   let latest: BattleView | undefined;
   const unsubscribe = controller.view.subscribe((view) => (latest = view));
   const oldTurn = controller.endTurn();
+  await paused;
   await controller.commands.startCampaign("green-accord");
   required(release)();
   await oldTurn;

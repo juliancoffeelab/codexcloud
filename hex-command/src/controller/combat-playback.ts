@@ -17,8 +17,6 @@ export interface CombatPlaybackFrame {
 /** Published combat phases. Phaser advances them; Rust has already committed the result. */
 export class CombatPlayback {
   frame: CombatPlaybackFrame;
-  readonly finished: Promise<void>;
-  private release!: () => void;
   private cancelled = false;
 
   constructor(
@@ -26,9 +24,7 @@ export class CombatPlayback {
     combat: NonNullable<BattleView["combat"]>,
     private readonly resolved: GameView,
     private readonly publish: (frame: CombatPlaybackFrame) => void,
-    reducedMotion: boolean,
   ) {
-    this.finished = new Promise((resolve) => (this.release = resolve));
     this.frame = {
       before,
       combat,
@@ -39,9 +35,8 @@ export class CombatPlayback {
       finish: () => this.complete(),
       skip: () => this.complete(true),
     };
-    if (reducedMotion || !combat.strikes.length) {
+    if (!combat.strikes.length) {
       this.frame = { ...this.frame, shown: combat.strikes.length, complete: true, game: resolved };
-      this.release();
     }
   }
 
@@ -82,12 +77,10 @@ export class CombatPlayback {
       complete: true,
       game: this.resolved,
     };
-    this.release();
     this.publish(this.frame);
   }
 
   cancel() {
     this.cancelled = true;
-    this.release();
   }
 }

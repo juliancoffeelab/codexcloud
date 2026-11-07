@@ -2,7 +2,14 @@ import { traceInstant } from "./performance-trace";
 import paletteData from "./audio-palette.json";
 import type { UnitType } from "../game/types";
 
+export type SoundOwner = object | string;
+interface CueOwnership {
+  owner?: SoundOwner;
+  key?: string;
+  replace?: boolean;
+}
 export interface InteractionSound {
+  owner?: SoundOwner;
   attackType?: UnitType;
   attackId?: string;
   attackSound?: string;
@@ -120,7 +127,85 @@ export function createSound() {
   let hud: ReturnType<typeof createHudAudio> | undefined;
   let ready = false;
   let requestPermission: (() => Promise<boolean>) | undefined;
-  const voices = new Set<{ sound: Phaser.Sound.BaseSound; channel: "feedback" | "combat" }>();
+  type Voice = {
+    sound: Phaser.Sound.BaseSound;
+    channel: "feedback" | "combat";
+    owner: SoundOwner;
+    key?: string;
+    family: string;
+    rate: number;
+    volume: number;
+    seek: number;
+  };
+  const voices = new Set<Voice>();
+  const paused = new Set<Omit<Voice, "sound">>();
+  const requests = new Set<{ owner: SoundOwner; cancelled: boolean }>();
+  const watchers = new Map<SoundOwner, Set<() => void>>();
+  function notify(owner: SoundOwner) {
+    for (const watcher of watchers.get(owner) ?? []) watcher();
+  }
+  function watchSoundOwner(owner: SoundOwner, watcher: () => void) {
+    const set = watchers.get(owner) ?? new Set();
+    set.add(watcher);
+    watchers.set(owner, set);
+    return () => {
+      set.delete(watcher);
+      if (!set.size) watchers.delete(owner);
+    };
+  }
+  function soundPending(owner: SoundOwner) {
+    return (
+      [...voices, ...paused].some((voice) => voice.owner === owner) ||
+      [...requests].some((request) => request.owner === owner && !request.cancelled)
+    );
+  }
+  function removeVoice(voice: Voice) {
+    voices.delete(voice);
+    voice.sound.destroy();
+    notify(voice.owner);
+  }
+  function stopSoundOwner(owner: SoundOwner, key?: string) {
+    if (key === undefined)
+      for (const request of requests) if (request.owner === owner) request.cancelled = true;
+    for (const voice of voices)
+      if (voice.owner === owner && (key === undefined || voice.key === key)) removeVoice(voice);
+    for (const voice of paused)
+      if (voice.owner === owner && (key === undefined || voice.key === key)) paused.delete(voice);
+    notify(owner);
+  }
+  /** A renderer restart retains unfinished action audio, not an unrelated UI voice. */
+  function pauseSoundOwner(owner: SoundOwner) {
+    for (const voice of voices)
+      if (voice.owner === owner) {
+        const seek = (voice.sound as Phaser.Sound.WebAudioSound).seek;
+        const { sound, ...record } = voice;
+        paused.add({ ...record, seek: Number.isFinite(seek) ? seek : voice.seek });
+        voices.delete(voice);
+        voice.sound.destroy();
+      }
+    notify(owner);
+  }
+  function resumeSoundOwner(owner: SoundOwner) {
+    if (!game || !ready) return;
+    for (const voice of paused)
+      if (voice.owner === owner) {
+        const manager = game.sound as Phaser.Sound.WebAudioSoundManager;
+        const key = paletteClip(voice.family) ? voice.family : `${voice.family}-1`;
+        if (!game.cache.audio.exists(key))
+          throw new Error(`Cannot resume prepared action cue: ${key}`);
+        const sound = manager.add(key, { volume: voice.volume, rate: voice.rate });
+        const resumed = { ...voice, sound };
+        voices.add(resumed);
+        paused.delete(voice);
+        sound.once("complete", () => removeVoice(resumed));
+        if (!sound.play({ seek: voice.seek })) {
+          removeVoice(resumed);
+          paused.add(voice);
+          throw new Error(`Cannot resume action cue: ${key}`);
+        }
+      }
+    notify(owner);
+  }
   let voiceRequest = 0;
   let unlocking: Promise<boolean> | undefined;
   const bags = new Map<string, number[]>();
@@ -210,6 +295,8 @@ export function createSound() {
       [soundForInteraction(details)],
       "feedback",
       details.attackType || details.unitType ? 0.8 : details.terrain ? 0.6 : 0.35,
+      details.owner ?? {},
+      true,
     );
   }
 
@@ -226,15 +313,23 @@ export function createSound() {
   }
   function stopNative(channel?: "feedback" | "combat") {
     voiceRequest++;
+    if (!channel)
+      for (const request of requests) {
+        request.cancelled = true;
+        notify(request.owner);
+      }
     for (const voice of voices) {
       if (channel && voice.channel !== channel) continue;
-      voice.sound.destroy();
-      voices.delete(voice);
+      removeVoice(voice);
     }
   }
   function cancelSound() {
     hud?.stop();
     stopNative();
+    for (const voice of paused) {
+      paused.delete(voice);
+      notify(voice.owner);
+    }
   }
   function setSoundEnabled(value: boolean) {
     enabled = Boolean(value);
@@ -269,29 +364,40 @@ export function createSound() {
     cues: readonly string[],
     channel: "feedback" | "combat" = "feedback",
     pitchSpread?: number,
+    owner: SoundOwner = {},
+    replace = false,
   ) {
     if (!enabled || !game || !ready) return false;
-    const owner = game;
-    const manager = owner.sound as Phaser.Sound.WebAudioSoundManager;
-    stopNative("feedback");
-    const currentRequest = voiceRequest;
-    if (manager.context && manager.context.state !== "running") {
-      if (!unlocking || !(await unlocking)) return false;
+    const gameOwner = game;
+    const manager = gameOwner.sound as Phaser.Sound.WebAudioSoundManager;
+    if (replace) stopSoundOwner(owner);
+    const pending = { owner, cancelled: false };
+    requests.add(pending);
+    notify(owner);
+    try {
+      const currentRequest = voiceRequest;
+      if (manager.context && manager.context.state !== "running") {
+        if (!unlocking || !(await unlocking)) return false;
+      }
+      if (!enabled || gameOwner !== game || currentRequest !== voiceRequest || pending.cancelled)
+        return false;
+      let at = performance.now(),
+        started = false;
+      for (const [i, family] of cues.entries()) {
+        const spread =
+          pitchSpread ?? (family === "select" ? 0.35 : channel === "combat" && i > 0 ? 1.2 : 0.8);
+        const timing = scheduleCue(family, at, channel, false, spread, { owner });
+        started ||= timing.played;
+        at = Math.min(timing.endAt, at + 180);
+      }
+      return started;
+    } finally {
+      requests.delete(pending);
+      notify(owner);
     }
-    if (!enabled || owner !== game || currentRequest !== voiceRequest) return false;
-    let at = performance.now(),
-      started = false;
-    for (const [i, family] of cues.entries()) {
-      const spread =
-        pitchSpread ?? (family === "select" ? 0.35 : channel === "combat" && i > 0 ? 1.2 : 0.8);
-      const timing = scheduleCue(family, at, channel, false, spread);
-      started ||= timing.played;
-      at = Math.min(timing.endAt, at + 180);
-    }
-    return started;
   }
-  function playSound(family: string) {
-    return playSequence([family]);
+  function playSound(family: string, owner: SoundOwner = {}) {
+    return playSequence([family], "feedback", undefined, owner);
   }
   /** Schedule the recording ahead of its audible anchor, on Phaser's own voice.
    * Output timestamps map the audio device clock to performance time when exposed.
@@ -302,6 +408,7 @@ export function createSound() {
     channel: "feedback" | "combat",
     useImpact = true,
     pitchSpread = 0.8,
+    ownership: CueOwnership = {},
   ): { impactAt: number; endAt: number; played: boolean } {
     if (!enabled || !game || !ready) return { impactAt, endAt: impactAt, played: false };
     const manager = game.sound as Phaser.Sound.WebAudioSoundManager;
@@ -318,7 +425,8 @@ export function createSound() {
       });
       return { impactAt, endAt: impactAt, played: false };
     }
-    if (channel === "feedback") stopNative("feedback");
+    const owner = ownership.owner ?? {};
+    if (ownership.replace || ownership.key !== undefined) stopSoundOwner(owner, ownership.key);
     const rate = 2 ** ((variation(family) * pitchSpread) / 12);
     const anchor = useImpact ? (clip?.impactMs ?? legacyImpactMs[family]!) / rate : 0;
     const now = performance.now();
@@ -330,22 +438,21 @@ export function createSound() {
     const start = Math.max(context.currentTime, requestedStart);
     const volume = clip ? 1 : VOLUME * (family === "select" ? 0.25 : 1);
     const sound = manager.add(key, { volume, rate });
-    const voice = { sound, channel };
-    if (voices.size >= 12) {
-      const oldest = voices.values().next().value;
-      if (oldest) {
-        oldest.sound.destroy();
-        voices.delete(oldest);
-      }
-    }
+    const voice: Voice = {
+      sound,
+      channel,
+      owner,
+      key: ownership.key,
+      family,
+      rate,
+      volume,
+      seek: 0,
+    };
     voices.add(voice);
-    sound.once("complete", () => {
-      sound.destroy();
-      voices.delete(voice);
-    });
+    notify(owner);
+    sound.once("complete", () => removeVoice(voice));
     if (!sound.play({ delay: Math.max(0, start - context.currentTime) })) {
-      sound.destroy();
-      voices.delete(voice);
+      removeVoice(voice);
       return { impactAt, endAt: impactAt, played: false };
     }
     const native = sound as Phaser.Sound.WebAudioSound;
@@ -368,17 +475,27 @@ export function createSound() {
     });
     return { impactAt: actualImpact, endAt: audibleStart + duration * 1000, played: true };
   }
-  function scheduleMovement(landingAt: number) {
-    return scheduleCue(palette.movement, landingAt, "feedback", true, 0.35);
+  function scheduleMovement(landingAt: number, owner: SoundOwner = {}) {
+    return scheduleCue(palette.movement, landingAt, "feedback", true, 0.35, {
+      owner,
+      key: "movement",
+    });
   }
-  function scheduleDeath(type: UnitType, at: number) {
+  function scheduleDeath(type: UnitType, at: number, owner: SoundOwner = {}, key = String(type)) {
     const cue = palette.units[type]?.death;
-    return cue ? scheduleCue(cue, at, "combat", false, 1.2) : { impactAt: at, endAt: at };
+    return cue
+      ? scheduleCue(cue, at, "combat", false, 1.2, { owner, key: `death:${key}` })
+      : { impactAt: at, endAt: at };
   }
-  function cancelCombatSound() {
-    stopNative("combat");
+  function cancelCombatSound(owner: SoundOwner) {
+    stopSoundOwner(owner);
   }
   return {
+    watchSoundOwner,
+    soundPending,
+    pauseSoundOwner,
+    resumeSoundOwner,
+    stopSoundOwner,
     prepareHudSound,
     playHudSound,
     disposeHudSound,
@@ -399,6 +516,11 @@ export function createSound() {
   };
 }
 export const {
+  watchSoundOwner,
+  soundPending,
+  pauseSoundOwner,
+  resumeSoundOwner,
+  stopSoundOwner,
   prepareHudSound,
   playHudSound,
   disposeHudSound,
