@@ -277,7 +277,6 @@ export function createSound() {
       const sound = manager.add(key, {
         volume: clip ? 1 : VOLUME * (family === "select" ? 0.25 : 1),
         rate,
-        delay: offset,
       });
       const voice = { sound, channel };
       if (voices.size >= 12) {
@@ -292,13 +291,13 @@ export function createSound() {
         sound.destroy();
         voices.delete(voice);
       });
-      if (sound.play()) {
+      if (sound.play({ delay: offset })) {
         started = true;
         // Shape Phaser's own voice gain; keep loading and sources owned by Phaser.
         const native = sound as Phaser.Sound.WebAudioSound;
         if (native.volumeNode && manager.context) {
           const gain = native.volumeNode.gain;
-          const at = manager.context.currentTime + offset;
+          const at = native.startTime;
           const duration = sound.duration / rate;
           const volume = clip ? 1 : VOLUME * (family === "select" ? 0.25 : 1);
           gain.setValueAtTime(0, at);
