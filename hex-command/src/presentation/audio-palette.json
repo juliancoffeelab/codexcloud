@@ -1,2339 +1,2339 @@
 {
   "clips": {
-    "c2fdf756bcb22f667fc9": {
-      "file": "palette/cue-c2fdf756bcb22f667fc9-be53e64a46.mp3"
+    "beast-roar": {
+      "file": "palette/beast-roar.mp3"
     },
-    "c535fbb07e3ea8d120aa": {
-      "file": "palette/cue-c535fbb07e3ea8d120aa-afad8631be.mp3"
+    "dying-creature-groan": {
+      "file": "palette/dying-creature-groan.mp3"
     },
-    "7439e556025516dd3513": {
-      "file": "palette/cue-7439e556025516dd3513-89150e2696.mp3"
+    "deep-monster-grunt": {
+      "file": "palette/deep-monster-grunt.mp3"
     },
-    "50806fc7df5e0bccc3cf": {
-      "file": "palette/attack-50806fc7df5e0bccc3cf-40a3f936ce.mp3"
+    "blade-swish": {
+      "file": "palette/blade-swish.mp3"
     },
-    "3e6310e5bc404ae19d74": {
-      "file": "palette/attack-3e6310e5bc404ae19d74-34b2c8cc72.mp3"
+    "beast-grunt": {
+      "file": "palette/beast-grunt.mp3"
     },
-    "7f84ad9347df544dfe68": {
-      "file": "palette/cue-7f84ad9347df544dfe68-c2d232dcc3.mp3"
+    "leather-rustle": {
+      "file": "palette/leather-rustle.mp3"
     },
-    "3a2f6220389148df7d39": {
-      "file": "palette/attack-3a2f6220389148df7d39-f6adc29435.mp3"
+    "fire-spell-burst": {
+      "file": "palette/fire-spell-burst.mp3"
     },
-    "038454dd45347855378b": {
-      "file": "palette/cue-038454dd45347855378b-41f5910981.mp3"
+    "flier-cry": {
+      "file": "palette/flier-cry.mp3"
     },
-    "ce5a4b87904953414717": {
-      "file": "palette/attack-ce5a4b87904953414717-5873bf2049.mp3"
+    "knife-draw": {
+      "file": "palette/knife-draw.mp3"
     },
-    "ac9f11aa3d1afb1cb5ec": {
-      "file": "palette/cue-ac9f11aa3d1afb1cb5ec-8859e78ecc.mp3"
+    "bone-crunch": {
+      "file": "palette/bone-crunch.mp3"
     },
-    "cd860a2f955d73aadba4": {
-      "file": "palette/cue-cd860a2f955d73aadba4-f07983ac0c.mp3"
+    "light-cloth-rustle": {
+      "file": "palette/light-cloth-rustle.mp3"
     },
-    "489d29a140c68e2945af": {
-      "file": "palette/attack-489d29a140c68e2945af-13913a3a4b.mp3"
+    "reptile-scale-rustle": {
+      "file": "palette/reptile-scale-rustle.mp3"
     },
-    "ef1ee89ac3b752927fa6": {
-      "file": "palette/cue-ef1ee89ac3b752927fa6-89f785f303.mp3"
+    "spider-leg-rustle": {
+      "file": "palette/spider-leg-rustle.mp3"
     },
-    "bb88422a34ef21ca7d19": {
-      "file": "palette/cue-bb88422a34ef21ca7d19-d6b0069a60.mp3"
+    "slimy-squelch": {
+      "file": "palette/slimy-squelch.mp3"
     },
-    "a226691fdd4ffd2f94db": {
-      "file": "palette/attack-a226691fdd4ffd2f94db-988004e337.mp3"
+    "creature-spit": {
+      "file": "palette/creature-spit.mp3"
     },
-    "46e40cd3d278b8ca4cf5": {
-      "file": "palette/cue-46e40cd3d278b8ca4cf5-d6e73b7580.mp3"
+    "insect-buzz": {
+      "file": "palette/insect-buzz.mp3"
     },
-    "018e21316d2e89dce4ed": {
-      "file": "palette/cue-018e21316d2e89dce4ed-f53abfb535.mp3"
+    "aquatic-gurgle-selection": {
+      "file": "palette/aquatic-gurgle-selection.mp3"
     },
-    "56526b8d2c6d61b7b01a": {
-      "file": "palette/attack-56526b8d2c6d61b7b01a-5367dd409e.mp3"
+    "aquatic-gurgle-attack": {
+      "file": "palette/aquatic-gurgle-attack.mp3"
     },
-    "2f2da629aaa8970692cd": {
-      "file": "palette/cue-2f2da629aaa8970692cd-101b1f65da.mp3"
+    "aquatic-creature-call": {
+      "file": "palette/aquatic-creature-call.mp3"
     },
-    "177e34470900c0b68b8f": {
-      "file": "palette/cue-177e34470900c0b68b8f-b0b4f72fa2.mp3"
+    "watery-squish": {
+      "file": "palette/watery-squish.mp3"
     },
-    "1a6ccd21007cc5043ae8": {
-      "file": "palette/attack-1a6ccd21007cc5043ae8-eedafd552d.mp3"
+    "fish-slap": {
+      "file": "palette/fish-slap.mp3"
     },
-    "a663115431b9ced218f0": {
-      "file": "palette/cue-a663115431b9ced218f0-570d64b6c3.mp3"
+    "horse-call": {
+      "file": "palette/horse-call.mp3"
     },
-    "5cff2015727d5a5b05fb": {
-      "file": "palette/cue-5cff2015727d5a5b05fb-0bbe07fcd5.mp3"
+    "dog-grumble": {
+      "file": "palette/dog-grumble.mp3"
     },
-    "9f2719dfc9bc4d177c8d": {
-      "file": "palette/cue-9f2719dfc9bc4d177c8d-d3869eec7a.mp3"
+    "wolf-howl": {
+      "file": "palette/wolf-howl.mp3"
     },
-    "416489d1ee464859862a": {
-      "file": "palette/attack-416489d1ee464859862a-88dd2c27c9.mp3"
+    "dog-snarl": {
+      "file": "palette/dog-snarl.mp3"
     },
-    "d9e2855603d99027e36d": {
-      "file": "palette/cue-d9e2855603d99027e36d-12c081cf65.mp3"
+    "belt-handling": {
+      "file": "palette/belt-handling.mp3"
     },
-    "060ee57e392c89dc2612": {
-      "file": "palette/cue-060ee57e392c89dc2612-34bee29892.mp3"
+    "dwarf-cough": {
+      "file": "palette/dwarf-cough.mp3"
     },
-    "d8c61eba50b2109dc31e": {
-      "file": "palette/attack-d8c61eba50b2109dc31e-41f3fc62d7.mp3"
+    "mining-strike": {
+      "file": "palette/mining-strike.mp3"
     },
-    "cd9bfc6a3ddcebb9b143": {
-      "file": "palette/cue-cd9bfc6a3ddcebb9b143-7c6ccbc90d.mp3"
+    "chainmail-rattle": {
+      "file": "palette/chainmail-rattle.mp3"
     },
-    "7d1b3828e8f11adc2b58": {
-      "file": "palette/cue-7d1b3828e8f11adc2b58-2c4f5a47f2.mp3"
+    "metal-armour-clatter": {
+      "file": "palette/metal-armour-clatter.mp3"
     },
-    "58f91c21fe4894683a7c": {
-      "file": "palette/attack-58f91c21fe4894683a7c-d0f571964d.mp3"
+    "crossbow-bolt-pass": {
+      "file": "palette/crossbow-bolt-pass.mp3"
     },
-    "ab73784d9d6a79e6b2e0": {
-      "file": "palette/attack-ab73784d9d6a79e6b2e0-5d2e87a662.mp3"
+    "blade-contact": {
+      "file": "palette/blade-contact.mp3"
     },
-    "24ca3c7ae37910133029": {
-      "file": "palette/cue-24ca3c7ae37910133029-c40e13d36d.mp3"
+    "metal-latch": {
+      "file": "palette/metal-latch.mp3"
     },
-    "e5d976ac476afa23295a": {
-      "file": "palette/attack-e5d976ac476afa23295a-3d5e1834da.mp3"
+    "metal-plate-impact": {
+      "file": "palette/metal-plate-impact.mp3"
     },
-    "856b426fa039b885d7a9": {
-      "file": "palette/attack-856b426fa039b885d7a9-e4dd3df407.mp3"
+    "arcane-pulse-attack": {
+      "file": "palette/arcane-pulse-attack.mp3"
     },
-    "aff60f2b6fc07087e016": {
-      "file": "palette/cue-aff60f2b6fc07087e016-0ece0f2cc8.mp3"
+    "elf-cough": {
+      "file": "palette/elf-cough.mp3"
     },
-    "0b42916f951ccb3189f2": {
-      "file": "palette/cue-0b42916f951ccb3189f2-dcda7100d4.mp3"
+    "dagger-draw": {
+      "file": "palette/dagger-draw.mp3"
     },
-    "13759e3ffc525ff24299": {
-      "file": "palette/cue-13759e3ffc525ff24299-f539ba1817.mp3"
+    "sabre-draw": {
+      "file": "palette/sabre-draw.mp3"
     },
-    "2b05640300191fe21abf": {
-      "file": "palette/attack-2b05640300191fe21abf-1726918501.mp3"
+    "spear-on-sabre": {
+      "file": "palette/spear-on-sabre.mp3"
     },
-    "753742aae5d40532afd2": {
-      "file": "palette/attack-753742aae5d40532afd2-2b78199c9b.mp3"
+    "scythian-bow-shot": {
+      "file": "palette/scythian-bow-shot.mp3"
     },
-    "8a6445db6945744e1cb8": {
-      "file": "palette/attack-8a6445db6945744e1cb8-c660ceb1e4.mp3"
+    "wooden-staff-impact": {
+      "file": "palette/wooden-staff-impact.mp3"
     },
-    "c4e45383c51b9aa36e9d": {
-      "file": "palette/cue-c4e45383c51b9aa36e9d-27dd3b4915.mp3"
+    "cough": {
+      "file": "palette/cough.mp3"
     },
-    "789b3b10b654e1bfda79": {
-      "file": "palette/attack-789b3b10b654e1bfda79-4ddb6d4e0a.mp3"
+    "mace-on-spear-haft": {
+      "file": "palette/mace-on-spear-haft.mp3"
     },
-    "0e3c50d86d5f953b2e42": {
-      "file": "palette/attack-0e3c50d86d5f953b2e42-b01a231f94.mp3"
+    "book-shut": {
+      "file": "palette/book-shut.mp3"
     },
-    "4d520b7a8999d60ec45a": {
-      "file": "palette/cue-4d520b7a8999d60ec45a-0c2fcbd108.mp3"
+    "small-leather-handling": {
+      "file": "palette/small-leather-handling.mp3"
     },
-    "4ae016755ede852d31e0": {
-      "file": "palette/cue-4ae016755ede852d31e0-614d8aa99c.mp3"
+    "horse-dying-call": {
+      "file": "palette/horse-dying-call.mp3"
     },
-    "4af95c458de224805922": {
-      "file": "palette/cue-4af95c458de224805922-054b841611.mp3"
+    "underwater-belt-rustle": {
+      "file": "palette/underwater-belt-rustle.mp3"
     },
-    "4be39645eb7969717904": {
-      "file": "palette/cue-4be39645eb7969717904-aedde380db.mp3"
+    "underwater-cough": {
+      "file": "palette/underwater-cough.mp3"
     },
-    "93b4816f7ecb8ff2db5b": {
-      "file": "palette/attack-93b4816f7ecb8ff2db5b-dfa6a631fb.mp3"
+    "scythian-arrow-pass": {
+      "file": "palette/scythian-arrow-pass.mp3"
     },
-    "5968d98e59842a38c439": {
-      "file": "palette/attack-5968d98e59842a38c439-76d91f846d.mp3"
+    "mace-on-spear-blade": {
+      "file": "palette/mace-on-spear-blade.mp3"
     },
-    "33ec234e52cf86420477": {
-      "file": "palette/cue-33ec234e52cf86420477-de68aca0c6.mp3"
+    "wooden-rattle-unit": {
+      "file": "palette/wooden-rattle-unit.mp3"
     },
-    "da6d2d434978508ee055": {
-      "file": "palette/attack-da6d2d434978508ee055-cd380c092c.mp3"
+    "dark-magic-burst": {
+      "file": "palette/dark-magic-burst.mp3"
     },
-    "a95dae6e648c7e63a1f0": {
-      "file": "palette/cue-a95dae6e648c7e63a1f0-0afd71fbe8.mp3"
+    "ghost-groan": {
+      "file": "palette/ghost-groan.mp3"
     },
-    "11306644002105606434": {
-      "file": "palette/cue-11306644002105606434-ec4b3e5c17.mp3"
+    "ghost-scream": {
+      "file": "palette/ghost-scream.mp3"
     },
-    "42c97afecf8fbc174dab": {
-      "file": "palette/attack-42c97afecf8fbc174dab-7b1817210d.mp3"
+    "spectral-magic": {
+      "file": "palette/spectral-magic.mp3"
     },
-    "45b770ab454d215cccb4": {
-      "file": "palette/cue-45b770ab454d215cccb4-863f14d198.mp3"
+    "zombie-death-grunt": {
+      "file": "palette/zombie-death-grunt.mp3"
     },
-    "e0dc42474885d93ab31f": {
-      "file": "palette/attack-e0dc42474885d93ab31f-e92eb5606e.mp3"
+    "monstrous-bite-grunt": {
+      "file": "palette/monstrous-bite-grunt.mp3"
     },
-    "1b10ad758768ecd1748d": {
-      "file": "palette/cue-1b10ad758768ecd1748d-9519cd854d.mp3"
+    "wooden-creak": {
+      "file": "palette/wooden-creak.mp3"
     },
-    "f17c65bc67627cca4149": {
-      "file": "palette/attack-f17c65bc67627cca4149-7c0211fad6.mp3"
+    "wooden-plank-impact": {
+      "file": "palette/wooden-plank-impact.mp3"
     },
-    "fd8a1d13d1dfea55bdcf": {
-      "file": "palette/attack-fd8a1d13d1dfea55bdcf-ecc8edcfbb.mp3"
+    "solid-wood-impact": {
+      "file": "palette/solid-wood-impact.mp3"
     },
-    "8526ac1715542e37d2d8": {
-      "file": "palette/attack-8526ac1715542e37d2d8-67f4e3bc96.mp3"
+    "stone-scatter-attack": {
+      "file": "palette/stone-scatter-attack.mp3"
     },
-    "1f51992dc1ab5fc5ce83": {
-      "file": "palette/cue-1f51992dc1ab5fc5ce83-6a7b9dbd45.mp3"
+    "ragged-breath": {
+      "file": "palette/ragged-breath.mp3"
     },
-    "2a67452288e81877a635": {
-      "file": "palette/attack-2a67452288e81877a635-34cdecfc01.mp3"
+    "burp": {
+      "file": "palette/burp.mp3"
     },
-    "404742b3fb08fbb7a8fc": {
-      "file": "palette/terrain-404742b3fb08fbb7a8fc-4d84619c7e.mp3"
+    "stone-scatter-terrain": {
+      "file": "palette/stone-scatter-terrain.mp3"
     },
-    "58891746d1c8d3fbef67": {
-      "file": "palette/terrain-58891746d1c8d3fbef67-284c9d911c.mp3"
+    "soft-grass-footstep": {
+      "file": "palette/soft-grass-footstep.mp3"
     },
-    "43b8c84c6d50d9faa7f2": {
-      "file": "palette/terrain-43b8c84c6d50d9faa7f2-a6cb38d39a.mp3"
+    "enchanted-forest-rustle": {
+      "file": "palette/enchanted-forest-rustle.mp3"
     },
-    "7af2410fabd7d201f661": {
-      "file": "palette/terrain-7af2410fabd7d201f661-51df43008b.mp3"
+    "hill-wind": {
+      "file": "palette/hill-wind.mp3"
     },
-    "a1c9216caaa716cbbd7d": {
-      "file": "palette/terrain-a1c9216caaa716cbbd7d-b7a0858495.mp3"
+    "water-ripple": {
+      "file": "palette/water-ripple.mp3"
     },
-    "6c4a106f6897dc5219c1": {
-      "file": "palette/terrain-6c4a106f6897dc5219c1-e083f0d61c.mp3"
+    "village-contact": {
+      "file": "palette/village-contact.mp3"
     },
-    "8b06cb5fb76a2136238e": {
-      "file": "palette/terrain-8b06cb5fb76a2136238e-a2d89aeed4.mp3"
+    "light-metal-contact": {
+      "file": "palette/light-metal-contact.mp3"
     },
-    "208c2e44527217fc0e2c": {
-      "file": "palette/terrain-208c2e44527217fc0e2c-3ba58e1b31.mp3"
+    "wooden-fort-contact": {
+      "file": "palette/wooden-fort-contact.mp3"
     },
-    "79a23cccff86b4327237": {
-      "file": "palette/terrain-79a23cccff86b4327237-d8b1ffdca4.mp3"
+    "sacred-grove-magic": {
+      "file": "palette/sacred-grove-magic.mp3"
     },
-    "dfb34fb86e2d2cc7519b": {
-      "file": "palette/terrain-dfb34fb86e2d2cc7519b-5e675a2062.mp3"
+    "door-movement": {
+      "file": "palette/door-movement.mp3"
     },
-    "8e4ebe6e7b343e7ecde3": {
-      "file": "palette/terrain-8e4ebe6e7b343e7ecde3-34578f4518.mp3"
+    "distant-mining": {
+      "file": "palette/distant-mining.mp3"
     },
-    "5ba8ecfff6a14827467f": {
-      "file": "palette/cue-5ba8ecfff6a14827467f-39ac3ddf90.mp3"
+    "quarry-strike": {
+      "file": "palette/quarry-strike.mp3"
     },
-    "dedfeaa0f001aa1742c4": {
-      "file": "palette/terrain-dedfeaa0f001aa1742c4-18d0c9c0eb.mp3"
+    "quiet-fire-crackle": {
+      "file": "palette/quiet-fire-crackle.mp3"
     },
-    "0afd3d28fe927744a881": {
-      "file": "palette/terrain-0afd3d28fe927744a881-7178c81960.mp3"
+    "plain-ground-contact": {
+      "file": "palette/plain-ground-contact.mp3"
     },
-    "1c229af7248cff8c22f4": {
-      "file": "palette/terrain-1c229af7248cff8c22f4-ad268314ec.mp3"
+    "courtyard-cue": {
+      "file": "palette/courtyard-cue.mp3"
     },
-    "6a215df7cb725eee9e56": {
-      "file": "palette/cue-6a215df7cb725eee9e56-bcd395a720.mp3"
+    "heavy-bell": {
+      "file": "palette/heavy-bell.mp3"
     },
-    "69b107702f3d02ae8e8e": {
-      "file": "palette/terrain-69b107702f3d02ae8e8e-f7c2a20e74.mp3"
+    "wooden-rattle-terrain": {
+      "file": "palette/wooden-rattle-terrain.mp3"
     },
-    "c02e02577301d78c1651": {
-      "file": "palette/terrain-c02e02577301d78c1651-9e4922173a.mp3"
+    "ritual-magic": {
+      "file": "palette/ritual-magic.mp3"
     },
-    "40fcbdbdc6d925647e3f": {
-      "file": "palette/terrain-40fcbdbdc6d925647e3f-810ff9e010.mp3"
+    "arcane-pulse-terrain": {
+      "file": "palette/arcane-pulse-terrain.mp3"
     },
-    "038caaa5a9591a170323": {
-      "file": "palette/move-038caaa5a9591a170323-5730dcba85.mp3"
+    "wooden-figurine-move": {
+      "file": "palette/wooden-figurine-move.mp3"
     }
   },
   "units": {
     "basilisk": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:7439e556025516dd3513"
+        "bite": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "basilisk-l2": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:7439e556025516dd3513"
+        "bite": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "basilisk-l3": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:7439e556025516dd3513"
+        "bite": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "bear": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf"
+        "claws": "palette:blade-swish"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "bear-l2": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:3e6310e5bc404ae19d74"
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "bear-l3": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:3e6310e5bc404ae19d74"
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "crocodile": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:7439e556025516dd3513"
+        "bite": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "crocodile-l2": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:7439e556025516dd3513"
+        "bite": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "crocodile-l3": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:7439e556025516dd3513"
+        "bite": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "dragon": {
-      "selection": "palette:7f84ad9347df544dfe68",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:leather-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "fire-breath": "palette:3a2f6220389148df7d39",
-        "claws": "palette:50806fc7df5e0bccc3cf"
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
       },
-      "primaryAttack": "palette:3a2f6220389148df7d39"
+      "primaryAttack": "palette:fire-spell-burst"
     },
     "dragon-l2": {
-      "selection": "palette:7f84ad9347df544dfe68",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:leather-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "fire-breath": "palette:3a2f6220389148df7d39",
-        "claws": "palette:50806fc7df5e0bccc3cf"
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
       },
-      "primaryAttack": "palette:3a2f6220389148df7d39"
+      "primaryAttack": "palette:fire-spell-burst"
     },
     "dragon-l3": {
-      "selection": "palette:7f84ad9347df544dfe68",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:leather-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "fire-breath": "palette:3a2f6220389148df7d39",
-        "claws": "palette:50806fc7df5e0bccc3cf"
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
       },
-      "primaryAttack": "palette:3a2f6220389148df7d39"
+      "primaryAttack": "palette:fire-spell-burst"
     },
     "giant-bat": {
-      "selection": "palette:7f84ad9347df544dfe68",
-      "death": "palette:038454dd45347855378b",
+      "selection": "palette:leather-rustle",
+      "death": "palette:flier-cry",
       "attacks": {
-        "bite": "palette:ce5a4b87904953414717"
+        "bite": "palette:knife-draw"
       },
-      "primaryAttack": "palette:ce5a4b87904953414717"
+      "primaryAttack": "palette:knife-draw"
     },
     "giant-bat-l2": {
-      "selection": "palette:7f84ad9347df544dfe68",
-      "death": "palette:038454dd45347855378b",
+      "selection": "palette:leather-rustle",
+      "death": "palette:flier-cry",
       "attacks": {
-        "bite": "palette:ce5a4b87904953414717"
+        "bite": "palette:knife-draw"
       },
-      "primaryAttack": "palette:ce5a4b87904953414717"
+      "primaryAttack": "palette:knife-draw"
     },
     "giant-bat-l3": {
-      "selection": "palette:7f84ad9347df544dfe68",
-      "death": "palette:038454dd45347855378b",
+      "selection": "palette:leather-rustle",
+      "death": "palette:flier-cry",
       "attacks": {
-        "bite": "palette:ce5a4b87904953414717"
+        "bite": "palette:knife-draw"
       },
-      "primaryAttack": "palette:ce5a4b87904953414717"
+      "primaryAttack": "palette:knife-draw"
     },
     "giant-crab": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:beast-roar",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "pincers": "palette:7439e556025516dd3513"
+        "pincers": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "giant-crab-l2": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:beast-roar",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "pincers": "palette:7439e556025516dd3513"
+        "pincers": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "giant-crab-l3": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:beast-roar",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "pincers": "palette:7439e556025516dd3513"
+        "pincers": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "giant-owl": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:038454dd45347855378b",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "giant-owl-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:038454dd45347855378b",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "giant-owl-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:038454dd45347855378b",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "giant-raven": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:038454dd45347855378b",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "giant-raven-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:038454dd45347855378b",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "giant-raven-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:038454dd45347855378b",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:flier-cry",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "giant-snake": {
-      "selection": "palette:489d29a140c68e2945af",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:489d29a140c68e2945af"
+        "bite": "palette:reptile-scale-rustle"
       },
-      "primaryAttack": "palette:489d29a140c68e2945af"
+      "primaryAttack": "palette:reptile-scale-rustle"
     },
     "giant-snake-l2": {
-      "selection": "palette:489d29a140c68e2945af",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:489d29a140c68e2945af"
+        "bite": "palette:reptile-scale-rustle"
       },
-      "primaryAttack": "palette:489d29a140c68e2945af"
+      "primaryAttack": "palette:reptile-scale-rustle"
     },
     "giant-snake-l3": {
-      "selection": "palette:489d29a140c68e2945af",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:489d29a140c68e2945af"
+        "bite": "palette:reptile-scale-rustle"
       },
-      "primaryAttack": "palette:489d29a140c68e2945af"
+      "primaryAttack": "palette:reptile-scale-rustle"
     },
     "giant-spider": {
-      "selection": "palette:ef1ee89ac3b752927fa6",
-      "death": "palette:bb88422a34ef21ca7d19",
+      "selection": "palette:spider-leg-rustle",
+      "death": "palette:slimy-squelch",
       "attacks": {
-        "bite": "palette:a226691fdd4ffd2f94db"
+        "bite": "palette:creature-spit"
       },
-      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+      "primaryAttack": "palette:creature-spit"
     },
     "giant-spider-l2": {
-      "selection": "palette:ef1ee89ac3b752927fa6",
-      "death": "palette:bb88422a34ef21ca7d19",
+      "selection": "palette:spider-leg-rustle",
+      "death": "palette:slimy-squelch",
       "attacks": {
-        "bite": "palette:a226691fdd4ffd2f94db"
+        "bite": "palette:creature-spit"
       },
-      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+      "primaryAttack": "palette:creature-spit"
     },
     "giant-spider-l3": {
-      "selection": "palette:ef1ee89ac3b752927fa6",
-      "death": "palette:bb88422a34ef21ca7d19",
+      "selection": "palette:spider-leg-rustle",
+      "death": "palette:slimy-squelch",
       "attacks": {
-        "bite": "palette:a226691fdd4ffd2f94db"
+        "bite": "palette:creature-spit"
       },
-      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+      "primaryAttack": "palette:creature-spit"
     },
     "giant-tortoise": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:7439e556025516dd3513"
+        "bite": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "giant-tortoise-l2": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:7439e556025516dd3513"
+        "bite": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "giant-tortoise-l3": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:7439e556025516dd3513"
+        "bite": "palette:deep-monster-grunt"
       },
-      "primaryAttack": "palette:7439e556025516dd3513"
+      "primaryAttack": "palette:deep-monster-grunt"
     },
     "giant-wasp": {
-      "selection": "palette:46e40cd3d278b8ca4cf5",
-      "death": "palette:bb88422a34ef21ca7d19",
+      "selection": "palette:insect-buzz",
+      "death": "palette:slimy-squelch",
       "attacks": {
-        "sting": "palette:a226691fdd4ffd2f94db"
+        "sting": "palette:creature-spit"
       },
-      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+      "primaryAttack": "palette:creature-spit"
     },
     "giant-wasp-l2": {
-      "selection": "palette:46e40cd3d278b8ca4cf5",
-      "death": "palette:bb88422a34ef21ca7d19",
+      "selection": "palette:insect-buzz",
+      "death": "palette:slimy-squelch",
       "attacks": {
-        "sting": "palette:a226691fdd4ffd2f94db"
+        "sting": "palette:creature-spit"
       },
-      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+      "primaryAttack": "palette:creature-spit"
     },
     "giant-wasp-l3": {
-      "selection": "palette:46e40cd3d278b8ca4cf5",
-      "death": "palette:bb88422a34ef21ca7d19",
+      "selection": "palette:insect-buzz",
+      "death": "palette:slimy-squelch",
       "attacks": {
-        "sting": "palette:a226691fdd4ffd2f94db"
+        "sting": "palette:creature-spit"
       },
-      "primaryAttack": "palette:a226691fdd4ffd2f94db"
+      "primaryAttack": "palette:creature-spit"
     },
     "gryphon": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "gryphon-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "gryphon-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "lynx": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:3e6310e5bc404ae19d74"
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "lynx-l2": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:3e6310e5bc404ae19d74"
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "lynx-l3": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:3e6310e5bc404ae19d74"
+        "claws": "palette:blade-swish",
+        "bite": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "octopus": {
-      "selection": "palette:018e21316d2e89dce4ed",
-      "death": "palette:bb88422a34ef21ca7d19",
+      "selection": "palette:aquatic-gurgle-selection",
+      "death": "palette:slimy-squelch",
       "attacks": {
-        "tentacles": "palette:56526b8d2c6d61b7b01a"
+        "tentacles": "palette:aquatic-gurgle-attack"
       },
-      "primaryAttack": "palette:56526b8d2c6d61b7b01a"
+      "primaryAttack": "palette:aquatic-gurgle-attack"
     },
     "octopus-l2": {
-      "selection": "palette:018e21316d2e89dce4ed",
-      "death": "palette:bb88422a34ef21ca7d19",
+      "selection": "palette:aquatic-gurgle-selection",
+      "death": "palette:slimy-squelch",
       "attacks": {
-        "tentacles": "palette:56526b8d2c6d61b7b01a"
+        "tentacles": "palette:aquatic-gurgle-attack"
       },
-      "primaryAttack": "palette:56526b8d2c6d61b7b01a"
+      "primaryAttack": "palette:aquatic-gurgle-attack"
     },
     "octopus-l3": {
-      "selection": "palette:018e21316d2e89dce4ed",
-      "death": "palette:bb88422a34ef21ca7d19",
+      "selection": "palette:aquatic-gurgle-selection",
+      "death": "palette:slimy-squelch",
       "attacks": {
-        "tentacles": "palette:56526b8d2c6d61b7b01a"
+        "tentacles": "palette:aquatic-gurgle-attack"
       },
-      "primaryAttack": "palette:56526b8d2c6d61b7b01a"
+      "primaryAttack": "palette:aquatic-gurgle-attack"
     },
     "ray": {
-      "selection": "palette:2f2da629aaa8970692cd",
-      "death": "palette:177e34470900c0b68b8f",
+      "selection": "palette:aquatic-creature-call",
+      "death": "palette:watery-squish",
       "attacks": {
-        "tail-strike": "palette:1a6ccd21007cc5043ae8"
+        "tail-strike": "palette:fish-slap"
       },
-      "primaryAttack": "palette:1a6ccd21007cc5043ae8"
+      "primaryAttack": "palette:fish-slap"
     },
     "ray-l2": {
-      "selection": "palette:2f2da629aaa8970692cd",
-      "death": "palette:177e34470900c0b68b8f",
+      "selection": "palette:aquatic-creature-call",
+      "death": "palette:watery-squish",
       "attacks": {
-        "tail-strike": "palette:1a6ccd21007cc5043ae8"
+        "tail-strike": "palette:fish-slap"
       },
-      "primaryAttack": "palette:1a6ccd21007cc5043ae8"
+      "primaryAttack": "palette:fish-slap"
     },
     "ray-l3": {
-      "selection": "palette:2f2da629aaa8970692cd",
-      "death": "palette:177e34470900c0b68b8f",
+      "selection": "palette:aquatic-creature-call",
+      "death": "palette:watery-squish",
       "attacks": {
-        "tail-strike": "palette:1a6ccd21007cc5043ae8"
+        "tail-strike": "palette:fish-slap"
       },
-      "primaryAttack": "palette:1a6ccd21007cc5043ae8"
+      "primaryAttack": "palette:fish-slap"
     },
     "sea-serpent": {
-      "selection": "palette:489d29a140c68e2945af",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:489d29a140c68e2945af"
+        "bite": "palette:reptile-scale-rustle"
       },
-      "primaryAttack": "palette:489d29a140c68e2945af"
+      "primaryAttack": "palette:reptile-scale-rustle"
     },
     "sea-serpent-l2": {
-      "selection": "palette:489d29a140c68e2945af",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:489d29a140c68e2945af"
+        "bite": "palette:reptile-scale-rustle"
       },
-      "primaryAttack": "palette:489d29a140c68e2945af"
+      "primaryAttack": "palette:reptile-scale-rustle"
     },
     "sea-serpent-l3": {
-      "selection": "palette:489d29a140c68e2945af",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:reptile-scale-rustle",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:489d29a140c68e2945af"
+        "bite": "palette:reptile-scale-rustle"
       },
-      "primaryAttack": "palette:489d29a140c68e2945af"
+      "primaryAttack": "palette:reptile-scale-rustle"
     },
     "shark": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:3e6310e5bc404ae19d74"
+        "bite": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+      "primaryAttack": "palette:beast-grunt"
     },
     "shark-l2": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:3e6310e5bc404ae19d74"
+        "bite": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+      "primaryAttack": "palette:beast-grunt"
     },
     "shark-l3": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "bite": "palette:3e6310e5bc404ae19d74"
+        "bite": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+      "primaryAttack": "palette:beast-grunt"
     },
     "stag": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:horse-call",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "trample": "palette:a663115431b9ced218f0",
-        "antlers": "palette:a663115431b9ced218f0"
+        "trample": "palette:horse-call",
+        "antlers": "palette:horse-call"
       },
-      "primaryAttack": "palette:a663115431b9ced218f0"
+      "primaryAttack": "palette:horse-call"
     },
     "stag-l2": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:horse-call",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "trample": "palette:a663115431b9ced218f0",
-        "antlers": "palette:a663115431b9ced218f0"
+        "trample": "palette:horse-call",
+        "antlers": "palette:horse-call"
       },
-      "primaryAttack": "palette:a663115431b9ced218f0"
+      "primaryAttack": "palette:horse-call"
     },
     "stag-l3": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:horse-call",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "trample": "palette:a663115431b9ced218f0",
-        "antlers": "palette:a663115431b9ced218f0"
+        "trample": "palette:horse-call",
+        "antlers": "palette:horse-call"
       },
-      "primaryAttack": "palette:a663115431b9ced218f0"
+      "primaryAttack": "palette:horse-call"
     },
     "werewolf": {
-      "selection": "palette:5cff2015727d5a5b05fb",
-      "death": "palette:9f2719dfc9bc4d177c8d",
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:416489d1ee464859862a"
+        "claws": "palette:blade-swish",
+        "bite": "palette:dog-snarl"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "werewolf-ironfang": {
-      "selection": "palette:5cff2015727d5a5b05fb",
-      "death": "palette:9f2719dfc9bc4d177c8d",
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:416489d1ee464859862a"
+        "claws": "palette:blade-swish",
+        "bite": "palette:dog-snarl"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "werewolf-pack-king": {
-      "selection": "palette:5cff2015727d5a5b05fb",
-      "death": "palette:9f2719dfc9bc4d177c8d",
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:416489d1ee464859862a"
+        "claws": "palette:blade-swish",
+        "bite": "palette:dog-snarl"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "dwarf-axeguard": {
-      "selection": "palette:d9e2855603d99027e36d",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:belt-handling",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "axe": "palette:50806fc7df5e0bccc3cf",
-        "shield-bash": "palette:d8c61eba50b2109dc31e"
+        "axe": "palette:blade-swish",
+        "shield-bash": "palette:mining-strike"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "dwarf-axeguard-l2": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "axe": "palette:50806fc7df5e0bccc3cf",
-        "shield-bash": "palette:d8c61eba50b2109dc31e"
+        "axe": "palette:blade-swish",
+        "shield-bash": "palette:mining-strike"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "dwarf-axeguard-l3": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "axe": "palette:50806fc7df5e0bccc3cf",
-        "shield-bash": "palette:d8c61eba50b2109dc31e"
+        "axe": "palette:blade-swish",
+        "shield-bash": "palette:mining-strike"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "dwarf-axe-pick-l2": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "pickaxe": "palette:d8c61eba50b2109dc31e",
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "pickaxe": "palette:mining-strike",
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-axe-pick-l3": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "pickaxe": "palette:d8c61eba50b2109dc31e",
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "pickaxe": "palette:mining-strike",
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-pickaxe": {
-      "selection": "palette:d9e2855603d99027e36d",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:belt-handling",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "pickaxe": "palette:d8c61eba50b2109dc31e",
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "pickaxe": "palette:mining-strike",
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-hammerer-l2": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-hammerer-l3": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-poleaxe-l2": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "poleaxe": "palette:50806fc7df5e0bccc3cf",
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "poleaxe": "palette:blade-swish",
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "dwarf-poleaxe-l3": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "poleaxe": "palette:50806fc7df5e0bccc3cf",
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "poleaxe": "palette:blade-swish",
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "dwarf-crossbow": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "crossbow": "palette:58f91c21fe4894683a7c",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "crossbow": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:58f91c21fe4894683a7c"
+      "primaryAttack": "palette:crossbow-bolt-pass"
     },
     "dwarf-crossbow-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "crossbow": "palette:58f91c21fe4894683a7c",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "crossbow": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:58f91c21fe4894683a7c"
+      "primaryAttack": "palette:crossbow-bolt-pass"
     },
     "dwarf-crossbow-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "crossbow": "palette:58f91c21fe4894683a7c",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "crossbow": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:58f91c21fe4894683a7c"
+      "primaryAttack": "palette:crossbow-bolt-pass"
     },
     "dwarf-arquebus-l2": {
-      "selection": "palette:24ca3c7ae37910133029",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:metal-latch",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "arquebus": "palette:e5d976ac476afa23295a",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "arquebus": "palette:metal-plate-impact",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:e5d976ac476afa23295a"
+      "primaryAttack": "palette:metal-plate-impact"
     },
     "dwarf-arquebus-l3": {
-      "selection": "palette:24ca3c7ae37910133029",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:metal-latch",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "arquebus": "palette:e5d976ac476afa23295a",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "arquebus": "palette:metal-plate-impact",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:e5d976ac476afa23295a"
+      "primaryAttack": "palette:metal-plate-impact"
     },
     "dwarf-runesmith": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "rune-stone": "palette:856b426fa039b885d7a9",
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "rune-stone": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "dwarf-thundersmith-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "rune-spark": "palette:856b426fa039b885d7a9",
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "rune-spark": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "dwarf-thundersmith-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "rune-spark": "palette:856b426fa039b885d7a9",
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "rune-spark": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "dwarf-stonespell-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "rune-stone": "palette:856b426fa039b885d7a9",
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "rune-stone": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "dwarf-stonespell-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "rune-stone": "palette:856b426fa039b885d7a9",
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "rune-stone": "palette:arcane-pulse-attack",
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "dwarf-goat-rider": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "spear": "palette:d8c61eba50b2109dc31e"
+        "spear": "palette:mining-strike"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-goat-rider-l2": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-goat-rider-l3": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-pistol-goat-rider-l2": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "pistol": "palette:e5d976ac476afa23295a",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "pistol": "palette:metal-plate-impact",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:e5d976ac476afa23295a"
+      "primaryAttack": "palette:metal-plate-impact"
     },
     "dwarf-pistol-goat-rider-l3": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:horse-call",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "pistol": "palette:e5d976ac476afa23295a",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "pistol": "palette:metal-plate-impact",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:e5d976ac476afa23295a"
+      "primaryAttack": "palette:metal-plate-impact"
     },
     "dwarf-forge-lord": {
-      "selection": "palette:d9e2855603d99027e36d",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:belt-handling",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-forge-lord-l2": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "dwarf-forge-lord-l3": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:060ee57e392c89dc2612",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:dwarf-cough",
       "attacks": {
-        "hammer": "palette:d8c61eba50b2109dc31e"
+        "hammer": "palette:mining-strike"
       },
-      "primaryAttack": "palette:d8c61eba50b2109dc31e"
+      "primaryAttack": "palette:mining-strike"
     },
     "elf-spearman": {
-      "selection": "palette:d9e2855603d99027e36d",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:belt-handling",
+      "death": "palette:elf-cough",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-spearman-l2": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-spearman-l3": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-jumper-l2": {
-      "selection": "palette:58f91c21fe4894683a7c",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:crossbow-bolt-pass",
+      "death": "palette:elf-cough",
       "attacks": {
-        "blade": "palette:ab73784d9d6a79e6b2e0"
+        "blade": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-jumper-l3": {
-      "selection": "palette:58f91c21fe4894683a7c",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:crossbow-bolt-pass",
+      "death": "palette:elf-cough",
       "attacks": {
-        "blade": "palette:ab73784d9d6a79e6b2e0"
+        "blade": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-flanker": {
-      "selection": "palette:0b42916f951ccb3189f2",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:dagger-draw",
+      "death": "palette:elf-cough",
       "attacks": {
-        "blade": "palette:ab73784d9d6a79e6b2e0"
+        "blade": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-flanker-l2": {
-      "selection": "palette:0b42916f951ccb3189f2",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:dagger-draw",
+      "death": "palette:elf-cough",
       "attacks": {
-        "blade": "palette:ab73784d9d6a79e6b2e0"
+        "blade": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-flanker-l3": {
-      "selection": "palette:0b42916f951ccb3189f2",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:dagger-draw",
+      "death": "palette:elf-cough",
       "attacks": {
-        "blade": "palette:ab73784d9d6a79e6b2e0"
+        "blade": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-bladedancer-l2": {
-      "selection": "palette:13759e3ffc525ff24299",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:sabre-draw",
+      "death": "palette:elf-cough",
       "attacks": {
-        "blade": "palette:2b05640300191fe21abf"
+        "blade": "palette:spear-on-sabre"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "elf-bladedancer-l3": {
-      "selection": "palette:13759e3ffc525ff24299",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:sabre-draw",
+      "death": "palette:elf-cough",
       "attacks": {
-        "blade": "palette:2b05640300191fe21abf"
+        "blade": "palette:spear-on-sabre"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "elf-archer": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "elf-archer-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "elf-archer-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "elf-deer-archer": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "elf-deer-archer-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "elf-deer-archer-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "elf-caster": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "arcane-spell": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "elf-caster-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "arcane-spell": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "elf-caster-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "arcane-spell": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "elf-killing-caster-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "arcane-spell": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "elf-killing-caster-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "arcane-spell": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "arcane-spell": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "elf-banner-lord": {
-      "selection": "palette:d9e2855603d99027e36d",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:belt-handling",
+      "death": "palette:elf-cough",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-banner-lord-l2": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "elf-banner-lord-l3": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:aff60f2b6fc07087e016",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:elf-cough",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "swordsman": {
-      "selection": "palette:d9e2855603d99027e36d",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:belt-handling",
+      "death": "palette:cough",
       "attacks": {
-        "sword": "palette:2b05640300191fe21abf"
+        "sword": "palette:spear-on-sabre"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "soldier": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:cough",
       "attacks": {
-        "sword": "palette:2b05640300191fe21abf",
-        "mace": "palette:789b3b10b654e1bfda79"
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "champion": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "sword": "palette:2b05640300191fe21abf",
-        "mace": "palette:789b3b10b654e1bfda79"
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "hammerman": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:cough",
       "attacks": {
-        "hammer": "palette:789b3b10b654e1bfda79"
+        "hammer": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:789b3b10b654e1bfda79"
+      "primaryAttack": "palette:mace-on-spear-haft"
     },
     "warhammer": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "hammer": "palette:789b3b10b654e1bfda79"
+        "hammer": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:789b3b10b654e1bfda79"
+      "primaryAttack": "palette:mace-on-spear-haft"
     },
     "spearman": {
-      "selection": "palette:d9e2855603d99027e36d",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:belt-handling",
+      "death": "palette:cough",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "warden": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:cough",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0",
-        "shieldbash": "palette:e5d976ac476afa23295a"
+        "spear": "palette:blade-contact",
+        "shieldbash": "palette:metal-plate-impact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "sentinel": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0",
-        "shieldbash": "palette:e5d976ac476afa23295a"
+        "spear": "palette:blade-contact",
+        "shieldbash": "palette:metal-plate-impact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "halberdier": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:cough",
       "attacks": {
-        "halberd": "palette:50806fc7df5e0bccc3cf",
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "halberd": "palette:blade-swish",
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "halberd-master": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "halberd": "palette:50806fc7df5e0bccc3cf",
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "halberd": "palette:blade-swish",
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "scout": {
-      "selection": "palette:0b42916f951ccb3189f2",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:dagger-draw",
+      "death": "palette:cough",
       "attacks": {
-        "knife": "palette:ab73784d9d6a79e6b2e0",
-        "sling": "palette:0e3c50d86d5f953b2e42"
+        "knife": "palette:blade-contact",
+        "sling": "palette:book-shut"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "ranger": {
-      "selection": "palette:0b42916f951ccb3189f2",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:dagger-draw",
+      "death": "palette:cough",
       "attacks": {
-        "knife": "palette:ab73784d9d6a79e6b2e0",
-        "sling": "palette:0e3c50d86d5f953b2e42"
+        "knife": "palette:blade-contact",
+        "sling": "palette:book-shut"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "shadowblade": {
-      "selection": "palette:0b42916f951ccb3189f2",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:dagger-draw",
+      "death": "palette:cough",
       "attacks": {
-        "knife": "palette:ab73784d9d6a79e6b2e0",
-        "sling": "palette:0e3c50d86d5f953b2e42"
+        "knife": "palette:blade-contact",
+        "sling": "palette:book-shut"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "slinger": {
-      "selection": "palette:4d520b7a8999d60ec45a",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:small-leather-handling",
+      "death": "palette:cough",
       "attacks": {
-        "sling": "palette:0e3c50d86d5f953b2e42",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "sling": "palette:book-shut",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:0e3c50d86d5f953b2e42"
+      "primaryAttack": "palette:book-shut"
     },
     "fireslinger": {
-      "selection": "palette:4d520b7a8999d60ec45a",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:small-leather-handling",
+      "death": "palette:cough",
       "attacks": {
-        "firepot": "palette:3a2f6220389148df7d39",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "firepot": "palette:fire-spell-burst",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:3a2f6220389148df7d39"
+      "primaryAttack": "palette:fire-spell-burst"
     },
     "archer": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "marksman": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "sharpshooter": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "crossbowman": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "crossbow": "palette:58f91c21fe4894683a7c",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "crossbow": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:58f91c21fe4894683a7c"
+      "primaryAttack": "palette:crossbow-bolt-pass"
     },
     "arbalester": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "arbalest": "palette:58f91c21fe4894683a7c",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "arbalest": "palette:crossbow-bolt-pass",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:58f91c21fe4894683a7c"
+      "primaryAttack": "palette:crossbow-bolt-pass"
     },
     "adept": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "spark": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "spark": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "mage": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "spark": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "spark": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "archmage": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "spark": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "spark": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "healer": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "light": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "light": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "high-healer": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "light": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "light": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "rider": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:4ae016755ede852d31e0",
+      "selection": "palette:horse-call",
+      "death": "palette:horse-dying-call",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "lancer": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:4ae016755ede852d31e0",
+      "selection": "palette:horse-call",
+      "death": "palette:horse-dying-call",
       "attacks": {
-        "lance": "palette:ab73784d9d6a79e6b2e0"
+        "lance": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "knight": {
-      "selection": "palette:a663115431b9ced218f0",
-      "death": "palette:4ae016755ede852d31e0",
+      "selection": "palette:horse-call",
+      "death": "palette:horse-dying-call",
       "attacks": {
-        "lance": "palette:ab73784d9d6a79e6b2e0",
-        "sword": "palette:2b05640300191fe21abf"
+        "lance": "palette:blade-contact",
+        "sword": "palette:spear-on-sabre"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "horse-archer": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:4ae016755ede852d31e0",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:horse-dying-call",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "horse-bowman": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:4ae016755ede852d31e0",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:horse-dying-call",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "horse-marksman": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:4ae016755ede852d31e0",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:horse-dying-call",
       "attacks": {
-        "bow": "palette:753742aae5d40532afd2",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "bow": "palette:scythian-bow-shot",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "captives": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {},
       "primaryAttack": null
     },
     "commander": {
-      "selection": "palette:d9e2855603d99027e36d",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:belt-handling",
+      "death": "palette:cough",
       "attacks": {
-        "sword": "palette:2b05640300191fe21abf",
-        "mace": "palette:789b3b10b654e1bfda79"
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "marshal": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "sword": "palette:2b05640300191fe21abf",
-        "mace": "palette:789b3b10b654e1bfda79"
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "grand-marshal": {
-      "selection": "palette:cd9bfc6a3ddcebb9b143",
-      "death": "palette:7d1b3828e8f11adc2b58",
+      "selection": "palette:chainmail-rattle",
+      "death": "palette:metal-armour-clatter",
       "attacks": {
-        "sword": "palette:2b05640300191fe21abf",
-        "mace": "palette:789b3b10b654e1bfda79"
+        "sword": "palette:spear-on-sabre",
+        "mace": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "harpooner": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "harpoon": "palette:2b05640300191fe21abf",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "harpoon": "palette:spear-on-sabre",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "tidehunter": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "harpoon": "palette:2b05640300191fe21abf",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "harpoon": "palette:spear-on-sabre",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "merfolk-harpoon-master": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "harpoon": "palette:2b05640300191fe21abf",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "harpoon": "palette:spear-on-sabre",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "merfolk-netter-l2": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "weighted-net": "palette:93b4816f7ecb8ff2db5b",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "weighted-net": "palette:scythian-arrow-pass",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+      "primaryAttack": "palette:scythian-arrow-pass"
     },
     "merfolk-netter-l3": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "weighted-net": "palette:93b4816f7ecb8ff2db5b",
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "weighted-net": "palette:scythian-arrow-pass",
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+      "primaryAttack": "palette:scythian-arrow-pass"
     },
     "reefguard": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "spear": "palette:2b05640300191fe21abf",
-        "tail": "palette:1a6ccd21007cc5043ae8"
+        "spear": "palette:spear-on-sabre",
+        "tail": "palette:fish-slap"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "tridentguard": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "spear": "palette:2b05640300191fe21abf",
-        "shellclub": "palette:5968d98e59842a38c439"
+        "spear": "palette:spear-on-sabre",
+        "shellclub": "palette:mace-on-spear-blade"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "merfolk-reef-champion": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "spear": "palette:2b05640300191fe21abf",
-        "shellclub": "palette:5968d98e59842a38c439"
+        "spear": "palette:spear-on-sabre",
+        "shellclub": "palette:mace-on-spear-blade"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "merfolk-trident-l2": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "trident": "palette:2b05640300191fe21abf"
+        "trident": "palette:spear-on-sabre"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "merfolk-trident-l3": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "trident": "palette:2b05640300191fe21abf"
+        "trident": "palette:spear-on-sabre"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "wavemender": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "surge": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "surge": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "tidesage": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "surge": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "surge": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "merfolk-tide-oracle": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "surge": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "surge": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "merfolk-tidecrusher-l2": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "crushing-wave": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "crushing-wave": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "merfolk-tidecrusher-l3": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "crushing-wave": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "crushing-wave": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "merfolk-maceguard": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "mace": "palette:789b3b10b654e1bfda79"
+        "mace": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:789b3b10b654e1bfda79"
+      "primaryAttack": "palette:mace-on-spear-haft"
     },
     "merfolk-maceguard-l2": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "mace": "palette:789b3b10b654e1bfda79"
+        "mace": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:789b3b10b654e1bfda79"
+      "primaryAttack": "palette:mace-on-spear-haft"
     },
     "merfolk-maceguard-l3": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "mace": "palette:789b3b10b654e1bfda79"
+        "mace": "palette:mace-on-spear-haft"
       },
-      "primaryAttack": "palette:789b3b10b654e1bfda79"
+      "primaryAttack": "palette:mace-on-spear-haft"
     },
     "tidekeeper": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "trident": "palette:2b05640300191fe21abf",
-        "tidebolt": "palette:856b426fa039b885d7a9"
+        "trident": "palette:spear-on-sabre",
+        "tidebolt": "palette:arcane-pulse-attack"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "tideseer": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "trident": "palette:2b05640300191fe21abf",
-        "tidebolt": "palette:856b426fa039b885d7a9"
+        "trident": "palette:spear-on-sabre",
+        "tidebolt": "palette:arcane-pulse-attack"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "merfolk-tide-sovereign": {
-      "selection": "palette:4af95c458de224805922",
-      "death": "palette:4be39645eb7969717904",
+      "selection": "palette:underwater-belt-rustle",
+      "death": "palette:underwater-cough",
       "attacks": {
-        "trident": "palette:2b05640300191fe21abf",
-        "tidebolt": "palette:856b426fa039b885d7a9"
+        "trident": "palette:spear-on-sabre",
+        "tidebolt": "palette:arcane-pulse-attack"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "skeleton": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "rustblade": "palette:ab73784d9d6a79e6b2e0",
-        "shieldbash": "palette:e5d976ac476afa23295a"
+        "rustblade": "palette:blade-contact",
+        "shieldbash": "palette:metal-plate-impact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "revenant": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "rustblade": "palette:ab73784d9d6a79e6b2e0",
-        "boneclub": "palette:5968d98e59842a38c439"
+        "rustblade": "palette:blade-contact",
+        "boneclub": "palette:mace-on-spear-blade"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "skeleton-dreadguard": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "rustblade": "palette:ab73784d9d6a79e6b2e0",
-        "boneclub": "palette:5968d98e59842a38c439"
+        "rustblade": "palette:blade-contact",
+        "boneclub": "palette:mace-on-spear-blade"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "skeleton-flanker-l2": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "skeleton-flanker-l3": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "knife": "palette:ab73784d9d6a79e6b2e0"
+        "knife": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "skeleton-impact-caster": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "boneburst": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "boneburst": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "skeleton-impact-caster-l2": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "boneburst": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "boneburst": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "skeleton-impact-caster-l3": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "boneburst": "palette:856b426fa039b885d7a9",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "boneburst": "palette:arcane-pulse-attack",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:856b426fa039b885d7a9"
+      "primaryAttack": "palette:arcane-pulse-attack"
     },
     "skeleton-scythe-caster-l2": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "soul-drain": "palette:da6d2d434978508ee055",
-        "scythe": "palette:ab73784d9d6a79e6b2e0"
+        "soul-drain": "palette:dark-magic-burst",
+        "scythe": "palette:blade-contact"
       },
-      "primaryAttack": "palette:da6d2d434978508ee055"
+      "primaryAttack": "palette:dark-magic-burst"
     },
     "skeleton-scythe-caster-l3": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "soul-drain": "palette:da6d2d434978508ee055",
-        "scythe": "palette:ab73784d9d6a79e6b2e0"
+        "soul-drain": "palette:dark-magic-burst",
+        "scythe": "palette:blade-contact"
       },
-      "primaryAttack": "palette:da6d2d434978508ee055"
+      "primaryAttack": "palette:dark-magic-burst"
     },
     "skeleton-rider": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "skeleton-rider-l2": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "skeleton-rider-l3": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "spear": "palette:ab73784d9d6a79e6b2e0"
+        "spear": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "bonearcher": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "bonebow": "palette:753742aae5d40532afd2",
-        "shard": "palette:93b4816f7ecb8ff2db5b"
+        "bonebow": "palette:scythian-bow-shot",
+        "shard": "palette:scythian-arrow-pass"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "deatharcher": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "bonebow": "palette:753742aae5d40532afd2",
-        "shard": "palette:93b4816f7ecb8ff2db5b"
+        "bonebow": "palette:scythian-bow-shot",
+        "shard": "palette:scythian-arrow-pass"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "skeleton-bow-master": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "bonebow": "palette:753742aae5d40532afd2",
-        "shard": "palette:93b4816f7ecb8ff2db5b"
+        "bonebow": "palette:scythian-bow-shot",
+        "shard": "palette:scythian-arrow-pass"
       },
-      "primaryAttack": "palette:753742aae5d40532afd2"
+      "primaryAttack": "palette:scythian-bow-shot"
     },
     "skeleton-axeman": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "skeleton-axeman-l2": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "skeleton-axeman-l3": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "axe": "palette:50806fc7df5e0bccc3cf"
+        "axe": "palette:blade-swish"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "ghost": {
-      "selection": "palette:a95dae6e648c7e63a1f0",
-      "death": "palette:11306644002105606434",
+      "selection": "palette:ghost-groan",
+      "death": "palette:ghost-scream",
       "attacks": {
-        "spectral-touch": "palette:42c97afecf8fbc174dab",
-        "spectral-orb": "palette:856b426fa039b885d7a9"
+        "spectral-touch": "palette:spectral-magic",
+        "spectral-orb": "palette:arcane-pulse-attack"
       },
-      "primaryAttack": "palette:42c97afecf8fbc174dab"
+      "primaryAttack": "palette:spectral-magic"
     },
     "wraith": {
-      "selection": "palette:a95dae6e648c7e63a1f0",
-      "death": "palette:11306644002105606434",
+      "selection": "palette:ghost-groan",
+      "death": "palette:ghost-scream",
       "attacks": {
-        "spectral-touch": "palette:42c97afecf8fbc174dab",
-        "spectral-orb": "palette:856b426fa039b885d7a9"
+        "spectral-touch": "palette:spectral-magic",
+        "spectral-orb": "palette:arcane-pulse-attack"
       },
-      "primaryAttack": "palette:42c97afecf8fbc174dab"
+      "primaryAttack": "palette:spectral-magic"
     },
     "spectre": {
-      "selection": "palette:a95dae6e648c7e63a1f0",
-      "death": "palette:11306644002105606434",
+      "selection": "palette:ghost-groan",
+      "death": "palette:ghost-scream",
       "attacks": {
-        "spectral-touch": "palette:42c97afecf8fbc174dab",
-        "spectral-orb": "palette:856b426fa039b885d7a9"
+        "spectral-touch": "palette:spectral-magic",
+        "spectral-orb": "palette:arcane-pulse-attack"
       },
-      "primaryAttack": "palette:42c97afecf8fbc174dab"
+      "primaryAttack": "palette:spectral-magic"
     },
     "necromancer": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "gravebolt": "palette:da6d2d434978508ee055",
-        "bonestaff": "palette:8a6445db6945744e1cb8"
+        "gravebolt": "palette:dark-magic-burst",
+        "bonestaff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:da6d2d434978508ee055"
+      "primaryAttack": "palette:dark-magic-burst"
     },
     "lich": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "gravebolt": "palette:da6d2d434978508ee055",
-        "bonestaff": "palette:8a6445db6945744e1cb8"
+        "gravebolt": "palette:dark-magic-burst",
+        "bonestaff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:da6d2d434978508ee055"
+      "primaryAttack": "palette:dark-magic-burst"
     },
     "lich-commander-l3": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "gravebolt": "palette:da6d2d434978508ee055",
-        "bonestaff": "palette:8a6445db6945744e1cb8"
+        "gravebolt": "palette:dark-magic-burst",
+        "bonestaff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:da6d2d434978508ee055"
+      "primaryAttack": "palette:dark-magic-burst"
     },
     "skeletal-hound": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "fangs": "palette:33ec234e52cf86420477"
+        "fangs": "palette:wooden-rattle-unit"
       },
-      "primaryAttack": "palette:33ec234e52cf86420477"
+      "primaryAttack": "palette:wooden-rattle-unit"
     },
     "skeletal-hound-l2": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "bite": "palette:33ec234e52cf86420477"
+        "bite": "palette:wooden-rattle-unit"
       },
-      "primaryAttack": "palette:33ec234e52cf86420477"
+      "primaryAttack": "palette:wooden-rattle-unit"
     },
     "skeletal-hound-l3": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "bite": "palette:33ec234e52cf86420477"
+        "bite": "palette:wooden-rattle-unit"
       },
-      "primaryAttack": "palette:33ec234e52cf86420477"
+      "primaryAttack": "palette:wooden-rattle-unit"
     },
     "corpse-vulture": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "corpse-vulture-l2": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "corpse-vulture-l3": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "talons": "palette:cd860a2f955d73aadba4",
-        "beak": "palette:cd860a2f955d73aadba4"
+        "talons": "palette:light-cloth-rustle",
+        "beak": "palette:light-cloth-rustle"
       },
-      "primaryAttack": "palette:cd860a2f955d73aadba4"
+      "primaryAttack": "palette:light-cloth-rustle"
     },
     "skeletal-horse": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "trample": "palette:33ec234e52cf86420477",
-        "hooves": "palette:33ec234e52cf86420477"
+        "trample": "palette:wooden-rattle-unit",
+        "hooves": "palette:wooden-rattle-unit"
       },
-      "primaryAttack": "palette:33ec234e52cf86420477"
+      "primaryAttack": "palette:wooden-rattle-unit"
     },
     "skeletal-horse-l2": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "trample": "palette:33ec234e52cf86420477",
-        "hooves": "palette:33ec234e52cf86420477"
+        "trample": "palette:wooden-rattle-unit",
+        "hooves": "palette:wooden-rattle-unit"
       },
-      "primaryAttack": "palette:33ec234e52cf86420477"
+      "primaryAttack": "palette:wooden-rattle-unit"
     },
     "skeletal-horse-l3": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "trample": "palette:33ec234e52cf86420477",
-        "hooves": "palette:33ec234e52cf86420477"
+        "trample": "palette:wooden-rattle-unit",
+        "hooves": "palette:wooden-rattle-unit"
       },
-      "primaryAttack": "palette:33ec234e52cf86420477"
+      "primaryAttack": "palette:wooden-rattle-unit"
     },
     "zombie-bear": {
-      "selection": "palette:7439e556025516dd3513",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:e0dc42474885d93ab31f"
+        "claws": "palette:blade-swish",
+        "bite": "palette:monstrous-bite-grunt"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "zombie-bear-l2": {
-      "selection": "palette:7439e556025516dd3513",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:e0dc42474885d93ab31f"
+        "claws": "palette:blade-swish",
+        "bite": "palette:monstrous-bite-grunt"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "zombie-bear-l3": {
-      "selection": "palette:7439e556025516dd3513",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "claws": "palette:50806fc7df5e0bccc3cf",
-        "bite": "palette:e0dc42474885d93ab31f"
+        "claws": "palette:blade-swish",
+        "bite": "palette:monstrous-bite-grunt"
       },
-      "primaryAttack": "palette:50806fc7df5e0bccc3cf"
+      "primaryAttack": "palette:blade-swish"
     },
     "bone-dragon": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "fire-breath": "palette:3a2f6220389148df7d39",
-        "claws": "palette:50806fc7df5e0bccc3cf"
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
       },
-      "primaryAttack": "palette:3a2f6220389148df7d39"
+      "primaryAttack": "palette:fire-spell-burst"
     },
     "bone-dragon-l2": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "fire-breath": "palette:3a2f6220389148df7d39",
-        "claws": "palette:50806fc7df5e0bccc3cf"
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
       },
-      "primaryAttack": "palette:3a2f6220389148df7d39"
+      "primaryAttack": "palette:fire-spell-burst"
     },
     "bone-dragon-l3": {
-      "selection": "palette:33ec234e52cf86420477",
-      "death": "palette:ac9f11aa3d1afb1cb5ec",
+      "selection": "palette:wooden-rattle-unit",
+      "death": "palette:bone-crunch",
       "attacks": {
-        "fire-breath": "palette:3a2f6220389148df7d39",
-        "claws": "palette:50806fc7df5e0bccc3cf"
+        "fire-breath": "palette:fire-spell-burst",
+        "claws": "palette:blade-swish"
       },
-      "primaryAttack": "palette:3a2f6220389148df7d39"
+      "primaryAttack": "palette:fire-spell-burst"
     },
     "wolf": {
-      "selection": "palette:5cff2015727d5a5b05fb",
-      "death": "palette:9f2719dfc9bc4d177c8d",
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
       "attacks": {
-        "fangs": "palette:416489d1ee464859862a"
+        "fangs": "palette:dog-snarl"
       },
-      "primaryAttack": "palette:416489d1ee464859862a"
+      "primaryAttack": "palette:dog-snarl"
     },
     "direwolf": {
-      "selection": "palette:5cff2015727d5a5b05fb",
-      "death": "palette:9f2719dfc9bc4d177c8d",
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
       "attacks": {
-        "fangs": "palette:416489d1ee464859862a"
+        "fangs": "palette:dog-snarl"
       },
-      "primaryAttack": "palette:416489d1ee464859862a"
+      "primaryAttack": "palette:dog-snarl"
     },
     "woodland-alpha-wolf": {
-      "selection": "palette:5cff2015727d5a5b05fb",
-      "death": "palette:9f2719dfc9bc4d177c8d",
+      "selection": "palette:dog-grumble",
+      "death": "palette:wolf-howl",
       "attacks": {
-        "fangs": "palette:416489d1ee464859862a"
+        "fangs": "palette:dog-snarl"
       },
-      "primaryAttack": "palette:416489d1ee464859862a"
+      "primaryAttack": "palette:dog-snarl"
     },
     "boar": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "trample": "palette:3e6310e5bc404ae19d74",
-        "tusks": "palette:3e6310e5bc404ae19d74"
+        "trample": "palette:beast-grunt",
+        "tusks": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+      "primaryAttack": "palette:beast-grunt"
     },
     "greatboar": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "trample": "palette:3e6310e5bc404ae19d74",
-        "tusks": "palette:3e6310e5bc404ae19d74"
+        "trample": "palette:beast-grunt",
+        "tusks": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+      "primaryAttack": "palette:beast-grunt"
     },
     "woodland-ancient-boar": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:c535fbb07e3ea8d120aa",
+      "selection": "palette:beast-roar",
+      "death": "palette:dying-creature-groan",
       "attacks": {
-        "trample": "palette:3e6310e5bc404ae19d74",
-        "tusks": "palette:3e6310e5bc404ae19d74"
+        "trample": "palette:beast-grunt",
+        "tusks": "palette:beast-grunt"
       },
-      "primaryAttack": "palette:3e6310e5bc404ae19d74"
+      "primaryAttack": "palette:beast-grunt"
     },
     "thorncaller": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "thorns": "palette:93b4816f7ecb8ff2db5b",
-        "rootstaff": "palette:8a6445db6945744e1cb8"
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+      "primaryAttack": "palette:scythian-arrow-pass"
     },
     "briarweaver": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "thorns": "palette:93b4816f7ecb8ff2db5b",
-        "rootstaff": "palette:8a6445db6945744e1cb8",
-        "root-crush": "palette:42c97afecf8fbc174dab"
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact",
+        "root-crush": "palette:spectral-magic"
       },
-      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+      "primaryAttack": "palette:scythian-arrow-pass"
     },
     "woodland-thorn-oracle": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "thorns": "palette:93b4816f7ecb8ff2db5b",
-        "rootstaff": "palette:8a6445db6945744e1cb8",
-        "root-crush": "palette:42c97afecf8fbc174dab"
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact",
+        "root-crush": "palette:spectral-magic"
       },
-      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+      "primaryAttack": "palette:scythian-arrow-pass"
     },
     "woodland-bramble-warden": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "thorns": "palette:93b4816f7ecb8ff2db5b",
-        "rootstaff": "palette:8a6445db6945744e1cb8"
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+      "primaryAttack": "palette:scythian-arrow-pass"
     },
     "woodland-thornbinder": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "thorns": "palette:93b4816f7ecb8ff2db5b",
-        "rootstaff": "palette:8a6445db6945744e1cb8"
+        "thorns": "palette:scythian-arrow-pass",
+        "rootstaff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
+      "primaryAttack": "palette:scythian-arrow-pass"
     },
     "fox-spearguard": {
-      "selection": "palette:5cff2015727d5a5b05fb",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:dog-grumble",
+      "death": "palette:cough",
       "attacks": {
-        "spear": "palette:2b05640300191fe21abf"
+        "spear": "palette:spear-on-sabre"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "fox-spearguard-l2": {
-      "selection": "palette:5cff2015727d5a5b05fb",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:dog-grumble",
+      "death": "palette:cough",
       "attacks": {
-        "spear": "palette:2b05640300191fe21abf"
+        "spear": "palette:spear-on-sabre"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "fox-spearguard-l3": {
-      "selection": "palette:5cff2015727d5a5b05fb",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:dog-grumble",
+      "death": "palette:cough",
       "attacks": {
-        "spear": "palette:2b05640300191fe21abf"
+        "spear": "palette:spear-on-sabre"
       },
-      "primaryAttack": "palette:2b05640300191fe21abf"
+      "primaryAttack": "palette:spear-on-sabre"
     },
     "treant": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:1b10ad758768ecd1748d",
+      "selection": "palette:beast-roar",
+      "death": "palette:wooden-creak",
       "attacks": {
-        "bough": "palette:f17c65bc67627cca4149",
-        "spikes": "palette:f17c65bc67627cca4149"
+        "bough": "palette:wooden-plank-impact",
+        "spikes": "palette:wooden-plank-impact"
       },
-      "primaryAttack": "palette:f17c65bc67627cca4149"
+      "primaryAttack": "palette:wooden-plank-impact"
     },
     "treant-l2": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:1b10ad758768ecd1748d",
+      "selection": "palette:beast-roar",
+      "death": "palette:wooden-creak",
       "attacks": {
-        "bough": "palette:f17c65bc67627cca4149",
-        "spikes": "palette:f17c65bc67627cca4149"
+        "bough": "palette:wooden-plank-impact",
+        "spikes": "palette:wooden-plank-impact"
       },
-      "primaryAttack": "palette:f17c65bc67627cca4149"
+      "primaryAttack": "palette:wooden-plank-impact"
     },
     "treant-l3": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
-      "death": "palette:1b10ad758768ecd1748d",
+      "selection": "palette:beast-roar",
+      "death": "palette:wooden-creak",
       "attacks": {
-        "bough": "palette:f17c65bc67627cca4149",
-        "spikes": "palette:f17c65bc67627cca4149"
+        "bough": "palette:wooden-plank-impact",
+        "spikes": "palette:wooden-plank-impact"
       },
-      "primaryAttack": "palette:f17c65bc67627cca4149"
+      "primaryAttack": "palette:wooden-plank-impact"
     },
     "wildkeeper": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "bough": "palette:fd8a1d13d1dfea55bdcf",
-        "stones": "palette:8526ac1715542e37d2d8"
+        "bough": "palette:solid-wood-impact",
+        "stones": "palette:stone-scatter-attack"
       },
-      "primaryAttack": "palette:fd8a1d13d1dfea55bdcf"
+      "primaryAttack": "palette:solid-wood-impact"
     },
     "grovewarden": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "bough": "palette:fd8a1d13d1dfea55bdcf",
-        "stones": "palette:8526ac1715542e37d2d8"
+        "bough": "palette:solid-wood-impact",
+        "stones": "palette:stone-scatter-attack"
       },
-      "primaryAttack": "palette:fd8a1d13d1dfea55bdcf"
+      "primaryAttack": "palette:solid-wood-impact"
     },
     "woodland-grove-oracle": {
-      "selection": "palette:cd860a2f955d73aadba4",
-      "death": "palette:c4e45383c51b9aa36e9d",
+      "selection": "palette:light-cloth-rustle",
+      "death": "palette:cough",
       "attacks": {
-        "bough": "palette:fd8a1d13d1dfea55bdcf",
-        "stones": "palette:8526ac1715542e37d2d8"
+        "bough": "palette:solid-wood-impact",
+        "stones": "palette:stone-scatter-attack"
       },
-      "primaryAttack": "palette:fd8a1d13d1dfea55bdcf"
+      "primaryAttack": "palette:solid-wood-impact"
     },
     "zombie-walker": {
-      "selection": "palette:1f51992dc1ab5fc5ce83",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "grasp": "palette:2a67452288e81877a635"
+        "grasp": "palette:burp"
       },
-      "primaryAttack": "palette:2a67452288e81877a635"
+      "primaryAttack": "palette:burp"
     },
     "zombie-fighter": {
-      "selection": "palette:1f51992dc1ab5fc5ce83",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "blade": "palette:ab73784d9d6a79e6b2e0"
+        "blade": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "zombie-cleaver": {
-      "selection": "palette:7439e556025516dd3513",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "cleaver": "palette:ab73784d9d6a79e6b2e0"
+        "cleaver": "palette:blade-contact"
       },
-      "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
+      "primaryAttack": "palette:blade-contact"
     },
     "zombie-decay-caster": {
-      "selection": "palette:1f51992dc1ab5fc5ce83",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "mire-bolt": "palette:da6d2d434978508ee055"
+        "mire-bolt": "palette:dark-magic-burst"
       },
-      "primaryAttack": "palette:da6d2d434978508ee055"
+      "primaryAttack": "palette:dark-magic-burst"
     },
     "zombie-plague-carrier": {
-      "selection": "palette:7439e556025516dd3513",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "grasping-hands": "palette:2a67452288e81877a635",
-        "bite": "palette:e0dc42474885d93ab31f"
+        "grasping-hands": "palette:burp",
+        "bite": "palette:monstrous-bite-grunt"
       },
-      "primaryAttack": "palette:2a67452288e81877a635"
+      "primaryAttack": "palette:burp"
     },
     "zombie-shambler": {
-      "selection": "palette:7439e556025516dd3513",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "grasping-hands": "palette:2a67452288e81877a635",
-        "bite": "palette:e0dc42474885d93ab31f"
+        "grasping-hands": "palette:burp",
+        "bite": "palette:monstrous-bite-grunt"
       },
-      "primaryAttack": "palette:2a67452288e81877a635"
+      "primaryAttack": "palette:burp"
     },
     "zombie-ghoul": {
-      "selection": "palette:7439e556025516dd3513",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:deep-monster-grunt",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "grasping-hands": "palette:2a67452288e81877a635",
-        "bite": "palette:e0dc42474885d93ab31f"
+        "grasping-hands": "palette:burp",
+        "bite": "palette:monstrous-bite-grunt"
       },
-      "primaryAttack": "palette:2a67452288e81877a635"
+      "primaryAttack": "palette:burp"
     },
     "zombie-corruption-mage-l1": {
-      "selection": "palette:1f51992dc1ab5fc5ce83",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "corruption-spell": "palette:da6d2d434978508ee055",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "corruption-spell": "palette:dark-magic-burst",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:da6d2d434978508ee055"
+      "primaryAttack": "palette:dark-magic-burst"
     },
     "zombie-corruption-mage": {
-      "selection": "palette:1f51992dc1ab5fc5ce83",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "corruption-spell": "palette:da6d2d434978508ee055",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "corruption-spell": "palette:dark-magic-burst",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:da6d2d434978508ee055"
+      "primaryAttack": "palette:dark-magic-burst"
     },
     "zombie-corruption-archmage": {
-      "selection": "palette:1f51992dc1ab5fc5ce83",
-      "death": "palette:45b770ab454d215cccb4",
+      "selection": "palette:ragged-breath",
+      "death": "palette:zombie-death-grunt",
       "attacks": {
-        "corruption-spell": "palette:da6d2d434978508ee055",
-        "staff": "palette:8a6445db6945744e1cb8"
+        "corruption-spell": "palette:dark-magic-burst",
+        "staff": "palette:wooden-staff-impact"
       },
-      "primaryAttack": "palette:da6d2d434978508ee055"
+      "primaryAttack": "palette:dark-magic-burst"
     }
   },
   "terrain": {
-    "road": "palette:404742b3fb08fbb7a8fc",
-    "plains": "palette:58891746d1c8d3fbef67",
-    "forest": "palette:43b8c84c6d50d9faa7f2",
-    "hill": "palette:7af2410fabd7d201f661",
-    "water": "palette:a1c9216caaa716cbbd7d",
-    "bridge": "palette:404742b3fb08fbb7a8fc",
-    "ford": "palette:a1c9216caaa716cbbd7d",
-    "village": "palette:6c4a106f6897dc5219c1",
-    "keep": "palette:8b06cb5fb76a2136238e",
-    "marsh": "palette:a1c9216caaa716cbbd7d",
-    "ruins": "palette:7af2410fabd7d201f661",
-    "fort": "palette:208c2e44527217fc0e2c",
-    "grove": "palette:79a23cccff86b4327237",
-    "landing": "palette:a1c9216caaa716cbbd7d",
-    "ferry": "palette:a1c9216caaa716cbbd7d",
-    "house": "palette:dfb34fb86e2d2cc7519b",
-    "mountain": "palette:8e4ebe6e7b343e7ecde3",
-    "cave": "palette:5ba8ecfff6a14827467f",
-    "burned-village": "palette:dedfeaa0f001aa1742c4",
-    "signpost": "palette:0afd3d28fe927744a881",
-    "castle-wall": "palette:1c229af7248cff8c22f4",
-    "castle-bell": "palette:6a215df7cb725eee9e56",
-    "monastery": "palette:dfb34fb86e2d2cc7519b",
-    "church": "palette:dfb34fb86e2d2cc7519b",
-    "graveyard": "palette:69b107702f3d02ae8e8e",
-    "ritual-star": "palette:c02e02577301d78c1651",
-    "ritual-spent": "palette:40fcbdbdc6d925647e3f"
+    "road": "palette:stone-scatter-terrain",
+    "plains": "palette:soft-grass-footstep",
+    "forest": "palette:enchanted-forest-rustle",
+    "hill": "palette:hill-wind",
+    "water": "palette:water-ripple",
+    "bridge": "palette:stone-scatter-terrain",
+    "ford": "palette:water-ripple",
+    "village": "palette:village-contact",
+    "keep": "palette:light-metal-contact",
+    "marsh": "palette:water-ripple",
+    "ruins": "palette:hill-wind",
+    "fort": "palette:wooden-fort-contact",
+    "grove": "palette:sacred-grove-magic",
+    "landing": "palette:water-ripple",
+    "ferry": "palette:water-ripple",
+    "house": "palette:door-movement",
+    "mountain": "palette:distant-mining",
+    "cave": "palette:quarry-strike",
+    "burned-village": "palette:quiet-fire-crackle",
+    "signpost": "palette:plain-ground-contact",
+    "castle-wall": "palette:courtyard-cue",
+    "castle-bell": "palette:heavy-bell",
+    "monastery": "palette:door-movement",
+    "church": "palette:door-movement",
+    "graveyard": "palette:wooden-rattle-terrain",
+    "ritual-star": "palette:ritual-magic",
+    "ritual-spent": "palette:arcane-pulse-terrain"
   },
   "fallbackAttacks": {
-    "melee:impact": "palette:789b3b10b654e1bfda79"
+    "melee:impact": "palette:mace-on-spear-haft"
   },
-  "movement": "palette:038caaa5a9591a170323"
+  "movement": "palette:wooden-figurine-move"
 }

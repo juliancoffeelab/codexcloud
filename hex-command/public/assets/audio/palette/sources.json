@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "license": "CC0-1.0 for imported recordings; archived game cues retain the project license",
+  "license": "Third-party recordings are CC0-1.0. First-party generated cues have no separately declared public license; no CC0 grant for those cues is implied.",
   "conversion": "Separate levelled exports per playback context. Audited chosen take, mono 44.1kHz/160kbps MP3; loudness and encoding correction baked into each file at unity game master. No runtime per-clip gain, take or source rotation. Legacy UI cues retain their original fixed 0.29 level.",
   "clips": {
-    "c2fdf756bcb22f667fc9": {
-      "file": "palette/cue-c2fdf756bcb22f667fc9-be53e64a46.mp3",
+    "beast-roar": {
+      "file": "palette/beast-roar.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
       "take": 1,
       "range": {
@@ -28,10 +28,23 @@
         "duration": 0.45839,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.0587
+      "priorEncodingCorrectionDb": 0.0587,
+      "description": "Beast roar",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "roar_03.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "c535fbb07e3ea8d120aa": {
-      "file": "palette/cue-c535fbb07e3ea8d120aa-afad8631be.mp3",
+    "dying-creature-groan": {
+      "file": "palette/dying-creature-groan.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
       "take": 1,
       "range": {
@@ -55,10 +68,23 @@
         "duration": 0.87,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.328
+      "priorEncodingCorrectionDb": 0.328,
+      "description": "Dying creature groan",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "creature_roar_03.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "7439e556025516dd3513": {
-      "file": "palette/cue-7439e556025516dd3513-89150e2696.mp3",
+    "deep-monster-grunt": {
+      "file": "palette/deep-monster-grunt.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/grunt_04.ogg",
       "take": 1,
       "range": {
@@ -82,10 +108,24 @@
         "duration": 0.505896,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3777
+      "priorEncodingCorrectionDb": 0.3777,
+      "description": "Deep monster grunt",
+      "uses": [
+        "attack",
+        "selection"
+      ],
+      "originalFile": "grunt_04.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "50806fc7df5e0bccc3cf": {
-      "file": "palette/attack-50806fc7df5e0bccc3cf-40a3f936ce.mp3",
+    "blade-swish": {
+      "file": "palette/blade-swish.mp3",
       "recording": "edits/knife-slice-2-no-hit-v1",
       "take": 1,
       "range": {
@@ -124,10 +164,24 @@
         "duration": 0.29,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.1531
+      "priorEncodingCorrectionDb": 0.1531,
+      "description": "Blade swish",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "knifeSlice2.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "3e6310e5bc404ae19d74": {
-      "file": "palette/attack-3e6310e5bc404ae19d74-34b2c8cc72.mp3",
+    "beast-grunt": {
+      "file": "palette/beast-grunt.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
       "take": 1,
       "range": {
@@ -151,10 +205,23 @@
         "duration": 0.706372,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.5506
+      "priorEncodingCorrectionDb": -0.5506,
+      "description": "Beast grunt",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "grunt_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "7f84ad9347df544dfe68": {
-      "file": "palette/cue-7f84ad9347df544dfe68-c2d232dcc3.mp3",
+    "leather-rustle": {
+      "file": "palette/leather-rustle.mp3",
       "recording": "rpg-audio/cloth2",
       "take": 1,
       "range": {
@@ -178,10 +245,24 @@
         "duration": 0.415079,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3454
+      "priorEncodingCorrectionDb": 0.3454,
+      "description": "Leather rustle",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "cloth2.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "3a2f6220389148df7d39": {
-      "file": "palette/attack-3a2f6220389148df7d39-f6adc29435.mp3",
+    "fire-spell-burst": {
+      "file": "palette/fire-spell-burst.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
       "take": 1,
       "range": {
@@ -205,10 +286,23 @@
         "duration": 0.520794,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2729
+      "priorEncodingCorrectionDb": 0.2729,
+      "description": "Fire spell burst",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "spell_fire_07.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "038454dd45347855378b": {
-      "file": "palette/cue-038454dd45347855378b-41f5910981.mp3",
+    "flier-cry": {
+      "file": "palette/flier-cry.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg",
       "take": 1,
       "range": {
@@ -232,10 +326,23 @@
         "duration": 0.460998,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.281
+      "priorEncodingCorrectionDb": 0.281,
+      "description": "Flier cry",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "creature_misc_05.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "ce5a4b87904953414717": {
-      "file": "palette/attack-ce5a4b87904953414717-5873bf2049.mp3",
+    "knife-draw": {
+      "file": "palette/knife-draw.mp3",
       "recording": "rpg-audio/drawKnife1",
       "take": 1,
       "range": {
@@ -259,10 +366,24 @@
         "duration": 0.399705,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.8748
+      "priorEncodingCorrectionDb": 0.8748,
+      "description": "Knife draw",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "drawKnife1.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "ac9f11aa3d1afb1cb5ec": {
-      "file": "palette/cue-ac9f11aa3d1afb1cb5ec-8859e78ecc.mp3",
+    "bone-crunch": {
+      "file": "palette/bone-crunch.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
       "take": 1,
       "range": {
@@ -286,10 +407,23 @@
         "duration": 0.515896,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.3901
+      "priorEncodingCorrectionDb": -0.3901,
+      "description": "Bone crunch",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "eat_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "cd860a2f955d73aadba4": {
-      "file": "palette/cue-cd860a2f955d73aadba4-f07983ac0c.mp3",
+    "light-cloth-rustle": {
+      "file": "palette/light-cloth-rustle.mp3",
       "recording": "rpg-audio/cloth3",
       "take": 1,
       "range": {
@@ -313,10 +447,25 @@
         "duration": 0.476576,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.2134
+      "priorEncodingCorrectionDb": -0.2134,
+      "description": "Light cloth rustle",
+      "uses": [
+        "attack",
+        "selection"
+      ],
+      "originalFile": "cloth3.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "489d29a140c68e2945af": {
-      "file": "palette/attack-489d29a140c68e2945af-13913a3a4b.mp3",
+    "reptile-scale-rustle": {
+      "file": "palette/reptile-scale-rustle.mp3",
       "recording": "edits/snake-belt-texture-v2",
       "take": 1,
       "range": {
@@ -355,10 +504,25 @@
         "duration": 0.595692,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.1587
+      "priorEncodingCorrectionDb": 0.1587,
+      "description": "Reptile scale rustle",
+      "uses": [
+        "attack",
+        "selection"
+      ],
+      "originalFile": "clothBelt2.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "ef1ee89ac3b752927fa6": {
-      "file": "palette/cue-ef1ee89ac3b752927fa6-89f785f303.mp3",
+    "spider-leg-rustle": {
+      "file": "palette/spider-leg-rustle.mp3",
       "recording": "edits/spider-fletching-take1-short-v1",
       "take": 1,
       "range": {
@@ -398,10 +562,23 @@
         "duration": 0.5,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.7633
+      "priorEncodingCorrectionDb": 0.7633,
+      "description": "Spider leg rustle",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "Arrow Fletching.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "still-north-media/weapon-textures",
+      "sourceEvidence": [
+        "licenses/still-north-media-weapon-textures-source.txt",
+        "licenses/still-north-media-weapon-textures-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "bb88422a34ef21ca7d19": {
-      "file": "palette/cue-bb88422a34ef21ca7d19-d6b0069a60.mp3",
+    "slimy-squelch": {
+      "file": "palette/slimy-squelch.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
       "take": 1,
       "range": {
@@ -425,10 +602,23 @@
         "duration": 0.565692,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3271
+      "priorEncodingCorrectionDb": 0.3271,
+      "description": "Slimy squelch",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "creature_slime_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "a226691fdd4ffd2f94db": {
-      "file": "palette/attack-a226691fdd4ffd2f94db-988004e337.mp3",
+    "creature-spit": {
+      "file": "palette/creature-spit.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/spit_01.ogg",
       "take": 1,
       "range": {
@@ -452,10 +642,23 @@
         "duration": 0.371202,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.0413
+      "priorEncodingCorrectionDb": 0.0413,
+      "description": "Creature spit",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "spit_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "46e40cd3d278b8ca4cf5": {
-      "file": "palette/cue-46e40cd3d278b8ca4cf5-d6e73b7580.mp3",
+    "insect-buzz": {
+      "file": "palette/insect-buzz.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
       "take": 1,
       "range": {
@@ -479,10 +682,23 @@
         "duration": 0.725397,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4158
+      "priorEncodingCorrectionDb": 0.4158,
+      "description": "Insect buzz",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "alien_03.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "018e21316d2e89dce4ed": {
-      "file": "palette/cue-018e21316d2e89dce4ed-f53abfb535.mp3",
+    "aquatic-gurgle-selection": {
+      "file": "palette/aquatic-gurgle-selection.mp3",
       "recording": "edits/octopus-gurgle-soft-v1",
       "take": 1,
       "range": {
@@ -519,10 +735,23 @@
         "duration": 0.941678,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4233
+      "priorEncodingCorrectionDb": 0.4233,
+      "description": "Aquatic gurgle",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "burble_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "56526b8d2c6d61b7b01a": {
-      "file": "palette/attack-56526b8d2c6d61b7b01a-5367dd409e.mp3",
+    "aquatic-gurgle-attack": {
+      "file": "palette/aquatic-gurgle-attack.mp3",
       "recording": "edits/octopus-gurgle-soft-v1",
       "take": 1,
       "range": {
@@ -559,10 +788,23 @@
         "duration": 0.941678,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.426
+      "priorEncodingCorrectionDb": 0.426,
+      "description": "Aquatic gurgle",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "burble_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "2f2da629aaa8970692cd": {
-      "file": "palette/cue-2f2da629aaa8970692cd-101b1f65da.mp3",
+    "aquatic-creature-call": {
+      "file": "palette/aquatic-creature-call.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
       "take": 1,
       "range": {
@@ -586,10 +828,23 @@
         "duration": 0.570703,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.2009
+      "priorEncodingCorrectionDb": -0.2009,
+      "description": "Aquatic creature call",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "alien_02.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "177e34470900c0b68b8f": {
-      "file": "palette/cue-177e34470900c0b68b8f-b0b4f72fa2.mp3",
+    "watery-squish": {
+      "file": "palette/watery-squish.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg",
       "take": 1,
       "range": {
@@ -613,10 +868,23 @@
         "duration": 0.3861,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.6773
+      "priorEncodingCorrectionDb": 0.6773,
+      "description": "Watery squish",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "creature_slime_03.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "1a6ccd21007cc5043ae8": {
-      "file": "palette/attack-1a6ccd21007cc5043ae8-eedafd552d.mp3",
+    "fish-slap": {
+      "file": "palette/fish-slap.mp3",
       "recording": "kyles/fish-slap/fish_drop1.ogg",
       "take": 1,
       "range": {
@@ -640,10 +908,23 @@
         "duration": 0.146689,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.5205
+      "priorEncodingCorrectionDb": 0.5205,
+      "description": "Fish slap",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "fish_drop1.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kyles/fish-slap",
+      "sourceEvidence": [
+        "licenses/kyles-fish-slap-source.txt",
+        "licenses/kyles-fish-slap-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "a663115431b9ced218f0": {
-      "file": "palette/cue-a663115431b9ced218f0-570d64b6c3.mp3",
+    "horse-call": {
+      "file": "palette/horse-call.mp3",
       "recording": "edits/horse-0286-trim-v1",
       "take": 1,
       "range": {
@@ -683,10 +964,24 @@
         "duration": 0.405011,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4141
+      "priorEncodingCorrectionDb": 0.4141,
+      "description": "Horse call",
+      "uses": [
+        "attack",
+        "selection"
+      ],
+      "originalFile": "0286.mp3",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "denischardonnet/horse-vocals",
+      "sourceEvidence": [
+        "licenses/denischardonnet-horse-vocals-source.txt",
+        "licenses/denischardonnet-horse-vocals-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "5cff2015727d5a5b05fb": {
-      "file": "palette/cue-5cff2015727d5a5b05fb-0bbe07fcd5.mp3",
+    "dog-grumble": {
+      "file": "palette/dog-grumble.mp3",
       "recording": "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac",
       "take": 1,
       "range": {
@@ -710,10 +1005,23 @@
         "duration": 0.565102,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2875
+      "priorEncodingCorrectionDb": 0.2875,
+      "description": "Dog grumble",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "dog-grumble.flac",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "qubodup/dog-snarl-grunt-grumble",
+      "sourceEvidence": [
+        "licenses/qubodup-dog-snarl-grunt-grumble-source.txt",
+        "licenses/qubodup-dog-snarl-grunt-grumble-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "9f2719dfc9bc4d177c8d": {
-      "file": "palette/cue-9f2719dfc9bc4d177c8d-d3869eec7a.mp3",
+    "wolf-howl": {
+      "file": "palette/wolf-howl.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/howl.ogg",
       "take": 1,
       "range": {
@@ -737,10 +1045,23 @@
         "duration": 0.545805,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3676
+      "priorEncodingCorrectionDb": 0.3676,
+      "description": "Wolf howl",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "howl.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "416489d1ee464859862a": {
-      "file": "palette/attack-416489d1ee464859862a-88dd2c27c9.mp3",
+    "dog-snarl": {
+      "file": "palette/dog-snarl.mp3",
       "recording": "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
       "take": 1,
       "range": {
@@ -764,10 +1085,23 @@
         "duration": 0.66551,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4456
+      "priorEncodingCorrectionDb": 0.4456,
+      "description": "Dog snarl",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "dog-snarl.flac",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "qubodup/dog-snarl-grunt-grumble",
+      "sourceEvidence": [
+        "licenses/qubodup-dog-snarl-grunt-grumble-source.txt",
+        "licenses/qubodup-dog-snarl-grunt-grumble-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "d9e2855603d99027e36d": {
-      "file": "palette/cue-d9e2855603d99027e36d-12c081cf65.mp3",
+    "belt-handling": {
+      "file": "palette/belt-handling.mp3",
       "recording": "rpg-audio/beltHandle1",
       "take": 1,
       "range": {
@@ -791,10 +1125,24 @@
         "duration": 0.256395,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.1031
+      "priorEncodingCorrectionDb": 0.1031,
+      "description": "Belt handling",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "beltHandle1.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "060ee57e392c89dc2612": {
-      "file": "palette/cue-060ee57e392c89dc2612-34bee29892.mp3",
+    "dwarf-cough": {
+      "file": "palette/dwarf-cough.mp3",
       "recording": "edits/death-cough-dwarf-v1",
       "take": 1,
       "range": {
@@ -835,10 +1183,23 @@
         "duration": 0.36678,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.0582
+      "priorEncodingCorrectionDb": 0.0582,
+      "description": "Dwarf cough",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "cough_02.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "d8c61eba50b2109dc31e": {
-      "file": "palette/attack-d8c61eba50b2109dc31e-41f3fc62d7.mp3",
+    "mining-strike": {
+      "file": "palette/mining-strike.mp3",
       "recording": "impact-sounds/impactMining_001",
       "take": 1,
       "range": {
@@ -862,10 +1223,24 @@
         "duration": 0.545805,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3943
+      "priorEncodingCorrectionDb": 0.3943,
+      "description": "Mining strike",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "impactMining_001.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "cd9bfc6a3ddcebb9b143": {
-      "file": "palette/cue-cd9bfc6a3ddcebb9b143-7c6ccbc90d.mp3",
+    "chainmail-rattle": {
+      "file": "palette/chainmail-rattle.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/chain_01.ogg",
       "take": 1,
       "range": {
@@ -889,10 +1264,23 @@
         "duration": 0.421111,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4434
+      "priorEncodingCorrectionDb": 0.4434,
+      "description": "Chainmail rattle",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "chain_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "7d1b3828e8f11adc2b58": {
-      "file": "palette/cue-7d1b3828e8f11adc2b58-2c4f5a47f2.mp3",
+    "metal-armour-clatter": {
+      "file": "palette/metal-armour-clatter.mp3",
       "recording": "rpg-audio/metalPot3",
       "take": 1,
       "range": {
@@ -916,10 +1304,24 @@
         "duration": 0.700408,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.1813
+      "priorEncodingCorrectionDb": -0.1813,
+      "description": "Metal armour clatter",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "metalPot3.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "58f91c21fe4894683a7c": {
-      "file": "palette/attack-58f91c21fe4894683a7c-d0f571964d.mp3",
+    "crossbow-bolt-pass": {
+      "file": "palette/crossbow-bolt-pass.mp3",
       "recording": "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav",
       "take": 1,
       "range": {
@@ -943,10 +1345,24 @@
         "duration": 0.41,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3602
+      "priorEncodingCorrectionDb": 0.3602,
+      "description": "Crossbow bolt pass",
+      "uses": [
+        "attack",
+        "selection"
+      ],
+      "originalFile": "Crossbow Bolt Passby.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "still-north-media/weapon-textures",
+      "sourceEvidence": [
+        "licenses/still-north-media-weapon-textures-source.txt",
+        "licenses/still-north-media-weapon-textures-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "ab73784d9d6a79e6b2e0": {
-      "file": "palette/attack-ab73784d9d6a79e6b2e0-5d2e87a662.mp3",
+    "blade-contact": {
+      "file": "palette/blade-contact.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/blade_01.ogg",
       "take": 1,
       "range": {
@@ -970,10 +1386,23 @@
         "duration": 0.246508,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.5908
+      "priorEncodingCorrectionDb": 0.5908,
+      "description": "Blade contact",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "blade_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "24ca3c7ae37910133029": {
-      "file": "palette/cue-24ca3c7ae37910133029-c40e13d36d.mp3",
+    "metal-latch": {
+      "file": "palette/metal-latch.mp3",
       "recording": "rpg-audio/metalLatch",
       "take": 1,
       "range": {
@@ -997,10 +1426,24 @@
         "duration": 0.19161,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.224
+      "priorEncodingCorrectionDb": 0.224,
+      "description": "Metal latch",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "metalLatch.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "e5d976ac476afa23295a": {
-      "file": "palette/attack-e5d976ac476afa23295a-3d5e1834da.mp3",
+    "metal-plate-impact": {
+      "file": "palette/metal-plate-impact.mp3",
       "recording": "impact-sounds/impactPlate_medium_000",
       "take": 1,
       "range": {
@@ -1024,10 +1467,24 @@
         "duration": 0.570703,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4474
+      "priorEncodingCorrectionDb": 0.4474,
+      "description": "Metal plate impact",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "impactPlate_medium_000.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "856b426fa039b885d7a9": {
-      "file": "palette/attack-856b426fa039b885d7a9-e4dd3df407.mp3",
+    "arcane-pulse-attack": {
+      "file": "palette/arcane-pulse-attack.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
       "take": 1,
       "range": {
@@ -1051,10 +1508,23 @@
         "duration": 0.530794,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.5236
+      "priorEncodingCorrectionDb": 0.5236,
+      "description": "Arcane pulse",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "spell_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "aff60f2b6fc07087e016": {
-      "file": "palette/cue-aff60f2b6fc07087e016-0ece0f2cc8.mp3",
+    "elf-cough": {
+      "file": "palette/elf-cough.mp3",
       "recording": "edits/death-cough-elf-v1",
       "take": 1,
       "range": {
@@ -1093,10 +1563,23 @@
         "duration": 0.330204,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2267
+      "priorEncodingCorrectionDb": 0.2267,
+      "description": "Elf cough",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "cough_02.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "0b42916f951ccb3189f2": {
-      "file": "palette/cue-0b42916f951ccb3189f2-dcda7100d4.mp3",
+    "dagger-draw": {
+      "file": "palette/dagger-draw.mp3",
       "recording": "still-north-media/weapon-textures/part-2/Dagger Draw Fast.wav",
       "take": 1,
       "range": {
@@ -1120,10 +1603,23 @@
         "duration": 0.3178,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.1356
+      "priorEncodingCorrectionDb": 0.1356,
+      "description": "Dagger draw",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "Dagger Draw Fast.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "still-north-media/weapon-textures",
+      "sourceEvidence": [
+        "licenses/still-north-media-weapon-textures-source.txt",
+        "licenses/still-north-media-weapon-textures-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "13759e3ffc525ff24299": {
-      "file": "palette/cue-13759e3ffc525ff24299-f539ba1817.mp3",
+    "sabre-draw": {
+      "file": "palette/sabre-draw.mp3",
       "recording": "still-north-media/weapon-textures/part-2/Sabre Draw Fast.wav",
       "take": 1,
       "range": {
@@ -1147,10 +1643,23 @@
         "duration": 0.984807,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.1523
+      "priorEncodingCorrectionDb": -0.1523,
+      "description": "Sabre draw",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "Sabre Draw Fast.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "still-north-media/weapon-textures",
+      "sourceEvidence": [
+        "licenses/still-north-media-weapon-textures-source.txt",
+        "licenses/still-north-media-weapon-textures-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "2b05640300191fe21abf": {
-      "file": "palette/attack-2b05640300191fe21abf-1726918501.mp3",
+    "spear-on-sabre": {
+      "file": "palette/spear-on-sabre.mp3",
       "recording": "edits/spear-sabre-one-shot-v1",
       "take": 1,
       "range": {
@@ -1189,10 +1698,23 @@
         "duration": 0.334694,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.4584
+      "priorEncodingCorrectionDb": -0.4584,
+      "description": "Spear on sabre",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "Spear Sabre Blade on Blade.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "still-north-media/weapon-impacts",
+      "sourceEvidence": [
+        "licenses/still-north-media-weapon-impacts-source.txt",
+        "licenses/still-north-media-weapon-impacts-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "753742aae5d40532afd2": {
-      "file": "palette/attack-753742aae5d40532afd2-2b78199c9b.mp3",
+    "scythian-bow-shot": {
+      "file": "palette/scythian-bow-shot.mp3",
       "recording": "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav",
       "take": 1,
       "range": {
@@ -1216,10 +1738,23 @@
         "duration": 0.223311,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3387
+      "priorEncodingCorrectionDb": 0.3387,
+      "description": "Scythian bow shot",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "Scythian Recurve Shoot.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "still-north-media/weapon-textures",
+      "sourceEvidence": [
+        "licenses/still-north-media-weapon-textures-source.txt",
+        "licenses/still-north-media-weapon-textures-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "8a6445db6945744e1cb8": {
-      "file": "palette/attack-8a6445db6945744e1cb8-c660ceb1e4.mp3",
+    "wooden-staff-impact": {
+      "file": "palette/wooden-staff-impact.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/wood_05.ogg",
       "take": 1,
       "range": {
@@ -1243,10 +1778,23 @@
         "duration": 0.221497,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.1352
+      "priorEncodingCorrectionDb": -0.1352,
+      "description": "Wooden staff impact",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "wood_05.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "c4e45383c51b9aa36e9d": {
-      "file": "palette/cue-c4e45383c51b9aa36e9d-27dd3b4915.mp3",
+    "cough": {
+      "file": "palette/cough.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
       "take": 1,
       "range": {
@@ -1270,10 +1818,23 @@
         "duration": 0.326304,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4465
+      "priorEncodingCorrectionDb": 0.4465,
+      "description": "Cough",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "cough_02.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "789b3b10b654e1bfda79": {
-      "file": "palette/attack-789b3b10b654e1bfda79-4ddb6d4e0a.mp3",
+    "mace-on-spear-haft": {
+      "file": "palette/mace-on-spear-haft.mp3",
       "recording": "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav",
       "take": 12,
       "range": {
@@ -1297,10 +1858,23 @@
         "duration": 0.20161,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3224
+      "priorEncodingCorrectionDb": 0.3224,
+      "description": "Mace on spear haft",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "Mace Spear Haft.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "still-north-media/weapon-impacts",
+      "sourceEvidence": [
+        "licenses/still-north-media-weapon-impacts-source.txt",
+        "licenses/still-north-media-weapon-impacts-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "0e3c50d86d5f953b2e42": {
-      "file": "palette/attack-0e3c50d86d5f953b2e42-b01a231f94.mp3",
+    "book-shut": {
+      "file": "palette/book-shut.mp3",
       "recording": "rpg-audio/bookClose",
       "take": 1,
       "range": {
@@ -1324,10 +1898,24 @@
         "duration": 0.195692,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3148
+      "priorEncodingCorrectionDb": 0.3148,
+      "description": "Book shut",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "bookClose.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "4d520b7a8999d60ec45a": {
-      "file": "palette/cue-4d520b7a8999d60ec45a-0c2fcbd108.mp3",
+    "small-leather-handling": {
+      "file": "palette/small-leather-handling.mp3",
       "recording": "rpg-audio/handleSmallLeather2",
       "take": 1,
       "range": {
@@ -1351,10 +1939,24 @@
         "duration": 0.276395,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.6768
+      "priorEncodingCorrectionDb": 0.6768,
+      "description": "Small leather handling",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "handleSmallLeather2.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "4ae016755ede852d31e0": {
-      "file": "palette/cue-4ae016755ede852d31e0-614d8aa99c.mp3",
+    "horse-dying-call": {
+      "file": "palette/horse-dying-call.mp3",
       "recording": "edits/horse-0284-death-start-v1",
       "take": 1,
       "range": {
@@ -1393,10 +1995,23 @@
         "duration": 0.5,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.1877
+      "priorEncodingCorrectionDb": 0.1877,
+      "description": "Horse dying call",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "0284.mp3",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "denischardonnet/horse-vocals",
+      "sourceEvidence": [
+        "licenses/denischardonnet-horse-vocals-source.txt",
+        "licenses/denischardonnet-horse-vocals-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "4af95c458de224805922": {
-      "file": "palette/cue-4af95c458de224805922-054b841611.mp3",
+    "underwater-belt-rustle": {
+      "file": "palette/underwater-belt-rustle.mp3",
       "recording": "edits/merfolk-selection-underwater-v1",
       "take": 1,
       "range": {
@@ -1432,10 +2047,24 @@
         "duration": 0.530794,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.14
+      "priorEncodingCorrectionDb": 0.14,
+      "description": "Underwater belt rustle",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "clothBelt2.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "4be39645eb7969717904": {
-      "file": "palette/cue-4be39645eb7969717904-aedde380db.mp3",
+    "underwater-cough": {
+      "file": "palette/underwater-cough.mp3",
       "recording": "edits/merfolk-death-underwater-v1",
       "take": 1,
       "range": {
@@ -1471,10 +2100,23 @@
         "duration": 0.326304,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3056
+      "priorEncodingCorrectionDb": 0.3056,
+      "description": "Underwater cough",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "cough_02.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "93b4816f7ecb8ff2db5b": {
-      "file": "palette/attack-93b4816f7ecb8ff2db5b-dfa6a631fb.mp3",
+    "scythian-arrow-pass": {
+      "file": "palette/scythian-arrow-pass.mp3",
       "recording": "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Pass.wav",
       "take": 1,
       "range": {
@@ -1498,10 +2140,23 @@
         "duration": 0.49,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3034
+      "priorEncodingCorrectionDb": 0.3034,
+      "description": "Scythian arrow pass",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "Scythian Recurve Arrow Pass.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "still-north-media/weapon-textures",
+      "sourceEvidence": [
+        "licenses/still-north-media-weapon-textures-source.txt",
+        "licenses/still-north-media-weapon-textures-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "5968d98e59842a38c439": {
-      "file": "palette/attack-5968d98e59842a38c439-76d91f846d.mp3",
+    "mace-on-spear-blade": {
+      "file": "palette/mace-on-spear-blade.mp3",
       "recording": "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav",
       "take": 1,
       "range": {
@@ -1525,10 +2180,23 @@
         "duration": 0.430907,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4594
+      "priorEncodingCorrectionDb": 0.4594,
+      "description": "Mace on spear blade",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "Mace Spear Blade.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "still-north-media/weapon-impacts",
+      "sourceEvidence": [
+        "licenses/still-north-media-weapon-impacts-source.txt",
+        "licenses/still-north-media-weapon-impacts-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "33ec234e52cf86420477": {
-      "file": "palette/cue-33ec234e52cf86420477-de68aca0c6.mp3",
+    "wooden-rattle-unit": {
+      "file": "palette/wooden-rattle-unit.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
       "take": 1,
       "range": {
@@ -1552,10 +2220,24 @@
         "duration": 0.296395,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2726
+      "priorEncodingCorrectionDb": 0.2726,
+      "description": "Wooden rattle",
+      "uses": [
+        "attack",
+        "selection"
+      ],
+      "originalFile": "item_wood_03.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "da6d2d434978508ee055": {
-      "file": "palette/attack-da6d2d434978508ee055-cd380c092c.mp3",
+    "dark-magic-burst": {
+      "file": "palette/dark-magic-burst.mp3",
       "recording": "edits/fout-01-short-v1",
       "take": 1,
       "range": {
@@ -1594,10 +2276,23 @@
         "duration": 0.48,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.1981
+      "priorEncodingCorrectionDb": 0.1981,
+      "description": "Dark magic burst",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "fout-01.flac",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "qubodup/3-dark-magic-spells",
+      "sourceEvidence": [
+        "licenses/qubodup-3-dark-magic-spells-source.txt",
+        "licenses/qubodup-3-dark-magic-spells-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "a95dae6e648c7e63a1f0": {
-      "file": "palette/cue-a95dae6e648c7e63a1f0-0afd71fbe8.mp3",
+    "ghost-groan": {
+      "file": "palette/ghost-groan.mp3",
       "recording": "edits/ghost-grunt-02-trim-v1",
       "take": 1,
       "range": {
@@ -1636,10 +2331,23 @@
         "duration": 0.36,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.305
+      "priorEncodingCorrectionDb": 0.305,
+      "description": "Ghost groan",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "grunt_02.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "11306644002105606434": {
-      "file": "palette/cue-11306644002105606434-ec4b3e5c17.mp3",
+    "ghost-scream": {
+      "file": "palette/ghost-scream.mp3",
       "recording": "edits/ghost-scream-02-no-cough-v1",
       "take": 1,
       "range": {
@@ -1678,10 +2386,23 @@
         "duration": 0.66,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.426
+      "priorEncodingCorrectionDb": 0.426,
+      "description": "Ghost scream",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "scream_02.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "42c97afecf8fbc174dab": {
-      "file": "palette/attack-42c97afecf8fbc174dab-7b1817210d.mp3",
+    "spectral-magic": {
+      "file": "palette/spectral-magic.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
       "take": 1,
       "range": {
@@ -1705,10 +2426,23 @@
         "duration": 0.436009,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.6101
+      "priorEncodingCorrectionDb": 0.6101,
+      "description": "Spectral magic",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "spell_02.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "45b770ab454d215cccb4": {
-      "file": "palette/cue-45b770ab454d215cccb4-863f14d198.mp3",
+    "zombie-death-grunt": {
+      "file": "palette/zombie-death-grunt.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/hurt_05.ogg",
       "take": 1,
       "range": {
@@ -1732,10 +2466,23 @@
         "duration": 0.34619,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2864
+      "priorEncodingCorrectionDb": 0.2864,
+      "description": "Zombie death grunt",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "hurt_05.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "e0dc42474885d93ab31f": {
-      "file": "palette/attack-e0dc42474885d93ab31f-e92eb5606e.mp3",
+    "monstrous-bite-grunt": {
+      "file": "palette/monstrous-bite-grunt.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/grunt_05.ogg",
       "take": 1,
       "range": {
@@ -1759,10 +2506,23 @@
         "duration": 0.431111,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.408
+      "priorEncodingCorrectionDb": 0.408,
+      "description": "Monstrous bite grunt",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "grunt_05.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "1b10ad758768ecd1748d": {
-      "file": "palette/cue-1b10ad758768ecd1748d-9519cd854d.mp3",
+    "wooden-creak": {
+      "file": "palette/wooden-creak.mp3",
       "recording": "rpg-audio/creak1",
       "take": 1,
       "range": {
@@ -1786,10 +2546,24 @@
         "duration": 0.6061,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.1539
+      "priorEncodingCorrectionDb": 0.1539,
+      "description": "Wooden creak",
+      "uses": [
+        "death"
+      ],
+      "originalFile": "creak1.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "f17c65bc67627cca4149": {
-      "file": "palette/attack-f17c65bc67627cca4149-7c0211fad6.mp3",
+    "wooden-plank-impact": {
+      "file": "palette/wooden-plank-impact.mp3",
       "recording": "impact-sounds/impactPlank_medium_004",
       "take": 1,
       "range": {
@@ -1813,10 +2587,24 @@
         "duration": 0.2,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4065
+      "priorEncodingCorrectionDb": 0.4065,
+      "description": "Wooden plank impact",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "impactPlank_medium_004.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "fd8a1d13d1dfea55bdcf": {
-      "file": "palette/attack-fd8a1d13d1dfea55bdcf-ecc8edcfbb.mp3",
+    "solid-wood-impact": {
+      "file": "palette/solid-wood-impact.mp3",
       "recording": "impact-sounds/impactWood_medium_000",
       "take": 1,
       "range": {
@@ -1840,10 +2628,24 @@
         "duration": 0.329773,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4482
+      "priorEncodingCorrectionDb": 0.4482,
+      "description": "Solid wood impact",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "impactWood_medium_000.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "8526ac1715542e37d2d8": {
-      "file": "palette/attack-8526ac1715542e37d2d8-67f4e3bc96.mp3",
+    "stone-scatter-attack": {
+      "file": "palette/stone-scatter-attack.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
       "take": 1,
       "range": {
@@ -1867,10 +2669,23 @@
         "duration": 0.490907,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.6676
+      "priorEncodingCorrectionDb": -0.6676,
+      "description": "Stone scatter",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "stones_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "1f51992dc1ab5fc5ce83": {
-      "file": "palette/cue-1f51992dc1ab5fc5ce83-6a7b9dbd45.mp3",
+    "ragged-breath": {
+      "file": "palette/ragged-breath.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/breath.ogg",
       "take": 1,
       "range": {
@@ -1894,10 +2709,23 @@
         "duration": 0.500907,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2516
+      "priorEncodingCorrectionDb": 0.2516,
+      "description": "Ragged breath",
+      "uses": [
+        "selection"
+      ],
+      "originalFile": "breath.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "2a67452288e81877a635": {
-      "file": "palette/attack-2a67452288e81877a635-34cdecfc01.mp3",
+    "burp": {
+      "file": "palette/burp.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/burp_02.ogg",
       "take": 1,
       "range": {
@@ -1921,10 +2749,23 @@
         "duration": 0.700408,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3674
+      "priorEncodingCorrectionDb": 0.3674,
+      "description": "Burp",
+      "uses": [
+        "attack"
+      ],
+      "originalFile": "burp_02.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-creature-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "404742b3fb08fbb7a8fc": {
-      "file": "palette/terrain-404742b3fb08fbb7a8fc-4d84619c7e.mp3",
+    "stone-scatter-terrain": {
+      "file": "palette/stone-scatter-terrain.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
       "take": 1,
       "range": {
@@ -1948,10 +2789,23 @@
         "duration": 0.490907,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": -0.6676
+      "priorEncodingCorrectionDb": -0.6676,
+      "description": "Stone scatter",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "stones_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "58891746d1c8d3fbef67": {
-      "file": "palette/terrain-58891746d1c8d3fbef67-284c9d911c.mp3",
+    "soft-grass-footstep": {
+      "file": "palette/soft-grass-footstep.mp3",
       "recording": "edits/plains-grass-003-soft-v1",
       "take": 1,
       "range": {
@@ -1991,10 +2845,24 @@
         "duration": 0.141701,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.6242
+      "priorEncodingCorrectionDb": 0.6242,
+      "description": "Soft grass footstep",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "footstep_grass_003.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "43b8c84c6d50d9faa7f2": {
-      "file": "palette/terrain-43b8c84c6d50d9faa7f2-a6cb38d39a.mp3",
+    "enchanted-forest-rustle": {
+      "file": "palette/enchanted-forest-rustle.mp3",
       "recording": "edits/forest-book-03-short-v1",
       "take": 1,
       "range": {
@@ -2046,10 +2914,23 @@
         "duration": 0.440204,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.5599
+      "priorEncodingCorrectionDb": 0.5599,
+      "description": "Enchanted forest rustle",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "book_03.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "7af2410fabd7d201f661": {
-      "file": "palette/terrain-7af2410fabd7d201f661-51df43008b.mp3",
+    "hill-wind": {
+      "file": "palette/hill-wind.mp3",
       "recording": "current/terrain-hill-1",
       "take": 1,
       "range": {
@@ -2057,7 +2938,7 @@
         "duration": 0.403
       },
       "source": "Hexcommand scripts/generate-sfx.py",
-      "license": "Existing Hexcommand asset",
+      "license": "NOASSERTION",
       "levelClass": "terrain",
       "assetSha256": "51df43008b96b7067cecbb7e34c060aca6f21352710a06fcb2d385191ba22f5d",
       "originalSha256": "bb0cfffbb8cce33ec666286f534a90a372c8767fe3a0bf2b7d9250f4cb630b19",
@@ -2073,10 +2954,19 @@
         "duration": 0.403016,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.236
+      "priorEncodingCorrectionDb": 0.236,
+      "description": "Hill wind",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "terrain-hill-1.wav",
+      "originType": "first-party-generated",
+      "licenseNote": "Original Hex Command generated cue. No separate public license declaration was found; not represented as third-party CC0.",
+      "generator": "scripts/generate-sfx.py",
+      "sourceRepository": "https://github.com/juliancoffeelab/codexcloud"
     },
-    "a1c9216caaa716cbbd7d": {
-      "file": "palette/terrain-a1c9216caaa716cbbd7d-b7a0858495.mp3",
+    "water-ripple": {
+      "file": "palette/water-ripple.mp3",
       "recording": "current/terrain-water-1",
       "take": 1,
       "range": {
@@ -2084,7 +2974,7 @@
         "duration": 0.2066
       },
       "source": "Hexcommand scripts/generate-sfx.py",
-      "license": "Existing Hexcommand asset",
+      "license": "NOASSERTION",
       "levelClass": "terrain",
       "assetSha256": "b7a0858495a4d2d9be08554e14b29b78184aee668537e3f3e492e3a6111a265b",
       "originalSha256": "4e6e12b7ebfbd2f20b064bad667eace7e734af5eb6ae2ec4313ede08d8bf16a7",
@@ -2100,10 +2990,19 @@
         "duration": 0.206599,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3824
+      "priorEncodingCorrectionDb": 0.3824,
+      "description": "Water ripple",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "terrain-water-1.wav",
+      "originType": "first-party-generated",
+      "licenseNote": "Original Hex Command generated cue. No separate public license declaration was found; not represented as third-party CC0.",
+      "generator": "scripts/generate-sfx.py",
+      "sourceRepository": "https://github.com/juliancoffeelab/codexcloud"
     },
-    "6c4a106f6897dc5219c1": {
-      "file": "palette/terrain-6c4a106f6897dc5219c1-e083f0d61c.mp3",
+    "village-contact": {
+      "file": "palette/village-contact.mp3",
       "recording": "current/terrain-village-1",
       "take": 1,
       "range": {
@@ -2111,7 +3010,7 @@
         "duration": 0.253
       },
       "source": "Hexcommand scripts/generate-sfx.py",
-      "license": "Existing Hexcommand asset",
+      "license": "NOASSERTION",
       "levelClass": "terrain",
       "assetSha256": "e083f0d61c343db2bd20547fb85a2702402e8d3f768c640e59069ce2eb8996a6",
       "originalSha256": "9ec693421e5f57001dbc6ae14299a4431bf001d01213b58edcc51f2f6991f934",
@@ -2127,10 +3026,19 @@
         "duration": 0.253016,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2216
+      "priorEncodingCorrectionDb": 0.2216,
+      "description": "Village contact",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "terrain-village-1.wav",
+      "originType": "first-party-generated",
+      "licenseNote": "Original Hex Command generated cue. No separate public license declaration was found; not represented as third-party CC0.",
+      "generator": "scripts/generate-sfx.py",
+      "sourceRepository": "https://github.com/juliancoffeelab/codexcloud"
     },
-    "8b06cb5fb76a2136238e": {
-      "file": "palette/terrain-8b06cb5fb76a2136238e-a2d89aeed4.mp3",
+    "light-metal-contact": {
+      "file": "palette/light-metal-contact.mp3",
       "recording": "edits/keep-metal-light-v1",
       "take": 1,
       "range": {
@@ -2177,10 +3085,24 @@
         "duration": 0.236508,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3475
+      "priorEncodingCorrectionDb": 0.3475,
+      "description": "Light metal contact",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "impactMetal_light_000.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "208c2e44527217fc0e2c": {
-      "file": "palette/terrain-208c2e44527217fc0e2c-3ba58e1b31.mp3",
+    "wooden-fort-contact": {
+      "file": "palette/wooden-fort-contact.mp3",
       "recording": "edits/fort-wood-v1",
       "take": 1,
       "range": {
@@ -2227,10 +3149,24 @@
         "duration": 0.141701,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4418
+      "priorEncodingCorrectionDb": 0.4418,
+      "description": "Wooden fort contact",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "impactWood_light_000.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "79a23cccff86b4327237": {
-      "file": "palette/terrain-79a23cccff86b4327237-d8b1ffdca4.mp3",
+    "sacred-grove-magic": {
+      "file": "palette/sacred-grove-magic.mp3",
       "recording": "edits/grove-short-magic-v2",
       "take": 1,
       "range": {
@@ -2278,10 +3214,23 @@
         "duration": 0.305011,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2795
+      "priorEncodingCorrectionDb": 0.2795,
+      "description": "Sacred grove magic",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "magical_2.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "jaggedstone/magic-spell-sfx",
+      "sourceEvidence": [
+        "licenses/jaggedstone-magic-spell-sfx-source.txt",
+        "licenses/jaggedstone-magic-spell-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "dfb34fb86e2d2cc7519b": {
-      "file": "palette/terrain-dfb34fb86e2d2cc7519b-5e675a2062.mp3",
+    "door-movement": {
+      "file": "palette/door-movement.mp3",
       "recording": "edits/house-door-soft-v1",
       "take": 1,
       "range": {
@@ -2328,10 +3277,24 @@
         "duration": 0.446009,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2743
+      "priorEncodingCorrectionDb": 0.2743,
+      "description": "Door movement",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "doorClose_1.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/rpg-audio",
+      "sourceEvidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "8e4ebe6e7b343e7ecde3": {
-      "file": "palette/terrain-8e4ebe6e7b343e7ecde3-34578f4518.mp3",
+    "distant-mining": {
+      "file": "palette/distant-mining.mp3",
       "recording": "edits/mountain-mining-soft-v1",
       "take": 1,
       "range": {
@@ -2378,10 +3341,24 @@
         "duration": 0.45,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4164
+      "priorEncodingCorrectionDb": 0.4164,
+      "description": "Distant mining",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "impactMining_000.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "5ba8ecfff6a14827467f": {
-      "file": "palette/cue-5ba8ecfff6a14827467f-39ac3ddf90.mp3",
+    "quarry-strike": {
+      "file": "palette/quarry-strike.mp3",
       "recording": "edits/quarry-mining-v1",
       "take": 1,
       "range": {
@@ -2428,10 +3405,24 @@
         "duration": 0.63059,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.3605
+      "priorEncodingCorrectionDb": 0.3605,
+      "description": "Quarry strike",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "impactMining_000.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "dedfeaa0f001aa1742c4": {
-      "file": "palette/terrain-dedfeaa0f001aa1742c4-18d0c9c0eb.mp3",
+    "quiet-fire-crackle": {
+      "file": "palette/quiet-fire-crackle.mp3",
       "recording": "edits/burned-fire-soft-onset-v3",
       "take": 1,
       "range": {
@@ -2478,10 +3469,23 @@
         "duration": 0.45,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.0998
+      "priorEncodingCorrectionDb": 0.0998,
+      "description": "Quiet fire crackle",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "fire-1.wav",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "antumdeluge/fire-crackling",
+      "sourceEvidence": [
+        "licenses/antumdeluge-fire-crackling-source.txt",
+        "licenses/antumdeluge-fire-crackling-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "0afd3d28fe927744a881": {
-      "file": "palette/terrain-0afd3d28fe927744a881-7178c81960.mp3",
+    "plain-ground-contact": {
+      "file": "palette/plain-ground-contact.mp3",
       "recording": "current/terrain-plains-1",
       "take": 1,
       "range": {
@@ -2489,7 +3493,7 @@
         "duration": 0.213
       },
       "source": "Hexcommand scripts/generate-sfx.py",
-      "license": "Existing Hexcommand asset",
+      "license": "NOASSERTION",
       "levelClass": "terrain",
       "assetSha256": "7178c8196072c73e49ad2ea0878276aed8921bca33e6fa8dcfcbfa76eeec78c2",
       "originalSha256": "82c2be963d1d21495070b468bc72b64b95fff40a8504bc961597610f73b1d0f4",
@@ -2505,10 +3509,19 @@
         "duration": 0.213016,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.0321
+      "priorEncodingCorrectionDb": 0.0321,
+      "description": "Plain ground contact",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "terrain-plains-1.wav",
+      "originType": "first-party-generated",
+      "licenseNote": "Original Hex Command generated cue. No separate public license declaration was found; not represented as third-party CC0.",
+      "generator": "scripts/generate-sfx.py",
+      "sourceRepository": "https://github.com/juliancoffeelab/codexcloud"
     },
-    "1c229af7248cff8c22f4": {
-      "file": "palette/terrain-1c229af7248cff8c22f4-ad268314ec.mp3",
+    "courtyard-cue": {
+      "file": "palette/courtyard-cue.mp3",
       "recording": "current/terrain-keep-1",
       "take": 1,
       "range": {
@@ -2516,7 +3529,7 @@
         "duration": 0.1816
       },
       "source": "Hexcommand scripts/generate-sfx.py",
-      "license": "Existing Hexcommand asset",
+      "license": "NOASSERTION",
       "levelClass": "terrain",
       "assetSha256": "ad268314ecbf7763eb19488d6e60b2bde036b37a1ca677f6d09955ad30042442",
       "originalSha256": "342347d1b23ea82a8fb146862029cc19643581e892344c66f19108a6d0299bab",
@@ -2532,10 +3545,19 @@
         "duration": 0.181587,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4163
+      "priorEncodingCorrectionDb": 0.4163,
+      "description": "Courtyard cue",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "terrain-keep-1.wav",
+      "originType": "first-party-generated",
+      "licenseNote": "Original Hex Command generated cue. No separate public license declaration was found; not represented as third-party CC0.",
+      "generator": "scripts/generate-sfx.py",
+      "sourceRepository": "https://github.com/juliancoffeelab/codexcloud"
     },
-    "6a215df7cb725eee9e56": {
-      "file": "palette/cue-6a215df7cb725eee9e56-bcd395a720.mp3",
+    "heavy-bell": {
+      "file": "palette/heavy-bell.mp3",
       "recording": "impact-sounds/impactBell_heavy_000",
       "take": 1,
       "range": {
@@ -2559,10 +3581,24 @@
         "duration": 1.150454,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.4364
+      "priorEncodingCorrectionDb": 0.4364,
+      "description": "Heavy bell",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "impactBell_heavy_000.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "kenney/impact-sounds",
+      "sourceEvidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "69b107702f3d02ae8e8e": {
-      "file": "palette/terrain-69b107702f3d02ae8e8e-f7c2a20e74.mp3",
+    "wooden-rattle-terrain": {
+      "file": "palette/wooden-rattle-terrain.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
       "take": 1,
       "range": {
@@ -2586,10 +3622,23 @@
         "duration": 0.296395,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2726
+      "priorEncodingCorrectionDb": 0.2726,
+      "description": "Wooden rattle",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "item_wood_03.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "c02e02577301d78c1651": {
-      "file": "palette/terrain-c02e02577301d78c1651-9e4922173a.mp3",
+    "ritual-magic": {
+      "file": "palette/ritual-magic.mp3",
       "recording": "edits/ritual-fout-03-short-v1",
       "take": 1,
       "range": {
@@ -2638,10 +3687,23 @@
         "duration": 0.45,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.2597
+      "priorEncodingCorrectionDb": 0.2597,
+      "description": "Ritual magic",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "fout-03.flac",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "qubodup/3-dark-magic-spells",
+      "sourceEvidence": [
+        "licenses/qubodup-3-dark-magic-spells-source.txt",
+        "licenses/qubodup-3-dark-magic-spells-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "40fcbdbdc6d925647e3f": {
-      "file": "palette/terrain-40fcbdbdc6d925647e3f-810ff9e010.mp3",
+    "arcane-pulse-terrain": {
+      "file": "palette/arcane-pulse-terrain.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
       "take": 1,
       "range": {
@@ -2665,10 +3727,23 @@
         "duration": 0.530794,
         "runtimeReferenceMasterGain": 1
       },
-      "priorEncodingCorrectionDb": 0.5236
+      "priorEncodingCorrectionDb": 0.5236,
+      "description": "Arcane pulse",
+      "uses": [
+        "terrain"
+      ],
+      "originalFile": "spell_01.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     },
-    "038caaa5a9591a170323": {
-      "file": "palette/move-038caaa5a9591a170323-5730dcba85.mp3",
+    "wooden-figurine-move": {
+      "file": "palette/wooden-figurine-move.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/wood_04.ogg",
       "take": 1,
       "range": {
@@ -2692,8 +3767,136 @@
         "duration": 0.321293,
         "runtimeReferenceMasterGain": 1
       },
-      "notes": "Wood 04 figurine placement for actual board moves; matched to the former select-1 board click. UI/target-selection clicks retain select-1."
+      "notes": "Wood 04 figurine placement for actual board moves; matched to the former select-1 board click. UI/target-selection clicks retain select-1.",
+      "description": "Wooden figurine move",
+      "uses": [
+        "move"
+      ],
+      "originalFile": "wood_04.ogg",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseText": "CC0-1.0.txt",
+      "sourcePack": "rubberduck/80-cc0-rpg-sfx",
+      "sourceEvidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ],
+      "originType": "third-party-recording"
     }
   },
-  "runtimeReferenceMasterGain": 1
+  "runtimeReferenceMasterGain": 1,
+  "rangeUnits": "seconds",
+  "takeNumbering": "one-based; range refers to the recording field; derived edits include their original-source processingRecipe",
+  "sourcePacks": {
+    "rubberduck/80-cc0-creature-sfx": {
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/80-cc0-creature-sfx",
+      "evidence": [
+        "licenses/rubberduck-80-cc0-creature-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-creature-sfx-credits.txt"
+      ]
+    },
+    "rubberduck/80-cc0-rpg-sfx": {
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "evidence": [
+        "licenses/rubberduck-80-cc0-rpg-sfx-source.txt",
+        "licenses/rubberduck-80-cc0-rpg-sfx-credits.txt"
+      ]
+    },
+    "kenney/rpg-audio": {
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "source": "https://kenney.nl/assets/rpg-audio",
+      "evidence": [
+        "licenses/kenney-rpg-audio-source.txt",
+        "licenses/kenney-rpg-audio-credits.txt",
+        "licenses/kenney-rpg-audio-license.txt"
+      ]
+    },
+    "still-north-media/weapon-textures": {
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
+      "evidence": [
+        "licenses/still-north-media-weapon-textures-source.txt",
+        "licenses/still-north-media-weapon-textures-credits.txt"
+      ]
+    },
+    "kyles/fish-slap": {
+      "creator": "kyles; upstream excerpt edited by sadboysuss",
+      "license": "CC0-1.0",
+      "source": "https://freesound.org/people/kyles/sounds/450830/",
+      "evidence": [
+        "licenses/kyles-fish-slap-source.txt",
+        "licenses/kyles-fish-slap-credits.txt"
+      ]
+    },
+    "denischardonnet/horse-vocals": {
+      "creator": "DenisChardonnet; distributed by Joseph SARDIN / BigSoundBank",
+      "license": "CC0-1.0",
+      "source": "https://bigsoundbank.com/neighing-of-a-horse-1-s0284.html",
+      "evidence": [
+        "licenses/denischardonnet-horse-vocals-source.txt",
+        "licenses/denischardonnet-horse-vocals-credits.txt"
+      ]
+    },
+    "qubodup/dog-snarl-grunt-grumble": {
+      "creator": "qubodup",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/dog-snarl-grunt-grumble",
+      "evidence": [
+        "licenses/qubodup-dog-snarl-grunt-grumble-source.txt",
+        "licenses/qubodup-dog-snarl-grunt-grumble-credits.txt"
+      ]
+    },
+    "kenney/impact-sounds": {
+      "creator": "Kenney Vleugels (Kenney.nl)",
+      "license": "CC0-1.0",
+      "source": "https://kenney.nl/assets/impact-sounds",
+      "evidence": [
+        "licenses/kenney-impact-sounds-source.txt",
+        "licenses/kenney-impact-sounds-credits.txt",
+        "licenses/kenney-impact-sounds-license.txt"
+      ]
+    },
+    "still-north-media/weapon-impacts": {
+      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/node/146863",
+      "evidence": [
+        "licenses/still-north-media-weapon-impacts-source.txt",
+        "licenses/still-north-media-weapon-impacts-credits.txt"
+      ]
+    },
+    "qubodup/3-dark-magic-spells": {
+      "creator": "qubodup",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/3-dark-magic-spells",
+      "evidence": [
+        "licenses/qubodup-3-dark-magic-spells-source.txt",
+        "licenses/qubodup-3-dark-magic-spells-credits.txt"
+      ]
+    },
+    "jaggedstone/magic-spell-sfx": {
+      "creator": "JaggedStone",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/magic-spell-sfx",
+      "evidence": [
+        "licenses/jaggedstone-magic-spell-sfx-source.txt",
+        "licenses/jaggedstone-magic-spell-sfx-credits.txt"
+      ]
+    },
+    "antumdeluge/fire-crackling": {
+      "creator": "AntumDeluge",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/fire-crackling",
+      "evidence": [
+        "licenses/antumdeluge-fire-crackling-source.txt",
+        "licenses/antumdeluge-fire-crackling-credits.txt"
+      ]
+    }
+  },
+  "licenseScope": "License fields describe original source material. Processing and normalization records do not declare a separate project-wide license for newly authored contributions."
 }
