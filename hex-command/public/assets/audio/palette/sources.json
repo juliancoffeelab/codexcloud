@@ -1,10 +1,10 @@
 {
   "schema": 1,
   "license": "CC0-1.0 for imported recordings; archived game cues retain the project license",
-  "conversion": "Audited selected take only; mono 44.1kHz 96kbps MP3; playback gains match approved Sound Lab at 55% to game master 0.29. No take/source rotation.",
+  "conversion": "Separate levelled exports per playback context. Audited chosen take, mono 44.1kHz/160kbps MP3; loudness and encoding correction baked into each file at unity game master. No runtime per-clip gain, take or source rotation. Legacy UI cues retain their original fixed 0.29 level.",
   "clips": {
     "c2fdf756bcb22f667fc9": {
-      "file": "palette/eec3744ee3c3673efa87.mp3",
+      "file": "palette/cue-c2fdf756bcb22f667fc9-be53e64a46.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
       "take": 1,
       "range": {
@@ -16,14 +16,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/roar_03.ogg",
       "originalSha256": "983396c808eb658ed3bd223ffaf9ea7f756dba7bc45ecc3fde117083026a4556",
-      "gameGainDb": -6.222,
       "levelClass": null,
-      "assetSha256": "5b338290cca47ef399fbf3e120829ab7b36211df2433512e419c7ed22b92ea96",
-      "conversionGainCorrectionDb": 0.0587,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "be53e64a462271cffb6f3aefde9e89a0122dcab5a2ef1a886da6a9efb1099a28",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "5b338290cca47ef399fbf3e120829ab7b36211df2433512e419c7ed22b92ea96",
+        "appliedGainDb": -16.5367841,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2984,
+        "outputPeakDbFS": -14.6034,
+        "duration": 0.45839,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.0587
     },
     "c535fbb07e3ea8d120aa": {
-      "file": "palette/b435ef876bc215a76de4.mp3",
+      "file": "palette/cue-c535fbb07e3ea8d120aa-afad8631be.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
       "take": 1,
       "range": {
@@ -35,14 +43,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/creature_roar_03.ogg",
       "originalSha256": "3571f6372012fdebb2a38ef89e18a6137b3f17d519f1259aafeb166dbdd94195",
-      "gameGainDb": -10.4727,
       "levelClass": null,
-      "assetSha256": "eedeef01aeec5270aea404f6d4e9144f4b24ff24db39407d74fc0bfae8797d3f",
-      "conversionGainCorrectionDb": 0.328,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "afad8631beed7fb0c008ab55f8c7a265be3dd5e96eb1ef4915d60376a6b36e81",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "eedeef01aeec5270aea404f6d4e9144f4b24ff24db39407d74fc0bfae8797d3f",
+        "appliedGainDb": -20.7792728,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2925,
+        "outputPeakDbFS": -19.1864,
+        "duration": 0.87,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.328
     },
     "7439e556025516dd3513": {
-      "file": "palette/bc86adbf5072da2d2b87.mp3",
+      "file": "palette/cue-7439e556025516dd3513-89150e2696.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/grunt_04.ogg",
       "take": 1,
       "range": {
@@ -54,14 +70,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/grunt_04.ogg",
       "originalSha256": "4fbc2b361ce055a3b94d43489108582313dd999e5761d4e69d59c9c7abcec295",
-      "gameGainDb": -5.133,
       "levelClass": null,
-      "assetSha256": "add1d22606765dd0e9324dff4e15c98ae1fba052cbc6fa53fa5dab6d6c46fc81",
-      "conversionGainCorrectionDb": 0.3777,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "89150e269673f6dafb632b7d82c015c2d59ec94ab937a6dda35b33ef41e33b2a",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "add1d22606765dd0e9324dff4e15c98ae1fba052cbc6fa53fa5dab6d6c46fc81",
+        "appliedGainDb": -15.4390018,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2935,
+        "outputPeakDbFS": -14.0609,
+        "duration": 0.505896,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3777
     },
     "50806fc7df5e0bccc3cf": {
-      "file": "palette/a3fda4a1fed3500ff14b.mp3",
+      "file": "palette/attack-50806fc7df5e0bccc3cf-40a3f936ce.mp3",
       "recording": "edits/knife-slice-2-no-hit-v1",
       "take": 1,
       "range": {
@@ -88,14 +112,22 @@
           "afade=t=out:st=0.230:d=0.06"
         ]
       },
-      "gameGainDb": -6.1576,
       "levelClass": "attack",
-      "assetSha256": "12d1fec07892888384a891d10ddadc596427ab0d4f35b341690c633ef428b73f",
-      "conversionGainCorrectionDb": 0.1531,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "40a3f936ceb41a9e6538ee5b695cf81f346f48d619abbafb83119844dd076f9b",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "12d1fec07892888384a891d10ddadc596427ab0d4f35b341690c633ef428b73f",
+        "appliedGainDb": -16.4032932,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2645,
+        "outputPeakDbFS": -15.2491,
+        "duration": 0.29,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.1531
     },
     "3e6310e5bc404ae19d74": {
-      "file": "palette/dfe74381e6a57787a6d7.mp3",
+      "file": "palette/attack-3e6310e5bc404ae19d74-34b2c8cc72.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
       "take": 1,
       "range": {
@@ -107,14 +139,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/grunt_01.ogg",
       "originalSha256": "73ee84f2bb3e1b371a72dd66a09f150c98c9000bcb735c3bdd7f607e59385206",
-      "gameGainDb": -2.0213,
       "levelClass": "attack",
-      "assetSha256": "0ac76c75dd087fb7089ef69b6ec782d44d596fc189779dd5eaf1b98304c06110",
-      "conversionGainCorrectionDb": -0.5506,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "34b2c8cc7294e4347853043138e12b81faa7b97895c92b5b8ef0a478e505c339",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "0ac76c75dd087fb7089ef69b6ec782d44d596fc189779dd5eaf1b98304c06110",
+        "appliedGainDb": -12.3269468,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2917,
+        "outputPeakDbFS": -17.0879,
+        "duration": 0.706372,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.5506
     },
     "7f84ad9347df544dfe68": {
-      "file": "palette/da5cb7087e09692e1259.mp3",
+      "file": "palette/cue-7f84ad9347df544dfe68-c2d232dcc3.mp3",
       "recording": "rpg-audio/cloth2",
       "take": 1,
       "range": {
@@ -126,14 +166,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/rpg-audio/Audio/cloth2.ogg",
       "originalSha256": "8a7451193c38bc05483aec25dd193e163a15d44cf7fff04ac7912573231b0201",
-      "gameGainDb": 5.4847,
       "levelClass": null,
-      "assetSha256": "dc0aee3735db5023dc8a1ae14556aae479dcaa636853879144ea1f8252ba56d3",
-      "conversionGainCorrectionDb": 0.3454,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "c2d232dcc3b12677c07e37de2a72b47d49220d68a11d01605881e198db4cbd95",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "dc0aee3735db5023dc8a1ae14556aae479dcaa636853879144ea1f8252ba56d3",
+        "appliedGainDb": -4.8258855,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3024,
+        "outputPeakDbFS": -13.324,
+        "duration": 0.415079,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3454
     },
     "3a2f6220389148df7d39": {
-      "file": "palette/94e4451b6a313203eb9f.mp3",
+      "file": "palette/attack-3a2f6220389148df7d39-f6adc29435.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
       "take": 1,
       "range": {
@@ -145,14 +193,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/spell_fire_07.ogg",
       "originalSha256": "bb13cef9c0b0b4ec7f9335c356b14814c88418abd85dd3747cb62469e9ada93f",
-      "gameGainDb": 8.6022,
       "levelClass": "attack",
-      "assetSha256": "c0791b4ea690abc4d867bf16e638d262240ff65f839f5f0c48a169e1a9cc0ca3",
-      "conversionGainCorrectionDb": 0.2729,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "f6adc294356d0e7a47169ad5b516ce5bf2a6bb7431778c0c6e0a49727478cd91",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "c0791b4ea690abc4d867bf16e638d262240ff65f839f5f0c48a169e1a9cc0ca3",
+        "appliedGainDb": -1.7216584,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.304,
+        "outputPeakDbFS": -17.1436,
+        "duration": 0.520794,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2729
     },
     "038454dd45347855378b": {
-      "file": "palette/9200f3c12d724251755d.mp3",
+      "file": "palette/cue-038454dd45347855378b-41f5910981.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg",
       "take": 1,
       "range": {
@@ -164,14 +220,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/creature_misc_05.ogg",
       "originalSha256": "09cdd7df30a0f3918cb8a3ce86b999d260c7f289c2049122b550cab65bf9fa9c",
-      "gameGainDb": -2.2997,
       "levelClass": null,
-      "assetSha256": "81811fa6d9396886b68fe70ba86d0939f51a8d94c8a850a66d120e4f55011856",
-      "conversionGainCorrectionDb": 0.281,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "41f5910981f7f28bf662817a25ec87ef73460ee278a23646ad2da8b5887aea15",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "81811fa6d9396886b68fe70ba86d0939f51a8d94c8a850a66d120e4f55011856",
+        "appliedGainDb": -12.603034,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2883,
+        "outputPeakDbFS": -14.0349,
+        "duration": 0.460998,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.281
     },
     "ce5a4b87904953414717": {
-      "file": "palette/8f3919ef19d89bba4b64.mp3",
+      "file": "palette/attack-ce5a4b87904953414717-5873bf2049.mp3",
       "recording": "rpg-audio/drawKnife1",
       "take": 1,
       "range": {
@@ -183,14 +247,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/rpg-audio/Audio/drawKnife1.ogg",
       "originalSha256": "276403e72c3b71c47bc24db3083970c23f8e5551ffa78f436f83483c56f3f0bb",
-      "gameGainDb": 21.6541,
       "levelClass": "attack",
-      "assetSha256": "ec40ffa7b05b517912b4f08b2c1862b29cc8a1bdfbafc8710b6fc9124b1b3bea",
-      "conversionGainCorrectionDb": 0.8748,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "5873bf20490da7fb7d11a2b4bde6201af4c6872e8f59d4cd19e09732f207cd86",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "ec40ffa7b05b517912b4f08b2c1862b29cc8a1bdfbafc8710b6fc9124b1b3bea",
+        "appliedGainDb": 11.444495,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2665,
+        "outputPeakDbFS": -13.0967,
+        "duration": 0.399705,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.8748
     },
     "ac9f11aa3d1afb1cb5ec": {
-      "file": "palette/db1b85e30e3ad5d5ecd2.mp3",
+      "file": "palette/cue-ac9f11aa3d1afb1cb5ec-8859e78ecc.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
       "take": 1,
       "range": {
@@ -202,14 +274,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/eat_01.ogg",
       "originalSha256": "f17305072d3d0ca5556f72db8701866329d33561ca5df086e501f2a52e2022df",
-      "gameGainDb": -0.7008,
       "levelClass": null,
-      "assetSha256": "9652a7ed0e5e03b20f6a3b109ca5915f924af6cb97081d0f58893efff4c8dcbc",
-      "conversionGainCorrectionDb": -0.3901,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "8859e78ecce4c7ca85fdf4a652ce8d880cf85ab518aea691c1d9588d3247dfcf",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "9652a7ed0e5e03b20f6a3b109ca5915f924af6cb97081d0f58893efff4c8dcbc",
+        "appliedGainDb": -10.9614547,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2615,
+        "outputPeakDbFS": -12.3079,
+        "duration": 0.515896,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.3901
     },
     "cd860a2f955d73aadba4": {
-      "file": "palette/9c295023e7e233e0c7b7.mp3",
+      "file": "palette/cue-cd860a2f955d73aadba4-f07983ac0c.mp3",
       "recording": "rpg-audio/cloth3",
       "take": 1,
       "range": {
@@ -221,14 +301,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/rpg-audio/Audio/cloth3.ogg",
       "originalSha256": "a48632d17a4f1416541d261a32a31612e01267144c407fa3ecab3ff410f0085b",
-      "gameGainDb": 7.5059,
       "levelClass": null,
-      "assetSha256": "0410601a898e3a84acd528d89e73634dc39d6149064b01628cc4e832f4e629a7",
-      "conversionGainCorrectionDb": -0.2134,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "f07983ac0ced349a2c0322329156fb6dfbf601c8fd98998450b763bed2d93f37",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "0410601a898e3a84acd528d89e73634dc39d6149064b01628cc4e832f4e629a7",
+        "appliedGainDb": -2.8004928,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2927,
+        "outputPeakDbFS": -12.7639,
+        "duration": 0.476576,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.2134
     },
     "489d29a140c68e2945af": {
-      "file": "palette/799f35cf888c7dda3572.mp3",
+      "file": "palette/attack-489d29a140c68e2945af-13913a3a4b.mp3",
       "recording": "edits/snake-belt-texture-v2",
       "take": 1,
       "range": {
@@ -255,14 +343,22 @@
         ],
         "preserveLevel": false
       },
-      "gameGainDb": 12.578,
       "levelClass": "attack",
-      "assetSha256": "6b2edaec5e9a30febe1279766dd4d853a3772dce5cab572fecde8f526e777052",
-      "conversionGainCorrectionDb": 0.1587,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "13913a3a4b1672a6dec76ce62c75492015226c40d76a4821e1c151164517fe6e",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "6b2edaec5e9a30febe1279766dd4d853a3772dce5cab572fecde8f526e777052",
+        "appliedGainDb": 2.2776249,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2953,
+        "outputPeakDbFS": -15.3881,
+        "duration": 0.595692,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.1587
     },
     "ef1ee89ac3b752927fa6": {
-      "file": "palette/277e8a85caa07ad2f954.mp3",
+      "file": "palette/cue-ef1ee89ac3b752927fa6-89f785f303.mp3",
       "recording": "edits/spider-fletching-take1-short-v1",
       "take": 1,
       "range": {
@@ -290,14 +386,22 @@
           "afade=t=out:st=0.450:d=0.05"
         ]
       },
-      "gameGainDb": 25.7526,
       "levelClass": null,
-      "assetSha256": "0aab234d09cb8568b47381a69c6aa862d15714f2aa7dc7bb7e5527ef0759846a",
-      "conversionGainCorrectionDb": 0.7633,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "89f785f3034ec6f9756f2deb72b85b1971354b22f1bf3989a0fd90cf43999219",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "0aab234d09cb8568b47381a69c6aa862d15714f2aa7dc7bb7e5527ef0759846a",
+        "appliedGainDb": 15.5821058,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2556,
+        "outputPeakDbFS": -8.0127,
+        "duration": 0.5,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.7633
     },
     "bb88422a34ef21ca7d19": {
-      "file": "palette/e85ee80cabff51afbed1.mp3",
+      "file": "palette/cue-bb88422a34ef21ca7d19-d6b0069a60.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
       "take": 1,
       "range": {
@@ -309,14 +413,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/creature_slime_01.ogg",
       "originalSha256": "746d6ef073abfadd43fe184c50c6a2528350d4f566f2c0f54cd51ff0eb665118",
-      "gameGainDb": -1.8336,
       "levelClass": null,
-      "assetSha256": "3ff5e3c4df7fbeff9710715df6d38c1f4154c82d1225019d40fc550decb18ce0",
-      "conversionGainCorrectionDb": 0.3271,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "d6b0069a603be7955193405d694d5b09bab35ca17b1ec2f5f3129d185ca62fc6",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "3ff5e3c4df7fbeff9710715df6d38c1f4154c82d1225019d40fc550decb18ce0",
+        "appliedGainDb": -12.1258642,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2512,
+        "outputPeakDbFS": -14.497,
+        "duration": 0.565692,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3271
     },
     "a226691fdd4ffd2f94db": {
-      "file": "palette/02af775e6c21f8c9718e.mp3",
+      "file": "palette/attack-a226691fdd4ffd2f94db-988004e337.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/spit_01.ogg",
       "take": 1,
       "range": {
@@ -328,14 +440,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/spit_01.ogg",
       "originalSha256": "11185484afda924711008f5e565d0baa5ebb271457c028b7e19b9ed487f8c6bd",
-      "gameGainDb": 0.1706,
       "levelClass": "attack",
-      "assetSha256": "565bb7b0a56c7418dc61e02a8b9db28e5803903060b965b493f0c6c656b2aaf1",
-      "conversionGainCorrectionDb": 0.0413,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "988004e337b0560ff0aaecd810d257d1887cc91891356da328e3382455512570",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "565bb7b0a56c7418dc61e02a8b9db28e5803903060b965b493f0c6c656b2aaf1",
+        "appliedGainDb": -10.1330632,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3216,
+        "outputPeakDbFS": -8.6759,
+        "duration": 0.371202,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.0413
     },
     "46e40cd3d278b8ca4cf5": {
-      "file": "palette/d2216e88d394f725aafc.mp3",
+      "file": "palette/cue-46e40cd3d278b8ca4cf5-d6e73b7580.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
       "take": 1,
       "range": {
@@ -347,14 +467,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/alien_03.ogg",
       "originalSha256": "8e417706c6ca3f7eb99d9500d17bf74ef977d16c540dfa9d695db4721cc30003",
-      "gameGainDb": -5.3849,
       "levelClass": null,
-      "assetSha256": "aa775a6091cd01896156664e4838a26802862c52714a3ba64ec97f04402d336a",
-      "conversionGainCorrectionDb": 0.4158,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "d6e73b75800dfd8ced596cc4a3f068349b53ebcecbaea3ff0f9a7b07a5fa85b1",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "aa775a6091cd01896156664e4838a26802862c52714a3ba64ec97f04402d336a",
+        "appliedGainDb": -15.6920318,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2907,
+        "outputPeakDbFS": -14.4343,
+        "duration": 0.725397,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4158
     },
     "018e21316d2e89dce4ed": {
-      "file": "palette/d2fc62f2f0d7019b2256.mp3",
+      "file": "palette/cue-018e21316d2e89dce4ed-f53abfb535.mp3",
       "recording": "edits/octopus-gurgle-soft-v1",
       "take": 1,
       "range": {
@@ -379,14 +507,22 @@
           "volume=-10dB"
         ]
       },
-      "gameGainDb": 5.9826,
       "levelClass": null,
-      "assetSha256": "9f75a994ac7a8a3211b85e0679ffe28d3ecd0f829d4aca19b2f928a1f66f18ca",
-      "conversionGainCorrectionDb": 0.4233,
-      "referenceGameOutputStrongest50msRmsDbFS": -31.2827
+      "assetSha256": "f53abfb53550c54cc1256e9f3c7b72e38add751e467b4ae98de65e5a6c7fc896",
+      "referenceGameOutputStrongest50msRmsDbFS": -31.2827,
+      "normalization": {
+        "inputFileSha256": "9f75a994ac7a8a3211b85e0679ffe28d3ecd0f829d4aca19b2f928a1f66f18ca",
+        "appliedGainDb": -4.3222806,
+        "targetStrongest50msRmsDbFS": -31.2827,
+        "outputStrongest50msRmsDbFS": -31.283,
+        "outputPeakDbFS": -18.9846,
+        "duration": 0.941678,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4233
     },
     "56526b8d2c6d61b7b01a": {
-      "file": "palette/d2fc62f2f0d7019b2256.mp3",
+      "file": "palette/attack-56526b8d2c6d61b7b01a-5367dd409e.mp3",
       "recording": "edits/octopus-gurgle-soft-v1",
       "take": 1,
       "range": {
@@ -411,14 +547,22 @@
           "volume=-10dB"
         ]
       },
-      "gameGainDb": 10.0353,
       "levelClass": "attack",
-      "assetSha256": "9f75a994ac7a8a3211b85e0679ffe28d3ecd0f829d4aca19b2f928a1f66f18ca",
-      "conversionGainCorrectionDb": 0.426,
-      "referenceGameOutputStrongest50msRmsDbFS": -27.23
+      "assetSha256": "5367dd409e9d173c11de034e43cc9860777876bb6636a3c4c0bd1e24a10fdaf5",
+      "referenceGameOutputStrongest50msRmsDbFS": -27.23,
+      "normalization": {
+        "inputFileSha256": "9f75a994ac7a8a3211b85e0679ffe28d3ecd0f829d4aca19b2f928a1f66f18ca",
+        "appliedGainDb": -0.1710671,
+        "targetStrongest50msRmsDbFS": -27.13,
+        "outputStrongest50msRmsDbFS": -27.1313,
+        "outputPeakDbFS": -14.8338,
+        "duration": 0.941678,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.426
     },
     "2f2da629aaa8970692cd": {
-      "file": "palette/65ccc1ddc9b9ccb463e8.mp3",
+      "file": "palette/cue-2f2da629aaa8970692cd-101b1f65da.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
       "take": 1,
       "range": {
@@ -430,14 +574,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/alien_02.ogg",
       "originalSha256": "a28c192579824352a0177d71d9f2fe32560d17b00fbc16297488bddd07ddcdc9",
-      "gameGainDb": -5.9916,
       "levelClass": null,
-      "assetSha256": "bd42645df5699c886c6a44e44ab997f0502ce388df61b2949f1d85aef42bf7c6",
-      "conversionGainCorrectionDb": -0.2009,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "101b1f65da0ccca56b449085965eea833ecc2c1b9de40715e8374f0082f2cea0",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "bd42645df5699c886c6a44e44ab997f0502ce388df61b2949f1d85aef42bf7c6",
+        "appliedGainDb": -16.3197083,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3215,
+        "outputPeakDbFS": -15.7149,
+        "duration": 0.570703,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.2009
     },
     "177e34470900c0b68b8f": {
-      "file": "palette/faff3722b84acc6b2a73.mp3",
+      "file": "palette/cue-177e34470900c0b68b8f-b0b4f72fa2.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg",
       "take": 1,
       "range": {
@@ -449,14 +601,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/creature_slime_03.ogg",
       "originalSha256": "0edd014144dbce5ff0386647c25e0c206ae3b382a16683240ab188bd926da8eb",
-      "gameGainDb": -0.7234,
       "levelClass": null,
-      "assetSha256": "b84d2985236d6dc40c7042fe90acf5c5143bc925b4a30f9b4ed226cd33f47858",
-      "conversionGainCorrectionDb": 0.6773,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "b0b4f72fa2712fa3d6f6893e701d506d7aa8d0d517e9faa93fd350ecc8dc541a",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "b84d2985236d6dc40c7042fe90acf5c5143bc925b4a30f9b4ed226cd33f47858",
+        "appliedGainDb": -10.9200005,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2388,
+        "outputPeakDbFS": -12.719,
+        "duration": 0.3861,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.6773
     },
     "1a6ccd21007cc5043ae8": {
-      "file": "palette/c35477d49f4231609b34.mp3",
+      "file": "palette/attack-1a6ccd21007cc5043ae8-eedafd552d.mp3",
       "recording": "kyles/fish-slap/fish_drop1.ogg",
       "take": 1,
       "range": {
@@ -468,14 +628,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kyles/fish-slap/fish_drop1.ogg",
       "originalSha256": "69f3432e2433dbc626dcc100918d6ea098b7d1cb2c2c07e462d4178aac28200c",
-      "gameGainDb": 1.6598,
       "levelClass": "attack",
-      "assetSha256": "2d52d8c3b7868146c973a882eabc51f5e957c7db6289b3876173518f09ce740a",
-      "conversionGainCorrectionDb": 0.5205,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "eedafd552de996342239a61fd3b6a1f3d957cee8b72db1d5bfa4b3630001eafc",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "2d52d8c3b7868146c973a882eabc51f5e957c7db6289b3876173518f09ce740a",
+        "appliedGainDb": -8.663755,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2846,
+        "outputPeakDbFS": -7.3967,
+        "duration": 0.146689,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.5205
     },
     "a663115431b9ced218f0": {
-      "file": "palette/fc1b81c32543d423d092.mp3",
+      "file": "palette/cue-a663115431b9ced218f0-570d64b6c3.mp3",
       "recording": "edits/horse-0286-trim-v1",
       "take": 1,
       "range": {
@@ -503,14 +671,22 @@
           "afade=t=out:st=0.393:d=0.012"
         ]
       },
-      "gameGainDb": -0.7466,
       "levelClass": null,
-      "assetSha256": "23cf5a3e4b4edcad1fc569b2a91658983c8ed4d37a797c40995d547febc919a1",
-      "conversionGainCorrectionDb": 0.4141,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "570d64b6c3d19a75ade465252ced524b365a5ba5315103a1522b04fec5a4f0ca",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "23cf5a3e4b4edcad1fc569b2a91658983c8ed4d37a797c40995d547febc919a1",
+        "appliedGainDb": -11.0567179,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2949,
+        "outputPeakDbFS": -13.595,
+        "duration": 0.405011,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4141
     },
     "5cff2015727d5a5b05fb": {
-      "file": "palette/bfaef9652301360208bd.mp3",
+      "file": "palette/cue-5cff2015727d5a5b05fb-0bbe07fcd5.mp3",
       "recording": "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac",
       "take": 1,
       "range": {
@@ -522,14 +698,22 @@
       "license": "CC0-1.0",
       "sourcePath": "qubodup/dog-snarl-grunt-grumble/dog/dog-grumble.flac",
       "originalSha256": "932580aca34cae6c9e8e54736a765e2688e15e4a949d1b039ff59f0465dcaed8",
-      "gameGainDb": -3.5432,
       "levelClass": null,
-      "assetSha256": "a765b37746d90caa8cfd9806e502e627018e4cb837b10c1c3d167fe1634039d9",
-      "conversionGainCorrectionDb": 0.2875,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "0bbe07fcd50de8c7142b7c885bbe7a6f9bd92d8cee3c4f019eaaa2cabb3a66c8",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "a765b37746d90caa8cfd9806e502e627018e4cb837b10c1c3d167fe1634039d9",
+        "appliedGainDb": -13.8510143,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3049,
+        "outputPeakDbFS": -15.9992,
+        "duration": 0.565102,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2875
     },
     "9f2719dfc9bc4d177c8d": {
-      "file": "palette/58f7366cce47f4f94d30.mp3",
+      "file": "palette/cue-9f2719dfc9bc4d177c8d-d3869eec7a.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/howl.ogg",
       "take": 1,
       "range": {
@@ -541,14 +725,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/howl.ogg",
       "originalSha256": "e63e29a219dfbe64724525600f36db7aab6017145650ffbc92763f87181c7825",
-      "gameGainDb": -10.7531,
       "levelClass": null,
-      "assetSha256": "4273cf5505da5b5db8d33b710b07f96353e2d2a0b1d0f90bd7f04d29a29cf0a5",
-      "conversionGainCorrectionDb": 0.3676,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "d3869eec7a194be8e0d345eac1adf2367def0fff902c2ba034b0a5bd2932e150",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "4273cf5505da5b5db8d33b710b07f96353e2d2a0b1d0f90bd7f04d29a29cf0a5",
+        "appliedGainDb": -21.0594878,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2935,
+        "outputPeakDbFS": -21.7283,
+        "duration": 0.545805,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3676
     },
     "416489d1ee464859862a": {
-      "file": "palette/3514156a60f5ebe6abc5.mp3",
+      "file": "palette/attack-416489d1ee464859862a-88dd2c27c9.mp3",
       "recording": "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
       "take": 1,
       "range": {
@@ -560,14 +752,22 @@
       "license": "CC0-1.0",
       "sourcePath": "qubodup/dog-snarl-grunt-grumble/dog/dog-snarl.flac",
       "originalSha256": "086614716a3d402c906079ea3ff1820a993a3fb7f6913653f50f1665eb444cab",
-      "gameGainDb": -3.2551,
       "levelClass": "attack",
-      "assetSha256": "06b215665c8ef99573c1c242671499ffffbe724e9a62255bae10c4f3ff47e453",
-      "conversionGainCorrectionDb": 0.4456,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "88dd2c27c916a6d2d27fdd60f1c3966b7ba7ebc0f7b33facfbc2b41d29d8181b",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "06b215665c8ef99573c1c242671499ffffbe724e9a62255bae10c4f3ff47e453",
+        "appliedGainDb": -13.5562696,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2945,
+        "outputPeakDbFS": -15.6424,
+        "duration": 0.66551,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4456
     },
     "d9e2855603d99027e36d": {
-      "file": "palette/eb49b2cf5bfe8569682d.mp3",
+      "file": "palette/cue-d9e2855603d99027e36d-12c081cf65.mp3",
       "recording": "rpg-audio/beltHandle1",
       "take": 1,
       "range": {
@@ -579,14 +779,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/rpg-audio/Audio/beltHandle1.ogg",
       "originalSha256": "2ef665bd8b65dbe669f4560be38a6d8f04a162e618b15a49e3e71b58e558aab0",
-      "gameGainDb": 3.8624,
       "levelClass": null,
-      "assetSha256": "0ab109ceafc910d44224a2ebdc28ce08d3fc26383d1026d9f682cbc5b5b39bef",
-      "conversionGainCorrectionDb": 0.1031,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "12c081cf654f8b705624fdda7e5a931505ee9235f20757411e47adec88b15d8a",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "0ab109ceafc910d44224a2ebdc28ce08d3fc26383d1026d9f682cbc5b5b39bef",
+        "appliedGainDb": -6.4439717,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3154,
+        "outputPeakDbFS": -10.2249,
+        "duration": 0.256395,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.1031
     },
     "060ee57e392c89dc2612": {
-      "file": "palette/2d9b15798251e8c90ccc.mp3",
+      "file": "palette/cue-060ee57e392c89dc2612-34bee29892.mp3",
       "recording": "edits/death-cough-dwarf-v1",
       "take": 1,
       "range": {
@@ -615,14 +823,22 @@
           "volume=-6dB"
         ]
       },
-      "gameGainDb": -1.0625,
       "levelClass": null,
-      "assetSha256": "689202ba1ec80eff8f2931da36aac04455242c3660596d36cc02f363d5018fc7",
-      "conversionGainCorrectionDb": 0.0582,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "34bee29892e531918bdb7a6d673c8a67018f9afbce8f1054814f68697a3a8892",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "689202ba1ec80eff8f2931da36aac04455242c3660596d36cc02f363d5018fc7",
+        "appliedGainDb": -11.3732922,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3038,
+        "outputPeakDbFS": -16.3946,
+        "duration": 0.36678,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.0582
     },
     "d8c61eba50b2109dc31e": {
-      "file": "palette/e31af778e77a19f9e49e.mp3",
+      "file": "palette/attack-d8c61eba50b2109dc31e-41f3fc62d7.mp3",
       "recording": "impact-sounds/impactMining_001",
       "take": 1,
       "range": {
@@ -634,14 +850,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/impact-sounds/Audio/impactMining_001.ogg",
       "originalSha256": "61235a18de3f3d92118235398222dbf51d448f1be70b1c8bc962b10b86f2d9c6",
-      "gameGainDb": -8.3564,
       "levelClass": "attack",
-      "assetSha256": "15e2662489325905cb054bd227edd71d17afcaf1178a959f836be16834264ca3",
-      "conversionGainCorrectionDb": 0.3943,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "41f3fc62d76f63e79e47f3139d4f9c78e824c5c35d31f7df8805229661c85f60",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "15e2662489325905cb054bd227edd71d17afcaf1178a959f836be16834264ca3",
+        "appliedGainDb": -18.6626686,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2949,
+        "outputPeakDbFS": -17.6637,
+        "duration": 0.545805,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3943
     },
     "cd9bfc6a3ddcebb9b143": {
-      "file": "palette/9e12fb86dca69c01821c.mp3",
+      "file": "palette/cue-cd9bfc6a3ddcebb9b143-7c6ccbc90d.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/chain_01.ogg",
       "take": 1,
       "range": {
@@ -653,14 +877,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/chain_01.ogg",
       "originalSha256": "d376caf0f61384b1d2e0b447f64f06be56d0ee0622ba70dd01cfdd78b3a10687",
-      "gameGainDb": -4.2673,
       "levelClass": null,
-      "assetSha256": "43efff7c0d6deef11ab51c5378fb1229013f6795001648b14a89e8ce28c635d9",
-      "conversionGainCorrectionDb": 0.4434,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "7c6ccbc90dee3a8bc7a6610e632fa0c5ac4b20d70f3cff31055120fbfc74ce63",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "43efff7c0d6deef11ab51c5378fb1229013f6795001648b14a89e8ce28c635d9",
+        "appliedGainDb": -14.4692016,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3223,
+        "outputPeakDbFS": -14.3941,
+        "duration": 0.421111,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4434
     },
     "7d1b3828e8f11adc2b58": {
-      "file": "palette/2f6d4cf819eb2f369a89.mp3",
+      "file": "palette/cue-7d1b3828e8f11adc2b58-2c4f5a47f2.mp3",
       "recording": "rpg-audio/metalPot3",
       "take": 1,
       "range": {
@@ -672,14 +904,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/rpg-audio/Audio/metalPot3.ogg",
       "originalSha256": "d306e5b848f6843332d0ca19f8f7dfe5796aeb56d8273902b085df463273f1dc",
-      "gameGainDb": -12.622,
       "levelClass": null,
-      "assetSha256": "c505dd74e05a8598047bc67d78ea7879f3cc86950a119f405b966a20508b2a98",
-      "conversionGainCorrectionDb": -0.1813,
-      "referenceGameOutputStrongest50msRmsDbFS": -25.2927
+      "assetSha256": "2c4f5a47f20352891120e88d36eaea73c470e41922f57836929e42acaf83d56c",
+      "referenceGameOutputStrongest50msRmsDbFS": -25.2927,
+      "normalization": {
+        "inputFileSha256": "c505dd74e05a8598047bc67d78ea7879f3cc86950a119f405b966a20508b2a98",
+        "appliedGainDb": -22.9178278,
+        "targetStrongest50msRmsDbFS": -25.2927,
+        "outputStrongest50msRmsDbFS": -25.2983,
+        "outputPeakDbFS": -18.6007,
+        "duration": 0.700408,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.1813
     },
     "4a58d311fd56ff1cbc4e": {
-      "file": "palette/99ff775ddb45374b2310.mp3",
+      "file": "palette/cue-4a58d311fd56ff1cbc4e-e3e6c7e359.mp3",
       "recording": "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav",
       "take": 1,
       "range": {
@@ -691,14 +931,22 @@
       "license": "CC0-1.0",
       "sourcePath": "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav",
       "originalSha256": "6db46e24f26ba2555049d1d9cc8d57a1fd217abfafa89a3048bb38c9ebb911d5",
-      "gameGainDb": 8.7492,
       "levelClass": null,
-      "assetSha256": "adaa71ea74c6ddedc6578e30681fd79b27b0855829b0c6541d54b69bc448ce41",
-      "conversionGainCorrectionDb": 0.4999,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "e3e6c7e35918fed74179ef61c87298aedb4596ef6fe149ec3f554dc4f7ec6384",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "adaa71ea74c6ddedc6578e30681fd79b27b0855829b0c6541d54b69bc448ce41",
+        "appliedGainDb": -1.5677891,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2828,
+        "outputPeakDbFS": -13.0135,
+        "duration": 0.295011,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4999
     },
     "58f91c21fe4894683a7c": {
-      "file": "palette/61eeae13e0f26c4c2c76.mp3",
+      "file": "palette/attack-58f91c21fe4894683a7c-d0f571964d.mp3",
       "recording": "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav",
       "take": 1,
       "range": {
@@ -710,14 +958,22 @@
       "license": "CC0-1.0",
       "sourcePath": "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav",
       "originalSha256": "6cd8078bc3b003e0a2180f68268a178a5b114586c17fe30c309f9012bfc36381",
-      "gameGainDb": 11.7895,
       "levelClass": "attack",
-      "assetSha256": "e0f872a2b80dd2c7b2676e1603681078b27a08b288a6c16bffe1bc6b082dea01",
-      "conversionGainCorrectionDb": 0.3602,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "d0f571964daaed29bfeacc1d0b974ae0068c5a4d1b6339670cd0935fba173970",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "e0f872a2b80dd2c7b2676e1603681078b27a08b288a6c16bffe1bc6b082dea01",
+        "appliedGainDb": 1.4860628,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2904,
+        "outputPeakDbFS": -9.1708,
+        "duration": 0.41,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3602
     },
     "ab73784d9d6a79e6b2e0": {
-      "file": "palette/db251c04162fd6bf6345.mp3",
+      "file": "palette/attack-ab73784d9d6a79e6b2e0-5d2e87a662.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/blade_01.ogg",
       "take": 1,
       "range": {
@@ -729,14 +985,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/blade_01.ogg",
       "originalSha256": "caf7a7cb9b25cda4bd487c1d12d18b74a34bb18c816fd67277cf3c8d7ef32a3a",
-      "gameGainDb": -1.3799,
       "levelClass": "attack",
-      "assetSha256": "65940ab02e95536f488ef40ed3827c6b449aff62f323ff5d9bb10191a84ddc6a",
-      "conversionGainCorrectionDb": 0.5908,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "5d2e87a6624ab3c6fd05180ae444ec7608928dfe0a729447f503ccb7f9c41524",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "65940ab02e95536f488ef40ed3827c6b449aff62f323ff5d9bb10191a84ddc6a",
+        "appliedGainDb": -11.6761475,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2604,
+        "outputPeakDbFS": -12.1521,
+        "duration": 0.246508,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.5908
     },
     "24ca3c7ae37910133029": {
-      "file": "palette/e4cbc56608d434dc4893.mp3",
+      "file": "palette/cue-24ca3c7ae37910133029-c40e13d36d.mp3",
       "recording": "rpg-audio/metalLatch",
       "take": 1,
       "range": {
@@ -748,14 +1012,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/rpg-audio/Audio/metalLatch.ogg",
       "originalSha256": "ba9ba60b172b3ebc131a940f25793cd2e207aca7af73dc80d637277f060f1708",
-      "gameGainDb": -3.7167,
       "levelClass": null,
-      "assetSha256": "a5a535f7bc61c245e4a8b6f0697d8e53d2470013a15cea780b42315b22a5a6f1",
-      "conversionGainCorrectionDb": 0.224,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "c40e13d36d6fbf19407456d058d574c6d56a521bd4b4656c69b6b63c4c1db5aa",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "a5a535f7bc61c245e4a8b6f0697d8e53d2470013a15cea780b42315b22a5a6f1",
+        "appliedGainDb": -13.9537554,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3517,
+        "outputPeakDbFS": -11.2466,
+        "duration": 0.19161,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.224
     },
     "e5d976ac476afa23295a": {
-      "file": "palette/1a155052d3caaebf90e0.mp3",
+      "file": "palette/attack-e5d976ac476afa23295a-3d5e1834da.mp3",
       "recording": "impact-sounds/impactPlate_medium_000",
       "take": 1,
       "range": {
@@ -767,14 +1039,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/impact-sounds/Audio/impactPlate_medium_000.ogg",
       "originalSha256": "b670d30452983369771081319c268475edaaafe782bf4e8d70bd7eef09d8823c",
-      "gameGainDb": -2.4333,
       "levelClass": "attack",
-      "assetSha256": "b715aaf6802423591c8d7ae4e4a8bc1f56043ce1316124fed7ba8f6f4adc85d4",
-      "conversionGainCorrectionDb": 0.4474,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "3d5e1834da043d5d881bc680ea52aebd723502432cefdc73a5165ce1248ba09a",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "b715aaf6802423591c8d7ae4e4a8bc1f56043ce1316124fed7ba8f6f4adc85d4",
+        "appliedGainDb": -12.7360044,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2812,
+        "outputPeakDbFS": -12.1872,
+        "duration": 0.570703,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4474
     },
     "856b426fa039b885d7a9": {
-      "file": "palette/8e7eb1022157a16fc965.mp3",
+      "file": "palette/attack-856b426fa039b885d7a9-e4dd3df407.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
       "take": 1,
       "range": {
@@ -786,14 +1066,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
       "originalSha256": "09821a53c418c5eeeac4fa25bada9d245e822fed302eeeae9ae4151522a45ae5",
-      "gameGainDb": -6.6471,
       "levelClass": "attack",
-      "assetSha256": "c5745ac8213b73727c787123c82baabd7ae2da954b4a6d6307be24f74a6f7810",
-      "conversionGainCorrectionDb": 0.5236,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "e4dd3df4077232764f1558a59e3083547f867ea01d8524b04ce226f2e1a52ff1",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "c5745ac8213b73727c787123c82baabd7ae2da954b4a6d6307be24f74a6f7810",
+        "appliedGainDb": -16.963818,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3122,
+        "outputPeakDbFS": -14.7238,
+        "duration": 0.530794,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.5236
     },
     "aff60f2b6fc07087e016": {
-      "file": "palette/41ee8b1a64885c4dba80.mp3",
+      "file": "palette/cue-aff60f2b6fc07087e016-0ece0f2cc8.mp3",
       "recording": "edits/death-cough-elf-v1",
       "take": 1,
       "range": {
@@ -820,14 +1108,22 @@
           "volume=-6dB"
         ]
       },
-      "gameGainDb": -0.744,
       "levelClass": null,
-      "assetSha256": "52100b93e340e5eaa98d721584e5749aa794d142b1d5aba47f7dd06900084f69",
-      "conversionGainCorrectionDb": 0.2267,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "0ece0f2cc8f0ac33ba864159925f22ab5c109c52b2ac446cdd8d2b76200e37ef",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "52100b93e340e5eaa98d721584e5749aa794d142b1d5aba47f7dd06900084f69",
+        "appliedGainDb": -11.0416456,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2726,
+        "outputPeakDbFS": -15.313,
+        "duration": 0.330204,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2267
     },
     "0b42916f951ccb3189f2": {
-      "file": "palette/7d030b4eff5d6d6776bb.mp3",
+      "file": "palette/cue-0b42916f951ccb3189f2-dcda7100d4.mp3",
       "recording": "still-north-media/weapon-textures/part-2/Dagger Draw Fast.wav",
       "take": 1,
       "range": {
@@ -839,14 +1135,22 @@
       "license": "CC0-1.0",
       "sourcePath": "still-north-media/weapon-textures/part-2/Dagger Draw Fast.wav",
       "originalSha256": "76aa638694419b8ba8c0795adc1806045af19b8fd92fdff90e9aa4485e09478b",
-      "gameGainDb": 9.2649,
       "levelClass": null,
-      "assetSha256": "03d23ae443b6477ed66a9bcfede1ec9180d018c574415b26dbca6929695886fa",
-      "conversionGainCorrectionDb": 0.1356,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "dcda7100d445b679e429cde089bdb11d7ae82620b943a38f99bf0d4f1eb014eb",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "03d23ae443b6477ed66a9bcfede1ec9180d018c574415b26dbca6929695886fa",
+        "appliedGainDb": -1.0224377,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2581,
+        "outputPeakDbFS": -7.8704,
+        "duration": 0.3178,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.1356
     },
     "13759e3ffc525ff24299": {
-      "file": "palette/4a323f31c130b5e1aead.mp3",
+      "file": "palette/cue-13759e3ffc525ff24299-f539ba1817.mp3",
       "recording": "still-north-media/weapon-textures/part-2/Sabre Draw Fast.wav",
       "take": 1,
       "range": {
@@ -858,14 +1162,22 @@
       "license": "CC0-1.0",
       "sourcePath": "still-north-media/weapon-textures/part-2/Sabre Draw Fast.wav",
       "originalSha256": "50b4cdef2a5d3b22ebd17c8a0483e9ea35056574d7c5336e6d6303db34506133",
-      "gameGainDb": 12.897,
       "levelClass": null,
-      "assetSha256": "dd3524da71945f5eae21df9e48c2654d2a62a5b7011fb930bcff0a3305798db1",
-      "conversionGainCorrectionDb": -0.1523,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "f539ba181751c0300299b8c6334ec505a6c75d01ed9a3dbb0f11d8ab7b81d851",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "dd3524da71945f5eae21df9e48c2654d2a62a5b7011fb930bcff0a3305798db1",
+        "appliedGainDb": 2.596221,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2674,
+        "outputPeakDbFS": -9.8978,
+        "duration": 0.984807,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.1523
     },
     "2b05640300191fe21abf": {
-      "file": "palette/68506e1c3d34db8a2d9a.mp3",
+      "file": "palette/attack-2b05640300191fe21abf-1726918501.mp3",
       "recording": "edits/spear-sabre-one-shot-v1",
       "take": 1,
       "range": {
@@ -892,14 +1204,22 @@
           "afade=t=out:st=0.3197:d=0.015"
         ]
       },
-      "gameGainDb": 7.6009,
       "levelClass": "attack",
-      "assetSha256": "9523ff64e3446adbcce4b09077db90b804444cc3dbca26409d31ef231715b0a8",
-      "conversionGainCorrectionDb": -0.4584,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "1726918501971871b917b1ef1a3a71caa86f0168e78097bce168e1ce2fc466e5",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "9523ff64e3446adbcce4b09077db90b804444cc3dbca26409d31ef231715b0a8",
+        "appliedGainDb": -2.5782764,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3015,
+        "outputPeakDbFS": -8.5349,
+        "duration": 0.334694,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.4584
     },
     "753742aae5d40532afd2": {
-      "file": "palette/b4926cd93ea6a6d19e2f.mp3",
+      "file": "palette/attack-753742aae5d40532afd2-2b78199c9b.mp3",
       "recording": "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav",
       "take": 1,
       "range": {
@@ -911,14 +1231,22 @@
       "license": "CC0-1.0",
       "sourcePath": "still-north-media/weapon-textures/part-1/Scythian Recurve Shoot.wav",
       "originalSha256": "8d95d06f0c7539f14b5a69fb2818ab42dc985b6966db9856a30a7767f11c259b",
-      "gameGainDb": 7.768,
       "levelClass": "attack",
-      "assetSha256": "0189e9c1612ff0536efca07cedea32bf35794996dedcff2c4a8c4d5a0ea0a0fa",
-      "conversionGainCorrectionDb": 0.3387,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "2b78199c9bc56f76a2e0358ac8419b058b04bba0b3949c5afe1c7a541bcd26be",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "0189e9c1612ff0536efca07cedea32bf35794996dedcff2c4a8c4d5a0ea0a0fa",
+        "appliedGainDb": -2.53736,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3,
+        "outputPeakDbFS": -7.01,
+        "duration": 0.223311,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3387
     },
     "8a6445db6945744e1cb8": {
-      "file": "palette/4e3d3d9643940c9bdcdb.mp3",
+      "file": "palette/attack-8a6445db6945744e1cb8-c660ceb1e4.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/wood_05.ogg",
       "take": 1,
       "range": {
@@ -930,14 +1258,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/wood_05.ogg",
       "originalSha256": "767fbe18abd5c37ced7d9fa86b36862f9680abb79bb0acda448f70850675e7bf",
-      "gameGainDb": -0.8259,
       "levelClass": "attack",
-      "assetSha256": "50aed50b00d9d25e5d88632e34b5e6d321c312ed62ce57e17a8a84c540b8112a",
-      "conversionGainCorrectionDb": -0.1352,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "c660ceb1e41043d6cd6f5df9e2ba0645e31378417086e6ab7e722caa2bb953fd",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "50aed50b00d9d25e5d88632e34b5e6d321c312ed62ce57e17a8a84c540b8112a",
+        "appliedGainDb": -11.1304132,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2932,
+        "outputPeakDbFS": -11.8698,
+        "duration": 0.221497,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.1352
     },
     "c4e45383c51b9aa36e9d": {
-      "file": "palette/b350ef174cf9c375fdd0.mp3",
+      "file": "palette/cue-c4e45383c51b9aa36e9d-27dd3b4915.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
       "take": 1,
       "range": {
@@ -949,14 +1285,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/cough_02.ogg",
       "originalSha256": "df56e706c69183587dbf6750bf4d5df528051456cd4a838bb1171d5dbb29fcc9",
-      "gameGainDb": -6.6442,
       "levelClass": null,
-      "assetSha256": "34af5eb53a887a393af31ac28d0547627708cf897ec996ceb0660df79357e2a0",
-      "conversionGainCorrectionDb": 0.4465,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "27dd3b4915caac008f1adcdb91c81708b696c5e556d2e8e53040ee4d10af1745",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "34af5eb53a887a393af31ac28d0547627708cf897ec996ceb0660df79357e2a0",
+        "appliedGainDb": -16.9482834,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2853,
+        "outputPeakDbFS": -15.298,
+        "duration": 0.326304,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4465
     },
     "789b3b10b654e1bfda79": {
-      "file": "palette/38bee214760d698a18c7.mp3",
+      "file": "palette/attack-789b3b10b654e1bfda79-4ddb6d4e0a.mp3",
       "recording": "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav",
       "take": 12,
       "range": {
@@ -968,14 +1312,22 @@
       "license": "CC0-1.0",
       "sourcePath": "still-north-media/weapon-impacts/part-1/Mace Spear Haft.wav",
       "originalSha256": "61104a0c4c06667ba47a0efaae9657f57455b7138420fdb5ac02afaca203cb9f",
-      "gameGainDb": 24.2617,
       "levelClass": "attack",
-      "assetSha256": "ef24364941fe16a47c6be784ebdd89ea56540a41fb8670243f16ccc9d2e1daae",
-      "conversionGainCorrectionDb": 0.3224,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "4ddb6d4e0a24c7fccdda4e9054ed04e49cf7bd50f5fae758b6f775e8caf44bca",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "ef24364941fe16a47c6be784ebdd89ea56540a41fb8670243f16ccc9d2e1daae",
+        "appliedGainDb": 13.9541118,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2972,
+        "outputPeakDbFS": -8.8237,
+        "duration": 0.20161,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3224
     },
     "0e3c50d86d5f953b2e42": {
-      "file": "palette/adceda86326f12046afe.mp3",
+      "file": "palette/attack-0e3c50d86d5f953b2e42-b01a231f94.mp3",
       "recording": "rpg-audio/bookClose",
       "take": 1,
       "range": {
@@ -987,14 +1339,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/rpg-audio/Audio/bookClose.ogg",
       "originalSha256": "81e976532565f4372abd14e83d2684195fa548d0a28d345de221e56052454f32",
-      "gameGainDb": -4.7659,
       "levelClass": "attack",
-      "assetSha256": "f73f443568cb4ab77ab84bc98be11a335967d371ab03d40f8bd2cccb8f915cf7",
-      "conversionGainCorrectionDb": 0.3148,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "b01a231f94bf4d5ae325f7ccdc1fc63834ca636d492b6c5789a9a886ff9e9b08",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "f73f443568cb4ab77ab84bc98be11a335967d371ab03d40f8bd2cccb8f915cf7",
+        "appliedGainDb": -15.0657229,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.278,
+        "outputPeakDbFS": -13.2335,
+        "duration": 0.195692,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3148
     },
     "4d520b7a8999d60ec45a": {
-      "file": "palette/f1faa2ea8b6a81492587.mp3",
+      "file": "palette/cue-4d520b7a8999d60ec45a-0c2fcbd108.mp3",
       "recording": "rpg-audio/handleSmallLeather2",
       "take": 1,
       "range": {
@@ -1006,14 +1366,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/rpg-audio/Audio/handleSmallLeather2.ogg",
       "originalSha256": "a66f6db5918ad016c28a9f2768f127a7f39b5fa04481e5a3b4e78ebe2a1c282d",
-      "gameGainDb": 16.4561,
       "levelClass": null,
-      "assetSha256": "700d48b414c3063ad2b8b30e3da01fc722bc033023d33e242a47979f909af605",
-      "conversionGainCorrectionDb": 0.6768,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "0c2fcbd1082b159cf7f9d50a9b08a8975d88cb6e4cca9856de408e08afa91a1d",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "700d48b414c3063ad2b8b30e3da01fc722bc033023d33e242a47979f909af605",
+        "appliedGainDb": 6.1315225,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3226,
+        "outputPeakDbFS": -10.4749,
+        "duration": 0.276395,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.6768
     },
     "4ae016755ede852d31e0": {
-      "file": "palette/0c203c20f9d8df988c6e.mp3",
+      "file": "palette/cue-4ae016755ede852d31e0-614d8aa99c.mp3",
       "recording": "edits/horse-0284-death-start-v1",
       "take": 1,
       "range": {
@@ -1040,14 +1408,22 @@
           "afade=t=out:st=0.420:d=0.08"
         ]
       },
-      "gameGainDb": -0.453,
       "levelClass": null,
-      "assetSha256": "84231693a5fa589e7d9728ca6d54011dcfe67c48e91eeab90f2f8d2c76efa2ca",
-      "conversionGainCorrectionDb": 0.1877,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "614d8aa99c3789bc4ea245e89e590bc1294d03db70e096ce184315b5f1429886",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "84231693a5fa589e7d9728ca6d54011dcfe67c48e91eeab90f2f8d2c76efa2ca",
+        "appliedGainDb": -10.7599352,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2912,
+        "outputPeakDbFS": -19.6868,
+        "duration": 0.5,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.1877
     },
     "4af95c458de224805922": {
-      "file": "palette/b1b11ffbb42da2facdd0.mp3",
+      "file": "palette/cue-4af95c458de224805922-054b841611.mp3",
       "recording": "edits/merfolk-selection-underwater-v1",
       "take": 1,
       "range": {
@@ -1071,14 +1447,22 @@
           "atrim=start=0:duration=0.5757,asetpts=PTS-STARTPTS,volume=-6dB,asplit=2[dry][wet];[wet]highpass=f=45,lowpass=f=2200:p=2,equalizer=f=220:t=q:w=0.8:g=1[water];[dry][water]amix=inputs=2:weights='0.2 0.8':normalize=0,afade=t=in:d=0.005,afade=t=out:st=0.5677:d=0.008"
         ]
       },
-      "gameGainDb": 18.4493,
       "levelClass": null,
-      "assetSha256": "4c4565d49c7b2112ffe7c4604ff82eda7868f3c5d9620eb7d9f046043f1732fd",
-      "conversionGainCorrectionDb": 0.14,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "054b84161178fdf12564c1f539411e67cc9f6dfc5ef8016cc70b5875abf6b684",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "4c4565d49c7b2112ffe7c4604ff82eda7868f3c5d9620eb7d9f046043f1732fd",
+        "appliedGainDb": 8.1473884,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2789,
+        "outputPeakDbFS": -7.4401,
+        "duration": 0.530794,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.14
     },
     "4be39645eb7969717904": {
-      "file": "palette/26da7ae3bf5fda735095.mp3",
+      "file": "palette/cue-4be39645eb7969717904-aedde380db.mp3",
       "recording": "edits/merfolk-death-underwater-v1",
       "take": 1,
       "range": {
@@ -1102,14 +1486,22 @@
           "atrim=start=0:duration=0.3263,asetpts=PTS-STARTPTS,volume=-6dB,asplit=2[dry][wet];[wet]highpass=f=45,lowpass=f=2200:p=2,equalizer=f=220:t=q:w=0.8:g=1[water];[dry][water]amix=inputs=2:weights='0.2 0.8':normalize=0,afade=t=in:d=0.005,afade=t=out:st=0.3183:d=0.008"
         ]
       },
-      "gameGainDb": -0.5751,
       "levelClass": null,
-      "assetSha256": "717e59faaef3bad0eb176736394573edc938a5162d7cd7029ded516b1b7847be",
-      "conversionGainCorrectionDb": 0.3056,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "aedde380db177aa86126ae4c4c519a6816f90ba8eb4c50edf4f2708f568b765a",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "717e59faaef3bad0eb176736394573edc938a5162d7cd7029ded516b1b7847be",
+        "appliedGainDb": -10.8789958,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2949,
+        "outputPeakDbFS": -15.1552,
+        "duration": 0.326304,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3056
     },
     "93b4816f7ecb8ff2db5b": {
-      "file": "palette/9c8c022a4e838dc5b35b.mp3",
+      "file": "palette/attack-93b4816f7ecb8ff2db5b-dfa6a631fb.mp3",
       "recording": "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Pass.wav",
       "take": 1,
       "range": {
@@ -1121,14 +1513,22 @@
       "license": "CC0-1.0",
       "sourcePath": "still-north-media/weapon-textures/part-1/Scythian Recurve Arrow Pass.wav",
       "originalSha256": "386ef860049508743bbae3d85674733564a1a3c055a84530c55d3f529819bef3",
-      "gameGainDb": 22.9727,
       "levelClass": "attack",
-      "assetSha256": "d0f2f6df19447bc7c8fa51e259ce1509988b21a0ac69e3738cc199542bb2ec4f",
-      "conversionGainCorrectionDb": 0.3034,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "dfa6a631fb274ccdebae585929024b353a0a31dad6052644c090f9a47a358a1b",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "d0f2f6df19447bc7c8fa51e259ce1509988b21a0ac69e3738cc199542bb2ec4f",
+        "appliedGainDb": 12.6511925,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3041,
+        "outputPeakDbFS": -8.1753,
+        "duration": 0.49,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3034
     },
     "5968d98e59842a38c439": {
-      "file": "palette/8f86274a70044652a17e.mp3",
+      "file": "palette/attack-5968d98e59842a38c439-76d91f846d.mp3",
       "recording": "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav",
       "take": 1,
       "range": {
@@ -1140,14 +1540,22 @@
       "license": "CC0-1.0",
       "sourcePath": "still-north-media/weapon-impacts/part-1/Mace Spear Blade.wav",
       "originalSha256": "453b1ac4db8e941cd6b694f980aab5282712e291dd0205d373fc205a114295f4",
-      "gameGainDb": 12.7887,
       "levelClass": "attack",
-      "assetSha256": "04cf6f8aae8466aa5e84b9fc8d14292e71aa1d72f9751aa230eb4bf274c964ec",
-      "conversionGainCorrectionDb": 0.4594,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "76d91f846d3086bec31546ad39b0899c30daeb9cf6eb59181c67e38f0a6fb5bf",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "04cf6f8aae8466aa5e84b9fc8d14292e71aa1d72f9751aa230eb4bf274c964ec",
+        "appliedGainDb": 2.5111858,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2823,
+        "outputPeakDbFS": -8.0402,
+        "duration": 0.430907,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4594
     },
     "33ec234e52cf86420477": {
-      "file": "palette/718e67c5c2f7713ccfd6.mp3",
+      "file": "palette/cue-33ec234e52cf86420477-de68aca0c6.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
       "take": 1,
       "range": {
@@ -1159,14 +1567,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
       "originalSha256": "a1f62c20ac2c294309966037fe66fbd5cddbee5df7ae6d6c29e4b2607a0db1e4",
-      "gameGainDb": -2.7281,
       "levelClass": null,
-      "assetSha256": "def9f688a35caa709f73b3de907c04ebc989fb3c825ae948d5eccd0f84dc4e9e",
-      "conversionGainCorrectionDb": 0.2726,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "de68aca0c6296da1d5ee0781165d59460c19c15b972d588dc2333c77dffac5b8",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "def9f688a35caa709f73b3de907c04ebc989fb3c825ae948d5eccd0f84dc4e9e",
+        "appliedGainDb": -12.9741014,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2277,
+        "outputPeakDbFS": -11.7349,
+        "duration": 0.296395,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2726
     },
     "da6d2d434978508ee055": {
-      "file": "palette/6c3601b54a112e7ff9f9.mp3",
+      "file": "palette/attack-da6d2d434978508ee055-cd380c092c.mp3",
       "recording": "edits/fout-01-short-v1",
       "take": 1,
       "range": {
@@ -1193,14 +1609,22 @@
           "afade=t=out:st=0.36:d=0.12"
         ]
       },
-      "gameGainDb": -6.3626,
       "levelClass": "attack",
-      "assetSha256": "fac77c2463ecc251d4af340e5572100237f83de6ec619e3c7b423a393a931b85",
-      "conversionGainCorrectionDb": 0.1981,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "cd380c092c82770fe42d8aad575cdb6f0947bdb9fe8af97c0706724f606798e5",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "fac77c2463ecc251d4af340e5572100237f83de6ec619e3c7b423a393a931b85",
+        "appliedGainDb": -16.662494,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2828,
+        "outputPeakDbFS": -18.2906,
+        "duration": 0.48,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.1981
     },
     "a95dae6e648c7e63a1f0": {
-      "file": "palette/06731ab323a4953276f1.mp3",
+      "file": "palette/cue-a95dae6e648c7e63a1f0-0afd71fbe8.mp3",
       "recording": "edits/ghost-grunt-02-trim-v1",
       "take": 1,
       "range": {
@@ -1227,14 +1651,22 @@
           "afade=t=out:st=0.31:d=0.05"
         ]
       },
-      "gameGainDb": -5.5157,
       "levelClass": null,
-      "assetSha256": "b6e260d4ca463bb41fb98d11b6802fe5242038d44756242e19cc323a7ba18bb9",
-      "conversionGainCorrectionDb": 0.305,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "0afd71fbe8e8c7fb6488b8ac31a7dbc80ecb92b690e7dba43afc7dd27653c98d",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "b6e260d4ca463bb41fb98d11b6802fe5242038d44756242e19cc323a7ba18bb9",
+        "appliedGainDb": -15.8213081,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2933,
+        "outputPeakDbFS": -22.3507,
+        "duration": 0.36,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.305
     },
     "11306644002105606434": {
-      "file": "palette/89a16afcb818f408515a.mp3",
+      "file": "palette/cue-11306644002105606434-ec4b3e5c17.mp3",
       "recording": "edits/ghost-scream-02-no-cough-v1",
       "take": 1,
       "range": {
@@ -1261,14 +1693,22 @@
           "afade=t=out:st=0.560:d=0.1"
         ]
       },
-      "gameGainDb": -5.4247,
       "levelClass": null,
-      "assetSha256": "3d1fc6df259a7d630da2402f434592ffba7117d68a0c3c36a2bfc8c560eb1e93",
-      "conversionGainCorrectionDb": 0.426,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "ec4b3e5c17ce7cecbd9dcb00a18d0e10887682aa2ef04aa5d7e56fd13a35f5ab",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "3d1fc6df259a7d630da2402f434592ffba7117d68a0c3c36a2bfc8c560eb1e93",
+        "appliedGainDb": -15.7558394,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3135,
+        "outputPeakDbFS": -14.8302,
+        "duration": 0.66,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.426
     },
     "42c97afecf8fbc174dab": {
-      "file": "palette/0191dc32a3d81b0fb915.mp3",
+      "file": "palette/attack-42c97afecf8fbc174dab-7b1817210d.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
       "take": 1,
       "range": {
@@ -1280,14 +1720,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/spell_02.ogg",
       "originalSha256": "bf9c48b76921e56aa266172d969a2c08215d6ce0ffae7c3584f23fa05d3f8bd4",
-      "gameGainDb": -5.3706,
       "levelClass": "attack",
-      "assetSha256": "5abf1cea31c4cbb4cb6b7dee294d619a556ed8c3c17c0bc08d04bcb6fcc86342",
-      "conversionGainCorrectionDb": 0.6101,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "7b1817210d013f44f67b9a0b12b85f7d029974d037feb96dc4e2a9747cbc0018",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "5abf1cea31c4cbb4cb6b7dee294d619a556ed8c3c17c0bc08d04bcb6fcc86342",
+        "appliedGainDb": -15.693905,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3146,
+        "outputPeakDbFS": -14.896,
+        "duration": 0.436009,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.6101
     },
     "45b770ab454d215cccb4": {
-      "file": "palette/a44d87917b48d5523465.mp3",
+      "file": "palette/cue-45b770ab454d215cccb4-863f14d198.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/hurt_05.ogg",
       "take": 1,
       "range": {
@@ -1299,14 +1747,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/hurt_05.ogg",
       "originalSha256": "4dc63fc62e8604a87baa1f5a74b75d848ccb68ce6e0e34d603dd3cbefc8519ed",
-      "gameGainDb": -6.4643,
       "levelClass": null,
-      "assetSha256": "217f193d3f18d6fc548a33c9bad3e71c7be3732646960b1e0d18d7fc57ff502e",
-      "conversionGainCorrectionDb": 0.2864,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "863f14d1981f2ff202689d59f3a978190c75b7171b7caba50db87c088ead27e3",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "217f193d3f18d6fc548a33c9bad3e71c7be3732646960b1e0d18d7fc57ff502e",
+        "appliedGainDb": -16.7711041,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2905,
+        "outputPeakDbFS": -17.4498,
+        "duration": 0.34619,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2864
     },
     "e0dc42474885d93ab31f": {
-      "file": "palette/cffe066a4330f65ef468.mp3",
+      "file": "palette/attack-e0dc42474885d93ab31f-e92eb5606e.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/grunt_05.ogg",
       "take": 1,
       "range": {
@@ -1318,14 +1774,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/grunt_05.ogg",
       "originalSha256": "164059a171a8a7d8f1a2fcfdb195a9d50da3ab67bed0b52f4c2c3409fe5df049",
-      "gameGainDb": -2.6727,
       "levelClass": "attack",
-      "assetSha256": "b812b9f9c56b860373c272dd2d7c5f0d7027c5df4fcf3ad30a861a1329802a55",
-      "conversionGainCorrectionDb": 0.408,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "e92eb5606e6559d3697d13aee1f8ecadf8aee347ff0a0fe91d54fc4d8fa7ae7b",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "b812b9f9c56b860373c272dd2d7c5f0d7027c5df4fcf3ad30a861a1329802a55",
+        "appliedGainDb": -12.9790881,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2933,
+        "outputPeakDbFS": -13.7131,
+        "duration": 0.431111,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.408
     },
     "1b10ad758768ecd1748d": {
-      "file": "palette/11f6af7140cb38e37689.mp3",
+      "file": "palette/cue-1b10ad758768ecd1748d-9519cd854d.mp3",
       "recording": "rpg-audio/creak1",
       "take": 1,
       "range": {
@@ -1337,14 +1801,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/rpg-audio/Audio/creak1.ogg",
       "originalSha256": "8a346186fd297254248cab8e8117060a52a5cf2a84f603153a762108550ea95e",
-      "gameGainDb": 0.2032,
       "levelClass": null,
-      "assetSha256": "1e78a98e4f78e5742795b781e9ff562848495ce2704c3ce27485e52e926e88e6",
-      "conversionGainCorrectionDb": 0.1539,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "9519cd854dd490786b75a011fa54b04673658191c3b57d37084c18d5d4521e94",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "1e78a98e4f78e5742795b781e9ff562848495ce2704c3ce27485e52e926e88e6",
+        "appliedGainDb": -10.1071404,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.3048,
+        "outputPeakDbFS": -17.5174,
+        "duration": 0.6061,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.1539
     },
     "f17c65bc67627cca4149": {
-      "file": "palette/604f7e264c91b201b917.mp3",
+      "file": "palette/attack-f17c65bc67627cca4149-7c0211fad6.mp3",
       "recording": "impact-sounds/impactPlank_medium_004",
       "take": 1,
       "range": {
@@ -1356,14 +1828,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/impact-sounds/Audio/impactPlank_medium_004.ogg",
       "originalSha256": "6a51318c1c63821ea757622b57fafbf44c16c28129f6d39406a784260d87c447",
-      "gameGainDb": -4.3342,
       "levelClass": "attack",
-      "assetSha256": "e38cc1370d8064e26e4db97f1b4f57ad6514bc1f285b545d11873934ae47095c",
-      "conversionGainCorrectionDb": 0.4065,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "7c0211fad6a2ce38ea582889066c836e3f2f9ee79bda41333e13f149299cb7b1",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "e38cc1370d8064e26e4db97f1b4f57ad6514bc1f285b545d11873934ae47095c",
+        "appliedGainDb": -14.6466888,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2973,
+        "outputPeakDbFS": -13.6713,
+        "duration": 0.2,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4065
     },
     "fd8a1d13d1dfea55bdcf": {
-      "file": "palette/5e26918f45c8c983a435.mp3",
+      "file": "palette/attack-fd8a1d13d1dfea55bdcf-ecc8edcfbb.mp3",
       "recording": "impact-sounds/impactWood_medium_000",
       "take": 1,
       "range": {
@@ -1375,14 +1855,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/impact-sounds/Audio/impactWood_medium_000.ogg",
       "originalSha256": "1723a9fd25103ed41af06054814e84e65f4a772bac86ab2dc927da93d9592ff5",
-      "gameGainDb": -3.1125,
       "levelClass": "attack",
-      "assetSha256": "7d1f87f7ff22ea347f3eae95338557471055fda973f76ed3becb6a4a150906e1",
-      "conversionGainCorrectionDb": 0.4482,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "ecc8edcfbb8db74b525e1ccdab65e0ad737654ed099e77b2bc94a296eeb0338d",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "7d1f87f7ff22ea347f3eae95338557471055fda973f76ed3becb6a4a150906e1",
+        "appliedGainDb": -13.4189405,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2929,
+        "outputPeakDbFS": -12.7854,
+        "duration": 0.329773,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4482
     },
     "8526ac1715542e37d2d8": {
-      "file": "palette/cb2ffbb05112d87b30df.mp3",
+      "file": "palette/attack-8526ac1715542e37d2d8-67f4e3bc96.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
       "take": 1,
       "range": {
@@ -1394,14 +1882,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
       "originalSha256": "d11ce95031c2c36ae2a00979620fa95a7a3f5c6d6f2ac86962ed292aa556be8d",
-      "gameGainDb": 1.0017,
       "levelClass": "attack",
-      "assetSha256": "60329a215d5921d5fd5af5520389f65cfc84b9276fb9971a2e326c1889944361",
-      "conversionGainCorrectionDb": -0.6676,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.9027
+      "assetSha256": "67f4e3bc96c88178c42baa3be695a26b8d324b7400dae099550a3bbe37e8a03c",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.9027,
+      "normalization": {
+        "inputFileSha256": "60329a215d5921d5fd5af5520389f65cfc84b9276fb9971a2e326c1889944361",
+        "appliedGainDb": -9.3070054,
+        "targetStrongest50msRmsDbFS": -26.9027,
+        "outputStrongest50msRmsDbFS": -26.912,
+        "outputPeakDbFS": -7.7791,
+        "duration": 0.490907,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.6676
     },
     "1f51992dc1ab5fc5ce83": {
-      "file": "palette/f5de08578b977501eb7a.mp3",
+      "file": "palette/cue-1f51992dc1ab5fc5ce83-6a7b9dbd45.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/breath.ogg",
       "take": 1,
       "range": {
@@ -1413,14 +1909,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/breath.ogg",
       "originalSha256": "d6ecfd092c261059701fe81581957ce6e67c1737978449bbd98ec6d4f30abb7f",
-      "gameGainDb": 6.4009,
       "levelClass": null,
-      "assetSha256": "770bd15cfabe0522095ea4e5ecda1e0c8d7d3a12242b16333d4834f2f2ab186a",
-      "conversionGainCorrectionDb": 0.2516,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "6a7b9dbd45b0145d86c23f64c2fd12e589039090ab00e81f13496c6bf7879371",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "770bd15cfabe0522095ea4e5ecda1e0c8d7d3a12242b16333d4834f2f2ab186a",
+        "appliedGainDb": -3.8949999,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2977,
+        "outputPeakDbFS": -14.2524,
+        "duration": 0.500907,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2516
     },
     "2a67452288e81877a635": {
-      "file": "palette/9458e3e298e319ac293a.mp3",
+      "file": "palette/attack-2a67452288e81877a635-34cdecfc01.mp3",
       "recording": "rubberduck/80-cc0-creature-sfx/burp_02.ogg",
       "take": 1,
       "range": {
@@ -1432,14 +1936,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-creature-sfx/burp_02.ogg",
       "originalSha256": "6742601fee1432cee9ab78ec2f07ed5686c9584759887239dfed6cda028ea4e5",
-      "gameGainDb": -8.2633,
       "levelClass": "attack",
-      "assetSha256": "1c4907762fdfe05721ac320770f3be313e97b8f2aed00898d3ba364f6063482b",
-      "conversionGainCorrectionDb": 0.3674,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "34cdecfc014098ed90e7fb7d3b8d7068cceec7f341d9f913a1b73fd7d5b4f942",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "1c4907762fdfe05721ac320770f3be313e97b8f2aed00898d3ba364f6063482b",
+        "appliedGainDb": -18.5726768,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2974,
+        "outputPeakDbFS": -19.2827,
+        "duration": 0.700408,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3674
     },
     "404742b3fb08fbb7a8fc": {
-      "file": "palette/cb2ffbb05112d87b30df.mp3",
+      "file": "palette/terrain-404742b3fb08fbb7a8fc-4d84619c7e.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
       "take": 1,
       "range": {
@@ -1451,14 +1963,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/stones_01.ogg",
       "originalSha256": "d11ce95031c2c36ae2a00979620fa95a7a3f5c6d6f2ac86962ed292aa556be8d",
-      "gameGainDb": -1.3783,
       "levelClass": "terrain",
-      "assetSha256": "60329a215d5921d5fd5af5520389f65cfc84b9276fb9971a2e326c1889944361",
-      "conversionGainCorrectionDb": -0.6676,
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827
+      "assetSha256": "4d84619c7e03bec3514f32c05eaa9eae3df8decb35f8550fbae0dc3c280f136a",
+      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "normalization": {
+        "inputFileSha256": "60329a215d5921d5fd5af5520389f65cfc84b9276fb9971a2e326c1889944361",
+        "appliedGainDb": -11.7804703,
+        "targetStrongest50msRmsDbFS": -29.38,
+        "outputStrongest50msRmsDbFS": -29.3951,
+        "outputPeakDbFS": -10.2533,
+        "duration": 0.490907,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": -0.6676
     },
     "58891746d1c8d3fbef67": {
-      "file": "palette/ed2606907f6cad4b6bad.mp3",
+      "file": "palette/terrain-58891746d1c8d3fbef67-284c9d911c.mp3",
       "recording": "edits/plains-grass-003-soft-v1",
       "take": 1,
       "range": {
@@ -1486,14 +2006,22 @@
           "afade=t=out:st=0.6493:d=0.02"
         ]
       },
-      "gameGainDb": 6.1835,
       "levelClass": "terrain",
-      "assetSha256": "af8dd61f11b8c85ed8dd88f2d86f11b6efcfa3342a391a2749a5617115861b40",
-      "conversionGainCorrectionDb": 0.6242,
-      "referenceGameOutputStrongest50msRmsDbFS": -34.1727
+      "assetSha256": "284c9d911c62c1f6306bfd4f74661948821b671c5a4aa2743f73377eb2605d90",
+      "referenceGameOutputStrongest50msRmsDbFS": -34.1727,
+      "normalization": {
+        "inputFileSha256": "af8dd61f11b8c85ed8dd88f2d86f11b6efcfa3342a391a2749a5617115861b40",
+        "appliedGainDb": -4.1237076,
+        "targetStrongest50msRmsDbFS": -34.1727,
+        "outputStrongest50msRmsDbFS": -34.1787,
+        "outputPeakDbFS": -18.4318,
+        "duration": 0.141701,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.6242
     },
     "43b8c84c6d50d9faa7f2": {
-      "file": "palette/1bf7f19ac14fd28a288c.mp3",
+      "file": "palette/terrain-43b8c84c6d50d9faa7f2-a6cb38d39a.mp3",
       "recording": "edits/forest-book-03-short-v1",
       "take": 1,
       "range": {
@@ -1533,14 +2061,22 @@
           "method": "Match the median existing forest cue after its game-relative gain at the board default volume; preserve intentional attenuation."
         }
       },
-      "gameGainDb": 6.1192,
       "levelClass": "terrain",
-      "assetSha256": "fb584b3bec100cf498144345763831dd00557b79f268b9f3ba498b2fe4d04467",
-      "conversionGainCorrectionDb": 0.5599,
-      "referenceGameOutputStrongest50msRmsDbFS": -41.2427
+      "assetSha256": "a6cb38d39a0397bc4aaf42366706281f51282bcdaba4c40de81622002db13199",
+      "referenceGameOutputStrongest50msRmsDbFS": -41.2427,
+      "normalization": {
+        "inputFileSha256": "fb584b3bec100cf498144345763831dd00557b79f268b9f3ba498b2fe4d04467",
+        "appliedGainDb": -4.123805,
+        "targetStrongest50msRmsDbFS": -41.18,
+        "outputStrongest50msRmsDbFS": -41.163,
+        "outputPeakDbFS": -32.8236,
+        "duration": 0.440204,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.5599
     },
     "7af2410fabd7d201f661": {
-      "file": "palette/1c31db129eeb87b6aa9c.mp3",
+      "file": "palette/terrain-7af2410fabd7d201f661-51df43008b.mp3",
       "recording": "current/terrain-hill-1",
       "take": 1,
       "range": {
@@ -1549,17 +2085,25 @@
       },
       "source": "Hexcommand scripts/generate-sfx.py",
       "license": "Existing Hexcommand asset",
-      "gameGainDb": 0.2353,
       "levelClass": "terrain",
-      "assetSha256": "3c582937d5f28287ecb0c8e58ad1e26c076d90d33d1e3ba7223262f1af33e03a",
+      "assetSha256": "51df43008b96b7067cecbb7e34c060aca6f21352710a06fcb2d385191ba22f5d",
       "originalSha256": "bb0cfffbb8cce33ec666286f534a90a372c8767fe3a0bf2b7d9250f4cb630b19",
       "sourcePath": "public/assets/audio/terrain-hill-1.wav",
       "creator": "Hex Command",
-      "conversionGainCorrectionDb": 0.236,
-      "referenceGameOutputStrongest50msRmsDbFS": -36.4227
+      "referenceGameOutputStrongest50msRmsDbFS": -36.4227,
+      "normalization": {
+        "inputFileSha256": "3c582937d5f28287ecb0c8e58ad1e26c076d90d33d1e3ba7223262f1af33e03a",
+        "appliedGainDb": -10.0712169,
+        "targetStrongest50msRmsDbFS": -36.4227,
+        "outputStrongest50msRmsDbFS": -36.4225,
+        "outputPeakDbFS": -27.2643,
+        "duration": 0.403016,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.236
     },
     "a1c9216caaa716cbbd7d": {
-      "file": "palette/8a8834b515696e4ea9b6.mp3",
+      "file": "palette/terrain-a1c9216caaa716cbbd7d-b7a0858495.mp3",
       "recording": "current/terrain-water-1",
       "take": 1,
       "range": {
@@ -1568,17 +2112,25 @@
       },
       "source": "Hexcommand scripts/generate-sfx.py",
       "license": "Existing Hexcommand asset",
-      "gameGainDb": 0.3817,
       "levelClass": "terrain",
-      "assetSha256": "389be1c1d584b51ed339431bac221a04c5004919058f10c42002cec51274ae41",
+      "assetSha256": "b7a0858495a4d2d9be08554e14b29b78184aee668537e3f3e492e3a6111a265b",
       "originalSha256": "4e6e12b7ebfbd2f20b064bad667eace7e734af5eb6ae2ec4313ede08d8bf16a7",
       "sourcePath": "public/assets/audio/terrain-water-1.wav",
       "creator": "Hex Command",
-      "conversionGainCorrectionDb": 0.3824,
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827
+      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "normalization": {
+        "inputFileSha256": "389be1c1d584b51ed339431bac221a04c5004919058f10c42002cec51274ae41",
+        "appliedGainDb": -10.0212151,
+        "targetStrongest50msRmsDbFS": -29.38,
+        "outputStrongest50msRmsDbFS": -29.3798,
+        "outputPeakDbFS": -21.7811,
+        "duration": 0.206599,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3824
     },
     "6c4a106f6897dc5219c1": {
-      "file": "palette/8bd322658dabecc115d6.mp3",
+      "file": "palette/terrain-6c4a106f6897dc5219c1-e083f0d61c.mp3",
       "recording": "current/terrain-village-1",
       "take": 1,
       "range": {
@@ -1587,17 +2139,25 @@
       },
       "source": "Hexcommand scripts/generate-sfx.py",
       "license": "Existing Hexcommand asset",
-      "gameGainDb": 0.2209,
       "levelClass": "terrain",
-      "assetSha256": "d422c8d21287f94619b438fe71b0ef833ffe078ee2980f5326dcc9c409252228",
+      "assetSha256": "e083f0d61c343db2bd20547fb85a2702402e8d3f768c640e59069ce2eb8996a6",
       "originalSha256": "9ec693421e5f57001dbc6ae14299a4431bf001d01213b58edcc51f2f6991f934",
       "sourcePath": "public/assets/audio/terrain-village-1.wav",
       "creator": "Hex Command",
-      "conversionGainCorrectionDb": 0.2216,
-      "referenceGameOutputStrongest50msRmsDbFS": -34.5027
+      "referenceGameOutputStrongest50msRmsDbFS": -34.5027,
+      "normalization": {
+        "inputFileSha256": "d422c8d21287f94619b438fe71b0ef833ffe078ee2980f5326dcc9c409252228",
+        "appliedGainDb": -10.0859281,
+        "targetStrongest50msRmsDbFS": -34.5027,
+        "outputStrongest50msRmsDbFS": -34.5035,
+        "outputPeakDbFS": -26.1247,
+        "duration": 0.253016,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2216
     },
     "8b06cb5fb76a2136238e": {
-      "file": "palette/aaa6c35101a027818936.mp3",
+      "file": "palette/terrain-8b06cb5fb76a2136238e-a2d89aeed4.mp3",
       "recording": "edits/keep-metal-light-v1",
       "take": 1,
       "range": {
@@ -1632,14 +2192,22 @@
           "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
         }
       },
-      "gameGainDb": 2.0968,
       "levelClass": "terrain",
-      "assetSha256": "959f1ab54f3cc5ae9567c0a9585f2faeaebf727b7424be3f03a1cf4a69dec94f",
-      "conversionGainCorrectionDb": 0.3475,
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827
+      "assetSha256": "a2d89aeed40516276a8b779525eb40cf242d932761b8bb65c761ce8cdda46602",
+      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "normalization": {
+        "inputFileSha256": "959f1ab54f3cc5ae9567c0a9585f2faeaebf727b7424be3f03a1cf4a69dec94f",
+        "appliedGainDb": -8.3074238,
+        "targetStrongest50msRmsDbFS": -29.38,
+        "outputStrongest50msRmsDbFS": -29.3799,
+        "outputPeakDbFS": -18.5209,
+        "duration": 0.236508,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3475
     },
     "208c2e44527217fc0e2c": {
-      "file": "palette/83464d8d619063487d3a.mp3",
+      "file": "palette/terrain-208c2e44527217fc0e2c-3ba58e1b31.mp3",
       "recording": "edits/fort-wood-v1",
       "take": 1,
       "range": {
@@ -1674,14 +2242,22 @@
           "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
         }
       },
-      "gameGainDb": 2.9411,
       "levelClass": "terrain",
-      "assetSha256": "12eb9aeb60cfafd9c21bade9ca4d5d96f1a346b8b68ceb3822527a2f7f4b44c0",
-      "conversionGainCorrectionDb": 0.4418,
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827
+      "assetSha256": "3ba58e1b319a46268095b524e806de39dc508c34c4274a2a068677c2920bd448",
+      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "normalization": {
+        "inputFileSha256": "12eb9aeb60cfafd9c21bade9ca4d5d96f1a346b8b68ceb3822527a2f7f4b44c0",
+        "appliedGainDb": -7.462603,
+        "targetStrongest50msRmsDbFS": -29.38,
+        "outputStrongest50msRmsDbFS": -29.3801,
+        "outputPeakDbFS": -20.5681,
+        "duration": 0.141701,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4418
     },
     "79a23cccff86b4327237": {
-      "file": "palette/2b28fb23db3b681eb203.mp3",
+      "file": "palette/terrain-79a23cccff86b4327237-d8b1ffdca4.mp3",
       "recording": "edits/grove-short-magic-v2",
       "take": 1,
       "range": {
@@ -1717,14 +2293,22 @@
         },
         "preserveLevel": true
       },
-      "gameGainDb": 5.8388,
       "levelClass": "terrain",
-      "assetSha256": "45436d2366beb57d6f2fa439c7757514ffdaa88aca5c4b79a3cef9b85efc6285",
-      "conversionGainCorrectionDb": 0.2795,
-      "referenceGameOutputStrongest50msRmsDbFS": -40.4327
+      "assetSha256": "d8b1ffdca45e97b11c6e740f4e6a165874bf3d8709f8a075de1d3fc1f51670cf",
+      "referenceGameOutputStrongest50msRmsDbFS": -40.4327,
+      "normalization": {
+        "inputFileSha256": "45436d2366beb57d6f2fa439c7757514ffdaa88aca5c4b79a3cef9b85efc6285",
+        "appliedGainDb": -4.4674563,
+        "targetStrongest50msRmsDbFS": -40.4327,
+        "outputStrongest50msRmsDbFS": -40.4337,
+        "outputPeakDbFS": -31.7086,
+        "duration": 0.305011,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2795
     },
     "dfb34fb86e2d2cc7519b": {
-      "file": "palette/100c7fb601626addb88d.mp3",
+      "file": "palette/terrain-dfb34fb86e2d2cc7519b-5e675a2062.mp3",
       "recording": "edits/house-door-soft-v1",
       "take": 1,
       "range": {
@@ -1759,14 +2343,22 @@
           "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
         }
       },
-      "gameGainDb": 0.1236,
       "levelClass": "terrain",
-      "assetSha256": "305d87c8d62552a599a4a5f00cff5236d4e311be7185fd39a1b114990f575d87",
-      "conversionGainCorrectionDb": 0.2743,
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827
+      "assetSha256": "5e675a2062f8fc520d02cbae8f7f7f7da1d0ff906c3c6b93b7d5d8253d15c54f",
+      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "normalization": {
+        "inputFileSha256": "305d87c8d62552a599a4a5f00cff5236d4e311be7185fd39a1b114990f575d87",
+        "appliedGainDb": -10.2947513,
+        "targetStrongest50msRmsDbFS": -29.38,
+        "outputStrongest50msRmsDbFS": -29.362,
+        "outputPeakDbFS": -19.0021,
+        "duration": 0.446009,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2743
     },
     "8e4ebe6e7b343e7ecde3": {
-      "file": "palette/47ee2e39407a4da595c7.mp3",
+      "file": "palette/terrain-8e4ebe6e7b343e7ecde3-34578f4518.mp3",
       "recording": "edits/mountain-mining-soft-v1",
       "take": 1,
       "range": {
@@ -1801,14 +2393,22 @@
           "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
         }
       },
-      "gameGainDb": 5.9757,
       "levelClass": "terrain",
-      "assetSha256": "eb86532e14c6078af48374cd3df43ba2340b1a4c794c71cedbedbef87e95052b",
-      "conversionGainCorrectionDb": 0.4164,
-      "referenceGameOutputStrongest50msRmsDbFS": -33.8527
+      "assetSha256": "34578f451860a19d1a7f968b1d91df65bf0d5cddccf163d38668c6ae6819f7d7",
+      "referenceGameOutputStrongest50msRmsDbFS": -33.8527,
+      "normalization": {
+        "inputFileSha256": "eb86532e14c6078af48374cd3df43ba2340b1a4c794c71cedbedbef87e95052b",
+        "appliedGainDb": -4.3309119,
+        "targetStrongest50msRmsDbFS": -33.8527,
+        "outputStrongest50msRmsDbFS": -33.8545,
+        "outputPeakDbFS": -23.4712,
+        "duration": 0.45,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4164
     },
     "5ba8ecfff6a14827467f": {
-      "file": "palette/aaf2c7e3b4eff767009d.mp3",
+      "file": "palette/cue-5ba8ecfff6a14827467f-39ac3ddf90.mp3",
       "recording": "edits/quarry-mining-v1",
       "take": 1,
       "range": {
@@ -1843,14 +2443,22 @@
           "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
         }
       },
-      "gameGainDb": 5.9198,
       "levelClass": null,
-      "assetSha256": "01c1c504ebd3226766e45f57d96a90c82a4acfdc910651897c4a181d4d79192a",
-      "conversionGainCorrectionDb": 0.3605,
-      "referenceGameOutputStrongest50msRmsDbFS": -22.1527
+      "assetSha256": "39ac3ddf90e3b4a63167cd80680b7cf7a33dc0b6b7aa6825330bd9cc8890a0f9",
+      "referenceGameOutputStrongest50msRmsDbFS": -22.1527,
+      "normalization": {
+        "inputFileSha256": "01c1c504ebd3226766e45f57d96a90c82a4acfdc910651897c4a181d4d79192a",
+        "appliedGainDb": -4.3861638,
+        "targetStrongest50msRmsDbFS": -22.1527,
+        "outputStrongest50msRmsDbFS": -22.1536,
+        "outputPeakDbFS": -14.1473,
+        "duration": 0.63059,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.3605
     },
     "dedfeaa0f001aa1742c4": {
-      "file": "palette/45fa5acde224476ceafe.mp3",
+      "file": "palette/terrain-dedfeaa0f001aa1742c4-18d0c9c0eb.mp3",
       "recording": "edits/burned-fire-soft-onset-v3",
       "take": 1,
       "range": {
@@ -1885,14 +2493,22 @@
           "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
         }
       },
-      "gameGainDb": 6.3091,
       "levelClass": "terrain",
-      "assetSha256": "43da0eeb3f86c54115c613bf8b21a1c96fa1ff0b038f92a384cee5773bc51317",
-      "conversionGainCorrectionDb": 0.0998,
-      "referenceGameOutputStrongest50msRmsDbFS": -41.28
+      "assetSha256": "18d0c9c0ebe3198ed85ca2d5b6b6c4c4441ec5171b7683102210278752e2a255",
+      "referenceGameOutputStrongest50msRmsDbFS": -41.28,
+      "normalization": {
+        "inputFileSha256": "43da0eeb3f86c54115c613bf8b21a1c96fa1ff0b038f92a384cee5773bc51317",
+        "appliedGainDb": -3.8947359,
+        "targetStrongest50msRmsDbFS": -41.18,
+        "outputStrongest50msRmsDbFS": -41.1791,
+        "outputPeakDbFS": -21.0693,
+        "duration": 0.45,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.0998
     },
     "0afd3d28fe927744a881": {
-      "file": "palette/2d6cc052878bf7398c44.mp3",
+      "file": "palette/terrain-0afd3d28fe927744a881-7178c81960.mp3",
       "recording": "current/terrain-plains-1",
       "take": 1,
       "range": {
@@ -1901,17 +2517,25 @@
       },
       "source": "Hexcommand scripts/generate-sfx.py",
       "license": "Existing Hexcommand asset",
-      "gameGainDb": 0.0314,
       "levelClass": "terrain",
-      "assetSha256": "69cd3250c759436441442d50fe5ca1bb92bf845e497dc0b5042c7a82b2d03d02",
+      "assetSha256": "7178c8196072c73e49ad2ea0878276aed8921bca33e6fa8dcfcbfa76eeec78c2",
       "originalSha256": "82c2be963d1d21495070b468bc72b64b95fff40a8504bc961597610f73b1d0f4",
       "sourcePath": "public/assets/audio/terrain-plains-1.wav",
       "creator": "Hex Command",
-      "conversionGainCorrectionDb": 0.0321,
-      "referenceGameOutputStrongest50msRmsDbFS": -37.0327
+      "referenceGameOutputStrongest50msRmsDbFS": -37.0327,
+      "normalization": {
+        "inputFileSha256": "69cd3250c759436441442d50fe5ca1bb92bf845e497dc0b5042c7a82b2d03d02",
+        "appliedGainDb": -10.2755801,
+        "targetStrongest50msRmsDbFS": -37.0327,
+        "outputStrongest50msRmsDbFS": -37.0309,
+        "outputPeakDbFS": -27.3409,
+        "duration": 0.213016,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.0321
     },
     "1c229af7248cff8c22f4": {
-      "file": "palette/f50bc07c204559e4ed07.mp3",
+      "file": "palette/terrain-1c229af7248cff8c22f4-ad268314ec.mp3",
       "recording": "current/terrain-keep-1",
       "take": 1,
       "range": {
@@ -1920,17 +2544,25 @@
       },
       "source": "Hexcommand scripts/generate-sfx.py",
       "license": "Existing Hexcommand asset",
-      "gameGainDb": 0.4156,
       "levelClass": "terrain",
-      "assetSha256": "97968366c13d4fe6c1c35739ebd9285eb57fbffc66bc3eb672a6a286465ee039",
+      "assetSha256": "ad268314ecbf7763eb19488d6e60b2bde036b37a1ca677f6d09955ad30042442",
       "originalSha256": "342347d1b23ea82a8fb146862029cc19643581e892344c66f19108a6d0299bab",
       "sourcePath": "public/assets/audio/terrain-keep-1.wav",
       "creator": "Hex Command",
-      "conversionGainCorrectionDb": 0.4163,
-      "referenceGameOutputStrongest50msRmsDbFS": -32.2627
+      "referenceGameOutputStrongest50msRmsDbFS": -32.2627,
+      "normalization": {
+        "inputFileSha256": "97968366c13d4fe6c1c35739ebd9285eb57fbffc66bc3eb672a6a286465ee039",
+        "appliedGainDb": -9.8914041,
+        "targetStrongest50msRmsDbFS": -32.2627,
+        "outputStrongest50msRmsDbFS": -32.264,
+        "outputPeakDbFS": -21.4439,
+        "duration": 0.181587,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4163
     },
     "6a215df7cb725eee9e56": {
-      "file": "palette/faee687a3d1adab9e5a4.mp3",
+      "file": "palette/cue-6a215df7cb725eee9e56-bcd395a720.mp3",
       "recording": "impact-sounds/impactBell_heavy_000",
       "take": 1,
       "range": {
@@ -1942,14 +2574,22 @@
       "license": "CC0-1.0",
       "sourcePath": "kenney/impact-sounds/Audio/impactBell_heavy_000.ogg",
       "originalSha256": "94b8bb5f2d43ab65e4bcc32b28562416e9bc2c51d9fd4be1e333660ee52f977f",
-      "gameGainDb": -3.0443,
       "levelClass": null,
-      "assetSha256": "ff6241d51c1a4ef695e4e44972a68cd9d053b407d50f761ebe48de02fa3d9206",
-      "conversionGainCorrectionDb": 0.4364,
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927
+      "assetSha256": "bcd395a72000dac4796a451d7bcb9abfd6358b7a6e861d6fafad01fbaca7dbac",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "normalization": {
+        "inputFileSha256": "ff6241d51c1a4ef695e4e44972a68cd9d053b407d50f761ebe48de02fa3d9206",
+        "appliedGainDb": -13.3513297,
+        "targetStrongest50msRmsDbFS": -26.2927,
+        "outputStrongest50msRmsDbFS": -26.2933,
+        "outputPeakDbFS": -12.7756,
+        "duration": 1.150454,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.4364
     },
     "69b107702f3d02ae8e8e": {
-      "file": "palette/718e67c5c2f7713ccfd6.mp3",
+      "file": "palette/terrain-69b107702f3d02ae8e8e-f7c2a20e74.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
       "take": 1,
       "range": {
@@ -1961,14 +2601,22 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/item_wood_03.ogg",
       "originalSha256": "a1f62c20ac2c294309966037fe66fbd5cddbee5df7ae6d6c29e4b2607a0db1e4",
-      "gameGainDb": -5.7181,
       "levelClass": "terrain",
-      "assetSha256": "def9f688a35caa709f73b3de907c04ebc989fb3c825ae948d5eccd0f84dc4e9e",
-      "conversionGainCorrectionDb": 0.2726,
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827
+      "assetSha256": "f7c2a20e749130e57aa67f2ee9d18df3b83783c1876dceb56f7409c346cfee36",
+      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "normalization": {
+        "inputFileSha256": "def9f688a35caa709f73b3de907c04ebc989fb3c825ae948d5eccd0f84dc4e9e",
+        "appliedGainDb": -16.0621313,
+        "targetStrongest50msRmsDbFS": -29.38,
+        "outputStrongest50msRmsDbFS": -29.4027,
+        "outputPeakDbFS": -14.9198,
+        "duration": 0.296395,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2726
     },
     "c02e02577301d78c1651": {
-      "file": "palette/71b13c3e01783632f8bb.mp3",
+      "file": "palette/terrain-c02e02577301d78c1651-9e4922173a.mp3",
       "recording": "edits/ritual-fout-03-short-v1",
       "take": 1,
       "range": {
@@ -2005,14 +2653,22 @@
           "method": "Post-encode integrated RMS calibration; not perceptual loudness mastering."
         }
       },
-      "gameGainDb": 5.819,
       "levelClass": "terrain",
-      "assetSha256": "23f88b8dd09fd6afdb0604f21579d5ae50856114474cfcda2c725ea3eab84358",
-      "conversionGainCorrectionDb": 0.2597,
-      "referenceGameOutputStrongest50msRmsDbFS": -34.6927
+      "assetSha256": "9e4922173ae9619ef87bf4f678cd4fdc2d733872860cb99b8c52e56df98b67c5",
+      "referenceGameOutputStrongest50msRmsDbFS": -34.6927,
+      "normalization": {
+        "inputFileSha256": "23f88b8dd09fd6afdb0604f21579d5ae50856114474cfcda2c725ea3eab84358",
+        "appliedGainDb": -4.5032944,
+        "targetStrongest50msRmsDbFS": -34.6927,
+        "outputStrongest50msRmsDbFS": -34.7002,
+        "outputPeakDbFS": -25.9339,
+        "duration": 0.45,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.2597
     },
     "40fcbdbdc6d925647e3f": {
-      "file": "palette/8e7eb1022157a16fc965.mp3",
+      "file": "palette/terrain-40fcbdbdc6d925647e3f-810ff9e010.mp3",
       "recording": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
       "take": 1,
       "range": {
@@ -2024,11 +2680,20 @@
       "license": "CC0-1.0",
       "sourcePath": "rubberduck/80-cc0-rpg-sfx/spell_01.ogg",
       "originalSha256": "09821a53c418c5eeeac4fa25bada9d245e822fed302eeeae9ae4151522a45ae5",
-      "gameGainDb": -9.6371,
       "levelClass": "terrain",
-      "assetSha256": "c5745ac8213b73727c787123c82baabd7ae2da954b4a6d6307be24f74a6f7810",
-      "conversionGainCorrectionDb": 0.5236,
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827
+      "assetSha256": "810ff9e0103dc9dc57f7355475b108bbb9dac84a64ad6af511fd6f93f3410309",
+      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "normalization": {
+        "inputFileSha256": "c5745ac8213b73727c787123c82baabd7ae2da954b4a6d6307be24f74a6f7810",
+        "appliedGainDb": -20.053561,
+        "targetStrongest50msRmsDbFS": -29.38,
+        "outputStrongest50msRmsDbFS": -29.4088,
+        "outputPeakDbFS": -17.8802,
+        "duration": 0.530794,
+        "runtimeReferenceMasterGain": 1
+      },
+      "priorEncodingCorrectionDb": 0.5236
     }
-  }
+  },
+  "runtimeReferenceMasterGain": 1
 }

@@ -1,336 +1,253 @@
 {
   "clips": {
     "c2fdf756bcb22f667fc9": {
-      "file": "palette/eec3744ee3c3673efa87.mp3",
-      "gainDb": -6.222
+      "file": "palette/cue-c2fdf756bcb22f667fc9-be53e64a46.mp3"
     },
     "c535fbb07e3ea8d120aa": {
-      "file": "palette/b435ef876bc215a76de4.mp3",
-      "gainDb": -10.4727
+      "file": "palette/cue-c535fbb07e3ea8d120aa-afad8631be.mp3"
     },
     "7439e556025516dd3513": {
-      "file": "palette/bc86adbf5072da2d2b87.mp3",
-      "gainDb": -5.133
+      "file": "palette/cue-7439e556025516dd3513-89150e2696.mp3"
     },
     "50806fc7df5e0bccc3cf": {
-      "file": "palette/a3fda4a1fed3500ff14b.mp3",
-      "gainDb": -6.1576
+      "file": "palette/attack-50806fc7df5e0bccc3cf-40a3f936ce.mp3"
     },
     "3e6310e5bc404ae19d74": {
-      "file": "palette/dfe74381e6a57787a6d7.mp3",
-      "gainDb": -2.0213
+      "file": "palette/attack-3e6310e5bc404ae19d74-34b2c8cc72.mp3"
     },
     "7f84ad9347df544dfe68": {
-      "file": "palette/da5cb7087e09692e1259.mp3",
-      "gainDb": 5.4847
+      "file": "palette/cue-7f84ad9347df544dfe68-c2d232dcc3.mp3"
     },
     "3a2f6220389148df7d39": {
-      "file": "palette/94e4451b6a313203eb9f.mp3",
-      "gainDb": 8.6022
+      "file": "palette/attack-3a2f6220389148df7d39-f6adc29435.mp3"
     },
     "038454dd45347855378b": {
-      "file": "palette/9200f3c12d724251755d.mp3",
-      "gainDb": -2.2997
+      "file": "palette/cue-038454dd45347855378b-41f5910981.mp3"
     },
     "ce5a4b87904953414717": {
-      "file": "palette/8f3919ef19d89bba4b64.mp3",
-      "gainDb": 21.6541
+      "file": "palette/attack-ce5a4b87904953414717-5873bf2049.mp3"
     },
     "ac9f11aa3d1afb1cb5ec": {
-      "file": "palette/db1b85e30e3ad5d5ecd2.mp3",
-      "gainDb": -0.7008
+      "file": "palette/cue-ac9f11aa3d1afb1cb5ec-8859e78ecc.mp3"
     },
     "cd860a2f955d73aadba4": {
-      "file": "palette/9c295023e7e233e0c7b7.mp3",
-      "gainDb": 7.5059
+      "file": "palette/cue-cd860a2f955d73aadba4-f07983ac0c.mp3"
     },
     "489d29a140c68e2945af": {
-      "file": "palette/799f35cf888c7dda3572.mp3",
-      "gainDb": 12.578
+      "file": "palette/attack-489d29a140c68e2945af-13913a3a4b.mp3"
     },
     "ef1ee89ac3b752927fa6": {
-      "file": "palette/277e8a85caa07ad2f954.mp3",
-      "gainDb": 25.7526
+      "file": "palette/cue-ef1ee89ac3b752927fa6-89f785f303.mp3"
     },
     "bb88422a34ef21ca7d19": {
-      "file": "palette/e85ee80cabff51afbed1.mp3",
-      "gainDb": -1.8336
+      "file": "palette/cue-bb88422a34ef21ca7d19-d6b0069a60.mp3"
     },
     "a226691fdd4ffd2f94db": {
-      "file": "palette/02af775e6c21f8c9718e.mp3",
-      "gainDb": 0.1706
+      "file": "palette/attack-a226691fdd4ffd2f94db-988004e337.mp3"
     },
     "46e40cd3d278b8ca4cf5": {
-      "file": "palette/d2216e88d394f725aafc.mp3",
-      "gainDb": -5.3849
+      "file": "palette/cue-46e40cd3d278b8ca4cf5-d6e73b7580.mp3"
     },
     "018e21316d2e89dce4ed": {
-      "file": "palette/d2fc62f2f0d7019b2256.mp3",
-      "gainDb": 5.9826
+      "file": "palette/cue-018e21316d2e89dce4ed-f53abfb535.mp3"
     },
     "56526b8d2c6d61b7b01a": {
-      "file": "palette/d2fc62f2f0d7019b2256.mp3",
-      "gainDb": 10.0353
+      "file": "palette/attack-56526b8d2c6d61b7b01a-5367dd409e.mp3"
     },
     "2f2da629aaa8970692cd": {
-      "file": "palette/65ccc1ddc9b9ccb463e8.mp3",
-      "gainDb": -5.9916
+      "file": "palette/cue-2f2da629aaa8970692cd-101b1f65da.mp3"
     },
     "177e34470900c0b68b8f": {
-      "file": "palette/faff3722b84acc6b2a73.mp3",
-      "gainDb": -0.7234
+      "file": "palette/cue-177e34470900c0b68b8f-b0b4f72fa2.mp3"
     },
     "1a6ccd21007cc5043ae8": {
-      "file": "palette/c35477d49f4231609b34.mp3",
-      "gainDb": 1.6598
+      "file": "palette/attack-1a6ccd21007cc5043ae8-eedafd552d.mp3"
     },
     "a663115431b9ced218f0": {
-      "file": "palette/fc1b81c32543d423d092.mp3",
-      "gainDb": -0.7466
+      "file": "palette/cue-a663115431b9ced218f0-570d64b6c3.mp3"
     },
     "5cff2015727d5a5b05fb": {
-      "file": "palette/bfaef9652301360208bd.mp3",
-      "gainDb": -3.5432
+      "file": "palette/cue-5cff2015727d5a5b05fb-0bbe07fcd5.mp3"
     },
     "9f2719dfc9bc4d177c8d": {
-      "file": "palette/58f7366cce47f4f94d30.mp3",
-      "gainDb": -10.7531
+      "file": "palette/cue-9f2719dfc9bc4d177c8d-d3869eec7a.mp3"
     },
     "416489d1ee464859862a": {
-      "file": "palette/3514156a60f5ebe6abc5.mp3",
-      "gainDb": -3.2551
+      "file": "palette/attack-416489d1ee464859862a-88dd2c27c9.mp3"
     },
     "d9e2855603d99027e36d": {
-      "file": "palette/eb49b2cf5bfe8569682d.mp3",
-      "gainDb": 3.8624
+      "file": "palette/cue-d9e2855603d99027e36d-12c081cf65.mp3"
     },
     "060ee57e392c89dc2612": {
-      "file": "palette/2d9b15798251e8c90ccc.mp3",
-      "gainDb": -1.0625
+      "file": "palette/cue-060ee57e392c89dc2612-34bee29892.mp3"
     },
     "d8c61eba50b2109dc31e": {
-      "file": "palette/e31af778e77a19f9e49e.mp3",
-      "gainDb": -8.3564
+      "file": "palette/attack-d8c61eba50b2109dc31e-41f3fc62d7.mp3"
     },
     "cd9bfc6a3ddcebb9b143": {
-      "file": "palette/9e12fb86dca69c01821c.mp3",
-      "gainDb": -4.2673
+      "file": "palette/cue-cd9bfc6a3ddcebb9b143-7c6ccbc90d.mp3"
     },
     "7d1b3828e8f11adc2b58": {
-      "file": "palette/2f6d4cf819eb2f369a89.mp3",
-      "gainDb": -12.622
+      "file": "palette/cue-7d1b3828e8f11adc2b58-2c4f5a47f2.mp3"
     },
     "4a58d311fd56ff1cbc4e": {
-      "file": "palette/99ff775ddb45374b2310.mp3",
-      "gainDb": 8.7492
+      "file": "palette/cue-4a58d311fd56ff1cbc4e-e3e6c7e359.mp3"
     },
     "58f91c21fe4894683a7c": {
-      "file": "palette/61eeae13e0f26c4c2c76.mp3",
-      "gainDb": 11.7895
+      "file": "palette/attack-58f91c21fe4894683a7c-d0f571964d.mp3"
     },
     "ab73784d9d6a79e6b2e0": {
-      "file": "palette/db251c04162fd6bf6345.mp3",
-      "gainDb": -1.3799
+      "file": "palette/attack-ab73784d9d6a79e6b2e0-5d2e87a662.mp3"
     },
     "24ca3c7ae37910133029": {
-      "file": "palette/e4cbc56608d434dc4893.mp3",
-      "gainDb": -3.7167
+      "file": "palette/cue-24ca3c7ae37910133029-c40e13d36d.mp3"
     },
     "e5d976ac476afa23295a": {
-      "file": "palette/1a155052d3caaebf90e0.mp3",
-      "gainDb": -2.4333
+      "file": "palette/attack-e5d976ac476afa23295a-3d5e1834da.mp3"
     },
     "856b426fa039b885d7a9": {
-      "file": "palette/8e7eb1022157a16fc965.mp3",
-      "gainDb": -6.6471
+      "file": "palette/attack-856b426fa039b885d7a9-e4dd3df407.mp3"
     },
     "aff60f2b6fc07087e016": {
-      "file": "palette/41ee8b1a64885c4dba80.mp3",
-      "gainDb": -0.744
+      "file": "palette/cue-aff60f2b6fc07087e016-0ece0f2cc8.mp3"
     },
     "0b42916f951ccb3189f2": {
-      "file": "palette/7d030b4eff5d6d6776bb.mp3",
-      "gainDb": 9.2649
+      "file": "palette/cue-0b42916f951ccb3189f2-dcda7100d4.mp3"
     },
     "13759e3ffc525ff24299": {
-      "file": "palette/4a323f31c130b5e1aead.mp3",
-      "gainDb": 12.897
+      "file": "palette/cue-13759e3ffc525ff24299-f539ba1817.mp3"
     },
     "2b05640300191fe21abf": {
-      "file": "palette/68506e1c3d34db8a2d9a.mp3",
-      "gainDb": 7.6009
+      "file": "palette/attack-2b05640300191fe21abf-1726918501.mp3"
     },
     "753742aae5d40532afd2": {
-      "file": "palette/b4926cd93ea6a6d19e2f.mp3",
-      "gainDb": 7.768
+      "file": "palette/attack-753742aae5d40532afd2-2b78199c9b.mp3"
     },
     "8a6445db6945744e1cb8": {
-      "file": "palette/4e3d3d9643940c9bdcdb.mp3",
-      "gainDb": -0.8259
+      "file": "palette/attack-8a6445db6945744e1cb8-c660ceb1e4.mp3"
     },
     "c4e45383c51b9aa36e9d": {
-      "file": "palette/b350ef174cf9c375fdd0.mp3",
-      "gainDb": -6.6442
+      "file": "palette/cue-c4e45383c51b9aa36e9d-27dd3b4915.mp3"
     },
     "789b3b10b654e1bfda79": {
-      "file": "palette/38bee214760d698a18c7.mp3",
-      "gainDb": 24.2617
+      "file": "palette/attack-789b3b10b654e1bfda79-4ddb6d4e0a.mp3"
     },
     "0e3c50d86d5f953b2e42": {
-      "file": "palette/adceda86326f12046afe.mp3",
-      "gainDb": -4.7659
+      "file": "palette/attack-0e3c50d86d5f953b2e42-b01a231f94.mp3"
     },
     "4d520b7a8999d60ec45a": {
-      "file": "palette/f1faa2ea8b6a81492587.mp3",
-      "gainDb": 16.4561
+      "file": "palette/cue-4d520b7a8999d60ec45a-0c2fcbd108.mp3"
     },
     "4ae016755ede852d31e0": {
-      "file": "palette/0c203c20f9d8df988c6e.mp3",
-      "gainDb": -0.453
+      "file": "palette/cue-4ae016755ede852d31e0-614d8aa99c.mp3"
     },
     "4af95c458de224805922": {
-      "file": "palette/b1b11ffbb42da2facdd0.mp3",
-      "gainDb": 18.4493
+      "file": "palette/cue-4af95c458de224805922-054b841611.mp3"
     },
     "4be39645eb7969717904": {
-      "file": "palette/26da7ae3bf5fda735095.mp3",
-      "gainDb": -0.5751
+      "file": "palette/cue-4be39645eb7969717904-aedde380db.mp3"
     },
     "93b4816f7ecb8ff2db5b": {
-      "file": "palette/9c8c022a4e838dc5b35b.mp3",
-      "gainDb": 22.9727
+      "file": "palette/attack-93b4816f7ecb8ff2db5b-dfa6a631fb.mp3"
     },
     "5968d98e59842a38c439": {
-      "file": "palette/8f86274a70044652a17e.mp3",
-      "gainDb": 12.7887
+      "file": "palette/attack-5968d98e59842a38c439-76d91f846d.mp3"
     },
     "33ec234e52cf86420477": {
-      "file": "palette/718e67c5c2f7713ccfd6.mp3",
-      "gainDb": -2.7281
+      "file": "palette/cue-33ec234e52cf86420477-de68aca0c6.mp3"
     },
     "da6d2d434978508ee055": {
-      "file": "palette/6c3601b54a112e7ff9f9.mp3",
-      "gainDb": -6.3626
+      "file": "palette/attack-da6d2d434978508ee055-cd380c092c.mp3"
     },
     "a95dae6e648c7e63a1f0": {
-      "file": "palette/06731ab323a4953276f1.mp3",
-      "gainDb": -5.5157
+      "file": "palette/cue-a95dae6e648c7e63a1f0-0afd71fbe8.mp3"
     },
     "11306644002105606434": {
-      "file": "palette/89a16afcb818f408515a.mp3",
-      "gainDb": -5.4247
+      "file": "palette/cue-11306644002105606434-ec4b3e5c17.mp3"
     },
     "42c97afecf8fbc174dab": {
-      "file": "palette/0191dc32a3d81b0fb915.mp3",
-      "gainDb": -5.3706
+      "file": "palette/attack-42c97afecf8fbc174dab-7b1817210d.mp3"
     },
     "45b770ab454d215cccb4": {
-      "file": "palette/a44d87917b48d5523465.mp3",
-      "gainDb": -6.4643
+      "file": "palette/cue-45b770ab454d215cccb4-863f14d198.mp3"
     },
     "e0dc42474885d93ab31f": {
-      "file": "palette/cffe066a4330f65ef468.mp3",
-      "gainDb": -2.6727
+      "file": "palette/attack-e0dc42474885d93ab31f-e92eb5606e.mp3"
     },
     "1b10ad758768ecd1748d": {
-      "file": "palette/11f6af7140cb38e37689.mp3",
-      "gainDb": 0.2032
+      "file": "palette/cue-1b10ad758768ecd1748d-9519cd854d.mp3"
     },
     "f17c65bc67627cca4149": {
-      "file": "palette/604f7e264c91b201b917.mp3",
-      "gainDb": -4.3342
+      "file": "palette/attack-f17c65bc67627cca4149-7c0211fad6.mp3"
     },
     "fd8a1d13d1dfea55bdcf": {
-      "file": "palette/5e26918f45c8c983a435.mp3",
-      "gainDb": -3.1125
+      "file": "palette/attack-fd8a1d13d1dfea55bdcf-ecc8edcfbb.mp3"
     },
     "8526ac1715542e37d2d8": {
-      "file": "palette/cb2ffbb05112d87b30df.mp3",
-      "gainDb": 1.0017
+      "file": "palette/attack-8526ac1715542e37d2d8-67f4e3bc96.mp3"
     },
     "1f51992dc1ab5fc5ce83": {
-      "file": "palette/f5de08578b977501eb7a.mp3",
-      "gainDb": 6.4009
+      "file": "palette/cue-1f51992dc1ab5fc5ce83-6a7b9dbd45.mp3"
     },
     "2a67452288e81877a635": {
-      "file": "palette/9458e3e298e319ac293a.mp3",
-      "gainDb": -8.2633
+      "file": "palette/attack-2a67452288e81877a635-34cdecfc01.mp3"
     },
     "404742b3fb08fbb7a8fc": {
-      "file": "palette/cb2ffbb05112d87b30df.mp3",
-      "gainDb": -1.3783
+      "file": "palette/terrain-404742b3fb08fbb7a8fc-4d84619c7e.mp3"
     },
     "58891746d1c8d3fbef67": {
-      "file": "palette/ed2606907f6cad4b6bad.mp3",
-      "gainDb": 6.1835
+      "file": "palette/terrain-58891746d1c8d3fbef67-284c9d911c.mp3"
     },
     "43b8c84c6d50d9faa7f2": {
-      "file": "palette/1bf7f19ac14fd28a288c.mp3",
-      "gainDb": 6.1192
+      "file": "palette/terrain-43b8c84c6d50d9faa7f2-a6cb38d39a.mp3"
     },
     "7af2410fabd7d201f661": {
-      "file": "palette/1c31db129eeb87b6aa9c.mp3",
-      "gainDb": 0.2353
+      "file": "palette/terrain-7af2410fabd7d201f661-51df43008b.mp3"
     },
     "a1c9216caaa716cbbd7d": {
-      "file": "palette/8a8834b515696e4ea9b6.mp3",
-      "gainDb": 0.3817
+      "file": "palette/terrain-a1c9216caaa716cbbd7d-b7a0858495.mp3"
     },
     "6c4a106f6897dc5219c1": {
-      "file": "palette/8bd322658dabecc115d6.mp3",
-      "gainDb": 0.2209
+      "file": "palette/terrain-6c4a106f6897dc5219c1-e083f0d61c.mp3"
     },
     "8b06cb5fb76a2136238e": {
-      "file": "palette/aaa6c35101a027818936.mp3",
-      "gainDb": 2.0968
+      "file": "palette/terrain-8b06cb5fb76a2136238e-a2d89aeed4.mp3"
     },
     "208c2e44527217fc0e2c": {
-      "file": "palette/83464d8d619063487d3a.mp3",
-      "gainDb": 2.9411
+      "file": "palette/terrain-208c2e44527217fc0e2c-3ba58e1b31.mp3"
     },
     "79a23cccff86b4327237": {
-      "file": "palette/2b28fb23db3b681eb203.mp3",
-      "gainDb": 5.8388
+      "file": "palette/terrain-79a23cccff86b4327237-d8b1ffdca4.mp3"
     },
     "dfb34fb86e2d2cc7519b": {
-      "file": "palette/100c7fb601626addb88d.mp3",
-      "gainDb": 0.1236
+      "file": "palette/terrain-dfb34fb86e2d2cc7519b-5e675a2062.mp3"
     },
     "8e4ebe6e7b343e7ecde3": {
-      "file": "palette/47ee2e39407a4da595c7.mp3",
-      "gainDb": 5.9757
+      "file": "palette/terrain-8e4ebe6e7b343e7ecde3-34578f4518.mp3"
     },
     "5ba8ecfff6a14827467f": {
-      "file": "palette/aaf2c7e3b4eff767009d.mp3",
-      "gainDb": 5.9198
+      "file": "palette/cue-5ba8ecfff6a14827467f-39ac3ddf90.mp3"
     },
     "dedfeaa0f001aa1742c4": {
-      "file": "palette/45fa5acde224476ceafe.mp3",
-      "gainDb": 6.3091
+      "file": "palette/terrain-dedfeaa0f001aa1742c4-18d0c9c0eb.mp3"
     },
     "0afd3d28fe927744a881": {
-      "file": "palette/2d6cc052878bf7398c44.mp3",
-      "gainDb": 0.0314
+      "file": "palette/terrain-0afd3d28fe927744a881-7178c81960.mp3"
     },
     "1c229af7248cff8c22f4": {
-      "file": "palette/f50bc07c204559e4ed07.mp3",
-      "gainDb": 0.4156
+      "file": "palette/terrain-1c229af7248cff8c22f4-ad268314ec.mp3"
     },
     "6a215df7cb725eee9e56": {
-      "file": "palette/faee687a3d1adab9e5a4.mp3",
-      "gainDb": -3.0443
+      "file": "palette/cue-6a215df7cb725eee9e56-bcd395a720.mp3"
     },
     "69b107702f3d02ae8e8e": {
-      "file": "palette/718e67c5c2f7713ccfd6.mp3",
-      "gainDb": -5.7181
+      "file": "palette/terrain-69b107702f3d02ae8e8e-f7c2a20e74.mp3"
     },
     "c02e02577301d78c1651": {
-      "file": "palette/71b13c3e01783632f8bb.mp3",
-      "gainDb": 5.819
+      "file": "palette/terrain-c02e02577301d78c1651-9e4922173a.mp3"
     },
     "40fcbdbdc6d925647e3f": {
-      "file": "palette/8e7eb1022157a16fc965.mp3",
-      "gainDb": -9.6371
+      "file": "palette/terrain-40fcbdbdc6d925647e3f-810ff9e010.mp3"
     }
   },
   "units": {
