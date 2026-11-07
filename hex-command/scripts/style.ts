@@ -17,7 +17,6 @@ const files = [
   "*.html",
   "AGENTS.md",
   ".agents/skills/**/*.{md,json,ts}",
-  "TODO.md",
   "pixel/art/factions.json",
   "pixel/art/units/lineups/*.json",
   "pixel/art/units/*/*/palette.json",
