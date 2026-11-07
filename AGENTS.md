@@ -60,5 +60,6 @@ When the user asks what caused an agent failure, use
 
 # Skills
 
+- [merge-gate](.agents/skills/merge-gate/SKILL.md): Required before merging a PR; also use when assessing or preparing merge readiness.
 - [writing-for-agents](.agents/skills/writing-for-agents/SKILL.md): Use when creating or editing skills or modifying agent instructions.
 - [design-audit](.agents/skills/design-audit/SKILL.md): User-invoked requirements, design, and plan-audit workflow.
