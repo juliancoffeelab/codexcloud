@@ -51,7 +51,7 @@ https://creativecommons.org/publicdomain/zero/1.0/
 
 Complete per-file sources, creators, take ranges, processing and license records:
 sources.json
-Source license evidence: licenses/
+Source license evidence: sources.json (sourcePacks)
 CC0 legal text: CC0-1.0.txt
 
 This credit list records authorship; it does not change the license terms.
