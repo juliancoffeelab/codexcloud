@@ -90,9 +90,6 @@
     "7d1b3828e8f11adc2b58": {
       "file": "palette/cue-7d1b3828e8f11adc2b58-2c4f5a47f2.mp3"
     },
-    "4a58d311fd56ff1cbc4e": {
-      "file": "palette/cue-4a58d311fd56ff1cbc4e-e3e6c7e359.mp3"
-    },
     "58f91c21fe4894683a7c": {
       "file": "palette/attack-58f91c21fe4894683a7c-d0f571964d.mp3"
     },
@@ -248,6 +245,9 @@
     },
     "40fcbdbdc6d925647e3f": {
       "file": "palette/terrain-40fcbdbdc6d925647e3f-810ff9e010.mp3"
+    },
+    "038caaa5a9591a170323": {
+      "file": "palette/move-038caaa5a9591a170323-5730dcba85.mp3"
     }
   },
   "units": {
@@ -843,7 +843,7 @@
       "primaryAttack": "palette:50806fc7df5e0bccc3cf"
     },
     "dwarf-crossbow": {
-      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:060ee57e392c89dc2612",
       "attacks": {
         "crossbow": "palette:58f91c21fe4894683a7c",
@@ -852,7 +852,7 @@
       "primaryAttack": "palette:58f91c21fe4894683a7c"
     },
     "dwarf-crossbow-l2": {
-      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:060ee57e392c89dc2612",
       "attacks": {
         "crossbow": "palette:58f91c21fe4894683a7c",
@@ -861,7 +861,7 @@
       "primaryAttack": "palette:58f91c21fe4894683a7c"
     },
     "dwarf-crossbow-l3": {
-      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:060ee57e392c89dc2612",
       "attacks": {
         "crossbow": "palette:58f91c21fe4894683a7c",
@@ -1079,7 +1079,7 @@
       "primaryAttack": "palette:2b05640300191fe21abf"
     },
     "elf-archer": {
-      "selection": "palette:0b42916f951ccb3189f2",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:aff60f2b6fc07087e016",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1088,7 +1088,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "elf-archer-l2": {
-      "selection": "palette:0b42916f951ccb3189f2",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:aff60f2b6fc07087e016",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1097,7 +1097,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "elf-archer-l3": {
-      "selection": "palette:0b42916f951ccb3189f2",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:aff60f2b6fc07087e016",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1106,7 +1106,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "elf-deer-archer": {
-      "selection": "palette:a663115431b9ced218f0",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:aff60f2b6fc07087e016",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1115,7 +1115,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "elf-deer-archer-l2": {
-      "selection": "palette:a663115431b9ced218f0",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:aff60f2b6fc07087e016",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1124,7 +1124,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "elf-deer-archer-l3": {
-      "selection": "palette:a663115431b9ced218f0",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:aff60f2b6fc07087e016",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1333,7 +1333,7 @@
       "primaryAttack": "palette:3a2f6220389148df7d39"
     },
     "archer": {
-      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:c4e45383c51b9aa36e9d",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1342,7 +1342,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "marksman": {
-      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:c4e45383c51b9aa36e9d",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1351,7 +1351,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "sharpshooter": {
-      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:c4e45383c51b9aa36e9d",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1360,7 +1360,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "crossbowman": {
-      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:c4e45383c51b9aa36e9d",
       "attacks": {
         "crossbow": "palette:58f91c21fe4894683a7c",
@@ -1369,7 +1369,7 @@
       "primaryAttack": "palette:58f91c21fe4894683a7c"
     },
     "arbalester": {
-      "selection": "palette:4a58d311fd56ff1cbc4e",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:c4e45383c51b9aa36e9d",
       "attacks": {
         "arbalest": "palette:58f91c21fe4894683a7c",
@@ -1448,7 +1448,7 @@
       "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
     },
     "horse-archer": {
-      "selection": "palette:a663115431b9ced218f0",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:4ae016755ede852d31e0",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1457,7 +1457,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "horse-bowman": {
-      "selection": "palette:a663115431b9ced218f0",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:4ae016755ede852d31e0",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1466,7 +1466,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "horse-marksman": {
-      "selection": "palette:a663115431b9ced218f0",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:4ae016755ede852d31e0",
       "attacks": {
         "bow": "palette:753742aae5d40532afd2",
@@ -1804,7 +1804,7 @@
       "primaryAttack": "palette:ab73784d9d6a79e6b2e0"
     },
     "bonearcher": {
-      "selection": "palette:33ec234e52cf86420477",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:ac9f11aa3d1afb1cb5ec",
       "attacks": {
         "bonebow": "palette:753742aae5d40532afd2",
@@ -1813,7 +1813,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "deatharcher": {
-      "selection": "palette:33ec234e52cf86420477",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:ac9f11aa3d1afb1cb5ec",
       "attacks": {
         "bonebow": "palette:753742aae5d40532afd2",
@@ -1822,7 +1822,7 @@
       "primaryAttack": "palette:753742aae5d40532afd2"
     },
     "skeleton-bow-master": {
-      "selection": "palette:33ec234e52cf86420477",
+      "selection": "palette:cd860a2f955d73aadba4",
       "death": "palette:ac9f11aa3d1afb1cb5ec",
       "attacks": {
         "bonebow": "palette:753742aae5d40532afd2",
@@ -2139,7 +2139,7 @@
       "primaryAttack": "palette:93b4816f7ecb8ff2db5b"
     },
     "fox-spearguard": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
+      "selection": "palette:5cff2015727d5a5b05fb",
       "death": "palette:c4e45383c51b9aa36e9d",
       "attacks": {
         "spear": "palette:2b05640300191fe21abf"
@@ -2147,7 +2147,7 @@
       "primaryAttack": "palette:2b05640300191fe21abf"
     },
     "fox-spearguard-l2": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
+      "selection": "palette:5cff2015727d5a5b05fb",
       "death": "palette:c4e45383c51b9aa36e9d",
       "attacks": {
         "spear": "palette:2b05640300191fe21abf"
@@ -2155,7 +2155,7 @@
       "primaryAttack": "palette:2b05640300191fe21abf"
     },
     "fox-spearguard-l3": {
-      "selection": "palette:c2fdf756bcb22f667fc9",
+      "selection": "palette:5cff2015727d5a5b05fb",
       "death": "palette:c4e45383c51b9aa36e9d",
       "attacks": {
         "spear": "palette:2b05640300191fe21abf"
@@ -2334,5 +2334,6 @@
   },
   "fallbackAttacks": {
     "melee:impact": "palette:789b3b10b654e1bfda79"
-  }
+  },
+  "movement": "palette:038caaa5a9591a170323"
 }

@@ -44,6 +44,7 @@ import {
   playHudSound,
   playInteraction,
   playCombat,
+  playMovement,
   cancelSound,
 } from "../presentation/sound";
 import { animateTile, animateTurn, type MotionKind } from "../presentation/motion";
@@ -824,7 +825,7 @@ export class BattleController {
     } else if (changes.recruited || changes.advanced) {
       playSound("recruit");
     } else if (changes.movedUnit) {
-      playSound("select");
+      playMovement();
     } else if (changes.capturedTiles.length > 0) {
       const tile = this.#game.tile(changes.capturedTiles[0]!);
       playInteraction({ terrain: tile?.terrain });

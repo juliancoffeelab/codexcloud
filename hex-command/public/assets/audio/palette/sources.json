@@ -918,33 +918,6 @@
       },
       "priorEncodingCorrectionDb": -0.1813
     },
-    "4a58d311fd56ff1cbc4e": {
-      "file": "palette/cue-4a58d311fd56ff1cbc4e-e3e6c7e359.mp3",
-      "recording": "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav",
-      "take": 1,
-      "range": {
-        "start": 0.035,
-        "duration": 0.295
-      },
-      "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
-      "creator": "Ben Jaszczak & Brian Nelson (Still North Media)",
-      "license": "CC0-1.0",
-      "sourcePath": "still-north-media/weapon-textures/part-1/English Longbow Nock Arrow.wav",
-      "originalSha256": "6db46e24f26ba2555049d1d9cc8d57a1fd217abfafa89a3048bb38c9ebb911d5",
-      "levelClass": null,
-      "assetSha256": "e3e6c7e35918fed74179ef61c87298aedb4596ef6fe149ec3f554dc4f7ec6384",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
-      "normalization": {
-        "inputFileSha256": "adaa71ea74c6ddedc6578e30681fd79b27b0855829b0c6541d54b69bc448ce41",
-        "appliedGainDb": -1.5677891,
-        "targetStrongest50msRmsDbFS": -26.2927,
-        "outputStrongest50msRmsDbFS": -26.2828,
-        "outputPeakDbFS": -13.0135,
-        "duration": 0.295011,
-        "runtimeReferenceMasterGain": 1
-      },
-      "priorEncodingCorrectionDb": 0.4999
-    },
     "58f91c21fe4894683a7c": {
       "file": "palette/attack-58f91c21fe4894683a7c-d0f571964d.mp3",
       "recording": "still-north-media/weapon-textures/part-1/Crossbow Bolt Passby.wav",
@@ -2693,6 +2666,33 @@
         "runtimeReferenceMasterGain": 1
       },
       "priorEncodingCorrectionDb": 0.5236
+    },
+    "038caaa5a9591a170323": {
+      "file": "palette/move-038caaa5a9591a170323-5730dcba85.mp3",
+      "recording": "rubberduck/80-cc0-rpg-sfx/wood_04.ogg",
+      "take": 1,
+      "range": {
+        "start": 0.0349,
+        "duration": 0.3213
+      },
+      "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
+      "creator": "rubberduck",
+      "license": "CC0-1.0",
+      "sourcePath": "rubberduck/80-cc0-rpg-sfx/wood_04.ogg",
+      "originalSha256": "bd5dc8469c4f1cb3abff35e2e01b541d4c97d58033f67dfe1c8e3b62ad5350ba",
+      "levelClass": "movement",
+      "assetSha256": "5730dcba85a03638ab2eee4e4d95d329e3618fbd78a58341dd26acf8b9a5b986",
+      "referenceGameOutputStrongest50msRmsDbFS": -45.7792,
+      "normalization": {
+        "inputFileSha256": "a937e234dc7f5f1e618c771cab1d54bcc460ae1d10f0a1bbea64d65b00ec29eb",
+        "appliedGainDb": -28.7662118,
+        "targetStrongest50msRmsDbFS": -45.7792,
+        "outputStrongest50msRmsDbFS": -45.7823,
+        "outputPeakDbFS": -28.1733,
+        "duration": 0.321293,
+        "runtimeReferenceMasterGain": 1
+      },
+      "notes": "Wood 04 figurine placement for actual board moves; matched to the former select-1 board click. UI/target-selection clicks retain select-1."
     }
   },
   "runtimeReferenceMasterGain": 1
