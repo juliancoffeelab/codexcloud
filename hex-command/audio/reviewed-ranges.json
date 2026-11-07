@@ -1,0 +1,1570 @@
+{
+  "schema": 1,
+  "inputRepositoryRevision": "1b0237bff9cdee4ad48903423432133d64558b5f",
+  "selection": "Final user-reviewed soundboard ranges; existing proposals retained where unchanged. Start inclusive, end exclusive, in decoded mono PCM samples.",
+  "figurineProcessing": {
+    "sourceSha256": "de301956c9002a3efd3a2d4531078ec706cca21a6f6644b25203b41f752c7e82",
+    "startSample": 1015,
+    "endSample": 9500,
+    "sampleRate": 44100,
+    "attackDb": 0,
+    "attackMs": 1,
+    "bodyDb": 0,
+    "brightnessDb": 12,
+    "brightnessFrequencyHz": 3000,
+    "transitionMs": 3,
+    "peakCeilingDbfs": -0.2,
+    "appliedPeakReductionDb": 0
+  },
+  "clips": [
+    {
+      "id": "palette:beast-roar",
+      "file": "palette/beast-roar.mp3",
+      "inputSha256": "be53e64a462271cffb6f3aefde9e89a0122dcab5a2ef1a886da6a9efb1099a28",
+      "sampleRate": 44100,
+      "inputSamples": 20215,
+      "startSample": 1777,
+      "endSample": 20215,
+      "selectionMode": "coefficient",
+      "outputSha256": "41f86f0e9164b0f97610b3e9282091518ffe47759477c3d9c0c97a64c994c956",
+      "output": {
+        "impactMs": 109.8,
+        "durationSamples": 18479,
+        "peakDbFS": -15.054,
+        "strongest50msRmsDbFS": -26.7463
+      }
+    },
+    {
+      "id": "palette:dying-creature-groan",
+      "file": "palette/dying-creature-groan.mp3",
+      "inputSha256": "afad8631beed7fb0c008ab55f8c7a265be3dd5e96eb1ef4915d60376a6b36e81",
+      "sampleRate": 44100,
+      "inputSamples": 38367,
+      "startSample": 894,
+      "endSample": 38367,
+      "selectionMode": "coefficient",
+      "outputSha256": "ba222729b49efa789101563908168a9e803002a1abbbc88c27c5ad694da29af1",
+      "output": {
+        "impactMs": 269.4,
+        "durationSamples": 37473,
+        "peakDbFS": -19.6316,
+        "strongest50msRmsDbFS": -26.7378
+      }
+    },
+    {
+      "id": "palette:deep-monster-grunt",
+      "file": "palette/deep-monster-grunt.mp3",
+      "inputSha256": "89150e269673f6dafb632b7d82c015c2d59ec94ab937a6dda35b33ef41e33b2a",
+      "sampleRate": 44100,
+      "inputSamples": 22310,
+      "startSample": 858,
+      "endSample": 22310,
+      "selectionMode": "time",
+      "outputSha256": "73b71b817ed4d3405252c84f5088d0b65d4a9c9fea172cd9921e795e546ebe4b",
+      "output": {
+        "impactMs": 84.8,
+        "durationSamples": 21452,
+        "peakDbFS": -14.5082,
+        "strongest50msRmsDbFS": -26.735
+      }
+    },
+    {
+      "id": "palette:blade-swish",
+      "file": "palette/blade-swish.mp3",
+      "inputSha256": "40a3f936ceb41a9e6538ee5b695cf81f346f48d619abbafb83119844dd076f9b",
+      "sampleRate": 44100,
+      "inputSamples": 12789,
+      "startSample": 1826,
+      "endSample": 12789,
+      "selectionMode": "time",
+      "outputSha256": "cc013b9a41f13c368925cec15397d2f1d4397aecd2c0d5c22e05b08981aaaa9b",
+      "output": {
+        "impactMs": 134.7,
+        "durationSamples": 10963,
+        "peakDbFS": -15.766,
+        "strongest50msRmsDbFS": -26.7049
+      }
+    },
+    {
+      "id": "palette:beast-grunt",
+      "file": "palette/beast-grunt.mp3",
+      "inputSha256": "34b2c8cc7294e4347853043138e12b81faa7b97895c92b5b8ef0a478e505c339",
+      "sampleRate": 44100,
+      "inputSamples": 31151,
+      "startSample": 0,
+      "endSample": 31151,
+      "selectionMode": "coefficient",
+      "outputSha256": "34b2c8cc7294e4347853043138e12b81faa7b97895c92b5b8ef0a478e505c339"
+    },
+    {
+      "id": "palette:leather-rustle",
+      "file": "palette/leather-rustle.mp3",
+      "inputSha256": "c2d232dcc3b12677c07e37de2a72b47d49220d68a11d01605881e198db4cbd95",
+      "sampleRate": 44100,
+      "inputSamples": 18305,
+      "startSample": 2385,
+      "endSample": 17592,
+      "selectionMode": "coefficient",
+      "outputSha256": "703b6a5133bfb5eb62810774c3a88b640b9c8cb815f2b38a84d0df9ef7fa7802",
+      "output": {
+        "impactMs": 59.9,
+        "durationSamples": 15207,
+        "peakDbFS": -13.8518,
+        "strongest50msRmsDbFS": -26.7625
+      }
+    },
+    {
+      "id": "palette:fire-spell-burst",
+      "file": "palette/fire-spell-burst.mp3",
+      "inputSha256": "f6adc294356d0e7a47169ad5b516ce5bf2a6bb7431778c0c6e0a49727478cd91",
+      "sampleRate": 44100,
+      "inputSamples": 22967,
+      "startSample": 1797,
+      "endSample": 22967,
+      "selectionMode": "time",
+      "outputSha256": "c2f6e8118928e46f02926178f302c925f74ba66100fef68aab4be5d292bc3964",
+      "output": {
+        "impactMs": 224.5,
+        "durationSamples": 21170,
+        "peakDbFS": -17.6091,
+        "strongest50msRmsDbFS": -26.7504
+      }
+    },
+    {
+      "id": "palette:flier-cry",
+      "file": "palette/flier-cry.mp3",
+      "inputSha256": "41f5910981f7f28bf662817a25ec87ef73460ee278a23646ad2da8b5887aea15",
+      "sampleRate": 44100,
+      "inputSamples": 20330,
+      "startSample": 426,
+      "endSample": 20330,
+      "selectionMode": "coefficient",
+      "outputSha256": "19b914490a101f179b82ca4d5786d5520e6f07b8a38d26ffba90491942dba565",
+      "output": {
+        "impactMs": 44.9,
+        "durationSamples": 19904,
+        "peakDbFS": -14.4842,
+        "strongest50msRmsDbFS": -26.7356
+      }
+    },
+    {
+      "id": "palette:knife-draw",
+      "file": "palette/knife-draw.mp3",
+      "inputSha256": "5873bf20490da7fb7d11a2b4bde6201af4c6872e8f59d4cd19e09732f207cd86",
+      "sampleRate": 44100,
+      "inputSamples": 17627,
+      "startSample": 2008,
+      "endSample": 17627,
+      "selectionMode": "time",
+      "outputSha256": "5c8dd3210b8d68db9d713c430962df115bc10fb7c3917b47d41060aaed1cb0d7",
+      "output": {
+        "impactMs": 109.8,
+        "durationSamples": 15619,
+        "peakDbFS": -13.5709,
+        "strongest50msRmsDbFS": -26.6909
+      }
+    },
+    {
+      "id": "palette:bone-crunch",
+      "file": "palette/bone-crunch.mp3",
+      "inputSha256": "8859e78ecce4c7ca85fdf4a652ce8d880cf85ab518aea691c1d9588d3247dfcf",
+      "sampleRate": 44100,
+      "inputSamples": 22751,
+      "startSample": 717,
+      "endSample": 21408,
+      "selectionMode": "time",
+      "outputSha256": "7dd59bbbc35a4dd74fe2dffc78c69c79b537cccc3ad75e58755f3b0b82d31b40",
+      "output": {
+        "impactMs": 54.9,
+        "durationSamples": 20691,
+        "peakDbFS": -12.6269,
+        "strongest50msRmsDbFS": -26.7019
+      }
+    },
+    {
+      "id": "palette:light-cloth-rustle",
+      "file": "palette/light-cloth-rustle.mp3",
+      "inputSha256": "f07983ac0ced349a2c0322329156fb6dfbf601c8fd98998450b763bed2d93f37",
+      "sampleRate": 44100,
+      "inputSamples": 21017,
+      "startSample": 1997,
+      "endSample": 18680,
+      "selectionMode": "time",
+      "outputSha256": "f164655db2d025809e55ae15a266cb3abc2e4e7303850ca0135ea82e92e3fe9e",
+      "output": {
+        "impactMs": 119.7,
+        "durationSamples": 16683,
+        "peakDbFS": -13.2067,
+        "strongest50msRmsDbFS": -26.7388
+      }
+    },
+    {
+      "id": "palette:reptile-scale-rustle",
+      "file": "palette/reptile-scale-rustle.mp3",
+      "inputSha256": "13913a3a4b1672a6dec76ce62c75492015226c40d76a4821e1c151164517fe6e",
+      "sampleRate": 44100,
+      "inputSamples": 26270,
+      "startSample": 1298,
+      "endSample": 26270,
+      "selectionMode": "time",
+      "outputSha256": "7649f0534ff9c3646a8c9d92f02925f0cac4d295413b7e5988966904bbd79fff",
+      "output": {
+        "impactMs": 89.8,
+        "durationSamples": 24972,
+        "peakDbFS": -15.841,
+        "strongest50msRmsDbFS": -26.7399
+      }
+    },
+    {
+      "id": "palette:spider-leg-rustle",
+      "file": "palette/spider-leg-rustle.mp3",
+      "inputSha256": "89f785f3034ec6f9756f2deb72b85b1971354b22f1bf3989a0fd90cf43999219",
+      "sampleRate": 44100,
+      "inputSamples": 22050,
+      "startSample": 0,
+      "endSample": 22050,
+      "selectionMode": "coefficient",
+      "outputSha256": "89f785f3034ec6f9756f2deb72b85b1971354b22f1bf3989a0fd90cf43999219"
+    },
+    {
+      "id": "palette:slimy-squelch",
+      "file": "palette/slimy-squelch.mp3",
+      "inputSha256": "d6b0069a603be7955193405d694d5b09bab35ca17b1ec2f5f3129d185ca62fc6",
+      "sampleRate": 44100,
+      "inputSamples": 24947,
+      "startSample": 881,
+      "endSample": 24947,
+      "selectionMode": "coefficient",
+      "outputSha256": "5b31cd05fb6756d3ddde96e4d79e71974f9b0517cd5d1cb6fe2a7c78d23eeb20",
+      "output": {
+        "impactMs": 114.7,
+        "durationSamples": 24066,
+        "peakDbFS": -14.8722,
+        "strongest50msRmsDbFS": -26.6955
+      }
+    },
+    {
+      "id": "palette:creature-spit",
+      "file": "palette/creature-spit.mp3",
+      "inputSha256": "988004e337b0560ff0aaecd810d257d1887cc91891356da328e3382455512570",
+      "sampleRate": 44100,
+      "inputSamples": 16370,
+      "startSample": 607,
+      "endSample": 16370,
+      "selectionMode": "time",
+      "outputSha256": "60b5dff8f0050af95afded8cb03e557c7f60e3bd510a16a89fc8c61e3e62783f",
+      "output": {
+        "impactMs": 54.9,
+        "durationSamples": 15763,
+        "peakDbFS": -9.1561,
+        "strongest50msRmsDbFS": -26.7286
+      }
+    },
+    {
+      "id": "palette:insect-buzz",
+      "file": "palette/insect-buzz.mp3",
+      "inputSha256": "d6e73b75800dfd8ced596cc4a3f068349b53ebcecbaea3ff0f9a7b07a5fa85b1",
+      "sampleRate": 44100,
+      "inputSamples": 31990,
+      "startSample": 4400,
+      "endSample": 30805,
+      "selectionMode": "coefficient",
+      "outputSha256": "b02df51db6ce6d5a163cf2fe63ba3281ac248c5e635f249afdcbb0ec7df35de2",
+      "output": {
+        "impactMs": 149.7,
+        "durationSamples": 26405,
+        "peakDbFS": -14.8819,
+        "strongest50msRmsDbFS": -26.7345
+      }
+    },
+    {
+      "id": "palette:aquatic-gurgle-selection",
+      "file": "palette/aquatic-gurgle-selection.mp3",
+      "inputSha256": "f53abfb53550c54cc1256e9f3c7b72e38add751e467b4ae98de65e5a6c7fc896",
+      "sampleRate": 44100,
+      "inputSamples": 41528,
+      "startSample": 667,
+      "endSample": 41528,
+      "selectionMode": "coefficient",
+      "outputSha256": "2b6cc8aa99c1c9dbe94d45cbd44c8452f29311fe98696f383863d3e639e217b2",
+      "output": {
+        "impactMs": 144.7,
+        "durationSamples": 40861,
+        "peakDbFS": -19.433,
+        "strongest50msRmsDbFS": -31.7307
+      }
+    },
+    {
+      "id": "palette:aquatic-gurgle-attack",
+      "file": "palette/aquatic-gurgle-attack.mp3",
+      "inputSha256": "5367dd409e9d173c11de034e43cc9860777876bb6636a3c4c0bd1e24a10fdaf5",
+      "sampleRate": 44100,
+      "inputSamples": 41528,
+      "startSample": 1254,
+      "endSample": 41528,
+      "selectionMode": "time",
+      "outputSha256": "92866dfbc8a08dd574f93e4650db12f7efd0e9339f4ed87f841d0bf869cba6d1",
+      "output": {
+        "impactMs": 129.7,
+        "durationSamples": 40274,
+        "peakDbFS": -15.2793,
+        "strongest50msRmsDbFS": -27.5789
+      }
+    },
+    {
+      "id": "palette:aquatic-creature-call",
+      "file": "palette/aquatic-creature-call.mp3",
+      "inputSha256": "101b1f65da0ccca56b449085965eea833ecc2c1b9de40715e8374f0082f2cea0",
+      "sampleRate": 44100,
+      "inputSamples": 25168,
+      "startSample": 4838,
+      "endSample": 25168,
+      "selectionMode": "coefficient",
+      "outputSha256": "49745c93ac504195ac9339ecb3826a6f6c790b6dccd3534b6e2189dfc10f5b7f",
+      "output": {
+        "impactMs": 164.6,
+        "durationSamples": 20330,
+        "peakDbFS": -16.13,
+        "strongest50msRmsDbFS": -26.747
+      }
+    },
+    {
+      "id": "palette:watery-squish",
+      "file": "palette/watery-squish.mp3",
+      "inputSha256": "b0b4f72fa2712fa3d6f6893e701d506d7aa8d0d517e9faa93fd350ecc8dc541a",
+      "sampleRate": 44100,
+      "inputSamples": 17027,
+      "startSample": 1135,
+      "endSample": 17027,
+      "selectionMode": "time",
+      "outputSha256": "a41db184223a1660b68e6f53a2b323e371c431898101bdfd0c8a041bffd27c83",
+      "output": {
+        "impactMs": 159.6,
+        "durationSamples": 15892,
+        "peakDbFS": -13.1736,
+        "strongest50msRmsDbFS": -26.6868
+      }
+    },
+    {
+      "id": "palette:fish-slap",
+      "file": "palette/fish-slap.mp3",
+      "inputSha256": "eedafd552de996342239a61fd3b6a1f3d957cee8b72db1d5bfa4b3630001eafc",
+      "sampleRate": 44100,
+      "inputSamples": 6469,
+      "startSample": 222,
+      "endSample": 6469,
+      "selectionMode": "time",
+      "outputSha256": "95017a6132797cd27e8bd448d2d8980e850bc8454f5b57edbcf81bd385f37166",
+      "output": {
+        "impactMs": 20.0,
+        "durationSamples": 6247,
+        "peakDbFS": -7.6772,
+        "strongest50msRmsDbFS": -26.7885
+      }
+    },
+    {
+      "id": "palette:horse-call",
+      "file": "palette/horse-call.mp3",
+      "inputSha256": "570d64b6c3d19a75ade465252ced524b365a5ba5315103a1522b04fec5a4f0ca",
+      "sampleRate": 44100,
+      "inputSamples": 17861,
+      "startSample": 0,
+      "endSample": 17861,
+      "selectionMode": "coefficient",
+      "outputSha256": "570d64b6c3d19a75ade465252ced524b365a5ba5315103a1522b04fec5a4f0ca"
+    },
+    {
+      "id": "palette:dog-grumble",
+      "file": "palette/dog-grumble.mp3",
+      "inputSha256": "0bbe07fcd50de8c7142b7c885bbe7a6f9bd92d8cee3c4f019eaaa2cabb3a66c8",
+      "sampleRate": 44100,
+      "inputSamples": 24921,
+      "startSample": 1102,
+      "endSample": 19961,
+      "selectionMode": "time",
+      "outputSha256": "98e2fac8e65b855adb533d33e530ddbf2fd8cf0f94133d939553387d22221fc8",
+      "output": {
+        "impactMs": 179.6,
+        "durationSamples": 18859,
+        "peakDbFS": -16.4181,
+        "strongest50msRmsDbFS": -26.7572
+      }
+    },
+    {
+      "id": "palette:wolf-howl",
+      "file": "palette/wolf-howl.mp3",
+      "inputSha256": "d3869eec7a194be8e0d345eac1adf2367def0fff902c2ba034b0a5bd2932e150",
+      "sampleRate": 44100,
+      "inputSamples": 24070,
+      "startSample": 1090,
+      "endSample": 24070,
+      "selectionMode": "time",
+      "outputSha256": "10a632b168256fe89b7e5ebbbf714683ce514b80363d9a6ad740de5f6206c832",
+      "output": {
+        "impactMs": 114.7,
+        "durationSamples": 22980,
+        "peakDbFS": -22.1708,
+        "strongest50msRmsDbFS": -26.7417
+      }
+    },
+    {
+      "id": "palette:dog-snarl",
+      "file": "palette/dog-snarl.mp3",
+      "inputSha256": "88dd2c27c916a6d2d27fdd60f1c3966b7ba7ebc0f7b33facfbc2b41d29d8181b",
+      "sampleRate": 44100,
+      "inputSamples": 29349,
+      "startSample": 604,
+      "endSample": 29349,
+      "selectionMode": "time",
+      "outputSha256": "c6243aaeeffed4ff6719fafc8dfb63001ad60c1019781c4ee6f562e60b7411d8",
+      "output": {
+        "impactMs": 144.7,
+        "durationSamples": 28745,
+        "peakDbFS": -16.0759,
+        "strongest50msRmsDbFS": -26.7338
+      }
+    },
+    {
+      "id": "palette:belt-handling",
+      "file": "palette/belt-handling.mp3",
+      "inputSha256": "12c081cf654f8b705624fdda7e5a931505ee9235f20757411e47adec88b15d8a",
+      "sampleRate": 44100,
+      "inputSamples": 11307,
+      "startSample": 3049,
+      "endSample": 9661,
+      "selectionMode": "time",
+      "outputSha256": "310b20b18539719c93ed84e9dfe6381d76923f722b01dce0cb3ee7ae1ffdaf9c",
+      "output": {
+        "impactMs": 44.9,
+        "durationSamples": 6612,
+        "peakDbFS": -10.8556,
+        "strongest50msRmsDbFS": -26.781
+      }
+    },
+    {
+      "id": "palette:dwarf-cough",
+      "file": "palette/dwarf-cough.mp3",
+      "inputSha256": "34bee29892e531918bdb7a6d673c8a67018f9afbce8f1054814f68697a3a8892",
+      "sampleRate": 44100,
+      "inputSamples": 16175,
+      "startSample": 555,
+      "endSample": 14998,
+      "selectionMode": "time",
+      "outputSha256": "29d556c90972743ced1c4517d5ab436ca9f3f99afa425a3a61dd51255391ad0a",
+      "output": {
+        "impactMs": 24.9,
+        "durationSamples": 14443,
+        "peakDbFS": -16.8259,
+        "strongest50msRmsDbFS": -26.7648
+      }
+    },
+    {
+      "id": "palette:mining-strike",
+      "file": "palette/mining-strike.mp3",
+      "inputSha256": "41f3fc62d76f63e79e47f3139d4f9c78e824c5c35d31f7df8805229661c85f60",
+      "sampleRate": 44100,
+      "inputSamples": 24070,
+      "startSample": 0,
+      "endSample": 24070,
+      "selectionMode": "coefficient",
+      "outputSha256": "41f3fc62d76f63e79e47f3139d4f9c78e824c5c35d31f7df8805229661c85f60"
+    },
+    {
+      "id": "palette:chainmail-rattle",
+      "file": "palette/chainmail-rattle.mp3",
+      "inputSha256": "7c6ccbc90dee3a8bc7a6610e632fa0c5ac4b20d70f3cff31055120fbfc74ce63",
+      "sampleRate": 44100,
+      "inputSamples": 18571,
+      "startSample": 1213,
+      "endSample": 16710,
+      "selectionMode": "time",
+      "outputSha256": "e175d791e8c8f013c384ea94923a40a220aa2d2013dada9087b283ebb26a70e9",
+      "output": {
+        "impactMs": 149.7,
+        "durationSamples": 15497,
+        "peakDbFS": -14.7869,
+        "strongest50msRmsDbFS": -26.7562
+      }
+    },
+    {
+      "id": "palette:metal-armour-clatter",
+      "file": "palette/metal-armour-clatter.mp3",
+      "inputSha256": "2c4f5a47f20352891120e88d36eaea73c470e41922f57836929e42acaf83d56c",
+      "sampleRate": 44100,
+      "inputSamples": 30888,
+      "startSample": 1515,
+      "endSample": 27114,
+      "selectionMode": "time",
+      "outputSha256": "23269383d1ba5d02b5648b7f786a295cf9f61e965d28a1e66a993cbe5c497005",
+      "output": {
+        "impactMs": 389.1,
+        "durationSamples": 25599,
+        "peakDbFS": -18.7627,
+        "strongest50msRmsDbFS": -25.7364
+      }
+    },
+    {
+      "id": "palette:crossbow-bolt-pass",
+      "file": "palette/crossbow-bolt-pass.mp3",
+      "inputSha256": "d0f571964daaed29bfeacc1d0b974ae0068c5a4d1b6339670cd0935fba173970",
+      "sampleRate": 44100,
+      "inputSamples": 18081,
+      "startSample": 447,
+      "endSample": 16815,
+      "selectionMode": "time",
+      "outputSha256": "5e1c070e8149f10bf84d4ca4d0be144f8ee1c4a1694bc237fd7d067b8e226e48",
+      "output": {
+        "impactMs": 15.0,
+        "durationSamples": 16368,
+        "peakDbFS": -9.6015,
+        "strongest50msRmsDbFS": -26.7444
+      }
+    },
+    {
+      "id": "palette:blade-contact",
+      "file": "palette/blade-contact.mp3",
+      "inputSha256": "5d2e87a6624ab3c6fd05180ae444ec7608928dfe0a729447f503ccb7f9c41524",
+      "sampleRate": 44100,
+      "inputSamples": 10871,
+      "startSample": 472,
+      "endSample": 8707,
+      "selectionMode": "time",
+      "outputSha256": "b4882062a148204d518ce55f36c23c48fcb5327215595a85cb88695837ba3d3a",
+      "output": {
+        "impactMs": 79.8,
+        "durationSamples": 8235,
+        "peakDbFS": -12.6435,
+        "strongest50msRmsDbFS": -26.6898
+      }
+    },
+    {
+      "id": "palette:metal-latch",
+      "file": "palette/metal-latch.mp3",
+      "inputSha256": "c40e13d36d6fbf19407456d058d574c6d56a521bd4b4656c69b6b63c4c1db5aa",
+      "sampleRate": 44100,
+      "inputSamples": 8450,
+      "startSample": 1486,
+      "endSample": 8450,
+      "selectionMode": "coefficient",
+      "outputSha256": "f1eda2b73c0e354318d7956b45e3f7e934965d46bed737cbde93ae0786c31747",
+      "output": {
+        "impactMs": 10.0,
+        "durationSamples": 6964,
+        "peakDbFS": -11.9295,
+        "strongest50msRmsDbFS": -26.7719
+      }
+    },
+    {
+      "id": "palette:metal-plate-impact",
+      "file": "palette/metal-plate-impact.mp3",
+      "inputSha256": "3d5e1834da043d5d881bc680ea52aebd723502432cefdc73a5165ce1248ba09a",
+      "sampleRate": 44100,
+      "inputSamples": 25168,
+      "startSample": 0,
+      "endSample": 21678,
+      "selectionMode": "time",
+      "outputSha256": "7bad59a0ef8c4b1460467372321a2d3c89b14718518d0bb68e34c6d66bc3c11b",
+      "output": {
+        "impactMs": 0.0,
+        "durationSamples": 21678,
+        "peakDbFS": -12.6048,
+        "strongest50msRmsDbFS": -26.7016
+      }
+    },
+    {
+      "id": "palette:arcane-pulse-attack",
+      "file": "palette/arcane-pulse-attack.mp3",
+      "inputSha256": "e4dd3df4077232764f1558a59e3083547f867ea01d8524b04ce226f2e1a52ff1",
+      "sampleRate": 44100,
+      "inputSamples": 23408,
+      "startSample": 1382,
+      "endSample": 22637,
+      "selectionMode": "time",
+      "outputSha256": "9d9d14ce63783c529d471b28074edc482d735c339ce6bb5b52cd5a5c4e086ce4",
+      "output": {
+        "impactMs": 74.8,
+        "durationSamples": 21255,
+        "peakDbFS": -15.1694,
+        "strongest50msRmsDbFS": -26.7788
+      }
+    },
+    {
+      "id": "palette:elf-cough",
+      "file": "palette/elf-cough.mp3",
+      "inputSha256": "0ece0f2cc8f0ac33ba864159925f22ab5c109c52b2ac446cdd8d2b76200e37ef",
+      "sampleRate": 44100,
+      "inputSamples": 14562,
+      "startSample": 500,
+      "endSample": 13243,
+      "selectionMode": "time",
+      "outputSha256": "bee0342a8690bc7fc0a52c6dafdb307bd42cda18590c86b258e60a3df5b4e900",
+      "output": {
+        "impactMs": 20.0,
+        "durationSamples": 12743,
+        "peakDbFS": -15.7345,
+        "strongest50msRmsDbFS": -26.7514
+      }
+    },
+    {
+      "id": "palette:dagger-draw",
+      "file": "palette/dagger-draw.mp3",
+      "inputSha256": "dcda7100d445b679e429cde089bdb11d7ae82620b943a38f99bf0d4f1eb014eb",
+      "sampleRate": 44100,
+      "inputSamples": 14015,
+      "startSample": 442,
+      "endSample": 14015,
+      "selectionMode": "time",
+      "outputSha256": "ba5194be13b34154fd511c39d981f9e2d217ea08010268808bd62547c0d77fff",
+      "output": {
+        "impactMs": 109.8,
+        "durationSamples": 13573,
+        "peakDbFS": -8.3003,
+        "strongest50msRmsDbFS": -26.707
+      }
+    },
+    {
+      "id": "palette:sabre-draw",
+      "file": "palette/sabre-draw.mp3",
+      "inputSha256": "f539ba181751c0300299b8c6334ec505a6c75d01ed9a3dbb0f11d8ab7b81d851",
+      "sampleRate": 44100,
+      "inputSamples": 43430,
+      "startSample": 2981,
+      "endSample": 43430,
+      "selectionMode": "time",
+      "outputSha256": "30847987d8ec94e64321f350c30d6e0f439cf409a9b0fbf9d9372f3db34c6b04",
+      "output": {
+        "impactMs": 59.9,
+        "durationSamples": 40449,
+        "peakDbFS": -10.3146,
+        "strongest50msRmsDbFS": -26.6982
+      }
+    },
+    {
+      "id": "palette:spear-on-sabre",
+      "file": "palette/spear-on-sabre.mp3",
+      "inputSha256": "1726918501971871b917b1ef1a3a71caa86f0168e78097bce168e1ce2fc466e5",
+      "sampleRate": 44100,
+      "inputSamples": 14760,
+      "startSample": 568,
+      "endSample": 11740,
+      "selectionMode": "time",
+      "outputSha256": "c0afc0e176bd66a5de56367ca0f05030f9f81e0a50db07ab760d175f23455946",
+      "output": {
+        "impactMs": 5.0,
+        "durationSamples": 11172,
+        "peakDbFS": -9.0025,
+        "strongest50msRmsDbFS": -26.7275
+      }
+    },
+    {
+      "id": "palette:scythian-bow-shot",
+      "file": "palette/scythian-bow-shot.mp3",
+      "inputSha256": "2b78199c9bc56f76a2e0358ac8419b058b04bba0b3949c5afe1c7a541bcd26be",
+      "sampleRate": 44100,
+      "inputSamples": 9848,
+      "startSample": 1614,
+      "endSample": 8226,
+      "selectionMode": "time",
+      "outputSha256": "e15ecbe883c1eb0325f78ac51e61dcea988b9039187084f3dac8414f5724f2f9",
+      "output": {
+        "impactMs": 15.0,
+        "durationSamples": 6612,
+        "peakDbFS": -7.445,
+        "strongest50msRmsDbFS": -26.7433
+      }
+    },
+    {
+      "id": "palette:wooden-staff-impact",
+      "file": "palette/wooden-staff-impact.mp3",
+      "inputSha256": "c660ceb1e41043d6cd6f5df9e2ba0645e31378417086e6ab7e722caa2bb953fd",
+      "sampleRate": 44100,
+      "inputSamples": 9768,
+      "startSample": 510,
+      "endSample": 7917,
+      "selectionMode": "time",
+      "outputSha256": "27236eb705d10c22cad3d3b9a0fa11cecb61a1031b8a357599ad44e9f938e247",
+      "output": {
+        "impactMs": 10.0,
+        "durationSamples": 7407,
+        "peakDbFS": -12.2962,
+        "strongest50msRmsDbFS": -26.7358
+      }
+    },
+    {
+      "id": "palette:cough",
+      "file": "palette/cough.mp3",
+      "inputSha256": "27dd3b4915caac008f1adcdb91c81708b696c5e556d2e8e53040ee4d10af1745",
+      "sampleRate": 44100,
+      "inputSamples": 14390,
+      "startSample": 494,
+      "endSample": 13145,
+      "selectionMode": "time",
+      "outputSha256": "9b2845b18c4893f68fef832da1e385d1b38a896d04022b267c1b920d1b406dae",
+      "output": {
+        "impactMs": 20.0,
+        "durationSamples": 12651,
+        "peakDbFS": -15.7351,
+        "strongest50msRmsDbFS": -26.7465
+      }
+    },
+    {
+      "id": "palette:mace-on-spear-haft",
+      "file": "palette/mace-on-spear-haft.mp3",
+      "inputSha256": "4ddb6d4e0a24c7fccdda4e9054ed04e49cf7bd50f5fae758b6f775e8caf44bca",
+      "sampleRate": 44100,
+      "inputSamples": 8891,
+      "startSample": 716,
+      "endSample": 6572,
+      "selectionMode": "time",
+      "outputSha256": "19e471ac50b618dbb7f20e40a51c8aef1c663947269513e9fb5a60e452b4f3bb",
+      "output": {
+        "impactMs": 0.0,
+        "durationSamples": 5856,
+        "peakDbFS": -9.2907,
+        "strongest50msRmsDbFS": -26.7487
+      }
+    },
+    {
+      "id": "palette:book-shut",
+      "file": "palette/book-shut.mp3",
+      "inputSha256": "b01a231f94bf4d5ae325f7ccdc1fc63834ca636d492b6c5789a9a886ff9e9b08",
+      "sampleRate": 44100,
+      "inputSamples": 8630,
+      "startSample": 966,
+      "endSample": 7315,
+      "selectionMode": "time",
+      "outputSha256": "be5c0a185297bc9f1d40ba8ec5d6845df6dd47e54bd9100e32667e12b44dca43",
+      "output": {
+        "impactMs": 20.0,
+        "durationSamples": 6349,
+        "peakDbFS": -13.6544,
+        "strongest50msRmsDbFS": -26.7214
+      }
+    },
+    {
+      "id": "palette:small-leather-handling",
+      "file": "palette/small-leather-handling.mp3",
+      "inputSha256": "0c2fcbd1082b159cf7f9d50a9b08a8975d88cb6e4cca9856de408e08afa91a1d",
+      "sampleRate": 44100,
+      "inputSamples": 12189,
+      "startSample": 3299,
+      "endSample": 12189,
+      "selectionMode": "coefficient",
+      "outputSha256": "c8d89a42bd3c64e5cf989cc4a6f89147bbc9456c383d5393e0d6740329f6f166",
+      "output": {
+        "impactMs": 74.8,
+        "durationSamples": 8890,
+        "peakDbFS": -10.959,
+        "strongest50msRmsDbFS": -26.7627
+      }
+    },
+    {
+      "id": "palette:horse-dying-call",
+      "file": "palette/horse-dying-call.mp3",
+      "inputSha256": "614d8aa99c3789bc4ea245e89e590bc1294d03db70e096ce184315b5f1429886",
+      "sampleRate": 44100,
+      "inputSamples": 22050,
+      "startSample": 0,
+      "endSample": 22050,
+      "selectionMode": "coefficient",
+      "outputSha256": "614d8aa99c3789bc4ea245e89e590bc1294d03db70e096ce184315b5f1429886"
+    },
+    {
+      "id": "palette:underwater-belt-rustle",
+      "file": "palette/underwater-belt-rustle.mp3",
+      "inputSha256": "054b84161178fdf12564c1f539411e67cc9f6dfc5ef8016cc70b5875abf6b684",
+      "sampleRate": 44100,
+      "inputSamples": 23408,
+      "startSample": 3117,
+      "endSample": 23408,
+      "selectionMode": "time",
+      "outputSha256": "7285594ccf3878dfe9568939ec80fd8ec26de749ea9a206c5d29fd85ec2e1c39",
+      "output": {
+        "impactMs": 34.9,
+        "durationSamples": 20291,
+        "peakDbFS": -7.8486,
+        "strongest50msRmsDbFS": -26.7204
+      }
+    },
+    {
+      "id": "palette:underwater-cough",
+      "file": "palette/underwater-cough.mp3",
+      "inputSha256": "aedde380db177aa86126ae4c4c519a6816f90ba8eb4c50edf4f2708f568b765a",
+      "sampleRate": 44100,
+      "inputSamples": 14390,
+      "startSample": 454,
+      "endSample": 13422,
+      "selectionMode": "time",
+      "outputSha256": "2a69a677c8c1c5cbb042d945ed4d440919d4199c3ecab4a56e5eee6e232399d5",
+      "output": {
+        "impactMs": 24.9,
+        "durationSamples": 12968,
+        "peakDbFS": -15.6043,
+        "strongest50msRmsDbFS": -26.7287
+      }
+    },
+    {
+      "id": "palette:scythian-arrow-pass",
+      "file": "palette/scythian-arrow-pass.mp3",
+      "inputSha256": "dfa6a631fb274ccdebae585929024b353a0a31dad6052644c090f9a47a358a1b",
+      "sampleRate": 44100,
+      "inputSamples": 21609,
+      "startSample": 860,
+      "endSample": 21609,
+      "selectionMode": "time",
+      "outputSha256": "00ab4221aeb64e3c687733a3489d78e13b70454b1cad8f89edd3c57aac5952c6",
+      "output": {
+        "impactMs": 20.0,
+        "durationSamples": 20783,
+        "peakDbFS": -8.6414,
+        "strongest50msRmsDbFS": -26.7389
+      }
+    },
+    {
+      "id": "palette:mace-on-spear-blade",
+      "file": "palette/mace-on-spear-blade.mp3",
+      "inputSha256": "76d91f846d3086bec31546ad39b0899c30daeb9cf6eb59181c67e38f0a6fb5bf",
+      "sampleRate": 44100,
+      "inputSamples": 19003,
+      "startSample": 496,
+      "endSample": 14490,
+      "selectionMode": "time",
+      "outputSha256": "f6d1ac89b16b78296a941bc23b249dd940e4ec944e36517c0c285291723f1a5d",
+      "output": {
+        "impactMs": 0.0,
+        "durationSamples": 13994,
+        "peakDbFS": -8.5563,
+        "strongest50msRmsDbFS": -26.7269
+      }
+    },
+    {
+      "id": "palette:wooden-rattle-unit",
+      "file": "palette/wooden-rattle-unit.mp3",
+      "inputSha256": "de68aca0c6296da1d5ee0781165d59460c19c15b972d588dc2333c77dffac5b8",
+      "sampleRate": 44100,
+      "inputSamples": 13071,
+      "startSample": 568,
+      "endSample": 13071,
+      "selectionMode": "time",
+      "outputSha256": "1a7246822e2f0aef52ce7f2e3fd7d49993a8b3602c1df38c0cebf7a6bfe5e1c6",
+      "output": {
+        "impactMs": 79.8,
+        "durationSamples": 12503,
+        "peakDbFS": -12.1385,
+        "strongest50msRmsDbFS": -26.6686
+      }
+    },
+    {
+      "id": "palette:dark-magic-burst",
+      "file": "palette/dark-magic-burst.mp3",
+      "inputSha256": "cd380c092c82770fe42d8aad575cdb6f0947bdb9fe8af97c0706724f606798e5",
+      "sampleRate": 44100,
+      "inputSamples": 21168,
+      "startSample": 0,
+      "endSample": 21168,
+      "selectionMode": "coefficient",
+      "outputSha256": "cd380c092c82770fe42d8aad575cdb6f0947bdb9fe8af97c0706724f606798e5"
+    },
+    {
+      "id": "palette:ghost-groan",
+      "file": "palette/ghost-groan.mp3",
+      "inputSha256": "0afd71fbe8e8c7fb6488b8ac31a7dbc80ecb92b690e7dba43afc7dd27653c98d",
+      "sampleRate": 44100,
+      "inputSamples": 15876,
+      "startSample": 0,
+      "endSample": 15876,
+      "selectionMode": "time",
+      "outputSha256": "0afd71fbe8e8c7fb6488b8ac31a7dbc80ecb92b690e7dba43afc7dd27653c98d"
+    },
+    {
+      "id": "palette:ghost-scream",
+      "file": "palette/ghost-scream.mp3",
+      "inputSha256": "ec4b3e5c17ce7cecbd9dcb00a18d0e10887682aa2ef04aa5d7e56fd13a35f5ab",
+      "sampleRate": 44100,
+      "inputSamples": 29106,
+      "startSample": 0,
+      "endSample": 29106,
+      "selectionMode": "coefficient",
+      "outputSha256": "ec4b3e5c17ce7cecbd9dcb00a18d0e10887682aa2ef04aa5d7e56fd13a35f5ab"
+    },
+    {
+      "id": "palette:spectral-magic",
+      "file": "palette/spectral-magic.mp3",
+      "inputSha256": "7b1817210d013f44f67b9a0b12b85f7d029974d037feb96dc4e2a9747cbc0018",
+      "sampleRate": 44100,
+      "inputSamples": 19228,
+      "startSample": 950,
+      "endSample": 19228,
+      "selectionMode": "time",
+      "outputSha256": "bd295652fa5f9b56dd56184690ff128178f35b0eb1cf28812ec6fe26b4e33766",
+      "output": {
+        "impactMs": 24.9,
+        "durationSamples": 18278,
+        "peakDbFS": -15.3325,
+        "strongest50msRmsDbFS": -26.7631
+      }
+    },
+    {
+      "id": "palette:zombie-death-grunt",
+      "file": "palette/zombie-death-grunt.mp3",
+      "inputSha256": "863f14d1981f2ff202689d59f3a978190c75b7171b7caba50db87c088ead27e3",
+      "sampleRate": 44100,
+      "inputSamples": 15267,
+      "startSample": 984,
+      "endSample": 15267,
+      "selectionMode": "time",
+      "outputSha256": "66c720439e5dbf5d50d945f9ab7cce2207b16c18d20f19e0a8b4a82c58a0b15d",
+      "output": {
+        "impactMs": 74.8,
+        "durationSamples": 14283,
+        "peakDbFS": -17.9079,
+        "strongest50msRmsDbFS": -26.7405
+      }
+    },
+    {
+      "id": "palette:monstrous-bite-grunt",
+      "file": "palette/monstrous-bite-grunt.mp3",
+      "inputSha256": "e92eb5606e6559d3697d13aee1f8ecadf8aee347ff0a0fe91d54fc4d8fa7ae7b",
+      "sampleRate": 44100,
+      "inputSamples": 19012,
+      "startSample": 470,
+      "endSample": 19012,
+      "selectionMode": "time",
+      "outputSha256": "d69804a21214d1a82dff016cab9c9df6b52e2a8f02b24af81524eb42ddb2282c",
+      "output": {
+        "impactMs": 69.8,
+        "durationSamples": 18542,
+        "peakDbFS": -14.1548,
+        "strongest50msRmsDbFS": -26.7384
+      }
+    },
+    {
+      "id": "palette:wooden-creak",
+      "file": "palette/wooden-creak.mp3",
+      "inputSha256": "9519cd854dd490786b75a011fa54b04673658191c3b57d37084c18d5d4521e94",
+      "sampleRate": 44100,
+      "inputSamples": 26729,
+      "startSample": 3890,
+      "endSample": 26729,
+      "selectionMode": "time",
+      "outputSha256": "e9ea7863581c80343c2434be4f4d38c339d9b7d2867cb9014f5a03f571f6d1ca",
+      "output": {
+        "impactMs": 284.4,
+        "durationSamples": 22839,
+        "peakDbFS": -17.9605,
+        "strongest50msRmsDbFS": -26.7625
+      }
+    },
+    {
+      "id": "palette:wooden-plank-impact",
+      "file": "palette/wooden-plank-impact.mp3",
+      "inputSha256": "7c0211fad6a2ce38ea582889066c836e3f2f9ee79bda41333e13f149299cb7b1",
+      "sampleRate": 44100,
+      "inputSamples": 8820,
+      "startSample": 0,
+      "endSample": 8820,
+      "selectionMode": "coefficient",
+      "outputSha256": "7c0211fad6a2ce38ea582889066c836e3f2f9ee79bda41333e13f149299cb7b1"
+    },
+    {
+      "id": "palette:solid-wood-impact",
+      "file": "palette/solid-wood-impact.mp3",
+      "inputSha256": "ecc8edcfbb8db74b525e1ccdab65e0ad737654ed099e77b2bc94a296eeb0338d",
+      "sampleRate": 44100,
+      "inputSamples": 14543,
+      "startSample": 0,
+      "endSample": 8193,
+      "selectionMode": "time",
+      "outputSha256": "d37e9c3c2bf3c7676d779d1f58d7f6b5c6682f40e64258d4627eb72facca0b1b",
+      "output": {
+        "impactMs": 0.0,
+        "durationSamples": 8193,
+        "peakDbFS": -13.2313,
+        "strongest50msRmsDbFS": -26.7384
+      }
+    },
+    {
+      "id": "palette:stone-scatter-attack",
+      "file": "palette/stone-scatter-attack.mp3",
+      "inputSha256": "67f4e3bc96c88178c42baa3be695a26b8d324b7400dae099550a3bbe37e8a03c",
+      "sampleRate": 44100,
+      "inputSamples": 21649,
+      "startSample": 1011,
+      "endSample": 15080,
+      "selectionMode": "time",
+      "outputSha256": "382e088673fd27f318a128808951186fd2ca0daf025488996ed4d60c041c7ec9",
+      "output": {
+        "impactMs": 34.9,
+        "durationSamples": 14069,
+        "peakDbFS": -8.2506,
+        "strongest50msRmsDbFS": -27.3649
+      }
+    },
+    {
+      "id": "palette:ragged-breath",
+      "file": "palette/ragged-breath.mp3",
+      "inputSha256": "6a7b9dbd45b0145d86c23f64c2fd12e589039090ab00e81f13496c6bf7879371",
+      "sampleRate": 44100,
+      "inputSamples": 22090,
+      "startSample": 1104,
+      "endSample": 22090,
+      "selectionMode": "coefficient",
+      "outputSha256": "2639cfe0235113ffe532299a6284c52cc862fa21a5fcacea96e15f5af5d4133f",
+      "output": {
+        "impactMs": 34.9,
+        "durationSamples": 20986,
+        "peakDbFS": -14.7045,
+        "strongest50msRmsDbFS": -26.748
+      }
+    },
+    {
+      "id": "palette:burp",
+      "file": "palette/burp.mp3",
+      "inputSha256": "34cdecfc014098ed90e7fb7d3b8d7068cceec7f341d9f913a1b73fd7d5b4f942",
+      "sampleRate": 44100,
+      "inputSamples": 30888,
+      "startSample": 594,
+      "endSample": 30888,
+      "selectionMode": "time",
+      "outputSha256": "c66c26173b6aeb662fc3fa3824b1dd61e43146fb2709133c3420fb6b9d12e448",
+      "output": {
+        "impactMs": 309.3,
+        "durationSamples": 30294,
+        "peakDbFS": -19.7136,
+        "strongest50msRmsDbFS": -26.7409
+      }
+    },
+    {
+      "id": "palette:stone-scatter-terrain",
+      "file": "palette/stone-scatter-terrain.mp3",
+      "inputSha256": "4d84619c7e03bec3514f32c05eaa9eae3df8decb35f8550fbae0dc3c280f136a",
+      "sampleRate": 44100,
+      "inputSamples": 21649,
+      "startSample": 658,
+      "endSample": 14961,
+      "selectionMode": "time",
+      "outputSha256": "5187133c0ceee80c6348fcfbd25fe176229fb0a3fd50b214c98c8032fd0f80dd",
+      "output": {
+        "impactMs": 39.9,
+        "durationSamples": 14303,
+        "peakDbFS": -10.7003,
+        "strongest50msRmsDbFS": -29.8475
+      }
+    },
+    {
+      "id": "palette:soft-grass-footstep",
+      "file": "palette/soft-grass-footstep.mp3",
+      "inputSha256": "284c9d911c62c1f6306bfd4f74661948821b671c5a4aa2743f73377eb2605d90",
+      "sampleRate": 44100,
+      "inputSamples": 6249,
+      "startSample": 0,
+      "endSample": 6249,
+      "selectionMode": "coefficient",
+      "outputSha256": "284c9d911c62c1f6306bfd4f74661948821b671c5a4aa2743f73377eb2605d90"
+    },
+    {
+      "id": "palette:enchanted-forest-rustle",
+      "file": "palette/enchanted-forest-rustle.mp3",
+      "inputSha256": "a6cb38d39a0397bc4aaf42366706281f51282bcdaba4c40de81622002db13199",
+      "sampleRate": 44100,
+      "inputSamples": 19413,
+      "startSample": 0,
+      "endSample": 19413,
+      "selectionMode": "coefficient",
+      "outputSha256": "a6cb38d39a0397bc4aaf42366706281f51282bcdaba4c40de81622002db13199"
+    },
+    {
+      "id": "palette:hill-wind",
+      "file": "palette/hill-wind.mp3",
+      "inputSha256": "51df43008b96b7067cecbb7e34c060aca6f21352710a06fcb2d385191ba22f5d",
+      "sampleRate": 44100,
+      "inputSamples": 17773,
+      "startSample": 0,
+      "endSample": 17773,
+      "selectionMode": "coefficient",
+      "outputSha256": "51df43008b96b7067cecbb7e34c060aca6f21352710a06fcb2d385191ba22f5d"
+    },
+    {
+      "id": "palette:water-ripple",
+      "file": "palette/water-ripple.mp3",
+      "inputSha256": "b7a0858495a4d2d9be08554e14b29b78184aee668537e3f3e492e3a6111a265b",
+      "sampleRate": 44100,
+      "inputSamples": 9111,
+      "startSample": 0,
+      "endSample": 9111,
+      "selectionMode": "coefficient",
+      "outputSha256": "b7a0858495a4d2d9be08554e14b29b78184aee668537e3f3e492e3a6111a265b"
+    },
+    {
+      "id": "palette:village-contact",
+      "file": "palette/village-contact.mp3",
+      "inputSha256": "e083f0d61c343db2bd20547fb85a2702402e8d3f768c640e59069ce2eb8996a6",
+      "sampleRate": 44100,
+      "inputSamples": 11158,
+      "startSample": 168,
+      "endSample": 11158,
+      "selectionMode": "time",
+      "outputSha256": "ed726379b5fc2faf21db3369cfa2bb7eb484102344645debe7991234b534851b",
+      "output": {
+        "impactMs": 5.0,
+        "durationSamples": 10990,
+        "peakDbFS": -26.5689,
+        "strongest50msRmsDbFS": -34.9489
+      }
+    },
+    {
+      "id": "palette:light-metal-contact",
+      "file": "palette/light-metal-contact.mp3",
+      "inputSha256": "a2d89aeed40516276a8b779525eb40cf242d932761b8bb65c761ce8cdda46602",
+      "sampleRate": 44100,
+      "inputSamples": 10430,
+      "startSample": 0,
+      "endSample": 10430,
+      "selectionMode": "coefficient",
+      "outputSha256": "a2d89aeed40516276a8b779525eb40cf242d932761b8bb65c761ce8cdda46602"
+    },
+    {
+      "id": "palette:wooden-fort-contact",
+      "file": "palette/wooden-fort-contact.mp3",
+      "inputSha256": "3ba58e1b319a46268095b524e806de39dc508c34c4274a2a068677c2920bd448",
+      "sampleRate": 44100,
+      "inputSamples": 6249,
+      "startSample": 0,
+      "endSample": 6249,
+      "selectionMode": "coefficient",
+      "outputSha256": "3ba58e1b319a46268095b524e806de39dc508c34c4274a2a068677c2920bd448"
+    },
+    {
+      "id": "palette:sacred-grove-magic",
+      "file": "palette/sacred-grove-magic.mp3",
+      "inputSha256": "d8b1ffdca45e97b11c6e740f4e6a165874bf3d8709f8a075de1d3fc1f51670cf",
+      "sampleRate": 44100,
+      "inputSamples": 13451,
+      "startSample": 0,
+      "endSample": 13451,
+      "selectionMode": "time",
+      "outputSha256": "d8b1ffdca45e97b11c6e740f4e6a165874bf3d8709f8a075de1d3fc1f51670cf"
+    },
+    {
+      "id": "palette:door-movement",
+      "file": "palette/door-movement.mp3",
+      "inputSha256": "5e675a2062f8fc520d02cbae8f7f7f7da1d0ff906c3c6b93b7d5d8253d15c54f",
+      "sampleRate": 44100,
+      "inputSamples": 19669,
+      "startSample": 594,
+      "endSample": 16402,
+      "selectionMode": "time",
+      "outputSha256": "a6f7f4fae0307ef1c1de8a9b9a6648f2d7905ff286d6bfd202be730908629c39",
+      "output": {
+        "impactMs": 189.6,
+        "durationSamples": 15808,
+        "peakDbFS": -19.3778,
+        "strongest50msRmsDbFS": -29.799
+      }
+    },
+    {
+      "id": "palette:distant-mining",
+      "file": "palette/distant-mining.mp3",
+      "inputSha256": "34578f451860a19d1a7f968b1d91df65bf0d5cddccf163d38668c6ae6819f7d7",
+      "sampleRate": 44100,
+      "inputSamples": 19845,
+      "startSample": 0,
+      "endSample": 19845,
+      "selectionMode": "coefficient",
+      "outputSha256": "34578f451860a19d1a7f968b1d91df65bf0d5cddccf163d38668c6ae6819f7d7"
+    },
+    {
+      "id": "palette:quarry-strike",
+      "file": "palette/quarry-strike.mp3",
+      "inputSha256": "39ac3ddf90e3b4a63167cd80680b7cf7a33dc0b6b7aa6825330bd9cc8890a0f9",
+      "sampleRate": 44100,
+      "inputSamples": 27809,
+      "startSample": 0,
+      "endSample": 27809,
+      "selectionMode": "coefficient",
+      "outputSha256": "39ac3ddf90e3b4a63167cd80680b7cf7a33dc0b6b7aa6825330bd9cc8890a0f9"
+    },
+    {
+      "id": "palette:quiet-fire-crackle",
+      "file": "palette/quiet-fire-crackle.mp3",
+      "inputSha256": "18d0c9c0ebe3198ed85ca2d5b6b6c4c4441ec5171b7683102210278752e2a255",
+      "sampleRate": 44100,
+      "inputSamples": 19845,
+      "startSample": 1580,
+      "endSample": 19845,
+      "selectionMode": "time",
+      "outputSha256": "f53af74b534a06d6e33d83cde5cfc35e0b2bab4f514cdbca28b97dbe38b5690e",
+      "output": {
+        "impactMs": 159.6,
+        "durationSamples": 18265,
+        "peakDbFS": -21.5203,
+        "strongest50msRmsDbFS": -41.628
+      }
+    },
+    {
+      "id": "palette:plain-ground-contact",
+      "file": "palette/plain-ground-contact.mp3",
+      "inputSha256": "7178c8196072c73e49ad2ea0878276aed8921bca33e6fa8dcfcbfa76eeec78c2",
+      "sampleRate": 44100,
+      "inputSamples": 9394,
+      "startSample": 193,
+      "endSample": 9394,
+      "selectionMode": "time",
+      "outputSha256": "2ca10ad3c282933e64578a4e3c105394f162019680a75a84e105d4356b68ec01",
+      "output": {
+        "impactMs": 15.0,
+        "durationSamples": 9201,
+        "peakDbFS": -27.7912,
+        "strongest50msRmsDbFS": -37.4779
+      }
+    },
+    {
+      "id": "palette:courtyard-cue",
+      "file": "palette/courtyard-cue.mp3",
+      "inputSha256": "ad268314ecbf7763eb19488d6e60b2bde036b37a1ca677f6d09955ad30042442",
+      "sampleRate": 44100,
+      "inputSamples": 8008,
+      "startSample": 176,
+      "endSample": 8008,
+      "selectionMode": "time",
+      "outputSha256": "85a83d5aae05178345771296cd58a754a42d153f60ff43080b29d63c15946e3d",
+      "output": {
+        "impactMs": 15.0,
+        "durationSamples": 7832,
+        "peakDbFS": -21.8896,
+        "strongest50msRmsDbFS": -32.7145
+      }
+    },
+    {
+      "id": "palette:heavy-bell",
+      "file": "palette/heavy-bell.mp3",
+      "inputSha256": "bcd395a72000dac4796a451d7bcb9abfd6358b7a6e861d6fafad01fbaca7dbac",
+      "sampleRate": 44100,
+      "inputSamples": 50735,
+      "startSample": 0,
+      "endSample": 50735,
+      "selectionMode": "time",
+      "outputSha256": "bcd395a72000dac4796a451d7bcb9abfd6358b7a6e861d6fafad01fbaca7dbac"
+    },
+    {
+      "id": "palette:wooden-rattle-terrain",
+      "file": "palette/wooden-rattle-terrain.mp3",
+      "inputSha256": "f7c2a20e749130e57aa67f2ee9d18df3b83783c1876dceb56f7409c346cfee36",
+      "sampleRate": 44100,
+      "inputSamples": 13071,
+      "startSample": 413,
+      "endSample": 13071,
+      "selectionMode": "time",
+      "outputSha256": "c63ce86a6bccd97019e6ce1c3a315d71462a3572a73d6aabcb94a035db73bb46",
+      "output": {
+        "impactMs": 84.8,
+        "durationSamples": 12658,
+        "peakDbFS": -15.4215,
+        "strongest50msRmsDbFS": -29.8474
+      }
+    },
+    {
+      "id": "palette:ritual-magic",
+      "file": "palette/ritual-magic.mp3",
+      "inputSha256": "9e4922173ae9619ef87bf4f678cd4fdc2d733872860cb99b8c52e56df98b67c5",
+      "sampleRate": 44100,
+      "inputSamples": 19845,
+      "startSample": 0,
+      "endSample": 19845,
+      "selectionMode": "time",
+      "outputSha256": "9e4922173ae9619ef87bf4f678cd4fdc2d733872860cb99b8c52e56df98b67c5"
+    },
+    {
+      "id": "palette:arcane-pulse-terrain",
+      "file": "palette/arcane-pulse-terrain.mp3",
+      "inputSha256": "810ff9e0103dc9dc57f7355475b108bbb9dac84a64ad6af511fd6f93f3410309",
+      "sampleRate": 44100,
+      "inputSamples": 23408,
+      "startSample": 7586,
+      "endSample": 23408,
+      "selectionMode": "time",
+      "outputSha256": "22c869e1394396726a4d6a2bc3f3edceb2865f84c4f2d2de096072add9d75059",
+      "output": {
+        "impactMs": 59.9,
+        "durationSamples": 15822,
+        "peakDbFS": -24.5751,
+        "strongest50msRmsDbFS": -35.4404
+      }
+    },
+    {
+      "id": "palette:wooden-figurine-move",
+      "file": "palette/wooden-figurine-move.mp3",
+      "inputSha256": "de301956c9002a3efd3a2d4531078ec706cca21a6f6644b25203b41f752c7e82",
+      "sampleRate": 44100,
+      "inputSamples": 14169,
+      "startSample": 1015,
+      "endSample": 9500,
+      "selectionMode": "time",
+      "outputSha256": "11fd52bb548b51106f169f090812af8b6180d96631b37818da865caf531c33f1",
+      "output": {
+        "impactMs": 5.0,
+        "durationSamples": 8485,
+        "peakDbFS": -8.2392,
+        "strongest50msRmsDbFS": -26.2482
+      }
+    },
+    {
+      "id": "legacy:attack-bow",
+      "file": "attack-bow-1.wav",
+      "inputSha256": "d808a4d2d3d282e85dbd1899f898b92501167e44db6a44ec0d6133ef330654cd",
+      "sampleRate": 44100,
+      "inputSamples": 23506,
+      "startSample": 613,
+      "endSample": 18043,
+      "selectionMode": "time",
+      "outputSha256": "fe7595370f28312f56a81f97b4cbf183f826b187ecfb6137c586b6150b620c9f",
+      "output": {
+        "impactMs": 119.7,
+        "durationSamples": 17431,
+        "peakDbFS": -5.0194,
+        "strongest50msRmsDbFS": -13.1599
+      }
+    },
+    {
+      "id": "legacy:attack-melee",
+      "file": "attack-melee-1.wav",
+      "inputSha256": "9f95b8b69f486d1ba7db99031a6b994d0cc6d637d69e3bb5ece0025f6acd65b5",
+      "sampleRate": 44100,
+      "inputSamples": 20419,
+      "startSample": 589,
+      "endSample": 17802,
+      "selectionMode": "time",
+      "outputSha256": "84929d6397edb7a73bd9bd0ab7f67a110ad6a0c5ce44530d24b206cab5b5eabc",
+      "output": {
+        "impactMs": 24.9,
+        "durationSamples": 17214,
+        "peakDbFS": -5.1549,
+        "strongest50msRmsDbFS": -14.9031
+      }
+    },
+    {
+      "id": "legacy:bell",
+      "file": "bell-1.wav",
+      "inputSha256": "a25311e40c8b7edf9dc90ff8d37a5894483f04d232ba79e5d646ed368ab915e2",
+      "sampleRate": 44100,
+      "inputSamples": 123478,
+      "startSample": 0,
+      "endSample": 122491,
+      "selectionMode": "coefficient",
+      "outputSha256": "38da34d594436cc14b6a4a07123c2c32126408538af5923b33fa36a31406fa7b",
+      "output": {
+        "impactMs": 24.9,
+        "durationSamples": 122492,
+        "peakDbFS": -4.1424,
+        "strongest50msRmsDbFS": -10.8837
+      }
+    },
+    {
+      "id": "legacy:defeat",
+      "file": "defeat-1.wav",
+      "inputSha256": "224cf033fe4a14a2b01e73fecdec5ecfa3be33cda7e86c8cfd7cbcabc647ec73",
+      "sampleRate": 44100,
+      "inputSamples": 29239,
+      "startSample": 0,
+      "endSample": 23762,
+      "selectionMode": "coefficient",
+      "outputSha256": "e8955e9f554dba310935919d11c498b5afec152f6b3591c83a057a53f5e8cdce",
+      "output": {
+        "impactMs": 274.4,
+        "durationSamples": 23763,
+        "peakDbFS": -3.8245,
+        "strongest50msRmsDbFS": -10.0023
+      }
+    },
+    {
+      "id": "legacy:recruit",
+      "file": "recruit-1.wav",
+      "inputSha256": "36f48648c111282a45a2aa3e7d9931050ad693a5e80baf238c85a25dd4fa4e03",
+      "sampleRate": 44100,
+      "inputSamples": 13363,
+      "startSample": 0,
+      "endSample": 13363,
+      "selectionMode": "coefficient",
+      "outputSha256": "36f48648c111282a45a2aa3e7d9931050ad693a5e80baf238c85a25dd4fa4e03"
+    },
+    {
+      "id": "legacy:select",
+      "file": "select-1.wav",
+      "inputSha256": "90cb4e7ccf5d4066aceff351e613a5e0bbc7ee2afe9839f52a2b175c87f97ceb",
+      "sampleRate": 44100,
+      "inputSamples": 4984,
+      "startSample": 0,
+      "endSample": 3525,
+      "selectionMode": "coefficient",
+      "outputSha256": "3a6cff557cea5e40b15d9bb0d03b6af71bf3f1b0d83f6aeca9401ca853c3a377",
+      "output": {
+        "impactMs": 5.0,
+        "durationSamples": 3527,
+        "peakDbFS": -6.8867,
+        "strongest50msRmsDbFS": -22.9859
+      }
+    },
+    {
+      "id": "legacy:terrain-forest",
+      "file": "terrain-forest-1.wav",
+      "inputSha256": "812a499e66893229fdc40f59e97d12b0d736d77a5446aa4401ec639a531c56c2",
+      "sampleRate": 44100,
+      "inputSamples": 10276,
+      "startSample": 0,
+      "endSample": 10276,
+      "selectionMode": "coefficient",
+      "outputSha256": "812a499e66893229fdc40f59e97d12b0d736d77a5446aa4401ec639a531c56c2"
+    },
+    {
+      "id": "legacy:terrain-hill",
+      "file": "terrain-hill-1.wav",
+      "inputSha256": "bb0cfffbb8cce33ec666286f534a90a372c8767fe3a0bf2b7d9250f4cb630b19",
+      "sampleRate": 44100,
+      "inputSamples": 17773,
+      "startSample": 0,
+      "endSample": 17773,
+      "selectionMode": "coefficient",
+      "outputSha256": "bb0cfffbb8cce33ec666286f534a90a372c8767fe3a0bf2b7d9250f4cb630b19"
+    },
+    {
+      "id": "legacy:terrain-keep",
+      "file": "terrain-keep-1.wav",
+      "inputSha256": "342347d1b23ea82a8fb146862029cc19643581e892344c66f19108a6d0299bab",
+      "sampleRate": 44100,
+      "inputSamples": 10717,
+      "startSample": 0,
+      "endSample": 7923,
+      "selectionMode": "coefficient",
+      "outputSha256": "b253377c92bb034fc440f155fb603b62a897176e638460ff4cc7fce3d6bbde41",
+      "output": {
+        "impactMs": 20.0,
+        "durationSamples": 7924,
+        "peakDbFS": -10.668,
+        "strongest50msRmsDbFS": -21.4786
+      }
+    },
+    {
+      "id": "legacy:terrain-plains",
+      "file": "terrain-plains-1.wav",
+      "inputSha256": "82c2be963d1d21495070b468bc72b64b95fff40a8504bc961597610f73b1d0f4",
+      "sampleRate": 44100,
+      "inputSamples": 9394,
+      "startSample": 0,
+      "endSample": 9394,
+      "selectionMode": "coefficient",
+      "outputSha256": "82c2be963d1d21495070b468bc72b64b95fff40a8504bc961597610f73b1d0f4"
+    },
+    {
+      "id": "legacy:terrain-village",
+      "file": "terrain-village-1.wav",
+      "inputSha256": "9ec693421e5f57001dbc6ae14299a4431bf001d01213b58edcc51f2f6991f934",
+      "sampleRate": 44100,
+      "inputSamples": 11158,
+      "startSample": 0,
+      "endSample": 11158,
+      "selectionMode": "coefficient",
+      "outputSha256": "9ec693421e5f57001dbc6ae14299a4431bf001d01213b58edcc51f2f6991f934"
+    },
+    {
+      "id": "legacy:terrain-water",
+      "file": "terrain-water-1.wav",
+      "inputSha256": "4e6e12b7ebfbd2f20b064bad667eace7e734af5eb6ae2ec4313ede08d8bf16a7",
+      "sampleRate": 44100,
+      "inputSamples": 11599,
+      "startSample": 0,
+      "endSample": 9017,
+      "selectionMode": "coefficient",
+      "outputSha256": "f45e2b3c4692f037800b319d29afccd19c096791fe6641ff0302dc2a86996d47",
+      "output": {
+        "impactMs": 10.0,
+        "durationSamples": 9017,
+        "peakDbFS": -10.8722,
+        "strongest50msRmsDbFS": -18.4671
+      }
+    },
+    {
+      "id": "legacy:turn",
+      "file": "turn-1.wav",
+      "inputSha256": "d78e1bab0237be3c0e2cef6f6661a11eb81602a3c5fea71429ab1957df9306ed",
+      "sampleRate": 44100,
+      "inputSamples": 20419,
+      "startSample": 0,
+      "endSample": 19802,
+      "selectionMode": "coefficient",
+      "outputSha256": "a82c70906fb63b2a438f2e2360223b007a7d8fcc9a0f4f2916369f5ea79cceb2",
+      "output": {
+        "impactMs": 189.6,
+        "durationSamples": 19803,
+        "peakDbFS": -3.7837,
+        "strongest50msRmsDbFS": -9.682
+      }
+    },
+    {
+      "id": "legacy:unit-archer",
+      "file": "unit-archer-1.wav",
+      "inputSha256": "a9f0d1957e9243db49b156d8313a15cf207d5d6f1255c87b33e883eb97779f22",
+      "sampleRate": 44100,
+      "inputSamples": 8071,
+      "startSample": 0,
+      "endSample": 8071,
+      "selectionMode": "coefficient",
+      "outputSha256": "a9f0d1957e9243db49b156d8313a15cf207d5d6f1255c87b33e883eb97779f22"
+    },
+    {
+      "id": "legacy:unit-commander",
+      "file": "unit-commander-1.wav",
+      "inputSha256": "e1653bf71057d0d84de39cd0701e161890b9a2fac6da2c6a89b4c0d39ea3ff74",
+      "sampleRate": 44100,
+      "inputSamples": 9835,
+      "startSample": 0,
+      "endSample": 9835,
+      "selectionMode": "coefficient",
+      "outputSha256": "e1653bf71057d0d84de39cd0701e161890b9a2fac6da2c6a89b4c0d39ea3ff74"
+    },
+    {
+      "id": "legacy:unit-scout",
+      "file": "unit-scout-1.wav",
+      "inputSha256": "78d9448cc019ad0d210c0b48415ad9daaab6a6bd5020d485855b61cea2b1aff6",
+      "sampleRate": 44100,
+      "inputSamples": 7189,
+      "startSample": 0,
+      "endSample": 7189,
+      "selectionMode": "coefficient",
+      "outputSha256": "78d9448cc019ad0d210c0b48415ad9daaab6a6bd5020d485855b61cea2b1aff6"
+    },
+    {
+      "id": "legacy:unit-soldier",
+      "file": "unit-soldier-1.wav",
+      "inputSha256": "bd27826f663f0f82f65a6a0cd19c1ea8018f9e9bb6c6272324e41d4a07bf6daa",
+      "sampleRate": 44100,
+      "inputSamples": 6307,
+      "startSample": 0,
+      "endSample": 3306,
+      "selectionMode": "coefficient",
+      "outputSha256": "4dc608168f0aba4a2a1368fbafde8181653d6dcaaf873af9ec17e921b5776ed8",
+      "output": {
+        "impactMs": 5.0,
+        "durationSamples": 3306,
+        "peakDbFS": -17.8538,
+        "strongest50msRmsDbFS": -29.2519
+      }
+    },
+    {
+      "id": "legacy:victory",
+      "file": "victory-1.wav",
+      "inputSha256": "a34094e9d6adc2f2bb895233dfdee0566ec2c425f79f5d72b5d7696fb52e3be2",
+      "sampleRate": 44100,
+      "inputSamples": 35854,
+      "startSample": 0,
+      "endSample": 28382,
+      "selectionMode": "coefficient",
+      "outputSha256": "63b124fb535a1f076fa21da4c244828ce5d129916aa8a30bfc4d69ff0944d98b",
+      "output": {
+        "impactMs": 404.1,
+        "durationSamples": 28383,
+        "peakDbFS": -3.793,
+        "strongest50msRmsDbFS": -9.6036
+      }
+    }
+  ]
+}

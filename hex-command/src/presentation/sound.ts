@@ -50,18 +50,18 @@ import { createHudAudio } from "./hud-sound";
 import { errorDetails } from "../error-details";
 const STORAGE_KEY = "hex-command-sound-enabled";
 const VOLUME = 0.29;
-const AUDIO_REVISION = "phaser-palette-4";
-// Measured strongest 5 ms RMS windows; recordings and their gains are unchanged.
+const AUDIO_REVISION = "reviewed-ranges-5";
+// Strongest 5 ms RMS windows measured after the reviewed offline audio edits.
 const legacyImpactMs: Record<string, number> = {
-  "attack-bow": 134.7,
-  "attack-melee": 39.9,
+  "attack-bow": 119.7,
+  "attack-melee": 24.9,
   bell: 24.9,
   defeat: 274.4,
   recruit: 84.8,
   select: 5.0,
   "terrain-forest": 29.9,
   "terrain-hill": 54.9,
-  "terrain-keep": 19.9,
+  "terrain-keep": 20.0,
   "terrain-plains": 15.0,
   "terrain-village": 10.0,
   "terrain-water": 10.0,

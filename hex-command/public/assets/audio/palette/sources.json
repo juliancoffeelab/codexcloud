@@ -11,7 +11,7 @@
     }
   },
   "licenseScope": "License fields describe original source material. Processing and normalization records do not declare a separate project-wide license for newly authored contributions.",
-  "conversion": "Separate levelled exports per playback context. Audited chosen take, mono 44.1kHz/160kbps MP3; loudness and encoding correction baked into each file at unity game master. No runtime per-clip gain, take or source rotation. Legacy UI cues retain their original fixed 0.29 level.",
+  "conversion": "Separate levelled exports per playback context. Audited chosen take, mono 44.1kHz/160kbps MP3; loudness and encoding correction baked into each file at unity game master. No runtime per-clip gain, take or source rotation. Legacy UI cues retain their original fixed 0.29 level. Subsequent user-reviewed edits are recorded in the project-relative audio/reviewed-ranges.json. Normalization records describe the pre-review baseline; assetSha256 and referenceGameOutputStrongest50msRmsDbFS describe the current edited output.",
   "runtimeReferenceMasterGain": 1,
   "rangeUnits": "seconds",
   "takeNumbering": "one-based; range refers to the recording field; derived edits include their original-source processingRecipe",
@@ -815,8 +815,8 @@
         "duration": 0.4584
       },
       "levelClass": null,
-      "assetSha256": "be53e64a462271cffb6f3aefde9e89a0122dcab5a2ef1a886da6a9efb1099a28",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "41f86f0e9164b0f97610b3e9282091518ffe47759477c3d9c0c97a64c994c956",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7463,
       "normalization": {
         "inputFileSha256": "5b338290cca47ef399fbf3e120829ab7b36211df2433512e419c7ed22b92ea96",
         "appliedGainDb": -16.5367841,
@@ -839,8 +839,8 @@
         "duration": 0.87
       },
       "levelClass": null,
-      "assetSha256": "afad8631beed7fb0c008ab55f8c7a265be3dd5e96eb1ef4915d60376a6b36e81",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "ba222729b49efa789101563908168a9e803002a1abbbc88c27c5ad694da29af1",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7378,
       "normalization": {
         "inputFileSha256": "eedeef01aeec5270aea404f6d4e9144f4b24ff24db39407d74fc0bfae8797d3f",
         "appliedGainDb": -20.7792728,
@@ -864,8 +864,8 @@
         "duration": 0.5059
       },
       "levelClass": null,
-      "assetSha256": "89150e269673f6dafb632b7d82c015c2d59ec94ab937a6dda35b33ef41e33b2a",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "73b71b817ed4d3405252c84f5088d0b65d4a9c9fea172cd9921e795e546ebe4b",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.735,
       "normalization": {
         "inputFileSha256": "add1d22606765dd0e9324dff4e15c98ae1fba052cbc6fa53fa5dab6d6c46fc81",
         "appliedGainDb": -15.4390018,
@@ -888,8 +888,8 @@
         "duration": 0.29
       },
       "levelClass": "attack",
-      "assetSha256": "40a3f936ceb41a9e6538ee5b695cf81f346f48d619abbafb83119844dd076f9b",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "cc013b9a41f13c368925cec15397d2f1d4397aecd2c0d5c22e05b08981aaaa9b",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7049,
       "normalization": {
         "inputFileSha256": "12d1fec07892888384a891d10ddadc596427ab0d4f35b341690c633ef428b73f",
         "appliedGainDb": -16.4032932,
@@ -936,8 +936,8 @@
         "duration": 0.4151
       },
       "levelClass": null,
-      "assetSha256": "c2d232dcc3b12677c07e37de2a72b47d49220d68a11d01605881e198db4cbd95",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "703b6a5133bfb5eb62810774c3a88b640b9c8cb815f2b38a84d0df9ef7fa7802",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7625,
       "normalization": {
         "inputFileSha256": "dc0aee3735db5023dc8a1ae14556aae479dcaa636853879144ea1f8252ba56d3",
         "appliedGainDb": -4.8258855,
@@ -960,8 +960,8 @@
         "duration": 0.5208
       },
       "levelClass": "attack",
-      "assetSha256": "f6adc294356d0e7a47169ad5b516ce5bf2a6bb7431778c0c6e0a49727478cd91",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "c2f6e8118928e46f02926178f302c925f74ba66100fef68aab4be5d292bc3964",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7504,
       "normalization": {
         "inputFileSha256": "c0791b4ea690abc4d867bf16e638d262240ff65f839f5f0c48a169e1a9cc0ca3",
         "appliedGainDb": -1.7216584,
@@ -984,8 +984,8 @@
         "duration": 0.461
       },
       "levelClass": null,
-      "assetSha256": "41f5910981f7f28bf662817a25ec87ef73460ee278a23646ad2da8b5887aea15",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "19b914490a101f179b82ca4d5786d5520e6f07b8a38d26ffba90491942dba565",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7356,
       "normalization": {
         "inputFileSha256": "81811fa6d9396886b68fe70ba86d0939f51a8d94c8a850a66d120e4f55011856",
         "appliedGainDb": -12.603034,
@@ -1008,8 +1008,8 @@
         "duration": 0.3997
       },
       "levelClass": "attack",
-      "assetSha256": "5873bf20490da7fb7d11a2b4bde6201af4c6872e8f59d4cd19e09732f207cd86",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "5c8dd3210b8d68db9d713c430962df115bc10fb7c3917b47d41060aaed1cb0d7",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.6909,
       "normalization": {
         "inputFileSha256": "ec40ffa7b05b517912b4f08b2c1862b29cc8a1bdfbafc8710b6fc9124b1b3bea",
         "appliedGainDb": 11.444495,
@@ -1032,8 +1032,8 @@
         "duration": 0.5159
       },
       "levelClass": null,
-      "assetSha256": "8859e78ecce4c7ca85fdf4a652ce8d880cf85ab518aea691c1d9588d3247dfcf",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "7dd59bbbc35a4dd74fe2dffc78c69c79b537cccc3ad75e58755f3b0b82d31b40",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7019,
       "normalization": {
         "inputFileSha256": "9652a7ed0e5e03b20f6a3b109ca5915f924af6cb97081d0f58893efff4c8dcbc",
         "appliedGainDb": -10.9614547,
@@ -1057,8 +1057,8 @@
         "duration": 0.4766
       },
       "levelClass": null,
-      "assetSha256": "f07983ac0ced349a2c0322329156fb6dfbf601c8fd98998450b763bed2d93f37",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "f164655db2d025809e55ae15a266cb3abc2e4e7303850ca0135ea82e92e3fe9e",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7388,
       "normalization": {
         "inputFileSha256": "0410601a898e3a84acd528d89e73634dc39d6149064b01628cc4e832f4e629a7",
         "appliedGainDb": -2.8004928,
@@ -1082,8 +1082,8 @@
         "duration": 0.5957
       },
       "levelClass": "attack",
-      "assetSha256": "13913a3a4b1672a6dec76ce62c75492015226c40d76a4821e1c151164517fe6e",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "7649f0534ff9c3646a8c9d92f02925f0cac4d295413b7e5988966904bbd79fff",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7399,
       "normalization": {
         "inputFileSha256": "6b2edaec5e9a30febe1279766dd4d853a3772dce5cab572fecde8f526e777052",
         "appliedGainDb": 2.2776249,
@@ -1130,8 +1130,8 @@
         "duration": 0.5657
       },
       "levelClass": null,
-      "assetSha256": "d6b0069a603be7955193405d694d5b09bab35ca17b1ec2f5f3129d185ca62fc6",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "5b31cd05fb6756d3ddde96e4d79e71974f9b0517cd5d1cb6fe2a7c78d23eeb20",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.6955,
       "normalization": {
         "inputFileSha256": "3ff5e3c4df7fbeff9710715df6d38c1f4154c82d1225019d40fc550decb18ce0",
         "appliedGainDb": -12.1258642,
@@ -1154,8 +1154,8 @@
         "duration": 0.3712
       },
       "levelClass": "attack",
-      "assetSha256": "988004e337b0560ff0aaecd810d257d1887cc91891356da328e3382455512570",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "60b5dff8f0050af95afded8cb03e557c7f60e3bd510a16a89fc8c61e3e62783f",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7286,
       "normalization": {
         "inputFileSha256": "565bb7b0a56c7418dc61e02a8b9db28e5803903060b965b493f0c6c656b2aaf1",
         "appliedGainDb": -10.1330632,
@@ -1178,8 +1178,8 @@
         "duration": 0.7254
       },
       "levelClass": null,
-      "assetSha256": "d6e73b75800dfd8ced596cc4a3f068349b53ebcecbaea3ff0f9a7b07a5fa85b1",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "b02df51db6ce6d5a163cf2fe63ba3281ac248c5e635f249afdcbb0ec7df35de2",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7345,
       "normalization": {
         "inputFileSha256": "aa775a6091cd01896156664e4838a26802862c52714a3ba64ec97f04402d336a",
         "appliedGainDb": -15.6920318,
@@ -1202,8 +1202,8 @@
         "duration": 0.9417
       },
       "levelClass": null,
-      "assetSha256": "f53abfb53550c54cc1256e9f3c7b72e38add751e467b4ae98de65e5a6c7fc896",
-      "referenceGameOutputStrongest50msRmsDbFS": -31.2827,
+      "assetSha256": "2b6cc8aa99c1c9dbe94d45cbd44c8452f29311fe98696f383863d3e639e217b2",
+      "referenceGameOutputStrongest50msRmsDbFS": -31.7307,
       "normalization": {
         "inputFileSha256": "9f75a994ac7a8a3211b85e0679ffe28d3ecd0f829d4aca19b2f928a1f66f18ca",
         "appliedGainDb": -4.3222806,
@@ -1226,8 +1226,8 @@
         "duration": 0.9417
       },
       "levelClass": "attack",
-      "assetSha256": "5367dd409e9d173c11de034e43cc9860777876bb6636a3c4c0bd1e24a10fdaf5",
-      "referenceGameOutputStrongest50msRmsDbFS": -27.23,
+      "assetSha256": "92866dfbc8a08dd574f93e4650db12f7efd0e9339f4ed87f841d0bf869cba6d1",
+      "referenceGameOutputStrongest50msRmsDbFS": -27.5789,
       "normalization": {
         "inputFileSha256": "9f75a994ac7a8a3211b85e0679ffe28d3ecd0f829d4aca19b2f928a1f66f18ca",
         "appliedGainDb": -0.1710671,
@@ -1250,8 +1250,8 @@
         "duration": 0.5707
       },
       "levelClass": null,
-      "assetSha256": "101b1f65da0ccca56b449085965eea833ecc2c1b9de40715e8374f0082f2cea0",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "49745c93ac504195ac9339ecb3826a6f6c790b6dccd3534b6e2189dfc10f5b7f",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.747,
       "normalization": {
         "inputFileSha256": "bd42645df5699c886c6a44e44ab997f0502ce388df61b2949f1d85aef42bf7c6",
         "appliedGainDb": -16.3197083,
@@ -1274,8 +1274,8 @@
         "duration": 0.3861
       },
       "levelClass": null,
-      "assetSha256": "b0b4f72fa2712fa3d6f6893e701d506d7aa8d0d517e9faa93fd350ecc8dc541a",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "a41db184223a1660b68e6f53a2b323e371c431898101bdfd0c8a041bffd27c83",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.6868,
       "normalization": {
         "inputFileSha256": "b84d2985236d6dc40c7042fe90acf5c5143bc925b4a30f9b4ed226cd33f47858",
         "appliedGainDb": -10.9200005,
@@ -1298,8 +1298,8 @@
         "duration": 0.1467
       },
       "levelClass": "attack",
-      "assetSha256": "eedafd552de996342239a61fd3b6a1f3d957cee8b72db1d5bfa4b3630001eafc",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "95017a6132797cd27e8bd448d2d8980e850bc8454f5b57edbcf81bd385f37166",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7885,
       "normalization": {
         "inputFileSha256": "2d52d8c3b7868146c973a882eabc51f5e957c7db6289b3876173518f09ce740a",
         "appliedGainDb": -8.663755,
@@ -1347,8 +1347,8 @@
         "duration": 0.5651
       },
       "levelClass": null,
-      "assetSha256": "0bbe07fcd50de8c7142b7c885bbe7a6f9bd92d8cee3c4f019eaaa2cabb3a66c8",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "98e2fac8e65b855adb533d33e530ddbf2fd8cf0f94133d939553387d22221fc8",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7572,
       "normalization": {
         "inputFileSha256": "a765b37746d90caa8cfd9806e502e627018e4cb837b10c1c3d167fe1634039d9",
         "appliedGainDb": -13.8510143,
@@ -1371,8 +1371,8 @@
         "duration": 0.5458
       },
       "levelClass": null,
-      "assetSha256": "d3869eec7a194be8e0d345eac1adf2367def0fff902c2ba034b0a5bd2932e150",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "10a632b168256fe89b7e5ebbbf714683ce514b80363d9a6ad740de5f6206c832",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7417,
       "normalization": {
         "inputFileSha256": "4273cf5505da5b5db8d33b710b07f96353e2d2a0b1d0f90bd7f04d29a29cf0a5",
         "appliedGainDb": -21.0594878,
@@ -1395,8 +1395,8 @@
         "duration": 0.6655
       },
       "levelClass": "attack",
-      "assetSha256": "88dd2c27c916a6d2d27fdd60f1c3966b7ba7ebc0f7b33facfbc2b41d29d8181b",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "c6243aaeeffed4ff6719fafc8dfb63001ad60c1019781c4ee6f562e60b7411d8",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7338,
       "normalization": {
         "inputFileSha256": "06b215665c8ef99573c1c242671499ffffbe724e9a62255bae10c4f3ff47e453",
         "appliedGainDb": -13.5562696,
@@ -1419,8 +1419,8 @@
         "duration": 0.2564
       },
       "levelClass": null,
-      "assetSha256": "12c081cf654f8b705624fdda7e5a931505ee9235f20757411e47adec88b15d8a",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "310b20b18539719c93ed84e9dfe6381d76923f722b01dce0cb3ee7ae1ffdaf9c",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.781,
       "normalization": {
         "inputFileSha256": "0ab109ceafc910d44224a2ebdc28ce08d3fc26383d1026d9f682cbc5b5b39bef",
         "appliedGainDb": -6.4439717,
@@ -1443,8 +1443,8 @@
         "duration": 0.3662
       },
       "levelClass": null,
-      "assetSha256": "34bee29892e531918bdb7a6d673c8a67018f9afbce8f1054814f68697a3a8892",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "29d556c90972743ced1c4517d5ab436ca9f3f99afa425a3a61dd51255391ad0a",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7648,
       "normalization": {
         "inputFileSha256": "689202ba1ec80eff8f2931da36aac04455242c3660596d36cc02f363d5018fc7",
         "appliedGainDb": -11.3732922,
@@ -1491,8 +1491,8 @@
         "duration": 0.4211
       },
       "levelClass": null,
-      "assetSha256": "7c6ccbc90dee3a8bc7a6610e632fa0c5ac4b20d70f3cff31055120fbfc74ce63",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "e175d791e8c8f013c384ea94923a40a220aa2d2013dada9087b283ebb26a70e9",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7562,
       "normalization": {
         "inputFileSha256": "43efff7c0d6deef11ab51c5378fb1229013f6795001648b14a89e8ce28c635d9",
         "appliedGainDb": -14.4692016,
@@ -1515,8 +1515,8 @@
         "duration": 0.7004
       },
       "levelClass": null,
-      "assetSha256": "2c4f5a47f20352891120e88d36eaea73c470e41922f57836929e42acaf83d56c",
-      "referenceGameOutputStrongest50msRmsDbFS": -25.2927,
+      "assetSha256": "23269383d1ba5d02b5648b7f786a295cf9f61e965d28a1e66a993cbe5c497005",
+      "referenceGameOutputStrongest50msRmsDbFS": -25.7364,
       "normalization": {
         "inputFileSha256": "c505dd74e05a8598047bc67d78ea7879f3cc86950a119f405b966a20508b2a98",
         "appliedGainDb": -22.9178278,
@@ -1540,8 +1540,8 @@
         "duration": 0.41
       },
       "levelClass": "attack",
-      "assetSha256": "d0f571964daaed29bfeacc1d0b974ae0068c5a4d1b6339670cd0935fba173970",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "5e1c070e8149f10bf84d4ca4d0be144f8ee1c4a1694bc237fd7d067b8e226e48",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7444,
       "normalization": {
         "inputFileSha256": "e0f872a2b80dd2c7b2676e1603681078b27a08b288a6c16bffe1bc6b082dea01",
         "appliedGainDb": 1.4860628,
@@ -1564,8 +1564,8 @@
         "duration": 0.2465
       },
       "levelClass": "attack",
-      "assetSha256": "5d2e87a6624ab3c6fd05180ae444ec7608928dfe0a729447f503ccb7f9c41524",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "b4882062a148204d518ce55f36c23c48fcb5327215595a85cb88695837ba3d3a",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.6898,
       "normalization": {
         "inputFileSha256": "65940ab02e95536f488ef40ed3827c6b449aff62f323ff5d9bb10191a84ddc6a",
         "appliedGainDb": -11.6761475,
@@ -1588,8 +1588,8 @@
         "duration": 0.1916
       },
       "levelClass": null,
-      "assetSha256": "c40e13d36d6fbf19407456d058d574c6d56a521bd4b4656c69b6b63c4c1db5aa",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "f1eda2b73c0e354318d7956b45e3f7e934965d46bed737cbde93ae0786c31747",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7719,
       "normalization": {
         "inputFileSha256": "a5a535f7bc61c245e4a8b6f0697d8e53d2470013a15cea780b42315b22a5a6f1",
         "appliedGainDb": -13.9537554,
@@ -1612,8 +1612,8 @@
         "duration": 0.5707
       },
       "levelClass": "attack",
-      "assetSha256": "3d5e1834da043d5d881bc680ea52aebd723502432cefdc73a5165ce1248ba09a",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "7bad59a0ef8c4b1460467372321a2d3c89b14718518d0bb68e34c6d66bc3c11b",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7016,
       "normalization": {
         "inputFileSha256": "b715aaf6802423591c8d7ae4e4a8bc1f56043ce1316124fed7ba8f6f4adc85d4",
         "appliedGainDb": -12.7360044,
@@ -1636,8 +1636,8 @@
         "duration": 0.5308
       },
       "levelClass": "attack",
-      "assetSha256": "e4dd3df4077232764f1558a59e3083547f867ea01d8524b04ce226f2e1a52ff1",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "9d9d14ce63783c529d471b28074edc482d735c339ce6bb5b52cd5a5c4e086ce4",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7788,
       "normalization": {
         "inputFileSha256": "c5745ac8213b73727c787123c82baabd7ae2da954b4a6d6307be24f74a6f7810",
         "appliedGainDb": -16.963818,
@@ -1660,8 +1660,8 @@
         "duration": 0.3302
       },
       "levelClass": null,
-      "assetSha256": "0ece0f2cc8f0ac33ba864159925f22ab5c109c52b2ac446cdd8d2b76200e37ef",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "bee0342a8690bc7fc0a52c6dafdb307bd42cda18590c86b258e60a3df5b4e900",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7514,
       "normalization": {
         "inputFileSha256": "52100b93e340e5eaa98d721584e5749aa794d142b1d5aba47f7dd06900084f69",
         "appliedGainDb": -11.0416456,
@@ -1684,8 +1684,8 @@
         "duration": 0.3178
       },
       "levelClass": null,
-      "assetSha256": "dcda7100d445b679e429cde089bdb11d7ae82620b943a38f99bf0d4f1eb014eb",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "ba5194be13b34154fd511c39d981f9e2d217ea08010268808bd62547c0d77fff",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.707,
       "normalization": {
         "inputFileSha256": "03d23ae443b6477ed66a9bcfede1ec9180d018c574415b26dbca6929695886fa",
         "appliedGainDb": -1.0224377,
@@ -1708,8 +1708,8 @@
         "duration": 0.9848
       },
       "levelClass": null,
-      "assetSha256": "f539ba181751c0300299b8c6334ec505a6c75d01ed9a3dbb0f11d8ab7b81d851",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "30847987d8ec94e64321f350c30d6e0f439cf409a9b0fbf9d9372f3db34c6b04",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.6982,
       "normalization": {
         "inputFileSha256": "dd3524da71945f5eae21df9e48c2654d2a62a5b7011fb930bcff0a3305798db1",
         "appliedGainDb": 2.596221,
@@ -1732,8 +1732,8 @@
         "duration": 0.3347
       },
       "levelClass": "attack",
-      "assetSha256": "1726918501971871b917b1ef1a3a71caa86f0168e78097bce168e1ce2fc466e5",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "c0afc0e176bd66a5de56367ca0f05030f9f81e0a50db07ab760d175f23455946",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7275,
       "normalization": {
         "inputFileSha256": "9523ff64e3446adbcce4b09077db90b804444cc3dbca26409d31ef231715b0a8",
         "appliedGainDb": -2.5782764,
@@ -1756,8 +1756,8 @@
         "duration": 0.2233
       },
       "levelClass": "attack",
-      "assetSha256": "2b78199c9bc56f76a2e0358ac8419b058b04bba0b3949c5afe1c7a541bcd26be",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "e15ecbe883c1eb0325f78ac51e61dcea988b9039187084f3dac8414f5724f2f9",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7433,
       "normalization": {
         "inputFileSha256": "0189e9c1612ff0536efca07cedea32bf35794996dedcff2c4a8c4d5a0ea0a0fa",
         "appliedGainDb": -2.53736,
@@ -1780,8 +1780,8 @@
         "duration": 0.2215
       },
       "levelClass": "attack",
-      "assetSha256": "c660ceb1e41043d6cd6f5df9e2ba0645e31378417086e6ab7e722caa2bb953fd",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "27236eb705d10c22cad3d3b9a0fa11cecb61a1031b8a357599ad44e9f938e247",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7358,
       "normalization": {
         "inputFileSha256": "50aed50b00d9d25e5d88632e34b5e6d321c312ed62ce57e17a8a84c540b8112a",
         "appliedGainDb": -11.1304132,
@@ -1804,8 +1804,8 @@
         "duration": 0.3263
       },
       "levelClass": null,
-      "assetSha256": "27dd3b4915caac008f1adcdb91c81708b696c5e556d2e8e53040ee4d10af1745",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "9b2845b18c4893f68fef832da1e385d1b38a896d04022b267c1b920d1b406dae",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7465,
       "normalization": {
         "inputFileSha256": "34af5eb53a887a393af31ac28d0547627708cf897ec996ceb0660df79357e2a0",
         "appliedGainDb": -16.9482834,
@@ -1828,8 +1828,8 @@
         "duration": 0.2016
       },
       "levelClass": "attack",
-      "assetSha256": "4ddb6d4e0a24c7fccdda4e9054ed04e49cf7bd50f5fae758b6f775e8caf44bca",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "19e471ac50b618dbb7f20e40a51c8aef1c663947269513e9fb5a60e452b4f3bb",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7487,
       "normalization": {
         "inputFileSha256": "ef24364941fe16a47c6be784ebdd89ea56540a41fb8670243f16ccc9d2e1daae",
         "appliedGainDb": 13.9541118,
@@ -1852,8 +1852,8 @@
         "duration": 0.1957
       },
       "levelClass": "attack",
-      "assetSha256": "b01a231f94bf4d5ae325f7ccdc1fc63834ca636d492b6c5789a9a886ff9e9b08",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "be5c0a185297bc9f1d40ba8ec5d6845df6dd47e54bd9100e32667e12b44dca43",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7214,
       "normalization": {
         "inputFileSha256": "f73f443568cb4ab77ab84bc98be11a335967d371ab03d40f8bd2cccb8f915cf7",
         "appliedGainDb": -15.0657229,
@@ -1876,8 +1876,8 @@
         "duration": 0.2764
       },
       "levelClass": null,
-      "assetSha256": "0c2fcbd1082b159cf7f9d50a9b08a8975d88cb6e4cca9856de408e08afa91a1d",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "c8d89a42bd3c64e5cf989cc4a6f89147bbc9456c383d5393e0d6740329f6f166",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7627,
       "normalization": {
         "inputFileSha256": "700d48b414c3063ad2b8b30e3da01fc722bc033023d33e242a47979f909af605",
         "appliedGainDb": 6.1315225,
@@ -1924,8 +1924,8 @@
         "duration": 0.5308
       },
       "levelClass": null,
-      "assetSha256": "054b84161178fdf12564c1f539411e67cc9f6dfc5ef8016cc70b5875abf6b684",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "7285594ccf3878dfe9568939ec80fd8ec26de749ea9a206c5d29fd85ec2e1c39",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7204,
       "normalization": {
         "inputFileSha256": "4c4565d49c7b2112ffe7c4604ff82eda7868f3c5d9620eb7d9f046043f1732fd",
         "appliedGainDb": 8.1473884,
@@ -1948,8 +1948,8 @@
         "duration": 0.3263
       },
       "levelClass": null,
-      "assetSha256": "aedde380db177aa86126ae4c4c519a6816f90ba8eb4c50edf4f2708f568b765a",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "2a69a677c8c1c5cbb042d945ed4d440919d4199c3ecab4a56e5eee6e232399d5",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7287,
       "normalization": {
         "inputFileSha256": "717e59faaef3bad0eb176736394573edc938a5162d7cd7029ded516b1b7847be",
         "appliedGainDb": -10.8789958,
@@ -1972,8 +1972,8 @@
         "duration": 0.49
       },
       "levelClass": "attack",
-      "assetSha256": "dfa6a631fb274ccdebae585929024b353a0a31dad6052644c090f9a47a358a1b",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "00ab4221aeb64e3c687733a3489d78e13b70454b1cad8f89edd3c57aac5952c6",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7389,
       "normalization": {
         "inputFileSha256": "d0f2f6df19447bc7c8fa51e259ce1509988b21a0ac69e3738cc199542bb2ec4f",
         "appliedGainDb": 12.6511925,
@@ -1996,8 +1996,8 @@
         "duration": 0.4309
       },
       "levelClass": "attack",
-      "assetSha256": "76d91f846d3086bec31546ad39b0899c30daeb9cf6eb59181c67e38f0a6fb5bf",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "f6d1ac89b16b78296a941bc23b249dd940e4ec944e36517c0c285291723f1a5d",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7269,
       "normalization": {
         "inputFileSha256": "04cf6f8aae8466aa5e84b9fc8d14292e71aa1d72f9751aa230eb4bf274c964ec",
         "appliedGainDb": 2.5111858,
@@ -2021,8 +2021,8 @@
         "duration": 0.2964
       },
       "levelClass": null,
-      "assetSha256": "de68aca0c6296da1d5ee0781165d59460c19c15b972d588dc2333c77dffac5b8",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "1a7246822e2f0aef52ce7f2e3fd7d49993a8b3602c1df38c0cebf7a6bfe5e1c6",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.6686,
       "normalization": {
         "inputFileSha256": "def9f688a35caa709f73b3de907c04ebc989fb3c825ae948d5eccd0f84dc4e9e",
         "appliedGainDb": -12.9741014,
@@ -2117,8 +2117,8 @@
         "duration": 0.436
       },
       "levelClass": "attack",
-      "assetSha256": "7b1817210d013f44f67b9a0b12b85f7d029974d037feb96dc4e2a9747cbc0018",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "bd295652fa5f9b56dd56184690ff128178f35b0eb1cf28812ec6fe26b4e33766",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7631,
       "normalization": {
         "inputFileSha256": "5abf1cea31c4cbb4cb6b7dee294d619a556ed8c3c17c0bc08d04bcb6fcc86342",
         "appliedGainDb": -15.693905,
@@ -2141,8 +2141,8 @@
         "duration": 0.3462
       },
       "levelClass": null,
-      "assetSha256": "863f14d1981f2ff202689d59f3a978190c75b7171b7caba50db87c088ead27e3",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "66c720439e5dbf5d50d945f9ab7cce2207b16c18d20f19e0a8b4a82c58a0b15d",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7405,
       "normalization": {
         "inputFileSha256": "217f193d3f18d6fc548a33c9bad3e71c7be3732646960b1e0d18d7fc57ff502e",
         "appliedGainDb": -16.7711041,
@@ -2165,8 +2165,8 @@
         "duration": 0.4311
       },
       "levelClass": "attack",
-      "assetSha256": "e92eb5606e6559d3697d13aee1f8ecadf8aee347ff0a0fe91d54fc4d8fa7ae7b",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "d69804a21214d1a82dff016cab9c9df6b52e2a8f02b24af81524eb42ddb2282c",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7384,
       "normalization": {
         "inputFileSha256": "b812b9f9c56b860373c272dd2d7c5f0d7027c5df4fcf3ad30a861a1329802a55",
         "appliedGainDb": -12.9790881,
@@ -2189,8 +2189,8 @@
         "duration": 0.6061
       },
       "levelClass": null,
-      "assetSha256": "9519cd854dd490786b75a011fa54b04673658191c3b57d37084c18d5d4521e94",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "e9ea7863581c80343c2434be4f4d38c339d9b7d2867cb9014f5a03f571f6d1ca",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7625,
       "normalization": {
         "inputFileSha256": "1e78a98e4f78e5742795b781e9ff562848495ce2704c3ce27485e52e926e88e6",
         "appliedGainDb": -10.1071404,
@@ -2237,8 +2237,8 @@
         "duration": 0.3298
       },
       "levelClass": "attack",
-      "assetSha256": "ecc8edcfbb8db74b525e1ccdab65e0ad737654ed099e77b2bc94a296eeb0338d",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "d37e9c3c2bf3c7676d779d1f58d7f6b5c6682f40e64258d4627eb72facca0b1b",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7384,
       "normalization": {
         "inputFileSha256": "7d1f87f7ff22ea347f3eae95338557471055fda973f76ed3becb6a4a150906e1",
         "appliedGainDb": -13.4189405,
@@ -2261,8 +2261,8 @@
         "duration": 0.4909
       },
       "levelClass": "attack",
-      "assetSha256": "67f4e3bc96c88178c42baa3be695a26b8d324b7400dae099550a3bbe37e8a03c",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.9027,
+      "assetSha256": "382e088673fd27f318a128808951186fd2ca0daf025488996ed4d60c041c7ec9",
+      "referenceGameOutputStrongest50msRmsDbFS": -27.3649,
       "normalization": {
         "inputFileSha256": "60329a215d5921d5fd5af5520389f65cfc84b9276fb9971a2e326c1889944361",
         "appliedGainDb": -9.3070054,
@@ -2285,8 +2285,8 @@
         "duration": 0.5009
       },
       "levelClass": null,
-      "assetSha256": "6a7b9dbd45b0145d86c23f64c2fd12e589039090ab00e81f13496c6bf7879371",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "2639cfe0235113ffe532299a6284c52cc862fa21a5fcacea96e15f5af5d4133f",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.748,
       "normalization": {
         "inputFileSha256": "770bd15cfabe0522095ea4e5ecda1e0c8d7d3a12242b16333d4834f2f2ab186a",
         "appliedGainDb": -3.8949999,
@@ -2309,8 +2309,8 @@
         "duration": 0.7004
       },
       "levelClass": "attack",
-      "assetSha256": "34cdecfc014098ed90e7fb7d3b8d7068cceec7f341d9f913a1b73fd7d5b4f942",
-      "referenceGameOutputStrongest50msRmsDbFS": -26.2927,
+      "assetSha256": "c66c26173b6aeb662fc3fa3824b1dd61e43146fb2709133c3420fb6b9d12e448",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.7409,
       "normalization": {
         "inputFileSha256": "1c4907762fdfe05721ac320770f3be313e97b8f2aed00898d3ba364f6063482b",
         "appliedGainDb": -18.5726768,
@@ -2333,8 +2333,8 @@
         "duration": 0.4909
       },
       "levelClass": "terrain",
-      "assetSha256": "4d84619c7e03bec3514f32c05eaa9eae3df8decb35f8550fbae0dc3c280f136a",
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "assetSha256": "5187133c0ceee80c6348fcfbd25fe176229fb0a3fd50b214c98c8032fd0f80dd",
+      "referenceGameOutputStrongest50msRmsDbFS": -29.8475,
       "normalization": {
         "inputFileSha256": "60329a215d5921d5fd5af5520389f65cfc84b9276fb9971a2e326c1889944361",
         "appliedGainDb": -11.7804703,
@@ -2453,8 +2453,8 @@
         "duration": 0.253
       },
       "levelClass": "terrain",
-      "assetSha256": "e083f0d61c343db2bd20547fb85a2702402e8d3f768c640e59069ce2eb8996a6",
-      "referenceGameOutputStrongest50msRmsDbFS": -34.5027,
+      "assetSha256": "ed726379b5fc2faf21db3369cfa2bb7eb484102344645debe7991234b534851b",
+      "referenceGameOutputStrongest50msRmsDbFS": -34.9489,
       "normalization": {
         "inputFileSha256": "d422c8d21287f94619b438fe71b0ef833ffe078ee2980f5326dcc9c409252228",
         "appliedGainDb": -10.0859281,
@@ -2549,8 +2549,8 @@
         "duration": 0.446
       },
       "levelClass": "terrain",
-      "assetSha256": "5e675a2062f8fc520d02cbae8f7f7f7da1d0ff906c3c6b93b7d5d8253d15c54f",
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "assetSha256": "a6f7f4fae0307ef1c1de8a9b9a6648f2d7905ff286d6bfd202be730908629c39",
+      "referenceGameOutputStrongest50msRmsDbFS": -29.799,
       "normalization": {
         "inputFileSha256": "305d87c8d62552a599a4a5f00cff5236d4e311be7185fd39a1b114990f575d87",
         "appliedGainDb": -10.2947513,
@@ -2621,8 +2621,8 @@
         "duration": 0.45
       },
       "levelClass": "terrain",
-      "assetSha256": "18d0c9c0ebe3198ed85ca2d5b6b6c4c4441ec5171b7683102210278752e2a255",
-      "referenceGameOutputStrongest50msRmsDbFS": -41.28,
+      "assetSha256": "f53af74b534a06d6e33d83cde5cfc35e0b2bab4f514cdbca28b97dbe38b5690e",
+      "referenceGameOutputStrongest50msRmsDbFS": -41.628,
       "normalization": {
         "inputFileSha256": "43da0eeb3f86c54115c613bf8b21a1c96fa1ff0b038f92a384cee5773bc51317",
         "appliedGainDb": -3.8947359,
@@ -2645,8 +2645,8 @@
         "duration": 0.213
       },
       "levelClass": "terrain",
-      "assetSha256": "7178c8196072c73e49ad2ea0878276aed8921bca33e6fa8dcfcbfa76eeec78c2",
-      "referenceGameOutputStrongest50msRmsDbFS": -37.0327,
+      "assetSha256": "2ca10ad3c282933e64578a4e3c105394f162019680a75a84e105d4356b68ec01",
+      "referenceGameOutputStrongest50msRmsDbFS": -37.4779,
       "normalization": {
         "inputFileSha256": "69cd3250c759436441442d50fe5ca1bb92bf845e497dc0b5042c7a82b2d03d02",
         "appliedGainDb": -10.2755801,
@@ -2669,8 +2669,8 @@
         "duration": 0.1816
       },
       "levelClass": "terrain",
-      "assetSha256": "ad268314ecbf7763eb19488d6e60b2bde036b37a1ca677f6d09955ad30042442",
-      "referenceGameOutputStrongest50msRmsDbFS": -32.2627,
+      "assetSha256": "85a83d5aae05178345771296cd58a754a42d153f60ff43080b29d63c15946e3d",
+      "referenceGameOutputStrongest50msRmsDbFS": -32.7145,
       "normalization": {
         "inputFileSha256": "97968366c13d4fe6c1c35739ebd9285eb57fbffc66bc3eb672a6a286465ee039",
         "appliedGainDb": -9.8914041,
@@ -2717,8 +2717,8 @@
         "duration": 0.2964
       },
       "levelClass": "terrain",
-      "assetSha256": "f7c2a20e749130e57aa67f2ee9d18df3b83783c1876dceb56f7409c346cfee36",
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "assetSha256": "c63ce86a6bccd97019e6ce1c3a315d71462a3572a73d6aabcb94a035db73bb46",
+      "referenceGameOutputStrongest50msRmsDbFS": -29.8474,
       "normalization": {
         "inputFileSha256": "def9f688a35caa709f73b3de907c04ebc989fb3c825ae948d5eccd0f84dc4e9e",
         "appliedGainDb": -16.0621313,
@@ -2765,8 +2765,8 @@
         "duration": 0.5308
       },
       "levelClass": "terrain",
-      "assetSha256": "810ff9e0103dc9dc57f7355475b108bbb9dac84a64ad6af511fd6f93f3410309",
-      "referenceGameOutputStrongest50msRmsDbFS": -29.2827,
+      "assetSha256": "22c869e1394396726a4d6a2bc3f3edceb2865f84c4f2d2de096072add9d75059",
+      "referenceGameOutputStrongest50msRmsDbFS": -35.4404,
       "normalization": {
         "inputFileSha256": "c5745ac8213b73727c787123c82baabd7ae2da954b4a6d6307be24f74a6f7810",
         "appliedGainDb": -20.053561,
@@ -2789,16 +2789,24 @@
         "duration": 0.3213
       },
       "levelClass": "movement",
-      "assetSha256": "5730dcba85a03638ab2eee4e4d95d329e3618fbd78a58341dd26acf8b9a5b986",
-      "referenceGameOutputStrongest50msRmsDbFS": -45.7792,
+      "assetSha256": "11fd52bb548b51106f169f090812af8b6180d96631b37818da865caf531c33f1",
+      "referenceGameOutputStrongest50msRmsDbFS": -26.2482,
       "normalization": {
         "inputFileSha256": "a937e234dc7f5f1e618c771cab1d54bcc460ae1d10f0a1bbea64d65b00ec29eb",
-        "appliedGainDb": -28.7662118,
-        "targetStrongest50msRmsDbFS": -45.7792,
-        "outputStrongest50msRmsDbFS": -45.7823,
-        "outputPeakDbFS": -28.1733,
+        "appliedGainDb": -19.1591987,
+        "targetStrongest50msRmsDbFS": -36.5792,
+        "outputStrongest50msRmsDbFS": -36.6668,
+        "outputPeakDbFS": -18.9273,
         "duration": 0.321293
-      }
+      },
+      "adjustments": [
+        {
+          "description": "User-selected +9.2 dB decoded movement level; no trimming. Re-encoded from the previous levelled export, with MP3 encoding attenuation compensated.",
+          "inputFileSha256": "5730dcba85a03638ab2eee4e4d95d329e3618fbd78a58341dd26acf8b9a5b986",
+          "appliedGainDb": 9.6070131,
+          "targetOutputChangeDb": 9.2
+        }
+      ]
     }
   }
 }
