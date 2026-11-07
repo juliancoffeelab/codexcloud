@@ -51,26 +51,26 @@ import { errorDetails } from "../error-details";
 const STORAGE_KEY = "hex-command-sound-enabled";
 const VOLUME = 0.29;
 const AUDIO_REVISION = "reviewed-ranges-5";
-// Strongest 5 ms RMS windows measured after the reviewed offline audio edits.
+// Highest absolute-amplitude samples in decoded 44.1 kHz mono; no RMS window.
 const legacyImpactMs: Record<string, number> = {
-  "attack-bow": 119.7,
-  "attack-melee": 24.9,
-  bell: 24.9,
-  defeat: 274.4,
-  recruit: 84.8,
-  select: 5.0,
-  "terrain-forest": 29.9,
-  "terrain-hill": 54.9,
-  "terrain-keep": 20.0,
-  "terrain-plains": 15.0,
-  "terrain-village": 10.0,
-  "terrain-water": 10.0,
-  turn: 189.6,
-  "unit-archer": 29.9,
-  "unit-commander": 39.9,
-  "unit-scout": 19.9,
-  "unit-soldier": 5.0,
-  victory: 404.1,
+  "attack-bow": 121.632653,
+  "attack-melee": 29.024943,
+  bell: 61.814059,
+  defeat: 258.61678,
+  recruit: 88.798186,
+  select: 8.344671,
+  "terrain-forest": 28.049887,
+  "terrain-hill": 53.446712,
+  "terrain-keep": 24.126984,
+  "terrain-plains": 52.60771,
+  "terrain-village": 10.385488,
+  "terrain-water": 11.972789,
+  turn: 221.746032,
+  "unit-archer": 31.655329,
+  "unit-commander": 40.521542,
+  "unit-scout": 19.84127,
+  "unit-soldier": 9.727891,
+  victory: 221.85941,
 };
 /** Actions available as soon as a battlefield is interactive, including a
  * first-action win/loss. Contextual narrative cues remain in their own plan. */

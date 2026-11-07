@@ -28,11 +28,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "41f86f0e9164b0f97610b3e9282091518ffe47759477c3d9c0c97a64c994c956",
       "output": {
-        "impactMs": 109.8,
+        "impactMs": 111.882086,
         "durationSamples": 18479,
         "peakDbFS": -15.054,
         "strongest50msRmsDbFS": -26.7463
-      }
+      },
+      "impactSample": 4934,
+      "impactMs": 111.882086
     },
     {
       "id": "palette:dying-creature-groan",
@@ -45,11 +47,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "ba222729b49efa789101563908168a9e803002a1abbbc88c27c5ad694da29af1",
       "output": {
-        "impactMs": 269.4,
+        "impactMs": 273.469388,
         "durationSamples": 37473,
         "peakDbFS": -19.6316,
         "strongest50msRmsDbFS": -26.7378
-      }
+      },
+      "impactSample": 12060,
+      "impactMs": 273.469388
     },
     {
       "id": "palette:deep-monster-grunt",
@@ -62,11 +66,13 @@
       "selectionMode": "time",
       "outputSha256": "73b71b817ed4d3405252c84f5088d0b65d4a9c9fea172cd9921e795e546ebe4b",
       "output": {
-        "impactMs": 84.8,
+        "impactMs": 86.938776,
         "durationSamples": 21452,
         "peakDbFS": -14.5082,
         "strongest50msRmsDbFS": -26.735
-      }
+      },
+      "impactSample": 3834,
+      "impactMs": 86.938776
     },
     {
       "id": "palette:blade-swish",
@@ -79,11 +85,13 @@
       "selectionMode": "time",
       "outputSha256": "cc013b9a41f13c368925cec15397d2f1d4397aecd2c0d5c22e05b08981aaaa9b",
       "output": {
-        "impactMs": 134.7,
+        "impactMs": 137.029478,
         "durationSamples": 10963,
         "peakDbFS": -15.766,
         "strongest50msRmsDbFS": -26.7049
-      }
+      },
+      "impactSample": 6043,
+      "impactMs": 137.029478
     },
     {
       "id": "palette:beast-grunt",
@@ -94,7 +102,9 @@
       "startSample": 0,
       "endSample": 31151,
       "selectionMode": "coefficient",
-      "outputSha256": "34b2c8cc7294e4347853043138e12b81faa7b97895c92b5b8ef0a478e505c339"
+      "outputSha256": "34b2c8cc7294e4347853043138e12b81faa7b97895c92b5b8ef0a478e505c339",
+      "impactSample": 13303,
+      "impactMs": 301.655329
     },
     {
       "id": "palette:leather-rustle",
@@ -107,11 +117,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "703b6a5133bfb5eb62810774c3a88b640b9c8cb815f2b38a84d0df9ef7fa7802",
       "output": {
-        "impactMs": 59.9,
+        "impactMs": 60.498866,
         "durationSamples": 15207,
         "peakDbFS": -13.8518,
         "strongest50msRmsDbFS": -26.7625
-      }
+      },
+      "impactSample": 2668,
+      "impactMs": 60.498866
     },
     {
       "id": "palette:fire-spell-burst",
@@ -124,11 +136,13 @@
       "selectionMode": "time",
       "outputSha256": "c2f6e8118928e46f02926178f302c925f74ba66100fef68aab4be5d292bc3964",
       "output": {
-        "impactMs": 224.5,
+        "impactMs": 203.809524,
         "durationSamples": 21170,
         "peakDbFS": -17.6091,
         "strongest50msRmsDbFS": -26.7504
-      }
+      },
+      "impactSample": 8988,
+      "impactMs": 203.809524
     },
     {
       "id": "palette:flier-cry",
@@ -141,11 +155,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "19b914490a101f179b82ca4d5786d5520e6f07b8a38d26ffba90491942dba565",
       "output": {
-        "impactMs": 44.9,
+        "impactMs": 48.503401,
         "durationSamples": 19904,
         "peakDbFS": -14.4842,
         "strongest50msRmsDbFS": -26.7356
-      }
+      },
+      "impactSample": 2139,
+      "impactMs": 48.503401
     },
     {
       "id": "palette:knife-draw",
@@ -158,11 +174,13 @@
       "selectionMode": "time",
       "outputSha256": "5c8dd3210b8d68db9d713c430962df115bc10fb7c3917b47d41060aaed1cb0d7",
       "output": {
-        "impactMs": 109.8,
+        "impactMs": 128.049887,
         "durationSamples": 15619,
         "peakDbFS": -13.5709,
         "strongest50msRmsDbFS": -26.6909
-      }
+      },
+      "impactSample": 5647,
+      "impactMs": 128.049887
     },
     {
       "id": "palette:bone-crunch",
@@ -175,11 +193,13 @@
       "selectionMode": "time",
       "outputSha256": "7dd59bbbc35a4dd74fe2dffc78c69c79b537cccc3ad75e58755f3b0b82d31b40",
       "output": {
-        "impactMs": 54.9,
+        "impactMs": 59.160998,
         "durationSamples": 20691,
         "peakDbFS": -12.6269,
         "strongest50msRmsDbFS": -26.7019
-      }
+      },
+      "impactSample": 2609,
+      "impactMs": 59.160998
     },
     {
       "id": "palette:light-cloth-rustle",
@@ -192,11 +212,13 @@
       "selectionMode": "time",
       "outputSha256": "f164655db2d025809e55ae15a266cb3abc2e4e7303850ca0135ea82e92e3fe9e",
       "output": {
-        "impactMs": 119.7,
+        "impactMs": 123.968254,
         "durationSamples": 16683,
         "peakDbFS": -13.2067,
         "strongest50msRmsDbFS": -26.7388
-      }
+      },
+      "impactSample": 5467,
+      "impactMs": 123.968254
     },
     {
       "id": "palette:reptile-scale-rustle",
@@ -209,11 +231,13 @@
       "selectionMode": "time",
       "outputSha256": "7649f0534ff9c3646a8c9d92f02925f0cac4d295413b7e5988966904bbd79fff",
       "output": {
-        "impactMs": 89.8,
+        "impactMs": 91.655329,
         "durationSamples": 24972,
         "peakDbFS": -15.841,
         "strongest50msRmsDbFS": -26.7399
-      }
+      },
+      "impactSample": 4042,
+      "impactMs": 91.655329
     },
     {
       "id": "palette:spider-leg-rustle",
@@ -224,7 +248,9 @@
       "startSample": 0,
       "endSample": 22050,
       "selectionMode": "coefficient",
-      "outputSha256": "89f785f3034ec6f9756f2deb72b85b1971354b22f1bf3989a0fd90cf43999219"
+      "outputSha256": "89f785f3034ec6f9756f2deb72b85b1971354b22f1bf3989a0fd90cf43999219",
+      "impactSample": 18585,
+      "impactMs": 421.428571
     },
     {
       "id": "palette:slimy-squelch",
@@ -237,11 +263,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "5b31cd05fb6756d3ddde96e4d79e71974f9b0517cd5d1cb6fe2a7c78d23eeb20",
       "output": {
-        "impactMs": 114.7,
+        "impactMs": 106.938776,
         "durationSamples": 24066,
         "peakDbFS": -14.8722,
         "strongest50msRmsDbFS": -26.6955
-      }
+      },
+      "impactSample": 4716,
+      "impactMs": 106.938776
     },
     {
       "id": "palette:creature-spit",
@@ -254,11 +282,13 @@
       "selectionMode": "time",
       "outputSha256": "60b5dff8f0050af95afded8cb03e557c7f60e3bd510a16a89fc8c61e3e62783f",
       "output": {
-        "impactMs": 54.9,
+        "impactMs": 59.070295,
         "durationSamples": 15763,
         "peakDbFS": -9.1561,
         "strongest50msRmsDbFS": -26.7286
-      }
+      },
+      "impactSample": 2605,
+      "impactMs": 59.070295
     },
     {
       "id": "palette:insect-buzz",
@@ -271,11 +301,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "b02df51db6ce6d5a163cf2fe63ba3281ac248c5e635f249afdcbb0ec7df35de2",
       "output": {
-        "impactMs": 149.7,
+        "impactMs": 162.222222,
         "durationSamples": 26405,
         "peakDbFS": -14.8819,
         "strongest50msRmsDbFS": -26.7345
-      }
+      },
+      "impactSample": 7154,
+      "impactMs": 162.222222
     },
     {
       "id": "palette:aquatic-gurgle-selection",
@@ -288,11 +320,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "2b6cc8aa99c1c9dbe94d45cbd44c8452f29311fe98696f383863d3e639e217b2",
       "output": {
-        "impactMs": 144.7,
+        "impactMs": 308.185941,
         "durationSamples": 40861,
         "peakDbFS": -19.433,
         "strongest50msRmsDbFS": -31.7307
-      }
+      },
+      "impactSample": 13591,
+      "impactMs": 308.185941
     },
     {
       "id": "palette:aquatic-gurgle-attack",
@@ -305,11 +339,13 @@
       "selectionMode": "time",
       "outputSha256": "92866dfbc8a08dd574f93e4650db12f7efd0e9339f4ed87f841d0bf869cba6d1",
       "output": {
-        "impactMs": 129.7,
+        "impactMs": 294.875283,
         "durationSamples": 40274,
         "peakDbFS": -15.2793,
         "strongest50msRmsDbFS": -27.5789
-      }
+      },
+      "impactSample": 13004,
+      "impactMs": 294.875283
     },
     {
       "id": "palette:aquatic-creature-call",
@@ -322,11 +358,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "49745c93ac504195ac9339ecb3826a6f6c790b6dccd3534b6e2189dfc10f5b7f",
       "output": {
-        "impactMs": 164.6,
+        "impactMs": 167.959184,
         "durationSamples": 20330,
         "peakDbFS": -16.13,
         "strongest50msRmsDbFS": -26.747
-      }
+      },
+      "impactSample": 7407,
+      "impactMs": 167.959184
     },
     {
       "id": "palette:watery-squish",
@@ -339,11 +377,13 @@
       "selectionMode": "time",
       "outputSha256": "a41db184223a1660b68e6f53a2b323e371c431898101bdfd0c8a041bffd27c83",
       "output": {
-        "impactMs": 159.6,
+        "impactMs": 163.854875,
         "durationSamples": 15892,
         "peakDbFS": -13.1736,
         "strongest50msRmsDbFS": -26.6868
-      }
+      },
+      "impactSample": 7226,
+      "impactMs": 163.854875
     },
     {
       "id": "palette:fish-slap",
@@ -356,11 +396,13 @@
       "selectionMode": "time",
       "outputSha256": "95017a6132797cd27e8bd448d2d8980e850bc8454f5b57edbcf81bd385f37166",
       "output": {
-        "impactMs": 20.0,
+        "impactMs": 19.546485,
         "durationSamples": 6247,
         "peakDbFS": -7.6772,
         "strongest50msRmsDbFS": -26.7885
-      }
+      },
+      "impactSample": 862,
+      "impactMs": 19.546485
     },
     {
       "id": "palette:horse-call",
@@ -371,7 +413,9 @@
       "startSample": 0,
       "endSample": 17861,
       "selectionMode": "coefficient",
-      "outputSha256": "570d64b6c3d19a75ade465252ced524b365a5ba5315103a1522b04fec5a4f0ca"
+      "outputSha256": "570d64b6c3d19a75ade465252ced524b365a5ba5315103a1522b04fec5a4f0ca",
+      "impactSample": 6282,
+      "impactMs": 142.44898
     },
     {
       "id": "palette:dog-grumble",
@@ -384,11 +428,13 @@
       "selectionMode": "time",
       "outputSha256": "98e2fac8e65b855adb533d33e530ddbf2fd8cf0f94133d939553387d22221fc8",
       "output": {
-        "impactMs": 179.6,
+        "impactMs": 179.433107,
         "durationSamples": 18859,
         "peakDbFS": -16.4181,
         "strongest50msRmsDbFS": -26.7572
-      }
+      },
+      "impactSample": 7913,
+      "impactMs": 179.433107
     },
     {
       "id": "palette:wolf-howl",
@@ -401,11 +447,13 @@
       "selectionMode": "time",
       "outputSha256": "10a632b168256fe89b7e5ebbbf714683ce514b80363d9a6ad740de5f6206c832",
       "output": {
-        "impactMs": 114.7,
+        "impactMs": 115.351474,
         "durationSamples": 22980,
         "peakDbFS": -22.1708,
         "strongest50msRmsDbFS": -26.7417
-      }
+      },
+      "impactSample": 5087,
+      "impactMs": 115.351474
     },
     {
       "id": "palette:dog-snarl",
@@ -418,11 +466,13 @@
       "selectionMode": "time",
       "outputSha256": "c6243aaeeffed4ff6719fafc8dfb63001ad60c1019781c4ee6f562e60b7411d8",
       "output": {
-        "impactMs": 144.7,
+        "impactMs": 158.004535,
         "durationSamples": 28745,
         "peakDbFS": -16.0759,
         "strongest50msRmsDbFS": -26.7338
-      }
+      },
+      "impactSample": 6968,
+      "impactMs": 158.004535
     },
     {
       "id": "palette:belt-handling",
@@ -435,11 +485,13 @@
       "selectionMode": "time",
       "outputSha256": "310b20b18539719c93ed84e9dfe6381d76923f722b01dce0cb3ee7ae1ffdaf9c",
       "output": {
-        "impactMs": 44.9,
+        "impactMs": 49.546485,
         "durationSamples": 6612,
         "peakDbFS": -10.8556,
         "strongest50msRmsDbFS": -26.781
-      }
+      },
+      "impactSample": 2185,
+      "impactMs": 49.546485
     },
     {
       "id": "palette:dwarf-cough",
@@ -452,11 +504,13 @@
       "selectionMode": "time",
       "outputSha256": "29d556c90972743ced1c4517d5ab436ca9f3f99afa425a3a61dd51255391ad0a",
       "output": {
-        "impactMs": 24.9,
+        "impactMs": 27.278912,
         "durationSamples": 14443,
         "peakDbFS": -16.8259,
         "strongest50msRmsDbFS": -26.7648
-      }
+      },
+      "impactSample": 1203,
+      "impactMs": 27.278912
     },
     {
       "id": "palette:mining-strike",
@@ -467,7 +521,9 @@
       "startSample": 0,
       "endSample": 24070,
       "selectionMode": "coefficient",
-      "outputSha256": "41f3fc62d76f63e79e47f3139d4f9c78e824c5c35d31f7df8805229661c85f60"
+      "outputSha256": "41f3fc62d76f63e79e47f3139d4f9c78e824c5c35d31f7df8805229661c85f60",
+      "impactSample": 478,
+      "impactMs": 10.839002
     },
     {
       "id": "palette:chainmail-rattle",
@@ -480,11 +536,13 @@
       "selectionMode": "time",
       "outputSha256": "e175d791e8c8f013c384ea94923a40a220aa2d2013dada9087b283ebb26a70e9",
       "output": {
-        "impactMs": 149.7,
+        "impactMs": 176.553288,
         "durationSamples": 15497,
         "peakDbFS": -14.7869,
         "strongest50msRmsDbFS": -26.7562
-      }
+      },
+      "impactSample": 7786,
+      "impactMs": 176.553288
     },
     {
       "id": "palette:metal-armour-clatter",
@@ -497,11 +555,13 @@
       "selectionMode": "time",
       "outputSha256": "23269383d1ba5d02b5648b7f786a295cf9f61e965d28a1e66a993cbe5c497005",
       "output": {
-        "impactMs": 389.1,
+        "impactMs": 389.659864,
         "durationSamples": 25599,
         "peakDbFS": -18.7627,
         "strongest50msRmsDbFS": -25.7364
-      }
+      },
+      "impactSample": 17184,
+      "impactMs": 389.659864
     },
     {
       "id": "palette:crossbow-bolt-pass",
@@ -514,11 +574,13 @@
       "selectionMode": "time",
       "outputSha256": "5e1c070e8149f10bf84d4ca4d0be144f8ee1c4a1694bc237fd7d067b8e226e48",
       "output": {
-        "impactMs": 15.0,
+        "impactMs": 16.553288,
         "durationSamples": 16368,
         "peakDbFS": -9.6015,
         "strongest50msRmsDbFS": -26.7444
-      }
+      },
+      "impactSample": 730,
+      "impactMs": 16.553288
     },
     {
       "id": "palette:blade-contact",
@@ -531,11 +593,13 @@
       "selectionMode": "time",
       "outputSha256": "b4882062a148204d518ce55f36c23c48fcb5327215595a85cb88695837ba3d3a",
       "output": {
-        "impactMs": 79.8,
+        "impactMs": 83.741497,
         "durationSamples": 8235,
         "peakDbFS": -12.6435,
         "strongest50msRmsDbFS": -26.6898
-      }
+      },
+      "impactSample": 3693,
+      "impactMs": 83.741497
     },
     {
       "id": "palette:metal-latch",
@@ -548,11 +612,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "f1eda2b73c0e354318d7956b45e3f7e934965d46bed737cbde93ae0786c31747",
       "output": {
-        "impactMs": 10.0,
+        "impactMs": 13.287982,
         "durationSamples": 6964,
         "peakDbFS": -11.9295,
         "strongest50msRmsDbFS": -26.7719
-      }
+      },
+      "impactSample": 586,
+      "impactMs": 13.287982
     },
     {
       "id": "palette:metal-plate-impact",
@@ -565,11 +631,13 @@
       "selectionMode": "time",
       "outputSha256": "7bad59a0ef8c4b1460467372321a2d3c89b14718518d0bb68e34c6d66bc3c11b",
       "output": {
-        "impactMs": 0.0,
+        "impactMs": 1.451247,
         "durationSamples": 21678,
         "peakDbFS": -12.6048,
         "strongest50msRmsDbFS": -26.7016
-      }
+      },
+      "impactSample": 64,
+      "impactMs": 1.451247
     },
     {
       "id": "palette:arcane-pulse-attack",
@@ -582,11 +650,13 @@
       "selectionMode": "time",
       "outputSha256": "9d9d14ce63783c529d471b28074edc482d735c339ce6bb5b52cd5a5c4e086ce4",
       "output": {
-        "impactMs": 74.8,
+        "impactMs": 73.968254,
         "durationSamples": 21255,
         "peakDbFS": -15.1694,
         "strongest50msRmsDbFS": -26.7788
-      }
+      },
+      "impactSample": 3262,
+      "impactMs": 73.968254
     },
     {
       "id": "palette:elf-cough",
@@ -599,11 +669,13 @@
       "selectionMode": "time",
       "outputSha256": "bee0342a8690bc7fc0a52c6dafdb307bd42cda18590c86b258e60a3df5b4e900",
       "output": {
-        "impactMs": 20.0,
+        "impactMs": 22.086168,
         "durationSamples": 12743,
         "peakDbFS": -15.7345,
         "strongest50msRmsDbFS": -26.7514
-      }
+      },
+      "impactSample": 974,
+      "impactMs": 22.086168
     },
     {
       "id": "palette:dagger-draw",
@@ -616,11 +688,13 @@
       "selectionMode": "time",
       "outputSha256": "ba5194be13b34154fd511c39d981f9e2d217ea08010268808bd62547c0d77fff",
       "output": {
-        "impactMs": 109.8,
+        "impactMs": 111.201814,
         "durationSamples": 13573,
         "peakDbFS": -8.3003,
         "strongest50msRmsDbFS": -26.707
-      }
+      },
+      "impactSample": 4904,
+      "impactMs": 111.201814
     },
     {
       "id": "palette:sabre-draw",
@@ -633,11 +707,13 @@
       "selectionMode": "time",
       "outputSha256": "30847987d8ec94e64321f350c30d6e0f439cf409a9b0fbf9d9372f3db34c6b04",
       "output": {
-        "impactMs": 59.9,
+        "impactMs": 61.38322,
         "durationSamples": 40449,
         "peakDbFS": -10.3146,
         "strongest50msRmsDbFS": -26.6982
-      }
+      },
+      "impactSample": 2707,
+      "impactMs": 61.38322
     },
     {
       "id": "palette:spear-on-sabre",
@@ -650,11 +726,13 @@
       "selectionMode": "time",
       "outputSha256": "c0afc0e176bd66a5de56367ca0f05030f9f81e0a50db07ab760d175f23455946",
       "output": {
-        "impactMs": 5.0,
+        "impactMs": 5.328798,
         "durationSamples": 11172,
         "peakDbFS": -9.0025,
         "strongest50msRmsDbFS": -26.7275
-      }
+      },
+      "impactSample": 235,
+      "impactMs": 5.328798
     },
     {
       "id": "palette:scythian-bow-shot",
@@ -667,11 +745,13 @@
       "selectionMode": "time",
       "outputSha256": "e15ecbe883c1eb0325f78ac51e61dcea988b9039187084f3dac8414f5724f2f9",
       "output": {
-        "impactMs": 15.0,
+        "impactMs": 16.462585,
         "durationSamples": 6612,
         "peakDbFS": -7.445,
         "strongest50msRmsDbFS": -26.7433
-      }
+      },
+      "impactSample": 726,
+      "impactMs": 16.462585
     },
     {
       "id": "palette:wooden-staff-impact",
@@ -684,11 +764,13 @@
       "selectionMode": "time",
       "outputSha256": "27236eb705d10c22cad3d3b9a0fa11cecb61a1031b8a357599ad44e9f938e247",
       "output": {
-        "impactMs": 10.0,
+        "impactMs": 11.38322,
         "durationSamples": 7407,
         "peakDbFS": -12.2962,
         "strongest50msRmsDbFS": -26.7358
-      }
+      },
+      "impactSample": 502,
+      "impactMs": 11.38322
     },
     {
       "id": "palette:cough",
@@ -701,11 +783,13 @@
       "selectionMode": "time",
       "outputSha256": "9b2845b18c4893f68fef832da1e385d1b38a896d04022b267c1b920d1b406dae",
       "output": {
-        "impactMs": 20.0,
+        "impactMs": 23.786848,
         "durationSamples": 12651,
         "peakDbFS": -15.7351,
         "strongest50msRmsDbFS": -26.7465
-      }
+      },
+      "impactSample": 1049,
+      "impactMs": 23.786848
     },
     {
       "id": "palette:mace-on-spear-haft",
@@ -718,11 +802,13 @@
       "selectionMode": "time",
       "outputSha256": "19e471ac50b618dbb7f20e40a51c8aef1c663947269513e9fb5a60e452b4f3bb",
       "output": {
-        "impactMs": 0.0,
+        "impactMs": 2.018141,
         "durationSamples": 5856,
         "peakDbFS": -9.2907,
         "strongest50msRmsDbFS": -26.7487
-      }
+      },
+      "impactSample": 89,
+      "impactMs": 2.018141
     },
     {
       "id": "palette:book-shut",
@@ -735,11 +821,13 @@
       "selectionMode": "time",
       "outputSha256": "be5c0a185297bc9f1d40ba8ec5d6845df6dd47e54bd9100e32667e12b44dca43",
       "output": {
-        "impactMs": 20.0,
+        "impactMs": 21.70068,
         "durationSamples": 6349,
         "peakDbFS": -13.6544,
         "strongest50msRmsDbFS": -26.7214
-      }
+      },
+      "impactSample": 957,
+      "impactMs": 21.70068
     },
     {
       "id": "palette:small-leather-handling",
@@ -752,11 +840,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "c8d89a42bd3c64e5cf989cc4a6f89147bbc9456c383d5393e0d6740329f6f166",
       "output": {
-        "impactMs": 74.8,
+        "impactMs": 77.142857,
         "durationSamples": 8890,
         "peakDbFS": -10.959,
         "strongest50msRmsDbFS": -26.7627
-      }
+      },
+      "impactSample": 3402,
+      "impactMs": 77.142857
     },
     {
       "id": "palette:horse-dying-call",
@@ -767,7 +857,9 @@
       "startSample": 0,
       "endSample": 22050,
       "selectionMode": "coefficient",
-      "outputSha256": "614d8aa99c3789bc4ea245e89e590bc1294d03db70e096ce184315b5f1429886"
+      "outputSha256": "614d8aa99c3789bc4ea245e89e590bc1294d03db70e096ce184315b5f1429886",
+      "impactSample": 15741,
+      "impactMs": 356.938776
     },
     {
       "id": "palette:underwater-belt-rustle",
@@ -780,11 +872,13 @@
       "selectionMode": "time",
       "outputSha256": "7285594ccf3878dfe9568939ec80fd8ec26de749ea9a206c5d29fd85ec2e1c39",
       "output": {
-        "impactMs": 34.9,
+        "impactMs": 36.780045,
         "durationSamples": 20291,
         "peakDbFS": -7.8486,
         "strongest50msRmsDbFS": -26.7204
-      }
+      },
+      "impactSample": 1622,
+      "impactMs": 36.780045
     },
     {
       "id": "palette:underwater-cough",
@@ -797,11 +891,13 @@
       "selectionMode": "time",
       "outputSha256": "2a69a677c8c1c5cbb042d945ed4d440919d4199c3ecab4a56e5eee6e232399d5",
       "output": {
-        "impactMs": 24.9,
+        "impactMs": 24.965986,
         "durationSamples": 12968,
         "peakDbFS": -15.6043,
         "strongest50msRmsDbFS": -26.7287
-      }
+      },
+      "impactSample": 1101,
+      "impactMs": 24.965986
     },
     {
       "id": "palette:scythian-arrow-pass",
@@ -814,11 +910,13 @@
       "selectionMode": "time",
       "outputSha256": "00ab4221aeb64e3c687733a3489d78e13b70454b1cad8f89edd3c57aac5952c6",
       "output": {
-        "impactMs": 20.0,
+        "impactMs": 21.587302,
         "durationSamples": 20783,
         "peakDbFS": -8.6414,
         "strongest50msRmsDbFS": -26.7389
-      }
+      },
+      "impactSample": 952,
+      "impactMs": 21.587302
     },
     {
       "id": "palette:mace-on-spear-blade",
@@ -831,11 +929,13 @@
       "selectionMode": "time",
       "outputSha256": "f6d1ac89b16b78296a941bc23b249dd940e4ec944e36517c0c285291723f1a5d",
       "output": {
-        "impactMs": 0.0,
+        "impactMs": 3.015873,
         "durationSamples": 13994,
         "peakDbFS": -8.5563,
         "strongest50msRmsDbFS": -26.7269
-      }
+      },
+      "impactSample": 133,
+      "impactMs": 3.015873
     },
     {
       "id": "palette:wooden-rattle-unit",
@@ -848,11 +948,13 @@
       "selectionMode": "time",
       "outputSha256": "1a7246822e2f0aef52ce7f2e3fd7d49993a8b3602c1df38c0cebf7a6bfe5e1c6",
       "output": {
-        "impactMs": 79.8,
+        "impactMs": 81.746032,
         "durationSamples": 12503,
         "peakDbFS": -12.1385,
         "strongest50msRmsDbFS": -26.6686
-      }
+      },
+      "impactSample": 3605,
+      "impactMs": 81.746032
     },
     {
       "id": "palette:dark-magic-burst",
@@ -863,7 +965,9 @@
       "startSample": 0,
       "endSample": 21168,
       "selectionMode": "coefficient",
-      "outputSha256": "cd380c092c82770fe42d8aad575cdb6f0947bdb9fe8af97c0706724f606798e5"
+      "outputSha256": "cd380c092c82770fe42d8aad575cdb6f0947bdb9fe8af97c0706724f606798e5",
+      "impactSample": 14641,
+      "impactMs": 331.995465
     },
     {
       "id": "palette:ghost-groan",
@@ -874,7 +978,9 @@
       "startSample": 0,
       "endSample": 15876,
       "selectionMode": "time",
-      "outputSha256": "0afd71fbe8e8c7fb6488b8ac31a7dbc80ecb92b690e7dba43afc7dd27653c98d"
+      "outputSha256": "0afd71fbe8e8c7fb6488b8ac31a7dbc80ecb92b690e7dba43afc7dd27653c98d",
+      "impactSample": 12094,
+      "impactMs": 274.240363
     },
     {
       "id": "palette:ghost-scream",
@@ -885,7 +991,9 @@
       "startSample": 0,
       "endSample": 29106,
       "selectionMode": "coefficient",
-      "outputSha256": "ec4b3e5c17ce7cecbd9dcb00a18d0e10887682aa2ef04aa5d7e56fd13a35f5ab"
+      "outputSha256": "ec4b3e5c17ce7cecbd9dcb00a18d0e10887682aa2ef04aa5d7e56fd13a35f5ab",
+      "impactSample": 1580,
+      "impactMs": 35.827664
     },
     {
       "id": "palette:spectral-magic",
@@ -898,11 +1006,13 @@
       "selectionMode": "time",
       "outputSha256": "bd295652fa5f9b56dd56184690ff128178f35b0eb1cf28812ec6fe26b4e33766",
       "output": {
-        "impactMs": 24.9,
+        "impactMs": 15.53288,
         "durationSamples": 18278,
         "peakDbFS": -15.3325,
         "strongest50msRmsDbFS": -26.7631
-      }
+      },
+      "impactSample": 685,
+      "impactMs": 15.53288
     },
     {
       "id": "palette:zombie-death-grunt",
@@ -915,11 +1025,13 @@
       "selectionMode": "time",
       "outputSha256": "66c720439e5dbf5d50d945f9ab7cce2207b16c18d20f19e0a8b4a82c58a0b15d",
       "output": {
-        "impactMs": 74.8,
+        "impactMs": 89.024943,
         "durationSamples": 14283,
         "peakDbFS": -17.9079,
         "strongest50msRmsDbFS": -26.7405
-      }
+      },
+      "impactSample": 3926,
+      "impactMs": 89.024943
     },
     {
       "id": "palette:monstrous-bite-grunt",
@@ -932,11 +1044,13 @@
       "selectionMode": "time",
       "outputSha256": "d69804a21214d1a82dff016cab9c9df6b52e2a8f02b24af81524eb42ddb2282c",
       "output": {
-        "impactMs": 69.8,
+        "impactMs": 72.176871,
         "durationSamples": 18542,
         "peakDbFS": -14.1548,
         "strongest50msRmsDbFS": -26.7384
-      }
+      },
+      "impactSample": 3183,
+      "impactMs": 72.176871
     },
     {
       "id": "palette:wooden-creak",
@@ -949,11 +1063,13 @@
       "selectionMode": "time",
       "outputSha256": "e9ea7863581c80343c2434be4f4d38c339d9b7d2867cb9014f5a03f571f6d1ca",
       "output": {
-        "impactMs": 284.4,
+        "impactMs": 287.414966,
         "durationSamples": 22839,
         "peakDbFS": -17.9605,
         "strongest50msRmsDbFS": -26.7625
-      }
+      },
+      "impactSample": 12675,
+      "impactMs": 287.414966
     },
     {
       "id": "palette:wooden-plank-impact",
@@ -964,7 +1080,9 @@
       "startSample": 0,
       "endSample": 8820,
       "selectionMode": "coefficient",
-      "outputSha256": "7c0211fad6a2ce38ea582889066c836e3f2f9ee79bda41333e13f149299cb7b1"
+      "outputSha256": "7c0211fad6a2ce38ea582889066c836e3f2f9ee79bda41333e13f149299cb7b1",
+      "impactSample": 130,
+      "impactMs": 2.947846
     },
     {
       "id": "palette:solid-wood-impact",
@@ -977,11 +1095,13 @@
       "selectionMode": "time",
       "outputSha256": "d37e9c3c2bf3c7676d779d1f58d7f6b5c6682f40e64258d4627eb72facca0b1b",
       "output": {
-        "impactMs": 0.0,
+        "impactMs": 1.70068,
         "durationSamples": 8193,
         "peakDbFS": -13.2313,
         "strongest50msRmsDbFS": -26.7384
-      }
+      },
+      "impactSample": 75,
+      "impactMs": 1.70068
     },
     {
       "id": "palette:stone-scatter-attack",
@@ -994,11 +1114,13 @@
       "selectionMode": "time",
       "outputSha256": "382e088673fd27f318a128808951186fd2ca0daf025488996ed4d60c041c7ec9",
       "output": {
-        "impactMs": 34.9,
+        "impactMs": 35.510204,
         "durationSamples": 14069,
         "peakDbFS": -8.2506,
         "strongest50msRmsDbFS": -27.3649
-      }
+      },
+      "impactSample": 1566,
+      "impactMs": 35.510204
     },
     {
       "id": "palette:ragged-breath",
@@ -1011,11 +1133,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "2639cfe0235113ffe532299a6284c52cc862fa21a5fcacea96e15f5af5d4133f",
       "output": {
-        "impactMs": 34.9,
+        "impactMs": 36.077098,
         "durationSamples": 20986,
         "peakDbFS": -14.7045,
         "strongest50msRmsDbFS": -26.748
-      }
+      },
+      "impactSample": 1591,
+      "impactMs": 36.077098
     },
     {
       "id": "palette:burp",
@@ -1028,11 +1152,13 @@
       "selectionMode": "time",
       "outputSha256": "c66c26173b6aeb662fc3fa3824b1dd61e43146fb2709133c3420fb6b9d12e448",
       "output": {
-        "impactMs": 309.3,
+        "impactMs": 304.829932,
         "durationSamples": 30294,
         "peakDbFS": -19.7136,
         "strongest50msRmsDbFS": -26.7409
-      }
+      },
+      "impactSample": 13443,
+      "impactMs": 304.829932
     },
     {
       "id": "palette:stone-scatter-terrain",
@@ -1045,11 +1171,13 @@
       "selectionMode": "time",
       "outputSha256": "5187133c0ceee80c6348fcfbd25fe176229fb0a3fd50b214c98c8032fd0f80dd",
       "output": {
-        "impactMs": 39.9,
+        "impactMs": 43.492063,
         "durationSamples": 14303,
         "peakDbFS": -10.7003,
         "strongest50msRmsDbFS": -29.8475
-      }
+      },
+      "impactSample": 1918,
+      "impactMs": 43.492063
     },
     {
       "id": "palette:soft-grass-footstep",
@@ -1060,7 +1188,9 @@
       "startSample": 0,
       "endSample": 6249,
       "selectionMode": "coefficient",
-      "outputSha256": "284c9d911c62c1f6306bfd4f74661948821b671c5a4aa2743f73377eb2605d90"
+      "outputSha256": "284c9d911c62c1f6306bfd4f74661948821b671c5a4aa2743f73377eb2605d90",
+      "impactSample": 77,
+      "impactMs": 1.746032
     },
     {
       "id": "palette:enchanted-forest-rustle",
@@ -1071,7 +1201,9 @@
       "startSample": 0,
       "endSample": 19413,
       "selectionMode": "coefficient",
-      "outputSha256": "a6cb38d39a0397bc4aaf42366706281f51282bcdaba4c40de81622002db13199"
+      "outputSha256": "a6cb38d39a0397bc4aaf42366706281f51282bcdaba4c40de81622002db13199",
+      "impactSample": 12096,
+      "impactMs": 274.285714
     },
     {
       "id": "palette:hill-wind",
@@ -1082,7 +1214,9 @@
       "startSample": 0,
       "endSample": 17773,
       "selectionMode": "coefficient",
-      "outputSha256": "51df43008b96b7067cecbb7e34c060aca6f21352710a06fcb2d385191ba22f5d"
+      "outputSha256": "51df43008b96b7067cecbb7e34c060aca6f21352710a06fcb2d385191ba22f5d",
+      "impactSample": 2357,
+      "impactMs": 53.446712
     },
     {
       "id": "palette:water-ripple",
@@ -1093,7 +1227,9 @@
       "startSample": 0,
       "endSample": 9111,
       "selectionMode": "coefficient",
-      "outputSha256": "b7a0858495a4d2d9be08554e14b29b78184aee668537e3f3e492e3a6111a265b"
+      "outputSha256": "b7a0858495a4d2d9be08554e14b29b78184aee668537e3f3e492e3a6111a265b",
+      "impactSample": 528,
+      "impactMs": 11.972789
     },
     {
       "id": "palette:village-contact",
@@ -1106,11 +1242,13 @@
       "selectionMode": "time",
       "outputSha256": "ed726379b5fc2faf21db3369cfa2bb7eb484102344645debe7991234b534851b",
       "output": {
-        "impactMs": 5.0,
+        "impactMs": 6.575964,
         "durationSamples": 10990,
         "peakDbFS": -26.5689,
         "strongest50msRmsDbFS": -34.9489
-      }
+      },
+      "impactSample": 290,
+      "impactMs": 6.575964
     },
     {
       "id": "palette:light-metal-contact",
@@ -1121,7 +1259,9 @@
       "startSample": 0,
       "endSample": 10430,
       "selectionMode": "coefficient",
-      "outputSha256": "a2d89aeed40516276a8b779525eb40cf242d932761b8bb65c761ce8cdda46602"
+      "outputSha256": "a2d89aeed40516276a8b779525eb40cf242d932761b8bb65c761ce8cdda46602",
+      "impactSample": 718,
+      "impactMs": 16.281179
     },
     {
       "id": "palette:wooden-fort-contact",
@@ -1132,7 +1272,9 @@
       "startSample": 0,
       "endSample": 6249,
       "selectionMode": "coefficient",
-      "outputSha256": "3ba58e1b319a46268095b524e806de39dc508c34c4274a2a068677c2920bd448"
+      "outputSha256": "3ba58e1b319a46268095b524e806de39dc508c34c4274a2a068677c2920bd448",
+      "impactSample": 696,
+      "impactMs": 15.782313
     },
     {
       "id": "palette:sacred-grove-magic",
@@ -1143,7 +1285,9 @@
       "startSample": 0,
       "endSample": 13451,
       "selectionMode": "time",
-      "outputSha256": "d8b1ffdca45e97b11c6e740f4e6a165874bf3d8709f8a075de1d3fc1f51670cf"
+      "outputSha256": "d8b1ffdca45e97b11c6e740f4e6a165874bf3d8709f8a075de1d3fc1f51670cf",
+      "impactSample": 7824,
+      "impactMs": 177.414966
     },
     {
       "id": "palette:door-movement",
@@ -1156,11 +1300,13 @@
       "selectionMode": "time",
       "outputSha256": "a6f7f4fae0307ef1c1de8a9b9a6648f2d7905ff286d6bfd202be730908629c39",
       "output": {
-        "impactMs": 189.6,
+        "impactMs": 198.979592,
         "durationSamples": 15808,
         "peakDbFS": -19.3778,
         "strongest50msRmsDbFS": -29.799
-      }
+      },
+      "impactSample": 8775,
+      "impactMs": 198.979592
     },
     {
       "id": "palette:distant-mining",
@@ -1171,7 +1317,9 @@
       "startSample": 0,
       "endSample": 19845,
       "selectionMode": "coefficient",
-      "outputSha256": "34578f451860a19d1a7f968b1d91df65bf0d5cddccf163d38668c6ae6819f7d7"
+      "outputSha256": "34578f451860a19d1a7f968b1d91df65bf0d5cddccf163d38668c6ae6819f7d7",
+      "impactSample": 759,
+      "impactMs": 17.210884
     },
     {
       "id": "palette:quarry-strike",
@@ -1182,7 +1330,9 @@
       "startSample": 0,
       "endSample": 27809,
       "selectionMode": "coefficient",
-      "outputSha256": "39ac3ddf90e3b4a63167cd80680b7cf7a33dc0b6b7aa6825330bd9cc8890a0f9"
+      "outputSha256": "39ac3ddf90e3b4a63167cd80680b7cf7a33dc0b6b7aa6825330bd9cc8890a0f9",
+      "impactSample": 688,
+      "impactMs": 15.600907
     },
     {
       "id": "palette:quiet-fire-crackle",
@@ -1195,11 +1345,13 @@
       "selectionMode": "time",
       "outputSha256": "f53af74b534a06d6e33d83cde5cfc35e0b2bab4f514cdbca28b97dbe38b5690e",
       "output": {
-        "impactMs": 159.6,
+        "impactMs": 163.265306,
         "durationSamples": 18265,
         "peakDbFS": -21.5203,
         "strongest50msRmsDbFS": -41.628
-      }
+      },
+      "impactSample": 7200,
+      "impactMs": 163.265306
     },
     {
       "id": "palette:plain-ground-contact",
@@ -1212,11 +1364,13 @@
       "selectionMode": "time",
       "outputSha256": "2ca10ad3c282933e64578a4e3c105394f162019680a75a84e105d4356b68ec01",
       "output": {
-        "impactMs": 15.0,
+        "impactMs": 48.231293,
         "durationSamples": 9201,
         "peakDbFS": -27.7912,
         "strongest50msRmsDbFS": -37.4779
-      }
+      },
+      "impactSample": 2127,
+      "impactMs": 48.231293
     },
     {
       "id": "palette:courtyard-cue",
@@ -1229,11 +1383,13 @@
       "selectionMode": "time",
       "outputSha256": "85a83d5aae05178345771296cd58a754a42d153f60ff43080b29d63c15946e3d",
       "output": {
-        "impactMs": 15.0,
+        "impactMs": 20.15873,
         "durationSamples": 7832,
         "peakDbFS": -21.8896,
         "strongest50msRmsDbFS": -32.7145
-      }
+      },
+      "impactSample": 889,
+      "impactMs": 20.15873
     },
     {
       "id": "palette:heavy-bell",
@@ -1244,7 +1400,9 @@
       "startSample": 0,
       "endSample": 50735,
       "selectionMode": "time",
-      "outputSha256": "bcd395a72000dac4796a451d7bcb9abfd6358b7a6e861d6fafad01fbaca7dbac"
+      "outputSha256": "bcd395a72000dac4796a451d7bcb9abfd6358b7a6e861d6fafad01fbaca7dbac",
+      "impactSample": 59,
+      "impactMs": 1.337868
     },
     {
       "id": "palette:wooden-rattle-terrain",
@@ -1257,11 +1415,13 @@
       "selectionMode": "time",
       "outputSha256": "c63ce86a6bccd97019e6ce1c3a315d71462a3572a73d6aabcb94a035db73bb46",
       "output": {
-        "impactMs": 84.8,
+        "impactMs": 85.260771,
         "durationSamples": 12658,
         "peakDbFS": -15.4215,
         "strongest50msRmsDbFS": -29.8474
-      }
+      },
+      "impactSample": 3760,
+      "impactMs": 85.260771
     },
     {
       "id": "palette:ritual-magic",
@@ -1272,7 +1432,9 @@
       "startSample": 0,
       "endSample": 19845,
       "selectionMode": "time",
-      "outputSha256": "9e4922173ae9619ef87bf4f678cd4fdc2d733872860cb99b8c52e56df98b67c5"
+      "outputSha256": "9e4922173ae9619ef87bf4f678cd4fdc2d733872860cb99b8c52e56df98b67c5",
+      "impactSample": 13371,
+      "impactMs": 303.197279
     },
     {
       "id": "palette:arcane-pulse-terrain",
@@ -1285,11 +1447,13 @@
       "selectionMode": "time",
       "outputSha256": "22c869e1394396726a4d6a2bc3f3edceb2865f84c4f2d2de096072add9d75059",
       "output": {
-        "impactMs": 59.9,
+        "impactMs": 47.23356,
         "durationSamples": 15822,
         "peakDbFS": -24.5751,
         "strongest50msRmsDbFS": -35.4404
-      }
+      },
+      "impactSample": 2083,
+      "impactMs": 47.23356
     },
     {
       "id": "palette:wooden-figurine-move",
@@ -1302,11 +1466,13 @@
       "selectionMode": "time",
       "outputSha256": "11fd52bb548b51106f169f090812af8b6180d96631b37818da865caf531c33f1",
       "output": {
-        "impactMs": 5.0,
+        "impactMs": 6.961451,
         "durationSamples": 8485,
         "peakDbFS": -8.2392,
         "strongest50msRmsDbFS": -26.2482
-      }
+      },
+      "impactSample": 307,
+      "impactMs": 6.961451
     },
     {
       "id": "legacy:attack-bow",
@@ -1319,11 +1485,13 @@
       "selectionMode": "time",
       "outputSha256": "fe7595370f28312f56a81f97b4cbf183f826b187ecfb6137c586b6150b620c9f",
       "output": {
-        "impactMs": 119.7,
+        "impactMs": 121.632653,
         "durationSamples": 17431,
         "peakDbFS": -5.0194,
         "strongest50msRmsDbFS": -13.1599
-      }
+      },
+      "impactSample": 5364,
+      "impactMs": 121.632653
     },
     {
       "id": "legacy:attack-melee",
@@ -1336,11 +1504,13 @@
       "selectionMode": "time",
       "outputSha256": "84929d6397edb7a73bd9bd0ab7f67a110ad6a0c5ce44530d24b206cab5b5eabc",
       "output": {
-        "impactMs": 24.9,
+        "impactMs": 29.024943,
         "durationSamples": 17214,
         "peakDbFS": -5.1549,
         "strongest50msRmsDbFS": -14.9031
-      }
+      },
+      "impactSample": 1280,
+      "impactMs": 29.024943
     },
     {
       "id": "legacy:bell",
@@ -1353,11 +1523,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "38da34d594436cc14b6a4a07123c2c32126408538af5923b33fa36a31406fa7b",
       "output": {
-        "impactMs": 24.9,
+        "impactMs": 61.814059,
         "durationSamples": 122492,
         "peakDbFS": -4.1424,
         "strongest50msRmsDbFS": -10.8837
-      }
+      },
+      "impactSample": 2726,
+      "impactMs": 61.814059
     },
     {
       "id": "legacy:defeat",
@@ -1370,11 +1542,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "e8955e9f554dba310935919d11c498b5afec152f6b3591c83a057a53f5e8cdce",
       "output": {
-        "impactMs": 274.4,
+        "impactMs": 258.61678,
         "durationSamples": 23763,
         "peakDbFS": -3.8245,
         "strongest50msRmsDbFS": -10.0023
-      }
+      },
+      "impactSample": 11405,
+      "impactMs": 258.61678
     },
     {
       "id": "legacy:recruit",
@@ -1385,7 +1559,9 @@
       "startSample": 0,
       "endSample": 13363,
       "selectionMode": "coefficient",
-      "outputSha256": "36f48648c111282a45a2aa3e7d9931050ad693a5e80baf238c85a25dd4fa4e03"
+      "outputSha256": "36f48648c111282a45a2aa3e7d9931050ad693a5e80baf238c85a25dd4fa4e03",
+      "impactSample": 3916,
+      "impactMs": 88.798186
     },
     {
       "id": "legacy:select",
@@ -1398,11 +1574,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "3a6cff557cea5e40b15d9bb0d03b6af71bf3f1b0d83f6aeca9401ca853c3a377",
       "output": {
-        "impactMs": 5.0,
+        "impactMs": 8.344671,
         "durationSamples": 3527,
         "peakDbFS": -6.8867,
         "strongest50msRmsDbFS": -22.9859
-      }
+      },
+      "impactSample": 368,
+      "impactMs": 8.344671
     },
     {
       "id": "legacy:terrain-forest",
@@ -1413,7 +1591,9 @@
       "startSample": 0,
       "endSample": 10276,
       "selectionMode": "coefficient",
-      "outputSha256": "812a499e66893229fdc40f59e97d12b0d736d77a5446aa4401ec639a531c56c2"
+      "outputSha256": "812a499e66893229fdc40f59e97d12b0d736d77a5446aa4401ec639a531c56c2",
+      "impactSample": 1237,
+      "impactMs": 28.049887
     },
     {
       "id": "legacy:terrain-hill",
@@ -1424,7 +1604,9 @@
       "startSample": 0,
       "endSample": 17773,
       "selectionMode": "coefficient",
-      "outputSha256": "bb0cfffbb8cce33ec666286f534a90a372c8767fe3a0bf2b7d9250f4cb630b19"
+      "outputSha256": "bb0cfffbb8cce33ec666286f534a90a372c8767fe3a0bf2b7d9250f4cb630b19",
+      "impactSample": 2357,
+      "impactMs": 53.446712
     },
     {
       "id": "legacy:terrain-keep",
@@ -1437,11 +1619,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "b253377c92bb034fc440f155fb603b62a897176e638460ff4cc7fce3d6bbde41",
       "output": {
-        "impactMs": 20.0,
+        "impactMs": 24.126984,
         "durationSamples": 7924,
         "peakDbFS": -10.668,
         "strongest50msRmsDbFS": -21.4786
-      }
+      },
+      "impactSample": 1064,
+      "impactMs": 24.126984
     },
     {
       "id": "legacy:terrain-plains",
@@ -1452,7 +1636,9 @@
       "startSample": 0,
       "endSample": 9394,
       "selectionMode": "coefficient",
-      "outputSha256": "82c2be963d1d21495070b468bc72b64b95fff40a8504bc961597610f73b1d0f4"
+      "outputSha256": "82c2be963d1d21495070b468bc72b64b95fff40a8504bc961597610f73b1d0f4",
+      "impactSample": 2320,
+      "impactMs": 52.60771
     },
     {
       "id": "legacy:terrain-village",
@@ -1463,7 +1649,9 @@
       "startSample": 0,
       "endSample": 11158,
       "selectionMode": "coefficient",
-      "outputSha256": "9ec693421e5f57001dbc6ae14299a4431bf001d01213b58edcc51f2f6991f934"
+      "outputSha256": "9ec693421e5f57001dbc6ae14299a4431bf001d01213b58edcc51f2f6991f934",
+      "impactSample": 458,
+      "impactMs": 10.385488
     },
     {
       "id": "legacy:terrain-water",
@@ -1476,11 +1664,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "f45e2b3c4692f037800b319d29afccd19c096791fe6641ff0302dc2a86996d47",
       "output": {
-        "impactMs": 10.0,
+        "impactMs": 11.972789,
         "durationSamples": 9017,
         "peakDbFS": -10.8722,
         "strongest50msRmsDbFS": -18.4671
-      }
+      },
+      "impactSample": 528,
+      "impactMs": 11.972789
     },
     {
       "id": "legacy:turn",
@@ -1493,11 +1683,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "a82c70906fb63b2a438f2e2360223b007a7d8fcc9a0f4f2916369f5ea79cceb2",
       "output": {
-        "impactMs": 189.6,
+        "impactMs": 221.746032,
         "durationSamples": 19803,
         "peakDbFS": -3.7837,
         "strongest50msRmsDbFS": -9.682
-      }
+      },
+      "impactSample": 9779,
+      "impactMs": 221.746032
     },
     {
       "id": "legacy:unit-archer",
@@ -1508,7 +1700,9 @@
       "startSample": 0,
       "endSample": 8071,
       "selectionMode": "coefficient",
-      "outputSha256": "a9f0d1957e9243db49b156d8313a15cf207d5d6f1255c87b33e883eb97779f22"
+      "outputSha256": "a9f0d1957e9243db49b156d8313a15cf207d5d6f1255c87b33e883eb97779f22",
+      "impactSample": 1396,
+      "impactMs": 31.655329
     },
     {
       "id": "legacy:unit-commander",
@@ -1519,7 +1713,9 @@
       "startSample": 0,
       "endSample": 9835,
       "selectionMode": "coefficient",
-      "outputSha256": "e1653bf71057d0d84de39cd0701e161890b9a2fac6da2c6a89b4c0d39ea3ff74"
+      "outputSha256": "e1653bf71057d0d84de39cd0701e161890b9a2fac6da2c6a89b4c0d39ea3ff74",
+      "impactSample": 1787,
+      "impactMs": 40.521542
     },
     {
       "id": "legacy:unit-scout",
@@ -1530,7 +1726,9 @@
       "startSample": 0,
       "endSample": 7189,
       "selectionMode": "coefficient",
-      "outputSha256": "78d9448cc019ad0d210c0b48415ad9daaab6a6bd5020d485855b61cea2b1aff6"
+      "outputSha256": "78d9448cc019ad0d210c0b48415ad9daaab6a6bd5020d485855b61cea2b1aff6",
+      "impactSample": 875,
+      "impactMs": 19.84127
     },
     {
       "id": "legacy:unit-soldier",
@@ -1543,11 +1741,13 @@
       "selectionMode": "coefficient",
       "outputSha256": "4dc608168f0aba4a2a1368fbafde8181653d6dcaaf873af9ec17e921b5776ed8",
       "output": {
-        "impactMs": 5.0,
+        "impactMs": 9.727891,
         "durationSamples": 3306,
         "peakDbFS": -17.8538,
         "strongest50msRmsDbFS": -29.2519
-      }
+      },
+      "impactSample": 429,
+      "impactMs": 9.727891
     },
     {
       "id": "legacy:victory",
@@ -1560,11 +1760,14 @@
       "selectionMode": "coefficient",
       "outputSha256": "63b124fb535a1f076fa21da4c244828ce5d129916aa8a30bfc4d69ff0944d98b",
       "output": {
-        "impactMs": 404.1,
+        "impactMs": 221.85941,
         "durationSamples": 28383,
         "peakDbFS": -3.793,
         "strongest50msRmsDbFS": -9.6036
-      }
+      },
+      "impactSample": 9784,
+      "impactMs": 221.85941
     }
-  ]
+  ],
+  "impactMethod": "Highest absolute-amplitude sample in decoded mono PCM at 44100 Hz; first occurrence on exact ties. No RMS window."
 }
