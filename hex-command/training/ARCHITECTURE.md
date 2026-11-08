@@ -332,9 +332,11 @@ Dataset content fingerprints and validation configurations must match. LightGBM
 uses indexed internal column names because human-readable feature names can
 repeat; exported native names and feature order remain unchanged.
 
-Training is limited to 64 trees, depth 6, and at most 1,200 seconds, with three CPU
-threads and early stopping after twelve iterations without improved validation
-choice accuracy. A supervising process enforces the time budget, including data
+Training defaults to 64 trees, with a maximum of 1,024, depth 6, and at most 1,200
+seconds, using three CPU threads. `--early-stopping-rounds` defaults to twelve
+iterations without improved validation choice accuracy. For a larger ensemble,
+use `--trees 512 --early-stopping-rounds 64` while retaining the same time budget.
+A supervising process enforces the time budget, including data
 loading and training. Evaluation follows the budget. Each improved iteration saves
 a versioned model pair before atomically publishing its checkpoint pointer, so a
 deadline can preserve the best completed checkpoint. Per-iteration JSONL records

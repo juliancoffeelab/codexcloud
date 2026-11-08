@@ -88,11 +88,12 @@ def train_worker(args):
             env.model.save_model(str(args.out/booster_file),num_iteration=best_iteration)
             save_json(args.out/'best-training.json',dict(run_id=args.run_id,best_iteration=best_iteration,
                 model_file=model_file,booster_file=booster_file,validation=metrics,parameters=params,tree_limit=args.trees,depth_limit=args.depth,
+                early_stopping_rounds=args.early_stopping_rounds,
                 dataset_source=str(args.dataset_dir.resolve()),fingerprints=fingerprints,
                 data_fingerprints=[train_manifest['fingerprints'],valid_manifest['fingerprints']],
                 lightgbm_version=lgb.__version__))
     checkpoint.order=20
-    callbacks=[checkpoint,lgb.early_stopping(12,first_metric_only=True,verbose=False)]
+    callbacks=[checkpoint,lgb.early_stopping(args.early_stopping_rounds,first_metric_only=True,verbose=False)]
     lgb.train(params,training,num_boost_round=args.trees,valid_sets=[validation],valid_names=['validation'],feval=evaluate,callbacks=callbacks)
     log.close()
     save_json(args.out/'training-complete.json',dict(run_id=args.run_id,seconds=time.monotonic()-started,
@@ -107,11 +108,12 @@ def main():
     p.add_argument('--seconds',type=float,default=1200)
     p.add_argument('--trees',type=int,default=64)
     p.add_argument('--depth',type=int,default=6)
+    p.add_argument('--early-stopping-rounds',type=int,default=12)
     p.add_argument('--worker',action='store_true',help=argparse.SUPPRESS)
     p.add_argument('--run-id',default='',help=argparse.SUPPRESS)
     args=p.parse_args()
-    if not np.isfinite(args.seconds) or not 0<args.seconds<=1200 or not 1<=args.trees<=64 or not 1<=args.depth<=6:
-        p.error('use <=1200 seconds, 1..64 trees and depth 1..6')
+    if not np.isfinite(args.seconds) or not 0<args.seconds<=1200 or not 1<=args.trees<=1024 or not 1<=args.depth<=6 or not 1<=args.early_stopping_rounds<=1024:
+        p.error('use <=1200 seconds, 1..1024 trees, depth 1..6 and early stopping rounds 1..1024')
     args.out.mkdir(parents=True,exist_ok=True)
     if args.worker:train_worker(args);return
     run_id=str(uuid.uuid4());started=time.monotonic();cutoff=False
