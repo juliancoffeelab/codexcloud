@@ -168,7 +168,7 @@ class TerrainFloors(unittest.TestCase):
             directory.mkdir()
             (directory / 'palette.json').write_text(json.dumps({'.': [0, 0, 0, 0],
                                                                 'T': [7, 40, 15, 255]}))
-            rows = ['GgT' + '.' * 61] + ['.' * 64] * 63
+            rows = ['.' * 64] * 32 + ['.' * 30 + 'GgT' + '.' * 31] + ['.' * 64] * 31
             for name in ['tile.txt', '18.txt']:
                 (directory / name).write_text('\n'.join(rows) + '\n')
         return root, path, floors
@@ -182,8 +182,10 @@ class TerrainFloors(unittest.TestCase):
         floors['palettes']['wood'] = {'G': [50, 70, 20, 255], 'g': [30, 50, 10, 255]}
         path.write_text(json.dumps(floors))
         after = art.rgba_pixels(matrix, floor='wood')[2]
-        self.assertEqual(list(after[:8]), floors['palettes']['wood']['G'] + floors['palettes']['wood']['g'])
-        self.assertEqual(after[8:], before[8:])  # Foliage and alpha stay unchanged.
+        offset = (32 * 64 + 30) * 4
+        self.assertEqual(list(after[offset:offset + 8]), floors['palettes']['wood']['G'] + floors['palettes']['wood']['g'])
+        self.assertEqual(after[:offset], before[:offset])
+        self.assertEqual(after[offset + 8:], before[offset + 8:])  # Foliage and alpha stay unchanged.
         self.assertEqual(matrix.read_bytes(), source)
         self.assertEqual(art.rgba_pixels(root / 'terrain/wood/18.txt', floor='wood')[2], after)
         self.assertEqual(art.rgba_pixels(root / 'terrain/shore/tile.txt', floor='shore')[2], shore)
@@ -216,13 +218,13 @@ class TerrainFloors(unittest.TestCase):
         (piece / 'tile.txt').write_text('T' + '.' * 63 + '\n' + ('.' * 64 + '\n') * 63)
         (piece / 'palette.json').write_text(json.dumps({'.': [0, 0, 0, 0], 'T': [7, 40, 15, 255]}))
         layout = root / 'terrain/wood/layouts.json'
-        layout.write_text(json.dumps([[{'prop': 'seed', 'x': 2, 'y': 0}]]))
+        layout.write_text(json.dumps([[{'prop': 'seed', 'x': 32, 'y': 32}]]))
         self.assertEqual(art.load_terrain_layouts()['wood'][0],
-                         [{'name': 'prop_wood_seed', 'x': 2, 'y': 0}])
+                         [{'name': 'prop_wood_seed', 'x': 32, 'y': 32}])
         self.assertEqual(art.read_palette(piece / 'tile.txt', floor='wood')['G'], floors['palettes']['wood']['G'])
-        for placement, error in [({'prop': 'missing', 'x': 2, 'y': 0}, 'unknown prop'),
-                                 ({'prop': '../seed', 'x': 2, 'y': 0}, 'invalid prop placement'),
-                                 ({'prop': 'seed', 'x': 3, 'y': 0}, 'outside the hex')]:
+        for placement, error in [({'prop': 'missing', 'x': 32, 'y': 32}, 'unknown prop'),
+                                 ({'prop': '../seed', 'x': 32, 'y': 32}, 'invalid prop placement'),
+                                 ({'prop': 'seed', 'x': 33, 'y': 32}, 'outside the hex')]:
             layout.write_text(json.dumps([[placement]]))
             with self.subTest(placement=placement), self.assertRaisesRegex(ValueError, error):
                 art.load_terrain_layouts()
@@ -233,14 +235,14 @@ class TerrainFloors(unittest.TestCase):
         piece.mkdir(parents=True)
         (piece / 'tile.txt').write_text('T' + '.' * 63 + '\n' + ('.' * 64 + '\n') * 63)
         direction = root / 'terrain/wood/ne-sw.txt'
-        direction.write_text('.G' + '.' * 62 + '\n' + ('.' * 64 + '\n') * 63)
-        variants = {'tile': [[{'prop': 'seed', 'x': 2, 'y': 0}]],
-                    'ne-sw': [[{'prop': 'seed', 'x': 1, 'y': 0}]]}
+        direction.write_text(('.' * 64 + '\n') * 32 + '.' * 31 + 'G' + '.' * 32 + '\n' + ('.' * 64 + '\n') * 31)
+        variants = {'tile': [[{'prop': 'seed', 'x': 32, 'y': 32}]],
+                    'ne-sw': [[{'prop': 'seed', 'x': 31, 'y': 32}]]}
         layout = root / 'terrain/wood/layouts.json'
         layout.write_text(json.dumps(variants))
         self.assertEqual(art.load_terrain_layouts()['wood_ne-sw'][0],
-                         [{'name': 'prop_wood_seed', 'x': 1, 'y': 0}])
-        variants['ne-sw'][0][0]['x'] = 2
+                         [{'name': 'prop_wood_seed', 'x': 31, 'y': 32}])
+        variants['ne-sw'][0][0]['x'] = 32
         layout.write_text(json.dumps(variants))
         with self.assertRaisesRegex(ValueError, 'outside the hex'):
             art.load_terrain_layouts()

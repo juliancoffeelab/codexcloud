@@ -16,6 +16,11 @@ import { hexPoints, tileCenter, battlefieldSpriteSize } from "../src/ui/geometry
 test("Adjacent hexes share both edge vertices without gaps on either row parity", () => {
   const vertices = (col: number, row: number) => {
     const center = tileCenter({ col, row });
+    // Both the lattice spacing and its origin must survive native bitmap baking.
+    for (const value of [center.x, center.y]) {
+      const native = (value * 64) / battlefieldSpriteSize;
+      assert.ok(Math.abs(native - Math.round(native)) < 1e-9);
+    }
     return hexPoints(center.x, center.y)
       .split(" ")
       .map((point) => point.split(",").map(Number));

@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import { BattlefieldVertexPipeline } from "./phaser-vertices";
 
 // Standard Phaser sprite attributes, including tint modes and its texture ID.
 // Keeping the full layout active also lets Phaser release every shader attribute.
@@ -157,81 +156,6 @@ export class BattlefieldFogCompositePipeline
         finish +
         `}`,
     });
-  }
-}
-
-/** Analytic world-space hex strokes, rendered as ordinary Phaser Images. */
-export class BattlefieldHexPipeline extends BattlefieldVertexPipeline {
-  private styles = new WeakMap<
-    Phaser.GameObjects.GameObject,
-    { width: number; dash0: number; dash1: number; values: readonly number[] }
-  >();
-  constructor(game: Phaser.Game) {
-    (game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).getExtension("OES_standard_derivatives");
-    super({
-      game,
-      vertShader: vertex.replace(
-        "void main(){",
-        "attribute vec3 inStyle;varying vec3 style;void main(){style=inStyle;",
-      ),
-      attributes: [
-        { name: "inPosition", size: 2, type: Phaser.Renderer.WebGL.FLOAT },
-        { name: "inTexCoord", size: 2, type: Phaser.Renderer.WebGL.FLOAT },
-        { name: "inTexId", size: 1, type: Phaser.Renderer.WebGL.FLOAT },
-        { name: "inTintEffect", size: 1, type: Phaser.Renderer.WebGL.FLOAT },
-        { name: "inTint", size: 4, type: Phaser.Renderer.WebGL.UNSIGNED_BYTE, normalized: true },
-        { name: "inStyle", size: 3, type: Phaser.Renderer.WebGL.FLOAT },
-      ],
-      fragShader:
-        `#extension GL_OES_standard_derivatives : enable\n` +
-        varyings.replace(
-          "uniform sampler2D uMainSampler;",
-          "uniform sampler2D uMainSampler[%count%];",
-        ) +
-        `
- varying vec3 style;
- #define uHalfWidth style.x
- #define uDash style.yz
- void main(){
-  vec2 point=(uv-.5)*vec2(84.0,90.0);
-  float distance=-10000.0,along=0.0,walk=0.0;
-  for(int i=0;i<6;i++){
-   float angle=(float(i)*60.0-30.0)*.017453292519943295;
-   float next=angle+1.0471975511965976;
-   vec2 a=vec2(cos(angle)*35.36270398809583,sin(angle)*35.0);
-   vec2 b=vec2(cos(next)*35.36270398809583,sin(next)*35.0);
-   vec2 edge=b-a;float length=length(edge);vec2 tangent=edge/length;
-   float d=dot(point-a,vec2(tangent.y,-tangent.x));
-   if(d>distance){distance=d;along=walk+dot(point-a,tangent);}
-   walk+=length;
-  }
-  float coverage=clamp(.5+(uHalfWidth-abs(distance))/max(fwidth(distance),.00001),0.0,1.0);
-  if(uDash.x>0.0){
-   float phase=mod(mod(along+walk,walk),uDash.x+uDash.y);
-   float fringe=max(fwidth(along),.00001);
-   coverage*=clamp(.5+phase/fringe,0.0,1.0)*clamp(.5+(uDash.x-phase)/fringe,0.0,1.0);
-  }
-  vec4 color=vec4(coverage);
- ` +
-        finish +
-        `}`,
-    });
-  }
-  onBind(object?: Phaser.GameObjects.GameObject) {
-    if (!object) return;
-    const data = (object as Phaser.GameObjects.Image).pipelineData as {
-      width: number;
-      dash?: readonly [number, number];
-    };
-    const dash0 = data.dash?.[0] ?? 0,
-      dash1 = data.dash?.[1] ?? 0,
-      old = this.styles.get(object);
-    if (old && old.width === data.width && old.dash0 === dash0 && old.dash1 === dash1) {
-      this.values = old.values;
-      return;
-    }
-    this.values = [data.width / 2, dash0, dash1];
-    this.styles.set(object, { width: data.width, dash0, dash1, values: this.values });
   }
 }
 
