@@ -325,6 +325,11 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub fn kind(&self, name: &str) -> usize {
         self.engine().kind(name)
     }
+    /// Authored terrain healing amount; ownership is observed separately.
+    #[inline]
+    pub fn terrain_healing(&self, tile: usize) -> i32 {
+        self.engine().terrain_role(tile).healing()
+    }
     #[inline]
     pub fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
         self.engine().role_is(tile, role)

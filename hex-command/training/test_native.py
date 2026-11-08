@@ -71,6 +71,22 @@ class NativeContract(unittest.TestCase):
         finally:
             env.close()
 
+    def test_masked_metrics_and_action_frequencies(self):
+        from hex_command_rl.train import metrics
+        width = len(native.FEATURE_NAMES)
+        features = np.zeros((3, width), dtype=np.float32)
+        features[0, 0] = features[2, 0] = 1
+        features[1, 1] = 1
+        data = (features, np.array([0, 2, 3]), np.array([1, 0]), 0)
+        model = Planner()
+        with torch.no_grad():
+            for parameter in model.parameters(): parameter.zero_()
+        result = metrics(model, data)
+        self.assertAlmostEqual(result['cross_entropy'], np.log(2)/2, places=6)
+        self.assertEqual(result['accuracy'], 0.5)
+        self.assertEqual(result['predicted_actions']['end_turn'], 2)
+        self.assertEqual(result['by_action']['move'], [0, 1])
+
     def test_collection_does_not_change_teacher_outcomes(self):
         before = native.evaluate([self.config], None)
         native.collect([self.config], 100)

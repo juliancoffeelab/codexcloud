@@ -11,9 +11,13 @@ def main():
     p.add_argument("model", type=Path)
     p.add_argument("--configs", type=Path, help="JSON array of native arena/campaign configs")
     p.add_argument("--seed", type=int, default=20002)
+    p.add_argument("--rounds", type=int, default=100)
     p.add_argument("--out", type=Path, default=Path("tmp/rl/evaluation.json"))
     args = p.parse_args()
-    configs = json.loads(args.configs.read_text()) if args.configs else arena([args.seed])
+    if not 1 <= args.rounds <= 1000: p.error("rounds must be in [1,1000]")
+    configs = json.loads(args.configs.read_text()) if args.configs else arena([args.seed], rounds=args.rounds, all_pairs=True)
+    for c in configs:
+        if 'campaign' not in c: c['maxRounds'] = args.rounds
     teacher = [json.loads(r) for r in native.evaluate(encode(configs), None)]
     learned = [json.loads(r) for r in native.evaluate(encode(configs), args.model.read_text())]
     report = dict(fingerprints=json.loads(native.fingerprints()), configs=configs,

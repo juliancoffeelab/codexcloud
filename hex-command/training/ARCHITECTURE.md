@@ -23,17 +23,19 @@ node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts \
 Training refuses budgets over 600 seconds. The budget covers data collection and
 optimization; final inference checks and evaluation run afterward. Checkpoints,
 exported weights, configurations, metrics and source fingerprints stay under
-ignored `tmp/rl/deathmatch/`. The best validation cross-entropy checkpoint is
+ignored `tmp/rl/deathmatch-v2/`. The best validation cross-entropy checkpoint is
 selected. A seed split separates complete training, validation and evaluation
 matches; positions from a match never span splits. Default workload: deathmatch (opposing leader elimination), four
-training seeds, one validation seed, one evaluation seed, all five arena maps,
-four directed faction pairings and both first seats. This is not a full balance
-panel. The teacher defaults to Balanced against Balanced.
+training seeds, one validation seed, all five arena maps,
+four directed faction pairings and both first seats for training/validation.
+Final evaluation defaults to three held-out seeds, all twelve directed non-mirror
+faction pairings, five maps and both first seats (360 games). The teacher defaults to Balanced against Balanced.
 
 ## Components
 
-- `rust/src/training.rs`: versioned 32-feature candidate schema, legal candidate
-  enumeration, teacher recording and small MLP inference. Weights require matching
+- `rust/src/training.rs`: teacher sessions and validated small MLP inference.
+- `rust/src/training/features.rs`: versioned 172-feature schema, mechanical unit
+  profiles, terrain/path encoding and legal candidates. Weights require matching
   schema/names, valid dimensions and finite values.
 - `rust/src/ai/planner/learned/`: native-only learned planner, selected through
   existing block composition when the `training` feature is enabled.
@@ -51,18 +53,39 @@ nonzero count. Candidates include end-turn, all reachable legal moves, immediate
 attacks with each weapon, and recruiter-approved promotions. No heuristic top-K
 shortlist restricts the learner. Moves and attacks are separate decisions.
 
-Feature names are exported as `hex_command_training.FEATURE_NAMES`. Features use
-relative quantities and fixed scales, without unit IDs or authored script
-predicates. Objective features summarize the nearest matching target and actor
-protection. They are deliberately an initial representation, not a complete
-encoding of escort duties, terrain, support abilities or strategic state.
+Feature names are exported as `hex_command_training.FEATURE_NAMES`. Schema 2
+has 172 inputs and rejects older checkpoints instead of silently misinterpreting
+weights. There are no unit, faction or terrain identity embeddings. Each candidate
+includes mechanical profiles for the actor, attack target and nearest enemy:
+max HP, cost, movement, level/experience, healing including equipment, thorns,
+armor modifiers including equipment, current action flags and strongest raw-damage
+weapon in each category. Selected attack weapon properties are encoded separately.
+Alternative weapons within a category are summarized rather than fully enumerated
+in the unit profile; attack candidates still enumerate every legal weapon.
+
+Destination and target terrain encode all six signed category/damage modifiers,
+entry cost, healing, keep status and ownership. Modifiers use the game's additive
+mechanics, not assumed percentage resistances. Path features use cached reverse
+route fields for matching active goals and enemy locations. Cost divided by base
+movement is an optimistic travel-turn estimate, not a turn simulation: it ignores
+occupancy, future blockers, per-turn wasted movement, and future combat. Separate
+reachability flags distinguish unreachable locations from zero-cost routes.
+Profiles and route references are prepared once per decision; the engine shares
+route fields by movement profile, goal set and terrain revision.
+
+Nearest-enemy observations provide raw properties, not a hand-written danger
+score. They are not a full roster or spatial encoder and can miss other dangerous
+units. Supplying live stats makes balance changes observable to the policy but
+does not guarantee successful generalization; substantial rebalances may require
+fresh imitation data or later RL training. Models remain compatible only with the
+same explicit feature schema.
 
 ## Step interface
 
 `BatchEnv.reset(config_json_strings)` and `step(candidate_indices)` return:
 
 ```text
-features: float32 [total_candidates, 32]
+features: float32 [total_candidates, 172]
 offsets: int64 [environment_count + 1]
 rewards: one float per environment
 terminated: one bool per environment
@@ -108,8 +131,8 @@ configuration is:
 Evaluate existing weights without retraining:
 
 ```sh
-.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch/planner.json
-.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch/planner.json \
+.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-v2/planner.json
+.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-v2/planner.json \
   --configs tmp/rl/campaign-configs.json --out tmp/rl/campaign-evaluation.json
 ```
 
@@ -123,3 +146,32 @@ and optional ruin-visit targets removed. Village income, recruitment and normal
 combat mechanics remain active. Existing native arena configurations that omit
 `objective` retain their original territory rules. The current experiment does
 not train campaign or escort behavior.
+
+## Logging and evaluation caps
+
+Training/validation matches retain 30 rounds. Final evaluation defaults to 100
+rounds (`--eval-rounds` in training, `--rounds` in standalone evaluation). Custom
+arena evaluation configs are also overridden with this explicit limit. Final
+seeds never overlap train, data-validation, or periodic-validation seeds.
+
+`metrics.jsonl` flushes one compact record per epoch, plus periodic evaluations.
+It records full validation metrics, a fixed training probe of at most 1,024
+positions, online optimization loss, action-specific accuracy, predicted action
+frequencies, optimization throughput, elapsed times, and peak process RSS. Dataset
+diagnostics sample at most 1,024 decisions once to measure identical-candidate
+features and teacher ambiguity. Ambiguity is not an accuracy ceiling: deterministic
+tie order may correlate with the teacher's choices. Timing separates optimizer
+work from diagnostics; train-probe and validation loss use the same checkpoint.
+
+Every 20 epochs, ten short validation matches (Humans across five maps and both
+first seats, separate seed) record wins/losses/caps and mean rounds. Their fixed
+baseline is cached once. Use `--eval-every 0` to disable. They are diagnostics,
+not final test results or the checkpoint selection metric. The best full-data
+validation cross-entropy still selects the saved checkpoint.
+
+Plot logs without retraining:
+
+```sh
+.venv/bin/pip install -e 'training[plots]'
+.venv/bin/python -m hex_command_rl.plot tmp/rl/deathmatch-v2/report.json
+```
