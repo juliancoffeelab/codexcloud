@@ -88,15 +88,19 @@ def main():
             last_resource=now
         if now-last_report>=1800:
             state=json.loads((root/'control.json').read_text());print(json.dumps(dict(event='monitor',phase=state['phase'],utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),resources=resources(root))),flush=True);last_report=now
+    def ensure_post_evaluator():
+        if not (root/'posttune/evaluation-complete.json').exists() and not live_pid('hex_command_rl.mixed_evaluate',root):
+            (root/'posttune/evaluation-active.json').unlink(missing_ok=True)
+            launch('hex_command_rl.mixed_evaluate','posttune-evaluation',['--phase','posttune','--interval','600'])
     while not (root/'posttune/complete.json').exists():
-        resource_tick()
+        resource_tick();ensure_post_evaluator()
         if not live_pid('hex_command_rl.mixed_imitation',root):
             if retries>=2:raise RuntimeError('post-tune failed repeatedly; inspect posttune.log')
             launch('hex_command_rl.mixed_imitation','posttune',['--seconds','5400','--resume',str(root/'posttune')]);retries+=1
             time.sleep(10)
         time.sleep(5)
     while not (root/'posttune/evaluation-complete.json').exists() or not (root/'sampler-ready.json').exists():
-        resource_tick();time.sleep(5)
+        resource_tick();ensure_post_evaluator();time.sleep(5)
     warm=resolve(root/'posttune','best.json')/'resume.pt';atomic_json(root/'control.json',dict(phase='rl',start=time.time(),warm_start=str(warm)))
     command=['--seconds','21600','--warm-start',str(warm)]
     if (root/'rl/latest.json').exists():command=['--seconds','21600','--resume',str(root/'rl')]
