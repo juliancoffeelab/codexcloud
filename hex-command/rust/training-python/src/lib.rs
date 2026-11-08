@@ -171,7 +171,7 @@ fn score<'py>(
     py: Python<'py>,
     model: String,
     features: PyReadonlyArray2<'py, f32>,
-) -> PyResult<Bound<'py, PyArray1<f32>>> {
+) -> PyResult<Bound<'py, PyArray1<f64>>> {
     let m = load_model(&model).map_err(err)?;
     let a = features.as_array();
     if a.ncols() != FEATURES {

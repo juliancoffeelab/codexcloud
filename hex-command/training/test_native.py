@@ -50,6 +50,40 @@ class NativeContract(unittest.TestCase):
         with torch.no_grad():expected=model(torch.from_numpy(x)).numpy()
         np.testing.assert_allclose(native.score(exported,x),expected,atol=2e-5,rtol=2e-5)
 
+    def test_tree_model_native_validation(self):
+        model=dict(schema=native.SCHEMA,feature_names=native.FEATURE_NAMES,
+                   trees=[dict(nodes=[dict(kind='split',feature=0,threshold=0.5,left=1,right=2,default_left=True),
+                                      dict(kind='leaf',value=0.25),dict(kind='leaf',value=-0.5)])])
+        x=np.zeros((2,len(native.FEATURE_NAMES)),dtype=np.float32);x[1,0]=1
+        np.testing.assert_array_equal(native.score(json.dumps(model),x),[0.25,-0.5])
+        x[0,0]=np.nan
+        np.testing.assert_array_equal(native.score(json.dumps(model),x),[0.25,-0.5])
+        # Keep double-precision thresholds/leaves, including values that round
+        # to the same float32 value. Otherwise valid rankings can change.
+        exact=json.loads(json.dumps(model));exact['trees'][0]['nodes'][0]['threshold']=1.-1e-9
+        exact['trees'][0]['nodes'][2]['value']=0.25+1e-9
+        self.assertGreater(native.score(json.dumps(exact),x)[1],0.25)
+        for field,value in [('left',0),('right',99),('feature',len(native.FEATURE_NAMES))]:
+            bad=json.loads(json.dumps(model));bad['trees'][0]['nodes'][0][field]=value
+            with self.assertRaises(ValueError):native.score(json.dumps(bad),x)
+
+    @unittest.skipUnless(__import__('importlib.util',fromlist=['find_spec']).find_spec('lightgbm'), 'optional LightGBM not installed')
+    def test_lightgbm_export_matches_native(self):
+        import lightgbm as lgb
+        from hex_command_rl.trees import export_model,grouped_metrics
+        x=np.zeros((12,len(native.FEATURE_NAMES)),dtype=np.float32)
+        x[:,0]=np.tile([0.,0.2,0.7,1.],3)
+        y=np.tile([0,0,0,1],3)
+        data=lgb.Dataset(x,label=y,group=[4,4,4],params=dict(feature_pre_filter=False))
+        booster=lgb.train(dict(objective='lambdarank',verbosity=-1,num_threads=1,max_depth=2,num_leaves=4,
+                              min_data_in_leaf=1,min_data_in_bin=1,feature_pre_filter=False),data,num_boost_round=4)
+        model=export_model(booster)
+        self.assertTrue(any(n['kind']=='split' for t in model['trees'] for n in t['nodes']))
+        scores=booster.predict(x,num_threads=1)
+        np.testing.assert_allclose(native.score(json.dumps(model),x),scores,atol=2e-5,rtol=2e-5)
+        self.assertEqual(grouped_metrics(scores,np.array([0,4,8,12]),np.array([3,3,3]))['accuracy'],1.)
+        self.assertEqual(grouped_metrics(np.zeros(4),np.array([0,4]),np.array([0]))['accuracy'],1.)
+
     def test_batch_reset_step_validation_and_close(self):
         env = native.BatchEnv()
         obs = env.reset([self.config, self.config])

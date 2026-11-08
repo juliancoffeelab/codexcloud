@@ -26,12 +26,104 @@ pub struct Layer {
 pub struct Model {
     pub schema: u32,
     pub feature_names: Vec<String>,
+    #[serde(default)]
     pub layers: Vec<Layer>,
+    #[serde(default)]
+    pub trees: Vec<Tree>,
+}
+#[derive(Clone, Deserialize, Serialize)]
+pub struct Tree {
+    pub nodes: Vec<TreeNode>,
+}
+#[derive(Clone, Deserialize, Serialize)]
+#[serde(tag = "kind", rename_all = "lowercase")]
+pub enum TreeNode {
+    Leaf {
+        value: f64,
+    },
+    Split {
+        feature: usize,
+        threshold: f64,
+        left: usize,
+        right: usize,
+        default_left: bool,
+    },
+}
+impl Tree {
+    fn validate(&self) -> Result<(), String> {
+        if self.nodes.is_empty() || self.nodes.len() > 8191 {
+            return Err("invalid tree size".into());
+        }
+        let mut depths = vec![0usize; self.nodes.len()];
+        depths[0] = 1;
+        for (i, node) in self.nodes.iter().enumerate() {
+            if depths[i] == 0 || depths[i] > 13 {
+                return Err("unreachable or overly deep tree node".into());
+            }
+            match node {
+                TreeNode::Leaf { value } => {
+                    if !value.is_finite() {
+                        return Err("non-finite leaf".into());
+                    }
+                }
+                TreeNode::Split {
+                    feature,
+                    threshold,
+                    left,
+                    right,
+                    ..
+                } => {
+                    if *feature >= FEATURES || !threshold.is_finite() || left == right {
+                        return Err("invalid tree split".into());
+                    }
+                    for &child in [left, right] {
+                        if child <= i || child >= self.nodes.len() || depths[child] != 0 {
+                            return Err("invalid tree topology".into());
+                        }
+                        depths[child] = depths[i] + 1;
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
+    fn score(&self, input: &[f32]) -> f64 {
+        let mut index = 0;
+        loop {
+            match &self.nodes[index] {
+                TreeNode::Leaf { value } => return *value,
+                TreeNode::Split {
+                    feature,
+                    threshold,
+                    left,
+                    right,
+                    default_left,
+                } => {
+                    let value = input[*feature];
+                    let goes_left = if value.is_nan() {
+                        *default_left
+                    } else {
+                        f64::from(value) <= *threshold
+                    };
+                    index = if goes_left { *left } else { *right };
+                }
+            }
+        }
+    }
 }
 impl Model {
     pub fn validate(&self) -> Result<(), String> {
         if self.schema != SCHEMA || self.feature_names != FEATURE_NAMES {
             return Err("model feature schema mismatch".into());
+        }
+        if !self.trees.is_empty() {
+            if !self.layers.is_empty() || self.trees.len() > 1024 {
+                return Err("ambiguous or oversized tree ensemble".into());
+            }
+            for tree in &self.trees {
+                tree.validate()?;
+            }
+            return Ok(());
         }
         if self.layers.is_empty() || self.layers.len() > 8 {
             return Err("invalid layer count".into());
@@ -56,7 +148,10 @@ impl Model {
         }
         Ok(())
     }
-    pub fn score(&self, input: &[f32]) -> f32 {
+    pub fn score(&self, input: &[f32]) -> f64 {
+        if !self.trees.is_empty() {
+            return self.trees.iter().map(|tree| tree.score(input)).sum();
+        }
         let mut x = input.to_vec();
         for (i, l) in self.layers.iter().enumerate() {
             x = l
@@ -73,7 +168,7 @@ impl Model {
                 })
                 .collect();
         }
-        x[0]
+        f64::from(x[0])
     }
 }
 pub type Controller = Box<dyn FnMut(&Choices) -> usize>;
@@ -159,7 +254,7 @@ pub(crate) fn select(choices: &Choices) -> usize {
             .as_ref()
             .expect("Learned planner requires a model or controller");
         // Match torch.argmax: retain the first candidate on equal logits.
-        let mut best = (0, f32::NEG_INFINITY);
+        let mut best = (0, f64::NEG_INFINITY);
         for (index, features) in choices.features.iter().enumerate() {
             let score = m.score(features);
             if score > best.1 {
@@ -182,6 +277,7 @@ mod tests {
         let model = Model {
             schema: SCHEMA,
             feature_names: FEATURE_NAMES.iter().map(|s| s.to_string()).collect(),
+            trees: vec![],
             layers: vec![Layer {
                 weights: vec![vec![0.; FEATURES]],
                 bias: vec![0.],

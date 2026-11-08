@@ -33,6 +33,7 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
     let result = run_arena(
         &rules,
         ArenaConfig {
+            objective: Default::default(),
             seed: 19,
             armies: Armies {
                 player: army.clone(),

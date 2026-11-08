@@ -33,7 +33,7 @@ faction pairings, five maps and both first seats per recruiter (1,080 games tota
 
 ## Components
 
-- `rust/src/training.rs`: teacher sessions and validated small MLP inference.
+- `rust/src/training.rs`: teacher sessions and validated dense/tree inference.
 - `rust/src/training/features.rs`: versioned 172-feature schema, mechanical unit
   profiles, terrain/path encoding and legal candidates. Weights require matching
   schema/names, valid dimensions and finite values.
@@ -309,3 +309,44 @@ identical across every candidate in one position: their common contribution
 cancels in softmax/argmax. Nonlinear interactions or explicit feature crosses are
 needed to use that global context conditionally. Per-candidate mechanical
 features, including combat forecasts, remain available to both model families.
+
+## Small boosted-tree ranker
+
+`trees.py` trains LightGBM LambdaMART on the same frozen candidate matrix. Each
+decision is one ranking group, with relevance 1 for the teacher's candidate and
+0 for its alternatives. The model sums tree leaf scores and chooses the highest
+scoring legal candidate, retaining the first on ties. This remains imitation;
+match rewards do not train the model.
+
+```sh
+.venv/bin/pip install -e 'training[trees]'
+.venv/bin/python -m hex_command_rl.trees \
+  --dataset-dir tmp/rl/deathmatch-classic-20m/data \
+  --source-report tmp/rl/deathmatch-classic-20m/report.json \
+  --seconds 1200 --trees 64 --depth 6 \
+  --out tmp/rl/deathmatch-classic-trees
+```
+
+The source report supplies the held-out evaluation panel and teacher outcomes.
+Dataset content fingerprints and validation configurations must match. LightGBM
+uses indexed internal column names because human-readable feature names can
+repeat; exported native names and feature order remain unchanged.
+
+Training is limited to 64 trees, depth 6, and at most 1,200 seconds, with three CPU
+threads and early stopping after twelve iterations without improved validation
+choice accuracy. A supervising process enforces the time budget, including data
+loading and training. Evaluation follows the budget. Each improved iteration saves
+a versioned model pair before atomically publishing its checkpoint pointer, so a
+deadline can preserve the best completed checkpoint. Per-iteration JSONL records
+elapsed time, validation choice accuracy and candidate-softmax cross-entropy.
+Cross-entropy is a diagnostic; LambdaMART does not optimize calibrated logits.
+
+Exported trees contain flat numeric split/leaf arrays. Native Rust validates
+feature indices, finite values, unique forward children, reachability, size and
+depth, and rejects models mixing dense layers with trees. Runtime inference has
+no LightGBM or Python dependency. Float32 observations are compared to float64
+thresholds and leaf values are summed in float64 to preserve LightGBM's ranking.
+The diagnostic `native.score` API returns float64; dense models still compute
+their original float32 forward pass. Export parity and grouped held-out choices
+are checked before evaluation. Reuse `benchmark.py --fixtures ...` to compare
+complete native planning phases on the same saved positions as other models.

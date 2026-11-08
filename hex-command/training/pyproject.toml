@@ -13,3 +13,5 @@ where = ["."]
 
 [project.optional-dependencies]
 plots = ["matplotlib>=3.8,<4"]
+
+trees = ["lightgbm>=4.6,<5"]
