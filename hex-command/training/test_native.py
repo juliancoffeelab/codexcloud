@@ -1,6 +1,7 @@
 """Small integration checks; run after maturin develop."""
 import json
 import unittest
+import tempfile
 import numpy as np
 import torch
 import hex_command_training as native
@@ -57,7 +58,7 @@ class NativeContract(unittest.TestCase):
 
     def test_random_candidates_remain_executable(self):
         env = native.BatchEnv()
-        configs = encode(arena([902]))[::10]
+        configs = encode(arena([902], rounds=8))[::20]
         obs = env.reset(configs)
         rng = np.random.default_rng(91)
         try:
@@ -70,6 +71,19 @@ class NativeContract(unittest.TestCase):
             self.assertTrue(all(t or u for t, u in zip(obs[3], obs[4])))
         finally:
             env.close()
+
+    def test_sharded_collection_matches_native_and_rejects_truncation(self):
+        from pathlib import Path
+        from hex_command_rl.data import collect_dataset, load_dataset
+        configs = [arena([903], recruiters=(r,))[0] for r in ('balanced','predictor')]
+        direct = native.collect(encode(configs), 100000)
+        with tempfile.TemporaryDirectory() as directory:
+            mapped = collect_dataset(configs, directory, batch_games=1)
+            self.assertIsInstance(mapped[0], np.memmap)
+            for a,b in zip(mapped[:3], direct[:3]): np.testing.assert_array_equal(a,b)
+            self.assertEqual(load_dataset(directory)[0].shape, direct[0].shape)
+            with self.assertRaises(RuntimeError):
+                collect_dataset(configs, Path(directory)/'limited', max_samples=1)
 
     def test_masked_metrics_and_action_frequencies(self):
         from hex_command_rl.train import metrics

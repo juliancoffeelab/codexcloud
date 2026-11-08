@@ -1,6 +1,7 @@
 """Bounded native behavioral cloning with sampled diagnostics and held-out matches."""
 import argparse
 import json
+import math
 from pathlib import Path
 import random
 import resource
@@ -10,7 +11,8 @@ import torch
 from torch.nn import functional as F
 import hex_command_training as native
 from .model import Planner
-from .workloads import arena, encode
+from .workloads import RECRUITERS, arena, encode, recruiter_pair
+from .data import collect_dataset
 
 
 def batches(data, indices, batch_size=64):
@@ -84,23 +86,31 @@ def evaluate(configs, model=None):
     return [json.loads(r) for r in native.evaluate(encode(configs), model)]
 
 
+def results_by_recruiter(configs,teacher,learned):
+    keys=sorted({recruiter_pair(c) for c in configs})
+    return {k:dict(baseline=results_summary([r for c,r in zip(configs,teacher) if recruiter_pair(c)==k]),
+                   learned=results_summary([r for c,r in zip(configs,learned) if recruiter_pair(c)==k])) for k in keys}
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--seconds', type=float, default=180)
     p.add_argument('--epochs', type=int, default=100)
-    p.add_argument('--train-seeds', type=int, default=4)
-    p.add_argument('--max-samples', type=int, default=30000)
+    p.add_argument('--train-seeds', type=int, default=16)
+    p.add_argument('--max-samples', type=int, help='Optional hard dataset limit; fails rather than truncates')
+    p.add_argument('--recruiters', nargs='+', choices=RECRUITERS, default=list(RECRUITERS))
     p.add_argument('--teacher', choices=['classic', 'balanced', 'rotated', 'situational', 'predictor'], default='balanced')
     p.add_argument('--train-configs', type=Path)
     p.add_argument('--validation-configs', type=Path)
     p.add_argument('--evaluation-configs', type=Path)
     p.add_argument('--eval-rounds', type=int, default=100)
     p.add_argument('--eval-seeds', type=int, default=3)
-    p.add_argument('--eval-every', type=int, default=20, help='Periodic validation interval; 0 disables')
-    p.add_argument('--out', type=Path, default=Path('tmp/rl/deathmatch-v2'))
+    p.add_argument('--eval-every', type=int, default=5, help='Periodic validation interval; 0 disables')
+    p.add_argument('--out', type=Path, default=Path('tmp/rl/deathmatch-mixed'))
     args = p.parse_args()
-    if not 0 < args.seconds <= 600 or min(args.train_seeds, args.epochs, args.eval_seeds, args.max_samples) < 1:
-        p.error('seconds must be in (0,600]; counts must be positive')
+    if not math.isfinite(args.seconds) or args.seconds<=0 or min(args.train_seeds,args.epochs,args.eval_seeds)<1 or (args.max_samples is not None and args.max_samples<1):
+        p.error('seconds must be finite and positive; counts must be positive')
+    if len(set(args.recruiters))!=len(args.recruiters): p.error('recruiters must be unique')
     if not 1 <= args.eval_rounds <= 1000 or args.eval_every < 0:
         p.error('eval-rounds must be in [1,1000]; eval-every cannot be negative')
     args.out.mkdir(parents=True, exist_ok=True)
@@ -108,24 +118,27 @@ def main():
     torch.manual_seed(42); np.random.seed(42); random.seed(42)
     fingerprints = json.loads(native.fingerprints())
     started = time.monotonic()
-    train_configs = arena(range(1, args.train_seeds+1), args.teacher)
-    valid_configs = arena([10001], args.teacher)
-    evaluation_configs = arena(range(20001, 20001+args.eval_seeds), args.teacher, rounds=args.eval_rounds, all_pairs=True)
+    train_configs = arena(range(1,args.train_seeds+1),args.teacher,recruiters=args.recruiters)
+    valid_configs = arena([10001],args.teacher,recruiters=args.recruiters)
+    evaluation_configs = arena(range(20001, 20001+args.eval_seeds), args.teacher, rounds=args.eval_rounds, all_pairs=True,recruiters=args.recruiters)
     if args.train_configs: train_configs = json.loads(args.train_configs.read_text())
     if args.validation_configs: valid_configs = json.loads(args.validation_configs.read_text())
     if args.evaluation_configs:
         evaluation_configs = json.loads(args.evaluation_configs.read_text())
         for c in evaluation_configs:
             if 'campaign' not in c: c['maxRounds'] = args.eval_rounds
-    periodic_configs = [c for c in arena([15001], args.teacher) if c['armies']['player'] == 'human'] if args.eval_every else []
+    periodic_configs = [c for c in arena([15001],args.teacher,recruiters=args.recruiters) if c['armies']['player'] == 'human'] if args.eval_every else []
     workloads = (train_configs, valid_configs, evaluation_configs, periodic_configs)
     seeds = [set(c['seed'] for c in configs) for configs in workloads]
     if any(seeds[i] & seeds[j] for i in range(4) for j in range(i)):
         p.error('training, validation, periodic and final evaluation must use disjoint seeds')
     if not all((train_configs, valid_configs, evaluation_configs)):
         p.error('train, validation and final workloads must be nonempty')
-    train = native.collect(encode(train_configs), args.max_samples)
-    valid = native.collect(encode(valid_configs), args.max_samples)
+    def collection_progress(row):
+        row['seconds']=round(time.monotonic()-started,2)
+        print(json.dumps(row),flush=True)
+    train=collect_dataset(train_configs,args.out/'data'/'train',args.max_samples,progress=collection_progress)
+    valid=collect_dataset(valid_configs,args.out/'data'/'validation',args.max_samples,progress=collection_progress)
     if not len(train[2]) or not len(valid[2]) or train[3] or valid[3]:
         raise RuntimeError(f'empty data or missing teacher actions: train={train[3]}, validation={valid[3]}')
     collection_seconds = time.monotonic()-started
@@ -185,22 +198,23 @@ def main():
     np.testing.assert_allclose(actual,expected,atol=2e-5,rtol=2e-5)
     evaluation_start=time.monotonic()
     teacher=evaluate(evaluation_configs);learned=evaluate(evaluation_configs,exported)
+    grouped=results_by_recruiter(evaluation_configs,teacher,learned)
     report=dict(schema=native.SCHEMA, feature_names=native.FEATURE_NAMES, fingerprints=fingerprints,
-                teacher=args.teacher, seed=42, train_configs=train_configs, validation_configs=valid_configs,
+                teacher=args.teacher, recruiters=args.recruiters, seed=42, train_configs=train_configs, validation_configs=valid_configs,
                 evaluation_configs=evaluation_configs, periodic_configs=periodic_configs,
                 initial_validation=initial, initial_train_probe=initial_train,
                 final_validation=metrics(model,valid), final_train_probe=metrics(model,train,train_probe),
                 diagnostics=diagnostics, train_probe_indices=train_probe.tolist(),
                 best_epoch=best_epoch, training_seconds=training_seconds, collection_seconds=collection_seconds,
                 final_evaluation_seconds=time.monotonic()-evaluation_start,
-                inference_max_absolute_error=error, teacher_results=teacher, learned_results=learned,
+                inference_max_absolute_error=error, teacher_results=teacher, learned_results=learned, results_by_recruiter=grouped,
                 history=history, periodic_history=periodic,
                 versions=dict(torch=torch.__version__,numpy=np.__version__))
     (args.out/'report.json').write_text(json.dumps(report,indent=2))
     print(json.dumps(dict(event='finished', training_seconds=round(training_seconds,2),
                           final_evaluation_seconds=report['final_evaluation_seconds'],
                           teacher=results_summary(teacher),learned=results_summary(learned),
-                          validation=report['final_validation'],parity_error=error)),flush=True)
+                          by_recruiter=grouped, validation=report['final_validation'],parity_error=error)),flush=True)
 
 
 if __name__ == '__main__': main()

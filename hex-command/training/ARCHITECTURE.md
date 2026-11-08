@@ -20,16 +20,16 @@ node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts \
 .venv/bin/python -m hex_command_rl.train --seconds 180
 ```
 
-Training refuses budgets over 600 seconds. The budget covers data collection and
+Training accepts a finite positive time budget. The budget covers data collection and
 optimization; final inference checks and evaluation run afterward. Checkpoints,
 exported weights, configurations, metrics and source fingerprints stay under
-ignored `tmp/rl/deathmatch-v2/`. The best validation cross-entropy checkpoint is
+ignored `tmp/rl/deathmatch-mixed/`. The best validation cross-entropy checkpoint is
 selected. A seed split separates complete training, validation and evaluation
-matches; positions from a match never span splits. Default workload: deathmatch (opposing leader elimination), four
+matches; positions from a match never span splits. Default workload: deathmatch (opposing leader elimination), sixteen
 training seeds, one validation seed, all five arena maps,
 four directed faction pairings and both first seats for training/validation.
 Final evaluation defaults to three held-out seeds, all twelve directed non-mirror
-faction pairings, five maps and both first seats (360 games). The teacher defaults to Balanced against Balanced.
+faction pairings, five maps and both first seats per recruiter (1,080 games total).
 
 ## Components
 
@@ -131,8 +131,8 @@ configuration is:
 Evaluate existing weights without retraining:
 
 ```sh
-.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-v2/planner.json
-.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-v2/planner.json \
+.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-mixed/planner.json
+.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-mixed/planner.json \
   --configs tmp/rl/campaign-configs.json --out tmp/rl/campaign-evaluation.json
 ```
 
@@ -163,8 +163,8 @@ features and teacher ambiguity. Ambiguity is not an accuracy ceiling: determinis
 tie order may correlate with the teacher's choices. Timing separates optimizer
 work from diagnostics; train-probe and validation loss use the same checkpoint.
 
-Every 20 epochs, ten short validation matches (Humans across five maps and both
-first seats, separate seed) record wins/losses/caps and mean rounds. Their fixed
+Every five epochs, thirty short validation matches (Humans across five maps, both
+first seats and all three recruiters, separate seed) record wins/losses/caps and mean rounds. Their fixed
 baseline is cached once. Use `--eval-every 0` to disable. They are diagnostics,
 not final test results or the checkpoint selection metric. The best full-data
 validation cross-entropy still selects the saved checkpoint.
@@ -173,5 +173,43 @@ Plot logs without retraining:
 
 ```sh
 .venv/bin/pip install -e 'training[plots]'
-.venv/bin/python -m hex_command_rl.plot tmp/rl/deathmatch-v2/report.json
+.venv/bin/python -m hex_command_rl.plot tmp/rl/deathmatch-mixed/report.json
 ```
+
+## Recruiter diversity and disk-backed datasets
+
+Recruitment is an independent workload axis. Defaults are Balanced, Situational
+and Predictor (`--recruiters balanced situational predictor`). Within each stratum,
+both sides use the selected recruiter. The teacher planner remains Queued and the
+campaigner remains Mission. The learned planner replaces only the player planner
+in evaluation. This diversifies army composition without treating different
+recruiters as different tactical planning algorithms. Results include a separate
+wins/losses/caps summary for each recruiter pair.
+
+The default training panel is 16 seeds × 3 recruiters × 5 maps × 4 directed faction
+pairings × 2 first seats = 1,920 matches. Validation uses a separate seed with all
+three recruiters (120 matches). Final evaluation uses all twelve directed
+non-mirror faction pairs, three other seeds and a 100-round cap: 360 matches per
+recruiter, 1,080 total. These matched-recruiter strata do not rank recruiters
+head-to-head against one another.
+
+`data.py` collects eight-game native shards into `data/train/` and
+`data/validation/`. Candidate features are written as a float32 binary buffer and
+mapped copy-on-write for training; offsets and labels use small NumPy arrays.
+Manifests retain schemas, fingerprints, full configurations and shard boundaries.
+All configurations are collected by default. Optional `--max-samples` is now a
+hard limit that raises an error rather than silently discarding later examples.
+The per-shard native guard also raises if reached. Tests compare sharded and
+single-call observations, offsets and labels exactly.
+
+For an approximately twenty-minute collection/training run, followed by final
+evaluation:
+
+```sh
+.venv/bin/python -m hex_command_rl.train --seconds 1200 --epochs 1000000 \
+  --out tmp/rl/deathmatch-mixed-20m
+```
+
+Training is still imitation over a fixed dataset, not RL. More data increases
+cost per epoch; the time budget limits repeated passes. Large mapped datasets
+also consume disk space and file-backed resident memory as batches touch pages.
