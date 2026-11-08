@@ -1524,6 +1524,7 @@ fn validate_simulation(
         identifier(&landscape.id, path)?;
         if (landscape.map.is_none()
             && !["open", "wooded", "crossings", "islands"].contains(&landscape.id.as_str()))
+            || (landscape.authored && landscape.map.is_none())
             || landscape.hold_turns == 0
         {
             return Err(ContentError::new(path, "invalid landscape or holdTurns"));
@@ -1550,23 +1551,38 @@ fn validate_simulation(
                     "arena territory is outside its authored map",
                 ));
             }
-            for side in [Side::Player, Side::Enemy] {
-                if map
-                    .tiles
-                    .iter()
-                    .filter(|t| {
-                        terrain.iter().any(|definition| {
-                            definition.id.as_str() == t.terrain
-                                && definition.role == TerrainRole::Keep
-                        }) && t.owner.as_deref() == Some(side.faction_id())
-                    })
-                    .count()
-                    != 1
-                {
-                    return Err(ContentError::new(
-                        path,
-                        "authored arenas require one owned keep per side",
-                    ));
+            if landscape.authored {
+                for side in [Side::Player, Side::Enemy] {
+                    if !map
+                        .units
+                        .iter()
+                        .any(|u| u.side == side && u.role == Some(Role::Leader))
+                    {
+                        return Err(ContentError::new(
+                            path,
+                            "authored combat requires leaders in both phases",
+                        ));
+                    }
+                }
+            } else {
+                for side in [Side::Player, Side::Enemy] {
+                    if map
+                        .tiles
+                        .iter()
+                        .filter(|t| {
+                            terrain.iter().any(|definition| {
+                                definition.id.as_str() == t.terrain
+                                    && definition.role == TerrainRole::Keep
+                            }) && t.owner.as_deref() == Some(side.faction_id())
+                        })
+                        .count()
+                        != 1
+                    {
+                        return Err(ContentError::new(
+                            path,
+                            "authored arenas require one owned keep per side",
+                        ));
+                    }
                 }
             }
         }

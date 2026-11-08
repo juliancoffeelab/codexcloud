@@ -77,6 +77,19 @@ pub(crate) fn create_arena<'catalog>(
     if landscape.map.is_none() {
         generate_arena_terrain(&mut state, &config.landscape, &mut random);
     }
+    if landscape.authored {
+        state.turn = config.first;
+        state.round = 1;
+        state.winner = None;
+        state.campaign = None;
+        state.log.clear();
+        state.last_combat = None;
+        let mut game = Game::from_state(rules, state);
+        game.set_combat_rng(config.seed);
+        // None preserves each authored faction's own recruitment pool and gold.
+        game.configure_arena(None, Some(config.first));
+        return Ok(game);
+    }
     state.units.clear();
     state.next_id = 1;
     let mut starting_cost = [0; 2];

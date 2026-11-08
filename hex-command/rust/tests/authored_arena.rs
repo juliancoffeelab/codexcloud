@@ -24,6 +24,7 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
             .hex(),
     ];
     rules.arena.landscapes.push(LandscapeConfig {
+        authored: false,
         id: "authored-fixture".into(),
         hold_turns: 4,
         map: Some(source.map_id.clone()),
@@ -112,4 +113,49 @@ fn invalid_authored_layout_and_capture_references_are_rejected() {
         assert_eq!(error.path, "simulation/arena.json");
         assert!(error.message.contains(message), "{}", error.message);
     }
+}
+
+#[test]
+fn authored_combat_preserves_starting_forces_and_faction_gold() {
+    let mut rules = Rules::load().unwrap();
+    let source = rules.maps[&("mirror".into(), 1)].clone();
+    let point = source.tiles[0].hex();
+    rules.arena.landscapes.push(LandscapeConfig {
+        id: "authored-forces".into(),
+        hold_turns: 4,
+        map: Some(source.map_id.clone()),
+        territory: Some(vec![point]),
+        authored: true,
+    });
+    let army = rules.rosters[0].id.clone();
+    let result = run_arena(
+        &rules,
+        ArenaConfig {
+            objective: Default::default(),
+            seed: 19,
+            armies: Armies {
+                player: army.clone(),
+                enemy: army,
+            },
+            landscape: "authored-forces".into(),
+            player: Policy::Balanced,
+            enemy: Policy::Classic,
+            player_blocks: None,
+            enemy_blocks: None,
+            first: Side::Enemy,
+            max_rounds: 1,
+            recruit_limit: Some(0),
+        },
+    )
+    .unwrap();
+    assert_eq!(
+        serde_json::to_value(&result.initial.units).unwrap(),
+        serde_json::to_value(&source.units).unwrap()
+    );
+    assert_eq!(
+        serde_json::to_value(&result.initial.gold).unwrap(),
+        serde_json::to_value(&source.gold).unwrap()
+    );
+    assert!(result.initial.campaign.is_none());
+    assert_eq!(result.initial.turn, Side::Enemy);
 }

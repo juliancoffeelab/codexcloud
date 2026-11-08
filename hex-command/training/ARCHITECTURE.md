@@ -412,3 +412,55 @@ best-checkpoint pointer. Final native parity, paired matches and timing follow
 training. Logs include full validation, a fixed training probe, action accuracy,
 prediction frequencies, throughput and peak RSS. CNN observations require fresh
 collection; the old 172-value rows alone cannot reconstruct full boards.
+
+## Representative combat corpus and bounded comparisons
+
+`representative.py` prepares an isolated catalog with Plains, current River
+Valley, Lantern Road's Villages, and Borrowed Tide's Sluice map. Villages and
+Sluice use `LandscapeConfig.authored`: starting units, roles, equipment, faction
+gold, relations and recruitment pools are retained instead of replacing them with
+paired arena rosters. They are standalone scenarios with no campaign state,
+events, scripted orders or escort requirements. Conditional tile presentation is
+removed. Villages drops the passive prisoner faction and enables normal human
+recruits for its existing patrol. The Tollkeeper and Edrin remain separate hostile
+leaders, both of whom must fall for player victory. These copies never alter the
+playable catalog. Plains and River Valley retain the normal paired-roster setup.
+
+```sh
+.venv/bin/python -m hex_command_rl.representative --collect \
+  --out tmp/rl/representative
+.venv/bin/python -m hex_command_rl.representative_run --root tmp/rl/representative
+```
+
+Training keeps the Queued teacher, Classic opponent and our Situational/Predictor
+recruiters. Each map has the same number of configured games. Authored rosters
+have more seeds instead of artificial faction substitutions. Training, validation
+and evaluation seed sets are disjoint. Collection shards remain homogeneous by
+map and record decision boundaries. Every model reuses the same numeric feature
+rows; the CNN additionally reads the shared board buffers. Raw datasets may be
+losslessly archived with a verified per-file hash index to reclaim scratch space;
+model exports, reports and curves remain independently usable.
+
+`map_weights` gives each map equal aggregate decision-loss weight, preserving all
+collected examples. Both micro and map-balanced validation metrics are logged.
+CNN/MLP selection uses map-balanced cross-entropy; LightGBM selects map-balanced
+choice accuracy and applies matching per-decision weights to candidate rows.
+These are imitation targets, not battle rewards or campaign scripting.
+
+The shared supervised runner accepts `--architecture cnn` or `mlp`, with default
+CNN head dropout 0.1 and the existing plain MLP unchanged. Explicit maximum budgets
+are now 1,800 seconds for CNN and 1,200 seconds for MLP; LightGBM retains its
+1,200-second maximum. Reusing a completed shared corpus means these budgets cover
+loading/checks/optimization/checkpointing rather than repeated collection.
+`--defer-evaluation` preserves exports/parity/metrics while leaving game comparisons
+until all fits finish. The orchestrator runs CNN and trees with two threads each,
+then starts the two-thread MLP when trees finish, preventing training jobs from
+oversubscribing a four-core box. Each supervisor independently enforces its
+requested cutoff. Cancellation terminates the complete process groups.
+
+The tree fit is a single boosted ensemble of at most 1,024 trees, depth six, with
+64-round early stopping in this experiment. Prefixes can subsequently be exported
+at different tree counts without retraining. Final evaluation uses 100-round
+leader-elimination matches on the same four scenarios, including separate Classic,
+Standard and Veteran opponent panels. Authored multi-faction encounters must be
+reported as such, not presented as a full synthetic faction matrix.

@@ -42,6 +42,9 @@ pub struct LandscapeConfig {
     pub map: Option<String>,
     /// Capture targets for this layout; omitted uses the generated-arena defaults.
     pub territory: Option<Vec<Hex>>,
+    /// Keep authored forces, faction economies and recruitment instead of arena rosters.
+    #[serde(default)]
+    pub authored: bool,
 }
 
 #[derive(Clone, Debug, Deserialize)]

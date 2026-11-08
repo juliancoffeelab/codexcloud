@@ -117,6 +117,18 @@ class NativeContract(unittest.TestCase):
             wrong=data.indices.copy();wrong[0,0]=10**9
             with self.assertRaises(ValueError):native.score_spatial(model.export(),data.dense[0],data.dense[1],np.asarray(data.boards),data.offsets,data.shapes,wrong)
 
+    def test_map_balance_preserves_equal_aggregate_weight(self):
+        from types import SimpleNamespace
+        from hex_command_rl.spatial_data import map_weights
+        from hex_command_rl.trees import grouped_metrics
+        data=SimpleNamespace(dense=(None,None,np.zeros(4,dtype=np.int64),0),manifest=dict(configs=[dict(landscape='a'),dict(landscape='b')],
+            shards=[dict(config_start=0,config_end=1,decision_start=0,decision_end=1),dict(config_start=1,config_end=2,decision_start=1,decision_end=4)]))
+        weights=map_weights(data,True)
+        self.assertAlmostEqual(float(weights[0]),float(weights[1:].sum()),places=6)
+        result=grouped_metrics(np.array([1.,0.,0.,1.,0.,1.,0.,1.]),np.array([0,2,4,6,8]),np.zeros(4,dtype=np.int64),weights)
+        self.assertEqual(result['accuracy'],.25)
+        self.assertAlmostEqual(result['map_balanced_accuracy'],.5,places=6)
+
     def test_spatial_step_buffers_and_terminal_slots(self):
         env=native.BatchEnv(spatial=True)
         try:

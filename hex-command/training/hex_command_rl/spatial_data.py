@@ -27,13 +27,14 @@ class SpatialData:
 def collect_spatial_dataset(configs,directory,progress=None,batch_games=8):
     directory=Path(directory);directory.mkdir(parents=True,exist_ok=True)
     (directory/'manifest.json').unlink(missing_ok=True)
-    offsets=[0];labels=[];board_offsets=[0];shapes=[];indices=[];rows=0;values=0
+    offsets=[0];labels=[];board_offsets=[0];shapes=[];indices=[];shards=[];rows=0;values=0
     with (directory/'features.bin').open('wb') as xf,(directory/'boards.bin').open('wb') as bf:
         for start in range(0,len(configs),batch_games):
             dense,spatial=native.collect_spatial(encode(configs[start:start+batch_games]),1_000_000,side='player')
             x,bounds,y,missing=dense;boards,bbounds,shape,ix=spatial
             if missing or len(y)>=1_000_000:raise RuntimeError('incomplete spatial teacher shard')
             assert len(shape)==len(y) and len(ix)==len(x)
+            shards.append(dict(config_start=start,config_end=min(start+batch_games,len(configs)),decision_start=len(labels),decision_end=len(labels)+len(y)))
             x.tofile(xf);boards.tofile(bf)
             offsets.extend((bounds[1:]+rows).tolist());labels.extend(y.tolist());board_offsets.extend((bbounds[1:]+values).tolist());shapes.extend(shape.tolist());indices.append(ix)
             rows+=len(x);values+=len(boards)
@@ -42,7 +43,7 @@ def collect_spatial_dataset(configs,directory,progress=None,batch_games=8):
     for name,array in [('offsets',offsets),('labels',labels),('board_offsets',board_offsets),('shapes',shapes)]:np.save(directory/f'{name}.npy',np.asarray(array,dtype=np.int64))
     np.save(directory/'indices.npy',np.concatenate(indices))
     manifest=dict(schema=native.SCHEMA,feature_names=native.FEATURE_NAMES,spatial_schema=native.SPATIAL_SCHEMA,channel_names=native.SPATIAL_CHANNEL_NAMES,
-        fingerprints=json.loads(native.fingerprints()),configs=configs,collection_side='player',decisions=len(labels),candidates=rows)
+        fingerprints=json.loads(native.fingerprints()),configs=configs,collection_side='player',decisions=len(labels),candidates=rows,shards=shards)
     (directory/'manifest.json').write_text(json.dumps(manifest,indent=2))
     return SpatialData(directory)
 
@@ -64,3 +65,19 @@ def batches(data,ids,batch_size=64):
             positions=data.indices[a:b]
             ix[row,:size]=np.where(positions<0,-1,(positions//bw)*w+positions%bw)
         yield torch.from_numpy(x),torch.from_numpy(board),torch.from_numpy(ix),torch.from_numpy(mask),torch.from_numpy(labels[selected].copy())
+
+
+def map_weights(data,enabled=False):
+    """Equal aggregate loss weight per map, retaining every collected decision."""
+    count=len(data.dense[2])
+    if not enabled:return np.ones(count,dtype=np.float32)
+    groups=np.full(count,-1,dtype=np.int64);names={};cursor=0
+    for shard in data.manifest.get('shards',[]):
+        names_in_shard={c.get('landscape',c.get('campaign')) for c in data.manifest['configs'][shard['config_start']:shard['config_end']]}
+        if len(names_in_shard)!=1 or shard['decision_start']!=cursor:raise ValueError('map balancing requires contiguous homogeneous-map collection shards')
+        name=next(iter(names_in_shard));group=names.setdefault(name,len(names))
+        cursor=shard['decision_end'];groups[shard['decision_start']:cursor]=group
+    if cursor!=count or np.any(groups<0):raise ValueError('incomplete map-balancing metadata')
+    sizes=np.bincount(groups)
+    if len(sizes)!=len(names) or np.any(sizes==0):raise ValueError('empty training map')
+    return (count/(len(sizes)*sizes[groups])).astype(np.float32)
