@@ -196,7 +196,7 @@ pub struct TacticalOrders {
     pub leader_intents: Vec<(UnitId, Option<bool>)>,
 }
 impl TacticalOrders {
-    pub(in crate::ai) fn promotion(&self, game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
+    pub(crate) fn promotion(&self, game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
         let (_, kind) = self.promotions.iter().find(|(id, _)| id.0 == unit.id)?;
         game.promotion_options(unit)
             .into_iter()

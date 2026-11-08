@@ -102,6 +102,12 @@ impl<'catalog> PlanningContext<'catalog> {
             combat_boundary: false,
         }
     }
+    #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+    pub(super) fn record_stop(&self, orders: &TacticalOrders) {
+        if self.draft.winner().is_none() {
+            crate::training::record(&self.draft, orders, &Command::EndTurn);
+        }
+    }
     pub(super) fn finish(
         self,
         mut recruitment: RecruitmentReport,
@@ -211,6 +217,18 @@ impl TacticalContext<'_, '_> {
         if !self.draft.permits(&command) {
             return Err(CommandError::IllegalIntent);
         }
+        #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+        crate::training::record(
+            self.draft,
+            &self
+                .workspace
+                .state
+                .orders
+                .as_ref()
+                .expect("orders")
+                .tactics,
+            &command,
+        );
         let before = self.draft.control_roster();
         self.draft.execute(command.clone())?;
         let control_changed = command != Command::EndTurn && before != self.draft.control_roster();

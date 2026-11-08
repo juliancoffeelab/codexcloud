@@ -69,6 +69,10 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
         let planning = self
             .planner
             .plan(&mut draft.tactical_context(workspace), &orders.tactics)?;
+        #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+        if workspace.finished() {
+            draft.record_stop(&orders.tactics);
+        }
         Ok(draft.finish(recruitment, planning))
     }
 }

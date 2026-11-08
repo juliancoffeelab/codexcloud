@@ -1,0 +1,80 @@
+"""Small integration checks; run after maturin develop."""
+import json
+import unittest
+import numpy as np
+import torch
+import hex_command_training as native
+from hex_command_rl.model import Planner
+from hex_command_rl.workloads import arena, encode
+
+
+class NativeContract(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        torch.set_num_threads(1)
+        cls.config = encode(arena([901]))[0]
+        cls.data = native.collect([cls.config], 1000)
+
+    def test_teacher_coverage_and_owned_buffers(self):
+        x, offsets, labels, missing = self.data
+        self.assertEqual(missing, 0)
+        self.assertGreater(len(labels), 0)
+        self.assertEqual(x.dtype, np.float32)
+        self.assertEqual(offsets[-1], len(x))
+        self.assertTrue(np.all(np.diff(offsets) > labels))
+        self.assertTrue(np.isfinite(x).all())
+        saved = x.copy()
+        native.collect([self.config], 10)
+        np.testing.assert_array_equal(x, saved)
+
+    def test_inference_parity_and_schema_rejection(self):
+        torch.manual_seed(7)
+        model = Planner()
+        x = self.data[0][:128].copy()
+        with torch.no_grad(): expected = model(torch.from_numpy(x)).numpy()
+        np.testing.assert_allclose(native.score(model.export(), x), expected, atol=2e-6, rtol=2e-5)
+        bad = json.loads(model.export()); bad["schema"] += 1
+        with self.assertRaises(ValueError): native.score(json.dumps(bad), x)
+        bad = json.loads(model.export()); bad["layers"][0]["weights"][0].pop()
+        with self.assertRaises(ValueError): native.score(json.dumps(bad), x)
+
+    def test_batch_reset_step_validation_and_close(self):
+        env = native.BatchEnv()
+        obs = env.reset([self.config, self.config])
+        snapshot = obs[0].copy()
+        self.assertEqual(len(obs[1]), 3)
+        with self.assertRaises(ValueError): env.step([10**9, 0])
+        # Invalid action validation must not partially advance either game.
+        np.testing.assert_array_equal(obs[0], snapshot)
+        for _ in range(40):
+            obs = env.step([0, 0])
+            if all(t or u for t, u in zip(obs[3], obs[4])): break
+        self.assertTrue(all(t or u for t, u in zip(obs[3], obs[4])))
+        self.assertEqual(obs[1][-1], 0)
+        env.reset([self.config])
+        env.close()  # cancellation while a native worker is awaiting an action
+        with self.assertRaises(ValueError): env.step([0])
+
+    def test_random_candidates_remain_executable(self):
+        env = native.BatchEnv()
+        configs = encode(arena([902]))[::10]
+        obs = env.reset(configs)
+        rng = np.random.default_rng(91)
+        try:
+            for _ in range(600):
+                lengths = np.diff(obs[1])
+                actions = [int(rng.integers(n)) if n else 0 for n in lengths]
+                obs = env.step(actions)
+                if all(t or u for t, u in zip(obs[3], obs[4])):
+                    break
+            self.assertTrue(all(t or u for t, u in zip(obs[3], obs[4])))
+        finally:
+            env.close()
+
+    def test_collection_does_not_change_teacher_outcomes(self):
+        before = native.evaluate([self.config], None)
+        native.collect([self.config], 100)
+        self.assertEqual(before, native.evaluate([self.config], None))
+
+
+if __name__ == "__main__": unittest.main()

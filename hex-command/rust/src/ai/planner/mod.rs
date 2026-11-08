@@ -7,6 +7,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum PlannerKind {
+    #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+    Learned,
     Classic,
     Full,
     Queued,
@@ -36,6 +38,8 @@ impl Planner for PlannerKind {
         orders: &crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, CommandError> {
         match self {
+            #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+            Self::Learned => learned::Learned.plan(context, orders),
             Self::Classic => classic::Classic.plan(context, orders),
             Self::Full => full::Full.plan(context, orders),
             Self::Queued => queued::Queued.plan(context, orders),
@@ -177,6 +181,8 @@ impl PlannerKind {
     pub const fn queued(self) -> bool {
         match self {
             Self::Queued => true,
+            #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+            Self::Learned => false,
             Self::Classic | Self::Full => false,
         }
     }
@@ -191,3 +197,6 @@ pub(in crate::ai) mod search;
 mod recruitment;
 
 mod proposal;
+
+#[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+pub(crate) mod learned;

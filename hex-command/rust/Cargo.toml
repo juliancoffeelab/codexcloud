@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members=["catalog","freeze-derive","battle"]
+members=["catalog","freeze-derive","battle","training-python"]
 resolver="2"
 
 [lib]
@@ -17,6 +17,7 @@ path = "src/main.rs"
 
 [features]
 default = []
+training = []
 runtime-catalog = ["hex-command-catalog/runtime-catalog", "hex-command-battle/runtime-catalog"]
 wasm = ["dep:tsify", "dep:wasm-bindgen", "hex-command-catalog/wasm", "hex-command-battle/wasm"]
 

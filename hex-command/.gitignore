@@ -45,3 +45,6 @@ Thumbs.db
 
 # Native sprites are built from pixel/art and copied into dist by Vite.
 /public/assets/sprites/
+
+# Editable Python package metadata
+/training/*.egg-info/
