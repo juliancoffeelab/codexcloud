@@ -6,10 +6,25 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
+/// Arena victory rule; existing reports retain their territory default.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum ArenaObjective {
+    #[default]
+    Territory,
+    Deathmatch,
+}
+impl ArenaObjective {
+    fn is_territory(&self) -> bool {
+        *self == Self::Territory
+    }
+}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 /// One race/policy pairing, initiative and seed on an arena landscape.
 pub struct ArenaConfig {
+    #[serde(default, skip_serializing_if = "ArenaObjective::is_territory")]
+    pub objective: ArenaObjective,
     pub seed: u32,
     pub armies: Armies,
     pub landscape: String,

@@ -64,7 +64,7 @@ def main():
     p.add_argument("--train-configs", type=Path, help="JSON array of native match configs")
     p.add_argument("--validation-configs", type=Path)
     p.add_argument("--evaluation-configs", type=Path)
-    p.add_argument("--out", type=Path, default=Path("tmp/rl/imitation"))
+    p.add_argument("--out", type=Path, default=Path("tmp/rl/deathmatch"))
     args = p.parse_args()
     if not 0 < args.seconds <= 600 or args.train_seeds < 1 or args.epochs < 1:
         p.error("seconds must be in (0,600]; train-seeds and epochs must be positive")

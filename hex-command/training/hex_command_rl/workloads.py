@@ -8,7 +8,7 @@ MAPS = ("open", "wooded", "crossings", "islands", "wood-edge")
 def arena(seeds, teacher="balanced", opponent="balanced"):
     return [dict(seed=seed, armies=dict(player=faction, enemy=FACTIONS[(i+1) % 4]),
                  landscape=landscape, player=teacher, enemy=opponent,
-                 first=first, maxRounds=30, recruitLimit=None)
+                 first=first, maxRounds=30, recruitLimit=None, objective="deathmatch")
             for seed in seeds for landscape in MAPS
             for i, faction in enumerate(FACTIONS) for first in ("player", "enemy")]
 

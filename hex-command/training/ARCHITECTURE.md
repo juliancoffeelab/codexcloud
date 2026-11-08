@@ -23,9 +23,9 @@ node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts \
 Training refuses budgets over 600 seconds. The budget covers data collection and
 optimization; final inference checks and evaluation run afterward. Checkpoints,
 exported weights, configurations, metrics and source fingerprints stay under
-ignored `tmp/rl/imitation/`. The best validation cross-entropy checkpoint is
+ignored `tmp/rl/deathmatch/`. The best validation cross-entropy checkpoint is
 selected. A seed split separates complete training, validation and evaluation
-matches; positions from a match never span splits. Default workload: four
+matches; positions from a match never span splits. Default workload: deathmatch (opposing leader elimination), four
 training seeds, one validation seed, one evaluation seed, all five arena maps,
 four directed faction pairings and both first seats. This is not a full balance
 panel. The teacher defaults to Balanced against Balanced.
@@ -108,7 +108,18 @@ configuration is:
 Evaluate existing weights without retraining:
 
 ```sh
-.venv/bin/python -m hex_command_rl.evaluate tmp/rl/imitation/planner.json
-.venv/bin/python -m hex_command_rl.evaluate tmp/rl/imitation/planner.json \
+.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch/planner.json
+.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch/planner.json \
   --configs tmp/rl/campaign-configs.json --out tmp/rl/campaign-evaluation.json
 ```
+
+## Deathmatch rules
+
+The default Python training and evaluation workloads explicitly select
+`"objective": "deathmatch"`. Only leader elimination wins; surviving to the round
+limit is truncation, never a territory or score victory. The campaigner receives
+leader-elimination and economic village-capture targets, with territory-holding
+and optional ruin-visit targets removed. Village income, recruitment and normal
+combat mechanics remain active. Existing native arena configurations that omit
+`objective` retain their original territory rules. The current experiment does
+not train campaign or escort behavior.

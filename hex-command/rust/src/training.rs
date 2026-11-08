@@ -416,6 +416,7 @@ mod tests {
         use crate::simulation::{ArenaConfig, Armies, run_arena};
         let rules = Rules::load().unwrap();
         let config = ArenaConfig {
+            objective: Default::default(),
             seed: 33,
             armies: Armies {
                 player: "human".into(),
