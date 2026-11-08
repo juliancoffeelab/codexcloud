@@ -2,7 +2,8 @@
 
 This experiment replaces only tactical planning. Existing recruiter and
 campaigner blocks remain selected by the match configuration. It implements
-behavioral cloning; reinforcement updates and WASM integration are future work.
+behavioral cloning and an opt-in native campaign PPO smoke trainer. WASM integration
+is future work.
 
 ## Setup
 
@@ -552,3 +553,35 @@ reducing incoming damage is disabled here to preserve the twenty-point bound.
 Candidate shortlisting and the existing arena fallback retain their original
 behavior. These are teacher scoring changes; existing learned weights require
 fresh demonstrations and fine-tuning to acquire the resulting preferences.
+
+
+## Native campaign PPO smoke runs
+
+`python -m hex_command_rl.ppo --seconds 300 --out tmp/rl/ppo-smoke` starts from
+`training/checkpoints/campaign-cnn-imitation-v1/weights.pt`. The default workload
+is authored Lantern Road versus Classic, with alternating Situational/Predictor
+recruiters, Mission campaigner, four native environments and 100 rounds per stage.
+`--opponent predictor` changes the fixed enemy. Training and validation seeds are
+separate; the committed baseline is never overwritten.
+
+The policy samples candidate actions at temperature 1.25 with dropout disabled.
+A value head consumes the pooled board embedding and mean legal-candidate features;
+its encoder input is detached, so critic regression does not change policy weights.
+The first two rollout updates train only the critic. Subsequent updates use clipped
+PPO, generalized advantage estimation, an entropy bonus, gradient clipping and a
+KL penalty against the frozen starting policy. Candidate padding uses finite
+masked logits to keep KL gradients finite. Rewards come only from completed
+campaign outcomes: +1 success, -1 defeat, 0 round cap. There are no teacher labels
+or heuristic shaping rewards in this trainer.
+
+The wall budget includes initial validation, rollouts, optimization and periodic
+validation; final checkpoint validation, export and plotting follow the budget.
+`metrics.jsonl` and `curves.png` record losses, policy entropy, KL, exploratory
+outcomes and greedy validation completions. `selection.json` chooses the most
+validation completions, breaking ties by fewer caps and then keeping the earlier
+checkpoint. The baseline remains eligible. Each saved directory contains the
+policy-only `weights.pt`, native `planner.json`, and `resume.pt` with policy,
+critic, optimizer and random-generator states. `--warm-start` starts from policy weights. `--resume <checkpoint>/resume.pt`
+restores policy, critic, optimizers and random generators while restarting native
+rollouts at fresh training seeds. Resume validates the engine, catalog, workload
+and frozen reference policy; it does not restore games in progress.
