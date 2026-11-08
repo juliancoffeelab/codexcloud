@@ -46,10 +46,13 @@ def worker(args):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--model',type=Path,required=True)
+    p.add_argument('--data-dir',type=Path,default=Path(os.environ.get('HEX_COMMAND_DATA_ROOT',ROOT/'rust/data')))
     p.add_argument('--source-report',type=Path)
     p.add_argument('--fixtures',type=Path)
     p.add_argument('--binary',type=Path,default=ROOT/'rust/target/simulation/hex-command-sim')
     p.add_argument('--repeat',type=int,default=10)
+    p.add_argument('--recruiters',nargs='+',choices=['balanced','situational','predictor'],default=['balanced','situational','predictor'])
+    p.add_argument('--planners',nargs='+',choices=['queued','full','learned'],default=['queued','full','learned'])
     p.add_argument('--out',type=Path,default=ROOT/'tmp/rl/native-timing')
     p.add_argument('--worker',action='store_true',help=argparse.SUPPRESS)
     p.add_argument('--planner',choices=['queued','full','learned'])
@@ -65,20 +68,22 @@ def main():
         helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
         source=json.loads(args.source_report.read_text());configs=[]
         from .workloads import FACTIONS
+        capture_seed=min(c['seed'] for c in source['evaluation_configs'])
+        capture_recruiter=source['evaluation_configs'][0]['playerBlocks']['recruiter']
         for c in source['evaluation_configs']:
-            if c['seed']!=20001 or c['playerBlocks']['recruiter']!='balanced':continue
+            if c['seed']!=capture_seed or c['playerBlocks']['recruiter']!=capture_recruiter:continue
             if c['armies']['enemy']!=FACTIONS[(FACTIONS.index(c['armies']['player'])+1)%len(FACTIONS)]:continue
             configs.append(c)
-        captured=helper.capture(args.binary.resolve(),ROOT/'rust/data',configs,[1,4,10,20],'player')
+        captured=helper.capture(args.binary.resolve(),args.data_dir.resolve(),configs,[1,4,10,20],'player')
         fixture=dict(positions=helper.positions(captured),capture=captured)
         args.fixtures=args.out/'positions.json';args.fixtures.write_text(json.dumps(fixture))
     rows=[]
-    for recruiter in ('balanced','situational','predictor'):
-        for planner in ('queued','full','learned'):
+    for recruiter in args.recruiters:
+        for planner in args.planners:
             command=[sys.executable,'-m','hex_command_rl.benchmark','--worker','--fixtures',str(args.fixtures.resolve()),'--model',str(args.model.resolve()),'--recruiter',recruiter,'--planner',planner,'--repeat',str(args.repeat)]
-            row=json.loads(subprocess.check_output(command,cwd=ROOT,env={**os.environ,'HEX_COMMAND_AI_PROFILE':'1'},text=True))
+            row=json.loads(subprocess.check_output(command,cwd=ROOT,env={**os.environ,'HEX_COMMAND_AI_PROFILE':'1','HEX_COMMAND_DATA_ROOT':str(args.data_dir.resolve())},text=True))
             rows.append(row);print(json.dumps({k:v for k,v in row.items() if k not in ('samples','fingerprints')}),flush=True)
-            report=dict(fixture_sha256=hashlib.sha256(args.fixtures.read_bytes()).hexdigest(), clock='thread_cpu', statistic='Median of repeated-panel mean CPU per own phase', scope='Native thread CPU inside tactical run_turn (recruiter/campaigner/planner); excludes state restore, encoding, and command execution outside planning forecasts',
+            report=dict(data_dir=str(args.data_dir.resolve()),model_path=str(args.model.resolve()),model_sha256=hashlib.sha256(args.model.read_bytes()).hexdigest(),fixture_sha256=hashlib.sha256(args.fixtures.read_bytes()).hexdigest(), clock='thread_cpu', statistic='Median of repeated-panel mean CPU per own phase', scope='Native thread CPU inside tactical run_turn (recruiter/campaigner/planner); excludes state restore, encoding, and command execution outside planning forecasts',
                         fixtures=str(args.fixtures.resolve()),rows=rows)
             (args.out/'timings.json').write_text(json.dumps(report,indent=2))
 

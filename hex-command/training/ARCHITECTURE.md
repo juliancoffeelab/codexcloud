@@ -406,8 +406,8 @@ cross-entropy. Available old dense arrays are compared exactly to the recollecte
 features, offsets and labels. Seed splits, configuration/side/content provenance
 and channel schema are checked. `--dataset-dir` can reuse a completed spatial
 corpus; `--dropout 0` supports an ablation on the same data. The supervising process
-enforces a maximum 20-minute budget covering child startup, collection, comparison
-and optimization. Versioned weights/model pairs are published through an atomic
+enforces the requested budget covering child startup, collection, comparison
+and optimization (up to 30 minutes for CNN and 20 for MLP). Versioned weights/model pairs are published through an atomic
 best-checkpoint pointer. Final native parity, paired matches and timing follow
 training. Logs include full validation, a fixed training probe, action accuracy,
 prediction frequencies, throughput and peak RSS. CNN observations require fresh
