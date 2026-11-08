@@ -240,6 +240,12 @@ def chunk(kind, data):
     return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", checksum)
 
 
+def inside_terrain_hex(x, y):
+    """Pixel-center mask for the shared 56×48 lattice in a native 64×64 frame."""
+    dx = abs(2 * x - 63)
+    return dx <= 56 and 4 * dx <= 7 * (64 - abs(2 * y - 63))
+
+
 def read_matrix(matrix):
     matrix = matrix.resolve()
     rows = matrix.read_text().splitlines()
@@ -252,6 +258,12 @@ def read_matrix(matrix):
             raise ValueError(f'{matrix}: invalid padded terrain canvas')
     else:
         require_canvas(rows, matrix)
+        if matrix.parent.parent == ART / 'terrain':
+            outside = [(x, y) for y, row in enumerate(rows) for x, symbol in enumerate(row)
+                       if symbol != '.' and not inside_terrain_hex(x, y)]
+            if outside:
+                raise ValueError(f'{matrix}: {len(outside)} pixels outside the native hex; '
+                                 'only approved padded terrain may overhang')
     return rows
 
 

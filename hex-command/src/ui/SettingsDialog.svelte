@@ -194,7 +194,6 @@
     </section>
     <section>
       <h3 class="group-label">Advanced</h3>
-
       <label class="setting-row sound-row">
         <span>Show commander return arrow</span>
         <input

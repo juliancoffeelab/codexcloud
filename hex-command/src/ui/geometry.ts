@@ -18,10 +18,11 @@ export function hexPoints(x: number, y: number) {
     return `${x + (hexColumnSpacing / Math.sqrt(3)) * Math.cos(angle)},${y + (battlefieldSpriteSize / 2) * Math.sin(angle)}`;
   }).join(" ");
 }
+// Keep the origin on native pixel (39, 38), not only the spacing between tiles.
 export function tileCenter(tile: Coordinates) {
   return {
-    x: 43 + hexColumnSpacing * (tile.col + (tile.row % 2) / 2),
-    y: 42 + hexRowSpacing * tile.row,
+    x: ((39 + 56 * (tile.col + (tile.row % 2) / 2)) * battlefieldSpriteSize) / 64,
+    y: ((38 + 48 * tile.row) * battlefieldSpriteSize) / 64,
   };
 }
 export const previewColors: Record<TerrainType, string> = {

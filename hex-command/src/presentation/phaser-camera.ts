@@ -167,16 +167,24 @@ export function installBattlefieldInput(
     return Math.max(-bounds.top, contentHeight - bounds.bottom);
   };
   let projection = "";
-  const applyScroll = (clamp = false) => {
+  const applyScroll = (clamp?: "pan" | "fit") => {
     // Clipping changes visibility only. Clamp on navigation, not on panel layout.
     if (clamp) {
       const bounds = visibleBounds();
+      // Viewport growth can leave the preserved pose outside its new limits.
+      // Panning may return inward, but must not snap that pose into bounds.
+      const currentLeft = clamp === "pan" ? (camera.scrollX * camera.zoomX) / pixelX : -bounds.left;
+      const currentTop = clamp === "pan" ? (camera.scrollY * camera.zoomY) / pixelY : -bounds.top;
       left = Phaser.Math.Clamp(
         left,
-        -bounds.left,
-        Math.max(-bounds.left, contentWidth - bounds.right),
+        Math.min(-bounds.left, currentLeft),
+        Math.max(-bounds.left, contentWidth - bounds.right, currentLeft),
       );
-      top = Phaser.Math.Clamp(top, -bounds.top, verticalLimit());
+      top = Phaser.Math.Clamp(
+        top,
+        Math.min(-bounds.top, currentTop),
+        Math.max(verticalLimit(), currentTop),
+      );
     }
     const x = (left * pixelX) / camera.zoomX,
       y = (top * pixelY) / camera.zoomY;
@@ -187,9 +195,9 @@ export function installBattlefieldInput(
     camera.preRender();
     invalidate();
   };
-  const moveVertical = (next: number) => {
+  const moveVertical = (next: number, clamp: "pan" | "fit" = "fit") => {
     top = next;
-    applyScroll(true);
+    applyScroll(clamp);
   };
   const layout = () => {
     visibleDirty = true;
@@ -281,7 +289,7 @@ export function installBattlefieldInput(
   const pan = (dx: number, dy: number) => {
     left += dx;
     top += dy;
-    applyScroll(true);
+    applyScroll("pan");
   };
   const zoomAt = (next: number, x: number, y: number) => {
     pendingReveal = undefined;
@@ -391,7 +399,7 @@ export function installBattlefieldInput(
     canvas.style.cursor = "grabbing";
     left = drag.left - dx;
     top = drag.top - dy;
-    applyScroll(true);
+    applyScroll("pan");
   };
   const up = (pointer: Phaser.Input.Pointer) => {
     if (traceConfiguration())
@@ -457,7 +465,7 @@ export function installBattlefieldInput(
               const progress = t.getValue() ?? 0;
               left = fromLeft + ((vx * duration) / 2) * progress;
               top = fromTop + ((vy * duration) / 2) * progress;
-              applyScroll(true);
+              applyScroll("pan");
             },
             onComplete: () => {
               record("inertia complete");
@@ -612,6 +620,7 @@ export function installBattlefieldInput(
         visibleTop +
           (Math.min(0, y1 - visibleTop - clip.top - 12) ||
             Math.max(0, y2 - visibleTop - clip.bottom + 12)),
+        "pan",
       );
     }
     traceInstant("Battlefield camera reveal", { ids, center, left, top });

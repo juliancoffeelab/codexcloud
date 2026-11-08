@@ -1,3 +1,4 @@
+import { BattlefieldHexOutline, idleHexLineWidth } from "./phaser-hex-outline";
 import { claimAction, type ActionToken } from "../controller/action-presentation";
 import { cellKey } from "../game/hex";
 import Phaser from "phaser";
@@ -25,7 +26,6 @@ import { battlefieldSpriteSize, hexPoints, mapDimensions } from "../ui/geometry"
 import { battlefieldScene, type BattlefieldUnit } from "./battlefield-scene";
 import {
   BattlefieldHaloPipeline,
-  BattlefieldHexPipeline,
   BattlefieldFogMaskPipeline,
   BattlefieldFogBlurPipeline,
   BattlefieldFogCompositePipeline,
@@ -221,8 +221,7 @@ export class BattlefieldScene extends Phaser.Scene {
     {
       root: Phaser.GameObjects.Container;
       ordinal: number;
-      stroke: Phaser.GameObjects.Image;
-      underlay?: Phaser.GameObjects.Image;
+      outline: BattlefieldHexOutline;
       tile?: BattlefieldTileView;
     }
   >();
@@ -363,7 +362,6 @@ export class BattlefieldScene extends Phaser.Scene {
       ["BattlefieldHalo", BattlefieldHaloPipeline],
       ["BattlefieldFogBlur", BattlefieldFogBlurPipeline],
       ["BattlefieldFogComposite", BattlefieldFogCompositePipeline],
-      ["BattlefieldHex", BattlefieldHexPipeline],
       ["BattlefieldFogMask", BattlefieldFogMaskPipeline],
     ] as const) {
       const pipeline = new Pipeline(this.game);
@@ -1081,7 +1079,7 @@ export class BattlefieldScene extends Phaser.Scene {
       if (!tileId && existing?.tile === tile) continue;
       const classes = new Set(tile.classes.split(" "));
       let ink = 0x39472b,
-        width = 0.7,
+        width = idleHexLineWidth,
         alpha = 0.3;
       if (classes.has("selected")) {
         ink = 0xffe5a1;
@@ -1108,11 +1106,14 @@ export class BattlefieldScene extends Phaser.Scene {
         width = 3.5;
         alpha = 1;
       }
+      const highlighted = ["selected", "reachable", "target", "recruitable", "objective"].some(
+        (kind) => classes.has(kind),
+      );
       const pulse = this.pulses.get(`select:${tile.id}`);
       if (pulse?.kind === "select") {
         // Ordinary terrain needs contrasting feedback; keep the stronger
         // movement, combat, recruitment and objective outlines intact.
-        if (width === 0.7) {
+        if (!highlighted) {
           ink = 0xffe5a1;
           width = 3;
         }
@@ -1126,31 +1127,20 @@ export class BattlefieldScene extends Phaser.Scene {
           : undefined;
       let hex = this.hexes.get(tile.id);
       if (!hex) {
-        const stroke = this.add
-          .image(tile.x, tile.y, "battlefield-white")
-          .setDisplaySize(84, 90)
-          .setPipeline("BattlefieldHex");
-        const root = this.add.container(0, 0);
-        root.add(stroke);
-        this.outlines.add(root);
-        hex = { root, ordinal: this.hexes.size, stroke };
+        const outline = new BattlefieldHexOutline(this);
+        this.outlines.add(outline.root);
+        hex = { root: outline.root, ordinal: this.hexes.size, outline };
         this.hexes.set(tile.id, hex);
       }
-      // Keep scene objects stable. Selection tweens change one hex's opacity,
-      // never destroy and reconstruct the entire grid on every animation frame.
-      hex.stroke.setPosition(tile.x, tile.y).setTint(ink).setAlpha(alpha);
-      hex.stroke.setPipelineData("width", width);
-      hex.stroke.setPipelineData("dash", dash);
-      if (dash && !hex.underlay) {
-        hex.underlay = this.add
-          .image(tile.x, tile.y, "battlefield-white")
-          .setDisplaySize(84, 90)
-          .setTint(0x172015)
-          .setPipeline("BattlefieldHex", { width: 7 });
-        hex.root.addAt(hex.underlay, 0);
-      }
-      hex.underlay?.setPosition(tile.x, tile.y).setVisible(!!dash);
-      if (hex.underlay) hex.underlay.setPipelineData("dash", dash);
+      hex.outline.update(
+        tile.x,
+        tile.y,
+        ink,
+        width,
+        alpha,
+        highlighted || pulse?.kind === "select",
+        dash,
+      );
       this.visibility.set(
         `hex:${tile.id}`,
         this.outlines,
@@ -1286,7 +1276,7 @@ export function preparePhaserBattlefield() {
           backgroundColor: "#19231c",
           pixelArt: false,
           roundPixels: false,
-          antialiasGL: true,
+          antialiasGL: false,
           antialias: false,
           banner: false,
           callbacks: {
