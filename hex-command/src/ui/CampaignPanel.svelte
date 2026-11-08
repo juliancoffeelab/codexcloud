@@ -1,4 +1,5 @@
 <script lang="ts">
+  import DialogWindow from "./DialogWindow.svelte";
   import type { BattleView, BattleCommands } from "../controller/view";
   import { CAMPAIGNS } from "../game/campaign-data";
   import { campaignMission, dialoguePending, returnsWithStory } from "../game/campaign-progress";
@@ -16,6 +17,7 @@
     onNewCampaign: () => void;
     expanded?: boolean;
   } = $props();
+  let conversations = $state<HTMLDialogElement>();
   let recall = $state<string[]>([]);
   const campaign = $derived(view.game.campaign);
   const definition = $derived(campaign ? CAMPAIGNS[campaign.id] : null);
@@ -87,6 +89,7 @@
       {definition.name}
       {campaign.mission + 1}/{definition.missions.length}
     </p>
+    <button onclick={() => conversations?.showModal()}>Campaign conversations</button>
     <h3>Briefing</h3>
     <p>{view.game.story?.briefing ?? ""}</p>
     {#if view.game.story?.hints.length}
@@ -209,6 +212,16 @@
     </section>
   {/if}
 {/if}
+
+<DialogWindow title="Campaign conversations" bind:dialog={conversations} width="680px" tall>
+  {#each campaign?.dialogue.slice(0, campaign.dialogueIndex) ?? [] as line}
+    <p>
+      <strong>{line.speaker}</strong>
+      <br />
+      {line.text}
+    </p>
+  {:else}<p>No conversations yet.</p>{/each}
+</DialogWindow>
 
 <style>
   .recall-copy {

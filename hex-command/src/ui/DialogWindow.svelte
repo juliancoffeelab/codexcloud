@@ -10,7 +10,7 @@
     tall = false,
     canDismiss = true,
     onBack,
-    backLabel = "Back to Settings",
+    backLabel = "Back to Menu",
     onBeforeClose,
     className = "",
   }: {

@@ -85,6 +85,17 @@
 </p>
 
 <style>
+  p {
+    font:
+      12px/1.5 system-ui,
+      sans-serif;
+    color: var(--muted);
+    margin: 8px 0;
+  }
+  .trace-buttons button {
+    min-height: 44px;
+    font-size: 12px;
+  }
   .trace-buttons {
     display: flex;
     flex-wrap: wrap;
