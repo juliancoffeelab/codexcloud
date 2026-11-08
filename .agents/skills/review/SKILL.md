@@ -27,12 +27,17 @@ changed area has been inspected in its relevant context.
 - **Correctness:** What concrete scenario breaks it? Trace boundary conditions,
   failures and interactions with existing behavior. Separate introduced defects
   from pre-existing problems.
-- **Simplicity:** Is this the simplest approach that solves the problem? Look for
-  existing mechanisms that suffice, unnecessary abstractions and special cases.
-  Propose a simpler alternative only when it preserves the required behavior.
-- **Repository burden:** Does each added file, dependency, rule and test give more
-  value than its total cost? Check for duplication, stale guidance and temporary
-  requirements, plans or handoffs leaking into maintained content. For skills and
+- **Simplicity (KISS, YAGNI):** What is the smallest design that satisfies the
+  current requirements? Compare the resulting design with a simpler alternative,
+  including removing affected mechanisms, state, branches or configuration.
+  Justify retained complexity by required behavior; reuse and DRY alone do not
+  establish simplicity. Recommend removal when it reduces complexity while
+  preserving required behavior; otherwise explain why the simpler alternative
+  is insufficient.
+- **Repository burden:** Does each added or retained file, dependency, rule and
+  test in the affected design give more value than its total cost? Check for
+  duplication, stale guidance and temporary requirements, plans or handoffs
+  leaking into maintained content. For skills and
   agent instructions, apply the [instruction checklist](references/agent-instructions.md).
 
 Resolve meaningful uncertainty by the cheapest useful method: source inspection,
@@ -59,6 +64,8 @@ file to the repository.
 End every review with **Intent, Correctness, Simplicity and Repository burden**,
 each marked **✅ no issue found / ❌ finding / ❓ unresolved**. Give a concrete
 reason and relevant scope limits for each; ✅ applies only to the reviewed scope.
+For Simplicity, name the simpler alternative considered and why it was adopted
+or why the retained complexity is necessary for the current requirements.
 
 **Complete when:** the reader can act on each finding and understand the review's
 scope and limits, and all four checklist results are reported.
