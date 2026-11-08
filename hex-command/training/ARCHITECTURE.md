@@ -250,3 +250,33 @@ configurations and a 100-round cap. Preset recruitment limits remain intact;
 these are whole-bot comparisons, not equalized recruitment-budget experiments.
 JSONL retains partial results by panel. `--baselines` reuses a completed panel
 only after exact workload and engine/content fingerprint checks.
+
+## Native runtime timing
+
+`benchmark.py` compares Queued, Full and Learned on identical frozen player-phase
+entry positions captured from fresh native matches. It reuses the simulation
+skill's capture protocol and never repeats begin/end-turn preparation. Different
+recruiters are benchmarked separately while keeping each row's inputs identical.
+
+```sh
+.venv/bin/python -m hex_command_rl.benchmark \
+  --model tmp/rl/deathmatch-classic-20m/planner.json \
+  --source-report tmp/rl/deathmatch-classic-20m/report.json \
+  --out tmp/rl/deathmatch-classic-20m/timing
+```
+
+Use `--fixtures <timing>/positions.json` to reuse the same captured positions.
+The artifact preserves source fingerprints and full states; output includes the
+fixture SHA256 and tested-engine fingerprints. Workers start in fresh processes
+with `HEX_COMMAND_AI_PROFILE=1`, warm the selected planner, then measure repeated
+panels using Linux thread CPU time. Timings include recruiter/campaigner/planner
+work inside tactical `run_turn`, including learned feature extraction and forward
+passes. They exclude fixture restore/validation, JSON/Python serialization, and
+real command execution outside the planner's own forecasts. Returned action counts
+identify differences in the work chosen from the same position.
+
+The reported statistic is the median of repeated-panel mean CPU milliseconds per
+own phase. It is not a worst-turn latency or a browser/WASM measurement. Both
+native replay embeddings and the existing phase-stdio path use the same validated
+phase executor. These JSON methods are offline fixture tools; numeric training
+observations still use NumPy buffers.

@@ -138,6 +138,34 @@ fn evaluate(py: Python<'_>, configs: Vec<String>, model: Option<String>) -> PyRe
     })
     .map_err(err)
 }
+/// Profile intervals are native thread CPU and exclude fixture decoding/encoding.
+#[pyfunction]
+fn profile_snapshot() -> Option<String> {
+    hex_command_core::ai::profiling::snapshot().map(|v| v.to_string())
+}
+#[pyfunction]
+fn replay_phases(
+    py: Python<'_>,
+    requests: Vec<String>,
+    model: Option<String>,
+) -> PyResult<Vec<String>> {
+    let model = model.map(|s| load_model(&s)).transpose().map_err(err)?;
+    py.detach(move || -> Result<Vec<String>, String> {
+        let rules = Rules::load().map_err(|e| e.to_string())?;
+        let (result, _) = scoped(None, model, None, || {
+            requests
+                .into_iter()
+                .map(|request| {
+                    hex_command_core::simulation::cli::saved_phase_json(&rules, &request)
+                        .map(|v| v.to_string())
+                        .map_err(|e| e.to_string())
+                })
+                .collect()
+        });
+        result
+    })
+    .map_err(err)
+}
 #[pyfunction]
 fn score<'py>(
     py: Python<'py>,
@@ -339,6 +367,8 @@ fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(collect, m)?)?;
     m.add_function(wrap_pyfunction!(evaluate, m)?)?;
     m.add_function(wrap_pyfunction!(score, m)?)?;
+    m.add_function(wrap_pyfunction!(profile_snapshot, m)?)?;
+    m.add_function(wrap_pyfunction!(replay_phases, m)?)?;
     m.add_class::<BatchEnv>()?;
     Ok(())
 }
