@@ -5,15 +5,21 @@ description: Diagnose the cause of an agent failure when the user asks why its b
 
 # Agent failure
 
-Produce an evidence-based diagnosis and ranked proposed remedies. Do not edit
-code, instructions or artifacts as part of this workflow.
+Produce an audit of the failure and its current status, a deep causal diagnosis,
+and concrete steps to fix the remaining causes. Investigate enough to support
+those conclusions; keep verification methods internal rather than making a
+verification plan a deliverable or handing investigation back to the user. Do not
+edit code, instructions or artifacts as part of this workflow.
 
 ## 1. Establish the failure
 
 Establish the expected behavior from the user's request and decisions. Inspect
-the actions and resulting artifacts to identify the concrete deviation.
+the actions and resulting artifacts to identify the concrete deviation. Trace
+repairs already made and explain what they fixed, how, and what remains. A past
+failure does not by itself establish a current defect.
 
-**Complete when:** the deviation is supported by evidence and its scope is clear.
+**Complete when:** the deviation, its scope, completed repairs and any remaining
+problem are clear.
 
 ## 2. Trace the cause
 
@@ -24,8 +30,8 @@ Investigate in this order:
    supported operation or a natural extension of the design.
 2. **Existing code:** trace the actual path, its placement, representation, naming
    and implementation patterns. Establish how those choices lead toward the
-   failure and what the existing checks verify. For non-code tasks, examine the
-   existing artifacts and how they are produced.
+   failure and whether subsequent repairs removed that path. For non-code tasks,
+   examine the existing artifacts and how they are produced.
 3. **Skills and other instructions:** after tracing architecture and code, inspect
    relevant guidance for gaps, ambiguity, contradictions, stale information or
    ineffective context pointers. Distinguish instructions that existed from
@@ -39,15 +45,16 @@ or implementation cause.
 “I failed to apply/follow the instruction” is not a diagnosis.
 
 An explicit existing rule must not be relabelled as missing or ambiguous to fit an
-explanation. Quoting that rule alone does not establish the cause either. Report
-uncertainty and the next discriminating check when the mechanism is unproven.
+explanation. Quoting that rule alone does not establish the cause either.
+Investigate unresolved causal links; distinguish supported conclusions from
+hypotheses and state material uncertainty that remains.
 
 **Complete when:** the causal explanation connects evidence to the deviation, with
 observations separated from hypotheses. An unexplained link remains open work.
 
 ## 3. Propose remedies
 
-Prioritize remedies in the same order as the diagnosis:
+Consider remedies at the layers implicated by the diagnosis:
 
 1. **Architecture:** remove the invalid operation or change the boundaries and
    defaults that encourage it. Prefer prevention by construction.
@@ -60,10 +67,12 @@ Do not recommend instruction changes as a substitute for repairing defective
 architecture or code. Avoid accumulating incident-specific prohibitions or
 duplicating existing rules.
 
-Explain how the proposed change interrupts the demonstrated failure mechanism.
-Identify a concrete check that distinguishes prevention from hiding or renaming the
-symptom.
+Propose changes for demonstrated remaining causes, accounting for completed
+repairs. Rank fix steps by impact on those causes and make each actionable: name
+what to change, where, and how it interrupts the failure mechanism. A possible
+future regression alone does not justify more rules or checks. If no further
+change is justified, say why the completed repair is sufficient.
 
-**Complete when:** the smallest justified correction and its recurrence check are
-concrete. Report the failure, evidenced cause, ranked proposed remedies, and any
-unresolved uncertainty. Stop at that report.
+**Complete when:** the report explains what failed, what is already fixed and how,
+the deep cause, and concrete fix steps for what remains, ordered by impact. State
+material unresolved uncertainty and stop at that report.
