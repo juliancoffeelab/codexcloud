@@ -873,13 +873,10 @@ pub(super) fn plan(
             withdrawing,
         });
     }
-    // Protected campaign actors must compare escape moves even when the raw
-    // shortlist contains a positive but dangerous attack. Ordinary arena units
-    // retain their existing fallback and bounded search.
-    if before > 0
-        && ((orders.campaign && orders.protects(unit.id))
-            || (best.is_none() && battle && important))
-    {
+    // A raw shortlist can hide retreat tiles behind attractive unsafe attacks.
+    // Reuse the same forecast to search moves only when an essential actor has
+    // no positive plan under pressure; ordinary units keep the bounded search.
+    if best.is_none() && battle && important && before > 0 {
         for (index, &tile) in destinations.iter().enumerate() {
             let (positioning, _, healing) = positions[index];
             if tile == unit.tile || !positioning.is_finite() {
@@ -908,7 +905,7 @@ pub(super) fn plan(
                 + wait_risk
                 - incoming as f64 * danger
                 - if incoming >= unit.hp { 40.0 } else { 0.0 }
-                + (before - incoming).max(0) as f64 * improvement_weight;
+                + (before - incoming).max(0) as f64 * 3.0;
             if score <= 0.1 || best.as_ref().is_some_and(|p| p.score >= score) {
                 continue;
             }

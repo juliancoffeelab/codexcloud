@@ -549,8 +549,6 @@ For these actors, predicted exposure costs at most twenty points and leaving
 exposure credits at most twenty. Predicted lethal exposure separately costs forty;
 the departure credit never refunds that death cost. The generic extra reward for
 reducing incoming damage is disabled here to preserve the twenty-point bound.
-Queued also evaluates reachable escape moves for threatened `Survive` actors in
-campaigns, even if its preliminary shortlist already contains a positive plan.
-This prevents progress/attack variants from crowding safe moves out before threat
-assessment. These are teacher policy changes; existing learned weights require
+Candidate shortlisting and the existing arena fallback retain their original
+behavior. These are teacher scoring changes; existing learned weights require
 fresh demonstrations and fine-tuning to acquire the resulting preferences.
