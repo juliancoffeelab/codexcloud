@@ -14,12 +14,13 @@ class SpatialData:
         current=self.manifest.get('spatial_schema')==native.SPATIAL_SCHEMA and self.manifest.get('channel_names')==native.SPATIAL_CHANNEL_NAMES
         legacy=self.manifest.get('spatial_schema')==3 and self.manifest.get('channel_names')==native.LEGACY_SPATIAL_CHANNEL_NAMES
         duties=self.manifest.get('spatial_schema')==5 and self.manifest.get('channel_names')==native.DUTY_SPATIAL_CHANNEL_NAMES
-        if not current and not legacy and not duties:
+        diplomacy=self.manifest.get('spatial_schema')==7 and self.manifest.get('channel_names')==native.SPATIAL_CHANNEL_NAMES
+        if not current and not legacy and not duties and not diplomacy:
             raise ValueError('spatial dataset schema mismatch')
         self.dense=load_dataset(directory)
         self.offsets=np.load(directory/'board_offsets.npy');self.shapes=np.load(directory/'shapes.npy');self.indices=np.load(directory/'indices.npy')
         n=len(self.dense[2]);channels=len(self.manifest['channel_names']);self.channels=channels
-        expected_width=len(native.LEGACY_FEATURE_NAMES) if legacy else len(native.DUTY_FEATURE_NAMES) if duties else len(native.FEATURE_NAMES)
+        expected_width=len(native.LEGACY_FEATURE_NAMES) if legacy else len(native.DUTY_FEATURE_NAMES) if duties else len(native.DIPLOMACY_FEATURE_NAMES) if diplomacy else len(native.FEATURE_NAMES)
         if self.dense[0].shape[1]!=expected_width:raise ValueError('mixed dense/spatial dataset schemas')
         if self.shapes.shape!=(n,2) or self.offsets.shape!=(n+1,) or self.indices.shape!=(len(self.dense[0]),3):raise ValueError('spatial dataset dimensions mismatch')
         if self.offsets[0]!=0 or np.any(self.shapes<=0) or np.any(self.shapes>256) or np.any(self.shapes.prod(1)>16384) or np.any(np.diff(self.offsets)!=self.shapes.prod(1)*channels):raise ValueError('invalid spatial board offsets/shapes')

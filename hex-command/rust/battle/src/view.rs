@@ -661,6 +661,10 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
         self.view.engine().requirements_disclosed()
     }
     #[inline]
+    pub fn deadline_round(&self) -> Option<u32> {
+        self.view.engine().planning_deadline_round()
+    }
+    #[inline]
     pub fn pending_arrivals(&self) -> bool {
         self.view.engine().script_pending_arrivals()
     }

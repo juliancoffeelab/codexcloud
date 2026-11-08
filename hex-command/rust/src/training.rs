@@ -5,11 +5,14 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::cell::RefCell;
-pub const SCHEMA: u32 = 6;
+pub const SCHEMA: u32 = 8;
 mod duties;
 mod features;
 pub mod spatial;
-pub use features::{Choices, DUTY_FEATURES, FEATURE_NAMES, FEATURES, LEGACY_FEATURES, candidates};
+pub use features::{
+    Choices, DIPLOMACY_FEATURES, DUTY_FEATURES, FEATURE_NAMES, FEATURES, LEGACY_FEATURES,
+    candidates,
+};
 #[derive(Default)]
 pub struct Dataset {
     pub features: Vec<[f32; FEATURES]>,
@@ -124,6 +127,7 @@ impl Model {
         let (old_width, old_channels) = match (self.schema, self.spatial.is_some()) {
             (2, false) | (3, true) => (LEGACY_FEATURES, spatial::LEGACY_CHANNELS),
             (4, false) | (5, true) => (DUTY_FEATURES, spatial::DUTY_CHANNELS),
+            (6, false) | (7, true) => (DIPLOMACY_FEATURES, spatial::CHANNELS),
             _ => return self.validate(),
         };
         if self.feature_names != FEATURE_NAMES[..old_width] {

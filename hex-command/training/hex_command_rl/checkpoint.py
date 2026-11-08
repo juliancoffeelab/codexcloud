@@ -15,9 +15,9 @@ def warm_start(model, path):
     key='head.0.weight' if spatial else 'net.0.weight'
     old_width=state[key].shape[1]-(64 if spatial else 0)
     width=len(native.FEATURE_NAMES)
-    if old_width not in (len(native.LEGACY_FEATURE_NAMES),len(native.DUTY_FEATURE_NAMES),width):raise ValueError('unknown checkpoint feature width')
+    if old_width not in (len(native.LEGACY_FEATURE_NAMES),len(native.DUTY_FEATURE_NAMES),len(native.DIPLOMACY_FEATURE_NAMES),width):raise ValueError('unknown checkpoint feature width')
     old_channels=state['convs.0.weight'].shape[1] if spatial else None
-    if spatial and (old_width,old_channels) not in ((len(native.LEGACY_FEATURE_NAMES),len(native.LEGACY_SPATIAL_CHANNEL_NAMES)),(len(native.DUTY_FEATURE_NAMES),len(native.DUTY_SPATIAL_CHANNEL_NAMES)),(width,len(native.SPATIAL_CHANNEL_NAMES))):
+    if spatial and (old_width,old_channels) not in ((len(native.LEGACY_FEATURE_NAMES),len(native.LEGACY_SPATIAL_CHANNEL_NAMES)),(len(native.DUTY_FEATURE_NAMES),len(native.DUTY_SPATIAL_CHANNEL_NAMES)),(len(native.DIPLOMACY_FEATURE_NAMES),len(native.SPATIAL_CHANNEL_NAMES)),(width,len(native.SPATIAL_CHANNEL_NAMES))):
         raise ValueError('checkpoint feature/channel schemas differ')
     copied={}
     for name,value in target.items():

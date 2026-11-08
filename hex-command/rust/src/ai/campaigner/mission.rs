@@ -165,6 +165,7 @@ impl CampaignBlock {
             }
         }
         let mut tactics = TacticalOrders {
+            deadline_round: game.authored.deadline_round(),
             progress: game
                 .objectives
                 .iter()

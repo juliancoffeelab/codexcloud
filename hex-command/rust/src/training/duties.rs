@@ -5,7 +5,7 @@ use crate::{
 };
 use std::rc::Rc;
 
-pub const NAMES: [&str; 55] = [
+pub const NAMES: [&str; 57] = [
     "goto_assigned",
     "goto_priority",
     "goto_turns_before",
@@ -61,6 +61,8 @@ pub const NAMES: [&str; 55] = [
     "target_mediated",
     "withdrawal_lane_before",
     "withdrawal_lane_after",
+    "deadline_known",
+    "deadline_rounds_remaining",
 ];
 pub const CHANNEL_NAMES: [&str; 12] = [
     "goto_actor",
@@ -258,6 +260,10 @@ impl Duties {
     ) {
         if !orders.campaign {
             return;
+        }
+        if let Some(round) = orders.deadline_round {
+            x[55] = 1.;
+            x[56] = round.saturating_sub(g.round()) as f32 / 30.;
         }
         x[36..51].copy_from_slice(&self.globals);
         if let Some(p) = orders

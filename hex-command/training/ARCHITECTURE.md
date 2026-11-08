@@ -35,7 +35,7 @@ faction pairings, five maps and both first seats per recruiter (1,080 games tota
 ## Components
 
 - `rust/src/training.rs`: teacher sessions and validated dense/tree inference.
-- `rust/src/training/features.rs`: versioned 227-feature schema (172 legacy + 47 campaign duty + 8 diplomacy inputs), mechanical unit
+- `rust/src/training/features.rs`: versioned 229-feature schema (172 legacy + 47 campaign duty + 8 diplomacy + 2 deadline inputs), mechanical unit
   profiles, terrain/path encoding and legal candidates. Weights require matching
   schema/names, valid dimensions and finite values.
 - `rust/src/ai/planner/learned/`: native-only learned planner, selected through
@@ -55,7 +55,7 @@ attacks with each weapon, and recruiter-approved promotions. No heuristic top-K
 shortlist restricts the learner. Moves and attacks are separate decisions.
 
 Feature names are exported as `hex_command_training.FEATURE_NAMES`. Dense/tree
-schema 6 has 227 inputs. Legacy schema-2/4 models are explicitly migrated by name
+schema 8 has 229 inputs. Legacy schema-2/4/6 models are explicitly migrated by name
 and shape, appending zero weights; unsupported schemas are rejected. There are no unit, faction or terrain identity embeddings. Each candidate
 includes mechanical profiles for the actor, attack target and nearest enemy:
 max HP, cost, movement, level/experience, healing including equipment, thorns,
@@ -86,7 +86,7 @@ same explicit feature schema.
 `BatchEnv.reset(config_json_strings)` and `step(candidate_indices)` return:
 
 ```text
-features: float32 [total_candidates, 227]
+features: float32 [total_candidates, 229]
 offsets: int64 [environment_count + 1]
 rewards: one float per environment
 terminated: one bool per environment
@@ -356,7 +356,7 @@ complete native planning phases on the same saved positions as other models.
 
 ## Shared hex CNN
 
-`spatial.py` adds an optional board encoder to 227 candidate features. The first
+`spatial.py` adds an optional board encoder to 229 candidate features. The first
 53 of its 65 channels include a valid-tile mask, friendly/hostile/
 neutral occupancy, the existing complete 34-value unit profile, base terrain
 cost/passability/healing/keep/ownership and six damage modifiers, and weighted
@@ -379,10 +379,10 @@ used. The complete model has 32,017 parameters.
 
 The board is encoded once per decision, shared across all candidates. Native Rust
 executes exported seven-position convolution weights and dense layers directly;
-no Python or PyTorch is needed in a game. Spatial model schema 7 includes explicit
+no Python or PyTorch is needed in a game. Spatial model schema 9 includes explicit
 channel names and validates both convolution shapes. Legacy schema-3/5 CNNs migrate
 with zero input-channel filters and zero dense columns inserted before the 64
-spatial gathers. Dense/tree schemas 2/4 also migrate to schema 6. Dropout is absent
+spatial gathers. Dense/tree schemas 2/4/6 also migrate to schema 8. Dropout is absent
 from the inference export.
 
 `native.collect_spatial` returns `(dense, spatial)`: the original four-array/data
@@ -490,8 +490,13 @@ learned planner.
 
 Progress is supplied by the visible Campaigner read model. Hold counts come from
 the engine's live counters. A known flag distinguishes absent hold duration from zero remaining turns.
-This metadata does not change scripted completion or failure behavior. Deadline
-reasoning is outside this observation contract.
+This metadata does not change scripted completion or failure behavior. Two appended
+dense inputs expose unconditional scripted campaign-defeat deadlines: `deadline_known`
+and `deadline_rounds_remaining` (failure round minus current round, divided by 30).
+They are present on every candidate, including EndTurn, and also reach the PPO
+critic through its state features. Conditional script events remain unknown. The
+board retains 65 channels; these global values enter the policy head directly.
+Dense/spatial schemas 8/9 preserve old 227-input policies by zero expansion.
 
 Runtime preserves a canonical snapshot of Campaigner orders, including recruiter
 promotions. Teacher recording and learned candidate generation both use that
@@ -505,7 +510,7 @@ rewriting their large disk buffers. Legacy campaign datasets are rejected and
 need recollection because their policy filtering or observation annotations are outdated.
 `native.upgrade_model(json)` validates and exports a migrated native model; normal
 model loading also performs this migration. Scoring APIs accept the known legacy
-172-feature/53-channel and 219-feature/62-channel buffers with zero extension. Unknown layouts are rejected.
+172-feature/53-channel, 219-feature/62-channel and 227-feature/65-channel buffers with zero extension. Unknown layouts are rejected.
 
 `spatial_train --warm-start <weights.pt>` loads either current or legacy CNN/MLP
 weights, preserving old columns and spatial embeddings while initializing added

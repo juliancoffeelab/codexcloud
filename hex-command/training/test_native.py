@@ -134,7 +134,8 @@ class NativeContract(unittest.TestCase):
         from hex_command_rl.spatial import SpatialPlanner,HexConv
         from hex_command_rl.checkpoint import warm_start
         for schema,names,channel_names in [(3,native.LEGACY_FEATURE_NAMES,native.LEGACY_SPATIAL_CHANNEL_NAMES),
-                                           (5,native.DUTY_FEATURE_NAMES,native.DUTY_SPATIAL_CHANNEL_NAMES)]:
+                                           (5,native.DUTY_FEATURE_NAMES,native.DUTY_SPATIAL_CHANNEL_NAMES),
+                                           (7,native.DIPLOMACY_FEATURE_NAMES,native.SPATIAL_CHANNEL_NAMES)]:
             width=len(names);channels=len(channel_names)
             torch.manual_seed(81)
             old=SpatialPlanner().eval()
@@ -160,7 +161,8 @@ class NativeContract(unittest.TestCase):
                     np.array([0,expanded_board[0].numel(),expanded_board.numel()]),np.array([[3,4],[3,4]]),indices.reshape(-1,3).numpy())
                 np.testing.assert_allclose(actual,expected.numpy().flatten(),atol=2e-6,rtol=2e-5)
                 model.train();model(expanded_x,expanded_board,indices).sum().backward()
-                self.assertGreater(float(model.convs[0].weight.grad[:,channels:].abs().sum()),0.)
+                if channels<len(native.SPATIAL_CHANNEL_NAMES):
+                    self.assertGreater(float(model.convs[0].weight.grad[:,channels:].abs().sum()),0.)
                 self.assertGreater(float(model.head[0].weight.grad[:,width:len(native.FEATURE_NAMES)].abs().sum()),0.)
 
     def test_spatial_step_buffers_and_terminal_slots(self):

@@ -181,6 +181,8 @@ pub use hex_command_battle::model::ScopedOrder;
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
 pub struct TacticalOrders {
+    /// First round triggering an unconditional scripted campaign defeat.
+    pub deadline_round: Option<u32>,
     pub progress: Vec<ObjectiveProgress>,
     pub scoped: Vec<ScopedOrder>,
     /// Actors withheld by Campaigner, independent of unit archetypes or economy.

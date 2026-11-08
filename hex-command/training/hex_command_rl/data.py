@@ -41,7 +41,8 @@ def load_dataset(directory):
     current=manifest['schema']==native.SCHEMA and manifest['feature_names']==native.FEATURE_NAMES
     legacy=manifest['schema']==2 and manifest['feature_names']==native.LEGACY_FEATURE_NAMES
     duties=manifest['schema']==4 and manifest['feature_names']==native.DUTY_FEATURE_NAMES
-    if not current and not legacy and not duties:
+    diplomacy=manifest['schema']==6 and manifest['feature_names']==native.DIPLOMACY_FEATURE_NAMES
+    if not current and not legacy and not duties and not diplomacy:
         raise ValueError('dataset feature schema mismatch')
     if not current and any('campaign' in c for c in manifest['configs']):
         raise ValueError('legacy campaign observations need recollection with current policy and annotations')

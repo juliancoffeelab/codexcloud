@@ -6,6 +6,7 @@ use crate::{
 use std::{collections::HashMap, rc::Rc};
 pub const LEGACY_FEATURES: usize = 172;
 pub const DUTY_FEATURES: usize = 219;
+pub const DIPLOMACY_FEATURES: usize = 227;
 pub const FEATURES: usize = LEGACY_FEATURES + super::duties::NAMES.len();
 pub const LEGACY_FEATURE_NAMES: [&str; LEGACY_FEATURES] = [
     "end_turn",

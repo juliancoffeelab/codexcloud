@@ -216,3 +216,26 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
         serde_json::to_value(game.state()).unwrap()
     );
 }
+
+#[test]
+fn planning_deadline_reports_only_unconditional_defeat_clocks() {
+    let mut rules = Rules::load().unwrap();
+    let events = serde_json::from_value(serde_json::json!([
+        {"id":"conditional","when":{"all":[{"turnAtLeast":4},{"flag":"unknown"}]},"actions":[{"defeat":"Conditional"}]},
+        {"id":"later","when":{"turnAtLeast":31},"actions":[{"defeat":"Too late"}]},
+        {"id":"earlier","when":{"turn":20},"actions":[{"defeat":"Too late"}]},
+        {"id":"reinforcement","when":{"turn":3},"actions":[{"log":"Not a deadline"}]}
+    ])).unwrap();
+    rules.campaigns.get_mut("borrowed-tide").unwrap().missions[1].scripted_events = events;
+    let game = Game::start_campaign(
+        &rules,
+        "borrowed-tide",
+        1,
+        vec![],
+        0,
+        vec![],
+        vec![],
+        vec![],
+    );
+    assert_eq!(game.planning_deadline_round(), Some(20));
+}

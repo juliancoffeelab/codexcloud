@@ -15,6 +15,7 @@ from torch import nn
 from torch.nn import functional as F
 import hex_command_training as native
 from .spatial import SpatialPlanner
+from .checkpoint import warm_start
 
 
 def save_json(path, value):
@@ -144,7 +145,7 @@ def main():
     args.out.mkdir(parents=True, exist_ok=False)
     torch.set_num_threads(args.threads); torch.set_num_interop_threads(1)
     torch.manual_seed(args.seed); random.seed(args.seed); rng = np.random.default_rng(args.seed)
-    policy = SpatialPlanner().eval(); policy.load_state_dict(torch.load(args.warm_start, map_location='cpu', weights_only=True))
+    policy = SpatialPlanner().eval(); warm_start(policy, args.warm_start)
     ac = ActorCritic(policy).eval(); reference = copy.deepcopy(policy).eval().requires_grad_(False)
     actor_opt = torch.optim.Adam(policy.parameters(), lr=1e-5)
     critic_opt = torch.optim.Adam(ac.critic.parameters(), lr=1e-3)

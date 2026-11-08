@@ -20,6 +20,30 @@ struct Bindings {
 }
 
 impl Game<'_> {
+    /// Unconditional timed defeats are explicit mission limits. Conditional
+    /// events remain unknown rather than guessing whether their guards will hold.
+    pub(crate) fn planning_deadline_round(&self) -> Option<u32> {
+        if self.campaign.is_none() {
+            return None;
+        }
+        self.mission
+            .as_ref()
+            .into_iter()
+            .flat_map(|m| &m.scripted_events)
+            .filter(|event| {
+                event
+                    .actions
+                    .iter()
+                    .any(|a| matches!(a, EventAction::Defeat(_)))
+            })
+            .filter_map(|event| match &event.when {
+                When::TurnAtLeast(n) => Some(*n),
+                When::Turn(TurnSelection::Number(n)) => Some(*n),
+                _ => None,
+            })
+            .min()
+    }
+
     #[inline]
     pub(crate) fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
         super::event_queries::unit_matches(self.rules, &self.factions, select, unit)

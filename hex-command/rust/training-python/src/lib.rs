@@ -248,7 +248,7 @@ fn score<'py>(
         return Err(err("use score_spatial for a CNN model"));
     }
     let a = features.as_array();
-    if ![LEGACY_FEATURES, DUTY_FEATURES, FEATURES].contains(&a.ncols()) {
+    if ![LEGACY_FEATURES, DUTY_FEATURES, DIPLOMACY_FEATURES, FEATURES].contains(&a.ncols()) {
         return Err(err("feature width mismatch"));
     }
     Ok(a.rows()
@@ -281,7 +281,7 @@ fn score_spatial<'py>(
     let x = features.as_array();
     let sh = shapes.as_array();
     let ix = indices.as_array();
-    if ![LEGACY_FEATURES, DUTY_FEATURES, FEATURES].contains(&x.ncols())
+    if ![LEGACY_FEATURES, DUTY_FEATURES, DIPLOMACY_FEATURES, FEATURES].contains(&x.ncols())
         || ix.nrows() != x.nrows()
         || ix.ncols() != 3
         || sh.ncols() != 2
@@ -582,6 +582,10 @@ fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add("SPATIAL_KERNEL", spatial::KERNEL.to_vec())?;
     m.add_function(wrap_pyfunction!(fingerprints, m)?)?;
     m.add("FEATURE_NAMES", FEATURE_NAMES.to_vec())?;
+    m.add(
+        "DIPLOMACY_FEATURE_NAMES",
+        FEATURE_NAMES[..DIPLOMACY_FEATURES].to_vec(),
+    )?;
     m.add(
         "LEGACY_FEATURE_NAMES",
         FEATURE_NAMES[..LEGACY_FEATURES].to_vec(),

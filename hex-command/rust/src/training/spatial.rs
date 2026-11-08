@@ -6,7 +6,7 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
-pub const SPATIAL_SCHEMA: u32 = 7;
+pub const SPATIAL_SCHEMA: u32 = 9;
 pub const DUTY_CHANNELS: usize = 62;
 pub const EMBEDDING: usize = 16;
 pub const LEGACY_CHANNELS: usize = 53;
