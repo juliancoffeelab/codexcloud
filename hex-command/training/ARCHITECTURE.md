@@ -34,7 +34,7 @@ faction pairings, five maps and both first seats per recruiter (1,080 games tota
 ## Components
 
 - `rust/src/training.rs`: teacher sessions and validated dense/tree inference.
-- `rust/src/training/features.rs`: versioned 221-feature schema (172 legacy + 49 campaign inputs), mechanical unit
+- `rust/src/training/features.rs`: versioned 219-feature schema (172 legacy + 47 campaign inputs), mechanical unit
   profiles, terrain/path encoding and legal candidates. Weights require matching
   schema/names, valid dimensions and finite values.
 - `rust/src/ai/planner/learned/`: native-only learned planner, selected through
@@ -54,7 +54,7 @@ attacks with each weapon, and recruiter-approved promotions. No heuristic top-K
 shortlist restricts the learner. Moves and attacks are separate decisions.
 
 Feature names are exported as `hex_command_training.FEATURE_NAMES`. Dense/tree
-schema 4 has 221 inputs. Legacy schema-2 models are explicitly migrated by name
+schema 4 has 219 inputs. Legacy schema-2 models are explicitly migrated by name
 and shape, appending zero weights; unsupported schemas are rejected. There are no unit, faction or terrain identity embeddings. Each candidate
 includes mechanical profiles for the actor, attack target and nearest enemy:
 max HP, cost, movement, level/experience, healing including equipment, thorns,
@@ -85,7 +85,7 @@ same explicit feature schema.
 `BatchEnv.reset(config_json_strings)` and `step(candidate_indices)` return:
 
 ```text
-features: float32 [total_candidates, 221]
+features: float32 [total_candidates, 219]
 offsets: int64 [environment_count + 1]
 rewards: one float per environment
 terminated: one bool per environment
@@ -355,7 +355,7 @@ complete native planning phases on the same saved positions as other models.
 
 ## Shared hex CNN
 
-`spatial.py` adds an optional board encoder to 221 candidate features. The first
+`spatial.py` adds an optional board encoder to 219 candidate features. The first
 53 of its 62 channels include a valid-tile mask, friendly/hostile/
 neutral occupancy, the existing complete 34-value unit profile, base terrain
 cost/passability/healing/keep/ownership and six damage modifiers, and weighted
@@ -372,9 +372,9 @@ Padding stays zero and is excluded from mean pooling. The mask describes map
 membership, independently of terrain passability or candidate legality. Each
 candidate gathers 16 values at its actor, destination and target, plus the shared
 16-value masked board mean. Missing references use zeros. Concatenating those 64
-values with existing features feeds a 285→64→64→1 head. A 10% dropout follows the
+values with existing features feeds a 283→64→64→1 head. A 10% dropout follows the
 first hidden ReLU during training only. No normalization or convolution dropout is
-used. The complete model has 31,297 parameters.
+used. The complete model has 31,169 parameters.
 
 The board is encoded once per decision, shared across all candidates. Native Rust
 executes exported seven-position convolution weights and dense layers directly;
@@ -469,11 +469,10 @@ reported as such, not presented as a full synthetic faction matrix.
 ## Campaign duties and warm starts
 
 The original 172 feature positions and first 53 board channels retain their
-meaning and normalization. Forty-nine appended candidate values describe actor-
+meaning and normalization. Forty-seven appended candidate values describe actor-
 bound GoTo/Occupy/ClearPassage travel, priorities and arrival flags; escort
 subjects/eligible guards, requested guards, nearby eligible allies and distances;
-shortest-terrain-route corridor occupancy; mission progress, hold duration and
-optional deadlines; terminal arrivals/attack targets; and unfinished/actionable
+shortest-terrain-route corridor occupancy; mission progress and hold duration; terminal arrivals/attack targets; and unfinished/actionable
 duty counts. Global duty/progress values are present on EndTurn as well. Route
 turn estimates are optimistic movement-cost/base-movement estimates. Nearby
 guards means eligible non-leader allies within one hex, not planner assignment.
@@ -489,11 +488,9 @@ an explicit input; no automatic native rescue or escort policy is added to the
 learned planner.
 
 Progress is supplied by the visible Campaigner read model. Hold counts come from
-the engine's live counters. An optional `deadlineRound` objective annotation can
-supply a public planning deadline; existing event conditions still enforce game
-rules. No deadline is guessed from text or hidden failure scripts. Separate known
-flags distinguish absent timing from zero remaining time. This metadata does not
-change scripted completion or failure behavior.
+the engine's live counters. A known flag distinguishes absent hold duration from zero remaining turns.
+This metadata does not change scripted completion or failure behavior. Deadline
+reasoning is outside this observation contract.
 
 Runtime preserves a canonical snapshot of Campaigner orders, including recruiter
 promotions. Teacher recording and learned candidate generation both use that

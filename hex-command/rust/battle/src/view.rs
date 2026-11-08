@@ -628,7 +628,6 @@ pub struct CampaignObjective<'a> {
     pub progress_current: u32,
     pub progress_total: u32,
     pub hold_turns_remaining: Option<u32>,
-    pub deadline_round: Option<u32>,
 }
 pub struct CampaignGroup<'a> {
     pub id: &'a str,

@@ -5,7 +5,7 @@ use super::*;
 fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let mut rules = Rules::load().unwrap();
     let tile = Hex::new(5, 4);
-    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":{"hex":tile},"character":"edda","turns":3,"when":{"own":{"tile":{"hex":tile},"faction":"player"}}}},"objective":{"label":"Defend","intent":{"hold":{"tile":{"hex":tile},"character":"edda","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
+    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":{"hex":tile},"character":"edda","turns":3,"when":{"own":{"tile":{"hex":tile},"faction":"player"}}}},"objective":{"label":"Defend","visibleWhen":{"always":true},"intent":{"hold":{"tile":{"hex":tile},"character":"edda","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
     rules.campaigns.get_mut("borrowed-tide").unwrap().missions[1].scripted_events =
         vec![event.clone()];
     let mut game = Game::start_campaign(
@@ -31,7 +31,15 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let evaluate = |g: &mut Game<'_>, round| {
         g.round = round;
         g.evaluate_campaign(true, None);
-        g.scripted_objective_status(&event).progress.current
+        let current = g.scripted_objective_status(&event).progress.current;
+        if current < 3 {
+            let objectives = g.planning_objectives();
+            let objective = objectives.iter().find(|o| o.id == "hold").unwrap();
+            assert_eq!(objective.progress_current, current);
+            assert_eq!(objective.progress_total, 3);
+            assert_eq!(objective.hold_turns_remaining, Some(3 - current));
+        }
+        current
     };
     assert_eq!(evaluate(&mut game, 6), 0);
     assert_eq!(evaluate(&mut game, 7), 0);

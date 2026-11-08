@@ -173,7 +173,6 @@ pub struct ObjectiveProgress {
     pub total: u32,
     pub satisfied: bool,
     pub hold_turns_remaining: Option<u32>,
-    pub deadline_round: Option<u32>,
 }
 
 pub use hex_command_battle::model::ScopedOrder;

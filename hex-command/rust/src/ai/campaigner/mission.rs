@@ -178,7 +178,6 @@ impl CampaignBlock {
                     total: o.progress_total,
                     satisfied: o.satisfied,
                     hold_turns_remaining: o.hold_turns_remaining,
-                    deadline_round: o.deadline_round,
                 })
                 .collect(),
             scoped,

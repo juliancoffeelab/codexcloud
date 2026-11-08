@@ -732,7 +732,6 @@ impl Game<'_> {
                     progress_current: progress.current,
                     progress_total: progress.total,
                     hold_turns_remaining,
-                    deadline_round: objective.deadline_round,
                 })
             })
             .collect()

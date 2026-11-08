@@ -5,7 +5,7 @@ use crate::{
 };
 use std::rc::Rc;
 
-pub const NAMES: [&str; 49] = [
+pub const NAMES: [&str; 47] = [
     "goto_assigned",
     "goto_priority",
     "goto_turns_before",
@@ -40,8 +40,6 @@ pub const NAMES: [&str; 49] = [
     "duty_progress_fraction",
     "duty_hold_remaining_known",
     "duty_hold_turns_remaining",
-    "duty_deadline_known",
-    "duty_deadline_turns_remaining",
     "terminal_arrival",
     "terminal_attack_target",
     "goto_unfinished",
@@ -75,17 +73,13 @@ fn priority(p: ObjectivePriority) -> f32 {
         ObjectivePriority::Critical => 1.,
     }
 }
-fn timing(g: &BattleView<'_, '_>, progress: &ObjectiveProgress, x: &mut [f32]) {
-    x[30..36].fill(0.);
+fn timing(progress: &ObjectiveProgress, x: &mut [f32]) {
+    x[30..34].fill(0.);
     x[30] = (progress.total > 0) as u8 as f32;
     x[31] = progress.current as f32 / progress.total.max(1) as f32;
     if let Some(n) = progress.hold_turns_remaining {
         x[32] = 1.;
         x[33] = n as f32 / 30.;
-    }
-    if let Some(n) = progress.deadline_round {
-        x[34] = 1.;
-        x[35] = n.saturating_sub(g.round()) as f32 / 30.;
     }
 }
 struct Route {
@@ -245,19 +239,14 @@ impl Duties {
         if !orders.campaign {
             return;
         }
-        x[38..49].copy_from_slice(&self.globals);
+        x[36..47].copy_from_slice(&self.globals);
         if let Some(p) = orders
             .progress
             .iter()
             .filter(|p| !p.satisfied)
-            .min_by_key(|p| {
-                (
-                    p.deadline_round.unwrap_or(u32::MAX),
-                    p.hold_turns_remaining.unwrap_or(u32::MAX),
-                )
-            })
+            .min_by_key(|p| (p.hold_turns_remaining.unwrap_or(u32::MAX),))
         {
-            timing(g, p, x);
+            timing(p, x);
         }
         let (id, tile) = match command {
             Command::Move { unit, tile } => (unit.0, Some(g.site(&tile.0))),
@@ -340,14 +329,14 @@ impl Duties {
                 })
                 .max_by_key(|p| p.id.len())
             {
-                timing(g, p, x);
+                timing(p, x);
             }
         }
         if let Command::Move { .. } = command {
-            x[36] = orders.arrives(g, unit, after) as u8 as f32;
+            x[34] = orders.arrives(g, unit, after) as u8 as f32;
         }
         if let Command::Attack { target, .. } = command {
-            x[37] = orders.terminal_targets.contains(target) as u8 as f32;
+            x[35] = orders.terminal_targets.contains(target) as u8 as f32;
         }
     }
     pub fn paint(
@@ -467,7 +456,6 @@ mod tests {
             total: 3,
             satisfied: false,
             hold_turns_remaining: Some(2),
-            deadline_round: Some(10),
         });
         let observe = |o: &TacticalOrders| {
             training::scoped(

@@ -543,13 +543,6 @@ pub struct PlayerMarker {
 )]
 #[serde(deny_unknown_fields)]
 pub struct EventObjective {
-    /// Public planning annotation; event conditions still enforce any deadline.
-    #[serde(
-        default,
-        rename = "deadlineRound",
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub deadline_round: Option<u32>,
     #[serde(default)]
     pub id: Option<String>,
     #[serde(default, rename = "preserveLives")]
