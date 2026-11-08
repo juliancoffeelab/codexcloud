@@ -12,6 +12,7 @@ from .model import Planner
 from .train import batches as dense_batches
 from .trees import save_json
 from .train import evaluate,results_summary,results_by_recruiter
+from .checkpoint import warm_start
 
 
 def model_batches(model,data,ids):
@@ -77,7 +78,10 @@ def worker(args):
         dense_equal.append(equal);data.append(current)
     train,valid=data;collection_seconds=time.monotonic()-started
     record(dict(event='collected',collection_seconds=collection_seconds,train_decisions=len(train.dense[2]),validation_decisions=len(valid.dense[2]),source_dense_equal=dense_equal))
-    model=SpatialPlanner(args.dropout) if args.architecture=='cnn' else Planner();sample_weights=map_weights(train,balance_maps);optimizer=torch.optim.Adam(model.parameters(),lr=args.learning_rate)
+    model=SpatialPlanner(args.dropout) if args.architecture=='cnn' else Planner()
+    checkpoint=warm_start(model,args.warm_start) if args.warm_start else None
+    sample_weights=map_weights(train,balance_maps);optimizer=torch.optim.Adam(model.parameters(),lr=args.learning_rate)
+    record(dict(event='initialization',warm_start=checkpoint,feature_names=native.FEATURE_NAMES,channel_names=native.SPATIAL_CHANNEL_NAMES if args.architecture=='cnn' else None))
     probe=np.random.default_rng(123).choice(len(train.dense[2]),min(1024,len(train.dense[2])),replace=False)
     initial=measure(model,valid,balance_maps=balance_maps);record(dict(event='initial',validation=initial))
     best=math.inf;history=[];best_epoch=0
@@ -104,7 +108,7 @@ def worker(args):
             save_json(args.out/'best.json',dict(run_id=args.run_id,epoch=epoch,architecture=args.architecture,balance_maps=balance_maps,threads=args.threads,weights=weights,model=model_path,validation=validation,
                 collection_seconds=collection_seconds,source_dense_equal=dense_equal,initial_validation=initial,dropout=args.dropout if args.architecture=='cnn' else 0.,
                 learning_rate=args.learning_rate,parameter_count=sum(p.numel() for p in model.parameters()),fingerprints=fingerprints,
-                dataset_source=str((args.dataset_dir or args.out/'data').resolve())))
+                dataset_source=str((args.dataset_dir or args.out/'data').resolve()),warm_start=checkpoint))
     log.close();save_json(args.out/'training-complete.json',dict(run_id=args.run_id,seconds=time.monotonic()-started,best_epoch=best_epoch,history=history))
 
 
@@ -119,10 +123,12 @@ def main():
     p.add_argument('--out',type=Path,default=Path('tmp/rl/deathmatch-classic-cnn'))
     p.add_argument('--dataset-dir',type=Path)
     p.add_argument('--dropout',type=float,default=0.1)
-    p.add_argument('--learning-rate',type=float,default=1e-3)
+    p.add_argument('--learning-rate',type=float)
+    p.add_argument('--warm-start',type=Path,help='Current or legacy .pt state dictionary; new inputs get zero weights')
     p.add_argument('--worker',action='store_true',help=argparse.SUPPRESS)
     p.add_argument('--run-id',default='',help=argparse.SUPPRESS)
     args=p.parse_args()
+    if args.learning_rate is None:args.learning_rate=1e-4 if args.warm_start else 1e-3
     if not math.isfinite(args.seconds) or not 0<args.seconds<=(1800 if args.architecture=='cnn' else 1200) or not math.isfinite(args.dropout) or not 0<=args.dropout<1 or not math.isfinite(args.learning_rate) or args.learning_rate<=0 or args.epochs<1 or not 1<=args.threads<=4:
         p.error('seconds: CNN <=1800, MLP <=1200; threads 1..4; dropout [0,1); positive rate/counts; all finite')
     args.out.mkdir(parents=True,exist_ok=True)
@@ -157,7 +163,7 @@ def main():
     if teacher!=source['teacher_results']:raise RuntimeError('teacher outcomes changed')
     history=[json.loads(line) for line in (args.out/'metrics.jsonl').read_text().splitlines() if json.loads(line)['event']=='epoch']
     report=dict(architecture='hex_cnn' if args.architecture=='cnn' else 'mlp',schema=native.SPATIAL_SCHEMA if args.architecture=='cnn' else native.SCHEMA,feature_names=native.FEATURE_NAMES,channel_names=native.SPATIAL_CHANNEL_NAMES if args.architecture=='cnn' else None,
-        fingerprints=json.loads(native.fingerprints()),source_report=str(args.source_report.resolve()),source_fingerprints=source.get('fingerprints'),seed=42,learning_rate=best['learning_rate'],parameter_count=best['parameter_count'],dropout=best['dropout'],best_epoch=best['epoch'],
+        fingerprints=json.loads(native.fingerprints()),source_report=str(args.source_report.resolve()),source_fingerprints=source.get('fingerprints'),seed=42,learning_rate=best['learning_rate'],parameter_count=best['parameter_count'],dropout=best['dropout'],best_epoch=best['epoch'],warm_start=best['warm_start'],
         training_seconds=training_seconds,training_cutoff=cutoff,training_limit_seconds=args.seconds,collection_seconds=best['collection_seconds'],
         dataset_source=best['dataset_source'],source_dense_equal=best['source_dense_equal'],initial_validation=best['initial_validation'],
         balance_maps=best['balance_maps'],threads=best['threads'],evaluation_deferred=args.defer_evaluation,final_validation=measure(model,valid,balance_maps=best['balance_maps']),history=history,inference_max_absolute_error=error,

@@ -11,11 +11,14 @@ from .workloads import encode
 class SpatialData:
     def __init__(self,directory):
         directory=Path(directory);self.manifest=json.loads((directory/'manifest.json').read_text())
-        if self.manifest.get('spatial_schema')!=native.SPATIAL_SCHEMA or self.manifest.get('channel_names')!=native.SPATIAL_CHANNEL_NAMES:
+        current=self.manifest.get('spatial_schema')==native.SPATIAL_SCHEMA and self.manifest.get('channel_names')==native.SPATIAL_CHANNEL_NAMES
+        legacy=self.manifest.get('spatial_schema')==3 and self.manifest.get('channel_names')==native.LEGACY_SPATIAL_CHANNEL_NAMES
+        if not current and not legacy:
             raise ValueError('spatial dataset schema mismatch')
         self.dense=load_dataset(directory)
         self.offsets=np.load(directory/'board_offsets.npy');self.shapes=np.load(directory/'shapes.npy');self.indices=np.load(directory/'indices.npy')
-        n=len(self.dense[2]);channels=len(native.SPATIAL_CHANNEL_NAMES)
+        n=len(self.dense[2]);channels=len(self.manifest['channel_names']);self.channels=channels
+        if legacy != (self.dense[0].shape[1]==len(native.LEGACY_FEATURE_NAMES)):raise ValueError('mixed dense/spatial dataset schemas')
         if self.shapes.shape!=(n,2) or self.offsets.shape!=(n+1,) or self.indices.shape!=(len(self.dense[0]),3):raise ValueError('spatial dataset dimensions mismatch')
         if self.offsets[0]!=0 or np.any(self.shapes<=0) or np.any(self.shapes>256) or np.any(self.shapes.prod(1)>16384) or np.any(np.diff(self.offsets)!=self.shapes.prod(1)*channels):raise ValueError('invalid spatial board offsets/shapes')
         if (directory/'boards.bin').stat().st_size!=int(self.offsets[-1])*4:raise ValueError('incomplete spatial board buffer')
@@ -60,8 +63,8 @@ def batches(data,ids,batch_size=64):
         mask=np.arange(width)[None,:]<sizes[:,None]
         for row,(i,size) in enumerate(zip(selected,sizes)):
             bh,bw=map(int,data.shapes[i]);a=int(offsets[i]);b=int(offsets[i+1])
-            board[row,:,:bh,:bw]=data.boards[data.offsets[i]:data.offsets[i+1]].reshape(channels,bh,bw)
-            x[row,:size]=features[a:b]
+            board[row,:data.channels,:bh,:bw]=data.boards[data.offsets[i]:data.offsets[i+1]].reshape(data.channels,bh,bw)
+            x[row,:size,:features.shape[1]]=features[a:b]
             positions=data.indices[a:b]
             ix[row,:size]=np.where(positions<0,-1,(positions//bw)*w+positions%bw)
         yield torch.from_numpy(x),torch.from_numpy(board),torch.from_numpy(ix),torch.from_numpy(mask),torch.from_numpy(labels[selected].copy())

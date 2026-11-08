@@ -21,6 +21,8 @@ class Planner(nn.Module):
             raise ValueError(f"unknown architecture: {architecture}")
 
     def forward(self, features):
+        if features.shape[-1]==len(native.LEGACY_FEATURE_NAMES):
+            features=torch.nn.functional.pad(features,(0,len(native.FEATURE_NAMES)-features.shape[-1]))
         return self.net(features).squeeze(-1)
 
     def export(self):

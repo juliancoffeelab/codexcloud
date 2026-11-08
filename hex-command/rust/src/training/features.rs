@@ -4,8 +4,9 @@ use crate::{
     data::*,
 };
 use std::{collections::HashMap, rc::Rc};
-pub const FEATURES: usize = 172;
-pub const FEATURE_NAMES: [&str; FEATURES] = [
+pub const LEGACY_FEATURES: usize = 172;
+pub const FEATURES: usize = LEGACY_FEATURES + super::duties::NAMES.len();
+pub const LEGACY_FEATURE_NAMES: [&str; LEGACY_FEATURES] = [
     "end_turn",
     "move",
     "attack",
@@ -179,6 +180,21 @@ pub const FEATURE_NAMES: [&str; FEATURES] = [
     "weapon_impact",
     "weapon_melee",
 ];
+pub const FEATURE_NAMES: [&str; FEATURES] = {
+    let old = LEGACY_FEATURE_NAMES;
+    let mut names = [""; FEATURES];
+    let mut i = 0;
+    while i < LEGACY_FEATURES {
+        names[i] = old[i];
+        i += 1;
+    }
+    let mut j = 0;
+    while j < super::duties::NAMES.len() {
+        names[i + j] = super::duties::NAMES[j];
+        j += 1;
+    }
+    names
+};
 #[derive(Clone)]
 pub struct Choices {
     pub spatial: Option<super::spatial::Spatial>,
@@ -236,7 +252,8 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
         .iter()
         .map(|c| encode(game, orders, c, &extra))
         .collect();
-    let spatial = super::needs_spatial().then(|| super::spatial::observe(game, orders, &commands));
+    let spatial = super::needs_spatial()
+        .then(|| super::spatial::observe_with_duties(game, orders, &commands, &extra.duties));
     Choices {
         commands,
         features,
@@ -265,6 +282,7 @@ fn encode(
     x[6] = enemies.len() as f32 / 10.;
     x[7] = g.gold_for_phase(g.turn()) as f32 / 100.;
     x[31] = orders.targets.len() as f32 / 10.;
+    extra.duties.encode(g, orders, c, &mut x[LEGACY_FEATURES..]);
     let (id, tile, target, weapon) = match c {
         Command::EndTurn => {
             x[0] = 1.;
@@ -384,6 +402,7 @@ fn encode(
 // Built once per decision; the engine caches route fields by movement profile,
 // goal set and terrain revision, so candidates only index shared distances.
 struct Extra {
+    duties: super::duties::Duties,
     profiles: HashMap<u32, [f32; 34]>,
     paths: HashMap<u32, (Rc<Vec<u16>>, Rc<Vec<u16>>)>,
 }
@@ -429,7 +448,11 @@ impl Extra {
             goals.dedup();
             paths.insert(u.id, (g.routes(u.kind, &goals), g.routes(u.kind, &enemies)));
         }
-        Self { profiles, paths }
+        Self {
+            profiles,
+            paths,
+            duties: super::duties::Duties::new(g, orders),
+        }
     }
 }
 fn weapon_features(w: &Weapon, x: &mut [f32]) {

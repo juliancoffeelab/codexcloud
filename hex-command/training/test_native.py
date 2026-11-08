@@ -129,6 +129,38 @@ class NativeContract(unittest.TestCase):
         self.assertEqual(result['accuracy'],.25)
         self.assertAlmostEqual(result['map_balanced_accuracy'],.5,places=6)
 
+    def test_expanded_cnn_checkpoint_preserves_logits_and_trains_new_inputs(self):
+        from pathlib import Path
+        from hex_command_rl.spatial import SpatialPlanner,HexConv
+        from hex_command_rl.checkpoint import warm_start
+        torch.manual_seed(81)
+        old=SpatialPlanner().eval()
+        width=len(native.LEGACY_FEATURE_NAMES);channels=len(native.LEGACY_SPATIAL_CHANNEL_NAMES)
+        old.convs[0]=HexConv(channels);old.head[0]=torch.nn.Linear(width+64,64)
+        x=torch.randn(2,3,width);board=torch.randn(2,channels,3,4);board[:,0]=1
+        indices=torch.tensor([[[0,1,-1],[1,2,3],[4,5,-1]]]*2)
+        with torch.no_grad():
+            encoded,pooled=old.encode(board)
+            gathered=encoded.flatten(2).gather(2,indices.clamp_min(0).reshape(2,1,-1).expand(-1,16,-1))
+            gathered=gathered.transpose(1,2).reshape(2,3,3,16)*(indices>=0).unsqueeze(-1)
+            expected=old.head(torch.cat([x,gathered.flatten(2),pooled[:,None,:].expand(-1,3,-1)],-1)).squeeze(-1)
+        exported=json.loads(old.export());exported.update(schema=3,feature_names=native.LEGACY_FEATURE_NAMES)
+        exported['spatial']['channel_names']=native.LEGACY_SPATIAL_CHANNEL_NAMES
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'old.pt';torch.save(old.state_dict(),path)
+            model=SpatialPlanner().eval();warm_start(model,path)
+            expanded_x=torch.cat([x,torch.randn(2,3,len(native.FEATURE_NAMES)-width)],-1)
+            expanded_board=torch.cat([board,torch.randn(2,len(native.SPATIAL_CHANNEL_NAMES)-channels,3,4)],1)
+            with torch.no_grad():actual=model(expanded_x,expanded_board,indices)
+            np.testing.assert_allclose(actual.numpy(),expected.numpy(),atol=2e-6,rtol=2e-5)
+            upgraded=native.upgrade_model(json.dumps(exported))
+            actual=native.score_spatial(upgraded,expanded_x.reshape(-1,len(native.FEATURE_NAMES)).numpy(),np.array([0,3,6]),expanded_board.flatten().numpy(),
+                np.array([0,expanded_board[0].numel(),expanded_board.numel()]),np.array([[3,4],[3,4]]),indices.reshape(-1,3).numpy())
+            np.testing.assert_allclose(actual,expected.numpy().flatten(),atol=2e-6,rtol=2e-5)
+            model.train();model(expanded_x,expanded_board,indices).sum().backward()
+            self.assertGreater(float(model.convs[0].weight.grad[:,channels:].abs().sum()),0.)
+            self.assertGreater(float(model.head[0].weight.grad[:,width:len(native.FEATURE_NAMES)].abs().sum()),0.)
+
     def test_spatial_step_buffers_and_terminal_slots(self):
         env=native.BatchEnv(spatial=True)
         try:

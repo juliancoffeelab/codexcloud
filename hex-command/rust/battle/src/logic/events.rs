@@ -716,6 +716,12 @@ impl Game<'_> {
                             .collect(),
                     ),
                 };
+                let progress = self.scripted_objective_status(event).progress;
+                let hold_turns_remaining = match &objective.intent {
+                    EventIntent::Hold(v) => Some(v.turns.saturating_sub(progress.current)),
+                    EventIntent::Own(v) => v.turns.map(|n| n.saturating_sub(progress.current)),
+                    _ => None,
+                };
                 Some(CampaignObjective {
                     id,
                     optional: objective.optional,
@@ -723,6 +729,10 @@ impl Game<'_> {
                     intent,
                     selector,
                     tiles,
+                    progress_current: progress.current,
+                    progress_total: progress.total,
+                    hold_turns_remaining,
+                    deadline_round: objective.deadline_round,
                 })
             })
             .collect()

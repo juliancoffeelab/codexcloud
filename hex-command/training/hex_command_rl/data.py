@@ -38,9 +38,13 @@ def collect_dataset(configs, directory, max_samples=None, batch_games=8, progres
 
 def load_dataset(directory):
     directory=Path(directory);manifest=json.loads((directory/'manifest.json').read_text())
-    if manifest['schema']!=native.SCHEMA or manifest['feature_names']!=native.FEATURE_NAMES:
+    current=manifest['schema']==native.SCHEMA and manifest['feature_names']==native.FEATURE_NAMES
+    legacy=manifest['schema']==2 and manifest['feature_names']==native.LEGACY_FEATURE_NAMES
+    if not current and not legacy:
         raise ValueError('dataset feature schema mismatch')
-    shape=(manifest['candidates'],len(native.FEATURE_NAMES))
+    if legacy and any('campaign' in c for c in manifest['configs']):
+        raise ValueError('legacy campaign observations need recollection with canonical orders')
+    shape=(manifest['candidates'],len(manifest['feature_names']))
     expected=int(np.prod(shape))*np.dtype(np.float32).itemsize
     if (directory/'features.bin').stat().st_size!=expected:
         raise ValueError('incomplete candidate buffer')

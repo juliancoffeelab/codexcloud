@@ -24,9 +24,13 @@ fn parse(config: &str) -> Result<MatchConfig, String> {
     Ok(c)
 }
 fn load_model(s: &str) -> Result<Model, String> {
-    let m: Model = serde_json::from_str(s).map_err(|e| e.to_string())?;
-    m.validate()?;
+    let mut m: Model = serde_json::from_str(s).map_err(|e| e.to_string())?;
+    m.upgrade()?;
     Ok(m)
+}
+#[pyfunction]
+fn upgrade_model(model: String) -> PyResult<String> {
+    serde_json::to_string(&load_model(&model).map_err(err)?).map_err(err)
 }
 fn learned(config: &mut MatchConfig) {
     match config {
@@ -244,12 +248,18 @@ fn score<'py>(
         return Err(err("use score_spatial for a CNN model"));
     }
     let a = features.as_array();
-    if a.ncols() != FEATURES {
+    if a.ncols() != FEATURES && a.ncols() != LEGACY_FEATURES {
         return Err(err("feature width mismatch"));
     }
     Ok(a.rows()
         .into_iter()
-        .map(|r| m.score(r.as_slice().unwrap_or(&r.to_vec())))
+        .map(|r| {
+            let mut row = vec![0.; FEATURES];
+            for (i, &v) in r.iter().enumerate() {
+                row[i] = v;
+            }
+            m.score(&row)
+        })
         .collect::<Vec<_>>()
         .into_pyarray(py))
 }
@@ -271,13 +281,23 @@ fn score_spatial<'py>(
     let x = features.as_array();
     let sh = shapes.as_array();
     let ix = indices.as_array();
-    if x.ncols() != FEATURES || ix.nrows() != x.nrows() || ix.ncols() != 3 || sh.ncols() != 2 {
+    if (x.ncols() != FEATURES && x.ncols() != LEGACY_FEATURES)
+        || ix.nrows() != x.nrows()
+        || ix.ncols() != 3
+        || sh.ncols() != 2
+    {
         return Err(err("spatial array dimensions mismatch"));
     }
     let x: Vec<[f32; FEATURES]> = x
         .rows()
         .into_iter()
-        .map(|row| row.to_vec().try_into().unwrap())
+        .map(|row| {
+            let mut values = [0.; FEATURES];
+            for (i, &v) in row.iter().enumerate() {
+                values[i] = v;
+            }
+            values
+        })
         .collect();
     let ix: Vec<[i64; 3]> = ix
         .rows()
@@ -315,12 +335,16 @@ fn score_spatial<'py>(
                 if shape[0] <= 0 || shape[1] <= 0 || shape[0] > 256 || shape[1] > 256 {
                     return Err("invalid spatial shape".into());
                 }
-                let board = spatial::Board {
+                let mut board = spatial::Board {
                     height: shape[0] as usize,
                     width: shape[1] as usize,
                     values: values[board_offsets[i] as usize..board_offsets[i + 1] as usize]
                         .to_vec(),
                 };
+                let cells = board.height * board.width;
+                if board.values.len() == cells * spatial::LEGACY_CHANNELS {
+                    board.values.resize(cells * spatial::CHANNELS, 0.);
+                }
                 board.validate()?;
                 let a = offsets[i] as usize;
                 let b = offsets[i + 1] as usize;
@@ -555,6 +579,15 @@ fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add("SPATIAL_KERNEL", spatial::KERNEL.to_vec())?;
     m.add_function(wrap_pyfunction!(fingerprints, m)?)?;
     m.add("FEATURE_NAMES", FEATURE_NAMES.to_vec())?;
+    m.add(
+        "LEGACY_FEATURE_NAMES",
+        FEATURE_NAMES[..LEGACY_FEATURES].to_vec(),
+    )?;
+    m.add(
+        "LEGACY_SPATIAL_CHANNEL_NAMES",
+        spatial::channel_names()[..spatial::LEGACY_CHANNELS].to_vec(),
+    )?;
+    m.add_function(wrap_pyfunction!(upgrade_model, m)?)?;
     m.add_function(wrap_pyfunction!(collect, m)?)?;
     m.add_function(wrap_pyfunction!(collect_spatial, m)?)?;
     m.add_function(wrap_pyfunction!(score_spatial, m)?)?;

@@ -14,8 +14,9 @@ impl super::Planner for Learned {
             return Err(CommandError::IllegalIntent);
         }
         super::prepare_priorities_and_recovery(context, orders)?;
+        let observed = context.observation_orders().clone();
         super::drive(context, |context| {
-            let choices = crate::training::candidates(context.battle(), orders);
+            let choices = crate::training::candidates(context.battle(), &observed);
             let index = crate::training::select(&choices);
             let command = choices.commands[index].clone();
             if command == Command::EndTurn {

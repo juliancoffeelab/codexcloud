@@ -213,6 +213,14 @@ impl TacticalContext<'_, '_> {
     pub(in crate::ai) fn battle(&self) -> &BattleView<'_, '_> {
         self.draft
     }
+    #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+    pub(in crate::ai) fn observation_orders(&self) -> &TacticalOrders {
+        self.workspace
+            .state
+            .observation_orders
+            .as_ref()
+            .expect("observation orders")
+    }
     pub(in crate::ai) fn emit(&mut self, command: Command) -> Result<(), CommandError> {
         if !self.draft.permits(&command) {
             return Err(CommandError::IllegalIntent);
@@ -223,10 +231,9 @@ impl TacticalContext<'_, '_> {
             &self
                 .workspace
                 .state
-                .orders
+                .observation_orders
                 .as_ref()
-                .expect("orders")
-                .tactics,
+                .expect("observation orders"),
             &command,
         );
         let before = self.draft.control_roster();

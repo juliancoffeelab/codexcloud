@@ -6,9 +6,10 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
-pub const SPATIAL_SCHEMA: u32 = 3;
+pub const SPATIAL_SCHEMA: u32 = 5;
 pub const EMBEDDING: usize = 16;
-pub const CHANNELS: usize = 53;
+pub const LEGACY_CHANNELS: usize = 53;
+pub const CHANNELS: usize = LEGACY_CHANNELS + super::duties::CHANNEL_NAMES.len();
 // (row, column) in axial coordinates q = col - floor(row/2), r = row.
 pub const KERNEL: [(i32, i32); 7] = [(0, 0), (0, 1), (1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1)];
 pub fn channel_names() -> Vec<String> {
@@ -42,6 +43,7 @@ pub fn channel_names() -> Vec<String> {
         .into_iter()
         .map(String::from),
     );
+    names.extend(super::duties::CHANNEL_NAMES.into_iter().map(String::from));
     names
 }
 #[derive(Clone)]
@@ -56,6 +58,15 @@ pub struct Spatial {
     pub indices: Vec<[i64; 3]>, // actor, destination, target; -1 means absent.
 }
 pub fn observe(g: &BattleView<'_, '_>, orders: &TacticalOrders, commands: &[Command]) -> Spatial {
+    let duties = super::duties::Duties::new(g, orders);
+    observe_with_duties(g, orders, commands, &duties)
+}
+pub(super) fn observe_with_duties(
+    g: &BattleView<'_, '_>,
+    orders: &TacticalOrders,
+    commands: &[Command],
+    duties: &super::duties::Duties,
+) -> Spatial {
     let axial: Vec<_> = g
         .board()
         .ids
@@ -126,6 +137,7 @@ pub fn observe(g: &BattleView<'_, '_>, orders: &TacticalOrders, commands: &[Comm
             }
         }
     }
+    duties.paint(g, orders, &sites, &mut values, cells);
     let indices = commands
         .iter()
         .map(|command| {

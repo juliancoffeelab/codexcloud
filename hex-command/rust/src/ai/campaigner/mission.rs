@@ -165,6 +165,22 @@ impl CampaignBlock {
             }
         }
         let mut tactics = TacticalOrders {
+            progress: game
+                .objectives
+                .iter()
+                .map(|o| ObjectiveProgress {
+                    id: format!(
+                        "{}:{}",
+                        if o.optional { "optional" } else { "required" },
+                        o.id
+                    ),
+                    current: o.progress_current,
+                    total: o.progress_total,
+                    satisfied: o.satisfied,
+                    hold_turns_remaining: o.hold_turns_remaining,
+                    deadline_round: o.deadline_round,
+                })
+                .collect(),
             scoped,
             inactive,
             targets: authored_targets.iter().cloned().map(Target::from).collect(),

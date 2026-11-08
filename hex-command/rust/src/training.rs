@@ -5,10 +5,11 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::cell::RefCell;
-pub const SCHEMA: u32 = 2;
+pub const SCHEMA: u32 = 4;
+mod duties;
 mod features;
 pub mod spatial;
-pub use features::{Choices, FEATURE_NAMES, FEATURES, candidates};
+pub use features::{Choices, FEATURE_NAMES, FEATURES, LEGACY_FEATURES, candidates};
 #[derive(Default)]
 pub struct Dataset {
     pub features: Vec<[f32; FEATURES]>,
@@ -118,6 +119,72 @@ impl Tree {
     }
 }
 impl Model {
+    /// Preserve legacy input meanings, inserting zero weights before CNN gathers.
+    pub fn upgrade(&mut self) -> Result<(), String> {
+        let old_schema = if self.spatial.is_some() { 3 } else { 2 };
+        if self.schema != old_schema {
+            return self.validate();
+        }
+        if self.feature_names != FEATURE_NAMES[..LEGACY_FEATURES] {
+            return Err("legacy model feature names differ".into());
+        }
+        let embedding = if self.spatial.is_some() {
+            4 * spatial::EMBEDDING
+        } else {
+            0
+        };
+        if let Some(encoder) = &mut self.spatial {
+            let names = spatial::channel_names();
+            if encoder.channel_names != names[..spatial::LEGACY_CHANNELS]
+                || encoder.convolutions.len() != 2
+            {
+                return Err("legacy spatial schema differs".into());
+            }
+            let first = &mut encoder.convolutions[0];
+            if first.input_channels != spatial::LEGACY_CHANNELS
+                || first.output_channels != spatial::EMBEDDING
+                || first.weights.len() != spatial::EMBEDDING * spatial::LEGACY_CHANNELS * 7
+            {
+                return Err("legacy convolution dimensions differ".into());
+            }
+            let mut weights = vec![0.; spatial::EMBEDDING * spatial::CHANNELS * 7];
+            for output in 0..spatial::EMBEDDING {
+                let old = output * spatial::LEGACY_CHANNELS * 7;
+                let new = output * spatial::CHANNELS * 7;
+                weights[new..new + spatial::LEGACY_CHANNELS * 7]
+                    .copy_from_slice(&first.weights[old..old + spatial::LEGACY_CHANNELS * 7]);
+            }
+            first.weights = weights;
+            first.input_channels = spatial::CHANNELS;
+            encoder.channel_names = names;
+        }
+        if let Some(first) = self.layers.first_mut() {
+            for row in &mut first.weights {
+                if row.len() != LEGACY_FEATURES + embedding {
+                    return Err("legacy dense dimensions differ".into());
+                }
+                let mut upgraded = vec![0.; FEATURES + embedding];
+                upgraded[..LEGACY_FEATURES].copy_from_slice(&row[..LEGACY_FEATURES]);
+                upgraded[FEATURES..].copy_from_slice(&row[LEGACY_FEATURES..]);
+                *row = upgraded;
+            }
+        }
+        if self
+            .trees
+            .iter()
+            .flat_map(|t| &t.nodes)
+            .any(|n| matches!(n, TreeNode::Split{feature,..} if *feature>=LEGACY_FEATURES))
+        {
+            return Err("legacy tree feature is outside schema".into());
+        }
+        self.feature_names = FEATURE_NAMES.iter().map(|s| s.to_string()).collect();
+        self.schema = if self.spatial.is_some() {
+            spatial::SPATIAL_SCHEMA
+        } else {
+            SCHEMA
+        };
+        self.validate()
+    }
     pub fn validate(&self) -> Result<(), String> {
         if self.schema
             != (if self.spatial.is_some() {
