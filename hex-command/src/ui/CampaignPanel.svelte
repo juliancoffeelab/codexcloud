@@ -89,9 +89,21 @@
       {definition.name}
       {campaign.mission + 1}/{definition.missions.length}
     </p>
-    <button onclick={() => conversations?.showModal()}>Campaign conversations</button>
     <h3>Briefing</h3>
-    <p>{view.game.story?.briefing ?? ""}</p>
+    <p>
+      {view.game.story?.briefing ?? ""}{" "}
+      <button
+        class="conversation-icon"
+        aria-label="Campaign conversations"
+        title="Campaign conversations"
+        onclick={() => conversations?.showModal()}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M14 3H4a2 2 0 0 0-2 2v11l4-4h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z" />
+          <path d="M8 16v1a2 2 0 0 0 2 2h8l4 3V11a2 2 0 0 0-2-2" />
+        </svg>
+      </button>
+    </p>
     {#if view.game.story?.hints.length}
       <h3>Hints</h3>
       <ul class="mission-items">
@@ -224,6 +236,31 @@
 </DialogWindow>
 
 <style>
+  .conversation-icon {
+    display: inline-grid;
+    place-items: center;
+    vertical-align: middle;
+    width: 28px;
+    height: 24px;
+    min-height: 24px;
+    padding: 3px 5px;
+    margin: 0 0 0 3px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+  }
+  .conversation-icon:is(:hover, :focus-visible) {
+    color: var(--gold);
+  }
+  .conversation-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
   .recall-copy {
     min-width: 0;
   }
