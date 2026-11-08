@@ -23,7 +23,7 @@ node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts \
 Training accepts a finite positive time budget. The budget covers data collection and
 optimization; final inference checks and evaluation run afterward. Checkpoints,
 exported weights, configurations, metrics and source fingerprints stay under
-ignored `tmp/rl/deathmatch-mixed/`. The best validation cross-entropy checkpoint is
+ignored `tmp/rl/deathmatch-classic/`. The best validation cross-entropy checkpoint is
 selected. A seed split separates complete training, validation and evaluation
 matches; positions from a match never span splits. Default workload: deathmatch (opposing leader elimination), sixteen
 training seeds, one validation seed, all five arena maps,
@@ -105,7 +105,7 @@ threads beyond the CPU quota do not add compute.
 The same learned planner drives interactive stepping and full native simulation.
 The step interface automatically runs fixed opponents and existing orchestration
 until the next player decision. Combat returns to the normal harness boundary
-before replanning. Collection currently records teacher decisions for both sides.
+before replanning. Collection defaults to player-side labels; `--collect-side both` restores both-side recording.
 
 ## Validation
 
@@ -131,8 +131,8 @@ configuration is:
 Evaluate existing weights without retraining:
 
 ```sh
-.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-mixed/planner.json
-.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-mixed/planner.json \
+.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-classic/planner.json
+.venv/bin/python -m hex_command_rl.evaluate tmp/rl/deathmatch-classic/planner.json \
   --configs tmp/rl/campaign-configs.json --out tmp/rl/campaign-evaluation.json
 ```
 
@@ -173,14 +173,15 @@ Plot logs without retraining:
 
 ```sh
 .venv/bin/pip install -e 'training[plots]'
-.venv/bin/python -m hex_command_rl.plot tmp/rl/deathmatch-mixed/report.json
+.venv/bin/python -m hex_command_rl.plot tmp/rl/deathmatch-classic/report.json
 ```
 
 ## Recruiter diversity and disk-backed datasets
 
 Recruitment is an independent workload axis. Defaults are Balanced, Situational
 and Predictor (`--recruiters balanced situational predictor`). Within each stratum,
-both sides use the selected recruiter. The teacher planner remains Queued and the
+our side uses the selected recruiter. The enemy retains the full Classic preset,
+including its Classic recruiter and default two-recruit phase limit. The teacher planner remains Queued and the
 campaigner remains Mission. The learned planner replaces only the player planner
 in evaluation. This diversifies army composition without treating different
 recruiters as different tactical planning algorithms. Results include a separate
@@ -190,8 +191,8 @@ The default training panel is 16 seeds × 3 recruiters × 5 maps × 4 directed f
 pairings × 2 first seats = 1,920 matches. Validation uses a separate seed with all
 three recruiters (120 matches). Final evaluation uses all twelve directed
 non-mirror faction pairs, three other seeds and a 100-round cap: 360 matches per
-recruiter, 1,080 total. These matched-recruiter strata do not rank recruiters
-head-to-head against one another.
+recruiter, 1,080 total. These are fixed-opponent comparisons, not direct matches between recruiter
+strategies.
 
 `data.py` collects eight-game native shards into `data/train/` and
 `data/validation/`. Candidate features are written as a float32 binary buffer and
@@ -207,9 +208,45 @@ evaluation:
 
 ```sh
 .venv/bin/python -m hex_command_rl.train --seconds 1200 --epochs 1000000 \
-  --out tmp/rl/deathmatch-mixed-20m
+  --out tmp/rl/deathmatch-classic-20m
 ```
 
 Training is still imitation over a fixed dataset, not RL. More data increases
 cost per epoch; the time budget limits repeated passes. Large mapped datasets
 also consume disk space and file-backed resident memory as batches touch pages.
+
+## Fixed Classic opponent and collection side
+
+The default opponent is now the complete Classic preset. `--opponent` selects
+another preset; its recruitment/planning remain independent of our recruiter
+axis. `--mirror-recruiters` explicitly overrides the enemy recruiter when a
+matched-recruiter experiment is wanted. To reproduce the earlier self-play
+workload, use `--opponent balanced --mirror-recruiters --collect-side both`.
+
+`--collect-side player` is the default: only our side's teacher decisions become
+labels, even when Classic moves first. The native collector also accepts enemy
+or both-side recording, with tests proving that player/enemy decision counts
+partition both-side recording and that sharded player data matches native data.
+Manifests record the collection side. Opponent actions still run normally and
+influence positions, but do not supply supervision.
+
+The current teacher remains Queued, with Balanced/Situational/Predictor recruiters.
+This change does not introduce Full teachers, stat randomization, spatial encoders
+or reinforcement updates. The time budget continues to include collection and
+training; final evaluation follows it.
+
+A reproducible bot comparison against the same full Classic enemy is available:
+
+```sh
+.venv/bin/python -m hex_command_rl.compare \
+  --model tmp/rl/deathmatch-classic-20m/planner.json \
+  --out tmp/rl/deathmatch-classic-20m/bot-comparison.json
+```
+
+It runs Classic, Rush, Rotated, Balanced, Situational and Predictor presets,
+Full with each of the three recruiters, and the learned planner with those same
+recruiters. Every panel uses the same 360 non-mirror faction/map/initiative/seed
+configurations and a 100-round cap. Preset recruitment limits remain intact;
+these are whole-bot comparisons, not equalized recruitment-budget experiments.
+JSONL retains partial results by panel. `--baselines` reuses a completed panel
+only after exact workload and engine/content fingerprint checks.

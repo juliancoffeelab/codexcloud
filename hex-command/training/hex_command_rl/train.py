@@ -100,13 +100,16 @@ def main():
     p.add_argument('--max-samples', type=int, help='Optional hard dataset limit; fails rather than truncates')
     p.add_argument('--recruiters', nargs='+', choices=RECRUITERS, default=list(RECRUITERS))
     p.add_argument('--teacher', choices=['classic', 'balanced', 'rotated', 'situational', 'predictor'], default='balanced')
+    p.add_argument('--opponent', choices=['classic','balanced','rotated','situational','predictor'], default='classic')
+    p.add_argument('--mirror-recruiters', action='store_true', help='Override enemy recruiter to match ours; default preserves the full opponent preset')
+    p.add_argument('--collect-side', choices=['player','enemy','both'], default='player')
     p.add_argument('--train-configs', type=Path)
     p.add_argument('--validation-configs', type=Path)
     p.add_argument('--evaluation-configs', type=Path)
     p.add_argument('--eval-rounds', type=int, default=100)
     p.add_argument('--eval-seeds', type=int, default=3)
     p.add_argument('--eval-every', type=int, default=5, help='Periodic validation interval; 0 disables')
-    p.add_argument('--out', type=Path, default=Path('tmp/rl/deathmatch-mixed'))
+    p.add_argument('--out', type=Path, default=Path('tmp/rl/deathmatch-classic'))
     args = p.parse_args()
     if not math.isfinite(args.seconds) or args.seconds<=0 or min(args.train_seeds,args.epochs,args.eval_seeds)<1 or (args.max_samples is not None and args.max_samples<1):
         p.error('seconds must be finite and positive; counts must be positive')
@@ -118,16 +121,16 @@ def main():
     torch.manual_seed(42); np.random.seed(42); random.seed(42)
     fingerprints = json.loads(native.fingerprints())
     started = time.monotonic()
-    train_configs = arena(range(1,args.train_seeds+1),args.teacher,recruiters=args.recruiters)
-    valid_configs = arena([10001],args.teacher,recruiters=args.recruiters)
-    evaluation_configs = arena(range(20001, 20001+args.eval_seeds), args.teacher, rounds=args.eval_rounds, all_pairs=True,recruiters=args.recruiters)
+    train_configs = arena(range(1,args.train_seeds+1),args.teacher,opponent=args.opponent,recruiters=args.recruiters,mirror_recruiters=args.mirror_recruiters)
+    valid_configs = arena([10001],args.teacher,opponent=args.opponent,recruiters=args.recruiters,mirror_recruiters=args.mirror_recruiters)
+    evaluation_configs = arena(range(20001, 20001+args.eval_seeds), args.teacher,opponent=args.opponent, rounds=args.eval_rounds, all_pairs=True,recruiters=args.recruiters,mirror_recruiters=args.mirror_recruiters)
     if args.train_configs: train_configs = json.loads(args.train_configs.read_text())
     if args.validation_configs: valid_configs = json.loads(args.validation_configs.read_text())
     if args.evaluation_configs:
         evaluation_configs = json.loads(args.evaluation_configs.read_text())
         for c in evaluation_configs:
             if 'campaign' not in c: c['maxRounds'] = args.eval_rounds
-    periodic_configs = [c for c in arena([15001],args.teacher,recruiters=args.recruiters) if c['armies']['player'] == 'human'] if args.eval_every else []
+    periodic_configs = [c for c in arena([15001],args.teacher,opponent=args.opponent,recruiters=args.recruiters,mirror_recruiters=args.mirror_recruiters) if c['armies']['player'] == 'human'] if args.eval_every else []
     workloads = (train_configs, valid_configs, evaluation_configs, periodic_configs)
     seeds = [set(c['seed'] for c in configs) for configs in workloads]
     if any(seeds[i] & seeds[j] for i in range(4) for j in range(i)):
@@ -137,8 +140,9 @@ def main():
     def collection_progress(row):
         row['seconds']=round(time.monotonic()-started,2)
         print(json.dumps(row),flush=True)
-    train=collect_dataset(train_configs,args.out/'data'/'train',args.max_samples,progress=collection_progress)
-    valid=collect_dataset(valid_configs,args.out/'data'/'validation',args.max_samples,progress=collection_progress)
+    collection_side=None if args.collect_side=='both' else args.collect_side
+    train=collect_dataset(train_configs,args.out/'data'/'train',args.max_samples,progress=collection_progress,side=collection_side)
+    valid=collect_dataset(valid_configs,args.out/'data'/'validation',args.max_samples,progress=collection_progress,side=collection_side)
     if not len(train[2]) or not len(valid[2]) or train[3] or valid[3]:
         raise RuntimeError(f'empty data or missing teacher actions: train={train[3]}, validation={valid[3]}')
     collection_seconds = time.monotonic()-started
@@ -200,7 +204,7 @@ def main():
     teacher=evaluate(evaluation_configs);learned=evaluate(evaluation_configs,exported)
     grouped=results_by_recruiter(evaluation_configs,teacher,learned)
     report=dict(schema=native.SCHEMA, feature_names=native.FEATURE_NAMES, fingerprints=fingerprints,
-                teacher=args.teacher, recruiters=args.recruiters, seed=42, train_configs=train_configs, validation_configs=valid_configs,
+                teacher=args.teacher, opponent=args.opponent, collect_side=args.collect_side, recruiters=args.recruiters, seed=42, train_configs=train_configs, validation_configs=valid_configs,
                 evaluation_configs=evaluation_configs, periodic_configs=periodic_configs,
                 initial_validation=initial, initial_train_probe=initial_train,
                 final_validation=metrics(model,valid), final_train_probe=metrics(model,train,train_probe),

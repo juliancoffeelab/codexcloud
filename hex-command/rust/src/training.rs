@@ -15,6 +15,7 @@ pub struct Dataset {
     pub labels: Vec<i64>,
     pub missing: usize,
     pub limit: usize,
+    pub side: Option<Side>,
 }
 #[derive(Clone, Deserialize, Serialize)]
 pub struct Layer {
@@ -112,7 +113,7 @@ pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &
         s.borrow()
             .data
             .as_ref()
-            .is_some_and(|d| d.labels.len() < d.limit)
+            .is_some_and(|d| d.labels.len() < d.limit && d.side.is_none_or(|side| side == g.turn()))
     });
     if !enabled
         || !matches!(

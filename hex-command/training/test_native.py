@@ -85,6 +85,19 @@ class NativeContract(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 collect_dataset(configs, Path(directory)/'limited', max_samples=1)
 
+    def test_collection_side_filter_partitions_decisions(self):
+        from hex_command_rl.data import collect_dataset
+        configs=[arena([904],recruiters=('situational',))[0]]
+        both=native.collect(encode(configs),100000)
+        player=native.collect(encode(configs),100000,side='player')
+        enemy=native.collect(encode(configs),100000,side='enemy')
+        self.assertGreater(len(player[2]),0);self.assertGreater(len(enemy[2]),0)
+        self.assertEqual(len(both[2]),len(player[2])+len(enemy[2]))
+        with tempfile.TemporaryDirectory() as directory:
+            mapped=collect_dataset(configs,directory,side='player')
+            for a,b in zip(mapped[:3],player[:3]):np.testing.assert_array_equal(a,b)
+        with self.assertRaises(ValueError):native.collect(encode(configs),side='invalid')
+
     def test_masked_metrics_and_action_frequencies(self):
         from hex_command_rl.train import metrics
         width = len(native.FEATURE_NAMES)

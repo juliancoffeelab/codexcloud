@@ -13,8 +13,8 @@ def recruiter_pair(config):
     return a if a==b else f'{a}-vs-{b}'
 
 
-def arena(seeds, teacher='balanced', opponent='balanced', rounds=30, all_pairs=False,
-          recruiters=RECRUITERS):
+def arena(seeds, teacher='balanced', opponent='classic', rounds=30, all_pairs=False,
+          recruiters=RECRUITERS, mirror_recruiters=False):
     # Recruiter is an independent axis. None retains each policy's preset blocks.
     configs=[]
     for seed in seeds:
@@ -30,7 +30,7 @@ def arena(seeds, teacher='balanced', opponent='balanced', rounds=30, all_pairs=F
                             if recruiter is not None:
                                 # These three presets share Mission/Queued. Explicit
                                 # blocks keep recruitment independent of teacher selection.
-                                for side,policy in [('player',teacher),('enemy',opponent)]:
+                                for side,policy in [('player',teacher)]+([('enemy',opponent)] if mirror_recruiters else []):
                                     planner='classic' if policy=='classic' else 'queued'
                                     c[side+'Blocks']=dict(recruiter=recruiter,campaign='mission',planner=planner)
                             configs.append(c)

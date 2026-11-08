@@ -6,7 +6,7 @@ import hex_command_training as native
 from .workloads import encode, recruiter_pair
 
 
-def collect_dataset(configs, directory, max_samples=None, batch_games=8, progress=None):
+def collect_dataset(configs, directory, max_samples=None, batch_games=8, progress=None, side=None):
     directory=Path(directory);directory.mkdir(parents=True,exist_ok=True)
     (directory/'manifest.json').unlink(missing_ok=True)
     offsets=[0];labels=[];shards=[];rows=0
@@ -15,7 +15,7 @@ def collect_dataset(configs, directory, max_samples=None, batch_games=8, progres
             batch=configs[start:start+batch_games]
             # Per-shard guard. Reaching it is an error, never silent truncation.
             guard=1_000_000
-            x, boundaries, y, missing=native.collect(encode(batch),guard)
+            x, boundaries, y, missing=native.collect(encode(batch),guard,side=side)
             if missing or len(y)>=guard:
                 raise RuntimeError(f'incomplete teacher shard: missing={missing}, decisions={len(y)}')
             if max_samples is not None and len(labels)+len(y)>max_samples:
@@ -29,7 +29,7 @@ def collect_dataset(configs, directory, max_samples=None, batch_games=8, progres
     if not labels:raise RuntimeError('empty teacher dataset')
     np.save(directory/'offsets.npy',np.asarray(offsets,dtype=np.int64))
     np.save(directory/'labels.npy',np.asarray(labels,dtype=np.int64))
-    manifest=dict(schema=native.SCHEMA,feature_names=native.FEATURE_NAMES,
+    manifest=dict(collection_side=side,schema=native.SCHEMA,feature_names=native.FEATURE_NAMES,
                   fingerprints=json.loads(native.fingerprints()),configs=configs,shards=shards,
                   decisions=len(labels),candidates=rows)
     (directory/'manifest.json').write_text(json.dumps(manifest,indent=2))

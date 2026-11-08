@@ -63,8 +63,19 @@ type DataResult = (
     usize,
 );
 #[pyfunction]
-#[pyo3(signature=(configs, max_samples=100000))]
-fn collect(py: Python<'_>, configs: Vec<String>, max_samples: usize) -> PyResult<DataResult> {
+#[pyo3(signature=(configs, max_samples=100000, side=None))]
+fn collect(
+    py: Python<'_>,
+    configs: Vec<String>,
+    max_samples: usize,
+    side: Option<String>,
+) -> PyResult<DataResult> {
+    let side = match side.as_deref() {
+        None => None,
+        Some("player") => Some(Side::Player),
+        Some("enemy") => Some(Side::Enemy),
+        _ => return Err(err("side must be player, enemy, or None")),
+    };
     if max_samples == 0 {
         return Err(err("max_samples must be positive"));
     }
@@ -75,6 +86,7 @@ fn collect(py: Python<'_>, configs: Vec<String>, max_samples: usize) -> PyResult
             let (result, data) = scoped(
                 Some(Dataset {
                     limit: max_samples,
+                    side,
                     ..Default::default()
                 }),
                 None,
