@@ -280,3 +280,32 @@ own phase. It is not a worst-turn latency or a browser/WASM measurement. Both
 native replay embeddings and the existing phase-stdio path use the same validated
 phase executor. These JSON methods are offline fixture tools; numeric training
 observations still use NumPy buffers.
+
+## Conditional logistic-regression baseline
+
+`--architecture linear` replaces the 172→64→64→1 ReLU scorer with one 172→1
+linear score. Training still applies a softmax across legal candidates and the
+same masked cross-entropy. This is conditional/multinomial logistic regression,
+not independent binary classification of candidates. Its shared intercept would
+cancel across candidate logits, so it uses 172 learned weights and exports a zero
+intercept for the existing native model format. No runtime-engine change is needed.
+
+```sh
+.venv/bin/python -m hex_command_rl.train --architecture linear \
+  --dataset-dir tmp/rl/deathmatch-classic-20m/data \
+  --seconds 180 --epochs 1000000 --out tmp/rl/deathmatch-classic-linear
+```
+
+Dataset reuse checks requested configurations, collection side, feature schema
+and current content fingerprint. Saved source-engine fingerprints are retained
+alongside the current runtime fingerprint. Reusing frozen examples does not
+assert that source and current engine revisions are identical. This lets model
+families use exactly the same examples without recollection. The report records
+architecture, parameter count, data provenance, learning rate and weight decay.
+`--learning-rate` defaults to 0.001 and `--weight-decay` to zero.
+
+A linear candidate scorer cannot make preferences depend on features that are
+identical across every candidate in one position: their common contribution
+cancels in softmax/argmax. Nonlinear interactions or explicit feature crosses are
+needed to use that global context conditionally. Per-candidate mechanical
+features, including combat forecasts, remain available to both model families.

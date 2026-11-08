@@ -12,7 +12,7 @@ from torch.nn import functional as F
 import hex_command_training as native
 from .model import Planner
 from .workloads import RECRUITERS, arena, encode, recruiter_pair
-from .data import collect_dataset
+from .data import collect_dataset, load_dataset
 
 
 def batches(data, indices, batch_size=64):
@@ -103,6 +103,10 @@ def main():
     p.add_argument('--opponent', choices=['classic','balanced','rotated','situational','predictor'], default='classic')
     p.add_argument('--mirror-recruiters', action='store_true', help='Override enemy recruiter to match ours; default preserves the full opponent preset')
     p.add_argument('--collect-side', choices=['player','enemy','both'], default='player')
+    p.add_argument('--architecture', choices=['mlp','linear'], default='mlp')
+    p.add_argument('--dataset-dir',type=Path,help='Reuse train/validation arrays with matching configurations, side, content and feature schema')
+    p.add_argument('--learning-rate',type=float,default=1e-3)
+    p.add_argument('--weight-decay',type=float,default=0.)
     p.add_argument('--train-configs', type=Path)
     p.add_argument('--validation-configs', type=Path)
     p.add_argument('--evaluation-configs', type=Path)
@@ -113,6 +117,8 @@ def main():
     args = p.parse_args()
     if not math.isfinite(args.seconds) or args.seconds<=0 or min(args.train_seeds,args.epochs,args.eval_seeds)<1 or (args.max_samples is not None and args.max_samples<1):
         p.error('seconds must be finite and positive; counts must be positive')
+    if not math.isfinite(args.learning_rate) or args.learning_rate<=0 or not math.isfinite(args.weight_decay) or args.weight_decay<0:
+        p.error('learning-rate must be positive; weight-decay nonnegative; both finite')
     if len(set(args.recruiters))!=len(args.recruiters): p.error('recruiters must be unique')
     if not 1 <= args.eval_rounds <= 1000 or args.eval_every < 0:
         p.error('eval-rounds must be in [1,1000]; eval-every cannot be negative')
@@ -141,8 +147,22 @@ def main():
         row['seconds']=round(time.monotonic()-started,2)
         print(json.dumps(row),flush=True)
     collection_side=None if args.collect_side=='both' else args.collect_side
-    train=collect_dataset(train_configs,args.out/'data'/'train',args.max_samples,progress=collection_progress,side=collection_side)
-    valid=collect_dataset(valid_configs,args.out/'data'/'validation',args.max_samples,progress=collection_progress,side=collection_side)
+    data_fingerprints=[]
+    if args.dataset_dir:
+        for split,configs in [('train',train_configs),('validation',valid_configs)]:
+            manifest=json.loads((args.dataset_dir/split/'manifest.json').read_text())
+            if manifest['configs']!=configs or manifest.get('collection_side')!=collection_side:
+                p.error(f'{split} dataset configurations or collection side differ')
+            if manifest['fingerprints']['content']!=fingerprints['content']:
+                p.error(f'{split} dataset content differs from current catalog')
+            data_fingerprints.append(manifest['fingerprints'])
+        train=load_dataset(args.dataset_dir/'train');valid=load_dataset(args.dataset_dir/'validation')
+        if args.max_samples is not None and max(len(train[2]),len(valid[2]))>args.max_samples:
+            p.error('saved datasets exceed --max-samples')
+    else:
+        train=collect_dataset(train_configs,args.out/'data'/'train',args.max_samples,progress=collection_progress,side=collection_side)
+        valid=collect_dataset(valid_configs,args.out/'data'/'validation',args.max_samples,progress=collection_progress,side=collection_side)
+        data_fingerprints=[fingerprints,fingerprints]
     if not len(train[2]) or not len(valid[2]) or train[3] or valid[3]:
         raise RuntimeError(f'empty data or missing teacher actions: train={train[3]}, validation={valid[3]}')
     collection_seconds = time.monotonic()-started
@@ -151,7 +171,7 @@ def main():
     valid_probe = rng.choice(len(valid[2]), min(1024, len(valid[2])), replace=False)
     diagnostics = dict(train=dataset_stats(train, train_probe), validation=dataset_stats(valid, valid_probe))
     periodic_baseline = evaluate(periodic_configs) if periodic_configs else []
-    model = Planner(); optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+    model = Planner(architecture=args.architecture); optimizer = torch.optim.Adam(model.parameters(),lr=args.learning_rate,weight_decay=args.weight_decay)
     initial = metrics(model, valid)
     initial_train = metrics(model, train, train_probe)
     best = float('inf'); best_epoch = 0; history = []; periodic = []
@@ -203,7 +223,9 @@ def main():
     evaluation_start=time.monotonic()
     teacher=evaluate(evaluation_configs);learned=evaluate(evaluation_configs,exported)
     grouped=results_by_recruiter(evaluation_configs,teacher,learned)
-    report=dict(schema=native.SCHEMA, feature_names=native.FEATURE_NAMES, fingerprints=fingerprints,
+    report=dict(architecture=args.architecture,parameter_count=sum(p.numel() for p in model.parameters()),
+                dataset_source=str(args.dataset_dir.resolve()) if args.dataset_dir else None,data_fingerprints=data_fingerprints,
+                learning_rate=args.learning_rate,weight_decay=args.weight_decay,schema=native.SCHEMA, feature_names=native.FEATURE_NAMES, fingerprints=fingerprints,
                 teacher=args.teacher, opponent=args.opponent, collect_side=args.collect_side, recruiters=args.recruiters, seed=42, train_configs=train_configs, validation_configs=valid_configs,
                 evaluation_configs=evaluation_configs, periodic_configs=periodic_configs,
                 initial_validation=initial, initial_train_probe=initial_train,

@@ -44,7 +44,7 @@ def main():
     ax.set(title='Periodic validation matches (30-round cap)',xlabel='Elapsed seconds',ylabel='Matches (%)',ylim=(0,100));ax.legend(fontsize=8)
     final=report['learned_results'];wins=sum(r['success'] for r in final);caps=sum(r['truncated'] for r in final)
     limit=report['evaluation_configs'][0]['maxRounds']
-    fig.suptitle(f"Native deathmatch imitation · schema {report['schema']} · {len(report['feature_names'])} inputs",fontsize=16)
+    fig.suptitle(f"Native deathmatch imitation · {report.get('architecture', 'mlp')} · schema {report['schema']} · {len(report['feature_names'])} inputs",fontsize=16)
     fig.text(.04,.015,f"Final evaluation ({limit}-round cap, {len(final)} matches): {wins} wins / {len(final)-wins-caps} losses / {caps} caps. Periodic matches use separate seeds.",fontsize=9)
     fig.tight_layout(rect=(0,.04,1,.95));output.parent.mkdir(parents=True,exist_ok=True)
     fig.savefig(output,dpi=170);print(output)

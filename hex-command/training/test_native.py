@@ -39,6 +39,17 @@ class NativeContract(unittest.TestCase):
         bad = json.loads(model.export()); bad["layers"][0]["weights"][0].pop()
         with self.assertRaises(ValueError): native.score(json.dumps(bad), x)
 
+    def test_linear_model_exports_and_matches_native(self):
+        model=Planner(architecture='linear')
+        self.assertEqual(sum(p.numel() for p in model.parameters()),len(native.FEATURE_NAMES))
+        with torch.no_grad():
+            model.net[0].weight.copy_(torch.linspace(-0.5,0.5,len(native.FEATURE_NAMES))[None,:])
+        exported=model.export()
+        self.assertEqual(len(json.loads(exported)['layers']),1)
+        x=self.data[0][:128].copy()
+        with torch.no_grad():expected=model(torch.from_numpy(x)).numpy()
+        np.testing.assert_allclose(native.score(exported,x),expected,atol=2e-5,rtol=2e-5)
+
     def test_batch_reset_step_validation_and_close(self):
         env = native.BatchEnv()
         obs = env.reset([self.config, self.config])
