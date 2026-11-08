@@ -1,7 +1,7 @@
 //! Python owns tensors; dedicated Rust worker threads own game lifetimes.
 use hex_command_core::{data::*, simulation::*, training::*};
 use numpy::ndarray::Array2;
-use numpy::{IntoPyArray, PyArray1, PyArray2, PyReadonlyArray2};
+use numpy::{IntoPyArray, PyArray1, PyArray2, PyReadonlyArray1, PyReadonlyArray2};
 use pyo3::{exceptions::PyValueError, prelude::*};
 use std::sync::mpsc::{self, Receiver, Sender};
 use std::thread::JoinHandle;
@@ -62,14 +62,13 @@ type DataResult = (
     Py<PyArray1<i64>>,
     usize,
 );
-#[pyfunction]
-#[pyo3(signature=(configs, max_samples=100000, side=None))]
-fn collect(
+fn collect_data(
     py: Python<'_>,
     configs: Vec<String>,
     max_samples: usize,
     side: Option<String>,
-) -> PyResult<DataResult> {
+    spatial: bool,
+) -> PyResult<Dataset> {
     let side = match side.as_deref() {
         None => None,
         Some("player") => Some(Side::Player),
@@ -79,39 +78,107 @@ fn collect(
     if max_samples == 0 {
         return Err(err("max_samples must be positive"));
     }
-    let data = py
-        .detach(move || -> Result<Dataset, String> {
-            let rules = Rules::load().map_err(|e| e.to_string())?;
-            let mut definitions = CampaignDefinitions::new(&rules);
-            let (result, data) = scoped(
-                Some(Dataset {
-                    limit: max_samples,
-                    side,
-                    ..Default::default()
-                }),
-                None,
-                None,
-                || {
-                    for config in configs {
-                        let config = parse(&config)?;
-                        definitions
-                            .prepare_match(&config)
-                            .map_err(|e| e.to_string())?;
-                        run(&rules, config, &definitions).map_err(|e| e.to_string())?;
-                    }
-                    Ok::<_, String>(())
-                },
-            );
-            result?;
-            Ok(data.unwrap())
-        })
-        .map_err(err)?;
-    Ok((
+    py.detach(move || -> Result<Dataset, String> {
+        let rules = Rules::load().map_err(|e| e.to_string())?;
+        let mut definitions = CampaignDefinitions::new(&rules);
+        let (result, data) = scoped(
+            Some(Dataset {
+                limit: max_samples,
+                side,
+                spatial,
+                ..Default::default()
+            }),
+            None,
+            None,
+            || {
+                for config in configs {
+                    let config = parse(&config)?;
+                    definitions
+                        .prepare_match(&config)
+                        .map_err(|e| e.to_string())?;
+                    run(&rules, config, &definitions).map_err(|e| e.to_string())?;
+                }
+                Ok::<_, String>(())
+            },
+        );
+        result?;
+        Ok(data.unwrap())
+    })
+    .map_err(err)
+}
+fn data_arrays(py: Python<'_>, data: Dataset) -> DataResult {
+    (
         matrix(py, data.features),
         data.offsets.into_pyarray(py).unbind(),
         data.labels.into_pyarray(py).unbind(),
         data.missing,
+    )
+}
+type SpatialResult = (
+    Py<PyArray1<f32>>,
+    Py<PyArray1<i64>>,
+    Py<PyArray2<i64>>,
+    Py<PyArray2<i64>>,
+);
+fn spatial_arrays(
+    py: Python<'_>,
+    boards: Vec<Option<&spatial::Board>>,
+    indices: Vec<[i64; 3]>,
+) -> SpatialResult {
+    let mut values = vec![];
+    let mut offsets = vec![0i64];
+    let mut shapes = vec![];
+    for board in &boards {
+        if let Some(b) = board {
+            values.extend_from_slice(&b.values);
+            shapes.extend([b.height as i64, b.width as i64]);
+        } else {
+            shapes.extend([0, 0]);
+        }
+        offsets.push(values.len() as i64);
+    }
+    let count = indices.len();
+    (
+        values.into_pyarray(py).unbind(),
+        offsets.into_pyarray(py).unbind(),
+        Array2::from_shape_vec((boards.len(), 2), shapes)
+            .unwrap()
+            .into_pyarray(py)
+            .unbind(),
+        Array2::from_shape_vec((count, 3), indices.into_iter().flatten().collect())
+            .unwrap()
+            .into_pyarray(py)
+            .unbind(),
+    )
+}
+#[pyfunction]
+#[pyo3(signature=(configs,max_samples=100000,side=None))]
+fn collect(
+    py: Python<'_>,
+    configs: Vec<String>,
+    max_samples: usize,
+    side: Option<String>,
+) -> PyResult<DataResult> {
+    Ok(data_arrays(
+        py,
+        collect_data(py, configs, max_samples, side, false)?,
     ))
+}
+#[pyfunction]
+#[pyo3(signature=(configs,max_samples=100000,side=None))]
+fn collect_spatial(
+    py: Python<'_>,
+    configs: Vec<String>,
+    max_samples: usize,
+    side: Option<String>,
+) -> PyResult<(DataResult, SpatialResult)> {
+    let mut data = collect_data(py, configs, max_samples, side, true)?;
+    let spatial = spatial_arrays(
+        py,
+        data.boards.iter().map(Some).collect(),
+        std::mem::take(&mut data.indices),
+    );
+    Ok((data_arrays(py, data), spatial))
 }
 #[pyfunction]
 fn evaluate(py: Python<'_>, configs: Vec<String>, model: Option<String>) -> PyResult<Vec<String>> {
@@ -173,6 +240,9 @@ fn score<'py>(
     features: PyReadonlyArray2<'py, f32>,
 ) -> PyResult<Bound<'py, PyArray1<f64>>> {
     let m = load_model(&model).map_err(err)?;
+    if m.spatial.is_some() {
+        return Err(err("use score_spatial for a CNN model"));
+    }
     let a = features.as_array();
     if a.ncols() != FEATURES {
         return Err(err("feature width mismatch"));
@@ -182,6 +252,90 @@ fn score<'py>(
         .map(|r| m.score(r.as_slice().unwrap_or(&r.to_vec())))
         .collect::<Vec<_>>()
         .into_pyarray(py))
+}
+#[pyfunction]
+fn score_spatial<'py>(
+    py: Python<'py>,
+    model: String,
+    features: PyReadonlyArray2<'py, f32>,
+    offsets: PyReadonlyArray1<'py, i64>,
+    boards: PyReadonlyArray1<'py, f32>,
+    board_offsets: PyReadonlyArray1<'py, i64>,
+    shapes: PyReadonlyArray2<'py, i64>,
+    indices: PyReadonlyArray2<'py, i64>,
+) -> PyResult<Bound<'py, PyArray1<f64>>> {
+    let model = load_model(&model).map_err(err)?;
+    if model.spatial.is_none() {
+        return Err(err("spatial model required"));
+    }
+    let x = features.as_array();
+    let sh = shapes.as_array();
+    let ix = indices.as_array();
+    if x.ncols() != FEATURES || ix.nrows() != x.nrows() || ix.ncols() != 3 || sh.ncols() != 2 {
+        return Err(err("spatial array dimensions mismatch"));
+    }
+    let x: Vec<[f32; FEATURES]> = x
+        .rows()
+        .into_iter()
+        .map(|row| row.to_vec().try_into().unwrap())
+        .collect();
+    let ix: Vec<[i64; 3]> = ix
+        .rows()
+        .into_iter()
+        .map(|row| row.to_vec().try_into().unwrap())
+        .collect();
+    let shapes: Vec<[i64; 2]> = sh
+        .rows()
+        .into_iter()
+        .map(|row| row.to_vec().try_into().unwrap())
+        .collect();
+    let offsets = offsets.as_array().to_vec();
+    let board_offsets = board_offsets.as_array().to_vec();
+    let values = boards.as_array().to_vec();
+    for (boundaries, length) in [(&offsets, x.len()), (&board_offsets, values.len())] {
+        if boundaries.len() != shapes.len() + 1
+            || boundaries.first() != Some(&0)
+            || boundaries.last() != Some(&(length as i64))
+            || boundaries.windows(2).any(|v| v[0] < 0 || v[0] > v[1])
+        {
+            return Err(err("invalid spatial offsets"));
+        }
+    }
+    let scores = py
+        .detach(move || -> Result<Vec<f64>, String> {
+            let encoder = model.spatial.as_ref().unwrap();
+            let mut result = vec![];
+            for (i, shape) in shapes.iter().enumerate() {
+                if *shape == [0, 0]
+                    && offsets[i] == offsets[i + 1]
+                    && board_offsets[i] == board_offsets[i + 1]
+                {
+                    continue;
+                }
+                if shape[0] <= 0 || shape[1] <= 0 || shape[0] > 256 || shape[1] > 256 {
+                    return Err("invalid spatial shape".into());
+                }
+                let board = spatial::Board {
+                    height: shape[0] as usize,
+                    width: shape[1] as usize,
+                    values: values[board_offsets[i] as usize..board_offsets[i + 1] as usize]
+                        .to_vec(),
+                };
+                board.validate()?;
+                let a = offsets[i] as usize;
+                let b = offsets[i + 1] as usize;
+                board.validate_indices(&ix[a..b])?;
+                result.extend(
+                    encoder
+                        .inputs(&board, &ix[a..b], &x[a..b])
+                        .iter()
+                        .map(|x| model.score(x)),
+                );
+            }
+            Ok(result)
+        })
+        .map_err(err)?;
+    Ok(scores.into_pyarray(py))
 }
 enum Event {
     Decision(Choices),
@@ -194,7 +348,7 @@ struct Worker {
     event: Option<Event>,
 }
 impl Worker {
-    fn new(config: String) -> Self {
+    fn new(config: String, spatial: bool) -> Self {
         let (tx, actions) = mpsc::channel();
         let (events, rx) = mpsc::channel();
         let join = std::thread::spawn(move || {
@@ -211,9 +365,15 @@ impl Worker {
                     }
                     actions.recv().unwrap_or(0)
                 });
-                let (result, _) = scoped(None, None, Some(controller), || {
-                    run(&rules, c, &definitions)
-                });
+                let (result, _) = scoped(
+                    spatial.then(|| Dataset {
+                        spatial: true,
+                        ..Default::default()
+                    }),
+                    None,
+                    Some(controller),
+                    || run(&rules, c, &definitions),
+                );
                 result
                     .map(|r| summary(&r).to_string())
                     .map_err(|e| e.to_string())
@@ -247,6 +407,7 @@ impl Drop for Worker {
 #[pyclass]
 struct BatchEnv {
     workers: Vec<Worker>,
+    spatial: bool,
 }
 type StepResult = (
     Py<PyArray2<f32>>,
@@ -299,8 +460,32 @@ impl BatchEnv {
 #[pymethods]
 impl BatchEnv {
     #[new]
-    fn new() -> Self {
-        Self { workers: vec![] }
+    #[pyo3(signature=(spatial=false))]
+    fn new(spatial: bool) -> Self {
+        Self {
+            workers: vec![],
+            spatial,
+        }
+    }
+    fn spatial_observation(&self, py: Python<'_>) -> PyResult<SpatialResult> {
+        if !self.spatial {
+            return Err(err("construct BatchEnv(spatial=True)"));
+        }
+        let mut boards = vec![];
+        let mut indices = vec![];
+        for worker in &self.workers {
+            if let Some(Event::Decision(c)) = &worker.event {
+                let s = c
+                    .spatial
+                    .as_ref()
+                    .ok_or_else(|| err("missing spatial observation"))?;
+                boards.push(Some(&s.board));
+                indices.extend_from_slice(&s.indices);
+            } else {
+                boards.push(None);
+            }
+        }
+        Ok(spatial_arrays(py, boards, indices))
     }
     fn reset(&mut self, py: Python<'_>, configs: Vec<String>) -> PyResult<StepResult> {
         if configs.is_empty() || configs.len() > 64 {
@@ -311,7 +496,10 @@ impl BatchEnv {
         }
         py.detach(|| -> Result<(), String> {
             self.workers.clear();
-            self.workers = configs.into_iter().map(Worker::new).collect();
+            self.workers = configs
+                .into_iter()
+                .map(|c| Worker::new(c, self.spatial))
+                .collect();
             for w in &mut self.workers {
                 w.receive()?;
             }
@@ -362,9 +550,14 @@ fn fingerprints(py: Python<'_>) -> PyResult<String> {
 #[pymodule]
 fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add("SCHEMA", SCHEMA)?;
+    m.add("SPATIAL_SCHEMA", spatial::SPATIAL_SCHEMA)?;
+    m.add("SPATIAL_CHANNEL_NAMES", spatial::channel_names())?;
+    m.add("SPATIAL_KERNEL", spatial::KERNEL.to_vec())?;
     m.add_function(wrap_pyfunction!(fingerprints, m)?)?;
     m.add("FEATURE_NAMES", FEATURE_NAMES.to_vec())?;
     m.add_function(wrap_pyfunction!(collect, m)?)?;
+    m.add_function(wrap_pyfunction!(collect_spatial, m)?)?;
+    m.add_function(wrap_pyfunction!(score_spatial, m)?)?;
     m.add_function(wrap_pyfunction!(evaluate, m)?)?;
     m.add_function(wrap_pyfunction!(score, m)?)?;
     m.add_function(wrap_pyfunction!(profile_snapshot, m)?)?;

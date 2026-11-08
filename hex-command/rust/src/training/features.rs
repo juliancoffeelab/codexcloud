@@ -181,6 +181,7 @@ pub const FEATURE_NAMES: [&str; FEATURES] = [
 ];
 #[derive(Clone)]
 pub struct Choices {
+    pub spatial: Option<super::spatial::Spatial>,
     pub commands: Vec<Command>,
     pub features: Vec<[f32; FEATURES]>,
 }
@@ -235,7 +236,12 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
         .iter()
         .map(|c| encode(game, orders, c, &extra))
         .collect();
-    Choices { commands, features }
+    let spatial = super::needs_spatial().then(|| super::spatial::observe(game, orders, &commands));
+    Choices {
+        commands,
+        features,
+        spatial,
+    }
 }
 fn encode(
     g: &BattleView<'_, '_>,
@@ -434,7 +440,7 @@ fn weapon_features(w: &Weapon, x: &mut [f32]) {
     x[4] = w.drain as f32 / 100.;
     x[5 + w.damage_type.index()] = 1.;
 }
-fn unit_features(g: &BattleView<'_, '_>, u: &Unit) -> [f32; 34] {
+pub(super) fn unit_features(g: &BattleView<'_, '_>, u: &Unit) -> [f32; 34] {
     let mut x = [0.; 34];
     let r = &g.rules().units[u.kind];
     x[0] = r.hp as f32 / 30.;

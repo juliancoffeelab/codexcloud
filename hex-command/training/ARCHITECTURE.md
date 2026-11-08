@@ -352,3 +352,63 @@ The diagnostic `native.score` API returns float64; dense models still compute
 their original float32 forward pass. Export parity and grouped held-out choices
 are checked before evaluation. Reuse `benchmark.py --fixtures ...` to compare
 complete native planning phases on the same saved positions as other models.
+
+## Shared hex CNN
+
+`spatial.py` adds an optional board encoder while keeping the original 172
+candidate features. Its 53 channels include a valid-tile mask, friendly/hostile/
+neutral occupancy, the existing complete 34-value unit profile, base terrain
+cost/passability/healing/keep/ownership and six damage modifiers, and weighted
+capture/defeat/visit goal planes. Empty tiles retain terrain; absent units have
+zero profiles. Terrain channels describe base mechanics; candidate features still
+provide the acting unit's adjusted terrain costs and resistances. Goal planes
+aggregate targets; candidate path features retain actor/family restrictions.
+No unit, faction or terrain identity embeddings are added.
+
+Coordinates use `q = col - floor(row/2), r = row`, preserving the engine's six
+neighbors even for negative coordinates. Two seven-position convolutions encode
+53→16→16 channels, each followed by ReLU and multiplication by the valid-tile mask.
+Padding stays zero and is excluded from mean pooling. The mask describes map
+membership, independently of terrain passability or candidate legality. Each
+candidate gathers 16 values at its actor, destination and target, plus the shared
+16-value masked board mean. Missing references use zeros. Concatenating those 64
+values with existing features feeds a 236→64→64→1 head. A 10% dropout follows the
+first hidden ReLU during training only. No normalization or convolution dropout is
+used. The complete model has 27,153 parameters.
+
+The board is encoded once per decision, shared across all candidates. Native Rust
+executes exported seven-position convolution weights and dense layers directly;
+no Python or PyTorch is needed in a game. Spatial model schema 3 includes explicit
+channel names and validates both convolution shapes. Dense/tree schema 2 remains
+supported, and old datasets and APIs retain their shapes. Dropout is absent from
+the inference export.
+
+`native.collect_spatial` returns `(dense, spatial)`: the original four-array/data
+collection tuple plus `(board_values, board_offsets, shapes, tile_indices)`.
+Board values are float32 CHW buffers, offsets/shapes are int64, and candidate
+indices are int64 `[candidate_count, 3]`, with -1 for missing references. There is
+one board per teacher decision. `spatial_data.py` streams both feature/board
+buffers to disk and pads only the current batch, rebasing tile indices to its
+width. `BatchEnv(spatial=True).spatial_observation()` exposes the same owned arrays
+for paused decision slots; completed slots have shape `[0, 0]` and no candidates.
+`native.score_spatial` checks offsets, masks, shapes, padding and tile references.
+Spatial arrays use numeric NumPy buffers, not JSON.
+
+```sh
+.venv/bin/python -m hex_command_rl.spatial_train --seconds 1200 \
+  --source-report tmp/rl/deathmatch-classic-20m/report.json \
+  --out tmp/rl/deathmatch-classic-cnn
+```
+
+This supervised experiment reuses the source report's complete train/validation/
+evaluation configurations, collects fresh board snapshots and selects validation
+cross-entropy. Available old dense arrays are compared exactly to the recollected
+features, offsets and labels. Seed splits, configuration/side/content provenance
+and channel schema are checked. `--dataset-dir` can reuse a completed spatial
+corpus; `--dropout 0` supports an ablation on the same data. The supervising process
+enforces a maximum 20-minute budget covering child startup, collection, comparison
+and optimization. Versioned weights/model pairs are published through an atomic
+best-checkpoint pointer. Final native parity, paired matches and timing follow
+training. Logs include full validation, a fixed training probe, action accuracy,
+prediction frequencies, throughput and peak RSS. CNN observations require fresh
+collection; the old 172-value rows alone cannot reconstruct full boards.

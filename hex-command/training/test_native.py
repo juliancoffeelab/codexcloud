@@ -84,6 +84,55 @@ class NativeContract(unittest.TestCase):
         self.assertEqual(grouped_metrics(scores,np.array([0,4,8,12]),np.array([3,3,3]))['accuracy'],1.)
         self.assertEqual(grouped_metrics(np.zeros(4),np.array([0,4]),np.array([0]))['accuracy'],1.)
 
+    def test_spatial_collection_parity_padding_and_gradients(self):
+        from pathlib import Path
+        from hex_command_rl.spatial import SpatialPlanner
+        from hex_command_rl.spatial_data import collect_spatial_dataset,batches
+        configs=[arena([906],rounds=3)[i] for i in (0,32)]
+        dense,spatial=native.collect_spatial(encode(configs),100000,side='player')
+        original=native.collect(encode(configs),100000,side='player')
+        for a,b in zip(dense[:3],original[:3]):np.testing.assert_array_equal(a,b)
+        with tempfile.TemporaryDirectory() as directory:
+            data=collect_spatial_dataset(configs,directory,batch_games=1)
+            for a,b in zip(data.dense[:3],dense[:3]):np.testing.assert_array_equal(a,b)
+            for a,b in zip((data.boards,data.offsets,data.shapes,data.indices),spatial):np.testing.assert_array_equal(a,b)
+            torch.manual_seed(19);model=SpatialPlanner().eval()
+            expected=[]
+            with torch.no_grad():
+                for x,board,ix,mask,y in batches(data,np.arange(len(data.dense[2])),batch_size=8):expected.extend(model(x,board,ix)[mask].numpy())
+            actual=native.score_spatial(model.export(),data.dense[0],data.dense[1],np.asarray(data.boards),data.offsets,data.shapes,data.indices)
+            np.testing.assert_allclose(actual,expected,atol=2e-6,rtol=2e-5)
+            x,board,ix,mask,y=next(batches(data,np.array([0])))
+            with torch.no_grad():
+                before=model(x,board,ix)
+                padded=torch.nn.functional.pad(board,(0,2,0,1))
+                old_width=board.shape[-1];new_width=padded.shape[-1]
+                shifted=torch.where(ix<0,ix,(ix//old_width)*new_width+ix%old_width)
+                np.testing.assert_allclose(model(x,padded,shifted).numpy(),before.numpy(),atol=2e-6,rtol=2e-5)
+            model.train();loss=torch.nn.functional.cross_entropy(model(x,board,ix),y);loss.backward()
+            self.assertGreater(float(model.convs[0].weight.grad.abs().sum()),0.)
+            with self.assertRaises(ValueError):native.score(model.export(),data.dense[0][:1])
+            bad=json.loads(model.export());bad['spatial']['convolutions'][0]['weights'].pop()
+            with self.assertRaises(ValueError):native.evaluate(encode(configs[:1]),json.dumps(bad))
+            wrong=data.indices.copy();wrong[0,0]=10**9
+            with self.assertRaises(ValueError):native.score_spatial(model.export(),data.dense[0],data.dense[1],np.asarray(data.boards),data.offsets,data.shapes,wrong)
+
+    def test_spatial_step_buffers_and_terminal_slots(self):
+        env=native.BatchEnv(spatial=True)
+        try:
+            obs=env.reset([self.config]);spatial=env.spatial_observation()
+            self.assertEqual(len(spatial[3]),len(obs[0]));self.assertEqual(spatial[2].shape,(1,2))
+            snapshot=spatial[0].copy()
+            for _ in range(40):
+                obs=env.step([0])
+                if obs[3][0] or obs[4][0]:break
+            self.assertTrue(obs[3][0] or obs[4][0])
+            np.testing.assert_array_equal(env.spatial_observation()[2],[[0,0]])
+            from hex_command_rl.spatial import SpatialPlanner
+            self.assertEqual(len(native.score_spatial(SpatialPlanner().export(),obs[0],obs[1],*env.spatial_observation())),0)
+            np.testing.assert_array_equal(spatial[0],snapshot)
+        finally:env.close()
+
     def test_batch_reset_step_validation_and_close(self):
         env = native.BatchEnv()
         obs = env.reset([self.config, self.config])

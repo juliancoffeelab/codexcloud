@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 use std::cell::RefCell;
 pub const SCHEMA: u32 = 2;
 mod features;
+pub mod spatial;
 pub use features::{Choices, FEATURE_NAMES, FEATURES, candidates};
 #[derive(Default)]
 pub struct Dataset {
@@ -16,6 +17,9 @@ pub struct Dataset {
     pub missing: usize,
     pub limit: usize,
     pub side: Option<Side>,
+    pub spatial: bool,
+    pub boards: Vec<spatial::Board>,
+    pub indices: Vec<[i64; 3]>,
 }
 #[derive(Clone, Deserialize, Serialize)]
 pub struct Layer {
@@ -30,6 +34,8 @@ pub struct Model {
     pub layers: Vec<Layer>,
     #[serde(default)]
     pub trees: Vec<Tree>,
+    #[serde(default)]
+    pub spatial: Option<spatial::Encoder>,
 }
 #[derive(Clone, Deserialize, Serialize)]
 pub struct Tree {
@@ -113,8 +119,21 @@ impl Tree {
 }
 impl Model {
     pub fn validate(&self) -> Result<(), String> {
-        if self.schema != SCHEMA || self.feature_names != FEATURE_NAMES {
+        if self.schema
+            != (if self.spatial.is_some() {
+                spatial::SPATIAL_SCHEMA
+            } else {
+                SCHEMA
+            })
+            || self.feature_names != FEATURE_NAMES
+        {
             return Err("model feature schema mismatch".into());
+        }
+        if let Some(encoder) = &self.spatial {
+            encoder.validate()?;
+            if !self.trees.is_empty() {
+                return Err("cannot combine trees and spatial encoder".into());
+            }
         }
         if !self.trees.is_empty() {
             if !self.layers.is_empty() || self.trees.len() > 1024 {
@@ -128,7 +147,12 @@ impl Model {
         if self.layers.is_empty() || self.layers.len() > 8 {
             return Err("invalid layer count".into());
         }
-        let mut width = FEATURES;
+        let mut width = FEATURES
+            + if self.spatial.is_some() {
+                4 * spatial::EMBEDDING
+            } else {
+                0
+            };
         for layer in &self.layers {
             if layer.bias.is_empty()
                 || layer.bias.len() > 1024
@@ -229,6 +253,10 @@ pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &
             if d.offsets.is_empty() {
                 d.offsets.push(0);
             }
+            if let Some(spatial) = choices.spatial {
+                d.boards.push(spatial.board);
+                d.indices.extend(spatial.indices);
+            }
             d.features.extend(choices.features);
             d.offsets.push(d.features.len() as i64);
             d.labels.push(index as i64);
@@ -236,6 +264,13 @@ pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &
             d.missing += 1;
         }
     });
+}
+pub(crate) fn needs_spatial() -> bool {
+    SESSION.with(|s| {
+        let s = s.borrow();
+        s.data.as_ref().is_some_and(|d| d.spatial)
+            || s.model.as_ref().is_some_and(|m| m.spatial.is_some())
+    })
 }
 pub(crate) fn configured() -> bool {
     SESSION.with(|s| {
@@ -253,10 +288,21 @@ pub(crate) fn select(choices: &Choices) -> usize {
             .model
             .as_ref()
             .expect("Learned planner requires a model or controller");
+        let inputs = m.spatial.as_ref().map(|encoder| {
+            let spatial = choices
+                .spatial
+                .as_ref()
+                .expect("spatial observation required");
+            encoder.inputs(&spatial.board, &spatial.indices, &choices.features)
+        });
         // Match torch.argmax: retain the first candidate on equal logits.
         let mut best = (0, f64::NEG_INFINITY);
         for (index, features) in choices.features.iter().enumerate() {
-            let score = m.score(features);
+            let score = m.score(
+                inputs
+                    .as_ref()
+                    .map_or(features.as_slice(), |x| x[index].as_slice()),
+            );
             if score > best.1 {
                 best = (index, score);
             }
@@ -278,12 +324,14 @@ mod tests {
             schema: SCHEMA,
             feature_names: FEATURE_NAMES.iter().map(|s| s.to_string()).collect(),
             trees: vec![],
+            spatial: None,
             layers: vec![Layer {
                 weights: vec![vec![0.; FEATURES]],
                 bias: vec![0.],
             }],
         };
         let choices = Choices {
+            spatial: None,
             commands: vec![Command::EndTurn; 3],
             features: vec![[0.; FEATURES]; 3],
         };
