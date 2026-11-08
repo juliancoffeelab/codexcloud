@@ -534,3 +534,21 @@ when no corresponding units are present. These annotations are campaign-only;
 protection-specific observations are zero when withdrawal protection is inactive.
 Old weights initially ignore these inputs through zero-weight expansion. Their
 campaign examples must be recollected under the current policy before fine-tuning.
+
+## Escort teacher scoring
+
+Full and Queued share bounded campaign courier/captive travel scoring in
+`ai/policies/escort/scoring.rs`: advancing earns up to five points, scaled by
+fraction of the remaining route covered, and arrival adds ten. Standing at the
+endpoint earns nothing again; leaving it reverses the arrival term. Village
+capture and healing retain their existing values.
+
+For these actors, predicted exposure costs at most twenty points and leaving
+exposure credits at most twenty. Predicted lethal exposure separately costs forty;
+the departure credit never refunds that death cost. The generic extra reward for
+reducing incoming damage is disabled here to preserve the twenty-point bound.
+Queued also evaluates reachable escape moves for threatened `Survive` actors in
+campaigns, even if its preliminary shortlist already contains a positive plan.
+This prevents progress/attack variants from crowding safe moves out before threat
+assessment. These are teacher policy changes; existing learned weights require
+fresh demonstrations and fine-tuning to acquire the resulting preferences.

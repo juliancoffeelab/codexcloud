@@ -3,6 +3,7 @@ use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
 use crate::ai::{
     TacticalRole,
     planner::proposal::Plan,
+    policies::escort::scoring as escort_scoring,
     policies::objectives::{TileOrder, TileOrderContext, actor_matches},
     policies::threat::Threats,
     policies::tie_breaking::action_jitter,
@@ -264,6 +265,7 @@ pub(super) fn plan(
     let mut unit = original.clone();
     unit.rebuilding = intent;
     let important = orders.important(game, &unit);
+    let escortee = escort_scoring::subject(orders, &unit);
     let category = role(game, unit.kind);
     let battle = !orders.campaign;
     let reserved = cache
@@ -499,11 +501,15 @@ pub(super) fn plan(
             if route[tile] == u16::MAX {
                 return f64::NEG_INFINITY;
             }
-            value += (route[unit.tile] as f64 - route[tile] as f64) * goal.weight / 4.0;
-            value += (field.tiles.contains(&tile) as i32 - field.tiles.contains(&unit.tile) as i32)
-                as f64
-                * goal.weight
-                * 0.6;
+            if escortee {
+                value += escort_scoring::progress(route[unit.tile], route[tile]);
+            } else {
+                value += (route[unit.tile] as f64 - route[tile] as f64) * goal.weight / 4.0;
+                value += (field.tiles.contains(&tile) as i32
+                    - field.tiles.contains(&unit.tile) as i32) as f64
+                    * goal.weight
+                    * 0.6;
+            }
         }
         if holding && tile != unit.tile {
             value -= 24.0;
@@ -784,7 +790,9 @@ pub(super) fn plan(
         threats.at(&unit, unit.tile, None),
         important,
     );
-    let danger = if orders.protects(unit.id) {
+    let danger = if escortee {
+        escort_scoring::EXPOSURE / unit.hp.max(1) as f64
+    } else if orders.protects(unit.id) {
         // A finite cost for the fraction of remaining life at risk.
         40.0 / unit.hp.max(1) as f64
     } else if important {
@@ -795,7 +803,7 @@ pub(super) fn plan(
         0.9
     };
     let wait_risk = before as f64 * danger
-        + if before >= unit.hp {
+        + if !escortee && before >= unit.hp {
             if important { 40.0 } else { 5.0 }
         } else {
             0.0
@@ -812,17 +820,18 @@ pub(super) fn plan(
             advance: Some(kind),
             withdrawing: false,
         });
+    // Escort exposure already rewards a reduction by at most twenty points.
+    let improvement_weight = if escortee {
+        0.0
+    } else if important {
+        3.0
+    } else if unit.hp <= 4 {
+        1.5
+    } else {
+        0.2
+    };
     for c in candidates {
-        let upper = c.score
-            + wait_risk
-            + before.max(0) as f64
-                * if important {
-                    3.0
-                } else if unit.hp <= 4 {
-                    1.5
-                } else {
-                    0.2
-                };
+        let upper = c.score + wait_risk + before.max(0) as f64 * improvement_weight;
         if upper <= 0.1 || best.as_ref().is_some_and(|p| p.score >= upper) {
             break;
         }
@@ -840,14 +849,7 @@ pub(super) fn plan(
             } else {
                 0.0
             }
-            + (before - incoming).max(0) as f64
-                * if important {
-                    3.0
-                } else if unit.hp <= 4 {
-                    1.5
-                } else {
-                    0.2
-                };
+            + (before - incoming).max(0) as f64 * improvement_weight;
         if score <= 0.1 || best.as_ref().is_some_and(|p| p.score >= score) {
             continue;
         }
@@ -866,10 +868,13 @@ pub(super) fn plan(
             withdrawing,
         });
     }
-    // A raw shortlist can hide retreat tiles behind attractive unsafe attacks.
-    // Reuse the same forecast to search moves only when an essential actor has
-    // no positive plan under pressure; ordinary units keep the bounded search.
-    if best.is_none() && battle && important && before > 0 {
+    // Protected campaign actors must compare escape moves even when the raw
+    // shortlist contains a positive but dangerous attack. Ordinary arena units
+    // retain their existing fallback and bounded search.
+    if before > 0
+        && ((orders.campaign && orders.protects(unit.id))
+            || (best.is_none() && battle && important))
+    {
         for (index, &tile) in destinations.iter().enumerate() {
             let (positioning, _, healing) = positions[index];
             if tile == unit.tile || !positioning.is_finite() {
@@ -898,7 +903,7 @@ pub(super) fn plan(
                 + wait_risk
                 - incoming as f64 * danger
                 - if incoming >= unit.hp { 40.0 } else { 0.0 }
-                + (before - incoming).max(0) as f64 * 3.0;
+                + (before - incoming).max(0) as f64 * improvement_weight;
             if score <= 0.1 || best.as_ref().is_some_and(|p| p.score >= score) {
                 continue;
             }
