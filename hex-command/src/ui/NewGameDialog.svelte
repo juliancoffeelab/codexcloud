@@ -30,7 +30,8 @@
     { value: "skeletons", label: "Skeletons", sprite: "necromancer" },
     { value: "coastal", label: "Merfolk", sprite: "tidekeeper" },
   ];
-  const maps = BATTLE_MAPS.map((map) => ({
+  const playableMaps = BATTLE_MAPS.filter((map) => map.id !== "developer");
+  const maps = playableMaps.map((map) => ({
     value: map.id,
     label: map.id === "river-valley" ? "River Valley" : map.name,
     description: map.description,
@@ -64,7 +65,7 @@
     mode = tab;
     if (tab === "campaign" && difficulty === "custom") setDifficulty("situational");
     error = "";
-    mapId = BATTLE_MAPS.some((m) => m.id === view.game.mapId) ? view.game.mapId : "mirror";
+    mapId = playableMaps.some((m) => m.id === view.game.mapId) ? view.game.mapId : "mirror";
     dialog?.showModal();
     preloadTerrainMap(mode === "campaign" ? campaign.missions[0]!.map.id : mapId);
   }

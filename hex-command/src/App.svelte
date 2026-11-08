@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { HudArtworkCache } from "./presentation/hud-artwork";
-  import { onMount, untrack } from "svelte";
+  import { onMount, tick, untrack } from "svelte";
   import { errorDetails } from "./error-details";
   import { BattleController } from "./controller/battle";
   import { registerBattleTools } from "./controller/tools";
@@ -61,6 +61,19 @@
     $view.details.kind !== "none" || !!($view.game.winner && !$view.game.campaign),
   );
   let briefingExpanded = $state(false);
+  let battleContent = $state<HTMLDivElement>();
+  async function toggleBriefing() {
+    const briefing = document.getElementById("mission-overview");
+    const visible =
+      briefingExpanded &&
+      briefing &&
+      briefing.getBoundingClientRect().bottom > (battleContent?.getBoundingClientRect().top ?? 0);
+    briefingExpanded = !visible;
+    if (briefingExpanded) {
+      await tick();
+      battleContent?.scrollTo({ top: 0 });
+    }
+  }
   const missionMapId = $derived($view.game.mapId);
   $effect(() => {
     missionMapId;
@@ -150,7 +163,7 @@
       {actions}
       onSettings={openSettings}
       {briefingExpanded}
-      onBriefing={() => (briefingExpanded = !briefingExpanded)}
+      onBriefing={toggleBriefing}
     />
     <p id="status" class="status" role="status" aria-live="polite">{$view.status}</p>
     {#if $hudAudioReadiness.error}
@@ -179,15 +192,13 @@
         {$audioReadiness.ready ? "Audio prepared." : "Preparing audio… Menus remain available."}
       </p>
     {/if}
-    <div class="battle-content">
-      <div class="campaign-overlay">
-        <CampaignPanel
-          view={$view}
-          {actions}
-          bind:expanded={briefingExpanded}
-          onNewCampaign={openCampaignPicker}
-        />
-      </div>
+    <div class="battle-content" data-touch-scroll bind:this={battleContent}>
+      <CampaignPanel
+        view={$view}
+        {actions}
+        bind:expanded={briefingExpanded}
+        onNewCampaign={openCampaignPicker}
+      />
       <div class="workspace" class:map-only={!inspectionOpen}>
         <Battlefield {previews} view={$view} {actions} {battlefield} {showCommanderArrow} />
         {#if inspectionOpen}
@@ -227,17 +238,6 @@
 />
 
 <style>
-  .campaign-overlay {
-    position: absolute;
-    inset: 0 var(--page-padding) auto;
-    max-height: 100%;
-    overflow: auto;
-    z-index: 5;
-    pointer-events: none;
-  }
-  .campaign-overlay :global(section) {
-    pointer-events: auto;
-  }
   main > [role="alert"] {
     position: absolute;
     inset: 80px 12px auto;

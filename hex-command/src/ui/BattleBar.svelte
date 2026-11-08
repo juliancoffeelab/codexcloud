@@ -95,8 +95,8 @@
   <button
     id="settings-button"
     class="icon-button"
-    aria-label="Settings"
-    title="Settings"
+    aria-label="Menu"
+    title="Menu"
     disabled={!onSettings}
     onclick={onSettings}
   >

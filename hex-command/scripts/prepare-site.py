@@ -139,6 +139,7 @@ def prepare(credential, message, source_commit=None, preview=None, preview_proje
         command(["npm", "ci", "--include=dev", "--ignore-scripts", "--no-audit", "--no-fund"], cwd=checkout)
         installed.write_text(dependency_key)
     build_environment = os.environ.copy()
+    build_environment["HEX_COMMAND_SOURCE_COMMIT"] = source_commit
     build_environment['PATH'] = str(dependencies / '.bin') + os.pathsep + build_environment.get('PATH', '')
     step("Build committed Site source")
     # Build explicitly: npm lifecycle hooks also run content checks. Preparation
@@ -149,7 +150,7 @@ def prepare(credential, message, source_commit=None, preview=None, preview_proje
              "--out-dir", "pkg", "--out-name", "hex_command", "--no-pack",
              "--no-opt", "--locked", "--features", "wasm"], cwd=checkout, env=build_environment)
     command(["python3", "scripts/build-pixel-art.py"], cwd=checkout)
-    command(["node", "node_modules/vite/bin/vite.js", "build"], cwd=checkout)
+    command(["node", "node_modules/vite/bin/vite.js", "build"], cwd=checkout, env=build_environment)
     # Generated source is part of the built Site snapshot, not a clean-tree gate.
     command(["git", "add", "-A"], cwd=checkout)
     command(["git", "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty",

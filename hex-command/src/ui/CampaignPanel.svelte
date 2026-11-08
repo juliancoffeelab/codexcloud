@@ -1,4 +1,5 @@
 <script lang="ts">
+  import DialogWindow from "./DialogWindow.svelte";
   import type { BattleView, BattleCommands } from "../controller/view";
   import { CAMPAIGNS } from "../game/campaign-data";
   import { campaignMission, dialoguePending, returnsWithStory } from "../game/campaign-progress";
@@ -16,6 +17,7 @@
     onNewCampaign: () => void;
     expanded?: boolean;
   } = $props();
+  let conversations = $state<HTMLDialogElement>();
   let recall = $state<string[]>([]);
   const campaign = $derived(view.game.campaign);
   const definition = $derived(campaign ? CAMPAIGNS[campaign.id] : null);
@@ -88,7 +90,20 @@
       {campaign.mission + 1}/{definition.missions.length}
     </p>
     <h3>Briefing</h3>
-    <p>{view.game.story?.briefing ?? ""}</p>
+    <p>
+      {view.game.story?.briefing ?? ""}{" "}
+      <button
+        class="conversation-icon"
+        aria-label="Campaign conversations"
+        title="Campaign conversations"
+        onclick={() => conversations?.showModal()}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M14 3H4a2 2 0 0 0-2 2v11l4-4h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z" />
+          <path d="M8 16v1a2 2 0 0 0 2 2h8l4 3V11a2 2 0 0 0-2-2" />
+        </svg>
+      </button>
+    </p>
     {#if view.game.story?.hints.length}
       <h3>Hints</h3>
       <ul class="mission-items">
@@ -210,7 +225,42 @@
   {/if}
 {/if}
 
+<DialogWindow title="Campaign conversations" bind:dialog={conversations} width="680px" tall>
+  {#each campaign?.dialogue.slice(0, campaign.dialogueIndex) ?? [] as line}
+    <p>
+      <strong>{line.speaker}</strong>
+      <br />
+      {line.text}
+    </p>
+  {:else}<p>No conversations yet.</p>{/each}
+</DialogWindow>
+
 <style>
+  .conversation-icon {
+    display: inline-grid;
+    place-items: center;
+    vertical-align: middle;
+    width: 28px;
+    height: 24px;
+    min-height: 24px;
+    padding: 3px 5px;
+    margin: 0 0 0 3px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+  }
+  .conversation-icon:is(:hover, :focus-visible) {
+    color: var(--gold);
+  }
+  .conversation-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
   .recall-copy {
     min-width: 0;
   }
