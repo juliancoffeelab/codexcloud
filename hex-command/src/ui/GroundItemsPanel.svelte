@@ -2,9 +2,9 @@
   import { cellKey } from "../game/hex";
   import type { BattleView } from "../controller/view";
   import ItemList from "./ItemList.svelte";
-  let { view }: { view: BattleView } = $props();
+  let { view }: { view: Pick<BattleView, "interactionGame" | "inspectedTile"> } = $props();
   const items = $derived(
-    view.game.groundItems
+    view.interactionGame.groundItems
       .filter((ground) => cellKey(ground.tile) === view.inspectedTile)
       .map((ground) => ground.item),
   );

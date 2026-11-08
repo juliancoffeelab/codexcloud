@@ -1,8 +1,12 @@
+import { claimAction, type ActionToken } from "../controller/action-presentation";
 import { cellKey } from "../game/hex";
 import Phaser from "phaser";
 import { BattlefieldVisibility } from "./phaser-visibility";
 import { BattlefieldResources } from "./phaser-resources";
 import {
+  watchSoundOwner,
+  soundPending,
+  type SoundOwner,
   audioReadiness,
   attachSound,
   soundReady,
@@ -28,7 +32,7 @@ import {
 } from "./phaser-atmosphere";
 import { BattlefieldActorLightingPipeline } from "./phaser-actor-lighting";
 import { BattlefieldLightingPipeline } from "./phaser-lighting";
-import { installBattlefieldInput, type BattlefieldCameraState } from "./phaser-camera";
+import { installBattlefieldInput } from "./phaser-camera";
 import { lightPosition } from "./battlefield-lighting";
 import { measureTrace, traceConfiguration, traceInstant } from "./performance-trace";
 import type { MotionKind } from "./motion";
@@ -63,6 +67,7 @@ type UnitActor = {
   indicators: Phaser.GameObjects.Graphics;
   transition?: {
     kind: "move" | "hit" | "spawn";
+    owner?: SoundOwner;
     t: number;
     fromX: number;
     fromY: number;
@@ -127,7 +132,39 @@ export class BattlefieldScene extends Phaser.Scene {
   private actorRoots!: Phaser.GameObjects.Container;
   private upperIndicators!: Phaser.GameObjects.Container;
   private invalidate = () => (this.game as BattlefieldGame).invalidateRender();
+  private action?: ActionToken;
+  private actionLease?: ReturnType<typeof claimAction>;
+  private actionFinished = false;
+  private unwatchAction?: () => void;
+  private get actionOwner(): SoundOwner {
+    return this.action ?? this.frame!.view.game;
+  }
+  private acknowledgeAction() {
+    if (
+      !this.action ||
+      this.actionFinished ||
+      !this.presented ||
+      this.loading ||
+      this.failed ||
+      this.lastVisual?.game !== this.frame?.view.game
+    )
+      return;
+    // A panel cannot erase the exchange that this action still owes the player.
+    if (
+      this.action.combat &&
+      (this.frame?.view.combatPlayback?.combat !== this.action.combat ||
+        !this.frame.view.combatPlayback.complete)
+    )
+      return;
+    if (soundPending(this.action)) return;
+    if ([...this.activeActors].some((actor) => actor.transition?.owner === this.action)) return;
+    if ([...this.dying.values()].some((death) => death.owner === this.action)) return;
+    if ([...this.pulses.values()].some((pulse) => pulse.owner === this.action)) return;
+    this.actionFinished = true;
+    this.actionLease?.complete();
+  }
   private cancelPresentation = () => {
+    if (this.action && !this.actionFinished) return;
     this.playback.skip();
     for (const actor of this.actors.values()) this.drawIndicators(actor);
     cancelSound();
@@ -163,7 +200,7 @@ export class BattlefieldScene extends Phaser.Scene {
   );
   private dying = new Map<
     Phaser.GameObjects.Container,
-    { tile: string; key: string; actor: UnitActor; start: number; y: number }
+    { tile: string; key: string; actor: UnitActor; start: number; y: number; owner?: SoundOwner }
   >();
   private items!: Phaser.GameObjects.Container;
   private atmosphere?: BattlefieldFog;
@@ -191,18 +228,23 @@ export class BattlefieldScene extends Phaser.Scene {
   >();
   private pulses = new Map<
     string,
-    { kind: MotionKind; t: number; start: number; duration: number }
+    {
+      kind: MotionKind;
+      tile: string;
+      t: number;
+      start: number;
+      duration: number;
+      owner?: SoundOwner;
+    }
   >();
   private hasFrame = false;
   private playbackFrame?: BattleView["combatPlayback"];
-  cameraSnapshot?: { identity: string; state: BattlefieldCameraState };
 
   constructor(
     private actions: () => BattleCommands,
     private describe: (label: string) => void,
     private previews: HudArtworkCache,
     private progress: (state: BattlefieldProgress) => void,
-    private restoreCamera?: { identity: string; state: BattlefieldCameraState },
   ) {
     super("battlefield");
   }
@@ -213,14 +255,8 @@ export class BattlefieldScene extends Phaser.Scene {
     const cleanup = () => {
       if (cleaned) return;
       cleaned = true;
-      if (this.controls)
-        this.cameraSnapshot = {
-          identity: this.identity,
-          state: this.controls.snapshot(),
-        };
       this.ready = false;
-      // Retry owns resuming a pending exchange. Teardown must not release the
-      // enemy turn while there is no renderer to present its next command.
+      this.unwatchAction?.();
       this.playback.stop();
       this.playbackFrame = undefined;
       this.game.events.off(Phaser.Core.Events.BLUR, this.cancelPresentation, this);
@@ -302,9 +338,7 @@ export class BattlefieldScene extends Phaser.Scene {
     if (this.input.manager.mouse) this.input.manager.mouse.preventDefaultWheel = false;
     const onContextLost = () =>
       (this.game as BattlefieldGame).fail(
-        new Error(
-          "The battlefield WebGL context was lost. Retry map rendering to restart cleanly.",
-        ),
+        new Error("The battlefield WebGL context was lost. Reload the game to restart cleanly."),
       );
     this.game.canvas.addEventListener("webglcontextlost", onContextLost);
     this.events.once(Phaser.Scenes.Events.DESTROY, () =>
@@ -337,16 +371,7 @@ export class BattlefieldScene extends Phaser.Scene {
       renderer.pipelines.add(name, pipeline);
     }
     this.textures.addUint8Array("battlefield-white", new Uint8Array([255, 255, 255, 255]), 1, 1);
-    this.controls = installBattlefieldInput(
-      this,
-      () => this.frame,
-      this.actions,
-      this.restoreCamera?.identity ===
-        `${this.frame?.view.sessionVersion}:${this.frame?.view.game.mapId}`
-        ? this.restoreCamera.state
-        : undefined,
-      this.invalidate,
-    );
+    this.controls = installBattlefieldInput(this, () => this.frame, this.actions, this.invalidate);
     this.game.events.on(Phaser.Core.Events.BLUR, this.cancelPresentation, this);
     this.game.events.on(Phaser.Core.Events.POST_STEP, this.animateActors, this);
     let renderStart: { id: number; time: number } | undefined;
@@ -370,7 +395,10 @@ export class BattlefieldScene extends Phaser.Scene {
         this.reportLoading();
         traceInstant("Battlefield first complete frame", { scene: this.identity });
       }
-      if (this.presented && !this.loading && !this.failed) this.playback.ready();
+      if (this.presented && !this.loading && !this.failed) {
+        this.playback.ready();
+        this.acknowledgeAction();
+      }
     });
     this.refreshSafely();
   }
@@ -414,6 +442,13 @@ export class BattlefieldScene extends Phaser.Scene {
       );
     }
     if (previous?.tiles !== tiles) this.tilesById = new Map(tiles.map((tile) => [tile.id, tile]));
+    if (this.action !== view.actionPresentation) {
+      this.unwatchAction?.();
+      this.action = view.actionPresentation;
+      this.actionFinished = false;
+      this.actionLease = this.action ? claimAction(this.action) : undefined;
+      this.unwatchAction = this.action ? watchSoundOwner(this.action, this.invalidate) : undefined;
+    }
     this.frame = { view, reducedMotion, tiles };
     if (this.ready) this.refreshSafely();
   }
@@ -469,10 +504,7 @@ export class BattlefieldScene extends Phaser.Scene {
   private reset(identity: string) {
     this.identity = identity;
     this.playback.stop();
-    // A completed result restored into a new renderer is history, not a new cue.
-    // An unfinished exchange must instead wait and resume its retained cursor.
-    const source = this.frame!.view.combatPlayback;
-    this.playbackFrame = source?.complete ? source : undefined;
+    this.playbackFrame = undefined;
     this.planKey = "";
     this.requiredAudio.clear();
     this.presented = false;
@@ -528,15 +560,14 @@ export class BattlefieldScene extends Phaser.Scene {
       this.frame!.tiles,
       this.resources,
     );
-    this.restoreCamera = undefined;
     this.controls.layout();
   }
   private refresh() {
     const frame = this.frame;
     if (!frame || this.failed) return;
     if (frame.reducedMotion) {
-      for (const id of this.pulses.keys()) {
-        const hex = this.hexes.get(id);
+      for (const pulse of this.pulses.values()) {
+        const hex = this.hexes.get(pulse.tile);
         if (hex) hex.tile = undefined;
       }
       for (const pulse of this.pulses.values()) this.tweens.killTweensOf(pulse);
@@ -563,6 +594,7 @@ export class BattlefieldScene extends Phaser.Scene {
         frame.view.combatPlayback,
         new Set([...this.actors.keys(), ...frame.view.game.units.map((u) => u.id)]),
         frame.reducedMotion,
+        this.action ?? frame.view.combatPlayback?.combat,
       );
     }
     const previous = this.lastVisual;
@@ -796,7 +828,8 @@ export class BattlefieldScene extends Phaser.Scene {
             tile: actor.data.tile,
             key: `dying:${id}`,
             actor,
-            start: held ? Infinity : performance.now(),
+            start: this.playback.death(id) ?? (held ? Infinity : performance.now()),
+            owner: this.action,
             y: actor.data.y,
           });
           this.visibility.set(
@@ -842,7 +875,10 @@ export class BattlefieldScene extends Phaser.Scene {
           const duration = this.frame!.reducedMotion ? 0 : 240;
           if (!movement) {
             const start = performance.now();
-            movement = { start, end: scheduleMovement(start + duration).impactAt };
+            movement = {
+              start,
+              end: scheduleMovement(start + duration, this.actionOwner).impactAt,
+            };
           }
           if (duration)
             this.transition(actor, "move", movement.end - movement.start, movement.start);
@@ -906,6 +942,7 @@ export class BattlefieldScene extends Phaser.Scene {
     if (actor.transition) this.tweens.killTweensOf(actor.transition);
     actor.transition = {
       kind,
+      owner: this.action,
       t: 0,
       fromX: actor.root.x,
       fromY: actor.root.y,
@@ -920,15 +957,17 @@ export class BattlefieldScene extends Phaser.Scene {
     if (!this.frame || !this.ready) return;
     const now = performance.now();
     this.playback.update(now);
-    for (const [tile, pulse] of this.pulses) {
+    for (const [key, pulse] of this.pulses) {
+      const tile = pulse.tile;
       pulse.t = Phaser.Math.Clamp((now - pulse.start) / pulse.duration, 0, 1);
-      if (pulse.t >= 1) this.pulses.delete(tile);
+      if (pulse.t >= 1) this.pulses.delete(key);
       if (pulse.kind === "select") this.drawOutlines(tile);
       if (pulse.kind === "capture") this.drawOwners(tile);
       this.invalidate();
     }
     for (const [root, death] of this.dying) {
       const start = this.playback.death(death.actor.data.id) ?? death.start;
+      if (Number.isFinite(start)) death.start = start;
       const duration = this.frame.reducedMotion ? 0 : 300;
       const t = now < start ? 0 : duration ? Math.min(1, (now - start) / duration) : 1;
       if (t >= 1 || (!Number.isFinite(start) && !this.playback.holds(death.actor.data.id))) {
@@ -953,6 +992,8 @@ export class BattlefieldScene extends Phaser.Scene {
       }
       this.invalidate();
     }
+    // Animation completion must reach a rendered frame even after sound/pulses end.
+    if (this.activeActors.size) this.invalidate();
     for (const actor of this.activeActors) {
       const dying = this.dying.get(actor.root);
       if (dying && now >= (this.playback.death(actor.data.id) ?? dying.start)) {
@@ -964,7 +1005,9 @@ export class BattlefieldScene extends Phaser.Scene {
         t = state ? Phaser.Math.Clamp((now - state.start) / (state.end - state.start), 0, 1) : 1;
       if (state) {
         state.t = t;
-        if (t >= 1) actor.transition = undefined;
+        if (t >= 1) {
+          actor.transition = undefined;
+        }
       }
       let x = unit.x,
         y = unit.y,
@@ -977,7 +1020,7 @@ export class BattlefieldScene extends Phaser.Scene {
         alpha = t;
         y -= (1 - t) * 10;
       } else if (state?.kind === "hit") x += Math.sin(t * Math.PI * 6) * (1 - t) * 4;
-      const pulse = this.pulses.get(cellKey(unit.tile));
+      const pulse = this.pulses.get(`attack:${cellKey(unit.tile)}`);
       if (pulse?.kind === "attack") x += Math.sin(pulse.t * Math.PI) * 7;
       const flash = state?.kind === "hit" ? Math.sin(t * Math.PI) * 0.5 : 0;
       const shade = Math.round(255 * (1 - flash));
@@ -1065,7 +1108,7 @@ export class BattlefieldScene extends Phaser.Scene {
         width = 3.5;
         alpha = 1;
       }
-      const pulse = this.pulses.get(tile.id);
+      const pulse = this.pulses.get(`select:${tile.id}`);
       if (pulse?.kind === "select") {
         // Ordinary terrain needs contrasting feedback; keep the stronger
         // movement, combat, recruitment and objective outlines intact.
@@ -1130,10 +1173,10 @@ export class BattlefieldScene extends Phaser.Scene {
           marker.destroy();
           this.visibility.delete(`owner:${id}`);
           this.ownerMarkers.delete(id);
-          const pulse = this.pulses.get(id);
+          const pulse = this.pulses.get(`capture:${id}`);
           if (pulse?.kind === "capture") {
             this.tweens.killTweensOf(pulse);
-            this.pulses.delete(id);
+            this.pulses.delete(`capture:${id}`);
           }
         }
     }
@@ -1148,7 +1191,7 @@ export class BattlefieldScene extends Phaser.Scene {
           this.ownerMarkers.set(tile.id, marker);
           this.owners.add(marker);
         }
-        const pulse = this.pulses.get(tile.id),
+        const pulse = this.pulses.get(`capture:${tile.id}`),
           radius = pulse?.kind === "capture" ? 5 + Math.sin(pulse.t * Math.PI) * 3 : 5;
         const fill = color(tile.ownerColor);
         if (
@@ -1195,15 +1238,23 @@ export class BattlefieldScene extends Phaser.Scene {
     if (!this.ready || !this.frame || !this.tilesById.has(tileId)) return;
     if (sound) void playInteraction(sound);
     if (this.frame.reducedMotion) return;
-    const previous = this.pulses.get(tileId);
+    const key = `${kind}:${tileId}`;
+    const previous = this.pulses.get(key);
     if (previous) {
       this.tweens.killTweensOf(previous);
-      this.pulses.delete(tileId);
+      this.pulses.delete(key);
       if (previous.kind === "capture") this.drawOwners(tileId);
       if (previous.kind === "select") this.drawOutlines(tileId);
     }
-    const pulse = { kind, t: 0, start: at, duration };
-    this.pulses.set(tileId, pulse);
+    const pulse = {
+      kind,
+      tile: tileId,
+      t: 0,
+      start: at,
+      duration,
+      owner: kind === "select" ? undefined : this.action,
+    };
+    this.pulses.set(key, pulse);
     if (kind === "attack")
       for (const actor of this.actors.values())
         if (actor.data.tile === tileId) this.activeActors.add(actor);
@@ -1213,7 +1264,7 @@ export class BattlefieldScene extends Phaser.Scene {
   }
 }
 
-/** Ordinary single Game lifecycle; the boot owner retains this retry handle. */
+/** One Phaser Game owns the battlefield until disposal or full-page recovery. */
 export function preparePhaserBattlefield() {
   let game: BattlefieldGame | undefined;
   let scene: BattlefieldScene | undefined;
@@ -1226,7 +1277,7 @@ export function preparePhaserBattlefield() {
       previews: HudArtworkCache,
       progress: (state: BattlefieldProgress) => void,
     ) {
-      scene = new BattlefieldScene(actions, describe, previews, progress, scene?.cameraSnapshot);
+      scene = new BattlefieldScene(actions, describe, previews, progress);
       const owner = new BattlefieldGame(
         {
           type: Phaser.WEBGL,
@@ -1289,7 +1340,7 @@ export function preparePhaserBattlefield() {
           ready: false,
           error: errorDetails(
             new Error(
-              "Battlefield audio is unavailable because its renderer stopped. Retry map rendering to restore its native audio owner.",
+              "Battlefield audio is unavailable because its renderer stopped. Reload the game to restore audio.",
             ),
           ),
         });

@@ -12,9 +12,11 @@ import { DEFAULT_SETUP, opponentSummary } from "../src/game/setup";
 function published(game: Game, selected: string): BattleView {
   return {
     game: game.publishedView(),
+    interactionGame: game.publishedView(),
     needsNewGame: false,
     canSave: true,
     activeRunId: "test-run",
+    details: { kind: "unit", unitId: selected },
     selected,
     target: null,
     inspectedTile: cellKey(required(game.unit(selected)).tile),
@@ -62,7 +64,9 @@ for (const terrain of ["plains", "hill", "grove"] as const) {
       const unit = required(game.units[0]);
       const view = published(game, unit.id);
       required(game.tile(unit.tile)).terrain = terrain;
-      const terrainPanel = required(terrainPanelView({ ...view, game: game.publishedView() }));
+      const terrainPanel = required(
+        terrainPanelView({ ...view, interactionGame: game.publishedView() }),
+      );
       assert(!terrainPanel.facts.some((fact) => fact.startsWith("Movement:")));
       if (terrain === "hill") {
         assert(

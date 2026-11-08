@@ -5,6 +5,8 @@ import { TERRAIN, TYPES } from "../game/catalog";
 import type { TerrainType } from "../game/types";
 import { campaignMission } from "../game/campaign-progress";
 
+type TerrainContext = Pick<BattleView, "interactionGame" | "inspectedTile" | "recruitment">;
+
 function protectionFact(terrain: TerrainType): string {
   const { role, damageModifiers: modifiers } = TERRAIN[terrain];
   if (role === "ford") return "Land troops: +1 damage received. Merfolk: no exposure.";
@@ -44,9 +46,9 @@ function terrainFacts(terrain: TerrainType): string[] {
   return facts;
 }
 
-function recruitmentView(view: BattleView, tile: TileView, context: RecruitmentContext | null) {
+function recruitmentView(view: TerrainContext, tile: TileView, context: RecruitmentContext | null) {
   if (!context) return null;
-  const { game } = view;
+  const { interactionGame: game } = view;
   const isPlayerTurn = game.turn === "player" && !game.winner;
   const faction = context.commander
     ? game.faction(context.commander.id).id
@@ -85,9 +87,9 @@ function recruitmentView(view: BattleView, tile: TileView, context: RecruitmentC
   return { options, hint };
 }
 
-export function terrainPanelView(view: BattleView) {
-  const tile = view.game.tile(view.inspectedTile);
-  if (!tile || view.game.presentation?.fog.map((hex) => cellKey(hex)).includes(tile.id))
+export function terrainPanelView(view: TerrainContext) {
+  const tile = view.interactionGame.tile(view.inspectedTile);
+  if (!tile || view.interactionGame.presentation?.fog.map((hex) => cellKey(hex)).includes(tile.id))
     return null;
 
   const hasOwnership =
@@ -98,10 +100,10 @@ export function terrainPanelView(view: BattleView) {
   if (tile.owner === "enemy") ownerLabel = "Enemy";
   if (tile.owner && tile.owner !== "player" && tile.owner !== "enemy")
     ownerLabel =
-      view.game.factions.find((faction) => faction.id === tile.owner)?.name ??
+      view.interactionGame.factions.find((faction) => faction.id === tile.owner)?.name ??
       tile.owner.replaceAll("-", " ");
   const facts = terrainFacts(tile.terrain);
-  const campaign = view.game.campaign;
+  const campaign = view.interactionGame.campaign;
   const mission = campaign && campaignMission(campaign);
   const seal =
     mission &&

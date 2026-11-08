@@ -34,11 +34,41 @@
   let host = $state.raw<HTMLDivElement>();
   let runtime = $state.raw<ReturnType<createPhaserBattlefield>>();
   let renderError = $state<string>();
-  let moduleFailure = $state(false);
+  let recoveryBusy = $state(false);
+  let recoveryError = $state<string>();
+  let copied = $state(false);
   let commanderHint = $state<number | null>(null);
   let description = $state("Battlefield loading");
   let reducedMotion = $state(false);
-  let attempt = $state(0);
+  function fail(error: unknown) {
+    if (renderError) return;
+    renderError = errorDetails(error);
+    const active = runtime;
+    runtime = undefined;
+    actions.battlefieldFailed(error);
+    active?.game.destroy(true);
+  }
+  async function reload(source: "checkpoint" | "turn-start") {
+    recoveryBusy = true;
+    recoveryError = undefined;
+    try {
+      await actions.prepareReload(source);
+      window.location.reload();
+    } catch (error) {
+      recoveryError = errorDetails(error);
+      recoveryBusy = false;
+    }
+  }
+  async function copyDiagnostics() {
+    try {
+      await navigator.clipboard.writeText(
+        [renderError, recoveryError].filter(Boolean).join("\n\n"),
+      );
+      copied = true;
+    } catch (error) {
+      recoveryError = errorDetails(error);
+    }
+  }
 
   onMount(() => {
     const preference = matchMedia("(prefers-reduced-motion: reduce)");
@@ -48,19 +78,17 @@
     return () => preference.removeEventListener("change", update);
   });
   $effect(() => {
-    attempt;
     let disposed = false;
     let active: ReturnType<createPhaserBattlefield> | undefined;
     void battlefield
       .then((module) => {
         if (disposed || renderError) return;
-        moduleFailure = false;
         try {
           active = module.mount(
             host!,
             () => actions,
             (message) => {
-              if (!disposed) renderError = message;
+              if (!disposed) fail(message);
             },
             (label) => {
               if (!disposed) description = label;
@@ -72,13 +100,12 @@
           );
           runtime = active;
         } catch (error) {
-          renderError = errorDetails(error);
+          fail(error);
         }
       })
       .catch((error) => {
         if (disposed) return;
-        moduleFailure = true;
-        renderError = errorDetails(error);
+        fail(error);
       });
     return () => {
       disposed = true;
@@ -90,7 +117,7 @@
     try {
       runtime?.scene.present({ view, reducedMotion });
     } catch (error) {
-      renderError = errorDetails(error);
+      fail(error);
     }
   });
   $effect(() => {
@@ -144,19 +171,27 @@
   {/snippet}
   {#if renderError}
     <div role="alert" class="map-render-error">
-      <pre>{renderError}</pre>
-      <button
-        onclick={() => {
-          if (moduleFailure) {
-            window.location.reload();
-            return;
-          }
-          renderError = undefined;
-          attempt++;
-        }}
-      >
-        {moduleFailure ? "Reload game" : "Retry map rendering"}
+      <p>The battlefield stopped. Reload to restore saved progress.</p>
+      <p>
+        Latest checkpoint keeps saved actions. Restarting the turn discards actions since its start.
+        An interrupted AI turn replays from its saved boundary.
+      </p>
+      <button disabled={recoveryBusy} onclick={() => reload("checkpoint")}>
+        Reload latest checkpoint
       </button>
+      <button disabled={recoveryBusy} onclick={() => reload("turn-start")}>
+        Restart current turn
+      </button>
+      <details>
+        <summary>Error details</summary>
+        <pre>{renderError}</pre>
+      </details>
+      <button onclick={copyDiagnostics}>
+        {copied ? "Diagnostics copied" : "Copy diagnostics"}
+      </button>
+      {#if recoveryError}
+        <pre role="alert">{recoveryError}</pre>
+      {/if}
     </div>
   {/if}
   {#if progress?.error}

@@ -8,19 +8,28 @@
   import CombatResult from "./CombatResult.svelte";
 
   interface Props {
-    view: BattleView;
+    view: Pick<
+      BattleView,
+      | "interactionGame"
+      | "details"
+      | "renderRevision"
+      | "artwork"
+      | "selected"
+      | "target"
+      | "inspectedTile"
+    >;
     actions: BattleCommands;
     onNewBattle: () => void;
   }
 
   let { view, actions, onNewBattle }: Props = $props();
   const panel = $derived(unitPanelView(view));
-  const playback = $derived(panel.kind === "combat" ? panel.playback : undefined);
-  const result = $derived(playback?.combat);
-  const resolving = $derived(!!playback && !playback.complete);
-  const health = $derived(playback?.combat.strikes[playback.shown - 1]?.health);
-  const shown = $derived(playback?.shown ?? 0);
-  const complete = $derived(playback?.complete ?? false);
+  const report = $derived(panel.kind === "combat-report" ? panel.report : undefined);
+  const result = $derived(report?.combat);
+  const resolving = $derived(!!report && !report.complete);
+  const health = $derived(report?.combat.strikes[report.shown - 1]?.health);
+  const shown = $derived(report?.shown ?? 0);
+  const complete = $derived(report?.complete ?? false);
 
   let panelElement: HTMLElement | undefined;
   const inspection = $derived([view.selected, view.target, view.inspectedTile].join("|"));
@@ -59,7 +68,7 @@
     </div>
     <p>{panel.description}</p>
     <button id="play-again" class="primary" onclick={onNewBattle}>Play again</button>
-  {:else if panel.kind === "combat"}
+  {:else if panel.kind === "combat-report" || panel.kind === "attack"}
     <div class="duel">
       <UnitCard
         unit={panel.attacker}
@@ -77,7 +86,7 @@
     </div>
     {#if result}
       <CombatResult combat={result} {shown} {complete} />
-    {:else}
+    {:else if panel.kind === "attack"}
       {#key panel.detailsResetKey}
         <AttackChoices
           game={panel.game}
@@ -93,7 +102,9 @@
       details={panel.details}
       artwork={view.artwork}
       onAdvance={(type) => actions.advanceUnit(panel.details.unit.id, type)}
-      onDrop={panel.details.faction.controllable && view.game.turn === "player" && !view.game.winner
+      onDrop={panel.details.faction.controllable &&
+      view.interactionGame.turn === "player" &&
+      !view.interactionGame.winner
         ? (item) => actions.dropItem(panel.details.unit.id, item)
         : undefined}
     />
