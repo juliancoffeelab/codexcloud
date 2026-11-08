@@ -2,6 +2,7 @@
 import argparse
 import fcntl
 import hashlib
+import gzip
 import json
 from pathlib import Path
 import shutil
@@ -20,6 +21,14 @@ def backup(root):
         for name,folder in [('latest',latest),('best',best)]:
             temporary=destination/(name+'.tmp');shutil.copyfile(folder/'resume.pt',temporary);temporary.replace(destination/(name+'.pt'))
         shutil.copyfile(root/'workload.json',destination/'workload.json')
+        for phase in ['posttune','rl']:
+            metrics=root/phase/'metrics.jsonl'
+            if metrics.exists():
+                temporary=destination/(phase+'-metrics.tmp')
+                temporary.write_bytes(gzip.compress(metrics.read_bytes(),mtime=0))
+                temporary.replace(destination/(phase+'-metrics.jsonl.gz'))
+            parameters=root/phase/'parameters.json'
+            if parameters.exists():shutil.copyfile(parameters,destination/(phase+'-parameters.json'))
         for source,name in [(root/'summary.json','summary.json'),(root/'final-scores.png','final-scores.png'),(root/'posttune/curves.png','posttune-curves.png'),(root/'rl/curves.png','rl-curves.png')]:
             if source.exists():shutil.copyfile(source,destination/name)
         if (root/'finished.json').exists():
