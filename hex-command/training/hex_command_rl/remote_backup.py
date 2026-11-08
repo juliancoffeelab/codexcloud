@@ -20,6 +20,12 @@ def backup(root):
         for name,folder in [('latest',latest),('best',best)]:
             temporary=destination/(name+'.tmp');shutil.copyfile(folder/'resume.pt',temporary);temporary.replace(destination/(name+'.pt'))
         shutil.copyfile(root/'workload.json',destination/'workload.json')
+        for source,name in [(root/'summary.json','summary.json'),(root/'final-scores.png','final-scores.png'),(root/'posttune/curves.png','posttune-curves.png'),(root/'rl/curves.png','rl-curves.png')]:
+            if source.exists():shutil.copyfile(source,destination/name)
+        if (root/'finished.json').exists():
+            for phase in ['posttune','rl']:
+                source=root/(phase+'-metrics.jsonl.gz')
+                if source.exists():shutil.copyfile(source,destination/source.name)
         atomic_json(destination/'manifest.json',dict(phase=control['phase'],latest=json.loads((latest/'manifest.json').read_text()),
                     best=json.loads((best/'manifest.json').read_text()),backup_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),
                     files={n:hashlib.sha256((destination/n).read_bytes()).hexdigest() for n in ['latest.pt','best.pt']}))

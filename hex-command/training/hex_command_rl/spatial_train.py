@@ -13,6 +13,7 @@ from .train import batches as dense_batches
 from .trees import save_json
 from .train import evaluate,results_summary,results_by_recruiter
 from .checkpoint import warm_start
+from .recovery import atomic_torch_save
 
 
 def model_batches(model,data,ids):
@@ -104,7 +105,7 @@ def worker(args):
         if selection<best:
             best=selection;best_epoch=epoch
             weights=f'weights-{epoch:04d}.pt';model_path=f'planner-{epoch:04d}.json'
-            torch.save(model.state_dict(),args.out/weights);save_json(args.out/model_path,json.loads(model.export()))
+            atomic_torch_save(model.state_dict(),args.out/weights);save_json(args.out/model_path,json.loads(model.export()))
             save_json(args.out/'best.json',dict(run_id=args.run_id,epoch=epoch,architecture=args.architecture,balance_maps=balance_maps,threads=args.threads,weights=weights,model=model_path,validation=validation,
                 collection_seconds=collection_seconds,source_dense_equal=dense_equal,initial_validation=initial,dropout=args.dropout if args.architecture=='cnn' else 0.,
                 learning_rate=args.learning_rate,parameter_count=sum(p.numel() for p in model.parameters()),fingerprints=fingerprints,

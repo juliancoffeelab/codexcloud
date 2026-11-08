@@ -16,6 +16,7 @@ from torch.nn import functional as F
 import hex_command_training as native
 from .spatial import SpatialPlanner
 from .checkpoint import warm_start
+from .recovery import atomic_torch_save
 
 
 def save_json(path, value):
@@ -164,7 +165,7 @@ def main():
                     opponent=args.opponent, seconds=args.seconds, envs=args.envs, horizon=args.horizon, gamma=gamma,
                     gae_lambda=lam, temperature=temperature, clip=.2, reference_kl_coefficient=.02, entropy_coefficient=.005,
                     actor_learning_rate=1e-5, critic_learning_rate=1e-3, critic_warmup_updates=2,
-                    rewards=dict(success=1, defeat=-1, truncation=0), reward_shaping=False, validation_configs=valid,
+                    rewards=dict(success=1, defeat=-1, truncation=-1), reward_shaping=False, validation_configs=valid,
                     training_first_seed=201001, random_seed=args.seed, optimizer_state_in_checkpoints=True,
                     resume_source=None if not args.resume else dict(path=str(args.resume), sha256=hashlib.sha256(args.resume.read_bytes()).hexdigest()))
     save_json(args.out/'manifest.json', manifest)
@@ -175,9 +176,9 @@ def main():
     next_seed = resume['next_training_seed'] if resume else 201001
     def checkpoint(label):
         directory = args.out/label; directory.mkdir(exist_ok=True)
-        torch.save(policy.state_dict(), directory/'weights.pt')
+        atomic_torch_save(policy.state_dict(), directory/'weights.pt')
         save_json(directory/'planner.json', json.loads(policy.export()))
-        torch.save(dict(policy=policy.state_dict(), critic=ac.critic.state_dict(), actor_optimizer=actor_opt.state_dict(),
+        atomic_torch_save(dict(policy=policy.state_dict(), critic=ac.critic.state_dict(), actor_optimizer=actor_opt.state_dict(),
                         critic_optimizer=critic_opt.state_dict(), torch_rng=torch.get_rng_state(), numpy_rng=rng.bit_generator.state,
                         python_rng=random.getstate(), update=update, episodes=episode_count, decisions=decisions,
                         next_training_seed=next_seed, manifest=manifest), directory/'resume.pt')
@@ -216,7 +217,7 @@ def main():
                 reward = np.zeros(args.envs, np.float32); value = np.zeros(args.envs, np.float32); done = np.ones(args.envs, np.float32)
                 for j, slot in enumerate(ids):
                     terminal = following[3][slot] or following[4][slot]
-                    reward[slot] = following[2][slot]; value[slot] = float(v[j]); done[slot] = terminal
+                    reward[slot] = -1. if following[4][slot] else following[2][slot]; value[slot] = float(v[j]); done[slot] = terminal
                     if terminal:
                         episode_count += 1
                         record('episode', episode=episode_count, reward=float(reward[slot]), success=bool(reward[slot]>0), truncated=bool(following[4][slot]))

@@ -22,3 +22,22 @@ class RecoveryContracts(unittest.TestCase):
         unique={group(c):c for c in partitions[0]}
         self.assertAlmostEqual(sum(mass(c) for c in unique.values()),1.)
         self.assertAlmostEqual(sum(mass(c) for c in unique.values() if 'campaign' in c),.5)
+
+    def test_sampler_budgets_follow_decisions_and_reserves_validation_seeds(self):
+        import numpy as np
+        from hex_command_rl.mixed_ppo import Sampler
+        sampler=Sampler(configs('train'),np.random.default_rng(9))
+        for _ in range(200):
+            c,k=sampler.choose(0)
+            self.assertGreaterEqual(c['seed'],7000001)
+            n=100 if 'campaign' in c else 10
+            for i in range(n):sampler.step(0)
+            sampler.finish(0,n)
+        totals={f:sum(n for k,n in sampler.counts.items() if __import__('json').loads(k)[0]==f) for f in ['arena','campaign']}
+        self.assertLess(abs(totals['campaign']/sum(totals.values())-.5),.08)
+
+    def test_campaign_cap_is_failure_and_arena_cap_remains_draw(self):
+        from hex_command_rl.mixed_ppo import terminal_reward
+        self.assertEqual(terminal_reward({'campaign':'test'},0.,True),-1.)
+        self.assertEqual(terminal_reward({'landscape':'test'},0.,True),0.)
+        self.assertEqual(terminal_reward({'campaign':'test'},1.,False),1.)

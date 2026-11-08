@@ -576,7 +576,7 @@ The first two rollout updates train only the critic. Subsequent updates use clip
 PPO, generalized advantage estimation, an entropy bonus, gradient clipping and a
 KL penalty against the frozen starting policy. Candidate padding uses finite
 masked logits to keep KL gradients finite. Rewards come only from completed
-campaign outcomes: +1 success, -1 defeat, 0 round cap. There are no teacher labels
+campaign outcomes: +1 success, -1 defeat or round cap. There are no teacher labels
 or heuristic shaping rewards in this trainer.
 
 The wall budget includes initial validation, rollouts, optimization and periodic
@@ -590,3 +590,42 @@ critic, optimizer and random-generator states. `--warm-start` starts from policy
 restores policy, critic, optimizers and random generators while restarting native
 rollouts at fresh training seeds. Resume validates the engine, catalog, workload
 and frozen reference policy; it does not restore games in progress.
+
+
+## Mixed overnight workload and recovery
+
+`mixed_workload --root <ignored-run-directory>` prepares an isolated catalog and
+hierarchical workload: 50% arena decisions across five maps/two objectives, and
+50% campaign decisions across four campaigns. Lantern's flight/fight/authored
+variants split its allocation equally; Ashen's two diplomacy postures split its
+allocation equally. Both opponents and recruiters receive equal shares. Training,
+periodic validation and final test seed ranges are disjoint.
+
+`mixed_imitation` collects independently recoverable float32 NumPy shards with
+lossless compression, then shuffles shards and decisions while applying hierarchical
+loss weights. Atomic full-state bundles preserve policy, Adam, random generators
+and the exact shard/minibatch cursor. `--resume <run-directory>` validates the
+workload and restores that state; completed collection shards are checksum-verified
+and reused. The initial and best gameplay policies remain eligible for selection.
+
+`mixed_ppo` samples fresh seeds above all supervised/evaluation seed ranges.
+Independent native slots reset when completed, and a deficit sampler tracks actual
+controlled decisions and work reserved for live episodes. Its targets match the
+supervised hierarchy. Campaign caps receive -1, arena caps 0; victory is +1 and
+defeat -1. The critic warms up for 24 completed games. PPO uses temperature 0.35,
+a clipped objective, an entropy bonus, a frozen-reference KL anchor and finite
+padded categorical logits. Recovery restores policy, critic, both Adam states,
+reference weights, random generators and sampling budgets; games restart at fresh
+seeds rather than restoring in-progress native matches.
+
+`recovery.save_bundle` fsyncs checkpoint files and metadata in a temporary directory,
+renames the completed directory, then atomically replaces the latest/best pointer.
+Recovery checks file sizes and SHA-256 digests before loading. `remote_backup`
+serializes Git operations with the run's lock and pushes latest/best full-state
+files and the workload recipe on the authorized feature branch. Raw corpora stay
+ignored. A workspace replacement can regenerate deterministic compressed shards
+from the committed recipe and restore the remote checkpoint; processes require
+relaunching. `overnight` monitors phases, retries failed workers from valid atomic
+checkpoints, launches PPO only after post-tune validation and sampler readiness,
+and evaluates the selected models on the final held-out panel. Curves, detailed
+outcomes and compressed metrics are backed up at completion.

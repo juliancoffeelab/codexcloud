@@ -30,14 +30,14 @@ def summarize(rows):
         for row in rs:
             for mission in row['result'].get('missions',[]):
                 d=stages[mission['id']];d['entered']+=1;d['wins']+=mission['winner']=='player';d['defeats']+=mission['winner']=='enemy';d['caps']+=mission['winner'] is None;d['rounds'].append(mission['round'])
-        detailed.append(dict(group=list(k),runs=n,wins=wins,defeats=n-wins-cap,caps=cap,stages=dict(stages)))
+        detailed.append(dict(group=list(k),runs=n,wins=wins,defeats=n-wins-cap,caps=cap,mass=w,stages=dict(stages)))
     return dict(score=score/weight,weighted_caps=caps/weight,wins=sum(r['result']['success'] for r in rows),
                 caps=sum(r['result']['truncated'] for r in rows),runs=len(rows),groups=detailed)
 
 
-def evaluate(cases,model):
+def evaluate(cases,model,workers=2):
     rows=[]
-    with ProcessPoolExecutor(max_workers=2,mp_context=multiprocessing.get_context('spawn')) as pool:
+    with ProcessPoolExecutor(max_workers=workers,mp_context=multiprocessing.get_context('spawn')) as pool:
         tasks=[(cases[i:i+4],model) for i in range(0,len(cases),4)]
         for f in as_completed([pool.submit(job,t) for t in tasks]):rows.extend(f.result())
     return dict(rows=rows,**summarize(rows))
@@ -55,7 +55,7 @@ def plot(root):
     for family in ['arena','campaign']:
         vals=[]
         for r in history:
-            gs=[g for g in r['groups'] if g['group'][0]==family];vals.append(100*sum(g['wins']/g['runs'] for g in gs)/max(1,len(gs)))
+            gs=[g for g in r['groups'] if g['group'][0]==family];weights=[g.get('mass',.5/5/2/4 if family=='arena' else .5/4/len(__import__('hex_command_rl.mixed_workload',fromlist=['VARIANTS']).VARIANTS[g['group'][1]])/4) for g in gs];vals.append(100*sum(w*g['wins']/g['runs'] for w,g in zip(weights,gs))/max(1e-9,sum(weights)))
         axes[0,1].plot(x,vals,marker='o',label=family)
     axes[0,1].legend();axes[0,1].set_title('Held-out family results')
     axes[0,2].plot(x,[r['caps'] for r in history],marker='o');axes[0,2].set_title('Held-out caps')

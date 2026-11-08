@@ -58,3 +58,14 @@ def load_resume(path):
     path=Path(path)
     if path.is_dir(): path=resolve(path)/'resume.pt'
     return torch.load(path, map_location='cpu', weights_only=True)
+
+
+def atomic_torch_save(value, path):
+    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    fd,name=tempfile.mkstemp(prefix='.'+path.name,dir=path.parent)
+    try:
+        with os.fdopen(fd,'wb') as f:
+            torch.save(value,f);f.flush();os.fsync(f.fileno())
+        os.replace(name,path);sync_dir(path.parent)
+    finally:
+        if os.path.exists(name):os.unlink(name)
