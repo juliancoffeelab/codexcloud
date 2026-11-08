@@ -5,6 +5,7 @@ use crate::{
 };
 use std::{collections::HashMap, rc::Rc};
 pub const LEGACY_FEATURES: usize = 172;
+pub const DUTY_FEATURES: usize = 219;
 pub const FEATURES: usize = LEGACY_FEATURES + super::duties::NAMES.len();
 pub const LEGACY_FEATURE_NAMES: [&str; LEGACY_FEATURES] = [
     "end_turn",
@@ -229,6 +230,9 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
         if !unit.attacked {
             for target in game.units().iter().filter(|t| game.hostile(unit, t)) {
                 for weapon in game.attack_options(unit, target, unit.tile) {
+                    if !orders.attack_allowed(game, unit, target, weapon, unit.tile) {
+                        continue;
+                    }
                     let c = Command::Attack {
                         unit: UnitId(unit.id),
                         target: UnitId(target.id),

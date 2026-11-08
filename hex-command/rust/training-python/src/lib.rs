@@ -248,7 +248,7 @@ fn score<'py>(
         return Err(err("use score_spatial for a CNN model"));
     }
     let a = features.as_array();
-    if a.ncols() != FEATURES && a.ncols() != LEGACY_FEATURES {
+    if ![LEGACY_FEATURES, DUTY_FEATURES, FEATURES].contains(&a.ncols()) {
         return Err(err("feature width mismatch"));
     }
     Ok(a.rows()
@@ -281,7 +281,7 @@ fn score_spatial<'py>(
     let x = features.as_array();
     let sh = shapes.as_array();
     let ix = indices.as_array();
-    if (x.ncols() != FEATURES && x.ncols() != LEGACY_FEATURES)
+    if ![LEGACY_FEATURES, DUTY_FEATURES, FEATURES].contains(&x.ncols())
         || ix.nrows() != x.nrows()
         || ix.ncols() != 3
         || sh.ncols() != 2
@@ -342,7 +342,10 @@ fn score_spatial<'py>(
                         .to_vec(),
                 };
                 let cells = board.height * board.width;
-                if board.values.len() == cells * spatial::LEGACY_CHANNELS {
+                if [spatial::LEGACY_CHANNELS, spatial::DUTY_CHANNELS]
+                    .iter()
+                    .any(|&channels| board.values.len() == cells * channels)
+                {
                     board.values.resize(cells * spatial::CHANNELS, 0.);
                 }
                 board.validate()?;
@@ -586,6 +589,14 @@ fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add(
         "LEGACY_SPATIAL_CHANNEL_NAMES",
         spatial::channel_names()[..spatial::LEGACY_CHANNELS].to_vec(),
+    )?;
+    m.add(
+        "DUTY_FEATURE_NAMES",
+        FEATURE_NAMES[..DUTY_FEATURES].to_vec(),
+    )?;
+    m.add(
+        "DUTY_SPATIAL_CHANNEL_NAMES",
+        spatial::channel_names()[..spatial::DUTY_CHANNELS].to_vec(),
     )?;
     m.add_function(wrap_pyfunction!(upgrade_model, m)?)?;
     m.add_function(wrap_pyfunction!(collect, m)?)?;

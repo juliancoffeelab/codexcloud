@@ -5,7 +5,7 @@ use crate::{
 };
 use std::rc::Rc;
 
-pub const NAMES: [&str; 47] = [
+pub const NAMES: [&str; 55] = [
     "goto_assigned",
     "goto_priority",
     "goto_turns_before",
@@ -53,8 +53,16 @@ pub const NAMES: [&str; 47] = [
     "critical_unfinished",
     "protected_units",
     "pending_arrivals",
+    "diplomatic_restraint",
+    "withdrawal_protection",
+    "protected_retreaters",
+    "mediated_enemies",
+    "nearest_enemy_withdrawing",
+    "target_mediated",
+    "withdrawal_lane_before",
+    "withdrawal_lane_after",
 ];
-pub const CHANNEL_NAMES: [&str; 9] = [
+pub const CHANNEL_NAMES: [&str; 12] = [
     "goto_actor",
     "goto_destination",
     "occupy_actor",
@@ -64,6 +72,9 @@ pub const CHANNEL_NAMES: [&str; 9] = [
     "escort_subject",
     "escort_guard_count",
     "survive",
+    "protected_retreating",
+    "mediated_enemy",
+    "withdrawal_lane",
 ];
 
 fn priority(p: ObjectivePriority) -> f32 {
@@ -103,7 +114,7 @@ struct Escort {
 pub(super) struct Duties {
     routes: Vec<Route>,
     escorts: Vec<Escort>,
-    globals: [f32; 11],
+    globals: [f32; 15],
 }
 impl Duties {
     pub fn new(g: &BattleView<'_, '_>, orders: &TacticalOrders) -> Self {
@@ -222,6 +233,15 @@ impl Duties {
             .count() as f32
             / 10.;
         result.globals[10] = orders.pending_arrivals as u8 as f32;
+        result.globals[11] = orders.restrained as u8 as f32;
+        result.globals[12] = orders.protect_withdrawal as u8 as f32;
+        if orders.protect_withdrawal {
+            for enemy in g.units().iter().filter(|u| g.hostile_to_phase(u, g.turn())) {
+                result.globals[13] += (enemy.retreating == Some(true)) as u8 as f32 / 10.;
+                result.globals[14] +=
+                    orders.mediated.contains(&UnitId(enemy.id)) as u8 as f32 / 10.;
+            }
+        }
         result
     }
     fn count(&mut self, kind: usize, p: ObjectivePriority, unmet: bool, actionable: bool) {
@@ -239,7 +259,7 @@ impl Duties {
         if !orders.campaign {
             return;
         }
-        x[36..47].copy_from_slice(&self.globals);
+        x[36..51].copy_from_slice(&self.globals);
         if let Some(p) = orders
             .progress
             .iter()
@@ -255,6 +275,23 @@ impl Duties {
         };
         let unit = g.unit(id).unwrap();
         let after = tile.unwrap_or(unit.tile);
+        if orders.protect_withdrawal {
+            x[51] = g
+                .units()
+                .iter()
+                .filter(|u| g.hostile(unit, u))
+                .min_by_key(|u| (g.board().distance(after, u.tile), u.id))
+                .is_some_and(|u| u.retreating == Some(true)) as u8 as f32;
+            if let Command::Attack { target, .. } = command {
+                x[52] = orders.mediated.contains(target) as u8 as f32;
+            }
+            x[53] = orders
+                .withdrawal_tiles
+                .contains(&TileId(g.board().ids[unit.tile])) as u8 as f32;
+            x[54] = orders
+                .withdrawal_tiles
+                .contains(&TileId(g.board().ids[after])) as u8 as f32;
+        }
         let mut primary: Option<(&str, ObjectivePriority, u16)> = None;
         let mut consider = |name, p, distance| {
             if primary.is_none_or(|(_, old, d)| p > old || p == old && distance < d) {
@@ -374,6 +411,19 @@ impl Duties {
         {
             mark(8, u.tile, 1.);
         }
+        if orders.protect_withdrawal {
+            for enemy in g.units().iter().filter(|u| g.hostile_to_phase(u, g.turn())) {
+                if enemy.retreating == Some(true) {
+                    mark(9, enemy.tile, 1.);
+                }
+                if orders.mediated.contains(&UnitId(enemy.id)) {
+                    mark(10, enemy.tile, 1.);
+                }
+            }
+            for &tile in &orders.withdrawal_tiles {
+                mark(11, g.site(&tile.0), 1.);
+            }
+        }
     }
 }
 
@@ -384,6 +434,122 @@ mod tests {
         logic::Game,
         training::{self, Dataset, FEATURE_NAMES, LEGACY_FEATURES},
     };
+
+    #[test]
+    fn diplomacy_filters_attacks_and_marks_protected_units_and_lanes() {
+        let rules = Rules::load().unwrap();
+        let original = Game::new(&rules, "mirror");
+        let actor = original
+            .units()
+            .iter()
+            .find(|u| u.side == original.turn())
+            .unwrap();
+        let enemy = original
+            .units()
+            .iter()
+            .find(|u| original.hostile(actor, u))
+            .unwrap();
+        let adjacent = (0..original.board().ids.len())
+            .find(|&t| original.board().distance(actor.tile, t) == 1 && original.at(t).is_none())
+            .unwrap();
+        let enemy_id = UnitId(enemy.id);
+        let actor_tile = TileId(original.board().ids[actor.tile]);
+        let mut state = original.state();
+        state
+            .units
+            .retain(|u| u.id == format!("u{}", actor.id) || u.id == format!("u{}", enemy.id));
+        let target = state
+            .units
+            .iter_mut()
+            .find(|u| u.side != state.turn)
+            .unwrap();
+        target.tile = original.board().ids[adjacent];
+        target.retreating = Some(true);
+        let observe = |state: &State, orders: &TacticalOrders| {
+            let game = Game::from_state(&rules, state.clone());
+            training::scoped(
+                Some(Dataset {
+                    spatial: true,
+                    ..Default::default()
+                }),
+                None,
+                None,
+                || training::candidates(game.view(), orders),
+            )
+            .0
+        };
+        let attacks = |choices: &training::Choices| {
+            choices
+                .commands
+                .iter()
+                .filter(|c| matches!(c, Command::Attack { .. }))
+                .count()
+        };
+        let mut orders = TacticalOrders {
+            campaign: true,
+            ..Default::default()
+        };
+        assert!(attacks(&observe(&state, &orders)) > 0);
+        orders.restrained = true;
+        orders.protect_withdrawal = true;
+        orders.mediated.push(enemy_id);
+        orders.withdrawal_tiles.push(actor_tile);
+        let protected = observe(&state, &orders);
+        assert_eq!(attacks(&protected), 0);
+        let feature = |name: &str| FEATURE_NAMES.iter().position(|&n| n == name).unwrap();
+        assert_eq!(protected.features[0][feature("diplomatic_restraint")], 1.);
+        assert_eq!(protected.features[0][feature("withdrawal_protection")], 1.);
+        assert!(protected.features[0][feature("protected_retreaters")] > 0.);
+        assert!(protected.features[0][feature("mediated_enemies")] > 0.);
+        assert!(
+            protected
+                .features
+                .iter()
+                .any(|x| x[feature("withdrawal_lane_before")] == 1.)
+        );
+        assert!(
+            protected
+                .features
+                .iter()
+                .any(|x| x[feature("nearest_enemy_withdrawing")] == 1.)
+        );
+        let board = protected.spatial.unwrap().board;
+        let cells = board.height * board.width;
+        for channel in 62..65 {
+            assert_eq!(
+                board.values[channel * cells..(channel + 1) * cells]
+                    .iter()
+                    .filter(|&&v| v == 1.)
+                    .count(),
+                1
+            );
+        }
+        let target = state
+            .units
+            .iter_mut()
+            .find(|u| u.side != state.turn)
+            .unwrap();
+        target.retreating = Some(false);
+        // Keep the nonlethal case independent of current weapon balance.
+        target.hp = i32::MAX;
+        let nonlethal = observe(&state, &orders);
+        assert!(attacks(&nonlethal) > 0);
+        assert!(
+            nonlethal
+                .features
+                .iter()
+                .any(|x| x[feature("target_mediated")] == 1.)
+        );
+        state
+            .units
+            .iter_mut()
+            .find(|u| u.side != state.turn)
+            .unwrap()
+            .hp = 1;
+        let lethal = observe(&state, &orders);
+        orders.protect_withdrawal = false;
+        assert!(attacks(&lethal) < attacks(&observe(&state, &orders)));
+    }
 
     #[test]
     fn markers_bind_actors_and_expose_unfinished_work_on_end_turn() {

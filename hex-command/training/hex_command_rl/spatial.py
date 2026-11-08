@@ -38,9 +38,9 @@ class SpatialPlanner(nn.Module):
         return x, (x.sum((-2,-1))/mask.sum((-2,-1)).clamp_min(1))
 
     def forward(self,features,boards,indices):
-        if features.shape[-1]==len(native.LEGACY_FEATURE_NAMES):
+        if features.shape[-1] in (len(native.LEGACY_FEATURE_NAMES),len(native.DUTY_FEATURE_NAMES)):
             features=F.pad(features,(0,len(native.FEATURE_NAMES)-features.shape[-1]))
-        if boards.shape[1]==len(native.LEGACY_SPATIAL_CHANNEL_NAMES):
+        if boards.shape[1] in (len(native.LEGACY_SPATIAL_CHANNEL_NAMES),len(native.DUTY_SPATIAL_CHANNEL_NAMES)):
             boards=F.pad(boards,(0,0,0,0,0,len(native.SPATIAL_CHANNEL_NAMES)-boards.shape[1]))
         spatial,pooled=self.encode(boards)
         batch,count,_=features.shape

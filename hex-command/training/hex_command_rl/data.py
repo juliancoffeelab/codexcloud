@@ -40,10 +40,11 @@ def load_dataset(directory):
     directory=Path(directory);manifest=json.loads((directory/'manifest.json').read_text())
     current=manifest['schema']==native.SCHEMA and manifest['feature_names']==native.FEATURE_NAMES
     legacy=manifest['schema']==2 and manifest['feature_names']==native.LEGACY_FEATURE_NAMES
-    if not current and not legacy:
+    duties=manifest['schema']==4 and manifest['feature_names']==native.DUTY_FEATURE_NAMES
+    if not current and not legacy and not duties:
         raise ValueError('dataset feature schema mismatch')
-    if legacy and any('campaign' in c for c in manifest['configs']):
-        raise ValueError('legacy campaign observations need recollection with canonical orders')
+    if not current and any('campaign' in c for c in manifest['configs']):
+        raise ValueError('legacy campaign observations need recollection with current policy and annotations')
     shape=(manifest['candidates'],len(manifest['feature_names']))
     expected=int(np.prod(shape))*np.dtype(np.float32).itemsize
     if (directory/'features.bin').stat().st_size!=expected:

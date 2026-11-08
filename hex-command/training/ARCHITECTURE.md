@@ -34,7 +34,7 @@ faction pairings, five maps and both first seats per recruiter (1,080 games tota
 ## Components
 
 - `rust/src/training.rs`: teacher sessions and validated dense/tree inference.
-- `rust/src/training/features.rs`: versioned 219-feature schema (172 legacy + 47 campaign inputs), mechanical unit
+- `rust/src/training/features.rs`: versioned 227-feature schema (172 legacy + 47 campaign duty + 8 diplomacy inputs), mechanical unit
   profiles, terrain/path encoding and legal candidates. Weights require matching
   schema/names, valid dimensions and finite values.
 - `rust/src/ai/planner/learned/`: native-only learned planner, selected through
@@ -54,7 +54,7 @@ attacks with each weapon, and recruiter-approved promotions. No heuristic top-K
 shortlist restricts the learner. Moves and attacks are separate decisions.
 
 Feature names are exported as `hex_command_training.FEATURE_NAMES`. Dense/tree
-schema 4 has 219 inputs. Legacy schema-2 models are explicitly migrated by name
+schema 6 has 227 inputs. Legacy schema-2/4 models are explicitly migrated by name
 and shape, appending zero weights; unsupported schemas are rejected. There are no unit, faction or terrain identity embeddings. Each candidate
 includes mechanical profiles for the actor, attack target and nearest enemy:
 max HP, cost, movement, level/experience, healing including equipment, thorns,
@@ -85,7 +85,7 @@ same explicit feature schema.
 `BatchEnv.reset(config_json_strings)` and `step(candidate_indices)` return:
 
 ```text
-features: float32 [total_candidates, 219]
+features: float32 [total_candidates, 227]
 offsets: int64 [environment_count + 1]
 rewards: one float per environment
 terminated: one bool per environment
@@ -355,8 +355,8 @@ complete native planning phases on the same saved positions as other models.
 
 ## Shared hex CNN
 
-`spatial.py` adds an optional board encoder to 219 candidate features. The first
-53 of its 62 channels include a valid-tile mask, friendly/hostile/
+`spatial.py` adds an optional board encoder to 227 candidate features. The first
+53 of its 65 channels include a valid-tile mask, friendly/hostile/
 neutral occupancy, the existing complete 34-value unit profile, base terrain
 cost/passability/healing/keep/ownership and six damage modifiers, and weighted
 capture/defeat/visit goal planes. Empty tiles retain terrain; absent units have
@@ -367,21 +367,21 @@ No unit, faction or terrain identity embeddings are added.
 
 Coordinates use `q = col - floor(row/2), r = row`, preserving the engine's six
 neighbors even for negative coordinates. Two seven-position convolutions encode
-62→16→16 channels, each followed by ReLU and multiplication by the valid-tile mask.
+65→16→16 channels, each followed by ReLU and multiplication by the valid-tile mask.
 Padding stays zero and is excluded from mean pooling. The mask describes map
 membership, independently of terrain passability or candidate legality. Each
 candidate gathers 16 values at its actor, destination and target, plus the shared
 16-value masked board mean. Missing references use zeros. Concatenating those 64
-values with existing features feeds a 283→64→64→1 head. A 10% dropout follows the
+values with existing features feeds a 291→64→64→1 head. A 10% dropout follows the
 first hidden ReLU during training only. No normalization or convolution dropout is
-used. The complete model has 31,169 parameters.
+used. The complete model has 32,017 parameters.
 
 The board is encoded once per decision, shared across all candidates. Native Rust
 executes exported seven-position convolution weights and dense layers directly;
-no Python or PyTorch is needed in a game. Spatial model schema 5 includes explicit
-channel names and validates both convolution shapes. Legacy schema-3 CNNs migrate
+no Python or PyTorch is needed in a game. Spatial model schema 7 includes explicit
+channel names and validates both convolution shapes. Legacy schema-3/5 CNNs migrate
 with zero input-channel filters and zero dense columns inserted before the 64
-spatial gathers. Dense/tree schema 2 also migrates to schema 4. Dropout is absent
+spatial gathers. Dense/tree schemas 2/4 also migrate to schema 6. Dropout is absent
 from the inference export.
 
 `native.collect_spatial` returns `(dense, spatial)`: the original four-array/data
@@ -499,12 +499,12 @@ owns its private coordination state; policy choices are not moved into the
 observation builder. Snapshots reset when the controlled roster changes.
 
 The appended values/channels are zero outside campaigns. Existing arena datasets
-with schemas 2/3 can therefore be reused with batch-local zero padding, without
+with schemas 2/3 or 4/5 can therefore be reused with batch-local zero padding, without
 rewriting their large disk buffers. Legacy campaign datasets are rejected and
-need recollection because their duty values and canonical orders are missing.
+need recollection because their policy filtering or observation annotations are outdated.
 `native.upgrade_model(json)` validates and exports a migrated native model; normal
 model loading also performs this migration. Scoring APIs accept the known legacy
-172-feature/53-channel buffers with zero extension. Unknown layouts are rejected.
+172-feature/53-channel and 219-feature/62-channel buffers with zero extension. Unknown layouts are rejected.
 
 `spatial_train --warm-start <weights.pt>` loads either current or legacy CNN/MLP
 weights, preserving old columns and spatial embeddings while initializing added
@@ -514,3 +514,23 @@ Initialization provenance and the source checkpoint SHA256 are recorded. Keep
 old checkpoints and write fine-tuning results to a separate output directory.
 Adding these inputs alone does not teach campaign behavior; actual campaign
 examples and held-out campaign/arena evaluation are still required.
+
+## Diplomatic restraint
+
+Attack candidates pass the same `TacticalOrders::attack_allowed` policy used by
+Full and Queued before they reach the scorer. Under withdrawal protection this
+excludes attacks on withdrawing enemies, and attacks on mediated enemies whose
+preview damage reaches their remaining HP. This is a policy restriction in
+addition to engine legality and scoped attack areas; the network cannot override
+it. The damage preview is an estimate, not a guarantee of a nonlethal outcome.
+
+Eight candidate inputs append diplomatic mode, withdrawal-protection mode,
+protected-retreater and mediated-enemy counts (divided by ten), whether the nearest
+enemy at the resulting location is withdrawing, whether an attack target is
+mediated, and withdrawal-lane membership before/after the action. The first four
+are available on EndTurn. Three board channels mark protected retreaters, mediated
+enemies and withdrawal lanes. Mode flags are separate dense inputs, including
+when no corresponding units are present. These annotations are campaign-only;
+protection-specific observations are zero when withdrawal protection is inactive.
+Old weights initially ignore these inputs through zero-weight expansion. Their
+campaign examples must be recollected under the current policy before fine-tuning.
