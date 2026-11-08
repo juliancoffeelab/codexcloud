@@ -179,15 +179,13 @@
         {$audioReadiness.ready ? "Audio prepared." : "Preparing audio… Menus remain available."}
       </p>
     {/if}
-    <div class="battle-content">
-      <div class="campaign-overlay">
-        <CampaignPanel
-          view={$view}
-          {actions}
-          bind:expanded={briefingExpanded}
-          onNewCampaign={openCampaignPicker}
-        />
-      </div>
+    <div class="battle-content" data-touch-scroll>
+      <CampaignPanel
+        view={$view}
+        {actions}
+        bind:expanded={briefingExpanded}
+        onNewCampaign={openCampaignPicker}
+      />
       <div class="workspace" class:map-only={!inspectionOpen}>
         <Battlefield {previews} view={$view} {actions} {battlefield} {showCommanderArrow} />
         {#if inspectionOpen}
@@ -227,17 +225,6 @@
 />
 
 <style>
-  .campaign-overlay {
-    position: absolute;
-    inset: 0 var(--page-padding) auto;
-    max-height: 100%;
-    overflow: auto;
-    z-index: 5;
-    pointer-events: none;
-  }
-  .campaign-overlay :global(section) {
-    pointer-events: auto;
-  }
   main > [role="alert"] {
     position: absolute;
     inset: 80px 12px auto;
