@@ -26,14 +26,13 @@ changes invalidate it. Assess these five conditions:
   handoffs and progress reports have not leaked into tracked files. Retained
   documents have an intentional permanent purpose; guidance is current and avoids
   duplicated rules or copies of readily discoverable code/config.
-- **PR description:** reflects the final change and matches the evidence. From
-  available implementation and review evidence, identify material lessons:
-  discoveries that changed the explanation of the problem, the chosen solution,
-  or what validation establishes. Match each to a passage in the description;
-  equivalent wording counts. Report missing coverage and unsupported claims.
-  Complete this comparison before grading the description. If the final report
-  introduces another material lesson, reconcile it before issuing the verdict.
-  Routine changes may have no lessons beyond the problem, fix and validation.
+- **Lessons preserved:** identify material lessons from implementation and review:
+  what was misunderstood or discovered, why it matters, and how it should change
+  future work. Match each lesson to a specific passage in the PR description;
+  equivalent wording counts. The description must also reflect the final change
+  accurately. Complete the comparison before grading this condition. If the
+  verdict introduces another lesson, include it in the comparison. When no
+  material lesson emerged, justify that conclusion from the work examined.
 - **History:** each commit has a clear reason to remain separate and an accurate
   message. Unrelated changes, accidental artifacts and obscuring WIP/fixup/revert
   chains were addressed.
@@ -59,8 +58,11 @@ Mark each ✅ supported, ❌ failed or ❓ unverified, followed by concrete evid
   disposition of findings, including evidence for fixes made after review.
 - **Markdowns:** name added, changed and deleted Markdown/guidance files and
   summarize their purpose and hygiene review. Say “none” when there are none.
-- **PR description:** identify uncovered material lessons or unsupported claims;
-  otherwise summarize the coverage supporting ✅.
+- **Lessons preserved:** show each identified lesson → its matching description
+  passage or “missing.” Grade from that visible comparison: ✅ when all are
+  preserved, ❌ for omissions or inaccurate claims, ❓ when evidence is unavailable.
+  If none emerged, give the evidence-based reason. Check results and limitations
+  belong under Validation; their presence does not establish lesson coverage.
 - **History:** number of PR commits, why each remains separate, and whether
   messages and sequence are coherent. Identify cleanup needed and any reliance
   on squash merging explicitly.
