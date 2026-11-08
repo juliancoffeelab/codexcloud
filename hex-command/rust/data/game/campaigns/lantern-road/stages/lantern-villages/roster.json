@@ -1,120 +1,150 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "commander",
-        "side": "player",
-        "col": 1,
-        "row": 4,
-        "name": "Captain Nera",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "warden",
-        "side": "player",
-        "col": 2,
-        "row": 4
-      },
-      {
-        "type": "scout",
-        "side": "player",
-        "col": 2,
-        "row": 3
-      },
-      {
-        "type": "swordsman",
-        "side": "player",
-        "col": 2,
-        "row": 5
-      },
-      {
-        "type": "necromancer",
-        "side": "enemy",
-        "col": 11,
-        "row": 4,
-        "name": "The Tollkeeper",
-        "role": "leader"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 6,
-        "row": 2
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 6,
-        "row": 6
-      },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 8,
-        "row": 1
+      "palette": "player",
+      "gold": 14,
+      "recruits": [],
+      "units": [
+        {
+          "type": "swordsman",
+          "role": "leader",
+          "character": "nera",
+          "tile": {
+            "col": 0,
+            "row": 5
+          }
+        },
+        {
+          "type": "scout",
+          "character": "ivo",
+          "tile": {
+            "col": 0,
+            "row": 4
+          }
+        },
+        {
+          "type": "adept",
+          "character": "oren",
+          "tile": {
+            "col": 0,
+            "row": 6
+          }
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "commander",
-      "side": "player",
-      "col": 1,
-      "row": 4,
-      "name": "Captain Nera",
-      "role": "leader"
     },
     {
-      "type": "warden",
-      "side": "player",
-      "col": 2,
-      "row": 4
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 6,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "units": [
+        {
+          "type": "skeleton",
+          "aiGroup": "captive-guard",
+          "tile": {
+            "col": 7,
+            "row": 6
+          }
+        },
+        {
+          "type": "necromancer",
+          "role": "leader",
+          "aiGroup": "tollkeeper",
+          "character": "tollkeeper",
+          "tile": {
+            "col": 15,
+            "row": 7
+          }
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     },
     {
-      "type": "scout",
-      "side": "player",
-      "col": 2,
-      "row": 3
+      "id": "prisoners",
+      "phase": "enemy",
+      "controller": {
+        "kind": "passive"
+      },
+      "palette": "passive",
+      "relations": {
+        "player": "neutral",
+        "enemy": "allied",
+        "swamp-dead": "neutral"
+      },
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "captives",
+          "role": "captive",
+          "character": "villagers",
+          "tile": {
+            "col": 8,
+            "row": 6
+          }
+        }
+      ]
     },
     {
-      "type": "swordsman",
-      "side": "player",
-      "col": 2,
-      "row": 5
-    },
-    {
-      "type": "necromancer",
-      "side": "enemy",
-      "col": 11,
-      "row": 4,
-      "name": "The Tollkeeper",
-      "role": "leader"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 6,
-      "row": 2
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 6,
-      "row": 6
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 8,
-      "row": 1
+      "id": "swamp-dead",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "green",
+      "relations": {
+        "player": "hostile",
+        "enemy": "neutral"
+      },
+      "name": "Marsh dead",
+      "recruits": [
+        {
+          "unit": "zombie-walker",
+          "cost": 6
+        },
+        {
+          "unit": "zombie-decay-caster",
+          "cost": 10
+        }
+      ],
+      "gold": 0,
+      "units": [
+        {
+          "type": "zombie-decay-caster",
+          "aiGroup": "swamp-commander",
+          "items": ["healing-bottle"],
+          "role": "leader",
+          "character": "edrin",
+          "tile": {
+            "col": 12,
+            "row": 12
+          }
+        }
+      ]
     }
-  ],
-  "recruits": ["swordsman", "archer", "scout", "spearman", "adept"],
-  "enemyRecruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
-  "gold": 18,
-  "enemyGold": 0
+  ]
 }

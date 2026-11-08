@@ -30,6 +30,24 @@ fn main() {
         PathBuf::from("../pixel/art/terrain/road/dead-ends.json"),
     ];
     sources(&root, &root.join("src"), &mut files);
+    sources(&root, &root.join("battle/src"), &mut files);
+    files.push(PathBuf::from("battle/Cargo.toml"));
+    if root.join("battle/build.rs").exists() {
+        files.push(PathBuf::from("battle/build.rs"));
+    }
+    println!("cargo:rerun-if-changed=battle/src");
+    println!("cargo:rerun-if-changed=battle/build.rs");
+    sources(&root, &root.join("catalog/src"), &mut files);
+    files.push(PathBuf::from("catalog/Cargo.toml"));
+    files.push(PathBuf::from("catalog/build.rs"));
+    sources(&root, &root.join("freeze-derive/src"), &mut files);
+    files.push(PathBuf::from("freeze-derive/Cargo.toml"));
+    files.push(PathBuf::from(
+        "../pixel/art/terrain/castle-wall/variants.json",
+    ));
+    files.push(PathBuf::from(
+        "../pixel/art/terrain/castle-bell/variants.json",
+    ));
     files.sort();
     let mut hash = Sha256::new();
     for file in files {
@@ -53,44 +71,13 @@ fn main() {
         "cargo:rustc-env=HEX_ENGINE_FINGERPRINT={:x}",
         hash.finalize()
     );
-    // Build a file-path table, not exported rules. Only test/WASM code includes
-    // these JSON bytes; native production catalogs still load authored files.
-    fn documents(directory: &Path, files: &mut Vec<PathBuf>) {
-        for entry in fs::read_dir(directory).expect("catalog directory") {
-            let path = entry.expect("catalog entry").path();
-            if path.is_dir() {
-                documents(&path, files);
-            } else if path
-                .extension()
-                .is_some_and(|extension| extension == "json")
-            {
-                files.push(path);
-            }
-        }
-    }
-    let data = root.join("data");
-    let mut files = Vec::new();
-    documents(&data, &mut files);
-    files.sort();
-    let mut generated = String::from("const EMBEDDED_DOCUMENTS: &[(&str, &str)] = &[\n");
-    for file in files {
-        if std::env::var_os("CARGO_FEATURE_WASM").is_some() {
-            println!("cargo:rerun-if-changed={}", file.display());
-        }
-        let name = file
-            .strip_prefix(&data)
-            .expect("document within catalog")
-            .to_string_lossy()
-            .replace('\\', "/");
-        generated.push_str(&format!(
-            "({name:?}, include_str!({:?})),\n",
-            file.to_string_lossy()
-        ));
-    }
-    generated.push_str("];\n");
-    let output = PathBuf::from(std::env::var_os("OUT_DIR").expect("build output"));
-    fs::write(output.join("catalog_documents.rs"), generated).expect("catalog file table");
-    if std::env::var_os("CARGO_FEATURE_WASM").is_some() {
+    if std::env::var_os("CARGO_FEATURE_WASM").is_some()
+        && std::env::var("CARGO_CFG_TARGET_ARCH").as_deref() == Ok("wasm32")
+    {
         println!("cargo:rerun-if-changed=data");
+        let generated = hex_command_catalog::compiler::compile(&root.join("data"))
+            .expect("valid campaign catalog");
+        let output = PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
+        fs::write(output.join("catalog_baked.rs"), generated).unwrap();
     }
 }

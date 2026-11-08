@@ -1,0 +1,13 @@
+(lang dune 3.24)
+(implicit_transitive_deps false)
+(name hex_command)
+(using melange 1.0)
+(package
+ (name hex_command)
+ (depends
+  (ocaml (= 5.3.0))
+  (melange (= 7.0.1-53))
+  (reason (= 3.17.3))
+  (reason-react (= 0.17.0))
+  (ocamlformat (= 0.28.1))
+  (ocp-indent (= 1.8.1))))

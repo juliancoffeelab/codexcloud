@@ -1,0 +1,227 @@
+{
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 250,
+      "recruits": [
+        {
+          "unit": "dragon"
+        },
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "adept"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "tile": {
+            "col": 2,
+            "row": 8
+          },
+          "role": "leader",
+          "character": "survey-captain",
+          "items": ["healing-bottle"]
+        },
+        {
+          "type": "dragon",
+          "tile": {
+            "col": 2,
+            "row": 9
+          }
+        },
+        {
+          "type": "scout",
+          "tile": {
+            "col": 1,
+            "row": 9
+          }
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 200,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-rider"
+        }
+      ],
+      "units": [
+        {
+          "type": "lich",
+          "tile": {
+            "col": 11,
+            "row": 12
+          },
+          "character": "survey-rival",
+          "role": "leader"
+        },
+        {
+          "type": "necromancer",
+          "tile": {
+            "col": 20,
+            "row": 21
+          },
+          "role": "leader"
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 4,
+            "row": 10
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 6,
+            "row": 10
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 8,
+            "row": 11
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 10,
+            "row": 12
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 12,
+            "row": 13
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 14,
+            "row": 14
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 15,
+            "row": 16
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 16,
+            "row": 18
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 18,
+            "row": 20
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 20,
+            "row": 20
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 10,
+            "row": 5
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 14,
+            "row": 5
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 18,
+            "row": 8
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 6,
+            "row": 16
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 4,
+            "row": 20
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 11,
+            "row": 21
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 7,
+            "row": 4
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 20,
+            "row": 3
+          }
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
+    }
+  ]
+}

@@ -1,134 +1,122 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "wildkeeper",
-        "side": "player",
-        "col": 1,
-        "row": 4,
-        "name": "Alder",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "wolf",
-        "side": "player",
-        "col": 2,
-        "row": 3
-      },
-      {
-        "type": "boar",
-        "side": "player",
-        "col": 2,
-        "row": 4
-      },
-      {
-        "type": "thorncaller",
-        "side": "player",
-        "col": 2,
-        "row": 5,
-        "name": "Lark"
-      },
-      {
-        "type": "commander",
-        "side": "enemy",
-        "col": 9,
-        "row": 4,
-        "name": "Captain Dain",
-        "role": "leader"
-      },
-      {
-        "type": "spearman",
-        "side": "enemy",
-        "col": 7,
-        "row": 3
-      },
-      {
-        "type": "spearman",
-        "side": "enemy",
-        "col": 7,
-        "row": 6
-      },
-      {
-        "type": "archer",
-        "side": "enemy",
-        "col": 6,
-        "row": 2
-      },
-      {
-        "type": "archer",
-        "side": "enemy",
-        "col": 7,
-        "row": 5
+      "palette": "player",
+      "gold": 12,
+      "recruits": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "thorncaller"
+        }
+      ],
+      "units": [
+        {
+          "type": "wildkeeper",
+          "role": "leader",
+          "character": "alder",
+          "tile": {
+            "col": 1,
+            "row": 4
+          }
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 2,
+            "row": 3
+          }
+        },
+        {
+          "type": "boar",
+          "tile": {
+            "col": 2,
+            "row": 4
+          }
+        },
+        {
+          "type": "thorncaller",
+          "character": "lark",
+          "tile": {
+            "col": 2,
+            "row": 5
+          }
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "wildkeeper",
-      "side": "player",
-      "col": 1,
-      "row": 4,
-      "name": "Alder",
-      "role": "leader"
     },
     {
-      "type": "wolf",
-      "side": "player",
-      "col": 2,
-      "row": 3
-    },
-    {
-      "type": "boar",
-      "side": "player",
-      "col": 2,
-      "row": 4
-    },
-    {
-      "type": "thorncaller",
-      "side": "player",
-      "col": 2,
-      "row": 5,
-      "name": "Lark"
-    },
-    {
-      "type": "commander",
-      "side": "enemy",
-      "col": 9,
-      "row": 4,
-      "name": "Captain Dain",
-      "role": "leader"
-    },
-    {
-      "type": "spearman",
-      "side": "enemy",
-      "col": 7,
-      "row": 3
-    },
-    {
-      "type": "spearman",
-      "side": "enemy",
-      "col": 7,
-      "row": 6
-    },
-    {
-      "type": "archer",
-      "side": "enemy",
-      "col": 6,
-      "row": 2
-    },
-    {
-      "type": "archer",
-      "side": "enemy",
-      "col": 7,
-      "row": 5
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "spearman"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "character": "dain",
+          "tile": {
+            "col": 9,
+            "row": 4
+          }
+        },
+        {
+          "type": "spearman",
+          "tile": {
+            "col": 7,
+            "row": 3
+          }
+        },
+        {
+          "type": "spearman",
+          "tile": {
+            "col": 7,
+            "row": 6
+          }
+        },
+        {
+          "type": "archer",
+          "tile": {
+            "col": 6,
+            "row": 2
+          }
+        },
+        {
+          "type": "archer",
+          "tile": {
+            "col": 7,
+            "row": 5
+          }
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
-  ],
-  "recruits": ["wolf", "boar", "thorncaller"],
-  "enemyRecruits": ["swordsman", "archer", "spearman"],
-  "gold": 12,
-  "enemyGold": 0
+  ]
 }

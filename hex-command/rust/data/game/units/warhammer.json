@@ -15,7 +15,8 @@
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 6
     }
   ],
   "damageModifiers": {

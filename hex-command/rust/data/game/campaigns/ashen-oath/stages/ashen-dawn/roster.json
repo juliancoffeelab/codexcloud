@@ -1,134 +1,131 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "necromancer",
-        "side": "player",
-        "col": 1,
-        "row": 4,
-        "name": "Orin",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "skeleton",
-        "side": "player",
-        "col": 2,
-        "row": 3
-      },
-      {
-        "type": "warden",
-        "side": "player",
-        "col": 2,
-        "row": 4,
-        "name": "Captain Dain"
-      },
-      {
-        "type": "necromancer",
-        "side": "enemy",
-        "col": 13,
-        "row": 4,
-        "name": "The Master",
-        "role": "leader"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 10,
-        "row": 2
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 10,
-        "row": 6
-      },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 11,
-        "row": 1
-      },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 11,
-        "row": 7
-      },
-      {
-        "type": "thorncaller",
-        "side": "enemy",
-        "col": 12,
-        "row": 4
+      "palette": "player",
+      "gold": 20,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "role": "leader",
+          "character": "orin",
+          "tile": {
+            "col": 1,
+            "row": 4
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 2,
+            "row": 3
+          }
+        },
+        {
+          "type": "warden",
+          "character": "dain",
+          "tile": {
+            "col": 2,
+            "row": 4
+          }
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "necromancer",
-      "side": "player",
-      "col": 1,
-      "row": 4,
-      "name": "Orin",
-      "role": "leader"
     },
     {
-      "type": "skeleton",
-      "side": "player",
-      "col": 2,
-      "row": 3
-    },
-    {
-      "type": "warden",
-      "side": "player",
-      "col": 2,
-      "row": 4,
-      "name": "Captain Dain"
-    },
-    {
-      "type": "necromancer",
-      "side": "enemy",
-      "col": 13,
-      "row": 4,
-      "name": "The Master",
-      "role": "leader"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 10,
-      "row": 2
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 10,
-      "row": 6
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 11,
-      "row": 1
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 11,
-      "row": 7
-    },
-    {
-      "type": "thorncaller",
-      "side": "enemy",
-      "col": 12,
-      "row": 4
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "role": "leader",
+          "character": "master",
+          "tile": {
+            "col": 13,
+            "row": 4
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 10,
+            "row": 2
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 10,
+            "row": 6
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 11,
+            "row": 1
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 11,
+            "row": 7
+          }
+        },
+        {
+          "type": "thorncaller",
+          "tile": {
+            "col": 12,
+            "row": 4
+          }
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
-  ],
-  "recruits": ["skeleton", "bonearcher", "spearman", "adept", "skeleton-impact-caster"],
-  "enemyRecruits": ["skeleton", "bonearcher", "boar", "skeleton-impact-caster"],
-  "gold": 20,
-  "enemyGold": 0
+  ]
 }

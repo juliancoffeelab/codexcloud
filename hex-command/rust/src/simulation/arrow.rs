@@ -5,17 +5,17 @@ use crate::data::{CampaignState, Gold, Objective, Progress, PublicUnit, Records,
 use arrow_array::{
     Array, ArrayRef, BooleanArray, Int8Array, Int32Array, ListArray, RecordBatch, StringArray,
     StructArray, UInt32Array,
-    builder::{Int8Builder, ListBuilder, StringBuilder, UInt32Builder},
+    builder::{ListBuilder, StringBuilder, UInt32Builder},
 };
 use arrow_buffer::{NullBuffer, OffsetBuffer};
 use arrow_ipc::{reader::StreamReader, writer::StreamWriter};
-use arrow_schema::{Field, Schema};
+use arrow_schema::{DataType, Field, Schema};
 use rustc_hash::FxHashMap;
 use serde::Serialize;
 use serde_json::{Map, Value};
 use std::{io::Cursor, sync::Arc};
 
-pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v2";
+pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v4";
 
 #[derive(Serialize)]
 struct PhaseHeader<'a> {
@@ -97,9 +97,20 @@ fn unit_column(
                 "enemy"
             }
         }))),
-        Arc::new(StringArray::from_iter_values(
-            values.iter().map(|u| u.tile.as_str()),
-        )),
+        Arc::new(StructArray::from(vec![
+            (
+                Arc::new(Field::new("col", DataType::Int32, false)),
+                Arc::new(Int32Array::from_iter_values(
+                    values.iter().map(|u| u.tile.col),
+                )) as ArrayRef,
+            ),
+            (
+                Arc::new(Field::new("row", DataType::Int32, false)),
+                Arc::new(Int32Array::from_iter_values(
+                    values.iter().map(|u| u.tile.row),
+                )) as ArrayRef,
+            ),
+        ])),
         Arc::new(Int32Array::from_iter_values(values.iter().map(|u| u.hp))),
         Arc::new(BooleanArray::from_iter(
             values.iter().map(|u| Some(u.moved)),
@@ -109,13 +120,22 @@ fn unit_column(
         )),
         Arc::new(UInt32Array::from_iter(values.iter().map(|u| u.experience))),
         Arc::new(StringArray::from_iter(
-            values.iter().map(|u| u.name.as_deref()),
+            values.iter().map(|u| u.character.as_deref()),
         )),
         Arc::new(StringArray::from_iter(
             values.iter().map(|u| u.role.as_ref().map(|r| r.as_str())),
         )),
         Arc::new(BooleanArray::from_iter(values.iter().map(|u| u.retreating))),
         Arc::new(BooleanArray::from_iter(values.iter().map(|u| u.rebuilding))),
+        Arc::new(StringArray::from_iter(
+            values.iter().map(|u| u.faction.as_deref()),
+        )),
+        Arc::new(StringArray::from_iter(
+            values.iter().map(|u| u.ai_group.as_deref()),
+        )),
+        Arc::new(StringArray::from_iter_values(values.iter().map(|u| {
+            serde_json::to_string(&u.items).expect("serializable unit items")
+        }))),
     ];
     let names = [
         "id",
@@ -126,10 +146,13 @@ fn unit_column(
         "moved",
         "attacked",
         "experience",
-        "name",
+        "character",
         "role",
         "retreating",
         "rebuilding",
+        "faction",
+        "aiGroup",
+        "items_json",
     ];
     let fields = names
         .into_iter()
@@ -146,12 +169,10 @@ fn ownership_column(
     dictionary: Dictionary<'_, OwnershipSnapshot>,
     rows: usize,
 ) -> Result<ArrayRef, SimulationError> {
-    let mut builder = ListBuilder::new(Int8Builder::new());
+    let mut builder = ListBuilder::new(StringBuilder::new());
     for value in dictionary.values {
         for owner in &value.owners {
-            builder
-                .values()
-                .append_option(owner.map(|s| s.index() as i8));
+            builder.values().append_option(owner.as_deref());
         }
         builder.append(true);
     }
@@ -284,37 +305,74 @@ fn unit_dictionary(array: &dyn Array) -> Result<Vec<Value>, SimulationError> {
                     arrow_schema::DataType::Boolean => {
                         Value::from(column::<BooleanArray>(values.as_ref())?.value(row))
                     }
+                    arrow_schema::DataType::Struct(_) if field.name() == "tile" => {
+                        let hex = column::<StructArray>(values.as_ref())?;
+                        serde_json::json!({
+                            "col": column::<Int32Array>(hex.column_by_name("col").ok_or("Missing hex col")?.as_ref())?.value(row),
+                            "row": column::<Int32Array>(hex.column_by_name("row").ok_or("Missing hex row")?.as_ref())?.value(row),
+                        })
+                    }
                     _ => return Err("Unexpected unit field type".into()),
                 };
-                object.insert(field.name().clone(), value);
+                if field.name() == "items_json" {
+                    let items: Value =
+                        serde_json::from_str(value.as_str().ok_or("Invalid unit items")?)?;
+                    if !items.is_array() {
+                        return Err("Invalid unit items".into());
+                    }
+                    if items.as_array().is_some_and(|items| !items.is_empty()) {
+                        object.insert("items".into(), items);
+                    }
+                } else {
+                    object.insert(field.name().clone(), value);
+                }
             }
             Ok(Value::Object(object))
         })
         .collect()
 }
-fn owners(array: &ListArray, index: usize, tiles: &Value) -> Result<Value, SimulationError> {
+fn owners(
+    array: &ListArray,
+    index: usize,
+    tiles: &Value,
+    structured_positions: bool,
+) -> Result<Value, SimulationError> {
     if index >= array.len() || array.is_null(index) {
         return Err("Invalid ownership index".into());
     }
     let values = array.value(index);
-    let owners = column::<Int8Array>(values.as_ref())?;
+    let owners: Vec<Value> = if let Some(strings) = values.as_any().downcast_ref::<StringArray>() {
+        strings
+            .iter()
+            .map(|owner| owner.map_or(Value::Null, Value::from))
+            .collect()
+    } else {
+        column::<Int8Array>(values.as_ref())?
+            .iter()
+            .map(|owner| match owner {
+                None => Ok(Value::Null),
+                Some(0) => Ok(Value::from("player")),
+                Some(1) => Ok(Value::from("enemy")),
+                _ => Err(SimulationError::from("Invalid owner side")),
+            })
+            .collect::<Result<_, _>>()?
+    };
     let tiles = tiles.as_array().ok_or("Missing chapter tiles")?;
     if owners.len() != tiles.len() {
         return Err("Ownership length differs from chapter tiles".into());
     }
     let values = tiles
         .iter()
-        .zip(owners.iter())
+        .zip(owners)
         .map(|(tile, owner)| {
-            let owner = match owner {
-                None => Value::Null,
-                Some(0) => Value::from("player"),
-                Some(1) => Value::from("enemy"),
-                _ => return Err("Invalid owner side".into()),
+            let address = if structured_positions {
+                serde_json::json!({"col":tile["col"],"row":tile["row"]})
+            } else {
+                tile["id"].clone()
             };
-            Ok(serde_json::json!({"tile":tile["id"], "owner":owner}))
+            serde_json::json!({"tile":address, "owner":owner})
         })
-        .collect::<Result<Vec<Value>, SimulationError>>()?;
+        .collect();
     Ok(Value::Array(values))
 }
 fn roster(array: &ListArray, row: usize, dictionary: &[Value]) -> Result<Value, SimulationError> {
@@ -336,15 +394,16 @@ fn roster(array: &ListArray, row: usize, dictionary: &[Value]) -> Result<Value, 
 }
 pub(crate) fn decode(bytes: &[u8]) -> Result<Value, SimulationError> {
     let mut reader = StreamReader::try_new(Cursor::new(bytes), None)?;
-    if reader
+    let structured_positions = match reader
         .schema()
         .metadata()
         .get("hex-command.detail-format")
         .map(String::as_str)
-        != Some(FORMAT)
     {
-        return Err("Unknown Arrow gameplay format".into());
-    }
+        Some("arrow-ipc-snapshot-dictionaries-v2" | "arrow-ipc-snapshot-dictionaries-v3") => false,
+        Some(FORMAT) => true,
+        _ => return Err("Unknown Arrow gameplay format".into()),
+    };
     let batch = reader.next().ok_or("Missing Arrow gameplay batch")??;
     if reader.next().is_some() || batch.num_columns() != 8 || batch.num_rows() == 0 {
         return Err("Invalid Arrow gameplay batch".into());
@@ -381,7 +440,12 @@ pub(crate) fn decode(bytes: &[u8]) -> Result<Value, SimulationError> {
                 .and_then(|initial| initial.get("tiles"))
                 .ok_or("Invalid campaign chapter index")?
         };
-        phase["ownership"] = owners(ownership_dictionary, ownership.value(row) as usize, tiles)?;
+        phase["ownership"] = owners(
+            ownership_dictionary,
+            ownership.value(row) as usize,
+            tiles,
+            structured_positions,
+        )?;
         let target = if arena {
             if chapters.value(row) != 0 {
                 return Err("Invalid arena chapter index".into());
@@ -456,14 +520,21 @@ mod tests {
         unit.retreating = Some(false);
         unit.rebuilding = Some(true);
         unit.role = Some(Role::Courier);
-        unit.name = Some("河😀".into());
+        unit.character = Some("河😀".into());
+        unit.faction = Some("independent".into());
+        unit.ai_group = Some("guard".into());
+        unit.items = serde_json::from_value(serde_json::json!([{
+            "id":"keepsake", "name":"Keepsake", "description":"Carried equipment", "attacks":[]
+        }]))
+        .unwrap();
         arena.phases[0].before.reverse();
         let arena = MatchResult::Arena(arena);
         let mut campaign = super::super::matches::run_campaign(
             &rules,
             CampaignConfig {
                 seed: 17,
-                diplomacy: Diplomacy::Restrained,
+                objective: "authored".into(),
+                diplomacy: Diplomacy::Diplomatic,
                 campaign: "green-accord".into(),
                 player: Policy::Balanced,
                 enemy: Policy::Classic,
@@ -472,6 +543,7 @@ mod tests {
                 max_rounds: 1,
                 recruit_limit: Some(0),
             },
+            &rules.campaigns["green-accord"],
         )
         .unwrap();
         campaign.missions.push(campaign.missions[0].clone());

@@ -5,7 +5,9 @@
     "game/races/merfolk.json",
     "game/races/human.json",
     "game/races/skeletons.json",
-    "game/races/beast.json"
+    "game/races/beast.json",
+    "game/races/spirit.json",
+    "game/races/zombies.json"
   ],
   "units": [
     "game/units/warden.json",
@@ -104,23 +106,46 @@
     "game/units/merfolk-tidecrusher-l2.json",
     "game/units/merfolk-tidecrusher-l3.json",
     "game/units/merfolk-maceguard-l3.json",
-    "game/units/merfolk-tide-sovereign.json"
+    "game/units/merfolk-tide-sovereign.json",
+    "game/units/ghost.json",
+    "game/units/wraith.json",
+    "game/units/spectre.json",
+    "game/units/bear.json",
+    "game/units/giant-bat.json",
+    "game/units/giant-spider.json",
+    "game/units/captives.json",
+    "game/units/zombie-walker.json",
+    "game/units/zombie-decay-caster.json",
+    "game/units/skeletal-hound.json",
+    "game/units/dragon.json"
   ],
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",
-    "game/scenario/river-v2/scenario.json",
-    "game/scenario/developer-v2/scenario.json",
-    "game/scenario/river-valley-v1/scenario.json"
+    "game/scenario/river-valley-v1/scenario.json",
+    "game/scenario/river-valley-v2/scenario.json",
+    "game/scenario/developer-v2/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",
     "game/campaigns/green-accord/campaign.json",
     "game/campaigns/ashen-oath/campaign.json",
-    "game/campaigns/borrowed-tide/campaign.json"
+    "game/campaigns/borrowed-tide/campaign.json",
+    "game/campaigns/mirror-night/campaign.json",
+    "game/campaigns/bell-night/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",
     "arena": "simulation/arena.json",
     "campaign": "simulation/campaign.json"
-  }
+  },
+  "arenaScenarios": [
+    "simulation/maps/wood-edge/scenario.json",
+    "simulation/maps/arena-template/scenario.json"
+  ],
+  "recruitment": "game/recruitment.json",
+  "items": [
+    "game/items/church-mail.json",
+    "game/items/healing-bottle.json",
+    "game/items/quarry-hammer.json"
+  ]
 }

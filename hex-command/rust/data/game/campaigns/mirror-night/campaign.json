@@ -1,0 +1,22 @@
+{
+  "id": "mirror-night",
+  "name": "Mirror Night",
+  "tagline": "Fog, village lamps and death lights.",
+  "description": "A single-battle rendering test on the Classic Mirror battlefield. Explore fog, capture villages to switch their lamps on, and accumulate persistent death lights in combat.",
+  "shortDescription": "Test fog, village lighting and persistent death marks.",
+  "race": "human",
+  "leader": "commander",
+  "ending": [],
+  "stages": ["stages/mirror-night/stage.json"],
+  "playerDiplomacy": ["unrestricted"],
+  "characters": [
+    {
+      "id": "mirror-captain",
+      "name": "Your commander"
+    },
+    {
+      "id": "mirror-rival",
+      "name": "Opposing commander"
+    }
+  ]
+}

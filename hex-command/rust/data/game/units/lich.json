@@ -3,7 +3,6 @@
   "role": "ranger",
   "name": "Lich",
   "race": "skeletons",
-  "leader": true,
   "hp": 30,
   "move": 3,
   "cost": 0,
@@ -16,7 +15,8 @@
       "category": "ranged",
       "range": 2,
       "sound": "attack-bow",
-      "count": 1
+      "count": 1,
+      "spread": 1
     },
     {
       "id": "bonestaff",
@@ -26,7 +26,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 1
+      "count": 1,
+      "spread": 2
     }
   ],
   "damageModifiers": {

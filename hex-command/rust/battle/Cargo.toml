@@ -1,0 +1,19 @@
+[package]
+name = "hex-command-battle"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[features]
+default = []
+wasm = ["hex-command-catalog/wasm", "dep:ocamljsify", "dep:ocamljs_bindgen"]
+runtime-catalog = ["hex-command-catalog/runtime-catalog"]
+
+[dependencies]
+ocamljsify={path="../../../ocaml-js-bindgen/crates/ocamljsify",optional=true}
+ocamljs_bindgen={path="../../../ocaml-js-bindgen/crates/ocamljs_bindgen",optional=true}
+hex-command-catalog = { path = "../catalog" }
+hex-catalog-freeze-derive = { path = "../freeze-derive" }
+rustc-hash = "2"
+serde = { version = "1", features = ["derive", "rc"] }
+serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }

@@ -23,12 +23,23 @@ impl Serialize for Canonical<'_, State> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let s = self.0;
         let mut map = serializer.serialize_map(None)?;
+        if let Some(armies) = &s.armies {
+            map.serialize_entry("armies", armies)?;
+        }
         if let Some(campaign) = &s.campaign {
             let value = serde_json::to_value(campaign).map_err(serde::ser::Error::custom)?;
             map.serialize_entry("campaign", &value)?;
         }
         map.serialize_entry("cols", &s.cols)?;
+        map.serialize_entry("combatRng", &s.combat_rng)?;
+        if !s.condition_memory.is_empty() {
+            map.serialize_entry("conditionMemory", &s.condition_memory)?;
+        }
+        let factions = serde_json::to_value(&s.factions).map_err(serde::ser::Error::custom)?;
+        map.serialize_entry("factions", &factions)?;
         map.serialize_entry("gold", &Canonical(&s.gold))?;
+        let ground = serde_json::to_value(&s.ground_items).map_err(serde::ser::Error::custom)?;
+        map.serialize_entry("groundItems", &ground)?;
         if let Some(combat) = &s.last_combat {
             map.serialize_entry("lastCombat", &combat.as_ref().map(Canonical))?;
         }
@@ -59,10 +70,28 @@ impl Serialize for Canonical<'_, Tile> {
         if let Some(value) = &t.floor {
             map.serialize_entry("floor", value)?;
         }
+        if let Some(fog) = &t.fog {
+            map.serialize_entry(
+                "fog",
+                &serde_json::to_value(fog).map_err(serde::ser::Error::custom)?,
+            )?;
+        }
         map.serialize_entry("id", &t.id)?;
+        if let Some(light) = &t.light {
+            map.serialize_entry(
+                "light",
+                &serde_json::to_value(light).map_err(serde::ser::Error::custom)?,
+            )?;
+        }
+        if let Some(location) = &t.location {
+            map.serialize_entry("location", location)?;
+        }
         map.serialize_entry("owner", &t.owner)?;
         map.serialize_entry("row", &t.row)?;
         map.serialize_entry("terrain", &t.terrain)?;
+        if let Some(walls) = &t.walls {
+            map.serialize_entry("walls", walls)?;
+        }
         map.end()
     }
 }
@@ -70,16 +99,29 @@ impl Serialize for Canonical<'_, PublicUnit> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let u = self.0;
         let mut map = serializer.serialize_map(None)?;
+        if let Some(group) = &u.ai_group {
+            map.serialize_entry("aiGroup", group)?;
+        }
         map.serialize_entry("attacked", &u.attacked)?;
+        if let Some(value) = &u.character {
+            map.serialize_entry("character", value)?;
+        }
+
         if let Some(value) = &u.experience {
             map.serialize_entry("experience", value)?;
         }
+        if let Some(faction) = &u.faction {
+            map.serialize_entry("faction", faction)?;
+        }
         map.serialize_entry("hp", &u.hp)?;
         map.serialize_entry("id", &u.id)?;
-        map.serialize_entry("moved", &u.moved)?;
-        if let Some(value) = &u.name {
-            map.serialize_entry("name", value)?;
+        if !u.items.is_empty() {
+            map.serialize_entry(
+                "items",
+                &serde_json::to_value(&u.items).map_err(serde::ser::Error::custom)?,
+            )?;
         }
+        map.serialize_entry("moved", &u.moved)?;
         if let Some(value) = &u.rebuilding {
             map.serialize_entry("rebuilding", value)?;
         }
@@ -97,9 +139,10 @@ impl Serialize for Canonical<'_, PublicUnit> {
 }
 impl Serialize for Canonical<'_, Gold> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        let mut map = serializer.serialize_map(Some(2))?;
-        map.serialize_entry("enemy", &self.0.enemy)?;
-        map.serialize_entry("player", &self.0.player)?;
+        let mut map = serializer.serialize_map(Some(self.0.len()))?;
+        for (id, amount) in self.0.iter() {
+            map.serialize_entry(id, amount)?;
+        }
         map.end()
     }
 }
@@ -135,7 +178,7 @@ mod tests {
             s.tiles[0].connections = Some(vec![HexDirection::E]);
             s.tiles[0].dead_ends = Some(vec![HexDirection::E]);
             s.tiles[0].floor = Some("河😀".into());
-            s.units[0].name = Some("name\\\"\n".into());
+            s.units[0].character = Some("name\\\"\n".into());
             s.units[0].retreating = Some(false);
             s.units[0].rebuilding = Some(true);
             s.units[0].experience = None;

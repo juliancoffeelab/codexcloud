@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Rebuild the game's small material-inspired sound library.
+"""Rebuild the legacy material-inspired compatibility cues (one WAV per family).
 
+Generates the base cues. Shipped cues also include the reviewed edits recorded
+in audio/reviewed-ranges.json; this script does not reapply those edits.
 Requires numpy and scipy only when rebuilding; the browser plays ordinary WAVs.
 Run from any directory: python scripts/generate-sfx.py
 """
@@ -214,24 +216,21 @@ def main():
     rms_values = []
     lengths = []
     for family_index, family in enumerate(FAMILIES):
-        variants = []
-        for variant in range(3):
-            samples = generate(family, variant, 917_003 + family_index * 307 + variant)
-            assert np.max(np.abs(samples.astype(np.int32))) < 32767
-            rms = float(np.sqrt(np.mean((samples.astype(float) / 32767) ** 2)))
-            assert rms > .005, (family, variant, rms)
-            assert .1 <= len(samples) / RATE <= .9
-            path = OUTPUT / f'{family}-{variant + 1}.wav'
-            with wave.open(str(path), 'wb') as out:
-                out.setnchannels(1)
-                out.setsampwidth(2)
-                out.setframerate(RATE)
-                out.writeframes(samples.tobytes())
-            variants.append(samples.tobytes())
-            rms_values.append(rms)
-            lengths.append(len(samples) / RATE)
-        assert len(set(variants)) == 3
-    print(f'{len(FAMILIES) * 3} WAVs: mono {RATE} Hz, signed 16-bit; '
+        # Retain the original variant-1 recipe; alterations happen during playback.
+        samples = generate(family, 0, 917_003 + family_index * 307)
+        assert np.max(np.abs(samples.astype(np.int32))) < 32767
+        rms = float(np.sqrt(np.mean((samples.astype(float) / 32767) ** 2)))
+        assert rms > .005, (family, rms)
+        assert .1 <= len(samples) / RATE <= .9
+        path = OUTPUT / f'{family}-1.wav'
+        with wave.open(str(path), 'wb') as out:
+            out.setnchannels(1)
+            out.setsampwidth(2)
+            out.setframerate(RATE)
+            out.writeframes(samples.tobytes())
+        rms_values.append(rms)
+        lengths.append(len(samples) / RATE)
+    print(f'{len(FAMILIES)} WAVs: mono {RATE} Hz, signed 16-bit; '
           f'duration {min(lengths):.3f}–{max(lengths):.3f}s; '
           f'RMS {min(rms_values):.3f}–{max(rms_values):.3f}; '
           f'rounded attacks and softened high frequencies, no clipping.')

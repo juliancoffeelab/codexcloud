@@ -3,19 +3,20 @@
   "role": "warrior",
   "name": "Grave axeman",
   "race": "skeletons",
-  "hp": 17,
+  "hp": 16,
   "move": 3,
   "cost": 6,
   "attacks": [
     {
       "id": "axe",
       "name": "Axe",
-      "damage": 11,
+      "damage": 10,
       "count": 1,
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 3
     }
   ],
   "damageModifiers": {
@@ -25,7 +26,7 @@
   },
   "terrainModifiers": {},
   "ability": "Grave axe",
-  "description": "A cheap, fragile skeletal fighter with a chopping axe and a blunt bone club.",
+  "description": "A cheap, fragile skeletal fighter with a chopping axe.",
   "level": 1,
   "family": "skeleton-axeman",
   "advancesTo": ["skeleton-axeman-l2"],

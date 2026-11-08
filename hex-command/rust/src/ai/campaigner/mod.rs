@@ -8,8 +8,7 @@ mod arena;
 pub(in crate::ai) mod mission;
 
 use serde::{Deserialize, Serialize};
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
-#[cfg_attr(feature = "wasm", tsify(missing_as_null, hashmap_as_object))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum CampaignerKind {
@@ -23,4 +22,14 @@ impl Campaigner for CampaignerKind {
             Self::Mission => mission::Mission.objectives(view),
         }
     }
+}
+
+/// Authored campaign goals for host diagnostics and route evaluation.
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn authored_goals(
+    authored: hex_command_battle::CampaignView<'_, '_>,
+    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+    side: crate::data::Side,
+) -> Vec<crate::data::Objective> {
+    mission::MissionPolicy::new(authored, phases).objectives(side)
 }

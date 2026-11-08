@@ -1,108 +1,104 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "necromancer",
-        "side": "player",
-        "col": 1,
-        "row": 3,
-        "name": "Orin",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "skeleton",
-        "side": "player",
-        "col": 2,
-        "row": 3
-      },
-      {
-        "type": "bonearcher",
-        "side": "player",
-        "col": 2,
-        "row": 2
-      },
-      {
-        "type": "skeleton",
-        "side": "player",
-        "col": 2,
-        "row": 4
-      },
-      {
-        "type": "skeleton",
-        "side": "player",
-        "col": 1,
-        "row": 2
-      },
-      {
-        "type": "commander",
-        "side": "enemy",
-        "col": 11,
-        "row": 5,
-        "name": "The Ledgerkeeper",
-        "role": "leader"
-      },
-      {
-        "type": "swordsman",
-        "side": "enemy",
-        "col": 9,
-        "row": 5
+      "palette": "player",
+      "gold": 14,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "role": "leader",
+          "character": "orin",
+          "tile": {
+            "col": 1,
+            "row": 3
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 2,
+            "row": 3
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 2,
+            "row": 2
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 2,
+            "row": 4
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 1,
+            "row": 2
+          }
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "necromancer",
-      "side": "player",
-      "col": 1,
-      "row": 3,
-      "name": "Orin",
-      "role": "leader"
     },
     {
-      "type": "skeleton",
-      "side": "player",
-      "col": 2,
-      "row": 3
-    },
-    {
-      "type": "bonearcher",
-      "side": "player",
-      "col": 2,
-      "row": 2
-    },
-    {
-      "type": "skeleton",
-      "side": "player",
-      "col": 2,
-      "row": 4
-    },
-    {
-      "type": "skeleton",
-      "side": "player",
-      "col": 1,
-      "row": 2
-    },
-    {
-      "type": "commander",
-      "side": "enemy",
-      "col": 11,
-      "row": 5,
-      "name": "The Ledgerkeeper",
-      "role": "leader"
-    },
-    {
-      "type": "swordsman",
-      "side": "enemy",
-      "col": 9,
-      "row": 5
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "character": "ledgerkeeper",
+          "tile": {
+            "col": 11,
+            "row": 5
+          }
+        },
+        {
+          "type": "swordsman",
+          "tile": {
+            "col": 9,
+            "row": 5
+          }
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     }
-  ],
-  "recruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
-  "enemyRecruits": ["swordsman", "archer"],
-  "gold": 14,
-  "enemyGold": 0
+  ]
 }

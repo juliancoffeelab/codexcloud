@@ -16,7 +16,8 @@
       "category": "ranged",
       "range": 2,
       "sound": "attack-magic",
-      "drain": 50
+      "drain": 50,
+      "spread": 1
     },
     {
       "id": "scythe",
@@ -27,7 +28,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "drain": 50
+      "drain": 50,
+      "spread": 5
     }
   ],
   "damageModifiers": {

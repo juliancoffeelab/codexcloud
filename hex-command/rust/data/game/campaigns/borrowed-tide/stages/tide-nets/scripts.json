@@ -1,21 +1,286 @@
 {
   "events": [
     {
-      "id": "nets",
-      "trigger": {
-        "kind": "visit",
-        "tile": "5,7"
+      "id": "edda-death",
+      "when": {
+        "killed": {
+          "character": "edda"
+        }
       },
-      "label": "Recover provisions from the southern fishing hamlet",
-      "gold": 4,
-      "dialogue": [
+      "actions": [
         {
-          "speaker": "Fisher",
-          "portrait": "worker",
-          "text": "The factor bought our food on credit too. Take these nets and rations. Bring back the people he sent into that ship."
+          "setFlag": "edda-dead"
+        }
+      ]
+    },
+    {
+      "id": "harl-death",
+      "when": {
+        "killed": {
+          "character": "harl"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "harl-dead"
+        }
+      ]
+    },
+    {
+      "id": "mira-death",
+      "when": {
+        "killed": {
+          "character": "mira"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "mira-dead"
+        }
+      ]
+    },
+    {
+      "id": "nets",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "nets-cache"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 4
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Fisher",
+              "portrait": "worker",
+              "text": "The factor bought our food on credit too. Take these nets and rations. Bring back the people he sent into that ship."
+            }
+          ]
+        },
+        {
+          "setFlag": "nets"
+        },
+        {
+          "log": "Recover provisions from the southern fishing hamlet"
+        }
+      ],
+      "objective": {
+        "label": "Recover provisions from the southern fishing hamlet",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "nets-cache"
+            },
+            "side": "player"
+          }
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "nets-cache"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "complete-goal-0",
+      "when": {
+        "objectiveSatisfied": "goal-0"
+      },
+      "actions": [
+        {
+          "completeObjective": "goal-0"
+        }
+      ]
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "all": [
+          {
+            "objectiveSatisfied": "goal-0"
+          },
+          {
+            "objectiveSatisfied": "goal-1"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "tide-nets-goal-0"
+        }
+      ],
+      "objective": {
+        "label": "Open both sounding outworks",
+        "intent": {
+          "capture": [
+            {
+              "location": "northern-fort"
+            },
+            {
+              "location": "southern-fort"
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "northern-fort"
+            },
+            {
+              "location": "southern-fort"
+            }
+          ]
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "own": {
+                "tile": {
+                  "location": "northern-fort"
+                },
+                "faction": "player"
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "location": "southern-fort"
+                },
+                "faction": "player"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "goal-1-lost",
+      "when": {
+        "killed": {
+          "character": "edda"
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "goal-1"
+        },
+        {
+          "defeat": "The escort cannot continue without its protected traveller."
+        }
+      ]
+    },
+    {
+      "id": "complete-goal-1",
+      "when": {
+        "objectiveSatisfied": "goal-1"
+      },
+      "actions": [
+        {
+          "completeObjective": "goal-1"
+        }
+      ]
+    },
+    {
+      "id": "goal-1",
+      "when": {
+        "all": [
+          {
+            "objectiveSatisfied": "goal-0"
+          },
+          {
+            "objectiveSatisfied": "goal-1"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "tide-nets-goal-1"
+        }
+      ],
+      "objective": {
+        "label": "Bring pilot Edda to the fishing village",
+        "intent": {
+          "escort": {
+            "tile": {
+              "location": "refuge"
+            },
+            "character": "edda",
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "refuge"
+            }
+          ]
+        },
+        "satisfiedWhen": {
+          "stand": {
+            "tile": {
+              "location": "refuge"
+            },
+            "character": "edda",
+            "side": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "flag": "tide-nets-goal-0"
+              },
+              {
+                "flag": "tide-nets-goal-1"
+              },
+              {
+                "hasUnits": {
+                  "role": "leader",
+                  "side": "player"
+                }
+              }
+            ]
+          },
+          {
+            "objectiveSatisfied": "goal-0"
+          },
+          {
+            "objectiveSatisfied": "goal-1"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "waves": []
+  "requiredCompanions": []
 }

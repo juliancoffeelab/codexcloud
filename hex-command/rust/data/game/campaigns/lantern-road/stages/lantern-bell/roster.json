@@ -1,156 +1,189 @@
 {
-  "initial": {
-    "gold": {
-      "player": 12,
-      "enemy": 12
-    },
-    "units": [
-      {
-        "type": "commander",
-        "side": "player",
-        "col": 3,
-        "row": 4,
-        "name": "Captain Nera",
-        "role": "leader"
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
       },
-      {
-        "type": "adept",
-        "side": "player",
-        "col": 4,
-        "row": 3
-      },
-      {
-        "type": "swordsman",
-        "side": "player",
-        "col": 4,
-        "row": 4
-      },
-      {
-        "type": "scout",
-        "side": "player",
-        "col": 4,
-        "row": 5
-      },
-      {
-        "type": "necromancer",
-        "side": "enemy",
-        "col": 13,
-        "row": 4,
-        "name": "The Bellwarden",
-        "role": "leader"
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 8,
-        "row": 1
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 8,
-        "row": 7
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 11,
-        "row": 3
-      },
-      {
-        "type": "skeleton",
-        "side": "enemy",
-        "col": 11,
-        "row": 5
-      },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 10,
-        "row": 2
-      },
-      {
-        "type": "bonearcher",
-        "side": "enemy",
-        "col": 10,
-        "row": 6
+      "palette": "player",
+      "gold": 20,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "adept"
+        }
+      ],
+      "units": [
+        {
+          "type": "swordsman",
+          "role": "leader",
+          "character": "nera",
+          "tile": {
+            "col": 2,
+            "row": 7
+          }
+        },
+        {
+          "type": "scout",
+          "character": "ivo",
+          "tile": {
+            "col": 1,
+            "row": 7
+          }
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
       }
-    ]
-  },
-  "units": [
-    {
-      "type": "commander",
-      "side": "player",
-      "col": 3,
-      "row": 4,
-      "name": "Captain Nera",
-      "role": "leader"
     },
     {
-      "type": "adept",
-      "side": "player",
-      "col": 4,
-      "row": 3
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 24,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        },
+        {
+          "unit": "skeleton-axeman"
+        },
+        {
+          "unit": "skeleton-rider"
+        }
+      ],
+      "units": [
+        {
+          "type": "lich-commander-l3",
+          "role": "leader",
+          "character": "bellwarden",
+          "tile": {
+            "col": 11,
+            "row": 12
+          }
+        },
+        {
+          "type": "skeleton-impact-caster",
+          "tile": {
+            "col": 10,
+            "row": 13
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 11,
+            "row": 13
+          }
+        },
+        {
+          "type": "skeleton",
+          "aiGroup": "north-watch",
+          "tile": {
+            "col": 10,
+            "row": 5
+          }
+        },
+        {
+          "type": "bonearcher",
+          "aiGroup": "east-watch",
+          "tile": {
+            "col": 19,
+            "row": 9
+          }
+        },
+        {
+          "type": "skeleton",
+          "aiGroup": "south-watch",
+          "tile": {
+            "col": 13,
+            "row": 20
+          }
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
     },
     {
-      "type": "swordsman",
-      "side": "player",
-      "col": 4,
-      "row": 4
-    },
-    {
-      "type": "scout",
-      "side": "player",
-      "col": 4,
-      "row": 5
-    },
-    {
-      "type": "necromancer",
-      "side": "enemy",
-      "col": 13,
-      "row": 4,
-      "name": "The Bellwarden",
-      "role": "leader"
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 8,
-      "row": 1
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 8,
-      "row": 7
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 11,
-      "row": 3
-    },
-    {
-      "type": "skeleton",
-      "side": "enemy",
-      "col": 11,
-      "row": 5
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 10,
-      "row": 2
-    },
-    {
-      "type": "bonearcher",
-      "side": "enemy",
-      "col": 10,
-      "row": 6
+      "id": "prisoners",
+      "phase": "enemy",
+      "controller": {
+        "kind": "passive"
+      },
+      "palette": "passive",
+      "relations": {
+        "player": "neutral",
+        "enemy": "allied"
+      },
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "captives",
+          "character": "northern-captives",
+          "tile": {
+            "col": 11,
+            "row": 5
+          },
+          "role": "captive"
+        },
+        {
+          "type": "captives",
+          "character": "eastern-captives",
+          "tile": {
+            "col": 19,
+            "row": 10
+          },
+          "role": "captive"
+        },
+        {
+          "type": "captives",
+          "character": "southern-captives",
+          "tile": {
+            "col": 12,
+            "row": 20
+          },
+          "role": "captive"
+        }
+      ]
     }
   ],
-  "recruits": ["swordsman", "archer", "scout", "spearman", "adept"],
-  "enemyRecruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
-  "gold": 20,
-  "enemyGold": 0
+  "arrivals": [
+    {
+      "character": "sella",
+      "tile": {
+        "col": 3,
+        "row": 8
+      }
+    },
+    {
+      "character": "oren",
+      "tile": {
+        "col": 3,
+        "row": 7
+      }
+    }
+  ]
 }

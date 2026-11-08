@@ -1,0 +1,161 @@
+{
+  "id": "dragon",
+  "name": "Survey Dragon",
+  "role": "flank",
+  "race": "beast",
+  "hp": 5000,
+  "move": 100,
+  "cost": 1,
+  "attacks": [
+    {
+      "id": "survey-flame",
+      "name": "Survey flame",
+      "damage": 1000,
+      "count": 1,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 3,
+      "sound": "attack-bow",
+      "spread": 0
+    },
+    {
+      "id": "survey-bite",
+      "name": "Survey bite",
+      "damage": 1000,
+      "count": 1,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 0
+    },
+    {
+      "id": "survey-claws",
+      "name": "Survey claws",
+      "damage": 2,
+      "count": 6,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 0
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Survey flight",
+  "description": "Debug survey flier: crosses every terrain, defeats targets in one hit, or exercises repeated strikes with Survey claws. Recruited only in Bell Night.",
+  "level": 1,
+  "family": "giant-bat",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "terrainModifiers": {
+    "road": {
+      "passable": true,
+      "cost": 0
+    },
+    "plains": {
+      "passable": true,
+      "cost": 0
+    },
+    "forest": {
+      "passable": true,
+      "cost": -1
+    },
+    "hill": {
+      "passable": true,
+      "cost": -1
+    },
+    "water": {
+      "passable": true,
+      "cost": 0
+    },
+    "bridge": {
+      "passable": true,
+      "cost": 0
+    },
+    "ford": {
+      "passable": true,
+      "cost": -1
+    },
+    "village": {
+      "passable": true,
+      "cost": 0
+    },
+    "keep": {
+      "passable": true,
+      "cost": 0
+    },
+    "marsh": {
+      "passable": true,
+      "cost": -1
+    },
+    "ruins": {
+      "passable": true,
+      "cost": 0
+    },
+    "fort": {
+      "passable": true,
+      "cost": -1
+    },
+    "grove": {
+      "passable": true,
+      "cost": -1
+    },
+    "landing": {
+      "passable": true,
+      "cost": 0
+    },
+    "ferry": {
+      "passable": true,
+      "cost": 0
+    },
+    "house": {
+      "passable": true,
+      "cost": 0
+    },
+    "mountain": {
+      "passable": true,
+      "cost": -2
+    },
+    "cave": {
+      "passable": true,
+      "cost": -1
+    },
+    "burned-village": {
+      "passable": true,
+      "cost": 0
+    },
+    "signpost": {
+      "passable": true,
+      "cost": 0
+    },
+    "fortification": {
+      "passable": true,
+      "cost": 0
+    },
+    "monastery": {
+      "passable": true,
+      "cost": 0
+    },
+    "church": {
+      "passable": true,
+      "cost": 0
+    },
+    "graveyard": {
+      "passable": true,
+      "cost": 0
+    },
+    "ritual-star": {
+      "passable": true,
+      "cost": 0
+    },
+    "ritual-spent": {
+      "passable": true,
+      "cost": 0
+    }
+  }
+}

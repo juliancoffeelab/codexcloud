@@ -1,830 +1,3764 @@
 {
-  "mapRevision": 2,
   "mapId": "lantern-villages",
-  "cols": 13,
-  "rows": 9,
+  "cols": 19,
+  "rows": 13,
   "tiles": [
     {
-      "id": "0,0",
       "col": 0,
       "row": 0,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "1,0",
       "col": 1,
       "row": 0,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "2,0",
       "col": 2,
       "row": 0,
-      "terrain": "grove",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "3,0",
       "col": 3,
       "row": 0,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "4,0",
       "col": 4,
       "row": 0,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "5,0",
       "col": 5,
       "row": 0,
-      "terrain": "water",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "6,0",
       "col": 6,
       "row": 0,
-      "terrain": "marsh",
-      "owner": null
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "7,0",
       "col": 7,
       "row": 0,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "8,0",
       "col": 8,
       "row": 0,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "9,0",
       "col": 9,
       "row": 0,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "10,0",
       "col": 10,
       "row": 0,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "11,0",
       "col": 11,
       "row": 0,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "12,0",
       "col": 12,
       "row": 0,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "0,1",
+      "col": 13,
+      "row": 0,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 0,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 0,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 0,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 17,
+      "row": 0,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "connections": ["sw", "ne"],
+      "id": "exit"
+    },
+    {
+      "col": 18,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
       "col": 0,
       "row": 1,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "1,1",
       "col": 1,
       "row": 1,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "2,1",
       "col": 2,
-      "row": 1,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "3,1",
-      "col": 3,
-      "row": 1,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "4,1",
-      "col": 4,
-      "row": 1,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "5,1",
-      "col": 5,
-      "row": 1,
-      "terrain": "ford",
-      "owner": null
-    },
-    {
-      "id": "6,1",
-      "col": 6,
-      "row": 1,
-      "terrain": "marsh",
-      "owner": null
-    },
-    {
-      "id": "7,1",
-      "col": 7,
       "row": 1,
       "terrain": "village",
-      "owner": "enemy"
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "connections": [],
+      "light": {
+        "radius": 100,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "flag",
+            "flag": "village-contact"
+          },
+          "remember": false
+        }
+      },
+      "id": "shelter"
     },
     {
-      "id": "8,1",
+      "col": 3,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
       "col": 8,
       "row": 1,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "9,1",
       "col": 9,
       "row": 1,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "10,1",
       "col": 10,
       "row": 1,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "11,1",
       "col": 11,
       "row": 1,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "12,1",
       "col": 12,
       "row": 1,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "0,2",
+      "col": 13,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 1,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "connections": ["sw", "ne"]
+    },
+    {
+      "col": 17,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
       "col": 0,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "1,2",
       "col": 1,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "keep",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "id": "player-camp"
     },
     {
-      "id": "2,2",
       "col": 2,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "3,2",
       "col": 3,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "4,2",
       "col": 4,
       "row": 2,
-      "terrain": "forest",
-      "owner": null
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "5,2",
       "col": 5,
       "row": 2,
-      "terrain": "water",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "6,2",
       "col": 6,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "7,2",
       "col": 7,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "8,2",
       "col": 8,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "9,2",
       "col": 9,
       "row": 2,
-      "terrain": "forest",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "10,2",
       "col": 10,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "11,2",
       "col": 11,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "12,2",
       "col": 12,
       "row": 2,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "0,3",
+      "col": 13,
+      "row": 2,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 2,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "connections": ["se", "ne"]
+    },
+    {
+      "col": 17,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 2,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
       "col": 0,
       "row": 3,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "1,3",
       "col": 1,
       "row": 3,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "2,3",
       "col": 2,
       "row": 3,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "3,3",
       "col": 3,
       "row": 3,
-      "terrain": "village",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "4,3",
       "col": 4,
       "row": 3,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "5,3",
       "col": 5,
       "row": 3,
-      "terrain": "water",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "6,3",
       "col": 6,
       "row": 3,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "7,3",
       "col": 7,
       "row": 3,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "8,3",
       "col": 8,
       "row": 3,
       "terrain": "hill",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "9,3",
       "col": 9,
       "row": 3,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "10,3",
       "col": 10,
       "row": 3,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "11,3",
       "col": 11,
       "row": 3,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "12,3",
       "col": 12,
       "row": 3,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "0,4",
+      "col": 13,
+      "row": 3,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 3,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 3,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "connections": ["sw", "nw"]
+    },
+    {
+      "col": 17,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 3,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
       "col": 0,
       "row": 4,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "1,4",
       "col": 1,
       "row": 4,
-      "terrain": "keep",
-      "owner": "player"
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "2,4",
       "col": 2,
       "row": 4,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "3,4",
       "col": 3,
       "row": 4,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "burned-village",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "4,4",
       "col": 4,
       "row": 4,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "5,4",
       "col": 5,
       "row": 4,
-      "terrain": "bridge",
-      "owner": null
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "6,4",
       "col": 6,
       "row": 4,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "7,4",
       "col": 7,
       "row": 4,
-      "terrain": "village",
-      "owner": "enemy"
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "8,4",
       "col": 8,
       "row": 4,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "9,4",
       "col": 9,
       "row": 4,
-      "terrain": "plains",
-      "owner": null
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "10,4",
       "col": 10,
       "row": 4,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 11,
+      "row": 4,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 12,
+      "row": 4,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 13,
+      "row": 4,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "sw"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "w"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "connections": ["w", "ne"]
+    },
+    {
+      "col": 17,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 9,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 10,
+      "row": 5,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "sw"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 11,
+      "row": 5,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "w"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 12,
+      "row": 5,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "w"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 13,
+      "row": 5,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["w", "ne"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 17,
+      "row": 5,
+      "terrain": "village",
+      "owner": "enemy",
+      "floor": "green-plain",
+      "connections": [],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "sw"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 6,
+      "row": 6,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "w"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 7,
+      "row": 6,
       "terrain": "fort",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "11,4",
-      "col": 11,
-      "row": 4,
-      "terrain": "keep",
-      "owner": "enemy"
-    },
-    {
-      "id": "12,4",
-      "col": 12,
-      "row": 4,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "0,5",
-      "col": 0,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "1,5",
-      "col": 1,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "2,5",
-      "col": 2,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "3,5",
-      "col": 3,
-      "row": 5,
-      "terrain": "village",
-      "owner": null
-    },
-    {
-      "id": "4,5",
-      "col": 4,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "5,5",
-      "col": 5,
-      "row": 5,
-      "terrain": "water",
-      "owner": null
-    },
-    {
-      "id": "6,5",
-      "col": 6,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "7,5",
-      "col": 7,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "8,5",
       "col": 8,
-      "row": 5,
+      "row": 6,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "w"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "light": {
+        "radius": 75,
+        "power": 0.5
+      },
+      "id": "captive-camp"
+    },
+    {
+      "col": 9,
+      "row": 6,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "w"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 10,
+      "row": 6,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["w", "ne"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 11,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 12,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 13,
+      "row": 6,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 6,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 6,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 6,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 17,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 0,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 1,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 2,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 3,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 4,
+      "row": 7,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["sw", "ne"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 5,
+      "row": 7,
       "terrain": "hill",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "9,5",
-      "col": 9,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "10,5",
-      "col": 10,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "11,5",
-      "col": 11,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "12,5",
-      "col": 12,
-      "row": 5,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "0,6",
-      "col": 0,
-      "row": 6,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "1,6",
-      "col": 1,
-      "row": 6,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "2,6",
-      "col": 2,
-      "row": 6,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "3,6",
-      "col": 3,
-      "row": 6,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "4,6",
-      "col": 4,
-      "row": 6,
-      "terrain": "forest",
-      "owner": null
-    },
-    {
-      "id": "5,6",
-      "col": 5,
-      "row": 6,
-      "terrain": "water",
-      "owner": null
-    },
-    {
-      "id": "6,6",
       "col": 6,
-      "row": 6,
-      "terrain": "plains",
-      "owner": null
+      "row": 7,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "7,6",
       "col": 7,
-      "row": 6,
-      "terrain": "plains",
-      "owner": null
+      "row": 7,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "8,6",
       "col": 8,
-      "row": 6,
-      "terrain": "plains",
-      "owner": null
+      "row": 7,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "9,6",
       "col": 9,
-      "row": 6,
-      "terrain": "forest",
-      "owner": null
+      "row": 7,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "10,6",
       "col": 10,
-      "row": 6,
-      "terrain": "plains",
-      "owner": null
+      "row": 7,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "11,6",
       "col": 11,
-      "row": 6,
-      "terrain": "plains",
-      "owner": null
+      "row": 7,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "12,6",
       "col": 12,
-      "row": 6,
+      "row": 7,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "0,7",
+      "col": 13,
+      "row": 7,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 7,
+      "terrain": "keep",
+      "owner": "enemy",
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "id": "tollkeeper-keep"
+    },
+    {
+      "col": 16,
+      "row": 7,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 17,
+      "row": 7,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
       "col": 0,
-      "row": 7,
+      "row": 8,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "1,7",
       "col": 1,
-      "row": 7,
+      "row": 8,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "2,7",
       "col": 2,
-      "row": 7,
+      "row": 8,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "3,7",
       "col": 3,
-      "row": 7,
+      "row": 8,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "4,7",
       "col": 4,
-      "row": 7,
-      "terrain": "plains",
-      "owner": null
+      "row": 8,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["sw", "ne"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "5,7",
       "col": 5,
-      "row": 7,
-      "terrain": "ford",
-      "owner": null
+      "row": 8,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "6,7",
       "col": 6,
-      "row": 7,
-      "terrain": "marsh",
-      "owner": null
+      "row": 8,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "7,7",
       "col": 7,
-      "row": 7,
+      "row": 8,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 8,
+      "row": 8,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 9,
+      "row": 8,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 10,
+      "row": 8,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 11,
+      "row": 8,
+      "terrain": "mountain",
+      "owner": null,
+      "floor": "mountain-rock",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 12,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 13,
+      "row": 8,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 8,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 8,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 8,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 17,
+      "row": 8,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 0,
+      "row": 9,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "sw"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 1,
+      "row": 9,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "w"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 2,
+      "row": 9,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["e", "w"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 3,
+      "row": 9,
       "terrain": "village",
-      "owner": "enemy"
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["w", "ne"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "8,7",
-      "col": 8,
-      "row": 7,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "9,7",
-      "col": 9,
-      "row": 7,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "10,7",
-      "col": 10,
-      "row": 7,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "11,7",
-      "col": 11,
-      "row": 7,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "12,7",
-      "col": 12,
-      "row": 7,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "0,8",
-      "col": 0,
-      "row": 8,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "1,8",
-      "col": 1,
-      "row": 8,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "2,8",
-      "col": 2,
-      "row": 8,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "3,8",
-      "col": 3,
-      "row": 8,
-      "terrain": "plains",
-      "owner": null
-    },
-    {
-      "id": "4,8",
       "col": 4,
-      "row": 8,
-      "terrain": "ruins",
-      "owner": null
+      "row": 9,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "5,8",
       "col": 5,
-      "row": 8,
-      "terrain": "water",
-      "owner": null
+      "row": 9,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "6,8",
       "col": 6,
-      "row": 8,
-      "terrain": "marsh",
-      "owner": null
+      "row": 9,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "7,8",
       "col": 7,
-      "row": 8,
-      "terrain": "plains",
-      "owner": null
+      "row": 9,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "8,8",
       "col": 8,
-      "row": 8,
-      "terrain": "plains",
-      "owner": null
+      "row": 9,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "9,8",
       "col": 9,
-      "row": 8,
-      "terrain": "plains",
-      "owner": null
+      "row": 9,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "10,8",
       "col": 10,
-      "row": 8,
-      "terrain": "plains",
-      "owner": null
+      "row": 9,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "11,8",
       "col": 11,
-      "row": 8,
-      "terrain": "plains",
-      "owner": null
+      "row": 9,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     },
     {
-      "id": "12,8",
       "col": 12,
-      "row": 8,
+      "row": 9,
+      "terrain": "burned-village",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 13,
+      "row": 9,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 9,
       "terrain": "plains",
-      "owner": null
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 9,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 9,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 17,
+      "row": 9,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 9,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 0,
+      "row": 10,
+      "terrain": "road",
+      "owner": null,
+      "floor": "green-plain",
+      "connections": ["ne", "w"],
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 1,
+      "row": 10,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 2,
+      "row": 10,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 3,
+      "row": 10,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 4,
+      "row": 10,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 5,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 6,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 7,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 8,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 9,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 10,
+      "row": 10,
+      "terrain": "water",
+      "owner": null,
+      "floor": "dark-water",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 11,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 12,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 13,
+      "row": 10,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 10,
+      "terrain": "water",
+      "owner": null,
+      "floor": "dark-water",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 17,
+      "row": 10,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 10,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 0,
+      "row": 11,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 1,
+      "row": 11,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 2,
+      "row": 11,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 3,
+      "row": 11,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 4,
+      "row": 11,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 5,
+      "row": 11,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 6,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 7,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 8,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 9,
+      "row": 11,
+      "terrain": "water",
+      "owner": null,
+      "floor": "dark-water",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 10,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 11,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 12,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 13,
+      "row": 11,
+      "terrain": "water",
+      "owner": null,
+      "floor": "dark-water",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 11,
+      "terrain": "water",
+      "owner": null,
+      "floor": "dark-water",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 17,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 11,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 0,
+      "row": 12,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 1,
+      "row": 12,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 2,
+      "row": 12,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 3,
+      "row": 12,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 4,
+      "row": 12,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 5,
+      "row": 12,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 6,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 7,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 8,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 9,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 10,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 11,
+      "row": 12,
+      "terrain": "village",
+      "owner": "swamp-dead",
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      },
+      "connections": []
+    },
+    {
+      "col": 12,
+      "row": 12,
+      "terrain": "keep",
+      "owner": "swamp-dead",
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 13,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 14,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 15,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 16,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 17,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
+    },
+    {
+      "col": 18,
+      "row": 12,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh",
+      "fog": {
+        "condition": {
+          "kind": "proximity",
+          "side": "player",
+          "radius": 3
+        },
+        "remember": true
+      }
     }
   ],
-  "name": "Three Unlit Windows",
-  "description": "Three Unlit Windows",
-  "revision": 2
+  "lighting": {
+    "time": "night"
+  },
+  "mapRevision": 8,
+  "name": "The Toll Road",
+  "description": "A hidden woodland refuge, a guarded mountain pass, and a prisoner road through the marshes."
 }

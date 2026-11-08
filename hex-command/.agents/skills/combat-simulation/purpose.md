@@ -8,35 +8,29 @@ objectives using the browser's engine rules. They also measure trial execution
 cost. **Balanced is the default arena comparison opponent. Classic remains the live
 enemy and the campaign competence baseline.** Making it stronger is not the purpose of simulation-player work.
 
-For faction and unit balance, use matching Situational policies with the normal
-leader-only arena starts, equal total budgets, recruitment and earned promotions. Inspect each
-opposing faction and terrain separately. Isolated advanced-level rosters are
-supplementary diagnostics, not validation of normal progression. Classic can
-saturate before a roster is balanced. Pooling recruiters or averaging easy and
-hard faction matchups can hide failures; a pooled result alone does not establish
-a terrain advantage or a balanced head-to-head matchup. Validate on additional
-seeds after tuning, and compare the full matchup matrix and authored campaign
-completion against the same baseline conditions.
+Use [recorded metrics](references/metrics.md) for evidence definitions and scope
+limitations, and [reporting](references/reporting.md) for output conventions.
+Isolated advanced-level rosters are supplementary diagnostics; validate normal
+progression on held-out seeds against matching baseline conditions.
 
-Aim for roughly 70% Woodland wins in forests and 80% Merfolk wins on water,
-with viable armies outside those biomes. Woodland should beat Merfolk on dry
-plains. Humans and Skeletons should be roughly equally useful overall across
-opponents and maps, particularly under Balanced and Situational. A fair direct
-matchup is desirable but not required; never infer overall parity from it alone.
-Some stalemates between them are expected. Rotation and Rush are simple baselines,
-not the primary targets for recruitment intelligence or numeric balance. Preserve meaningful cavalry use and
-lore-specific campaign recruitment pools when tuning numeric balance. Audit
-movement above three against the lore; terrain access and movement costs also
-contribute to mobility.
+Use the [army-design goals](design.md#terrain-and-overall-strength) for biome
+targets, faction parity, cavalry roles and lore-specific recruitment limits.
+
+Use Rotation and Rush as simple baselines. Focus recruitment-intelligence and
+numeric-balance evaluation on Balanced, Situational and Predictor.
 
 The intended player strategies are infantry-only, fair roster use and
-situational selection. Compare them against the same fixed enemy under matching
-conditions. Fair and situational strategies should improve on the narrow
-infantry baseline without relying on repeated selection of one dominant unit.
-No acceptable numeric gap is established; report differences by race, map and
-opponent.
+adaptive selection. Situational evaluates observed enemies; Predictor additionally
+anticipates legal future recruits. Both use distance-free combat and support
+valuation, with movement rewarded through village capture. Balanced represents fair roster use. Both adaptive recruiters should
+maximize winning strength, including repeated selection of a successful unit.
+Do not weaken either adaptive recruiter or impose roster diversity to conceal a strong unit.
+Concentrated field presence is balance evidence to investigate, not a reason to
+reject a winning recruitment strategy. Compare strategies against the same fixed
+enemy under matching conditions and validate on separate seeds. No acceptable
+numeric gap is established; report differences by race, map and opponent.
 
-Campaign competence concerns **Balanced, Rotated and Situational against Classic**, using
+Campaign competence concerns **Balanced, Rotated, Situational and Predictor against Classic**, using
 authored rosters and objectives. Classic/Rush campaign failures do not establish
 simulation-player competence regressions. Completion, required-actor survival
 and progression matter; speed alone does not establish correctness or balance.

@@ -15,7 +15,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 2
+      "count": 2,
+      "spread": 1
     },
     {
       "id": "tidebolt",
@@ -25,7 +26,8 @@
       "category": "ranged",
       "range": 2,
       "sound": "attack-bow",
-      "count": 1
+      "count": 1,
+      "spread": 1
     }
   ],
   "damageModifiers": {
@@ -35,7 +37,6 @@
   },
   "ability": "Amphibious",
   "description": "A merfolk leader who recruits from an owned keep and guides the company through coastal waters.",
-  "leader": true,
   "level": 1,
   "family": "tidekeeper",
   "experienceNeeded": 10,

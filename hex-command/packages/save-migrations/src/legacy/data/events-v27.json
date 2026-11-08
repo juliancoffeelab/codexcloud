@@ -1,0 +1,476 @@
+{
+  "lantern-ferry": {
+    "eventIds": [
+      "ferryman-death",
+      "contact-route-scout",
+      "contact-western-scout",
+      "contact-northern-scout",
+      "quarry-bear",
+      "western-ford",
+      "eastern-ford",
+      "house-visit",
+      "ford-shout",
+      "ford-silence",
+      "ferryman-alive",
+      "ferryman-letter",
+      "village-1",
+      "village-2",
+      "first-spiders",
+      "villages-secured",
+      "quarry-tools",
+      "chapter-victory",
+      "spiders-cleared"
+    ],
+    "oldEventIds": [
+      "contact-route-scout",
+      "contact-western-scout",
+      "contact-northern-scout",
+      "quarry-bear",
+      "western-ford",
+      "eastern-ford",
+      "house-visit",
+      "ford-shout",
+      "ford-silence",
+      "ferryman-alive",
+      "ferryman-letter",
+      "ferryman-testimony",
+      "village-1",
+      "village-2",
+      "first-spiders",
+      "villages-secured",
+      "quarry-tools"
+    ],
+    "aliases": {
+      "ferryman-testimony": "ferryman-alive"
+    },
+    "choiceFlags": {
+      "ferryman-alive": "ferryman-alive",
+      "ferryman-letter": "ferryman-dead"
+    },
+    "spawns": [
+      {
+        "event": "contact-route-scout",
+        "area": [
+          "hex-0893-940b4e4db1",
+          "hex-0860-3735600481",
+          "hex-0892-f4d2ec09d8",
+          "hex-0861-b81de56c08",
+          "hex-0925-815fb4de6a",
+          "hex-0862-3ea2b77194",
+          "hex-0894-59c2dceed8"
+        ],
+        "faction": "player",
+        "aiGroup": null,
+        "units": [
+          {
+            "oldId": "member-1",
+            "unitType": "scout",
+            "items": []
+          }
+        ]
+      },
+      {
+        "event": "contact-western-scout",
+        "area": [
+          "hex-0412-0c9247ea66",
+          "hex-0411-28541665a4",
+          "hex-0763-c9e627d16e",
+          "hex-0060-946ce75068",
+          "hex-0764-1e6853c01c",
+          "hex-0413-a7f6b5f93d",
+          "hex-0765-3a0bcc5d48"
+        ],
+        "faction": "player",
+        "aiGroup": null,
+        "units": [
+          {
+            "oldId": "member-1",
+            "unitType": "scout",
+            "items": []
+          }
+        ]
+      },
+      {
+        "event": "contact-northern-scout",
+        "area": [
+          "hex-0856-a2b6e60ea7",
+          "hex-0845-9e38fcb018",
+          "hex-0877-678535c7d6",
+          "hex-0760-150b2b6a75",
+          "hex-0888-a99d723b63",
+          "hex-0859-8a12839c45",
+          "hex-0891-b20a50ef8c"
+        ],
+        "faction": "player",
+        "aiGroup": null,
+        "units": [
+          {
+            "oldId": "member-1",
+            "unitType": "scout",
+            "items": []
+          }
+        ]
+      },
+      {
+        "event": "quarry-bear",
+        "area": ["hex-0386-9dcf2ec127", "hex-0737-cb60354473", "hex-0738-f0cce97107"],
+        "faction": "wildlife",
+        "aiGroup": "animals",
+        "units": [
+          {
+            "oldId": "member-1",
+            "unitType": "bear",
+            "character": "quarry-bear",
+            "items": []
+          }
+        ]
+      },
+      {
+        "event": "western-ford",
+        "area": ["hex-0187-8d8ab817b0", "hex-0220-71856b5fe2", "hex-0222-38c4b50445"],
+        "faction": "wildlife",
+        "aiGroup": "animals",
+        "units": [
+          {
+            "oldId": "member-1",
+            "unitType": "giant-bat",
+            "items": []
+          },
+          {
+            "oldId": "member-2",
+            "unitType": "giant-bat",
+            "items": []
+          },
+          {
+            "oldId": "member-3",
+            "unitType": "giant-bat",
+            "items": []
+          }
+        ]
+      },
+      {
+        "event": "village-1",
+        "area": [
+          "hex-0444-7f9879166b",
+          "hex-0475-533ea4fc56",
+          "hex-0476-aa57f89866",
+          "hex-0477-0b5144e7b1",
+          "hex-0507-58cb41ca51",
+          "hex-0508-ad32d05df3",
+          "hex-0509-8c38d5d34a"
+        ],
+        "faction": "wildlife",
+        "aiGroup": "animals",
+        "units": [
+          {
+            "oldId": "member-1",
+            "unitType": "giant-spider",
+            "items": []
+          },
+          {
+            "oldId": "member-2",
+            "unitType": "giant-spider",
+            "items": []
+          }
+        ]
+      },
+      {
+        "event": "village-2",
+        "area": [
+          "hex-0421-9fea0a883b",
+          "hex-0420-64e5601fe8",
+          "hex-0453-5d76a2bb0b",
+          "hex-0422-6a48fe5f70",
+          "hex-0452-b47b257c52",
+          "hex-0485-6edc9d487c",
+          "hex-0454-20b394508c"
+        ],
+        "faction": "wildlife",
+        "aiGroup": "animals",
+        "units": [
+          {
+            "oldId": "member-1",
+            "unitType": "giant-spider",
+            "items": []
+          },
+          {
+            "oldId": "member-2",
+            "unitType": "giant-spider",
+            "items": []
+          }
+        ]
+      }
+    ],
+    "waves": [],
+    "holds": [],
+    "ritual": null,
+    "recruitmentGrants": {},
+    "removedTransfers": []
+  },
+  "lantern-bell": {
+    "eventIds": [
+      "captive-death",
+      "rescue-southern-captives",
+      "rescue-eastern-captives",
+      "rescue-northern-captives",
+      "monastery-lead",
+      "monastery-start",
+      "fog-cleared",
+      "bell-sighted",
+      "toll-warning",
+      "church-sighted",
+      "church-armor",
+      "northern-sighted",
+      "northern-freed",
+      "eastern-sighted",
+      "eastern-freed",
+      "southern-sighted",
+      "southern-freed",
+      "bellwarden-demands-captives",
+      "tollkeeper-pursuit",
+      "opened-graveyard-sighted",
+      "first-toll",
+      "second-toll",
+      "third-toll",
+      "bell-silenced",
+      "chapter-victory",
+      "western-reinforcements",
+      "monastery-interrupted"
+    ],
+    "oldEventIds": [
+      "monastery-lead",
+      "monastery-start",
+      "fog-cleared",
+      "bell-sighted",
+      "toll-warning",
+      "church-sighted",
+      "church-armor",
+      "northern-sighted",
+      "northern-freed",
+      "eastern-sighted",
+      "eastern-freed",
+      "southern-sighted",
+      "southern-freed",
+      "bellwarden-demands-captives",
+      "tollkeeper-pursuit",
+      "opened-graveyard-sighted"
+    ],
+    "aliases": {},
+    "choiceFlags": {},
+    "spawns": [
+      {
+        "event": "monastery-start",
+        "area": [
+          "hex-0956-1372406dd4",
+          "hex-0925-815fb4de6a",
+          "hex-0924-5cbf18fdd5",
+          "hex-0893-940b4e4db1",
+          "hex-0957-c94afbbfa1"
+        ],
+        "faction": "enemy",
+        "aiGroup": "monastery-wolves",
+        "units": [
+          {
+            "oldId": "wolf-1",
+            "unitType": "skeletal-hound",
+            "items": []
+          },
+          {
+            "oldId": "wolf-2",
+            "unitType": "skeletal-hound",
+            "items": []
+          }
+        ]
+      },
+      {
+        "event": "tollkeeper-pursuit",
+        "area": [
+          "hex-0394-7889695a30",
+          "hex-0042-3103f25c56",
+          "hex-0043-cc2388bbb8",
+          "hex-0395-f9b1a8bf44",
+          "hex-0746-8d990f3ec1"
+        ],
+        "faction": "enemy",
+        "aiGroup": null,
+        "units": [
+          {
+            "oldId": "tollkeeper",
+            "unitType": "necromancer",
+            "character": "tollkeeper",
+            "items": []
+          },
+          {
+            "oldId": "spear",
+            "unitType": "skeleton",
+            "items": []
+          },
+          {
+            "oldId": "bow",
+            "unitType": "bonearcher",
+            "items": []
+          }
+        ]
+      }
+    ],
+    "waves": ["western-reinforcements"],
+    "holds": [
+      {
+        "event": "fog-cleared",
+        "tile": "hex-0892-f4d2ec09d8",
+        "predicate": 0
+      }
+    ],
+    "ritual": {
+      "id": "bell",
+      "sources": ["hex-0124-7838ad1797", "hex-0355-3f598bb97a", "hex-0142-a3ef30fee6"],
+      "radius": 2,
+      "light": {
+        "radius": 62,
+        "power": 0.75,
+        "color": [255, 32, 32],
+        "fixture": false
+      },
+      "units": [
+        {
+          "oldId": "spear",
+          "unitType": "skeleton",
+          "items": []
+        },
+        {
+          "oldId": "spear-2",
+          "unitType": "skeleton",
+          "items": []
+        },
+        {
+          "oldId": "bow",
+          "unitType": "bonearcher",
+          "items": []
+        }
+      ],
+      "aiGroup": "bell-raised"
+    },
+    "recruitmentGrants": {},
+    "removedTransfers": ["prisoners"]
+  },
+  "lantern-villages": {
+    "eventIds": [
+      "deadline-0",
+      "village-contact",
+      "foothold-established",
+      "oren-lessons",
+      "ferry-supplies",
+      "ferry-letter",
+      "prisoners-found",
+      "prisoners-found-guarded",
+      "prisoners-found-unguarded",
+      "prisoners-freed",
+      "road-urgency",
+      "tollkeeper-provoked",
+      "swamp-sighting",
+      "oren-swamp",
+      "village-safe",
+      "tollkeeper-fallen",
+      "eastern-departure",
+      "oren-healer-fallen",
+      "mire-balm-found",
+      "road-cleared",
+      "first-bell-toll",
+      "road-bell-warning",
+      "captives-lost",
+      "chapter-victory"
+    ],
+    "oldEventIds": [
+      "village-contact",
+      "foothold-established",
+      "oren-lessons",
+      "ferry-supplies",
+      "ferry-letter",
+      "prisoners-found",
+      "prisoners-found-guarded",
+      "prisoners-found-unguarded",
+      "prisoners-freed",
+      "road-urgency-oren",
+      "road-urgency-nera",
+      "tollkeeper-provoked",
+      "swamp-sighting",
+      "oren-swamp",
+      "village-safe",
+      "tollkeeper-fallen",
+      "eastern-departure",
+      "oren-healer-fallen",
+      "mire-balm-found",
+      "road-cleared",
+      "first-bell-toll",
+      "road-bell-warning-oren",
+      "road-bell-warning-nera"
+    ],
+    "aliases": {
+      "road-urgency-oren": "road-urgency",
+      "road-urgency-nera": "road-urgency",
+      "road-bell-warning-oren": "road-bell-warning",
+      "road-bell-warning-nera": "road-bell-warning"
+    },
+    "choiceFlags": {
+      "village-contact": "hidden-village-found",
+      "prisoners-freed": "road-prisoners-freed",
+      "village-safe": "road-villagers-safe",
+      "tollkeeper-fallen": "tollkeeper-defeated",
+      "eastern-departure": "road-continued-east",
+      "first-bell-toll": "bell-tolled-before-arrival"
+    },
+    "spawns": [
+      {
+        "event": "village-contact",
+        "area": [
+          "hex-0386-9dcf2ec127",
+          "hex-0385-50a8d92c35",
+          "hex-0034-53333de58a",
+          "hex-0397-b042f4a1af",
+          "hex-0738-f0cce97107",
+          "hex-0033-68054f369c",
+          "hex-0749-0fa856724a"
+        ],
+        "faction": "player",
+        "aiGroup": null,
+        "units": [
+          {
+            "oldId": "sella",
+            "unitType": "warden",
+            "character": "sella",
+            "items": []
+          }
+        ]
+      }
+    ],
+    "waves": [],
+    "holds": [],
+    "ritual": null,
+    "recruitmentGrants": {
+      "village-contact": {
+        "player": [
+          {
+            "unit": "swordsman"
+          },
+          {
+            "unit": "spearman"
+          },
+          {
+            "unit": "archer"
+          },
+          {
+            "unit": "scout"
+          }
+        ]
+      },
+      "oren-lessons": {
+        "player": [
+          {
+            "unit": "adept"
+          }
+        ]
+      }
+    },
+    "removedTransfers": ["prisoners"]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "ashen-dawn": {
+    "hex-0129-7c8659226d": "names-cache",
+    "hex-0941-278b487380": "northern-seal",
+    "hex-0957-c94afbbfa1": "southern-seal"
+  },
+  "ashen-quarry": {
+    "hex-0098-b1326129be": "exit",
+    "hex-0892-f4d2ec09d8": "ledger-cache",
+    "hex-0124-7838ad1797": "enemy-keep"
+  },
+  "ashen-refuge": {
+    "hex-0737-cb60354473": "medicine-cache",
+    "hex-0891-b20a50ef8c": "refuge"
+  },
+  "tide-nets": {
+    "hex-0909-61c988dee7": "northern-fort",
+    "hex-1016-9e0db09d3e": "refuge",
+    "hex-0988-17596734c1": "southern-fort",
+    "hex-0894-59c2dceed8": "nets-cache"
+  },
+  "tide-sluice": {
+    "hex-0973-079cfc7b3c": "northern-sluice",
+    "hex-1019-90a76d4969": "refuge",
+    "hex-0988-17596734c1": "southern-sluice",
+    "hex-0414-7d6a56c9b3": "boat-cache"
+  },
+  "tide-wreck": {
+    "hex-0891-b20a50ef8c": "wreck"
+  },
+  "green-border": {
+    "hex-0898-eed2a38c9d": "tools-cache",
+    "hex-0952-a980626eda": "northern-fort",
+    "hex-0956-1372406dd4": "southern-fort"
+  },
+  "green-pact": {
+    "hex-0897-9650de66eb": "old-trail",
+    "hex-0130-cb5c0e2a48": "refuge",
+    "hex-0955-5859c768ff": "fort"
+  },
+  "green-vigil": {
+    "hex-0897-9650de66eb": "owl-cache",
+    "hex-0923-ec307e92cf": "grove"
+  },
+  "lantern-bell": {
+    "hex-0892-f4d2ec09d8": "monastery",
+    "hex-0124-7838ad1797": "northern-ritual-mark",
+    "hex-0355-3f598bb97a": "eastern-ritual-mark",
+    "hex-0101-0061999dcd": "bell-keep",
+    "hex-0327-75e4fc333f": "church",
+    "hex-0142-a3ef30fee6": "southern-ritual-mark"
+  },
+  "lantern-ferry": {
+    "hex-0737-cb60354473": "quarry",
+    "hex-0856-a2b6e60ea7": "northern-scout",
+    "hex-0412-0c9247ea66": "western-scout",
+    "hex-0956-1372406dd4": "western-ford",
+    "hex-0476-aa57f89866": "northern-village",
+    "hex-0893-940b4e4db1": "route-scout",
+    "hex-0319-08df480e03": "eastern-ford",
+    "hex-0323-cf4945b8a9": "ferryman-house",
+    "hex-0453-5d76a2bb0b": "southern-village"
+  },
+  "lantern-villages": {
+    "hex-0289-0646356c88": "exit",
+    "hex-0386-9dcf2ec127": "shelter",
+    "hex-0045-b0e58b1f93": "player-camp",
+    "hex-0989-f27f4a3764": "captive-camp",
+    "hex-0254-415f24444c": "tollkeeper-keep"
+  },
+  "bell-night": {},
+  "mirror-night": {},
+  "developer": {},
+  "mirror": {},
+  "river-valley": {},
+  "wood-edge": {},
+  "arena-template": {}
+}

@@ -1,37 +1,95 @@
 {
   "subtitle": "Break the chains. Leave the names.",
-  "briefing": "Dain has chosen to stand beside Orin against the man who commanded them both. The Master still binds others to his will through stones along the road. Breaking those chains and confronting him is the company’s chance to secure a freedom he cannot simply revoke.",
+  "briefing": [
+    {
+      "when": {
+        "flag": "peace-lost"
+      },
+      "text": "The refuge battle ended without an agreement. Dain and his allies will not come with Orin; the company must face the Master alone. His binding stones still hold others in servitude. Breaking them is the first step toward a freedom that can survive him."
+    },
+    {
+      "text": "Dain has chosen to stand beside Orin against the man who commanded them both. The Master still binds others to his will through stones along the road. Breaking those chains and confronting him is the company’s chance to secure a freedom he cannot simply revoke."
+    }
+  ],
   "hints": [
-    "Dain's hammer and the adepts answer bones; spears answer beasts. Withdraw wounded named allies before they are cut off.",
-    "The stones are where the Master’s reach begins."
+    {
+      "when": {
+        "not": {
+          "flag": "peace-lost"
+        }
+      },
+      "text": "Dain's hammer and the adepts answer bones; spears answer beasts. Withdraw wounded named allies before they are cut off."
+    },
+    {
+      "when": {
+        "not": {
+          "flag": "peace-lost"
+        }
+      },
+      "text": "The stones are where the Master’s reach begins."
+    },
+    {
+      "when": {
+        "flag": "peace-lost"
+      },
+      "text": "The dead will have to look after their own."
+    },
+    {
+      "when": {
+        "flag": "peace-lost"
+      },
+      "text": "The stones are where the Master’s reach begins."
+    }
   ],
   "intro": [
     {
-      "speaker": "The Master",
-      "portrait": "necromancer",
-      "text": "I gave you a second life. You owe me the use of it."
-    },
-    {
-      "speaker": "Orin",
-      "portrait": "necromancer",
-      "text": "A life is not a ledger. These people choose whom they follow."
-    },
-    {
-      "speaker": "Dain",
-      "portrait": "warden",
-      "text": "My wardens chose the same road. Break his binding stones. The adepts can answer his bones; my spears can keep the beasts off them."
+      "with": "dain",
+      "dialogue": [
+        {
+          "portrait": "necromancer",
+          "text": "I gave you a second life. You owe me the use of it.",
+          "character": "master"
+        },
+        {
+          "portrait": "necromancer",
+          "text": "A life is not a ledger. These people choose whom they follow.",
+          "character": "orin"
+        },
+        {
+          "portrait": "warden",
+          "text": "My wardens chose the same road. Break his binding stones. The adepts can answer his bones; my spears can keep the beasts off them.",
+          "character": "dain"
+        }
+      ],
+      "alternative": [
+        {
+          "portrait": "necromancer",
+          "text": "You broke the patrol that came to turn you back. You have learned my methods well.",
+          "character": "master"
+        },
+        {
+          "portrait": "necromancer",
+          "text": "We chose that battle. We will carry what it cost us. But you will not choose our lives again.",
+          "character": "orin"
+        },
+        {
+          "speaker": "A hollow voice",
+          "portrait": "skeleton",
+          "text": "No captain is coming to help us. Break the binding stones. We can still bring the others home."
+        }
+      ]
     }
   ],
   "victory": [
     {
-      "speaker": "The Master",
       "portrait": "necromancer",
-      "text": "Without me, what are you?"
+      "text": "Without me, what are you?",
+      "character": "master"
     },
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "We have not decided yet. That is the point."
+      "text": "We have not decided yet. That is the point.",
+      "character": "orin"
     }
   ]
 }

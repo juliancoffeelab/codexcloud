@@ -1,4 +1,5 @@
-//! Earned promotion choices use mechanical matchups and nearby support demand.
+//! Earned promotions use distance-independent mechanical matchups and support demand.
+use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
 
 pub(super) fn choices(
@@ -12,9 +13,9 @@ pub(super) fn choices(
     let mut units: Vec<_> = game
         .units()
         .iter()
-        .filter(|u| u.side == game.turn())
+        .filter(|u| game.belongs_to_phase(u, game.turn()))
         .collect();
-    units.sort_by_key(|u| u.id);
+    units.order_by_key(|u| u.id);
     units
         .into_iter()
         .filter_map(|unit| {
@@ -24,7 +25,11 @@ pub(super) fn choices(
             }
             let kind = match policy {
                 super::RecruiterKind::Classic => options[0],
-                super::RecruiterKind::Situational => choose(game, unit)?,
+                super::RecruiterKind::Situational
+                | super::RecruiterKind::Predictor
+                | super::RecruiterKind::AggressivePredictor => {
+                    choose(game, unit, policy != super::RecruiterKind::Situational)?
+                }
                 super::RecruiterKind::Balanced | super::RecruiterKind::Frontline => {
                     let draw = super::random(
                         seed,
@@ -49,14 +54,15 @@ pub(super) fn choices(
         .collect()
 }
 
-fn choose(game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
+fn choose(game: &BattleView<'_, '_>, unit: &Unit, predict: bool) -> Option<usize> {
     let wounds = game.rules().units[unit.kind].hp - unit.hp;
     game.promotion_options(unit).into_iter().max_by(|&a, &b| {
         let score = |kind| {
             let mut promoted = unit.clone();
             promoted.kind = kind;
             promoted.hp = (game.rules().units[kind].hp - wounds).max(1);
-            super::evaluation::Assessment::new(game, &promoted).score(game, &promoted)
+            super::evaluation::Assessment::with_forecast(game, &promoted, predict)
+                .score(game, &promoted)
         };
         score(a).total_cmp(&score(b))
     })
@@ -65,6 +71,7 @@ fn choose(game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ai::recruiter::fixtures;
     use crate::logic::Game;
 
     fn fixture() -> (Rules, usize, usize, usize) {
@@ -90,20 +97,27 @@ mod tests {
     }
     fn battle(rules: &Rules, base: usize) -> (Game<'_>, u32) {
         let mut game = Game::new(rules, "mirror");
-        game.units.retain(|u| rules.units[u.kind].leader);
-        game.roster_changed();
+        fixtures::units(&mut game, |units| {
+            units.retain(|u| u.is_leader());
+        });
         let leader = game
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, base, false)[0];
-        let id = game.add(base, Side::Player, tile);
+        let id = fixtures::add(&mut game, base, Side::Player, tile);
         let i = game.index(id).unwrap();
-        game.units[i].experience = Some(1);
-        game.units[i].moved = false;
-        game.units[i].attacked = false;
+        fixtures::units(&mut game, |units| {
+            units[i].experience = Some(1);
+        });
+        fixtures::units(&mut game, |units| {
+            units[i].moved = false;
+        });
+        fixtures::units(&mut game, |units| {
+            units[i].attacked = false;
+        });
         (game, id)
     }
     #[test]
@@ -136,15 +150,17 @@ mod tests {
         let (rules, base, a, b) = fixture();
         let (mut game, id) = battle(&rules, base);
         let leader = game
-            .units
+            .units()
             .iter()
-            .find(|u| rules.units[u.kind].leader && u.side == Side::Player)
+            .find(|u| u.is_leader() && u.side == Side::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, base, false)[0];
-        let second = game.add(base, Side::Player, tile);
+        let second = fixtures::add(&mut game, base, Side::Player, tile);
         let index = game.index(second).unwrap();
-        game.units[index].experience = Some(1);
+        fixtures::units(&mut game, |units| {
+            units[index].experience = Some(1);
+        });
         let result = choices(
             &BattleView::new(&game),
             super::super::RecruiterKind::Rotation,
@@ -159,11 +175,16 @@ mod tests {
             (UnitId(second), UnitTypeId(rules.units[b].id.clone()))
         );
         let index = game.index(id).unwrap();
-        game.units[index].kind = a;
-        game.units[index].experience = Some(0);
-        game.units.retain(|u| u.id != id);
-        game.roster_changed();
-        game.round += 1;
+        fixtures::units(&mut game, |units| {
+            units[index].kind = a;
+        });
+        fixtures::units(&mut game, |units| {
+            units[index].experience = Some(0);
+        });
+        fixtures::units(&mut game, |units| {
+            units.retain(|u| u.id != id);
+        });
+        fixtures::edit(&mut game, |state| state.round += 1);
         assert_eq!(
             choices(
                 &BattleView::new(&game),
@@ -183,7 +204,7 @@ mod tests {
         rules.units[b].attacks[0].damage_type = DamageType::Pierce;
         let enemy = battle(&rules, base)
             .0
-            .units
+            .units()
             .iter()
             .find(|u| u.side == Side::Enemy)
             .unwrap()
@@ -193,15 +214,84 @@ mod tests {
             rules.units[enemy].damage_modifiers.pierce = pierce;
             let (mut game, id) = battle(&rules, base);
             assert_eq!(
-                choose(&BattleView::new(&game), game.unit(id).unwrap()),
+                choose(&BattleView::new(&game), game.unit(id).unwrap(), false),
                 Some(expected)
             );
             let i = game.index(id).unwrap();
-            game.units[i].experience = Some(0);
+            fixtures::units(&mut game, |units| {
+                units[i].experience = Some(0);
+            });
             assert_eq!(
-                choose(&BattleView::new(&game), game.unit(id).unwrap()),
+                choose(&BattleView::new(&game), game.unit(id).unwrap(), false),
                 None
             );
+        }
+    }
+    #[test]
+    #[cfg(not(target_arch = "wasm32"))]
+    fn predictor_promotion_diagnostics_match_choices_with_future_enemy_recruits() {
+        use super::super::RecruiterKind;
+        let (mut rules, base, a, b) = fixture();
+        for (kind, damage_type, damage) in [(a, DamageType::Blade, 11), (b, DamageType::Pierce, 10)]
+        {
+            rules.units[kind].attacks[0].damage_type = damage_type;
+            rules.units[kind].attacks[0].damage = damage;
+            rules.units[kind].attacks[0].spread = 0;
+        }
+        let observed = battle(&rules, base)
+            .0
+            .units()
+            .iter()
+            .find(|u| u.side == Side::Enemy)
+            .unwrap()
+            .kind;
+        rules.units[observed].damage_modifiers = DamageModifiers {
+            blade: 0,
+            pierce: 0,
+            impact: 0,
+        };
+        rules.units[observed].environment.fill([[0; 3]; 2]);
+        for attack in &mut rules.units[observed].attacks {
+            attack.damage = 0;
+            attack.spread = 0;
+        }
+        let future = rules.types["scout"];
+        let mut foe = rules.units[observed].clone();
+        foe.id = rules.units[future].id.clone();
+        foe.damage_modifiers.blade = -10;
+        rules.units[future] = foe;
+        rules.route_classes[future] = future;
+        let (mut game, actor) = battle(&rules, base);
+        game.configure_arena(Some([vec![], vec![]]), None);
+        for anticipate in [false, true] {
+            if anticipate {
+                game.configure_arena(Some([vec![], vec![future]]), None);
+            }
+            for policy in [RecruiterKind::Situational, RecruiterKind::Predictor] {
+                let expected = if anticipate && policy == RecruiterKind::Predictor {
+                    b
+                } else {
+                    a
+                };
+                let selected = choices(&BattleView::new(&game), policy, 7)
+                    .into_iter()
+                    .find(|(id, _)| id.0 == actor)
+                    .unwrap()
+                    .1;
+                assert_eq!(selected.0, rules.units[expected].id);
+                let rows = super::super::diagnostics(&game, policy);
+                let best = rows
+                    .iter()
+                    .filter(|r| r["choice"] == "promotion" && r["actor"] == actor)
+                    .max_by(|a, b| {
+                        a["score"]
+                            .as_f64()
+                            .unwrap()
+                            .total_cmp(&b["score"].as_f64().unwrap())
+                    })
+                    .unwrap();
+                assert_eq!(best["unit"], selected.0);
+            }
         }
     }
     #[test]
@@ -216,7 +306,7 @@ mod tests {
             }
             let enemy = battle(&rules, base)
                 .0
-                .units
+                .units()
                 .iter()
                 .find(|u| u.side == Side::Enemy)
                 .unwrap()
@@ -228,34 +318,37 @@ mod tests {
             rules.units[enemy].attacks[0].count = 3;
             let (mut game, id) = battle(&rules, base);
             let unit = game.unit(id).unwrap().clone();
-            let tiles: Vec<_> = game.board.adjacent[unit.tile]
+            let tiles: Vec<_> = game.board().adjacent[unit.tile]
                 .iter()
                 .copied()
                 .filter(|&t| game.at(t).is_none())
                 .collect();
             if !thorns {
-                assert_eq!(choose(&BattleView::new(&game), &unit), Some(a));
+                assert_eq!(choose(&BattleView::new(&game), &unit, false), Some(a));
             }
-            let ally = game.add(base, Side::Player, tiles[0]);
+            let ally = fixtures::add(&mut game, base, Side::Player, tiles[0]);
             let i = game.index(ally).unwrap();
-            game.units[i].hp = 1;
+            fixtures::units(&mut game, |units| {
+                units[i].hp = 1;
+            });
             let enemy = game
-                .units
+                .units()
                 .iter()
                 .find(|u| u.side == Side::Enemy)
                 .unwrap()
                 .id;
             let i = game.index(enemy).unwrap();
-            game.units[i].tile = tiles[1];
-            game.roster_changed();
-            assert_eq!(choose(&BattleView::new(&game), &unit), Some(b));
+            fixtures::units(&mut game, |units| {
+                units[i].tile = tiles[1];
+            });
+            assert_eq!(choose(&BattleView::new(&game), &unit, false), Some(b));
         }
     }
     #[test]
     fn every_planner_executes_the_recruiters_selected_branch() {
         use crate::ai::{
             Diplomacy, PlanningWorkspace, campaigner::CampaignerKind, planner::PlannerKind,
-            recruiter::Recruiter, tactic::Tactic,
+            recruiter::Recruiter, runtime::tactic::Tactic,
         };
         struct Fixed(usize);
         impl Recruiter for Fixed {
@@ -288,7 +381,7 @@ mod tests {
             for planner in [PlannerKind::Classic, PlannerKind::Full, PlannerKind::Queued] {
                 let (game, id) = battle(&rules, base);
                 let mut tactic = Tactic::new(Fixed(branch), CampaignerKind::Arena, planner);
-                let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Restrained);
+                let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Diplomatic);
                 let plan = tactic.run_turn(&game, &mut workspace).unwrap();
                 assert!(
                     plan.commands.contains(&crate::logic::Command::Advance {

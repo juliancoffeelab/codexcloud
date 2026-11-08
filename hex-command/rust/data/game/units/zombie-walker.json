@@ -1,0 +1,33 @@
+{
+  "id": "zombie-walker",
+  "name": "Restless corpse",
+  "role": "warrior",
+  "race": "zombies",
+  "hp": 17,
+  "move": 2,
+  "cost": 0,
+  "attacks": [
+    {
+      "id": "grasp",
+      "name": "Grasping hands",
+      "damage": 4,
+      "count": 2,
+      "damageType": "impact",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "spread": 1
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Restless",
+  "description": "A slow corpse, heedless of wounds and drawn to the living.",
+  "level": 1,
+  "family": "zombie-walker",
+  "advancesTo": [],
+  "experienceNeeded": 0
+}

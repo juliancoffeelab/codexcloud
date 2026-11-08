@@ -184,6 +184,7 @@ pub(crate) fn arrow_header(summary: &DetailedSummary<'_>) -> Result<String, Simu
     }
     #[derive(Serialize)]
     struct MissionHeader<'a> {
+        escalated: bool,
         id: &'a str,
         winner: Option<Side>,
         round: u32,
@@ -222,6 +223,7 @@ pub(crate) fn arrow_header(summary: &DetailedSummary<'_>) -> Result<String, Simu
                 .missions
                 .iter()
                 .map(|m| MissionHeader {
+                    escalated: m.result.escalated,
                     id: &m.result.id,
                     winner: m.result.winner,
                     round: m.result.round,
@@ -300,13 +302,7 @@ pub fn compact_summary(
                     round: mission.result.round,
                     goals: &mission.result.goals,
                     events: &mission.events,
-                    escalated: mission
-                        .result
-                        .r#final
-                        .campaign
-                        .as_ref()
-                        .and_then(|campaign| campaign.refuge.as_ref())
-                        .is_some_and(|refuge| refuge.escalated),
+                    escalated: mission.result.escalated,
                 })
                 .collect();
             Ok(serde_json::to_value(CampaignCompact {
@@ -325,6 +321,7 @@ pub fn compact_summary(
 mod tests {
     use super::*;
     use crate::ai::Policy;
+    use crate::data::Hex;
     use crate::data::{Gold, Records};
     use serde_json::json;
     #[test]
@@ -337,7 +334,7 @@ mod tests {
             };
             let unit = |id, kind, side| {
                 serde_json::from_value::<PublicUnit>(json!({
-                "id":id,"type":kind,"side":side,"tile":"0,0","hp":20,"moved":true,"attacked":true
+                "id":id,"type":kind,"side":side,"tile":Hex::new(0, 0),"hp":20,"moved":true,"attacked":true
             }))
             .unwrap()
             };
@@ -350,7 +347,7 @@ mod tests {
             phase.records.losses = vec![unit("u2", "guard", "enemy")];
             phase.records.combats = vec![
             serde_json::from_value(json!({
-                "unit":"u1","target":"u2","weapon":"hit","from":"0,0","targetTile":"0,1",
+                "unit":"u1","target":"u2","weapon":"hit","from":Hex::new(0, 0),"targetTile":Hex::new(0, 1),
                 "damage":8,"retaliation":reflected_or_weapon,"count":2,"damagePerHit":4,"retaliationCount":reply_count,
                 "retaliationPerHit":4,"mediationAtRisk":false
             }))
@@ -369,22 +366,24 @@ mod tests {
 
     fn fixture() -> MatchResult {
         let state = State {
+            factions: vec![],
+            ground_items: vec![],
+            condition_memory: vec![],
+            armies: None,
             map_id: "fixture".into(),
             map_revision: 1,
             cols: 1,
             rows: 1,
             round: 1,
             turn: Side::Player,
-            gold: Gold {
-                player: 1,
-                enemy: 2,
-            },
+            gold: Gold::two(1, 2),
             winner: None,
             next_id: 1,
             log: vec![],
             tiles: vec![],
             units: vec![],
             campaign: None,
+            combat_rng: 0x6d2b79f5,
             last_combat: Some(None),
         };
         MatchResult::Arena(ArenaResult {
@@ -416,7 +415,8 @@ mod tests {
                         ActionRecord::Recruit {
                             unit: "u1".into(),
                             unit_type: "archer".into(),
-                            tile: "0,0".into(),
+                            tile: Hex::new(0, 0).into(),
+                            cost: Some(7),
                         },
                         ActionRecord::Advance {
                             unit: "u1".into(),
@@ -503,11 +503,12 @@ mod tests {
             unreachable!()
         };
         let mut final_state = arena.r#final;
-        final_state.campaign = Some(serde_json::from_value(json!({"id":"fixture","mission":0,"recall":[],"carryGold":0,"marks":[],"dialogue":[],"dialogueIndex":0,"outcome":null,"completed":false,"refuge":{"heldTurns":0,"lastCountedRound":0,"escalated":true}})).unwrap());
+        final_state.campaign = Some(serde_json::from_value(json!({"id":"fixture","flags":{},"mission":0,"recall":[],"carryGold":0,"marks":[],"dialogue":[],"dialogueIndex":0,"outcome":null,"completed":false,"refuge":{"heldTurns":0,"lastCountedRound":0,"escalated":true}})).unwrap());
         let result = MatchResult::Campaign(CampaignResult {
             config: CampaignConfig {
                 seed: 1,
-                diplomacy: crate::ai::Diplomacy::Pragmatic,
+                objective: "authored".into(),
+                diplomacy: crate::ai::Diplomacy::Unrestricted,
                 campaign: "fixture".into(),
                 player: Policy::Classic,
                 enemy: Policy::Classic,
@@ -518,6 +519,7 @@ mod tests {
             },
             completed: false,
             missions: vec![MissionResult {
+                escalated: true,
                 id: "chapter".into(),
                 winner: None,
                 round: 1,

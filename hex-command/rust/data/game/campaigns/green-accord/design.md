@@ -53,11 +53,3 @@ The villages and pack agree to protect the crossing and harvest ordinary woods
 without cutting the sacred groves. The Rootbinder may remain a danger; the
 ending does not claim an undefeated army vanished. Dain speaks only if he
 survives. The victory is evidence delivered and the road held together.
-
-## Implementation
-
-Use ordinary maps, units, persistent event marks, control objectives and the
-existing vigil/escort rules. Add an event objective for the ledger rather than
-woodland-specific victory conditions in the engine. New campaigns use the
-revised story; the save loader still recognizes old conversations. Earned
-victories remain earned, and unfinished saves retain their units and progress.

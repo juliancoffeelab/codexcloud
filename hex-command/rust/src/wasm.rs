@@ -1,34 +1,119 @@
-//! Browser ownership boundary. The catalog is owned once by the factory; battles
-//! hold snapshots and exclusive planner workspaces, borrowing rules only per call.
+//! Native ownership and typed OCaml transport over the battle engine.
+use crate::sort::SharedSort;
 use crate::{
     ai::{self, PlanningWorkspace},
     data::*,
-    logic::{Game, battle::Board},
+    logic::{
+        Game,
+        battle::{Board, RuntimeCache},
+    },
     protocol::*,
 };
-use serde::{Serialize, de::DeserializeOwned};
-use std::collections::HashMap;
-use std::rc::Rc;
-use tsify::{Ts, Tsify};
-use wasm_bindgen::prelude::*;
-
-fn encode<T, Response>(result: Result<T, EngineError>) -> Result<Ts<Response>, JsError>
-where
-    Response: Tsify + Serialize + From<Result<T, EngineError>>,
-{
-    Ok(Response::from(result).into_ts()?)
+use hex_command_battle::model::{DispatchUpdateProjection, TerrainUpdateProjection};
+#[cfg(test)]
+use ocamljs_bindgen::{Encode, EncodeAs};
+use ocamljs_bindgen::{Encoded, ocamljs_bindgen};
+use std::cell::RefCell;
+use std::{
+    collections::{BTreeMap, HashMap},
+    rc::Rc,
+};
+// The SDK codec stays in the binding module; the shared BorrowFields derive is
+// identical to upstream and remains independent of a host representation.
+struct NativeFrame<'a>(&'a State);
+impl<'a> From<&'a State> for NativeFrame<'a> {
+    fn from(state: &'a State) -> Self {
+        Self(state)
+    }
 }
-fn decode<T: Tsify + DeserializeOwned>(value: Ts<T>) -> Result<T, EngineError>
-where
-    T::JsType: Clone,
-{
-    value
-        .to_rust()
-        .map_err(|error| EngineError::InvalidRequest {
-            message: error.to_string(),
-        })
+impl ocamljs_bindgen::EncodeAs<StateFrame> for NativeFrame<'_> {
+    fn encode_as(self, out: &mut ocamljs_bindgen::Encoder) {
+        let State {
+            factions,
+            ground_items,
+            armies,
+            condition_memory,
+            map_id,
+            map_revision,
+            cols,
+            rows,
+            round,
+            turn,
+            gold,
+            winner,
+            next_id,
+            combat_rng,
+            log,
+            units,
+            campaign,
+            last_combat,
+            tiles: _,
+        } = self.0;
+        out.nested(|out| {
+            ocamljs_bindgen::EncodeRef::encode_ref(factions, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(ground_items, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(armies, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(condition_memory, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(map_id, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(map_revision, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(cols, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(rows, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(round, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(turn, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(gold, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(winner, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(next_id, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(combat_rng, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(log, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(units, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(campaign, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(last_combat, out);
+        });
+    }
+}
+enum TerrainDelta {
+    Keep,
+    Patch(Vec<usize>),
+    Replace,
+}
+struct Applied {
+    terrain: TerrainDelta,
+    presentation: BattlefieldPresentation,
+    combat: Option<CombatAnimation>,
+    inspection: Option<BattleInspection>,
+}
+struct ChangedTiles<'a> {
+    tiles: &'a [Tile],
+    indices: std::vec::IntoIter<usize>,
+}
+impl<'a> Iterator for ChangedTiles<'a> {
+    type Item = &'a Tile;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.indices.next().map(|i| &self.tiles[i])
+    }
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.indices.size_hint()
+    }
+}
+impl ExactSizeIterator for ChangedTiles<'_> {}
+type TerrainProjection<'a> =
+    TerrainUpdateProjection<ocamljs_bindgen::SequenceProjection<ChangedTiles<'a>>, &'a Vec<Tile>>;
+fn terrain_projection(state: &State, delta: TerrainDelta) -> TerrainProjection<'_> {
+    match delta {
+        TerrainDelta::Keep => TerrainUpdateProjection::Keep,
+        TerrainDelta::Patch(indices) => TerrainUpdateProjection::Patch {
+            tiles: ocamljs_bindgen::SequenceProjection(ChangedTiles {
+                tiles: &state.tiles,
+                indices: indices.into_iter(),
+            }),
+        },
+        TerrainDelta::Replace => TerrainUpdateProjection::Replace {
+            tiles: &state.tiles,
+        },
+    }
 }
 struct Battle {
+    runtime_cache: RefCell<RuntimeCache>,
     state: State,
     board: Rc<Board>,
     seed: u32,
@@ -39,10 +124,21 @@ struct Battle {
 }
 impl Battle {
     fn game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
-        Game::from_state_with_board(rules, self.state.clone(), self.board.clone())
+        let game = self.take_game(rules);
+        *self.runtime_cache.borrow_mut() = game.runtime_cache();
+        game
     }
-    fn view(&self) -> EngineView {
+    fn take_game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
+        Game::from_borrowed_state(
+            rules,
+            &self.state,
+            self.board.clone(),
+            self.runtime_cache.take(),
+        )
+    }
+    fn view(&self, rules: &Rules) -> EngineView {
         EngineView {
+            presentation: self.game(rules).presentation(),
             revision: self.revision,
             state: self.state.clone(),
         }
@@ -59,144 +155,270 @@ impl Battle {
     }
 }
 
-/// Owns one validated catalog and independent battles for a browser host.
-#[wasm_bindgen]
+#[ocamljs_bindgen::ocamljs_bindgen(opaque)]
 pub struct NativeEngineFactory {
     rules: Rules,
     battles: HashMap<u32, Battle>,
     next_id: u32,
 }
 
-#[wasm_bindgen]
-impl NativeEngineFactory {
-    /// Omit the bundle for the host default: disk on native, embedded JSON on WASM.
-    /// An explicit bundle supplies relative path -> JSON text.
-    /// Construction errors carry an encoded [`EngineResult`] failure for the host adapter.
-    #[wasm_bindgen(constructor)]
-    pub fn new(bundle: Option<Ts<CatalogDocuments>>) -> Result<NativeEngineFactory, JsValue> {
-        let loaded = if let Some(bundle) = bundle {
-            decode(bundle).and_then(|bundle| {
-                Rules::from_json_bundle(&bundle.0).map_err(|error| EngineError::Content {
-                    path: error.path,
-                    message: error.message,
-                })
-            })
-        } else {
-            Rules::load().map_err(|error| EngineError::Content {
-                path: error.path,
-                message: error.message,
-            })
-        };
-        let rules = loaded.map_err(|error| match encode::<(), UnitResponse>(Err(error)) {
-            Ok(response) => response.js_value(),
-            Err(error) => error.into(),
-        })?;
-        Ok(Self {
-            rules,
-            battles: HashMap::new(),
-            next_id: 1,
-        })
+#[ocamljs_bindgen(module=NativeEngineFactory,name="create")]
+pub fn new_factory() -> Result<NativeEngineFactory, EngineError> {
+    #[cfg(target_arch = "wasm32")]
+    {
+        factory_with_rules(Ok(crate::data::baked_rules()))
     }
-
-    /// Return owned catalog metadata as an encoded [`EngineResult<CatalogView>`].
-    pub fn catalog(&self) -> Result<Ts<CatalogResponse>, JsError> {
-        let mut campaigns: Vec<_> = self.rules.campaigns.values().cloned().collect();
-        campaigns.sort_by(|a, b| a.id.cmp(&b.id));
-        encode(Ok(CatalogView {
-            units: self.rules.units.clone(),
-            terrain: self.rules.terrain_definitions.clone(),
-            races: self.rules.race_definitions.clone(),
-            maps: self.rules.map_definitions.clone(),
-            campaigns,
-        }))
-    }
-
-    /// Decode [`Start`] and return a new [`BattleHandle`] at revision zero.
-    /// The seed is retained for deterministic AI planning.
-    pub fn create(&mut self, start: Ts<Start>, seed: u32) -> Result<Ts<BattleResponse>, JsError> {
-        let result = decode::<Start>(start)
-            .and_then(|start| self.start(start))
-            .map(|state| {
-                let board = Board::new(&state.tiles);
-                self.insert(state, seed, board)
-            });
-        encode(result)
-    }
-    /// Validate [`SavedGame`] and restore resolved state under a new handle.
-    /// The restored handle starts at revision zero; invalid saves leave the factory unchanged.
-    pub fn restore(&mut self, saved: Ts<SavedGame>) -> Result<Ts<BattleResponse>, JsError> {
-        encode(decode::<SavedGame>(saved).and_then(|saved| self.restore_saved(saved)))
-    }
-    /// Return a detached [`EngineView`] when the handle and expected revision are current.
-    pub fn view(&self, id: u32, revision: u32) -> Result<Ts<ViewResponse>, JsError> {
-        encode(self.battle(id, revision).map(Battle::view))
-    }
-    /// Publish legal actions and display forecasts without exposing mutable state.
-    pub fn inspect(&self, id: u32, revision: u32) -> Result<Ts<InspectionResponse>, JsError> {
-        encode(
-            self.battle(id, revision)
-                .map(|battle| battle.game(&self.rules).inspect(revision)),
-        )
-    }
-    /// Apply one decoded [`Command`] against the expected revision.
-    /// Success returns [`DispatchResult`]; rejected commands leave state unchanged.
-    pub fn dispatch(
-        &mut self,
-        id: u32,
-        revision: u32,
-        command: Ts<Command>,
-    ) -> Result<Ts<DispatchResponse>, JsError> {
-        encode(decode::<Command>(command).and_then(|command| self.apply(id, revision, command)))
-    }
-    /// Return an [`AiDecision`] without applying it or advancing the battle revision.
-    /// Repeated requests reuse the pending command until dispatch; changed options start a new phase.
-    #[wasm_bindgen(js_name = chooseAiCommand)]
-    pub fn choose_ai_command(
-        &mut self,
-        id: u32,
-        revision: u32,
-        options: Ts<AiOptions>,
-    ) -> Result<Ts<AiResponse>, JsError> {
-        encode(
-            decode::<AiOptions>(options).and_then(|options| self.decision(id, revision, options)),
-        )
-    }
-    /// Return a [`SavedGame`] checkpoint of resolved game state.
-    pub fn save(&self, id: u32, revision: u32) -> Result<Ts<SaveResponse>, JsError> {
-        encode(self.checkpoint(id, revision))
-    }
-    /// Release a battle and its planner; later requests return [`EngineError::UnknownBattle`].
-    /// All results use the encoded [`EngineResult`] envelope.
-    #[wasm_bindgen(js_name = disposeBattle)]
-    pub fn dispose_battle(&mut self, id: u32) -> Result<Ts<UnitResponse>, JsError> {
-        encode(
-            self.battles
-                .remove(&id)
-                .map(|_| ())
-                .ok_or(EngineError::UnknownBattle),
-        )
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        factory_with_rules(Rules::load())
     }
 }
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn with_documents(
+    documents: BTreeMap<String, String>,
+) -> Result<NativeEngineFactory, EngineError> {
+    #[cfg(any(not(target_arch = "wasm32"), feature = "runtime-catalog"))]
+    {
+        factory_with_rules(Rules::from_json_bundle(&documents))
+    }
+    #[cfg(all(target_arch = "wasm32", not(feature = "runtime-catalog")))]
+    {
+        let _ = documents;
+        Err(EngineError::InvalidRequest {
+            message: "Custom catalogs require a runtime-catalog build".into(),
+        })
+    }
+}
+fn factory_with_rules(
+    rules: Result<Rules, ContentError>,
+) -> Result<NativeEngineFactory, EngineError> {
+    let rules = rules.map_err(|error| EngineError::Content {
+        path: error.path,
+        message: error.message,
+    })?;
+    Ok(NativeEngineFactory {
+        rules,
+        battles: HashMap::new(),
+        next_id: 1,
+    })
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn catalog(factory: &NativeEngineFactory) -> CatalogView {
+    let mut campaigns: Vec<_> = factory.rules.campaigns.values().cloned().collect();
+    campaigns.order_by(|a, b| a.id.cmp(&b.id));
+    let mut items: Vec<_> = factory.rules.items.values().cloned().collect();
+    items.order_by(|a, b| a.id.cmp(&b.id));
+    CatalogView {
+        items,
+        units: factory.rules.units.clone(),
+        terrain: factory.rules.terrain_definitions.clone(),
+        races: factory.rules.race_definitions.clone(),
+        maps: factory.rules.map_definitions.clone(),
+        campaigns,
+    }
+}
+#[ocamljs_bindgen(module=NativeEngineFactory,name="new_battle")]
+pub fn create(
+    factory: &mut NativeEngineFactory,
+    start: Start,
+    seed: u32,
+) -> Result<BattleHandle, EngineError> {
+    let mut state = factory.start(start)?;
+    state.combat_rng = seed;
+    let board = Board::new(&state.tiles);
+    let game = Game::from_state_with_board(&factory.rules, state, board.clone());
+    let cache = game.runtime_cache();
+    let tiles = game.tiles();
+    Ok(factory.insert(game.into_state(tiles), seed, board, cache))
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn restore(
+    factory: &mut NativeEngineFactory,
+    saved: SavedGame,
+) -> Result<BattleHandle, EngineError> {
+    factory.restore_saved(saved)
+}
+/// Data-only JSON request, decoded at the untrusted persistence boundary.
+#[ocamljs_bindgen(module = NativeEngineFactory)]
+pub fn validate_undo(factory: &NativeEngineFactory, request: &str) -> Result<(), EngineError> {
+    let request: UndoValidation =
+        serde_json::from_str(request).map_err(|error| EngineError::InvalidSave {
+            message: error.to_string(),
+        })?;
+    crate::undo::validate(&factory.rules, request)
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn view(
+    factory: &NativeEngineFactory,
+    id: u32,
+    revision: u32,
+) -> Result<EngineView, EngineError> {
+    factory
+        .battle(id, revision)
+        .map(|battle| battle.view(&factory.rules))
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn inspect(
+    factory: &NativeEngineFactory,
+    id: u32,
+    revision: u32,
+) -> Result<BattleInspection, EngineError> {
+    factory.battle(id, revision).map(|battle| {
+        let game = battle.game(&factory.rules);
+        crate::ai::policies::combat::inspect(game.view(), game.inspect(revision))
+    })
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn geometry(
+    factory: &NativeEngineFactory,
+    id: u32,
+    revision: u32,
+) -> Result<BoardInspection, EngineError> {
+    factory
+        .battle(id, revision)
+        .map(|battle| battle.game(&factory.rules).inspect_board())
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn dispatch(
+    factory: &mut NativeEngineFactory,
+    id: u32,
+    revision: u32,
+    command: Command,
+) -> Result<DispatchResult, EngineError> {
+    let applied = factory.apply(id, revision, command, false)?;
+    let battle = &factory.battles[&id];
+    Ok(DispatchResult {
+        view: EngineView {
+            revision: battle.revision,
+            state: battle.state.clone(),
+            presentation: applied.presentation,
+        },
+        combat: applied.combat,
+    })
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn dispatch_update(
+    factory: &mut NativeEngineFactory,
+    id: u32,
+    revision: u32,
+    command: Command,
+    include_inspection: bool,
+) -> Encoded<Result<DispatchUpdate, EngineError>> {
+    let applied = factory.apply(id, revision, command, include_inspection);
+    let update = applied.map(|applied| {
+        let battle = &factory.battles[&id];
+        DispatchUpdateProjection {
+            base_revision: revision,
+            revision: battle.revision,
+            state: NativeFrame::from(&battle.state),
+            terrain: terrain_projection(&battle.state, applied.terrain),
+            presentation: applied.presentation,
+            combat: applied.combat,
+            inspection: applied.inspection,
+        }
+    });
+    Encoded::new(ocamljs_bindgen::ResultProjection(update))
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn choose_ai_command(
+    factory: &mut NativeEngineFactory,
+    id: u32,
+    revision: u32,
+    options: AiOptions,
+) -> Result<AiDecision, EngineError> {
+    factory.decision(id, revision, options)
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn save(
+    factory: &NativeEngineFactory,
+    id: u32,
+    revision: u32,
+) -> Result<SavedGame, EngineError> {
+    factory.checkpoint(id, revision)
+}
+#[ocamljs_bindgen(module=NativeEngineFactory,js_value("string"))]
+pub fn save_json(
+    factory: &NativeEngineFactory,
+    id: u32,
+    revision: u32,
+) -> Result<String, EngineError> {
+    #[derive(serde::Serialize)]
+    struct Checkpoint<'a> {
+        seed: u32,
+        state: &'a State,
+    }
+    let battle = factory.battle(id, revision)?;
+    Ok(serde_json::to_string(&Checkpoint {
+        seed: battle.seed,
+        state: &battle.state,
+    })
+    .expect("serializable checkpoint"))
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn dispose_battle(factory: &mut NativeEngineFactory, id: u32) -> Result<(), EngineError> {
+    factory
+        .battles
+        .remove(&id)
+        .map(|_| ())
+        .ok_or(EngineError::UnknownBattle)
+}
+/// Decode persistence through the same Rust serde contract used by native restoration.
+#[ocamljs_bindgen]
+pub fn checkpoint_from_json(value: String) -> Result<SavedGame, EngineError> {
+    serde_json::from_str(&value).map_err(|error| EngineError::InvalidSave {
+        message: error.to_string(),
+    })
+}
 
+#[ocamljs_bindgen]
+pub fn checkpoint_to_json(value: SavedGame) -> String {
+    serde_json::to_string(&value).expect("serializable checkpoint")
+}
+
+#[ocamljs_bindgen]
+pub fn state_to_json(value: State) -> String {
+    serde_json::to_string(&value).expect("serializable state")
+}
+#[ocamljs_bindgen]
+pub fn unit_actions_to_json(value: UnitActions) -> String {
+    serde_json::to_string(&value).expect("serializable actions")
+}
+#[ocamljs_bindgen]
+pub fn preview_presentation(
+    input: crate::logic::conditions::PresentationInput,
+) -> BattlefieldPresentation {
+    crate::logic::conditions::resolve(&input).0
+}
 impl NativeEngineFactory {
     fn apply(
         &mut self,
         id: u32,
         revision: u32,
         command: Command,
-    ) -> Result<DispatchResult, EngineError> {
+        include_inspection: bool,
+    ) -> Result<Applied, EngineError> {
         let battle = self
             .battles
             .get_mut(&id)
             .ok_or(EngineError::UnknownBattle)?;
         battle.check(revision)?;
-        let mut game = battle.game(&self.rules);
+        let mut game = battle.take_game(&self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
         game.execute(command)?;
-        let state = game.state();
-        battle.state = state;
-        battle.board = game.board.clone();
+        let replaced = terrain_replaced(&battle.state, &battle.board, &game);
+        let (tiles, terrain) = if replaced {
+            (game.tiles(), TerrainDelta::Replace)
+        } else {
+            let changed = game.patch_tiles(&mut battle.state.tiles);
+            let terrain = if changed.is_empty() {
+                TerrainDelta::Keep
+            } else {
+                TerrainDelta::Patch(changed)
+            };
+            (std::mem::take(&mut battle.state.tiles), terrain)
+        };
+        battle.board = game.board_handle();
         battle.revision = battle
             .revision
             .checked_add(1)
@@ -206,10 +428,27 @@ impl NativeEngineFactory {
             battle.workspace = None;
             battle.options = None;
         }
-        Ok(DispatchResult {
-            view: battle.view(),
+        let presentation = game.presentation();
+        let inspection = if include_inspection {
+            game.refresh_mission();
+            Some(crate::ai::policies::combat::inspect(
+                game.view(),
+                game.inspect(battle.revision),
+            ))
+        } else {
+            None
+        };
+        *battle.runtime_cache.borrow_mut() = game.runtime_cache();
+        let combat = game.take_combat_animation();
+        battle.state = game.into_state(tiles);
+        Ok(Applied {
+            terrain,
+            presentation,
+            combat,
+            inspection,
         })
     }
+
     fn decision(
         &mut self,
         id: u32,
@@ -275,20 +514,31 @@ impl NativeEngineFactory {
                 message: error.to_string(),
             }
         })?;
-        Ok(self.insert(game.state(), saved.seed, game.board.clone()))
+        let cache = game.runtime_cache();
+        let board = game.board_handle();
+        let tiles = game.tiles();
+        Ok(self.insert(game.into_state(tiles), saved.seed, board, cache))
     }
+
     fn battle(&self, id: u32, revision: u32) -> Result<&Battle, EngineError> {
         let battle = self.battles.get(&id).ok_or(EngineError::UnknownBattle)?;
         battle.check(revision)?;
         Ok(battle)
     }
-    fn insert(&mut self, state: State, seed: u32, board: Rc<Board>) -> BattleHandle {
+    fn insert(
+        &mut self,
+        state: State,
+        seed: u32,
+        board: Rc<Board>,
+        cache: RuntimeCache,
+    ) -> BattleHandle {
         let id = self.next_id;
         self.next_id = self
             .next_id
             .checked_add(1)
             .expect("battle handle exhausted");
         let battle = Battle {
+            runtime_cache: RefCell::new(cache),
             state,
             board,
             seed,
@@ -297,22 +547,74 @@ impl NativeEngineFactory {
             options: None,
             pending: None,
         };
-        let view = battle.view();
+        let view = battle.view(&self.rules);
         self.battles.insert(id, battle);
         BattleHandle { id, view }
     }
     fn start(&self, start: Start) -> Result<State, EngineError> {
         match start {
-            Start::Scenario { map, revision } => self
-                .rules
-                .maps
-                .iter()
-                .filter(|((id, rev), _)| {
-                    id == &map && revision.is_none_or(|expected| expected == *rev)
-                })
-                .max_by_key(|((_, revision), _)| revision)
-                .map(|(_, state)| state.clone())
-                .ok_or(EngineError::UnknownMap { map }),
+            Start::Scenario {
+                map,
+                revision,
+                armies,
+                first,
+            } => {
+                let mut state = self
+                    .rules
+                    .maps
+                    .iter()
+                    .filter(|((id, rev), _)| {
+                        id == &map && revision.is_none_or(|expected| expected == *rev)
+                    })
+                    .max_by_key(|((_, revision), _)| revision)
+                    .map(|(_, state)| state.clone())
+                    .ok_or(EngineError::UnknownMap { map: map.clone() })?;
+                if let Some(armies) = armies {
+                    if map == "developer" {
+                        return Err(EngineError::InvalidRequest {
+                            message: "Developer armies are authored".into(),
+                        });
+                    }
+                    for side in [Side::Player, Side::Enemy] {
+                        let roster = self
+                            .rules
+                            .rosters
+                            .iter()
+                            .find(|r| r.id == armies[side.index()])
+                            .ok_or_else(|| EngineError::InvalidRequest {
+                                message: "Unknown faction".into(),
+                            })?;
+                        for unit in state.units.iter_mut().filter(|u| u.side == side) {
+                            let original = &self.rules.units[self.rules.types[&unit.r#type]];
+                            let kind = if unit.role == Some(Role::Leader) {
+                                roster.leader.as_str()
+                            } else if roster.id == "human" || roster.pool.contains(&unit.r#type) {
+                                unit.r#type.as_str()
+                            } else {
+                                roster
+                                    .pool
+                                    .iter()
+                                    .find(|id| {
+                                        self.rules.units[self.rules.types[*id]].role
+                                            == original.role
+                                    })
+                                    .or_else(|| roster.pool.first())
+                                    .ok_or_else(|| EngineError::InvalidRequest {
+                                        message: "Faction has no unit for the starting army".into(),
+                                    })?
+                                    .as_str()
+                            };
+                            let rule = &self.rules.units[self.rules.types[kind]];
+                            unit.r#type = kind.to_owned();
+                            unit.hp = rule.hp;
+                            unit.experience = Some(0);
+                        }
+                    }
+                    state.armies = Some(armies);
+                }
+                state.turn = first.unwrap_or(Side::Player);
+                Ok(state)
+            }
             Start::Campaign { id } => {
                 if !self.rules.campaigns.contains_key(&id) {
                     return Err(EngineError::UnknownCampaign { id });
@@ -330,6 +632,78 @@ mod tests {
     use super::*;
 
     #[test]
+    fn borrowed_dispatch_matches_owned_codec_and_includes_coherent_inspection() {
+        let mut factory = new_factory().unwrap();
+        let battle = mirror(&mut factory);
+        let applied = factory.apply(battle.id, 0, Command::EndTurn, true).unwrap();
+        let state = &factory.battles[&battle.id].state;
+        let expected_inspection = inspect(&factory, battle.id, 1).unwrap();
+        assert_eq!(
+            serde_json::to_value(&applied.inspection).unwrap(),
+            serde_json::to_value(Some(&expected_inspection)).unwrap()
+        );
+        // All three terrain forms borrow the authoritative graph, including
+        // nested authored Arc rules, and retain the owned SDK wire contract.
+        for terrain in [
+            TerrainDelta::Keep,
+            TerrainDelta::Patch(vec![0]),
+            TerrainDelta::Replace,
+        ] {
+            let owned_terrain = match &terrain {
+                TerrainDelta::Keep => TerrainUpdate::Keep,
+                TerrainDelta::Patch(indices) => TerrainUpdate::Patch {
+                    tiles: indices.iter().map(|&i| state.tiles[i].clone()).collect(),
+                },
+                TerrainDelta::Replace => TerrainUpdate::Replace {
+                    tiles: state.tiles.clone(),
+                },
+            };
+            let owned = DispatchUpdate {
+                base_revision: 0,
+                revision: 1,
+                state: StateFrame::from(state),
+                terrain: owned_terrain,
+                presentation: applied.presentation.clone(),
+                combat: applied.combat.clone(),
+                inspection: applied.inspection.clone(),
+            };
+            let projection = DispatchUpdateProjection {
+                base_revision: 0u32,
+                revision: 1u32,
+                state: NativeFrame::from(state),
+                terrain: terrain_projection(state, terrain),
+                presentation: applied.presentation.clone(),
+                combat: applied.combat.clone(),
+                inspection: applied.inspection.clone(),
+            };
+            let mut expected = ocamljs_bindgen::Encoder::new();
+            owned.encode(&mut expected);
+            let mut actual = ocamljs_bindgen::Encoder::new();
+            projection.encode_as(&mut actual);
+            assert_eq!(actual.bytes, expected.bytes);
+        }
+        let checkpoint = save_json(&factory, battle.id, 1).unwrap();
+        assert!(
+            factory
+                .apply(
+                    battle.id,
+                    1,
+                    Command::Move {
+                        unit: UnitId(u32::MAX),
+                        tile: Hex::new(0, 0).into()
+                    },
+                    true
+                )
+                .is_err()
+        );
+        assert_eq!(checkpoint, save_json(&factory, battle.id, 1).unwrap());
+        assert_eq!(
+            serde_json::to_value(inspect(&factory, battle.id, 1).unwrap()).unwrap(),
+            serde_json::to_value(expected_inspection).unwrap()
+        );
+    }
+
+    #[test]
     fn checkpoint_discards_unexecuted_plans_and_restores_resolved_state() {
         let mut factory = NativeEngineFactory {
             rules: Rules::embedded().unwrap(),
@@ -337,11 +711,16 @@ mod tests {
             next_id: 1,
         };
         let state = Game::new(&factory.rules, "mirror").state();
-        let original = factory.insert(state.clone(), 17, Board::new(&state.tiles));
+        let original = factory.insert(
+            state.clone(),
+            17,
+            Board::new(&state.tiles),
+            RuntimeCache::default(),
+        );
         let options = AiOptions {
             blocks: None,
             policy: AiPolicy::Balanced,
-            diplomacy: AiDiplomacy::Restrained,
+            diplomacy: AiDiplomacy::Diplomatic,
             recruitment_limit: Some(2),
         };
         factory.decision(original.id, 0, options).unwrap();
@@ -357,4 +736,169 @@ mod tests {
         old["planner"] = serde_json::json!({});
         assert!(serde_json::from_value::<SavedGame>(old).is_err());
     }
+    fn mirror(factory: &mut NativeEngineFactory) -> BattleHandle {
+        create(
+            factory,
+            Start::Scenario {
+                map: "mirror".into(),
+                revision: None,
+                armies: None,
+                first: None,
+            },
+            17,
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn static_queries_are_detached_and_excluded_from_dynamic_publications() {
+        let mut factory = new_factory().unwrap();
+        let original = mirror(&mut factory);
+        let costs = geometry(&factory, original.id, 0).unwrap().costs;
+        for rule in &factory.rules.units {
+            for (terrain, cost) in factory.rules.terrain_names.iter().zip(&rule.costs) {
+                assert_eq!(costs[&rule.id][terrain], *cost);
+            }
+        }
+        let board = geometry(&factory, original.id, 0).unwrap();
+        let dynamic = inspect(&factory, original.id, 0).unwrap();
+        let json = serde_json::to_value(&dynamic).unwrap();
+        assert!(json.get("objectives").is_some());
+        assert!(json.get("costs").is_none() && json.get("neighbors").is_none());
+        let battle = &factory.battles[&original.id];
+        for (index, id) in battle.board.ids.iter().enumerate() {
+            assert_eq!(
+                board.neighbors[&id.to_string()],
+                battle.board.adjacent[index]
+                    .iter()
+                    .map(|&next| battle.board.ids[next].clone())
+                    .collect::<Vec<_>>()
+            );
+        }
+        dispatch(&mut factory, original.id, 0, Command::EndTurn).unwrap();
+        assert_eq!(geometry(&factory, original.id, 1).unwrap().costs, costs);
+        let next = geometry(&factory, original.id, 1).unwrap();
+        assert_eq!(next.neighbors, board.neighbors);
+        assert!(matches!(
+            geometry(&factory, original.id, 0),
+            Err(EngineError::StaleRevision { actual: 1, .. })
+        ));
+        dispose_battle(&mut factory, original.id).unwrap();
+        assert!(matches!(
+            geometry(&factory, original.id, 1),
+            Err(EngineError::UnknownBattle)
+        ));
+        // Previously returned static data owns no live battle references.
+        assert_eq!(next.neighbors, board.neighbors);
+    }
+
+    #[test]
+    fn geometry_preserves_adjacency_after_reordered_or_repainted_restore() {
+        let mut factory = new_factory().unwrap();
+        let original = mirror(&mut factory);
+        let expected = geometry(&factory, original.id, 0).unwrap();
+        let mut saved = save(&factory, original.id, 0).unwrap();
+        saved.state.tiles.reverse();
+        saved.state.tiles[0].terrain = "plains".into();
+        let restored = restore(&mut factory, saved).unwrap();
+        let actual = geometry(&factory, restored.id, 0).unwrap();
+        assert_eq!(
+            actual.neighbors.keys().collect::<Vec<_>>(),
+            expected.neighbors.keys().collect::<Vec<_>>()
+        );
+        for (tile, neighbors) in actual.neighbors {
+            let mut actual = neighbors;
+            let mut expected = expected.neighbors[&tile].clone();
+            actual.sort();
+            expected.sort();
+            assert_eq!(actual, expected);
+        }
+    }
+
+    #[test]
+    fn typed_custom_catalog_keeps_static_rules_and_topology_factory_local() {
+        let mut default = new_factory().unwrap();
+        let original = mirror(&mut default);
+        let mut documents = crate::data::catalog::embedded_bundle();
+        let mut terrain: serde_json::Value =
+            serde_json::from_str(&documents["game/terrain.json"]).unwrap();
+        terrain
+            .as_array_mut()
+            .unwrap()
+            .iter_mut()
+            .find(|row| row["id"] == "forest")
+            .unwrap()["cost"] = 3.into();
+        documents.insert(
+            "game/terrain.json".into(),
+            serde_json::to_string(&terrain).unwrap(),
+        );
+        let path = "game/scenario/mirror-v1/map.json";
+        let mut map: serde_json::Value = serde_json::from_str(&documents[path]).unwrap();
+        let removed = Hex::new(0, 0).to_string();
+        map["tiles"]
+            .as_array_mut()
+            .unwrap()
+            .retain(|tile| tile["col"] != 0 || tile["row"] != 0);
+        documents.insert(path.into(), serde_json::to_string(&map).unwrap());
+        let mut custom = with_documents(documents).unwrap();
+        let custom_battle = mirror(&mut custom);
+        assert_ne!(
+            geometry(&default, original.id, 0).unwrap().costs,
+            geometry(&custom, custom_battle.id, 0).unwrap().costs
+        );
+        let old_topology = geometry(&default, original.id, 0).unwrap();
+        let new_topology = geometry(&custom, custom_battle.id, 0).unwrap();
+        assert!(old_topology.neighbors.contains_key(&removed));
+        assert!(!new_topology.neighbors.contains_key(&removed));
+        assert!(
+            matches!(with_documents(BTreeMap::new()), Err(EngineError::Content { path, .. }) if path == "manifest.json")
+        );
+    }
+
+    #[test]
+    fn direct_checkpoint_json_matches_native_save_and_checks_live_revision() {
+        let mut factory = new_factory().unwrap();
+        let original = mirror(&mut factory);
+        dispatch(&mut factory, original.id, 0, Command::EndTurn).unwrap();
+        let saved = save(&factory, original.id, 1).unwrap();
+        let json = save_json(&factory, original.id, 1).unwrap();
+        assert_eq!(json, checkpoint_to_json(saved.clone()));
+        let decoded: SavedGame = serde_json::from_str(&json).unwrap();
+        assert_eq!(
+            serde_json::to_value(decoded).unwrap(),
+            serde_json::to_value(&saved).unwrap()
+        );
+        assert_eq!(
+            state_to_json(saved.state.clone()),
+            serde_json::to_string(&saved.state).unwrap()
+        );
+        let action = inspect(&factory, original.id, 1).unwrap().units.remove(0);
+        assert_eq!(
+            unit_actions_to_json(action.clone()),
+            serde_json::to_string(&action).unwrap()
+        );
+        assert!(matches!(
+            save_json(&factory, original.id, 0),
+            Err(EngineError::StaleRevision { actual: 1, .. })
+        ));
+        dispose_battle(&mut factory, original.id).unwrap();
+        assert!(matches!(
+            save_json(&factory, original.id, 1),
+            Err(EngineError::UnknownBattle)
+        ));
+    }
+}
+
+fn terrain_replaced(old: &State, board: &Rc<Board>, game: &Game<'_>) -> bool {
+    old.map_id != game.map_id()
+        || old.map_revision != game.map_revision()
+        || old.cols != game.cols()
+        || old.rows != game.rows()
+        || old.tiles.len() != game.board().ids.len()
+        || (!Rc::ptr_eq(board, &game.board_handle())
+            && old
+                .tiles
+                .iter()
+                .zip(&game.board().ids)
+                .any(|(a, b)| a.hex() != *b))
 }

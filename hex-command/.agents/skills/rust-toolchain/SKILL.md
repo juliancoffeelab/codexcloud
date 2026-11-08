@@ -11,7 +11,7 @@ environment overrides, and resolves the project's pinned wasm-pack binary or
 versioned cache. It avoids relying on exports from a previous shell.
 
 ```sh
-node --import tsx .agents/skills/rust-toolchain/scripts/with-toolchain.ts \
+node scripts/toolchain/with-toolchain.mjs \
   cargo fmt --manifest-path rust/Cargo.toml --check
 ```
 

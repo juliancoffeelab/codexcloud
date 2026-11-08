@@ -1,0 +1,32 @@
+{
+  "race": "cursed",
+  "trees": [
+    {
+      "base": {
+        "id": "werewolf",
+        "name": "Werewolf",
+        "level": 1,
+        "source": "werewolf"
+      },
+      "branches": [
+        {
+          "role": "Werewolf",
+          "units": [
+            {
+              "id": "werewolf-ironfang",
+              "name": "Ironfang",
+              "level": 2,
+              "source": "werewolf-ironfang"
+            },
+            {
+              "id": "werewolf-pack-king",
+              "name": "Pack King",
+              "level": 3,
+              "source": "werewolf-pack-king"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

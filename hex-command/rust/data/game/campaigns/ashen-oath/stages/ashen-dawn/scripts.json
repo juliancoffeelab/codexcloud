@@ -1,102 +1,419 @@
 {
   "events": [
     {
-      "id": "names",
-      "trigger": {
-        "kind": "visit",
-        "tile": "12,0"
+      "id": "dain-death",
+      "when": {
+        "killed": {
+          "character": "dain"
+        }
       },
-      "label": "Recover the stolen names from the old archive",
-      "gold": 6,
-      "dialogue": [
+      "actions": [
         {
-          "speaker": "Orin",
-          "portrait": "necromancer",
-          "text": "Here they are. All the names he took. We will return them, one house at a time."
+          "setFlag": "dain-dead"
         }
       ]
-    }
-  ],
-  "waves": [
+    },
+    {
+      "id": "master-death",
+      "when": {
+        "killed": {
+          "character": "master"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "master-dead"
+        }
+      ]
+    },
+    {
+      "id": "orin-death",
+      "when": {
+        "killed": {
+          "character": "orin"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "orin-dead"
+        }
+      ]
+    },
+    {
+      "id": "alternate-company",
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "flag": "peace-lost"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "deleteUnit": {
+            "character": "dain"
+          }
+        },
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "hex": {
+                "col": 2,
+                "row": 4
+              }
+            },
+            "radius": 0,
+            "units": [
+              {
+                "type": "skeleton"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "hex": {
+                "col": 1,
+                "row": 3
+              }
+            },
+            "radius": 0,
+            "units": [
+              {
+                "type": "bonearcher"
+              }
+            ]
+          }
+        },
+        {
+          "recruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "skeleton"
+              },
+              {
+                "unit": "bonearcher"
+              },
+              {
+                "unit": "skeleton-impact-caster"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "names",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "names-cache"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 6
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "necromancer",
+              "text": "Here they are. All the names he took. We will return them, one house at a time.",
+              "character": "orin"
+            }
+          ]
+        },
+        {
+          "setFlag": "names"
+        },
+        {
+          "log": "Recover the stolen names from the old archive"
+        }
+      ],
+      "objective": {
+        "label": "Recover the stolen names from the old archive",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "names-cache"
+            },
+            "side": "player"
+          }
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "names-cache"
+            }
+          ]
+        }
+      }
+    },
     {
       "id": "north-binding-rise",
-      "round": 5,
-      "label": "An unsealed binding stone raises a skeleton on turn 5",
-      "requiresUnsealed": "7,2",
-      "units": [
+      "when": {
+        "all": [
+          {
+            "turn": {
+              "number": 5,
+              "faction": "enemy"
+            }
+          },
+          {
+            "not": {
+              "flag": "northern-seal-closed"
+            }
+          }
+        ]
+      },
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 7,
-          "row": 2
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "location": "northern-seal"
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "skeleton"
+              }
+            ]
+          }
+        },
+        {
+          "log": "An unsealed binding stone raises a skeleton on turn 5"
         }
       ]
     },
     {
       "id": "south-binding-rise",
-      "round": 5,
-      "label": "An unsealed binding stone raises a skeleton on turn 5",
-      "requiresUnsealed": "7,6",
-      "units": [
+      "when": {
+        "all": [
+          {
+            "turn": {
+              "number": 5,
+              "faction": "enemy"
+            }
+          },
+          {
+            "not": {
+              "flag": "southern-seal-closed"
+            }
+          }
+        ]
+      },
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 7,
-          "row": 6
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "location": "southern-seal"
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "skeleton"
+              }
+            ]
+          }
+        },
+        {
+          "log": "An unsealed binding stone raises a skeleton on turn 5"
         }
       ]
     },
     {
-      "round": 4,
-      "label": "The Master's boar reaches the central road on turn 4",
       "id": "masters-boar",
-      "units": [
+      "when": {
+        "turn": {
+          "number": 4,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
         {
-          "type": "boar",
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 4
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "boar"
+              }
+            ]
+          }
+        },
+        {
+          "log": "The Master's boar reaches the central road on turn 4"
+        }
+      ]
+    },
+    {
+      "id": "northern-seal-closed",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "northern-seal"
+          },
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "northern-seal-closed"
+        }
+      ],
+      "objective": {
+        "label": "Break the binding stone",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "northern-seal"
+            },
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "northern-seal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "southern-seal-closed",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "southern-seal"
+          },
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "southern-seal-closed"
+        }
+      ],
+      "objective": {
+        "label": "Break the binding stone",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "southern-seal"
+            },
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "southern-seal"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "all": [
+          {
+            "flag": "northern-seal-closed"
+          },
+          {
+            "flag": "southern-seal-closed"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "ashen-dawn-goal-0"
+        }
+      ]
+    },
+    {
+      "id": "goal-1",
+      "when": {
+        "noUnits": {
           "side": "enemy",
-          "col": 9,
-          "row": 4
+          "role": "leader"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "ashen-dawn-goal-1"
+        }
+      ],
+      "objective": {
+        "label": "Defeat the Master",
+        "intent": {
+          "defeat": {
+            "side": "enemy",
+            "role": "leader"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "ashen-dawn-goal-0"
+          },
+          {
+            "flag": "ashen-dawn-goal-1"
+          },
+          {
+            "hasUnits": {
+              "role": "leader",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "withoutDain": {
-    "briefing": "The refuge battle ended without an agreement. Dain and his allies will not come with Orin; the company must face the Master alone. His binding stones still hold others in servitude. Breaking them is the first step toward a freedom that can survive him.",
-    "hints": [
-      "The dead will have to look after their own.",
-      "The stones are where the Master’s reach begins."
-    ],
-    "recruits": ["skeleton", "bonearcher", "skeleton-impact-caster"],
-    "reinforcements": [
-      {
-        "type": "skeleton",
-        "side": "player",
-        "col": 2,
-        "row": 4
-      },
-      {
-        "type": "bonearcher",
-        "side": "player",
-        "col": 1,
-        "row": 3
-      }
-    ],
-    "intro": [
-      {
-        "speaker": "The Master",
-        "portrait": "necromancer",
-        "text": "You broke the patrol that came to turn you back. You have learned my methods well."
-      },
-      {
-        "speaker": "Orin",
-        "portrait": "necromancer",
-        "text": "We chose that battle. We will carry what it cost us. But you will not choose our lives again."
-      },
-      {
-        "speaker": "A hollow voice",
-        "portrait": "skeleton",
-        "text": "No captain is coming to help us. Break the binding stones. We can still bring the others home."
-      }
-    ]
-  }
+  "requiredCompanions": []
 }

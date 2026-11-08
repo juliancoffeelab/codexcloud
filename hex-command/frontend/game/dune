@@ -1,0 +1,6 @@
+(library
+ (name hex_game)
+ (modes melange)
+ (libraries melange.js melange.dom hex_platform hex_engine hex_audio hex_persistence)
+ (flags (:standard -open Hex_platform -open Hex_engine -open Hex_audio -open Hex_persistence))
+ (preprocess (pps melange.ppx)))

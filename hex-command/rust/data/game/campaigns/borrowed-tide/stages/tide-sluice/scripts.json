@@ -1,64 +1,299 @@
 {
   "events": [
     {
-      "id": "boat",
-      "trigger": {
-        "kind": "visit",
-        "tile": "2,7"
+      "id": "edda-death",
+      "when": {
+        "killed": {
+          "character": "edda"
+        }
       },
-      "label": "Recover the southern ferry's supplies",
-      "gold": 4,
-      "dialogue": [
+      "actions": [
         {
-          "speaker": "Boatkeeper",
-          "portrait": "worker",
-          "text": "We could not leave our homes, but we saved food for your company. Make sure that beacon means a safe tide."
+          "setFlag": "edda-dead"
+        }
+      ]
+    },
+    {
+      "id": "mira-death",
+      "when": {
+        "killed": {
+          "character": "mira"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "mira-dead"
+        }
+      ]
+    },
+    {
+      "id": "tomas-death",
+      "when": {
+        "killed": {
+          "character": "tomas"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "tomas-dead"
+        }
+      ]
+    },
+    {
+      "id": "vale-death",
+      "when": {
+        "killed": {
+          "character": "vale"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "vale-dead"
+        }
+      ]
+    },
+    {
+      "id": "boat",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "boat-cache"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 4
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Boatkeeper",
+              "portrait": "worker",
+              "text": "We could not leave our homes, but we saved food for your company. Make sure that beacon means a safe tide."
+            }
+          ]
+        },
+        {
+          "setFlag": "boat"
+        },
+        {
+          "log": "Recover the southern ferry's supplies"
+        }
+      ],
+      "objective": {
+        "label": "Recover the southern ferry's supplies",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "boat-cache"
+            },
+            "side": "player"
+          }
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "boat-cache"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "complete-goal-0",
+      "when": {
+        "objectiveSatisfied": "goal-0"
+      },
+      "actions": [
+        {
+          "completeObjective": "goal-0"
+        }
+      ]
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "all": [
+          {
+            "objectiveSatisfied": "goal-0"
+          },
+          {
+            "objectiveSatisfied": "goal-1"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "tide-sluice-goal-0"
+        }
+      ],
+      "objective": {
+        "label": "Control both sluice gates",
+        "intent": {
+          "capture": [
+            {
+              "location": "northern-sluice"
+            },
+            {
+              "location": "southern-sluice"
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "northern-sluice"
+            },
+            {
+              "location": "southern-sluice"
+            }
+          ]
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "own": {
+                "tile": {
+                  "location": "northern-sluice"
+                },
+                "faction": "player"
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "location": "southern-sluice"
+                },
+                "faction": "player"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "goal-1-lost",
+      "when": {
+        "killed": {
+          "character": "edda"
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "goal-1"
+        },
+        {
+          "defeat": "The escort cannot continue without its protected traveller."
+        }
+      ]
+    },
+    {
+      "id": "complete-goal-1",
+      "when": {
+        "objectiveSatisfied": "goal-1"
+      },
+      "actions": [
+        {
+          "completeObjective": "goal-1"
+        }
+      ]
+    },
+    {
+      "id": "goal-1",
+      "when": {
+        "all": [
+          {
+            "objectiveSatisfied": "goal-0"
+          },
+          {
+            "objectiveSatisfied": "goal-1"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "tide-sluice-goal-1"
+        }
+      ],
+      "objective": {
+        "label": "Bring Edda to the release beacon",
+        "intent": {
+          "escort": {
+            "tile": {
+              "location": "refuge"
+            },
+            "character": "edda",
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "refuge"
+            }
+          ]
+        },
+        "satisfiedWhen": {
+          "stand": {
+            "tile": {
+              "location": "refuge"
+            },
+            "character": "edda",
+            "side": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "flag": "tide-sluice-goal-0"
+              },
+              {
+                "flag": "tide-sluice-goal-1"
+              },
+              {
+                "hasUnits": {
+                  "role": "leader",
+                  "side": "player"
+                }
+              }
+            ]
+          },
+          {
+            "objectiveSatisfied": "goal-0"
+          },
+          {
+            "objectiveSatisfied": "goal-1"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "waves": [],
-  "companionLosses": {
-    "Tomas": {
-      "intro": [
-        {
-          "speaker": "Mira",
-          "portrait": "tidekeeper",
-          "text": "Tomas's companions showed us the high bank through the woods. They will lead our land fighters. We take the lower wheel through the reeds."
-        },
-        {
-          "speaker": "Captain Vale",
-          "portrait": "commander",
-          "text": "Senn says the council will hang deserters first. Your testimony will not save you."
-        },
-        {
-          "speaker": "Mira",
-          "portrait": "tidekeeper",
-          "text": "He forged the council's order. Hear the clerk, or answer for holding this flood above the village."
-        },
-        {
-          "speaker": "Edda",
-          "portrait": "harpooner",
-          "text": "Bring me to the beacon. I will signal only when both wheels are ours."
-        }
-      ],
-      "victory": [
-        {
-          "speaker": "Edda",
-          "portrait": "harpooner",
-          "text": "Both flags up. Open together—now."
-        },
-        {
-          "speaker": "Mira",
-          "portrait": "tidekeeper",
-          "text": "The tide is home. Tomas should have seen it."
-        },
-        {
-          "speaker": "Edda",
-          "portrait": "harpooner",
-          "text": "Put someone from each shore beside each wheel. Keep this from happening again."
-        }
-      ]
-    }
-  }
+  "requiredCompanions": []
 }

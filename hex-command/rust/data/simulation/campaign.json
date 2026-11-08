@@ -1,6 +1,81 @@
 {
   "defaultMaxRounds": 100,
-  "diplomacy": ["pragmatic", "restrained"],
+  "diplomacy": ["unrestricted", "diplomatic"],
   "policies": ["classic", "rush", "balanced", "rotated", "situational"],
-  "campaigns": ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"]
+  "campaigns": ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"],
+  "objectives": {
+    "lantern-road": {
+      "flight": {
+        "stages": {
+          "lantern-villages": {
+            "ignoreOptionalWhen": {
+              "kind": "flag",
+              "flag": "village-safe"
+            }
+          }
+        }
+      },
+      "fight": {
+        "stages": {
+          "lantern-villages": {
+            "scriptEvents": [
+              {
+                "id": "simulation-road-cleared",
+                "when": {
+                  "flag": "road-cleared"
+                },
+                "objective": {
+                  "label": "Defeat all enemies before leaving",
+                  "optional": false,
+                  "visibleWhen": {
+                    "flag": "village-safe"
+                  },
+                  "intent": {
+                    "defeat": {
+                      "side": "enemy"
+                    }
+                  },
+                  "playerMarker": null
+                },
+                "actions": [
+                  {
+                    "setFlag": "simulation-road-cleared"
+                  }
+                ]
+              }
+            ],
+            "scriptConditions": {
+              "eastern-departure": {
+                "all": [
+                  {
+                    "all": [
+                      {
+                        "stand": {
+                          "tile": {
+                            "location": "exit"
+                          },
+                          "side": "player",
+                          "character": "nera",
+                          "through": true
+                        }
+                      },
+                      {
+                        "flag": "village-safe"
+                      }
+                    ]
+                  },
+                  {
+                    "flag": "simulation-road-cleared"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "escalationFlags": {
+    "ashen-refuge": "peace-lost"
+  }
 }

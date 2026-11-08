@@ -32,10 +32,11 @@ def panel(matrix, side, scale=8):
 
 
 def previews(matrices, output):
-    tiles = [(path, side, panel(path, side)) for side in ('player', 'enemy', 'debug') for path in matrices]
+    sides = ('player', 'enemy', 'debug') if any(path.stem == 'sprite' for path in matrices) else ('player',)
+    tiles = [(path, side, panel(path, side)) for side in sides for path in matrices]
     width = max(t.width for _, _, t in tiles)
     height = max(t.height for _, _, t in tiles)
-    board = Image.new('RGB', (len(matrices) * (width + 16), 3 * (height + 36)), (22, 32, 28))
+    board = Image.new('RGB', (len(matrices) * (width + 16), len(sides) * (height + 36)), (22, 32, 28))
     draw = ImageDraw.Draw(board)
     for i, (path, side, tile) in enumerate(tiles):
         x, y = i % len(matrices) * (width + 16), i // len(matrices) * (height + 36)
@@ -95,9 +96,9 @@ def review(matrix, output, policy=None, points=None, radius=10):
         raise ValueError('Use a new review directory under project tmp/')
     rows = render.read_matrix(matrix); palette = render.read_palette(matrix)
     require_canvas(rows, matrix)
-    if matrix.name != 'sprite.txt':
-        raise ValueError('Review a shared sprite.txt matrix')
-    palette.update(faction_palette('enemy'))
+    unit = matrix.stem == 'sprite'
+    if unit:
+        palette.update(faction_palette('enemy'))
     # Validate both factions without calling the renderer CLI, which can replay recipes.
     rendered = {side: render.rgba_pixels(matrix, side)[2] for side in ('player', 'enemy', 'debug')}
     faction_count = 0
@@ -129,7 +130,8 @@ def review(matrix, output, policy=None, points=None, radius=10):
     images = ['strays.png'] + (['material-strays.png'] if policy else [])
     for kind in sorted({f['kind'] for f in edges}):
         name = f'{kind}.png'; write_review(matrix, [f for f in edges if f['kind'] == kind], output / name); images.append(name)
-    previews([matrix], output / 'factions.png')
+    preview_name = 'factions.png' if unit else 'terrain.png'
+    previews([matrix], output / preview_name)
     unique = {}
     for f in flags:
         entry = unique.setdefault((f['x'], f['y']), {'x': f['x'], 'y': f['y'], 'symbol': rows[f['y']][f['x']], 'kinds': []})
@@ -148,7 +150,7 @@ def review(matrix, output, policy=None, points=None, radius=10):
               'factionValidation': {'identicalAlpha': True, 'fixedMaterialsIdentical': True,
                                     'factionPixels': faction_count,
                                     'ownershipNeedsVisualReview': True},
-              'images': images + ['factions.png'] + pages,
+              'images': images + [preview_name] + pages,
               'warning': 'Candidates only. Cardinal rules flag legitimate diagonals and miss connected wrong-material patches. Inspect the complete render too.'}
     (output / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({'output': str(output), 'counts': report['counts'], 'neighborhoodPages': len(pages)}))

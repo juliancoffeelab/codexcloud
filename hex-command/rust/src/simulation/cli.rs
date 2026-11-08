@@ -1,11 +1,14 @@
 //! Native schedule, bounded scoped worker pool, reporting and replay.
 use super::{
+    CampaignDefinitions,
     checkpoint::{IndexedOutcome, Progress},
     error::SimulationError,
     matches,
     records::{DetailRecord, EncodedRecord, ResultJournal, read_detail, sha256},
     report,
-    schedule::{Mode, ScheduleOptions, WithSelection, schedule},
+    schedule::{
+        DEFAULT_ARENA_SEEDS, DEFAULT_CAMPAIGN_SEEDS, Mode, ScheduleOptions, WithSelection, schedule,
+    },
     types::{MatchConfig, MatchResult},
 };
 use crate::{
@@ -40,9 +43,9 @@ struct SimulationArgs {
     /// Add a custom tactic; - selects the workload default for that block.
     #[arg(group = "batch", long, value_name = "RECRUITER,CAMPAIGNER,PLANNER", value_parser = WithSelection::parse, allow_hyphen_values = true)]
     with: Option<WithSelection>,
-    /// Number of seeds.
-    #[arg(group = "batch", long, default_value_t = 10, value_parser = clap::value_parser!(u32).range(1..=10000))]
-    seeds: u32,
+    /// Seed count override for both workloads (defaults: arena 50, campaign 100).
+    #[arg(group = "batch", long, value_parser = clap::value_parser!(u32).range(1..=10000))]
+    seeds: Option<u32>,
     /// First seed.
     #[arg(group = "batch", long, default_value_t = 1, value_parser = clap::value_parser!(u32).range(0..=2147483647))]
     seed: u32,
@@ -73,6 +76,9 @@ struct SimulationArgs {
     /// Filter the campaign's authored diplomacy modes.
     #[arg(group = "batch", long, value_enum, value_delimiter = ',', action = clap::ArgAction::Set)]
     diplomacy: Option<Vec<Diplomacy>>,
+    /// Filter the campaign's simulation objective routes.
+    #[arg(group = "batch", long, value_delimiter = ',')]
+    objectives: Option<Vec<String>>,
     /// Worker count, defaulting to the available CPU quota.
     #[arg(group = "batch", long, default_value_t = default_workers() as u32, value_parser = clap::value_parser!(u32).range(1..=8))]
     workers: u32,
@@ -129,6 +135,9 @@ struct SimulationArgs {
     /// Read and write saved-position phase profiling requests/results.
     #[arg(long, group = "protocol")]
     phase_stdio: bool,
+    /// Capture selected planner-entry positions from fresh native matches.
+    #[arg(long, group = "protocol")]
+    capture_stdio: bool,
     /// Print the compiled content and engine SHA256 fingerprints.
     #[arg(long, group = "protocol")]
     fingerprint: bool,
@@ -189,7 +198,12 @@ impl SimulationArgs {
         options.with = self.with;
         options.mode = self.mode;
         options.first_seed = self.seed;
-        options.seeds = self.seeds;
+        options.seeds = self.seeds.unwrap_or(if self.mode == Mode::Campaign {
+            DEFAULT_CAMPAIGN_SEEDS
+        } else {
+            DEFAULT_ARENA_SEEDS
+        });
+        options.campaign_seeds = self.seeds.unwrap_or(DEFAULT_CAMPAIGN_SEEDS);
         options.self_play = self.self_play;
         options.opponent = if self.mode == Mode::Campaign || self.all_pairs || self.self_play {
             None
@@ -258,7 +272,13 @@ impl SimulationArgs {
                         .iter()
                         .copied()
                         .filter(|p| {
-                            matches!(p, Policy::Balanced | Policy::Rotated | Policy::Situational)
+                            matches!(
+                                p,
+                                Policy::Balanced
+                                    | Policy::Rotated
+                                    | Policy::Situational
+                                    | Policy::Predictor
+                            )
                         })
                         .collect();
                     if players.is_empty() {
@@ -272,6 +292,14 @@ impl SimulationArgs {
                 .get_or_insert_with(|| vec![Policy::Classic]);
         }
         options.diplomacy = selection(self.diplomacy, "--diplomacy", &options.diplomacy)?;
+        if let Some(objectives) = self.objectives {
+            let known: Vec<_> = std::iter::once("authored".to_owned())
+                .chain(options.campaign_objectives.values().flatten().cloned())
+                .collect::<std::collections::BTreeSet<_>>()
+                .into_iter()
+                .collect();
+            options.objectives = Some(selection(Some(objectives), "--objectives", &known)?);
+        }
         let mut out = self.out.unwrap_or_else(|| {
             let timestamp = SystemTime::now()
                 .duration_since(UNIX_EPOCH)
@@ -327,59 +355,82 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
     let stdin = io::stdin();
     let stdout = io::stdout();
     let mut output = io::BufWriter::new(stdout.lock());
+    let mut definitions = CampaignDefinitions::new(rules);
     for line in stdin.lock().lines() {
         let line = line?;
         if line.trim().is_empty() {
             continue;
         }
         let config: MatchConfig = serde_json::from_str(&line)?;
-        let result = matches::run(rules, config)?;
+        definitions.prepare_match(&config)?;
+        let result = matches::run(rules, config, &definitions)?;
         serde_json::to_writer(&mut output, &result)?;
         writeln!(output)?;
         output.flush()?;
     }
     Ok(())
 }
-#[derive(serde::Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct PhaseRequest {
-    /// Include unchanged Situational score components before running this phase.
-    #[serde(default)]
-    inspect_recruitment: bool,
-    #[serde(default)]
-    blocks: Option<crate::ai::Blocks>,
-    state: crate::data::State,
-    policy: crate::ai::Policy,
-    seed: u32,
-    #[serde(default)]
-    recruitment_limit: usize,
-    #[serde(default)]
-    goals: Option<Vec<crate::data::Objective>>,
-    #[serde(default)]
-    diplomacy: crate::ai::Diplomacy,
-    #[serde(default)]
-    advance_turn: bool,
-    #[serde(default)]
-    begin_turn: bool,
-    #[serde(default)]
-    arena: Option<super::types::ArenaConfig>,
+use super::phase_fixtures::{Capture, CaptureRequest, PhaseRequest};
+/// Generate a small independent artifact, without changing normal journal records.
+fn capture_stdio(rules: &Rules) -> Result<(), SimulationError> {
+    let mut output = io::BufWriter::new(io::stdout().lock());
+    let mut definitions = CampaignDefinitions::new(rules);
+    for line in io::stdin().lock().lines() {
+        let line = line?;
+        if line.trim().is_empty() {
+            continue;
+        }
+        let request: CaptureRequest = serde_json::from_str(&line)?;
+        let config = request.config.clone();
+        let rounds = request.rounds.clone();
+        let side = request.side;
+        definitions.prepare_match(&config)?;
+        let mut capture = Capture::new(request)?;
+        match config.clone() {
+            MatchConfig::Arena(c) => {
+                matches::run_arena_capturing(rules, c, Some(&mut capture))?;
+            }
+            MatchConfig::Campaign(c) => {
+                let definition = definitions.get(&c.campaign, &c.objective)?;
+                matches::run_campaign_capturing(rules, c, definition, Some(&mut capture))?;
+            }
+        }
+        serde_json::to_writer(
+            &mut output,
+            &json!({"format":"hex-phase-fixtures-v1","fingerprints":fingerprints(rules),"config":config,"requestedRounds":rounds,"side":side,"positions":capture.positions}),
+        )?;
+        writeln!(output)?;
+        output.flush()?;
+    }
+    Ok(())
 }
 /// Replay one own phase from a saved position, for fixed-input policy profiling.
 fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
     let mut output = io::BufWriter::new(io::stdout().lock());
+    let mut definitions = CampaignDefinitions::new(rules);
     for line in io::stdin().lock().lines() {
         let line = line?;
         if line.trim().is_empty() {
             continue;
         }
         let request: PhaseRequest = serde_json::from_str(&line)?;
-        serde_json::to_writer(&mut output, &saved_phase(rules, request)?)?;
+        serde_json::to_writer(&mut output, &saved_phase(rules, &mut definitions, request)?)?;
         writeln!(output)?;
         output.flush()?;
     }
     Ok(())
 }
-fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, SimulationError> {
+fn saved_phase(
+    rules: &Rules,
+    definitions: &mut CampaignDefinitions<'_>,
+    request: PhaseRequest,
+) -> Result<Value, SimulationError> {
+    let definition = if let Some(campaign) = &request.state.campaign {
+        definitions.prepare(&campaign.id, &request.objective)?;
+        Some(definitions.get(&campaign.id, &request.objective)?)
+    } else {
+        None
+    };
     let arena = request
         .arena
         .as_ref()
@@ -394,13 +445,21 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
         crate::logic::validate_state_geometry(rules, &request.state, &arena.state())
             .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     } else {
-        crate::logic::validate_state(rules, &request.state)
-            .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
+        let authored = rules
+            .maps
+            .get(&(request.state.map_id.clone(), request.state.map_revision))
+            .ok_or_else(|| SimulationError::InvalidConfig("unknown map revision".into()))?;
+        crate::logic::validate_state_geometry_with_campaign(
+            rules,
+            &request.state,
+            authored,
+            definition,
+        )
+        .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     }
-    let mut game = crate::logic::Game::from_state(rules, request.state);
+    let mut game = crate::logic::Game::from_state_with_campaign(rules, request.state, definition);
     if let Some(arena) = arena {
-        game.pools = arena.pools;
-        game.arena_first = arena.arena_first;
+        game.configure_arena(arena.pools().cloned(), arena.arena_first());
     }
     if request.advance_turn && request.begin_turn {
         return Err(SimulationError::InvalidConfig(
@@ -408,20 +467,25 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
         ));
     }
     if request.begin_turn {
-        game.begin_turn(game.turn);
+        game.begin_turn(game.turn());
     } else if request.advance_turn {
         game.end_turn();
     }
-    if request.recruitment_limit > 1_000_000
+    if request
+        .recruitment_limit
+        .is_some_and(|limit| limit > 1_000_000)
         || request.goals.iter().flatten().any(|goal| {
             !goal.weight.is_finite()
                 || goal.weight <= 0.0
-                || goal.tiles.iter().any(|tile| !game.board.ids.contains(tile))
+                || goal
+                    .tiles
+                    .iter()
+                    .any(|tile| !game.board().ids.contains(tile))
                 || goal.actor.as_ref().is_some_and(|actor| {
                     actor
                         .strip_prefix('u')
                         .and_then(|id| id.parse::<u32>().ok())
-                        .is_none_or(|id| id == 0 || id >= game.next_id)
+                        .is_none_or(|id| id == 0 || id >= game.next_id())
                 })
         })
     {
@@ -429,19 +493,26 @@ fn saved_phase(rules: &Rules, request: PhaseRequest) -> Result<Value, Simulation
             "Invalid planning budget or objective".into(),
         ));
     }
-    let scores = request
-        .inspect_recruitment
-        .then(|| crate::ai::recruiter::diagnostics(&game));
-    game.recordings = Some(crate::data::Records::default());
-    game.play_blocks(
+    let scores = request.inspect_recruitment.then(|| {
+        crate::ai::recruiter::diagnostics(
+            game.view(),
+            request.blocks.unwrap_or(request.policy.blocks()).recruiter,
+        )
+    });
+    game.start_recording();
+    let goals = request
+        .goals
+        .or_else(|| super::objectives::player_goals(&game, &request.objective));
+    crate::ai::play_blocks(
+        &mut game,
         request.policy,
         request.blocks,
         request.seed,
         request.recruitment_limit,
-        request.goals.as_deref(),
+        goals.as_deref(),
         request.diplomacy,
     )?;
-    let mut response = json!({"final":game.state(),"records":game.recordings});
+    let mut response = json!({"final":game.state(),"records":game.take_recordings()});
     if let Some(scores) = scores {
         response["recruitmentScores"] = serde_json::to_value(scores)?;
     }
@@ -466,6 +537,7 @@ fn replay(rules: &Rules, path: &Path, fingerprint: &str) -> Result<(), Simulatio
     let outcomes = saved["outcomes"]
         .as_array()
         .ok_or("Replay report outcomes missing")?;
+    let mut definitions = CampaignDefinitions::new(rules);
     for (index, outcome) in outcomes.iter().enumerate() {
         let expected = if let Some(reference) = outcome.get("detail") {
             let reference: DetailRecord = serde_json::from_value(reference.clone())?;
@@ -474,7 +546,8 @@ fn replay(rules: &Rules, path: &Path, fingerprint: &str) -> Result<(), Simulatio
             outcome.clone()
         };
         let config: MatchConfig = serde_json::from_value(expected["config"].clone())?;
-        let actual = report::detailed_summary(&matches::run(rules, config)?)?;
+        definitions.prepare_match(&config)?;
+        let actual = report::detailed_summary(&matches::run(rules, config, &definitions)?)?;
         if actual != expected {
             return Err(SimulationError::Replay(format!(
                 "Replay mismatch at game {}: {}",
@@ -513,6 +586,10 @@ fn execute_schedule<F>(
 where
     F: FnMut(usize, PreparedMatch, f64) -> Result<(), SimulationError>,
 {
+    let mut definitions = CampaignDefinitions::new(rules);
+    for config in configs {
+        definitions.prepare_match(config)?;
+    }
     let prepare = |result: MatchResult, elapsed: f64| {
         let summary = report::borrowed_summary(&result, true)?;
         let details = if arrow {
@@ -547,7 +624,7 @@ where
         workers,
         &|config| {
             let start = Instant::now();
-            let result = matches::run(rules, config.clone())?;
+            let result = matches::run(rules, config.clone(), &definitions)?;
             prepare(result, start.elapsed().as_secs_f64() * 1000.0)
         },
         |index, result, elapsed| append(index, result, elapsed),
@@ -788,6 +865,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     if options.arrow {
         report["detailFormat"] = Value::String(super::arrow::FORMAT.into());
     }
+    report["recruitmentProfiles"] = serde_json::to_value(&rules.recruitment)?;
     report["unitFamilies"] = serde_json::to_value(
         rules
             .units
@@ -806,8 +884,8 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
                 (
                     u.id.clone(),
                     json!({
-                        "name":u.name,"family":u.family,"race":u.race,"leader":u.leader,"hp":u.hp,
-                        "level":u.level,"cost":u.cost,"move":u.r#move,
+                        "name":u.name,"family":u.family,"race":u.race,"hp":u.hp,
+                        "level":u.level,"cost":u.cost,"move":u.r#move,"role":u.role,
                         "healing":u.healing,"thornAura":u.thorn_aura,"thorns":u.thorns
                     }),
                 )
@@ -817,6 +895,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     if options.profile_turns {
         report["turnTiming"] = crate::ai::profiling::snapshot().unwrap();
     }
+    super::damage::write(rules, output.parent().unwrap_or(Path::new(".")))?;
     write_json(&output, &report, true)?;
     if !options.no_report {
         fs::write(sibling(&output, ".md")?, report::markdown(&report))?;
@@ -900,6 +979,9 @@ pub fn run(args: &[String]) -> Result<(), SimulationError> {
     if args.stdio {
         return stdio(&rules);
     }
+    if args.capture_stdio {
+        return capture_stdio(&rules);
+    }
     if args.phase_stdio {
         return phase_stdio(&rules);
     }
@@ -924,6 +1006,25 @@ mod tests {
             .unwrap()
             .resolve(&rules)
             .unwrap();
+        assert_eq!(options.schedule.seeds, 50);
+        assert_eq!(options.schedule.campaign_seeds, 100);
+        for (mode, arena_seeds) in [("arena", 50), ("campaign", 100), ("full", 50)] {
+            let args = ["sim", "--mode", mode];
+            let defaults = SimulationArgs::try_parse_from(args)
+                .unwrap()
+                .resolve(&rules)
+                .unwrap();
+            assert_eq!(defaults.schedule.seeds, arena_seeds);
+            assert_eq!(defaults.schedule.campaign_seeds, 100);
+            let override_seeds =
+                SimulationArgs::try_parse_from(args.into_iter().chain(["--seeds", "7"]))
+                    .unwrap()
+                    .resolve(&rules)
+                    .unwrap();
+            assert_eq!(override_seeds.schedule.seeds, 7);
+            assert_eq!(override_seeds.schedule.campaign_seeds, 7);
+        }
+
         assert_eq!(options.schedule.opponent, Some(Policy::Balanced));
         assert_eq!(
             options.schedule.campaign_enemies,
@@ -941,6 +1042,7 @@ mod tests {
     #[test]
     fn saved_phase_restores_generated_arenas_and_validates_geometry() {
         let rules = Rules::load().unwrap();
+        let mut definitions = CampaignDefinitions::new(&rules);
         let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
             "seed": 7, "maxRounds": 30, "recruitLimit": 0, "landscape": "open",
             "first": "player", "player": "balanced", "enemy": "balanced",
@@ -956,25 +1058,26 @@ mod tests {
             }))
             .unwrap()
         };
-        expected.begin_turn(expected.turn);
-        expected.recordings = Some(crate::data::Records::default());
-        expected
-            .play_blocks(
-                crate::ai::Policy::Balanced,
-                None,
-                7,
-                1,
-                None,
-                crate::ai::Diplomacy::Pragmatic,
-            )
-            .unwrap();
+        expected.begin_turn(expected.turn());
+        expected.start_recording();
+        crate::ai::play_blocks(
+            &mut expected,
+            crate::ai::Policy::Balanced,
+            None,
+            7,
+            1,
+            None,
+            crate::ai::Diplomacy::Unrestricted,
+        )
+        .unwrap();
+        let expected_records = expected.take_recordings();
         assert_eq!(
-            saved_phase(&rules, request(state.clone())).unwrap(),
-            json!({"final": expected.state(), "records": expected.recordings})
+            saved_phase(&rules, &mut definitions, request(state.clone())).unwrap(),
+            json!({"final": expected.state(), "records": expected_records})
         );
         let mut inspected = request(state.clone());
         inspected.inspect_recruitment = true;
-        let mut diagnostic = saved_phase(&rules, inspected).unwrap();
+        let mut diagnostic = saved_phase(&rules, &mut definitions, inspected).unwrap();
         assert!(
             !diagnostic
                 .as_object_mut()
@@ -987,14 +1090,118 @@ mod tests {
         );
         assert_eq!(
             diagnostic,
-            json!({"final":expected.state(),"records":expected.recordings})
+            json!({"final":expected.state(),"records":expected_records})
         );
         let mut invalid = state.clone();
         invalid.tiles[0].col = -1;
-        assert!(saved_phase(&rules, request(invalid)).is_err());
+        assert!(saved_phase(&rules, &mut definitions, request(invalid)).is_err());
         let mut invalid = request(state);
         invalid.advance_turn = true;
-        assert!(saved_phase(&rules, invalid).is_err());
+        assert!(saved_phase(&rules, &mut definitions, invalid).is_err());
+    }
+    #[test]
+    fn selected_capture_preserves_run_and_restores_planner_entry() {
+        let rules = Rules::load().unwrap();
+        let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
+            "seed":7,"maxRounds":2,"recruitLimit":null,"landscape":"open",
+            "first":"enemy","player":"classic","enemy":"classic",
+            "armies":{"player":"human","enemy":"skeletons"}
+        }))
+        .unwrap();
+        let expected = matches::run_arena(&rules, config.clone()).unwrap();
+        let mut capture = Capture::new(CaptureRequest {
+            config: MatchConfig::Arena(config.clone()),
+            rounds: vec![1, 2],
+            side: crate::data::Side::Player,
+        })
+        .unwrap();
+        let actual = matches::run_arena_capturing(&rules, config, Some(&mut capture)).unwrap();
+        assert_eq!(
+            serde_json::to_value(&actual).unwrap(),
+            serde_json::to_value(&expected).unwrap()
+        );
+        assert!(!capture.positions.is_empty());
+        let mut definitions = CampaignDefinitions::new(&rules);
+        for position in capture.positions {
+            let request = position.request;
+            assert!(!request.begin_turn && !request.advance_turn);
+            let phase = actual
+                .phases
+                .iter()
+                .find(|p| p.round == request.state.round && p.side == request.state.turn)
+                .unwrap();
+            assert_eq!(
+                serde_json::to_value(&request.state.units).unwrap(),
+                serde_json::to_value(&phase.before).unwrap()
+            );
+            let result = saved_phase(&rules, &mut definitions, request.clone()).unwrap();
+            assert_eq!(
+                result,
+                saved_phase(&rules, &mut definitions, request).unwrap()
+            );
+            assert_eq!(
+                result["records"]["actions"],
+                serde_json::to_value(&phase.records.actions).unwrap()
+            );
+            assert_eq!(
+                result["final"]["units"],
+                serde_json::to_value(&phase.units).unwrap()
+            );
+            assert_eq!(
+                result["final"]["gold"],
+                serde_json::to_value(&phase.gold).unwrap()
+            );
+        }
+    }
+    #[test]
+    fn campaign_capture_keeps_route_and_separate_rng_at_planner_entry() {
+        let rules = Rules::load().unwrap();
+        let mut definitions = CampaignDefinitions::new(&rules);
+        let config: super::super::types::CampaignConfig = serde_json::from_value(json!({
+            "seed":7,"maxRounds":3,"recruitLimit":0,"campaign":"lantern-road",
+            "objective":"fight","diplomacy":"diplomatic","player":"classic","enemy":"classic"
+        }))
+        .unwrap();
+        definitions
+            .prepare_match(&MatchConfig::Campaign(config.clone()))
+            .unwrap();
+        let definition = definitions
+            .get(&config.campaign, &config.objective)
+            .unwrap();
+        let mut game = crate::logic::Game::start_campaign_from_definition(
+            &rules,
+            definition,
+            1,
+            vec![],
+            0,
+            crate::data::FlagHistory::new(),
+            vec![],
+            vec![],
+        );
+        game.set_combat_rng(789);
+        game.dismiss_all_dialogue();
+        let mut capture = Capture::new(CaptureRequest {
+            config: MatchConfig::Campaign(config),
+            rounds: vec![1],
+            side: crate::data::Side::Player,
+        })
+        .unwrap();
+        capture.observe(&game, None);
+        let request = capture.positions.pop().unwrap().request;
+        assert_eq!(
+            serde_json::to_value(&request.state).unwrap(),
+            serde_json::to_value(game.state()).unwrap()
+        );
+        assert_eq!(request.seed, 7);
+        assert_eq!(request.state.combat_rng, 789);
+        let correct = saved_phase(&rules, &mut definitions, request.clone()).unwrap();
+        assert_eq!(
+            correct,
+            saved_phase(&rules, &mut definitions, request.clone()).unwrap()
+        );
+        let mut wrong = request;
+        wrong.objective = "authored".into();
+        assert!(saved_phase(&rules, &mut definitions, wrong).is_err());
     }
     #[test]
     fn append_failure_drains_in_flight_workers() {

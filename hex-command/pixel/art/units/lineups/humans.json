@@ -286,6 +286,17 @@
           ]
         }
       ]
+    },
+    {
+      "base": {
+        "id": "captives",
+        "name": "Captive villagers",
+        "source": "captives",
+        "level": 1,
+        "factions": ["player", "enemy", "passive"]
+      },
+      "section": "civilians",
+      "branches": []
     }
   ],
   "commander": {

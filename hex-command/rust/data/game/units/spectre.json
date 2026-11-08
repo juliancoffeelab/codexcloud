@@ -1,0 +1,55 @@
+{
+  "id": "spectre",
+  "role": "flank",
+  "name": "Spectre",
+  "race": "spirit",
+  "terrainModifiers": {
+    "forest": {
+      "cost": -1
+    },
+    "grove": {
+      "cost": -1
+    },
+    "hill": {
+      "cost": -1
+    }
+  },
+  "hp": 28,
+  "move": 6,
+  "cost": 15,
+  "attacks": [
+    {
+      "id": "spectral-touch",
+      "name": "Spectral touch",
+      "damage": 4,
+      "damageType": "blade",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee",
+      "count": 3,
+      "spread": 1
+    },
+    {
+      "id": "spectral-orb",
+      "name": "Spectral orb",
+      "damage": 4,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow",
+      "count": 2,
+      "spread": 1
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Unquiet shade",
+  "description": "An experienced spectral scout whose incorporeal form resists impact damage.",
+  "level": 3,
+  "family": "ghost",
+  "experienceNeeded": 0,
+  "advancesTo": []
+}

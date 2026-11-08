@@ -1,0 +1,66 @@
+{
+  "events": [
+    {
+      "id": "death-light",
+      "priority": 100,
+      "when": {
+        "killed": {}
+      },
+      "remembers": false,
+      "actions": [
+        {
+          "createMark": {
+            "type": "death-light",
+            "tile": {
+              "binding": "death"
+            },
+            "light": {
+              "radius": 62,
+              "power": 0.75,
+              "color": [255, 32, 32],
+              "fixture": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "killed": {
+          "character": "survey-captain"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Your survey captain fell. Restart Bell Night from Debug tools."
+        }
+      ]
+    },
+    {
+      "id": "rival-defeated",
+      "when": {
+        "killed": {
+          "character": "survey-rival"
+        }
+      },
+      "objective": {
+        "label": "Defeat the rival when your survey is complete",
+        "intent": {
+          "defeat": {
+            "character": "survey-rival"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "Survey complete. Restart Bell Night to test again."
+        }
+      ]
+    }
+  ]
+}

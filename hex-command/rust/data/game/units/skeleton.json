@@ -15,17 +15,19 @@
       "damageType": "blade",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 1
     },
     {
-      "id": "boneclub",
-      "name": "Boneclub",
-      "damage": 8,
+      "id": "shieldbash",
+      "name": "Shield bash",
+      "damage": 6,
       "count": 1,
       "damageType": "impact",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 2
     }
   ],
   "damageModifiers": {

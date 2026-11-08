@@ -3,18 +3,24 @@
   "name": "The Ashen Oath",
   "tagline": "Freedom is an order you give yourself.",
   "description": "Lead Orin’s unbound dead out of servitude. Escape a quarry, defend a refuge, and break the Master’s bindings with unexpected living allies.",
+  "shortDescription": "The dead have broken their chains—but their Master wants them back.",
   "race": "skeletons",
   "leader": "necromancer",
   "ending": [
     {
-      "speaker": "Dain",
-      "portrait": "warden",
-      "text": "What should I put in the new ledger?"
+      "with": "dain",
+      "dialogue": [
+        {
+          "portrait": "warden",
+          "text": "What should I put in the new ledger?",
+          "character": "dain"
+        }
+      ]
     },
     {
-      "speaker": "Orin",
       "portrait": "necromancer",
-      "text": "Names first. And leave a blank page. We may become more than you expected."
+      "text": "Names first. And leave a blank page. We may become more than you expected.",
+      "character": "orin"
     }
   ],
   "stages": [
@@ -22,5 +28,23 @@
     "stages/ashen-refuge/stage.json",
     "stages/ashen-dawn/stage.json"
   ],
-  "playerDiplomacy": ["pragmatic", "restrained"]
+  "playerDiplomacy": ["unrestricted", "diplomatic"],
+  "characters": [
+    {
+      "id": "dain",
+      "name": "Captain Dain"
+    },
+    {
+      "id": "orin",
+      "name": "Orin"
+    },
+    {
+      "id": "ledgerkeeper",
+      "name": "The Ledgerkeeper"
+    },
+    {
+      "id": "master",
+      "name": "The Master"
+    }
+  ]
 }

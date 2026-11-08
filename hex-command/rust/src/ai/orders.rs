@@ -3,7 +3,7 @@ use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 
 /// Generic heuristic hints supplement typed duties without exposing mission kinds.
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum TargetKind {
@@ -11,12 +11,12 @@ pub enum TargetKind {
     Defeat,
     Visit,
 }
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Target {
     pub id: String,
     pub kind: TargetKind,
-    pub tiles: Vec<String>,
+    pub tiles: Vec<Hex>,
     pub weight: f64,
     pub actor: Option<String>,
     pub family: Option<Family>,
@@ -44,7 +44,7 @@ impl From<crate::data::Objective> for Target {
         }
     }
 }
-pub(in crate::ai) fn target(id: &str, kind: TargetKind, tiles: Vec<String>, weight: f64) -> Target {
+pub(in crate::ai) fn target(id: &str, kind: TargetKind, tiles: Vec<Hex>, weight: f64) -> Target {
     Target {
         id: id.into(),
         kind,
@@ -56,11 +56,12 @@ pub(in crate::ai) fn target(id: &str, kind: TargetKind, tiles: Vec<String>, weig
     }
 }
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum UnitSelector {
     Type(UnitTypeId),
+    AnyOf(Vec<UnitTypeId>),
     Family(Family),
     Role(UnitRole),
 }
@@ -69,13 +70,14 @@ impl UnitSelector {
         let rule = &game.rules().units[kind];
         match self {
             Self::Type(id) => rule.id == id.0,
+            Self::AnyOf(ids) => ids.iter().any(|id| rule.id == id.0),
             Self::Family(family) => rule.family == *family,
             Self::Role(role) => rule.role == *role,
         }
     }
 }
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum RecruitRequirement {
     EnsureUnits {
@@ -89,7 +91,9 @@ impl RecruitRequirement {
             Self::EnsureUnits { selector, count } => count.saturating_sub(
                 game.units()
                     .iter()
-                    .filter(|u| u.side == game.turn() && selector.accepts(game, u.kind))
+                    .filter(|u| {
+                        game.belongs_to_phase(u, game.turn()) && selector.accepts(game, u.kind)
+                    })
                     .count(),
             ),
         }
@@ -101,7 +105,7 @@ impl RecruitRequirement {
     }
 }
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RecruitmentOrders {
@@ -110,26 +114,27 @@ pub struct RecruitmentOrders {
     pub rotate_pool: bool,
 }
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)]
 pub enum BattleObjective {
     #[default]
     BattleToKill,
 }
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum TacticalConstraint {
+    /// A soft preference evaluated against objective value and full exposure.
     Survive { actor: UnitId },
 }
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum ObjectivePriority {
     Normal,
     Important,
     Critical,
 }
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum TacticalObjective {
     GoTo {
@@ -150,7 +155,7 @@ pub enum TacticalObjective {
         destination: TileId,
     },
 }
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ObjectiveOrder {
     pub id: String,
@@ -158,10 +163,15 @@ pub struct ObjectiveOrder {
     pub objective: TacticalObjective,
 }
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+pub use hex_command_battle::model::ScopedOrder;
+
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
 pub struct TacticalOrders {
+    pub scoped: Vec<ScopedOrder>,
+    /// Actors withheld by Campaigner, independent of unit archetypes or economy.
+    pub inactive: Vec<UnitId>,
     /// Promotion branches selected by Recruiter; Planner owns their timing.
     pub promotions: Vec<(UnitId, UnitTypeId)>,
     pub battle: BattleObjective,
@@ -212,6 +222,10 @@ impl TacticalOrders {
         &self,
         game: &BattleView<'_, '_>,
     ) -> rustc_hash::FxHashMap<u32, rustc_hash::FxHashSet<usize>> {
+        crate::ai::policies::objectives::actor_lanes(game, &self.passage_targets())
+    }
+    /// Complete the explicit passage contract without choosing planner heuristics.
+    pub(crate) fn passage_targets(&self) -> std::borrow::Cow<'_, [Target]> {
         fn passage(order: &ObjectiveOrder) -> Option<(UnitId, &TileId)> {
             match &order.objective {
                 TacticalObjective::ClearPassage { actor, destination } => {
@@ -228,17 +242,17 @@ impl TacticalOrders {
             .filter_map(passage)
             .filter(|(actor, destination)| {
                 !self.targets.iter().any(|goal| {
-                    super::objectives::actor_matches(&goal.actor, actor.0)
+                    crate::ai::policies::objectives::actor_matches(&goal.actor, actor.0)
                         && goal.tiles.contains(&destination.0)
                 })
             })
             .collect();
         if missing.is_empty() {
-            return game.actor_lanes(&self.targets);
+            return std::borrow::Cow::Borrowed(&self.targets);
         }
         let mut goals = self.targets.clone();
         for (actor, destination) in missing {
-            let mut goal = super::objectives::objective(
+            let mut goal = crate::ai::policies::objectives::objective(
                 "passage",
                 ObjectiveKind::Visit,
                 vec![destination.0.clone()],
@@ -247,7 +261,7 @@ impl TacticalOrders {
             goal.actor = Some(format!("u{}", actor.0));
             goals.push(goal.into());
         }
-        game.actor_lanes(&goals)
+        std::borrow::Cow::Owned(goals)
     }
     pub(crate) fn rebuild_plan(
         &self,
@@ -260,15 +274,16 @@ impl TacticalOrders {
             .iter()
             .find(|(actor, _)| actor.0 == id)
             .and_then(|(_, intent)| *intent);
-        let keeps = self
+        let targets = self
             .targets
             .iter()
             .filter(|goal| {
-                goal.id.starts_with("rebuild:") && super::objectives::actor_matches(&goal.actor, id)
+                goal.id.starts_with("rebuild:")
+                    && crate::ai::policies::objectives::actor_matches(&goal.actor, id)
             })
             .flat_map(|goal| goal.tiles.iter().map(|tile| game.site(tile)))
             .collect();
-        (keeps, intent)
+        (targets, intent)
     }
     pub(crate) fn moving_actor(&self, id: u32) -> bool {
         self.objectives.iter().any(|order| {
@@ -291,8 +306,8 @@ impl TacticalOrders {
             .filter(|goal| {
                 goal.id.starts_with("rebuild:")
                     && game.units().iter().any(|unit| {
-                        unit.side == game.turn()
-                            && super::objectives::actor_matches(&goal.actor, unit.id)
+                        game.belongs_to_phase(unit, game.turn())
+                            && crate::ai::policies::objectives::actor_matches(&goal.actor, unit.id)
                     })
             })
             .cloned()
@@ -303,10 +318,8 @@ impl TacticalOrders {
             TacticalConstraint::Survive { actor } => actor.0 == id,
         })
     }
-    pub(crate) fn important(&self, game: &BattleView<'_, '_>, unit: &Unit) -> bool {
-        self.protects(unit.id)
-            || game.rules().units[unit.kind].leader
-            || unit.role == Some(Role::Courier)
+    pub(crate) fn important(&self, _game: &BattleView<'_, '_>, unit: &Unit) -> bool {
+        self.protects(unit.id) || unit.is_leader() || unit.role.is_some_and(Role::is_escort)
     }
     pub(crate) fn arrives(&self, game: &BattleView<'_, '_>, unit: &Unit, tile: usize) -> bool {
         self.terminal_arrivals.iter().any(|(actor, destination)| {
@@ -324,11 +337,14 @@ impl TacticalOrders {
         weapon: usize,
         from: usize,
     ) -> bool {
-        let preview = || game.preview(unit, target, weapon, from);
-        (!self.protects(unit.id) || preview().1 == 0)
+        self.scoped
+            .iter()
+            .filter(|order| order.actor.0 == unit.id)
+            .all(|order| order.allows_attack(game, from, target.tile))
             && (!self.protect_withdrawal
                 || target.retreating != Some(true)
-                    && (!self.mediated.contains(&UnitId(target.id)) || preview().0 < target.hp))
+                    && (!self.mediated.contains(&UnitId(target.id))
+                        || game.preview(unit, target, weapon, from).0 < target.hp))
     }
     pub(crate) fn lanes(&self, game: &BattleView<'_, '_>) -> rustc_hash::FxHashSet<usize> {
         self.withdrawal_tiles
@@ -342,7 +358,7 @@ impl TacticalOrders {
         unit: &Unit,
         destinations: Vec<usize>,
     ) -> Vec<usize> {
-        let goals: Vec<_> = if game.rules().units[unit.kind].leader && self.leader_post.is_some() {
+        let goals: Vec<_> = if unit.is_leader() && self.leader_post.is_some() {
             self.leader_post.iter().map(|t| game.site(&t.0)).collect()
         } else {
             self.defensive_tiles
@@ -367,21 +383,21 @@ impl TacticalOrders {
     }
 }
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct CampaignOrders {
     pub recruitment: RecruitmentOrders,
     pub tactics: TacticalOrders,
 }
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum PlanningStatus {
     Fulfilled,
     Deferred,
     Unmet,
 }
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum PlanningReason {
     InactiveActor,
@@ -394,7 +410,7 @@ pub enum PlanningReason {
     SearchBudget,
     NotReached,
 }
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct DutyReport {
     pub id: String,
@@ -404,7 +420,7 @@ pub struct DutyReport {
     pub guards: Vec<UnitId>,
     pub incoming: Option<i32>,
 }
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PlanningReport {
@@ -420,7 +436,7 @@ pub struct TurnDiagnostics {
     pub report: PlanningReport,
 }
 
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RecruitmentReport {
@@ -428,7 +444,7 @@ pub struct RecruitmentReport {
     pub mandatory: Vec<UnitId>,
     pub requirements: Vec<RecruitmentShortfall>,
 }
-#[cfg_attr(feature = "wasm", derive(tsify::Tsify))]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct RecruitmentShortfall {
     pub selector: UnitSelector,

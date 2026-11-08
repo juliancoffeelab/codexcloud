@@ -15,7 +15,8 @@
       "damageType": "pierce",
       "category": "melee",
       "range": 1,
-      "sound": "attack-melee"
+      "sound": "attack-melee",
+      "spread": 1
     },
     {
       "id": "tidebolt",
@@ -25,7 +26,8 @@
       "damageType": "impact",
       "category": "ranged",
       "range": 2,
-      "sound": "attack-magic"
+      "sound": "attack-magic",
+      "spread": 1
     }
   ],
   "damageModifiers": {
@@ -55,6 +57,5 @@
   "level": 3,
   "family": "tidekeeper",
   "advancesTo": [],
-  "experienceNeeded": 0,
-  "leader": true
+  "experienceNeeded": 0
 }

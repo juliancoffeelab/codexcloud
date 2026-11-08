@@ -12,6 +12,22 @@ import zlib
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "pixel" / "art"
 FRAME_NAMES = {"bonearcher": "bone_archer", "grove": "sacred_grove"}
+# Finite native canvas policy, not an artwork-controlled size override. New
+# families stay 64x64 unless this reviewed contract explicitly admits them.
+PADDED_TERRAIN_FAMILIES = frozenset({'castle-wall', 'castle-bell'})
+CASTLE_CANVAS = {'width': 80, 'height': 96, 'anchorX': 40, 'anchorY': 48}
+
+
+def terrain_canvas(path):
+    geometry = json.loads(path.read_text())
+    if (path.parent.name not in PADDED_TERRAIN_FAMILIES or
+            not isinstance(geometry, dict) or
+            set(geometry) != {*CASTLE_CANVAS, 'z'} or
+            any(type(v) is not int for v in geometry.values()) or
+            any(geometry[key] != value for key, value in CASTLE_CANVAS.items())):
+        raise ValueError(f'{path}: only approved castle terrain may use the '
+                         '80×96 canvas anchored at (40,48); all other artwork is 64×64')
+    return geometry
 
 
 def require_canvas(rows, label="Artwork"):
@@ -54,13 +70,26 @@ def load_road_dead_ends():
 def require_terrain_variants(kind, stems, road_caps):
     """Every supported connection must have finished artwork, without frozen pixels."""
     if kind == 'road':
-        expected = {'tile'} | {str(mask) for mask in range(1, 64) if mask != 9}
+        expected = {str(mask) for mask in range(1, 64)}
         expected |= {f'{exits}-end-{ends}' for exits, ends in road_caps}
+    elif kind == 'signpost':
+        expected = {'9'}
     elif kind == 'village':
-        expected = {'tile', '0'} | {str(mask) for mask in range(1, 64)
-                                    if mask != 9 and mask.bit_count() <= 3}
+        expected = {'0'} | {str(mask) for mask in range(1, 64)
+                            if mask.bit_count() <= 3}
+    elif kind in ('castle-wall', 'castle-bell'):
+        catalog = json.loads((ART / 'terrain/castle-library.json').read_text())
+        if catalog.get('version') != 3:
+            raise ValueError('Unsupported castle library definition version')
+        definitions = catalog['families'][kind]
+        registered = json.loads((ART / 'terrain' / kind / 'variants.json').read_text())
+        if sorted(definitions, key=lambda v: v['id']) != sorted(registered, key=lambda v: v['id']):
+            raise ValueError(f'{kind}: finished registry differs from the reusable tile definitions')
+        expected = {v['id'] for v in definitions}
     elif kind in ('bridge', 'ford'):
-        expected = {'tile', 'ne-sw', 'nw-se'}
+        expected = {'9', '18', '36'}
+    elif kind in ('landing', 'ferry'):
+        expected = {'1', '8'}
     else:
         return
     missing, unsupported = expected - set(stems), set(stems) - expected
@@ -111,6 +140,8 @@ def rows(lineup):
     if "commander" in lineup:
         yield lineup["commander"]["units"]
     for tree in lineup["trees"]:
+        if not tree["branches"]:
+            yield [tree["base"]]
         for branch in tree["branches"]:
             yield [tree["base"], *branch["units"]]
 
@@ -131,14 +162,18 @@ def load_lineups(directory=None):
         if race != path.stem or not isinstance(lineup.get("trees"), list) or not lineup["trees"]:
             raise ValueError(f"{path}: expected the race's named tree file")
         for tree in lineup["trees"]:
-            if tree.get("base", {}).get("level") != 1 or not tree.get("branches"):
-                raise ValueError(f"{path}: every starter needs L1 and at least one branch")
+            if tree.get("base", {}).get("level") != 1 or not isinstance(tree.get("branches"), list):
+                raise ValueError(f"{path}: every starter needs L1 and a branches list (which may be empty)")
             for branch in tree["branches"]:
                 if not branch.get("role") or [u.get("level") for u in branch.get("units", [])] != [2, 3]:
                     raise ValueError(f"{path}: branches must contain L2 followed by L3")
         if "commander" in lineup and [u.get("level") for u in lineup["commander"].get("units", [])] != [1, 2, 3]:
             raise ValueError(f"{path}: commander must contain L1, L2 and L3")
         for unit in entries(lineup):
+            factions = unit.get("factions", ["player", "enemy"])
+            available = set(json.loads((ART / "factions.json").read_text())) - {"debug"}
+            if not isinstance(factions, list) or any(not isinstance(faction, str) for faction in factions) or not {"player", "enemy"}.issubset(factions) or len(set(factions)) != len(factions) or not set(factions).issubset(available):
+                raise ValueError(f'{path}: invalid unit faction variants')
             id = unit.get("id")
             if not isinstance(id, str) or not id or Path(id).name != id or not unit.get("name"):
                 raise ValueError(f"{path}: invalid unit identity")
@@ -188,18 +223,16 @@ def load_terrain_floors():
         if not re.fullmatch(r'[a-z][a-z0-9-]*', name):
             raise ValueError(f'Invalid floor name: {name!r}')
         require_shared_palette(palette, ('G', 'g'), f'{name} floor')
-    for kind, name in floors['defaults'].items():
-        if name not in floors['palettes']:
-            raise ValueError(f'{kind}: unknown default floor {name!r}')
     return floors
 
 
 def terrain_floor_palette(kind, floor=None):
     floors = load_terrain_floors()
-    name = floor if floor is not None else floors['defaults'].get(kind)
-    if name not in floors['palettes']:
-        raise ValueError(f'{kind}: unknown floor {name!r}')
-    return floors['palettes'][name]
+    if floor is None:
+        return {'G': [0, 0, 0, 0], 'g': [0, 0, 0, 0]}
+    if floor not in floors['palettes']:
+        raise ValueError(f'{kind}: unknown floor {floor!r}')
+    return floors['palettes'][floor]
 
 
 def chunk(kind, data):
@@ -207,12 +240,30 @@ def chunk(kind, data):
     return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", checksum)
 
 
+def inside_terrain_hex(x, y):
+    """Pixel-center mask for the shared 56×48 lattice in a native 64×64 frame."""
+    dx = abs(2 * x - 63)
+    return dx <= 56 and 4 * dx <= 7 * (64 - abs(2 * y - 63))
+
+
 def read_matrix(matrix):
     matrix = matrix.resolve()
     rows = matrix.read_text().splitlines()
     if not rows or not rows[0] or any(len(row) != len(rows[0]) for row in rows):
         raise ValueError(f"{matrix}: matrix must be a nonempty rectangle")
-    require_canvas(rows, matrix)
+    canvas = matrix.parent / 'canvas.json'
+    if canvas.is_file() and matrix.parent.parent == ART / 'terrain':
+        geometry = terrain_canvas(canvas)
+        if (len(rows) != geometry['height'] or len(rows[0]) != geometry['width']):
+            raise ValueError(f'{matrix}: invalid padded terrain canvas')
+    else:
+        require_canvas(rows, matrix)
+        if matrix.parent.parent == ART / 'terrain':
+            outside = [(x, y) for y, row in enumerate(rows) for x, symbol in enumerate(row)
+                       if symbol != '.' and not inside_terrain_hex(x, y)]
+            if outside:
+                raise ValueError(f'{matrix}: {len(outside)} pixels outside the native hex; '
+                                 'only approved padded terrain may overhang')
     return rows
 
 
@@ -245,9 +296,8 @@ def read_palette(matrix, floor=None):
             or not isinstance(rgba, list)
             or len(rgba) != 4
             or any(type(channel) is not int or not 0 <= channel <= 255 for channel in rgba)
-            or rgba[3] not in (0, 255)
         ):
-            raise ValueError(f"Invalid flat RGBA palette entry: {symbol!r}")
+            raise ValueError(f"Invalid RGBA palette entry: {symbol!r}")
     if matrix.stem == "sprite" and ("^" in palette or "*" in palette):
         raise ValueError(f"{matrix}: faction shades belong in factions.json")
     if palette.get(".") != [0, 0, 0, 0]:
@@ -333,7 +383,7 @@ def png_bytes(width, height, rgba):
 
 
 def composite(base, layers):
-    """Flatten opaque pixel-art layers at native integer offsets, in depth order."""
+    """Composite straight-alpha layers at native integer offsets, in depth order."""
     width, height, pixels = base
     result = bytearray(pixels)
     for (layer_width, layer_height, layer), dx, dy in layers:
@@ -345,24 +395,32 @@ def composite(base, layers):
                     continue
                 source = (y * layer_width + x) * 4
                 alpha = layer[source + 3]
-                if alpha not in (0, 255):
-                    raise ValueError('Pixel-art layers must have flat alpha')
                 if alpha:
                     target = ((y + dy) * width + x + dx) * 4
-                    result[target:target + 4] = layer[source:source + 4]
+                    if alpha == 255:
+                        result[target:target + 4] = layer[source:source + 4]
+                    else:
+                        background_alpha = result[target + 3]
+                        combined = alpha * 255 + background_alpha * (255 - alpha)
+                        for channel in range(3):
+                            numerator = (layer[source + channel] * alpha * 255
+                                         + result[target + channel] * background_alpha * (255 - alpha))
+                            result[target + channel] = (numerator + combined // 2) // combined
+                        result[target + 3] = (combined + 127) // 255
     return width, height, result
 
 
 def pixel_sprites():
     lineups = load_lineups()
     native = {}
+    factions = {u["id"]: u.get("factions", ["player", "enemy"]) for lineup in lineups.values() for u in entries(lineup)}
     for id, directory in sorted(unit_directories(lineups).items()):
         matrix = directory / "sprite.txt"
         materials = read_palette(matrix)
         require_grounded(read_matrix(matrix), {**materials, **faction_palette("player")},
                          json.loads((directory / "palette.json").read_text()).get("flying", False), id)
         alpha = None
-        for side in ("player", "enemy"):
+        for side in factions[id]:
             matrix = directory / "sprite.txt"
             if not matrix.exists():
                 raise ValueError(f"{matrix}: a shared sprite matrix is required")
@@ -390,38 +448,25 @@ def pixel_sprites():
 
     def add_terrain(key, matrix):
         terrain[key] = rgba_pixels(matrix)
-        if not any(terrain[key][2][3::4]):
-            raise ValueError(f'{matrix}: expected nonempty terrain artwork')
         for floor in floors['palettes']:
             terrain[f'{key}__{floor}'] = rgba_pixels(matrix, floor=floor)
+            if not any(terrain[f'{key}__{floor}'][2][3::4]):
+                raise ValueError(f'{matrix}: expected nonempty terrain artwork')
 
-    for matrix in sorted((ART / "terrain").glob("*/tile.txt")):
-        key = f"terrain_{FRAME_NAMES.get(matrix.parent.name, matrix.parent.name)}"
-        add_terrain(key, matrix)
-        kind = matrix.parent.name
-        require_terrain_variants(kind, [path.stem for path in matrix.parent.glob('*.txt')], road_caps)
-        default_mask = {"road": 9, "village": 9}.get(kind)
-        surface = frozenset("RrC" if kind == "road" else "RrH")
-        if default_mask is not None:
-            require_road_exits(read_matrix(matrix), default_mask, surface, label=kind)
-        for variant in sorted(matrix.parent.glob("*.txt")):
-            if variant == matrix:
-                continue
-            crossing = matrix.parent.name in ("bridge", "ford") and variant.stem in ("ne-sw", "nw-se")
-            path = (default_mask is not None and variant.stem.isdigit() and
-                    (0 if kind == "village" else 1) <= int(variant.stem) <= 63 and int(variant.stem) != default_mask and
-                    (kind == "road" or (kind == "village" and int(variant.stem).bit_count() <= 3)))
-            capped = re.fullmatch(r"(\d+)-end-(\d+)", variant.stem) if kind == "road" else None
-            if capped:
-                exits, ends = map(int, capped.groups())
-                capped = (exits, ends) in road_caps
-            if not (crossing or path or capped):
-                raise ValueError(f"{variant}: unknown terrain orientation")
-            if path:
-                require_road_exits(read_matrix(variant), int(variant.stem), surface, label=kind)
-            if capped:
-                require_road_exits(read_matrix(variant), exits, surface, label=kind)
-            add_terrain(f"{key}_{variant.stem}", variant)
+    for palette in sorted((ART / "terrain").glob("*/palette.json")):
+        kind = palette.parent.name
+        matrices = sorted(palette.parent.glob("*.txt"))
+        require_terrain_variants(kind, [path.stem for path in matrices], road_caps)
+        connected = kind in ('signpost', 'road', 'village', 'bridge', 'ford', 'landing', 'ferry', 'castle-wall', 'castle-bell')
+        if not connected and [p.stem for p in matrices] != ['tile']:
+            raise ValueError(f'{kind}: unconnected terrain requires only tile.txt')
+        key = f"terrain_{FRAME_NAMES.get(kind, kind)}"
+        for matrix in matrices:
+            if kind in ('road', 'village'):
+                mask = int(matrix.stem.split('-')[0])
+                require_road_exits(read_matrix(matrix), mask,
+                                   frozenset("RrC" if kind == "road" else "RrH"), label=kind)
+            add_terrain(f"{key}_{matrix.stem}" if connected else key, matrix)
     layouts = load_terrain_layouts()
     for matrix in sorted((ART / 'terrain/props').glob('*/*/tile.txt')):
         add_terrain(f'terrain_prop_{matrix.parent.parent.name}_{matrix.parent.name}', matrix)
@@ -447,38 +492,54 @@ def pixel_sprites():
     def property_name(key):
         return key if key.isidentifier() else json.dumps(key)
 
-    sprite_fields = ''.join(f'  {property_name(key)}: {json.dumps(url)},\n'
+    def string_property(key, value):
+        name, literal = property_name(key), json.dumps(value)
+        line = f'  {name}: {literal},'
+        return (line if len(line) <= 100 else f'  {name}:\n    {literal},') + '\n'
+
+    sprite_fields = ''.join(string_property(key, url)
                             for key, url in sorted(sprites.items()))
     floor_fields = ''.join(
         f'  {property_name(name)}: {json.dumps("#" + "".join(f"{c:02x}" for c in palette["G"][:3]))},\n'
         for name, palette in sorted(floors['palettes'].items())
     )
-    default_fields = ''.join(
-        f'  {property_name(kind)}: {json.dumps(name)},\n'
-        for kind, name in sorted(floors['defaults'].items())
-    )
     layout_fields = ''
     for kind, variants in layouts.items():
+        def placement_field(p):
+            return f'{{ name: {json.dumps(p["name"])}, x: {p["x"]}, y: {p["y"]} }}'
+        if len(variants) == 1 and len(variants[0]) == 1:
+            layout_fields += f'  {property_name(kind)}: [[{placement_field(variants[0][0])}]],\n'
+            continue
         layout_fields += f'  {property_name(kind)}: [\n'
         for placements in variants:
+            if len(placements) == 1:
+                layout_fields += f'    [{placement_field(placements[0])}],\n'
+                continue
             layout_fields += '    [\n'
             for p in placements:
-                layout_fields += f'      {{ name: {json.dumps(p["name"])}, x: {p["x"]}, y: {p["y"]} }},\n'
+                layout_fields += f'      {placement_field(p)},\n'
             layout_fields += '    ],\n'
         layout_fields += '  ],\n'
     model_fields = "".join(
         f"  {property_name(key)}: {json.dumps(model)},\n"
         for key, model in sorted(gameplay_models(lineups).items())
     )
+    geometry = {path.parent.name: terrain_canvas(path)
+                for path in sorted((ART / 'terrain').glob('*/canvas.json'))}
+    geometry_fields = ''.join(
+        f'  {property_name(key)}: {{ '
+        + ', '.join(f'{property_name(field)}: {json.dumps(value)}'
+                    for field, value in canvas.items())
+        + ' },\n'
+        for key, canvas in geometry.items()
+    )
     metadata = (
         "// Generated by scripts/build-pixel-art.py; edit pixel/art matrices and palettes.\n"
-        + "export const pixelSprites: Readonly<Record<string, string>> = {\n" + sprite_fields + "};\n"
-        + "\nexport const pixelFloorColors: Readonly<Record<string, string>> = {\n" + floor_fields + "};\n"
-        + "\nexport const pixelDefaultFloors = {\n" + default_fields + "} as const;\n"
-        + "\nexport const pixelTerrainLayouts: Readonly<\n"
-        + "  Record<string, readonly (readonly { name: string; x: number; y: number }[])[]>\n"
-        + "> = {\n" + layout_fields + "};\n"
-        + "\nexport const pixelUnitModels: Readonly<Record<string, string>> = {\n"
+        + "export const pixelSprites = {\n" + sprite_fields + "};\n"
+        + "\nexport const pixelFloorColors = {\n" + floor_fields + "};\n"
+        + "\nexport const pixelTerrainLayouts = {\n" + layout_fields + "};\n"
+        + "\nexport const pixelTerrainGeometry = {\n" + geometry_fields + "};\n"
+        + "\nexport const pixelUnitModels = {\n"
         + model_fields + "};\n"
     )
     return outputs, metadata
@@ -490,7 +551,7 @@ def main():
     args = parser.parse_args()
     outputs, metadata = pixel_sprites()
     products = {ROOT / "public/assets/sprites" / name: data for name, data in outputs.items()}
-    products[ROOT / "src/presentation/pixel-art.ts"] = metadata.encode()
+    products[ROOT / "src/presentation/pixel-art.mjs"] = metadata.encode()
     directory = ROOT / 'public/assets/sprites'
     expected = {directory / name for name in outputs}
     obsolete = set(directory.glob('*.png')) - expected

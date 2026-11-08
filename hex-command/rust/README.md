@@ -1,8 +1,10 @@
 # Rust game core
 
 [Authored JSON](data/README.md) supplies rules and scenario content directly.
-`data` owns definitions and snapshots, `logic` owns battle commands and campaign
-execution, and `ai` owns recruitment, campaign orders and planning. `simulation` owns scheduling,
+The internal `catalog` crate owns definitions, snapshots and authoring validation;
+`data` re-exports the model vocabulary. The `battle` crate owns mechanical state,
+commands and campaign execution; `ai` owns recruitment, campaign orders and
+planning. `simulation` owns scheduling,
 workers and records; `protocol` defines the browser transfer contract.
 
 A host owns `Catalog` and lends it to operations. Native workers share an immutable
@@ -10,9 +12,17 @@ catalog through scoped threads, while each match owns state and planning workspa
 Immutable geometry, effective missions and distance fields use local `Rc` inside
 one match; the core needs no shared mutable catalog or synchronization locks.
 
+The internal `freeze-derive` crate derives static mirrors of the current model
+fields and exhaustive conversions back to owned values. The catalog compiler
+validates the authoring documents and emits these mirrors as borrowed constants.
+The browser factory constructs its owned catalog from them once, retaining the
+existing gameplay types. Simulation-only tables are omitted from browser builds;
+the authoring loader is available there only with `runtime-catalog`. Static mirror
+types are not part of the saved-game or browser transfer format.
+
 ## Core execution
 
-`Catalog::load_from` and `Catalog::from_json_bundle` validate content and resolve
+Native `Catalog::load_from` and `Catalog::from_json_bundle` validate content and resolve
 terrain/race/unit inheritance once. `Game` executes typed commands and owns battle
 state. Occupancy and unit indexes avoid roster scans; terrain revisions invalidate
 cached route fields.
@@ -20,6 +30,13 @@ cached route fields.
 AI tactics compose a recruiter, campaigner and planner. Each receives a restricted
 view and contributes to a shared turn draft. Native matches execute that draft;
 the browser consumes its command queue through revision-checked battle handles.
+
+Condition evaluation borrows current battlefield facts through the catalog's shared
+query interface. Remembered fog has a derived tile index; saved games retain the
+original durable condition keys. Traversal updates remember new facts without
+constructing discarded presentation snapshots. Immutable tile fog conditions use
+`Arc` so snapshots share their trees while the catalog remains safe to share
+across native simulation threads. Their serialized shape is unchanged.
 
 ## Browser contract
 
@@ -29,51 +46,49 @@ commands, save and disposal. Revision checks reject stale decisions. Saved games
 contain only game state and seed. Browser saves bracket the whole enemy turn;
 commands and planning workspaces are never persisted.
 
-The live TypeScript adapter is `src/game/native-engine.ts`. Engine handles use
-`wasm-bindgen`; commands, snapshots and responses derive `Tsify`. Typed `Ts<T>`
-arguments validate inside the facade, where conversion failures return ordinary
-engine errors. Concrete transparent response types retain the shared
-`EngineResult<T>` envelope without losing generic arguments at the WASM boundary.
-Serialization uses JavaScript objects through Tsify's `js` feature, with maps as
-objects and explicit nulls; omitted optional save fields remain omitted.
+Rust exports in `src/wasm.rs` use `ocamljs_bindgen` and `ocamljsify` to generate
+native OCaml records, variants, results and opaque resource modules.
+`ocamljs_pack` emits the Wasm binary and matching bindings/runtime into Git-ignored
+`rust/pkg/`. The build copies `Bindings.ml/.mli` to `frontend/Domain.ml/.mli`;
+`frontend/Native.ml` owns the generated factory and battle handles.
 
-The Svelte UI, map picker, artwork, sound, pacing and browser tools remain in
-JavaScript. `src/game/live-game.ts` adapts native state/actions to the existing
-controller. Its published views contain detached state and precomputed Rust
-inspection results; rendering never calls the mutable engine. Moves, combat,
-recruitment, promotion, enemy planning and campaign transitions dispatch through
-WASM. Browser checkpoints retain native state and seed; previous browser saves
-are imported once, including pending enemy-turn recovery. Undo restores a native
-checkpoint. JavaScript continues to own campaign and scenario selection.
+`Native.ml` applies revision-checked updates and builds detached OCaml
+publications from state and precomputed Rust inspection. Unchanged terrain and
+records remain shared across publications. Native collections retain ordinary
+OCaml semantics. Rendering reads the publications rather than the mutable engine.
+The Rust buffered encoder borrows current state during serialization; the
+`BorrowFields` derive checks incremental projections against the owned model.
 
-`wasm-pack` generates the JavaScript, `.wasm` and `.d.ts` together in Git-ignored
-`rust/pkg/`. The adapter imports those generated types directly and derives its
-bridge signatures from the generated class. There is no separate type exporter
-or handwritten bridge contract.
+The frontend uses OCaml/Melange and ReasonReact with Preact compatibility imports.
+`frontend/Session.ml` owns commands, undo, saves, pacing and cancellable enemy
+phases. Moves, combat, recruitment, promotion, enemy planning and campaign
+transitions execute in Rust. Undo restores a native checkpoint. Enemy decisions
+are prepared during pacing windows and applied only while the session and
+revision still match.
 
 ```sh
-npm run wasm:build
-npm run wasm:build:release
-npm run check:wasm
+npm run wasm:build          # Development Wasm and matching OCaml bindings
+npm run wasm:build:release  # Size-optimized wasm-release profile
+npm run check:wasm         # Verify the schema, bindings and Wasm imports
 ```
 
-`wasm-pack` is pinned as an npm development dependency and installs the matching
-`wasm-bindgen` tool. Development and type-check commands build the bindings before
-using them; the production build uses the release profile. When npm runs
-behind an environment proxy, use `NODE_USE_ENV_PROXY=1 npm ci` with Node 24.5 or
-newer so its binary installer uses that proxy.
+Development and verification commands prepare matching generated artifacts;
+production builds also run the pinned Binaryen optimization. See
+[rust-toolchain](../.agents/skills/rust-toolchain/SKILL.md) for tool discovery.
 
-Browser persistence has one versioned envelope owned by `src/save/`. The generated
+Browser persistence has one versioned envelope defined by `src/save/schema.ts`,
+with browser I/O and lifecycle owned by `frontend/Save.ml` and `Session.ml`. The generated
 `SavedGame` checkpoint contains only seed and resolved game state;
 it has no separate format version. Historical conversion runs before native
 restore. Rust validates current battle invariants and never migrates browser saves.
-See [save migrations](../docs/save-migrations.md).
+See [save migrations](../.agents/skills/save-migrations/SKILL.md).
 
 ## Tests and simulations
 
 `npm test` includes native rules, commands, catalog validation, saves, scheduling
-and recording tests together with Python and browser-adapter tests under one
-shared 20-second budget. `npm run check:rust` is available for a focused native run.
+and recording tests together with Python and frontend tests under one
+shared 20-second advisory budget, including preparation. Runs warn and continue
+when they exceed that target. `npm run check:rust` is available for a focused native run.
 Its WASM feature also compares embedded content with the authored disk catalog.
 
 Use the [simulation guide](../.agents/skills/combat-simulation/SKILL.md) for

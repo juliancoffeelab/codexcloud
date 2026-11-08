@@ -1,38 +1,50 @@
 {
-  "subtitle": "Carry a message, not a conquest.",
-  "briefing": "The eastern villages have gone dark. Ivo carries their names and a message for the last ferryman; Nera promises to get him across the river. The Tollkeeper’s guards block the road, but this journey is about reaching the living, not conquering the valley.",
-  "hints": [
-    "Move Ivo's support first. Keep him outside enemy reach until the company opens a safe path; reaching the landing matters more than clearing the map.",
-    "Arrows find little purchase in bare bones. A scout's stone sling provides ranged Impact without a skeleton's melee reply.",
-    "The river has more than one crossing."
-  ],
+  "subtitle": "Find out why the other bank went dark.",
+  "briefing": "The landing lamp has gone out. Across the river, every window is dark. The ferry is tied up on the far bank, and nobody answers from the crossing. Take the island fords and find the ferryman.",
+  "hints": ["Find the scouts in the western woods to reinforce your patrol."],
   "intro": [
     {
-      "speaker": "Ivo",
       "portrait": "scout",
-      "text": "The eastern villages have not seen a lantern in three nights. I have their names here. Someone has to read them."
+      "text": "That landing lamp has burned every night since I was a boy. Last night it went out. So did every window on the other bank.",
+      "character": "ivo"
     },
     {
-      "speaker": "Nera",
-      "portrait": "commander",
-      "text": "Then we get you across. Stay behind the shields. We are not here to win the river; we are here to reach the other bank."
+      "portrait": "swordsman",
+      "text": "And the ferry?",
+      "character": "nera"
     },
     {
-      "speaker": "Ivo",
       "portrait": "scout",
-      "text": "The ford north of the bridge is still open. And the ferryman hid his purse in the old riverside ruin, if we need supplies."
+      "text": "Still tied up over there. We’ll have to take the fords round the island.",
+      "character": "ivo"
+    },
+    {
+      "portrait": "adept",
+      "text": "The wind’s coming down the valley. That mist is creeping the other way.",
+      "character": "oren"
+    },
+    {
+      "portrait": "scout",
+      "text": "You studied fog?",
+      "character": "ivo"
+    },
+    {
+      "portrait": "adept",
+      "text": "A whole winter at the Collegium. This wasn’t in the lessons.",
+      "character": "oren"
+    },
+    {
+      "portrait": "swordsman",
+      "text": "Find the ferryman. Quickly. Whatever happened, he’s alone over there.",
+      "character": "nera"
     }
   ],
   "victory": [
     {
-      "speaker": "Ivo",
-      "portrait": "scout",
-      "text": "The names are safe. But the ferryman says the dead have taken three settlements farther up the road."
-    },
-    {
-      "speaker": "Nera",
-      "portrait": "commander",
-      "text": "We will light each one. Let the people see that the road still belongs to the living."
+      "portrait": "swordsman",
+      "text": "Both lanterns are burning. Leave someone watching the crossing; the rest of us take the eastern road. We still have people to find.",
+      "character": "nera"
     }
-  ]
+  ],
+  "debrief": "The patrol reached the ferryman and secured the eastern villages."
 }

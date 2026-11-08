@@ -1,0 +1,14 @@
+(library
+ (name hex_devtools)
+ (modes melange)
+ (libraries melange.js hex_platform hex_engine)
+ (private_modules Map_draft_json)
+ (flags (:standard -open Hex_platform -open Hex_engine))
+ (preprocess (pps melange.ppx)))
+
+(rule
+ (target Map_draft_json.ml)
+ (deps ../../scripts/generate-json-codecs.mjs ../../rust/pkg/schema.json)
+ (action
+  (run node ../../scripts/generate-json-codecs.mjs --schema ../../rust/pkg/schema.json
+   --only PresentationInput --strict 1 --out %{target})))

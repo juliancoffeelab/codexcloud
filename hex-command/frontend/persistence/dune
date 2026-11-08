@@ -1,0 +1,7 @@
+(library
+ (name hex_persistence)
+ (modes melange)
+ (libraries melange.js melange.dom hex_platform hex_engine save_migrations)
+ (private_modules Save_storage Migration_contract Migration_native_contract)
+ (flags (:standard -open Hex_platform -open Hex_engine))
+ (preprocess (pps melange.ppx)))

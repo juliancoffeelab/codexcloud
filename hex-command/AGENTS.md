@@ -1,91 +1,48 @@
-# Hex Command development rules
+# Hex Command instructions
 
-- Use [docs/development.md](docs/development.md) for setup and technical references.
-  The README is user-owned; modify it only when explicitly asked.
+Startup should be fast and show as much of final UI to the user as possible as
+early as possible, by lazy-loading unnecessary parts.
+The data should be prefetched, user must never wait for the data loading.
+Loading failures must provide a full backtrace and a way to restart cleanly.
 
-- **Permanent character canvas rule: every character/unit sprite and portrait is
-  exactly 64×64 native pixels. This rule must never be changed; do not reintroduce
-  alternate sizes, automatic cropping or resizing.** New generation, extraction,
-  cleaning and generated frames must use 64×64. Most characters should be below
-  40 painted pixels tall; cavalry and giants may go slightly above this. Compare
-  mounted artwork with existing mounted units before setting scale. Distinguish
-  body/mount height from raised weapons or staffs. Terrain tiles also use exactly
-  64×64 native pixels, with a pointy-top regular hex centered in the square frame.
-  Terrain, troops and commanders share one battlefield pixel scale; do not add
-  per-unit scaling to emphasize leaders.
-- **Native row 63 is the ground line. Grounded units must stand on it with no
-  transparent rows beneath their ground-contacting body.** Preserve every painted
-  pixel when aligning existing units: translate within the canvas, never resize
-  or crop. Intentionally suspended animal poses must declare `"flying": true` in
-  `palette.json`; this artwork-only flag covers hovering and swimming poses.
-  Missing or false means grounded.
-- Keep changes quick to make and review. Tests must be small, fast, and lightweight.
-- Data-only changes do not justify new behavioral tests or extra named-content
-  cases in existing test matrices.
-- Validate content through generic schema and consistency checks. Measure
-  balance through simulations.
-- Add tests for new mechanics, changed code paths, or reproduced bugs that
-  existing coverage misses. Identify that missing coverage before writing tests.
-- Use a small, fixed set of representative fixtures. Do not freeze current
-  unit stats, promotion choices, recruitment lists or roster sizes.
-- Do not duplicate existing coverage merely because new content uses it.
-  Remove redundant cases when found.
-- Keep temporary data, experiments and diagnostics in ignored `tmp/`, outside
-  tracked content.
-- No tracked markdown file is allowed to contain information that is only relevant
-  for the current work. Markdown files whose sole purpose is to track current work
-  are not allowed to be in tracked places. Docs must contain permanent information.
-- Run `npm run format` to apply project formatting automatically.
-- Target 20 seconds for all test suites together, including Rust, Python
-  and Vitest. Use the shared `npm test` runner; exceeding the target warns
-  without terminating the run or failing successful tests. Use
-  controlled promises or an injected clock instead of real delays.
-- Keep browser automation out of the default test suite. Playwright is available
-  for explicitly requested browser spot checks; keep scratch probes in ignored
-  `tmp/`. Do not add mandatory browser installs, extra services, large migration
-  suites, or Git-history fixtures. Use focused checks for meaningful rules,
-  state transitions, publication, and cancellation behavior.
-- Startup should be fast. Lazy-load what is possible. Loading failures must
-  provide a way to diagnose the error and restart cleanly.
-- Run combat simulations when needed to explore or validate balance. Do not wait
-  for separate permission to use them during balance work.
-- After changing the simulation harness, analyzer or AI behavior, run fresh
-  simulations and include the report directly in the final reply without waiting
-  for another request. A successful run or test status alone is not delivery.
-  Report the affected workload; use the full panel when scope is unclear.
-- `dist/` contains generated output and is Git-ignored. Commit source and public
-  assets. For Sites publication, build the selected checkout with `npm run build`,
-  commit and push its exact source to the Sites source repository, then package
-  it with `python3 scripts/package-site.py /tmp/hex-command.tar.gz`. Publish the
-  archive and source commit. Do not use `git archive` for generated output; the
-  packager checks client references and archive bytes.
-- Use feature branches and pull requests for publication as for other changes.
-  Never push directly to `main` or bypass the repository's PR workflow.
-- Commit and push before returning only if the current task took more than
-  10 minutes, even if unfinished or checks fail. Otherwise, keep changes local.
-  Report check status and remaining work.
-- For visual changes, deploy before pushing to GitHub so the user can test them
-  sooner. If deployment fails, report it and still make the required GitHub push.
+Runtime code obtains current authored game data, including scenarios and their
+settings, through Rust. Frontend JSON imports or generated game-data modules must
+not bypass Rust. Pure presentation details may live in the frontend; devtools may
+read source data directly.
 
-## Skills
+For battlefield rendering changes, preserve the
+[native artwork scale](.agents/skills/design-unit/SKILL.md#native-artwork) and
+[offline terrain contract](.agents/skills/design-terrain/SKILL.md#terrain-contract).
 
-Read the linked `SKILL.md` before starting work that matches its trigger.
+# Skills
 
+- [live-play](.agents/skills/live-play/SKILL.md): Playtest through the player UI only when the user explicitly authorizes browser gameplay.
+- [engine-probe](.agents/skills/engine-probe/SKILL.md): Use for user-requested extensive engine end-to-end probes without complete UI coverage.
+
+- [testing](.agents/skills/testing/SKILL.md): Use for bug fixes, test changes and implementation validation.
+- [save-migrations](.agents/skills/save-migrations/SKILL.md): Use when changing or
+  auditing save loading, save formats, migrations, or their data and dependencies.
+- [deploy](.agents/skills/deploy/SKILL.md): Use for an intended live human playtest, or when
+  the user asks to deploy, publish or update the live game.
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
-  simulations; or assess balance, campaign competence or simulation performance.
-- [pinkbox-enhancement](.agents/skills/pinkbox-enhancement/SKILL.md): Use when
-  asked to recolor or redesign existing unit artwork, create upgrade artwork
-  from an approved unit, or recolor terrain floors.
+  simulations; change simulation harnesses or analyzers; or assess balance, campaign competence or simulation performance.
+- [design-campaign](.agents/skills/design-campaign/SKILL.md): Use to design or
+  revise campaigns and scenarios, including writing, objectives, maps, encounters,
+  progression, and supporting mechanics.
+- [design-unit](.agents/skills/design-unit/SKILL.md): Use when creating, revising
+  or integrating unit artwork, promotion branches or shared sprite scale, or
+  previewing and comparing faction lineups.
+- [design-terrain](.agents/skills/design-terrain/SKILL.md): Use when authoring,
+  revising or integrating terrain artwork, connected variants or shared tile geometry.
 - [pinkbox-generation](.agents/skills/pinkbox-generation/SKILL.md): Use when
-  asked to generate a new pixel unit or regenerate a unit's shape, pose or
-  equipment through image generation.
-- [pixel-cleaning](.agents/skills/pixel-cleaning/SKILL.md): Use when asked to
-  inspect, clean or repair sprite or terrain pixels, outlines, shading, ground
-  alignment or terrain joins.
-- [pixel-lineup](.agents/skills/pixel-lineup/SKILL.md): Use when asked to show,
-  preview or visually compare faction lineups, unit upgrade trees or progression
-  grids.
+  generating or regenerating native pixel artwork from reference matrices,
+  including units, terrain and foreground props.
+- [pixel-cleaning](.agents/skills/pixel-cleaning/SKILL.md): Use when inspecting,
+  cleaning or repairing native pixel artwork, including units, terrain and props.
+- [artwork-enhancement](.agents/skills/artwork-enhancement/SKILL.md): Use when
+  revising approved pixel artwork, including manual edits, recoloring,
+  regeneration, unit upgrades and terrain changes.
 - [rust-toolchain](.agents/skills/rust-toolchain/SKILL.md): Use when building,
   testing or formatting Rust code, compiling WASM or simulation binaries, or
   troubleshooting Cargo, Rustup or wasm-pack.

@@ -1,83 +1,83 @@
 ---
 name: pixel-cleaning
-description: Use for inspecting or repairing Hex Command sprite and terrain pixels, outlines, shading, alignment or joins.
+description: Use to inspect, clean or repair native pixel artwork, including units, terrain and foreground props.
 ---
 
 # Pixel cleaning
 
-Work from the game root with Python 3 and Pillow. Detection requests use only
-read-only commands. Before editing, preserve the exact baseline matrix, palette
-and image in a fresh `tmp/` directory. Use the branch matching the source.
+This is the shared cleanup step after generation, enhancement or manual edits.
+Use [design-unit](../design-unit/SKILL.md) and
+[design-terrain](../design-terrain/SKILL.md) for subject-specific requirements.
+Work from the game root with Python 3 and Pillow. Read
+[implementation.md](implementation.md) before changing the helpers.
 
-## Unit sprites
+## Inspect
+
+Detection requests are read-only. Before edits, preserve the exact baseline
+matrix, palette and rendered image in a fresh ignored `tmp/` directory. Keep
+source matrix dimensions unchanged. For units, follow the
+[native artwork rules](../design-unit/SKILL.md#native-artwork); for terrain, follow
+[its frame contract](../design-terrain/SKILL.md#terrain-contract). The current cleanup
+helpers accept ordinary 64×64 matrices. For complete padded
+terrain frames, retain the declared canvas, anchor and depth and inspect the full
+frame through the artwork builder/map renderer. Report that guarded cleanup helpers
+do not yet support this branch; extend those shared helpers within an authorized
+implementation task before using them on padded frames.
+Inspect at native scale and enlarged with nearest neighbor.
+
+Start by isolating material colors. Highlight every occurrence of each selected
+RGB color, including misplaced pixels. Do not filter matches by location,
+neighbors, symbol or presumed ownership. Each check accepts at most two source
+colors with distinct replacements. Presets expand into pairs; explicit `--color`
+values work for any subject. Check coordinates, counts, hashes and source/shade
+colors in the report. The agent judges which pixels are wrong.
 
 ```sh
+python3 .agents/skills/pixel-cleaning/scripts/highlight_colors.py \
+  pixel/art/terrain/hill/tile.txt --color '#1e511a' --color '#476922' \
+  --output tmp/hill-colors
 python3 .agents/skills/pixel-cleaning/scripts/review.py \
-  pixel/art/units/humans/scout/sprite.txt tmp/scout-review
-python3 .agents/skills/pixel-cleaning/scripts/apply_edits.py \
-  pixel/art/units/humans/scout/sprite.txt tmp/scout-edits.json tmp/scout-candidate
+  pixel/art/terrain/hill/tile.txt tmp/hill-review
 ```
 
-The edit JSON requires `matrix_sha256`, `palette_sha256` and `edits`. Use the source
-hashes from the review's `report.json` (`sha256` and `palette_sha256`). Each edit
-has native `x`, `y`, `from`, `to`, `material` and `reason`. Outline or transparency
-changes also require `boundary_reviewed: true`. Apply to a fresh `tmp/` directory;
-the helper returns `sprite.txt`, its palette, a comparison image and an exact
-`before/` copy. Rerun review on that candidate before integration.
+The combined reviewer accepts unit, terrain and prop matrices. It provides
+isolated-pixel and outline candidates, material neighborhoods and full previews.
+Unit previews also compare player, enemy and debug faction colors. For standalone detectors or detector-specific options, consult
+[detector commands](implementation.md#standalone-detectors).
 
-Character matrices remain 64×64. Keep grounded feet or bodies at native row 63;
-equipment touching it is insufficient. Preserve every painted pixel during
-alignment. Intentionally suspended poses retain their explicit flying flag.
-Use the approved human scout as a finish benchmark for material planes,
-without copying its pose or palette.
+## Repair
 
-## Terrain matrices
+Judge findings against the intended surface. Flags are candidates, not painting
+instructions. Inspect connected wrong-material patches too; zero flags does not
+establish clean artwork. Preserve intentional diagonals, details and negative
+spaces. Terrain does not automatically need a black outline.
 
-For `tile.txt` and directional frames, use the standalone detectors, which accept
-terrain sources and resolve their shared floor colors. The unit review/edit
-helpers above accept only `sprite.txt`.
+For confirmed edits, follow the
+[guarded edit request contract](implementation.md#edit-request-contract).
 
 ```sh
-python3 .agents/skills/pixel-cleaning/scripts/check_isolated_pixels.py \
-  pixel/art/terrain/road/tile.txt --output tmp/road-review/strays.json \
-  --images-dir tmp/road-review
-python3 .agents/skills/pixel-cleaning/scripts/check_broken_outlines.py \
-  pixel/art/terrain/road/tile.txt --output tmp/road-review/outlines.json \
-  --images-dir tmp/road-review
+python3 .agents/skills/pixel-cleaning/scripts/apply_edits.py \
+  pixel/art/terrain/hill/tile.txt tmp/hill-edits.json tmp/hill-candidate
 ```
 
-Review each affected directional frame and connected forks, crossroads and curves.
-Road exits must meet at the same position and width, with a normal tangent through
-the hex boundary. Assess the joins at native scale; matching connection names
-alone do not establish continuity. Treat outline findings as candidates: terrain
-surfaces do not necessarily use character-style black borders.
+The helper writes a fresh candidate and byte-exact baseline for comparison.
+For terrain scratch palette integration, follow
+[floor palettes](../design-terrain/references/surfaces.md#floor-palettes).
 
-For requested source fixes, back up the matrix and its palette, then edit only
-individually reviewed native matrix pixels. Keep shared floor colors in
-`floors.json`, as described in [terrain artwork](../../../docs/terrain-artwork.md).
-Rerun the detectors and `npm run art:build` / `npm run art:check`, and inspect the
-affected tile networks. Preserve the original frame filenames during edits.
+Rerun diagnostics and inspect the full result. Correct only confirmed defects,
+restore mistaken edits exactly and state remaining uncertainty. Do not modify
+only a PNG, resize/crop artwork to hide defects, or bulk-apply detector flags.
+Shape or palette-wide changes belong in
+[artwork-enhancement](../artwork-enhancement/SKILL.md).
 
-## Review and present
+## Finish
 
-Inspect the review images and unmarked source. A full cleanup examines every
-surface, including connected defects detectors miss; a narrow fix stays within
-its requested scope. Findings are candidates, not instructions to paint them.
+Review unit anatomy, material ownership and body ground contact with the unit
+design skill. Review terrain/props in assembled neighborhoods, including joins,
+floor variants and densities, with the terrain design skill. A clean isolated
+piece can still compose badly.
 
-- Preserve intentional eyes, highlights, diagonals, limb separators, weapon width
-  and negative spaces. Do not bridge every diagonal or fill every notch.
-- Infer material ownership from the source and anatomy. Distinguish skin from
-  sleeves and pale clothing from fur or armor. Match repairs to the actual material.
-- Keep shade clusters coherent.
-
-Apply only individually justified matrix edits. Do not batch-paint detector flags
-or edit only a PNG. Rerun diagnostics and visually inspect the result. Track
-confirmed defects separately from changed pixels; zero flags does not establish
-that a sprite is clean. Restore mistaken edits exactly and state remaining uncertainty.
-
-Show a clean nearest-neighbor matrix render in the requested faction, otherwise
-last used or enemy for units. Keep debug colors and overlays internal unless asked. Use
-[lineup previews](../pixel-lineup/SKILL.md) for trees. When integration is part of
-the task, copy the chosen unit matrix/palette into its unit folder and rebuild/check
-art. For detector or guarded-editor changes and debugging, read
-[implementation.md](implementation.md).
+Show clean matrix renders; retain diagnostic views under ignored `tmp/`. When
+integration is requested, update canonical matrices/palettes and run
+`npm run art:build` and `npm run art:check`. These invoke the artwork-builder
+script; the builder is not a skill. Stay within the requested integration scope.

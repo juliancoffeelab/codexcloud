@@ -3,6 +3,10 @@ name = "hex-command-simulation"
 version = "0.1.0"
 edition = "2024"
 
+[workspace]
+members=["catalog","freeze-derive","battle"]
+resolver="2"
+
 [lib]
 name = "hex_command_core"
 crate-type = ["rlib", "cdylib"]
@@ -13,15 +17,18 @@ path = "src/main.rs"
 
 [features]
 default = []
-wasm = ["dep:tsify", "dep:wasm-bindgen"]
+runtime-catalog = ["hex-command-catalog/runtime-catalog", "hex-command-battle/runtime-catalog"]
+wasm = ["dep:ocamljsify", "dep:ocamljs_bindgen", "hex-command-catalog/wasm", "hex-command-battle/wasm"]
 
 [dependencies]
+ocamljsify={path="../../ocaml-js-bindgen/crates/ocamljsify",optional=true}
+ocamljs_bindgen={path="../../ocaml-js-bindgen/crates/ocamljs_bindgen",optional=true}
+hex-command-battle={path="battle"}
+hex-command-catalog={path="catalog"}
 rustc-hash = "2"
 serde = { version = "1", features = ["derive", "rc"] }
 serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }
 sha2 = "0.10"
-tsify = { version = "0.5.8", default-features = false, features = ["js"], optional = true }
-wasm-bindgen = { version = "0.2", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 arrow-array = "57"
@@ -33,6 +40,7 @@ mimalloc = { version = "0.1", default-features = false }
 clap = { version = "4.5", features = ["derive"] }
 
 [build-dependencies]
+hex-command-catalog={path="catalog",features=["bake"]}
 sha2 = "0.10"
 
 [profile.release]
@@ -46,3 +54,10 @@ inherits = "release"
 lto = false
 codegen-units = 16
 incremental = true
+
+# Optimize browser download size independently of the native simulation profile.
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
+codegen-units = 1

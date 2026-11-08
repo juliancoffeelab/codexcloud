@@ -1,41 +1,199 @@
 {
   "events": [
     {
-      "id": "ledger",
-      "trigger": {
-        "kind": "visit",
-        "tile": "5,5"
+      "id": "ledgerkeeper-death",
+      "when": {
+        "killed": {
+          "character": "ledgerkeeper"
+        }
       },
-      "label": "Recover the forgotten workers’ ledger",
-      "gold": 6,
-      "dialogue": [
+      "actions": [
         {
-          "speaker": "Orin",
-          "portrait": "necromancer",
-          "text": "They wrote down our wages. They did not write down our names. Take the six coins. We can begin with that."
+          "setFlag": "ledgerkeeper-dead"
+        }
+      ]
+    },
+    {
+      "id": "orin-death",
+      "when": {
+        "killed": {
+          "character": "orin"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "orin-dead"
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "ledger-cache"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 6
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "necromancer",
+              "text": "They wrote down our wages. They did not write down our names. Take the six coins. We can begin with that.",
+              "character": "orin"
+            }
+          ]
+        },
+        {
+          "setFlag": "ledger"
+        },
+        {
+          "log": "Recover the forgotten workers\u2019 ledger"
+        }
+      ],
+      "objective": {
+        "label": "Recover the forgotten workers\u2019 ledger",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "ledger-cache"
+            },
+            "side": "player"
+          }
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "ledger-cache"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "southern-capture-party",
+      "when": {
+        "turn": {
+          "number": 6,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 6
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "adept"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 6
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "warden"
+              }
+            ]
+          }
+        },
+        {
+          "log": "An adept and warden arrive from the southern road on turn 6"
+        }
+      ]
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "exit"
+          },
+          "role": "leader",
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "ashen-quarry-goal-0"
+        }
+      ],
+      "objective": {
+        "label": "Bring Orin to the northern quarry gate",
+        "intent": {
+          "escape": {
+            "tile": {
+              "location": "exit"
+            },
+            "role": "leader",
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "exit"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "ashen-quarry-goal-0"
+          },
+          {
+            "hasUnits": {
+              "role": "leader",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "waves": [
-    {
-      "round": 6,
-      "label": "An adept and warden arrive from the southern road on turn 6",
-      "id": "southern-capture-party",
-      "units": [
-        {
-          "type": "adept",
-          "side": "enemy",
-          "col": 11,
-          "row": 6
-        },
-        {
-          "type": "warden",
-          "side": "enemy",
-          "col": 10,
-          "row": 6
-        }
-      ]
-    }
-  ]
+  "requiredCompanions": [],
+  "enemyLeaderPost": {
+    "location": "enemy-keep"
+  }
 }

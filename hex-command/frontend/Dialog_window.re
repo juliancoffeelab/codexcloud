@@ -1,0 +1,83 @@
+open Ui;
+[@mel.set] external setStyle: (ReactDOM.domProps, ReactDOM.Style.t) => unit = "style";
+[@mel.set] external windowWidth: (ReactDOM.Style.t, string) => unit = "--window-width";
+[@react.component]
+let make =
+    (
+      ~title,
+      ~dialog,
+      ~id="",
+      ~width="420px",
+      ~tall=false,
+      ~canDismiss=true,
+      ~releaseControls=false,
+      ~className="",
+      ~onBeforeClose=() => (),
+      ~onBack: option(unit => unit)=?,
+      ~body: option(React.ref(Js.Nullable.t(Dom.element)))=?,
+      ~children,
+    ) => {
+  let dismiss = () =>
+    if (canDismiss) {
+      onBeforeClose();
+      close(dialog);
+    };
+  let props =
+    ReactDOM.domProps(
+      ~id,
+      ~className="dialog-window " ++ className ++ (tall ? " tall" : ""),
+      ~ref=ReactDOM.Ref.domRef(dialog),
+      ~ariaLabel=Utf8.to_js(title),
+      ~onClick=
+        event =>
+          if (canDismiss) {
+            if (React.Event.Mouse.target(event) == React.Event.Mouse.currentTarget(event)) {
+              onBeforeClose();
+            };
+            backdrop(event);
+          },
+      (),
+    );
+  onCancel(props, event =>
+    if (!canDismiss) {
+      React.Event.Form.preventDefault(event);
+    } else {
+      onBeforeClose();
+    }
+  );
+  let style = ReactDOM.Style.make();
+  windowWidth(style, width);
+  setStyle(props, style);
+  ReactDOM.createElement(
+    "dialog",
+    ~props,
+    [|
+      <header className={onBack == None ? "" : "with-back"}>
+        {option(onBack, back =>
+           <button
+             className="window-icon"
+             onPointerDown=?{releaseControls ? None : Some(Button_press.pointer_down(back))}
+             onClick={releaseControls ? _ => back() : Button_press.click(back)}
+             ariaLabel="Back to Menu">
+             <svg viewBox="0 0 24 24" ariaHidden=true> <path d="m14 5-7 7 7 7" /> </svg>
+           </button>
+         )}
+        <h2 tabIndex=(-1)> {text(title)} </h2>
+        {canDismiss
+           ? <button
+               className="window-icon"
+               onPointerDown=?{releaseControls ? None : Some(Button_press.pointer_down(dismiss))}
+               onClick={releaseControls ? _ => dismiss() : Button_press.click(dismiss)}
+               ariaLabel={Utf8.to_js("Close " ++ String.lowercase_ascii(title))}>
+               <svg viewBox="0 0 24 24" ariaHidden=true> <path d="m6 6 12 12M18 6 6 18" /> </svg>
+             </button>
+           : React.null}
+      </header>,
+      switch (body) {
+      | None => <div className="window-content"> children </div>
+      | Some(body) =>
+        <div className="window-content" ref={ReactDOM.Ref.domRef(body)}> children </div>
+      },
+    |],
+  );
+};

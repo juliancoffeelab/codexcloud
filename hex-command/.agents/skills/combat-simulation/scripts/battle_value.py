@@ -15,7 +15,12 @@ FIELDS = ('unitTurns', 'hpDamageDealt', 'hpDamageTaken', 'weaponHPDamageDealt', 
           'ownedTileTurns', 'objectiveControlTurns', 'capturableOccupationTurns',
           'objectiveOccupationTurns', 'casualties', 'recruitGoldLost',
           'casualtyReplacementValue')
-DIMS = ('kind', 'campaign', 'diplomacy', 'mission', 'race', 'policy', 'opponentPolicy', 'map', 'family')
+DIMS = ('kind', 'campaign', 'diplomacy', 'objective', 'mission', 'race', 'policy', 'opponentPolicy', 'map', 'family')
+
+
+def cell_key(tile):
+    """Hashable analysis key for current structured hexes and historical journals."""
+    return f"{tile['col']},{tile['row']}" if isinstance(tile, dict) else tile
 
 
 def analyze(inputs, journals, value=True, leaders=True):
@@ -42,12 +47,25 @@ def analyze(inputs, journals, value=True, leaders=True):
             initial = chapter['initial']
             tiles = {t['id']: t for t in initial['tiles']}
             owners = {t: u.get('owner') for t, u in tiles.items()}
+            factions = {f['id']: f for f in initial.get('factions', [])}
+            def faction_id(unit):
+                return unit.get('faction') or unit['side']
+            def hostile(first, second):
+                if first == second:
+                    return False
+                relation = factions.get(first, {}).get('relations', {}).get(second)
+                if relation is None:
+                    relation = factions.get(second, {}).get('relations', {}).get(first)
+                return relation == 'hostile' if relation is not None else {first, second} == {'player', 'enemy'}
+            def replacement_cost(unit):
+                pool = factions.get(faction_id(unit), {}).get('recruits') or []
+                return next((entry.get('cost', profiles[unit['type']]['cost']) for entry in pool if entry['unit'] == unit['type']), profiles[unit['type']]['cost'])
             captors, investments = {}, {}
             objective_tiles = {side: set() for side in ('player', 'enemy')}
             for phase in chapter['phases']:
                 for objective in phase.get('objectives', []):
                     if objective.get('kind') == 'capture':
-                        objective_tiles[phase['side']].update(objective['tiles'])
+                        objective_tiles[phase['side']].update(cell_key(t) for t in objective['tiles'])
 
             def policy(side):
                 blocks = config.get(side + 'Blocks')
@@ -57,7 +75,7 @@ def analyze(inputs, journals, value=True, leaders=True):
                 side = unit['side']
                 other = 'enemy' if side == 'player' else 'player'
                 race = config['armies'][side] if kind == 'arena' else profiles[unit['type']]['race']
-                return (kind, config.get('campaign', ''), config.get('diplomacy', ''), mission,
+                return (kind, config.get('campaign', ''), config.get('diplomacy', ''), config.get('objective', 'authored'), mission,
                         race, policy(side), policy(other), landscape, profiles[unit['type']]['family'])
 
             def add(unit, **stats):
@@ -74,7 +92,7 @@ def analyze(inputs, journals, value=True, leaders=True):
                     for unit in phase['units']:
                         if unit['side'] == side:
                             add(unit, unitTurns=1)
-                            tile = unit['tile']
+                            tile = cell_key(unit['tile'])
                             if tiles[tile]['terrain'] in CAPTURABLE:
                                 add(unit, capturableOccupationTurns=1)
                             if tile in objective_tiles[side]:
@@ -89,17 +107,17 @@ def analyze(inputs, journals, value=True, leaders=True):
                                 and u['type'] == action['type'] and u['id'] not in investments]
                             if len(recruits) != 1:
                                 raise ValueError('Cannot identify recorded new recruit from its deployment tile/type')
-                            investments[recruits[0]['id']] = profiles[action['type']]['cost']
+                            investments[recruits[0]['id']] = action['cost'] if action.get('cost') is not None else replacement_cost(recruits[0])
                         elif action['kind'] == 'move':
                             unit = lookup[action['unit']]
-                            tile = action['tile']
-                            if tiles[tile]['terrain'] in CAPTURABLE and owners[tile] != unit['side']:
-                                owners[tile] = unit['side']
+                            tile = cell_key(action['tile'])
+                            if tiles[tile]['terrain'] in CAPTURABLE and (owners[tile] is None or hostile(faction_id(unit), owners[tile])):
+                                owners[tile] = faction_id(unit)
                                 captors[tile] = dict(unit)
                                 add(unit, captures=1, objectiveCaptures=int(tile in objective_tiles[unit['side']]))
                     for loss in phase.get('losses', []):
                         add(loss, casualties=1, recruitGoldLost=investments.pop(loss['id'], 0),
-                            casualtyReplacementValue=profiles[loss['type']]['cost'])
+                            casualtyReplacementValue=replacement_cost(loss))
                     for combat in phase.get('combats', []):
                         mitigation = combat.get('mitigation')
                         if mitigation is None:
@@ -111,7 +129,8 @@ def analyze(inputs, journals, value=True, leaders=True):
                         ):
                             if event is None:
                                 continue
-                            actual = min(event['afterTerrainDamage'], event['availableHp'])
+                            actual = (event['effectiveDamage'] if event.get('effectiveDamage') is not None
+                                      else min(event['afterTerrainDamage'], event['availableHp']))
                             add(actor, hpDamageDealt=actual, weaponHPDamageDealt=actual)
                             add(defender, hpDamageTaken=actual, weaponHPDamageTaken=actual,
                                 armourDamagePrevented=event['effectiveArmourPrevented'],
@@ -134,9 +153,9 @@ def analyze(inputs, journals, value=True, leaders=True):
                             for source in sources:
                                 reflected = effective * thorns['auraDamage'] / raw / len(sources)
                                 add(lookup[source], hpDamageDealt=reflected, thornHPDamageDealt=reflected)
-                    observed_owners = {o['tile']: o['owner'] for o in phase['ownership']}
+                    observed_owners = {cell_key(o['tile']): o['owner'] for o in phase['ownership']}
                     for tile, captor in captors.items():
-                        if observed_owners.get(tile) == side and captor['side'] == side:
+                        if observed_owners.get(tile) == faction_id(captor) and captor['side'] == side:
                             add(captor, ownedTileTurns=1,
                                 objectiveControlTurns=int(tile in objective_tiles[side]))
                     owners.update(observed_owners)

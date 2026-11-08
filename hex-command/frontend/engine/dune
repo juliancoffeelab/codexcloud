@@ -1,0 +1,7 @@
+(library
+ (name hex_engine)
+ (modes melange)
+ (libraries melange.js melange.dom hex_platform)
+ (private_modules Snapshot_equal)
+ (flags (:standard -open Hex_platform))
+ (preprocess (pps melange.ppx)))

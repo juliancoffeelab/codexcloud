@@ -1,104 +1,1455 @@
 {
-  "events": [
+  "enemyGroups": [
     {
-      "id": "reeds",
-      "trigger": {
-        "kind": "visit",
-        "tile": "5,1"
-      },
-      "label": "Meet the reed gatherers by the northern bridge",
-      "gold": 6,
-      "dialogue": [
-        {
-          "speaker": "Reed gatherer",
-          "portrait": "worker",
-          "text": "We saved what we could. Please make sure the road is still open when our children come home."
+      "id": "north-watch",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "location": "northern-ritual-mark"
+          },
+          {
+            "hex": {
+              "col": 10,
+              "row": 5
+            }
+          },
+          {
+            "hex": {
+              "col": 10,
+              "row": 6
+            }
+          }
+        ],
+        "attackRadius": 2,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "character": "northern-captives"
         }
-      ]
+      }
+    },
+    {
+      "id": "east-watch",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "location": "eastern-ritual-mark"
+          },
+          {
+            "hex": {
+              "col": 19,
+              "row": 9
+            }
+          },
+          {
+            "hex": {
+              "col": 18,
+              "row": 10
+            }
+          }
+        ],
+        "attackRadius": 2,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "character": "eastern-captives"
+        }
+      }
+    },
+    {
+      "id": "south-watch",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "location": "southern-ritual-mark"
+          },
+          {
+            "hex": {
+              "col": 13,
+              "row": 20
+            }
+          },
+          {
+            "hex": {
+              "col": 12,
+              "row": 19
+            }
+          }
+        ],
+        "attackRadius": 2,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "character": "southern-captives"
+        }
+      }
+    },
+    {
+      "id": "monastery-wolves"
+    },
+    {
+      "id": "bell-raised"
     }
   ],
-  "waves": [
+  "events": [
     {
-      "id": "first-rise-9-1",
-      "round": 8,
-      "label": "An unsealed grave raises a skeleton on turn 8",
-      "requiresUnsealed": "9,1",
-      "units": [
+      "id": "captive-death",
+      "when": {
+        "killed": {
+          "role": "captive"
+        }
+      },
+      "remembers": false,
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 9,
-          "row": 1
+          "createMark": {
+            "type": "captive-death",
+            "tile": {
+              "binding": "death"
+            },
+            "light": {
+              "radius": 62,
+              "power": 0.75,
+              "color": [255, 32, 32],
+              "fixture": false
+            }
+          }
         }
       ]
     },
     {
-      "id": "first-rise-11-4",
-      "round": 8,
-      "label": "An unsealed grave raises a skeleton on turn 8",
-      "requiresUnsealed": "11,4",
-      "units": [
+      "id": "lost-southern-captives",
+      "when": {
+        "killed": {
+          "character": "southern-captives"
+        }
+      },
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 4
+          "failObjective": "southern-freed"
         }
       ]
     },
     {
-      "id": "first-rise-9-7",
-      "round": 8,
-      "label": "An unsealed grave raises a skeleton on turn 8",
-      "requiresUnsealed": "9,7",
-      "units": [
+      "id": "lost-eastern-captives",
+      "when": {
+        "killed": {
+          "character": "eastern-captives"
+        }
+      },
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 9,
-          "row": 7
+          "failObjective": "eastern-freed"
         }
       ]
     },
     {
-      "id": "second-rise-9-1",
-      "round": 12,
-      "label": "An unsealed grave raises a skeleton on turn 12",
-      "requiresUnsealed": "9,1",
-      "units": [
+      "id": "lost-northern-captives",
+      "when": {
+        "killed": {
+          "character": "northern-captives"
+        }
+      },
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 9,
-          "row": 1
+          "failObjective": "northern-freed"
         }
       ]
     },
     {
-      "id": "second-rise-11-4",
-      "round": 12,
-      "label": "An unsealed grave raises a skeleton on turn 12",
-      "requiresUnsealed": "11,4",
-      "units": [
+      "id": "rescue-southern-captives",
+      "when": {
+        "proximity": {
+          "target": {
+            "character": "southern-captives"
+          },
+          "side": "player",
+          "radius": 1
+        }
+      },
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 4
+          "changeAllegiance": {
+            "units": {
+              "character": "southern-captives"
+            },
+            "faction": "player"
+          }
         }
       ]
     },
     {
-      "id": "second-rise-9-7",
-      "round": 12,
-      "label": "An unsealed grave raises a skeleton on turn 12",
-      "requiresUnsealed": "9,7",
-      "units": [
+      "id": "rescue-eastern-captives",
+      "when": {
+        "proximity": {
+          "target": {
+            "character": "eastern-captives"
+          },
+          "side": "player",
+          "radius": 1
+        }
+      },
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 9,
-          "row": 7
+          "changeAllegiance": {
+            "units": {
+              "character": "eastern-captives"
+            },
+            "faction": "player"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rescue-northern-captives",
+      "when": {
+        "proximity": {
+          "target": {
+            "character": "northern-captives"
+          },
+          "side": "player",
+          "radius": 1
+        }
+      },
+      "actions": [
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "northern-captives"
+            },
+            "faction": "player"
+          }
+        }
+      ]
+    },
+    {
+      "id": "monastery-lead",
+      "when": {
+        "all": [
+          {
+            "hasUnits": {
+              "side": "player",
+              "character": "oren"
+            }
+          },
+          {
+            "not": {
+              "flag": "monastery-start"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "adept",
+              "text": "The monastery is on the hill to the north. Get me there, and I can use its wards to clear this fog.",
+              "character": "oren"
+            }
+          ]
+        },
+        {
+          "log": "Oren can clear the fog from the northern hill monastery."
+        },
+        {
+          "setFlag": "monastery-lead"
+        }
+      ]
+    },
+    {
+      "id": "monastery-start",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "monastery"
+          },
+          "side": "player",
+          "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"],
+          "through": false
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "area": [
+              {
+                "hex": {
+                  "col": 7,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 6,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 6,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 7,
+                  "row": 6
+                }
+              }
+            ],
+            "aiGroup": "monastery-wolves",
+            "units": [
+              {
+                "type": "skeletal-hound"
+              },
+              {
+                "type": "skeletal-hound"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "The company",
+              "portrait": "adept",
+              "text": "The stones answer the mage\u2019s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
+            },
+            {
+              "portrait": "adept",
+              "text": "Keep them back. I need three turns here to break the veil.",
+              "character": "oren"
+            }
+          ]
+        },
+        {
+          "log": "The hill ritual begins; skeletal wolves emerge."
+        },
+        {
+          "setFlag": "monastery-start"
+        }
+      ]
+    },
+    {
+      "id": "fog-cleared",
+      "when": {
+        "all": [
+          {
+            "held": {
+              "tile": {
+                "location": "monastery"
+              },
+              "turns": 3,
+              "side": "player",
+              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
+            }
+          },
+          {
+            "flag": "monastery-start"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "The company",
+              "portrait": "adept",
+              "text": "The fog thins and lifts. The keep and the burial grounds lie exposed below."
+            }
+          ]
+        },
+        {
+          "log": "The hill ritual clears the valley\u2019s fog."
+        },
+        {
+          "setFlag": "fog-cleared"
+        }
+      ],
+      "objective": {
+        "label": "Hold the monastery with a mage for three turns",
+        "optional": true,
+        "intent": {
+          "hold": {
+            "tile": {
+              "location": "monastery"
+            },
+            "side": "player",
+            "turns": 3,
+            "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
+          }
+        },
+        "visibleWhen": {
+          "any": [
+            {
+              "flag": "monastery-lead"
+            },
+            {
+              "flag": "monastery-start"
+            }
+          ]
+        },
+        "availableWhen": {
+          "any": [
+            {
+              "flag": "monastery-lead"
+            },
+            {
+              "flag": "monastery-start"
+            }
+          ]
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "bell-sighted",
+      "when": {
+        "all": [
+          {
+            "hasUnits": {
+              "side": "enemy",
+              "character": "bellwarden"
+            }
+          },
+          {
+            "visibleUnits": {
+              "side": "enemy",
+              "unitTypes": [
+                "skeleton",
+                "bonearcher",
+                "skeleton-impact-caster",
+                "skeleton-axeman",
+                "skeleton-rider"
+              ]
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "lich",
+              "text": "More names for the bell.",
+              "character": "bellwarden"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "You\u2019ll have no more of them.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "A voice carries across the valley."
+        },
+        {
+          "setFlag": "bell-sighted"
+        }
+      ]
+    },
+    {
+      "id": "toll-warning",
+      "when": {
+        "turn": 4
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "The company",
+              "portrait": "captives",
+              "text": "A low note builds beneath the mist. The marked stones begin to glow."
+            },
+            {
+              "portrait": "adept",
+              "text": "The bell is gathering strength. Get the prisoners off those marks\u2014cutting their bonds won\u2019t be enough.",
+              "character": "oren"
+            }
+          ]
+        },
+        {
+          "log": "The next toll is close."
+        },
+        {
+          "setFlag": "toll-warning"
+        }
+      ]
+    },
+    {
+      "id": "church-sighted",
+      "when": {
+        "proximity": {
+          "tile": {
+            "location": "church"
+          },
+          "side": "player",
+          "radius": 2
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "scout",
+              "text": "A church beyond the trees. The door is open.",
+              "character": "ivo"
+            }
+          ]
+        },
+        {
+          "log": "The eastern church comes into view."
+        },
+        {
+          "setFlag": "church-sighted"
+        }
+      ]
+    },
+    {
+      "id": "church-armor",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "church"
+          },
+          "side": "player",
+          "through": false
+        }
+      },
+      "actions": [
+        {
+          "give": {
+            "item": "church-mail",
+            "tile": {
+              "location": "church"
+            },
+            "side": "player"
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "The company",
+              "portrait": "spearman",
+              "text": "A shirt of mail beneath the bench. No rust, and silver runes worked into the links."
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Take what we can use. Leave the door unbarred for anyone coming after us.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "Enchanted mail is found in the eastern church."
+        },
+        {
+          "setFlag": "church-armor"
+        }
+      ]
+    },
+    {
+      "id": "northern-sighted",
+      "when": {
+        "all": [
+          {
+            "proximity": {
+              "tile": {
+                "location": "northern-ritual-mark"
+              },
+              "side": "player",
+              "radius": 3
+            }
+          },
+          {
+            "hasUnits": {
+              "side": "any",
+              "character": "northern-captives"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Captive",
+              "portrait": "captives",
+              "text": "Here! Please\u2014before it rings again!"
+            }
+          ]
+        },
+        {
+          "log": "The northern prisoners have been found."
+        },
+        {
+          "setFlag": "northern-sighted"
+        }
+      ]
+    },
+    {
+      "id": "northern-freed",
+      "when": {
+        "all": [
+          {
+            "hasUnits": {
+              "side": "player",
+              "character": "northern-captives"
+            }
+          },
+          {
+            "flag": "northern-sighted"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Captive",
+              "portrait": "captives",
+              "text": "Our hands are free. Where do we go?"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Off the marked stones. Stay clear of the fighting.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "The northern captives are freed."
+        },
+        {
+          "setFlag": "northern-freed"
+        }
+      ],
+      "objective": {
+        "label": "Free the northern captives",
+        "optional": true,
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "northern-ritual-mark"
+            },
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "flag": "northern-sighted"
+        },
+        "availableWhen": {
+          "flag": "northern-sighted"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "eastern-sighted",
+      "when": {
+        "all": [
+          {
+            "proximity": {
+              "tile": {
+                "location": "eastern-ritual-mark"
+              },
+              "side": "player",
+              "radius": 3
+            }
+          },
+          {
+            "hasUnits": {
+              "side": "any",
+              "character": "eastern-captives"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Captive",
+              "portrait": "captives",
+              "text": "Here! Please\u2014before it rings again!"
+            }
+          ]
+        },
+        {
+          "log": "The eastern prisoners have been found."
+        },
+        {
+          "setFlag": "eastern-sighted"
+        }
+      ]
+    },
+    {
+      "id": "eastern-freed",
+      "when": {
+        "all": [
+          {
+            "hasUnits": {
+              "side": "player",
+              "character": "eastern-captives"
+            }
+          },
+          {
+            "flag": "eastern-sighted"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Captive",
+              "portrait": "captives",
+              "text": "Our hands are free. Where do we go?"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Off the marked stones. Stay clear of the fighting.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "The eastern captives are freed."
+        },
+        {
+          "setFlag": "eastern-freed"
+        }
+      ],
+      "objective": {
+        "label": "Free the eastern captives",
+        "optional": true,
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "eastern-ritual-mark"
+            },
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "flag": "eastern-sighted"
+        },
+        "availableWhen": {
+          "flag": "eastern-sighted"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "southern-sighted",
+      "when": {
+        "all": [
+          {
+            "proximity": {
+              "tile": {
+                "location": "southern-ritual-mark"
+              },
+              "side": "player",
+              "radius": 3
+            }
+          },
+          {
+            "hasUnits": {
+              "side": "any",
+              "character": "southern-captives"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Captive",
+              "portrait": "captives",
+              "text": "Here! Please\u2014before it rings again!"
+            }
+          ]
+        },
+        {
+          "log": "The southern prisoners have been found."
+        },
+        {
+          "setFlag": "southern-sighted"
+        }
+      ]
+    },
+    {
+      "id": "southern-freed",
+      "when": {
+        "all": [
+          {
+            "hasUnits": {
+              "side": "player",
+              "character": "southern-captives"
+            }
+          },
+          {
+            "flag": "southern-sighted"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Captive",
+              "portrait": "captives",
+              "text": "Our hands are free. Where do we go?"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Off the marked stones. Stay clear of the fighting.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "The southern captives are freed."
+        },
+        {
+          "setFlag": "southern-freed"
+        }
+      ],
+      "objective": {
+        "label": "Free the southern captives",
+        "optional": true,
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "southern-ritual-mark"
+            },
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "flag": "southern-sighted"
+        },
+        "availableWhen": {
+          "flag": "southern-sighted"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "bellwarden-demands-captives",
+      "when": {
+        "all": [
+          {
+            "hasUnits": {
+              "side": "enemy",
+              "character": "bellwarden"
+            }
+          },
+          {
+            "any": [
+              {
+                "hasUnits": {
+                  "side": "player",
+                  "character": "northern-captives"
+                }
+              },
+              {
+                "hasUnits": {
+                  "side": "player",
+                  "character": "eastern-captives"
+                }
+              },
+              {
+                "hasUnits": {
+                  "side": "player",
+                  "character": "southern-captives"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "lich",
+              "text": "Bring them back. Alive or dead\u2014their blood will serve the ritual just the same.",
+              "character": "bellwarden"
+            }
+          ]
+        },
+        {
+          "setFlag": "bellwarden-demands-captives"
+        }
+      ]
+    },
+    {
+      "id": "tollkeeper-pursuit",
+      "when": {
+        "all": [
+          {
+            "turn": 5
+          },
+          {
+            "not": {
+              "flag": "tollkeeper-defeated"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "area": [
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 17
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 17
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 18
+                }
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 18
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 17
+                }
+              }
+            ],
+            "units": [
+              {
+                "type": "necromancer",
+                "character": "tollkeeper"
+              },
+              {
+                "type": "skeleton"
+              },
+              {
+                "type": "bonearcher"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "scout",
+              "text": "The dead from the pass\u2014they\u2019ve followed us!",
+              "character": "ivo"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Hold them at the tree line. The rest of you, keep moving.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "The Tollkeeper's skeleton patrol enters from the southwest."
+        },
+        {
+          "setFlag": "tollkeeper-pursuit"
+        }
+      ]
+    },
+    {
+      "id": "opened-graveyard-sighted",
+      "when": {
+        "all": [
+          {
+            "flag": "bell-tolled-before-arrival"
+          },
+          {
+            "proximity": {
+              "tile": {
+                "location": "northern-ritual-mark"
+              },
+              "radius": 3,
+              "side": "player"
+            }
+          },
+          {
+            "noUnits": {
+              "side": "any",
+              "character": "northern-captives"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "The company",
+              "portrait": "captives",
+              "text": "The graves stand open. The first toll reached these prisoners before we did."
+            }
+          ]
+        },
+        {
+          "log": "The northern graves have already opened."
+        },
+        {
+          "setFlag": "opened-graveyard-sighted"
+        }
+      ]
+    },
+    {
+      "id": "first-toll",
+      "when": {
+        "any": [
+          {
+            "turn": 6
+          },
+          {
+            "all": [
+              {
+                "chapterStarted": true
+              },
+              {
+                "flag": "bell-tolled-before-arrival"
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "sound": "bell"
+        },
+        {
+          "forEachUnit": {
+            "select": {
+              "role": "captive",
+              "tile": {
+                "location": "northern-ritual-mark"
+              }
+            },
+            "actions": [
+              {
+                "failObjective": "northern-freed"
+              },
+              {
+                "deleteUnit": "$unit"
+              },
+              {
+                "spawn": {
+                  "faction": "enemy",
+                  "aiGroup": "bell-raised",
+                  "tile": {
+                    "location": "northern-ritual-mark"
+                  },
+                  "radius": 2,
+                  "units": ["skeleton", "skeleton", "bonearcher"]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "forEachMark": {
+            "select": {
+              "type": "captive-death"
+            },
+            "actions": [
+              {
+                "spawn": {
+                  "faction": "enemy",
+                  "aiGroup": "bell-raised",
+                  "tile": {
+                    "binding": "mark"
+                  },
+                  "radius": 2,
+                  "units": ["skeleton", "skeleton", "bonearcher"]
+                }
+              },
+              {
+                "removeMark": "$mark"
+              }
+            ]
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "northern-ritual-mark"
+            },
+            "terrain": "ritual-spent"
+          }
+        },
+        {
+          "log": "The bell tolls across the valley."
+        },
+        {
+          "setFlag": "first-toll"
+        }
+      ]
+    },
+    {
+      "id": "second-toll",
+      "when": {
+        "any": [
+          {
+            "turn": 12
+          },
+          {
+            "all": [
+              {
+                "flag": "bell-tolled-before-arrival"
+              },
+              {
+                "turn": 6
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "sound": "bell"
+        },
+        {
+          "forEachUnit": {
+            "select": {
+              "role": "captive",
+              "tile": {
+                "location": "eastern-ritual-mark"
+              }
+            },
+            "actions": [
+              {
+                "failObjective": "eastern-freed"
+              },
+              {
+                "deleteUnit": "$unit"
+              },
+              {
+                "spawn": {
+                  "faction": "enemy",
+                  "aiGroup": "bell-raised",
+                  "tile": {
+                    "location": "eastern-ritual-mark"
+                  },
+                  "radius": 2,
+                  "units": ["skeleton", "skeleton", "bonearcher"]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "forEachMark": {
+            "select": {
+              "type": "captive-death"
+            },
+            "actions": [
+              {
+                "spawn": {
+                  "faction": "enemy",
+                  "aiGroup": "bell-raised",
+                  "tile": {
+                    "binding": "mark"
+                  },
+                  "radius": 2,
+                  "units": ["skeleton", "skeleton", "bonearcher"]
+                }
+              },
+              {
+                "removeMark": "$mark"
+              }
+            ]
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "eastern-ritual-mark"
+            },
+            "terrain": "ritual-spent"
+          }
+        },
+        {
+          "log": "The bell tolls across the valley."
+        },
+        {
+          "setFlag": "second-toll"
+        }
+      ]
+    },
+    {
+      "id": "third-toll",
+      "when": {
+        "all": [
+          {
+            "turn": 18
+          },
+          {
+            "not": {
+              "flag": "bell-tolled-before-arrival"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "sound": "bell"
+        },
+        {
+          "forEachUnit": {
+            "select": {
+              "role": "captive",
+              "tile": {
+                "location": "southern-ritual-mark"
+              }
+            },
+            "actions": [
+              {
+                "failObjective": "southern-freed"
+              },
+              {
+                "deleteUnit": "$unit"
+              },
+              {
+                "spawn": {
+                  "faction": "enemy",
+                  "aiGroup": "bell-raised",
+                  "tile": {
+                    "location": "southern-ritual-mark"
+                  },
+                  "radius": 2,
+                  "units": ["skeleton", "skeleton", "bonearcher"]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "forEachMark": {
+            "select": {
+              "type": "captive-death"
+            },
+            "actions": [
+              {
+                "spawn": {
+                  "faction": "enemy",
+                  "aiGroup": "bell-raised",
+                  "tile": {
+                    "binding": "mark"
+                  },
+                  "radius": 2,
+                  "units": ["skeleton", "skeleton", "bonearcher"]
+                }
+              },
+              {
+                "removeMark": "$mark"
+              }
+            ]
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "southern-ritual-mark"
+            },
+            "terrain": "ritual-spent"
+          }
+        },
+        {
+          "log": "The bell tolls across the valley."
+        },
+        {
+          "setFlag": "third-toll"
+        }
+      ]
+    },
+    {
+      "id": "bell-silenced",
+      "when": {
+        "killed": {
+          "character": "bellwarden"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "bell-silenced"
+        }
+      ],
+      "objective": {
+        "label": "Silence the bell",
+        "optional": false,
+        "intent": {
+          "defeat": {
+            "character": "bellwarden"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "bell-silenced"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
+        }
+      ]
+    },
+    {
+      "id": "western-reinforcements",
+      "when": {
+        "turn": 10
+      },
+      "actions": [
+        {
+          "spawn": {
+            "tile": {
+              "hex": {
+                "col": 0,
+                "row": 7
+              }
+            },
+            "faction": "player",
+            "radius": 2,
+            "units": [
+              {
+                "type": "lancer"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "tile": {
+              "hex": {
+                "col": 0,
+                "row": 8
+              }
+            },
+            "faction": "player",
+            "radius": 2,
+            "units": [
+              {
+                "type": "mage"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "tile": {
+              "hex": {
+                "col": 0,
+                "row": 9
+              }
+            },
+            "faction": "player",
+            "radius": 2,
+            "units": [
+              {
+                "type": "healer"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Reinforcements",
+              "portrait": "lancer",
+              "text": "Captain! Your runner reached the ferry. We followed your trail."
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Good timing. Join the company\u2014we need to silence that bell.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "Reinforcements from the ferry arrive from the west."
+        }
+      ]
+    },
+    {
+      "id": "monastery-interrupted",
+      "remembers": false,
+      "when": {
+        "all": [
+          {
+            "left": {
+              "tile": {
+                "location": "monastery"
+              },
+              "side": "player",
+              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
+            }
+          },
+          {
+            "not": {
+              "flag": "fog-cleared"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "with": "oren",
+              "dialogue": [
+                {
+                  "character": "oren",
+                  "text": "The connection broke. I\u2019ll have to start again."
+                }
+              ],
+              "alternative": [
+                {
+                  "character": "nera",
+                  "text": "We\u2019ll have to try again."
+                }
+              ]
+            }
+          ]
         }
       ]
     }

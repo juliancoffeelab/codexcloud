@@ -243,7 +243,7 @@ pub fn build_report(
             .or_default()
             .push(observation);
     }
-    let mut campaign_groups: BTreeMap<(String, String, String, String), Vec<&Value>> =
+    let mut campaign_groups: BTreeMap<(String, String, String, String, String), Vec<&Value>> =
         BTreeMap::new();
     for game in outcomes.iter().filter(|game| game["kind"] == "campaign") {
         let config = &game["config"];
@@ -253,6 +253,10 @@ pub fn build_report(
                 tactic_label(config, "player"),
                 tactic_label(config, "enemy"),
                 config["diplomacy"].as_str().unwrap_or("").to_owned(),
+                config["objective"]
+                    .as_str()
+                    .unwrap_or("authored")
+                    .to_owned(),
             ))
             .or_default()
             .push(game);
@@ -279,7 +283,7 @@ pub fn build_report(
         }
     }
     let mut campaign_strata = vec![];
-    for ((campaign, player, enemy, alignment), games) in &campaign_groups {
+    for ((campaign, player, enemy, alignment, objective), games) in &campaign_groups {
         let chapters: Vec<_> = games
             .iter()
             .flat_map(|game| game["missions"].as_array().into_iter().flatten())
@@ -300,7 +304,7 @@ pub fn build_report(
                 .and_then(|missions| missions.last())
                 .map(|mission| mission["winner"].clone())
         };
-        campaign_strata.push(json!({"campaign":campaign,"player":player,"enemy":enemy,"diplomacy":alignment,"games":games.len(),"completed":games.iter().filter(|game|game["completed"]==true).count(),"defeated":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner=="enemy")).count(),"unresolved":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner.is_null())).count(),"escalated":games.iter().filter(|game|game["missions"].as_array().is_some_and(|missions|missions.iter().any(|mission|mission["escalated"]==true))).count(),"missions":missions}));
+        campaign_strata.push(json!({"campaign":campaign,"player":player,"enemy":enemy,"diplomacy":alignment,"objective":objective,"games":games.len(),"completed":games.iter().filter(|game|game["completed"]==true).count(),"defeated":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner=="enemy")).count(),"unresolved":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner.is_null())).count(),"escalated":games.iter().filter(|game|game["missions"].as_array().is_some_and(|missions|missions.iter().any(|mission|mission["escalated"]==true))).count(),"missions":missions}));
     }
     let army_compositions: Vec<_> = labels
         .iter()
@@ -345,7 +349,7 @@ pub fn build_report(
         let games: Vec<_> = arena.iter().copied().filter(|game|game.player==*policy && game.enemy==*policy).collect();
         json!({"policy":policy,"games":games.len(),"playerWins":games.iter().filter(|game|game.game["winner"]=="player").count(),"enemyWins":games.iter().filter(|game|game.game["winner"]=="enemy").count(),"firstWins":games.iter().filter(|game|game.game["winner"]==game.game["config"]["first"]).count(),"secondWins":games.iter().filter(|game|!game.game["winner"].is_null() && game.game["winner"]!=game.game["config"]["first"]).count(),"unresolved":games.iter().filter(|game|game.game["winner"].is_null()).count()})
     }).collect();
-    let mut report = json!({"schema":3,"status":"complete","mode":options.mode,"fingerprint":fingerprint,"sourceCommit":source_commit,"engine":"rust","elapsedSeconds":elapsed,"seeds":{"first":options.first_seed,"count":options.seeds},"schedule":options,"rows":rows,"strata":strata,"campaignStrata":campaign_strata,"armyCompositions":army_compositions,"seatDiagnostics":seat_diagnostics,"outcomes":outcomes,"detailFormat":"jsonl-byte-ranges-v1"});
+    let mut report = json!({"schema":3,"status":"complete","mode":options.mode,"fingerprint":fingerprint,"sourceCommit":source_commit,"engine":"rust","elapsedSeconds":elapsed,"seeds":{"first":options.first_seed,"count":options.seeds,"campaignCount":options.campaign_seeds},"schedule":options,"rows":rows,"strata":strata,"campaignStrata":campaign_strata,"armyCompositions":army_compositions,"seatDiagnostics":seat_diagnostics,"outcomes":outcomes,"detailFormat":"jsonl-byte-ranges-v1"});
     report["recruitmentLimits"] = serde_json::to_value(
         crate::ai::Policy::ALL
             .iter()
@@ -382,16 +386,25 @@ pub fn build_report(
 }
 /// Render the compact report into a readable results table and workload summary.
 pub fn markdown(report: &Value) -> String {
+    let first = report["seeds"]["first"].as_u64().unwrap_or(0);
+    let count = report["seeds"]["count"].as_u64().unwrap_or(1);
+    let campaign_count = report["seeds"]["campaignCount"].as_u64().unwrap_or(count);
+    let seeds = if report["mode"] == "full" && count != campaign_count {
+        format!(
+            "arena seeds {first}–{}; campaign seeds {first}–{}",
+            first + count - 1,
+            first + campaign_count - 1
+        )
+    } else {
+        format!("seeds {first}–{}", first + count - 1)
+    };
     let mut text = format!(
-        "# Seeded AI {} results\n\nSource: `{}`. Rules/policy fingerprint: `{}`.\n\n{} games, seeds {}–{}, {:.1} seconds.\n\n",
+        "# Seeded AI {} results\n\nSource: `{}`. Rules/policy fingerprint: `{}`.\n\n{} games, {}, {:.1} seconds.\n\n",
         report["mode"].as_str().unwrap_or(""),
         report["sourceCommit"].as_str().unwrap_or(""),
         report["fingerprint"].as_str().unwrap_or(""),
         report["outcomes"].as_array().map_or(0, Vec::len),
-        report["seeds"]["first"],
-        report["seeds"]["first"].as_u64().unwrap_or(0)
-            + report["seeds"]["count"].as_u64().unwrap_or(1)
-            - 1,
+        seeds,
         report["elapsedSeconds"].as_f64().unwrap_or(0.0)
     );
     if let Some(timing) = report.get("turnTiming") {
@@ -424,7 +437,7 @@ pub fn markdown(report: &Value) -> String {
         text.push('\n');
     }
     if report["mode"] != "arena" {
-        text.push_str("| Campaign | Player policy | Enemy policy | Diplomacy | Seed | Completed | Recorded chapters |\n|---|---|---|---|---:|---|---|\n");
+        text.push_str("| Campaign | Player policy | Enemy policy | Diplomacy | Objective | Seed | Completed | Recorded chapters |\n|---|---|---|---|---|---:|---|---|\n");
         for game in report["outcomes"]
             .as_array()
             .into_iter()
@@ -446,11 +459,12 @@ pub fn markdown(report: &Value) -> String {
                 .collect::<Vec<_>>()
                 .join("; ");
             text.push_str(&format!(
-                "| {} | {} | {} | {} | {} | {} | {} |\n",
+                "| {} | {} | {} | {} | {} | {} | {} | {} |\n",
                 game["config"]["campaign"].as_str().unwrap_or(""),
                 tactic_label(&game["config"], "player"),
                 tactic_label(&game["config"], "enemy"),
                 game["config"]["diplomacy"].as_str().unwrap_or(""),
+                game["config"]["objective"].as_str().unwrap_or("authored"),
                 game["config"]["seed"],
                 game["completed"],
                 chapters
@@ -475,6 +489,7 @@ mod tests {
             campaign_custom_enemy: false,
             first_seed: 1,
             seeds: 2,
+            campaign_seeds: 2,
             max_rounds: 2,
             campaign_max_rounds: 2,
             recruit_limit: Some(0),
@@ -484,8 +499,10 @@ mod tests {
             policies: vec![Policy::Classic],
             campaign_players: None,
             campaign_enemies: None,
-            diplomacy: vec![Diplomacy::Pragmatic],
+            diplomacy: vec![Diplomacy::Unrestricted],
             campaign_diplomacy: Default::default(),
+            objectives: None,
+            campaign_objectives: Default::default(),
             self_play: false,
             opponent: None,
         };

@@ -5,7 +5,6 @@
   "hp": 32,
   "move": 3,
   "cost": 0,
-  "leader": true,
   "race": "human",
   "terrainModifiers": {
     "ford": {
@@ -24,7 +23,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 2
+      "count": 2,
+      "spread": 1
     },
     {
       "id": "mace",
@@ -34,7 +34,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "count": 1
+      "count": 1,
+      "spread": 2
     }
   ],
   "damageModifiers": {

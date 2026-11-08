@@ -1,0 +1,52 @@
+{
+  "tide-sluice": {
+    "added": ["complete-goal-0", "complete-goal-1"],
+    "order": [
+      "edda-death",
+      "mira-death",
+      "tomas-death",
+      "vale-death",
+      "boat",
+      "complete-goal-0",
+      "goal-0",
+      "goal-1-lost",
+      "complete-goal-1",
+      "goal-1",
+      "chapter-victory"
+    ]
+  },
+  "tide-nets": {
+    "added": ["complete-goal-0", "complete-goal-1"],
+    "order": [
+      "edda-death",
+      "harl-death",
+      "mira-death",
+      "nets",
+      "complete-goal-0",
+      "goal-0",
+      "goal-1-lost",
+      "complete-goal-1",
+      "goal-1",
+      "chapter-victory"
+    ]
+  },
+  "green-pact": {
+    "added": ["complete-goal-0", "complete-goal-1"],
+    "order": [
+      "lark-lost",
+      "alder-death",
+      "dain-death",
+      "lark-death",
+      "rootbinder-death",
+      "tamsin-death",
+      "alternate-company",
+      "old-trail",
+      "complete-goal-0",
+      "goal-0",
+      "goal-1-lost",
+      "complete-goal-1",
+      "goal-1",
+      "chapter-victory"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "captives",
+  "role": "flank",
+  "name": "Captive villagers",
+  "race": "human",
+  "hp": 24,
+  "move": 3,
+  "cost": 0,
+  "attacks": [],
+  "ability": "Unarmed",
+  "description": "A group of villagers. They cannot fight; keep them out of danger.",
+  "level": 1,
+  "family": "captives",
+  "advancesTo": [],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "experienceNeeded": 0
+}

@@ -1,59 +1,152 @@
 {
-  "debrief": "Both logging camps are captured and the pay ledger contradicts the Overseer’s report. Dain suspends his patrol’s attacks and agrees to protect Lark’s investigation in the central grove. The Overseer’s other guards have accepted no truce.",
+  "debrief": [
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "The cutting operation has lost both camps. Dain died in the fighting; his death remains part of what happened. The ledger leads Lark to question the roots about the Rootbinder and the Overseer."
+    },
+    {
+      "text": "Both logging camps are captured and the pay ledger contradicts the Overseer’s report. Dain suspends his patrol’s attacks and agrees to protect Lark’s investigation in the central grove. The Overseer’s other guards have accepted no truce."
+    }
+  ],
   "subtitle": "Take their tools. Find the missing workers.",
-  "briefing": "The village council licenses ordinary timber cutting, but its Overseer has sent crews into Alder’s sacred groves. He claims the pack killed the missing woodcutters. His tools and carts are stored in two guarded logging camps. Capture both camps to stop the cutting, and recover the workers’ pay ledger from the northern ruin. Captain Dain commands the patrol protecting those camps; leave him alive if you can.",
+  "briefing": [
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "Dain has fallen. Capture both logging camps to stop their crews, and recover the workers’ pay ledger from the northern ruin. His death does not answer what happened to the missing woodcutters; Lark must find evidence their families can hear without him."
+    },
+    {
+      "text": "The village council licenses ordinary timber cutting, but its Overseer has sent crews into Alder’s sacred groves. He claims the pack killed the missing woodcutters. His tools and carts are stored in two guarded logging camps. Capture both camps to stop the cutting, and recover the workers’ pay ledger from the northern ruin. Captain Dain commands the patrol protecting those camps; leave him alive if you can."
+    }
+  ],
   "hints": [
-    "Capture both logging forts; standing in a marked grove does not stop the operation.",
-    "Search the northern ruin for the workers’ ledger.",
-    "Wolves cross woods easily. Boars and thorncaller staves fare better against armor."
+    {
+      "when": {
+        "not": {
+          "flag": "dain-dead"
+        }
+      },
+      "text": "Capture both logging forts; standing in a marked grove does not stop the operation."
+    },
+    {
+      "when": {
+        "not": {
+          "flag": "dain-dead"
+        }
+      },
+      "text": "Search the northern ruin for the workers’ ledger."
+    },
+    {
+      "when": {
+        "not": {
+          "flag": "dain-dead"
+        }
+      },
+      "text": "Wolves cross woods easily. Boars and thorncaller staves fare better against armor."
+    },
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "Capture both logging forts; standing in a marked grove does not stop the operation."
+    },
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "Search the northern ruin for the workers’ ledger."
+    },
+    {
+      "when": {
+        "flag": "dain-dead"
+      },
+      "text": "Wolves cross woods easily. Boars and thorncaller staves fare better against armor."
+    }
   ],
   "intro": [
     {
-      "speaker": "Lark",
-      "portrait": "thorncaller",
-      "text": "The council promised the villages repair timber. Its Overseer marked our sacred groves instead. His crews keep their tools and carts in those two forts."
-    },
-    {
-      "speaker": "Alder",
-      "portrait": "wildkeeper",
-      "text": "Take the camps and the cutting stops. The northern post kept the workers’ records. Bring those back too."
-    },
-    {
-      "speaker": "Captain Dain",
-      "portrait": "warden",
-      "text": "My missing woodcutters were sent here. The Overseer says your pack killed them. I have orders to protect the crews that remain."
-    },
-    {
-      "speaker": "Lark",
-      "portrait": "thorncaller",
-      "text": "Your orders won’t tell us where they went. Their ledger might."
-    },
-    {
-      "speaker": "Alder",
-      "portrait": "wildkeeper",
-      "text": "We need our roots back, not your bones. Keep away from our groves, captain, and help us find your people."
+      "with": "dain",
+      "dialogue": [
+        {
+          "portrait": "thorncaller",
+          "text": "The council promised the villages repair timber. Its Overseer marked our sacred groves instead. His crews keep their tools and carts in those two forts.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "Take the camps and the cutting stops. The northern post kept the workers’ records. Bring those back too.",
+          "character": "alder"
+        },
+        {
+          "portrait": "warden",
+          "text": "My missing woodcutters were sent here. The Overseer says your pack killed them. I have orders to protect the crews that remain.",
+          "character": "dain"
+        },
+        {
+          "portrait": "thorncaller",
+          "text": "Your orders won’t tell us where they went. Their ledger might.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "We need our roots back, not your bones. Keep away from our groves, captain, and help us find your people.",
+          "character": "alder"
+        }
+      ],
+      "alternative": [
+        {
+          "portrait": "thorncaller",
+          "text": "Dain is dead. His patrol’s orders still do not tell us what happened to the workers.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "Take both tool camps and recover their ledger. We still owe the families an answer.",
+          "character": "alder"
+        }
+      ]
     }
   ],
   "victory": [
     {
-      "speaker": "Lark",
-      "portrait": "thorncaller",
-      "text": "Both camps are ours. Without their tools and carts, the crews have stopped cutting. Here is the ledger."
-    },
-    {
-      "speaker": "Captain Dain",
-      "portrait": "warden",
-      "text": "These men were marked as deserters, but their wages went to the Overseer’s own account. That is his seal. I cannot explain it."
-    },
-    {
-      "speaker": "Alder",
-      "portrait": "wildkeeper",
-      "text": "Lark can ask the grove what happened. Come and watch her work."
-    },
-    {
-      "speaker": "Captain Dain",
-      "portrait": "warden",
-      "text": "Your pack has hurt my patrol, and mine has hurt yours. I am offering a truce for this investigation, not pretending that never happened."
+      "with": "dain",
+      "dialogue": [
+        {
+          "portrait": "thorncaller",
+          "text": "Both camps are ours. Without their tools and carts, the crews have stopped cutting. Here is the ledger.",
+          "character": "lark"
+        },
+        {
+          "portrait": "warden",
+          "text": "These men were marked as deserters, but their wages went to the Overseer’s own account. That is his seal. I cannot explain it.",
+          "character": "dain"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "Lark can ask the grove what happened. Come and watch her work.",
+          "character": "alder"
+        },
+        {
+          "portrait": "warden",
+          "text": "Your pack has hurt my patrol, and mine has hurt yours. I am offering a truce for this investigation, not pretending that never happened.",
+          "character": "dain"
+        }
+      ],
+      "alternative": [
+        {
+          "portrait": "thorncaller",
+          "text": "The camps are ours and the cutting has stopped. The missing workers’ wages went to the Overseer, and their last orders sent them to the Rootbinder.",
+          "character": "lark"
+        },
+        {
+          "portrait": "wildkeeper",
+          "text": "Dain will never hear their story. Lark, bring it back in a living branch. The families must be able to hear it for themselves.",
+          "character": "alder"
+        }
+      ]
     }
   ]
 }

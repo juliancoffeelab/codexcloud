@@ -1,35 +1,1115 @@
 {
-  "events": [
+  "enemyGroups": [
     {
-      "id": "ferryman",
-      "trigger": {
-        "kind": "visit",
-        "tile": "9,1"
-      },
-      "label": "Find the ferryman’s purse in the riverside ruin",
-      "gold": 6,
-      "dialogue": [
-        {
-          "speaker": "Ferryman",
-          "portrait": "scout",
-          "text": "Take it. Six coins will not buy my ferry back, but perhaps they will buy someone else a morning."
-        }
-      ]
+      "id": "animals"
+    },
+    {
+      "id": "skeletons",
+      "when": {
+        "condition": {
+          "kind": "flag",
+          "flag": "eastern-ford"
+        },
+        "remember": false
+      }
     }
   ],
-  "waves": [
+  "events": [
     {
-      "round": 6,
-      "label": "A skeleton patrol arrives from the southern road on turn 6",
-      "id": "southern-patrol",
-      "units": [
+      "id": "ferryman-death",
+      "when": {
+        "all": [
+          {
+            "turn": 16
+          },
+          {
+            "not": {
+              "flag": "ferryman-saved"
+            }
+          }
+        ]
+      },
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 6
+          "failObjective": "ford-shout"
+        },
+        {
+          "setFlag": "ferryman-dead"
         }
       ]
+    },
+    {
+      "id": "contact-route-scout",
+      "when": {
+        "proximity": {
+          "tile": {
+            "location": "route-scout"
+          },
+          "radius": 1,
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "area": [
+              {
+                "location": "route-scout"
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 6,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 7
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 7
+                }
+              }
+            ],
+            "units": [
+              {
+                "type": "scout"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Scout",
+              "portrait": "scout",
+              "text": "You\u2019re the patrol? We\u2019ve been checking the western woods. Nobody has come back across the ford. I\u2019ll show you the way."
+            }
+          ]
+        },
+        {
+          "log": "A scouting patrol joins the company"
+        },
+        {
+          "setFlag": "contact-route-scout"
+        }
+      ],
+      "objective": {
+        "label": "Contact the route scout",
+        "optional": true,
+        "intent": {
+          "approach": {
+            "tile": {
+              "location": "route-scout"
+            },
+            "radius": 1,
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "flag": "contact-route-scout"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "contact-western-scout",
+      "when": {
+        "proximity": {
+          "tile": {
+            "location": "western-scout"
+          },
+          "radius": 1,
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "area": [
+              {
+                "location": "western-scout"
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 6
+                }
+              }
+            ],
+            "units": [
+              {
+                "type": "scout"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Scout",
+              "portrait": "scout",
+              "text": "No sign of raiders on this bank. Whatever stopped the ferry is across the river. I\u2019m coming with you."
+            }
+          ]
+        },
+        {
+          "log": "A scouting patrol joins the company"
+        },
+        {
+          "setFlag": "contact-western-scout"
+        }
+      ],
+      "objective": {
+        "label": "Contact the western scout",
+        "optional": true,
+        "intent": {
+          "approach": {
+            "tile": {
+              "location": "western-scout"
+            },
+            "radius": 1,
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "flag": "contact-western-scout"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "contact-northern-scout",
+      "when": {
+        "proximity": {
+          "tile": {
+            "location": "northern-scout"
+          },
+          "radius": 1,
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "area": [
+              {
+                "location": "northern-scout"
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 2
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 2
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 3
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 3
+                }
+              },
+              {
+                "hex": {
+                  "col": 4,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 5,
+                  "row": 4
+                }
+              }
+            ],
+            "units": [
+              {
+                "type": "scout"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Scout",
+              "portrait": "scout",
+              "text": "The mountain path is quiet. The old quarry cave isn\u2019t. We heard something breathing in there. Leave it alone if you\u2019re in a hurry."
+            }
+          ]
+        },
+        {
+          "log": "A scouting patrol joins the company"
+        },
+        {
+          "setFlag": "contact-northern-scout"
+        }
+      ],
+      "objective": {
+        "label": "Contact the northern scout",
+        "optional": true,
+        "intent": {
+          "approach": {
+            "tile": {
+              "location": "northern-scout"
+            },
+            "radius": 1,
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "flag": "contact-northern-scout"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "quarry-bear",
+      "when": {
+        "proximity": {
+          "tile": {
+            "location": "quarry"
+          },
+          "radius": 1,
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "wildlife",
+            "area": [
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 1
+                }
+              },
+              {
+                "location": "quarry"
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 1
+                }
+              }
+            ],
+            "aiGroup": "animals",
+            "units": [
+              {
+                "type": "bear",
+                "character": "quarry-bear"
+              }
+            ]
+          }
+        },
+        {
+          "log": "A bear emerges from the cave"
+        },
+        {
+          "setFlag": "quarry-bear"
+        }
+      ],
+      "objective": {
+        "label": "Investigate the quarry cave",
+        "optional": true,
+        "intent": {
+          "approach": {
+            "tile": {
+              "location": "quarry"
+            },
+            "radius": 1,
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "flag": "quarry-bear"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "western-ford",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "western-ford"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "wildlife",
+            "area": [
+              {
+                "hex": {
+                  "col": 13,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 14,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 14,
+                  "row": 7
+                }
+              }
+            ],
+            "aiGroup": "animals",
+            "units": [
+              {
+                "type": "giant-bat"
+              },
+              {
+                "type": "giant-bat"
+              },
+              {
+                "type": "giant-bat"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "Bats! Keep them off the horses!",
+              "character": "nera"
+            },
+            {
+              "portrait": "adept",
+              "text": "There are accounts of swarms like this in the old siege chronicles. I thought the writers were embellishing.",
+              "character": "oren"
+            }
+          ]
+        },
+        {
+          "log": "Three bats burst from the island woods"
+        },
+        {
+          "setFlag": "western-ford"
+        }
+      ]
+    },
+    {
+      "id": "eastern-ford",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "eastern-ford"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "log": "The skeletons notice the patrol"
+        },
+        {
+          "setFlag": "eastern-ford"
+        }
+      ]
+    },
+    {
+      "id": "house-visit",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "ferryman-house"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "log": "The patrol enters the ferryman\u2019s house and lights its lantern"
+        },
+        {
+          "setFlag": "house-visit"
+        }
+      ],
+      "objective": {
+        "label": "Reach the ferryman\u2019s house",
+        "optional": false,
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "ferryman-house"
+            },
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "ferryman-house"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ford-shout",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "eastern-ford"
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "not": {
+              "flag": "ferryman-dead"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "ferryman-saved"
+        },
+        {
+          "setFlag": "ferryman-alive"
+        },
+        {
+          "say": [
+            {
+              "speaker": "Ferryman",
+              "portrait": "worker",
+              "text": "Over here! They\u2019re at the door! For the love of anything living, get them away from the door!"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Shields up. Make them come to us.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "A cry from the ferryman\u2019s house"
+        },
+        {
+          "setFlag": "ford-shout"
+        }
+      ],
+      "objective": {
+        "label": "Reach the ferryman by turn 15",
+        "optional": true,
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "eastern-ford"
+            },
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "flag": "ferryman-saved"
+        },
+        "availableWhen": {
+          "not": {
+            "flag": "ferryman-dead"
+          }
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "ford-silence",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "flag": "eastern-ford"
+              },
+              {
+                "turnAtLeast": 16
+              }
+            ]
+          },
+          {
+            "not": {
+              "flag": "ford-shout"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "No lamp. No answer. Get to the house.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "No voice answers from the house"
+        },
+        {
+          "setFlag": "ford-silence"
+        }
+      ]
+    },
+    {
+      "id": "ferryman-alive",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "ferryman-house"
+              },
+              "side": "player"
+            }
+          },
+          {
+            "flag": "ferryman-saved"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Ferryman",
+              "portrait": "worker",
+              "text": "I thought the door would give before anyone heard me."
+            },
+            {
+              "portrait": "swordsman",
+              "text": "We saw the landing lantern go out. Where is everyone?",
+              "character": "nera"
+            },
+            {
+              "speaker": "Ferryman",
+              "portrait": "worker",
+              "text": "The dead took them. Went house to house, drove them out onto the eastern road. I barred this door and put the lamp out."
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Stay inside. We\u2019ll light the villages and see what\u2019s left.",
+              "character": "nera"
+            },
+            {
+              "with": "oren",
+              "dialogue": [
+                {
+                  "portrait": "adept",
+                  "text": "Who gave the skeletons their orders? Did you see him?",
+                  "character": "oren"
+                },
+                {
+                  "speaker": "Ferryman",
+                  "portrait": "worker",
+                  "text": "Something in a robe. Bare bone where its face should be. The other dead stood still when it spoke."
+                },
+                {
+                  "portrait": "adept",
+                  "text": "A lich. Those villages weren\u2019t attacked for their coin.",
+                  "character": "oren"
+                },
+                {
+                  "speaker": "Ferryman",
+                  "portrait": "worker",
+                  "text": "Then bring my neighbors back. And watch the houses. I heard things moving inside after the people were gone."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "log": "The ferryman is alive"
+        },
+        {
+          "setFlag": "ferryman-alive"
+        }
+      ]
+    },
+    {
+      "id": "ferryman-letter",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "ferryman-house"
+              },
+              "side": "player"
+            }
+          },
+          {
+            "flag": "ferryman-dead"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "The door is broken. We\u2019re too late.",
+              "character": "nera"
+            },
+            {
+              "speaker": "The letter",
+              "portrait": "worker",
+              "text": "If someone finds this: skeletons took the villagers up the eastern road. I stayed to keep the ferry ready. They have come back for me. Leave the light out. Save yourselves."
+            },
+            {
+              "portrait": "swordsman",
+              "text": "We\u2019re lighting it. Then we follow the road.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "A letter lies beside the extinguished lamp"
+        },
+        {
+          "setFlag": "ferryman-letter"
+        },
+        {
+          "setFlag": "ferryman-dead"
+        }
+      ]
+    },
+    {
+      "id": "village-1",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "northern-village"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "wildlife",
+            "area": [
+              {
+                "hex": {
+                  "col": 20,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 21,
+                  "row": 4
+                }
+              },
+              {
+                "location": "northern-village"
+              },
+              {
+                "hex": {
+                  "col": 21,
+                  "row": 6
+                }
+              },
+              {
+                "hex": {
+                  "col": 22,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 22,
+                  "row": 5
+                }
+              },
+              {
+                "hex": {
+                  "col": 22,
+                  "row": 6
+                }
+              }
+            ],
+            "aiGroup": "animals",
+            "units": [
+              {
+                "type": "giant-spider"
+              },
+              {
+                "type": "giant-spider"
+              }
+            ]
+          }
+        },
+        {
+          "log": "Spiders emerge from the village"
+        },
+        {
+          "setFlag": "village-1"
+        }
+      ]
+    },
+    {
+      "id": "village-2",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "southern-village"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "wildlife",
+            "area": [
+              {
+                "hex": {
+                  "col": 20,
+                  "row": 12
+                }
+              },
+              {
+                "hex": {
+                  "col": 20,
+                  "row": 11
+                }
+              },
+              {
+                "location": "southern-village"
+              },
+              {
+                "hex": {
+                  "col": 20,
+                  "row": 13
+                }
+              },
+              {
+                "hex": {
+                  "col": 21,
+                  "row": 11
+                }
+              },
+              {
+                "hex": {
+                  "col": 22,
+                  "row": 12
+                }
+              },
+              {
+                "hex": {
+                  "col": 21,
+                  "row": 13
+                }
+              }
+            ],
+            "aiGroup": "animals",
+            "units": [
+              {
+                "type": "giant-spider"
+              },
+              {
+                "type": "giant-spider"
+              }
+            ]
+          }
+        },
+        {
+          "log": "Spiders emerge from the village"
+        },
+        {
+          "setFlag": "village-2"
+        }
+      ]
+    },
+    {
+      "id": "first-spiders",
+      "when": {
+        "any": [
+          {
+            "flag": "village-1"
+          },
+          {
+            "flag": "village-2"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "Spiders! Back from the doorway!",
+              "character": "nera"
+            },
+            {
+              "portrait": "adept",
+              "text": "Cellar spiders. We raised them at the Collegium. All the food in the world wouldn\u2019t make them grow like this.",
+              "character": "oren"
+            }
+          ]
+        },
+        {
+          "log": "Giant spiders spill out of the houses"
+        },
+        {
+          "setFlag": "first-spiders"
+        }
+      ]
+    },
+    {
+      "id": "villages-secured",
+      "when": {
+        "objectiveSatisfied": "villages-secured"
+      },
+      "actions": [
+        {
+          "log": "The eastern villages are lit and the spiders are defeated"
+        },
+        {
+          "setFlag": "villages-secured"
+        }
+      ],
+      "objective": {
+        "label": "Light and secure the eastern villages",
+        "optional": false,
+        "intent": {
+          "capture": [
+            {
+              "location": "northern-village"
+            },
+            {
+              "location": "southern-village"
+            }
+          ]
+        },
+        "visibleWhen": {
+          "flag": "house-visit"
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "northern-village"
+            },
+            {
+              "location": "southern-village"
+            }
+          ]
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "flag": "house-visit"
+            },
+            {
+              "flag": "village-1"
+            },
+            {
+              "flag": "village-2"
+            },
+            {
+              "owner": {
+                "tile": {
+                  "location": "northern-village"
+                },
+                "faction": "player"
+              }
+            },
+            {
+              "owner": {
+                "tile": {
+                  "location": "southern-village"
+                },
+                "faction": "player"
+              }
+            },
+            {
+              "noUnits": {
+                "side": "enemy",
+                "unitType": "giant-spider"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "quarry-tools",
+      "when": {
+        "killed": {
+          "character": "quarry-bear"
+        }
+      },
+      "actions": [
+        {
+          "give": {
+            "item": "quarry-hammer",
+            "side": "player",
+            "character": "nera"
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "Quarry tools. This hammer still has a sound head. I\u2019ll take it.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "log": "Nera takes a quarry hammer"
+        },
+        {
+          "setFlag": "quarry-tools"
+        }
+      ]
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "flag": "house-visit"
+              },
+              {
+                "flag": "villages-secured"
+              }
+            ]
+          },
+          {
+            "objectiveSatisfied": "villages-secured"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
+        }
+      ]
+    },
+    {
+      "id": "spiders-cleared",
+      "when": {
+        "all": [
+          {
+            "flag": "first-spiders"
+          },
+          {
+            "noUnits": {
+              "side": "enemy",
+              "unitType": "giant-spider"
+            }
+          }
+        ]
+      },
+      "objective": {
+        "label": "Defeat the cellar spiders",
+        "visibleWhen": {
+          "flag": "first-spiders"
+        },
+        "intent": {
+          "defeat": {
+            "side": "enemy",
+            "unitType": "giant-spider"
+          }
+        },
+        "availableWhen": {
+          "flag": "first-spiders"
+        },
+        "playerMarker": null
+      },
+      "actions": []
     }
   ]
 }

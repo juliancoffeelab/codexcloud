@@ -1,106 +1,349 @@
 {
   "events": [
     {
-      "id": "owl-cache",
-      "trigger": {
-        "kind": "visit",
-        "tile": "6,0"
-      },
-      "label": "Recover the northern guard-post supplies",
-      "gold": 6,
-      "dialogue": [
-        {
-          "speaker": "Alder",
-          "portrait": "wildkeeper",
-          "text": "The abandoned guard post still has funds for provisions. Use them to bring another defender to the grove; Lark cannot finish her work if we lose it."
+      "id": "lark-lost",
+      "when": {
+        "killed": {
+          "character": "lark"
         }
-      ]
-    }
-  ],
-  "waves": [
-    {
-      "round": 3,
-      "label": "A warden and archer arrive from the east on turn 3",
-      "id": "eastern-patrol",
-      "units": [
+      },
+      "actions": [
         {
-          "type": "warden",
-          "side": "enemy",
-          "col": 11,
-          "row": 1
+          "failObjective": "goal-0"
         },
         {
-          "type": "archer",
-          "side": "enemy",
-          "col": 11,
-          "row": 7
+          "defeat": "A protected companion fell. The company cannot continue."
         }
       ]
     },
     {
-      "round": 5,
-      "label": "An adept and soldier arrive from the east on turn 5",
-      "id": "eastern-support",
-      "units": [
+      "id": "alder-death",
+      "when": {
+        "killed": {
+          "character": "alder"
+        }
+      },
+      "actions": [
         {
-          "type": "adept",
-          "side": "enemy",
-          "col": 10,
-          "row": 3
+          "setFlag": "alder-dead"
+        }
+      ]
+    },
+    {
+      "id": "dain-death",
+      "when": {
+        "killed": {
+          "character": "dain"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "dain-dead"
+        }
+      ]
+    },
+    {
+      "id": "lark-death",
+      "when": {
+        "killed": {
+          "character": "lark"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "lark-dead"
+        }
+      ]
+    },
+    {
+      "id": "overseer-death",
+      "when": {
+        "killed": {
+          "character": "overseer"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "overseer-dead"
+        }
+      ]
+    },
+    {
+      "id": "alternate-company",
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "flag": "dain-dead"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "deleteUnit": {
+            "character": "dain"
+          }
         },
         {
-          "type": "soldier",
-          "side": "enemy",
-          "col": 10,
-          "row": 5
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "hex": {
+                "col": 5,
+                "row": 5
+              }
+            },
+            "radius": 0,
+            "units": [
+              {
+                "type": "boar"
+              }
+            ]
+          }
+        },
+        {
+          "recruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "wolf"
+              },
+              {
+                "unit": "boar"
+              },
+              {
+                "unit": "thorncaller"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "owl-cache",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "owl-cache"
+          },
+          "side": "player",
+          "through": true
+        }
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 6
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "wildkeeper",
+              "text": "The abandoned guard post still has funds for provisions. Use them to bring another defender to the grove; Lark cannot finish her work if we lose it.",
+              "character": "alder"
+            }
+          ]
+        },
+        {
+          "setFlag": "owl-cache"
+        },
+        {
+          "log": "Recover the northern guard-post supplies"
+        }
+      ],
+      "objective": {
+        "label": "Recover the northern guard-post supplies",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "owl-cache"
+            },
+            "side": "player"
+          }
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "owl-cache"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "eastern-patrol",
+      "when": {
+        "turn": {
+          "number": 3,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 1
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "warden"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 7
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "archer"
+              }
+            ]
+          }
+        },
+        {
+          "log": "A warden and archer arrive from the east on turn 3"
+        }
+      ]
+    },
+    {
+      "id": "eastern-support",
+      "when": {
+        "turn": {
+          "number": 5,
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 3
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "adept"
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 5
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "soldier"
+              }
+            ]
+          }
+        },
+        {
+          "log": "An adept and soldier arrive from the east on turn 5"
+        }
+      ]
+    },
+    {
+      "id": "goal-0",
+      "when": {
+        "held": {
+          "tile": {
+            "location": "grove"
+          },
+          "turns": 3,
+          "character": "lark",
+          "side": "player",
+          "when": {
+            "own": {
+              "tile": {
+                "location": "grove"
+              },
+              "faction": "player"
+            }
+          }
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "green-vigil-goal-0"
+        }
+      ],
+      "objective": {
+        "label": "Protect Lark in the central grove through three enemy turns",
+        "intent": {
+          "hold": {
+            "tile": {
+              "location": "grove"
+            },
+            "turns": 3,
+            "character": "lark",
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "grove"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "green-vigil-goal-0"
+          },
+          {
+            "hasUnits": {
+              "role": "leader",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }
   ],
-  "withoutDain": {
-    "briefing": "Dain is dead. The ledger still names the Overseer and the Rootbinder, but the council needs more than accusations from the pack. Keep Lark in the central grove through three full enemy turns so she can carry the workers’ memories in a living branch. The Overseer’s remaining charter guards are attacking to destroy that evidence.",
-    "hints": [
-      "Protect Lark in the grove through three enemy turns.",
-      "Leaving or losing the grove resets the vigil."
-    ],
-    "intro": [
-      {
-        "speaker": "Lark",
-        "portrait": "thorncaller",
-        "text": "Dain cannot be our witness. The roots can. Keep me in the central grove while I listen."
-      },
-      {
-        "speaker": "The Overseer",
-        "portrait": "commander",
-        "text": "The captain is dead. Destroy that branch before the council hears a word of this."
-      },
-      {
-        "speaker": "Alder",
-        "portrait": "wildkeeper",
-        "text": "They will hear the workers themselves. We defend the grove until Lark has their memories."
-      }
-    ],
-    "victory": [
-      {
-        "speaker": "Lark",
-        "portrait": "thorncaller",
-        "text": "The workers demanded their wages and refused to cut the grove. The Overseer delivered them to the Rootbinder; he killed and bound them into his logging crews."
-      },
-      {
-        "speaker": "Alder",
-        "portrait": "wildkeeper",
-        "text": "Dain is among the dead now too. We cannot undo that. Bring the branch and the ledger to the families, and let them judge the whole account."
-      }
-    ],
-    "debrief": "The roots revealed the workers’ murder and binding. Dain cannot testify, but the living branch carries their memories. The pack must take it and the ledger to the council across the river.",
-    "recruits": ["wolf", "boar", "thorncaller"],
-    "reinforcements": [
-      {
-        "type": "boar",
-        "side": "player",
-        "col": 5,
-        "row": 5
-      }
-    ]
-  }
+  "requiredCompanions": ["lark"]
 }

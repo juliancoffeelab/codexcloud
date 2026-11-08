@@ -2,6 +2,57 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <script>
+      (() => {
+        let pending;
+        function showFailure(error) {
+          const detail = String(
+            error?.stack || error?.message || error || "The game script could not be loaded.",
+          );
+          if (!document.getElementById("startup")) {
+            pending = detail;
+            return;
+          }
+          document.getElementById("startup-message").textContent =
+            "The game could not start. Reloading keeps your saved battle.";
+          const panel = document.getElementById("startup-error");
+          panel.hidden = false;
+          panel.open = true;
+          document.getElementById("startup-detail").textContent = detail;
+        }
+        function failed(event) {
+          if (event.target?.tagName === "SCRIPT" || event.error || event.message)
+            showFailure(
+              event.error ||
+                (event.target?.tagName === "SCRIPT"
+                  ? `Could not load game script: ${event.target.src}`
+                  : `${event.message}\n${event.filename || ""}:${event.lineno || ""}:${event.colno || ""}`),
+            );
+        }
+        function rejected(event) {
+          showFailure(event.reason);
+        }
+        function domReady() {
+          document.getElementById("startup-reload")?.addEventListener("click", function () {
+            const url = new URL(location.href);
+            url.searchParams.set("reload", Date.now().toString());
+            this.href = url.href;
+          });
+          if (pending !== undefined) showFailure(pending);
+        }
+        function ready() {
+          document.getElementById("startup")?.remove();
+          window.removeEventListener("error", failed, true);
+          window.removeEventListener("unhandledrejection", rejected);
+          window.removeEventListener("hex-command-shell-ready", ready);
+          document.removeEventListener("DOMContentLoaded", domReady);
+        }
+        window.addEventListener("error", failed, true);
+        window.addEventListener("unhandledrejection", rejected);
+        window.addEventListener("hex-command-shell-ready", ready);
+        document.addEventListener("DOMContentLoaded", domReady, { once: true });
+      })();
+    </script>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Hex Command</title>
     <meta
@@ -26,7 +77,7 @@
       <noscript>This game needs JavaScript enabled.</noscript>
     </section>
     <div id="app"></div>
-    <script src="./startup.js"></script>
-    <script type="module" src="/src/main.ts"></script>
+    <link rel="stylesheet" href="/src/style.css" />
+    <script type="module" src="/_build/default/frontend/output/frontend/Boot.js"></script>
   </body>
 </html>

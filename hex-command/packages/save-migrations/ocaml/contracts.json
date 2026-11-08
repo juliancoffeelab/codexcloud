@@ -1,0 +1,14 @@
+{
+  "inputs": {
+    "ocaml/native-v38.json": "9b568fbe7cd0810f9fb0e1136d3d8ab6b00e52d627b9931a7eba01c7682442b9",
+    "ocaml/native-v39.json": "1d9cd57401e1f9ec81e11fda47c6abc577cee3facf2ef5e2811af043b957ce87",
+    "src/formats/readers.json": "47d791d619b1902e167df20491f14279804e185a31d148c3df89d82416b8064a"
+  },
+  "outputs": {
+    "ocaml/Native_v39.ml": "c6569f423f528409de47fa1d22ac3889614df37b5ebe5a2ff8a6c4e6ed45c1e1",
+    "ocaml/Native_v39.mli": "547cbdf78b74920e1f623fea56c01ba1dc9d0fcd245b47d5be91969c7565fc1f",
+    "ocaml/Historical_types.ml": "1331ae9a373414991b30a2022ff79fba398a9a88b4c343747107885c4e268497",
+    "ocaml/Historical_codec.ml": "df9e9b2fc40ce0107611235a7a13a24a09b838be214f736dfb691d631d92b193",
+    "ocaml/Historical_codec.mli": "8eba42e36f35eace8192309a00069991e9eaa18ee2946f8cfe6fb92d12993711"
+  }
+}

@@ -1,52 +1,1642 @@
 {
-  "events": [
+  "enemyGroups": [
     {
-      "id": "road-cache",
-      "trigger": {
-        "kind": "visit",
-        "tile": "4,8"
-      },
-      "label": "Recover the southern road cache",
-      "gold": 6,
-      "dialogue": [
-        {
-          "speaker": "Ivo",
-          "portrait": "scout",
-          "text": "Dry blankets, clean bandages, and six coins. Someone expected the road to open again. I would hate to disappoint them."
+      "id": "captive-guard",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "hex": {
+              "col": 7,
+              "row": 6
+            }
+          }
+        ],
+        "attackRadius": 1,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "character": "villagers"
         }
-      ]
+      }
+    },
+    {
+      "id": "swamp-dead"
+    },
+    {
+      "id": "tollkeeper",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "location": "tollkeeper-keep"
+          }
+        ],
+        "attackRadius": 1,
+        "when": {
+          "kind": "hasUnits",
+          "side": "neutral",
+          "character": "villagers"
+        }
+      }
+    },
+    {
+      "id": "swamp-commander",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "hex": {
+              "col": 12,
+              "row": 12
+            }
+          }
+        ],
+        "attackRadius": 2
+      }
     }
   ],
-  "waves": [
+  "events": [
     {
-      "round": 5,
-      "label": "Two skeletons enter from the eastern road on turn 5",
-      "id": "eastern-skeletons",
-      "units": [
+      "id": "deadline-0",
+      "when": {
+        "turnAtLeast": 31
+      },
+      "actions": [
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 1
+          "failObjective": "prisoners-freed"
         },
         {
-          "type": "skeleton",
-          "side": "enemy",
-          "col": 11,
-          "row": 7
+          "failObjective": "village-safe"
+        },
+        {
+          "failObjective": "eastern-departure"
+        },
+        {
+          "defeat": "The Bellwarden's final toll seals the road. The company has run out of time."
         }
       ]
     },
     {
-      "round": 7,
-      "label": "A bone bow reaches the southern crossing on turn 7",
-      "id": "southern-bow",
-      "units": [
+      "id": "village-contact",
+      "when": {
+        "proximity": {
+          "tile": {
+            "location": "shelter"
+          },
+          "radius": 1,
+          "side": "player"
+        }
+      },
+      "actions": [
         {
-          "type": "bonearcher",
-          "side": "enemy",
-          "col": 8,
-          "row": 7
+          "spawn": {
+            "faction": "player",
+            "area": [
+              {
+                "location": "shelter"
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 0
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 1
+                }
+              },
+              {
+                "hex": {
+                  "col": 2,
+                  "row": 2
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 1
+                }
+              },
+              {
+                "hex": {
+                  "col": 1,
+                  "row": 0
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 2
+                }
+              }
+            ],
+            "units": [
+              {
+                "type": "warden",
+                "character": "sella"
+              }
+            ]
+          }
+        },
+        {
+          "unlockRecruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "swordsman"
+              },
+              {
+                "unit": "spearman"
+              },
+              {
+                "unit": "archer"
+              },
+              {
+                "unit": "scout"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "warden",
+              "text": "Easy. Living faces\u2014I\u2019d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by.",
+              "character": "sella"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "We came from the crossing. What happened here?",
+              "character": "nera"
+            },
+            {
+              "portrait": "warden",
+              "text": "They emptied the roadside villages. There are prisoners at the old pass fort, waiting to be marched east. We haven\u2019t the strength to fetch them.",
+              "character": "sella"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Then we\u2019ll bring them here. Can you keep them safe?",
+              "character": "nera"
+            },
+            {
+              "portrait": "warden",
+              "text": "We can. I\u2019ll go with you. There are a few here who can take up arms; give us somewhere to muster.",
+              "character": "sella"
+            }
+          ]
+        },
+        {
+          "setFlag": "village-contact"
+        },
+        {
+          "setFlag": "hidden-village-found"
+        }
+      ],
+      "objective": {
+        "label": "Find a safe foothold",
+        "intent": {
+          "approach": {
+            "tile": {
+              "location": "shelter"
+            },
+            "radius": 1,
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "foothold-established",
+      "when": {
+        "all": [
+          {
+            "owner": {
+              "tile": {
+                "location": "player-camp"
+              },
+              "faction": "player"
+            }
+          },
+          {
+            "flag": "village-contact"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "foothold-established"
+        }
+      ],
+      "objective": {
+        "label": "Investigate the area",
+        "optional": false,
+        "intent": {
+          "capture": [
+            {
+              "location": "player-camp"
+            }
+          ]
+        },
+        "visibleWhen": {
+          "flag": "village-contact"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "oren-lessons",
+      "when": {
+        "all": [
+          {
+            "flag": "village-contact"
+          },
+          {
+            "proximity": {
+              "target": {
+                "character": "oren"
+              },
+              "side": "player",
+              "role": "leader",
+              "radius": 1
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "unlockRecruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "adept"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "adept",
+              "text": "That child by the hearth\u2014those marks on the slate aren\u2019t letters. Who taught you to draw them?",
+              "character": "oren"
+            },
+            {
+              "speaker": "Villager",
+              "portrait": "captives",
+              "text": "Nobody. They appear when I\u2019m trying to remember things."
+            },
+            {
+              "portrait": "adept",
+              "text": "A little training, then. We haven\u2019t an academy to hand, but this is better than leaving a gift untended. Stay with me; I\u2019ll show you how to keep it from burning your fingers.",
+              "character": "oren"
+            }
+          ]
+        },
+        {
+          "setFlag": "oren-lessons"
+        }
+      ]
+    },
+    {
+      "id": "ferry-supplies",
+      "when": {
+        "flag": "ferryman-alive"
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 6
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "The ferryman\u2019s purse will buy a few more hands. Let\u2019s make his coins count.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "setFlag": "ferry-supplies"
+        }
+      ]
+    },
+    {
+      "id": "ferry-letter",
+      "when": {
+        "flag": "ferryman-dead"
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "He asked us to follow the people taken from the bank. This is their road.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "setFlag": "ferry-letter"
+        }
+      ]
+    },
+    {
+      "id": "prisoners-found",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "proximity": {
+                  "tile": {
+                    "location": "captive-camp"
+                  },
+                  "radius": 2,
+                  "side": "player"
+                }
+              },
+              {
+                "hasUnits": {
+                  "side": "any",
+                  "character": "villagers"
+                }
+              }
+            ]
+          },
+          {
+            "flag": "village-contact"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Villager",
+              "portrait": "captives",
+              "text": "Help! Help us!"
+            }
+          ]
+        },
+        {
+          "setFlag": "prisoners-found"
+        }
+      ]
+    },
+    {
+      "id": "prisoners-found-guarded",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "hasUnits": {
+                  "side": "any",
+                  "character": "villagers"
+                }
+              },
+              {
+                "hasUnits": {
+                  "side": "enemy",
+                  "aiGroup": "captive-guard"
+                }
+              }
+            ]
+          },
+          {
+            "flag": "prisoners-found"
+          },
+          {
+            "not": {
+              "flag": "prisoners-found-unguarded"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Skeleton guard",
+              "portrait": "skeleton",
+              "text": "Quiet."
+            },
+            {
+              "speaker": "Villager",
+              "portrait": "captives",
+              "text": "Please\u2014before it\u2019s too late!"
+            },
+            {
+              "speaker": "Skeleton guard",
+              "portrait": "skeleton",
+              "text": "Silence. The Bell has no use for your tongue."
+            }
+          ]
+        },
+        {
+          "setFlag": "prisoners-found-guarded"
+        }
+      ]
+    },
+    {
+      "id": "prisoners-found-unguarded",
+      "when": {
+        "all": [
+          {
+            "hasUnits": {
+              "side": "any",
+              "character": "villagers"
+            }
+          },
+          {
+            "flag": "prisoners-found"
+          },
+          {
+            "not": {
+              "flag": "prisoners-found-guarded"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "Keep your heads down. We\u2019re getting you out.",
+              "character": "nera"
+            },
+            {
+              "speaker": "Villager",
+              "portrait": "captives",
+              "text": "They said another column was coming for us. Please\u2014don\u2019t let them take us."
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Stay together. We\u2019ll get you somewhere safe.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "setFlag": "prisoners-found-unguarded"
+        }
+      ]
+    },
+    {
+      "id": "prisoners-freed",
+      "when": {
+        "all": [
+          {
+            "flag": "village-contact"
+          },
+          {
+            "proximity": {
+              "target": {
+                "character": "villagers"
+              },
+              "side": "player",
+              "radius": 1
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "villagers"
+            },
+            "faction": "player"
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "There\u2019s a village hidden in the western woods. Stay together. We\u2019ll take you there.",
+              "character": "nera"
+            },
+            {
+              "speaker": "Villager",
+              "portrait": "captives",
+              "text": "They took the others down the road. My brother, the children\u2014everyone who could still walk."
+            },
+            {
+              "speaker": "Villager",
+              "portrait": "captives",
+              "text": "We heard a bell somewhere ahead of the column. It kept ringing long after midnight."
+            },
+            {
+              "portrait": "swordsman",
+              "text": "First we get you somewhere safe.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "setFlag": "prisoners-freed"
+        },
+        {
+          "setFlag": "road-prisoners-freed"
+        }
+      ],
+      "objective": {
+        "label": "Reach and free the captives",
+        "visibleWhen": {
+          "flag": "village-contact"
+        },
+        "intent": {
+          "approach": {
+            "target": {
+              "character": "villagers"
+            },
+            "side": "player",
+            "radius": 1
+          }
+        },
+        "availableWhen": {
+          "flag": "village-contact"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "road-urgency",
+      "when": {
+        "flag": "road-prisoners-freed"
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "with": "oren",
+              "dialogue": [
+                {
+                  "portrait": "adept",
+                  "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it\u2019s too late. We must leave this road by the end of turn 30.",
+                  "character": "oren"
+                }
+              ],
+              "alternative": [
+                {
+                  "portrait": "swordsman",
+                  "text": "They\u2019re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays\u2014we have to reach them while they\u2019re still alive. We must leave this road by the end of turn 30.",
+                  "character": "nera"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tollkeeper-provoked",
+      "when": {
+        "all": [
+          {
+            "hasUnits": {
+              "side": "enemy",
+              "character": "tollkeeper"
+            }
+          },
+          {
+            "any": [
+              {
+                "flag": "prisoners-freed"
+              },
+              {
+                "proximity": {
+                  "tile": {
+                    "location": "tollkeeper-keep"
+                  },
+                  "radius": 3,
+                  "side": "player"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "necromancer",
+              "text": "Living soldiers on my road? You\u2019ll pay for every step. Come closer\u2014I\u2019ll take the toll in bones.",
+              "character": "tollkeeper"
+            }
+          ]
+        },
+        {
+          "setFlag": "tollkeeper-provoked"
+        }
+      ]
+    },
+    {
+      "id": "swamp-sighting",
+      "when": {
+        "any": [
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 16,
+                  "row": 6
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "tollkeeper-keep"
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 13,
+                  "row": 8
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 8
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 8
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 9
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 8,
+                  "row": 9
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 9
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 10,
+                  "row": 9
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 11,
+                  "row": 9
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 13,
+                  "row": 9
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 9
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 16,
+                  "row": 9
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 17,
+                  "row": 9
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 5,
+                  "row": 10
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 10
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 10
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 8,
+                  "row": 10
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 10
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 11,
+                  "row": 10
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 12,
+                  "row": 10
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 10
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 17,
+                  "row": 10
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 8,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 10,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 11,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 12,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 17,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 18,
+                  "row": 11
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 8,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 10,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 11,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 12,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 13,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 16,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 17,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 18,
+                  "row": 12
+                }
+              },
+              "side": "player",
+              "through": true
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "scout",
+              "text": "The reeds are full of them.",
+              "character": "ivo"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Back onto firm ground. Let it come out where we can see it.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "setFlag": "swamp-sighting"
+        }
+      ]
+    },
+    {
+      "id": "oren-swamp",
+      "when": {
+        "all": [
+          {
+            "flag": "swamp-sighting"
+          },
+          {
+            "hasUnits": {
+              "side": "player",
+              "character": "oren"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "adept",
+              "text": "That smell. Something\u2019s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire.",
+              "character": "oren"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "A friend of yours?",
+              "character": "nera"
+            },
+            {
+              "portrait": "adept",
+              "text": "An old healer. A better one than most of my tutors. He had a house along this bank. I hope he had the sense to leave.",
+              "character": "oren"
+            }
+          ]
+        },
+        {
+          "setFlag": "oren-swamp"
+        }
+      ]
+    },
+    {
+      "id": "village-safe",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "shelter"
+              },
+              "side": "player",
+              "through": false,
+              "character": "villagers"
+            }
+          },
+          {
+            "flag": "prisoners-freed"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "deleteUnit": {
+            "side": "player",
+            "role": "captive"
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Villager",
+              "portrait": "captives",
+              "text": "Inside. There\u2019s broth, and room enough if we move the tables."
+            },
+            {
+              "speaker": "Villager",
+              "portrait": "captives",
+              "text": "Thank you. The others are still out there. Please don\u2019t leave them to the dead."
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Send a runner back to the ferry. Tell them the dead are taking people east. We need reinforcements, and a watch along this road.",
+              "character": "nera"
+            },
+            {
+              "speaker": "Villager",
+              "portrait": "captives",
+              "text": "They\u2019ll have your message. I\u2019ll keep these people safe."
+            },
+            {
+              "portrait": "swordsman",
+              "text": "We can move on now, or finish the dead here so they can\u2019t follow us. But every fight costs us time.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "setFlag": "village-safe"
+        },
+        {
+          "setFlag": "road-villagers-safe"
+        }
+      ],
+      "objective": {
+        "label": "Bring the captives safely to the hidden village",
+        "optional": false,
+        "intent": {
+          "escort": {
+            "tile": {
+              "location": "shelter"
+            },
+            "character": "villagers",
+            "side": "player"
+          }
+        },
+        "visibleWhen": {
+          "flag": "prisoners-freed"
+        },
+        "availableWhen": {
+          "flag": "prisoners-freed"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "tollkeeper-fallen",
+      "when": {
+        "all": [
+          {
+            "noUnits": {
+              "side": "enemy",
+              "character": "tollkeeper"
+            }
+          },
+          {
+            "flag": "village-contact"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        },
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "No more soldiers from this keep. Gather what we can carry; the prisoners ahead still need us.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "setFlag": "tollkeeper-fallen"
+        },
+        {
+          "setFlag": "tollkeeper-defeated"
+        }
+      ]
+    },
+    {
+      "id": "eastern-departure",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "exit"
+              },
+              "side": "player",
+              "character": "nera",
+              "through": true
+            }
+          },
+          {
+            "flag": "village-safe"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "eastern-departure"
+        },
+        {
+          "setFlag": "road-continued-east"
+        }
+      ],
+      "objective": {
+        "label": "Lead Nera through the northern pass by the end of turn 30",
+        "optional": false,
+        "intent": {
+          "escape": {
+            "tile": {
+              "location": "exit"
+            },
+            "side": "player",
+            "character": "nera"
+          }
+        },
+        "visibleWhen": {
+          "flag": "prisoners-freed"
+        },
+        "availableWhen": {
+          "flag": "village-safe"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "oren-healer-fallen",
+      "when": {
+        "all": [
+          {
+            "all": [
+              {
+                "noUnits": {
+                  "side": "enemy",
+                  "character": "edrin"
+                }
+              },
+              {
+                "hasUnits": {
+                  "side": "player",
+                  "character": "oren"
+                }
+              }
+            ]
+          },
+          {
+            "flag": "oren-swamp"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "adept",
+              "text": "Edrin. Oh, my friend. So this is what they made of you.",
+              "character": "oren"
+            },
+            {
+              "portrait": "swordsman",
+              "text": "Oren\u2026",
+              "character": "nera"
+            },
+            {
+              "portrait": "adept",
+              "text": "He spent his life keeping people out of graves. Let\u2019s leave him in peace, and see that those villagers get home.",
+              "character": "oren"
+            }
+          ]
+        },
+        {
+          "setFlag": "oren-healer-fallen"
+        }
+      ]
+    },
+    {
+      "id": "mire-balm-found",
+      "when": {
+        "all": [
+          {
+            "noUnits": {
+              "side": "enemy",
+              "character": "edrin"
+            }
+          },
+          {
+            "flag": "swamp-sighting"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "portrait": "swordsman",
+              "text": "There\u2019s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done.",
+              "character": "nera"
+            }
+          ]
+        },
+        {
+          "setFlag": "mire-balm-found"
+        }
+      ]
+    },
+    {
+      "id": "road-cleared",
+      "when": {
+        "noUnits": {
+          "side": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "log": "The road is clear of enemies"
+        },
+        {
+          "setFlag": "road-cleared"
+        }
+      ],
+      "objective": {
+        "label": "Defeat all enemies before leaving",
+        "optional": true,
+        "intent": {
+          "defeat": {
+            "side": "enemy"
+          }
+        },
+        "visibleWhen": {
+          "flag": "village-safe"
+        },
+        "availableWhen": {
+          "flag": "village-safe"
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "first-bell-toll",
+      "when": {
+        "turn": 26
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "The company",
+              "portrait": "captives",
+              "text": "A deep bell rolls out of the valley. For a moment, the sound seems to come from beneath the ground.",
+              "sound": "bell"
+            }
+          ]
+        },
+        {
+          "log": "The bell sounds in the valley."
+        },
+        {
+          "setFlag": "first-bell-toll"
+        },
+        {
+          "setFlag": "bell-tolled-before-arrival"
+        }
+      ]
+    },
+    {
+      "id": "road-bell-warning",
+      "when": {
+        "flag": "first-bell-toll"
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "with": "oren",
+              "dialogue": [
+                {
+                  "portrait": "adept",
+                  "text": "The ritual has started. Hurry! We have to reach the valley before the final toll.",
+                  "character": "oren"
+                }
+              ],
+              "alternative": [
+                {
+                  "portrait": "swordsman",
+                  "text": "They\u2019ve started. We cannot lose another moment. Hurry!",
+                  "character": "nera"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "captives-lost",
+      "when": {
+        "killed": {
+          "character": "villagers"
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "prisoners-freed"
+        },
+        {
+          "failObjective": "village-safe"
+        },
+        {
+          "failObjective": "eastern-departure"
+        },
+        {
+          "defeat": "The captives were killed before reaching safety."
+        }
+      ]
+    },
+    {
+      "id": "chapter-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "foothold-established"
+          },
+          {
+            "flag": "village-safe"
+          },
+          {
+            "flag": "eastern-departure"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mission complete. The company can rest and regroup."
         }
       ]
     }

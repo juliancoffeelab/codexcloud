@@ -1,0 +1,32 @@
+/** Native modal lifetimes and immutable authored selection menus. */
+module Settings: {
+  type screen =
+    | Hub
+    | Saves;
+  [@react.component]
+  let make:
+    (
+      ~session: Session.t,
+      ~view: Session.model,
+      ~actions: Session.actions,
+      ~dialog: React.ref(Js.Nullable.t(Dom.element)),
+      ~onNewBattle: unit => unit,
+      ~onRepair: unit => unit,
+      ~openKey: int=?,
+      ~initialScreen: screen=?,
+      ~focusId: option(string)=?,
+      ~showCommanderArrow: bool,
+      ~commanderArrowError: string,
+      ~onCommanderArrowChange: bool => unit,
+      ~enemyDetailsError: string,
+      ~onEnemyDetailsChange: bool => unit
+    ) =>
+    React.element;
+};
+/** Keyboard navigation and post-commit focus belong to the current publication. */
+module Dialogue: {
+  [@react.component]
+  let make:
+    (~view: Session.model, ~actions: Session.actions, ~narrate: Native.view => unit) =>
+    React.element;
+};

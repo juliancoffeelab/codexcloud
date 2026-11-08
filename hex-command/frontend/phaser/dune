@@ -1,0 +1,6 @@
+(library
+ (name phaser_bindings)
+ (modes melange)
+ (libraries melange.js melange.dom hex_platform)
+ (flags (:standard -open Hex_platform))
+ (preprocess (pps melange.ppx)))
