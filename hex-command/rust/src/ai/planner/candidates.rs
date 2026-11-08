@@ -502,7 +502,12 @@ pub(super) fn plan(
                 return f64::NEG_INFINITY;
             }
             if escortee {
-                value += escort_scoring::progress(route[unit.tile], route[tile]);
+                value += escort_scoring::progress(
+                    route[unit.tile],
+                    route[tile],
+                    field.tiles.contains(&unit.tile),
+                    field.tiles.contains(&tile),
+                );
             } else {
                 value += (route[unit.tile] as f64 - route[tile] as f64) * goal.weight / 4.0;
                 value += (field.tiles.contains(&tile) as i32

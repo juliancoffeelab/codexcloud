@@ -686,7 +686,12 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                         continue;
                     }
                     if escortee {
-                        positioning += escort_scoring::progress(d.before, after);
+                        positioning += escort_scoring::progress(
+                            d.before,
+                            after,
+                            d.goal.tiles.contains(&self.board().ids[unit.tile]),
+                            d.goal.tiles.contains(&self.board().ids[tile]),
+                        );
                     } else {
                         positioning += (d.before as f64 - after as f64) * d.goal.weight / 4.0
                             + ((d.goal.tiles.contains(&self.board().ids[tile]) as i32

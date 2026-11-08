@@ -540,7 +540,9 @@ campaign examples must be recollected under the current policy before fine-tunin
 Full and Queued share bounded campaign courier/captive travel scoring in
 `ai/policies/escort/scoring.rs`: advancing earns up to five points, scaled by
 fraction of the remaining route covered, and arrival adds ten. Standing at the
-endpoint earns nothing again; leaving it reverses the arrival term. Village
+endpoint earns nothing again; leaving it reverses the arrival term. Endpoint
+membership is checked explicitly because zero-cost terrain can also have zero
+remaining route cost. Village
 capture and healing retain their existing values.
 
 For these actors, predicted exposure costs at most twenty points and leaving
