@@ -1,0 +1,9 @@
+{
+  "name": "async-search-demo",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "rescript": "11.1.4"
+  }
+}

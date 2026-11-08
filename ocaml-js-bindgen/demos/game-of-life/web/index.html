@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Game of Life · OCamlJS</title
+  ><link rel="stylesheet" href="./style.css" />
+  <header>
+    <p>OCAML × RUST / WEBASSEMBLY</p>
+    <h1>Game of Life</h1>
+    <p>Rust owns the grid. OCaml controls its evolution.</p>
+  </header>
+  <main>
+    <button id="step">Next generation</button><output id="generation"></output>
+    <div id="grid" aria-label="Game of Life grid"></div>
+  </main>
+  <script type="module" src="./frontend.mjs"></script>
+</html>

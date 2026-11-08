@@ -1,0 +1,11 @@
+(rule
+ (targets Bindings.ml Bindings.mli)
+ (deps ../../generated/lwt/Bindings.ml ../../generated/lwt/Bindings.mli)
+ (action (progn
+  (copy ../../generated/lwt/Bindings.ml Bindings.ml)
+  (copy ../../generated/lwt/Bindings.mli Bindings.mli))))
+(executable
+ (name Test)
+ (modes js)
+ (libraries js_of_ocaml lwt))
+(alias (name validation) (deps Test.bc.js))

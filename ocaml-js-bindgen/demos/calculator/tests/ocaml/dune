@@ -1,0 +1,7 @@
+(library
+ (name calculator_demo_checks)
+ (wrapped false)
+ (modes melange)
+ (modules Test)
+ (libraries calculator_demo)
+ (preprocess (pps melange.ppx)))

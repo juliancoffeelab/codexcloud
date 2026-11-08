@@ -1,0 +1,7 @@
+(library
+ (name todo_demo_checks)
+ (wrapped false)
+ (modes melange)
+ (modules Test)
+ (libraries todo_demo)
+ (preprocess (pps melange.ppx)))

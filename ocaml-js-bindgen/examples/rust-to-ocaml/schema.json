@@ -1,0 +1,312 @@
+{
+  "Cat": {
+    "body": {
+      "fields": [
+        {
+          "docs": "Identifier assigned by the API.",
+          "name": "id",
+          "serde": "",
+          "ty": {
+            "args": [],
+            "kind": "named",
+            "name": "String",
+            "qualified": false
+          }
+        },
+        {
+          "docs": "HTTPS image URL.",
+          "name": "url",
+          "serde": "",
+          "ty": {
+            "args": [],
+            "kind": "named",
+            "name": "String",
+            "qualified": false
+          }
+        }
+      ],
+      "style": "named"
+    },
+    "docs": "One cat picture returned by the public API.",
+    "flat": false,
+    "key_eq": false,
+    "key_ord": false,
+    "kind": "struct",
+    "name": "Cat",
+    "params": [],
+    "serde": "",
+    "transparent": false
+  },
+  "CatError": {
+    "docs": "Expected failures when loading a cat picture.",
+    "key_eq": false,
+    "key_ord": false,
+    "kind": "enum",
+    "name": "CatError",
+    "params": [],
+    "serde": "",
+    "variants": [
+      {
+        "body": {
+          "fields": [],
+          "style": "unit"
+        },
+        "docs": "The request failed.",
+        "name": "Network",
+        "serde": "",
+        "serde_name": "Network"
+      },
+      {
+        "body": {
+          "fields": [],
+          "style": "unit"
+        },
+        "docs": "The response exceeded the configured byte limit.",
+        "name": "TooLarge",
+        "serde": "",
+        "serde_name": "TooLarge"
+      },
+      {
+        "body": {
+          "fields": [],
+          "style": "unit"
+        },
+        "docs": "The response did not contain a valid HTTPS picture.",
+        "name": "InvalidResponse",
+        "serde": "",
+        "serde_name": "InvalidResponse"
+      }
+    ]
+  },
+  "Geometry__Point": {
+    "body": {
+      "fields": [
+        {
+          "docs": "Horizontal coordinate.",
+          "name": "x",
+          "serde": "",
+          "ty": {
+            "args": [],
+            "kind": "named",
+            "name": "f64",
+            "qualified": false
+          }
+        },
+        {
+          "docs": "Vertical coordinate.",
+          "name": "y",
+          "serde": "",
+          "ty": {
+            "args": [],
+            "kind": "named",
+            "name": "f64",
+            "qualified": false
+          }
+        }
+      ],
+      "style": "named"
+    },
+    "docs": "A point in two-dimensional space.",
+    "flat": true,
+    "key_eq": false,
+    "key_ord": false,
+    "kind": "struct",
+    "member": "Point",
+    "module": "Geometry",
+    "name": "Geometry__Point",
+    "params": [],
+    "serde": "",
+    "transparent": false
+  },
+  "OcamljsModule__Geometry": {
+    "docs": "Euclidean geometry with native OCaml records.",
+    "kind": "module",
+    "member": "Geometry",
+    "name": "OcamljsModule__Geometry",
+    "rust_path": "geometry",
+    "ty": null
+  },
+  "OcamljsModule__Token": {
+    "docs": "",
+    "kind": "module",
+    "member": "Token",
+    "name": "OcamljsModule__Token",
+    "rust_path": "token",
+    "ty": {
+      "kind": "named",
+      "name": "Token"
+    }
+  },
+  "OcamljsModule__Tokens": {
+    "docs": "",
+    "kind": "module",
+    "member": "Tokens",
+    "name": "OcamljsModule__Tokens",
+    "rust_path": "tokens",
+    "ty": null
+  },
+  "Token": {
+    "body": null,
+    "docs": "A parsed numeric token whose identity remains in Rust.",
+    "flat": false,
+    "key_eq": false,
+    "key_ord": false,
+    "kind": "opaque",
+    "module": "Token",
+    "name": "Token",
+    "params": [],
+    "serde": "",
+    "transparent": false
+  },
+  "__ocamljs_Geometry_distance": {
+    "asynchronous": false,
+    "docs": "Returns the Euclidean distance between two points.",
+    "kind": "function",
+    "member": "distance",
+    "module": "Geometry",
+    "name": "__ocamljs_Geometry_distance",
+    "params": [
+      {
+        "mode": "value",
+        "name": "a",
+        "ty": {
+          "args": [],
+          "kind": "named",
+          "name": "Geometry__Point",
+          "qualified": false
+        }
+      },
+      {
+        "mode": "value",
+        "name": "b",
+        "ty": {
+          "args": [],
+          "kind": "named",
+          "name": "Geometry__Point",
+          "qualified": false
+        }
+      }
+    ],
+    "result": {
+      "args": [],
+      "kind": "named",
+      "name": "f64",
+      "qualified": false
+    },
+    "throws": false
+  },
+  "__ocamljs_Token_value": {
+    "asynchronous": false,
+    "docs": "Reads the numeric value without transferring ownership.",
+    "kind": "function",
+    "member": "value",
+    "module": "Token",
+    "name": "__ocamljs_Token_value",
+    "params": [
+      {
+        "mode": "value",
+        "name": "token",
+        "ty": {
+          "inner": {
+            "args": [],
+            "kind": "named",
+            "name": "Token",
+            "qualified": false
+          },
+          "kind": "ref",
+          "mutable": false
+        }
+      }
+    ],
+    "result": {
+      "args": [],
+      "kind": "named",
+      "name": "u32",
+      "qualified": false
+    },
+    "throws": false
+  },
+  "__ocamljs_Tokens_parse": {
+    "asynchronous": false,
+    "docs": "Parses a decimal token; invalid input returns an error message.",
+    "kind": "function",
+    "member": "parse",
+    "module": "Tokens",
+    "name": "__ocamljs_Tokens_parse",
+    "params": [
+      {
+        "mode": "value",
+        "name": "text",
+        "ty": {
+          "args": [],
+          "kind": "named",
+          "name": "String",
+          "qualified": false
+        }
+      }
+    ],
+    "result": {
+      "args": [
+        {
+          "args": [],
+          "kind": "named",
+          "name": "Token",
+          "path": "super::token::Token",
+          "qualified": true
+        },
+        {
+          "args": [],
+          "kind": "named",
+          "name": "String",
+          "qualified": false
+        }
+      ],
+      "kind": "named",
+      "name": "Result",
+      "qualified": false
+    },
+    "throws": false
+  },
+  "fetch_cat": {
+    "asynchronous": true,
+    "docs": "Fetches a picture description from the supplied JSON API URL.",
+    "kind": "function",
+    "name": "fetch_cat",
+    "params": [
+      {
+        "mode": "value",
+        "name": "api_url",
+        "ty": {
+          "inner": {
+            "args": [],
+            "kind": "named",
+            "name": "str",
+            "qualified": false
+          },
+          "kind": "ref",
+          "mutable": false
+        }
+      }
+    ],
+    "result": {
+      "args": [
+        {
+          "args": [],
+          "kind": "named",
+          "name": "Cat",
+          "qualified": false
+        },
+        {
+          "args": [],
+          "kind": "named",
+          "name": "CatError",
+          "qualified": false
+        }
+      ],
+      "kind": "named",
+      "name": "Result",
+      "qualified": false
+    },
+    "throws": false
+  }
+}

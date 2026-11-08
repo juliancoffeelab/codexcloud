@@ -1,0 +1,31 @@
+[package]
+name = "glue-benchmark"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[workspace]
+
+[features]
+lifecycle-probes = []
+direct-numeric = []
+ours = ["dep:ocamljs_bindgen", "dep:ocamljsify"]
+js = ["ours"]
+js-record = ["js"]
+baseline = ["dep:wasm-bindgen", "dep:serde-wasm-bindgen"]
+
+[dependencies]
+ocamljs_bindgen = { path = "../../../crates/ocamljs_bindgen", optional = true }
+ocamljsify = { path = "../../../crates/ocamljsify", optional = true }
+serde = { version = "=1.0.229", features = ["derive"] }
+wasm-bindgen = { version = "=0.2.129", optional = true }
+serde-wasm-bindgen = { version = "=0.6.5", optional = true }
+
+[profile.release]
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+panic = "abort"

@@ -1,0 +1,7 @@
+(library
+ (name document_explorer_demo_checks)
+ (wrapped false)
+ (modes melange)
+ (modules Test)
+ (libraries document_explorer_demo)
+ (preprocess (pps melange.ppx)))

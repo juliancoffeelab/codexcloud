@@ -1,0 +1,7 @@
+/node_modules/
+/_build/
+/generated/
+/rust/target/
+/backend.wasm
+/Frontend.js
+/dist/

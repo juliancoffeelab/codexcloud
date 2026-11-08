@@ -1,0 +1,7 @@
+(library
+ (name cat_pics_demo_checks)
+ (wrapped false)
+ (modes melange)
+ (modules Test)
+ (libraries cat_pics_demo)
+ (preprocess (pps melange.ppx)))

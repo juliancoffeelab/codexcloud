@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document and live views</title>
+  </head>
+  <body>
+    <main>
+      <h1>Document and live views</h1>
+      <label
+        >JSON file
+        <input id="file" type="file" accept=".json,application/json" /></label
+      ><button id="load-file">Open JSON file</button
+      ><textarea id="source">{"items":[1,2],"title":"OCaml"}</textarea
+      ><button id="parse">Parse</button
+      ><button id="replace">Replace document</button
+      ><button id="release-view">Release view</button
+      ><button id="release-parent">Release parent</button>
+      <div id="nodes"></div>
+      <pre id="selection"></pre>
+      <p id="message" role="status"></p>
+    </main>
+    <script type="module" src="./frontend.mjs"></script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+(lang dune 3.24)
+(name scripted_game)
+(using melange 1.0)
+(package
+ (name scripted_game)
+ (allow_empty)
+ (depends
+  (ocaml (= 5.3.0))
+  (melange (= 7.0.1-53))
+  (js_of_ocaml (= 6.5.0))
+  (js_of_ocaml-ppx (= 6.5.0))
+  (js_of_ocaml-compiler (= 6.5.0))))

@@ -1,0 +1,9 @@
+{
+  "name": "rust-to-ocaml-example",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "playwright": "1.63.0"
+  }
+}

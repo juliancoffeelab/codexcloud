@@ -1,0 +1,16 @@
+[package]
+name = "ocamljsify"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+[features]
+default = []
+generator = ["dep:serde", "dep:serde_json", "dep:wasmparser", "dep:wasm-encoder", "dep:sha2", "dep:walrus"]
+[dependencies]
+ocamljs_bindgen = { path = "../ocamljs_bindgen", version = "0.1.0" }
+serde = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+wasmparser = { version = "0.240", optional = true }
+wasm-encoder = { version = "0.240", features = ["wasmparser"], optional = true }
+sha2 = { version = "0.10", optional = true }
+walrus = { version = "0.27.2", optional = true }

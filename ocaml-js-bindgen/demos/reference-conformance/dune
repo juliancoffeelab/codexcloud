@@ -1,0 +1,8 @@
+(melange.emit
+ (target test-output)
+ (alias checks)
+ (modules)
+ (libraries reference_conformance_checks)
+ (module_systems esm))
+
+(alias (name validation) (deps (alias checks)))

@@ -1,0 +1,23 @@
+[package]
+name = "reference_conformance"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+[lib]
+crate-type = ["cdylib", "rlib"]
+[dependencies]
+ocamljs_bindgen = { path = "../../../crates/ocamljs_bindgen" }
+ocamljsify = { path = "../../../crates/ocamljsify" }
+
+[features]
+primitive-only = []
+builtin-only = []
+error-only = []
+text-only = []
+pixels-only = []
+
+[workspace]
+
+[profile.release]
+lto = "thin"
+panic = "abort"

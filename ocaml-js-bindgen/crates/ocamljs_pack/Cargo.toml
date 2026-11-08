@@ -1,0 +1,8 @@
+[package]
+name = "ocamljs_pack"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+[dependencies]
+ocamljsify = { path = "../ocamljsify", version = "0.1.0", features = ["generator"] }
+serde_json.workspace = true

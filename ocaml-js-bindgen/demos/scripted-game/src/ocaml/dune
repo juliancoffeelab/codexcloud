@@ -1,0 +1,18 @@
+(rule
+ (targets Bindings.ml Bindings.mli)
+ (deps ../../generated/melange/Bindings.ml ../../generated/melange/Bindings.mli)
+ (action (progn
+  (copy ../../generated/melange/Bindings.ml Bindings.ml)
+  (copy ../../generated/melange/Bindings.mli Bindings.mli))))
+(rule (target Async.ml) (deps ../../adapters/melange/Async.ml) (action (copy %{deps} %{target})))
+(rule (target Async.mli) (deps ../../adapters/melange/Async.mli) (action (copy %{deps} %{target})))
+(rule (target Browser.ml) (deps ../../adapters/melange/Browser.ml) (action (copy %{deps} %{target})))
+(rule (target Browser.mli) (deps ../../adapters/melange/Browser.mli) (action (copy %{deps} %{target})))
+(rule (target Checks.ml) (deps ../../tests/ocaml/Checks.ml) (action (copy %{deps} %{target})))
+
+(library
+ (name scripted_game_demo)
+ (wrapped false)
+ (modes melange)
+ (modules Bindings Async Browser Ui Checks Main Worker)
+ (preprocess (pps melange.ppx)))

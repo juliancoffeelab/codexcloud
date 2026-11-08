@@ -1,0 +1,13 @@
+(rule
+ (targets Bindings.ml Bindings.mli)
+ (deps ../../generated/melange/Bindings.ml ../../generated/melange/Bindings.mli)
+ (action (progn
+  (copy ../../generated/melange/Bindings.ml Bindings.ml)
+  (copy ../../generated/melange/Bindings.mli Bindings.mli))))
+
+(library
+ (name reference_conformance_checks)
+ (wrapped false)
+ (modes melange)
+ (modules Bindings Checks Test)
+ (preprocess (pps melange.ppx)))

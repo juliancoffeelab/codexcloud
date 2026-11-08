@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Todo · OCamlJS</title
+  ><link rel="stylesheet" href="./style.css" />
+  <header>
+    <p>OCAML × RUST / WEBASSEMBLY</p>
+    <h1>Todo</h1>
+    <p>An opaque Rust owner, an OCaml interface.</p>
+  </header>
+  <main>
+    <input
+      id="title"
+      aria-label="Task title"
+      placeholder="What needs doing?"
+    /><button id="add">Add task</button>
+    <p id="message" role="status"></p>
+    <ul id="tasks"></ul>
+    <output id="remaining"></output>
+  </main>
+  <script type="module" src="./frontend.mjs"></script>
+</html>

@@ -1,0 +1,23 @@
+(rule
+ (targets Bindings.ml Bindings.mli)
+ (deps ../../generated/js_of_ocaml/Bindings.ml ../../generated/js_of_ocaml/Bindings.mli)
+ (action (progn
+  (copy ../../generated/js_of_ocaml/Bindings.ml Bindings.ml)
+  (copy ../../generated/js_of_ocaml/Bindings.mli Bindings.mli))))
+(rule
+ (targets Checks.ml)
+ (deps ../../tests/ocaml/Checks.ml)
+ (action (copy %{deps} %{targets})))
+(rule
+ (targets Test.ml)
+ (deps ../../tests/js_of_ocaml/Test.ml)
+ (action (copy %{deps} %{targets})))
+
+(executables
+ (names Test)
+ (modes js)
+ (libraries js_of_ocaml))
+
+(alias
+ (name validation)
+ (deps Test.bc.js))

@@ -1,0 +1,24 @@
+(rule
+ (targets Bindings.ml Bindings.mli)
+ (deps ../../generated/js_of_ocaml/Bindings.ml ../../generated/js_of_ocaml/Bindings.mli)
+ (action (progn
+  (copy ../../generated/js_of_ocaml/Bindings.ml Bindings.ml)
+  (copy ../../generated/js_of_ocaml/Bindings.mli Bindings.mli))))
+(rule
+ (targets Main.ml)
+ (deps ../../src/js_of_ocaml/Main.ml)
+ (action (copy %{deps} %{targets})))
+(rule
+ (targets Test.ml)
+ (deps ../../tests/ocaml/Test.ml)
+ (action (copy %{deps} %{targets})))
+
+(executables
+ (names Test Main)
+ (modes js)
+ (libraries js_of_ocaml)
+ (preprocess (pps js_of_ocaml-ppx)))
+
+(alias
+ (name validation)
+ (deps Test.bc.js Main.bc.js))

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Rust async cat photos</title>
+  <main>
+    <h1>Rust async cat photos</h1>
+    <p>Fetch in Rust. Await in OCaml. Display a cat.</p>
+    <label
+      >Public cat API
+      <input id="api-url" value="https://api.thecatapi.com/v1/images/search"
+    /></label>
+    <button id="fetch">Fetch a cat</button>
+    <p id="status" role="status">Ready</p>
+    <img
+      id="cat"
+      alt="A cat will appear here"
+      style="max-width: 100%; max-height: 480px"
+    />
+  </main>
+  <script type="module" src="./frontend.mjs"></script>
+</html>

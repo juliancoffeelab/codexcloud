@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rust → OCaml</title>
+  <style>
+    body {
+      max-width: 42rem;
+      margin: 3rem auto;
+      padding: 0 1rem;
+      font: 18px system-ui;
+    }
+    section {
+      margin: 2rem 0;
+    }
+    input,
+    button {
+      font: inherit;
+      padding: 0.4rem;
+    }
+    #cat-api {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #cat {
+      max-width: 100%;
+      max-height: 22rem;
+    }
+  </style>
+  <h1>Rust → OCaml</h1>
+  <section>
+    <h2>Native records</h2>
+    <p id="distance">Loading WASM…</p>
+  </section>
+  <section>
+    <h2>Opaque Rust token</h2>
+    <label>Unsigned integer <input id="token-input" value="13" /></label>
+    <button id="read-token">Parse token</button>
+    <p id="token-result"></p>
+  </section>
+  <section>
+    <h2>Async fetch</h2>
+    <label
+      >Cat API
+      <input id="cat-api" value="https://api.thecatapi.com/v1/images/search"
+    /></label>
+    <p><button id="fetch-cat">Fetch a cat</button></p>
+    <p id="cat-status">Ready</p>
+    <img id="cat" alt="Fetched cat" />
+  </section>
+  <script type="module" src="./frontend.mjs"></script>
+</html>

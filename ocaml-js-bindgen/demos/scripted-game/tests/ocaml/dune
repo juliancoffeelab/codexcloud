@@ -1,0 +1,7 @@
+(library
+ (name scripted_game_demo_checks)
+ (wrapped false)
+ (modes melange)
+ (modules Test)
+ (libraries scripted_game_demo)
+ (preprocess (pps melange.ppx)))

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hello, Rust</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1>Hello, Rust</h1>
+    <p>Hypotenuse: √(a² + b²)</p>
+    <p>
+      <label
+        >Side a
+        <input
+          id="a"
+          type="number"
+          min="0"
+          step="any"
+          value="3"
+          inputmode="decimal"
+      /></label>
+      <label
+        >Side b
+        <input
+          id="b"
+          type="number"
+          min="0"
+          step="any"
+          value="4"
+          inputmode="decimal"
+      /></label>
+    </p>
+    <p>Result: <output id="result" aria-live="polite">…</output></p>
+    <script type="module" src="./frontend.mjs"></script>
+  </body>
+</html>

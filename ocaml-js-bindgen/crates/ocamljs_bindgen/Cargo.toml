@@ -1,0 +1,11 @@
+[package]
+name = "ocamljs_bindgen"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+[features]
+paranoid = []
+resource-diagnostics = []
+
+[dependencies]
+ocamljs_bindgen_macro = { path = "../ocamljs_bindgen_macro", version = "0.1.0" }

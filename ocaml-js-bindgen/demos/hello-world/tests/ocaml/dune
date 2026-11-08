@@ -1,0 +1,7 @@
+(library
+ (name hello_world_demo_checks)
+ (wrapped false)
+ (modes melange)
+ (modules Test)
+ (libraries hello_world_demo)
+ (preprocess (pps melange.ppx)))

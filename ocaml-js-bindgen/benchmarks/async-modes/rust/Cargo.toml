@@ -1,0 +1,28 @@
+[package]
+name = "async-mode-benchmark"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[workspace]
+
+[features]
+async = []
+opaque = []
+owned-result = ["opaque"]
+host = []
+completion = ["async", "host"]
+callbacks = []
+
+[dependencies]
+ocamljs_bindgen = { path = "../../../crates/ocamljs_bindgen" }
+ocamljsify = { path = "../../../crates/ocamljsify" }
+
+[profile.release]
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+panic = "abort"

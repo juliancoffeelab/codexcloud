@@ -1,0 +1,19 @@
+/target/
+/node_modules/
+/demos/*/generated/
+/demos/*/dist/
+/demos/*/lib/
+/demos/*/_build/
+/tmp/
+
+/_build/
+
+/demos/*/node_modules/
+/demos/*/rust/target/
+/benchmarks/glue/rust/target/
+
+# Generated benchmark reports and evidence archives stay local.
+/docs/*.json
+/docs/*.csv
+/docs/*.tar.gz
+/reports/

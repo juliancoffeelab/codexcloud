@@ -1,0 +1,7 @@
+(library
+ (name game_of_life_demo_checks)
+ (wrapped false)
+ (modes melange)
+ (modules Test)
+ (libraries game_of_life_demo)
+ (preprocess (pps melange.ppx)))

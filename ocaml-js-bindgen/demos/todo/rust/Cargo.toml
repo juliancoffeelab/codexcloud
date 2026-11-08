@@ -1,0 +1,19 @@
+[package]
+name = "todo_demo"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+[lib]
+crate-type = ["cdylib", "rlib"]
+[features]
+conformance = []
+
+[dependencies]
+ocamljs_bindgen = { path = "../../../crates/ocamljs_bindgen" }
+ocamljsify = { path = "../../../crates/ocamljsify" }
+
+[workspace]
+
+[profile.release]
+lto = "thin"
+panic = "abort"

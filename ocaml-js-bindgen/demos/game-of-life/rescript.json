@@ -1,0 +1,30 @@
+{
+  "name": "game-of-life-demo",
+  "sources": [
+    {
+      "dir": "src/rescript",
+      "subdirs": false
+    },
+    {
+      "dir": "adapters/rescript",
+      "subdirs": false
+    },
+    {
+      "dir": "tests/rescript",
+      "subdirs": false
+    },
+    {
+      "dir": "generated/rescript",
+      "files": [
+        "Bindings.res",
+        "Bindings.resi"
+      ]
+    }
+  ],
+  "package-specs": {
+    "module": "esmodule",
+    "in-source": false
+  },
+  "suffix": ".js",
+  "uncurried": false
+}

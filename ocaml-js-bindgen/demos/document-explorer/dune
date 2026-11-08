@@ -1,0 +1,13 @@
+(melange.emit
+ (target output)
+ (alias frontend)
+ (modules)
+ (libraries document_explorer_demo)
+ (module_systems esm))
+
+(melange.emit
+ (target test-output)
+ (alias validation)
+ (modules)
+ (libraries document_explorer_demo_checks)
+ (module_systems esm))
