@@ -150,7 +150,7 @@ def prepare(credential, message, source_commit=None, preview=None, preview_proje
              "--out-dir", "pkg", "--out-name", "hex_command", "--no-pack",
              "--no-opt", "--locked", "--features", "wasm"], cwd=checkout, env=build_environment)
     command(["python3", "scripts/build-pixel-art.py"], cwd=checkout)
-    command(["node", "node_modules/vite/bin/vite.js", "build"], cwd=checkout)
+    command(["node", "node_modules/vite/bin/vite.js", "build"], cwd=checkout, env=build_environment)
     # Generated source is part of the built Site snapshot, not a clean-tree gate.
     command(["git", "add", "-A"], cwd=checkout)
     command(["git", "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty",
