@@ -1,254 +1,254 @@
 {
   "last_update": {
     "event": "update",
-    "seconds": 24242.928939961006,
-    "update": 14231,
-    "decisions": 3643136,
-    "episodes": 45062,
-    "policy_loss": -0.0012988396920263767,
-    "value_loss": 0.0688412928332885,
-    "entropy": 0.401551753282547,
-    "reference_kl": 0.12440318552156289,
+    "seconds": 26072.227724425007,
+    "update": 15257,
+    "decisions": 3905792,
+    "episodes": 48401,
+    "policy_loss": -0.0008964499769111475,
+    "value_loss": 0.07665709468225639,
+    "entropy": 0.4380851412812869,
+    "reference_kl": 0.21537254936993122,
     "clip_fraction": 0.0,
-    "gradient_norm": 8.146743218104044,
-    "critic_explained_variance": 0.8457981318039633,
+    "gradient_norm": 4.800995310147603,
+    "critic_explained_variance": 0.8297393799367391,
     "warmup": false,
     "family_decisions": {
-      "arena": 1821656,
-      "campaign": 1821480
+      "arena": 1952938,
+      "campaign": 1952854
     },
     "action_counts": {
-      "end_turn": 737624,
-      "move": 2012716,
-      "attack": 840875,
-      "advance": 51921
+      "end_turn": 783041,
+      "move": 2163703,
+      "attack": 903341,
+      "advance": 55707
     }
   },
-  "completed_games": 45064,
+  "completed_games": 48404,
   "groups": {
     "arena/river-valley/territory/predictor": {
-      "games": 2289,
-      "wins": 547,
+      "games": 2449,
+      "wins": 578,
       "caps": 0,
-      "decisions": 91050,
-      "reward": -1195.0
+      "decisions": 97646,
+      "reward": -1293.0
     },
     "arena/villages/deathmatch/predictor": {
-      "games": 2330,
-      "wins": 30,
-      "caps": 41,
-      "decisions": 91024,
-      "reward": -2229.0
+      "games": 2500,
+      "wins": 31,
+      "caps": 44,
+      "decisions": 97572,
+      "reward": -2394.0
     },
     "arena/open/deathmatch/classic": {
-      "games": 2132,
-      "wins": 2021,
+      "games": 2292,
+      "wins": 2173,
       "caps": 21,
-      "decisions": 91078,
-      "reward": 1931.0
+      "decisions": 97607,
+      "reward": 2075.0
     },
     "arena/crossings/territory/classic": {
-      "games": 1538,
-      "wins": 1347,
+      "games": 1650,
+      "wins": 1443,
       "caps": 2,
-      "decisions": 91093,
-      "reward": 1158.0
+      "decisions": 97600,
+      "reward": 1238.0
     },
     "arena/sluice/deathmatch/classic": {
-      "games": 1077,
-      "wins": 938,
-      "caps": 137,
-      "decisions": 91101,
-      "reward": 936.0
+      "games": 1158,
+      "wins": 1013,
+      "caps": 143,
+      "decisions": 97678,
+      "reward": 1011.0
     },
     "arena/sluice/territory/predictor": {
-      "games": 961,
-      "wins": 616,
-      "caps": 332,
-      "decisions": 91035,
-      "reward": 603.0
+      "games": 1035,
+      "wins": 670,
+      "caps": 352,
+      "decisions": 97673,
+      "reward": 657.0
     },
     "campaign/green-accord/authored/predictor": {
-      "games": 1592,
-      "wins": 900,
+      "games": 1709,
+      "wins": 967,
       "caps": 1,
-      "decisions": 227543,
-      "reward": 208.0
+      "decisions": 243828,
+      "reward": 225.0
     },
     "arena/villages/territory/predictor": {
-      "games": 2492,
-      "wins": 242,
+      "games": 2661,
+      "wins": 264,
       "caps": 0,
-      "decisions": 91070,
-      "reward": -2008.0
+      "decisions": 97630,
+      "reward": -2133.0
     },
     "campaign/borrowed-tide/authored/predictor": {
-      "games": 1905,
-      "wins": 613,
+      "games": 2026,
+      "wins": 659,
       "caps": 0,
-      "decisions": 227533,
-      "reward": -679.0
+      "decisions": 243885,
+      "reward": -708.0
     },
     "arena/sluice/deathmatch/predictor": {
-      "games": 1033,
-      "wins": 894,
-      "caps": 137,
-      "decisions": 91075,
-      "reward": 892.0
+      "games": 1112,
+      "wins": 969,
+      "caps": 141,
+      "decisions": 97638,
+      "reward": 967.0
     },
     "arena/river-valley/territory/classic": {
-      "games": 1816,
-      "wins": 322,
+      "games": 1942,
+      "wins": 348,
       "caps": 0,
-      "decisions": 91066,
-      "reward": -1172.0
+      "decisions": 97602,
+      "reward": -1246.0
     },
     "campaign/borrowed-tide/authored/classic": {
-      "games": 1197,
-      "wins": 1065,
+      "games": 1284,
+      "wins": 1141,
       "caps": 0,
-      "decisions": 227606,
-      "reward": 933.0
+      "decisions": 244146,
+      "reward": 998.0
     },
     "arena/villages/territory/classic": {
-      "games": 4025,
-      "wins": 2212,
+      "games": 4312,
+      "wins": 2383,
       "caps": 0,
-      "decisions": 91056,
-      "reward": 399.0
+      "decisions": 97607,
+      "reward": 454.0
     },
     "arena/open/territory/classic": {
-      "games": 2471,
-      "wins": 2448,
+      "games": 2651,
+      "wins": 2627,
       "caps": 0,
-      "decisions": 91039,
-      "reward": 2425.0
+      "decisions": 97610,
+      "reward": 2603.0
     },
     "arena/crossings/deathmatch/predictor": {
-      "games": 1161,
-      "wins": 413,
-      "caps": 547,
-      "decisions": 91076,
-      "reward": 212.0
+      "games": 1264,
+      "wins": 474,
+      "caps": 562,
+      "decisions": 97637,
+      "reward": 246.0
     },
     "arena/crossings/territory/predictor": {
-      "games": 1183,
-      "wins": 622,
+      "games": 1267,
+      "wins": 673,
       "caps": 9,
-      "decisions": 91251,
-      "reward": 70.0
+      "decisions": 97605,
+      "reward": 88.0
     },
     "campaign/green-accord/authored/classic": {
-      "games": 1411,
-      "wins": 1210,
+      "games": 1513,
+      "wins": 1301,
       "caps": 0,
-      "decisions": 227344,
-      "reward": 1009.0
+      "decisions": 243993,
+      "reward": 1089.0
     },
     "arena/river-valley/deathmatch/predictor": {
-      "games": 1095,
-      "wins": 691,
+      "games": 1164,
+      "wins": 734,
       "caps": 0,
-      "decisions": 91103,
-      "reward": 287.0
+      "decisions": 97609,
+      "reward": 304.0
     },
     "arena/sluice/territory/classic": {
-      "games": 887,
-      "wins": 503,
-      "caps": 376,
-      "decisions": 91080,
-      "reward": 495.0
+      "games": 957,
+      "wins": 549,
+      "caps": 400,
+      "decisions": 97808,
+      "reward": 541.0
     },
     "arena/villages/deathmatch/classic": {
-      "games": 2217,
-      "wins": 32,
-      "caps": 8,
-      "decisions": 91054,
-      "reward": -2145.0
+      "games": 2386,
+      "wins": 33,
+      "caps": 9,
+      "decisions": 97613,
+      "reward": -2311.0
     },
     "arena/crossings/deathmatch/classic": {
-      "games": 1362,
-      "wins": 1100,
-      "caps": 136,
-      "decisions": 91057,
-      "reward": 974.0
+      "games": 1477,
+      "wins": 1201,
+      "caps": 140,
+      "decisions": 97622,
+      "reward": 1065.0
     },
     "arena/open/territory/predictor": {
-      "games": 2618,
-      "wins": 1523,
+      "games": 2796,
+      "wins": 1635,
       "caps": 1,
-      "decisions": 91074,
-      "reward": 429.0
+      "decisions": 97607,
+      "reward": 475.0
     },
     "arena/river-valley/deathmatch/classic": {
-      "games": 787,
-      "wins": 654,
-      "caps": 48,
-      "decisions": 91114,
-      "reward": 569.0
+      "games": 842,
+      "wins": 699,
+      "caps": 50,
+      "decisions": 97819,
+      "reward": 606.0
     },
     "campaign/ashen-oath/authored/classic": {
-      "games": 1138,
-      "wins": 1134,
+      "games": 1219,
+      "wins": 1214,
       "caps": 0,
-      "decisions": 227684,
-      "reward": 1130.0
+      "decisions": 244101,
+      "reward": 1209.0
     },
     "arena/open/deathmatch/predictor": {
-      "games": 1534,
-      "wins": 556,
-      "caps": 603,
-      "decisions": 90986,
-      "reward": 181.0
+      "games": 1721,
+      "wins": 679,
+      "caps": 615,
+      "decisions": 97548,
+      "reward": 252.0
     },
     "campaign/ashen-oath/authored/predictor": {
-      "games": 1105,
-      "wins": 1031,
+      "games": 1183,
+      "wins": 1108,
       "caps": 3,
-      "decisions": 227582,
-      "reward": 957.0
+      "decisions": 244312,
+      "reward": 1033.0
     },
     "campaign/lantern-road/flight/predictor": {
-      "games": 307,
-      "wins": 89,
+      "games": 329,
+      "wins": 97,
       "caps": 7,
-      "decisions": 75904,
-      "reward": -129.0
+      "decisions": 81321,
+      "reward": -135.0
     },
     "campaign/lantern-road/flight/classic": {
-      "games": 246,
-      "wins": 128,
+      "games": 264,
+      "wins": 138,
       "caps": 7,
-      "decisions": 75888,
-      "reward": 10.0
+      "decisions": 81142,
+      "reward": 12.0
     },
     "campaign/lantern-road/authored/classic": {
-      "games": 251,
-      "wins": 134,
-      "caps": 11,
-      "decisions": 76036,
-      "reward": 17.0
+      "games": 268,
+      "wins": 144,
+      "caps": 12,
+      "decisions": 81718,
+      "reward": 20.0
     },
     "campaign/lantern-road/fight/predictor": {
-      "games": 325,
-      "wins": 52,
+      "games": 348,
+      "wins": 54,
       "caps": 8,
-      "decisions": 75789,
-      "reward": -221.0
+      "decisions": 81322,
+      "reward": -240.0
     },
     "campaign/lantern-road/fight/classic": {
-      "games": 264,
-      "wins": 111,
-      "caps": 7,
-      "decisions": 75919,
-      "reward": -42.0
+      "games": 284,
+      "wins": 118,
+      "caps": 8,
+      "decisions": 81121,
+      "reward": -48.0
     },
     "campaign/lantern-road/authored/predictor": {
-      "games": 315,
-      "wins": 93,
+      "games": 341,
+      "wins": 96,
       "caps": 10,
-      "decisions": 75950,
-      "reward": -129.0
+      "decisions": 81373,
+      "reward": -149.0
     }
   },
   "evaluations": [
@@ -1931,6 +1931,129 @@
         0.5,
         0.6125000000000003,
         -0.012500000000000004
+      ]
+    },
+    {
+      "score": 0.5020833333333337,
+      "weighted_caps": 0.05000000000000002,
+      "wins": 37,
+      "caps": 4,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00014462-1794211021080597371",
+      "seconds": 24731.716404822007,
+      "model_sha256": "585bc5869e8d339f2aae0d06b8b264d3d2eaee065c5eb86e47cbe668e37f187d",
+      "strata": {
+        "arena/classic": {
+          "score": 0.65,
+          "wins": 13,
+          "runs": 20,
+          "caps": 2
+        },
+        "arena/predictor": {
+          "score": 0.4,
+          "wins": 8,
+          "runs": 20,
+          "caps": 2
+        },
+        "campaign/classic": {
+          "score": 0.6666666666666666,
+          "wins": 10,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.29166666666666663,
+          "wins": 6,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.29166666666666663,
+        0.5020833333333337,
+        -0.05000000000000002
+      ]
+    },
+    {
+      "score": 0.6666666666666669,
+      "weighted_caps": 0.02500000000000001,
+      "wins": 47,
+      "caps": 2,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00014805-1794211627392911531",
+      "seconds": 25332.268260716002,
+      "model_sha256": "ee7c48a31c536e00a90c49cffd6fa153aded723af1bc689b0a350d546307d800",
+      "strata": {
+        "arena/classic": {
+          "score": 0.65,
+          "wins": 13,
+          "runs": 20,
+          "caps": 0
+        },
+        "arena/predictor": {
+          "score": 0.6000000000000001,
+          "wins": 12,
+          "runs": 20,
+          "caps": 2
+        },
+        "campaign/classic": {
+          "score": 1.0,
+          "wins": 14,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.41666666666666663,
+          "wins": 8,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.41666666666666663,
+        0.6666666666666669,
+        -0.02500000000000001
+      ]
+    },
+    {
+      "score": 0.6281250000000003,
+      "weighted_caps": 0.0,
+      "wins": 44,
+      "caps": 0,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00015143-1794212230747221406",
+      "seconds": 25935.13064036001,
+      "model_sha256": "d6221d149917eac51226226d0f0746b09086b60d754429422dec6d8bda587f0c",
+      "strata": {
+        "arena/classic": {
+          "score": 0.7000000000000001,
+          "wins": 14,
+          "runs": 20,
+          "caps": 0
+        },
+        "arena/predictor": {
+          "score": 0.5,
+          "wins": 10,
+          "runs": 20,
+          "caps": 0
+        },
+        "campaign/classic": {
+          "score": 0.9583333333333334,
+          "wins": 13,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.35416666666666663,
+          "wins": 7,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.35416666666666663,
+        0.6281250000000003,
+        -0.0
       ]
     }
   ]
