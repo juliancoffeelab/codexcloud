@@ -83,8 +83,8 @@ let default =
     overrides = None;
   }
 
-let campaign policy =
-  { first = Domain.Side.Player; policy; diplomacy = Domain.Diplomacy.Diplomatic; overrides = None }
+let campaign ?overrides policy =
+  { first = Domain.Side.Player; policy; diplomacy = Domain.Diplomacy.Diplomatic; overrides }
 
 let skirmish ~first ~planner ~recruiter =
   let policy =

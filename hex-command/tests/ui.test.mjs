@@ -607,58 +607,74 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
   },
 );
 
-test("New Game filters playable content and retains typed setup choices through start", async () => {
-  session = await Session.create_with_audio(async () => {}, audio, factory);
-  const mounted = session;
-  await act(async () =>
-    root.render(React.createElement(App.make, { session: mounted, onMount: () => () => {} })),
-  );
-  await click("#settings-button");
-  await click("#new-game");
-  const catalog = Session.view(mounted).catalog;
-  const choices = () =>
-    [...host.querySelectorAll(".ng-choice > strong")].map((node) => node.textContent.toLowerCase());
-  assert.deepEqual(
-    choices(),
-    Catalog.campaigns(catalog)
-      .filter((campaign) => campaign.human)
-      .map((campaign) => campaign.name.toLowerCase()),
-  );
-  await click(".ng-modes button:nth-child(2)");
-  const scenarios = Catalog.scenario_maps(catalog);
-  assert.equal(choices().length, scenarios.filter((map) => map.human).length);
-  for (const map of scenarios.filter((map) => !map.human))
-    assert(!choices().includes(map.name.toLowerCase()));
-  await click(".ng-choice");
-  const choose = async (group, value) => {
-    const container = element(`[role="group"][aria-label="${group}"]`);
-    const target = required(
-      [...container.querySelectorAll("button")].find((button) => button.textContent === value),
+test.each(["scenario", "campaign"])(
+  "%s New Game filters playable content and retains typed setup choices through start",
+  async (mode) => {
+    session = await Session.create_with_audio(async () => {}, audio, factory);
+    const mounted = session;
+    await act(async () =>
+      root.render(React.createElement(App.make, { session: mounted, onMount: () => () => {} })),
     );
-    await act(async () => target.click());
-  };
-  await click(".new-game-dialog .advanced > summary");
-  await choose("Opponent planning", "Full");
-  await click(".ng-recruitment > summary");
-  const aggressive = required(
-    [...host.querySelectorAll(".ng-recruit-option")].find((row) =>
-      row.textContent.includes("Aggressive Predictor"),
-    ),
-  );
-  await act(async () => aggressive.querySelector("input").click());
-  assert.equal(element('.ng-difficulty button[aria-pressed="true"]').textContent, "Custom");
-  await click(".new-game-dialog .ng-start-footer .primary");
-  const saved = JSON.parse(await Save.flashText());
-  assert.deepEqual(saved.setup, {
-    first: "player",
-    enemy: {
-      policy: "predictor",
-      diplomacy: "diplomatic",
-      blocks: { planner: "full", recruiter: "aggressive-predictor", campaign: "mission" },
-    },
-  });
-  assert.deepEqual(saved.checkpoint.state.armies, ["human", "skeletons"]);
-});
+    await click("#settings-button");
+    await click("#new-game");
+    const catalog = Session.view(mounted).catalog;
+    const choices = () =>
+      [...host.querySelectorAll(".ng-choice > strong")].map((node) =>
+        node.textContent.toLowerCase(),
+      );
+    assert.deepEqual(
+      choices(),
+      Catalog.campaigns(catalog)
+        .filter((campaign) => campaign.human)
+        .map((campaign) => campaign.name.toLowerCase()),
+    );
+    await click(".ng-modes button:nth-child(2)");
+    const scenarios = Catalog.scenario_maps(catalog);
+    assert.equal(choices().length, scenarios.filter((map) => map.human).length);
+    for (const map of scenarios.filter((map) => !map.human))
+      assert(!choices().includes(map.name.toLowerCase()));
+    if (mode === "campaign") await click(".ng-modes button:first-child");
+    await click(".ng-choice");
+    assert.equal(
+      host.querySelector('[role="group"][aria-label="First turn"]') !== null,
+      mode === "scenario",
+    );
+    const choose = async (group, value) => {
+      const container = element(`[role="group"][aria-label="${group}"]`);
+      const target = required(
+        [...container.querySelectorAll("button")].find((button) => button.textContent === value),
+      );
+      await act(async () => target.click());
+    };
+    await click(".new-game-dialog .advanced > summary");
+    await choose("Opponent planning", "Full");
+    await click(".ng-recruitment > summary");
+    const aggressive = required(
+      [...host.querySelectorAll(".ng-recruit-option")].find((row) =>
+        row.textContent.includes("Aggressive Predictor"),
+      ),
+    );
+    await act(async () => aggressive.querySelector("input").click());
+    assert.equal(element('.ng-difficulty button[aria-pressed="true"]').textContent, "Custom");
+    await click(".new-game-dialog .ng-start-footer .primary");
+    const saved = JSON.parse(await Save.flashText());
+    assert.deepEqual(saved.setup, {
+      first: "player",
+      enemy: {
+        policy: "predictor",
+        diplomacy: "diplomatic",
+        blocks: { planner: "full", recruiter: "aggressive-predictor", campaign: "mission" },
+      },
+    });
+    if (mode === "scenario")
+      assert.deepEqual(saved.checkpoint.state.armies, ["human", "skeletons"]);
+    else
+      assert.equal(
+        saved.checkpoint.state.campaign.id,
+        Catalog.campaigns(catalog).find((campaign) => campaign.human).id,
+      );
+  },
+);
 
 test("Sound-only dialogue waits for phase persistence and advances when that same game settles", async () => {
   const checkpoint = structuredClone(

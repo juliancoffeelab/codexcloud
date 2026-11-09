@@ -200,15 +200,21 @@ let make =
   let (campaignId, setCampaign) = React.useState(() => "lantern-road");
   let (player, setPlayer) = React.useState(() => "human");
   let (opponent, setOpponent) = React.useState(() => "skeletons");
-  let (campaignPolicy, setCampaignPolicy) = React.useState(() => Setup.Standard);
-  let (planner, setPlanner) = React.useState(() => Domain.Planner_kind.Queued);
-  let (recruiter, setRecruiter) = React.useState(() => Domain.Recruiter_kind.Situational);
+  let (campaignPlanner, setCampaignPlanner) = React.useState(() => Domain.Planner_kind.Queued);
+  let (campaignRecruiter, setCampaignRecruiter) =
+    React.useState(() => Domain.Recruiter_kind.Situational);
+  let (scenarioPlanner, setScenarioPlanner) = React.useState(() => Domain.Planner_kind.Queued);
+  let (scenarioRecruiter, setScenarioRecruiter) =
+    React.useState(() => Domain.Recruiter_kind.Situational);
+  let planner = mode == Setup.Campaign ? campaignPlanner : scenarioPlanner;
+  let recruiter = mode == Setup.Campaign ? campaignRecruiter : scenarioRecruiter;
+  let setPlanner = mode == Setup.Campaign ? setCampaignPlanner : setScenarioPlanner;
+  let setRecruiter = mode == Setup.Campaign ? setCampaignRecruiter : setScenarioRecruiter;
   let (first, setFirst) = React.useState(() => Setup.First(Domain.Side.Player));
   let (error, setError) = React.useState(() => "");
   let (starting, setStarting) = React.useState(() => false);
   let startGuard = React.useRef(false);
-  let difficulty =
-    mode == Setup.Campaign ? Setup.Preset(campaignPolicy) : Setup.difficulty(planner, recruiter);
+  let difficulty = Setup.difficulty(planner, recruiter);
   let maps =
     List.filter((map: Domain.map_definition) => map.human, Catalog.scenario_maps(view.catalog));
   let campaigns = List.filter((c: Domain.campaign) => c.human, Catalog.campaigns(view.catalog));
@@ -219,14 +225,11 @@ let make =
       : Catalog.map(view.catalog, mapId);
   let mapName = (map: Domain.map_definition) =>
     map.id == "river-valley" ? "River Valley" : map.name;
-  let setDifficulty = policy =>
-    if (mode == Setup.Campaign) {
-      setCampaignPolicy(_ => policy);
-    } else {
-      let preset = Setup.preset(policy);
-      setPlanner(_ => preset.planner);
-      setRecruiter(_ => preset.recruiter);
-    };
+  let setDifficulty = policy => {
+    let preset = Setup.preset(policy);
+    setPlanner(_ => preset.planner);
+    setRecruiter(_ => preset.recruiter);
+  };
   let preloadCampaign = (c: Domain.campaign) =>
     Terrain_preload.map(view.catalog, c.missions[0].map.id);
   let dismiss = () =>
@@ -297,7 +300,11 @@ let make =
         };
       let setup =
         mode == Setup.Campaign
-          ? Setup.campaign(campaignPolicy) : Setup.skirmish(~first=opening, ~planner, ~recruiter);
+          ? switch (difficulty) {
+            | Setup.Preset(policy) => Setup.campaign(policy)
+            | Setup.Custom => Setup.campaign(~overrides=(planner, recruiter), Setup.Veteran)
+            }
+          : Setup.skirmish(~first=opening, ~planner, ~recruiter);
       try(
         {
           if (mode == Setup.Campaign) {
@@ -509,13 +516,13 @@ let make =
                       </div>
                       <p className="help"> {text(explanation(difficulty))} </p>
                     </section>
-                    {mode == Setup.Skirmish
-                       ? <details className="advanced">
-                           <summary className="setting-row">
-                             <span className="label"> {text("Advanced")} </span>
-                             chevron
-                           </summary>
-                           <div className="ng-advanced-group">
+                    <details className="advanced">
+                      <summary className="setting-row">
+                        <span className="label"> {text("Advanced")} </span>
+                        chevron
+                      </summary>
+                      {mode == Setup.Skirmish
+                         ? <div className="ng-advanced-group">
                              <span className="label"> {text("First turn")} </span>
                              <div className="ng-segments" role="group" ariaLabel="First turn">
                                {eachList(
@@ -533,63 +540,61 @@ let make =
                                 )}
                              </div>
                            </div>
-                           <div className="ng-advanced-group">
-                             <span className="label"> {text("Opponent planning")} </span>
-                             <div
-                               className="ng-segments" role="group" ariaLabel="Opponent planning">
-                               {eachList(Setup.planners, value =>
-                                  <button
-                                    ariaPressed={string_of_bool(planner == value)}
-                                    onClick={_ => setPlanner(_ => value)}>
-                                    {text(title(Enum.string_of_planner_kind(value)))}
-                                  </button>
-                                )}
-                             </div>
-                             <p className="help"> {text(plannerHelp(planner))} </p>
-                           </div>
-                           <details
-                             className="ng-recruitment" ref={ReactDOM.Ref.domRef(recruitment)}>
-                             <summary className="setting-row">
-                               <span className="label"> {text("Recruitment")} </span>
+                         : React.null}
+                      <div className="ng-advanced-group">
+                        <span className="label"> {text("Opponent planning")} </span>
+                        <div className="ng-segments" role="group" ariaLabel="Opponent planning">
+                          {eachList(Setup.planners, value =>
+                             <button
+                               ariaPressed={string_of_bool(planner == value)}
+                               onClick={_ => setPlanner(_ => value)}>
+                               {text(title(Enum.string_of_planner_kind(value)))}
+                             </button>
+                           )}
+                        </div>
+                        <p className="help"> {text(plannerHelp(planner))} </p>
+                      </div>
+                      <details className="ng-recruitment" ref={ReactDOM.Ref.domRef(recruitment)}>
+                        <summary className="setting-row">
+                          <span className="label"> {text("Recruitment")} </span>
+                          <span className="ng-recruit-value">
+                            {text(title(Enum.string_of_recruiter_kind(recruiter)))}
+                          </span>
+                          chevron
+                        </summary>
+                        <div role="radiogroup" ariaLabel="Recruitment">
+                          {eachList(Setup.recruiters, value =>
+                             <label className="ng-recruit-option">
+                               <input
+                                 type_="radio"
+                                 name="new-game-recruiter"
+                                 checked={recruiter == value}
+                                 onChange={_ => {
+                                   setRecruiter(_ => value);
+                                   Option.iter(
+                                     node => {
+                                       open_(node, false);
+                                       Option.iter(
+                                         focus,
+                                         Js.Nullable.toOption(queryWithin(node, "summary")),
+                                       );
+                                     },
+                                     Js.Nullable.toOption(recruitment.current),
+                                   );
+                                 }}
+                               />
                                <span>
-                                 {text(title(Enum.string_of_recruiter_kind(recruiter)))}
+                                 <strong>
+                                   {text(title(Enum.string_of_recruiter_kind(value)))}
+                                 </strong>
+                                 <small> {text(recruiterHelp(value))} </small>
                                </span>
-                               chevron
-                             </summary>
-                             <div role="radiogroup" ariaLabel="Recruitment">
-                               {eachList(Setup.recruiters, value =>
-                                  <label className="ng-recruit-option">
-                                    <input
-                                      type_="radio"
-                                      name="new-game-recruiter"
-                                      checked={recruiter == value}
-                                      onChange={_ => {
-                                        setRecruiter(_ => value);
-                                        Option.iter(
-                                          node => {
-                                            open_(node, false);
-                                            Option.iter(
-                                              focus,
-                                              Js.Nullable.toOption(queryWithin(node, "summary")),
-                                            );
-                                          },
-                                          Js.Nullable.toOption(recruitment.current),
-                                        );
-                                      }}
-                                    />
-                                    <span>
-                                      <strong>
-                                        {text(title(Enum.string_of_recruiter_kind(value)))}
-                                      </strong>
-                                      <small> {text(recruiterHelp(value))} </small>
-                                    </span>
-                                  </label>
-                                )}
-                             </div>
-                           </details>
-                           <p className="help"> {text(recruiterHelp(recruiter))} </p>
-                         </details>
-                       : React.null}
+                             </label>
+                           )}
+                        </div>
+                      </details>
+                      <p className="help"> {text(recruiterHelp(recruiter))} </p>
+                    </details>
                   </>}
              {error != "" ? <p role="alert" className="ng-error"> {text(error)} </p> : React.null}
            </>

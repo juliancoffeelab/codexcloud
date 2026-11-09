@@ -18,7 +18,7 @@ type difficulty = private {
 
 val default : t
 val first : t -> Domain.Side.t
-val campaign : policy -> t
+val campaign : ?overrides:Domain.Planner_kind.t * Domain.Recruiter_kind.t -> policy -> t
 
 val skirmish :
   first:Domain.Side.t -> planner:Domain.Planner_kind.t -> recruiter:Domain.Recruiter_kind.t -> t
