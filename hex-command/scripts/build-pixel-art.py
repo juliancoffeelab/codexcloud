@@ -410,6 +410,38 @@ def composite(base, layers):
     return width, height, result
 
 
+def sun_shadows(base, layers):
+    """Bake cool cast shadows into a complete native frame, before its props.
+
+    Sunlight comes from the upper left. A single union mask prevents overlapping
+    silhouettes from accumulating into black patches. The floor's alpha clips
+    the shadow: lighting never extends a tile's canvas or paints into a neighbor.
+    """
+    width, height, pixels = base
+    mask = bytearray(width * height)
+    for (layer_width, layer_height, layer), dx, dy in layers:
+        occupied = [(x, y) for y in range(layer_height) for x in range(layer_width)
+                    if layer[(y * layer_width + x) * 4 + 3]]
+        if not occupied:
+            continue
+        ground = max(y for _, y in occupied)
+        for x, y in occupied:
+            rise = ground - y
+            xx = dx + x + round(rise * 0.65)
+            yy = dy + ground + round(rise * 0.22)
+            if 0 <= xx < width and 0 <= yy < height:
+                mask[yy * width + xx] = max(mask[yy * width + xx],
+                                           layer[(y * layer_width + x) * 4 + 3])
+    result = bytearray(pixels)
+    for index, alpha in enumerate(mask):
+        if alpha and pixels[index * 4 + 3]:
+            amount = alpha / 255 * 0.24
+            for channel, shade in enumerate((31, 48, 62)):
+                at = index * 4 + channel
+                result[at] = round(pixels[at] * (1 - amount) + shade * amount)
+    return width, height, result
+
+
 def pixel_sprites():
     lineups = load_lineups()
     native = {}
@@ -479,6 +511,11 @@ def pixel_sprites():
                 base = terrain[f'terrain_{name}{suffix}']
                 layers = [(terrain[f'terrain_{piece["name"]}{suffix}'], piece['x'], piece['y'])
                           for piece in placements]
+                casters = [layer for piece, layer in zip(placements, layers)
+                           if piece['name'].startswith(('prop_forest_tree-', 'prop_house_tree-',
+                                                        'prop_mountain_', 'prop_hill_'))
+                           or piece['name'].endswith('_building')]
+                base = sun_shadows(base, casters)
                 terrain[f'terrain_{name}_layout_{index}{suffix}'] = composite(base, layers)
     outputs, sprites = {}, {}
     for key, (width, height, pixels) in sorted({**native, **terrain}.items()):

@@ -375,8 +375,15 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
         Option.iter (fun (target : Phaser.render_texture) -> target##destroy ()) record.lit;
         record.lit <- None;
         resources#remove ("terrain-lit:" ^ page.url);
-        light_source source { Phaser_lighting.plain with unlit = true };
-        record.display <- Some (make_display scene page (texture source) x y))
+        pipeline#configure lighting
+          (float_of_int manifest.width /. scale)
+          (float_of_int manifest.height /. scale);
+        let display = make_display scene page (texture source) x y in
+        let _ =
+          Phaser_lighting.Pipeline_data.image display "BattlefieldLighting" Phaser_lighting.plain
+            false
+        in
+        record.display <- Some display)
       else
         let target =
           match record.lit with

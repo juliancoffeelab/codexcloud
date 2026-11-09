@@ -184,6 +184,7 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
       let _ = native##set1f "uNativeScale" Geometry.native_pixel_scale in
       let _ = native##set1f "uNormalization" normalization in
       let _ = native##set1f "uNight" (if night && not data.unlit then 1. else 0.) in
+      let _ = native##set1f "uDay" (if (not night) && not data.unlit then 1. else 0.) in
       let _ = native##set1f "uBrightness" (Option.value ~default:1. data.brightness) in
       let _ = native##set1f "uGround" (if Option.is_some point then 1. else 0.) in
       (match point with

@@ -1280,7 +1280,13 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
             let has value = List.mem value classes in
             let ink = ref 0x39472b
             and width = ref Phaser_hex_outline.idle_line_width
-            and alpha = ref 0.3 in
+            and alpha =
+              ref
+                (if
+                   (Native.presentation self#frame.view.game).lighting.time = Domain.Time_of_day.Day
+                 then 0.14
+                 else 0.3)
+            in
             if has "selected" then (
               ink := 0xffe5a1;
               width := 3.);

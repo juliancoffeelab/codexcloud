@@ -58,7 +58,9 @@ class actor_lighting (game : Phaser.game) =
           ~vertex:Phaser_shaders.actor_lighting_vertex
           ~fragment:Phaser_shaders.actor_lighting_fragment
           ~bind:(fun _ values object_ ->
-            Option.iter (fun object_ -> values := self#coefficients object_) object_)
+            (* Phaser's shape renderer binds without an object. Shapes must not
+               inherit the preceding sprite's lighting coefficients. *)
+            values := Option.fold ~none:identity ~some:self#coefficients object_)
           ()
       in
       Phaser_pipeline.set_values created identity;
@@ -164,7 +166,10 @@ class actor_lighting (game : Phaser.game) =
       in
       match point with
       | None -> identity
-      | Some _ when data.unlit || lighting.time = Domain.Time_of_day.Day -> identity
+      | Some _ when data.unlit -> identity
+      | Some point when lighting.time = Domain.Time_of_day.Day ->
+          let values = Lighting.daylight point##x point##y in
+          [| values.(0); values.(1); values.(2); -1.; values.(3); values.(4); values.(5) |]
       | Some point -> (
           (match Weak_map.get anchors object_ with
           | Some previous when previous == point -> ()
