@@ -51,6 +51,23 @@ consequence; label unresolved suspicions as questions rather than established bu
 suspected issues have either a supported consequence, a reason for dismissal or
 an explicit unresolved question.
 
+## Assess PR structure
+
+For a PR, derive the logical changes and their dependencies from the requirements
+and final diff **before consulting commit messages or history**. Use those units
+to judge whether the final scope is necessary and the design is appropriately
+small, then compare them with the actual commit patches and messages.
+
+Give each retained commit a concrete reason to stand alone. Recommend folding,
+splitting or removing commits where the patches do not fit the derived units;
+corrections to an earlier change normally belong with that change. Record the
+units and commit dispositions even when no cleanup is needed. For a working-tree
+review without a proposed commit structure, leave history explicitly unassessed.
+
+**Complete when:** final scope and simplicity are assessed against the request,
+and every PR commit is accounted for against the source-derived units, or history
+is explicitly unassessed.
+
 ## Report
 
 Lead with actionable findings, ordered by impact. For each, give the location,
@@ -58,6 +75,8 @@ trigger or scenario, consequence and suggested direction. Include simplification
 and burden findings when their benefit is concrete; skip personal style preferences.
 Keep questions and verification limits distinct from findings. State when no
 findings remain, and identify what was reviewed and any checks actually run.
+For PRs, include the scope, simplicity and commit-structure assessment above so
+the merge gate can check it against the current head.
 Keep the review in the response or requested PR review, rather than adding a report
 file to the repository.
 

@@ -5,75 +5,55 @@ description: Use when the user asks whether a PR is ready to merge, or asks to m
 
 # Merge gate
 
-Give a quick readiness verdict from existing evidence. Budget under one minute
-for the audit, including tool calls and quick checks; batch reads and bound
-commands to the remaining time. If evidence cannot be checked within that budget,
-report the gap. Preparation is separate work, undertaken only when requested.
-Routine implementation, pushes and deployment do not invoke this skill.
+Audit existing evidence in under one minute, including tool calls and quick
+checks. Preparation is separate work, undertaken only when requested. Routine
+implementation, pushes and deployment do not invoke this skill.
 
-## Check existing evidence
+## Audit the current head
 
 Identify the PR head and inspect existing review/check results, the changed-file
-list and commit history. Reuse evidence for unchanged content; check whether later
-changes invalidate it. Assess these five conditions:
+list and commit history. Reuse evidence for unchanged content; assess whether
+later changes invalidate its coverage. Check these five conditions:
 
-- **Independent review:** at least one reviewer other than the implementer covered
-  the final substantive change, with findings resolved or given an evidenced
-  disposition. An agent review uses fresh context without implementation history;
-  a separate human review also counts.
-- **Markdown hygiene:** added Markdown and changed guidance were reviewed using
-  [writing-for-agents](../writing-for-agents/SKILL.md). Task requirements, plans,
-  handoffs and progress reports have not leaked into tracked files. Retained
-  documents have an intentional permanent purpose; guidance is current and avoids
-  duplicated rules or copies of readily discoverable code/config.
-- **Lessons preserved:** identify material lessons from implementation and review:
-  what was misunderstood or discovered, why it matters, and how it should change
-  future work. Match each lesson to a specific passage in the PR description;
-  equivalent wording counts. The description must also reflect the final change
-  accurately. Complete the comparison before grading this condition. If the
-  verdict introduces another lesson, include it in the comparison. When no
-  material lesson emerged, justify that conclusion from the work examined.
-- **History:** each commit has a clear reason to remain separate and an accurate
-  message. Unrelated changes, accidental artifacts and obscuring WIP/fixup/revert
-  chains were addressed.
-- **Validation:** the affected projects' required checks passed for the current
-  source, with commands, results and tested revision available. Reliable local
-  results count without CI; absent, failed or stale evidence remains a gap.
-  Documentation-only changes need relevant documentation checks.
+- **Independent review:** cite a reviewer other than the implementer, reviewed
+  revision/scope and the resolution or evidenced disposition of findings. The
+  review must cover the final substantive change and explicitly assess
+  requirements, scope and simplicity as required by [review](../review/SKILL.md).
+  Agent reviewers use fresh context; human reviews also count.
+- **Markdown hygiene:** name added, changed or deleted Markdown/guidance and cite
+  its [writing-for-agents](../writing-for-agents/SKILL.md) review. Retained material
+  serves a permanent purpose; temporary plans, handoffs and reports stay outside
+  tracked content. Say “none” when no documents changed.
+- **Lessons preserved:** check each material implementation/review lesson against
+  the PR description: what was learned, why it matters and its effect on future
+  work. Check description accuracy too. Summarize coverage with passage references
+  and expand only gaps or disputed matches. If no material lesson emerged, give
+  the reason. Include any lesson introduced by this verdict before grading.
+- **History:** use the review's source-derived logical units and commit
+  dispositions. Verify their mapping to the current patches, boundaries and
+  messages. Each retained commit has a reason to stand alone; required cleanup
+  is complete. A proposed squash merge is not completed cleanup.
+- **Validation:** required checks passed for the current source. Cite commands,
+  results and tested revision, distinguishing reused evidence from fresh checks.
+  Reliable local results count without CI. Documentation-only changes need
+  relevant checks.
 
-Use quick probes such as diff whitespace checks or small targeted format/link
-checks when useful and within budget. A quick probe cannot substitute for a
-required suite. Missing evidence becomes a blocker, not an instruction to launch
-reviews, install dependencies, run long suites, fix files or rewrite history.
+Missing or stale requirements, scope, simplicity or history assessments remain
+unverified; producing them belongs to review, not this audit. Bound quick probes
+to the remaining time. Missing evidence or exhausted time is a gap, not an
+instruction to launch reviews, install dependencies, run suites, fix files or
+rewrite history. Quick probes do not replace required checks.
 
 **Complete when:** each condition is supported, failed or unverified for the
 identified head, or the time budget is reached.
 
 ## Return the verdict
 
-Every verdict must identify the PR head and include all five checklist items.
-Mark each ✅ supported, ❌ failed or ❓ unverified, followed by concrete evidence:
-
-- **Independent review:** reviewer identity, reviewed revision/scope, and the
-  disposition of findings, including evidence for fixes made after review.
-- **Markdowns:** name added, changed and deleted Markdown/guidance files and
-  summarize their purpose and hygiene review. Say “none” when there are none.
-- **Lessons preserved:** show each identified lesson → its matching description
-  passage or “missing.” Grade from that visible comparison: ✅ when all are
-  preserved, ❌ for omissions or inaccurate claims, ❓ when evidence is unavailable.
-  If none emerged, give the evidence-based reason. Check results and limitations
-  belong under Validation; their presence does not establish lesson coverage.
-- **History:** number of PR commits, why each remains separate, and whether
-  messages and sequence are coherent. Identify cleanup needed and any reliance
-  on squash merging explicitly.
-- **Validation:** exact commands, results and tested revision; distinguish reused
-  evidence and quick checks from checks run during this audit. Name missing,
-  failed or stale checks.
-
-Report **ready** only when all five items are ✅. Otherwise report **not ready**
-and give the next action for each ❌ or ❓. A proposed squash merge does not count
-as completed history cleanup. Keep the checklist in the response or PR metadata,
-without adding a tracked gate report file.
+Identify the head and report the five items once, each marked ✅ supported,
+❌ failed or ❓ unverified with concise evidence. Reference existing assessments
+rather than reproducing their reports. Report **ready** only when all five are ✅;
+otherwise report **not ready** and the next action for each gap. Keep the verdict
+in the response or PR metadata, without a tracked gate report file.
 
 For an explicitly requested merge, follow repository permission and conflict
 rules, confirm the head is unchanged and merge only the ready revision, using an
