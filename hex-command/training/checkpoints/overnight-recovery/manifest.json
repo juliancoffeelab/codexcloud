@@ -1,15 +1,15 @@
 {
   "phase": "rl",
   "latest": {
-    "label": "update-00008498",
+    "label": "update-00008630",
     "files": {
       "planner.json": {
-        "bytes": 1018521,
-        "sha256": "ecee38bb8553c6d08f2e742a742cd93866cf0064daf1dd0f581c10636cc34e5a"
+        "bytes": 1018459,
+        "sha256": "1348b498c844eae38bc4dd5c5c98b35948a57cfc2f4cf84d7475243df5ebf2d3"
       },
       "resume.pt": {
         "bytes": 743042,
-        "sha256": "2f5b9ae0334b5e07198920d5add9348b7799f67e329f961538bacbe9fd6245fb"
+        "sha256": "a82931b632b7760321838a7a23eab78ce0ca47224dba6282e20658e0df88649b"
       }
     }
   },
@@ -26,9 +26,9 @@
       }
     }
   },
-  "backup_utc": "2026-11-09T05:07:47Z",
+  "backup_utc": "2026-11-09T05:12:50Z",
   "files": {
-    "latest.pt": "2f5b9ae0334b5e07198920d5add9348b7799f67e329f961538bacbe9fd6245fb",
+    "latest.pt": "a82931b632b7760321838a7a23eab78ce0ca47224dba6282e20658e0df88649b",
     "best.pt": "a98074c18ab896ac3ed2355ba9d5cd0343901cbc1b7565ed746201902c3d48cb"
   }
 }
