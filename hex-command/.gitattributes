@@ -1,0 +1,3 @@
+/training/checkpoints/**/planner.json -diff linguist-generated=true
+/training/experiments/** linguist-generated=true
+/training/experiments/**/*.csv -text whitespace=cr-at-eol

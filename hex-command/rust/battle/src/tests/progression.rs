@@ -5,7 +5,7 @@ use super::*;
 fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let mut rules = Rules::load().unwrap();
     let tile = Hex::new(5, 4);
-    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":{"hex":tile},"character":"edda","turns":3,"when":{"own":{"tile":{"hex":tile},"faction":"player"}}}},"objective":{"label":"Defend","intent":{"hold":{"tile":{"hex":tile},"character":"edda","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
+    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":{"hex":tile},"character":"edda","turns":3,"when":{"own":{"tile":{"hex":tile},"faction":"player"}}}},"objective":{"label":"Defend","visibleWhen":{"always":true},"intent":{"hold":{"tile":{"hex":tile},"character":"edda","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
     rules.campaigns.get_mut("borrowed-tide").unwrap().missions[1].scripted_events =
         vec![event.clone()];
     let mut game = Game::start_campaign(
@@ -31,7 +31,15 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let evaluate = |g: &mut Game<'_>, round| {
         g.round = round;
         g.evaluate_campaign(true, None);
-        g.scripted_objective_status(&event).progress.current
+        let current = g.scripted_objective_status(&event).progress.current;
+        if current < 3 {
+            let objectives = g.planning_objectives();
+            let objective = objectives.iter().find(|o| o.id == "hold").unwrap();
+            assert_eq!(objective.progress_current, current);
+            assert_eq!(objective.progress_total, 3);
+            assert_eq!(objective.hold_turns_remaining, Some(3 - current));
+        }
+        current
     };
     assert_eq!(evaluate(&mut game, 6), 0);
     assert_eq!(evaluate(&mut game, 7), 0);
@@ -207,4 +215,27 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
         serde_json::to_value(restored.state()).unwrap(),
         serde_json::to_value(game.state()).unwrap()
     );
+}
+
+#[test]
+fn planning_deadline_reports_only_unconditional_defeat_clocks() {
+    let mut rules = Rules::load().unwrap();
+    let events = serde_json::from_value(serde_json::json!([
+        {"id":"conditional","when":{"all":[{"turnAtLeast":4},{"flag":"unknown"}]},"actions":[{"defeat":"Conditional"}]},
+        {"id":"later","when":{"turnAtLeast":31},"actions":[{"defeat":"Too late"}]},
+        {"id":"earlier","when":{"turn":20},"actions":[{"defeat":"Too late"}]},
+        {"id":"reinforcement","when":{"turn":3},"actions":[{"log":"Not a deadline"}]}
+    ])).unwrap();
+    rules.campaigns.get_mut("borrowed-tide").unwrap().missions[1].scripted_events = events;
+    let game = Game::start_campaign(
+        &rules,
+        "borrowed-tide",
+        1,
+        vec![],
+        0,
+        vec![],
+        vec![],
+        vec![],
+    );
+    assert_eq!(game.planning_deadline_round(), Some(20));
 }

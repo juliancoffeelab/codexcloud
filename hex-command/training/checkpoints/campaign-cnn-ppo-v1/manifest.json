@@ -1,0 +1,65 @@
+{
+  "kind": "native-planner-checkpoint",
+  "id": "campaign-cnn-ppo-v1",
+  "architecture": "hex-cnn",
+  "parameters": 32145,
+  "feature_count": 229,
+  "spatial_channels": 65,
+  "spatial_schema": 9,
+  "training_fingerprints": {
+    "content": "7279a96b6a8061299689b5901749b60e6225dfc7a7093190758b95b64c70ac81",
+    "engine": "4fcbb82bc8aff10ac48a95847012a02696528bf82b6f45e75edd7b92fedc0a00"
+  },
+  "training_workload_sha256": "8514634752982fa7fb0d4ed0e08c87041985544aa1de4f88c5a2294ef67df2c8",
+  "selected_after_seconds": 28868.724926974006,
+  "selection": {
+    "checkpoint": "checkpoints/update-00016858-1794215249764251591",
+    "reliability_key": [
+      0.5687500000000001,
+      0.7395833333333336,
+      -0.003125000000000001
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.74375,
+        "wins": 119,
+        "runs": 160,
+        "caps": 1
+      },
+      "arena/predictor": {
+        "score": 0.5687500000000001,
+        "wins": 91,
+        "runs": 160,
+        "caps": 1
+      },
+      "campaign/classic": {
+        "score": 0.8854166666666666,
+        "wins": 45,
+        "runs": 56,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.7604166666666666,
+        "wins": 37,
+        "runs": 56,
+        "caps": 0
+      }
+    },
+    "candidates": 7,
+    "validation_runs": 432,
+    "test_seeds_used": false,
+    "criterion": "Worst stratum within 2.5 percentage points of best; then overall score and fewer caps; starting policy eligible"
+  },
+  "experiment": "../../experiments/2026-11-09-mixed/experiment.json",
+  "files": {
+    "planner.json": {
+      "bytes": 1018436,
+      "sha256": "73d439390e8926d4a696269f358e89ea158d37f9c3199c2dc6c81c383fb96080"
+    },
+    "resume.pt": {
+      "bytes": 743042,
+      "sha256": "4f5cd0b66801cf69b7eda0d07c3d80e24a1a82c44a85f2dda9ea9cbecd3f254f"
+    }
+  },
+  "usage": "Native experimental planner; warm-start on changed data/schema-compatible engine, resume only matching training provenance."
+}

@@ -325,6 +325,29 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
     pub fn kind(&self, name: &str) -> usize {
         self.engine().kind(name)
     }
+    /// Base mechanical terrain properties before a unit's racial/type modifiers.
+    /// Ordering: melee blade/pierce/impact, then ranged blade/pierce/impact.
+    pub fn base_terrain_properties(&self, tile: usize) -> (u16, bool, [i32; 6]) {
+        let t = &self.engine().rules.terrain_definitions[self.terrain()[tile]];
+        let m = &t.damage_modifiers;
+        (
+            t.cost,
+            t.passable,
+            [
+                m.melee + m.blade,
+                m.melee + m.pierce,
+                m.melee + m.impact,
+                m.ranged + m.blade,
+                m.ranged + m.pierce,
+                m.ranged + m.impact,
+            ],
+        )
+    }
+    /// Authored terrain healing amount; ownership is observed separately.
+    #[inline]
+    pub fn terrain_healing(&self, tile: usize) -> i32 {
+        self.engine().terrain_role(tile).healing()
+    }
     #[inline]
     pub fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
         self.engine().role_is(tile, role)
@@ -602,6 +625,9 @@ pub struct CampaignObjective<'a> {
     pub intent: CampaignIntent,
     pub selector: Option<&'a UnitMatch>,
     pub tiles: Vec<Hex>,
+    pub progress_current: u32,
+    pub progress_total: u32,
+    pub hold_turns_remaining: Option<u32>,
 }
 pub struct CampaignGroup<'a> {
     pub id: &'a str,
@@ -633,6 +659,10 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
     #[inline]
     pub fn requirements_disclosed(&self) -> bool {
         self.view.engine().requirements_disclosed()
+    }
+    #[inline]
+    pub fn deadline_round(&self) -> Option<u32> {
+        self.view.engine().planning_deadline_round()
     }
     #[inline]
     pub fn pending_arrivals(&self) -> bool {

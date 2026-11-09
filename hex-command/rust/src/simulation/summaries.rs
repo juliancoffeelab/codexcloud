@@ -388,6 +388,7 @@ mod tests {
         };
         MatchResult::Arena(ArenaResult {
             config: ArenaConfig {
+                objective: Default::default(),
                 seed: 1,
                 armies: Armies {
                     player: "human".into(),

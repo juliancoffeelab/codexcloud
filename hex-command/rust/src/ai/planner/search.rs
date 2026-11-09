@@ -2,6 +2,7 @@ use super::proposal::Plan;
 use crate::ai::TacticalRole;
 use crate::ai::orders::target as objective;
 use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::ai::policies::escort::scoring as escort_scoring;
 use crate::ai::policies::objectives::actor_matches;
 use crate::ai::policies::tie_breaking::action_jitter;
 use crate::ai::roles::role;
@@ -508,7 +509,19 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
             } else {
                 commitments.remove(&unit.id);
             }
-            let danger_weight = if orders.protects(unit.id) {
+            let escortee = escort_scoring::subject(orders, &unit);
+            let improvement_weight = if escortee {
+                0.0
+            } else if important {
+                3.0
+            } else if unit.hp <= 4 {
+                1.5
+            } else {
+                0.2
+            };
+            let danger_weight = if escortee {
+                escort_scoring::EXPOSURE / unit.hp.max(1) as f64
+            } else if orders.protects(unit.id) {
                 // A finite cost for the fraction of remaining life at risk.
                 40.0 / unit.hp.max(1) as f64
             } else if important {
@@ -537,10 +550,17 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                         self.rules().units[unit.kind].r#move
                     };
                     let progress = d.before.min(movement.min(u16::MAX as usize) as u16) as f64;
-                    ceiling = add(ceiling, ((progress * d.goal.weight).upper() / 4.0).upper());
+                    if escortee {
+                        // A loose bound preserves all winners under the bounded
+                        // fifteen-point escort progress/arrival policy.
+                        ceiling = add(ceiling, 15.0);
+                    } else {
+                        ceiling = add(ceiling, ((progress * d.goal.weight).upper() / 4.0).upper());
+                    }
                     // Reaching an endpoint costs at least its current reverse
                     // route distance, including occupancy-aware escort routes.
-                    if !unit.moved
+                    if !escortee
+                        && !unit.moved
                         && d.before as usize <= movement
                         && !d.goal.tiles.contains(&self.board().ids[unit.tile])
                     {
@@ -605,25 +625,14 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 let minimum_wait =
                     (minimum_position - (before_risk as f64 * danger_weight).upper()).lower();
                 let minimum_wait = (minimum_wait
-                    - if before_risk >= unit.hp {
+                    - if !escortee && before_risk >= unit.hp {
                         if important { 40.0 } else { 5.0 }
                     } else {
                         0.0
                     })
                 .lower();
                 ceiling = add(ceiling, maximum_combat);
-                ceiling = add(
-                    ceiling,
-                    (before_risk as f64
-                        * if important {
-                            3.0
-                        } else if unit.hp <= 4 {
-                            1.5
-                        } else {
-                            0.2
-                        })
-                    .upper(),
-                );
+                ceiling = add(ceiling, (before_risk as f64 * improvement_weight).upper());
                 ceiling = add(ceiling, 0.05);
                 ceiling = (ceiling - minimum_wait).upper();
                 if ceiling < best.as_ref().unwrap().score.max(0.1) {
@@ -676,12 +685,21 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                     if after == u16::MAX {
                         continue;
                     }
-                    positioning += (d.before as f64 - after as f64) * d.goal.weight / 4.0
-                        + ((d.goal.tiles.contains(&self.board().ids[tile]) as i32
-                            - d.goal.tiles.contains(&self.board().ids[unit.tile]) as i32)
-                            as f64)
-                            * d.goal.weight
-                            * 0.6;
+                    if escortee {
+                        positioning += escort_scoring::progress(
+                            d.before,
+                            after,
+                            d.goal.tiles.contains(&self.board().ids[unit.tile]),
+                            d.goal.tiles.contains(&self.board().ids[tile]),
+                        );
+                    } else {
+                        positioning += (d.before as f64 - after as f64) * d.goal.weight / 4.0
+                            + ((d.goal.tiles.contains(&self.board().ids[tile]) as i32
+                                - d.goal.tiles.contains(&self.board().ids[unit.tile]) as i32)
+                                as f64)
+                                * d.goal.weight
+                                * 0.6;
+                    }
                 }
                 if rebuilding.contains(&unit.tile)
                     && tile != unit.tile
@@ -765,7 +783,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 if tile == unit.tile {
                     wait_score = positioning
                         - before_risk as f64 * danger_weight
-                        - if before_risk >= unit.hp {
+                        - if !escortee && before_risk >= unit.hp {
                             if important { 40.0 } else { 5.0 }
                         } else {
                             0.0
@@ -851,13 +869,6 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                     } else {
                         combat
                     };
-                    let improvement_weight = if important {
-                        3.0
-                    } else if unit.hp <= 4 {
-                        1.5
-                    } else {
-                        0.2
-                    };
                     let ceiling = positioning
                         + if finishing || finishes_battle {
                             100.0
@@ -914,14 +925,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                         } else {
                             0.0
                         }
-                        + (before_risk - incoming).max(0) as f64
-                            * if important {
-                                3.0
-                            } else if unit.hp <= 4 {
-                                1.5
-                            } else {
-                                0.2
-                            }
+                        + (before_risk - incoming).max(0) as f64 * improvement_weight
                         + action_jitter(
                             seed,
                             self.round(),

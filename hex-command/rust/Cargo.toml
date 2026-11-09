@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members=["catalog","freeze-derive","battle"]
+members=["catalog","freeze-derive","battle","training-python"]
 resolver="2"
 
 [lib]
@@ -17,6 +17,7 @@ path = "src/main.rs"
 
 [features]
 default = []
+training = ["dep:gemm", "dep:pulp"]
 runtime-catalog = ["hex-command-catalog/runtime-catalog", "hex-command-battle/runtime-catalog"]
 wasm = ["dep:ocamljsify", "dep:ocamljs_bindgen", "hex-command-catalog/wasm", "hex-command-battle/wasm"]
 
@@ -31,6 +32,8 @@ serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }
 sha2 = "0.10"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+gemm = { version = "0.19", default-features = false, features = ["std"], optional = true }
+pulp = { version = "0.22", default-features = false, features = ["std", "x86-v3", "x86-v4"], optional = true }
 arrow-array = "57"
 arrow-buffer = "57"
 arrow-schema = "57"

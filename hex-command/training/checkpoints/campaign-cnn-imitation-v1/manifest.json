@@ -1,0 +1,296 @@
+{
+  "format_version": 1,
+  "id": "campaign-cnn-imitation-v1",
+  "purpose": "Frozen supervised campaign policy baseline for subsequent reinforcement learning",
+  "algorithm": "behavioral_cloning",
+  "architecture": "hex_cnn",
+  "parameter_count": 32017,
+  "schema": 7,
+  "dense_features": 227,
+  "spatial_channels": 65,
+  "source_commit": "763a5c1ff898e24d4ed4f376f8d80c34526fb2af",
+  "fingerprints": {
+    "content": "585c98eced2235a8ec3e8711075b122e51e0bf525489ef6b1a349359d6d3b642",
+    "engine": "5e1ab61693b109c130bfe56f6cc02a8067672cc1a22cbe01294582a7e617d13e"
+  },
+  "artifacts": {
+    "weights.pt": {
+      "sha256": "1e8c428be0d038b77db5776bca87d7a57e906416e8b9c7a74ad705514c68f9e0",
+      "bytes": 133405
+    },
+    "planner.json": {
+      "sha256": "14dc0748829c5f92de94448213a677c69bbef92d5bddc031fa448d10b73a386b",
+      "bytes": 1012753
+    }
+  },
+  "checkpoint_contents": {
+    "policy_state_dict": true,
+    "optimizer_state": false,
+    "critic": false
+  },
+  "selection": {
+    "additional_epoch": 7,
+    "campaign_validation_completions": 33,
+    "campaign_validation_runs": 40,
+    "test_seeds_used_for_selection": false
+  },
+  "training": {
+    "teacher": "queued",
+    "opponent": "classic",
+    "recruiters": [
+      "situational",
+      "predictor"
+    ],
+    "campaigner": "mission",
+    "objective": "authored",
+    "max_rounds_per_stage": 100,
+    "learning_rate": 0.0001,
+    "dropout": 0.1,
+    "train_seeds": [
+      111001,
+      111002,
+      111003,
+      111004,
+      111005,
+      111006,
+      111007,
+      111008
+    ],
+    "validation_seeds": [
+      121001,
+      121002,
+      121003,
+      121004
+    ]
+  },
+  "evaluation": {
+    "classic": {
+      "seeds": [
+        101001,
+        101002,
+        101003,
+        101004,
+        101005,
+        101006,
+        101007,
+        101008,
+        101009,
+        101010,
+        101011,
+        101012,
+        101013,
+        101014,
+        101015,
+        101016,
+        101017,
+        101018,
+        101019,
+        101020,
+        101021,
+        101022,
+        101023,
+        101024,
+        101025
+      ],
+      "objective": "authored",
+      "max_rounds_per_stage": 100,
+      "recruit_limit": null,
+      "results": {
+        "situational": {
+          "total": {
+            "completions": 93,
+            "defeats": 29,
+            "caps": 3,
+            "total": 125
+          },
+          "campaigns": {
+            "lantern-road/unrestricted": {
+              "completions": 7,
+              "defeats": 15,
+              "caps": 3,
+              "total": 25
+            },
+            "borrowed-tide/unrestricted": {
+              "completions": 16,
+              "defeats": 9,
+              "caps": 0,
+              "total": 25
+            },
+            "green-accord/unrestricted": {
+              "completions": 20,
+              "defeats": 5,
+              "caps": 0,
+              "total": 25
+            },
+            "ashen-oath/unrestricted": {
+              "completions": 25,
+              "defeats": 0,
+              "caps": 0,
+              "total": 25
+            },
+            "ashen-oath/diplomatic": {
+              "completions": 25,
+              "defeats": 0,
+              "caps": 0,
+              "total": 25
+            }
+          }
+        },
+        "predictor": {
+          "total": {
+            "completions": 92,
+            "defeats": 30,
+            "caps": 3,
+            "total": 125
+          },
+          "campaigns": {
+            "lantern-road/unrestricted": {
+              "completions": 6,
+              "defeats": 16,
+              "caps": 3,
+              "total": 25
+            },
+            "borrowed-tide/unrestricted": {
+              "completions": 16,
+              "defeats": 9,
+              "caps": 0,
+              "total": 25
+            },
+            "green-accord/unrestricted": {
+              "completions": 20,
+              "defeats": 5,
+              "caps": 0,
+              "total": 25
+            },
+            "ashen-oath/unrestricted": {
+              "completions": 25,
+              "defeats": 0,
+              "caps": 0,
+              "total": 25
+            },
+            "ashen-oath/diplomatic": {
+              "completions": 25,
+              "defeats": 0,
+              "caps": 0,
+              "total": 25
+            }
+          }
+        }
+      }
+    },
+    "predictor": {
+      "seeds": [
+        101001,
+        101002,
+        101003,
+        101004,
+        101005,
+        101006,
+        101007,
+        101008,
+        101009,
+        101010,
+        101011,
+        101012,
+        101013,
+        101014,
+        101015,
+        101016,
+        101017,
+        101018,
+        101019,
+        101020,
+        101021,
+        101022,
+        101023,
+        101024,
+        101025
+      ],
+      "objective": "authored",
+      "max_rounds_per_stage": 100,
+      "recruit_limit": null,
+      "results": {
+        "situational": {
+          "total": {
+            "completions": 15,
+            "defeats": 107,
+            "caps": 3,
+            "total": 125
+          },
+          "campaigns": {
+            "lantern-road/unrestricted": {
+              "completions": 0,
+              "defeats": 22,
+              "caps": 3,
+              "total": 25
+            },
+            "borrowed-tide/unrestricted": {
+              "completions": 1,
+              "defeats": 24,
+              "caps": 0,
+              "total": 25
+            },
+            "green-accord/unrestricted": {
+              "completions": 13,
+              "defeats": 12,
+              "caps": 0,
+              "total": 25
+            },
+            "ashen-oath/unrestricted": {
+              "completions": 1,
+              "defeats": 24,
+              "caps": 0,
+              "total": 25
+            },
+            "ashen-oath/diplomatic": {
+              "completions": 0,
+              "defeats": 25,
+              "caps": 0,
+              "total": 25
+            }
+          }
+        },
+        "predictor": {
+          "total": {
+            "completions": 15,
+            "defeats": 107,
+            "caps": 3,
+            "total": 125
+          },
+          "campaigns": {
+            "lantern-road/unrestricted": {
+              "completions": 0,
+              "defeats": 22,
+              "caps": 3,
+              "total": 25
+            },
+            "borrowed-tide/unrestricted": {
+              "completions": 1,
+              "defeats": 24,
+              "caps": 0,
+              "total": 25
+            },
+            "green-accord/unrestricted": {
+              "completions": 14,
+              "defeats": 11,
+              "caps": 0,
+              "total": 25
+            },
+            "ashen-oath/unrestricted": {
+              "completions": 0,
+              "defeats": 25,
+              "caps": 0,
+              "total": 25
+            },
+            "ashen-oath/diplomatic": {
+              "completions": 0,
+              "defeats": 25,
+              "caps": 0,
+              "total": 25
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -391,6 +391,7 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
                         for (left, right) in seats {
                             for first in [Side::Player, Side::Enemy] {
                                 configs.push(MatchConfig::Arena(ArenaConfig {
+                                    objective: Default::default(),
                                     seed,
                                     max_rounds: options.max_rounds,
                                     recruit_limit: options.recruit_limit,

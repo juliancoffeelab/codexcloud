@@ -2,14 +2,24 @@
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
-#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub enum PlannerKind {
-    Classic,
-    Full,
-    Queued,
+// Select the variants before ocamljsify expands; it does not filter cfg variants.
+macro_rules! planner_kind {
+    ($($extra:ident,)*) => {
+        #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+        #[serde(rename_all = "lowercase")]
+        pub enum PlannerKind {
+            $($extra,)*
+            Classic,
+            Full,
+            Queued,
+        }
+    };
 }
+#[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+planner_kind!(Learned,);
+#[cfg(not(all(feature = "training", not(target_arch = "wasm32"))))]
+planner_kind!();
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum QueueMode {
     Arena,
@@ -35,6 +45,8 @@ impl Planner for PlannerKind {
         orders: &crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, CommandError> {
         match self {
+            #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+            Self::Learned => learned::Learned.plan(context, orders),
             Self::Classic => classic::Classic.plan(context, orders),
             Self::Full => full::Full.plan(context, orders),
             Self::Queued => queued::Queued.plan(context, orders),
@@ -176,6 +188,8 @@ impl PlannerKind {
     pub const fn queued(self) -> bool {
         match self {
             Self::Queued => true,
+            #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+            Self::Learned => false,
             Self::Classic | Self::Full => false,
         }
     }
@@ -190,3 +204,6 @@ pub(in crate::ai) mod search;
 mod recruitment;
 
 mod proposal;
+
+#[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+pub(crate) mod learned;
