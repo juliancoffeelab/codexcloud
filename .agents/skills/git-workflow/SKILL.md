@@ -11,9 +11,14 @@ checkouts can fetch only main, so a general fetch need not populate feature refs
 
 - Fetch a needed branch explicitly, e.g.
   `git fetch origin refs/heads/main:refs/remotes/origin/main`.
-- For latest-main inspection when the starting branch has diverged, preserve the
-  checkout and use an ignored `tmp/` worktree at the fetched commit. Run tools from
-  that checkout and reuse supplied toolchains; do not reinstall the environment.
+- For a fresh task on latest main, use the existing checkout: fetch main explicitly,
+  then `git switch main` and `git merge --ff-only origin/main`. If main does not
+  exist locally, use `git switch -c main --track origin/main`. Preserve uncommitted
+  work and local commits; if they block switching or fast-forwarding, report the
+  blocker instead of resetting them. Create implementation branches from the
+  fetched main as required by AGENTS.md.
+- Use a separate worktree when the task actually needs simultaneous checkouts or
+  preserving active work prevents switching. Reuse supplied toolchains and caches.
 - Continue requested implementation on its current branch/PR unless instructed
   otherwise. Divergence alone is not a reason to pull, rebase or replace it.
 - For a new feature branch, push with `git push -u origin HEAD`.
