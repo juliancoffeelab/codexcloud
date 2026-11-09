@@ -280,6 +280,31 @@ fn score_spatial<'py>(
     if model.spatial.is_none() {
         return Err(err("spatial model required"));
     }
+    let mut evaluator = Evaluator::new(model).map_err(err)?;
+    Ok(spatial_scores(
+        py,
+        &mut evaluator,
+        features,
+        offsets,
+        boards,
+        board_offsets,
+        shapes,
+        indices,
+    )?
+    .0)
+}
+
+type ScoresAndPool<'py> = (Bound<'py, PyArray1<f64>>, Bound<'py, PyArray2<f32>>);
+fn spatial_scores<'py>(
+    py: Python<'py>,
+    evaluator: &mut Evaluator,
+    features: PyReadonlyArray2<'py, f32>,
+    offsets: PyReadonlyArray1<'py, i64>,
+    boards: PyReadonlyArray1<'py, f32>,
+    board_offsets: PyReadonlyArray1<'py, i64>,
+    shapes: PyReadonlyArray2<'py, i64>,
+    indices: PyReadonlyArray2<'py, i64>,
+) -> PyResult<ScoresAndPool<'py>> {
     let x = features.as_array();
     let sh = shapes.as_array();
     let ix = indices.as_array();
@@ -323,15 +348,17 @@ fn score_spatial<'py>(
             return Err(err("invalid spatial offsets"));
         }
     }
-    let scores = py
-        .detach(move || -> Result<Vec<f64>, String> {
-            let mut evaluator = Evaluator::new(model)?;
+    let shapes_count = shapes.len();
+    let (scores, pooled) = py
+        .detach(move || -> Result<(Vec<f64>, Vec<f32>), String> {
             let mut result = vec![];
+            let mut pooled = vec![];
             for (i, shape) in shapes.iter().enumerate() {
                 if *shape == [0, 0]
                     && offsets[i] == offsets[i + 1]
                     && board_offsets[i] == board_offsets[i + 1]
                 {
+                    pooled.extend([0.; spatial::EMBEDDING]);
                     continue;
                 }
                 if shape[0] <= 0 || shape[1] <= 0 || shape[0] > 256 || shape[1] > 256 {
@@ -355,12 +382,60 @@ fn score_spatial<'py>(
                 let b = offsets[i + 1] as usize;
                 board.validate_indices(&ix[a..b])?;
                 result.extend(evaluator.scores(&x[a..b], Some((&board, &ix[a..b]))));
+                pooled.extend(if a == b {
+                    [0.; spatial::EMBEDDING]
+                } else {
+                    evaluator.pooled()
+                });
             }
-            Ok(result)
+            Ok((result, pooled))
         })
         .map_err(err)?;
-    Ok(scores.into_pyarray(py))
+    Ok((
+        scores.into_pyarray(py),
+        Array2::from_shape_vec((shapes_count, spatial::EMBEDDING), pooled)
+            .unwrap()
+            .into_pyarray(py),
+    ))
 }
+/// Persistent weights and inference scratch for no-gradient rollout collection.
+#[pyclass]
+struct SpatialEvaluator {
+    evaluator: Evaluator,
+}
+#[pymethods]
+impl SpatialEvaluator {
+    #[new]
+    fn new(model: String) -> PyResult<Self> {
+        let evaluator = Evaluator::new(load_model(&model).map_err(err)?).map_err(err)?;
+        if !evaluator.is_spatial() {
+            return Err(err("spatial model required"));
+        }
+        Ok(Self { evaluator })
+    }
+    fn score<'py>(
+        &mut self,
+        py: Python<'py>,
+        features: PyReadonlyArray2<'py, f32>,
+        offsets: PyReadonlyArray1<'py, i64>,
+        boards: PyReadonlyArray1<'py, f32>,
+        board_offsets: PyReadonlyArray1<'py, i64>,
+        shapes: PyReadonlyArray2<'py, i64>,
+        indices: PyReadonlyArray2<'py, i64>,
+    ) -> PyResult<ScoresAndPool<'py>> {
+        spatial_scores(
+            py,
+            &mut self.evaluator,
+            features,
+            offsets,
+            boards,
+            board_offsets,
+            shapes,
+            indices,
+        )
+    }
+}
+
 enum Event {
     Decision(Choices),
     Done(Result<String, String>),
@@ -608,5 +683,6 @@ fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(profile_snapshot, m)?)?;
     m.add_function(wrap_pyfunction!(replay_phases, m)?)?;
     m.add_class::<BatchEnv>()?;
+    m.add_class::<SpatialEvaluator>()?;
     Ok(())
 }

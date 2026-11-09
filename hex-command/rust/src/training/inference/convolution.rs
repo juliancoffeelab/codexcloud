@@ -64,7 +64,7 @@ impl Encoder {
         indices: &[[i64; 3]],
         features: &[[f32; FEATURES]],
         input: &mut Vec<f32>,
-    ) {
+    ) -> [f32; EMBEDDING] {
         let cells = board.height * board.width;
         if self.height != board.height
             || self.width != board.width
@@ -143,6 +143,7 @@ impl Encoder {
             }
             input.extend_from_slice(&pooled);
         }
+        pooled
     }
 }
 

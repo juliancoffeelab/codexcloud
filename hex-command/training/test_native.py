@@ -189,6 +189,23 @@ class NativeContract(unittest.TestCase):
                 data.indices,
             )
             np.testing.assert_allclose(actual, expected, atol=2e-6, rtol=2e-5)
+            evaluator = native.SpatialEvaluator(model.export())
+            persistent, pooled = evaluator.score(
+                data.dense[0],
+                data.dense[1],
+                np.asarray(data.boards),
+                data.offsets,
+                data.shapes,
+                data.indices,
+            )
+            np.testing.assert_array_equal(persistent, actual)
+            expected_pool = []
+            with torch.no_grad():
+                for x, board, ix, mask, y in batches(
+                    data, np.arange(len(data.dense[2])), batch_size=8
+                ):
+                    expected_pool.extend(model.encode(board)[1].numpy())
+            np.testing.assert_allclose(pooled, expected_pool, atol=2e-6, rtol=2e-5)
             x, board, ix, mask, y = next(batches(data, np.array([0])))
             with torch.no_grad():
                 before = model(x, board, ix)

@@ -16,6 +16,7 @@ import hex_command_training as native
 from .mixed_workload import group, mass
 from .ppo import ActorCritic, pack, unpack, advantages, categorical, categorical_kl
 from .spatial import SpatialPlanner
+from .rollout import NativeRollout
 from .recovery import save_bundle, atomic_json, load_resume, read_jsonl
 
 
@@ -110,6 +111,7 @@ def main():
     p.add_argument("--critic-warmup-episodes", type=int, default=24)
     p.add_argument("--horizon", type=int, default=64)
     p.add_argument("--temperature", type=float)
+    p.add_argument("--rollout-backend", choices=["torch", "native"])
     a = p.parse_args()
     if (
         not 0 < a.seconds <= 43200
@@ -132,6 +134,10 @@ def main():
     rng = np.random.default_rng(271)
     policy = SpatialPlanner().eval()
     old = load_resume(a.resume) if a.resume else None
+    saved_backend = old.get("rollout_backend", "torch") if old else "torch"
+    if old and a.rollout_backend is not None and a.rollout_backend != saved_backend:
+        p.error("resume rollout backend must match; use a policy warm start to switch")
+    a.rollout_backend = a.rollout_backend or saved_backend
     if old and a.temperature is not None and a.temperature != old["temperature"]:
         p.error("resume temperature must match the saved policy")
     a.temperature = (
@@ -159,6 +165,7 @@ def main():
         torch.set_rng_state(old["torch_rng"])
         rng.bit_generator.state = old["numpy_rng"]
         random.setstate(old["python_rng"])
+    rollout = NativeRollout(ac) if a.rollout_backend == "native" else None
     sampler = Sampler(spec["train"], rng, old["sampler"] if old else None)
     update = old["update"] if old else 0
     episodes = old["episodes"] if old else 0
@@ -207,6 +214,7 @@ def main():
             fingerprints=spec["fingerprints"],
             workload_sha256=spec["workload_sha256"],
             temperature=a.temperature,
+            rollout_backend=a.rollout_backend,
             action_counts=dict(action_counts),
         )
         save_bundle(run, state, policy, label)
@@ -218,6 +226,7 @@ def main():
             temperature=a.temperature,
             envs=a.envs,
             horizon=a.horizon,
+            rollout_backend=a.rollout_backend,
             actor_lr=5e-6,
             critic_lr=1e-3,
             gamma=0.999,
@@ -260,10 +269,15 @@ def main():
             observations = {i: f.result() for i, f in initial.items()}
             last_save = time.monotonic()
             while time.monotonic() < deadline:
+                sync_start = time.monotonic()
+                if rollout is not None:
+                    rollout.sync()
+                rollout_sync_seconds = time.monotonic() - sync_start
                 samples = []
                 rew = []
                 vals = []
                 done = []
+                collection_start = time.monotonic()
                 for t in range(a.horizon):
                     while (
                         run / "evaluation-active.json"
@@ -276,9 +290,12 @@ def main():
                         for i, obs in observations.items()
                     }
                     ids = list(views)
-                    tensors = pack(list(views.values()))
                     with torch.no_grad():
-                        dist, v = ac(*tensors, a.temperature)
+                        dist, v = (
+                            rollout.forward(list(views.values()), a.temperature)
+                            if rollout is not None
+                            else ac(*pack(list(views.values())), a.temperature)
+                        )
                         acts = dist.sample()
                         old_lp = dist.log_prob(acts)
                     futures = {
@@ -347,9 +364,15 @@ def main():
                 }
                 bootstrap = np.zeros(a.envs, np.float32)
                 with torch.no_grad():
-                    _, next_v = ac(*pack(list(views.values())), a.temperature)
+                    _, next_v = (
+                        rollout.forward(list(views.values()), a.temperature)
+                        if rollout is not None
+                        else ac(*pack(list(views.values())), a.temperature)
+                    )
                 for j, i in enumerate(views):
                     bootstrap[i] = float(next_v[j])
+                collection_seconds = time.monotonic() - collection_start
+                optimization_start = time.monotonic()
                 advantage, returns = advantages(
                     np.asarray(rew),
                     np.asarray(vals),
@@ -449,6 +472,9 @@ def main():
                         update=update,
                         decisions=decisions,
                         episodes=episodes,
+                        rollout_sync_seconds=rollout_sync_seconds,
+                        collection_seconds=collection_seconds,
+                        optimization_seconds=time.monotonic() - optimization_start,
                         policy_loss=m[0],
                         value_loss=m[1],
                         entropy=m[2],

@@ -8,6 +8,7 @@ pub struct Evaluator {
     spatial: Option<convolution::Encoder>,
     input: Vec<f32>,
     output: Vec<f32>,
+    pooled: [f32; spatial::EMBEDDING],
 }
 
 impl Evaluator {
@@ -25,11 +26,16 @@ impl Evaluator {
             spatial,
             input: Vec::new(),
             output: Vec::new(),
+            pooled: [0.; spatial::EMBEDDING],
         })
     }
 
     pub fn is_spatial(&self) -> bool {
         self.model.spatial.is_some()
+    }
+
+    pub fn pooled(&self) -> [f32; spatial::EMBEDDING] {
+        self.pooled
     }
 
     /// Score one decision's candidates. Spatial arrays must be validated by the caller.
@@ -52,7 +58,7 @@ impl Evaluator {
                 features.len(),
                 "candidate index count mismatch"
             );
-            encoder.inputs(board, indices, features, &mut self.input);
+            self.pooled = encoder.inputs(board, indices, features, &mut self.input);
         } else {
             self.input.extend(features.iter().flatten().copied());
         }

@@ -102,6 +102,16 @@ managed process. Restarting its command recovers existing atomic phase state.
 A finished run is retained and reported as complete; use a new root for another
 experiment.
 
+PPO optionally collects actions with `mixed_ppo --rollout-backend native`.
+The default remains `torch`. Native rollout inference loads a persistent evaluator
+once per rollout and returns candidate scores plus the pooled board embedding.
+The existing Torch critic consumes that embedding; action sampling, log
+probabilities, all gradient updates and frozen-reference scoring remain in Torch.
+Weights refresh between rollouts, after optimization. This mode changes reduction
+rounding slightly and does not promise bit-identical training trajectories.
+Collection and optimization durations are recorded in update metrics; overall
+throughput also includes weight export, checkpointing and other orchestration.
+
 Mixed sampling assigns equal decision budgets to arenas and campaigns, then
 balances maps/campaigns and divides their objective/route variants. Recruiters and
 fixed opponents are explicit workload axes. Seed partitions separate training,
