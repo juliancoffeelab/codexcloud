@@ -690,6 +690,7 @@ dependencies = [
  "mimalloc",
  "ocamljs_bindgen",
  "ocamljsify",
+ "pulp",
  "rustc-hash",
  "serde",
  "serde_json",

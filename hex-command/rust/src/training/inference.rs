@@ -1,9 +1,11 @@
 //! Prepared native inference; serialized models retain their portable weight layout.
 use super::{FEATURES, Model, spatial};
+mod convolution;
 
 pub struct Evaluator {
     model: Model,
     weights: Vec<Vec<f32>>,
+    spatial: Option<convolution::Encoder>,
 }
 
 impl Evaluator {
@@ -14,7 +16,12 @@ impl Evaluator {
             .iter()
             .map(|layer| layer.weights.iter().flatten().copied().collect())
             .collect();
-        Ok(Self { model, weights })
+        let spatial = model.spatial.as_ref().map(convolution::Encoder::new);
+        Ok(Self {
+            model,
+            weights,
+            spatial,
+        })
     }
 
     pub fn is_spatial(&self) -> bool {
@@ -33,7 +40,7 @@ impl Evaluator {
         if !self.model.trees.is_empty() {
             return features.iter().map(|row| self.model.score(row)).collect();
         }
-        let mut x: Vec<f32> = if let Some(encoder) = &self.model.spatial {
+        let mut x: Vec<f32> = if let Some(encoder) = &self.spatial {
             let (board, indices) = board.expect("spatial observation required");
             encoder
                 .inputs(board, indices, features)
