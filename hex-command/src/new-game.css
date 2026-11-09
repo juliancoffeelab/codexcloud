@@ -305,3 +305,21 @@
   border-color: var(--gold);
   background: #d8ba6f12;
 }
+
+@media (min-height: 700px) {
+  .new-game-dialog.ng-setup > .window-content {
+    padding-top: 12px;
+  }
+  .ng-races {
+    padding-block: 6px;
+  }
+  .ng-races .ng-label {
+    margin-bottom: 6px;
+  }
+  .ng-difficulty {
+    padding-top: 16px;
+  }
+  .new-game-dialog .advanced {
+    margin-top: 8px;
+  }
+}
