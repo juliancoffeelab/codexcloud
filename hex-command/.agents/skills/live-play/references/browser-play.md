@@ -20,6 +20,38 @@ Wait for the expected user-visible transition after each action. Bound waits and
 the run's lifetime. On timeout, preserve available evidence and close the browser
 in `finally`; a timed-out evaluation can still be executing.
 
+## Presentation settings
+
+Start long journeys with the supported browser preference. Set sound through the
+actual Menu control after entering the game:
+
+```js
+const context = await browser.newContext({ reducedMotion: "reduce" });
+const page = await context.newPage();
+await page.goto(gameUrl);
+await page.getByRole("button", { name: "Menu", exact: true }).click();
+const menu = page.getByRole("dialog", { name: "Menu", exact: true });
+await menu.getByRole("checkbox", { name: "Sound effects", exact: true }).uncheck();
+await menu.getByRole("button", { name: "Close menu", exact: true }).click();
+// Continue through normal UI controls, waiting for each visible result.
+```
+
+To exercise normal timing, first wait for the current action to settle, then:
+
+```js
+await page.emulateMedia({ reducedMotion: "no-preference" });
+// Enable Sound effects through the same Menu checkbox when audio is in scope.
+// Perform representative movement/combat and observe its complete presentation.
+// Once settled, return to the long-journey setting:
+await page.emulateMedia({ reducedMotion: "reduce" });
+// Turn sound off through Menu before continuing without audio timing checks.
+```
+
+Reduced motion is an actual player setting, not permission to force completion,
+alter timers or skip controller barriers. Sound can retain combat pacing even
+with reduced motion. Report the selected settings; ordinary frame readiness or
+a requested audio cue alone does not prove timing or audible output.
+
 ## Canvas and gestures
 
 Locate units and terrain from the rendered battlefield. Read-only coordinate

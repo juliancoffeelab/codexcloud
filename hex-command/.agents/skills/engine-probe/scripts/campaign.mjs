@@ -9,6 +9,8 @@ export async function openHarness(options = {}) {
     url: process.env.ENGINE_PROBE_URL || "http://127.0.0.1:5191",
     artifacts: process.env.ENGINE_PROBE_ARTIFACTS || "tmp/engine-probe/artifacts",
     enemyPauseScale: Number(process.env.ENEMY_PAUSE_SCALE ?? 0),
+    reducedMotion: "reduce",
+    sound: false,
     operationTimeout: 60_000,
     totalTimeout: 15 * 60_000,
     playerAI: { policy: process.env.PLAYER_AI_POLICY || "predictor", diplomacy: "unrestricted" },
@@ -32,6 +34,16 @@ export async function openHarness(options = {}) {
   });
   const context = await browser.newContext({
     viewport: config.viewport || { width: 1440, height: 1000 },
+    reducedMotion: config.reducedMotion,
+    storageState: {
+      cookies: [],
+      origins: [
+        {
+          origin: address.origin,
+          localStorage: [{ name: "hex-command-sound-enabled", value: String(config.sound) }],
+        },
+      ],
+    },
   });
   await config.prepareContext?.(context);
   const page = await context.newPage();

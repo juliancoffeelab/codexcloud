@@ -18,6 +18,11 @@ for the requested probe. State which steps use engine/controller operations and
 which, if any, need UI interaction. Record the assertions that establish the
 end-to-end result.
 
+Default to reduced motion, sound off and no extra enemy pacing. These settings
+shorten controller journeys while preserving normal commands, persistence and
+completion barriers. Request normal presentation explicitly when its timing is
+under test; the [harness reference](references/harness.md) shows the overrides.
+
 **Complete when:** the journey, endpoint and required coverage are explicit.
 Complete UI coverage belongs to [live-play](../live-play/SKILL.md).
 
@@ -46,6 +51,8 @@ Report the tested revision, fixture, endpoint reached, commands, expected and
 observed state, and any unresolved question. Label this an **engine/controller
 probe** and name the UI steps actually exercised and those omitted. When paired
 with live play, keep their evidence and conclusions separate.
+Record motion, sound and pacing settings. Reduced-motion results do not verify
+normal animation, audible output or audio/impact synchronization.
 
 **Complete when:** the result is reproducible and its scope cannot be mistaken
 for a UI playthrough.

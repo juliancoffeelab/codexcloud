@@ -14,8 +14,10 @@ and install it before navigation:
 import { installAiAdvisor, observe, recommend } from "./ai-advisor-ocaml.mjs";
 
 await installAiAdvisor(page);
+await page.emulateMedia({ reducedMotion: "reduce" });
 await page.goto(localGameUrl);
 // Choose the campaign and dismiss its briefing through visible controls.
+// Turn sound off through Menu as shown in browser-play.md#presentation-settings.
 const before = await observe(page);
 if (!before.canAct) throw new Error("Finish the visible turn or dialog before planning.");
 const decision = await recommend(page, { policy: "classic", diplomacy: "diplomatic" });
@@ -66,7 +68,9 @@ When a visible control is absent, disabled or produces the wrong result, preserv
 that attempted workflow as a blocker. Request another recommendation after a
 successful action instead of applying a stale sequence.
 
-Use ordinary presentation timing. Advisor computation is additional diagnostic
+For animation/audio timing checks, switch to normal presentation between settled
+actions as shown in [browser play](browser-play.md#presentation-settings).
+Advisor computation is additional diagnostic
 work; separate it from measurements of the game's own interaction latency.
 
 The upstream adapter remains in `scripts/ai-advisor.mjs`. The OCaml adapter
