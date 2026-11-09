@@ -13,19 +13,13 @@ checkouts can fetch only main, so a general fetch need not populate feature refs
   `git fetch origin +refs/heads/main:refs/remotes/origin/main`.
   The leading `+` lets the remote-tracking ref follow upstream history rewrites;
   it does not reset the local main branch.
-- For a fresh task on latest main, use the existing checkout: fetch main explicitly,
-  then `git switch main` and `git merge --ff-only origin/main`. If main does not
-  exist locally, use `git switch -c main --track origin/main`. Preserve uncommitted
-  work and local commits. If a known upstream force-push prevents fast-forwarding
-  and the checkout is clean, preserve the old local main with
-  `git branch -m main archive/main-before-rewrite-UNIQUE` (choose an unused name),
-  then `git switch -c main --track origin/main`. This replaces the stale local
-  baseline while retaining its commits; it does not merge the unrelated histories.
-  For unexplained divergence or uncommitted work that blocks switching, report
-  the blocker. Create implementation branches from fetched main as required by
-  AGENTS.md.
-- Use a separate worktree when the task actually needs simultaneous checkouts or
-  preserving active work prevents switching. Reuse supplied toolchains and caches.
+- At the start of a fresh task, with a clean working tree, fetch main as above and
+  run `git switch -C main origin/main`. The cloud starting checkout can contain
+  obsolete history after an upstream force-push; replace that local baseline
+  directly. No archive branch, merge or separate worktree is needed. Create an
+  implementation branch from this main when making changes, as AGENTS.md requires.
+  If the working tree contains uncommitted changes, report them before discarding.
+- Use a separate worktree only when the task needs simultaneous checkouts.
 - Continue requested implementation on its current branch/PR unless instructed
   otherwise. Divergence alone is not a reason to pull, rebase or replace it.
 - For a new feature branch, push with `git push -u origin HEAD`.
