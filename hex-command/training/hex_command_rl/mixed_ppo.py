@@ -13,7 +13,7 @@ import torch
 from torch.nn import functional as F
 import hex_command_training as native
 from .mixed_workload import group,mass
-from .ppo import ActorCritic,pack,unpack,advantages,categorical
+from .ppo import ActorCritic,pack,unpack,advantages,categorical,categorical_kl
 from .spatial import SpatialPlanner
 from .recovery import save_bundle,atomic_json,load_resume,resolve
 
@@ -135,7 +135,7 @@ def main():
                         acts=torch.tensor([s['action'] for s in batch]);old_lp=torch.tensor([s['old_log_prob'] for s in batch]);adv=torch.tensor([s['advantage'] for s in batch]);target=torch.tensor([s['target'] for s in batch])
                         logp=dist.log_prob(acts);ratio=(logp-old_lp).clamp(-20,20).exp();policy_loss=-torch.minimum(ratio*adv,ratio.clamp(.8,1.2)*adv).mean();value_loss=F.mse_loss(value,target)
                         with torch.no_grad():ref=categorical(reference(*tensors[:3]),tensors[3],a.temperature)
-                        kl=torch.distributions.kl_divergence(dist,ref).mean();entropy=dist.entropy().mean();loss=value_loss+(0 if warmup else policy_loss+.02*kl-.001*entropy)
+                        kl=categorical_kl(dist,ref).mean();entropy=dist.entropy().mean();loss=value_loss+(0 if warmup else policy_loss+.02*kl-.001*entropy)
                         if not torch.isfinite(loss):raise RuntimeError('nonfinite PPO objective')
                         actor_opt.zero_grad();critic_opt.zero_grad();loss.backward();norm=torch.nn.utils.clip_grad_norm_(ac.parameters(),.5,error_if_nonfinite=True)
                         if not warmup:actor_opt.step()

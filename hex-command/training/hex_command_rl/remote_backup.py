@@ -20,6 +20,10 @@ def backup(root):
         fcntl.flock(lock,fcntl.LOCK_EX)
         for name,folder in [('latest',latest),('best',best)]:
             temporary=destination/(name+'.tmp');shutil.copyfile(folder/'resume.pt',temporary);temporary.replace(destination/(name+'.pt'))
+        if (root/'posttune/handoff-best.json').exists():
+            selected=resolve(root/'posttune','handoff-best.json')
+            temporary=destination/'posttune-selected.tmp';shutil.copyfile(selected/'resume.pt',temporary);temporary.replace(destination/'posttune-selected.pt')
+            shutil.copyfile(root/'posttune/handoff-complete.json',destination/'posttune-selection.json')
         shutil.copyfile(root/'workload.json',destination/'workload.json')
         for phase in ['posttune','rl']:
             metrics=root/phase/'metrics.jsonl'

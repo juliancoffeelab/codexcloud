@@ -56,6 +56,13 @@ def categorical(scores, mask, temperature):
     return torch.distributions.Categorical(logits=logits)
 
 
+def categorical_kl(policy, reference):
+    # Both distributions have identical legal actions and finite log probabilities.
+    # PyTorch's generic categorical KL treats underflowed reference probabilities
+    # as absent support, producing infinity even though their logits are finite.
+    return (policy.probs * (policy.logits - reference.logits)).sum(-1)
+
+
 class ActorCritic(nn.Module):
     def __init__(self, policy):
         super().__init__()
@@ -247,7 +254,7 @@ def main():
                     policy_loss = -torch.minimum(ratio*advantage, ratio.clamp(.8, 1.2)*advantage).mean()
                     value_loss = F.mse_loss(value, target)
                     with torch.no_grad(): ref_dist = categorical(reference(*tensors[:3]), tensors[3], temperature)
-                    kl = torch.distributions.kl_divergence(dist, ref_dist).mean(); entropy = dist.entropy().mean()
+                    kl = categorical_kl(dist, ref_dist).mean(); entropy = dist.entropy().mean()
                     loss = value_loss + (policy_loss + .02*kl - .005*entropy if update>2 else 0)
                     if not torch.isfinite(loss): raise RuntimeError('nonfinite PPO loss')
                     actor_opt.zero_grad(); critic_opt.zero_grad(); loss.backward(); nn.utils.clip_grad_norm_(ac.parameters(), .5, error_if_nonfinite=True)
