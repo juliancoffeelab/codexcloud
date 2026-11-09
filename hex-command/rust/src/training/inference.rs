@@ -6,6 +6,8 @@ pub struct Evaluator {
     model: Model,
     weights: Vec<Vec<f32>>,
     spatial: Option<convolution::Encoder>,
+    input: Vec<f32>,
+    output: Vec<f32>,
 }
 
 impl Evaluator {
@@ -21,6 +23,8 @@ impl Evaluator {
             model,
             weights,
             spatial,
+            input: Vec::new(),
+            output: Vec::new(),
         })
     }
 
@@ -40,21 +44,18 @@ impl Evaluator {
         if !self.model.trees.is_empty() {
             return features.iter().map(|row| self.model.score(row)).collect();
         }
-        let mut x: Vec<f32> = if let Some(encoder) = &self.spatial {
+        self.input.clear();
+        if let Some(encoder) = &mut self.spatial {
             let (board, indices) = board.expect("spatial observation required");
-            encoder
-                .inputs(board, indices, features)
-                .into_iter()
-                .flatten()
-                .collect()
+            encoder.inputs(board, indices, features, &mut self.input);
         } else {
-            features.iter().flatten().copied().collect()
-        };
+            self.input.extend(features.iter().flatten().copied());
+        }
         let count = features.len();
         for (i, layer) in self.model.layers.iter().enumerate() {
             let width = layer.weights[0].len();
             let outputs = layer.bias.len();
-            let mut y = vec![0.; count * outputs];
+            self.output.resize(count * outputs, 0.);
             // SAFETY: x is count×width, weights are outputs×width, and y is
             // count×outputs. Transposing the weight strides gives width×outputs.
             // All buffers are contiguous, initialized, disjoint and live for the call.
@@ -63,11 +64,11 @@ impl Evaluator {
                     count,
                     outputs,
                     width,
-                    y.as_mut_ptr(),
+                    self.output.as_mut_ptr(),
                     1,
                     outputs as isize,
                     false,
-                    x.as_ptr(),
+                    self.input.as_ptr(),
                     1,
                     width as isize,
                     self.weights[i].as_ptr(),
@@ -81,7 +82,7 @@ impl Evaluator {
                     gemm::Parallelism::None,
                 );
             }
-            for row in y.chunks_exact_mut(outputs) {
+            for row in self.output.chunks_exact_mut(outputs) {
                 for (value, bias) in row.iter_mut().zip(&layer.bias) {
                     *value += bias;
                     if i + 1 < self.model.layers.len() {
@@ -89,8 +90,8 @@ impl Evaluator {
                     }
                 }
             }
-            x = y;
+            std::mem::swap(&mut self.input, &mut self.output);
         }
-        x.into_iter().map(f64::from).collect()
+        self.input.iter().copied().map(f64::from).collect()
     }
 }

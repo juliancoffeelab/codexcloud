@@ -14,7 +14,7 @@ python3 -m venv .venv
 .venv/bin/pip install 'maturin>=1.9,<2'
 .venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu
 .venv/bin/pip install -e 'training[dev]'
-node scripts/toolchain/with-toolchain.mjs \
+RUSTFLAGS="-C target-cpu=native" node scripts/toolchain/with-toolchain.mjs \
   .venv/bin/maturin develop --manifest-path rust/training-python/Cargo.toml --profile simulation
 .venv/bin/python -m unittest discover -s training -p 'test_*.py'
 .venv/bin/ruff check training --select F
@@ -23,6 +23,10 @@ node scripts/toolchain/with-toolchain.mjs \
 
 `training[trees]` additionally installs LightGBM. PyTorch's CPU distribution is
 selected explicitly above; Matplotlib is required by the evaluation tools.
+The native extension command targets the build machine, matching `ai:rust:build`.
+Omit `RUSTFLAGS` when producing a portable extension: it retains runtime SIMD
+dispatch. Host builds select a concrete SIMD kernel at compile time when the
+required CPU features are enabled.
 
 ## Observations and actions
 
@@ -40,6 +44,14 @@ schema 9 adds 65 board channels. The hex CNN shares two seven-neighbor
 convolutions across candidates, gathers actor/destination/target embeddings and a
 global pool, and scores candidates through a 64/64 head. The critic reuses the
 same pooled board encoding with its gradient detached from the policy.
+
+Native inference prepares flat dense weights and reordered convolution weights
+once per model. Candidate heads use single-threaded `gemm`; seven-neighbor
+convolutions use `pulp` to select scalar, AVX2 or AVX-512 kernels at runtime.
+Each evaluator owns reusable buffers. Geometry is cached by board dimensions and
+the complete valid-tile mask; activations are recomputed on every decision.
+Exported weights and schemas retain their portable layout. Optimized reductions
+can differ slightly in floating-point rounding from the scalar reference scorer.
 
 Candidates contain EndTurn, all reachable legal moves, allowed attacks with each
 weapon, and recruiter-approved promotions. Recruitment is performed by the
