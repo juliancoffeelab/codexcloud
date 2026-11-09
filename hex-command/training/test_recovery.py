@@ -41,3 +41,15 @@ class RecoveryContracts(unittest.TestCase):
         self.assertEqual(terminal_reward({'campaign':'test'},0.,True),-1.)
         self.assertEqual(terminal_reward({'landscape':'test'},0.,True),0.)
         self.assertEqual(terminal_reward({'campaign':'test'},1.,False),1.)
+
+    def test_selection_rejects_predictor_collapse_despite_high_pooled_score(self):
+        from hex_command_rl.mixed_evaluate import reliability
+        def report(wins):
+            groups=[]
+            for family in ['arena','campaign']:
+                for enemy in ['classic','predictor']:
+                    key=['arena','open','deathmatch',enemy,'predictor'] if family=='arena' else ['campaign','borrowed-tide','authored','unrestricted',enemy,'predictor']
+                    groups.append(dict(group=key,wins=wins[len(groups)],runs=10,caps=0,mass=.25))
+            return dict(groups=groups,score=sum(wins)/40,weighted_caps=0.)
+        collapsed=report([10,10,10,0]);balanced=report([4,4,4,4])
+        self.assertGreater(reliability(balanced)[0],reliability(collapsed)[0])

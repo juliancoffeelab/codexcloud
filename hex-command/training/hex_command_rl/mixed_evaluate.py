@@ -2,6 +2,7 @@
 from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor,as_completed
 import argparse
+import fcntl
 import hashlib
 import json
 import multiprocessing
@@ -36,11 +37,32 @@ def summarize(rows):
 
 
 def evaluate(cases,model,workers=2):
+    lock_path=os.environ.get('HEX_COMMAND_EVALUATION_LOCK')
+    if lock_path:
+        with open(lock_path,'a') as lock:
+            fcntl.flock(lock,fcntl.LOCK_EX)
+            return evaluate_unlocked(cases,model,workers)
+    return evaluate_unlocked(cases,model,workers)
+
+
+def evaluate_unlocked(cases,model,workers=2):
     rows=[]
     with ProcessPoolExecutor(max_workers=workers,mp_context=multiprocessing.get_context('spawn')) as pool:
         tasks=[(cases[i:i+4],model) for i in range(0,len(cases),4)]
         for f in as_completed([pool.submit(job,t) for t in tasks]):rows.extend(f.result())
     return dict(rows=rows,**summarize(rows))
+
+
+def reliability(report):
+    from .mixed_workload import VARIANTS
+    strata={}
+    for family in ['arena','campaign']:
+        for opponent in ['classic','predictor']:
+            gs=[g for g in report['groups'] if g['group'][0]==family and g['group'][-2]==opponent]
+            weights=[g.get('mass',.5/5/2/4 if family=='arena' else .5/4/len(VARIANTS[g['group'][1]])/4) for g in gs]
+            rate=sum(w*g['wins']/g['runs'] for w,g in zip(weights,gs))/max(1e-12,sum(weights))
+            strata[family+'/'+opponent]=dict(score=rate,wins=sum(g['wins'] for g in gs),runs=sum(g['runs'] for g in gs),caps=sum(g['caps'] for g in gs))
+    return (min(s['score'] for s in strata.values()),report['score'],-report['weighted_caps']),strata
 
 
 def plot(root):
@@ -77,10 +99,12 @@ def plot(root):
 
 
 def watch(root,phase,interval=600):
-    root=Path(root);run=root/phase;run.mkdir(exist_ok=True);spec=json.loads((root/'workload.json').read_text());os.environ['HEX_COMMAND_DATA_ROOT']=spec['catalog']
-    seen=set();last=-float('inf');best=(-1.,-float('inf'));start=time.monotonic()
+    root=Path(root);run=root/phase;run.mkdir(exist_ok=True);spec=json.loads((root/'workload.json').read_text());os.environ['HEX_COMMAND_DATA_ROOT']=spec['catalog'];os.environ['HEX_COMMAND_EVALUATION_LOCK']=str(root/'gameplay.lock')
+    seen=set();last=-float('inf');best=(-1.,-1.,-float('inf'));start=time.monotonic()
     if (run/'evaluations.jsonl').exists():
-        old=[json.loads(l) for l in (run/'evaluations.jsonl').read_text().splitlines()];seen={r['checkpoint'] for r in old};last=max((r['seconds'] for r in old),default=-float('inf'));best=max(((r['score'],-r['weighted_caps']) for r in old),default=best)
+        old=[json.loads(l) for l in (run/'evaluations.jsonl').read_text().splitlines()];seen={r['checkpoint'] for r in old};last=max((r['seconds'] for r in old),default=-float('inf'));best=max((reliability(r)[0] for r in old),default=best)
+        if old:
+            chosen=max(old,key=lambda r:reliability(r)[0]);folder=run/chosen['checkpoint'];m=json.loads((folder/'manifest.json').read_text());atomic_json(run/'best.json',dict(path=chosen['checkpoint'],files=m['files'],label=m['label']))
     while True:
         complete=(run/'complete.json').exists()
         if (run/'latest.json').exists():
@@ -91,9 +115,9 @@ def watch(root,phase,interval=600):
                 try:result=evaluate(spec['periodic'],str(folder/'planner.json'))
                 finally:(run/'evaluation-active.json').unlink(missing_ok=True)
                 result.update(checkpoint=name,seconds=state_time,model_sha256=hashlib.sha256((folder/'planner.json').read_bytes()).hexdigest())
+                score,strata=reliability(result);result['strata']=strata;result['reliability_key']=list(score)
                 atomic_json(folder/'gameplay.json',result)
                 with (run/'evaluations.jsonl').open('a') as f:f.write(json.dumps(result)+'\n')
-                score=(result['score'],-result['weighted_caps'])
                 if score>best:best=score;atomic_json(run/'best.json',pointer)
                 seen.add(name);last=state_time;plot(run)
                 print(json.dumps(dict(phase=phase,checkpoint=name,seconds=state_time,score=result['score'],wins=result['wins'],caps=result['caps'],runs=result['runs'])),flush=True)

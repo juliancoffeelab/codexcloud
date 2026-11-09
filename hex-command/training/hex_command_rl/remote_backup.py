@@ -14,7 +14,7 @@ from .recovery import atomic_json, resolve
 def backup(root):
     root=Path(root);control=json.loads((root/'control.json').read_text());run=root/control['phase']
     if not (run/'latest.json').exists():return
-    latest=resolve(run);best=resolve(run,'best.json') if (run/'best.json').exists() else latest
+    latest=resolve(run);best=resolve(run,'handoff-best.json') if (run/'handoff-best.json').exists() else resolve(run,'best.json') if (run/'best.json').exists() else latest
     destination=Path('training/checkpoints/overnight-recovery');destination.mkdir(parents=True,exist_ok=True)
     with (root/'git.lock').open('w') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)

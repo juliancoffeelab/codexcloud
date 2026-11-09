@@ -629,3 +629,13 @@ relaunching. `overnight` monitors phases, retries failed workers from valid atom
 checkpoints, launches PPO only after post-tune validation and sampler readiness,
 and evaluates the selected models on the final held-out panel. Curves, detailed
 outcomes and compressed metrics are backed up at completion.
+
+
+The overnight handoff also evaluates checkpoint candidates on the larger validation
+corpus. Selection maximizes the weakest balanced gameplay score among arena versus
+Classic, arena versus Predictor, campaign versus Classic and campaign versus
+Predictor; overall score and fewer caps break ties. A zero in a stratum loses to
+any candidate with a positive minimum. `handoff-best.json` is the authoritative RL
+starting policy; final test seeds never select that policy. The authorized PPO
+budget is nine hours, including periodic evaluation pauses, and is preserved
+across recovery.

@@ -45,7 +45,7 @@ def final_report(root):
     import matplotlib.pyplot as plt
     spec=json.loads((root/'workload.json').read_text());os.environ['HEX_COMMAND_DATA_ROOT']=spec['catalog']
     models={'original':'training/checkpoints/campaign-cnn-imitation-v1/planner.json',
-            'posttune':str(resolve(root/'posttune','best.json')/'planner.json'),
+            'posttune':str(resolve(root/'posttune','handoff-best.json')/'planner.json'),
             'rl_best':str(resolve(root/'rl','best.json')/'planner.json'),
             'rl_last':str(resolve(root/'rl')/'planner.json')}
     reports={};cache={}
@@ -74,7 +74,7 @@ def final_report(root):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);a=p.parse_args();root=a.root
+    p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--rl-seconds',type=int,default=32400);a=p.parse_args();root=a.root
     spec=json.loads((root/'workload.json').read_text());os.environ['HEX_COMMAND_DATA_ROOT']=spec['catalog'];handles=[];children=[];last_resource=last_report=0.;retries=0
     def launch(module,phase,extra):
         f=(root/(phase+'.log')).open('a');handles.append(f)
@@ -89,6 +89,8 @@ def main():
         if now-last_report>=1800:
             state=json.loads((root/'control.json').read_text());print(json.dumps(dict(event='monitor',phase=state['phase'],utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),resources=resources(root))),flush=True);last_report=now
     def ensure_post_evaluator():
+        if not (root/'posttune/handoff-complete.json').exists() and not live_pid('hex_command_rl.handoff',root):
+            launch('hex_command_rl.handoff','handoff',[])
         if not (root/'posttune/evaluation-complete.json').exists() and not live_pid('hex_command_rl.mixed_evaluate',root):
             (root/'posttune/evaluation-active.json').unlink(missing_ok=True)
             launch('hex_command_rl.mixed_evaluate','posttune-evaluation',['--phase','posttune','--interval','600'])
@@ -99,19 +101,19 @@ def main():
             launch('hex_command_rl.mixed_imitation','posttune',['--seconds','5400','--resume',str(root/'posttune')]);retries+=1
             time.sleep(10)
         time.sleep(5)
-    while not (root/'posttune/evaluation-complete.json').exists() or not (root/'sampler-ready.json').exists():
+    while not (root/'posttune/evaluation-complete.json').exists() or not (root/'posttune/handoff-complete.json').exists() or not (root/'sampler-ready.json').exists():
         resource_tick();ensure_post_evaluator();time.sleep(5)
-    warm=resolve(root/'posttune','best.json')/'resume.pt';atomic_json(root/'control.json',dict(phase='rl',start=time.time(),warm_start=str(warm)))
-    command=['--seconds','21600','--warm-start',str(warm)]
-    if (root/'rl/latest.json').exists():command=['--seconds','21600','--resume',str(root/'rl')]
+    warm=resolve(root/'posttune','handoff-best.json')/'resume.pt';atomic_json(root/'control.json',dict(phase='rl',start=time.time(),warm_start=str(warm)))
+    command=['--seconds',str(a.rl_seconds),'--warm-start',str(warm)]
+    if (root/'rl/latest.json').exists():command=['--seconds',str(a.rl_seconds),'--resume',str(root/'rl')]
     actor=launch('hex_command_rl.mixed_ppo','rl',command)
     evaluator=launch('hex_command_rl.mixed_evaluate','rl-evaluation',['--phase','rl','--interval','600']);retries=0
-    print(json.dumps(dict(event='rl_started',pid=actor.pid,warm_start=str(warm),seconds=21600)),flush=True)
+    print(json.dumps(dict(event='rl_started',pid=actor.pid,warm_start=str(warm),seconds=a.rl_seconds)),flush=True)
     while actor.poll() is None or not (root/'rl/complete.json').exists():
         resource_tick()
         if actor.poll() not in (None,0):
             if retries>=2:raise RuntimeError('PPO failed repeatedly; inspect rl.log')
-            actor=launch('hex_command_rl.mixed_ppo','rl',['--seconds','21600','--resume',str(root/'rl')]);retries+=1
+            actor=launch('hex_command_rl.mixed_ppo','rl',['--seconds',str(a.rl_seconds),'--resume',str(root/'rl')]);retries+=1
         if evaluator.poll() not in (None,0):
             (root/'rl/evaluation-active.json').unlink(missing_ok=True)
             evaluator=launch('hex_command_rl.mixed_evaluate','rl-evaluation',['--phase','rl','--interval','600'])

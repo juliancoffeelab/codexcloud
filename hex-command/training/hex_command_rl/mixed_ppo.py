@@ -57,7 +57,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--seconds',type=float,default=21600)
     p.add_argument('--warm-start',type=Path);p.add_argument('--resume',type=Path);p.add_argument('--envs',type=int,default=4)
     p.add_argument('--critic-warmup-episodes',type=int,default=24);p.add_argument('--horizon',type=int,default=64);p.add_argument('--temperature',type=float,default=.35);a=p.parse_args()
-    if not 0<a.seconds<=28800 or not 1<=a.envs<=4 or not .05<=a.temperature<=2 or a.horizon<1:p.error('invalid PPO budget')
+    if not 0<a.seconds<=43200 or not 1<=a.envs<=4 or not .05<=a.temperature<=2 or a.horizon<1:p.error('invalid PPO budget')
     root=a.root;run=root/'rl';run.mkdir(exist_ok=True);spec=json.loads((root/'workload.json').read_text());os.environ['HEX_COMMAND_DATA_ROOT']=spec['catalog']
     assert json.loads(native.fingerprints())==spec['fingerprints'];torch.set_num_threads(1);torch.set_num_interop_threads(1);torch.manual_seed(271);random.seed(271);rng=np.random.default_rng(271)
     policy=SpatialPlanner().eval();old=load_resume(a.resume) if a.resume else None
