@@ -1,15 +1,15 @@
 {
   "phase": "posttune",
   "latest": {
-    "label": "update-00035792",
+    "label": "update-00040905",
     "files": {
       "planner.json": {
-        "bytes": 1018011,
-        "sha256": "56d20491e3111e7997739e249fbf32ed7aa4377a6f4110544d3981fb19f43120"
+        "bytes": 1017904,
+        "sha256": "27872daae1480a2c4dbdea3662aa7d20b12e707a41c51b8c1b4b9260c27fd339"
       },
       "resume.pt": {
-        "bytes": 414556,
-        "sha256": "4930e1842aaa267b96fd848b90aa6663fb6de201a1bcd433c68463b8cf8e1f82"
+        "bytes": 411100,
+        "sha256": "f66a5d3f71bc3cdb7c9339198924ab5d06a02b2edd1d5bff626c86b22ea001bd"
       }
     }
   },
@@ -26,9 +26,9 @@
       }
     }
   },
-  "backup_utc": "2026-11-09T00:00:03Z",
+  "backup_utc": "2026-11-09T00:05:05Z",
   "files": {
-    "latest.pt": "4930e1842aaa267b96fd848b90aa6663fb6de201a1bcd433c68463b8cf8e1f82",
+    "latest.pt": "f66a5d3f71bc3cdb7c9339198924ab5d06a02b2edd1d5bff626c86b22ea001bd",
     "best.pt": "43afa9ffe0c357ee8fa9cbff6a539070585b7058fa60fbe414fb1128d6d0eb8a"
   }
 }
