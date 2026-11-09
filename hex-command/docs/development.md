@@ -25,7 +25,10 @@ The dev command prepares WASM, generated bindings, artwork and OCaml output,
 then starts Dune's watcher and Vite. Vite options pass through. Restart preparation
 after Rust/catalog or artwork edits. Stop the watcher before formatting or other
 Dune builds. Project commands use the Node helpers in `scripts/toolchain/`;
-only run `npm run toolchain:setup` when persistent shell setup is requested.
+direct Make and npm commands discover the supplied cloud toolchains without shell
+setup. For direct Cargo or Dune use in Bash, run `source scripts/env.sh`; this
+exports discovered paths in the current shell without installing tools or editing
+profiles. Only run `npm run toolchain:setup` when persistent shell setup is requested.
 
 For Rust/WASM tool discovery and proxy setup, use
 [rust-toolchain](../.agents/skills/rust-toolchain/SKILL.md).

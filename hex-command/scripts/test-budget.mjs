@@ -39,6 +39,7 @@ function sourceFingerprint() {
     "Makefile",
     "scripts/toolchain/packager.mjs",
     "scripts/toolchain/toolchain-env.mjs",
+    "scripts/toolchain/with-toolchain.mjs",
     "scripts/fixture-json.mjs",
     "scripts/generate-json-codecs.mjs",
     "scripts/check-migration-contract.mjs",

@@ -1,3 +1,7 @@
+# Resolve supplied tools for direct Make use as well as npm commands.
+SHELL := $(abspath scripts/toolchain/with-toolchain.mjs)
+.SHELLFLAGS := /bin/sh -c
+
 .DELETE_ON_ERROR:
 .NOTPARALLEL:
 PROFILE ?= wasm-release

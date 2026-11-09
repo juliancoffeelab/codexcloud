@@ -1,5 +1,7 @@
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { toolchainEnvironment } from "./toolchain/toolchain-env.mjs";
+const env = toolchainEnvironment();
 const cwd = fileURLToPath(new URL("../", import.meta.url));
 const children = /* @__PURE__ */ new Set();
 let stopping = false;
@@ -33,7 +35,7 @@ function run(name, command, args, watch = false) {
           `[dev] ${name} still running (${Math.floor((performance.now() - started) / 1e3)}s).`,
         );
       }, 15e3);
-  const child = spawn(command, args, { cwd, stdio: "inherit", detached: true });
+  const child = spawn(command, args, { cwd, env, stdio: "inherit", detached: true });
   children.add(child);
   return new Promise((resolve, reject) => {
     let launchError;
@@ -63,7 +65,7 @@ try {
     await run("Checking Dune", "dune", ["--version"]);
   } catch {
     throw new Error(
-      "Dune is unavailable. Follow the Dune bootstrap commands in README.md, then retry npm run dev.",
+      "Dune could not run after tool discovery. Check the error above and scripts/toolchain/toolchain-env.mjs; existing cloud tools need no shell installation.",
     );
   }
   await run("Preparing Rust/WASM", "npm", ["run", "wasm:build"]);
