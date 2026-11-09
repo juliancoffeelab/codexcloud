@@ -635,8 +635,7 @@ impl Mission {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Campaign {
-    #[serde(rename = "playerDiplomacy")]
-    pub player_diplomacy: Vec<String>,
+    pub human: bool,
     pub tagline: String,
     pub description: String,
     #[serde(rename = "shortDescription")]
@@ -690,8 +689,7 @@ pub struct MapDefinition {
     pub revision: u32,
     pub name: String,
     pub description: String,
-    #[serde(default)]
-    pub hidden: bool,
+    pub human: bool,
     pub cols: i32,
     pub rows: i32,
     pub terrain: Vec<Tile>,

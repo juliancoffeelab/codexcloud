@@ -547,11 +547,11 @@ type wave = { dialogue : (dialogue) array [@ocaml.doc "Shown only when at least 
 
 type mission = { item_ids : (string) array; scripted_events : (script_event) array; lose_conditions : (loss_condition) array; map : layout; subtitle : string; briefing : Conditional_text.t; debrief : (Conditional_text.t) option; hints : (Conditional_hint.t) array; required_companions : (string) array; arrivals : (companion_arrival) array; goals : (Goal.t) array; optional_goals : (Goal.t) array [@ocaml.doc "Authored side objectives, displayed separately and never required for victory."]; recruitment : ((faction_recruit) array) String_map.t; gold : gold; defend_objectives : bool; enemy_leader_post : (Tile_ref.t) option; intro : (Speech.t) array; victory : (Speech.t) array; events : (event) array; enemy_groups : (enemy_group) array; waves : (wave) array; companion_losses : ((mission_patch) String_map.t) option; refuge : (refuge) option; without_dain : (mission_patch) option } [@@ocaml.doc "An authored chapter defining objectives, recruits, events and story feedback."]
 
-type campaign = { player_diplomacy : (string) array; tagline : string; description : string; short_description : string; race : Race.t; id : string; name : string; leader : string; characters : (character) array; missions : (mission) array; ending : (Speech.t) array } [@@ocaml.doc "An ordered set of authored chapters and their final dialogue."]
+type campaign = { human : bool; tagline : string; description : string; short_description : string; race : Race.t; id : string; name : string; leader : string; characters : (character) array; missions : (mission) array; ending : (Speech.t) array } [@@ocaml.doc "An ordered set of authored chapters and their final dialogue."]
 
 type map_lighting = { time : Time_of_day.t } [@@ocaml.doc "Map-wide ambience; terrain emitters belong to their tiles."]
 
-type map_definition = { id : string; revision : float; name : string; description : string; hidden : bool; cols : int32; rows : int32; terrain : (tile) array; units : (starting_unit) array; lighting : map_lighting; presentation : battlefield_presentation } [@@ocaml.doc "Displayable current authored map."]
+type map_definition = { id : string; revision : float; name : string; description : string; human : bool; cols : int32; rows : int32; terrain : (tile) array; units : (starting_unit) array; lighting : map_lighting; presentation : battlefield_presentation } [@@ocaml.doc "Displayable current authored map."]
 
 module Terrain_role : sig
 type t =

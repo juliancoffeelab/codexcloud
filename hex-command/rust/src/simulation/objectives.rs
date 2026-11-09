@@ -8,8 +8,9 @@ pub(super) fn player_goals(game: &Game<'_>, route: &str) -> Option<Vec<Objective
     let plan = game
         .catalogue()
         .campaign_defaults
-        .objectives
+        .campaigns
         .get(&campaign.id)?
+        .routes
         .get(route)?
         .stages
         .get(game.map_id())?;

@@ -11,8 +11,8 @@ val terrain : t -> Domain.terrain_definition list
 val races : t -> Domain.race_definition list
 
 val maps : t -> Domain.map_definition list
-(** One map per identifier, taking the last authored entry while preserving first occurrence order.
-    Historical revisions remain available through [raw]. *)
+(** One map per identifier, taking the highest authored revision while preserving first occurrence
+    order. Historical revisions remain available through [raw]. *)
 
 val campaigns : t -> Domain.campaign list
 val unit : t -> string -> Domain.unit_rule
@@ -23,11 +23,11 @@ val map : t -> string -> Domain.map_definition
 val campaign : t -> string -> Domain.campaign
 
 val battle_maps : t -> Domain.map_definition list
-(** Visible scenario choices, excluding campaign-only layouts. Hidden developer scenarios remain
-    valid for commands but do not appear in this menu. *)
+(** Visible scenario choices, excluding campaign-only layouts. Non-human scenarios remain valid for
+    commands but do not appear in this menu. *)
 
 val scenario_maps : t -> Domain.map_definition list
-(** All command-addressable scenarios, including hidden developer layouts. Campaign-only maps remain
+(** All command-addressable scenarios, including non-human layouts. Campaign-only maps remain
     outside this collection. *)
 
 val mission_map : t -> Domain.mission -> Domain.map_definition
@@ -35,6 +35,6 @@ val mission_map : t -> Domain.mission -> Domain.map_definition
     than the general scenario's starting roster. *)
 
 val raw : t -> Domain.catalog_view
-(** The factory-owned resolved catalog, for validated save migration. *)
+(** Complete runtime metadata, including non-human content and historical map revisions. *)
 
 val terrain_roles : t -> Domain.Terrain_role.t Js.Dict.t

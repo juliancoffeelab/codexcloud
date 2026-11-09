@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "terrain": "game/terrain.json",
   "races": [
     "game/races/merfolk.json",
@@ -123,7 +123,23 @@
     "game/scenario/mirror-v1/scenario.json",
     "game/scenario/river-valley-v1/scenario.json",
     "game/scenario/river-valley-v2/scenario.json",
-    "game/scenario/developer-v2/scenario.json"
+    "game/scenario/developer-v2/scenario.json",
+    "game/scenario/wood-edge-v1/scenario.json",
+    "game/scenario/arena-plains-1/scenario.json",
+    "game/scenario/arena-forests-1/scenario.json",
+    "game/scenario/arena-forests-2/scenario.json",
+    "game/scenario/arena-forests-3/scenario.json",
+    "game/scenario/arena-forests-4/scenario.json",
+    "game/scenario/arena-crossing-1/scenario.json",
+    "game/scenario/arena-crossing-2/scenario.json",
+    "game/scenario/arena-crossing-3/scenario.json",
+    "game/scenario/arena-crossing-4/scenario.json",
+    "game/scenario/arena-islands-1/scenario.json",
+    "game/scenario/arena-islands-2/scenario.json",
+    "game/scenario/arena-islands-3/scenario.json",
+    "game/scenario/arena-islands-4/scenario.json",
+    "game/scenario/combat-villages/scenario.json",
+    "game/scenario/combat-sluice/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",
@@ -136,12 +152,9 @@
   "simulation": {
     "rosters": "simulation/rosters.json",
     "arena": "simulation/arena.json",
-    "campaign": "simulation/campaign.json"
+    "campaign": "simulation/campaign.json",
+    "rl": "simulation/rl.json"
   },
-  "arenaScenarios": [
-    "simulation/maps/wood-edge/scenario.json",
-    "simulation/maps/arena-template/scenario.json"
-  ],
   "recruitment": "game/recruitment.json",
   "items": [
     "game/items/church-mail.json",

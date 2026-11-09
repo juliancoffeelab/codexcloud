@@ -1,0 +1,380 @@
+{
+  "mapId": "arena-forests-1",
+  "mapRevision": 1,
+  "name": "Forests arena 1",
+  "description": "Fixed arena layout.",
+  "cols": 9,
+  "rows": 9,
+  "tiles": [
+    {
+      "col": 2,
+      "owner": null,
+      "row": 0,
+      "terrain": "forest"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 0,
+      "terrain": "forest"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 0,
+      "terrain": "forest"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 0,
+      "terrain": "plains"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 0,
+      "terrain": "plains"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 1,
+      "terrain": "forest"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 1,
+      "terrain": "forest"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 1,
+      "terrain": "ruins"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 1,
+      "terrain": "forest"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 1,
+      "terrain": "plains"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 1,
+      "terrain": "forest"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 2,
+      "terrain": "forest"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 2,
+      "terrain": "forest"
+    },
+    {
+      "col": 3,
+      "connections": [],
+      "owner": null,
+      "row": 2,
+      "terrain": "village"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 2,
+      "terrain": "forest"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 2,
+      "terrain": "forest"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 2,
+      "terrain": "forest"
+    },
+    {
+      "col": 7,
+      "owner": null,
+      "row": 2,
+      "terrain": "forest"
+    },
+    {
+      "col": 0,
+      "owner": null,
+      "row": 3,
+      "terrain": "forest"
+    },
+    {
+      "col": 1,
+      "connections": [],
+      "owner": null,
+      "row": 3,
+      "terrain": "village"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 3,
+      "terrain": "forest"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 3,
+      "terrain": "forest"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 3,
+      "terrain": "forest"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 3,
+      "terrain": "forest"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 3,
+      "terrain": "plains"
+    },
+    {
+      "col": 7,
+      "owner": null,
+      "row": 3,
+      "terrain": "grove"
+    },
+    {
+      "col": 0,
+      "owner": null,
+      "row": 4,
+      "terrain": "forest"
+    },
+    {
+      "col": 1,
+      "owner": "player",
+      "row": 4,
+      "terrain": "keep"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 4,
+      "terrain": "plains"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 4,
+      "terrain": "forest"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 4,
+      "terrain": "fort"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 4,
+      "terrain": "forest"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 4,
+      "terrain": "plains"
+    },
+    {
+      "col": 7,
+      "owner": "enemy",
+      "row": 4,
+      "terrain": "keep"
+    },
+    {
+      "col": 8,
+      "owner": null,
+      "row": 4,
+      "terrain": "forest"
+    },
+    {
+      "col": 0,
+      "owner": null,
+      "row": 5,
+      "terrain": "grove"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 5,
+      "terrain": "plains"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 5,
+      "terrain": "forest"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 5,
+      "terrain": "forest"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 5,
+      "terrain": "forest"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 5,
+      "terrain": "forest"
+    },
+    {
+      "col": 6,
+      "connections": [],
+      "owner": null,
+      "row": 5,
+      "terrain": "village"
+    },
+    {
+      "col": 7,
+      "owner": null,
+      "row": 5,
+      "terrain": "forest"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 6,
+      "terrain": "forest"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 6,
+      "terrain": "forest"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 6,
+      "terrain": "forest"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 6,
+      "terrain": "forest"
+    },
+    {
+      "col": 5,
+      "connections": [],
+      "owner": null,
+      "row": 6,
+      "terrain": "village"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 6,
+      "terrain": "forest"
+    },
+    {
+      "col": 7,
+      "owner": null,
+      "row": 6,
+      "terrain": "forest"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 7,
+      "terrain": "forest"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 7,
+      "terrain": "plains"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 7,
+      "terrain": "forest"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 7,
+      "terrain": "ruins"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 7,
+      "terrain": "forest"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 7,
+      "terrain": "forest"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 8,
+      "terrain": "plains"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 8,
+      "terrain": "plains"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 8,
+      "terrain": "forest"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 8,
+      "terrain": "forest"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 8,
+      "terrain": "forest"
+    }
+  ]
+}

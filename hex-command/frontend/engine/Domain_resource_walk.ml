@@ -15,7 +15,7 @@ let rec walk_map_definition visitor (value : Domain.map_definition) =
   visitor.field "revision" (fun visitor -> ());
   visitor.field "name" (fun visitor -> visitor.string value.name);
   visitor.field "description" (fun visitor -> visitor.string value.description);
-  visitor.field "hidden" (fun visitor -> ());
+  visitor.field "human" (fun visitor -> ());
   visitor.field "cols" (fun visitor -> ());
   visitor.field "rows" (fun visitor -> ());
   visitor.field "terrain" (fun visitor ->

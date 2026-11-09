@@ -15,7 +15,7 @@ pub struct ContentError {
     pub message: String,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 /// An arena roster, authored independently of story campaign recruitment.
 #[cfg_attr(
@@ -28,44 +28,56 @@ pub struct ArmyRoster {
     pub pool: Vec<String>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-/// A generated arena landscape and its required territory hold duration.
+/// A named arena workload over explicitly registered map variants.
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
-pub struct LandscapeConfig {
+pub struct ArenaScenario {
     pub id: String,
+    pub variants: Vec<ArenaVariant>,
     pub hold_turns: u32,
-    /// Optional authored scenario layout, shared with the playable map.
-    pub map: Option<String>,
-    /// Capture targets for this layout; omitted uses the generated-arena defaults.
-    pub territory: Option<Vec<Hex>>,
-    /// Keep authored forces, faction economies and recruitment instead of arena rosters.
-    #[serde(default)]
-    pub authored: bool,
+    pub territory: Vec<Hex>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-/// Authored arena dimensions and default per-match execution limits.
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct ArenaVariant {
+    pub map: String,
+    pub forces: ArenaForces,
+}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(tag = "kind", rename_all = "lowercase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub enum ArenaForces {
+    Selected { budget: i32 },
+    Scenario,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct ArenaDefaults {
-    pub landscapes: Vec<LandscapeConfig>,
-    pub territory: Vec<Hex>,
-    /// Minimum total gold value per side, including its leader.
-    pub starting_budget: i32,
+    pub scenarios: Vec<ArenaScenario>,
+    pub default_scenarios: Vec<String>,
     pub default_max_rounds: u32,
     pub policies: Vec<String>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-/// Campaign schedule dimensions and default attempt execution limits.
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
@@ -75,14 +87,71 @@ pub struct CampaignDefaults {
     pub escalation_flags: BTreeMap<String, String>,
     pub default_max_rounds: u32,
     pub diplomacy: Vec<String>,
-    #[serde(default)]
-    pub objectives: BTreeMap<String, BTreeMap<String, SimulationObjective>>,
     pub policies: Vec<String>,
-    pub campaigns: Vec<String>,
+    pub default_campaigns: Vec<String>,
+    pub campaigns: BTreeMap<String, CampaignSimulation>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct CampaignSimulation {
+    pub diplomacy: Vec<String>,
+    pub routes: BTreeMap<String, SimulationObjective>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct TrainingDefaults {
+    pub objectives: Vec<String>,
+    pub arenas: Vec<TrainingArena>,
+    pub campaigns: BTreeMap<String, Vec<TrainingCampaignVariant>>,
+    pub opponents: Vec<String>,
+    pub recruiters: Vec<String>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct TrainingArena {
+    pub id: String,
+    pub pairs: Vec<TrainingArmies>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct TrainingArmies {
+    pub player: String,
+    pub enemy: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+pub struct TrainingCampaignVariant {
+    pub objective: String,
+    pub diplomacy: String,
 }
 
 /// Named simulator-only routes. Keys are authored stage map identifiers.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
@@ -91,7 +160,7 @@ pub struct CampaignDefaults {
 pub struct SimulationObjective {
     pub stages: std::collections::BTreeMap<String, SimulationStageObjective>,
 }
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),

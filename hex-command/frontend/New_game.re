@@ -255,11 +255,7 @@ let make =
   let difficulty = Setup.difficulty(planner, recruiter);
   let (first, setFirst) = React.useState(() => Setup.Random);
   let (error, setError) = React.useState(() => "");
-  let maps =
-    List.filter(
-      (map: Domain.map_definition) => map.id != "developer",
-      Catalog.battle_maps(view.catalog),
-    );
+  let maps = Catalog.battle_maps(view.catalog);
   let map = Catalog.map(view.catalog, mapId);
   let campaign = Catalog.campaign(view.catalog, campaignId);
   let mapChoices =
@@ -290,7 +286,10 @@ let make =
               ~sprite=Some(campaign.leader),
               (),
             ),
-          Catalog.campaigns(view.catalog),
+          List.filter(
+            (campaign: Domain.campaign) => campaign.human,
+            Catalog.campaigns(view.catalog),
+          ),
         ),
       [|view.catalog|],
     );
