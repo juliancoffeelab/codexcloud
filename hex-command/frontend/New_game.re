@@ -3,7 +3,7 @@ open Ui;
 
 module MapThumbnail = {
   [@react.component]
-  let make = (~map: Domain.map_definition) => {
+  let make = (~map: Domain.map_definition, ~backdrop=false) => {
     let size =
       Geometry.preview_dimensions(~cols=Int32.to_int(map.cols), ~rows=Int32.to_int(map.rows));
     let tiles =
@@ -40,11 +40,31 @@ module MapThumbnail = {
         },
         [|map|],
       );
+    // The browsing artwork is decorative; the setup preview keeps the authored layout.
+    let symmetric = backdrop && map.id == "mirror";
+    let axis = Geometry.center(~col=Int32.to_int(map.cols) / 2, ~row=0).x;
     <svg
       className="setup-map-preview"
-      viewBox={"0 0 " ++ number(size.width) ++ " " ++ number(size.height)}
+      viewBox={
+        "0 0 " ++ number(symmetric ? axis *. 2. : size.width) ++ " " ++ number(size.height)
+      }
+      preserveAspectRatio={backdrop ? "xMidYMid slice" : "xMidYMid meet"}
       ariaHidden=true>
-      {eachList(tiles, tile => tile)}
+      {symmetric
+         ? <>
+             <defs>
+               <clipPath id="new-game-mirror-half">
+                 <rect width={number(axis)} height={number(size.height)} />
+               </clipPath>
+             </defs>
+             <g clipPath="url(#new-game-mirror-half)"> {eachList(tiles, tile => tile)} </g>
+             <g
+               clipPath="url(#new-game-mirror-half)"
+               transform={"translate(" ++ number(axis *. 2.) ++ " 0) scale(-1 1)"}>
+               {eachList(tiles, tile => tile)}
+             </g>
+           </>
+         : eachList(tiles, tile => tile)}
     </svg>;
   };
 };
@@ -402,6 +422,12 @@ let make =
                                setError(_ => "");
                                preloadCampaign(c);
                              }}>
+                             <span className="ng-choice-map">
+                               <MapThumbnail
+                                 map={Catalog.mission_map(view.catalog, c.missions[0])}
+                                 backdrop=true
+                               />
+                             </span>
                              <span className="ng-choice-art">
                                <Sprite
                                  artwork={view.artwork}
@@ -433,7 +459,9 @@ let make =
                                setError(_ => "");
                                Terrain_preload.map(view.catalog, map.id);
                              }}>
-                             <span className="ng-choice-art"> <MapThumbnail map /> </span>
+                             <span className="ng-choice-map">
+                               <MapThumbnail map backdrop=true />
+                             </span>
                              <strong> {text(mapName(map))} </strong>
                              <p> {text(map.description)} </p>
                            </button>
