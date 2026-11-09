@@ -42,7 +42,7 @@ export async function installAiAdvisor(page) {
             checkpoint: nativeValue(this.#game.checkpoint()),
             selected: this.lastPublishedView?.selected ?? null,
             target: this.lastPublishedView?.target ?? null,
-            ready: this.initialized && this.active(),
+            canAct: this.initialized && this.active(),
           }),
           suggest: options => {
             if (!this.initialized || !this.active())

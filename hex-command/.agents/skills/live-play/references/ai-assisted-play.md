@@ -17,6 +17,7 @@ await installAiAdvisor(page);
 await page.goto(localGameUrl);
 // Choose the campaign and dismiss its briefing through visible controls.
 const before = await observe(page);
+if (!before.canAct) throw new Error("Finish the visible turn or dialog before planning.");
 const decision = await recommend(page, { policy: "classic", diplomacy: "diplomatic" });
 console.log({ revision: decision.revision, command: decision.command });
 // Translate this command into player input, then inspect the screen and observe again.
