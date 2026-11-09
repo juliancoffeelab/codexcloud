@@ -409,7 +409,6 @@ let make =
                                  width=64.
                                  height=64.
                                />
-                               <span> {text("Set up campaign ›")} </span>
                              </span>
                              <strong> {text(c.name)} </strong>
                              <p> {text(c.short_description)} </p>
@@ -437,7 +436,6 @@ let make =
                              <span className="ng-choice-art"> <MapThumbnail map /> </span>
                              <strong> {text(mapName(map))} </strong>
                              <p> {text(map.description)} </p>
-                             <span className="ng-choice-go"> {text("Go")} </span>
                            </button>
                          )}
                   </div>
