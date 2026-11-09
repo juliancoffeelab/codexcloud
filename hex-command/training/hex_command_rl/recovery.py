@@ -26,7 +26,18 @@ def atomic_json(path, value):
         if os.path.exists(name): os.unlink(name)
 
 
+def finite_tensors(value):
+    if isinstance(value,torch.Tensor):
+        if value.is_floating_point() and not torch.isfinite(value).all():raise ValueError('checkpoint contains a nonfinite tensor')
+    elif isinstance(value,dict):
+        for child in value.values():finite_tensors(child)
+    elif isinstance(value,(list,tuple)):
+        for child in value:finite_tensors(child)
+
+
 def save_bundle(root, state, policy, label, best=False):
+    finite_tensors(state)
+    finite_tensors(policy.state_dict())
     root = Path(root); folder = root/'checkpoints'; folder.mkdir(parents=True, exist_ok=True)
     name = f'{label}-{time.time_ns()}'
     temporary = Path(tempfile.mkdtemp(prefix='.pending-', dir=folder))

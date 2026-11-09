@@ -11,6 +11,9 @@ class RecoveryContracts(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             policy=SpatialPlanner();save_bundle(d,dict(value=torch.tensor([3.])),policy,'test',best=True)
             self.assertEqual(float(load_resume(d)['value'][0]),3.)
+            original=(Path(d)/'latest.json').read_bytes()
+            with self.assertRaises(ValueError):save_bundle(d,dict(value=torch.tensor([float('nan')])),policy,'invalid')
+            self.assertEqual((Path(d)/'latest.json').read_bytes(),original)
             folder=resolve(d,'best.json');(folder/'resume.pt').write_bytes(b'broken')
             with self.assertRaises(ValueError):resolve(d)
 
