@@ -48,3 +48,7 @@ Thumbs.db
 
 # Editable Python package metadata
 /training/*.egg-info/
+
+# Completed recovery files remain local; selected models and immutable run archives
+# have explicit tracked homes under training/checkpoints and training/experiments.
+/training/checkpoints/overnight-recovery/

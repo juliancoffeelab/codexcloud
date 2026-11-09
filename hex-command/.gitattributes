@@ -1,0 +1,2 @@
+/training/checkpoints/**/planner.json -diff linguist-generated=true
+/training/experiments/** linguist-generated=true
