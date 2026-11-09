@@ -251,17 +251,19 @@ fn score<'py>(
     if ![LEGACY_FEATURES, DUTY_FEATURES, DIPLOMACY_FEATURES, FEATURES].contains(&a.ncols()) {
         return Err(err("feature width mismatch"));
     }
-    Ok(a.rows()
+    let features: Vec<[f32; FEATURES]> = a
+        .rows()
         .into_iter()
         .map(|r| {
-            let mut row = vec![0.; FEATURES];
+            let mut row = [0.; FEATURES];
             for (i, &v) in r.iter().enumerate() {
                 row[i] = v;
             }
-            m.score(&row)
+            row
         })
-        .collect::<Vec<_>>()
-        .into_pyarray(py))
+        .collect();
+    let scores = Evaluator::new(m).map_err(err)?.scores(&features, None);
+    Ok(scores.into_pyarray(py))
 }
 #[pyfunction]
 fn score_spatial<'py>(
@@ -323,7 +325,7 @@ fn score_spatial<'py>(
     }
     let scores = py
         .detach(move || -> Result<Vec<f64>, String> {
-            let encoder = model.spatial.as_ref().unwrap();
+            let mut evaluator = Evaluator::new(model)?;
             let mut result = vec![];
             for (i, shape) in shapes.iter().enumerate() {
                 if *shape == [0, 0]
@@ -352,12 +354,7 @@ fn score_spatial<'py>(
                 let a = offsets[i] as usize;
                 let b = offsets[i + 1] as usize;
                 board.validate_indices(&ix[a..b])?;
-                result.extend(
-                    encoder
-                        .inputs(&board, &ix[a..b], &x[a..b])
-                        .iter()
-                        .map(|x| model.score(x)),
-                );
+                result.extend(evaluator.scores(&x[a..b], Some((&board, &ix[a..b]))));
             }
             Ok(result)
         })

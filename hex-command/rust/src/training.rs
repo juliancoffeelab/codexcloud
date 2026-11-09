@@ -8,11 +8,13 @@ use std::cell::RefCell;
 pub const SCHEMA: u32 = 8;
 mod duties;
 mod features;
+mod inference;
 pub mod spatial;
 pub use features::{
     Choices, DIPLOMACY_FEATURES, DUTY_FEATURES, FEATURE_NAMES, FEATURES, LEGACY_FEATURES,
     candidates,
 };
+pub use inference::Evaluator;
 #[derive(Default)]
 pub struct Dataset {
     pub features: Vec<[f32; FEATURES]>,
@@ -270,7 +272,7 @@ pub type Controller = Box<dyn FnMut(&Choices) -> Option<usize>>;
 #[derive(Default)]
 struct Session {
     data: Option<Dataset>,
-    model: Option<Model>,
+    model: Option<Evaluator>,
     controller: Option<Controller>,
 }
 thread_local! { static SESSION: RefCell<Session> = RefCell::new(Session::default()); }
@@ -289,7 +291,7 @@ pub fn scoped<T>(
     let old = SESSION.with(|s| {
         s.replace(Session {
             data,
-            model,
+            model: model.map(|model| Evaluator::new(model).expect("valid learned model required")),
             controller,
         })
     });
@@ -340,7 +342,7 @@ pub(crate) fn needs_spatial() -> bool {
     SESSION.with(|s| {
         let s = s.borrow();
         s.data.as_ref().is_some_and(|d| d.spatial)
-            || s.model.as_ref().is_some_and(|m| m.spatial.is_some())
+            || s.model.as_ref().is_some_and(Evaluator::is_spatial)
     })
 }
 pub(crate) fn configured() -> bool {
@@ -357,23 +359,18 @@ pub(crate) fn select(choices: &Choices) -> Option<usize> {
         }
         let m = s
             .model
-            .as_ref()
+            .as_mut()
             .expect("Learned planner requires a model or controller");
-        let inputs = m.spatial.as_ref().map(|encoder| {
-            let spatial = choices
+        let scores = m.scores(
+            &choices.features,
+            choices
                 .spatial
                 .as_ref()
-                .expect("spatial observation required");
-            encoder.inputs(&spatial.board, &spatial.indices, &choices.features)
-        });
+                .map(|s| (&s.board, s.indices.as_slice())),
+        );
         // Match torch.argmax: retain the first candidate on equal logits.
         let mut best = (0, f64::NEG_INFINITY);
-        for (index, features) in choices.features.iter().enumerate() {
-            let score = m.score(
-                inputs
-                    .as_ref()
-                    .map_or(features.as_slice(), |x| x[index].as_slice()),
-            );
+        for (index, score) in scores.into_iter().enumerate() {
             if score > best.1 {
                 best = (index, score);
             }
