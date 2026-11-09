@@ -1,77 +1,78 @@
-// Human-guided example. From hex-command:
+// Unattended focused UI example, not a complete battle. From hex-command:
 // node .agents/skills/live-play/scripts/presentation-sample-example.mjs GAME_URL
+// Write actions/assertions into the script; no terminal prompts or human gates.
 import { chromium } from "playwright";
-import { createInterface } from "node:readline/promises";
-import { stdin, stdout } from "node:process";
+import assert from "node:assert/strict";
+import { mkdir } from "node:fs/promises";
 
 const gameUrl = process.argv[2];
 if (!gameUrl) throw new Error("Supply the URL of a running game.");
-const browser = await chromium.launch({ headless: false });
-const terminal = createInterface({ input: stdin, output: stdout });
+const evidence = `tmp/live-play-presentation-${Date.now()}`;
+await mkdir(evidence, { recursive: true });
+const browser = await chromium.launch({ headless: true });
+const deadline = setTimeout(() => void browser.close(), 2 * 60_000);
+let page;
 try {
-  const context = await browser.newContext({ reducedMotion: "reduce" });
-  const page = await context.newPage();
+  const context = await browser.newContext({
+    reducedMotion: "reduce",
+    recordVideo: { dir: evidence },
+  });
+  page = await context.newPage();
+  page.setDefaultTimeout(20_000);
+  page.setDefaultNavigationTimeout(45_000);
   await page.goto(gameUrl);
-  const entered = await terminal.question(
-    "Choose the scenario and dismiss its briefing through the UI; type entered: ",
-    {
-      signal: AbortSignal.timeout(5 * 60_000),
-    },
-  );
-  if (entered.trim() !== "entered") throw new Error("Game entry not confirmed.");
+  // Fresh context: enter a deterministic skirmish through the normal setup UI.
+  const setup = page.getByRole("dialog", { name: "New game", exact: true });
+  await setup.getByRole("button", { name: "Skirmish", exact: true }).click();
+  await setup.getByRole("button", { name: "Battlefield", exact: true }).click();
+  await page
+    .getByRole("dialog", { name: "Battlefield", exact: true })
+    .getByRole("option", { name: "Classic mirror", exact: true })
+    .click();
+  await setup.getByRole("button", { name: "First turn", exact: true }).click();
+  await page
+    .getByRole("dialog", { name: "First turn", exact: true })
+    .getByRole("option", { name: "You", exact: true })
+    .click();
+  await setup.getByRole("button", { name: "Start skirmish", exact: true }).click();
+  await setup.waitFor({ state: "hidden" });
+  await page.locator("#map.map-ready canvas").waitFor({ state: "visible" });
   await page.getByRole("button", { name: "Menu", exact: true }).click();
   const menu = page.getByRole("dialog", { name: "Menu", exact: true });
   const sound = menu.getByRole("checkbox", { name: "Sound effects", exact: true });
-  const closeMenu = menu.getByRole("button", { name: "Close menu", exact: true });
   await sound.uncheck();
-  await closeMenu.click();
-  console.log("Play through the UI to a position suitable for a movement/combat sample.");
-  const before = await terminal.question(
-    "When the preceding action has visibly finished, type settled: ",
-    { signal: AbortSignal.timeout(20 * 60_000) },
-  );
-  if (before.trim() !== "settled") throw new Error("Sample not started: completion uncertain.");
+  await menu.getByRole("button", { name: "Save game", exact: true }).click();
+  await menu.getByRole("button", { name: "Saved", exact: true }).waitFor();
+  await menu.getByRole("button", { name: "Close menu", exact: true }).click();
 
+  // Fast approach ends here. Keep normal settings for the rest of this segment:
+  // controls/canAct allow input but cannot safely gate switching back to fast mode.
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.getByRole("button", { name: "Menu", exact: true }).click();
   await sound.check();
-  await closeMenu.click();
-  console.log(
-    "Perform a short movement/combat segment through player controls. Watch the " +
-      "full movement, strikes and effects, and listen to impact cues. Enabled controls " +
-      "or advisor canAct allow gameplay; they do not prove animation completion.",
-  );
-  const completion = await terminal.question(
-    "After observing the entire sample finish, type finished; otherwise describe uncertainty: ",
-    { signal: AbortSignal.timeout(5 * 60_000) },
-  );
-  if (completion.trim() !== "finished") {
-    console.log({ evidence: "operator report", completion, restoredFastSettings: false });
-    throw new Error(
-      "Sample incomplete or uncertain; normal settings retained until browser close.",
-    );
+  await menu.getByRole("button", { name: "Close menu", exact: true }).click();
+  const before = await page.locator("#round").innerText();
+  await page.locator("#end-turn").click();
+  await page.waitForFunction((previous) => {
+    const turn = document.querySelector("#end-turn");
+    return document.querySelector("#round")?.textContent !== previous && turn && !turn.disabled;
+  }, before);
+  // This asserts return to gameplay, not completion of every animation or sound.
+  // Add action-specific read-only visual observations for the behavior under test.
+  // When that evidence is unavailable, report the gap; never insert operator input.
+  await page.screenshot({ path: `${evidence}/next-turn.png` });
+  console.log({
+    endpoint: "enemy turn returned control at a later round",
+    evidence,
+    settings: "normal motion and sound retained until context close",
+    limitations: "video contains no audio capture; visual/audio synchronization unverified",
+  });
+} catch (error) {
+  if (page && !page.isClosed()) {
+    await page.screenshot({ path: `${evidence}/blocker.png`, timeout: 5000 }).catch(() => {});
   }
-  const observations = await terminal.question(
-    "Describe the actions and visual/audio observations: ",
-    {
-      signal: AbortSignal.timeout(5 * 60_000),
-    },
-  );
-  // Restore only after explicit visual confirmation, never from gameplay readiness.
-  await page.getByRole("button", { name: "Menu", exact: true }).click();
-  await sound.uncheck();
-  await closeMenu.click();
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  console.log({ evidence: "human-observed sample; no audio capture", observations });
-  const result = await terminal.question(
-    "Continue the UI journey; record its endpoint or blocker: ",
-    {
-      signal: AbortSignal.timeout(20 * 60_000),
-    },
-  );
-  console.log({ evidence: "operator report", result });
+  throw error;
 } finally {
-  // Errors/timeouts skip restoration; closing the owned browser ends the session.
-  terminal.close();
+  clearTimeout(deadline);
   await browser.close();
 }

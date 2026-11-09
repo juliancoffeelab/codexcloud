@@ -22,20 +22,20 @@ in `finally`; a timed-out evaluation can still be executing.
 
 ## Presentation settings
 
-Choose between two standalone, human-guided Playwright examples:
+Choose between two standalone, unattended Playwright examples:
 
-- [Fast journey](../scripts/fast-journey-example.mjs): reduced motion and sound off
-  throughout, for gameplay and save/load workflows.
-- [Presentation sample](../scripts/presentation-sample-example.mjs): fast play to
-  reach a useful position, then normal motion and sound for a short visual/audio
-  sample. Explicit human confirmation of completed presentation gates restoration
-  of fast settings. Uncertainty or timeout ends the session without restoring them.
+- [Fast journey](../scripts/fast-journey-example.mjs): enter Mirror, save, reload
+  and check the visible turn and sound preference, with reduced motion throughout.
+- [Presentation sample](../scripts/presentation-sample-example.mjs): fast setup/save,
+  then normal motion and sound for an enemy-turn segment. Keep normal settings
+  through its endpoint, without per-action restoration or operator confirmation.
 
-Run either from `hex-command` with `node SCRIPT_PATH GAME_URL`, an existing server,
-installed Playwright/Chromium, and a desktop display. Use audible output for the
-second example. Both require a human playing through the UI; neither is an
-autonomous playthrough or an audio recording. Adapt the journey to the requested
-scenario and endpoint, and keep operator evidence identified as such.
+Run either from `hex-command` with `node SCRIPT_PATH GAME_URL`, an existing server
+and installed Playwright/Chromium. Both are focused workflow examples, not complete
+battles. Extend the UI actions and assertions to the requested scenario and endpoint;
+use read-only AI advice where helpful. They run without human input, save video and
+screenshots, and report their actual assertion limits. Video alone supplies no
+audible-output or synchronization guarantee.
 
 For automated scripts, enabled controls determine which player input is available.
 Advisor `canAct` can gate a request for advice; neither establishes that movement

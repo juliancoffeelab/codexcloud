@@ -14,6 +14,9 @@ and AI advice leave that game unchanged. Applying commands directly to the live
 controller or engine, or manually completing presentation barriers, invalidates
 a UI playthrough.
 State assertions and DOM checks support the session; they do not replace playing it.
+Write unattended scripts: include the UI actions, observations and bounded failure
+handling in the driver; terminal prompts or an operator playing the game do not
+complete an agent live-play session.
 The user can request a separate [engine-probe](../engine-probe/SKILL.md) for an
 engine end-to-end probe; it does not complete this UI journey.
 
