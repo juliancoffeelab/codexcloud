@@ -122,6 +122,9 @@ def watch(root,phase,interval=600):
                 seen.add(name);last=state_time;plot(run)
                 print(json.dumps(dict(phase=phase,checkpoint=name,seconds=state_time,score=result['score'],wins=result['wins'],caps=result['caps'],runs=result['runs'])),flush=True)
         if complete:
+            if phase=='rl':
+                from .handoff import refine_rl_selection
+                selected=refine_rl_selection(root);best=tuple(selected['reliability_key'])
             atomic_json(run/'evaluation-complete.json',dict(best=best,checkpoints=len(seen)));break
         time.sleep(5)
 

@@ -66,3 +66,30 @@ def finalize_selection(run):
                 criterion='Worst stratum within 2.5 percentage points of best; then highest overall score and fewer caps; positive strata required when available',
                 candidates=len(records),validation_runs=selected['runs'],test_seeds_used=False))
     return selected
+
+
+def refine_rl_selection(root):
+    """Recheck a bounded shortlist on validation, leaving test seeds untouched."""
+    root=Path(root);run=root/'rl';spec=json.loads((root/'workload.json').read_text())
+    history=[json.loads(l) for l in (run/'evaluations.jsonl').read_text().splitlines()]
+    shortlist=sorted(history,key=lambda r:reliability(r)[0],reverse=True)[:5]
+    shortlist+=sorted(history,key=lambda r:r['score'],reverse=True)[:3]
+    paths=[r['checkpoint'] for r in shortlist]+[history[0]['checkpoint'],json.loads((run/'latest.json').read_text())['path']]
+    cache=run/'selection-validation';cache.mkdir(exist_ok=True);records=[];seen=set()
+    import hashlib
+    for relative in dict.fromkeys(paths):
+        folder=run/relative;digest=hashlib.sha256((folder/'planner.json').read_bytes()).hexdigest()
+        if digest in seen:continue
+        seen.add(digest);output=cache/(folder.name+'.json')
+        if output.exists():r=json.loads(output.read_text())
+        else:
+            r=evaluate(spec['validation'],str(folder/'planner.json'));key,strata=reliability(r)
+            r.update(checkpoint=relative,reliability_key=list(key),strata=strata,model_sha256=digest);atomic_json(output,r)
+        records.append(r)
+        print(json.dumps(dict(event='rl_selection_validation',checkpoint=relative,reliability=r['reliability_key'],strata=r['strata'])),flush=True)
+    chosen=reliable_choice(records);folder=run/chosen['checkpoint'];manifest=json.loads((folder/'manifest.json').read_text())
+    atomic_json(run/'best.json',dict(path=chosen['checkpoint'],label=manifest['label'],files=manifest['files']))
+    atomic_json(run/'selection-complete.json',dict(checkpoint=chosen['checkpoint'],reliability_key=chosen['reliability_key'],strata=chosen['strata'],
+        candidates=len(records),validation_runs=len(spec['validation']),test_seeds_used=False,
+        criterion='Worst stratum within 2.5 percentage points of best; then overall score and fewer caps; starting policy eligible'))
+    return chosen

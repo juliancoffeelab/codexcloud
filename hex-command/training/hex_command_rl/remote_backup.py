@@ -33,7 +33,7 @@ def backup(root):
                 temporary.replace(destination/(phase+'-metrics.jsonl.gz'))
             parameters=root/phase/'parameters.json'
             if parameters.exists():shutil.copyfile(parameters,destination/(phase+'-parameters.json'))
-        for source,name in [(root/'summary.json','summary.json'),(root/'final-scores.png','final-scores.png'),(root/'posttune/curves.png','posttune-curves.png'),(root/'rl/curves.png','rl-curves.png')]:
+        for source,name in [(root/'summary.json','summary.json'),(root/'final-scores.png','final-scores.png'),(root/'posttune/curves.png','posttune-curves.png'),(root/'rl/curves.png','rl-curves.png'),(root/'rl/diagnostics.png','rl-diagnostics.png'),(root/'rl/diagnostics.json','rl-diagnostics.json'),(root/'rl/selection-complete.json','rl-selection.json')]:
             if source.exists():shutil.copyfile(source,destination/name)
         if (root/'finished.json').exists():
             for phase in ['posttune','rl']:
