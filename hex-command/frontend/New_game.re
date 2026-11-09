@@ -568,15 +568,6 @@ let make =
                              </div>
                            </details>
                            <p className="help"> {text(recruiterHelp(recruiter))} </p>
-                           <button
-                             className="ng-reset"
-                             onClick={_ => {
-                               let preset = Setup.preset(Setup.Standard);
-                               setPlanner(_ => preset.planner);
-                               setRecruiter(_ => preset.recruiter);
-                             }}>
-                             {text("Reset AI to Standard")}
-                           </button>
                          </details>
                        : React.null}
                   </>}

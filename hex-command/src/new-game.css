@@ -239,13 +239,6 @@
   color: var(--muted);
   margin-top: 3px;
 }
-.ng-reset {
-  width: 100%;
-  min-height: 44px;
-  margin: 6px 0 0;
-  text-align: left;
-  color: #dfcc95;
-}
 .ng-campaign-info {
   display: flex;
   align-items: center;
