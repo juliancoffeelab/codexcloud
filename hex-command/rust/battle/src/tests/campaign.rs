@@ -11,7 +11,7 @@ fn reach_wreck(game: &mut Game<'_>) {
     let index = game
         .units
         .iter()
-        .position(|u| u.character.as_deref() == Some("edda"))
+        .position(|u| game.name(u.character) == Some("edda"))
         .unwrap();
     game.units[index].tile = game.site(&Hex::new(4, 4));
     game.roster_changed();
@@ -61,7 +61,7 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
         let edda = game
             .units
             .iter()
-            .find(|u| u.character.as_deref() == Some("edda"))
+            .find(|u| game.name(u.character) == Some("edda"))
             .unwrap()
             .id;
         game.move_unit(edda, game.site(&Hex::new(5, 3)));
@@ -136,7 +136,7 @@ fn story_companions_are_not_eligible_for_explicit_recall() {
     let dain = game
         .units
         .iter()
-        .find(|u| u.character.as_deref() == Some("dain"))
+        .find(|u| game.name(u.character) == Some("dain"))
         .unwrap()
         .id;
     game.winner = Some(Side::Player);
@@ -155,7 +155,7 @@ fn story_companions_are_not_eligible_for_explicit_recall() {
     assert_eq!(
         game.units
             .iter()
-            .filter(|u| u.character.as_deref() == Some("dain"))
+            .filter(|u| game.name(u.character) == Some("dain"))
             .count(),
         1
     );

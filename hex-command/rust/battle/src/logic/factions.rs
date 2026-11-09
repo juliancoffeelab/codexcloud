@@ -4,38 +4,40 @@ use crate::data::*;
 impl Game<'_> {
     #[inline]
     pub(crate) fn faction_for_phase(&self, side: Side) -> &str {
-        self.active_faction
+        self.runtime
+            .active_faction
             .as_deref()
             .filter(|_| self.scoped_phase() == Some(side))
             .unwrap_or(side.faction_id())
     }
     #[inline]
     pub(crate) fn gold_for_phase(&self, side: Side) -> i32 {
-        self.gold[self.faction_for_phase(side)]
+        self.runtime.gold[self.faction_for_phase(side)]
     }
     #[inline]
     pub(crate) fn gold_for_unit(&self, unit: &Unit) -> i32 {
-        self.gold[self.unit_faction(unit)]
+        self.runtime.gold[self.unit_faction(unit)]
     }
     #[inline]
     pub(crate) fn owns(&self, tile: usize, side: Side) -> bool {
-        self.owners[tile].as_deref() == Some(self.faction_for_phase(side))
+        self.runtime.owners[tile].as_deref() == Some(self.faction_for_phase(side))
     }
     #[inline]
     pub(crate) fn captures(&self, tile: usize, side: Side) -> bool {
-        self.owners[tile].as_deref().is_none_or(|owner| {
+        self.runtime.owners[tile].as_deref().is_none_or(|owner| {
             self.faction_relation(self.faction_for_phase(side), owner) == Relation::Hostile
         })
     }
-    pub(crate) fn control_roster(&self) -> Vec<(u32, Side, Option<String>, Option<Role>)> {
-        self.units
+    pub(crate) fn control_roster(&self) -> Vec<(u32, Side, Option<NameKey>, Option<Role>)> {
+        self.runtime
+            .units
             .iter()
             .map(|unit| (unit.id, unit.side, unit.faction.clone(), unit.role))
             .collect()
     }
     #[inline]
-    pub(crate) fn unit_faction<'a>(&self, unit: &'a Unit) -> &'a str {
-        unit.faction.as_deref().unwrap_or(unit.side.faction_id())
+    pub(crate) fn unit_faction<'a>(&'a self, unit: &Unit) -> &'a str {
+        self.name(unit.faction).unwrap_or(unit.side.faction_id())
     }
     pub(crate) fn unit_faction_view(&self, unit: &Unit) -> UnitFaction {
         let id = self.unit_faction(unit);
@@ -53,25 +55,30 @@ impl Game<'_> {
     }
     #[inline]
     pub(crate) fn faction(&self, id: &str) -> Option<&Faction> {
-        self.factions.iter().find(|faction| faction.id == id)
+        self.runtime
+            .factions
+            .iter()
+            .find(|faction| faction.id == id)
     }
     #[inline]
     pub(crate) fn faction_relation(&self, first: &str, second: &str) -> Relation {
-        crate::data::faction_relation(&self.factions, first, second)
+        crate::data::faction_relation(&self.runtime.factions, first, second)
+    }
+    #[inline]
+    pub(crate) fn unit_relation(&self, first: &Unit, second: &Unit) -> Relation {
+        self.faction_relation(self.unit_faction(first), self.unit_faction(second))
     }
     #[inline]
     pub(crate) fn hostile(&self, first: &Unit, second: &Unit) -> bool {
-        self.faction_relation(self.unit_faction(first), self.unit_faction(second))
-            == Relation::Hostile
+        self.unit_relation(first, second) == Relation::Hostile
     }
     #[inline]
     pub(crate) fn allied(&self, first: &Unit, second: &Unit) -> bool {
-        self.faction_relation(self.unit_faction(first), self.unit_faction(second))
-            == Relation::Allied
+        self.unit_relation(first, second) == Relation::Allied
     }
     #[inline]
     fn scoped_phase(&self) -> Option<Side> {
-        self.active_faction.as_deref().map(|id| {
+        self.runtime.active_faction.as_deref().map(|id| {
             self.faction(id)
                 .map(|f| f.phase)
                 .unwrap_or(if id == "player" {
@@ -101,7 +108,7 @@ impl Game<'_> {
     }
     #[inline]
     pub(crate) fn may_act(&self, unit: &Unit) -> bool {
-        self.belongs_to_phase(unit, self.turn)
+        self.belongs_to_phase(unit, self.runtime.turn)
             && !self
                 .faction(self.unit_faction(unit))
                 .is_some_and(|f| matches!(f.controller, Controller::Passive))
@@ -115,10 +122,9 @@ impl Game<'_> {
         {
             return false;
         }
-        let group = self.mission.as_ref().and_then(|mission| {
-            unit.ai_group
-                .as_ref()
-                .and_then(|id| mission.enemy_groups.iter().find(|group| &group.id == id))
+        let group = self.runtime.mission.as_ref().and_then(|mission| {
+            self.name(unit.ai_group)
+                .and_then(|id| mission.enemy_groups.iter().find(|group| group.id == id))
         });
         group.is_none_or(|group| {
             self.group_active(group)
@@ -134,15 +140,18 @@ impl Game<'_> {
         let mut controllers = Vec::new();
         // The implicit legacy army remains an independent controller when authored
         // factions coexist with old, unassigned units or ordinary recruitment.
-        if self
-            .units
-            .iter()
-            .any(|u| u.side == self.turn && self.unit_faction(u) == self.turn.faction_id())
-            && self.faction(self.turn.faction_id()).is_none()
+        if self.units.iter().any(|u| {
+            u.side == self.runtime.turn && self.unit_faction(u) == self.runtime.turn.faction_id()
+        }) && self.faction(self.runtime.turn.faction_id()).is_none()
         {
-            controllers.push((self.turn.faction_id().to_owned(), None));
+            controllers.push((self.runtime.turn.faction_id().to_owned(), None));
         }
-        for faction in self.factions.iter().filter(|f| f.phase == self.turn) {
+        for faction in self
+            .runtime
+            .factions
+            .iter()
+            .filter(|f| f.phase == self.runtime.turn)
+        {
             match faction.controller {
                 Controller::Ai { policy } => controllers.push((faction.id.clone(), policy)),
                 Controller::Human => controllers.push((faction.id.clone(), None)),
@@ -168,7 +177,7 @@ impl Game<'_> {
                 crate::logic::conditions::matches(
                     &rule.when.condition,
                     &input,
-                    Some(&TileRef::Hex(self.board.ids[unit.tile])),
+                    Some(&TileRef::Hex(self.runtime.board.ids[unit.tile])),
                 )
                 .then(|| {
                     let phase = self.faction(&rule.to).map(|f| f.phase).unwrap_or_else(|| {
@@ -187,8 +196,9 @@ impl Game<'_> {
         }
         for (id, faction, phase) in changes {
             let index = self.index(id).expect("transferred unit exists");
-            let unit = &mut self.units[index];
-            unit.faction = Some(faction.clone());
+            let key = self.intern_name(&faction);
+            let unit = &mut self.runtime.units[index];
+            unit.faction = Some(key);
             unit.side = phase;
             unit.ai_group = None;
             unit.retreating = None;

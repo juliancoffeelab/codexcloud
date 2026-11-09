@@ -1,6 +1,6 @@
 //! Battle rules and campaign transitions, independent of transport and policy.
 pub(crate) mod battle;
-mod combat;
+pub(crate) mod combat;
 mod commands;
 pub mod damage;
 mod event_queries;
@@ -10,7 +10,7 @@ pub mod exchange;
 mod factions;
 mod inspection;
 mod items;
-mod movement;
+pub(crate) mod movement;
 mod recruit_pool;
 mod restore;
 mod turns;

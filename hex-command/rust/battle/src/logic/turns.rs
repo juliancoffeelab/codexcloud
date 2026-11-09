@@ -7,7 +7,8 @@ impl<'catalog> Game<'catalog> {
         self.faction_income(self.faction_for_phase(side))
     }
     pub(crate) fn faction_income(&self, faction: &str) -> i32 {
-        self.owners
+        self.runtime
+            .owners
             .iter()
             .enumerate()
             .filter(|(_, owner)| owner.as_deref() == Some(faction))
@@ -15,9 +16,9 @@ impl<'catalog> Game<'catalog> {
             .sum()
     }
     pub(crate) fn begin_turn(&mut self, side: Side) {
-        self.turn = side;
-        self.last_combat = None;
-        self.combat_present = true;
+        self.runtime.turn = side;
+        self.runtime.last_combat = None;
+        self.runtime.combat_present = true;
         let factions: Vec<_> = self
             .gold
             .keys()
@@ -29,44 +30,53 @@ impl<'catalog> Game<'catalog> {
             .collect();
         for faction in factions {
             let income = self.faction_income(&faction);
-            self.gold[&faction] += income;
+            self.runtime.gold[&faction] += income;
         }
-        for unit in &mut self.units {
+        let names = &self.runtime.names;
+        for unit in &mut self.runtime.units {
             if unit.side != side {
                 continue;
             }
             unit.moved = false;
             unit.attacked = false;
-            let terrain = self.rules.terrain_roles[self.terrain[unit.tile]];
-            if self.owners[unit.tile].as_deref()
-                == Some(unit.faction.as_deref().unwrap_or(unit.side.faction_id()))
+            let terrain = self.rules.terrain_roles[self.runtime.terrain[unit.tile]];
+            if self.runtime.owners[unit.tile].as_deref()
+                == Some(
+                    names
+                        .resolve(unit.faction)
+                        .unwrap_or(unit.side.faction_id()),
+                )
             {
                 unit.hp = (unit.hp + terrain.healing()).min(self.rules.units[unit.kind].hp);
             }
         }
-        for index in 0..self.units.len() {
-            if self.units[index].side != side {
+        for index in 0..self.runtime.units.len() {
+            if self.runtime.units[index].side != side {
                 continue;
             }
             let healing = self
                 .units
                 .iter()
-                .map(|ally| self.healing_from(ally, &self.units[index]))
+                .map(|ally| self.healing_from(ally, &self.runtime.units[index]))
                 .max()
                 .unwrap_or(0);
             #[cfg(not(target_arch = "wasm32"))]
-            let amount = healing
-                .min((self.rules.units[self.units[index].kind].hp - self.units[index].hp).max(0));
+            let amount = healing.min(
+                (self.rules.units[self.runtime.units[index].kind].hp
+                    - self.runtime.units[index].hp)
+                    .max(0),
+            );
             #[cfg(not(target_arch = "wasm32"))]
-            if amount > 0 && self.recordings.is_some() {
-                let target = &self.units[index];
+            if amount > 0 && self.runtime.recordings.is_some() {
+                let target = &self.runtime.units[index];
                 let providers = self
                     .units
                     .iter()
                     .filter(|ally| self.healing_from(ally, target) == healing)
                     .map(|ally| format!("u{}", ally.id))
                     .collect();
-                self.recordings
+                self.runtime
+                    .recordings
                     .as_mut()
                     .unwrap()
                     .healing
@@ -76,20 +86,20 @@ impl<'catalog> Game<'catalog> {
                         amount,
                     });
             }
-            self.units[index].hp =
-                (self.units[index].hp + healing).min(self.rules.units[self.units[index].kind].hp);
+            self.runtime.units[index].hp = (self.runtime.units[index].hp + healing)
+                .min(self.rules.units[self.runtime.units[index].kind].hp);
         }
         self.evaluate_campaign(true, None);
     }
     pub(crate) fn end_turn(&mut self) {
-        assert!(self.winner.is_none());
-        if self.arena_first.is_some() {
-            if Some(self.turn) != self.arena_first {
-                self.round += 1;
+        assert!(self.runtime.winner.is_none());
+        if self.runtime.arena_first.is_some() {
+            if Some(self.runtime.turn) != self.runtime.arena_first {
+                self.runtime.round += 1;
             }
-        } else if self.turn == Side::Enemy {
-            self.round += 1;
+        } else if self.runtime.turn == Side::Enemy {
+            self.runtime.round += 1;
         }
-        self.begin_turn(self.turn.other());
+        self.begin_turn(self.runtime.turn.other());
     }
 }

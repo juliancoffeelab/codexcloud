@@ -8,7 +8,9 @@ mod commands;
 pub use commands::*;
 mod factions;
 pub use factions::*;
+mod runtime;
 mod units;
+pub use runtime::*;
 pub use units::*;
 mod events;
 pub use events::*;
@@ -63,7 +65,7 @@ pub struct Rules {
     /// Current authored map descriptions and layouts.
     pub map_definitions: Vec<MapDefinition>,
     /// Effective unit rules after terrain, race and unit inheritance.
-    pub units: Vec<UnitRule>,
+    pub units: UnitDefinitions,
     pub movement_classes: Vec<usize>,
     pub route_classes: Vec<usize>,
     /// Authored unit identifiers mapped to dense runtime indices.
@@ -76,7 +78,7 @@ pub struct Rules {
     #[cfg(not(target_arch = "wasm32"))]
     pub arena_maps: HashMap<(String, u32), State>,
     /// Campaign definitions indexed by their authored identifier.
-    pub campaigns: HashMap<String, Campaign>,
+    pub campaigns: HashMap<String, CampaignRules>,
 }
 
 /// Immutable authored content shared by battles and scoped simulation workers.
@@ -90,7 +92,7 @@ pub use policy::*;
 pub mod presentation;
 
 impl Rules {
-    pub fn campaign_for_map(&self, map: &str) -> Option<&Campaign> {
+    pub fn campaign_for_map(&self, map: &str) -> Option<&CampaignRules> {
         self.campaigns
             .values()
             .find(|c| c.missions.iter().any(|m| m.map.id == map))

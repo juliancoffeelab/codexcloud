@@ -1,4 +1,5 @@
 //! The turn driver owns execution capabilities and the orchestration continuation.
+use hex_command_battle::RuntimeCommand as Command;
 pub(crate) mod context;
 mod state;
 pub use state::PlanningWorkspace;
@@ -16,6 +17,7 @@ pub(crate) fn choose_game_command(
     policy: Policy,
     workspace: &mut PlanningWorkspace,
 ) -> Result<Command, CommandError> {
+    workspace.refresh_scope(game);
     if !game.factions().is_empty() && game.active_faction().is_none() {
         let controllers = workspace
             .state
@@ -142,7 +144,7 @@ pub(crate) fn play_blocks(
             if game.active_faction().is_some() && command == Command::EndTurn {
                 continue;
             }
-            game.execute(command)?;
+            game.execute_runtime(command)?;
         }
         if workspace.finished() || game.winner().is_some() {
             break;

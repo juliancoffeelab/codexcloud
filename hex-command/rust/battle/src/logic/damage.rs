@@ -1,6 +1,7 @@
 //! Exact independent-strike distributions, shared by UI and policy forecasts.
-use crate::data::Weapon;
-use std::{cell::RefCell, collections::HashMap, rc::Rc};
+use crate::data::WeaponRules;
+use rustc_hash::FxHashMap as HashMap;
+use std::{cell::RefCell, rc::Rc};
 
 #[derive(Debug)]
 pub struct DamageDistribution {
@@ -40,9 +41,9 @@ impl DamageDistribution {
 }
 type Key = (i32, i32, u8, i32);
 thread_local! {
-    static CACHE: RefCell<HashMap<Key, Rc<DamageDistribution>>> = RefCell::new(HashMap::new());
+    static CACHE: RefCell<HashMap<Key, Rc<DamageDistribution>>> = RefCell::new(HashMap::default());
 }
-pub fn distribution(attack: &Weapon, modifier: i32) -> Rc<DamageDistribution> {
+pub fn distribution(attack: &WeaponRules, modifier: i32) -> Rc<DamageDistribution> {
     rolls(attack.damage, attack.spread, attack.count, modifier)
 }
 pub(super) fn rolls(damage: i32, spread: i32, count: u8, modifier: i32) -> Rc<DamageDistribution> {

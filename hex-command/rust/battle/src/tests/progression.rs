@@ -25,7 +25,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let actor = game
         .units
         .iter()
-        .find(|u| u.character.as_deref() == Some("edda"))
+        .find(|u| game.name(u.character) == Some("edda"))
         .unwrap()
         .id;
     let evaluate = |g: &mut Game<'_>, round| {
@@ -169,7 +169,7 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     let pilot = game
         .units
         .iter()
-        .position(|u| u.character.as_deref() == Some("edda"))
+        .position(|u| game.name(u.character) == Some("edda"))
         .unwrap();
     game.units[pilot].experience = Some(7);
     game.winner = Some(Side::Player);
@@ -190,14 +190,14 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     assert_eq!(
         game.units
             .iter()
-            .filter(|u| u.character.as_deref() == Some("edda"))
+            .filter(|u| game.name(u.character) == Some("edda"))
             .count(),
         1
     );
     let pilot = game
         .units
         .iter()
-        .position(|u| u.character.as_deref() == Some("edda"))
+        .position(|u| game.name(u.character) == Some("edda"))
         .unwrap();
     assert_eq!(game.units[pilot].experience, Some(7));
     game.units[pilot].experience = Some(10);
@@ -205,7 +205,7 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     assert_eq!(
         game.units
             .iter()
-            .find(|u| u.character.as_deref() == Some("edda"))
+            .find(|u| game.name(u.character) == Some("edda"))
             .unwrap()
             .experience,
         Some(7)

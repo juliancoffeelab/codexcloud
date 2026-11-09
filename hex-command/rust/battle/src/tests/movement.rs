@@ -3,6 +3,78 @@ use super::*;
 use std::collections::HashSet;
 
 #[test]
+fn terrain_connectivity_preserves_route_saturation_and_fork_invalidation() {
+    let mut rules = Rules::load().unwrap();
+    let kind = rules.types["swordsman"];
+    let plains = rules.terrains["plains"];
+    let water = rules.terrains["water"];
+    rules.route_classes[kind] = kind;
+    rules.units[kind].costs[water] = None;
+    let mut state = flat().state();
+    state.units.clear();
+    for tile in &mut state.tiles {
+        tile.terrain = "water".into();
+        if tile.row == 1 && (1..=3).contains(&tile.col) {
+            tile.terrain = "plains".into();
+        }
+    }
+    for cost in [0, 1, 40_000] {
+        rules.content_fingerprint = format!("connectivity-cost-{cost}");
+        rules.units[kind].costs[plains] = Some(cost);
+        let game = Game::from_state(&rules, state.clone());
+        let left = game.site(&Hex::new(1, 1));
+        let middle = game.site(&Hex::new(2, 1));
+        let right = game.site(&Hex::new(3, 1));
+        let blocked = game.site(&Hex::new(4, 1));
+        for start in [left, middle, blocked] {
+            let reachable = game.reachability(kind, start);
+            let distances = game.routes_from(kind, start);
+            for (tile, &distance) in distances.iter().enumerate() {
+                assert_eq!(reachable.contains(tile), distance != u16::MAX);
+            }
+            for (category, range) in [(Category::Melee, 1), (Category::Ranged, 2)] {
+                let mut expected = Vec::new();
+                game.attack_origins(category, range)[right].for_each(|tile| {
+                    if distances[tile] != u16::MAX && game.cost(kind, tile) != u16::MAX {
+                        expected.push((game.terrain[tile], game.board.distance(tile, right)));
+                    }
+                });
+                let grouped = game.attack_origin_runs(kind, start, category, range, right);
+                let actual: Vec<_> = grouped
+                    .iter()
+                    .flat_map(|run| {
+                        assert_eq!(game.terrain[run.tile], run.terrain);
+                        assert_eq!(game.board.distance(run.tile, right), run.distance);
+                        std::iter::repeat_n((run.terrain, run.distance), run.count)
+                    })
+                    .collect();
+                assert_eq!(actual, expected);
+            }
+        }
+        if cost < 40_000 {
+            assert!(game.reachability(kind, left).contains(right));
+            let origins = game.attack_origin_runs(kind, left, Category::Ranged, 2, right);
+            assert_eq!(origins.iter().map(|run| run.count).sum::<usize>(), 2);
+            let mut fork = game.fork();
+            fork.set_terrain(middle, water);
+            assert!(!fork.reachability(kind, left).contains(right));
+            assert!(game.reachability(kind, left).contains(right));
+            let changed = fork.attack_origin_runs(kind, left, Category::Ranged, 2, right);
+            assert_eq!(changed.iter().map(|run| run.count).sum::<usize>(), 1);
+            assert_eq!(
+                game.attack_origin_runs(kind, left, Category::Ranged, 2, right)
+                    .iter()
+                    .map(|run| run.count)
+                    .sum::<usize>(),
+                2
+            );
+        } else {
+            assert!(!game.reachability(kind, left).contains(right));
+        }
+    }
+}
+
+#[test]
 fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
     use crate::logic::geometry::TileSet;
     for size in [61, 128, 135] {

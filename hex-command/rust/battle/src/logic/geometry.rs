@@ -105,10 +105,72 @@ impl TileSet {
 }
 pub(super) type AttackGeometry = Rc<RefCell<HashMap<(usize, u8), Rc<Vec<TileSet>>>>>;
 pub(super) type AttackMasks = Rc<RefCell<HashMap<(usize, u8), Rc<Vec<u128>>>>>;
+/// Consecutive legal origins with equal terrain and distance to the target.
+/// The representative preserves every retaliation range/line-of-fire input;
+/// count retains multiplicity without changing the original origin order.
+#[derive(Debug)]
+pub struct AttackOriginRun {
+    pub tile: usize,
+    pub terrain: usize,
+    pub distance: u16,
+    pub count: usize,
+}
+pub(super) type OriginRunCache =
+    Rc<RefCell<HashMap<(usize, usize, usize, u8, usize), Rc<Vec<AttackOriginRun>>>>>;
 impl Game<'_> {
+    pub(crate) fn attack_origin_runs(
+        &self,
+        kind: usize,
+        from: usize,
+        category: Category,
+        range: u8,
+        target: usize,
+    ) -> Rc<Vec<AttackOriginRun>> {
+        let kind = self.rules.route_classes[kind];
+        let reachable = self.reachability(kind, from);
+        let key = (
+            kind,
+            reachable.source_key(),
+            category.index(),
+            range,
+            target,
+        );
+        if let Some(runs) = self.runtime.origin_runs.borrow().get(&key) {
+            return runs.clone();
+        }
+        let origins = self.attack_origins(category, range);
+        let mut runs: Vec<AttackOriginRun> = Vec::new();
+        origins[target].for_each(|tile| {
+            if !reachable.contains(tile) || self.cost(kind, tile) == u16::MAX {
+                return;
+            }
+            let terrain = self.runtime.terrain[tile];
+            let distance = self.runtime.board.distance(tile, target);
+            if let Some(last) = runs.last_mut() {
+                if last.terrain == terrain && last.distance == distance {
+                    last.count += 1;
+                    return;
+                }
+            }
+            runs.push(AttackOriginRun {
+                tile,
+                terrain,
+                distance,
+                count: 1,
+            });
+        });
+        let runs = Rc::new(runs);
+        let mut cache = self.runtime.origin_runs.borrow_mut();
+        if cache.len() >= 512 {
+            cache.clear();
+        }
+        cache.insert(key, runs.clone());
+        runs
+    }
+
     pub fn attack_masks(&self, category: Category, range: u8) -> Rc<Vec<u128>> {
         let key = (category.index(), range);
-        if let Some(masks) = self.attack_masks.borrow().get(&key) {
+        if let Some(masks) = self.runtime.attack_masks.borrow().get(&key) {
             return masks.clone();
         }
         let masks: Rc<Vec<u128>> = Rc::new(
@@ -122,9 +184,13 @@ impl Game<'_> {
                 })
                 .collect(),
         );
-        self.attack_masks.borrow_mut().insert(key, masks.clone());
+        self.runtime
+            .attack_masks
+            .borrow_mut()
+            .insert(key, masks.clone());
         masks
     }
+    #[inline]
     pub fn in_attack_range(
         &self,
         from: usize,
@@ -132,27 +198,27 @@ impl Game<'_> {
         category: Category,
         range: u8,
     ) -> bool {
-        let gap = self.board.distance(from, target);
+        let gap = self.runtime.board.distance(from, target);
         if gap < 1 || gap > range as u16 {
             return false;
         }
         category != Category::Ranged
             || gap != 2
-            || self.board.adjacent[from].iter().any(|&between| {
-                self.board.distance(between, target) == 1
+            || self.runtime.board.adjacent[from].iter().any(|&between| {
+                self.runtime.board.distance(between, target) == 1
                     && !self.terrain_role(between).blocks_shots()
             })
     }
     pub fn attack_origins(&self, category: Category, range: u8) -> Rc<Vec<TileSet>> {
         let key = (category.index(), range);
-        if let Some(fields) = self.attack_geometry.borrow().get(&key) {
+        if let Some(fields) = self.runtime.attack_geometry.borrow().get(&key) {
             return fields.clone();
         }
         let fields = Rc::new(
-            (0..self.terrain.len())
+            (0..self.runtime.terrain.len())
                 .map(|target| {
-                    let mut origins = TileSet::new(self.terrain.len());
-                    for from in 0..self.terrain.len() {
+                    let mut origins = TileSet::new(self.runtime.terrain.len());
+                    for from in 0..self.runtime.terrain.len() {
                         if self.in_attack_range(from, target, category, range) {
                             origins.insert(from);
                         }
@@ -161,7 +227,8 @@ impl Game<'_> {
                 })
                 .collect::<Vec<_>>(),
         );
-        self.attack_geometry
+        self.runtime
+            .attack_geometry
             .borrow_mut()
             .insert(key, fields.clone());
         fields

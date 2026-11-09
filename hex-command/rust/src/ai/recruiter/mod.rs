@@ -1,4 +1,5 @@
 //! Recruitment selection and placement, independent of tactical planning.
+use hex_command_battle::RuntimeCommand as Command;
 #[cfg(test)]
 pub(in crate::ai) mod fixtures;
 use super::{
@@ -69,6 +70,8 @@ fn drive(
     orders: &crate::ai::orders::RecruitmentOrders,
 ) -> Result<crate::ai::orders::RecruitmentReport, CommandError> {
     use crate::ai::orders::*;
+    #[cfg(not(target_arch = "wasm32"))]
+    let _profile = crate::ai::profiling::Recruitment::start(kind, context.battle().turn());
     let mut report = RecruitmentReport::default();
     while context
         .budget()
@@ -252,7 +255,7 @@ fn recruit_for_leader(
         let order = TileOrder::new(game, &leader, false);
         tiles.order_by(|&a, &b| order.compare(game, a, b));
         if let Some(&tile) = tiles.first() {
-            return Some(super::recruit_command(game, leader.id, kind, tile));
+            return Some(super::recruit_command(leader.id, kind, tile));
         }
         return None;
     }
@@ -304,9 +307,6 @@ fn recruit_for_leader(
             continue;
         }
         let recruit = Unit {
-            faction: leader.faction.clone(),
-            items: vec![],
-            ai_group: None,
             id: 0,
             kind,
             side,
@@ -315,10 +315,13 @@ fn recruit_for_leader(
             moved: true,
             attacked: true,
             experience: None,
-            character: None,
             role: None,
             retreating: None,
             rebuilding: None,
+            faction: leader.faction,
+            ai_group: None,
+            character: None,
+            inventory: InventoryId::default(),
         };
         let effectiveness = if opponents.is_empty() {
             r.attacks
@@ -427,7 +430,7 @@ fn recruit_for_leader(
             proximity(b).cmp(&proximity(a))
         }
     });
-    Some(super::recruit_command(game, leader.id, kind, tiles[0]))
+    Some(super::recruit_command(leader.id, kind, tiles[0]))
 }
 
 /// Native fixed-position diagnostics. These are the same mechanical components
@@ -468,7 +471,7 @@ pub(crate) fn diagnostics(
             let tiles = if recruit {
                 view.placement_tiles(unit, kind, false)
             } else {
-                vec![unit.tile]
+                std::iter::once(unit.tile).collect()
             };
             let Some(&tile) = tiles.first() else {
                 continue;
@@ -541,8 +544,7 @@ pub(crate) fn diagnostics(
 /// Seeded, well-mixed draw; the small deterministic planner jitter alone is
 /// unsuitable for choosing uniformly between adjacent content identifiers.
 fn random(seed: u32, key: &str) -> f64 {
-    let hash = (jitter(seed, key) / 0.05 * u32::MAX as f64) as u32;
-    crate::ai::policies::tie_breaking::Random(hash).next()
+    crate::ai::policies::tie_breaking::mixed_draw(jitter(seed, key))
 }
 
 /// Redistribute the authored role proportions over the current roster only.
@@ -564,6 +566,7 @@ fn mixed_shares(roles: impl Iterator<Item = UnitRole>) -> [f64; 4] {
 mod tests {
     use super::*;
     use crate::ai::recruiter::fixtures;
+    use hex_command_battle::RuntimeCommand as Command;
 
     #[test]
     fn balanced_draws_both_kinds_but_only_within_the_needed_role() {
@@ -618,7 +621,7 @@ mod tests {
         fixtures::add(&mut game, a, Side::Player, tile);
         // Infantry is now over target, so every draw must be a flanker.
         for seed in 0..16 {
-            assert_eq!(draw(&game, seed), rules.units[b].id);
+            assert_eq!(draw(&game, seed), b);
         }
     }
 
@@ -655,8 +658,8 @@ mod tests {
                 let Command::Recruit { ref kind, .. } = command else {
                     panic!("expected recruit")
                 };
-                assert_eq!(kind.0, rules.units[expected].id);
-                game.execute(command).unwrap();
+                assert_eq!(kind.0, expected);
+                game.execute_runtime(command).unwrap();
                 // Clear the keep so the next choice measures composition,
                 // rather than running out of deployment tiles.
                 let leader = game
@@ -729,7 +732,7 @@ mod tests {
         let selected = RecruiterKind::Rotation
             .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
             .unwrap();
-        fn recruited(command: Command) -> Option<String> {
+        fn recruited(command: Command) -> Option<usize> {
             match command {
                 Command::Recruit { kind, .. } => Some(kind.0),
                 Command::Move { .. }
@@ -745,7 +748,7 @@ mod tests {
                 | Command::RetryMission => None,
             }
         }
-        assert_eq!(recruited(selected).as_deref(), Some("rider"));
+        assert_eq!(recruited(selected), Some(rules.types["rider"]));
     }
 
     #[test]
