@@ -41,7 +41,7 @@ function installUiAdvisor(t) {
         revision: N.revision(game), state: J.to_state(N.state(game)), checkpoint: checkpoint(),
         selected: v.map_focus.selected === undefined ? null : U.to_js(v.map_focus.selected),
         target: v.map_focus.target === undefined ? null : U.to_js(v.map_focus.target),
-        ready: t.initialized && v.failure === undefined && active(t),
+        canAct: t.initialized && v.failure === undefined && active(t),
       });
     },
     suggest: options => {

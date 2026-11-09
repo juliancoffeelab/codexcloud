@@ -17,6 +17,29 @@ Dialogue and transitions use normal commands; successful campaign completion is
 checked through the actual next-game dialog. Controller-driven setup does not
 validate its UI controls: adapt clicks when those controls are under test.
 
+## Presentation settings
+
+`openHarness()` defaults to `reducedMotion: "reduce"`, `sound: false` and
+`enemyPauseScale: 0`. Motion uses Playwright's browser preference; sound is seeded
+once in the isolated context's storage, before `prepareContext`. Subsequent UI
+preference changes survive reload, and storage fixtures can replace the seed.
+Both the upstream and OCaml adapters use these settings.
+
+For normal presentation, override all three independently:
+
+```js
+const harness = await openHarness({
+  reducedMotion: "no-preference",
+  sound: true,
+  enemyPauseScale: 1,
+});
+```
+
+Changing only `enemyPauseScale` does not control movement/combat animations.
+Reduced motion can retain frame/completion waits; enabled sound can retain
+combat pacing. Label accelerated results and use normal presentation for timing
+or synchronization assertions.
+
 ## Adapter changes
 
 The adapter instruments the served Vite controller response to capture the game

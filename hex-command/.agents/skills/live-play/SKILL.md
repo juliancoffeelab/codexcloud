@@ -11,9 +11,13 @@ Implementation, review and deployment requests alone do not authorize gameplay.
 
 Every change to the live game goes through normal player input. Observations
 and AI advice leave that game unchanged. Applying commands directly to the live
-controller or engine, or bypassing presentation, invalidates a UI playthrough.
+controller or engine, or manually completing presentation barriers, invalidates
+a UI playthrough.
 State assertions and DOM checks support the session; they do not replace playing it.
-The user can request a separate [engine-probe](../engine-probe/SKILL.md) for a
+Write unattended scripts: include the UI actions, observations and bounded failure
+handling in the driver; terminal prompts or an operator playing the game do not
+complete an agent live-play session.
+The user can request a separate [engine-probe](../engine-probe/SKILL.md) for an
 engine end-to-end probe; it does not complete this UI journey.
 
 ## 1. Define the session
@@ -22,6 +26,14 @@ Identify the requested URL/revision, scenario, browser, input method and endpoin
 For an unqualified playtest, exercise the UI through an ordinary battle to its
 end screen. A focused request can end at its specified workflow. Set execution
 bounds and record the scope in ignored `tmp/`.
+
+Default to the game's reduced-motion preference and sound off for long journeys.
+Use normal motion and sound for checks of movement, impacts, combat synchronization,
+enemy-turn completion and victory transitions. The
+[browser reference](references/browser-play.md#presentation-settings) shows setup
+and switching between settled actions. Record the settings and the actions
+exercised at normal speed; a reduced-motion journey does not establish normal
+presentation timing or audible output.
 
 **Complete when:** the intended player journey, endpoint and bounds are explicit;
 a short interaction probe cannot be mistaken for a complete game.
@@ -53,8 +65,9 @@ Play the connected workflow: choosing a unit, moving or attacking, inspecting
 results, choosing the next unit, recruiting, ending turns and navigating dialogs
 as the session requires. Notice blocked controls, confusing state, unexpected
 camera/layout changes, missing feedback and delays as well as gameplay outcomes.
-Record meaningful actions and their visible results as you go. Keep normal
-presentation timing so the session exercises the experience being reported.
+Record meaningful actions and their visible results as you go. Wait for each
+action's visible completion at the selected presentation settings; change modes
+only after it settles. Use normal presentation for the timing checks defined above.
 Read-only state can confirm legality or an outcome.
 
 **Complete when:** the requested endpoint is visibly reached, or a concrete
@@ -83,6 +96,8 @@ UI workflows exercised and terminal outcome: requested endpoint reached, player
 blocked, defeat, execution limit or tooling failure. Link relevant screenshots,
 recordings and action notes. Distinguish observed behavior from diagnostic
 inferences and name unexercised paths or device limitations.
+State motion/sound settings and distinguish reduced-motion UI completion from
+normal animation/audio timing verified on the explicitly exercised actions.
 
 Claim a completed game only after its terminal result was reached through the UI;
 claim a completed campaign only after its missions and final transition were.
