@@ -22,12 +22,18 @@ struct Bindings {
 impl Game<'_> {
     #[inline]
     pub(crate) fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
-        super::event_queries::unit_matches(self.rules, &self.factions, select, unit)
+        super::event_queries::unit_matches(
+            self.rules,
+            &self.runtime.factions,
+            &self.runtime.names,
+            select,
+            unit,
+        )
     }
     pub(crate) fn script_condition(&self, when: &When) -> bool {
-        let state = self.scripts.as_deref();
+        let state = self.runtime.scripts.as_deref();
         assert!(
-            state.is_some() || self.campaign.is_none(),
+            state.is_some() || self.runtime.campaign.is_none(),
             "event evaluation requires explicit current progress"
         );
         EventFacts::new(self).when_matches(when, state, None, false, None)
@@ -42,7 +48,7 @@ impl Game<'_> {
         }
     }
     pub(crate) fn resolved_story(&self) -> Option<ResolvedStory> {
-        let mission = self.mission.as_ref()?;
+        let mission = self.runtime.mission.as_ref()?;
         Some(ResolvedStory {
             briefing: self.resolve_text(&mission.briefing).unwrap_or_default(),
             debrief: mission.debrief.as_ref().and_then(|t| self.resolve_text(t)),
@@ -61,7 +67,8 @@ impl Game<'_> {
         })
     }
     pub(crate) fn reference_site(&self, target: &TileRef) -> usize {
-        self.board
+        self.runtime
+            .board
             .resolve(target)
             .expect("validated authored target")
     }
@@ -71,17 +78,17 @@ impl Game<'_> {
                 bindings.mark.as_ref().expect("validated mark binding").tile
             }
             TileRef::Binding(TileBinding::Unit) => {
-                self.board.ids[bindings.unit.as_ref().expect("validated unit binding").tile]
+                self.runtime.board.ids[bindings.unit.as_ref().expect("validated unit binding").tile]
             }
             TileRef::Binding(TileBinding::Death) => {
-                self.board.ids[bindings
+                self.runtime.board.ids[bindings
                     .death
                     .as_ref()
                     .expect("validated death binding")
                     .unit
                     .tile]
             }
-            _ => self.board.ids[self.reference_site(value)],
+            _ => self.runtime.board.ids[self.reference_site(value)],
         }
     }
     pub(crate) fn script_speech(&self, nodes: &[Speech], out: &mut Vec<Dialogue>) {
@@ -91,7 +98,7 @@ impl Game<'_> {
                     let present = self
                         .units
                         .iter()
-                        .any(|u| u.character.as_ref() == Some(&branch.with));
+                        .any(|u| self.name(u.character) == Some(branch.with.as_str()));
                     self.script_speech(
                         if present {
                             &branch.dialogue
@@ -103,7 +110,10 @@ impl Game<'_> {
                 }
                 Speech::Line(line) => {
                     let present = line.character.as_ref().and_then(|id| {
-                        self.units.iter().find(|u| u.character.as_ref() == Some(id))
+                        self.runtime
+                            .units
+                            .iter()
+                            .find(|u| self.name(u.character) == Some(id.as_str()))
                     });
                     if let Some(id) = &line.character {
                         let party =
@@ -173,16 +183,26 @@ impl Game<'_> {
                         .phase;
                     let id = self.add(kind, phase, tile);
                     let index = self.index(id).unwrap();
-                    let unit = &mut self.units[index];
-                    unit.faction = Some(group.faction.clone());
-                    unit.ai_group = group.ai_group.clone();
-                    unit.character = member.character;
-                    unit.role = member.role;
-                    unit.items = member
+                    let faction = Some(self.intern_name(&group.faction));
+                    let ai_group = group
+                        .ai_group
+                        .as_deref()
+                        .map(|value| self.intern_name(value));
+                    let character = member
+                        .character
+                        .as_deref()
+                        .map(|value| self.intern_name(value));
+                    let items = member
                         .items
                         .iter()
                         .map(|id| self.rules.items[id].clone())
                         .collect();
+                    self.set_inventory(id, items);
+                    let unit = &mut self.runtime.units[index];
+                    unit.faction = faction;
+                    unit.ai_group = ai_group;
+                    unit.character = character;
+                    unit.role = member.role;
                 } else {
                     pending.push(member);
                 }
@@ -200,35 +220,37 @@ impl Game<'_> {
         for action in actions {
             match action {
                 EventAction::SetFlag(update) => {
-                    self.campaign.as_mut().unwrap().set_flag(
+                    self.runtime.campaign.as_mut().unwrap().set_flag(
                         update.id(),
                         update.state(),
-                        self.round,
+                        self.runtime.round,
                     );
                 }
                 EventAction::Say(nodes) => {
                     let mut lines = vec![];
                     self.script_speech(nodes, &mut lines);
-                    self.campaign.as_mut().unwrap().say(lines);
+                    self.runtime.campaign.as_mut().unwrap().say(lines);
                 }
-                EventAction::Sound(sound) => self.campaign.as_mut().unwrap().say([Dialogue {
-                    character: None,
-                    speaker: String::new(),
-                    portrait: "worker".into(),
-                    text: String::new(),
-                    sound: Some(sound.clone()),
-                }]),
+                EventAction::Sound(sound) => {
+                    self.runtime.campaign.as_mut().unwrap().say([Dialogue {
+                        character: None,
+                        speaker: String::new(),
+                        portrait: "worker".into(),
+                        text: String::new(),
+                        sound: Some(sound.clone()),
+                    }])
+                }
                 EventAction::Spawn(spec) => {
                     let area = if let Some(value) = &spec.tile {
                         let tile = self.bound_tile(value, bindings);
                         let origin = self.site(&tile);
-                        let mut slots: Vec<_> = (0..self.terrain.len())
-                            .filter(|&t| self.board.distance(origin, t) <= spec.radius)
+                        let mut slots: Vec<_> = (0..self.runtime.terrain.len())
+                            .filter(|&t| self.runtime.board.distance(origin, t) <= spec.radius)
                             .collect();
-                        slots.sort_by_key(|&t| (self.board.distance(origin, t), t));
+                        slots.sort_by_key(|&t| (self.runtime.board.distance(origin, t), t));
                         slots
                             .into_iter()
-                            .map(|t| self.board.ids[t].clone())
+                            .map(|t| self.runtime.board.ids[t].clone())
                             .collect()
                     } else {
                         spec.area
@@ -251,35 +273,41 @@ impl Game<'_> {
                         .iter()
                         .filter(|u| {
                             self.script_unit_matches(&spec.units, u)
-                                && tile.as_ref().is_none_or(|t| &self.board.ids[u.tile] == t)
+                                && tile
+                                    .as_ref()
+                                    .is_none_or(|t| &self.runtime.board.ids[u.tile] == t)
                         })
                         .map(|u| u.id)
                         .collect();
                     for id in selected {
                         let index = self.index(id).unwrap();
-                        let mut inventory = self.units[index].items.clone();
-                        inventory.push(self.rules.items[&spec.item].clone());
+                        let item = &self.rules.items[&spec.item];
                         if validate_equipment(
-                            &inventory,
-                            &self.rules.units[self.units[index].kind].attacks,
+                            self.inventory(&self.runtime.units[index])
+                                .chain(std::iter::once(item)),
+                            &self.rules.units[self.runtime.units[index].kind].attacks,
                             "event gift",
                         )
                         .is_ok()
                         {
-                            self.units[index].items = inventory;
+                            self.give_item(id, item.clone());
                         } else {
-                            self.ground_items.push(GroundItem {
-                                tile: self.board.ids[self.units[index].tile].clone(),
-                                item: self.rules.items[&spec.item].clone(),
+                            let item = std::sync::Arc::make_mut(&mut self.runtime.inventories)
+                                .add_item(item.clone(), self.mechanics);
+                            self.runtime.ground_items.push(GroundItemState {
+                                tile: self.runtime.units[index].tile,
+                                item,
                             });
                         }
                     }
                 }
                 EventAction::PlaceItem(spec) => {
                     let tile = self.bound_tile(&spec.tile, bindings);
-                    self.ground_items.push(GroundItem {
-                        tile: tile.clone(),
-                        item: self.rules.items[&spec.item].clone(),
+                    let item = std::sync::Arc::make_mut(&mut self.runtime.inventories)
+                        .add_item(self.rules.items[&spec.item].clone(), self.mechanics);
+                    self.runtime.ground_items.push(GroundItemState {
+                        tile: self.site(&tile),
+                        item,
                     });
                     if let Some(unit) = self.at(self.site(&tile)).map(|u| u.id) {
                         self.collect_items(unit);
@@ -296,11 +324,12 @@ impl Game<'_> {
                         .filter(|u| self.script_unit_matches(&spec.units, u))
                         .map(|u| u.id)
                         .collect();
+                    let faction = self.intern_name(&spec.faction);
                     for id in ids {
                         let index = self.index(id).unwrap();
-                        let unit = &mut self.units[index];
+                        let unit = &mut self.runtime.units[index];
                         unit.side = phase;
-                        unit.faction = Some(spec.faction.clone());
+                        unit.faction = Some(faction);
                         unit.ai_group = None;
                         unit.retreating = None;
                         unit.rebuilding = None;
@@ -319,7 +348,7 @@ impl Game<'_> {
                             .map(|u| u.id)
                             .collect(),
                     };
-                    self.units.retain(|u| !ids.contains(&u.id));
+                    self.runtime.units.retain(|u| !ids.contains(&u.id));
                     self.roster_changed();
                 }
                 EventAction::CreateMark(spec) => {
@@ -347,7 +376,9 @@ impl Game<'_> {
                         .iter()
                         .filter(|u| {
                             self.script_unit_matches(&spec.select.units, u)
-                                && tile.as_ref().is_none_or(|t| &self.board.ids[u.tile] == t)
+                                && tile
+                                    .as_ref()
+                                    .is_none_or(|t| &self.runtime.board.ids[u.tile] == t)
                         })
                         .cloned()
                         .collect();
@@ -374,7 +405,7 @@ impl Game<'_> {
                     let tile = self.bound_tile(&spec.tile, bindings);
                     self.set_terrain(self.site(&tile), self.rules.terrains[&spec.terrain]);
                 }
-                EventAction::Gold(spec) => self.gold[&spec.faction] += spec.amount,
+                EventAction::Gold(spec) => self.runtime.gold[&spec.faction] += spec.amount,
                 EventAction::Recruits(spec) => {
                     state
                         .recruitment_mut()
@@ -446,10 +477,9 @@ impl Game<'_> {
                     .required_companions
                     .iter()
                     .any(|id| {
-                        !self
-                            .units
-                            .iter()
-                            .any(|u| u.side == Side::Player && u.character.as_ref() == Some(id))
+                        !self.units.iter().any(|u| {
+                            u.side == Side::Player && self.name(u.character) == Some(id.as_str())
+                        })
                     }))
         {
             return;
@@ -457,9 +487,9 @@ impl Game<'_> {
         let definition = self.campaign_definition();
         let ending = definition.ending.clone();
         let last = definition.missions.len() - 1;
-        let mission = self.mission.as_ref().unwrap().clone();
-        self.winner = Some(if victory { Side::Player } else { Side::Enemy });
-        let campaign = self.campaign.as_mut().unwrap();
+        let mission = self.runtime.mission.as_ref().unwrap().clone();
+        self.runtime.winner = Some(if victory { Side::Player } else { Side::Enemy });
+        let campaign = self.runtime.campaign.as_mut().unwrap();
         campaign.outcome = Some(message.into());
         campaign.completed = victory && campaign.mission == last;
         if victory {
@@ -469,7 +499,7 @@ impl Game<'_> {
             if complete {
                 self.script_speech(&ending, &mut lines);
             }
-            self.campaign.as_mut().unwrap().say(lines);
+            self.runtime.campaign.as_mut().unwrap().say(lines);
         } else {
             campaign.say([Dialogue {
                 character: None,
@@ -488,7 +518,7 @@ impl Game<'_> {
             .expect("scripted chapter has event state");
         let mission = state.plan();
         let events = &mission.scripted_events;
-        let deaths = std::mem::take(&mut self.event_deaths);
+        let deaths = std::mem::take(&mut self.runtime.event_deaths);
         self.release_event_spawns(&mut state);
         EventProgress::update_holds(&mut state, &EventFacts::new(self), tick);
         let mut fired = HashSet::new();
@@ -549,11 +579,11 @@ impl Game<'_> {
                         }
                     }
                     changed = true;
-                    if self.winner.is_some() || event.remembers {
+                    if self.runtime.winner.is_some() || event.remembers {
                         break;
                     }
                 }
-                if self.winner.is_some() {
+                if self.runtime.winner.is_some() {
                     break;
                 }
             }
@@ -562,7 +592,7 @@ impl Game<'_> {
                 state.compact();
             }
             EventProgress::update_holds(&mut state, &EventFacts::new(self), false);
-            if !changed || self.winner.is_some() {
+            if !changed || self.runtime.winner.is_some() {
                 break;
             }
         }
@@ -592,12 +622,13 @@ impl Game<'_> {
             state.marks_mut()[index].light_remembered = true;
         }
         self.reveal_objectives(&mut state);
-        self.scripts = Some(state);
-        self.event_departure = None;
-        self.event_opening = false;
+        self.runtime.scripts = Some(state);
+        self.runtime.event_departure = None;
+        self.runtime.event_opening = false;
     }
     pub(crate) fn script_mark_lights(&self) -> Vec<BattlefieldLight> {
-        self.scripts
+        self.runtime
+            .scripts
             .as_deref()
             .into_iter()
             .flat_map(|s| &s.marks)
@@ -615,7 +646,7 @@ impl Game<'_> {
                             })
                     })
                     .map(|l| {
-                        let (c, r) = self.board.positions[self.site(&m.tile)];
+                        let (c, r) = self.runtime.board.positions[self.site(&m.tile)];
                         l.at(c, r)
                     })
             })
@@ -625,23 +656,24 @@ impl Game<'_> {
         let origins: Vec<_> = if let Some(t) = &selection.tile {
             vec![self.reference_site(t)]
         } else {
-            self.units
+            self.runtime
+                .units
                 .iter()
                 .filter(|u| self.script_unit_matches(selection.target.as_ref().unwrap(), u))
                 .map(|u| u.tile)
                 .collect()
         };
-        (0..self.terrain.len())
+        (0..self.runtime.terrain.len())
             .filter(|&t| {
                 origins
                     .iter()
-                    .any(|&o| self.board.distance(t, o) <= selection.radius)
+                    .any(|&o| self.runtime.board.distance(t, o) <= selection.radius)
             })
-            .map(|t| self.board.ids[t].clone())
+            .map(|t| self.runtime.board.ids[t].clone())
             .collect()
     }
     fn objective_available(&self, event: &ScriptEvent) -> bool {
-        let state = self.scripts.as_deref().unwrap();
+        let state = self.runtime.scripts.as_deref().unwrap();
         let objective = event.objective.as_ref().unwrap();
         !state.failed.iter().any(|id| id == event.objective_id())
             && (objective.satisfied_when.is_some()
@@ -653,11 +685,12 @@ impl Game<'_> {
     }
     pub(crate) fn planning_objectives(&self) -> Vec<crate::view::CampaignObjective<'_>> {
         use crate::view::{CampaignIntent as Kind, CampaignObjective};
-        let Some(state) = self.scripts.as_deref() else {
+        let Some(state) = self.runtime.scripts.as_deref() else {
             return vec![];
         };
         let facts = EventFacts::new(self);
-        self.mission
+        self.runtime
+            .mission
             .as_ref()
             .into_iter()
             .flat_map(|m| &m.scripted_events)
@@ -674,22 +707,22 @@ impl Game<'_> {
                     EventIntent::Hold(v) => (
                         Kind::Hold,
                         Some(&v.units),
-                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::Escort(v) => (
                         Kind::Escort,
                         Some(&v.units),
-                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::GoTo(v) => (
                         Kind::GoTo,
                         Some(&v.units),
-                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::Escape(v) => (
                         Kind::Escape,
                         Some(&v.units),
-                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::Approach(v) => {
                         (Kind::Approach, Some(&v.units), self.approach_tiles(v))
@@ -697,22 +730,23 @@ impl Game<'_> {
                     EventIntent::Own(v) => (
                         Kind::Own,
                         None,
-                        vec![self.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::Capture(v) => (
                         Kind::Capture,
                         None,
                         v.iter()
-                            .map(|t| self.board.ids[self.reference_site(t)])
+                            .map(|t| self.runtime.board.ids[self.reference_site(t)])
                             .collect(),
                     ),
                     EventIntent::Defeat(v) => (
                         Kind::Defeat,
                         Some(v),
-                        self.units
+                        self.runtime
+                            .units
                             .iter()
                             .filter(|unit| self.script_unit_matches(v, unit))
-                            .map(|unit| self.board.ids[unit.tile].clone())
+                            .map(|unit| self.runtime.board.ids[unit.tile].clone())
                             .collect(),
                     ),
                 };
@@ -729,11 +763,12 @@ impl Game<'_> {
     }
     /// Aggregate readiness blocks terminal shortcuts without revealing hidden requirements.
     pub(crate) fn requirements_disclosed(&self) -> bool {
-        let Some(state) = self.scripts.as_deref() else {
+        let Some(state) = self.runtime.scripts.as_deref() else {
             return true;
         };
         let facts = EventFacts::new(self);
-        self.mission
+        self.runtime
+            .mission
             .as_ref()
             .into_iter()
             .flat_map(|m| &m.scripted_events)
@@ -750,10 +785,10 @@ impl Game<'_> {
             })
     }
     pub(crate) fn script_pending_arrivals(&self) -> bool {
-        if self.turn != Side::Player {
+        if self.runtime.turn != Side::Player {
             return false;
         }
-        let Some(state) = self.scripts.as_deref() else {
+        let Some(state) = self.runtime.scripts.as_deref() else {
             return false;
         };
         state.pending.iter().any(|pending| {
@@ -767,7 +802,7 @@ impl Game<'_> {
             .any(|event| {
                 let due = match &event.when {
                     When::Turn(TurnSelection::Faction { number, faction }) => {
-                        *number <= self.round
+                        *number <= self.runtime.round
                             && self
                                 .faction(faction)
                                 .is_some_and(|f| f.phase == Side::Enemy)
@@ -783,7 +818,7 @@ impl Game<'_> {
     }
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn event_goal_progress(&self) -> Vec<Progress> {
-        self.mission.as_ref().map_or_else(Vec::new, |m| {
+        self.runtime.mission.as_ref().map_or_else(Vec::new, |m| {
             m.scripted_events
                 .iter()
                 .filter(|e| e.objective.as_ref().is_some_and(|o| !o.optional))
@@ -794,31 +829,36 @@ impl Game<'_> {
 
     pub(crate) fn scripted_objective_status(&self, event: &ScriptEvent) -> ObjectiveStatus {
         let objective = event.objective.as_ref().unwrap();
-        let state = self.scripts.as_deref().unwrap();
+        let state = self.runtime.scripts.as_deref().unwrap();
         let failed = state.failed.iter().any(|id| id == event.objective_id());
         let done = EventFacts::new(self).objective_satisfied(state, event.objective_id());
         let available = self.objective_available(event);
         let (tiles, total) = match &objective.intent {
-            EventIntent::Hold(v) => (vec![self.board.ids[self.reference_site(&v.tile)]], v.turns),
-            EventIntent::Escort(v) | EventIntent::GoTo(v) | EventIntent::Escape(v) => {
-                (vec![self.board.ids[self.reference_site(&v.tile)]], 1)
-            }
+            EventIntent::Hold(v) => (
+                vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                v.turns,
+            ),
+            EventIntent::Escort(v) | EventIntent::GoTo(v) | EventIntent::Escape(v) => (
+                vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                1,
+            ),
             EventIntent::Approach(v) => (self.approach_tiles(v), 1),
             EventIntent::Own(v) => (
-                vec![self.board.ids[self.reference_site(&v.tile)]],
+                vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
                 v.turns.unwrap_or(1),
             ),
             EventIntent::Capture(v) => (
                 v.iter()
-                    .map(|t| self.board.ids[self.reference_site(t)])
+                    .map(|t| self.runtime.board.ids[self.reference_site(t)])
                     .collect(),
                 v.len() as u32,
             ),
             EventIntent::Defeat(v) => (
-                self.units
+                self.runtime
+                    .units
                     .iter()
                     .filter(|u| self.script_unit_matches(v, u))
-                    .map(|u| self.board.ids[u.tile].clone())
+                    .map(|u| self.runtime.board.ids[u.tile].clone())
                     .collect(),
                 1,
             ),
@@ -828,7 +868,9 @@ impl Game<'_> {
         } else if let EventIntent::Capture(tiles) = &objective.intent {
             tiles
                 .iter()
-                .filter(|t| self.owners[self.reference_site(t)].as_deref() == Some("player"))
+                .filter(|t| {
+                    self.runtime.owners[self.reference_site(t)].as_deref() == Some("player")
+                })
                 .count() as u32
         } else if matches!(
             &objective.intent,
@@ -852,16 +894,17 @@ impl Game<'_> {
             .as_ref()
             .map_or_else(Vec::new, |marker| {
                 let destinations: Vec<Hex> = if let Some(select) = &marker.units {
-                    self.units
+                    self.runtime
+                        .units
                         .iter()
                         .filter(|unit| self.script_unit_matches(select, unit))
-                        .map(|unit| self.board.ids[unit.tile].clone())
+                        .map(|unit| self.runtime.board.ids[unit.tile].clone())
                         .collect()
                 } else {
                     marker
                         .tiles
                         .iter()
-                        .map(|name| self.board.ids[self.reference_site(name)].clone())
+                        .map(|name| self.runtime.board.ids[self.reference_site(name)].clone())
                         .collect()
                 };
                 destinations
@@ -870,12 +913,17 @@ impl Game<'_> {
                         marker.visible_in_fog
                             || self
                                 .condition_context()
-                                .visible_at(self.board.positions[self.site(tile)])
+                                .visible_at(self.runtime.board.positions[self.site(tile)])
                     })
                     .collect()
             });
         ObjectiveStatus {
-            active_tiles: if !done && !failed && visible && available && self.winner.is_none() {
+            active_tiles: if !done
+                && !failed
+                && visible
+                && available
+                && self.runtime.winner.is_none()
+            {
                 markers
             } else {
                 vec![]

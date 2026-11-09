@@ -9,6 +9,7 @@ use crate::{
     data::*,
     logic::Game,
 };
+use hex_command_battle::RuntimeCommand as Command;
 use hex_command_battle::{ActionForecast, ActionForecastSource, BattleView, PhaseForecasts};
 
 /// Execution-only recruiter information. Evaluators receive EstimateInput instead.
@@ -136,10 +137,10 @@ impl RecruitmentContext<'_, '_> {
         self.draft
     }
     pub(in crate::ai) fn emit(&mut self, command: Command) -> Result<(), CommandError> {
-        if !self.draft.permits(&command) {
+        if !self.draft.permits_runtime(&command) {
             return Err(CommandError::IllegalIntent);
         }
-        self.draft.execute(command.clone())?;
+        self.draft.execute_runtime(command.clone())?;
         self.commands.push(command);
         Ok(())
     }
@@ -208,11 +209,11 @@ impl TacticalContext<'_, '_> {
         self.draft
     }
     pub(in crate::ai) fn emit(&mut self, command: Command) -> Result<(), CommandError> {
-        if !self.draft.permits(&command) {
+        if !self.draft.permits_runtime(&command) {
             return Err(CommandError::IllegalIntent);
         }
         let before = self.draft.control_roster();
-        self.draft.execute(command.clone())?;
+        self.draft.execute_runtime(command.clone())?;
         let control_changed = command != Command::EndTurn && before != self.draft.control_roster();
         self.combat_boundary = command.is_attack() || control_changed;
         if control_changed {

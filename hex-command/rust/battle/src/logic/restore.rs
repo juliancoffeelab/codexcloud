@@ -50,7 +50,7 @@ pub fn validate_state_geometry_with_campaign(
     rules: &Rules,
     state: &State,
     authored: &State,
-    campaign_definition: Option<&Campaign>,
+    campaign_definition: Option<&CampaignRules>,
 ) -> Result<(), StateError> {
     let fail = |message: &str| StateError(message.to_owned());
     let registry = campaign_definition.or_else(|| rules.campaign_for_map(&state.map_id));

@@ -10,6 +10,7 @@ pub(crate) struct LiveContext<'a, 'catalog> {
     rules: &'catalog Rules,
     board: &'a super::battle::Board,
     units: &'a [Unit],
+    names: &'a Names,
     factions: &'a [Faction],
     owners: &'a [Option<String>],
     mission: Option<&'a Mission>,
@@ -28,6 +29,7 @@ impl<'a, 'catalog> LiveContext<'a, 'catalog> {
             rules: game.rules,
             board: &game.board,
             units: &game.units,
+            names: &game.runtime.names,
             factions: &game.factions,
             owners: &game.owners,
             mission: game.mission.as_deref().map(|m| &**m),
@@ -83,11 +85,11 @@ impl ConditionContext for LiveContext<'_, '_> {
                 .map(|(_, tile)| tile)
                 .unwrap_or(unit.tile);
             predicate(ConditionUnit {
-                faction: unit.faction.as_deref(),
+                faction: self.names.resolve(unit.faction),
                 side: unit.side,
                 kind: &self.rules.units[unit.kind].id,
-                character: unit.character.as_deref(),
-                ai_group: unit.ai_group.as_deref(),
+                character: self.names.resolve(unit.character),
+                ai_group: self.names.resolve(unit.ai_group),
                 position: Some(self.board.positions[tile]),
             })
         })
@@ -182,8 +184,8 @@ impl<'catalog> Game<'catalog> {
         if matches(condition, &self.condition_context(), None) {
             return true;
         }
-        if let Some((actor, path)) = &self.traversal {
-            if self.units.iter().any(|u| u.id == *actor) {
+        if let Some((actor, path)) = &self.runtime.traversal {
+            if self.runtime.units.iter().any(|u| u.id == *actor) {
                 return path.iter().any(|&tile| {
                     matches(
                         condition,
@@ -206,12 +208,13 @@ impl<'catalog> Game<'catalog> {
         })
     }
     pub(crate) fn presentation(&self) -> BattlefieldPresentation {
-        let mut result = presentation::render(&self.condition_context(), &self.condition_memory);
+        let mut result =
+            presentation::render(&self.condition_context(), &self.runtime.condition_memory);
         result.lighting.lights.extend(self.script_mark_lights());
         result
     }
     pub(crate) fn remember_conditions(&mut self) {
-        let groups = self.mission.as_ref().is_some_and(|m| {
+        let groups = self.runtime.mission.as_ref().is_some_and(|m| {
             m.enemy_groups
                 .iter()
                 .any(|g| g.when.as_ref().is_some_and(|r| r.remember))
@@ -230,15 +233,15 @@ impl<'catalog> Game<'catalog> {
         {
             return;
         }
-        let mut memory = std::mem::take(&mut self.condition_memory);
-        let mut known = std::mem::take(&mut self.fog_memory);
+        let mut memory = std::mem::take(&mut self.runtime.condition_memory);
+        let mut known = std::mem::take(&mut self.runtime.fog_memory);
         let mut visit = |position| {
             let input = LiveContext::new(self, position);
             let added = presentation::discover(&input, &memory, &mut known);
             if !added.is_empty() {
                 std::rc::Rc::make_mut(&mut memory).extend(added);
             }
-            if let Some(mission) = &self.mission {
+            if let Some(mission) = &self.runtime.mission {
                 for group in &mission.enemy_groups {
                     if group
                         .when
@@ -254,14 +257,14 @@ impl<'catalog> Game<'catalog> {
             }
         };
         visit(None);
-        if let Some((actor, path)) = &self.traversal {
-            if self.units.iter().any(|u| u.id == *actor) {
+        if let Some((actor, path)) = &self.runtime.traversal {
+            if self.runtime.units.iter().any(|u| u.id == *actor) {
                 for &tile in path {
                     visit(Some((*actor, tile)));
                 }
             }
         }
-        self.condition_memory = memory;
-        self.fog_memory = known;
+        self.runtime.condition_memory = memory;
+        self.runtime.fog_memory = known;
     }
 }

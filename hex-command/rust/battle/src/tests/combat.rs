@@ -521,6 +521,7 @@ fn independent_roll_distributions_include_clamping_and_exact_kill_odds() {
     attack.damage = 1;
     attack.spread = 1;
     attack.count = 2;
+    let attack = &rules.units.mechanics().attacks(rules.types["archer"])[0];
     let distribution = crate::logic::damage::distribution(attack, 0);
     assert_eq!((distribution.min, distribution.max), (0, 4));
     for (actual, expected) in distribution.probabilities.iter().zip([1., 2., 3., 2., 1.]) {

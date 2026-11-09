@@ -391,10 +391,10 @@ fn phase(
             };
             recruitment.get_or_insert(plan.recruitment);
             for command in plan.commands {
-                if scoped && command == Command::EndTurn {
+                if scoped && command == hex_command_battle::RuntimeCommand::EndTurn {
                     continue;
                 }
-                game.execute(command)?;
+                game.execute_runtime(command)?;
             }
             if workspace.finished() || game.winner().is_some() {
                 break plan.planning;
@@ -598,14 +598,14 @@ pub(super) fn run_arena_capturing(
 pub fn run_campaign(
     rules: &Rules,
     config: CampaignConfig,
-    definition: &Campaign,
+    definition: &CampaignRules,
 ) -> Result<CampaignResult, SimulationError> {
     run_campaign_capturing(rules, config, definition, None)
 }
 pub(super) fn run_campaign_capturing(
     rules: &Rules,
     config: CampaignConfig,
-    definition: &Campaign,
+    definition: &CampaignRules,
     mut capture: Option<&mut super::phase_fixtures::Capture>,
 ) -> Result<CampaignResult, SimulationError> {
     validate_limits(config.max_rounds, config.recruit_limit)?;

@@ -3,6 +3,7 @@
 use crate::ai::{Blocks, Policy};
 use crate::ai::{Diplomacy, orders::*, planner, policies};
 use crate::data::*;
+use hex_command_battle::RuntimeCommand as Command;
 use std::collections::VecDeque;
 
 /// Public continuation handle. Its storage is private to runtime, not AI siblings.
@@ -11,7 +12,8 @@ pub struct PlanningWorkspace {
 }
 
 pub(super) struct TurnState {
-    pub(super) control_roster: Option<Vec<(u32, Side, Option<String>, Option<Role>)>>,
+    scope: Option<hex_command_battle::BattleScope>,
+    pub(super) control_roster: Option<Vec<(u32, Side, Option<NameKey>, Option<Role>)>>,
     #[cfg(any(feature = "wasm", test))]
     pub(super) controller_index: usize,
     #[cfg(any(feature = "wasm", test))]
@@ -27,7 +29,7 @@ pub(super) struct TurnState {
     pub(super) initialized: bool,
     pub(super) finished: bool,
     pub(super) commands: VecDeque<Command>,
-    pub(super) attack_continuation: Option<(UnitId, UnitId, WeaponId)>,
+    pub(super) attack_continuation: Option<(UnitId, UnitId, WeaponKey)>,
     #[cfg(any(feature = "wasm", test))]
     pub(super) blocks: Option<Blocks>,
     pub(super) orders: Option<CampaignOrders>,
@@ -55,7 +57,7 @@ pub(in crate::ai) struct PlannerTurn<'a> {
     pub commands: &'a mut VecDeque<Command>,
     pub report: &'a mut PlanningReport,
     pub finished: &'a mut bool,
-    pub attack_continuation: &'a mut Option<(UnitId, UnitId, WeaponId)>,
+    pub attack_continuation: &'a mut Option<(UnitId, UnitId, WeaponKey)>,
     pub coordination: &'a mut policies::cooperation::State,
 }
 pub(in crate::ai) struct PlannerParts<'a, S> {
@@ -95,6 +97,7 @@ impl PlanningWorkspace {
     ) -> Self {
         Self {
             state: TurnState {
+                scope: None,
                 control_roster: None,
                 #[cfg(any(feature = "wasm", test))]
                 controller_index: 0,
@@ -176,7 +179,29 @@ impl PlanningWorkspace {
             session: &mut state.queued,
         }
     }
+    pub(super) fn refresh_scope(&mut self, game: &crate::logic::Game<'_>) {
+        let changed = self
+            .state
+            .scope
+            .as_ref()
+            .is_some_and(|scope| !game.in_scope(scope));
+        if changed {
+            self.reset_planning();
+            self.state.recruitment_opportunity = None;
+            self.state.control_roster = None;
+            #[cfg(any(feature = "wasm", test))]
+            {
+                self.state.controller_index = 0;
+                self.state.controller_factions = None;
+                self.state.controller_workspace = None;
+            }
+        }
+        if self.state.scope.is_none() || changed {
+            self.state.scope = Some(game.scope());
+        }
+    }
     pub(super) fn refresh_control(&mut self, game: &crate::logic::Game<'_>) {
+        self.refresh_scope(game);
         let roster = game.control_roster();
         let changed = self.state.control_roster.as_ref().is_some_and(|before| {
             before.iter().any(|old| {

@@ -1,6 +1,7 @@
 //! Policies choose typed commands from a read-only battle. A workspace retains
 //! turn-local commitments and the continuation of a classic unit's action.
 #![deny(clippy::wildcard_enum_match_arm)]
+use hex_command_battle::RuntimeCommand as Command;
 pub mod campaigner;
 pub mod context;
 pub mod orders;
@@ -11,7 +12,7 @@ mod presets;
 pub mod profiling;
 pub mod recruiter;
 mod roles;
-use crate::{data::*, logic::Command};
+use crate::data::*;
 pub use campaigner::CampaignerKind as CampaignBlock;
 pub use planner::PlannerKind as Planner;
 pub use policies::tie_breaking::Random;
@@ -135,10 +136,10 @@ fn intent_command(
         record_retreat: false,
     }
 }
-fn move_command(game: &context::BattleView<'_, '_>, unit: u32, tile: usize) -> Command {
+fn move_command(unit: u32, tile: usize) -> Command {
     Command::Move {
         unit: UnitId(unit),
-        tile: TileId(game.board().ids[tile].clone()),
+        tile: TileIndex(tile),
     }
 }
 fn attack_command(
@@ -151,25 +152,20 @@ fn attack_command(
     Command::Attack {
         unit: UnitId(unit),
         target: UnitId(target),
-        weapon: WeaponId(game.weapon(actor, weapon).id.clone()),
+        weapon: game.weapon(actor, weapon).key(),
     }
 }
-fn recruit_command(
-    game: &context::BattleView<'_, '_>,
-    unit: u32,
-    kind: usize,
-    tile: usize,
-) -> Command {
+fn recruit_command(unit: u32, kind: usize, tile: usize) -> Command {
     Command::Recruit {
         unit: UnitId(unit),
-        kind: UnitTypeId(game.rules().units[kind].id.clone()),
-        tile: TileId(game.board().ids[tile].clone()),
+        kind: UnitKind(kind),
+        tile: TileIndex(tile),
     }
 }
-fn advance_command(game: &context::BattleView<'_, '_>, unit: u32, kind: usize) -> Command {
+fn advance_command(unit: u32, kind: usize) -> Command {
     Command::Advance {
         unit: UnitId(unit),
-        kind: UnitTypeId(game.rules().units[kind].id.clone()),
+        kind: UnitKind(kind),
     }
 }
 
@@ -178,6 +174,7 @@ mod courier_tests {
     use super::*;
     use crate::data::Hex;
     use crate::{ai::recruiter::fixtures, logic::Game};
+    use hex_command_battle::RuntimeCommand as Command;
 
     #[test]
     fn required_courier_can_detour_around_stationary_allies() {
@@ -256,9 +253,6 @@ mod courier_tests {
 
             // Block the other direct approach as well.
             units.push(Unit {
-                faction: None,
-                items: vec![],
-                ai_group: None,
                 id: 100,
                 kind: rules.types["reefguard"],
                 tile: blocker_tile,
@@ -267,10 +261,13 @@ mod courier_tests {
                 moved: true,
                 attacked: true,
                 experience: Some(0),
-                character: None,
                 role: None,
                 retreating: None,
                 rebuilding: None,
+                faction: None,
+                ai_group: None,
+                character: None,
+                inventory: InventoryId::default(),
             });
         });
         let courier = game.unit(5).unwrap();
@@ -284,13 +281,13 @@ mod courier_tests {
         let command = loop {
             let command = choose_game_command(&game, Policy::Balanced, &mut workspace).unwrap();
             if is_command_setunitintent(&command) {
-                game.execute(command).unwrap();
+                game.execute_runtime(command).unwrap();
             } else {
                 break command;
             }
         };
         assert!(is_command_move(&command), "{command:?}");
-        game.execute(command).unwrap();
+        game.execute_runtime(command).unwrap();
         assert_ne!(game.board().ids[game.unit(5).unwrap().tile], Hex::new(8, 4));
     }
 
@@ -358,7 +355,7 @@ mod courier_tests {
                 if is_command_endturn(&command) {
                     break;
                 }
-                game.execute(command).unwrap();
+                game.execute_runtime(command).unwrap();
                 if game.winner().is_some() {
                     break;
                 }

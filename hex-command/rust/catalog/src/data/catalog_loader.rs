@@ -693,7 +693,7 @@ impl Rules {
             terrain_definitions: terrain,
             race_definitions: races.into_iter().map(|(_, race)| race).collect(),
             map_definitions,
-            units,
+            units: units.into(),
             movement_classes,
             route_classes,
             types,
@@ -701,7 +701,10 @@ impl Rules {
             maps,
             #[cfg(not(target_arch = "wasm32"))]
             arena_maps,
-            campaigns,
+            campaigns: campaigns
+                .into_iter()
+                .map(|(id, campaign)| (id, CampaignRules::from(campaign)))
+                .collect(),
             rosters,
             #[cfg(not(target_arch = "wasm32"))]
             arena,
@@ -1999,7 +2002,7 @@ impl Rules {
         &self,
         campaign: &str,
         route: &str,
-    ) -> Result<std::borrow::Cow<'_, Campaign>, ContentError> {
+    ) -> Result<std::borrow::Cow<'_, CampaignRules>, ContentError> {
         let authored = self.campaigns.get(campaign).ok_or_else(|| {
             ContentError::new(
                 "simulation/campaign.json",

@@ -73,6 +73,7 @@ mod tests {
     use super::*;
     use crate::ai::recruiter::fixtures;
     use crate::logic::Game;
+    use hex_command_battle::RuntimeCommand as Command;
 
     fn fixture() -> (Rules, usize, usize, usize) {
         let mut rules = Rules::load().unwrap();
@@ -384,15 +385,15 @@ mod tests {
                 let mut workspace = PlanningWorkspace::new(7, 0, None, Diplomacy::Diplomatic);
                 let plan = tactic.run_turn(&game, &mut workspace).unwrap();
                 assert!(
-                    plan.commands.contains(&crate::logic::Command::Advance {
+                    plan.commands.contains(&Command::Advance {
                         unit: UnitId(id),
-                        kind: UnitTypeId(rules.units[branch].id.clone()),
+                        kind: UnitKind(branch),
                     }),
                     "{planner:?} did not execute selected branch"
                 );
                 let mut replay = game.fork();
                 for command in plan.commands {
-                    replay.execute(command).unwrap();
+                    replay.execute_runtime(command).unwrap();
                 }
                 assert_eq!(replay.unit(id).unwrap().kind, branch);
             }

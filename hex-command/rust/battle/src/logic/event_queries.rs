@@ -9,6 +9,7 @@ pub(super) struct EventFacts<'a, 'catalog> {
     rules: &'catalog Rules,
     board: &'a Board,
     units: &'a [Unit],
+    names: &'a Names,
     factions: &'a [Faction],
     owners: &'a [Option<String>],
     round: u32,
@@ -26,6 +27,7 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
             rules: game.rules,
             board: &game.board,
             units: &game.units,
+            names: &game.runtime.names,
             factions: &game.factions,
             owners: &game.owners,
             round: game.round,
@@ -54,7 +56,7 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
     }
     #[inline]
     fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
-        unit_matches(self.rules, self.factions, select, unit)
+        unit_matches(self.rules, self.factions, self.names, select, unit)
     }
     fn pending_unit_matches(
         &self,
@@ -222,23 +224,26 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
 pub(super) fn unit_matches(
     rules: &Rules,
     factions: &[Faction],
+    names: &Names,
     select: &UnitMatch,
     unit: &Unit,
 ) -> bool {
     select
         .character
         .as_ref()
-        .is_none_or(|id| unit.character.as_ref() == Some(id))
+        .is_none_or(|id| names.resolve(unit.character) == Some(id.as_str()))
         && select
             .retreating
             .is_none_or(|value| unit.retreating.unwrap_or(false) == value)
         && select.role.is_none_or(|r| unit.role == Some(r))
-        && select
-            .faction
-            .as_ref()
-            .is_none_or(|id| unit.faction.as_deref().unwrap_or(unit.side.faction_id()) == id)
+        && select.faction.as_ref().is_none_or(|id| {
+            names
+                .resolve(unit.faction)
+                .unwrap_or(unit.side.faction_id())
+                == id
+        })
         && select.side.is_none_or(|side| {
-            faction_matches_side(factions, unit.faction.as_deref(), unit.side, side)
+            faction_matches_side(factions, names.resolve(unit.faction), unit.side, side)
         })
         && select
             .unit_type
@@ -248,5 +253,5 @@ pub(super) fn unit_matches(
         && select
             .ai_group
             .as_ref()
-            .is_none_or(|id| unit.ai_group.as_ref() == Some(id))
+            .is_none_or(|id| names.resolve(unit.ai_group) == Some(id.as_str()))
 }

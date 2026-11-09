@@ -3,11 +3,11 @@ use super::battle::Game;
 use crate::{data::*, model::*};
 
 impl Game<'_> {
-    fn damage_detail(&self, attack: &Weapon, defender: &Unit, tile: usize) -> DamageDetail {
+    fn damage_detail(&self, attack: &WeaponRules, defender: &Unit, tile: usize) -> DamageDetail {
         let rule = &self.rules.units[defender.kind];
         let modifier = rule.damage_modifiers.get(attack.damage_type)
             + self.equipment_modifier(defender, attack.damage_type);
-        let environment = rule.environment[self.terrain[tile]][attack.category.index()]
+        let environment = rule.environment[self.runtime.terrain[tile]][attack.category.index()]
             [attack.damage_type.index()];
         let distribution = super::damage::distribution(attack, modifier + environment);
         DamageDetail {
@@ -25,14 +25,14 @@ impl Game<'_> {
             modified: attack.damage + modifier,
             protection: (-environment).max(0),
             exposure: environment.max(0),
-            terrain: self.rules.terrain_names[self.terrain[tile]].clone(),
+            terrain: self.rules.terrain_names[self.runtime.terrain[tile]].clone(),
             damage: (attack.damage + modifier + environment).max(0),
         }
     }
 
     fn campaign_objectives(&self) -> Option<CampaignObjectives> {
-        let state = self.campaign.as_ref()?;
-        let mission = self.mission.as_ref()?;
+        let state = self.runtime.campaign.as_ref()?;
+        let mission = self.runtime.mission.as_ref()?;
         let leader_alive = self
             .units
             .iter()
@@ -46,20 +46,19 @@ impl Game<'_> {
             available: true,
             progress: Progress {
                 label,
-                current: u32::from(self.winner.is_some() && alive),
+                current: u32::from(self.runtime.winner.is_some() && alive),
                 total: 1,
-                done: self.winner.is_some() && alive,
+                done: self.runtime.winner.is_some() && alive,
                 tiles: vec![],
             },
             failed: !alive,
         };
         let mut protected = vec![survival("Keep your leader alive.".into(), leader_alive)];
         for name in &mission.required_companions {
-            let alive = self
-                .units
-                .iter()
-                .any(|u| u.side == Side::Player && u.character.as_ref() == Some(name))
-                || state
+            let alive =
+                self.units.iter().any(|u| {
+                    u.side == Side::Player && self.name(u.character) == Some(name.as_str())
+                }) || state
                     .evacuated
                     .iter()
                     .any(|record| record.unit.character.as_ref() == Some(name));
@@ -109,9 +108,9 @@ impl Game<'_> {
                 .map(|(index, id)| {
                     (
                         id.to_string(),
-                        self.board.adjacent[index]
+                        self.runtime.board.adjacent[index]
                             .iter()
-                            .map(|&next| self.board.ids[next].clone())
+                            .map(|&next| self.runtime.board.ids[next].clone())
                             .collect(),
                     )
                 })
@@ -125,7 +124,7 @@ impl Game<'_> {
             .iter()
             .map(|unit| {
                 let mut attacks = Vec::new();
-                for target in &self.units {
+                for target in &self.runtime.units {
                     for weapon in self.attack_options(unit, target, unit.tile) {
                         let attack = self.weapon(unit, weapon).clone();
                         let (damage, retaliation, response) =
@@ -155,16 +154,17 @@ impl Game<'_> {
                             damage,
                             retaliation,
                             damage_detail: self.damage_detail(&attack, target, target.tile),
-                            attack,
-                            response,
+                            attack: self.source_weapon(&attack).clone(),
+                            response: response
+                                .as_ref()
+                                .map(|attack| self.source_weapon(attack).clone()),
                             retaliation_detail,
                         });
                     }
                 }
                 UnitActions {
-                    name: unit
-                        .character
-                        .as_deref()
+                    name: self
+                        .name(unit.character)
                         .and_then(|id| self.character_name(id))
                         .map(str::to_owned),
                     faction: self.unit_faction_view(unit),
@@ -174,7 +174,7 @@ impl Game<'_> {
                         .iter()
                         .copied()
                         .map(|(tile, cost)| ReachableTile {
-                            tile: TileId(self.board.ids[tile].clone()),
+                            tile: TileId(self.runtime.board.ids[tile].clone()),
                             cost,
                         })
                         .collect(),
@@ -192,7 +192,7 @@ impl Game<'_> {
                                 self.rules.units[kind].id.clone(),
                                 self.placement_tiles(unit, kind, true)
                                     .into_iter()
-                                    .map(|tile| self.board.ids[tile].clone())
+                                    .map(|tile| self.runtime.board.ids[tile].clone())
                                     .collect(),
                             )
                         })
@@ -254,7 +254,8 @@ impl Game<'_> {
                 })
                 .collect(),
             income: Gold(std::sync::Arc::new(
-                self.gold
+                self.runtime
+                    .gold
                     .keys()
                     .map(|id| (id.clone(), self.faction_income(id)))
                     .collect(),

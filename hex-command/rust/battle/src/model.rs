@@ -295,3 +295,33 @@ impl ScopedOrder {
                 .any(|tile| game.board().distance(game.site(&tile.0), target) <= self.attack_radius)
     }
 }
+
+/// Recruitment can use only the six neighboring hexes, in board order.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct PlacementTiles {
+    tiles: [usize; 6],
+    len: usize,
+}
+impl std::ops::Deref for PlacementTiles {
+    type Target = [usize];
+    fn deref(&self) -> &[usize] {
+        &self.tiles[..self.len]
+    }
+}
+impl FromIterator<usize> for PlacementTiles {
+    fn from_iter<T: IntoIterator<Item = usize>>(tiles: T) -> Self {
+        let mut result = Self::default();
+        for tile in tiles {
+            result.tiles[result.len] = tile;
+            result.len += 1;
+        }
+        result
+    }
+}
+impl IntoIterator for PlacementTiles {
+    type Item = usize;
+    type IntoIter = std::iter::Take<std::array::IntoIter<usize, 6>>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.tiles.into_iter().take(self.len)
+    }
+}

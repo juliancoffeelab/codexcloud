@@ -13,7 +13,50 @@ pub(in crate::ai) fn jitter(seed: u32, key: &str) -> f64 {
     for c in key.encode_utf16() {
         h = (h ^ c as u32).wrapping_mul(16777619);
     }
-    h as f64 / 4294967296.0 * 0.05
+    jitter_value(h)
+}
+#[inline]
+fn jitter_value(hash: u32) -> f64 {
+    hash as f64 / 4294967296.0 * 0.05
+}
+
+pub(in crate::ai) fn mixed_draw(jitter: f64) -> f64 {
+    Random((jitter / 0.05 * u32::MAX as f64) as u32).next()
+}
+
+/// A recruitment draw's stable domain, round and authored unit ID are hashed
+/// once. Placements append a numeric tile without allocating or rehashing IDs.
+pub(in crate::ai) struct RecruitmentDraw(u32);
+impl RecruitmentDraw {
+    pub(in crate::ai) fn new(seed: u32, round: u32, unit: &str) -> Self {
+        let mut hash = seed;
+        for byte in b"situational:" {
+            hash = (hash ^ u32::from(*byte)).wrapping_mul(16777619);
+        }
+        hash = hash_number(hash, round);
+        hash = (hash ^ u32::from(b':')).wrapping_mul(16777619);
+        for character in unit.encode_utf16() {
+            hash = (hash ^ u32::from(character)).wrapping_mul(16777619);
+        }
+        Self((hash ^ u32::from(b':')).wrapping_mul(16777619))
+    }
+    pub(in crate::ai) fn at_tile(&self, mut tile: usize) -> f64 {
+        let mut digits = [0u8; 20];
+        let mut start = digits.len();
+        loop {
+            start -= 1;
+            digits[start] = b'0' + (tile % 10) as u8;
+            tile /= 10;
+            if tile == 0 {
+                break;
+            }
+        }
+        let mut hash = self.0;
+        for &byte in &digits[start..] {
+            hash = (hash ^ u32::from(byte)).wrapping_mul(16777619);
+        }
+        mixed_draw(jitter_value(hash))
+    }
 }
 fn hash_number(mut hash: u32, mut number: u32) -> u32 {
     let mut digits = [0; 10];
@@ -82,6 +125,25 @@ mod tests {
                         assert_eq!(
                             action_jitter(seed, round, unit, tile, target),
                             jitter(seed, &key)
+                        );
+                    }
+                }
+            }
+        }
+    }
+    #[test]
+    fn recruitment_draw_matches_formatted_keys() {
+        for seed in [0, 19, u32::MAX] {
+            for round in [0, u32::MAX] {
+                for unit in ["archer", "thorn-caller", "unit:α😀"] {
+                    let draw = super::RecruitmentDraw::new(seed, round, unit);
+                    for tile in [0, 81, usize::MAX] {
+                        assert_eq!(
+                            draw.at_tile(tile),
+                            super::mixed_draw(jitter(
+                                seed,
+                                &format!("situational:{round}:{unit}:{tile}")
+                            ))
                         );
                     }
                 }

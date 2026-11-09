@@ -1,5 +1,6 @@
 //! Explicit, turn-local contracts between the three fixed AI blocks.
 use crate::{ai::context::BattleView, data::*};
+use hex_command_battle::RuntimeCommand as Command;
 use serde::{Deserialize, Serialize};
 
 /// Generic heuristic hints supplement typed duties without exposing mission kinds.

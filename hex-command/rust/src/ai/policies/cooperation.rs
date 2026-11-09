@@ -4,6 +4,7 @@ use crate::ai::orders::target as objective;
 use crate::ai::{attack_command, move_command, orders::*, policies::threat::Threats};
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
+use hex_command_battle::RuntimeCommand as Command;
 use hex_command_battle::{ActionForecastSource, PhaseForecasts};
 
 const PER_ACTOR: usize = 32;
@@ -288,7 +289,7 @@ pub(in crate::ai) fn rescue(
                     {
                         queued.extend(commands);
                         if tile != board.unit(actor.0).unwrap().tile {
-                            queued.push_back(move_command(&board, actor.0, tile));
+                            queued.push_back(move_command(actor.0, tile));
                         }
                         report.duties.push(DutyReport {
                             id: format!("survive:u{}", actor.0),
@@ -355,12 +356,12 @@ pub(in crate::ai) fn rescue(
                     let mut draft = board.fork();
                     let mut next = commands.clone();
                     if tile != ally.tile {
-                        let command = move_command(&draft, *helper, tile);
-                        draft.execute(command.clone())?;
+                        let command = move_command(*helper, tile);
+                        draft.execute_runtime(command.clone())?;
                         next.push(command);
                     }
                     let command = attack_command(&draft, *helper, target, weapon);
-                    draft.execute(command.clone())?;
+                    draft.execute_runtime(command.clone())?;
                     next.push(command);
                     let mut next_used = used.clone();
                     next_used.push(*helper);
@@ -394,7 +395,7 @@ pub(in crate::ai) fn fallback(
         };
         if let Some((tile, incoming)) = safest(phases, orders, actor.0) {
             if tile != unit.tile && !unit.moved && !unit.attacked {
-                queued.push_back(move_command(game, actor.0, tile));
+                queued.push_back(move_command(actor.0, tile));
                 // Drain before choosing another fallback so legality uses updated occupancy.
                 return Ok(true);
             }
@@ -568,6 +569,7 @@ mod tests {
     use super::*;
     use crate::data::Hex;
     use crate::logic::Game;
+    use hex_command_battle::RuntimeCommand as Command;
 
     fn small_battle(rules: &Rules) -> Game<'_> {
         let mut state = Game::new(rules, "mirror").state();
@@ -663,7 +665,7 @@ mod tests {
         );
         assert!(workspace.report.candidates <= PER_ACTOR);
         while let Some(command) = workspace.commands.pop_front() {
-            game.execute(command).unwrap();
+            game.execute_runtime(command).unwrap();
         }
         assert!(
             safest(game.phase_forecasts(), &workspace.orders.tactics, actor)

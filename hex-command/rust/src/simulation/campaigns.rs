@@ -1,13 +1,13 @@
 //! Campaign definitions prepared once and shared by all trials and phase requests.
 use super::{SimulationError, types::MatchConfig};
-use crate::data::{Campaign, Rules};
+use crate::data::{CampaignRules, Rules};
 use std::{borrow::Cow, collections::HashMap};
 
 /// Own changed definitions and borrow unchanged authored campaigns from the catalog.
 /// Workers only borrow this table after workload preparation has finished.
 pub struct CampaignDefinitions<'catalog> {
     rules: &'catalog Rules,
-    definitions: HashMap<String, HashMap<String, Cow<'catalog, Campaign>>>,
+    definitions: HashMap<String, HashMap<String, Cow<'catalog, CampaignRules>>>,
 }
 impl<'catalog> CampaignDefinitions<'catalog> {
     pub fn new(rules: &'catalog Rules) -> Self {
@@ -37,7 +37,7 @@ impl<'catalog> CampaignDefinitions<'catalog> {
         }
         Ok(())
     }
-    pub fn get(&self, campaign: &str, route: &str) -> Result<&Campaign, SimulationError> {
+    pub fn get(&self, campaign: &str, route: &str) -> Result<&CampaignRules, SimulationError> {
         self.definitions
             .get(campaign)
             .and_then(|routes| routes.get(route))

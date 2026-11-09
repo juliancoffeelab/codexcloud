@@ -187,7 +187,7 @@ mod tests {
             assert_eq!(game.gold_for_phase(game.turn()), 1000);
             let mut replay = game.fork();
             for command in plan.commands {
-                replay.execute(command).unwrap();
+                replay.execute_runtime(command).unwrap();
             }
             assert_eq!(replay.units().len(), game.units().len() + 2);
         }

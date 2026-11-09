@@ -113,9 +113,8 @@ impl CampaignBlock {
                 .iter()
                 .filter(|unit| game.belongs_to_phase(unit, game.turn()))
             {
-                let group = unit
-                    .ai_group
-                    .as_ref()
+                let group = game
+                    .name(unit.ai_group)
                     .and_then(|id| game.groups.iter().find(|group| group.id == id));
                 if let Some(group) = group {
                     if !group.active {
@@ -203,7 +202,7 @@ impl CampaignBlock {
                     CampaignIntent::Hold => selector
                         .character
                         .as_ref()
-                        .is_some_and(|id| unit.character.as_ref() == Some(id)),
+                        .is_some_and(|id| game.name(unit.character) == Some(id.as_str())),
                     CampaignIntent::GoTo => game.script_unit_matches(selector, unit),
                     CampaignIntent::Approach
                     | CampaignIntent::Own
@@ -617,9 +616,12 @@ impl MissionPolicy<'_, '_> {
         u.is_leader()
             || u.role.is_some_and(Role::is_escort)
             || (u.side == Side::Player
-                && u.character
-                    .as_ref()
-                    .is_some_and(|id| self.authored.required_companions().contains(id)))
+                && self.name(u.character).is_some_and(|id| {
+                    self.authored
+                        .required_companions()
+                        .iter()
+                        .any(|required| required == id)
+                }))
     }
 
     pub fn objectives(&self, side: Side) -> Vec<Objective> {

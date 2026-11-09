@@ -3,10 +3,7 @@ use crate::sort::SharedSort;
 use crate::{
     ai::{self, PlanningWorkspace},
     data::*,
-    logic::{
-        Game,
-        battle::{Board, RuntimeCache},
-    },
+    logic::{Game, battle::Board},
     protocol::*,
 };
 use hex_command_battle::model::{DispatchUpdateProjection, TerrainUpdateProjection};
@@ -98,24 +95,74 @@ impl<'a> Iterator for ChangedTiles<'a> {
 impl ExactSizeIterator for ChangedTiles<'_> {}
 type TerrainProjection<'a> =
     TerrainUpdateProjection<ocamljs_bindgen::SequenceProjection<ChangedTiles<'a>>, &'a Vec<Tile>>;
-fn terrain_projection(state: &State, delta: TerrainDelta) -> TerrainProjection<'_> {
+fn terrain_projection(tiles: &Vec<Tile>, delta: TerrainDelta) -> TerrainProjection<'_> {
     match delta {
         TerrainDelta::Keep => TerrainUpdateProjection::Keep,
         TerrainDelta::Patch(indices) => TerrainUpdateProjection::Patch {
             tiles: ocamljs_bindgen::SequenceProjection(ChangedTiles {
-                tiles: &state.tiles,
+                tiles,
                 indices: indices.into_iter(),
             }),
         },
-        TerrainDelta::Replace => TerrainUpdateProjection::Replace {
-            tiles: &state.tiles,
-        },
+        TerrainDelta::Replace => TerrainUpdateProjection::Replace { tiles },
+    }
+}
+/// The live roster stays owned here between operations. A loan only binds rules;
+/// dropping it returns the same runtime data, including caches and continuation scope.
+struct RuntimeLoan<'a> {
+    slot: std::cell::RefMut<'a, Option<hex_command_battle::BattleState>>,
+    game: Option<Game<'a>>,
+}
+impl<'a> RuntimeLoan<'a> {
+    fn new(slot: &'a RefCell<Option<hex_command_battle::BattleState>>, rules: &'a Rules) -> Self {
+        let mut slot = slot.borrow_mut();
+        let runtime = slot.take().expect("non-reentrant battle operation");
+        Self {
+            slot,
+            game: Some(Game::from_runtime(rules, runtime)),
+        }
+    }
+}
+impl<'a> std::ops::Deref for RuntimeLoan<'a> {
+    type Target = Game<'a>;
+    fn deref(&self) -> &Self::Target {
+        self.game.as_ref().unwrap()
+    }
+}
+impl std::ops::DerefMut for RuntimeLoan<'_> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.game.as_mut().unwrap()
+    }
+}
+impl Drop for RuntimeLoan<'_> {
+    fn drop(&mut self) {
+        *self.slot = Some(self.game.take().unwrap().into_runtime());
+    }
+}
+/// Only terrain publication needs retained delta state; live units stay in runtime storage.
+struct PublishedTerrain {
+    map_id: String,
+    map_revision: u32,
+    cols: i32,
+    rows: i32,
+    tiles: Vec<Tile>,
+    board: Rc<Board>,
+}
+impl PublishedTerrain {
+    fn new(game: &Game<'_>) -> Self {
+        Self {
+            map_id: game.map_id().to_owned(),
+            map_revision: game.map_revision(),
+            cols: game.cols(),
+            rows: game.rows(),
+            tiles: game.tiles(),
+            board: game.board_handle(),
+        }
     }
 }
 struct Battle {
-    runtime_cache: RefCell<RuntimeCache>,
-    state: State,
-    board: Rc<Board>,
+    runtime: RefCell<Option<hex_command_battle::BattleState>>,
+    terrain: PublishedTerrain,
     seed: u32,
     revision: u32,
     workspace: Option<PlanningWorkspace>,
@@ -123,24 +170,19 @@ struct Battle {
     pending: Option<Command>,
 }
 impl Battle {
-    fn game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
-        let game = self.take_game(rules);
-        *self.runtime_cache.borrow_mut() = game.runtime_cache();
-        game
+    fn game<'a>(&'a self, rules: &'a Rules) -> RuntimeLoan<'a> {
+        RuntimeLoan::new(&self.runtime, rules)
     }
-    fn take_game<'catalog>(&self, rules: &'catalog Rules) -> Game<'catalog> {
-        Game::from_borrowed_state(
-            rules,
-            &self.state,
-            self.board.clone(),
-            self.runtime_cache.take(),
-        )
+    fn snapshot(&self, rules: &Rules) -> State {
+        self.game(rules)
+            .state_with_tiles(self.terrain.tiles.clone())
     }
     fn view(&self, rules: &Rules) -> EngineView {
+        let game = self.game(rules);
         EngineView {
-            presentation: self.game(rules).presentation(),
+            presentation: game.presentation(),
             revision: self.revision,
-            state: self.state.clone(),
+            state: game.state_with_tiles(self.terrain.tiles.clone()),
         }
     }
     fn check(&self, revision: u32) -> Result<(), EngineError> {
@@ -204,13 +246,18 @@ fn factory_with_rules(
 }
 #[ocamljs_bindgen(module=NativeEngineFactory)]
 pub fn catalog(factory: &NativeEngineFactory) -> CatalogView {
-    let mut campaigns: Vec<_> = factory.rules.campaigns.values().cloned().collect();
+    let mut campaigns: Vec<_> = factory
+        .rules
+        .campaigns
+        .values()
+        .map(CampaignRules::snapshot)
+        .collect();
     campaigns.order_by(|a, b| a.id.cmp(&b.id));
     let mut items: Vec<_> = factory.rules.items.values().cloned().collect();
     items.order_by(|a, b| a.id.cmp(&b.id));
     CatalogView {
         items,
-        units: factory.rules.units.clone(),
+        units: factory.rules.units.iter().cloned().collect(),
         terrain: factory.rules.terrain_definitions.clone(),
         races: factory.rules.race_definitions.clone(),
         maps: factory.rules.map_definitions.clone(),
@@ -223,13 +270,10 @@ pub fn create(
     start: Start,
     seed: u32,
 ) -> Result<BattleHandle, EngineError> {
-    let mut state = factory.start(start)?;
-    state.combat_rng = seed;
-    let board = Board::new(&state.tiles);
-    let game = Game::from_state_with_board(&factory.rules, state, board.clone());
-    let cache = game.runtime_cache();
-    let tiles = game.tiles();
-    Ok(factory.insert(game.into_state(tiles), seed, board, cache))
+    let mut game = factory.start(start)?;
+    game.set_combat_rng(seed);
+    let runtime = game.into_runtime();
+    Ok(factory.insert_runtime(runtime, seed))
 }
 #[ocamljs_bindgen(module=NativeEngineFactory)]
 pub fn restore(
@@ -290,7 +334,7 @@ pub fn dispatch(
     Ok(DispatchResult {
         view: EngineView {
             revision: battle.revision,
-            state: battle.state.clone(),
+            state: battle.snapshot(&factory.rules),
             presentation: applied.presentation,
         },
         combat: applied.combat,
@@ -305,13 +349,18 @@ pub fn dispatch_update(
     include_inspection: bool,
 ) -> Encoded<Result<DispatchUpdate, EngineError>> {
     let applied = factory.apply(id, revision, command, include_inspection);
+    let state = applied.as_ref().ok().map(|_| {
+        factory.battles[&id]
+            .game(&factory.rules)
+            .state_with_tiles(Vec::new())
+    });
     let update = applied.map(|applied| {
         let battle = &factory.battles[&id];
         DispatchUpdateProjection {
             base_revision: revision,
             revision: battle.revision,
-            state: NativeFrame::from(&battle.state),
-            terrain: terrain_projection(&battle.state, applied.terrain),
+            state: NativeFrame::from(state.as_ref().unwrap()),
+            terrain: terrain_projection(&battle.terrain.tiles, applied.terrain),
             presentation: applied.presentation,
             combat: applied.combat,
             inspection: applied.inspection,
@@ -348,9 +397,10 @@ pub fn save_json(
         state: &'a State,
     }
     let battle = factory.battle(id, revision)?;
+    let state = battle.snapshot(&factory.rules);
     Ok(serde_json::to_string(&Checkpoint {
         seed: battle.seed,
-        state: &battle.state,
+        state: &state,
     })
     .expect("serializable checkpoint"))
 }
@@ -402,23 +452,22 @@ impl NativeEngineFactory {
             .get_mut(&id)
             .ok_or(EngineError::UnknownBattle)?;
         battle.check(revision)?;
-        let mut game = battle.take_game(&self.rules);
+        let mut game = RuntimeLoan::new(&battle.runtime, &self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
         game.execute(command)?;
-        let replaced = terrain_replaced(&battle.state, &battle.board, &game);
-        let (tiles, terrain) = if replaced {
-            (game.tiles(), TerrainDelta::Replace)
+        let terrain = if terrain_replaced(&battle.terrain, &game) {
+            battle.terrain = PublishedTerrain::new(&game);
+            TerrainDelta::Replace
         } else {
-            let changed = game.patch_tiles(&mut battle.state.tiles);
-            let terrain = if changed.is_empty() {
+            let changed = game.patch_tiles(&mut battle.terrain.tiles);
+            battle.terrain.board = game.board_handle();
+            if changed.is_empty() {
                 TerrainDelta::Keep
             } else {
                 TerrainDelta::Patch(changed)
-            };
-            (std::mem::take(&mut battle.state.tiles), terrain)
+            }
         };
-        battle.board = game.board_handle();
         battle.revision = battle
             .revision
             .checked_add(1)
@@ -438,9 +487,7 @@ impl NativeEngineFactory {
         } else {
             None
         };
-        *battle.runtime_cache.borrow_mut() = game.runtime_cache();
         let combat = game.take_combat_animation();
-        battle.state = game.into_state(tiles);
         Ok(Applied {
             terrain,
             presentation,
@@ -489,12 +536,13 @@ impl NativeEngineFactory {
                 command: command.clone(),
             });
         }
-        let game = battle.game(&self.rules);
+        let game = RuntimeLoan::new(&battle.runtime, &self.rules);
         let command = ai::choose_game_command(
             &game,
             options.policy,
             battle.workspace.as_mut().expect("workspace initialized"),
         )?;
+        let command = game.command_snapshot(&command)?;
         battle.pending = Some(command.clone());
         Ok(AiDecision {
             revision: battle.revision,
@@ -505,7 +553,7 @@ impl NativeEngineFactory {
         let battle = self.battle(id, revision)?;
         Ok(SavedGame {
             seed: battle.seed,
-            state: battle.state.clone(),
+            state: battle.snapshot(&self.rules),
         })
     }
     fn restore_saved(&mut self, saved: SavedGame) -> Result<BattleHandle, EngineError> {
@@ -514,10 +562,8 @@ impl NativeEngineFactory {
                 message: error.to_string(),
             }
         })?;
-        let cache = game.runtime_cache();
-        let board = game.board_handle();
-        let tiles = game.tiles();
-        Ok(self.insert(game.into_state(tiles), saved.seed, board, cache))
+        let runtime = game.into_runtime();
+        Ok(self.insert_runtime(runtime, saved.seed))
     }
 
     fn battle(&self, id: u32, revision: u32) -> Result<&Battle, EngineError> {
@@ -525,22 +571,22 @@ impl NativeEngineFactory {
         battle.check(revision)?;
         Ok(battle)
     }
-    fn insert(
+    fn insert_runtime(
         &mut self,
-        state: State,
+        runtime: hex_command_battle::BattleState,
         seed: u32,
-        board: Rc<Board>,
-        cache: RuntimeCache,
     ) -> BattleHandle {
         let id = self.next_id;
         self.next_id = self
             .next_id
             .checked_add(1)
             .expect("battle handle exhausted");
+        let game = Game::from_runtime(&self.rules, runtime);
+        let terrain = PublishedTerrain::new(&game);
+        let runtime = game.into_runtime();
         let battle = Battle {
-            runtime_cache: RefCell::new(cache),
-            state,
-            board,
+            runtime: RefCell::new(Some(runtime)),
+            terrain,
             seed,
             revision: 0,
             workspace: None,
@@ -551,7 +597,7 @@ impl NativeEngineFactory {
         self.battles.insert(id, battle);
         BattleHandle { id, view }
     }
-    fn start(&self, start: Start) -> Result<State, EngineError> {
+    fn start(&self, start: Start) -> Result<Game<'_>, EngineError> {
         match start {
             Start::Scenario {
                 map,
@@ -613,16 +659,22 @@ impl NativeEngineFactory {
                     state.armies = Some(armies);
                 }
                 state.turn = first.unwrap_or(Side::Player);
-                Ok(state)
+                Ok(Game::from_state(&self.rules, state))
             }
             Start::Campaign { id } => {
                 if !self.rules.campaigns.contains_key(&id) {
                     return Err(EngineError::UnknownCampaign { id });
                 }
-                Ok(
-                    Game::start_campaign(&self.rules, &id, 0, vec![], 0, vec![], vec![], vec![])
-                        .state(),
-                )
+                Ok(Game::start_campaign(
+                    &self.rules,
+                    &id,
+                    0,
+                    vec![],
+                    0,
+                    vec![],
+                    vec![],
+                    vec![],
+                ))
             }
         }
     }
@@ -636,7 +688,7 @@ mod tests {
         let mut factory = new_factory().unwrap();
         let battle = mirror(&mut factory);
         let applied = factory.apply(battle.id, 0, Command::EndTurn, true).unwrap();
-        let state = &factory.battles[&battle.id].state;
+        let state = &factory.battles[&battle.id].snapshot(&factory.rules);
         let expected_inspection = inspect(&factory, battle.id, 1).unwrap();
         assert_eq!(
             serde_json::to_value(&applied.inspection).unwrap(),
@@ -671,7 +723,7 @@ mod tests {
                 base_revision: 0u32,
                 revision: 1u32,
                 state: NativeFrame::from(state),
-                terrain: terrain_projection(state, terrain),
+                terrain: terrain_projection(&state.tiles, terrain),
                 presentation: applied.presentation.clone(),
                 combat: applied.combat.clone(),
                 inspection: applied.inspection.clone(),
@@ -711,12 +763,8 @@ mod tests {
             next_id: 1,
         };
         let state = Game::new(&factory.rules, "mirror").state();
-        let original = factory.insert(
-            state.clone(),
-            17,
-            Board::new(&state.tiles),
-            RuntimeCache::default(),
-        );
+        let runtime = Game::from_state(&factory.rules, state.clone()).into_runtime();
+        let original = factory.insert_runtime(runtime, 17);
         let options = AiOptions {
             blocks: None,
             policy: AiPolicy::Balanced,
@@ -731,7 +779,10 @@ mod tests {
         let restored = factory.restore_saved(saved).unwrap();
         let battle = &factory.battles[&restored.id];
         assert!(battle.workspace.is_none() && battle.pending.is_none() && battle.options.is_none());
-        assert_eq!(serde_json::to_value(&battle.state).unwrap(), json["state"]);
+        assert_eq!(
+            serde_json::to_value(battle.snapshot(&factory.rules)).unwrap(),
+            json["state"]
+        );
         let mut old = json;
         old["planner"] = serde_json::json!({});
         assert!(serde_json::from_value::<SavedGame>(old).is_err());
@@ -766,12 +817,12 @@ mod tests {
         assert!(json.get("objectives").is_some());
         assert!(json.get("costs").is_none() && json.get("neighbors").is_none());
         let battle = &factory.battles[&original.id];
-        for (index, id) in battle.board.ids.iter().enumerate() {
+        for (index, id) in battle.terrain.board.ids.iter().enumerate() {
             assert_eq!(
                 board.neighbors[&id.to_string()],
-                battle.board.adjacent[index]
+                battle.terrain.board.adjacent[index]
                     .iter()
-                    .map(|&next| battle.board.ids[next].clone())
+                    .map(|&next| battle.terrain.board.ids[next].clone())
                     .collect::<Vec<_>>()
             );
         }
@@ -889,13 +940,13 @@ mod tests {
     }
 }
 
-fn terrain_replaced(old: &State, board: &Rc<Board>, game: &Game<'_>) -> bool {
+fn terrain_replaced(old: &PublishedTerrain, game: &Game<'_>) -> bool {
     old.map_id != game.map_id()
         || old.map_revision != game.map_revision()
         || old.cols != game.cols()
         || old.rows != game.rows()
         || old.tiles.len() != game.board().ids.len()
-        || (!Rc::ptr_eq(board, &game.board_handle())
+        || (!Rc::ptr_eq(&old.board, &game.board_handle())
             && old
                 .tiles
                 .iter()

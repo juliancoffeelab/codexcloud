@@ -2,53 +2,52 @@
 use super::battle::Game;
 use crate::data::*;
 impl Game<'_> {
+    #[inline]
     pub(crate) fn equipment_modifier(&self, unit: &Unit, damage: DamageType) -> i32 {
-        unit.items
-            .iter()
-            .filter_map(|item| item.armor.as_ref())
-            .map(|armor| armor.get(damage))
-            .sum()
+        if unit.inventory.0 == 0 {
+            0
+        } else {
+            self.runtime.inventories.modifier(unit.inventory, damage)
+        }
     }
     pub(crate) fn collect_items(&mut self, id: u32) {
         let index = self.index(id).unwrap();
-        let tile = self.board.ids[self.units[index].tile].clone();
-        let mut remaining = vec![];
-        for ground in std::mem::take(&mut self.ground_items) {
-            let mut inventory = self.units[index].items.clone();
-            inventory.push(ground.item.clone());
-            if ground.tile == tile
+        let tile = self.runtime.units[index].tile;
+        let mut position = 0;
+        while position < self.runtime.ground_items.len() {
+            let ground = self.runtime.ground_items[position];
+            let allowed = ground.tile == tile
                 && validate_equipment(
-                    &inventory,
-                    &self.rules.units[self.units[index].kind].attacks,
+                    self.inventory(&self.runtime.units[index])
+                        .chain(std::iter::once(self.runtime.inventories.item(ground.item))),
+                    &self.rules.units[self.runtime.units[index].kind].attacks,
                     "pickup",
                 )
-                .is_ok()
-            {
+                .is_ok();
+            if allowed {
                 self.record(format!(
                     "{} picked up {}.",
-                    self.unit_name(&self.units[index]),
-                    ground.item.name
+                    self.unit_name(&self.runtime.units[index]),
+                    self.runtime.inventories.item(ground.item).name
                 ));
-                self.units[index].items = inventory;
+                self.give_existing_item(id, ground.item);
+                self.runtime.ground_items.remove(position);
             } else {
-                remaining.push(ground);
+                position += 1;
             }
         }
-        self.ground_items = remaining;
     }
     pub(crate) fn healing_from(&self, provider: &Unit, target: &Unit) -> i32 {
         if !self.allied(provider, target) {
             return 0;
         }
-        let distance = self.board.distance(provider.tile, target.tile);
+        let distance = self.runtime.board.distance(provider.tile, target.tile);
         let innate = if provider.id != target.id && distance == 1 {
-            self.rules.units[provider.kind].healing
+            self.mechanics.units[provider.kind].healing
         } else {
             0
         };
-        provider
-            .items
-            .iter()
+        self.inventory(provider)
             .filter_map(|item| item.healing.as_ref())
             .filter(|aura| distance <= aura.radius)
             .map(|aura| aura.amount)

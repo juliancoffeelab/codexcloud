@@ -9,6 +9,7 @@ use crate::{
     ai::policies::threat::Threats,
     data::*,
 };
+use hex_command_battle::RuntimeCommand as Command;
 use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Retreat {
@@ -1095,7 +1096,7 @@ impl Recorder {
     }
     fn emit(&mut self, game: &mut hex_command_battle::ActionForecast<'_>, command: Command) {
         self.flush_intents(game);
-        if let Err(error) = game.execute(command.clone()) {
+        if let Err(error) = game.execute_runtime(command.clone()) {
             self.error = Some(error);
             return;
         }
@@ -1112,7 +1113,7 @@ impl Recorder {
         unit: u32,
         tile: usize,
     ) {
-        self.emit(game, crate::ai::move_command(game, unit, tile));
+        self.emit(game, crate::ai::move_command(unit, tile));
     }
     fn attack(
         &mut self,
@@ -1129,6 +1130,6 @@ impl Recorder {
         unit: u32,
         kind: usize,
     ) {
-        self.emit(game, crate::ai::advance_command(game, unit, kind));
+        self.emit(game, crate::ai::advance_command(unit, kind));
     }
 }

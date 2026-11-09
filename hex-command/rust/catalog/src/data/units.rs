@@ -351,15 +351,9 @@ pub struct PublicUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rebuilding: Option<bool>,
 }
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
-#[cfg_attr(
-    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
-    derive(hex_catalog_freeze_derive::Freeze)
-)]
+/// Compact live facts. Names and inventories are numeric references into battle tables.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Unit {
-    pub faction: Option<String>,
-    pub items: Vec<Item>,
-    pub ai_group: Option<String>,
     pub id: u32,
     pub kind: usize,
     pub side: Side,
@@ -368,13 +362,16 @@ pub struct Unit {
     pub moved: bool,
     pub attacked: bool,
     pub experience: Option<u32>,
-    pub character: Option<String>,
     pub role: Option<Role>,
     pub retreating: Option<bool>,
     pub rebuilding: Option<bool>,
+    pub faction: Option<NameKey>,
+    pub ai_group: Option<NameKey>,
+    pub character: Option<NameKey>,
+    pub inventory: InventoryId,
 }
 impl Unit {
-    #[cfg_attr(not(target_arch = "wasm32"), inline)]
+    #[inline]
     pub fn is_leader(&self) -> bool {
         self.role == Some(Role::Leader)
     }
@@ -417,12 +414,20 @@ fn one_attack() -> u8 {
 
 /// Inventory validation also protects stable weapon IDs used by commands.
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
-pub fn validate_equipment(items: &[Item], base: &[Weapon], path: &str) -> Result<(), ContentError> {
-    super::catalog::unique(items.iter().map(|i| i.id.as_str()), path)?;
+pub fn validate_equipment<'a, I>(items: I, base: &[Weapon], path: &str) -> Result<(), ContentError>
+where
+    I: IntoIterator<Item = &'a Item>,
+    I::IntoIter: Clone,
+{
+    let items = items.into_iter();
+    super::catalog::unique(items.clone().map(|item| item.id.as_str()), path)?;
     super::catalog::unique(
-        base.iter()
-            .chain(items.iter().flat_map(|i| &i.attacks))
-            .map(|a| a.id.as_str()),
+        base.iter().map(|attack| attack.id.as_str()).chain(
+            items
+                .clone()
+                .flat_map(|item| &item.attacks)
+                .map(|attack| attack.id.as_str()),
+        ),
         path,
     )?;
     for item in items {
