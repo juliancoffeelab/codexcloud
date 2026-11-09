@@ -10,13 +10,20 @@ Inspect `git status --short --branch`, the current branch, and
 checkouts can fetch only main, so a general fetch need not populate feature refs.
 
 - Fetch a needed branch explicitly, e.g.
-  `git fetch origin refs/heads/main:refs/remotes/origin/main`.
+  `git fetch origin +refs/heads/main:refs/remotes/origin/main`.
+  The leading `+` lets the remote-tracking ref follow upstream history rewrites;
+  it does not reset the local main branch.
 - For a fresh task on latest main, use the existing checkout: fetch main explicitly,
   then `git switch main` and `git merge --ff-only origin/main`. If main does not
   exist locally, use `git switch -c main --track origin/main`. Preserve uncommitted
-  work and local commits; if they block switching or fast-forwarding, report the
-  blocker instead of resetting them. Create implementation branches from the
-  fetched main as required by AGENTS.md.
+  work and local commits. If a known upstream force-push prevents fast-forwarding
+  and the checkout is clean, preserve the old local main with
+  `git branch -m main archive/main-before-rewrite-UNIQUE` (choose an unused name),
+  then `git switch -c main --track origin/main`. This replaces the stale local
+  baseline while retaining its commits; it does not merge the unrelated histories.
+  For unexplained divergence or uncommitted work that blocks switching, report
+  the blocker. Create implementation branches from fetched main as required by
+  AGENTS.md.
 - Use a separate worktree when the task actually needs simultaneous checkouts or
   preserving active work prevents switching. Reuse supplied toolchains and caches.
 - Continue requested implementation on its current branch/PR unless instructed
