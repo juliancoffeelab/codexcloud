@@ -388,9 +388,9 @@ impl Worker {
                 let emit = events.clone();
                 let controller: hex_command_core::training::Controller = Box::new(move |choices| {
                     if emit.send(Event::Decision(choices.clone())).is_err() {
-                        return 0;
+                        return None;
                     }
-                    actions.recv().unwrap_or(0)
+                    actions.recv().ok()
                 });
                 let (result, _) = scoped(
                     spatial.then(|| Dataset {

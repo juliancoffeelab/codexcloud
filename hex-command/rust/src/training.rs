@@ -265,7 +265,8 @@ impl Model {
         f64::from(x[0])
     }
 }
-pub type Controller = Box<dyn FnMut(&Choices) -> usize>;
+/// A disconnected controller cancels its native rollout.
+pub type Controller = Box<dyn FnMut(&Choices) -> Option<usize>>;
 #[derive(Default)]
 struct Session {
     data: Option<Dataset>,
@@ -348,7 +349,7 @@ pub(crate) fn configured() -> bool {
         s.model.is_some() || s.controller.is_some()
     })
 }
-pub(crate) fn select(choices: &Choices) -> usize {
+pub(crate) fn select(choices: &Choices) -> Option<usize> {
     SESSION.with(|s| {
         let mut s = s.borrow_mut();
         if let Some(c) = s.controller.as_mut() {
@@ -377,7 +378,7 @@ pub(crate) fn select(choices: &Choices) -> usize {
                 best = (index, score);
             }
         }
-        best.0
+        Some(best.0)
     })
 }
 pub fn learned_blocks(mut blocks: crate::ai::Blocks) -> crate::ai::Blocks {
@@ -406,7 +407,7 @@ mod tests {
             features: vec![[0.; FEATURES]; 3],
         };
         let (index, _) = scoped(None, Some(model), None, || select(&choices));
-        assert_eq!(index, 0);
+        assert_eq!(index, Some(0));
     }
     #[test]
     fn candidates_execute_on_mechanical_forecasts() {

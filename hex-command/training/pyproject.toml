@@ -2,7 +2,7 @@
 name = "hex-command-rl"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = ["torch>=2.5,<3", "numpy>=2,<3"]
+dependencies = ["torch>=2.5,<3", "numpy>=2,<3", "matplotlib>=3.8,<4"]
 
 [build-system]
 requires = ["setuptools>=77"]
@@ -12,6 +12,7 @@ build-backend = "setuptools.build_meta"
 where = ["."]
 
 [project.optional-dependencies]
-plots = ["matplotlib>=3.8,<4"]
+plots = []
+dev = ["ruff>=0.14,<1"]
 
 trees = ["lightgbm>=4.6,<5"]

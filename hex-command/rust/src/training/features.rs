@@ -210,13 +210,14 @@ fn actor_matches(actor: &Option<String>, unit: &Unit) -> bool {
 }
 pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices {
     let mut commands = vec![Command::EndTurn];
+    let mut move_costs = vec![0.];
     for unit in game
         .units()
         .iter()
         .filter(|u| game.belongs_to_phase(u, game.turn()) && game.can_act(u.id))
     {
         if !unit.moved {
-            for &(tile, _) in game.reachable(unit).iter() {
+            for &(tile, cost) in game.reachable(unit).iter() {
                 if tile != unit.tile {
                     let c = Command::Move {
                         unit: UnitId(unit.id),
@@ -224,6 +225,7 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
                     };
                     if game.permits(&c) {
                         commands.push(c);
+                        move_costs.push(cost as f32 / 10.);
                     }
                 }
             }
@@ -241,6 +243,7 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
                     };
                     if game.permits(&c) {
                         commands.push(c);
+                        move_costs.push(0.);
                     }
                 }
             }
@@ -250,12 +253,14 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
                 unit: UnitId(unit.id),
                 kind: UnitTypeId(game.rules().units[kind].id.clone()),
             });
+            move_costs.push(0.);
         }
     }
     let extra = Extra::new(game, orders);
     let features = commands
         .iter()
-        .map(|c| encode(game, orders, c, &extra))
+        .zip(move_costs)
+        .map(|(c, cost)| encode(game, orders, c, cost, &extra))
         .collect();
     let spatial = super::needs_spatial()
         .then(|| super::spatial::observe_with_duties(game, orders, &commands, &extra.duties));
@@ -269,19 +274,12 @@ fn encode(
     g: &BattleView<'_, '_>,
     orders: &TacticalOrders,
     c: &Command,
+    move_cost: f32,
     extra: &Extra,
 ) -> [f32; FEATURES] {
     let mut x = [0.; FEATURES];
-    let allies: Vec<_> = g
-        .units()
-        .iter()
-        .filter(|u| g.belongs_to_phase(u, g.turn()))
-        .collect();
-    let enemies: Vec<_> = g
-        .units()
-        .iter()
-        .filter(|u| g.hostile_to_phase(u, g.turn()))
-        .collect();
+    let allies = &extra.allies;
+    let enemies = &extra.enemies;
     x[4] = g.round() as f32 / 30.;
     x[5] = allies.len() as f32 / 10.;
     x[6] = enemies.len() as f32 / 10.;
@@ -380,13 +378,7 @@ fn encode(
     let paths = &extra.paths[&id];
     path_features(&paths.0, u.tile, tile, r.r#move, &mut x[154..158]);
     path_features(&paths.1, u.tile, tile, r.r#move, &mut x[158..162]);
-    if matches!(c, Command::Move { .. }) {
-        x[162] = g
-            .reachable(u)
-            .iter()
-            .find(|&&(t, _)| t == tile)
-            .map_or(0., |&(_, cost)| cost as f32 / 10.);
-    }
+    x[162] = move_cost;
     if let Some(t) = target.and_then(|id| g.unit(id)) {
         let w = g.weapons(u).position(|w| Some(&w.id) == weapon).unwrap();
         x[66..100].copy_from_slice(&extra.profiles[&t.id]);
@@ -406,13 +398,25 @@ fn encode(
 
 // Built once per decision; the engine caches route fields by movement profile,
 // goal set and terrain revision, so candidates only index shared distances.
-struct Extra {
+struct Extra<'a> {
+    allies: Vec<&'a Unit>,
+    enemies: Vec<&'a Unit>,
     duties: super::duties::Duties,
     profiles: HashMap<u32, [f32; 34]>,
     paths: HashMap<u32, (Rc<Vec<u16>>, Rc<Vec<u16>>)>,
 }
-impl Extra {
-    fn new(g: &BattleView<'_, '_>, orders: &TacticalOrders) -> Self {
+impl<'a> Extra<'a> {
+    fn new(g: &'a BattleView<'_, '_>, orders: &TacticalOrders) -> Self {
+        let allies = g
+            .units()
+            .iter()
+            .filter(|u| g.belongs_to_phase(u, g.turn()))
+            .collect();
+        let enemy_units = g
+            .units()
+            .iter()
+            .filter(|u| g.hostile_to_phase(u, g.turn()))
+            .collect();
         let profiles = g
             .units()
             .iter()
@@ -454,6 +458,8 @@ impl Extra {
             paths.insert(u.id, (g.routes(u.kind, &goals), g.routes(u.kind, &enemies)));
         }
         Self {
+            allies,
+            enemies: enemy_units,
             profiles,
             paths,
             duties: super::duties::Duties::new(g, orders),
