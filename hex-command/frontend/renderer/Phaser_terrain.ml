@@ -365,38 +365,49 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
         if next.time = Domain.Time_of_day.Day then pipeline#release;
         resources#publish)
 
+    method private target record x y =
+      let page = record.page in
+      let target =
+        match record.lit with
+        | Some target -> target
+        | None ->
+            let target = Phaser.GameObjects.render_texture scene x y page.width page.height false in
+            let _ = target##setOrigin 0. 0. in
+            let _ =
+              target##setDisplaySize
+                (float_of_int page.width /. scale)
+                (float_of_int page.height /. scale)
+            in
+            record.lit <- Some target;
+            target
+      in
+      let _ = target##camera##setOrigin 0. 0. in
+      let _ = target##camera##setZoom scale in
+      let _ = target##camera##setScroll x y in
+      target
+
     method private shade record (lighting : Domain.battlefield_lighting) =
       version <- version + 1;
       let page = record.page and source = Option.get record.unlit in
       Option.iter (fun (image : Phaser.image) -> image##destroy ()) record.display;
       record.display <- None;
       let x, y = position source in
+      let target = self#target record x y in
       if lighting.time = Domain.Time_of_day.Day then (
-        Option.iter (fun (target : Phaser.render_texture) -> target##destroy ()) record.lit;
-        record.lit <- None;
-        resources#remove ("terrain-lit:" ^ page.url);
-        light_source source { Phaser_lighting.plain with unlit = true };
-        record.display <- Some (make_display scene page (texture source) x y))
+        (* Daylight is stationary in world coordinates. Shade the padded page
+           once at native resolution; display the cached result with Phaser's
+           ordinary image pipeline at every camera position and pixel density. *)
+        pipeline#configure ~x ~y lighting
+          (float_of_int page.width /. scale)
+          (float_of_int page.height /. scale);
+        light_source source { Phaser_lighting.plain with lighting_camera = Some target##camera };
+        let _ = target##clear () in
+        Phaser.RenderTexture.draw_many target [| object_ source |];
+        self#clip_outer target page;
+        record.display <- Some (make_display scene page target##texture x y);
+        resources#set ("terrain-lit:" ^ page.url) "lit terrain finals" 0.
+          (float_of_int page.width *. float_of_int page.height *. 4.))
       else
-        let target =
-          match record.lit with
-          | Some target -> target
-          | None ->
-              let target =
-                Phaser.GameObjects.render_texture scene x y page.width page.height false
-              in
-              let _ = target##setOrigin 0. 0. in
-              let _ =
-                target##setDisplaySize
-                  (float_of_int page.width /. scale)
-                  (float_of_int page.height /. scale)
-              in
-              record.lit <- Some target;
-              target
-        in
-        let _ = target##camera##setOrigin 0. 0. in
-        let _ = target##camera##setZoom scale in
-        let _ = target##camera##setScroll x y in
         let local_bounds = region page in
         let indices =
           Phaser_spatial.query light_index

@@ -3,6 +3,7 @@ val key : Domain.battlefield_lighting -> string
     supplies already-resolved light/fog conditions. *)
 
 val matrix : float -> float -> Domain.battlefield_lighting -> float array
+val daylight : float -> float -> float array
 
 type pixels
 (** Browser and Node Uint8ClampedArray storage, without representation exposure. *)

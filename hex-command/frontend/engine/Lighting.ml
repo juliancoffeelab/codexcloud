@@ -77,9 +77,37 @@ let palette x y (lighting : Domain.battlefield_lighting) =
 let colored (lighting : Domain.battlefield_lighting) =
   Array.exists (fun (light : Domain.battlefield_light) -> light.color <> None) lighting.lights
 
+(* Broad, stationary cloud shade in world coordinates. Keep the daylight GLSL in
+   Phaser_shaders in sync; actors sample this field at their ground anchor. *)
+let daylight x y =
+  let wave =
+    0.5
+    +. (0.25 *. sin ((x *. 0.010) +. (y *. 0.006) +. (0.9 *. sin (y *. 0.009))))
+    +. (0.25 *. sin ((x *. 0.004) -. (y *. 0.011) +. 1.7))
+  in
+  let t = max 0. (min 1. ((wave -. 0.10) /. 0.75)) in
+  let shade = t *. t *. (3. -. (2. *. t)) *. 0.52 in
+  [|
+    1.04 -. (0.42 *. shade);
+    1.00 -. (0.24 *. shade);
+    0.94 -. (0.05 *. shade);
+    0.018 *. (1. -. shade);
+    0.012;
+    0.006 +. (0.012 *. shade);
+  |]
+
 let matrix x y (lighting : Domain.battlefield_lighting) =
   if lighting.time = Domain.Time_of_day.Day then
-    [| 1.; 0.; 0.; 0.; 0.; 0.; 1.; 0.; 0.; 0.; 0.; 0.; 1.; 0.; 0.; 0.; 0.; 0.; 1.; 0. |]
+    let values = daylight x y in
+    let luminance = [| 0.2126; 0.7152; 0.0722 |] in
+    Array.init 20 (fun index ->
+        let channel = index / 5 and source = index mod 5 in
+        if channel = 3 then if source = 3 then 1. else 0.
+        else if source = 3 then 0.
+        else if source = 4 then values.(channel + 3)
+        else
+          ((if channel = source then 0.86 else 0.) +. (0.14 *. luminance.(source)))
+          *. values.(channel))
   else
     let mix = strength x y lighting in
     let luminance = [| 0.2126; 0.7152; 0.0722 |]
@@ -118,7 +146,22 @@ type source = {
 external source_at : source array -> int -> source = "" [@@mel.get_index]
 
 let shade data width start finish pixel_scale (lighting : Domain.battlefield_lighting) =
-  if lighting.time <> Domain.Time_of_day.Day then
+  if lighting.time = Domain.Time_of_day.Day then
+    for y = start to finish - 1 do
+      for x = 0 to width - 1 do
+        let index = ((y * width) + x) * 4 in
+        if get data (index + 3) <> 0. then
+          let values = daylight (float_of_int x /. pixel_scale) (float_of_int y /. pixel_scale) in
+          let rgb = Array.init 3 (fun channel -> get data (index + channel)) in
+          let lum = (rgb.(0) *. 0.2126) +. (rgb.(1) *. 0.7152) +. (rgb.(2) *. 0.0722) in
+          for channel = 0 to 2 do
+            set data (index + channel)
+              ((((rgb.(channel) *. 0.86) +. (lum *. 0.14)) *. values.(channel))
+              +. (values.(channel + 3) *. 255.))
+          done
+      done
+    done
+  else
     let colored = colored lighting in
     let sources =
       Array.map

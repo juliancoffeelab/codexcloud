@@ -1,4 +1,4 @@
-(* GLSL preserved verbatim from upstream 28e4f05c. Phaser owns shader compilation. *)
+(* Phaser owns shader compilation. Daylight matches the shared Lighting module. *)
 
 let halo_vertex =
   {glsl|
@@ -202,6 +202,7 @@ uniform vec2 uPackedSize;uniform vec2 uPackedShift;
 uniform float uDirect;uniform float uCount;
 uniform vec4 uLights[%count%];uniform vec3 uWarm[%count%];uniform vec3 uOffsetsDirect[%count%];
 uniform float uNight;
+uniform float uDay;
 uniform float uBrightness;
 uniform float uGround;
 uniform vec3 uRowR;
@@ -223,7 +224,23 @@ void main() {
   else if (mode.y == 2.0) source = ink;
   source.rgb *= uBrightness;
   if (source.a <= 0.0) { gl_FragColor = source; return; }
-  if (uNight < .5) { gl_FragColor = source; return; }
+  if (uNight < .5) {
+    if (uDay > .5) {
+      // Sample native world pixels so panning, zooming and page boundaries do
+      // not move the cloud shade relative to the landscape.
+      vec2 p = floor(worldPoint * uNativeScale) / uNativeScale;
+      float wave = .5 + .25*sin(p.x*.010+p.y*.006+.9*sin(p.y*.009))
+                       + .25*sin(p.x*.004-p.y*.011+1.7);
+      float shade = smoothstep(.10,.85,wave)*.52;
+      vec3 factor = vec3(1.04,1.,.94)-vec3(.42,.24,.05)*shade;
+      vec3 offset = vec3(.018*(1.-shade),.012,.006+.012*shade);
+      vec3 rgb = source.rgb / source.a;
+      float lum = dot(rgb,vec3(.2126,.7152,.0722));
+      rgb = mix(rgb,vec3(lum),.14)*factor+offset;
+      source.rgb = clamp(rgb,0.,1.)*source.a;
+    }
+    gl_FragColor = source; return;
+  }
   if (uGround > .5) {
     vec3 rgb = source.rgb / source.a;
     rgb = vec3(dot(rgb,uRowR),dot(rgb,uRowG),dot(rgb,uRowB)) + uOffset;
@@ -288,7 +305,8 @@ let actor_lighting_fragment =
       else if(outTintEffect==2.)source=ink;
       if(source.a>0.){vec3 rgb=source.rgb/source.a;
       float lum=dot(rgb,vec3(.2126,.7152,.0722));
-      rgb=rgb*factor.rgb+lum*vec3(.28,.41,.63)*.2*factor.a+offset;
+      if(factor.a<-.5)rgb=mix(rgb,vec3(lum),.14);
+      rgb=rgb*factor.rgb+lum*vec3(.28,.41,.63)*.2*max(factor.a,0.)+offset;
       source.rgb=clamp(rgb,0.,1.)*source.a;}gl_FragColor=source;}|glsl}
 
 let light_field_vertex =
