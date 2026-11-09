@@ -24,10 +24,13 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);a=p.parse_args();root=a.root;run=root/'posttune'
     spec=json.loads((root/'workload.json').read_text());os.environ['HEX_COMMAND_DATA_ROOT']=spec['catalog'];os.environ['HEX_COMMAND_EVALUATION_LOCK']=str(root/'gameplay.lock')
     cache=run/'handoff-validation';cache.mkdir(exist_ok=True);best=None;best_key=(-1.,-1.,-1.)
-    if (run/'handoff-results.jsonl').exists():
-        for line in (run/'handoff-results.jsonl').read_text().splitlines():
-            r=json.loads(line);key=tuple(r['reliability_key'])
-            if key>best_key:best_key=key;best=r
+    # Atomic result files are authoritative if a crash happened before logging
+    # or before updating the handoff pointer.
+    for path in cache.glob('*.json'):
+        r=json.loads(path.read_text());key=tuple(r['reliability_key'])
+        if key>best_key:
+            best_key=key;best=r;folder=run/r['checkpoint'];m=json.loads((folder/'manifest.json').read_text())
+            atomic_json(run/'handoff-best.json',dict(path=r['checkpoint'],label=m['label'],files=m['files']))
     while True:
         pending=[]
         for relative in candidates(run):

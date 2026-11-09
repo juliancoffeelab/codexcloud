@@ -1,4 +1,4 @@
-"""Post-tune → six-hour PPO → held-out report, with restartable phase control."""
+"""Post-tune → nine-hour PPO → held-out report, with restartable phase control."""
 import argparse
 import gzip
 import json
@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
-from .mixed_evaluate import evaluate,plot
+from .mixed_evaluate import evaluate,plot,reliability
 from .recovery import atomic_json,resolve
 
 
@@ -52,19 +52,15 @@ def final_report(root):
     for label,path in models.items():
         digest=hashlib.sha256(Path(path).read_bytes()).hexdigest()
         if digest not in cache:
-            report=evaluate(spec['test'],path,workers=3);atomic_json(root/(label+'-test.json'),report);cache[digest]=report
+            report=evaluate(spec['test'],path,workers=3);key,strata=reliability(report);report.update(reliability_key=list(key),strata=strata);atomic_json(root/(label+'-test.json'),report);cache[digest]=report
         reports[label]=cache[digest]
         print(json.dumps(dict(event='final_evaluation',model=label,score=reports[label]['score'],wins=reports[label]['wins'],caps=reports[label]['caps'],runs=reports[label]['runs'])),flush=True)
     compact={label:{k:v for k,v in r.items() if k!='rows'} for label,r in reports.items()}
     atomic_json(root/'summary.json',dict(models=models,results=compact,test_seeds_used_for_selection=False))
-    fig,axes=plt.subplots(1,2,figsize=(12,5));labels=list(reports)
-    for ax,family in zip(axes,['arena','campaign']):
-        values=[]
-        for label in labels:
-            rows=[r for r in reports[label]['rows'] if ('campaign' in r['config'])==(family=='campaign')]
-            from .mixed_evaluate import summarize
-            values.append(100*summarize(rows)['score'])
-        ax.bar(labels,values);ax.set(title=family+' · balanced final held-out score',ylabel='Win / completion score (%)',ylim=(0,100));ax.tick_params(axis='x',rotation=15);ax.grid(axis='y',alpha=.2)
+    fig,axes=plt.subplots(2,2,figsize=(12,8));labels=list(reports)
+    for ax,key in zip(axes.flat,['arena/classic','arena/predictor','campaign/classic','campaign/predictor']):
+        values=[100*reports[label]['strata'][key]['score'] for label in labels]
+        ax.bar(labels,values);ax.set(title=key+' · held-out score',ylabel='Win / completion score (%)',ylim=(0,100));ax.tick_params(axis='x',rotation=15);ax.grid(axis='y',alpha=.2)
     fig.tight_layout();fig.savefig(root/'final-scores.png',dpi=150);plt.close(fig)
     for phase in ['posttune','rl']:plot(root/phase)
     for phase in ['posttune','rl']:
