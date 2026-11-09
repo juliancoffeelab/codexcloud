@@ -22,30 +22,26 @@ in `finally`; a timed-out evaluation can still be executing.
 
 ## Presentation settings
 
-Start long journeys with the supported browser preference. Set sound through the
-actual Menu control after entering the game:
+Choose between two standalone, human-guided Playwright examples:
 
-```js
-const context = await browser.newContext({ reducedMotion: "reduce" });
-const page = await context.newPage();
-await page.goto(gameUrl);
-await page.getByRole("button", { name: "Menu", exact: true }).click();
-const menu = page.getByRole("dialog", { name: "Menu", exact: true });
-await menu.getByRole("checkbox", { name: "Sound effects", exact: true }).uncheck();
-await menu.getByRole("button", { name: "Close menu", exact: true }).click();
-// Continue through normal UI controls, waiting for each visible result.
-```
+- [Fast journey](../scripts/fast-journey-example.mjs): reduced motion and sound off
+  throughout, for gameplay and save/load workflows.
+- [Presentation sample](../scripts/presentation-sample-example.mjs): fast play to
+  reach a useful position, then normal motion and sound for a short visual/audio
+  sample. Explicit human confirmation of completed presentation gates restoration
+  of fast settings. Uncertainty or timeout ends the session without restoring them.
 
-To exercise normal timing, first wait for the current action to settle, then:
+Run either from `hex-command` with `node SCRIPT_PATH GAME_URL`, an existing server,
+installed Playwright/Chromium, and a desktop display. Use audible output for the
+second example. Both require a human playing through the UI; neither is an
+autonomous playthrough or an audio recording. Adapt the journey to the requested
+scenario and endpoint, and keep operator evidence identified as such.
 
-```js
-await page.emulateMedia({ reducedMotion: "no-preference" });
-// Enable Sound effects through the same Menu checkbox when audio is in scope.
-// Perform representative movement/combat and observe its complete presentation.
-// Once settled, return to the long-journey setting:
-await page.emulateMedia({ reducedMotion: "reduce" });
-// Turn sound off through Menu before continuing without audio timing checks.
-```
+For automated scripts, enabled controls determine which player input is available.
+Advisor `canAct` can gate a request for advice; neither establishes that movement
+has finished. Keep normal settings enabled until you have action-specific visual
+completion evidence. If that evidence is unavailable, report timing as unverified
+and keep normal settings for the remaining segment rather than toggling per action.
 
 Reduced motion is an actual player setting, not permission to force completion,
 alter timers or skip controller barriers. Sound can retain combat pacing even
