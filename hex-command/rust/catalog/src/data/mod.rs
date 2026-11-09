@@ -50,6 +50,8 @@ pub struct Rules {
     /// Native campaign workload defaults.
     #[cfg(not(target_arch = "wasm32"))]
     pub campaign_defaults: CampaignDefaults,
+    #[cfg(not(target_arch = "wasm32"))]
+    pub training: TrainingDefaults,
     /// Terrain identifiers in dense runtime order.
     pub terrain_names: Vec<String>,
     /// Closed terrain variants in the same runtime order.
@@ -74,9 +76,6 @@ pub struct Rules {
     pub terrains: HashMap<String, usize>,
     /// Fresh initial states indexed by authored map and revision.
     pub maps: HashMap<(String, u32), State>,
-    /// Arena layouts kept outside playable scenarios and map metadata.
-    #[cfg(not(target_arch = "wasm32"))]
-    pub arena_maps: HashMap<(String, u32), State>,
     /// Campaign definitions indexed by their authored identifier.
     pub campaigns: HashMap<String, CampaignRules>,
 }

@@ -3,6 +3,7 @@ use crate::{
     ai::{context::BattleView, orders::*},
     data::*,
 };
+use hex_command_battle::RuntimeCommand as Command;
 use std::{collections::HashMap, rc::Rc};
 pub const LEGACY_FEATURES: usize = 172;
 pub const DUTY_FEATURES: usize = 219;
@@ -203,10 +204,10 @@ pub struct Choices {
     pub commands: Vec<Command>,
     pub features: Vec<[f32; FEATURES]>,
 }
-fn actor_matches(actor: &Option<String>, unit: &Unit) -> bool {
+fn actor_matches(g: &BattleView<'_, '_>, actor: &Option<String>, unit: &Unit) -> bool {
     actor
         .as_ref()
-        .is_none_or(|a| a == &format!("u{}", unit.id) || unit.character.as_ref() == Some(a))
+        .is_none_or(|a| a == &format!("u{}", unit.id) || g.name(unit.character) == Some(a.as_str()))
 }
 pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices {
     let mut commands = vec![Command::EndTurn];
@@ -221,9 +222,9 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
                 if tile != unit.tile {
                     let c = Command::Move {
                         unit: UnitId(unit.id),
-                        tile: TileId(game.board().ids[tile].clone()),
+                        tile: TileIndex(tile),
                     };
-                    if game.permits(&c) {
+                    if game.permits_runtime(&c) {
                         commands.push(c);
                         move_costs.push(cost as f32 / 10.);
                     }
@@ -239,9 +240,9 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
                     let c = Command::Attack {
                         unit: UnitId(unit.id),
                         target: UnitId(target.id),
-                        weapon: WeaponId(game.weapon(unit, weapon).id.clone()),
+                        weapon: game.weapon(unit, weapon).key(),
                     };
-                    if game.permits(&c) {
+                    if game.permits_runtime(&c) {
                         commands.push(c);
                         move_costs.push(0.);
                     }
@@ -251,7 +252,7 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
         if let Some(kind) = orders.promotion(game, unit) {
             commands.push(Command::Advance {
                 unit: UnitId(unit.id),
-                kind: UnitTypeId(game.rules().units[kind].id.clone()),
+                kind: UnitKind(kind),
             });
             move_costs.push(0.);
         }
@@ -293,7 +294,7 @@ fn encode(
         }
         Command::Move { unit, tile } => {
             x[1] = 1.;
-            (unit.0, Some(g.site(&tile.0)), None, None)
+            (unit.0, Some(tile.0), None, None)
         }
         Command::Attack {
             unit,
@@ -301,7 +302,7 @@ fn encode(
             weapon,
         } => {
             x[2] = 1.;
-            (unit.0, None, Some(target.0), Some(&weapon.0))
+            (unit.0, None, Some(target.0), Some(*weapon))
         }
         Command::Advance { unit, .. } => {
             x[3] = 1.;
@@ -347,7 +348,9 @@ fn encode(
     if let Some((goal, d)) = orders
         .targets
         .iter()
-        .filter(|o| actor_matches(&o.actor, u) && o.family.as_ref().is_none_or(|f| *f == r.family))
+        .filter(|o| {
+            actor_matches(g, &o.actor, u) && o.family.as_ref().is_none_or(|f| *f == r.family)
+        })
         .filter_map(|o| {
             o.tiles
                 .iter()
@@ -380,7 +383,7 @@ fn encode(
     path_features(&paths.1, u.tile, tile, r.r#move, &mut x[158..162]);
     x[162] = move_cost;
     if let Some(t) = target.and_then(|id| g.unit(id)) {
-        let w = g.weapons(u).position(|w| Some(&w.id) == weapon).unwrap();
+        let w = g.weapons(u).position(|w| Some(w.key()) == weapon).unwrap();
         x[66..100].copy_from_slice(&extra.profiles[&t.id]);
         terrain_features(g, t, t.tile, &mut x[144..154]);
         let attack = g.weapon(u, w);
@@ -440,7 +443,7 @@ impl<'a> Extra<'a> {
                 .targets
                 .iter()
                 .filter(|o| {
-                    actor_matches(&o.actor, u)
+                    actor_matches(g, &o.actor, u)
                         && o.family
                             .as_ref()
                             .is_none_or(|f| *f == g.rules().units[u.kind].family)
@@ -466,7 +469,7 @@ impl<'a> Extra<'a> {
         }
     }
 }
-fn weapon_features(w: &Weapon, x: &mut [f32]) {
+fn weapon_features(w: &WeaponRules, x: &mut [f32]) {
     x[0] = w.damage as f32 / 10.;
     x[1] = w.count as f32 / 5.;
     x[2] = w.range as f32 / 5.;
@@ -489,9 +492,8 @@ pub(super) fn unit_features(g: &BattleView<'_, '_>, u: &Unit) -> [f32; 34] {
         .is_some_and(|n| u.experience.unwrap_or(0) >= n)
         && !r.advances_to.is_empty()) as u8 as f32;
     x[6] = r.healing as f32 / 10.;
-    if let Some(aura) = u
-        .items
-        .iter()
+    if let Some(aura) = g
+        .inventory(u)
         .filter_map(|i| i.healing.as_ref())
         .max_by_key(|a| (a.amount, a.radius))
     {
@@ -505,8 +507,7 @@ pub(super) fn unit_features(g: &BattleView<'_, '_>, u: &Unit) -> [f32; 34] {
         .enumerate()
     {
         x[11 + i] = (r.damage_modifiers.get(damage)
-            + u.items
-                .iter()
+            + g.inventory(u)
                 .filter_map(|i| i.armor.as_ref())
                 .map(|a| a.get(damage))
                 .sum::<i32>()) as f32

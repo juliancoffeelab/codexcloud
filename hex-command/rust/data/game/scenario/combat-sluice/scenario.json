@@ -1,0 +1,23 @@
+{
+  "human": false,
+  "map": "map.json",
+  "roster": "roster.json",
+  "characters": [
+    {
+      "id": "vale",
+      "name": "Captain Vale"
+    },
+    {
+      "id": "edda",
+      "name": "Edda"
+    },
+    {
+      "id": "mira",
+      "name": "Mira"
+    },
+    {
+      "id": "tomas",
+      "name": "Tomas"
+    }
+  ]
+}

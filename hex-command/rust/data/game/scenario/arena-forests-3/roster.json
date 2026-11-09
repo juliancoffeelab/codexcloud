@@ -1,0 +1,52 @@
+{
+  "factions": [
+    {
+      "controller": {
+        "kind": "human"
+      },
+      "id": "player",
+      "palette": "player",
+      "phase": "player",
+      "recruits": [],
+      "relations": {
+        "enemy": "hostile"
+      },
+      "gold": 39,
+      "units": [
+        {
+          "id": "u1",
+          "type": "commander",
+          "tile": {
+            "col": 1,
+            "row": 4
+          },
+          "role": "leader"
+        }
+      ]
+    },
+    {
+      "controller": {
+        "kind": "ai"
+      },
+      "id": "enemy",
+      "palette": "enemy",
+      "phase": "enemy",
+      "recruits": [],
+      "relations": {
+        "player": "hostile"
+      },
+      "gold": 39,
+      "units": [
+        {
+          "id": "u2",
+          "type": "necromancer",
+          "tile": {
+            "col": 7,
+            "row": 4
+          },
+          "role": "leader"
+        }
+      ]
+    }
+  ]
+}

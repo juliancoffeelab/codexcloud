@@ -1,25 +1,229 @@
 {
-  "landscapes": [
+  "scenarios": [
     {
       "id": "open",
+      "variants": [
+        {
+          "map": "arena-plains-1",
+          "forces": {
+            "kind": "selected",
+            "budget": 36
+          }
+        },
+        {
+          "map": "arena-plains-1",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "arena-plains-1",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "arena-plains-1",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 4
+        },
+        {
+          "col": 3,
+          "row": 2
+        },
+        {
+          "col": 5,
+          "row": 6
+        }
+      ],
       "holdTurns": 4
     },
     {
       "id": "wooded",
+      "variants": [
+        {
+          "map": "arena-forests-1",
+          "forces": {
+            "kind": "selected",
+            "budget": 36
+          }
+        },
+        {
+          "map": "arena-forests-2",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "arena-forests-3",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "arena-forests-4",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 4
+        },
+        {
+          "col": 3,
+          "row": 2
+        },
+        {
+          "col": 5,
+          "row": 6
+        }
+      ],
       "holdTurns": 4
     },
     {
       "id": "crossings",
+      "variants": [
+        {
+          "map": "arena-crossing-1",
+          "forces": {
+            "kind": "selected",
+            "budget": 36
+          }
+        },
+        {
+          "map": "arena-crossing-2",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "arena-crossing-3",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "arena-crossing-4",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 4
+        },
+        {
+          "col": 3,
+          "row": 2
+        },
+        {
+          "col": 5,
+          "row": 6
+        }
+      ],
       "holdTurns": 4
     },
     {
       "id": "islands",
+      "variants": [
+        {
+          "map": "arena-islands-1",
+          "forces": {
+            "kind": "selected",
+            "budget": 36
+          }
+        },
+        {
+          "map": "arena-islands-2",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "arena-islands-3",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "arena-islands-4",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 4
+        },
+        {
+          "col": 3,
+          "row": 2
+        },
+        {
+          "col": 5,
+          "row": 6
+        }
+      ],
       "holdTurns": 6
     },
     {
       "id": "wood-edge",
-      "holdTurns": 4,
-      "map": "wood-edge",
+      "variants": [
+        {
+          "map": "wood-edge",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "wood-edge",
+          "forces": {
+            "kind": "selected",
+            "budget": 42
+          }
+        },
+        {
+          "map": "wood-edge",
+          "forces": {
+            "kind": "selected",
+            "budget": 42
+          }
+        },
+        {
+          "map": "wood-edge",
+          "forces": {
+            "kind": "selected",
+            "budget": 42
+          }
+        }
+      ],
       "territory": [
         {
           "col": 4,
@@ -33,24 +237,87 @@
           "col": 4,
           "row": 6
         }
-      ]
-    }
-  ],
-  "territory": [
-    {
-      "col": 4,
-      "row": 4
+      ],
+      "holdTurns": 4
     },
     {
-      "col": 3,
-      "row": 2
+      "id": "villages",
+      "variants": [
+        {
+          "map": "combat-villages",
+          "forces": {
+            "kind": "scenario"
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 2,
+          "row": 1
+        }
+      ],
+      "holdTurns": 4
     },
     {
-      "col": 5,
-      "row": 6
+      "id": "sluice",
+      "variants": [
+        {
+          "map": "combat-sluice",
+          "forces": {
+            "kind": "scenario"
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 1
+        }
+      ],
+      "holdTurns": 4
+    },
+    {
+      "id": "river-valley",
+      "variants": [
+        {
+          "map": "river-valley",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        },
+        {
+          "map": "river-valley",
+          "forces": {
+            "kind": "selected",
+            "budget": 42
+          }
+        },
+        {
+          "map": "river-valley",
+          "forces": {
+            "kind": "selected",
+            "budget": 42
+          }
+        },
+        {
+          "map": "river-valley",
+          "forces": {
+            "kind": "selected",
+            "budget": 42
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 11,
+          "row": 1
+        }
+      ],
+      "holdTurns": 4
     }
   ],
-  "startingBudget": 36,
+  "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],
   "defaultMaxRounds": 30,
   "policies": ["classic", "rush", "balanced", "rotated", "situational"]
 }

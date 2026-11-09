@@ -12,73 +12,9 @@ AUTHORED = {
 
 
 def prepare_catalog(source, destination):
-    source = Path(source)
-    destination = Path(destination)
-    shutil.copytree(source, destination, dirs_exist_ok=True)
-    manifest = json.loads((destination / "manifest.json").read_text())
-    arena = json.loads((destination / "simulation/arena.json").read_text())
-    human = next(
-        r["pool"]
-        for r in json.loads((source / "simulation/rosters.json").read_text())
-        if r["id"] == "human"
-    )
-    for name, (campaign, stage) in AUTHORED.items():
-        original = source / "game/campaigns" / campaign / "stages" / stage
-        folder = destination / "training" / name
-        folder.mkdir(parents=True, exist_ok=True)
-        board = json.loads((original / "map.json").read_text())
-        board["mapRevision"] = board.get("mapRevision", 1) + 1000
-        for tile in board["tiles"]:
-            for key in ("fog", "light", "glow"):
-                tile.pop(key, None)
-        roster = json.loads((original / "roster.json").read_text())
-        roster["factions"] = [
-            f for f in roster["factions"] if f["controller"]["kind"] != "passive"
-        ]
-        ids = {f["id"] for f in roster["factions"]}
-        for faction in roster["factions"]:
-            faction["relations"] = {
-                key: value
-                for key, value in faction.get("relations", {}).items()
-                if key in ids
-            }
-            for unit in faction["units"]:
-                unit.pop("aiGroup", None)
-            if name == "villages" and faction["id"] == "player":
-                faction["recruits"] = [dict(unit=k) for k in human]
-        (folder / "map.json").write_text(json.dumps(board, indent=2))
-        (folder / "roster.json").write_text(json.dumps(roster, indent=2))
-        (folder / "scenario.json").write_text(
-            json.dumps(dict(map="map.json", roster="roster.json"))
-        )
-        manifest.setdefault("arenaScenarios", []).append(
-            f"training/{name}/scenario.json"
-        )
-        territory = next(
-            t for t in board["tiles"] if t["terrain"] in ("village", "fort", "keep")
-        )
-        arena["landscapes"].append(
-            dict(
-                id=name,
-                holdTurns=4,
-                map=board["mapId"],
-                authored=True,
-                territory=[dict(col=territory["col"], row=territory["row"])],
-            )
-        )
-    river = json.loads((source / "game/scenario/river-valley-v2/map.json").read_text())
-    point = next(t for t in river["tiles"] if t["terrain"] == "village")
-    arena["landscapes"].append(
-        dict(
-            id="river-valley",
-            holdTurns=4,
-            map="river-valley",
-            territory=[dict(col=point["col"], row=point["row"])],
-        )
-    )
-    (destination / "manifest.json").write_text(json.dumps(manifest, indent=2))
-    (destination / "simulation/arena.json").write_text(json.dumps(arena, indent=2))
-    return dict(maps=MAPS, authored_sources=AUTHORED, villages_player_recruits=human)
+    # Scenarios and workload definitions are already resolved through one engine catalog.
+    shutil.copytree(Path(source), Path(destination), dirs_exist_ok=True)
+    return dict(maps=MAPS)
 
 
 def workload(start, seeds, all_pairs=False, rounds=30, opponent="classic"):

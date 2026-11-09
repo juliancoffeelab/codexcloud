@@ -598,17 +598,12 @@ test("Initialization is idempotent and preserves native-URL pixel artwork", asyn
   observed.unsubscribe();
 });
 test("Hidden scenarios remain command-addressable while visible menus exclude them and campaigns", async () => {
-  const metadata = structuredClone(Catalog.raw(catalog));
-  const hiddenId = required(Catalog.scenario_maps(catalog)[0]).id;
-  for (const map of metadata.maps) if (map.id === hiddenId) map.hidden = true;
-  const controlled = Catalog.of_view(metadata);
-  const scenarios = Catalog.scenario_maps(controlled),
-    choices = Catalog.battle_maps(controlled);
-  const hidden = scenarios.filter((map) => map.hidden === true);
-  assert.equal(hidden.length, 1);
-  assert.equal(required(hidden[0]).id, hiddenId);
+  const scenarios = Catalog.scenario_maps(catalog),
+    choices = Catalog.battle_maps(catalog);
+  const hidden = scenarios.filter((map) => map.human === false);
+  const hiddenId = required(hidden[0]).id;
   for (const map of hidden) assert(!choices.some((choice) => choice.id === map.id));
-  assert(choices.every((map) => map.hidden !== true));
+  assert(choices.every((map) => map.human === true));
   const session = await createController(),
     commands = Session.commands(session);
   commands.reset(undefined, undefined, hiddenId);

@@ -1,5 +1,6 @@
 //! One learned decision at a time; runtime still owns recruitment and combat boundaries.
 use crate::{ai::orders::*, data::*};
+use hex_command_battle::RuntimeCommand as Command;
 pub(super) struct Learned;
 impl super::Planner for Learned {
     fn recruits_after_move(&self) -> bool {

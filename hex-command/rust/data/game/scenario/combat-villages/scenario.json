@@ -1,0 +1,27 @@
+{
+  "human": false,
+  "map": "map.json",
+  "roster": "roster.json",
+  "characters": [
+    {
+      "id": "nera",
+      "name": "Captain Nera"
+    },
+    {
+      "id": "edrin",
+      "name": "Edrin"
+    },
+    {
+      "id": "ivo",
+      "name": "Ivo"
+    },
+    {
+      "id": "oren",
+      "name": "Oren"
+    },
+    {
+      "id": "tollkeeper",
+      "name": "The Tollkeeper"
+    }
+  ]
+}

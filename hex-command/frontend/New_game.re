@@ -80,6 +80,8 @@ module ChoicePicker = {
     let id = React.useId();
     let dialog = React.useRef(Js.Nullable.null);
     let trigger = React.useRef(Js.Nullable.null);
+    let (backdropDown, backdropUp, backdropCancel, backdropClick) =
+      useBackdrop(dialog, () => close(dialog));
     let (expanded, setExpanded) = React.useState(() => false);
     React.useEffect0(() =>
       switch (Js.Nullable.toOption(dialog.current)) {
@@ -165,7 +167,10 @@ module ChoicePicker = {
         className="choice-dialog"
         ariaLabel={Utf8.to_js(label)}
         ref={ReactDOM.Ref.domRef(dialog)}
-        onClick=backdrop
+        onPointerDown=backdropDown
+        onPointerUp=backdropUp
+        onPointerCancel=backdropCancel
+        onClick=backdropClick
         onKeyDown=navigate>
         <header className="setup-heading">
           <h2> {text(label)} </h2>
@@ -255,11 +260,7 @@ let make =
   let difficulty = Setup.difficulty(planner, recruiter);
   let (first, setFirst) = React.useState(() => Setup.Random);
   let (error, setError) = React.useState(() => "");
-  let maps =
-    List.filter(
-      (map: Domain.map_definition) => map.id != "developer",
-      Catalog.battle_maps(view.catalog),
-    );
+  let maps = Catalog.battle_maps(view.catalog);
   let map = Catalog.map(view.catalog, mapId);
   let campaign = Catalog.campaign(view.catalog, campaignId);
   let mapChoices =
@@ -290,7 +291,10 @@ let make =
               ~sprite=Some(campaign.leader),
               (),
             ),
-          Catalog.campaigns(view.catalog),
+          List.filter(
+            (campaign: Domain.campaign) => campaign.human,
+            Catalog.campaigns(view.catalog),
+          ),
         ),
       [|view.catalog|],
     );

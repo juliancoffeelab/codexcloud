@@ -23,7 +23,6 @@
     "stages/tide-wreck/stage.json",
     "stages/tide-sluice/stage.json"
   ],
-  "playerDiplomacy": ["unrestricted"],
   "characters": [
     {
       "id": "vale",
@@ -49,5 +48,6 @@
       "id": "tomas",
       "name": "Tomas"
     }
-  ]
+  ],
+  "human": true
 }

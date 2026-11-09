@@ -1,4 +1,5 @@
 {
+  "human": false,
   "map": "map.json",
   "roster": "roster.json"
 }

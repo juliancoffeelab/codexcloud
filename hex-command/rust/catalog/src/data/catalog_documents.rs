@@ -4,6 +4,9 @@ use super::*;
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct ScenarioDocuments {
+    human: bool,
+    #[serde(default)]
+    characters: Vec<Character>,
     map: String,
     roster: String,
 }
@@ -28,8 +31,6 @@ struct MapDocument {
     tiles: Vec<Tile>,
     #[serde(default)]
     lighting: MapLighting,
-    #[serde(default)]
-    hidden: bool,
     #[serde(rename = "name")]
     name: Option<String>,
     #[serde(rename = "description")]
@@ -259,7 +260,7 @@ pub fn collect_bundle(
     let mut bundle = JsonBundle::new();
     read(&mut bundle, &mut source, "manifest.json")?;
     let manifest: Manifest = parse(&bundle, "manifest.json")?;
-    if manifest.schema_version != 2 {
+    if manifest.schema_version != 3 {
         return Err(ContentError::new(
             "manifest.json",
             "unsupported schemaVersion",
@@ -270,6 +271,7 @@ pub fn collect_bundle(
         &manifest.simulation.rosters,
         &manifest.simulation.arena,
         &manifest.simulation.campaign,
+        &manifest.simulation.rl,
     ]
     .into_iter()
     .chain(manifest.recruitment.iter())
@@ -277,12 +279,11 @@ pub fn collect_bundle(
     .chain(&manifest.units)
     .chain(&manifest.items)
     .chain(&manifest.scenarios)
-    .chain(&manifest.arena_scenarios)
     .chain(&manifest.campaigns)
     {
         read(&mut bundle, &mut source, path)?;
     }
-    for path in manifest.scenarios.iter().chain(&manifest.arena_scenarios) {
+    for path in &manifest.scenarios {
         let documents: ScenarioDocuments = parse(&bundle, path)?;
         for component in [&documents.map, &documents.roster] {
             read(&mut bundle, &mut source, &sibling(path, component)?)?;
@@ -313,7 +314,7 @@ pub fn scenario(
     bundle: &JsonBundle,
     path: &str,
     items: &HashMap<String, Item>,
-) -> Result<(InitialState, String), ContentError> {
+) -> Result<(InitialState, String, bool, Vec<Character>), ContentError> {
     let documents: ScenarioDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
@@ -335,7 +336,13 @@ pub fn scenario(
     let roster_path = sibling(path, &documents.roster)?;
     let roster: RosterDocument = parse(bundle, &roster_path)?;
     let (roster, _, _) = roster.resolve(&roster_path, items)?;
-    Ok((map.initial(roster), roster_path))
+    validate_characters(&documents.characters, path)?;
+    Ok((
+        map.initial(roster),
+        roster_path,
+        documents.human,
+        documents.characters,
+    ))
 }
 pub fn stage(
     bundle: &JsonBundle,
@@ -462,6 +469,7 @@ pub fn map_metadata(
     descriptor: &str,
     state: &State,
     units: Option<Vec<StartingUnit>>,
+    human: bool,
 ) -> Result<MapDefinition, ContentError> {
     #[derive(Deserialize)]
     struct Reference {
@@ -514,7 +522,7 @@ pub fn map_metadata(
         revision: state.map_revision,
         name: metadata.name.unwrap_or_else(|| state.map_id.clone()),
         description: metadata.description.unwrap_or_default(),
-        hidden: metadata.hidden,
+        human,
         cols: state.cols,
         rows: state.rows,
         terrain: state.tiles.clone(),

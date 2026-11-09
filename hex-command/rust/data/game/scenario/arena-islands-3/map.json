@@ -1,0 +1,394 @@
+{
+  "mapId": "arena-islands-3",
+  "mapRevision": 1,
+  "name": "Islands arena 3",
+  "description": "Fixed arena layout.",
+  "cols": 9,
+  "rows": 9,
+  "tiles": [
+    {
+      "col": 2,
+      "owner": null,
+      "row": 0,
+      "terrain": "water"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 0,
+      "terrain": "water"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 0,
+      "terrain": "water"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 0,
+      "terrain": "water"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 0,
+      "terrain": "water"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 1,
+      "terrain": "water"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 1,
+      "terrain": "plains"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 1,
+      "terrain": "ruins"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 1,
+      "terrain": "water"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 1,
+      "terrain": "water"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 1,
+      "terrain": "water"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 2,
+      "terrain": "forest"
+    },
+    {
+      "col": 2,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 2,
+      "terrain": "ford"
+    },
+    {
+      "col": 3,
+      "connections": [],
+      "owner": null,
+      "row": 2,
+      "terrain": "village"
+    },
+    {
+      "col": 4,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 2,
+      "terrain": "ford"
+    },
+    {
+      "col": 5,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 2,
+      "terrain": "ford"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 2,
+      "terrain": "marsh"
+    },
+    {
+      "col": 7,
+      "owner": null,
+      "row": 2,
+      "terrain": "plains"
+    },
+    {
+      "col": 0,
+      "owner": null,
+      "row": 3,
+      "terrain": "water"
+    },
+    {
+      "col": 1,
+      "connections": [],
+      "owner": null,
+      "row": 3,
+      "terrain": "village"
+    },
+    {
+      "col": 2,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 3,
+      "terrain": "ford"
+    },
+    {
+      "col": 3,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 3,
+      "terrain": "ford"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 3,
+      "terrain": "plains"
+    },
+    {
+      "col": 5,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 3,
+      "terrain": "ford"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 3,
+      "terrain": "plains"
+    },
+    {
+      "col": 7,
+      "owner": null,
+      "row": 3,
+      "terrain": "marsh"
+    },
+    {
+      "col": 0,
+      "owner": null,
+      "row": 4,
+      "terrain": "plains"
+    },
+    {
+      "col": 1,
+      "owner": "player",
+      "row": 4,
+      "terrain": "keep"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 4,
+      "terrain": "plains"
+    },
+    {
+      "col": 3,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 4,
+      "terrain": "bridge"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 4,
+      "terrain": "fort"
+    },
+    {
+      "col": 5,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 4,
+      "terrain": "bridge"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 4,
+      "terrain": "plains"
+    },
+    {
+      "col": 7,
+      "owner": "enemy",
+      "row": 4,
+      "terrain": "keep"
+    },
+    {
+      "col": 8,
+      "owner": null,
+      "row": 4,
+      "terrain": "plains"
+    },
+    {
+      "col": 0,
+      "owner": null,
+      "row": 5,
+      "terrain": "marsh"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 5,
+      "terrain": "plains"
+    },
+    {
+      "col": 2,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 5,
+      "terrain": "ford"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 5,
+      "terrain": "plains"
+    },
+    {
+      "col": 4,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 5,
+      "terrain": "ford"
+    },
+    {
+      "col": 5,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 5,
+      "terrain": "ford"
+    },
+    {
+      "col": 6,
+      "connections": [],
+      "owner": null,
+      "row": 5,
+      "terrain": "village"
+    },
+    {
+      "col": 7,
+      "owner": null,
+      "row": 5,
+      "terrain": "water"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 6,
+      "terrain": "plains"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 6,
+      "terrain": "marsh"
+    },
+    {
+      "col": 3,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 6,
+      "terrain": "ford"
+    },
+    {
+      "col": 4,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 6,
+      "terrain": "ford"
+    },
+    {
+      "col": 5,
+      "connections": [],
+      "owner": null,
+      "row": 6,
+      "terrain": "village"
+    },
+    {
+      "col": 6,
+      "connections": ["e", "w"],
+      "owner": null,
+      "row": 6,
+      "terrain": "ford"
+    },
+    {
+      "col": 7,
+      "owner": null,
+      "row": 6,
+      "terrain": "forest"
+    },
+    {
+      "col": 1,
+      "owner": null,
+      "row": 7,
+      "terrain": "water"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 7,
+      "terrain": "water"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 7,
+      "terrain": "water"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 7,
+      "terrain": "ruins"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 7,
+      "terrain": "plains"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 7,
+      "terrain": "water"
+    },
+    {
+      "col": 2,
+      "owner": null,
+      "row": 8,
+      "terrain": "water"
+    },
+    {
+      "col": 3,
+      "owner": null,
+      "row": 8,
+      "terrain": "water"
+    },
+    {
+      "col": 4,
+      "owner": null,
+      "row": 8,
+      "terrain": "water"
+    },
+    {
+      "col": 5,
+      "owner": null,
+      "row": 8,
+      "terrain": "water"
+    },
+    {
+      "col": 6,
+      "owner": null,
+      "row": 8,
+      "terrain": "water"
+    }
+  ]
+}

@@ -7,24 +7,18 @@ import assert from "node:assert/strict";
 import { pixelSprites } from "../src/presentation/pixel-art.mjs";
 const { Game, TYPES, developerFixture } = await import("./game-fixture.mjs");
 const { Native, Catalog, catalog, restoreBattle } = await import("./native-fixture.mjs");
-test("Map revisions preserve native history and expose one latest river-valley choice", async () => {
+test("Map revisions retain runtime metadata while human choices exclude non-human maps", () => {
   const history = Catalog.raw(catalog).maps.filter((map) => map.id === "river-valley");
   assert(history.length > 1);
-  const latest = history.at(-1);
+  const latest = history.reduce((a, b) => (a.revision > b.revision ? a : b));
   assert.deepEqual(Catalog.map(catalog, "river-valley"), latest);
-  for (const maps of [
-    Catalog.maps(catalog),
-    Catalog.scenario_maps(catalog),
-    Catalog.battle_maps(catalog),
-  ])
-    assert.deepEqual(
-      maps.filter((map) => map.id === "river-valley"),
-      [latest],
-    );
-  assert.equal(
-    Catalog.raw(catalog).maps.filter((map) => map.id === "river-valley").length,
-    history.length,
+  assert.deepEqual(
+    Catalog.battle_maps(catalog).filter((map) => map.id === latest.id),
+    [latest],
   );
+  assert(Catalog.battle_maps(catalog).every((map) => map.human));
+  assert(Catalog.scenario_maps(catalog).some((map) => !map.human));
+  assert.deepEqual(Catalog.campaigns(catalog), Catalog.raw(catalog).campaigns);
 });
 test("Developer showcase contains both factions' playable units and expansion space", async () => {
   const game = new Game("developer");

@@ -8,7 +8,6 @@
   "leader": "commander",
   "ending": [],
   "stages": ["stages/mirror-night/stage.json"],
-  "playerDiplomacy": ["unrestricted"],
   "characters": [
     {
       "id": "mirror-captain",
@@ -18,5 +17,6 @@
       "id": "mirror-rival",
       "name": "Opposing commander"
     }
-  ]
+  ],
+  "human": false
 }
