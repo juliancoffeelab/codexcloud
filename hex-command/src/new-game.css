@@ -225,9 +225,21 @@
 .new-game-dialog .ng-recruitment[open] > summary .chevron {
   transform: rotate(180deg);
 }
-.ng-recruitment > summary {
+.new-game-dialog.settings-style .ng-recruitment > summary {
   list-style: none;
   cursor: pointer;
+  padding-inline: 12px;
+  border: 1px solid #7f744d;
+  border-radius: 4px;
+  background: #d8ba6f08;
+  color: #dfcc95;
+}
+.new-game-dialog.settings-style .ng-recruitment > summary:hover,
+.new-game-dialog.settings-style .ng-recruitment > summary:focus-visible {
+  background: #d8ba6f12;
+}
+.new-game-dialog .ng-recruitment > summary .chevron {
+  stroke: currentColor;
 }
 .ng-recruitment > summary::-webkit-details-marker {
   display: none;
