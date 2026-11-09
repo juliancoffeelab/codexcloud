@@ -175,13 +175,28 @@ impl<const CHANNEL_MAJOR: bool> WithSimd for Kernel<'_, CHANNEL_MAJOR> {
 
     #[inline(always)]
     fn with_simd<S: Simd>(self, simd: S) {
+        // Exact accumulator counts let LLVM keep them in registers instead of
+        // clearing sixteen vectors even on the one-vector AVX-512 path.
+        match size_of::<S::f32s>() {
+            4 => self.run::<S, 16>(simd),
+            8 => self.run::<S, 8>(simd),
+            16 => self.run::<S, 4>(simd),
+            32 => self.run::<S, 2>(simd),
+            64 => self.run::<S, 1>(simd),
+            _ => unreachable!("unsupported SIMD width"),
+        }
+    }
+}
+
+impl<const CHANNEL_MAJOR: bool> Kernel<'_, CHANNEL_MAJOR> {
+    #[inline(always)]
+    fn run<S: Simd, const VECTORS: usize>(self, simd: S) {
         let lanes = size_of::<S::f32s>() / size_of::<f32>();
-        assert!(lanes <= EMBEDDING && EMBEDDING % lanes == 0);
-        let vectors = EMBEDDING / lanes;
+        assert_eq!(VECTORS * lanes, EMBEDDING);
         let zero = simd.splat_f32s(0.);
         let (bias, _) = S::as_simd_f32s(&self.layer.bias);
         for (&site, neighbors) in self.sites.iter().zip(self.neighbors) {
-            let mut sums = [zero; EMBEDDING];
+            let mut sums = [zero; VECTORS];
             for channel in 0..self.layer.channels {
                 for (k, &neighbor) in neighbors.iter().enumerate() {
                     if neighbor == usize::MAX {
@@ -196,7 +211,7 @@ impl<const CHANNEL_MAJOR: bool> WithSimd for Kernel<'_, CHANNEL_MAJOR> {
                     let offset = (channel * 7 + k) * EMBEDDING;
                     let (weights, _) =
                         S::as_simd_f32s(&self.layer.weights[offset..offset + EMBEDDING]);
-                    for (sum, &weight) in sums[..vectors].iter_mut().zip(weights) {
+                    for (sum, &weight) in sums.iter_mut().zip(weights) {
                         // Separate multiply/add retain the scalar accumulation order.
                         *sum = simd.add_f32s(*sum, simd.mul_f32s(value, weight));
                     }
@@ -204,7 +219,7 @@ impl<const CHANNEL_MAJOR: bool> WithSimd for Kernel<'_, CHANNEL_MAJOR> {
             }
             let a = site * EMBEDDING;
             let (output, _) = S::as_mut_simd_f32s(&mut self.output[a..a + EMBEDDING]);
-            for ((out, sum), &bias) in output.iter_mut().zip(&sums[..vectors]).zip(bias) {
+            for ((out, sum), &bias) in output.iter_mut().zip(&sums).zip(bias) {
                 *out = simd.max_f32s(simd.add_f32s(*sum, bias), zero);
             }
         }

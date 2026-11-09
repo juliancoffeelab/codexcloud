@@ -47,6 +47,11 @@ impl Evaluator {
         self.input.clear();
         if let Some(encoder) = &mut self.spatial {
             let (board, indices) = board.expect("spatial observation required");
+            assert_eq!(
+                indices.len(),
+                features.len(),
+                "candidate index count mismatch"
+            );
             encoder.inputs(board, indices, features, &mut self.input);
         } else {
             self.input.extend(features.iter().flatten().copied());
@@ -55,6 +60,11 @@ impl Evaluator {
         for (i, layer) in self.model.layers.iter().enumerate() {
             let width = layer.weights[0].len();
             let outputs = layer.bias.len();
+            assert_eq!(
+                self.input.len(),
+                count * width,
+                "dense input shape mismatch"
+            );
             self.output.resize(count * outputs, 0.);
             // SAFETY: x is count×width, weights are outputs×width, and y is
             // count×outputs. Transposing the weight strides gives width×outputs.
