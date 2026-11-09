@@ -1,5 +1,5 @@
-/** Persistent setup choices with nested native modal lifetimes. Requests open
-    the selected mode; commands own replacement, persistence and enemy pacing. */
+/** Native browse/setup flow. Choices persist while the component is mounted;
+    game commands own replacement, save completion and enemy pacing. */
 [@react.component]
 let make:
   (

@@ -15,6 +15,8 @@ let make =
       ~onBeforeClose=() => (),
       ~onBack: option(unit => unit)=?,
       ~body: option(React.ref(Js.Nullable.t(Dom.element)))=?,
+      ~headerArtwork: option(React.element)=?,
+      ~footer: option(React.element)=?,
       ~children,
     ) => {
   let dismiss = () =>
@@ -62,6 +64,7 @@ let make =
              <svg viewBox="0 0 24 24" ariaHidden=true> <path d="m14 5-7 7 7 7" /> </svg>
            </button>
          )}
+        {option(headerArtwork, artwork => artwork)}
         <h2 tabIndex=(-1)> {text(title)} </h2>
         {canDismiss
            ? <button
@@ -78,6 +81,7 @@ let make =
       | Some(body) =>
         <div className="window-content" ref={ReactDOM.Ref.domRef(body)}> children </div>
       },
+      option(footer, node => node),
     |],
   );
 };

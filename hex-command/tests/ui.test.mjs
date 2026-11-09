@@ -77,6 +77,7 @@ vi.mock("virtual:terrain-prebuilt", () => ({ default: terrainManifest }));
 let root, host, session;
 let restoreDialogs;
 let restoreCanvasTransfer;
+let restoreScroll;
 let applicationCleanup;
 beforeEach(() => {
   audio = Sound.create();
@@ -101,6 +102,12 @@ beforeEach(() => {
       },
     },
   });
+  const oldScroll = Object.getOwnPropertyDescriptor(Element.prototype, "scrollIntoView");
+  Object.defineProperty(Element.prototype, "scrollIntoView", { configurable: true, value() {} });
+  restoreScroll = () => {
+    if (oldScroll) Object.defineProperty(Element.prototype, "scrollIntoView", oldScroll);
+    else Reflect.deleteProperty(Element.prototype, "scrollIntoView");
+  };
   restoreDialogs = () => {
     for (const [name, descriptor] of previous) {
       if (descriptor) Object.defineProperty(prototype, name, descriptor);
@@ -156,6 +163,7 @@ afterEach(async () => {
   applicationCleanup = void 0;
   restoreDialogs();
   restoreCanvasTransfer();
+  restoreScroll();
 });
 function element(selector) {
   return required(host.querySelector(selector));
@@ -207,44 +215,41 @@ test("The real embedding mounts native presentation, browser tools and reusable 
   );
   await click("#settings-button");
   await click("#new-game");
+  assert.ok(element(".new-game-dialog .ng-choice"));
+  assert.equal(host.querySelector(".choice-dialog"), null, "New Game has no nested picker dialogs");
+  await click(".ng-modes button:nth-child(2)");
   assert.ok(element(".new-game-dialog .setup-map-preview polygon"));
-  assert.equal(
-    host.querySelector(".choice-row"),
-    null,
-    "Closed pickers retain no rows or thumbnails",
-  );
-  await click('.choice-trigger[aria-label="Battlefield"]');
-  const picker = element('.choice-dialog[aria-label="Battlefield"]');
-  assert(picker.open);
-  assert.equal(document.activeElement, picker.querySelector('[aria-selected="true"]'));
-  await act(async () =>
-    picker.dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true })),
-  );
-  assert.equal(document.activeElement, [...picker.querySelectorAll('[role="option"]')].at(-1));
-  await click('.choice-dialog[aria-label="Battlefield"] .setup-close');
-  assert.equal(document.activeElement, element('.choice-trigger[aria-label="Battlefield"]'));
-  assert.equal(host.querySelector(".choice-row"), null);
-  await click(".new-game-dialog .setup-actions .quiet");
+  await click(".ng-choice");
+  const strip = element('.ng-strip[aria-label="Your race"]');
+  const choices = [...strip.querySelectorAll('[role="radio"]')];
+  await act(async () => {
+    choices[0].focus();
+    choices[0].dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }));
+  });
+  assert.equal(document.activeElement, choices.at(-1));
+  assert.equal(choices.at(-1).getAttribute("aria-checked"), "true");
+  await click(".ng-start-footer button:first-child");
+  await click(".ng-browse-footer > button");
   assert.equal(
     host.querySelector(".new-game-dialog .setup-map-preview"),
     null,
     "Closing releases preview nodes",
   );
-  await click("#settings-button");
   await click("#new-game");
   await act(async () => element(".new-game-dialog").dispatchEvent(new Event("close")));
   assert.ok(
-    host.querySelector(".new-game-dialog .setup-map-preview"),
+    host.querySelector(".new-game-dialog .ng-choice"),
     "A stale close event cannot clear a reopened dialog",
   );
   await act(async () => element(".new-game-dialog").close());
-  assert.equal(host.querySelector(".new-game-dialog .setup-map-preview"), null);
+  assert.equal(host.querySelector(".new-game-dialog .ng-choice"), null);
   await click("#settings-button");
   await click("#new-game");
-  await click(".setup-tabs button:nth-child(2)");
-  assert.ok(host.querySelector(".setup-story"));
+  await click(".ng-choice");
+  assert.ok(element(".ng-campaign-info"));
   await act(async () => element(".new-game-dialog").close());
-  assert.equal(host.querySelector(".setup-story"), null);
+  assert.equal(host.querySelector(".ng-campaign-info"), null);
+  assert.equal(host.querySelector(".new-game-dialog .setup-map-preview"), null);
   const cleanup = required(applicationCleanup);
   assert.doesNotThrow(cleanup);
   assert.doesNotThrow(cleanup);
@@ -610,17 +615,26 @@ test("Typed setup choices retain planner, recruiter and opening side through sta
   );
   await click("#settings-button");
   await click("#new-game");
-  const choose = async (label, value) => {
-    await click(`.choice-trigger[aria-label="${label}"]`);
-    await click(
-      `.choice-dialog[aria-label="${label}"][open] [role="option"][aria-label="${value}"]`,
+  await click(".ng-modes button:nth-child(2)");
+  await click(".ng-choice");
+  const choose = async (group, value) => {
+    const container = element(`[role="group"][aria-label="${group}"]`);
+    const target = required(
+      [...container.querySelectorAll("button")].find((button) => button.textContent === value),
     );
+    await act(async () => target.click());
   };
-  await choose("First turn", "You");
-  await choose("Opponent planner", "Full");
-  await choose("Opponent recruiter", "Aggressive Predictor");
-  assert.match(element(".setup-difficulty .setup-label").textContent, /Custom/);
-  await click(".new-game-dialog .setup-actions .primary");
+  await click(".new-game-dialog .advanced > summary");
+  await choose("Opponent planning", "Full");
+  await click(".ng-recruitment > summary");
+  const aggressive = required(
+    [...host.querySelectorAll(".ng-recruit-option")].find((row) =>
+      row.textContent.includes("Aggressive Predictor"),
+    ),
+  );
+  await act(async () => aggressive.querySelector("input").click());
+  assert.equal(element('.ng-difficulty button[aria-pressed="true"]').textContent, "Custom");
+  await click(".new-game-dialog .ng-start-footer .primary");
   const saved = JSON.parse(await Save.flashText());
   assert.deepEqual(saved.setup, {
     first: "player",

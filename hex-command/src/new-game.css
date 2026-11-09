@@ -1,0 +1,296 @@
+/* Menu window primitives own typography and disclosures; these are choice layouts. */
+.new-game-dialog.dialog-window {
+  margin: auto auto 12px;
+  max-width: 420px;
+}
+.new-game-dialog > .window-content {
+  padding: 0 20px 8px;
+}
+.new-game-dialog.ng-browse > .window-content {
+  padding-top: 16px;
+  padding-bottom: 20px;
+}
+.new-game-dialog.ng-setup > header {
+  padding-block: 8px;
+  gap: 10px;
+}
+.new-game-dialog.ng-setup > header .setup-map-preview {
+  width: 112px;
+  height: 64px;
+  flex: none;
+}
+.new-game-dialog.ng-setup > header .window-icon {
+  display: none;
+}
+.ng-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ng-choice {
+  width: 100%;
+  padding: 14px;
+  text-align: left;
+  border-color: #7f744d;
+  background: #d8ba6f08;
+}
+.ng-choice-art {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ng-choice-art > span {
+  font-size: 14px;
+  color: #dfcc95;
+}
+.ng-choice .setup-map-preview {
+  width: 112px;
+  height: 88px;
+}
+.ng-choice > strong {
+  display: block;
+  font:
+    500 19px/1.3 system-ui,
+    sans-serif;
+  margin-top: 10px;
+}
+.ng-choice > p {
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+  margin-top: 8px;
+}
+.ng-choice > small {
+  display: block;
+  font:
+    12px/1.5 system-ui,
+    sans-serif;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.new-game-dialog.settings-style .ng-footer {
+  padding: 10px 20px 12px;
+  border-top: 1px solid var(--line);
+  flex-shrink: 0;
+  display: block;
+  margin-top: 0;
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+}
+.ng-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.ng-modes button,
+.ng-start-footer > button:first-child {
+  border-color: #7f744d;
+  color: #dfcc95;
+  background: #d8ba6f08;
+  font-weight: 500;
+}
+.ng-modes button[aria-pressed="true"] {
+  border-color: var(--gold);
+  background: #d8ba6f12;
+  box-shadow: inset 0 -2px var(--gold);
+}
+.ng-browse-footer > button {
+  width: 100%;
+  border: 0;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.new-game-dialog.settings-style .ng-start-footer {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 8px;
+}
+.ng-start-footer .primary {
+  min-height: 46px;
+}
+.ng-races {
+  padding: 0 0 1px;
+  border-bottom: 1px solid #39413688;
+  font-family: system-ui, sans-serif;
+}
+.ng-label {
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+  min-height: 20px;
+  margin-bottom: 2px;
+}
+.ng-strip {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: #687251 transparent;
+}
+.ng-strip > button {
+  width: 84px;
+  flex: 0 0 84px;
+  min-height: 84px;
+  padding: 0 3px 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scroll-snap-align: nearest;
+  border-color: transparent;
+}
+.ng-strip > button > .art-sprite {
+  width: 64px;
+  height: 64px;
+  flex: none;
+}
+.ng-strip > button > span {
+  font:
+    14px/1.2 system-ui,
+    sans-serif;
+  white-space: nowrap;
+}
+.ng-strip > button[aria-checked="true"] {
+  border-color: #7f744d;
+  background: #d8ba6f08;
+  font-weight: 600;
+}
+.ng-difficulty {
+  padding: 8px 0 0;
+}
+.ng-segments {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2px;
+  border-bottom: 1px solid #39413688;
+}
+.ng-segments.ng-custom {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.ng-segments > button {
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+  white-space: nowrap;
+}
+.ng-segments > button[aria-pressed="true"] {
+  color: #dfcc95;
+  background: #d8ba6f08;
+  box-shadow: inset 0 -2px #9f8c55;
+  font-weight: 600;
+}
+.new-game-dialog .ng-advanced-group {
+  padding: 8px 0;
+}
+.ng-advanced-group > .label {
+  display: block;
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+  margin-bottom: 6px;
+}
+.new-game-dialog.settings-style .advanced summary .chevron {
+  transform: none;
+}
+.new-game-dialog.settings-style .advanced[open] > summary .chevron,
+.new-game-dialog .ng-recruitment[open] > summary .chevron {
+  transform: rotate(180deg);
+}
+.ng-recruitment > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.ng-recruitment > summary::-webkit-details-marker {
+  display: none;
+}
+.ng-recruit-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 10px 0;
+  border-bottom: 1px solid #39413688;
+  cursor: pointer;
+}
+.ng-recruit-option input {
+  width: 23px;
+  height: 23px;
+  flex: none;
+  accent-color: #cfb76d;
+}
+.ng-recruit-option strong {
+  display: block;
+  font:
+    500 14px/1.45 system-ui,
+    sans-serif;
+}
+.ng-recruit-option small {
+  display: block;
+  font:
+    12px/1.5 system-ui,
+    sans-serif;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.ng-reset {
+  width: 100%;
+  min-height: 44px;
+  margin: 6px 0 0;
+  text-align: left;
+  color: #dfcc95;
+}
+.ng-campaign-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0 8px;
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+}
+.ng-campaign-info > .art-sprite {
+  width: 64px;
+  height: 64px;
+  flex: none;
+}
+.ng-error {
+  color: var(--red);
+  font:
+    13px/1.5 system-ui,
+    sans-serif;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.ng-confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 8px;
+  margin-top: 16px;
+}
+@media (max-width: 350px) {
+  .new-game-dialog.ng-setup > header .window-icon {
+    display: none;
+  }
+  .ng-footer {
+    padding-block: 9px;
+  }
+  .ng-segments > button {
+    font-size: 13px;
+  }
+}
+
+.ng-start-footer > button {
+  width: 100%;
+}
+
+.ng-choice[aria-current="true"] {
+  border-color: var(--gold);
+  background: #d8ba6f12;
+}
