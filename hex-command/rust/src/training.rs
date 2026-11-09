@@ -3,6 +3,7 @@ use crate::{
     ai::{Planner, context::BattleView, orders::*},
     data::*,
 };
+use hex_command_battle::RuntimeCommand as Command;
 use serde::{Deserialize, Serialize};
 use std::cell::RefCell;
 pub const SCHEMA: u32 = 8;
@@ -421,11 +422,12 @@ mod tests {
                 assert!(features.iter().all(|v| v.is_finite()));
                 let mut draft = game.action_forecasts().fork();
                 draft
-                    .execute(command.clone())
+                    .execute_runtime(command.clone())
                     .unwrap_or_else(|e| panic!("candidate {command:?}: {e}"));
             }
             let index = (step * 31) % choices.commands.len();
-            game.execute(choices.commands[index].clone()).unwrap();
+            game.execute_runtime(choices.commands[index].clone())
+                .unwrap();
         }
     }
     #[test]

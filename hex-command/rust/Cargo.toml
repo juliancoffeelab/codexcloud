@@ -16,7 +16,8 @@ name = "hex-command-sim"
 path = "src/main.rs"
 
 [features]
-default = []
+# Include native learned inference and observation code in ordinary builds.
+default = ["training"]
 training = ["dep:gemm", "dep:pulp"]
 runtime-catalog = ["hex-command-catalog/runtime-catalog", "hex-command-battle/runtime-catalog"]
 wasm = ["dep:ocamljsify", "dep:ocamljs_bindgen", "hex-command-catalog/wasm", "hex-command-battle/wasm"]

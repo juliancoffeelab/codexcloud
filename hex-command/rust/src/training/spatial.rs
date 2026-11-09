@@ -4,6 +4,7 @@ use crate::{
     ai::{context::BattleView, orders::*},
     data::*,
 };
+use hex_command_battle::RuntimeCommand as Command;
 use serde::{Deserialize, Serialize};
 
 pub const SPATIAL_SCHEMA: u32 = 9;
@@ -143,7 +144,7 @@ pub(super) fn observe_with_duties(
         .iter()
         .map(|command| {
             let (id, dest, target) = match command {
-                Command::Move { unit, tile } => (unit.0, Some(g.site(&tile.0)), None),
+                Command::Move { unit, tile } => (unit.0, Some(tile.0), None),
                 Command::Attack { unit, target, .. } => {
                     (unit.0, None, g.unit(target.0).map(|u| u.tile))
                 }

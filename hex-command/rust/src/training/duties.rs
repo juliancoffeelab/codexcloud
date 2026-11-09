@@ -3,6 +3,7 @@ use crate::{
     ai::{context::BattleView, orders::*},
     data::*,
 };
+use hex_command_battle::RuntimeCommand as Command;
 use std::rc::Rc;
 
 pub const NAMES: [&str; 57] = [
@@ -275,7 +276,7 @@ impl Duties {
             timing(p, x);
         }
         let (id, tile) = match command {
-            Command::Move { unit, tile } => (unit.0, Some(g.site(&tile.0))),
+            Command::Move { unit, tile } => (unit.0, Some(tile.0)),
             Command::Attack { unit, .. } | Command::Advance { unit, .. } => (unit.0, None),
             _ => return,
         };
@@ -646,7 +647,13 @@ mod tests {
         assert!(choices.features[0][feature("goto_unfinished")] > 0.);
         assert!(choices.features[0][feature("occupy_unfinished")] > 0.);
         assert!(choices.features[0][feature("duty_hold_remaining_known")] > 0.);
-        let move_index=choices.commands.iter().position(|c|matches!(c,Command::Move{unit,tile:t} if unit.0==actor.id && t==&tile(destination))).unwrap();
+        let move_index = choices
+            .commands
+            .iter()
+            .position(
+                |c| matches!(c,Command::Move{unit,tile:t} if unit.0==actor.id && t.0==destination),
+            )
+            .unwrap();
         assert_eq!(choices.features[move_index][feature("goto_at_after")], 1.);
         assert_eq!(choices.features[move_index][feature("goto_priority")], 1.);
         let guard_index = choices
