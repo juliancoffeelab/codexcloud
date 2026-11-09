@@ -1,0 +1,789 @@
+{
+  "last_update": {
+    "event": "update",
+    "seconds": 7768.722865241005,
+    "update": 4511,
+    "decisions": 1154816,
+    "episodes": 14039,
+    "policy_loss": -0.0011635005163649719,
+    "value_loss": 0.06077624671161175,
+    "entropy": 0.5008387938141823,
+    "reference_kl": 0.05657018100221952,
+    "clip_fraction": 0.0,
+    "gradient_norm": 5.627627193927765,
+    "critic_explained_variance": 0.7645178794997202,
+    "warmup": false,
+    "family_decisions": {
+      "arena": 577434,
+      "campaign": 577382
+    },
+    "action_counts": {
+      "end_turn": 259968,
+      "move": 617767,
+      "attack": 260934,
+      "advance": 16147
+    }
+  },
+  "completed_games": 14041,
+  "groups": {
+    "arena/river-valley/territory/predictor": {
+      "games": 736,
+      "wins": 180,
+      "caps": 0,
+      "decisions": 28865,
+      "reward": -376.0
+    },
+    "arena/villages/deathmatch/predictor": {
+      "games": 742,
+      "wins": 11,
+      "caps": 16,
+      "decisions": 28825,
+      "reward": -704.0
+    },
+    "arena/open/deathmatch/classic": {
+      "games": 622,
+      "wins": 569,
+      "caps": 19,
+      "decisions": 28855,
+      "reward": 535.0
+    },
+    "arena/crossings/territory/classic": {
+      "games": 497,
+      "wins": 428,
+      "caps": 2,
+      "decisions": 28883,
+      "reward": 361.0
+    },
+    "arena/sluice/deathmatch/classic": {
+      "games": 313,
+      "wins": 244,
+      "caps": 69,
+      "decisions": 28897,
+      "reward": 244.0
+    },
+    "arena/sluice/territory/predictor": {
+      "games": 287,
+      "wins": 160,
+      "caps": 125,
+      "decisions": 28877,
+      "reward": 158.0
+    },
+    "campaign/green-accord/authored/predictor": {
+      "games": 519,
+      "wins": 253,
+      "caps": 0,
+      "decisions": 72052,
+      "reward": -13.0
+    },
+    "arena/villages/territory/predictor": {
+      "games": 812,
+      "wins": 94,
+      "caps": 0,
+      "decisions": 28845,
+      "reward": -624.0
+    },
+    "campaign/borrowed-tide/authored/predictor": {
+      "games": 670,
+      "wins": 180,
+      "caps": 0,
+      "decisions": 72103,
+      "reward": -310.0
+    },
+    "arena/sluice/deathmatch/predictor": {
+      "games": 310,
+      "wins": 246,
+      "caps": 64,
+      "decisions": 28838,
+      "reward": 246.0
+    },
+    "arena/river-valley/territory/classic": {
+      "games": 574,
+      "wins": 111,
+      "caps": 0,
+      "decisions": 28816,
+      "reward": -352.0
+    },
+    "campaign/borrowed-tide/authored/classic": {
+      "games": 390,
+      "wins": 334,
+      "caps": 0,
+      "decisions": 72259,
+      "reward": 278.0
+    },
+    "arena/villages/territory/classic": {
+      "games": 1270,
+      "wins": 607,
+      "caps": 0,
+      "decisions": 28835,
+      "reward": -56.0
+    },
+    "arena/open/territory/classic": {
+      "games": 785,
+      "wins": 778,
+      "caps": 0,
+      "decisions": 28836,
+      "reward": 771.0
+    },
+    "arena/crossings/deathmatch/predictor": {
+      "games": 314,
+      "wins": 38,
+      "caps": 250,
+      "decisions": 28877,
+      "reward": 12.0
+    },
+    "arena/crossings/territory/predictor": {
+      "games": 397,
+      "wins": 173,
+      "caps": 2,
+      "decisions": 28861,
+      "reward": -49.0
+    },
+    "campaign/green-accord/authored/classic": {
+      "games": 443,
+      "wins": 363,
+      "caps": 0,
+      "decisions": 71737,
+      "reward": 283.0
+    },
+    "arena/river-valley/deathmatch/predictor": {
+      "games": 357,
+      "wins": 216,
+      "caps": 0,
+      "decisions": 28931,
+      "reward": 75.0
+    },
+    "arena/sluice/territory/classic": {
+      "games": 245,
+      "wins": 96,
+      "caps": 145,
+      "decisions": 28866,
+      "reward": 92.0
+    },
+    "arena/villages/deathmatch/classic": {
+      "games": 675,
+      "wins": 13,
+      "caps": 3,
+      "decisions": 28906,
+      "reward": -646.0
+    },
+    "arena/crossings/deathmatch/classic": {
+      "games": 375,
+      "wins": 253,
+      "caps": 75,
+      "decisions": 28942,
+      "reward": 206.0
+    },
+    "arena/open/territory/predictor": {
+      "games": 828,
+      "wins": 453,
+      "caps": 0,
+      "decisions": 28832,
+      "reward": 78.0
+    },
+    "arena/river-valley/deathmatch/classic": {
+      "games": 254,
+      "wins": 208,
+      "caps": 19,
+      "decisions": 28940,
+      "reward": 181.0
+    },
+    "campaign/ashen-oath/authored/classic": {
+      "games": 362,
+      "wins": 361,
+      "caps": 0,
+      "decisions": 72092,
+      "reward": 360.0
+    },
+    "arena/open/deathmatch/predictor": {
+      "games": 359,
+      "wins": 51,
+      "caps": 249,
+      "decisions": 28739,
+      "reward": -8.0
+    },
+    "campaign/ashen-oath/authored/predictor": {
+      "games": 353,
+      "wins": 321,
+      "caps": 2,
+      "decisions": 72229,
+      "reward": 289.0
+    },
+    "campaign/lantern-road/flight/predictor": {
+      "games": 95,
+      "wins": 41,
+      "caps": 2,
+      "decisions": 24086,
+      "reward": -13.0
+    },
+    "campaign/lantern-road/flight/classic": {
+      "games": 77,
+      "wins": 42,
+      "caps": 3,
+      "decisions": 24223,
+      "reward": 7.0
+    },
+    "campaign/lantern-road/authored/classic": {
+      "games": 84,
+      "wins": 38,
+      "caps": 7,
+      "decisions": 23941,
+      "reward": -8.0
+    },
+    "campaign/lantern-road/fight/predictor": {
+      "games": 107,
+      "wins": 14,
+      "caps": 4,
+      "decisions": 23932,
+      "reward": -79.0
+    },
+    "campaign/lantern-road/fight/classic": {
+      "games": 87,
+      "wins": 32,
+      "caps": 3,
+      "decisions": 23977,
+      "reward": -23.0
+    },
+    "campaign/lantern-road/authored/predictor": {
+      "games": 102,
+      "wins": 25,
+      "caps": 4,
+      "decisions": 24195,
+      "reward": -52.0
+    }
+  },
+  "evaluations": [
+    {
+      "score": 0.7020833333333334,
+      "weighted_caps": 0.07500000000000001,
+      "wins": 43,
+      "caps": 6,
+      "runs": 68,
+      "checkpoint": "checkpoints/initial-1794186145038922800",
+      "seconds": 3.3063932360018953,
+      "model_sha256": "232f8d503687f52a5c014fa39d0b2caa38c89e805182f4d685d566f82ad39fa3",
+      "strata": {
+        "arena/classic": {
+          "score": 0.7000000000000001,
+          "wins": 14,
+          "runs": 20,
+          "caps": 1
+        },
+        "arena/predictor": {
+          "score": 0.4,
+          "wins": 8,
+          "runs": 20,
+          "caps": 5
+        },
+        "campaign/classic": {
+          "score": 0.8333333333333334,
+          "wins": 10,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.875,
+          "wins": 11,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.4,
+        0.7020833333333334,
+        -0.07500000000000001
+      ]
+    },
+    {
+      "score": 0.4343750000000002,
+      "weighted_caps": 0.11250000000000002,
+      "wins": 27,
+      "caps": 9,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00000334-1794186941032968469",
+      "seconds": 606.4726143040098,
+      "model_sha256": "d077a30d71891fbd6ccd9fb779146cfc39102c332a8b85e949cd3fe919fcb067",
+      "strata": {
+        "arena/classic": {
+          "score": 0.45,
+          "wins": 9,
+          "runs": 20,
+          "caps": 2
+        },
+        "arena/predictor": {
+          "score": 0.35000000000000003,
+          "wins": 7,
+          "runs": 20,
+          "caps": 7
+        },
+        "campaign/classic": {
+          "score": 0.5,
+          "wins": 6,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.4375,
+          "wins": 5,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.35000000000000003,
+        0.4343750000000002,
+        -0.11250000000000002
+      ]
+    },
+    {
+      "score": 0.48750000000000016,
+      "weighted_caps": 0.15000000000000002,
+      "wins": 31,
+      "caps": 13,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00000694-1794187544457119118",
+      "seconds": 1211.165586784009,
+      "model_sha256": "c1b043cd3a7e1b1189cb275162aecde4fe3b57ae9fd6c410ba044a317053140f",
+      "strata": {
+        "arena/classic": {
+          "score": 0.6000000000000001,
+          "wins": 12,
+          "runs": 20,
+          "caps": 2
+        },
+        "arena/predictor": {
+          "score": 0.35000000000000003,
+          "wins": 7,
+          "runs": 20,
+          "caps": 5
+        },
+        "campaign/classic": {
+          "score": 0.75,
+          "wins": 8,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.25,
+          "wins": 4,
+          "runs": 14,
+          "caps": 6
+        }
+      },
+      "reliability_key": [
+        0.25,
+        0.48750000000000016,
+        -0.15000000000000002
+      ]
+    },
+    {
+      "score": 0.6208333333333337,
+      "weighted_caps": 0.13750000000000004,
+      "wins": 41,
+      "caps": 12,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00001047-1794188146802897885",
+      "seconds": 1811.7637028080062,
+      "model_sha256": "973f85491f5735e43f6bd41065ee82d2b444c303a201bde1eca8477ec383d45a",
+      "strata": {
+        "arena/classic": {
+          "score": 0.7000000000000001,
+          "wins": 14,
+          "runs": 20,
+          "caps": 1
+        },
+        "arena/predictor": {
+          "score": 0.45,
+          "wins": 9,
+          "runs": 20,
+          "caps": 5
+        },
+        "campaign/classic": {
+          "score": 0.9583333333333334,
+          "wins": 13,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.375,
+          "wins": 5,
+          "runs": 14,
+          "caps": 6
+        }
+      },
+      "reliability_key": [
+        0.375,
+        0.6208333333333337,
+        -0.13750000000000004
+      ]
+    },
+    {
+      "score": 0.5166666666666669,
+      "weighted_caps": 0.13750000000000004,
+      "wins": 37,
+      "caps": 12,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00001399-1794188753387117925",
+      "seconds": 2417.732634360007,
+      "model_sha256": "b65db67bcc852b8da265a3ba02599b1a2b5bc45ba62c6d369eda36966d1f3f6d",
+      "strata": {
+        "arena/classic": {
+          "score": 0.7000000000000001,
+          "wins": 14,
+          "runs": 20,
+          "caps": 1
+        },
+        "arena/predictor": {
+          "score": 0.45,
+          "wins": 9,
+          "runs": 20,
+          "caps": 5
+        },
+        "campaign/classic": {
+          "score": 0.6666666666666666,
+          "wins": 10,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.25,
+          "wins": 4,
+          "runs": 14,
+          "caps": 6
+        }
+      },
+      "reliability_key": [
+        0.25,
+        0.5166666666666669,
+        -0.13750000000000004
+      ]
+    },
+    {
+      "score": 0.46875000000000017,
+      "weighted_caps": 0.2,
+      "wins": 31,
+      "caps": 18,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00001743-1794189358214184796",
+      "seconds": 3022.90185172201,
+      "model_sha256": "d030cdc354f3247c16b86edd0937e714ce78b913f5f93da996f8e872c43ae4e5",
+      "strata": {
+        "arena/classic": {
+          "score": 0.6000000000000001,
+          "wins": 12,
+          "runs": 20,
+          "caps": 1
+        },
+        "arena/predictor": {
+          "score": 0.4,
+          "wins": 8,
+          "runs": 20,
+          "caps": 5
+        },
+        "campaign/classic": {
+          "score": 0.625,
+          "wins": 7,
+          "runs": 14,
+          "caps": 6
+        },
+        "campaign/predictor": {
+          "score": 0.25,
+          "wins": 4,
+          "runs": 14,
+          "caps": 6
+        }
+      },
+      "reliability_key": [
+        0.25,
+        0.46875000000000017,
+        -0.2
+      ]
+    },
+    {
+      "score": 0.4895833333333336,
+      "weighted_caps": 0.10000000000000002,
+      "wins": 35,
+      "caps": 8,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00002091-1794189962322469794",
+      "seconds": 3627.468896738006,
+      "model_sha256": "80cb5127218ce39b8ffbe8c549ab600c1f64fabb0c9f9610996f45d71ff38a56",
+      "strata": {
+        "arena/classic": {
+          "score": 0.55,
+          "wins": 11,
+          "runs": 20,
+          "caps": 3
+        },
+        "arena/predictor": {
+          "score": 0.45,
+          "wins": 9,
+          "runs": 20,
+          "caps": 5
+        },
+        "campaign/classic": {
+          "score": 0.4583333333333333,
+          "wins": 9,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.5,
+          "wins": 6,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.45,
+        0.4895833333333336,
+        -0.10000000000000002
+      ]
+    },
+    {
+      "score": 0.5166666666666668,
+      "weighted_caps": 0.10000000000000002,
+      "wins": 34,
+      "caps": 8,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00002429-1794190567839399966",
+      "seconds": 4230.949563094007,
+      "model_sha256": "98483061c215079476ebb5b118ff97e010102f554183e2164ec340b3e64ad40b",
+      "strata": {
+        "arena/classic": {
+          "score": 0.55,
+          "wins": 11,
+          "runs": 20,
+          "caps": 3
+        },
+        "arena/predictor": {
+          "score": 0.35000000000000003,
+          "wins": 7,
+          "runs": 20,
+          "caps": 5
+        },
+        "campaign/classic": {
+          "score": 0.6666666666666666,
+          "wins": 10,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.5,
+          "wins": 6,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.35000000000000003,
+        0.5166666666666668,
+        -0.10000000000000002
+      ]
+    },
+    {
+      "score": 0.5583333333333337,
+      "weighted_caps": 0.07500000000000001,
+      "wins": 38,
+      "caps": 6,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00002767-1794191173580340749",
+      "seconds": 4833.505596493007,
+      "model_sha256": "2df532fe68c14baeedf5df83be661b87f95a4343ac36df471f3dd8538327ad26",
+      "strata": {
+        "arena/classic": {
+          "score": 0.75,
+          "wins": 15,
+          "runs": 20,
+          "caps": 1
+        },
+        "arena/predictor": {
+          "score": 0.4,
+          "wins": 8,
+          "runs": 20,
+          "caps": 5
+        },
+        "campaign/classic": {
+          "score": 0.7083333333333334,
+          "wins": 11,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.375,
+          "wins": 4,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.375,
+        0.5583333333333337,
+        -0.07500000000000001
+      ]
+    },
+    {
+      "score": 0.5375000000000003,
+      "weighted_caps": 0.07500000000000001,
+      "wins": 39,
+      "caps": 6,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00003119-1794191777311816736",
+      "seconds": 5437.819189417009,
+      "model_sha256": "512d717130cbcda4b5cb889bb5f9f6fbad9c99d1e6bf465fed861cc1d5dd5fb1",
+      "strata": {
+        "arena/classic": {
+          "score": 0.75,
+          "wins": 15,
+          "runs": 20,
+          "caps": 1
+        },
+        "arena/predictor": {
+          "score": 0.4,
+          "wins": 8,
+          "runs": 20,
+          "caps": 5
+        },
+        "campaign/classic": {
+          "score": 0.75,
+          "wins": 12,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.25,
+          "wins": 4,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.25,
+        0.5375000000000003,
+        -0.07500000000000001
+      ]
+    },
+    {
+      "score": 0.6583333333333335,
+      "weighted_caps": 0.08750000000000001,
+      "wins": 40,
+      "caps": 7,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00003470-1794192380333686857",
+      "seconds": 6040.336611716011,
+      "model_sha256": "59a573425eefbc0145d8918f91a8fdd055bb2bc68fa9d76f9feea0a5d347b1a5",
+      "strata": {
+        "arena/classic": {
+          "score": 0.6000000000000001,
+          "wins": 12,
+          "runs": 20,
+          "caps": 3
+        },
+        "arena/predictor": {
+          "score": 0.45,
+          "wins": 9,
+          "runs": 20,
+          "caps": 4
+        },
+        "campaign/classic": {
+          "score": 0.875,
+          "wins": 11,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.7083333333333334,
+          "wins": 8,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.45,
+        0.6583333333333335,
+        -0.08750000000000001
+      ]
+    },
+    {
+      "score": 0.5562500000000002,
+      "weighted_caps": 0.06250000000000001,
+      "wins": 37,
+      "caps": 5,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00003825-1794192985986619868",
+      "seconds": 6644.641388081007,
+      "model_sha256": "fa0b7863785117ccfdda503000b587b82c2b8c448884bb7e9788e3969ecd170e",
+      "strata": {
+        "arena/classic": {
+          "score": 0.7000000000000001,
+          "wins": 14,
+          "runs": 20,
+          "caps": 1
+        },
+        "arena/predictor": {
+          "score": 0.4,
+          "wins": 8,
+          "runs": 20,
+          "caps": 4
+        },
+        "campaign/classic": {
+          "score": 0.5416666666666666,
+          "wins": 7,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.5833333333333334,
+          "wins": 8,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.4,
+        0.5562500000000002,
+        -0.06250000000000001
+      ]
+    },
+    {
+      "score": 0.4854166666666669,
+      "weighted_caps": 0.10000000000000002,
+      "wins": 31,
+      "caps": 8,
+      "runs": 68,
+      "checkpoint": "checkpoints/update-00004182-1794193590735710295",
+      "seconds": 7247.254713662005,
+      "model_sha256": "1164aab4fe4f7f25e72d161b77748800fd88a69ca981d2724b2b3bd811ac9bf6",
+      "strata": {
+        "arena/classic": {
+          "score": 0.6000000000000001,
+          "wins": 12,
+          "runs": 20,
+          "caps": 2
+        },
+        "arena/predictor": {
+          "score": 0.30000000000000004,
+          "wins": 6,
+          "runs": 20,
+          "caps": 6
+        },
+        "campaign/classic": {
+          "score": 0.5,
+          "wins": 6,
+          "runs": 14,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.5416666666666666,
+          "wins": 7,
+          "runs": 14,
+          "caps": 0
+        }
+      },
+      "reliability_key": [
+        0.30000000000000004,
+        0.4854166666666669,
+        -0.10000000000000002
+      ]
+    }
+  ]
+}
