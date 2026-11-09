@@ -1,34 +1,34 @@
 {
-  "phase": "posttune",
+  "phase": "rl",
   "latest": {
     "label": "last",
     "files": {
       "planner.json": {
-        "bytes": 1017115,
-        "sha256": "d16f8834bc11734c6f0af8d6f7f4a6318bfbec6b8373d78cdc8a16dc4a441a5b"
+        "bytes": 1017585,
+        "sha256": "6b14688c50c6fd79fa353969bf170d31c316c134f4d3e155ab58ff2868fcf51e"
       },
       "resume.pt": {
-        "bytes": 408604,
-        "sha256": "0ab2b528b95767d1004e82e1799c81cfc84bc9a882172b81410a2b6f8b5640b5"
+        "bytes": 742914,
+        "sha256": "fc53a0334d5631f23581f272dcd20f51cd44f7e79a10fafc7673471bbc28a7f2"
       }
     }
   },
   "best": {
-    "label": "epoch-0017",
+    "label": "initial",
     "files": {
       "planner.json": {
-        "bytes": 1017279,
-        "sha256": "c7224c96707b07fd6523df64b0a08888c72830dd188384c6debc304a8b9641e5"
+        "bytes": 1017636,
+        "sha256": "232f8d503687f52a5c014fa39d0b2caa38c89e805182f4d685d566f82ad39fa3"
       },
       "resume.pt": {
-        "bytes": 410780,
-        "sha256": "09450330fdeb43732b05ca73f2463b764f2ba2231600e883a200a9d7d73cd449"
+        "bytes": 347968,
+        "sha256": "c135cb05016f6d6a89fdfcde60c3aba3b2b8f1b30b5d1ca950f87fb5740d9139"
       }
     }
   },
-  "backup_utc": "2026-11-09T01:00:26Z",
+  "backup_utc": "2026-11-09T01:05:27Z",
   "files": {
-    "latest.pt": "0ab2b528b95767d1004e82e1799c81cfc84bc9a882172b81410a2b6f8b5640b5",
-    "best.pt": "09450330fdeb43732b05ca73f2463b764f2ba2231600e883a200a9d7d73cd449"
+    "latest.pt": "fc53a0334d5631f23581f272dcd20f51cd44f7e79a10fafc7673471bbc28a7f2",
+    "best.pt": "c135cb05016f6d6a89fdfcde60c3aba3b2b8f1b30b5d1ca950f87fb5740d9139"
   }
 }
