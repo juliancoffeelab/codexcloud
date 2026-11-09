@@ -16,7 +16,7 @@ import hex_command_training as native
 from .mixed_workload import group, mass
 from .ppo import ActorCritic, pack, unpack, advantages, categorical, categorical_kl
 from .spatial import SpatialPlanner
-from .recovery import save_bundle, atomic_json, load_resume
+from .recovery import save_bundle, atomic_json, load_resume, read_jsonl
 
 
 def terminal_reward(config, reward, truncated):
@@ -166,6 +166,7 @@ def main():
     elapsed = old["elapsed"] if old else 0.0
     start = time.monotonic()
     deadline = start + max(0, a.seconds - elapsed)
+    read_jsonl(run / "metrics.jsonl", repair=True)
     log = (run / "metrics.jsonl").open("a")
     action_counts = defaultdict(int, old.get("action_counts", {}) if old else {})
 

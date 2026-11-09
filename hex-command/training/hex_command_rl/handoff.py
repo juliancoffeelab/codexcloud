@@ -33,6 +33,7 @@ def main():
     os.environ["HEX_COMMAND_EVALUATION_LOCK"] = str(root / "gameplay.lock")
     cache = run / "handoff-validation"
     cache.mkdir(exist_ok=True)
+    read_jsonl(run / "handoff-results.jsonl", repair=True)
     best = None
     best_key = (-1.0, -1.0, -1.0)
     # Atomic result files are authoritative if a crash happened before logging

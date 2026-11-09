@@ -212,14 +212,19 @@ def main():
     )
     if resume:
         prior = resume["manifest"]
+        prior_rounds = prior.get("rounds")
+        if prior_rounds is None:
+            # Older smoke checkpoints recorded the cap only in their cases.
+            caps = {c.get("maxRounds") for c in prior.get("validation_configs", [])}
+            prior_rounds = caps.pop() if len(caps) == 1 else None
         if (
             prior["fingerprints"] != json.loads(native.fingerprints())
             or prior["campaign"] != args.campaign
             or prior["opponent"] != args.opponent
-            or prior["rounds"] != args.rounds
+            or prior_rounds != args.rounds
         ):
             p.error(
-                "resume catalog, engine, campaign and opponent must match; use --warm-start for a new workload"
+                "resume catalog, engine, campaign, opponent and round cap must match; use --warm-start for a new workload"
             )
         args.warm_start = Path(prior["warm_start"])
         if (
@@ -270,6 +275,7 @@ def main():
         warm_start_sha256=hashlib.sha256(args.warm_start.read_bytes()).hexdigest(),
         campaign=args.campaign,
         opponent=args.opponent,
+        rounds=args.rounds,
         seconds=args.seconds,
         envs=args.envs,
         horizon=args.horizon,

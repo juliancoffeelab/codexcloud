@@ -14,7 +14,7 @@ import hex_command_training as native
 from .checkpoint import warm_start
 from .compressed_data import collect, load
 from .mixed_workload import mass
-from .recovery import atomic_json, save_bundle, load_resume
+from .recovery import atomic_json, save_bundle, load_resume, read_jsonl
 from .spatial import SpatialPlanner
 from .spatial_data import batches
 
@@ -109,6 +109,7 @@ def main():
         random.setstate(old["python_rng"])
     start = time.monotonic()
     deadline = start + max(0, a.seconds - elapsed)
+    read_jsonl(run / "metrics.jsonl", repair=True)
     log = (run / "metrics.jsonl").open("a")
 
     def record(event, **kw):
