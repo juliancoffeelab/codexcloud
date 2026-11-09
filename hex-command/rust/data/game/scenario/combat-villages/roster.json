@@ -1,0 +1,143 @@
+{
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 14,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "rider"
+        },
+        {
+          "unit": "horse-archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "swordsman",
+          "role": "leader",
+          "character": "nera",
+          "tile": {
+            "col": 0,
+            "row": 5
+          }
+        },
+        {
+          "type": "scout",
+          "character": "ivo",
+          "tile": {
+            "col": 0,
+            "row": 4
+          }
+        },
+        {
+          "type": "adept",
+          "character": "oren",
+          "tile": {
+            "col": 0,
+            "row": 6
+          }
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 6,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        }
+      ],
+      "units": [
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 7,
+            "row": 6
+          }
+        },
+        {
+          "type": "necromancer",
+          "role": "leader",
+          "character": "tollkeeper",
+          "tile": {
+            "col": 15,
+            "row": 7
+          }
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
+    },
+    {
+      "id": "swamp-dead",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "green",
+      "relations": {
+        "player": "hostile",
+        "enemy": "neutral"
+      },
+      "name": "Marsh dead",
+      "recruits": [
+        {
+          "unit": "zombie-walker",
+          "cost": 6
+        },
+        {
+          "unit": "zombie-decay-caster",
+          "cost": 10
+        }
+      ],
+      "gold": 0,
+      "units": [
+        {
+          "type": "zombie-decay-caster",
+          "items": ["healing-bottle"],
+          "role": "leader",
+          "character": "edrin",
+          "tile": {
+            "col": 12,
+            "row": 12
+          }
+        }
+      ]
+    }
+  ]
+}

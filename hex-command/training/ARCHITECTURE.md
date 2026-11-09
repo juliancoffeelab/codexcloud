@@ -102,6 +102,12 @@ managed process. Restarting its command recovers existing atomic phase state.
 A finished run is retained and reported as complete; use a new root for another
 experiment.
 
+The engine-owned `rust/data/simulation/rl.json` selects workload maps, roster
+pairs, objective routes, opponents and recruiters. Python reads this validated
+manifest through the native binding. Isolated catalogs copy the current engine
+catalog; they do not create a second set of scenario definitions. See
+[the catalog contract](../rust/data/CATALOG.md) for visibility and simulation setup.
+
 Mixed sampling assigns equal decision budgets to arenas and campaigns, then
 balances maps/campaigns and divides their objective/route variants. Recruiters and
 fixed opponents are explicit workload axes. Seed partitions separate training,

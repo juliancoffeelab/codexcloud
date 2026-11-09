@@ -9,6 +9,7 @@ use crate::{
     ai::policies::threat::Threats,
     data::*,
 };
+use hex_command_battle::RuntimeCommand as Command;
 use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Retreat {
@@ -569,8 +570,10 @@ impl ClassicProjection<'_, '_> {
         let routes = if assigned {
             Some(std::rc::Rc::new(self.occupied_routes(&u, &goals, false)))
         } else {
-            (self.map_id() == "river" || rules.orders.campaign || !rebuild.is_empty())
-                .then(|| self.routes(u.kind, &goals))
+            ((0..self.terrain().len()).any(|tile| self.role_is(tile, TerrainRole::Water))
+                || rules.orders.campaign
+                || !rebuild.is_empty())
+            .then(|| self.routes(u.kind, &goals))
         };
         let recruiting = self
             .recruitment_options(u.side)
@@ -1095,7 +1098,7 @@ impl Recorder {
     }
     fn emit(&mut self, game: &mut hex_command_battle::ActionForecast<'_>, command: Command) {
         self.flush_intents(game);
-        if let Err(error) = game.execute(command.clone()) {
+        if let Err(error) = game.execute_runtime(command.clone()) {
             self.error = Some(error);
             return;
         }
@@ -1112,7 +1115,7 @@ impl Recorder {
         unit: u32,
         tile: usize,
     ) {
-        self.emit(game, crate::ai::move_command(game, unit, tile));
+        self.emit(game, crate::ai::move_command(unit, tile));
     }
     fn attack(
         &mut self,
@@ -1129,6 +1132,6 @@ impl Recorder {
         unit: u32,
         kind: usize,
     ) {
-        self.emit(game, crate::ai::advance_command(game, unit, kind));
+        self.emit(game, crate::ai::advance_command(unit, kind));
     }
 }

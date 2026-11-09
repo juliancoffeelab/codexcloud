@@ -1,14 +1,13 @@
 {
   "id": "bell-night",
-  "name": "Bell Night \u2014 Survey",
+  "name": "Bell Night — Survey",
   "tagline": "A large night battlefield with survey dragons.",
-  "description": "A debug battle on the 23\u00d725 Bell valley. Test movement, recruitment, fog, village lamps and accumulated death lights through normal commands.",
+  "description": "A debug battle on the 23×25 Bell valley. Test movement, recruitment, fog, village lamps and accumulated death lights through normal commands.",
   "shortDescription": "Large battlefield rendering playtest.",
   "race": "human",
   "leader": "commander",
   "ending": [],
   "stages": ["stages/bell-night/stage.json"],
-  "playerDiplomacy": ["unrestricted"],
   "characters": [
     {
       "id": "survey-captain",
@@ -18,5 +17,6 @@
       "id": "survey-rival",
       "name": "Survey rival"
     }
-  ]
+  ],
+  "human": false
 }

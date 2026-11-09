@@ -2,7 +2,7 @@
 use super::{error::SimulationError, types::*};
 use crate::{
     ai::{
-        Diplomacy, PlanningWorkspace, Policy, Random, policies::objectives::objective,
+        Diplomacy, PlanningWorkspace, Policy, policies::objectives::objective,
         runtime::tactic::PresetTactic,
     },
     data::*,
@@ -57,27 +57,24 @@ pub(crate) fn create_arena<'catalog>(
     config: &ArenaConfig,
 ) -> Result<Game<'catalog>, SimulationError> {
     validate_arena(rules, config)?;
-    let mut random = Random(config.seed);
     let landscape = rules
         .arena
-        .landscapes
+        .scenarios
         .iter()
         .find(|l| l.id == config.landscape)
         .unwrap();
-    let map_id = landscape.map.as_deref().unwrap_or("arena-template");
+    let variant =
+        &landscape.variants[config.seed.saturating_sub(1) as usize % landscape.variants.len()];
+    let map_id = &variant.map;
     let mut state = rules
         .maps
         .iter()
-        .chain(rules.arena_maps.iter())
         .filter(|((id, _), _)| id == map_id)
         .max_by_key(|((_, revision), _)| revision)
         .ok_or("Arena layout is unavailable")?
         .1
         .clone();
-    if landscape.map.is_none() {
-        generate_arena_terrain(&mut state, &config.landscape, &mut random);
-    }
-    if landscape.authored {
+    if matches!(variant.forces, ArenaForces::Scenario) {
         state.turn = config.first;
         state.round = 1;
         state.winner = None;
@@ -133,7 +130,9 @@ pub(crate) fn create_arena<'catalog>(
         });
         state.next_id += 1;
     }
-    let budget = rules.arena.starting_budget + (random.next() * 3.0).floor() as i32 * 3;
+    let ArenaForces::Selected { budget } = variant.forces else {
+        unreachable!()
+    };
     if starting_cost.iter().any(|&cost| cost > budget) {
         return Err("Arena starting troops exceed the shared budget".into());
     }
@@ -164,156 +163,6 @@ pub(crate) fn create_arena<'catalog>(
     game.configure_arena(pools, Some(config.first));
     Ok(game)
 }
-fn generate_arena_terrain(state: &mut State, landscape: &str, random: &mut Random) {
-    // Preserve generated water-arena identities without the retired skirmish template.
-    if matches!(landscape, "crossings" | "islands") {
-        state.map_id = "river".into();
-        state.map_revision = 2;
-    }
-    state.cols = 9;
-    state.rows = 9;
-    let mut used = HashSet::new();
-    for index in 0..state.tiles.len() {
-        let tile = &state.tiles[index];
-        if used.contains(&tile.id) {
-            continue;
-        }
-        let partner = state
-            .tiles
-            .iter()
-            .position(|other| other.row == 8 - tile.row && other.col == 8 - tile.col - tile.row % 2)
-            .unwrap();
-        used.insert(tile.id.clone());
-        used.insert(state.tiles[partner].id.clone());
-        let draw = random.next();
-        let r = tile.row - 4;
-        let q = tile.col - r.div_euclid(2) - 4;
-        let terrain = match landscape {
-            "wooded" => {
-                // Most unreserved ground is woodland; starters and settlements stay clear.
-                if draw < 0.75 {
-                    "forest"
-                } else if draw < 0.9 {
-                    "grove"
-                } else if draw < 0.95 {
-                    "hill"
-                } else {
-                    "plains"
-                }
-            }
-            "crossings" => {
-                // The curved river widens only around the island fort.
-                let river = match r {
-                    -4..=-2 => q == 2,
-                    -1 => (0..=1).contains(&q),
-                    0 => q.abs() <= 1,
-                    1 => (-1..=0).contains(&q),
-                    2..=4 => q == -2,
-                    _ => false,
-                };
-                if river {
-                    "water"
-                } else if draw < 0.2 {
-                    "marsh"
-                } else if draw < 0.3 {
-                    "forest"
-                } else {
-                    "plains"
-                }
-            }
-            "islands" => {
-                let home = q.abs() >= 2
-                    && r.abs() <= 2
-                    && !(q == -2 && r > 0)
-                    && !(q == 2 && r < 0)
-                    && !(q == -3 && r == -1)
-                    && !(q == 3 && r == 1);
-                let fort = q == 0 && r == 0 || q == -1 && r == 1 || q == 1 && r == -1;
-                let village = q == 0 && (r.abs() == 2 || r.abs() == 3);
-                if home || fort || village {
-                    if draw < 0.15 {
-                        "forest"
-                    } else if draw < 0.25 {
-                        "hill"
-                    } else if draw < 0.45 {
-                        "marsh"
-                    } else {
-                        "plains"
-                    }
-                } else {
-                    "water"
-                }
-            }
-            _ => "plains",
-        };
-        state.tiles[index].terrain = terrain.into();
-        state.tiles[partner].terrain = terrain.into();
-        if terrain == "ford" {
-            state.tiles[index].connections = Some(vec![HexDirection::E, HexDirection::W]);
-            state.tiles[partner].connections = Some(vec![HexDirection::E, HexDirection::W]);
-        }
-    }
-    let mut terrain = |q: i32, r: i32, kind: &str, owner: Option<Side>| {
-        let tile = state
-            .tiles
-            .iter_mut()
-            .find(|t| (t.col, t.row) == (q + r.div_euclid(2) + 4, r + 4))
-            .unwrap();
-        tile.terrain = kind.into();
-        tile.connections = match kind {
-            "village" => Some(vec![]),
-            "bridge" | "ford" => Some(vec![HexDirection::E, HexDirection::W]),
-            _ => None,
-        };
-        tile.owner = owner.map(|side: Side| side.faction_id().to_owned());
-    };
-    for (q, r, kind, owner) in [
-        (-3, 0, "keep", Some(Side::Player)),
-        (3, 0, "keep", Some(Side::Enemy)),
-        (0, 0, "fort", None),
-        (0, -2, "village", None),
-        (0, 2, "village", None),
-        (-2, 0, "plains", None),
-        (2, 0, "plains", None),
-        (-3, 1, "plains", None),
-        (3, -1, "plains", None),
-        (-2, -1, "village", None),
-        (2, 1, "village", None),
-        (-1, 3, "ruins", None),
-        (1, -3, "ruins", None),
-    ] {
-        terrain(q, r, kind, owner);
-    }
-    if landscape == "crossings" {
-        for (q, r) in [(-1, 0), (1, 0)] {
-            terrain(q, r, "bridge", None);
-        }
-        for (q, r) in [(2, -3), (-2, 3)] {
-            terrain(q, r, "ford", None);
-        }
-    }
-    if landscape == "islands" {
-        for (q, r) in [(-1, 0), (1, 0)] {
-            terrain(q, r, "bridge", None);
-        }
-        for (q, r) in [
-            (-2, 1),
-            (2, -1),
-            (0, -1),
-            (0, 1),
-            (1, -2),
-            (-1, 2),
-            (-1, -2),
-            (1, 2),
-            (2, -2),
-            (-2, 2),
-            (-1, -1),
-            (1, 1),
-        ] {
-            terrain(q, r, "ford", None);
-        }
-    }
-}
 fn roster<'a>(rules: &'a Rules, id: &str) -> Result<&'a crate::data::ArmyRoster, SimulationError> {
     rules
         .rosters
@@ -337,7 +186,7 @@ pub fn validate_arena(rules: &Rules, config: &ArenaConfig) -> Result<(), Simulat
     roster(rules, &config.armies.enemy)?;
     if !rules
         .arena
-        .landscapes
+        .scenarios
         .iter()
         .any(|item| item.id == config.landscape)
     {
@@ -404,10 +253,10 @@ fn phase(
             };
             recruitment.get_or_insert(plan.recruitment);
             for command in plan.commands {
-                if scoped && command == Command::EndTurn {
+                if scoped && command == hex_command_battle::RuntimeCommand::EndTurn {
                     continue;
                 }
-                game.execute(command)?;
+                game.execute_runtime(command)?;
             }
             if workspace.finished() || game.winner().is_some() {
                 break plan.planning;
@@ -477,14 +326,11 @@ pub(super) fn run_arena_capturing(
     game.begin_turn(config.first);
     let landscape = rules
         .arena
-        .landscapes
+        .scenarios
         .iter()
         .find(|item| item.id == config.landscape)
         .ok_or("Unknown arena landscape")?;
-    let territory = landscape
-        .territory
-        .as_ref()
-        .unwrap_or(&rules.arena.territory);
+    let territory = &landscape.territory;
     let hold_turns = landscape.hold_turns;
     let deathmatch = config.objective == ArenaObjective::Deathmatch;
     let mut held = [0u32; 2];
@@ -620,14 +466,14 @@ pub(super) fn run_arena_capturing(
 pub fn run_campaign(
     rules: &Rules,
     config: CampaignConfig,
-    definition: &Campaign,
+    definition: &CampaignRules,
 ) -> Result<CampaignResult, SimulationError> {
     run_campaign_capturing(rules, config, definition, None)
 }
 pub(super) fn run_campaign_capturing(
     rules: &Rules,
     config: CampaignConfig,
-    definition: &Campaign,
+    definition: &CampaignRules,
     mut capture: Option<&mut super::phase_fixtures::Capture>,
 ) -> Result<CampaignResult, SimulationError> {
     validate_limits(config.max_rounds, config.recruit_limit)?;
@@ -923,7 +769,14 @@ mod tests {
                 bank.iter()
                     .filter(|&&tile| {
                         river.role_is(tile, TerrainRole::Village)
-                            && rules.arena.territory.contains(&river.board().ids[tile])
+                            && rules
+                                .arena
+                                .scenarios
+                                .iter()
+                                .find(|a| a.id == "crossings")
+                                .unwrap()
+                                .territory
+                                .contains(&river.board().ids[tile])
                     })
                     .count(),
                 1
@@ -940,7 +793,7 @@ mod tests {
     #[test]
     fn arena_starts_with_only_leaders_and_the_remaining_paired_budget() {
         let rules = Rules::load().unwrap();
-        for seed in [1, 2, 10] {
+        for seed in [0u32, 1, 2, 10] {
             for landscape in ["open", "wooded", "crossings", "islands"] {
                 for player in &rules.rosters {
                     for enemy in &rules.rosters {
@@ -971,7 +824,18 @@ mod tests {
                         };
                         let budget = total(Side::Player);
                         assert_eq!(budget, total(Side::Enemy));
-                        assert!([0, 3, 6].contains(&(budget - rules.arena.starting_budget)));
+                        let scenario = rules
+                            .arena
+                            .scenarios
+                            .iter()
+                            .find(|s| s.id == landscape)
+                            .unwrap();
+                        let variant = &scenario.variants
+                            [seed.saturating_sub(1) as usize % scenario.variants.len()];
+                        let ArenaForces::Selected { budget: expected } = variant.forces else {
+                            unreachable!()
+                        };
+                        assert_eq!(budget, expected);
                         assert!(game.gold().values().all(|&gold| gold >= 0));
                         assert_eq!(game.turn(), Side::Enemy);
                         for unit in game.units() {

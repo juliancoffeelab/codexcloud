@@ -565,6 +565,13 @@ impl BatchEnv {
     }
 }
 #[pyfunction]
+fn training_workload(py: Python<'_>) -> PyResult<String> {
+    py.detach(|| {
+        let rules = Rules::load().map_err(err)?;
+        serde_json::to_string(&rules.training).map_err(err)
+    })
+}
+#[pyfunction]
 fn fingerprints(py: Python<'_>) -> PyResult<String> {
     py.detach(|| {
         let rules = Rules::load().map_err(err)?;
@@ -578,6 +585,7 @@ fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add("SPATIAL_CHANNEL_NAMES", spatial::channel_names())?;
     m.add("SPATIAL_KERNEL", spatial::KERNEL.to_vec())?;
     m.add_function(wrap_pyfunction!(fingerprints, m)?)?;
+    m.add_function(wrap_pyfunction!(training_workload, m)?)?;
     m.add("FEATURE_NAMES", FEATURE_NAMES.to_vec())?;
     m.add(
         "DIPLOMACY_FEATURE_NAMES",

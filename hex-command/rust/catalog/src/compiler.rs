@@ -10,7 +10,7 @@ pub fn compile(root: &Path) -> Result<String, ContentError> {
         syn::parse2(rules.freeze().bake(&context)).expect("baked Rules structure");
     for field in &mut expression.fields {
         if let syn::Member::Named(name) = &field.member {
-            if ["arena", "campaign_defaults", "arena_maps"].contains(&name.to_string().as_str()) {
+            if ["arena", "campaign_defaults", "training"].contains(&name.to_string().as_str()) {
                 field
                     .attrs
                     .push(syn::parse_quote!(#[cfg(not(target_arch="wasm32"))]));

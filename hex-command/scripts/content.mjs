@@ -458,7 +458,6 @@ for (const file of readdirSync(lineupRoot).filter((file2) => file2.endsWith(".js
   }
 }
 for (const path of manifest.scenarios) components(path, ["map", "roster"]);
-for (const path of manifest.arenaScenarios ?? []) components(path, ["map", "roster"]);
 for (const path of manifest.campaigns) {
   const campaign = read(path);
   for (const stage of campaign.stages)

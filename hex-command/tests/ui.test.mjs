@@ -607,7 +607,7 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
   },
 );
 
-test("Typed setup choices retain planner, recruiter and opening side through start", async () => {
+test("New Game filters playable content and retains typed setup choices through start", async () => {
   session = await Session.create_with_audio(async () => {}, audio, factory);
   const mounted = session;
   await act(async () =>
@@ -615,7 +615,20 @@ test("Typed setup choices retain planner, recruiter and opening side through sta
   );
   await click("#settings-button");
   await click("#new-game");
+  const catalog = Session.view(mounted).catalog;
+  const choices = () =>
+    [...host.querySelectorAll(".ng-choice > strong")].map((node) => node.textContent.toLowerCase());
+  assert.deepEqual(
+    choices(),
+    Catalog.campaigns(catalog)
+      .filter((campaign) => campaign.human)
+      .map((campaign) => campaign.name.toLowerCase()),
+  );
   await click(".ng-modes button:nth-child(2)");
+  const scenarios = Catalog.scenario_maps(catalog);
+  assert.equal(choices().length, scenarios.filter((map) => map.human).length);
+  for (const map of scenarios.filter((map) => !map.human))
+    assert(!choices().includes(map.name.toLowerCase()));
   await click(".ng-choice");
   const choose = async (group, value) => {
     const container = element(`[role="group"][aria-label="${group}"]`);

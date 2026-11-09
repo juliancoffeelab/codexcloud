@@ -210,16 +210,8 @@ let make =
   let difficulty =
     mode == Setup.Campaign ? Setup.Preset(campaignPolicy) : Setup.difficulty(planner, recruiter);
   let maps =
-    List.filter(
-      (map: Domain.map_definition) => map.id != "developer",
-      Catalog.battle_maps(view.catalog),
-    );
-  // These authored diagnostics remain available under Menu > Advanced > Test maps.
-  let campaigns =
-    List.filter(
-      (c: Domain.campaign) => c.id != "bell-night" && c.id != "mirror-night",
-      Catalog.campaigns(view.catalog),
-    );
+    List.filter((map: Domain.map_definition) => map.human, Catalog.scenario_maps(view.catalog));
+  let campaigns = List.filter((c: Domain.campaign) => c.human, Catalog.campaigns(view.catalog));
   let campaign = Catalog.campaign(view.catalog, campaignId);
   let selectedMap =
     mode == Setup.Campaign

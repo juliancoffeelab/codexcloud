@@ -1,11 +1,11 @@
 //! Atomic validation and execution of typed battle commands.
 
 use super::battle::Game;
-use crate::data::*;
+use crate::{RuntimeCommand, data::*};
 impl Game<'_> {
-    /// Validate all identifiers and legality before making any state mutation.
+    /// Resolve the wire representation once; runtime AI bypasses this boundary.
     pub(crate) fn execute(&mut self, command: Command) -> Result<(), CommandError> {
-        if self.winner.is_some()
+        if self.runtime.winner.is_some()
             && !matches!(
                 command,
                 Command::DismissDialogue
@@ -18,14 +18,187 @@ impl Game<'_> {
         {
             return Err(CommandError::BattleFinished);
         }
-        match command {
+        let command = self.resolve_command(command)?;
+        self.execute_runtime(command)
+    }
+    fn resolve_command(&self, command: Command) -> Result<RuntimeCommand, CommandError> {
+        Ok(match command {
             Command::Move { unit, tile } => {
+                self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
+                let tile = TileIndex(
+                    *self
+                        .board
+                        .indices
+                        .get(&tile.0)
+                        .ok_or_else(|| CommandError::UnknownTile(tile.clone()))?,
+                );
+                RuntimeCommand::Move { unit, tile }
+            }
+            Command::Attack {
+                unit,
+                target,
+                weapon,
+            } => {
+                self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
+                self.unit(target.0)
+                    .ok_or(CommandError::UnknownUnit(target))?;
+                let actor = self.unit(unit.0).unwrap();
+                let weapon = self
+                    .weapons(actor)
+                    .find(|w| self.source_weapon(w).id == weapon.0)
+                    .ok_or_else(|| CommandError::UnknownWeapon(weapon.clone()))?
+                    .key();
+                RuntimeCommand::Attack {
+                    unit,
+                    target,
+                    weapon,
+                }
+            }
+            Command::Recruit { unit, kind, tile } => {
+                self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
+                let kind = UnitKind(
+                    *self
+                        .rules
+                        .types
+                        .get(&kind.0)
+                        .ok_or_else(|| CommandError::UnknownType(kind.clone()))?,
+                );
+                let tile = TileIndex(
+                    *self
+                        .board
+                        .indices
+                        .get(&tile.0)
+                        .ok_or_else(|| CommandError::UnknownTile(tile.clone()))?,
+                );
+                RuntimeCommand::Recruit { unit, kind, tile }
+            }
+            Command::Advance { unit, kind } => {
+                self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
+                let kind = UnitKind(
+                    *self
+                        .rules
+                        .types
+                        .get(&kind.0)
+                        .ok_or_else(|| CommandError::UnknownType(kind.clone()))?,
+                );
+                RuntimeCommand::Advance { unit, kind }
+            }
+            Command::DropItem { unit, item } => RuntimeCommand::DropItem { unit, item },
+            Command::RecallMission { units } => RuntimeCommand::RecallMission { units },
+            Command::SetUnitIntent {
+                unit,
+                retreating,
+                rebuilding,
+                attacked,
+                record_retreat,
+            } => RuntimeCommand::SetUnitIntent {
+                unit,
+                retreating,
+                rebuilding,
+                attacked,
+                record_retreat,
+            },
+            Command::EndTurn => RuntimeCommand::EndTurn,
+            Command::DismissDialogue => RuntimeCommand::DismissDialogue,
+            Command::RetryMission => RuntimeCommand::RetryMission,
+            Command::PreviousDialogue => RuntimeCommand::PreviousDialogue,
+            Command::SkipDialogue => RuntimeCommand::SkipDialogue,
+        })
+    }
+    pub(crate) fn command_snapshot(
+        &self,
+        command: &RuntimeCommand,
+    ) -> Result<Command, CommandError> {
+        self.check_command_indices(command)?;
+        Ok(match command {
+            RuntimeCommand::Move { unit, tile } => Command::Move {
+                unit: unit.clone(),
+                tile: TileId(self.runtime.board.ids[tile.0].clone()),
+            },
+            RuntimeCommand::Attack {
+                unit,
+                target,
+                weapon,
+            } => Command::Attack {
+                unit: unit.clone(),
+                target: target.clone(),
+                weapon: WeaponId(self.weapon_id(*weapon).to_owned()),
+            },
+            RuntimeCommand::Recruit { unit, kind, tile } => Command::Recruit {
+                unit: unit.clone(),
+                kind: UnitTypeId(self.rules.units[kind.0].id.clone()),
+                tile: TileId(self.runtime.board.ids[tile.0].clone()),
+            },
+            RuntimeCommand::Advance { unit, kind } => Command::Advance {
+                unit: unit.clone(),
+                kind: UnitTypeId(self.rules.units[kind.0].id.clone()),
+            },
+            RuntimeCommand::DropItem { unit, item } => Command::DropItem {
+                unit: unit.clone(),
+                item: item.clone(),
+            },
+            RuntimeCommand::RecallMission { units } => Command::RecallMission {
+                units: units.clone(),
+            },
+            RuntimeCommand::SetUnitIntent {
+                unit,
+                retreating,
+                rebuilding,
+                attacked,
+                record_retreat,
+            } => Command::SetUnitIntent {
+                unit: unit.clone(),
+                retreating: retreating.clone(),
+                rebuilding: rebuilding.clone(),
+                attacked: attacked.clone(),
+                record_retreat: record_retreat.clone(),
+            },
+            RuntimeCommand::EndTurn => Command::EndTurn,
+            RuntimeCommand::DismissDialogue => Command::DismissDialogue,
+            RuntimeCommand::RetryMission => Command::RetryMission,
+            RuntimeCommand::PreviousDialogue => Command::PreviousDialogue,
+            RuntimeCommand::SkipDialogue => Command::SkipDialogue,
+        })
+    }
+    pub(crate) fn check_command_indices(
+        &self,
+        command: &RuntimeCommand,
+    ) -> Result<(), CommandError> {
+        match command {
+            RuntimeCommand::Move { tile, .. } if tile.0 >= self.runtime.terrain.len() => {
+                Err(CommandError::IllegalMove)
+            }
+            RuntimeCommand::Recruit { kind, tile, .. }
+                if kind.0 >= self.rules.units.len() || tile.0 >= self.runtime.terrain.len() =>
+            {
+                Err(CommandError::IllegalRecruit)
+            }
+            RuntimeCommand::Advance { kind, .. } if kind.0 >= self.rules.units.len() => {
+                Err(CommandError::IllegalAdvance)
+            }
+            _ => Ok(()),
+        }
+    }
+    /// Validate all identifiers and legality before making any state mutation.
+    pub(crate) fn execute_runtime(&mut self, command: RuntimeCommand) -> Result<(), CommandError> {
+        if self.runtime.winner.is_some()
+            && !matches!(
+                command,
+                RuntimeCommand::DismissDialogue
+                    | RuntimeCommand::PreviousDialogue
+                    | RuntimeCommand::SkipDialogue
+                    | RuntimeCommand::RecallMission { .. }
+                    | RuntimeCommand::RetryMission
+                    | RuntimeCommand::SetUnitIntent { .. }
+            )
+        {
+            return Err(CommandError::BattleFinished);
+        }
+        self.check_command_indices(&command)?;
+        match command {
+            RuntimeCommand::Move { unit, tile } => {
                 let actor = self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
-                let site = *self
-                    .board
-                    .indices
-                    .get(&tile.0)
-                    .ok_or_else(|| CommandError::UnknownTile(tile.clone()))?;
+                let site = tile.0;
                 if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
@@ -34,7 +207,7 @@ impl Game<'_> {
                 }
                 self.move_unit(unit.0, site);
             }
-            Command::Attack {
+            RuntimeCommand::Attack {
                 unit,
                 target,
                 weapon,
@@ -45,8 +218,10 @@ impl Game<'_> {
                     .ok_or(CommandError::UnknownUnit(target))?;
                 let attack = self
                     .weapons(actor)
-                    .position(|a| a.id == weapon.0)
-                    .ok_or_else(|| CommandError::UnknownWeapon(weapon.clone()))?;
+                    .position(|a| a.matches_key(&weapon))
+                    .ok_or_else(|| {
+                        CommandError::UnknownWeapon(WeaponId(self.weapon_id(weapon).to_owned()))
+                    })?;
                 if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
@@ -55,18 +230,10 @@ impl Game<'_> {
                 }
                 self.attack(unit.0, target.0, attack);
             }
-            Command::Recruit { unit, kind, tile } => {
+            RuntimeCommand::Recruit { unit, kind, tile } => {
                 let actor = self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
-                let recruit = *self
-                    .rules
-                    .types
-                    .get(&kind.0)
-                    .ok_or_else(|| CommandError::UnknownType(kind.clone()))?;
-                let site = *self
-                    .board
-                    .indices
-                    .get(&tile.0)
-                    .ok_or_else(|| CommandError::UnknownTile(tile.clone()))?;
+                let recruit = kind.0;
+                let site = tile.0;
                 if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
@@ -75,13 +242,9 @@ impl Game<'_> {
                 }
                 self.recruit(unit.0, recruit, site);
             }
-            Command::Advance { unit, kind } => {
+            RuntimeCommand::Advance { unit, kind } => {
                 let actor = self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
-                let advance = *self
-                    .rules
-                    .types
-                    .get(&kind.0)
-                    .ok_or_else(|| CommandError::UnknownType(kind.clone()))?;
+                let advance = kind.0;
                 if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
@@ -90,55 +253,70 @@ impl Game<'_> {
                 }
                 self.advance(unit.0, advance);
             }
-            Command::DropItem { unit, item } => {
+            RuntimeCommand::DropItem { unit, item } => {
                 let index = self.index(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
-                if !self.may_act(&self.units[index]) {
+                if !self.may_act(&self.runtime.units[index]) {
                     return Err(CommandError::WrongTurn);
                 }
-                let slot = self.units[index]
-                    .items
-                    .iter()
-                    .position(|i| i.id == item)
+                let slot = self
+                    .inventory(&self.runtime.units[index])
+                    .position(|candidate| candidate.id == item)
                     .ok_or(CommandError::IllegalItem)?;
-                let item = self.units[index].items.remove(slot);
+                let item = self.drop_item(unit.0, slot);
                 self.record(format!(
                     "{} dropped {}.",
-                    self.unit_name(&self.units[index]),
-                    item.name
+                    self.unit_name(&self.runtime.units[index]),
+                    self.runtime.inventories.item(item).name
                 ));
-                self.ground_items.push(GroundItem {
-                    tile: self.board.ids[self.units[index].tile].clone(),
+                self.runtime.ground_items.push(GroundItemState {
+                    tile: self.runtime.units[index].tile,
                     item,
                 });
                 #[cfg(not(target_arch = "wasm32"))]
                 self.action(ActionRecord::Drop {
                     unit: format!("u{}", unit.0),
-                    item: self.ground_items.last().unwrap().item.id.clone(),
+                    item: self.runtime.inventories.item(item).id.clone(),
                 });
                 self.evaluate_campaign(false, None);
             }
-            Command::EndTurn => self.end_turn(),
-            Command::DismissDialogue => {
-                let campaign = self.campaign.as_mut().ok_or(CommandError::NoCampaign)?;
+            RuntimeCommand::EndTurn => self.end_turn(),
+            RuntimeCommand::DismissDialogue => {
+                let campaign = self
+                    .runtime
+                    .campaign
+                    .as_mut()
+                    .ok_or(CommandError::NoCampaign)?;
                 if campaign.dialogue_index < campaign.dialogue.len() {
                     campaign.dialogue_index += 1;
                 }
             }
-            Command::PreviousDialogue => {
-                let campaign = self.campaign.as_mut().ok_or(CommandError::NoCampaign)?;
+            RuntimeCommand::PreviousDialogue => {
+                let campaign = self
+                    .runtime
+                    .campaign
+                    .as_mut()
+                    .ok_or(CommandError::NoCampaign)?;
                 if campaign.dialogue_index < campaign.dialogue.len() {
                     campaign.dialogue_index = campaign.dialogue_index.saturating_sub(1);
                 }
             }
-            Command::SkipDialogue => {
-                let campaign = self.campaign.as_mut().ok_or(CommandError::NoCampaign)?;
+            RuntimeCommand::SkipDialogue => {
+                let campaign = self
+                    .runtime
+                    .campaign
+                    .as_mut()
+                    .ok_or(CommandError::NoCampaign)?;
                 campaign.dialogue_index = campaign.dialogue.len();
             }
-            Command::RetryMission => {
-                let campaign = self.campaign.as_ref().ok_or(CommandError::NoCampaign)?;
-                let combat_rng = self.combat_rng;
+            RuntimeCommand::RetryMission => {
+                let campaign = self
+                    .runtime
+                    .campaign
+                    .as_ref()
+                    .ok_or(CommandError::NoCampaign)?;
+                let combat_rng = self.runtime.combat_rng;
                 #[cfg(not(target_arch = "wasm32"))]
-                let records = self.recordings.take();
+                let records = self.runtime.recordings.take();
                 let flags = campaign.retry_flags();
                 *self = Self::start_campaign_from_definition(
                     self.rules,
@@ -150,15 +328,19 @@ impl Game<'_> {
                     campaign.story_veterans.clone().unwrap_or_default(),
                     campaign.fallen_companions.clone().unwrap_or_default(),
                 );
-                self.combat_rng = combat_rng;
+                self.runtime.combat_rng = combat_rng;
                 #[cfg(not(target_arch = "wasm32"))]
                 {
-                    self.recordings = records;
+                    self.runtime.recordings = records;
                 }
             }
-            Command::RecallMission { units } => {
-                let campaign = self.campaign.as_ref().ok_or(CommandError::NoCampaign)?;
-                if self.winner != Some(Side::Player)
+            RuntimeCommand::RecallMission { units } => {
+                let campaign = self
+                    .runtime
+                    .campaign
+                    .as_ref()
+                    .ok_or(CommandError::NoCampaign)?;
+                if self.runtime.winner != Some(Side::Player)
                     || campaign.completed
                     || campaign.mission + 1 >= self.campaign_definition().missions.len()
                 {
@@ -166,14 +348,14 @@ impl Game<'_> {
                 }
                 let replacement = self.continue_campaign(Some(&units))?;
                 #[cfg(not(target_arch = "wasm32"))]
-                let records = self.recordings.take();
+                let records = self.runtime.recordings.take();
                 *self = replacement;
                 #[cfg(not(target_arch = "wasm32"))]
                 {
-                    self.recordings = records;
+                    self.runtime.recordings = records;
                 }
             }
-            Command::SetUnitIntent {
+            RuntimeCommand::SetUnitIntent {
                 unit,
                 retreating,
                 rebuilding,
@@ -181,21 +363,22 @@ impl Game<'_> {
                 record_retreat,
             } => {
                 let index = self.index(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
-                if self.units[index].side != self.turn {
+                if self.runtime.units[index].side != self.runtime.turn {
                     return Err(CommandError::WrongTurn);
                 }
-                if self.units[index].attacked && !attacked {
+                if self.runtime.units[index].attacked && !attacked {
                     return Err(CommandError::IllegalIntent);
                 }
                 if record_retreat
-                    && (retreating != Some(true) || !attacked || !self.units[index].moved)
+                    && (retreating != Some(true) || !attacked || !self.runtime.units[index].moved)
                 {
                     return Err(CommandError::IllegalIntent);
                 }
-                let name = record_retreat.then(|| self.unit_name(&self.units[index]).to_owned());
-                self.units[index].retreating = retreating;
-                self.units[index].rebuilding = rebuilding;
-                self.units[index].attacked = attacked;
+                let name =
+                    record_retreat.then(|| self.unit_name(&self.runtime.units[index]).to_owned());
+                self.runtime.units[index].retreating = retreating;
+                self.runtime.units[index].rebuilding = rebuilding;
+                self.runtime.units[index].attacked = attacked;
                 if let Some(name) = name {
                     self.record(format!("{name} is retreating."));
                 }

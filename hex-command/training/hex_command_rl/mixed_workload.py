@@ -4,24 +4,21 @@ import argparse
 import hashlib
 import json
 import os
+from functools import lru_cache
 from pathlib import Path
-from .representative import prepare_catalog, AUTHORED
-from .workloads import FACTIONS
+from .representative import prepare_catalog
 from .recovery import atomic_json
 
-MAPS = ("open", "river-valley", "villages", "sluice", "crossings")
-VARIANTS = {
-    "lantern-road": [
-        ("flight", "unrestricted"),
-        ("fight", "unrestricted"),
-        ("authored", "unrestricted"),
-    ],
-    "borrowed-tide": [("authored", "unrestricted")],
-    "green-accord": [("authored", "unrestricted")],
-    "ashen-oath": [("authored", "unrestricted"), ("authored", "diplomatic")],
-}
-OPPONENTS = ("classic", "predictor")
-RECRUITERS = ("situational", "predictor")
+
+@lru_cache(maxsize=8)
+def _definition(catalog):
+    import hex_command_training as native
+
+    return json.loads(native.training_workload())
+
+
+def definition():
+    return _definition(os.environ.get("HEX_COMMAND_DATA_ROOT", ""))
 
 
 def group(c):
@@ -34,10 +31,12 @@ def group(c):
 
 
 def mass(c):
+    spec = definition()
+    axes = len(spec["opponents"]) * len(spec["recruiters"])
     return (
-        0.5 / 4 / len(VARIANTS[c["campaign"]]) / 4
+        0.5 / len(spec["campaigns"]) / len(spec["campaigns"][c["campaign"]]) / axes
         if "campaign" in c
-        else 0.5 / 5 / 2 / 4
+        else 0.5 / len(spec["arenas"]) / len(spec["objectives"]) / axes
     )
 
 
@@ -45,24 +44,16 @@ def configs(split):
     result = []
     arena_start = {"train": 1000001, "validation": 3000001, "test": 5000001}[split]
     campaign_start = {"train": 2000001, "validation": 4000001, "test": 6000001}[split]
-    for name in MAPS:
-        pairs = (
-            [("human", "skeletons")]
-            if name == "villages"
-            else [("coastal", "human")]
-            if name == "sluice"
-            else [(f, FACTIONS[(i + 1) % 4]) for i, f in enumerate(FACTIONS)]
-        )
-        n = (
-            8 * (4 if name in AUTHORED else 1)
-            if split == "train"
-            else (4 if name in AUTHORED else 1)
-            if split == "validation"
-            else 3 * (4 if name in AUTHORED else 1)
-        )
-        for objective in ["deathmatch", "territory"]:
-            for enemy in OPPONENTS:
-                for recruiter in RECRUITERS:
+    spec = definition()
+    max_pairs = max(len(a["pairs"]) for a in spec["arenas"])
+    for arena in spec["arenas"]:
+        name = arena["id"]
+        pairs = [(p["player"], p["enemy"]) for p in arena["pairs"]]
+        multiplier = max_pairs // len(pairs)
+        n = {"train": 8, "validation": 1, "test": 3}[split] * multiplier
+        for objective in spec["objectives"]:
+            for enemy in spec["opponents"]:
+                for recruiter in spec["recruiters"]:
                     for seed in range(arena_start, arena_start + n):
                         for player, foe in pairs:
                             for first in ["player", "enemy"]:
@@ -84,11 +75,12 @@ def configs(split):
                                         objective=objective,
                                     )
                                 )
-    for campaign, variants in VARIANTS.items():
+    for campaign, variants in spec["campaigns"].items():
         n = {"train": 24, "validation": 4, "test": 25}[split]
-        for objective, diplomacy in variants:
-            for enemy in OPPONENTS:
-                for recruiter in RECRUITERS:
+        for variant in variants:
+            objective, diplomacy = variant["objective"], variant["diplomacy"]
+            for enemy in spec["opponents"]:
+                for recruiter in spec["recruiters"]:
                     for seed in range(campaign_start, campaign_start + n):
                         result.append(
                             dict(

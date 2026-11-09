@@ -43,7 +43,7 @@ pub struct UnitFilter {
 }
 impl UnitFilter {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn accepts(&self, unit: &Unit) -> bool {
+    pub fn accepts(&self, unit: &Unit, names: &Names) -> bool {
         unit.side == self.side
             && self
                 .role
@@ -52,7 +52,7 @@ impl UnitFilter {
             && self
                 .character
                 .as_ref()
-                .is_none_or(|name| unit.character.as_ref() == Some(name))
+                .is_none_or(|name| names.resolve(unit.character) == Some(name.as_str()))
     }
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -635,8 +635,7 @@ impl Mission {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Campaign {
-    #[serde(rename = "playerDiplomacy")]
-    pub player_diplomacy: Vec<String>,
+    pub human: bool,
     pub tagline: String,
     pub description: String,
     #[serde(rename = "shortDescription")]
@@ -690,8 +689,7 @@ pub struct MapDefinition {
     pub revision: u32,
     pub name: String,
     pub description: String,
-    #[serde(default)]
-    pub hidden: bool,
+    pub human: bool,
     pub cols: i32,
     pub rows: i32,
     pub terrain: Vec<Tile>,

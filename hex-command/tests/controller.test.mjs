@@ -597,23 +597,15 @@ test("Initialization is idempotent and preserves native-URL pixel artwork", asyn
   Session.close(session);
   observed.unsubscribe();
 });
-test("Hidden scenarios remain command-addressable while visible menus exclude them and campaigns", async () => {
-  const metadata = structuredClone(Catalog.raw(catalog));
-  const hiddenId = required(Catalog.scenario_maps(catalog)[0]).id;
-  for (const map of metadata.maps) if (map.id === hiddenId) map.hidden = true;
-  const controlled = Catalog.of_view(metadata);
-  const scenarios = Catalog.scenario_maps(controlled),
-    choices = Catalog.battle_maps(controlled);
-  const hidden = scenarios.filter((map) => map.hidden === true);
-  assert.equal(hidden.length, 1);
-  assert.equal(required(hidden[0]).id, hiddenId);
-  for (const map of hidden) assert(!choices.some((choice) => choice.id === map.id));
-  assert(choices.every((map) => map.hidden !== true));
+test("Non-human scenarios remain command-addressable while campaign maps use their own launcher", async () => {
+  const scenarios = Catalog.scenario_maps(catalog);
+  const hidden = scenarios.filter((map) => map.human === false);
+  const hiddenId = required(hidden[0]).id;
   const session = await createController(),
     commands = Session.commands(session);
   commands.reset(undefined, undefined, hiddenId);
   assert.equal(state(session).mapId, hiddenId);
-  const visibleId = required(choices[0]).id;
+  const visibleId = required(scenarios.find((map) => map.human)).id;
   commands.reset(undefined, undefined, visibleId);
   assert.equal(state(session).mapId, visibleId);
   const campaign = required(Catalog.campaigns(catalog)[0]),

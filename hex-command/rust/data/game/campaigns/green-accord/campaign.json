@@ -23,7 +23,6 @@
     "stages/green-vigil/stage.json",
     "stages/green-pact/stage.json"
   ],
-  "playerDiplomacy": ["unrestricted"],
   "characters": [
     {
       "id": "tamsin",
@@ -49,5 +48,6 @@
       "id": "rootbinder",
       "name": "The Rootbinder"
     }
-  ]
+  ],
+  "human": true
 }

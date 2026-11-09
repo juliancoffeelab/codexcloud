@@ -28,7 +28,6 @@
     "stages/ashen-refuge/stage.json",
     "stages/ashen-dawn/stage.json"
   ],
-  "playerDiplomacy": ["unrestricted", "diplomatic"],
   "characters": [
     {
       "id": "dain",
@@ -46,5 +45,6 @@
       "id": "master",
       "name": "The Master"
     }
-  ]
+  ],
+  "human": true
 }

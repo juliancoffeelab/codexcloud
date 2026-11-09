@@ -3,7 +3,6 @@
   "mapId": "river-valley",
   "name": "Two Keeps, River Valley",
   "description": "Opposing keeps in a wooded river valley, with villages, a bridge and shallow fords.",
-  "hidden": true,
   "cols": 14,
   "rows": 16,
   "tiles": [

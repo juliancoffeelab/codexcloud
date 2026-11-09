@@ -25,31 +25,11 @@ pub(in crate::ai) fn edit(game: &mut Game<'_>, change: impl FnOnce(&mut State)) 
 pub(in crate::ai) fn units(game: &mut Game<'_>, change: impl FnOnce(&mut Vec<Unit>)) {
     let mut units = game.units().to_vec();
     change(&mut units);
-    let rules = game.catalogue();
+    let next_id = units.iter().map(|u| u.id + 1).max().unwrap_or(0);
+    let public = units.iter().map(|u| game.public_unit(u)).collect();
     edit(game, |state| {
-        state.next_id = state
-            .next_id
-            .max(units.iter().map(|u| u.id + 1).max().unwrap_or(0));
-        state.units = units
-            .into_iter()
-            .map(|u| PublicUnit {
-                faction: u.faction,
-                items: u.items,
-                ai_group: u.ai_group,
-                id: format!("u{}", u.id),
-                r#type: rules.units[u.kind].id.clone(),
-                side: u.side,
-                tile: state.tiles[u.tile].hex(),
-                hp: u.hp,
-                moved: u.moved,
-                attacked: u.attacked,
-                experience: u.experience,
-                character: u.character,
-                role: u.role,
-                retreating: u.retreating,
-                rebuilding: u.rebuilding,
-            })
-            .collect();
+        state.next_id = state.next_id.max(next_id);
+        state.units = public;
     });
 }
 
@@ -58,9 +38,6 @@ pub(in crate::ai) fn add(game: &mut Game<'_>, kind: usize, side: Side, tile: usi
     let hp = game.catalogue().units[kind].hp;
     units(game, |units| {
         units.push(Unit {
-            faction: None,
-            items: vec![],
-            ai_group: None,
             id,
             kind,
             side,
@@ -69,10 +46,13 @@ pub(in crate::ai) fn add(game: &mut Game<'_>, kind: usize, side: Side, tile: usi
             moved: false,
             attacked: false,
             experience: Some(0),
-            character: None,
             role: None,
             retreating: None,
             rebuilding: None,
+            faction: None,
+            ai_group: None,
+            character: None,
+            inventory: InventoryId::default(),
         })
     });
     edit(game, |state| state.next_id = id + 1);

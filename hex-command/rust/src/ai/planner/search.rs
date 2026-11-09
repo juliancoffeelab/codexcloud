@@ -984,11 +984,12 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
 mod tests {
     use super::*;
     use crate::logic::Game;
+    use hex_command_battle::RuntimeCommand as Command;
     #[test]
     fn whole_unit_bounds_preserve_plans_and_commitments_through_live_actions() {
         fn is_command_endturn(value: &Command) -> bool {
             match value {
-                crate::logic::Command::EndTurn => true,
+                Command::EndTurn => true,
                 Command::Move { .. }
                 | Command::Attack { .. }
                 | Command::Recruit { .. }
@@ -1083,10 +1084,10 @@ mod tests {
                     if game.winner().is_some() {
                         break;
                     }
-                    game.execute(Command::EndTurn).unwrap();
+                    game.execute_runtime(Command::EndTurn).unwrap();
                     actual = workspace();
                 } else {
-                    game.execute(command).unwrap();
+                    game.execute_runtime(command).unwrap();
                 }
             }
         }
@@ -1255,12 +1256,10 @@ pub(super) fn publish_plan(
             .find(|(id, _)| *id == plan.unit)
             .map_or(actor.rebuilding, |(_, intent)| *intent);
         if let Some(kind) = plan.advance {
-            turn.commands
-                .push_back(advance_command(game, plan.unit, kind));
+            turn.commands.push_back(advance_command(plan.unit, kind));
         } else {
             if actor.tile != plan.tile {
-                turn.commands
-                    .push_back(move_command(game, plan.unit, plan.tile));
+                turn.commands.push_back(move_command(plan.unit, plan.tile));
                 let retreating = plan.withdrawing.then_some(true);
                 if actor.retreating != retreating {
                     turn.commands.push_back(intent_command(
@@ -1275,7 +1274,7 @@ pub(super) fn publish_plan(
                 *turn.attack_continuation = Some((
                     UnitId(plan.unit),
                     UnitId(target),
-                    WeaponId(game.weapon(actor, weapon).id.clone()),
+                    game.weapon(actor, weapon).key(),
                 ));
             }
         }

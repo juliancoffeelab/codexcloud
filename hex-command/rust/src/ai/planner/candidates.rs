@@ -26,7 +26,7 @@ type GoalUnit = (
     Option<usize>,
     Option<Role>,
     Option<bool>,
-    Option<String>,
+    Option<NameKey>,
 );
 #[derive(Default)]
 pub(in crate::ai) struct Workspace {
@@ -939,6 +939,7 @@ mod tests {
     use super::*;
     use crate::ai::PlanningWorkspace;
     use crate::logic::Game;
+    use hex_command_battle::RuntimeCommand as Command;
     #[test]
     fn shared_frames_follow_actions_and_turn_boundaries() {
         fn is_command_endturn(value: &Command) -> bool {
@@ -1075,7 +1076,7 @@ mod tests {
                     break;
                 }
                 let boundary = is_command_endturn(&command);
-                game.execute(command).unwrap();
+                game.execute_runtime(command).unwrap();
                 if boundary {
                     workspace =
                         PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted);

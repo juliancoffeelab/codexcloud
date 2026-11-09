@@ -1,0 +1,126 @@
+{
+  "arenas": [
+    {
+      "id": "open",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        }
+      ]
+    },
+    {
+      "id": "river-valley",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        }
+      ]
+    },
+    {
+      "id": "villages",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        }
+      ]
+    },
+    {
+      "id": "sluice",
+      "pairs": [
+        {
+          "player": "coastal",
+          "enemy": "human"
+        }
+      ]
+    },
+    {
+      "id": "crossings",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        }
+      ]
+    }
+  ],
+  "campaigns": {
+    "lantern-road": [
+      {
+        "objective": "flight",
+        "diplomacy": "unrestricted"
+      },
+      {
+        "objective": "fight",
+        "diplomacy": "unrestricted"
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "borrowed-tide": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "green-accord": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "ashen-oath": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "diplomatic"
+      }
+    ]
+  },
+  "opponents": ["classic", "predictor"],
+  "recruiters": ["situational", "predictor"],
+  "objectives": ["deathmatch", "territory"]
+}

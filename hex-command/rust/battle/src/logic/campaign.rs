@@ -3,36 +3,35 @@ use crate::sort::SharedSort;
 use crate::{data::*, logic::battle::Game};
 impl<'catalog> Game<'catalog> {
     pub(crate) fn evaluate_campaign(&mut self, at_turn_start: bool, _entered: Option<usize>) {
-        if self.campaign.is_none() || self.winner.is_some() {
+        if self.runtime.campaign.is_none() || self.runtime.winner.is_some() {
             return;
         }
         self.apply_faction_transfers();
         self.evaluate_scripted_events(at_turn_start);
-        if self.winner.is_some() {
+        if self.runtime.winner.is_some() {
             return;
         }
-        let missing = self
-            .mission
-            .as_ref()
-            .unwrap()
-            .required_companions
-            .iter()
-            .find(|id| {
-                !self
-                    .units
-                    .iter()
-                    .any(|u| u.character.as_ref() == Some(id) && u.side == Side::Player)
-            });
+        let missing =
+            self.mission
+                .as_ref()
+                .unwrap()
+                .required_companions
+                .iter()
+                .find(|id| {
+                    !self.units.iter().any(|u| {
+                        self.name(u.character) == Some(id.as_str()) && u.side == Side::Player
+                    })
+                });
         if missing.is_some()
             || !self
                 .units
                 .iter()
                 .any(|u| u.is_leader() && u.side == Side::Player)
         {
-            self.winner = Some(Side::Enemy);
+            self.runtime.winner = Some(Side::Enemy);
             let message = "The company cannot continue without its protected companions.";
-            self.campaign.as_mut().unwrap().outcome = Some(message.into());
-            self.campaign.as_mut().unwrap().say([Dialogue {
+            self.runtime.campaign.as_mut().unwrap().outcome = Some(message.into());
+            self.runtime.campaign.as_mut().unwrap().say([Dialogue {
                 character: None,
                 speaker: "The company".into(),
                 portrait: "worker".into(),
@@ -76,7 +75,7 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn start_campaign_from_definition(
         rules: &'catalog Rules,
-        definition: &'catalog Campaign,
+        definition: &CampaignRules,
         index: usize,
         veterans: Vec<Veteran>,
         carry: i32,
@@ -118,10 +117,13 @@ impl<'catalog> Game<'catalog> {
             )
             .into(),
         );
-        game.units.retain(|u| {
+        let names = &game.runtime.names;
+        game.runtime.units.retain(|u| {
             u.side != Side::Player
                 || u.role == Some(Role::Leader)
-                || u.character.as_ref().is_none_or(|n| !fallen.contains(n))
+                || names
+                    .resolve(u.character)
+                    .is_none_or(|n| !fallen.iter().any(|f| f == n))
         });
         game.roster_changed();
 
@@ -140,25 +142,34 @@ impl<'catalog> Game<'catalog> {
                     .min_by_key(|&t| game.board.distance(tile, t));
                 if let Some(destination) = destination {
                     let id = game.add(kind, Side::Player, destination);
-                    let unit = game.units.iter_mut().find(|u| u.id == id).unwrap();
-                    unit.items = veteran.items.clone();
-                    unit.character = veteran.character.clone();
+                    game.set_inventory(id, veteran.items.clone());
+                    let character = veteran
+                        .character
+                        .as_deref()
+                        .map(|name| game.intern_name(name));
+                    let unit = game.runtime.units.iter_mut().find(|u| u.id == id).unwrap();
+                    unit.character = character;
                     unit.experience = Some(veteran.experience);
                     unit.role = veteran.role;
                 }
                 continue;
             }
             let kind = game.kind(&veteran.r#type);
-            if let Some(unit) = game.units.iter_mut().find(|u| {
+            if let Some(index) = game.runtime.units.iter().position(|u| {
                 u.side == Side::Player
                     && if veteran.role == Some(Role::Leader) {
                         u.role == Some(Role::Leader)
                     } else {
-                        veteran.character.is_some() && u.character == veteran.character
+                        veteran.character.is_some()
+                            && game.name(u.character) == veteran.character.as_deref()
                     }
             }) {
-                if game.rules.units[unit.kind].family == game.rules.units[kind].family {
-                    unit.items = veteran.items.clone();
+                if game.rules.units[game.runtime.units[index].kind].family
+                    == game.rules.units[kind].family
+                {
+                    let id = game.runtime.units[index].id;
+                    game.set_inventory(id, veteran.items.clone());
+                    let unit = &mut game.runtime.units[index];
                     unit.kind = kind;
                     unit.experience = Some(veteran.experience);
                     unit.hp = game.rules.units[kind].hp;
@@ -187,15 +198,19 @@ impl<'catalog> Game<'catalog> {
                 continue;
             };
             let tile = slots.remove(slot);
-            game.add(kind, Side::Player, tile);
-            let unit = game.units.last_mut().unwrap();
+            let id = game.add(kind, Side::Player, tile);
+            game.set_inventory(id, veteran.items);
+            let character = veteran
+                .character
+                .as_deref()
+                .map(|name| game.intern_name(name));
+            let unit = game.runtime.units.last_mut().unwrap();
             unit.experience = Some(veteran.experience);
-            unit.character = veteran.character;
-            unit.items = veteran.items;
+            unit.character = character;
         }
-        for unit in &game.units {
+        for unit in &game.runtime.units {
             if game.terrain_role(unit.tile).capturable() {
-                game.owners[unit.tile] = Some(game.unit_faction(&unit).to_owned());
+                game.runtime.owners[unit.tile] = Some(game.unit_faction(&unit).to_owned());
             }
         }
         game.log.clear();
@@ -215,7 +230,7 @@ impl<'catalog> Game<'catalog> {
         game
     }
     pub(crate) fn returns_with_story(&self, u: &Unit) -> bool {
-        let state = self.campaign.as_ref().unwrap();
+        let state = self.runtime.campaign.as_ref().unwrap();
         self.campaign_definition()
             .missions
             .get(state.mission + 1)
@@ -223,7 +238,7 @@ impl<'catalog> Game<'catalog> {
                 mission
                     .arrivals
                     .iter()
-                    .any(|arrival| u.character.as_ref() == Some(&arrival.character))
+                    .any(|arrival| self.name(u.character) == Some(arrival.character.as_str()))
                     || mission.map.units.iter().any(|incoming| {
                         incoming.side == Side::Player
                             && self.rules.units[self.kind(&incoming.r#type)].family
@@ -231,7 +246,8 @@ impl<'catalog> Game<'catalog> {
                             && if u.role == Some(Role::Leader) {
                                 incoming.role == Some(Role::Leader)
                             } else {
-                                u.character.is_some() && incoming.character == u.character
+                                u.character.is_some()
+                                    && incoming.character.as_deref() == self.name(u.character)
                             }
                     })
             })
@@ -246,8 +262,8 @@ impl<'catalog> Game<'catalog> {
         &self,
         selected: Option<&[UnitId]>,
     ) -> Result<Self, CommandError> {
-        let state = self.campaign.as_ref().unwrap();
-        let mission = self.mission.as_ref().unwrap();
+        let state = self.runtime.campaign.as_ref().unwrap();
+        let mission = self.runtime.mission.as_ref().unwrap();
         let mut eligible: Vec<_> = self
             .units
             .iter()
@@ -255,9 +271,12 @@ impl<'catalog> Game<'catalog> {
                 u.side == Side::Player
                     && !u.is_leader()
                     && !u.role.is_some_and(Role::is_escort)
-                    && u.character
-                        .as_ref()
-                        .is_none_or(|n| !mission.required_companions.contains(n))
+                    && self.name(u.character).is_none_or(|n| {
+                        !mission
+                            .required_companions
+                            .iter()
+                            .any(|required| required == n)
+                    })
                     && !self.returns_with_story(u)
             })
             .collect();
@@ -289,10 +308,10 @@ impl<'catalog> Game<'catalog> {
             eligible = recalled;
         }
         let veteran = |u: &Unit, role: bool| Veteran {
-            items: u.items.clone(),
+            items: self.inventory(u).cloned().collect(),
             r#type: self.rules.units[u.kind].id.clone(),
             experience: u.experience.unwrap_or(0),
-            character: u.character.clone(),
+            character: self.name(u.character).map(str::to_owned),
             role: if role { u.role.clone() } else { None },
         };
         eligible.truncate(4);
@@ -304,7 +323,7 @@ impl<'catalog> Game<'catalog> {
                     && !self.returns_with_story(unit)
                     && !eligible.iter().any(|selected| selected.id == unit.id)
             })
-            .flat_map(|unit| unit.items.iter().cloned())
+            .flat_map(|unit| self.inventory(unit).cloned())
             .collect();
         let veterans = eligible.into_iter().map(|u| veteran(u, false)).collect();
         let mut story: Vec<Veteran> = self
@@ -353,8 +372,9 @@ impl<'catalog> Game<'catalog> {
                         u.side == Side::Player
                             && u.character.is_some()
                             && u.role != Some(Role::Leader)
-                            && !self.units.iter().any(|alive| {
-                                alive.side == Side::Player && alive.character == u.character
+                            && !self.runtime.units.iter().any(|alive| {
+                                alive.side == Side::Player
+                                    && self.name(alive.character) == u.character.as_deref()
                             })
                             && !state
                                 .evacuated
@@ -373,20 +393,29 @@ impl<'catalog> Game<'catalog> {
             self.campaign_definition(),
             state.mission + 1,
             veterans,
-            self.gold["player"],
+            self.runtime.gold["player"],
             flags,
             story,
             fallen,
         );
         if !overflow.is_empty() {
-            let leader = next
+            let leader_id = next
                 .units
-                .iter_mut()
+                .iter()
                 .find(|unit| unit.side == Side::Player && unit.is_leader())
-                .unwrap();
-            leader.items.extend(overflow);
-            // Retry must restore the same equipment as the chapter's first entry.
-            let leader = veteran(leader, true);
+                .unwrap()
+                .id;
+            for item in overflow {
+                next.give_item(leader_id, item);
+            }
+            let unit = next.units.iter().find(|unit| unit.id == leader_id).unwrap();
+            let leader = Veteran {
+                items: next.inventory(unit).cloned().collect(),
+                r#type: next.rules.units[unit.kind].id.clone(),
+                experience: unit.experience.unwrap_or(0),
+                character: next.name(unit.character).map(str::to_owned),
+                role: unit.role,
+            };
             let story = next
                 .campaign
                 .as_mut()
@@ -402,7 +431,7 @@ impl<'catalog> Game<'catalog> {
                 story.push(leader);
             }
         }
-        next.combat_rng = self.combat_rng;
+        next.combat_rng = self.runtime.combat_rng;
         Ok(next)
     }
 }

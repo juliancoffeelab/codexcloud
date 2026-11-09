@@ -71,6 +71,7 @@ mod tests {
         data::*,
         logic::Game,
     };
+    use hex_command_battle::RuntimeCommand as Command;
 
     fn end_turn(command: &Command) -> bool {
         fn boundary(command: &Command) -> bool {
@@ -147,7 +148,7 @@ mod tests {
             if end_turn(&command) {
                 return;
             }
-            game.execute(command).unwrap();
+            game.execute_runtime(command).unwrap();
         }
         panic!("queued phase failed to finish");
     }

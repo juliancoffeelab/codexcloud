@@ -2,77 +2,100 @@
   "defaultMaxRounds": 100,
   "diplomacy": ["unrestricted", "diplomatic"],
   "policies": ["classic", "rush", "balanced", "rotated", "situational"],
-  "campaigns": ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"],
-  "objectives": {
+  "defaultCampaigns": ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"],
+  "campaigns": {
     "lantern-road": {
-      "flight": {
-        "stages": {
-          "lantern-villages": {
-            "ignoreOptionalWhen": {
-              "kind": "flag",
-              "flag": "village-safe"
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "flight": {
+          "stages": {
+            "lantern-villages": {
+              "ignoreOptionalWhen": {
+                "kind": "flag",
+                "flag": "village-safe"
+              }
             }
           }
-        }
-      },
-      "fight": {
-        "stages": {
-          "lantern-villages": {
-            "scriptEvents": [
-              {
-                "id": "simulation-road-cleared",
-                "when": {
-                  "flag": "road-cleared"
-                },
-                "objective": {
-                  "label": "Defeat all enemies before leaving",
-                  "optional": false,
-                  "visibleWhen": {
-                    "flag": "village-safe"
+        },
+        "fight": {
+          "stages": {
+            "lantern-villages": {
+              "scriptEvents": [
+                {
+                  "id": "simulation-road-cleared",
+                  "when": {
+                    "flag": "road-cleared"
                   },
-                  "intent": {
-                    "defeat": {
-                      "side": "enemy"
-                    }
-                  },
-                  "playerMarker": null
-                },
-                "actions": [
-                  {
-                    "setFlag": "simulation-road-cleared"
-                  }
-                ]
-              }
-            ],
-            "scriptConditions": {
-              "eastern-departure": {
-                "all": [
-                  {
-                    "all": [
-                      {
-                        "stand": {
-                          "tile": {
-                            "location": "exit"
-                          },
-                          "side": "player",
-                          "character": "nera",
-                          "through": true
-                        }
-                      },
-                      {
-                        "flag": "village-safe"
+                  "objective": {
+                    "label": "Defeat all enemies before leaving",
+                    "optional": false,
+                    "visibleWhen": {
+                      "flag": "village-safe"
+                    },
+                    "intent": {
+                      "defeat": {
+                        "side": "enemy"
                       }
-                    ]
+                    },
+                    "playerMarker": null
                   },
-                  {
-                    "flag": "simulation-road-cleared"
-                  }
-                ]
+                  "actions": [
+                    {
+                      "setFlag": "simulation-road-cleared"
+                    }
+                  ]
+                }
+              ],
+              "scriptConditions": {
+                "eastern-departure": {
+                  "all": [
+                    {
+                      "all": [
+                        {
+                          "stand": {
+                            "tile": {
+                              "location": "exit"
+                            },
+                            "side": "player",
+                            "character": "nera",
+                            "through": true
+                          }
+                        },
+                        {
+                          "flag": "village-safe"
+                        }
+                      ]
+                    },
+                    {
+                      "flag": "simulation-road-cleared"
+                    }
+                  ]
+                }
               }
             }
           }
         }
       }
+    },
+    "green-accord": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "ashen-oath": {
+      "diplomacy": ["unrestricted", "diplomatic"],
+      "routes": {}
+    },
+    "borrowed-tide": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "mirror-night": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "bell-night": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
     }
   },
   "escalationFlags": {

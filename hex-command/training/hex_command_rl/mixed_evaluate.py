@@ -92,25 +92,16 @@ def evaluate_unlocked(cases, model, workers=2):
 
 
 def reliability(report):
-    from .mixed_workload import VARIANTS
-
     strata = {}
+    opponents = sorted({g["group"][-2] for g in report["groups"]})
     for family in ["arena", "campaign"]:
-        for opponent in ["classic", "predictor"]:
+        for opponent in opponents:
             gs = [
                 g
                 for g in report["groups"]
                 if g["group"][0] == family and g["group"][-2] == opponent
             ]
-            weights = [
-                g.get(
-                    "mass",
-                    0.5 / 5 / 2 / 4
-                    if family == "arena"
-                    else 0.5 / 4 / len(VARIANTS[g["group"][1]]) / 4,
-                )
-                for g in gs
-            ]
+            weights = [g["mass"] for g in gs]
             rate = sum(w * g["wins"] / g["runs"] for w, g in zip(weights, gs)) / max(
                 1e-12, sum(weights)
             )
@@ -147,22 +138,7 @@ def plot(root):
         vals = []
         for r in history:
             gs = [g for g in r["groups"] if g["group"][0] == family]
-            weights = [
-                g.get(
-                    "mass",
-                    0.5 / 5 / 2 / 4
-                    if family == "arena"
-                    else 0.5
-                    / 4
-                    / len(
-                        __import__(
-                            "hex_command_rl.mixed_workload", fromlist=["VARIANTS"]
-                        ).VARIANTS[g["group"][1]]
-                    )
-                    / 4,
-                )
-                for g in gs
-            ]
+            weights = [g["mass"] for g in gs]
             vals.append(
                 100
                 * sum(w * g["wins"] / g["runs"] for w, g in zip(weights, gs))

@@ -19,8 +19,6 @@ struct Manifest {
     units: Vec<String>,
     items: Vec<String>,
     scenarios: Vec<String>,
-    #[serde(default)]
-    arena_scenarios: Vec<String>,
     campaigns: Vec<String>,
     simulation: SimulationPaths,
     #[serde(default)]
@@ -32,6 +30,7 @@ struct SimulationPaths {
     rosters: String,
     arena: String,
     campaign: String,
+    rl: String,
 }
 impl EnvironmentalModifiers {
     fn value(&self, category: usize, damage: usize) -> i32 {
@@ -66,9 +65,9 @@ struct UnitSpecification {
     description: String,
 }
 #[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
 struct CampaignFile {
-    #[serde(rename = "playerDiplomacy")]
-    player_diplomacy: Vec<String>,
+    human: bool,
     id: String,
     name: String,
     tagline: String,
@@ -281,7 +280,7 @@ impl Rules {
     /// Validate named documents and resolve inheritance without filesystem access.
     pub fn from_json_bundle(bundle: &JsonBundle) -> Result<Self, ContentError> {
         let manifest: Manifest = parse(bundle, "manifest.json")?;
-        if manifest.schema_version != 2 {
+        if manifest.schema_version != 3 {
             return Err(ContentError::new(
                 "manifest.json",
                 "unsupported schemaVersion",
@@ -467,25 +466,19 @@ impl Rules {
         }
         let mut map_definitions = Vec::new();
         let mut maps = HashMap::new();
-        let mut arena_maps = HashMap::new();
+        let mut scenario_characters = HashMap::new();
         let mut campaigns = HashMap::new();
         let mut used_paths = HashSet::new();
         for path in &manifest.scenarios {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let (initial, roster_path) = documents::scenario(bundle, path, &items)?;
+            let (initial, roster_path, human, characters) =
+                documents::scenario(bundle, path, &items)?;
             let state = initial.resolve(&units, &types, &roster_path)?;
-            map_definitions.push(documents::map_metadata(bundle, path, &state, None)?);
+            scenario_characters.insert((state.map_id.clone(), state.map_revision), characters);
+            map_definitions.push(documents::map_metadata(bundle, path, &state, None, human)?);
             insert_map(&mut maps, state, &terrains, &types, path)?;
-        }
-        for path in &manifest.arena_scenarios {
-            if !used_paths.insert(path.clone()) {
-                return Err(ContentError::new(path, "duplicate catalog path"));
-            }
-            let (initial, roster_path) = documents::scenario(bundle, path, &items)?;
-            let state = initial.resolve(&units, &types, &roster_path)?;
-            insert_map(&mut arena_maps, state, &terrains, &types, path)?;
         }
         for path in &manifest.campaigns {
             if !used_paths.insert(path.clone()) {
@@ -494,18 +487,6 @@ impl Rules {
             let source: CampaignFile = parse(bundle, path)?;
             identifier(&source.id, path)?;
             reference(&source.leader, &types, path)?;
-            unique(source.player_diplomacy.iter().map(String::as_str), path)?;
-            if source.player_diplomacy.is_empty()
-                || source
-                    .player_diplomacy
-                    .iter()
-                    .any(|mode| !["unrestricted", "diplomatic"].contains(&mode.as_str()))
-            {
-                return Err(ContentError::new(
-                    path,
-                    "unknown or missing player diplomacy",
-                ));
-            }
             if source.name.is_empty()
                 || source.tagline.is_empty()
                 || source.description.is_empty()
@@ -556,6 +537,7 @@ impl Rules {
                     &stage_path,
                     &state,
                     Some(stage.mission.map.units.clone()),
+                    source.human,
                 )?);
                 insert_map(&mut maps, state, &terrains, &types, &stage_path)?;
                 missions.push(stage.mission);
@@ -575,7 +557,7 @@ impl Rules {
                         leader: source.leader,
                         missions,
                         ending: source.ending,
-                        player_diplomacy: source.player_diplomacy,
+                        human: source.human,
                     },
                 )
                 .is_some()
@@ -595,20 +577,28 @@ impl Rules {
         let rosters: Vec<ArmyRoster> = parse(bundle, &manifest.simulation.rosters)?;
         let arena: ArenaDefaults = parse(bundle, &manifest.simulation.arena)?;
         let campaign_defaults: CampaignDefaults = parse(bundle, &manifest.simulation.campaign)?;
+        let training: TrainingDefaults = parse(bundle, &manifest.simulation.rl)?;
         validate_simulation(
             &rosters,
             &arena,
             &campaign_defaults,
             &types,
             &maps,
-            &arena_maps,
+            &training,
             &terrain,
         )?;
         unique(
-            campaign_defaults.campaigns.iter().map(String::as_str),
+            campaign_defaults
+                .default_campaigns
+                .iter()
+                .map(String::as_str),
             "simulation/campaign.json",
         )?;
-        for id in &campaign_defaults.campaigns {
+        for id in campaign_defaults
+            .campaigns
+            .keys()
+            .chain(&campaign_defaults.default_campaigns)
+        {
             if !campaigns.contains_key(id) {
                 return Err(ContentError::new(
                     "simulation/campaign.json",
@@ -635,11 +625,16 @@ impl Rules {
                     .unwrap()
             })
             .collect();
-        for state in maps.values().chain(arena_maps.values()) {
-            let characters = campaigns
-                .values()
-                .find(|c| c.missions.iter().any(|m| m.map.id == state.map_id))
-                .map_or(&[][..], |c| c.characters.as_slice());
+        for state in maps.values() {
+            let characters = scenario_characters
+                .get(&(state.map_id.clone(), state.map_revision))
+                .map(Vec::as_slice)
+                .unwrap_or_else(|| {
+                    campaigns
+                        .values()
+                        .find(|c| c.missions.iter().any(|m| m.map.id == state.map_id))
+                        .map_or(&[][..], |c| c.characters.as_slice())
+                });
             for unit in &state.units {
                 if let Some(id) = &unit.character {
                     character_ref(id, characters, &state.map_id)?;
@@ -659,10 +654,15 @@ impl Rules {
             let state = maps
                 .get(&(map.id.clone(), map.revision))
                 .expect("authored map");
-            let characters = campaigns
-                .values()
-                .find(|c| c.missions.iter().any(|m| m.map.id == map.id))
-                .map_or(&[][..], |c| c.characters.as_slice());
+            let characters = scenario_characters
+                .get(&(map.id.clone(), map.revision))
+                .map(Vec::as_slice)
+                .unwrap_or_else(|| {
+                    campaigns
+                        .values()
+                        .find(|c| c.missions.iter().any(|m| m.map.id == map.id))
+                        .map_or(&[][..], |c| c.characters.as_slice())
+                });
             for rule in map
                 .terrain
                 .iter()
@@ -693,15 +693,18 @@ impl Rules {
             terrain_definitions: terrain,
             race_definitions: races.into_iter().map(|(_, race)| race).collect(),
             map_definitions,
-            units,
+            units: units.into(),
             movement_classes,
             route_classes,
             types,
             terrains,
             maps,
             #[cfg(not(target_arch = "wasm32"))]
-            arena_maps,
-            campaigns,
+            training,
+            campaigns: campaigns
+                .into_iter()
+                .map(|(id, campaign)| (id, CampaignRules::from(campaign)))
+                .collect(),
             rosters,
             #[cfg(not(target_arch = "wasm32"))]
             arena,
@@ -1490,7 +1493,7 @@ fn validate_simulation(
     campaign: &CampaignDefaults,
     types: &HashMap<String, usize>,
     maps: &HashMap<(String, u32), State>,
-    arena_maps: &HashMap<(String, u32), State>,
+    training: &TrainingDefaults,
     terrain: &[TerrainDefinition],
 ) -> Result<(), ContentError> {
     let path = "simulation/rosters.json";
@@ -1507,98 +1510,207 @@ fn validate_simulation(
         }
     }
     let path = "simulation/arena.json";
-    unique(arena.landscapes.iter().map(|l| l.id.as_str()), path)?;
-    unique(arena.territory.iter(), path)?;
-    if arena.landscapes.is_empty()
-        || arena.territory.is_empty()
-        || arena.starting_budget <= 0
+    unique(arena.scenarios.iter().map(|s| s.id.as_str()), path)?;
+    unique(arena.default_scenarios.iter().map(String::as_str), path)?;
+    if arena.scenarios.is_empty()
+        || arena.default_scenarios.is_empty()
         || arena.default_max_rounds == 0
         || campaign.default_max_rounds == 0
     {
         return Err(ContentError::new(
             path,
-            "landscapes, territory, starting budget and round limits must be nonempty/positive",
+            "arena scenarios, default scenarios and round limits must be nonempty/positive",
         ));
     }
-    for landscape in &arena.landscapes {
-        identifier(&landscape.id, path)?;
-        if (landscape.map.is_none()
-            && !["open", "wooded", "crossings", "islands"].contains(&landscape.id.as_str()))
-            || (landscape.authored && landscape.map.is_none())
-            || landscape.hold_turns == 0
+    for id in &arena.default_scenarios {
+        if !arena.scenarios.iter().any(|s| &s.id == id) {
+            return Err(ContentError::new(
+                path,
+                format!("unknown default arena {id}"),
+            ));
+        }
+    }
+    for scenario in &arena.scenarios {
+        identifier(&scenario.id, path)?;
+        unique(scenario.territory.iter(), path)?;
+        if scenario.variants.is_empty() || scenario.territory.is_empty() || scenario.hold_turns == 0
         {
-            return Err(ContentError::new(path, "invalid landscape or holdTurns"));
+            return Err(ContentError::new(
+                path,
+                "arena variants, territory and holdTurns must be nonempty/positive",
+            ));
         }
-        let territory = landscape.territory.as_ref().unwrap_or(&arena.territory);
-        unique(territory.iter(), path)?;
-        if territory.is_empty() {
-            return Err(ContentError::new(path, "arena territory must not be empty"));
-        }
-        if let Some(id) = &landscape.map {
+        for variant in &scenario.variants {
             let map = maps
                 .iter()
-                .chain(arena_maps.iter())
-                .filter(|((name, _), _)| name == id)
+                .filter(|((id, _), _)| id == &variant.map)
                 .max_by_key(|((_, revision), _)| revision)
                 .map(|(_, map)| map)
-                .ok_or_else(|| ContentError::new(path, format!("unknown arena map {id}")))?;
-            if territory
+                .ok_or_else(|| {
+                    ContentError::new(path, format!("unknown arena map {}", variant.map))
+                })?;
+            if scenario
+                .territory
                 .iter()
-                .any(|id| !map.tiles.iter().any(|tile| tile.hex() == *id))
+                .any(|hex| !map.tiles.iter().any(|t| t.hex() == *hex))
             {
                 return Err(ContentError::new(
                     path,
-                    "arena territory is outside its authored map",
+                    "arena territory is outside its map",
                 ));
             }
-            if landscape.authored {
-                for side in [Side::Player, Side::Enemy] {
-                    if !map
-                        .units
-                        .iter()
-                        .any(|u| u.side == side && u.role == Some(Role::Leader))
-                    {
-                        return Err(ContentError::new(
-                            path,
-                            "authored combat requires leaders in both phases",
-                        ));
+            match variant.forces {
+                ArenaForces::Scenario => {
+                    for side in [Side::Player, Side::Enemy] {
+                        if !map
+                            .units
+                            .iter()
+                            .any(|u| u.side == side && u.role == Some(Role::Leader))
+                        {
+                            return Err(ContentError::new(
+                                path,
+                                "scenario forces require leaders in both phases",
+                            ));
+                        }
                     }
                 }
-            } else {
-                for side in [Side::Player, Side::Enemy] {
-                    if map
-                        .tiles
-                        .iter()
-                        .filter(|t| {
-                            terrain.iter().any(|definition| {
-                                definition.id.as_str() == t.terrain
-                                    && definition.role == TerrainRole::Keep
-                            }) && t.owner.as_deref() == Some(side.faction_id())
-                        })
-                        .count()
-                        != 1
-                    {
+                ArenaForces::Selected { budget } => {
+                    if budget <= 0 {
                         return Err(ContentError::new(
                             path,
-                            "authored arenas require one owned keep per side",
+                            "selected forces require a positive budget",
                         ));
+                    }
+                    for side in [Side::Player, Side::Enemy] {
+                        if map
+                            .tiles
+                            .iter()
+                            .filter(|tile| {
+                                terrain.iter().any(|t| {
+                                    t.id.as_str() == tile.terrain && t.role == TerrainRole::Keep
+                                }) && tile.owner.as_deref() == Some(side.faction_id())
+                            })
+                            .count()
+                            != 1
+                        {
+                            return Err(ContentError::new(
+                                path,
+                                "selected forces require one owned keep per side",
+                            ));
+                        }
                     }
                 }
             }
         }
     }
-    let template = arena_maps
-        .iter()
-        .filter(|((id, _), _)| id == "arena-template")
-        .max_by_key(|((_, revision), _)| revision)
-        .map(|(_, state)| state)
-        .ok_or_else(|| ContentError::new(path, "missing arena template"))?;
-    for tile in &arena.territory {
-        if !template.tiles.iter().any(|t| t.hex() == *tile) {
+    let path = "simulation/campaign.json";
+    for (id, config) in &campaign.campaigns {
+        identifier(id, path)?;
+        unique(config.diplomacy.iter().map(String::as_str), path)?;
+        if config.diplomacy.is_empty()
+            || config
+                .diplomacy
+                .iter()
+                .any(|m| !campaign.diplomacy.contains(m))
+        {
             return Err(ContentError::new(
                 path,
-                format!("unknown arena territory tile {tile}"),
+                "unknown or missing campaign diplomacy",
             ));
+        }
+        for route in config.routes.keys() {
+            identifier(route, path)?;
+        }
+    }
+    let path = "simulation/rl.json";
+    unique(training.arenas.iter().map(|a| a.id.as_str()), path)?;
+    if training.objectives.is_empty()
+        || training.arenas.is_empty()
+        || training.campaigns.is_empty()
+        || training.opponents.is_empty()
+        || training.recruiters.is_empty()
+    {
+        return Err(ContentError::new(
+            path,
+            "RL workload dimensions must be nonempty",
+        ));
+    }
+    unique(training.objectives.iter().map(String::as_str), path)?;
+    if training
+        .objectives
+        .iter()
+        .any(|o| !["deathmatch", "territory"].contains(&o.as_str()))
+    {
+        return Err(ContentError::new(path, "unknown RL arena objective"));
+    }
+    for a in &training.arenas {
+        if !arena.scenarios.iter().any(|s| s.id == a.id) || a.pairs.is_empty() {
+            return Err(ContentError::new(
+                path,
+                format!("unknown or empty RL arena {}", a.id),
+            ));
+        }
+        unique(
+            a.pairs.iter().map(|p| format!("{}/{}", p.player, p.enemy)),
+            path,
+        )?;
+        for p in &a.pairs {
+            for id in [&p.player, &p.enemy] {
+                if !rosters.iter().any(|r| &r.id == id) {
+                    return Err(ContentError::new(path, format!("unknown RL roster {id}")));
+                }
+            }
+        }
+    }
+    for (id, variants) in &training.campaigns {
+        let config = campaign
+            .campaigns
+            .get(id)
+            .ok_or_else(|| ContentError::new(path, format!("unknown RL campaign {id}")))?;
+        if variants.is_empty() {
+            return Err(ContentError::new(
+                path,
+                "RL campaign variants must be nonempty",
+            ));
+        }
+        unique(
+            variants
+                .iter()
+                .map(|v| format!("{}/{}", v.objective, v.diplomacy)),
+            path,
+        )?;
+        for v in variants {
+            if !config.diplomacy.contains(&v.diplomacy)
+                || v.objective != "authored" && !config.routes.contains_key(&v.objective)
+            {
+                return Err(ContentError::new(
+                    path,
+                    format!("unknown RL route/diplomacy for {id}"),
+                ));
+            }
+        }
+    }
+    for (ids, allowed) in [
+        (
+            &training.opponents,
+            [
+                "classic",
+                "rush",
+                "balanced",
+                "rotated",
+                "situational",
+                "predictor",
+            ]
+            .as_slice(),
+        ),
+        (
+            &training.recruiters,
+            ["balanced", "rotated", "situational", "predictor"].as_slice(),
+        ),
+    ] {
+        unique(ids.iter().map(String::as_str), path)?;
+        if ids.iter().any(|id| !allowed.contains(&id.as_str())) {
+            return Err(ContentError::new(path, "unknown RL opponent or recruiter"));
         }
     }
     for (ids, allowed, path) in [
@@ -1721,7 +1833,7 @@ mod tests {
         );
         let mut bundle = test_bundle();
         let manifest = bundle.get_mut("manifest.json").unwrap();
-        *manifest = manifest.replace("\"schemaVersion\": 2", "\"schemaVersion\": 99");
+        *manifest = manifest.replace("\"schemaVersion\": 3", "\"schemaVersion\": 99");
         assert!(
             Rules::from_json_bundle(&bundle)
                 .unwrap_err()
@@ -1805,19 +1917,12 @@ mod tests {
         );
     }
     #[test]
-    fn hidden_maps_remain_loadable_and_default_to_visible() {
+    fn scenario_visibility_is_explicit_and_does_not_change_loadability() {
         let mut bundle = test_bundle();
-        let path = "game/scenario/mirror-v1/map.json";
+        let path = "game/scenario/mirror-v1/scenario.json";
         let mut map: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
-        for hidden in [None, Some(true), Some(false)] {
-            match hidden {
-                Some(value) => {
-                    map["hidden"] = serde_json::json!(value);
-                }
-                None => {
-                    map.as_object_mut().unwrap().remove("hidden");
-                }
-            }
+        for human in [true, false] {
+            map["human"] = serde_json::json!(human);
             bundle.insert(path.to_owned(), serde_json::to_string(&map).unwrap());
             let rules = Rules::from_json_bundle(&bundle).unwrap();
             let metadata = rules
@@ -1825,7 +1930,7 @@ mod tests {
                 .iter()
                 .find(|map| map.id == "mirror")
                 .unwrap();
-            assert_eq!(metadata.hidden, hidden.unwrap_or(false));
+            assert_eq!(metadata.human, human);
             assert!(
                 rules
                     .maps
@@ -2015,7 +2120,7 @@ impl Rules {
         &self,
         campaign: &str,
         route: &str,
-    ) -> Result<std::borrow::Cow<'_, Campaign>, ContentError> {
+    ) -> Result<std::borrow::Cow<'_, CampaignRules>, ContentError> {
         let authored = self.campaigns.get(campaign).ok_or_else(|| {
             ContentError::new(
                 "simulation/campaign.json",
@@ -2027,9 +2132,9 @@ impl Rules {
         }
         let plan = self
             .campaign_defaults
-            .objectives
+            .campaigns
             .get(campaign)
-            .and_then(|routes| routes.get(route))
+            .and_then(|config| config.routes.get(route))
             .ok_or_else(|| {
                 ContentError::new(
                     "simulation/campaign.json",

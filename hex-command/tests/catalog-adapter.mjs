@@ -13,8 +13,6 @@ export const terrain_type = (c, id) => to("TerrainDefinition", Catalog.terrain_t
 export const race = (c, id) => to("RaceDefinition", Catalog.race(c, id));
 export const map = (c, id) => to("MapDefinition", Catalog.map(c, id));
 export const campaign = (c, id) => to("Campaign", Catalog.campaign(c, id));
-export const battle_maps = (c) =>
-  toArray(Catalog.battle_maps(c)).map((v) => to("MapDefinition", v));
 export const scenario_maps = (c) =>
   toArray(Catalog.scenario_maps(c)).map((v) => to("MapDefinition", v));
 export const mission_map = (c, m) =>

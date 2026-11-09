@@ -14,9 +14,9 @@ type ArenaUnit = (
     usize,
     usize,
     Side,
-    Option<String>,
     Option<Role>,
-    Vec<Item>,
+    Option<NameKey>,
+    InventoryId,
 );
 /// A nonlethal attack changes HP/action flags, but arena movement forecasts and
 /// incoming damage also depend on equipment, allegiance and actor roles.
@@ -44,7 +44,6 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     /// Potential exposure without an allied screen, so a successful screen does
     /// not cause Campaigner to release its escort on the following turn.
     pub(in crate::ai) fn unshielded(phases: PhaseForecasts<'_, 'catalog>, unit: &Unit) -> i32 {
-        let game = phases.view();
         let board = phases.next_phase();
         if board.winner().is_some() {
             return 0;
@@ -55,7 +54,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         let enemies: Vec<_> = board
             .units()
             .iter()
-            .filter(|u| game.hostile(unit, u))
+            .filter(|u| board.hostile(target, u))
             .map(|enemy| {
                 let mut blocked = TileSet::new(board.terrain().len());
                 blocked.insert(enemy.tile);
@@ -106,28 +105,22 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 && workspace.terrain == *g.terrain()
                 && workspace.roster.len() == g.units().len()
                 && workspace.roster.iter().zip(g.units()).all(
-                    |((id, kind, tile, side, faction, role, items), u)| {
+                    |((id, kind, tile, side, role, faction, inventory), u)| {
                         (*id, *kind, *tile, *side) == (u.id, u.kind, u.tile, u.side)
-                            && *faction == u.faction
                             && *role == u.role
-                            && *items == u.items
+                            && *faction == u.faction
+                            && *inventory == u.inventory
                     },
                 );
             if !same {
                 workspace.side = Some(side);
                 workspace.terrain.clone_from(g.terrain());
                 workspace.roster.clear();
-                workspace.roster.extend(g.units().iter().map(|u| {
-                    (
-                        u.id,
-                        u.kind,
-                        u.tile,
-                        u.side,
-                        u.faction.clone(),
-                        u.role,
-                        u.items.clone(),
-                    )
-                }));
+                workspace.roster.extend(
+                    g.units()
+                        .iter()
+                        .map(|u| (u.id, u.kind, u.tile, u.side, u.role, u.faction, u.inventory)),
+                );
                 workspace.arena.clear();
                 workspace.risks.clear();
             }
@@ -306,7 +299,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 let enemies = shadow
                     .units()
                     .iter()
-                    .filter(|u| self.source.hostile_to_phase(u, self.side))
+                    .filter(|u| shadow.hostile_to_phase(u, self.side))
                     .map(|u| {
                         let positions =
                             shadow.threat_reach_blocked(u, shadow.occupied_tiles().clone());

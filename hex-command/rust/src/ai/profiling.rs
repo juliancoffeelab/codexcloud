@@ -11,6 +11,44 @@ static TIME: [AtomicU64; SLOTS] = [const { AtomicU64::new(0) }; SLOTS];
 static CALLS: [AtomicU64; SLOTS] = [const { AtomicU64::new(0) }; SLOTS];
 static TURN_TIME: [AtomicU64; SLOTS] = [const { AtomicU64::new(0) }; SLOTS];
 static TURNS: [AtomicU64; SLOTS] = [const { AtomicU64::new(0) }; SLOTS];
+const RECRUITERS: [super::Recruiter; 7] = [
+    super::Recruiter::Classic,
+    super::Recruiter::Rotation,
+    super::Recruiter::Frontline,
+    super::Recruiter::Balanced,
+    super::Recruiter::Situational,
+    super::Recruiter::Predictor,
+    super::Recruiter::AggressivePredictor,
+];
+const RECRUIT_SLOTS: usize = RECRUITERS.len() * 2;
+static RECRUIT_TIME: [AtomicU64; RECRUIT_SLOTS] = [const { AtomicU64::new(0) }; RECRUIT_SLOTS];
+static RECRUIT_CALLS: [AtomicU64; RECRUIT_SLOTS] = [const { AtomicU64::new(0) }; RECRUIT_SLOTS];
+
+/// Actual recruitment, including execution in the planning draft and attempts
+/// after commander movement. These intervals can be nested inside planning.
+pub(crate) struct Recruitment {
+    start: u64,
+    index: usize,
+}
+impl Recruitment {
+    #[inline]
+    pub(crate) fn start(kind: super::Recruiter, side: Side) -> Option<Self> {
+        if !enabled() {
+            return None;
+        }
+        let index = RECRUITERS.iter().position(|&r| r == kind).unwrap() * 2 + side.index();
+        Some(Self {
+            start: now(),
+            index,
+        })
+    }
+}
+impl Drop for Recruitment {
+    fn drop(&mut self) {
+        RECRUIT_TIME[self.index].fetch_add(now() - self.start, Ordering::Relaxed);
+        RECRUIT_CALLS[self.index].fetch_add(1, Ordering::Relaxed);
+    }
+}
 /// Enable CLI profiling before any worker starts.
 pub fn enable() {
     let _ = ENABLED.set(true);
@@ -139,6 +177,22 @@ pub fn snapshot() -> Option<serde_json::Value> {
         })
         .filter(|row| row["calls"].as_u64().unwrap() > 0)
         .collect();
+    let recruiters: Vec<_> = RECRUITERS
+        .into_iter()
+        .enumerate()
+        .flat_map(|(kind, recruiter)| {
+            [Side::Player, Side::Enemy]
+                .into_iter()
+                .filter_map(move |side| {
+                    let index = kind * 2 + side.index();
+                    let calls = RECRUIT_CALLS[index].load(Ordering::Relaxed);
+                    (calls > 0).then(|| {
+                        serde_json::json!({"recruiter":recruiter,"side":side,"calls":calls,
+                "seconds":RECRUIT_TIME[index].load(Ordering::Relaxed) as f64 / 1e9})
+                    })
+                })
+        })
+        .collect();
     let clock = if cfg!(all(target_os = "linux", target_pointer_width = "64")) {
         "thread_cpu"
     } else {
@@ -147,7 +201,7 @@ pub fn snapshot() -> Option<serde_json::Value> {
     Some(serde_json::json!({
         "clock":clock,"instrumentation":"one thread CPU interval per returned decision",
         "turnScope":"one side's completed own phase: decisions, command execution and boundary snapshots; excludes turn-transition events, journal encoding and report aggregation",
-        "policies":policies,"rows":rows
+        "policies":policies,"rows":rows,"recruiters":recruiters
     }))
 }
 /// Write measurements once, after the native CLI completes (including stdio).

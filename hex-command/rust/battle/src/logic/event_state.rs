@@ -176,10 +176,7 @@ impl EventProgress {
     pub(crate) fn saved(&self) -> &EventState {
         &self.saved
     }
-    #[cfg(feature = "wasm")]
-    pub(super) fn into_saved(self) -> EventState {
-        self.saved
-    }
+
     pub(super) fn plan(&self) -> Rc<CompiledMission> {
         self.plan.clone()
     }

@@ -9,7 +9,6 @@ type t = {
   campaign_index : Domain.campaign Js.Dict.t;
   resolved_maps : Domain.map_definition list;
   scenarios : Domain.map_definition list;
-  visible : Domain.map_definition list;
 }
 
 let index key values =
@@ -22,15 +21,16 @@ let index key values =
     values;
   result
 
-(* Authored revisions share an identifier. Match Object.fromEntries: the last
-   entry supplies the value while the first occurrence fixes display order. *)
+(* Keep the highest authored revision while preserving first occurrence order. *)
 let map_projection (maps : Domain.map_definition array) =
   let result = dictionary () in
   let identifiers = ref [] in
   Array.iter
     (fun (map : Domain.map_definition) ->
       if Js.Dict.get result map.id = None then identifiers := map.id :: !identifiers;
-      Js.Dict.set result map.id map)
+      match Js.Dict.get result map.id with
+      | Some (previous : Domain.map_definition) when previous.Domain.revision > map.revision -> ()
+      | _ -> Js.Dict.set result map.id map)
     maps;
   let resolved = List.rev_map (fun id -> Option.get (Js.Dict.get result id)) !identifiers in
   (result, resolved)
@@ -49,7 +49,6 @@ let of_view (source : Domain.catalog_view) =
       (fun (map : Domain.map_definition) -> Js.Dict.get campaign_maps map.id = None)
       resolved_maps
   in
-  let visible = List.filter (fun (map : Domain.map_definition) -> not map.hidden) scenarios in
   {
     source;
     unit_index = index (fun (unit : Domain.unit_rule) -> unit.id) source.Domain.units;
@@ -63,7 +62,6 @@ let of_view (source : Domain.catalog_view) =
     resolved_maps;
     campaign_index = index (fun (campaign : Domain.campaign) -> campaign.id) source.Domain.campaigns;
     scenarios;
-    visible;
   }
 
 let require index id =
@@ -82,7 +80,6 @@ let terrain_role t id = (terrain_type t id).Domain.role
 let race t id = require t.race_index id
 let map t id = require t.map_index id
 let campaign t id = require t.campaign_index id
-let battle_maps t = t.visible
 let scenario_maps t = t.scenarios
 let mission_map t (mission : Domain.mission) = map t mission.Domain.map.id
 let raw t = t.source

@@ -8,7 +8,9 @@ mod commands;
 pub use commands::*;
 mod factions;
 pub use factions::*;
+mod runtime;
 mod units;
+pub use runtime::*;
 pub use units::*;
 mod events;
 pub use events::*;
@@ -48,6 +50,8 @@ pub struct Rules {
     /// Native campaign workload defaults.
     #[cfg(not(target_arch = "wasm32"))]
     pub campaign_defaults: CampaignDefaults,
+    #[cfg(not(target_arch = "wasm32"))]
+    pub training: TrainingDefaults,
     /// Terrain identifiers in dense runtime order.
     pub terrain_names: Vec<String>,
     /// Closed terrain variants in the same runtime order.
@@ -63,7 +67,7 @@ pub struct Rules {
     /// Current authored map descriptions and layouts.
     pub map_definitions: Vec<MapDefinition>,
     /// Effective unit rules after terrain, race and unit inheritance.
-    pub units: Vec<UnitRule>,
+    pub units: UnitDefinitions,
     pub movement_classes: Vec<usize>,
     pub route_classes: Vec<usize>,
     /// Authored unit identifiers mapped to dense runtime indices.
@@ -72,11 +76,8 @@ pub struct Rules {
     pub terrains: HashMap<String, usize>,
     /// Fresh initial states indexed by authored map and revision.
     pub maps: HashMap<(String, u32), State>,
-    /// Arena layouts kept outside playable scenarios and map metadata.
-    #[cfg(not(target_arch = "wasm32"))]
-    pub arena_maps: HashMap<(String, u32), State>,
     /// Campaign definitions indexed by their authored identifier.
-    pub campaigns: HashMap<String, Campaign>,
+    pub campaigns: HashMap<String, CampaignRules>,
 }
 
 /// Immutable authored content shared by battles and scoped simulation workers.
@@ -90,7 +91,7 @@ pub use policy::*;
 pub mod presentation;
 
 impl Rules {
-    pub fn campaign_for_map(&self, map: &str) -> Option<&Campaign> {
+    pub fn campaign_for_map(&self, map: &str) -> Option<&CampaignRules> {
         self.campaigns
             .values()
             .find(|c| c.missions.iter().any(|m| m.map.id == map))

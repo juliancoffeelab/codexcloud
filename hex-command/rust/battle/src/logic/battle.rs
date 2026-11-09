@@ -94,18 +94,40 @@ type TerrainKey = (String, Vec<(String, Option<String>, i32, i32, String)>);
 #[derive(Clone)]
 struct SharedTerrain {
     board: Rc<Board>,
-    routes: Rc<RefCell<HashMap<(usize, Vec<usize>, u64, bool), Rc<Vec<u16>>>>>,
-    route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64, bool)>>>,
+    routes: Rc<RefCell<HashMap<super::movement::RouteKey, Rc<Vec<u16>>>>>,
+    route_order: Rc<RefCell<VecDeque<super::movement::RouteKey>>>,
     attacks: super::geometry::AttackGeometry,
     masks: super::geometry::AttackMasks,
     reach: super::movement::ReachCache,
     threat_reach: super::movement::ThreatReachCache,
     movement: super::movement::MovementMasks,
+    regions: super::movement::RegionCache,
+    origin_runs: super::geometry::OriginRunCache,
 }
 thread_local! {
     static TERRAIN_POOL: RefCell<(HashMap<TerrainKey, SharedTerrain>, VecDeque<TerrainKey>)> = RefCell::new((HashMap::default(), VecDeque::new()));
 }
-type MissionKey = (String, usize, bool, Vec<String>, bool);
+#[derive(Clone, Debug)]
+struct MissionKey {
+    definition: CampaignRules,
+    mission: usize,
+}
+impl PartialEq for MissionKey {
+    fn eq(&self, other: &Self) -> bool {
+        self.mission == other.mission && self.definition.same_definition(&other.definition)
+    }
+}
+impl Eq for MissionKey {}
+impl std::hash::Hash for MissionKey {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        std::hash::Hash::hash(&self.definition.identity(), state);
+        std::hash::Hash::hash(&self.mission, state);
+    }
+}
+thread_local! {
+    // Strong definition ownership prevents address reuse from aliasing cached content.
+    static MISSION_POOL: RefCell<HashMap<MissionKey, Rc<CompiledMission>>> = RefCell::default();
+}
 /// Derived data for the current battle revision; refreshed after successful commands.
 #[derive(Clone, Debug)]
 struct TileGeometry {
@@ -116,38 +138,13 @@ struct TileGeometry {
     fog: Rc<Vec<Option<std::sync::Arc<ConditionRule>>>>,
     light: Rc<Vec<Option<std::sync::Arc<TileLight>>>>,
 }
-#[cfg(feature = "wasm")]
-impl TileGeometry {
-    fn from_tiles(tiles: &[Tile]) -> Self {
-        Self {
-            connections: Rc::new(tiles.iter().map(|t| t.connections.clone()).collect()),
-            walls: Rc::new(tiles.iter().map(|t| t.walls.clone()).collect()),
-            dead_ends: Rc::new(tiles.iter().map(|t| t.dead_ends.clone()).collect()),
-            floors: Rc::new(tiles.iter().map(|t| t.floor.clone()).collect()),
-            fog: Rc::new(tiles.iter().map(|t| t.fog.clone()).collect()),
-            light: Rc::new(tiles.iter().map(|t| t.light.clone()).collect()),
-        }
-    }
-}
-#[derive(Clone, Default)]
-pub struct RuntimeCache {
-    #[cfg(feature = "wasm")]
-    geometry: Option<TileGeometry>,
-    key: Option<MissionKey>,
-    mission: Option<Rc<CompiledMission>>,
-}
+
 /// Immutable planning facts are shared; a mutation detaches only its branch.
 #[derive(Clone, Debug)]
 pub(crate) struct Shared<T: Clone>(Rc<T>);
 impl<T: Clone> From<T> for Shared<T> {
     fn from(value: T) -> Self {
         Self(Rc::new(value))
-    }
-}
-#[cfg(feature = "wasm")]
-impl<T: Clone> Shared<T> {
-    fn into_owned(self) -> T {
-        Rc::unwrap_or_clone(self.0)
     }
 }
 impl<T: Clone> std::ops::Deref for Shared<T> {
@@ -168,12 +165,13 @@ impl<T: Clone> AsRef<T> for Shared<T> {
         &self.0
     }
 }
+/// Owned live data; no catalog borrows and no wire representation.
 #[derive(Debug)]
-pub(crate) struct Game<'catalog> {
+pub struct BattleState {
+    pub(crate) scope: crate::BattleScope,
     pub(crate) factions: Rc<Vec<Faction>>,
     /// Turn-local controller scope, never persisted.
     pub(crate) active_faction: Option<String>,
-    pub(crate) rules: &'catalog Rules,
     pub(crate) board: Rc<Board>,
     pub(crate) terrain: Vec<usize>,
     pub(crate) owners: Shared<Vec<Option<String>>>,
@@ -191,7 +189,9 @@ pub(crate) struct Game<'catalog> {
     pub(super) event_opening: bool,
     pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
-    pub(crate) ground_items: Vec<GroundItem>,
+    pub(crate) ground_items: Vec<GroundItemState>,
+    pub(crate) names: std::sync::Arc<Names>,
+    pub(crate) inventories: std::sync::Arc<Inventories>,
     pub(crate) map_id: String,
     pub(crate) map_revision: u32,
     pub(crate) cols: i32,
@@ -214,23 +214,101 @@ pub(crate) struct Game<'catalog> {
     pub(crate) arena_first: Option<Side>,
     pub(crate) mission: Option<Rc<CompiledMission>>,
     /// The selected immutable definition; absent only for a non-campaign game.
-    campaign_definition: Option<&'catalog Campaign>,
+    pub(super) campaign_definition: Option<CampaignRules>,
     mission_key: Option<MissionKey>,
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) recordings: Option<Records>,
-    pub(super) route_cache: Rc<RefCell<HashMap<(usize, Vec<usize>, u64, bool), Rc<Vec<u16>>>>>,
+    pub(super) route_cache: Rc<RefCell<HashMap<super::movement::RouteKey, Rc<Vec<u16>>>>>,
     pub(super) terrain_revision: u64,
     pub(super) attack_geometry: super::geometry::AttackGeometry,
     pub(super) attack_masks: super::geometry::AttackMasks,
     pub(super) reach_cache: super::movement::ReachCache,
     pub(super) threat_reach_cache: super::movement::ThreatReachCache,
     pub(super) movement_masks: super::movement::MovementMasks,
-    pub(super) route_order: Rc<RefCell<VecDeque<(usize, Vec<usize>, u64, bool)>>>,
+    pub(super) movement_regions: super::movement::RegionCache,
+    pub(super) origin_runs: super::geometry::OriginRunCache,
+    pub(super) route_order: Rc<RefCell<VecDeque<super::movement::RouteKey>>>,
     pub(super) occupancy: Vec<Option<usize>>,
     pub(crate) occupied_tiles: super::geometry::TileSet,
     pub(super) unit_indices: HashMap<u32, usize>,
 }
+#[derive(Debug)]
+pub(crate) struct Game<'catalog> {
+    pub(crate) rules: &'catalog Rules,
+    pub(crate) mechanics: &'catalog UnitMechanics,
+    pub(crate) runtime: BattleState,
+}
+impl std::ops::Deref for Game<'_> {
+    type Target = BattleState;
+    #[inline]
+    fn deref(&self) -> &Self::Target {
+        &self.runtime
+    }
+}
+impl std::ops::DerefMut for Game<'_> {
+    #[inline]
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.runtime
+    }
+}
 impl<'catalog> Game<'catalog> {
+    #[inline]
+    pub(crate) fn name(&self, key: Option<NameKey>) -> Option<&str> {
+        self.runtime.names.resolve(key)
+    }
+    pub(crate) fn intern_name(&mut self, value: &str) -> NameKey {
+        if let Some(key) = self.runtime.names.find(value) {
+            key
+        } else {
+            std::sync::Arc::make_mut(&mut self.runtime.names).intern(value.to_owned())
+        }
+    }
+    #[inline]
+    pub(crate) fn inventory(&self, unit: &Unit) -> impl ExactSizeIterator<Item = &Item> + Clone {
+        self.runtime.inventories.items(unit.inventory)
+    }
+    pub(crate) fn set_inventory(&mut self, id: u32, items: Vec<Item>) {
+        let inventory =
+            std::sync::Arc::make_mut(&mut self.runtime.inventories).load(items, self.mechanics);
+        let index = self.index(id).unwrap();
+        self.runtime.units[index].inventory = inventory;
+    }
+    pub(crate) fn give_item(&mut self, id: u32, item: Item) {
+        let item =
+            std::sync::Arc::make_mut(&mut self.runtime.inventories).add_item(item, self.mechanics);
+        self.give_existing_item(id, item);
+    }
+    pub(crate) fn give_existing_item(&mut self, id: u32, item: ItemId) {
+        let index = self.index(id).unwrap();
+        let old = self.runtime.units[index].inventory;
+        let inventory =
+            std::sync::Arc::make_mut(&mut self.runtime.inventories).edit(old, None, Some(item));
+        self.runtime.units[index].inventory = inventory;
+    }
+    pub(crate) fn drop_item(&mut self, id: u32, slot: usize) -> ItemId {
+        let index = self.index(id).unwrap();
+        let old = self.runtime.units[index].inventory;
+        let item = self.runtime.inventories.item_ids(old)[slot];
+        let inventory =
+            std::sync::Arc::make_mut(&mut self.runtime.inventories).edit(old, Some(slot), None);
+        self.runtime.units[index].inventory = inventory;
+        item
+    }
+    #[inline]
+    pub(crate) fn source_weapon(&self, weapon: &WeaponRules) -> &Weapon {
+        if weapon.source < self.mechanics.weapons.len() {
+            let (kind, slot) = self.mechanics.weapon_sources[weapon.source];
+            &self.rules.units[kind].attacks[slot]
+        } else {
+            self.runtime
+                .inventories
+                .source(weapon.source, self.mechanics)
+        }
+    }
+    #[inline]
+    pub(crate) fn weapon_id(&self, key: WeaponKey) -> String {
+        self.mechanics.weapon_id(key)
+    }
     pub(crate) fn from_state(rules: &'catalog Rules, state: State) -> Self {
         let definition = state
             .campaign
@@ -241,7 +319,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn from_state_with_campaign(
         rules: &'catalog Rules,
         state: State,
-        definition: Option<&'catalog Campaign>,
+        definition: Option<&CampaignRules>,
     ) -> Self {
         let key = (
             rules.content_fingerprint.clone(),
@@ -272,6 +350,8 @@ impl<'catalog> Game<'catalog> {
             game.reach_cache = cached.reach;
             game.threat_reach_cache = cached.threat_reach;
             game.movement_masks = cached.movement;
+            game.movement_regions = cached.regions;
+            game.origin_runs = cached.origin_runs;
         } else {
             TERRAIN_POOL.with_borrow_mut(|(pool, order)| {
                 if pool.len() >= 64 {
@@ -291,29 +371,20 @@ impl<'catalog> Game<'catalog> {
                         reach: game.reach_cache.clone(),
                         threat_reach: game.threat_reach_cache.clone(),
                         movement: game.movement_masks.clone(),
+                        regions: game.movement_regions.clone(),
+                        origin_runs: game.origin_runs.clone(),
                     },
                 );
             });
         }
         game
     }
-    #[cfg(feature = "wasm")]
-    pub(crate) fn from_state_with_board(
-        rules: &'catalog Rules,
-        state: State,
-        board: Rc<Board>,
-    ) -> Self {
-        let definition = state
-            .campaign
-            .as_ref()
-            .map(|state| &rules.campaigns[&state.id]);
-        Self::from_state_with_board_and_campaign(rules, state, board, definition)
-    }
+
     fn from_state_with_board_and_campaign(
         rules: &'catalog Rules,
         state: State,
         board: Rc<Board>,
-        definition: Option<&'catalog Campaign>,
+        definition: Option<&CampaignRules>,
     ) -> Self {
         let (state, tiles) = StateFrame::split(state);
         let n = tiles.len();
@@ -347,54 +418,14 @@ impl<'catalog> Game<'catalog> {
             fog: Rc::new(fog),
             light: Rc::new(light),
         };
-        Self::from_parts(
-            rules,
-            state,
-            board,
-            RuntimeCache::default(),
-            definition,
-            terrain,
-            owners,
-            geometry,
-        )
+        Self::from_parts(rules, state, board, definition, terrain, owners, geometry)
     }
-    #[cfg(feature = "wasm")]
-    pub(crate) fn from_borrowed_state(
-        rules: &'catalog Rules,
-        state: &State,
-        board: Rc<Board>,
-        mut cache: RuntimeCache,
-    ) -> Self {
-        let geometry = cache
-            .geometry
-            .take()
-            .unwrap_or_else(|| TileGeometry::from_tiles(&state.tiles));
-        let terrain = state
-            .tiles
-            .iter()
-            .map(|t| rules.terrains[&t.terrain])
-            .collect();
-        let owners = state.tiles.iter().map(|t| t.owner.clone()).collect();
-        Self::from_parts(
-            rules,
-            StateFrame::from(state),
-            board,
-            cache,
-            state
-                .campaign
-                .as_ref()
-                .map(|state| &rules.campaigns[&state.id]),
-            terrain,
-            owners,
-            geometry,
-        )
-    }
+
     fn from_parts(
         rules: &'catalog Rules,
         mut state: StateFrame,
         board: Rc<Board>,
-        cache: RuntimeCache,
-        campaign_definition: Option<&'catalog Campaign>,
+        campaign_definition: Option<&CampaignRules>,
         terrain: Vec<usize>,
         owners: Vec<Option<String>>,
         geometry: TileGeometry,
@@ -424,13 +455,13 @@ impl<'catalog> Game<'catalog> {
                 }
             }
         }
+        let mechanics = rules.units.mechanics();
+        let mut names = Names::default();
+        let mut inventories = Inventories::default();
         let units: Vec<Unit> = state
             .units
             .into_iter()
             .map(|unit| Unit {
-                faction: unit.faction,
-                items: unit.items,
-                ai_group: unit.ai_group,
                 id: unit.id.strip_prefix('u').unwrap().parse().unwrap(),
                 kind: rules.types[&unit.r#type],
                 side: unit.side,
@@ -439,71 +470,90 @@ impl<'catalog> Game<'catalog> {
                 moved: unit.moved,
                 attacked: unit.attacked,
                 experience: unit.experience,
-                character: unit.character,
                 role: unit.role,
                 retreating: unit.retreating,
                 rebuilding: unit.rebuilding,
+                faction: unit.faction.map(|value| names.intern(value)),
+                ai_group: unit.ai_group.map(|value| names.intern(value)),
+                character: unit.character.map(|value| names.intern(value)),
+                inventory: inventories.load(unit.items, mechanics),
+            })
+            .collect();
+        let ground_items = state
+            .ground_items
+            .into_iter()
+            .map(|ground| GroundItemState {
+                tile: board.indices[&ground.tile],
+                item: inventories.add_item(ground.item, mechanics),
             })
             .collect();
         let combat_present = state.last_combat.is_some();
         let last_combat = state.last_combat.flatten();
         let mut game = Self {
-            factions: Rc::new(state.factions),
-            ground_items: state.ground_items,
-            active_faction: None,
-            fog: geometry.fog,
-            light: geometry.light,
-            condition_memory: Rc::new(state.condition_memory),
-            fog_memory,
-            traversal: None,
-            event_deaths: vec![],
-            event_departure: None,
-            event_opening: false,
             rules,
-            board,
-            terrain,
-            owners: owners.into(),
-            connections: geometry.connections,
-            walls: geometry.walls,
-            dead_ends: geometry.dead_ends,
-            floors: geometry.floors,
-            units,
-            map_id: state.map_id,
-            map_revision: state.map_revision,
-            cols: state.cols,
-            rows: state.rows,
-            round: state.round,
-            turn: state.turn,
-            gold: state.gold,
-            winner: state.winner,
-            next_id: state.next_id,
-            combat_rng: state.combat_rng,
-            log: state.log,
-            campaign: state.campaign.map(Into::into),
-            scripts: None,
-            last_combat,
-            #[cfg(feature = "wasm")]
-            combat_animation: None,
-            combat_present,
-            armies: state.armies,
-            pools: None,
-            arena_first: None,
-            mission: cache.mission,
-            campaign_definition,
-            mission_key: cache.key,
-            #[cfg(not(target_arch = "wasm32"))]
-            recordings: None,
-            route_cache: Rc::new(RefCell::new(HashMap::default())),
-            terrain_revision: 0,
-            attack_geometry: Rc::new(RefCell::new(HashMap::default())),
-            attack_masks: super::geometry::AttackMasks::default(),
-            reach_cache: super::movement::ReachCache::default(),
-            threat_reach_cache: super::movement::ThreatReachCache::default(),
-            movement_masks: super::movement::MovementMasks::default(),
-            route_order: Rc::new(RefCell::new(VecDeque::new())),
-            occupancy: vec![],
-            occupied_tiles: super::geometry::TileSet::new(0),
-            unit_indices: HashMap::default(),
+            mechanics,
+            runtime: BattleState {
+                scope: crate::BattleScope::new(),
+                factions: Rc::new(state.factions),
+                ground_items,
+                names: std::sync::Arc::new(names),
+                inventories: std::sync::Arc::new(inventories),
+                active_faction: None,
+                fog: geometry.fog,
+                light: geometry.light,
+                condition_memory: Rc::new(state.condition_memory),
+                fog_memory,
+                traversal: None,
+                event_deaths: vec![],
+                event_departure: None,
+                event_opening: false,
+                board,
+                terrain,
+                owners: owners.into(),
+                connections: geometry.connections,
+                walls: geometry.walls,
+                dead_ends: geometry.dead_ends,
+                floors: geometry.floors,
+                units,
+                map_id: state.map_id,
+                map_revision: state.map_revision,
+                cols: state.cols,
+                rows: state.rows,
+                round: state.round,
+                turn: state.turn,
+                gold: state.gold,
+                winner: state.winner,
+                next_id: state.next_id,
+                combat_rng: state.combat_rng,
+                log: state.log,
+                campaign: state.campaign.map(Into::into),
+                scripts: None,
+                last_combat,
+                #[cfg(feature = "wasm")]
+                combat_animation: None,
+                combat_present,
+                armies: state.armies,
+                pools: None,
+                arena_first: None,
+                mission: None,
+                campaign_definition: campaign_definition.cloned(),
+                mission_key: None,
+                #[cfg(not(target_arch = "wasm32"))]
+                recordings: None,
+                route_cache: Rc::new(RefCell::new(HashMap::default())),
+                terrain_revision: 0,
+                attack_geometry: Rc::new(RefCell::new(HashMap::default())),
+                attack_masks: super::geometry::AttackMasks::default(),
+                reach_cache: super::movement::ReachCache::default(),
+                threat_reach_cache: super::movement::ThreatReachCache::default(),
+                movement_masks: super::movement::MovementMasks::default(),
+                movement_regions: super::movement::RegionCache::default(),
+                origin_runs: super::geometry::OriginRunCache::default(),
+                route_order: Rc::new(RefCell::new(VecDeque::new())),
+                occupancy: vec![],
+                occupied_tiles: super::geometry::TileSet::new(0),
+                unit_indices: HashMap::default(),
+            },
         };
         game.roster_changed();
         game.refresh_mission();
@@ -526,7 +576,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn new_with_campaign(
         rules: &'catalog Rules,
         map: &str,
-        definition: Option<&'catalog Campaign>,
+        definition: Option<&CampaignRules>,
     ) -> Self {
         let state = rules
             .maps
@@ -539,91 +589,62 @@ impl<'catalog> Game<'catalog> {
         Self::from_state_with_campaign(rules, state, definition)
     }
     pub(crate) fn campaign_snapshot(&self) -> Option<CampaignState> {
-        self.campaign.as_deref().cloned().map(|mut campaign| {
-            campaign.scripts = self.scripts.as_deref().map(|state| state.saved().clone());
-            campaign
-        })
+        self.runtime
+            .campaign
+            .as_deref()
+            .cloned()
+            .map(|mut campaign| {
+                campaign.scripts = self
+                    .runtime
+                    .scripts
+                    .as_deref()
+                    .map(|state| state.saved().clone());
+                campaign
+            })
     }
     /// Materialize the protocol snapshot without changing battle state.
     pub(crate) fn state(&self) -> State {
+        self.state_with_tiles(self.tiles())
+    }
+    pub(crate) fn state_with_tiles(&self, tiles: Vec<Tile>) -> State {
         State {
-            factions: self.factions.as_ref().clone(),
-            ground_items: self.ground_items.clone(),
-            condition_memory: self.condition_memory.as_ref().clone(),
-            armies: self.armies.clone(),
-            map_id: self.map_id.clone(),
-            map_revision: self.map_revision,
-            cols: self.cols,
-            rows: self.rows,
-            round: self.round,
-            turn: self.turn,
-            gold: self.gold.clone(),
-            winner: self.winner,
-            next_id: self.next_id,
-            combat_rng: self.combat_rng,
-            log: self.log.clone(),
-            tiles: self.tiles(),
+            factions: self.runtime.factions.as_ref().clone(),
+            ground_items: self
+                .runtime
+                .ground_items
+                .iter()
+                .map(|ground| GroundItem {
+                    tile: self.runtime.board.ids[ground.tile].clone(),
+                    item: self.runtime.inventories.item(ground.item).clone(),
+                })
+                .collect(),
+            condition_memory: self.runtime.condition_memory.as_ref().clone(),
+            armies: self.runtime.armies.clone(),
+            map_id: self.runtime.map_id.clone(),
+            map_revision: self.runtime.map_revision,
+            cols: self.runtime.cols,
+            rows: self.runtime.rows,
+            round: self.runtime.round,
+            turn: self.runtime.turn,
+            gold: self.runtime.gold.clone(),
+            winner: self.runtime.winner,
+            next_id: self.runtime.next_id,
+            combat_rng: self.runtime.combat_rng,
+            log: self.runtime.log.clone(),
+            tiles,
             units: self.public_units(),
             campaign: self.campaign_snapshot(),
-            last_combat: self.combat_present.then(|| self.last_combat.clone()),
+            last_combat: self
+                .runtime
+                .combat_present
+                .then(|| self.runtime.last_combat.clone()),
         }
     }
-    /// Consume a transient runtime after its inspection and effects are resolved.
-    #[cfg(feature = "wasm")]
-    pub(crate) fn into_state(mut self, tiles: Vec<Tile>) -> State {
-        debug_assert_eq!(tiles.len(), self.board.ids.len());
-        let units = std::mem::take(&mut self.units)
-            .into_iter()
-            .map(|unit| PublicUnit {
-                faction: unit.faction,
-                items: unit.items,
-                ai_group: unit.ai_group,
-                id: format!("u{}", unit.id),
-                r#type: self.rules.units[unit.kind].id.clone(),
-                side: unit.side,
-                tile: self.board.ids[unit.tile].clone(),
-                hp: unit.hp,
-                moved: unit.moved,
-                attacked: unit.attacked,
-                experience: unit.experience,
-                character: unit.character,
-                role: unit.role,
-                retreating: unit.retreating,
-                rebuilding: unit.rebuilding,
-            })
-            .collect();
-        State {
-            factions: Rc::unwrap_or_clone(self.factions),
-            ground_items: self.ground_items,
-            condition_memory: Rc::unwrap_or_clone(self.condition_memory),
-            armies: self.armies,
-            map_id: self.map_id,
-            map_revision: self.map_revision,
-            cols: self.cols,
-            rows: self.rows,
-            round: self.round,
-            turn: self.turn,
-            gold: self.gold,
-            winner: self.winner,
-            next_id: self.next_id,
-            combat_rng: self.combat_rng,
-            log: self.log,
-            tiles,
-            units,
-            campaign: self.campaign.map(Shared::into_owned).map(|mut campaign| {
-                campaign.scripts = self
-                    .scripts
-                    .map(Shared::into_owned)
-                    .map(EventProgress::into_saved);
-                campaign
-            }),
-            last_combat: self.combat_present.then_some(self.last_combat),
-        }
-    }
+
     /// Patch the authoritative terrain only where current runtime values differ.
     #[cfg(feature = "wasm")]
     pub(crate) fn patch_tiles(&self, tiles: &mut [Tile]) -> Vec<usize> {
-        debug_assert_eq!(tiles.len(), self.board.ids.len());
+        debug_assert_eq!(tiles.len(), self.runtime.board.ids.len());
         let mut changed = Vec::new();
         for (i, tile) in tiles.iter_mut().enumerate() {
             let Tile {
@@ -640,103 +661,108 @@ impl<'catalog> Game<'catalog> {
                 fog,
                 light,
             } = tile;
-            let position = self.board.positions[i];
-            let kind = &self.rules.terrain_names[self.terrain[i]];
+            let position = self.runtime.board.positions[i];
+            let kind = &self.rules.terrain_names[self.runtime.terrain[i]];
             if *col != position.0
                 || *row != position.1
                 || terrain != kind
-                || *owner != self.owners[i]
-                || *connections != self.connections[i]
-                || *dead_ends != self.dead_ends[i]
-                || *walls != self.walls[i]
-                || *floor != self.floors[i]
-                || *fog != self.fog[i]
-                || *light != self.light[i]
+                || *owner != self.runtime.owners[i]
+                || *connections != self.runtime.connections[i]
+                || *dead_ends != self.runtime.dead_ends[i]
+                || *walls != self.runtime.walls[i]
+                || *floor != self.runtime.floors[i]
+                || *fog != self.runtime.fog[i]
+                || *light != self.runtime.light[i]
             {
                 *col = position.0;
                 *row = position.1;
                 terrain.clone_from(kind);
-                owner.clone_from(&self.owners[i]);
-                connections.clone_from(&self.connections[i]);
-                dead_ends.clone_from(&self.dead_ends[i]);
-                walls.clone_from(&self.walls[i]);
-                floor.clone_from(&self.floors[i]);
-                fog.clone_from(&self.fog[i]);
-                light.clone_from(&self.light[i]);
+                owner.clone_from(&self.runtime.owners[i]);
+                connections.clone_from(&self.runtime.connections[i]);
+                dead_ends.clone_from(&self.runtime.dead_ends[i]);
+                walls.clone_from(&self.runtime.walls[i]);
+                floor.clone_from(&self.runtime.floors[i]);
+                fog.clone_from(&self.runtime.fog[i]);
+                light.clone_from(&self.runtime.light[i]);
                 changed.push(i);
             }
         }
         changed
     }
     pub(crate) fn tiles(&self) -> Vec<Tile> {
-        self.board
+        self.runtime
+            .board
             .ids
             .iter()
             .enumerate()
             .map(|(index, id)| Tile {
                 id: id.to_string(),
-                location: self.board.locations[index].clone(),
-                col: self.board.positions[index].0,
-                row: self.board.positions[index].1,
-                terrain: self.rules.terrain_names[self.terrain[index]].clone(),
-                owner: self.owners[index].clone(),
-                connections: self.connections[index].clone(),
-                walls: self.walls[index].clone(),
-                dead_ends: self.dead_ends[index].clone(),
-                floor: self.floors[index].clone(),
-                fog: self.fog[index].clone(),
-                light: self.light[index].clone(),
+                location: self.runtime.board.locations[index].clone(),
+                col: self.runtime.board.positions[index].0,
+                row: self.runtime.board.positions[index].1,
+                terrain: self.rules.terrain_names[self.runtime.terrain[index]].clone(),
+                owner: self.runtime.owners[index].clone(),
+                connections: self.runtime.connections[index].clone(),
+                walls: self.runtime.walls[index].clone(),
+                dead_ends: self.runtime.dead_ends[index].clone(),
+                floor: self.runtime.floors[index].clone(),
+                fog: self.runtime.fog[index].clone(),
+                light: self.runtime.light[index].clone(),
             })
             .collect()
     }
     pub(crate) fn public_unit(&self, unit: &Unit) -> PublicUnit {
         PublicUnit {
-            faction: unit.faction.clone(),
-            items: unit.items.clone(),
-            ai_group: unit.ai_group.clone(),
+            faction: self.name(unit.faction).map(str::to_owned),
+            items: self.inventory(unit).cloned().collect(),
+            ai_group: self.name(unit.ai_group).map(str::to_owned),
             id: format!("u{}", unit.id),
             r#type: self.rules.units[unit.kind].id.clone(),
             side: unit.side,
-            tile: self.board.ids[unit.tile].clone(),
+            tile: self.runtime.board.ids[unit.tile].clone(),
             hp: unit.hp,
             moved: unit.moved,
             attacked: unit.attacked,
             experience: unit.experience,
-            character: unit.character.clone(),
+            character: self.name(unit.character).map(str::to_owned),
             role: unit.role.clone(),
             retreating: unit.retreating,
             rebuilding: unit.rebuilding,
         }
     }
     pub(crate) fn public_units(&self) -> Vec<PublicUnit> {
-        self.units
+        self.runtime
+            .units
             .iter()
             .map(|unit| self.public_unit(unit))
             .collect()
     }
     #[inline]
     pub(crate) fn unit(&self, id: u32) -> Option<&Unit> {
-        self.index(id).map(|index| &self.units[index])
+        self.index(id).map(|index| &self.runtime.units[index])
     }
     #[inline]
     pub(crate) fn at(&self, tile: usize) -> Option<&Unit> {
-        self.occupancy
+        self.runtime
+            .occupancy
             .get(tile)
             .copied()
             .flatten()
-            .and_then(|index| self.units.get(index))
+            .and_then(|index| self.runtime.units.get(index))
             .filter(|unit| unit.tile == tile)
     }
     #[inline]
     pub(crate) fn index(&self, id: u32) -> Option<usize> {
-        self.unit_indices
+        self.runtime
+            .unit_indices
             .get(&id)
             .copied()
-            .filter(|&index| self.units.get(index).is_some_and(|u| u.id == id))
+            .filter(|&index| self.runtime.units.get(index).is_some_and(|u| u.id == id))
     }
     #[cfg(test)]
     pub(crate) fn site_at(&self, col: i32, row: i32) -> usize {
-        self.board
+        self.runtime
+            .board
             .positions
             .iter()
             .position(|p| *p == (col, row))
@@ -744,17 +770,17 @@ impl<'catalog> Game<'catalog> {
     }
     #[inline]
     pub(crate) fn site(&self, id: &Hex) -> usize {
-        *self.board.indices.get(id).expect("validated hex")
+        *self.runtime.board.indices.get(id).expect("validated hex")
     }
     pub(crate) fn character_name(&self, id: &str) -> Option<&str> {
         self.campaign_definition
-            .or_else(|| self.rules.campaign_for_map(&self.map_id))
+            .as_ref()
+            .or_else(|| self.rules.campaign_for_map(&self.runtime.map_id))
             .and_then(|campaign| campaign.character(id))
             .map(|c| c.name.as_str())
     }
     pub(crate) fn unit_name<'a>(&'a self, unit: &'a Unit) -> &'a str {
-        unit.character
-            .as_deref()
+        self.name(unit.character)
             .and_then(|id| self.character_name(id))
             .unwrap_or(&self.rules.units[unit.kind].name)
     }
@@ -764,7 +790,7 @@ impl<'catalog> Game<'catalog> {
     }
     #[inline]
     pub(crate) fn terrain_role(&self, tile: usize) -> TerrainRole {
-        self.rules.terrain_roles[self.terrain[tile]]
+        self.rules.terrain_roles[self.runtime.terrain[tile]]
     }
     #[inline]
     pub(crate) fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
@@ -776,16 +802,13 @@ impl<'catalog> Game<'catalog> {
         self.role_is(tile, TerrainRole::Keep)
     }
     pub(crate) fn record(&mut self, message: String) {
-        self.log.insert(0, message);
-        self.log.truncate(8);
+        self.runtime.log.insert(0, message);
+        self.runtime.log.truncate(8);
     }
     pub(crate) fn add(&mut self, kind: usize, side: Side, tile: usize) -> u32 {
-        let id = self.next_id;
-        self.next_id += 1;
-        self.units.push(Unit {
-            faction: None,
-            items: vec![],
-            ai_group: None,
+        let id = self.runtime.next_id;
+        self.runtime.next_id += 1;
+        self.runtime.units.push(Unit {
             id,
             kind,
             side,
@@ -794,78 +817,88 @@ impl<'catalog> Game<'catalog> {
             moved: false,
             attacked: false,
             experience: Some(0),
-            character: None,
             role: None,
             retreating: None,
             rebuilding: None,
+            faction: None,
+            ai_group: None,
+            character: None,
+            inventory: InventoryId(0),
         });
-        self.unit_indices.insert(id, self.units.len() - 1);
-        self.occupancy[tile] = Some(self.units.len() - 1);
-        self.occupied_tiles.insert(tile);
+        self.runtime
+            .unit_indices
+            .insert(id, self.runtime.units.len() - 1);
+        self.runtime.occupancy[tile] = Some(self.runtime.units.len() - 1);
+        self.runtime.occupied_tiles.insert(tile);
         id
     }
     /// Refresh dense lookup tables after an internal roster transformation.
     pub(crate) fn roster_changed(&mut self) {
-        self.occupancy = vec![None; self.terrain.len()];
-        self.occupied_tiles = super::geometry::TileSet::new(self.terrain.len());
-        self.unit_indices.clear();
-        for (index, unit) in self.units.iter().enumerate() {
-            self.occupancy[unit.tile] = Some(index);
-            self.occupied_tiles.insert(unit.tile);
-            self.unit_indices.insert(unit.id, index);
+        self.runtime.occupancy = vec![None; self.runtime.terrain.len()];
+        self.runtime.occupied_tiles = super::geometry::TileSet::new(self.runtime.terrain.len());
+        self.runtime.unit_indices.clear();
+        for (index, unit) in self.runtime.units.iter().enumerate() {
+            self.runtime.occupancy[unit.tile] = Some(index);
+            self.runtime.occupied_tiles.insert(unit.tile);
+            self.runtime.unit_indices.insert(unit.id, index);
         }
     }
     /// Change terrain and invalidate only terrain-dependent route results.
     pub(crate) fn set_terrain(&mut self, tile: usize, terrain: usize) {
-        if self.terrain[tile] != terrain {
-            self.terrain[tile] = terrain;
-            Rc::make_mut(&mut self.connections)[tile] = None;
-            Rc::make_mut(&mut self.walls)[tile] = None;
-            Rc::make_mut(&mut self.dead_ends)[tile] = None;
-            self.attack_geometry = Rc::new(RefCell::new(HashMap::default()));
-            self.attack_masks = super::geometry::AttackMasks::default();
-            self.reach_cache = super::movement::ReachCache::default();
-            self.threat_reach_cache = super::movement::ThreatReachCache::default();
-            self.movement_masks = super::movement::MovementMasks::default();
-            self.terrain_revision = self.terrain_revision.wrapping_add(1);
-            self.route_cache = Rc::new(RefCell::new(HashMap::default()));
-            self.route_order = Rc::new(RefCell::new(VecDeque::new()));
+        if self.runtime.terrain[tile] != terrain {
+            self.runtime.terrain[tile] = terrain;
+            Rc::make_mut(&mut self.runtime.connections)[tile] = None;
+            Rc::make_mut(&mut self.runtime.walls)[tile] = None;
+            Rc::make_mut(&mut self.runtime.dead_ends)[tile] = None;
+            self.runtime.attack_geometry = Rc::new(RefCell::new(HashMap::default()));
+            self.runtime.attack_masks = super::geometry::AttackMasks::default();
+            self.runtime.reach_cache = super::movement::ReachCache::default();
+            self.runtime.threat_reach_cache = super::movement::ThreatReachCache::default();
+            self.runtime.movement_masks = super::movement::MovementMasks::default();
+            self.runtime.movement_regions = super::movement::RegionCache::default();
+            self.runtime.origin_runs = super::geometry::OriginRunCache::default();
+            self.runtime.terrain_revision = self.runtime.terrain_revision.wrapping_add(1);
+            self.runtime.route_cache = Rc::new(RefCell::new(HashMap::default()));
+            self.runtime.route_order = Rc::new(RefCell::new(VecDeque::new()));
         }
     }
 
-    #[cfg(feature = "wasm")]
-    pub(crate) fn runtime_cache(&self) -> RuntimeCache {
-        RuntimeCache {
-            geometry: Some(TileGeometry {
-                connections: self.connections.clone(),
-                walls: self.walls.clone(),
-                dead_ends: self.dead_ends.clone(),
-                floors: self.floors.clone(),
-                fog: self.fog.clone(),
-                light: self.light.clone(),
-            }),
-            key: self.mission_key.clone(),
-            mission: self.mission.clone(),
-        }
-    }
-    pub(crate) fn campaign_definition(&self) -> &'catalog Campaign {
+    pub(crate) fn campaign_definition(&self) -> &CampaignRules {
         self.campaign_definition
+            .as_ref()
             .expect("campaign game has a definition")
     }
     pub(crate) fn refresh_mission(&mut self) {
-        let Some(state) = &self.campaign else {
-            self.mission = None;
+        let Some(state) = &self.runtime.campaign else {
+            self.runtime.mission = None;
             self.mission_key = None;
             return;
         };
-        let key = (state.id.clone(), state.mission, false, vec![], false);
-        if self.mission_key.as_ref() == Some(&key) {
+        let definition = self.campaign_definition();
+        if self.mission_key.as_ref().is_some_and(|key| {
+            key.mission == state.mission && key.definition.same_definition(definition)
+        }) {
             return;
         }
+        let key = MissionKey {
+            definition: definition.clone(),
+            mission: state.mission,
+        };
+        let mission = MISSION_POOL.with_borrow_mut(|pool| {
+            if let Some(mission) = pool.get(&key) {
+                return mission.clone();
+            }
+            let mission = Rc::new(CompiledMission::new(
+                definition.missions[state.mission].clone(),
+            ));
+            if pool.len() >= 128 {
+                pool.clear();
+            }
+            pool.insert(key.clone(), mission.clone());
+            mission
+        });
         self.mission_key = Some(key);
-        self.mission = Some(Rc::new(CompiledMission::new(
-            self.campaign_definition().missions[state.mission].clone(),
-        )));
+        self.runtime.mission = Some(mission);
     }
 }
 
@@ -877,72 +910,84 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn fork(&self) -> Self {
         Self {
-            factions: self.factions.clone(),
-            ground_items: self.ground_items.clone(),
-            active_faction: self.active_faction.clone(),
-            condition_memory: self.condition_memory.clone(),
-            fog_memory: self.fog_memory.clone(),
-            traversal: None,
-            event_deaths: vec![],
-            event_departure: None,
-            event_opening: false,
-            fog: self.fog.clone(),
-            light: self.light.clone(),
             rules: self.rules,
-            board: self.board.clone(),
-            terrain: self.terrain.clone(),
-            owners: self.owners.clone(),
-            connections: self.connections.clone(),
-            walls: self.walls.clone(),
-            dead_ends: self.dead_ends.clone(),
-            floors: self.floors.clone(),
-            units: self.units.clone(),
-            map_id: self.map_id.clone(),
-            map_revision: self.map_revision,
-            cols: self.cols,
-            rows: self.rows,
-            round: self.round,
-            turn: self.turn,
-            gold: self.gold.clone(),
-            winner: self.winner,
-            next_id: self.next_id,
-            combat_rng: self.combat_rng,
-            log: self.log.clone(),
-            campaign: self.campaign.clone(),
-            scripts: self.scripts.clone(),
-            last_combat: self.last_combat.clone(),
-            #[cfg(feature = "wasm")]
-            combat_animation: None,
-            combat_present: self.combat_present,
-            armies: self.armies.clone(),
-            pools: self.pools.clone(),
-            arena_first: self.arena_first,
-            mission: self.mission.clone(),
-            campaign_definition: self.campaign_definition,
-            mission_key: self.mission_key.clone(),
-            #[cfg(not(target_arch = "wasm32"))]
-            recordings: None,
-            route_cache: self.route_cache.clone(),
-            terrain_revision: self.terrain_revision,
-            attack_geometry: self.attack_geometry.clone(),
-            attack_masks: self.attack_masks.clone(),
-            reach_cache: self.reach_cache.clone(),
-            threat_reach_cache: self.threat_reach_cache.clone(),
-            movement_masks: self.movement_masks.clone(),
-            route_order: self.route_order.clone(),
-            occupancy: self.occupancy.clone(),
-            occupied_tiles: self.occupied_tiles.clone(),
-            unit_indices: self.unit_indices.clone(),
+            mechanics: self.mechanics,
+            runtime: BattleState {
+                scope: self.runtime.scope.clone(),
+                factions: self.runtime.factions.clone(),
+                ground_items: self.runtime.ground_items.clone(),
+                names: self.runtime.names.clone(),
+                inventories: self.runtime.inventories.clone(),
+                active_faction: self.runtime.active_faction.clone(),
+                condition_memory: self.runtime.condition_memory.clone(),
+                fog_memory: self.runtime.fog_memory.clone(),
+                traversal: None,
+                event_deaths: vec![],
+                event_departure: None,
+                event_opening: false,
+                fog: self.runtime.fog.clone(),
+                light: self.runtime.light.clone(),
+                board: self.runtime.board.clone(),
+                terrain: self.runtime.terrain.clone(),
+                owners: self.runtime.owners.clone(),
+                connections: self.runtime.connections.clone(),
+                walls: self.runtime.walls.clone(),
+                dead_ends: self.runtime.dead_ends.clone(),
+                floors: self.runtime.floors.clone(),
+                units: self.runtime.units.clone(),
+                map_id: self.runtime.map_id.clone(),
+                map_revision: self.runtime.map_revision,
+                cols: self.runtime.cols,
+                rows: self.runtime.rows,
+                round: self.runtime.round,
+                turn: self.runtime.turn,
+                gold: self.runtime.gold.clone(),
+                winner: self.runtime.winner,
+                next_id: self.runtime.next_id,
+                combat_rng: self.runtime.combat_rng,
+                log: self.runtime.log.clone(),
+                campaign: self.runtime.campaign.clone(),
+                scripts: self.runtime.scripts.clone(),
+                last_combat: self.runtime.last_combat.clone(),
+                #[cfg(feature = "wasm")]
+                combat_animation: None,
+                combat_present: self.runtime.combat_present,
+                armies: self.runtime.armies.clone(),
+                pools: self.runtime.pools.clone(),
+                arena_first: self.runtime.arena_first,
+                mission: self.runtime.mission.clone(),
+                campaign_definition: self.campaign_definition.clone(),
+                mission_key: self.mission_key.clone(),
+                #[cfg(not(target_arch = "wasm32"))]
+                recordings: None,
+                route_cache: self.runtime.route_cache.clone(),
+                terrain_revision: self.runtime.terrain_revision,
+                attack_geometry: self.runtime.attack_geometry.clone(),
+                attack_masks: self.runtime.attack_masks.clone(),
+                reach_cache: self.runtime.reach_cache.clone(),
+                threat_reach_cache: self.runtime.threat_reach_cache.clone(),
+                movement_masks: self.runtime.movement_masks.clone(),
+                movement_regions: self.runtime.movement_regions.clone(),
+                origin_runs: self.runtime.origin_runs.clone(),
+                route_order: self.runtime.route_order.clone(),
+                occupancy: self.runtime.occupancy.clone(),
+                occupied_tiles: self.runtime.occupied_tiles.clone(),
+                unit_indices: self.runtime.unit_indices.clone(),
+            },
         }
     }
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn action(&mut self, value: ActionRecord) {
-        if let Some(records) = &mut self.recordings {
+        if let Some(records) = &mut self.runtime.recordings {
             records.actions.push(value);
         }
     }
     pub(crate) fn promotion_options(&self, unit: &Unit) -> Vec<usize> {
-        if self.winner.is_some() || unit.side != self.turn || unit.moved || unit.attacked {
+        if self.runtime.winner.is_some()
+            || unit.side != self.runtime.turn
+            || unit.moved
+            || unit.attacked
+        {
             return vec![];
         }
         let rule = &self.rules.units[unit.kind];
@@ -960,15 +1005,18 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn advance(&mut self, id: u32, kind: usize) {
         let index = self.index(id).unwrap();
-        assert!(self.promotion_options(&self.units[index]).contains(&kind));
-        let previous = &self.rules.units[self.units[index].kind];
-        let name = self.unit_name(&self.units[index]).to_owned();
-        let wounds = previous.hp - self.units[index].hp;
-        let experience = self.units[index]
+        assert!(
+            self.promotion_options(&self.runtime.units[index])
+                .contains(&kind)
+        );
+        let previous = &self.rules.units[self.runtime.units[index].kind];
+        let name = self.unit_name(&self.runtime.units[index]).to_owned();
+        let wounds = previous.hp - self.runtime.units[index].hp;
+        let experience = self.runtime.units[index]
             .experience
             .unwrap_or(0)
             .saturating_sub(previous.experience_needed.unwrap_or(0));
-        let unit = &mut self.units[index];
+        let unit = &mut self.runtime.units[index];
         unit.kind = kind;
         unit.experience = Some(experience);
         unit.hp = (self.rules.units[kind].hp - wounds).max(1);
@@ -1001,42 +1049,46 @@ impl<'catalog> Game<'catalog> {
     }
     fn recruitment_pool_for_faction(&self, id: &str) -> super::recruit_pool::RecruitPool<'_> {
         use super::recruit_pool::{PoolEntries, RecruitPool};
-        let entries =
-            if let Some(pool) = self.scripts.as_deref().and_then(|s| s.recruitment.get(id)) {
-                PoolEntries::Recruits(pool.iter())
-            } else if let Some(mission) = &self.mission {
-                PoolEntries::Recruits(
-                    mission
-                        .recruitment
-                        .get(id)
-                        .map(Vec::as_slice)
-                        .unwrap_or(&[])
-                        .iter(),
-                )
-            } else if let Some(pools) = &self.pools
-                && matches!(id, "player" | "enemy")
-            {
-                PoolEntries::Kinds(pools[if id == "player" { 0 } else { 1 }].iter())
-            } else if let Some(armies) = &self.armies
-                && matches!(id, "player" | "enemy")
-            {
-                PoolEntries::Names(
-                    self.rules
-                        .rosters
-                        .iter()
-                        .find(|r| r.id == armies[if id == "player" { 0 } else { 1 }])
-                        .expect("validated skirmish faction")
-                        .pool
-                        .iter(),
-                )
-            } else {
-                PoolEntries::Recruits(
-                    self.faction(id)
-                        .and_then(|f| f.recruits.as_deref())
-                        .unwrap_or(&[])
-                        .iter(),
-                )
-            };
+        let entries = if let Some(pool) = self
+            .runtime
+            .scripts
+            .as_deref()
+            .and_then(|s| s.recruitment.get(id))
+        {
+            PoolEntries::Recruits(pool.iter())
+        } else if let Some(mission) = &self.runtime.mission {
+            PoolEntries::Recruits(
+                mission
+                    .recruitment
+                    .get(id)
+                    .map(Vec::as_slice)
+                    .unwrap_or(&[])
+                    .iter(),
+            )
+        } else if let Some(pools) = &self.runtime.pools
+            && matches!(id, "player" | "enemy")
+        {
+            PoolEntries::Kinds(pools[if id == "player" { 0 } else { 1 }].iter())
+        } else if let Some(armies) = &self.runtime.armies
+            && matches!(id, "player" | "enemy")
+        {
+            PoolEntries::Names(
+                self.rules
+                    .rosters
+                    .iter()
+                    .find(|r| r.id == armies[if id == "player" { 0 } else { 1 }])
+                    .expect("validated skirmish faction")
+                    .pool
+                    .iter(),
+            )
+        } else {
+            PoolEntries::Recruits(
+                self.faction(id)
+                    .and_then(|f| f.recruits.as_deref())
+                    .unwrap_or(&[])
+                    .iter(),
+            )
+        };
         RecruitPool {
             rules: self.rules,
             entries,
@@ -1050,7 +1102,7 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn recruit_cost_for_faction(&self, id: &str, kind: usize) -> i32 {
         let unit = &self.rules.units[kind].id;
-        if let Some(mission) = &self.mission {
+        if let Some(mission) = &self.runtime.mission {
             if let Some(entry) = self
                 .scripts
                 .as_deref()
@@ -1076,18 +1128,25 @@ impl<'catalog> Game<'catalog> {
             .and_then(|entry| entry.cost)
             .unwrap_or(self.rules.units[kind].cost)
     }
-    pub(crate) fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> Vec<usize> {
+    pub(crate) fn placement_tiles(
+        &self,
+        leader: &Unit,
+        kind: usize,
+        price: bool,
+    ) -> crate::model::PlacementTiles {
         if !leader.is_leader()
-            || !self.recruitment_options_for(leader).contains(&kind)
-            || self.winner.is_some()
+            || !self
+                .recruitment_pool_for(leader)
+                .any(|option| option == kind)
+            || self.runtime.winner.is_some()
             || !self.may_act(leader)
             || !self.is_keep(leader.tile)
-            || self.owners[leader.tile].as_deref() != Some(self.unit_faction(leader))
+            || self.runtime.owners[leader.tile].as_deref() != Some(self.unit_faction(leader))
             || (price && self.gold_for_unit(leader) < self.recruit_cost(leader, kind))
         {
-            return vec![];
+            return crate::model::PlacementTiles::default();
         }
-        self.board.adjacent[leader.tile]
+        self.runtime.board.adjacent[leader.tile]
             .iter()
             .copied()
             .filter(|&tile| self.cost(kind, tile) != u16::MAX && self.at(tile).is_none())
@@ -1098,10 +1157,12 @@ impl<'catalog> Game<'catalog> {
         assert!(self.placement_tiles(&leader, kind, true).contains(&tile));
         let faction = self.unit_faction(&leader).to_owned();
         let cost = self.recruit_cost(&leader, kind);
-        self.gold[&faction] -= cost;
+        self.runtime.gold[&faction] -= cost;
         self.add(kind, leader.side, tile);
-        let unit = self.units.last_mut().unwrap();
-        unit.faction = leader.faction.clone();
+        let unit = self.runtime.units.last_mut().unwrap();
+        if unit.faction != leader.faction {
+            unit.faction = leader.faction.clone();
+        }
         unit.moved = true;
         unit.attacked = true;
         self.record(format!(
@@ -1117,7 +1178,7 @@ impl<'catalog> Game<'catalog> {
         self.action(ActionRecord::Recruit {
             unit: format!("u{id}"),
             unit_type: self.rules.units[kind].id.clone(),
-            tile: self.board.ids[tile].clone(),
+            tile: self.runtime.board.ids[tile].clone(),
             cost: Some(cost),
         });
         self.evaluate_campaign(false, None);

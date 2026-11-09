@@ -32,13 +32,13 @@ Use the [metrics reference](metrics.md) to choose required telemetry and the
 
 ## Campaign objective routes
 
-`--diplomacy unrestricted,diplomatic` filters the modes declared by each campaign's
-`playerDiplomacy`. `--objectives flight,fight` likewise filters that campaign's
+`--diplomacy unrestricted,diplomatic` filters the modes declared in the simulation manifest's
+`campaigns.<id>.diplomacy`. `--objectives flight,fight` likewise filters that campaign's
 named simulation routes. The scheduler takes their cross product with seeds,
 player tactics and enemy tactics. Reports keep both dimensions separate.
 `--objectives authored` runs the unchanged authored objectives as a control.
 
-Declare routes under `objectives.<campaign-id>.<route-name>.stages` in
+Declare routes under `campaigns.<campaign-id>.routes.<route-name>.stages` in
 `rust/data/simulation/campaign.json`. Stage keys are authored map identifiers;
 route names are arbitrary identifiers, not Rust enum variants. Campaigns without
 routes retain one `authored` configuration. Adding a campaign or route needs data

@@ -132,31 +132,28 @@ impl ScheduleOptions {
             campaign_max_rounds: rules.campaign_defaults.default_max_rounds,
             recruit_limit: None,
             armies: rules.rosters.iter().map(|item| item.id.clone()).collect(),
-            landscapes: rules
-                .arena
-                .landscapes
-                .iter()
-                .map(|item| item.id.clone())
-                .collect(),
-            campaigns: rules.campaign_defaults.campaigns.clone(),
+            landscapes: rules.arena.default_scenarios.clone(),
+            campaigns: rules.campaign_defaults.default_campaigns.clone(),
             policies: parse(&rules.arena.policies)?,
             objectives: None,
             campaign_objectives: rules
                 .campaign_defaults
-                .objectives
+                .campaigns
                 .iter()
-                .map(|(id, routes)| (id.clone(), routes.keys().cloned().collect()))
+                .filter(|(_, config)| !config.routes.is_empty())
+                .map(|(id, config)| (id.clone(), config.routes.keys().cloned().collect()))
                 .collect(),
             campaign_players: None,
             campaign_enemies: None,
             self_play: false,
             opponent: None,
             campaign_diplomacy: rules
+                .campaign_defaults
                 .campaigns
                 .iter()
                 .map(|(id, campaign)| {
                     let modes = campaign
-                        .player_diplomacy
+                        .diplomacy
                         .iter()
                         .map(|mode| {
                             serde_json::from_value(serde_json::Value::String(mode.clone()))
