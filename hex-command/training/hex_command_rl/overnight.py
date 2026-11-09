@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import signal
 import sys
 import time
 from .mixed_evaluate import evaluate,plot,reliability
@@ -99,6 +100,14 @@ def main():
         time.sleep(5)
     while not (root/'posttune/evaluation-complete.json').exists() or not (root/'posttune/handoff-complete.json').exists() or not (root/'sampler-ready.json').exists():
         resource_tick();ensure_post_evaluator();time.sleep(5)
+    # If a supervisor was lost, replace its detached workers from the last
+    # atomic state instead of accidentally running two PPO writers.
+    for module in ['hex_command_rl.mixed_ppo','hex_command_rl.mixed_evaluate']:
+        pid=live_pid(module,root)
+        if pid:
+            try:os.killpg(os.getpgid(pid),signal.SIGTERM)
+            except ProcessLookupError:pass
+    (root/'rl/evaluation-active.json').unlink(missing_ok=True)
     warm=resolve(root/'posttune','handoff-best.json')/'resume.pt';atomic_json(root/'control.json',dict(phase='rl',start=time.time(),warm_start=str(warm)))
     command=['--seconds',str(a.rl_seconds),'--warm-start',str(warm)]
     if (root/'rl/latest.json').exists():command=['--seconds',str(a.rl_seconds),'--resume',str(root/'rl')]
