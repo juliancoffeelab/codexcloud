@@ -56,3 +56,8 @@ class RecoveryContracts(unittest.TestCase):
             return dict(groups=groups,score=sum(wins)/40,weighted_caps=0.)
         collapsed=report([10,10,10,0]);balanced=report([4,4,4,4])
         self.assertGreater(reliability(balanced)[0],reliability(collapsed)[0])
+
+    def test_handoff_preserves_strength_when_worst_strata_are_near_tied(self):
+        from hex_command_rl.handoff import reliable_choice
+        stronger=dict(reliability_key=[.36,.58,-.1]);noisy_edge=dict(reliability_key=[.37,.50,-.1]);collapsed=dict(reliability_key=[0.,.99,0.])
+        self.assertIs(reliable_choice([stronger,noisy_edge,collapsed]),stronger)

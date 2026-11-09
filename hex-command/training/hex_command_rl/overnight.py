@@ -108,6 +108,8 @@ def main():
             try:os.killpg(os.getpgid(pid),signal.SIGTERM)
             except ProcessLookupError:pass
     (root/'rl/evaluation-active.json').unlink(missing_ok=True)
+    from .handoff import finalize_selection
+    finalize_selection(root/'posttune')
     warm=resolve(root/'posttune','handoff-best.json')/'resume.pt';atomic_json(root/'control.json',dict(phase='rl',start=time.time(),warm_start=str(warm)))
     command=['--seconds',str(a.rl_seconds),'--warm-start',str(warm)]
     if (root/'rl/latest.json').exists():command=['--seconds',str(a.rl_seconds),'--resume',str(root/'rl')]

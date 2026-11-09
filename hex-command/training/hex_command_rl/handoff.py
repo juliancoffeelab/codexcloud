@@ -49,3 +49,20 @@ def main():
             atomic_json(run/'handoff-complete.json',dict(best=best['checkpoint'],reliability=list(best_key),strata=best['strata'],criterion='Maximize minimum balanced result across arena/campaign × Classic/Predictor; then overall score and fewer caps',validation_runs=len(spec['validation']),test_seeds_used=False));break
         time.sleep(5)
 if __name__=='__main__':main()
+
+
+def reliable_choice(records,tolerance=.025):
+    """Treat tiny worst-stratum differences as ties, preserving overall strength."""
+    maximum=max(r['reliability_key'][0] for r in records)
+    eligible=[r for r in records if r['reliability_key'][0]>=maximum-tolerance-1e-12 and (maximum<=0 or r['reliability_key'][0]>0)]
+    return max(eligible,key=lambda r:(r['reliability_key'][1],r['reliability_key'][2],r['reliability_key'][0]))
+
+
+def finalize_selection(run):
+    run=Path(run);records=[json.loads(p.read_text()) for p in (run/'handoff-validation').glob('*.json')]
+    selected=reliable_choice(records);folder=run/selected['checkpoint'];m=json.loads((folder/'manifest.json').read_text())
+    atomic_json(run/'handoff-best.json',dict(path=selected['checkpoint'],label=m['label'],files=m['files']))
+    atomic_json(run/'handoff-complete.json',dict(best=selected['checkpoint'],reliability=selected['reliability_key'],strata=selected['strata'],
+                criterion='Worst stratum within 2.5 percentage points of best; then highest overall score and fewer caps; positive strata required when available',
+                candidates=len(records),validation_runs=selected['runs'],test_seeds_used=False))
+    return selected
