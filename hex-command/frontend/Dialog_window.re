@@ -22,20 +22,17 @@ let make =
       onBeforeClose();
       close(dialog);
     };
+  let (backdropDown, backdropUp, backdropCancel, backdropClick) = useBackdrop(dialog, dismiss);
   let props =
     ReactDOM.domProps(
       ~id,
       ~className="dialog-window " ++ className ++ (tall ? " tall" : ""),
       ~ref=ReactDOM.Ref.domRef(dialog),
       ~ariaLabel=Utf8.to_js(title),
-      ~onClick=
-        event =>
-          if (canDismiss) {
-            if (React.Event.Mouse.target(event) == React.Event.Mouse.currentTarget(event)) {
-              onBeforeClose();
-            };
-            backdrop(event);
-          },
+      ~onPointerDown=backdropDown,
+      ~onPointerUp=backdropUp,
+      ~onPointerCancel=backdropCancel,
+      ~onClick=backdropClick,
       (),
     );
   onCancel(props, event =>

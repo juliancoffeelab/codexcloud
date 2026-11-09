@@ -37,18 +37,70 @@ let close = reference =>
 [@mel.get] external checkedTarget: React.Event.Form.t => {. "checked": bool } = "currentTarget";
 [@mel.get] external checked: {. "checked": bool } => bool = "checked";
 let bindChecked = event => checked(checkedTarget(event));
-[@mel.get] external mouseCurrentTarget: React.Event.Mouse.t => Dom.element = "currentTarget";
-[@mel.get] external mouseTarget: React.Event.Mouse.t => Dom.element = "target";
-let backdrop = event => {
-  let element = mouseCurrentTarget(event);
-  if (mouseTarget(event) === element) {
+[@mel.get]
+external eventCurrentTarget: React.Event.synthetic('a) => Dom.element = "currentTarget";
+[@mel.get] external eventTarget: React.Event.synthetic('a) => Dom.element = "target";
+[@mel.get] external eventX: React.Event.synthetic('a) => float = "clientX";
+[@mel.get] external eventY: React.Event.synthetic('a) => float = "clientY";
+let outsideDialog = event => {
+  let element = eventCurrentTarget(event);
+  if (eventTarget(event) === element) {
     let b = bounds(element);
-    let x = float_of_int(React.Event.Mouse.clientX(event));
-    let y = float_of_int(React.Event.Mouse.clientY(event));
-    if (x < b.left || x > b.right || y < b.top || y > b.bottom) {
-      closeModal(element);
+    let x = eventX(event);
+    let y = eventY(event);
+    x < b.left || x > b.right || y < b.top || y > b.bottom;
+  } else {
+    false;
+  };
+};
+type backdropGesture =
+  | Idle
+  | Pressed(Dom.eventPointerId)
+  | Released;
+
+/* A modal-opening press never started on the new modal's backdrop. */
+let useBackdrop = (dialog, dismiss) => {
+  let gesture = React.useRef(Idle);
+  let reset = () => gesture.current = Idle;
+  React.useEffect0(() =>
+    switch (Js.Nullable.toOption(dialog.React.current)) {
+    | None => None
+    | Some(node) =>
+      let closed = _ => reset();
+      addListener(node, "close", closed);
+      addListener(node, "cancel", closed);
+      Some(
+        () => {
+          removeListener(node, "close", closed);
+          removeListener(node, "cancel", closed);
+        },
+      );
+    }
+  );
+  let down = event => {
+    gesture.current =
+      React.Event.Pointer.isPrimary(event)
+      && React.Event.Pointer.button(event) == 0
+      && outsideDialog(event)
+        ? Pressed(React.Event.Pointer.pointerId(event)) : Idle;
+  };
+  let up = event => {
+    gesture.current = (
+      switch (gesture.current) {
+      | Pressed(id) when id == React.Event.Pointer.pointerId(event) && outsideDialog(event) =>
+        Released
+      | _ => Idle
+      }
+    );
+  };
+  let click = event => {
+    let completed = gesture.current == Released && outsideDialog(event);
+    reset();
+    if (completed) {
+      dismiss();
     };
   };
+  (down, up, _ => reset(), click);
 };
 [@mel.set] external dataKey: (ReactDOM.domProps, string) => unit = "key";
 [@mel.set] external dataTile: (ReactDOM.domProps, string) => unit = "data-tile";
