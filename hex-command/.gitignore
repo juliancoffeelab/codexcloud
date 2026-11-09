@@ -110,3 +110,9 @@ Thumbs.db
 
 /rust/pkg-benchmark/
 /dist-benchmark/
+
+# Editable Python package metadata
+/training/*.egg-info/
+
+# Mutable recovery copies stay local; versioned models and archives are tracked.
+/training/checkpoints/overnight-recovery/

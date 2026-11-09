@@ -18,3 +18,6 @@ pub mod wasm;
 mod tests;
 
 mod sort;
+
+#[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+pub mod training;

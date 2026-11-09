@@ -77,6 +77,19 @@ pub(crate) fn create_arena<'catalog>(
     if landscape.map.is_none() {
         generate_arena_terrain(&mut state, &config.landscape, &mut random);
     }
+    if landscape.authored {
+        state.turn = config.first;
+        state.round = 1;
+        state.winner = None;
+        state.campaign = None;
+        state.log.clear();
+        state.last_combat = None;
+        let mut game = Game::from_state(rules, state);
+        game.set_combat_rng(config.seed);
+        // None preserves each authored faction's own recruitment pool and gold.
+        game.configure_arena(None, Some(config.first));
+        return Ok(game);
+    }
     state.units.clear();
     state.next_id = 1;
     let mut starting_cost = [0; 2];
@@ -473,6 +486,7 @@ pub(super) fn run_arena_capturing(
         .as_ref()
         .unwrap_or(&rules.arena.territory);
     let hold_turns = landscape.hold_turns;
+    let deathmatch = config.objective == ArenaObjective::Deathmatch;
     let mut held = [0u32; 2];
     let mut visits: [HashSet<Hex>; 2] = Default::default();
     let mut phases = vec![];
@@ -484,12 +498,16 @@ pub(super) fn run_arena_capturing(
             break;
         }
         let side = game.turn();
-        let mut goals = vec![objective(
-            "required-territory",
-            ObjectiveKind::Capture,
-            territory.clone(),
-            24.0,
-        )];
+        let mut goals = if deathmatch {
+            vec![]
+        } else {
+            vec![objective(
+                "required-territory",
+                ObjectiveKind::Capture,
+                territory.clone(),
+                24.0,
+            )]
+        };
         for tile in 0..game.terrain().len() {
             if game.role_is(tile, TerrainRole::Village) && game.captures(tile, side) {
                 goals.push(objective(
@@ -511,7 +529,8 @@ pub(super) fn run_arena_capturing(
             12.0,
         ));
         for tile in 0..game.terrain().len() {
-            if game.role_is(tile, TerrainRole::Ruins)
+            if !deathmatch
+                && game.role_is(tile, TerrainRole::Ruins)
                 && !visits[side.index()].contains(&game.board().ids[tile])
             {
                 goals.push(objective(
@@ -552,7 +571,10 @@ pub(super) fn run_arena_capturing(
             reason = "leader";
             break;
         }
-        for owner in [Side::Player, Side::Enemy] {
+        for owner in [Side::Player, Side::Enemy]
+            .into_iter()
+            .filter(|_| !deathmatch)
+        {
             if !territory
                 .iter()
                 .all(|tile| game.owners()[game.site(tile)].as_deref() == Some(owner.faction_id()))
@@ -810,9 +832,45 @@ mod tests {
     }
 
     #[test]
+    fn deathmatch_omits_holding_and_optional_objectives() {
+        let rules = Rules::load().unwrap();
+        let mut config: ArenaConfig = serde_json::from_value(serde_json::json!({
+            "seed": 17, "armies": {"player": "human", "enemy": "skeletons"},
+            "landscape": "open", "player": "balanced", "enemy": "balanced",
+            "first": "player", "maxRounds": 30, "recruitLimit": null
+        }))
+        .unwrap();
+        assert_eq!(config.objective, ArenaObjective::Territory);
+        assert!(
+            serde_json::to_value(&config)
+                .unwrap()
+                .get("objective")
+                .is_none()
+        );
+        config.objective = ArenaObjective::Deathmatch;
+        let result = run_arena(&rules, config).unwrap();
+        assert!(["leader", "cap"].contains(&result.reason.as_str()));
+        assert_eq!(result.winner.is_some(), result.reason == "leader");
+        assert!(result.phases.iter().all(|p| {
+            p.objectives
+                .iter()
+                .all(|o| o.id == "opposing-leader" || o.id.starts_with("village:"))
+        }));
+        assert!(
+            result
+                .phases
+                .iter()
+                .any(|p| p.objectives.iter().any(|o| o.id == "opposing-leader"))
+        );
+        assert_eq!(result.objectives.player.held, 0);
+        assert_eq!(result.objectives.enemy.held, 0);
+    }
+
+    #[test]
     fn wooded_arena_has_cover_and_crossings_have_fords_and_an_island_fort() {
         let rules = Rules::load().unwrap();
         let mut config = ArenaConfig {
+            objective: Default::default(),
             seed: 61,
             armies: Armies {
                 player: rules.rosters[0].id.clone(),
@@ -887,6 +945,7 @@ mod tests {
                 for player in &rules.rosters {
                     for enemy in &rules.rosters {
                         let config = ArenaConfig {
+                            objective: Default::default(),
                             seed,
                             armies: Armies {
                                 player: player.id.clone(),

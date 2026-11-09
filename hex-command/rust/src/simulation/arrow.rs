@@ -494,6 +494,7 @@ mod tests {
         let mut arena = super::super::matches::run_arena(
             &rules,
             ArenaConfig {
+                objective: Default::default(),
                 seed: 17,
                 armies: Armies {
                     player: "human".into(),

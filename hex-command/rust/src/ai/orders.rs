@@ -163,12 +163,27 @@ pub struct ObjectiveOrder {
     pub objective: TacticalObjective,
 }
 
+/// Visible mission progress, separate from planner-owned duty assignments.
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ObjectiveProgress {
+    pub id: String,
+    pub current: u32,
+    pub total: u32,
+    pub satisfied: bool,
+    pub hold_turns_remaining: Option<u32>,
+}
+
 pub use hex_command_battle::model::ScopedOrder;
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
 pub struct TacticalOrders {
+    /// First round triggering an unconditional scripted campaign defeat.
+    pub deadline_round: Option<u32>,
+    pub progress: Vec<ObjectiveProgress>,
     pub scoped: Vec<ScopedOrder>,
     /// Actors withheld by Campaigner, independent of unit archetypes or economy.
     pub inactive: Vec<UnitId>,
@@ -196,7 +211,7 @@ pub struct TacticalOrders {
     pub leader_intents: Vec<(UnitId, Option<bool>)>,
 }
 impl TacticalOrders {
-    pub(in crate::ai) fn promotion(&self, game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
+    pub(crate) fn promotion(&self, game: &BattleView<'_, '_>, unit: &Unit) -> Option<usize> {
         let (_, kind) = self.promotions.iter().find(|(id, _)| id.0 == unit.id)?;
         game.promotion_options(unit)
             .into_iter()

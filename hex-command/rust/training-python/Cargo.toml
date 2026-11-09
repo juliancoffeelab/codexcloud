@@ -1,0 +1,17 @@
+[package]
+name = "hex-command-training-python"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "hex_command_training"
+crate-type = ["cdylib"]
+test = false
+doctest = false
+
+[dependencies]
+hex-command-simulation = { path = "..", features = ["training"] }
+pyo3 = { version = "0.27", features = ["extension-module"] }
+numpy = "0.27"
+serde_json = "1"

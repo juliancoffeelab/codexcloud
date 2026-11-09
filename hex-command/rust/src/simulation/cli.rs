@@ -420,6 +420,12 @@ fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
     }
     Ok(())
 }
+/// Replay a validated serialized phase request for native embedding/profiling.
+/// Turn preparation is controlled by the request, just as in --phase-stdio.
+pub fn saved_phase_json(rules: &Rules, request: &str) -> Result<Value, SimulationError> {
+    let mut definitions = CampaignDefinitions::new(rules);
+    saved_phase(rules, &mut definitions, serde_json::from_str(request)?)
+}
 fn saved_phase(
     rules: &Rules,
     definitions: &mut CampaignDefinitions<'_>,
