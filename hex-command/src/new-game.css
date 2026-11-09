@@ -225,21 +225,9 @@
 .new-game-dialog .ng-recruitment[open] > summary .chevron {
   transform: rotate(180deg);
 }
-.new-game-dialog.settings-style .ng-recruitment > summary {
+.ng-recruitment > summary {
   list-style: none;
   cursor: pointer;
-  padding-inline: 12px;
-  border: 1px solid #7f744d;
-  border-radius: 4px;
-  background: #d8ba6f08;
-  color: #dfcc95;
-}
-.new-game-dialog.settings-style .ng-recruitment > summary:hover,
-.new-game-dialog.settings-style .ng-recruitment > summary:focus-visible {
-  background: #d8ba6f12;
-}
-.new-game-dialog .ng-recruitment > summary .chevron {
-  stroke: currentColor;
 }
 .ng-recruitment > summary::-webkit-details-marker {
   display: none;
@@ -249,9 +237,14 @@
   align-items: center;
   gap: 10px;
   min-height: 64px;
-  padding: 10px 0;
+  padding: 10px 8px;
   border-bottom: 1px solid #39413688;
   cursor: pointer;
+}
+.ng-recruit-option:has(input:checked) {
+  color: #dfcc95;
+  background: #d8ba6f12;
+  box-shadow: inset 0 -2px #9f8c55;
 }
 .ng-recruit-option input {
   width: 23px;
