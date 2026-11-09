@@ -379,7 +379,7 @@ let make =
       dialog
       body
       width="420px"
-      tall=browsing
+      tall=true
       canDismiss={!view.awaiting_new_game && !starting}
       onBeforeClose={() => Option.iter(callback => callback(), onBack)}
       headerArtwork=?{!opened || browsing ? None : Some(<MapThumbnail map=selectedMap />)}
@@ -434,12 +434,10 @@ let make =
                                setError(_ => "");
                                Terrain_preload.map(view.catalog, map.id);
                              }}>
-                             <span className="ng-choice-art">
-                               <MapThumbnail map />
-                               <span> {text("Set up scenario ›")} </span>
-                             </span>
+                             <span className="ng-choice-art"> <MapThumbnail map /> </span>
                              <strong> {text(mapName(map))} </strong>
                              <p> {text(map.description)} </p>
+                             <span className="ng-choice-go"> {text("Go")} </span>
                            </button>
                          )}
                   </div>
