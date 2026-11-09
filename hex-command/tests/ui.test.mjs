@@ -77,6 +77,7 @@ vi.mock("virtual:terrain-prebuilt", () => ({ default: terrainManifest }));
 let root, host, session;
 let restoreDialogs;
 let restoreCanvasTransfer;
+let restoreScroll;
 let applicationCleanup;
 beforeEach(() => {
   audio = Sound.create();
@@ -101,6 +102,12 @@ beforeEach(() => {
       },
     },
   });
+  const oldScroll = Object.getOwnPropertyDescriptor(Element.prototype, "scrollIntoView");
+  Object.defineProperty(Element.prototype, "scrollIntoView", { configurable: true, value() {} });
+  restoreScroll = () => {
+    if (oldScroll) Object.defineProperty(Element.prototype, "scrollIntoView", oldScroll);
+    else Reflect.deleteProperty(Element.prototype, "scrollIntoView");
+  };
   restoreDialogs = () => {
     for (const [name, descriptor] of previous) {
       if (descriptor) Object.defineProperty(prototype, name, descriptor);
@@ -156,6 +163,7 @@ afterEach(async () => {
   applicationCleanup = void 0;
   restoreDialogs();
   restoreCanvasTransfer();
+  restoreScroll();
 });
 function element(selector) {
   return required(host.querySelector(selector));
@@ -207,44 +215,41 @@ test("The real embedding mounts native presentation, browser tools and reusable 
   );
   await click("#settings-button");
   await click("#new-game");
+  assert.ok(element(".new-game-dialog .ng-choice"));
+  assert.equal(host.querySelector(".choice-dialog"), null, "New Game has no nested picker dialogs");
+  await click(".ng-modes button:nth-child(2)");
   assert.ok(element(".new-game-dialog .setup-map-preview polygon"));
-  assert.equal(
-    host.querySelector(".choice-row"),
-    null,
-    "Closed pickers retain no rows or thumbnails",
-  );
-  await click('.choice-trigger[aria-label="Battlefield"]');
-  const picker = element('.choice-dialog[aria-label="Battlefield"]');
-  assert(picker.open);
-  assert.equal(document.activeElement, picker.querySelector('[aria-selected="true"]'));
-  await act(async () =>
-    picker.dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true })),
-  );
-  assert.equal(document.activeElement, [...picker.querySelectorAll('[role="option"]')].at(-1));
-  await click('.choice-dialog[aria-label="Battlefield"] .setup-close');
-  assert.equal(document.activeElement, element('.choice-trigger[aria-label="Battlefield"]'));
-  assert.equal(host.querySelector(".choice-row"), null);
-  await click(".new-game-dialog .setup-actions .quiet");
+  await click(".ng-choice");
+  const strip = element('.ng-strip[aria-label="Your race"]');
+  const choices = [...strip.querySelectorAll('[role="radio"]')];
+  await act(async () => {
+    choices[0].focus();
+    choices[0].dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }));
+  });
+  assert.equal(document.activeElement, choices.at(-1));
+  assert.equal(choices.at(-1).getAttribute("aria-checked"), "true");
+  await click(".ng-start-footer button:first-child");
+  await click(".ng-browse-footer > button");
   assert.equal(
     host.querySelector(".new-game-dialog .setup-map-preview"),
     null,
     "Closing releases preview nodes",
   );
-  await click("#settings-button");
   await click("#new-game");
   await act(async () => element(".new-game-dialog").dispatchEvent(new Event("close")));
   assert.ok(
-    host.querySelector(".new-game-dialog .setup-map-preview"),
+    host.querySelector(".new-game-dialog .ng-choice"),
     "A stale close event cannot clear a reopened dialog",
   );
   await act(async () => element(".new-game-dialog").close());
-  assert.equal(host.querySelector(".new-game-dialog .setup-map-preview"), null);
+  assert.equal(host.querySelector(".new-game-dialog .ng-choice"), null);
   await click("#settings-button");
   await click("#new-game");
-  await click(".setup-tabs button:nth-child(2)");
-  assert.ok(host.querySelector(".setup-story"));
+  await click(".ng-choice");
+  assert.ok(element(".ng-campaign-info"));
   await act(async () => element(".new-game-dialog").close());
-  assert.equal(host.querySelector(".setup-story"), null);
+  assert.equal(host.querySelector(".ng-campaign-info"), null);
+  assert.equal(host.querySelector(".new-game-dialog .setup-map-preview"), null);
   const cleanup = required(applicationCleanup);
   assert.doesNotThrow(cleanup);
   assert.doesNotThrow(cleanup);
@@ -602,36 +607,74 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
   },
 );
 
-test("Typed setup choices retain planner, recruiter and opening side through start", async () => {
-  session = await Session.create_with_audio(async () => {}, audio, factory);
-  const mounted = session;
-  await act(async () =>
-    root.render(React.createElement(App.make, { session: mounted, onMount: () => () => {} })),
-  );
-  await click("#settings-button");
-  await click("#new-game");
-  const choose = async (label, value) => {
-    await click(`.choice-trigger[aria-label="${label}"]`);
-    await click(
-      `.choice-dialog[aria-label="${label}"][open] [role="option"][aria-label="${value}"]`,
+test.each(["scenario", "campaign"])(
+  "%s New Game filters playable content and retains typed setup choices through start",
+  async (mode) => {
+    session = await Session.create_with_audio(async () => {}, audio, factory);
+    const mounted = session;
+    await act(async () =>
+      root.render(React.createElement(App.make, { session: mounted, onMount: () => () => {} })),
     );
-  };
-  await choose("First turn", "You");
-  await choose("Opponent planner", "Full");
-  await choose("Opponent recruiter", "Aggressive Predictor");
-  assert.match(element(".setup-difficulty .setup-label").textContent, /Custom/);
-  await click(".new-game-dialog .setup-actions .primary");
-  const saved = JSON.parse(await Save.flashText());
-  assert.deepEqual(saved.setup, {
-    first: "player",
-    enemy: {
-      policy: "predictor",
-      diplomacy: "diplomatic",
-      blocks: { planner: "full", recruiter: "aggressive-predictor", campaign: "mission" },
-    },
-  });
-  assert.deepEqual(saved.checkpoint.state.armies, ["human", "skeletons"]);
-});
+    await click("#settings-button");
+    await click("#new-game");
+    const catalog = Session.view(mounted).catalog;
+    const choices = () =>
+      [...host.querySelectorAll(".ng-choice > strong")].map((node) =>
+        node.textContent.toLowerCase(),
+      );
+    assert.deepEqual(
+      choices(),
+      Catalog.campaigns(catalog)
+        .filter((campaign) => campaign.human)
+        .map((campaign) => campaign.name.toLowerCase()),
+    );
+    await click(".ng-modes button:nth-child(2)");
+    const scenarios = Catalog.scenario_maps(catalog);
+    assert.equal(choices().length, scenarios.filter((map) => map.human).length);
+    for (const map of scenarios.filter((map) => !map.human))
+      assert(!choices().includes(map.name.toLowerCase()));
+    if (mode === "campaign") await click(".ng-modes button:first-child");
+    await click(".ng-choice");
+    assert.equal(
+      host.querySelector('[role="group"][aria-label="First turn"]') !== null,
+      mode === "scenario",
+    );
+    const choose = async (group, value) => {
+      const container = element(`[role="group"][aria-label="${group}"]`);
+      const target = required(
+        [...container.querySelectorAll("button")].find((button) => button.textContent === value),
+      );
+      await act(async () => target.click());
+    };
+    await click(".new-game-dialog .advanced > summary");
+    await choose("Opponent planning", "Full");
+    await click(".ng-recruitment > summary");
+    const aggressive = required(
+      [...host.querySelectorAll(".ng-recruit-option")].find((row) =>
+        row.textContent.includes("Aggressive Predictor"),
+      ),
+    );
+    await act(async () => aggressive.querySelector("input").click());
+    assert.equal(element('.ng-difficulty button[aria-pressed="true"]').textContent, "Custom");
+    await click(".new-game-dialog .ng-start-footer .primary");
+    const saved = JSON.parse(await Save.flashText());
+    assert.deepEqual(saved.setup, {
+      first: "player",
+      enemy: {
+        policy: "predictor",
+        diplomacy: "diplomatic",
+        blocks: { planner: "full", recruiter: "aggressive-predictor", campaign: "mission" },
+      },
+    });
+    if (mode === "scenario")
+      assert.deepEqual(saved.checkpoint.state.armies, ["human", "skeletons"]);
+    else
+      assert.equal(
+        saved.checkpoint.state.campaign.id,
+        Catalog.campaigns(catalog).find((campaign) => campaign.human).id,
+      );
+  },
+);
 
 test("Sound-only dialogue waits for phase persistence and advances when that same game settles", async () => {
   const checkpoint = structuredClone(

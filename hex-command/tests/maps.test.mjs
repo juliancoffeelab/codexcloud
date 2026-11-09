@@ -7,16 +7,15 @@ import assert from "node:assert/strict";
 import { pixelSprites } from "../src/presentation/pixel-art.mjs";
 const { Game, TYPES, developerFixture } = await import("./game-fixture.mjs");
 const { Native, Catalog, catalog, restoreBattle } = await import("./native-fixture.mjs");
-test("Map revisions retain runtime metadata while human choices exclude non-human maps", () => {
+test("Catalog retains the latest scenario revisions and non-human metadata", () => {
   const history = Catalog.raw(catalog).maps.filter((map) => map.id === "river-valley");
   assert(history.length > 1);
   const latest = history.reduce((a, b) => (a.revision > b.revision ? a : b));
   assert.deepEqual(Catalog.map(catalog, "river-valley"), latest);
   assert.deepEqual(
-    Catalog.battle_maps(catalog).filter((map) => map.id === latest.id),
+    Catalog.scenario_maps(catalog).filter((map) => map.id === latest.id),
     [latest],
   );
-  assert(Catalog.battle_maps(catalog).every((map) => map.human));
   assert(Catalog.scenario_maps(catalog).some((map) => !map.human));
   assert.deepEqual(Catalog.campaigns(catalog), Catalog.raw(catalog).campaigns);
 });

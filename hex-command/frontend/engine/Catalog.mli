@@ -22,10 +22,6 @@ val race : t -> string -> Domain.race_definition
 val map : t -> string -> Domain.map_definition
 val campaign : t -> string -> Domain.campaign
 
-val battle_maps : t -> Domain.map_definition list
-(** Visible scenario choices, excluding campaign-only layouts. Non-human scenarios remain valid for
-    commands but do not appear in this menu. *)
-
 val scenario_maps : t -> Domain.map_definition list
 (** All command-addressable scenarios, including non-human layouts. Campaign-only maps remain
     outside this collection. *)

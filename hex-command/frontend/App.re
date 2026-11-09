@@ -343,7 +343,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
           view
           actions
           dialog=settings
-          onNewBattle={() => openSetup(~fromSettings=true, Setup.Skirmish)}
+          onNewBattle={() => openSetup(~fromSettings=true, Setup.Campaign)}
           onRepair=openRepair
           openKey=settingsKey
           initialScreen=settingsScreen
