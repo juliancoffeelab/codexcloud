@@ -570,8 +570,10 @@ impl ClassicProjection<'_, '_> {
         let routes = if assigned {
             Some(std::rc::Rc::new(self.occupied_routes(&u, &goals, false)))
         } else {
-            (self.map_id() == "river" || rules.orders.campaign || !rebuild.is_empty())
-                .then(|| self.routes(u.kind, &goals))
+            ((0..self.terrain().len()).any(|tile| self.role_is(tile, TerrainRole::Water))
+                || rules.orders.campaign
+                || !rebuild.is_empty())
+            .then(|| self.routes(u.kind, &goals))
         };
         let recruiting = self
             .recruitment_options(u.side)
