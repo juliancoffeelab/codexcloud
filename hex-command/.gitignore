@@ -49,54 +49,6 @@ Thumbs.db
 # OCaml compiler output
 _build/
 
-# Local environment files and credentials
-.env
-.env.*
-!.env.example
-!.env.*.example
-*.pem
-*.key
-*.p12
-*.pfx
-/secrets/
-/credentials/
-
-# Dependencies, caches, and generated output
-node_modules/
-.npm/
-.pnpm-store/
-.cache/
-.parcel-cache/
-.vite/
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-/build/
-/coverage/
-/tmp/
-/temp/
-*.tsbuildinfo
-
-# Logs and editor/OS files
-*.log
-.DS_Store
-Thumbs.db
-*.swp
-*.swo
-*~
-
-# Production output is generated from src/ and public/.
-/dist/
-
-# Local tournament output; reviewed result snapshots belong in docs/simulations/.
-/artifacts/
-/rust/target/
-/rust/pkg/
-
-# Native sprites are built from pixel/art and copied into dist by Vite.
-/public/assets/sprites/
-
 /frontend/generated/
 
 /ocamljs/target/

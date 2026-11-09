@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync, mkdirSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { toolchainEnvironment } from "./toolchain/toolchain-env.mjs";
 const groups = process.argv.slice(2);
 if (groups.some((g) => !["ui", "wasm", "types"].includes(g)))
@@ -11,8 +12,9 @@ const env = toolchainEnvironment();
 try {
   mkdirSync(out, { recursive: true });
   const result = spawnSync(
-    "ocamljs_pack",
+    process.execPath,
     [
+      fileURLToPath(new URL("./toolchain/packager.mjs", import.meta.url)),
       "generate",
       "--wasm",
       "rust/pkg/backend.wasm",
@@ -51,7 +53,7 @@ try {
     )
   )
     throw new Error("Unexpected foreign ABI import");
-  const compiled = spawnSync("dune", ["build", "@melange"], {
+  const compiled = spawnSync("dune", ["build", "--root", root, "@melange"], {
     cwd: root,
     env,
     stdio: "inherit",

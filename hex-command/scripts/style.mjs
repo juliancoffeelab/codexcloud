@@ -14,7 +14,7 @@ const cwd = fileURLToPath(new URL("../", import.meta.url));
 const files = [
   "src",
   "packages/save-migrations/src",
-  "scripts/*.{mjs,js}",
+  "scripts/**/*.{mjs,js}",
   "tests/*.mjs",
   "*.config.mjs",
   "*.json",

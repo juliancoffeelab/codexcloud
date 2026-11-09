@@ -71,7 +71,7 @@ try {
   console.log(
     "[dev] First OCaml build can take several minutes: Dune downloads and compiles the locked compiler and libraries. Later builds reuse them.",
   );
-  await run("Preparing OCaml", "dune", ["build", "@melange", "--display", "short"]);
+  await run("Preparing OCaml", "dune", ["build", "--root", cwd, "@melange", "--display", "short"]);
   if (!stopping) {
     console.log(
       "[dev] OCaml edits rebuild automatically; diagnostics stay in this terminal. CSS updates through Vite. Ctrl-C stops both.",
@@ -82,6 +82,8 @@ try {
         "dune",
         [
           "build",
+          "--root",
+          cwd,
           "@melange",
           "--watch",
           "--display",

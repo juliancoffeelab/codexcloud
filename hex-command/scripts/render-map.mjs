@@ -76,7 +76,14 @@ async function prepare() {
   await new Promise((ok, fail) => {
     const child = spawn(
       toolchainCommand("dune"),
-      ["build", "frontend/output/frontend/devtools/Map_draft.js", "--display", "quiet"],
+      [
+        "build",
+        "--root",
+        root,
+        "frontend/output/frontend/devtools/Map_draft.js",
+        "--display",
+        "quiet",
+      ],
       { cwd: root, env: toolchainEnvironment(), stdio: "inherit" },
     );
     child.once("error", fail);

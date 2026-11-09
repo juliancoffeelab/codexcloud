@@ -10,13 +10,17 @@ export async function initialize(wasm) {
   factory = Json.value(outcome);
 }
 export function phase(input) {
-  const value=result=>{if(Json.is_ok(result))return Json.value(result);throw new Error(Native.message(Json.result_error(result)))};
-  const battle=value(Native.restore(factory,Json.of_saved_game(input.checkpoint)));
-  const options=Json.of_ai_options({policy:input.policy,diplomacy:"diplomatic"});
+  const value = (result) => {
+    if (Json.is_ok(result)) return Json.value(result);
+    throw new Error(Native.message(Json.result_error(result)));
+  };
+  const battle = value(Native.restore(factory, Json.of_saved_game(input.checkpoint)));
+  const options = Json.of_ai_options({ policy: input.policy, diplomacy: "diplomatic" });
   try {
-    let state=Native.state(Native.view(battle));
-    while(Enum.string_of_side(state.turn)==="enemy" && state.winner===undefined){
-      value(Native.enemy_step_recorded(battle,options));state=Native.state(Native.view(battle));
+    let state = Native.state(Native.view(battle));
+    while (Enum.string_of_side(state.turn) === "enemy" && state.winner === undefined) {
+      value(Native.enemy_step_recorded(battle, options));
+      state = Native.state(Native.view(battle));
     }
     return value(Native.save_json(battle));
   } finally {

@@ -12,10 +12,10 @@ and ReasonReact; no separate application Opam switch is needed. With a bootstrap
 OCaml compiler on PATH, `scripts/install-dune.sh` can install Dune. The first
 locked compiler build can take several minutes.
 
-Install the sibling SDK packager before building Hex:
+Keep the sibling SDK checkout alongside Hex. Build commands compile its packager
+from source as needed; a globally installed generator is not used:
 
 ```sh
-cargo install --locked --path ../ocaml-js-bindgen/crates/ocamljs_pack
 rustup target add wasm32-unknown-unknown
 npm ci
 npm run dev

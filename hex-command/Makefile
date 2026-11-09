@@ -10,7 +10,7 @@ content:
 	node scripts/content.mjs --check
 
 wasm: content
-	cd rust && ocamljs_pack build --features wasm --name hex_command \
+	cd rust && node ../scripts/toolchain/packager.mjs build --features wasm --name hex_command \
 	  --out-dir pkg $(if $(filter dev,$(PROFILE)),--dev,--profile $(PROFILE))
 	$(if $(filter dev,$(PROFILE)),,node scripts/optimize-wasm.mjs rust/pkg/backend.wasm)
 	cp rust/pkg/Bindings.ml frontend/engine/Domain.ml
@@ -19,7 +19,7 @@ wasm: content
 
 frontend: fixtures
 	node scripts/check-migrations.mjs
-	dune build @melange --display short
+	dune build --root . @melange --display short
 
 assets:
 	python3 scripts/build-pixel-art.py
@@ -36,7 +36,7 @@ native-tests:
 
 # JS below only records hashes and reads Cargo's artifact manifest; it builds nothing.
 prepare: build fixtures
-	dune exec -- which refmt ocamlformat
+	dune exec --root . -- which refmt ocamlformat
 	node scripts/test-budget.mjs --begin-preparation
 	$(MAKE) native-tests
 	node scripts/test-budget.mjs --record-preparation
@@ -56,7 +56,7 @@ serve:
 clean:
 	rm -rf dist rust/pkg
 	rm -f tmp/verification-prepared.json tmp/verification-start.json tmp/native-test-artifacts.jsonl
-	dune clean
+	dune clean --root .
 
 help:
 	@printf '%s\n' 'make build | wasm [PROFILE=dev] | frontend | assets | prepare | test | verify | format | clean' 'make serve [PORT=8000]'

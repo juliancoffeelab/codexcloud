@@ -7,7 +7,7 @@ import { toolchainEnvironment } from "./toolchain/toolchain-env.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const env = toolchainEnvironment();
-const located = spawnSync("dune", ["exec", "--", "which", "melc"], {
+const located = spawnSync("dune", ["exec", "--root", root, "--", "which", "melc"], {
   cwd: root,
   env,
   encoding: "utf8",

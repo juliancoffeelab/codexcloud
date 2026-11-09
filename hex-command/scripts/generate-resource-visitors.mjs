@@ -119,7 +119,16 @@ for (const e of needed.values()) {
 }
 const formatted = spawnSync(
   "dune",
-  ["exec", "--", "ocamlformat", "--name", "frontend/engine/Domain_resource_walk.ml", "-"],
+  [
+    "exec",
+    "--root",
+    ".",
+    "--",
+    "ocamlformat",
+    "--name",
+    "frontend/engine/Domain_resource_walk.ml",
+    "-",
+  ],
   { input: out, encoding: "utf8" },
 );
 if (formatted.status !== 0 || formatted.error) throw formatted.error ?? new Error(formatted.stderr);

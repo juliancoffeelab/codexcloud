@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 const write = process.argv.includes("--write");
-const tools = spawnSync("dune", ["exec", "--", "which", "refmt", "ocamlformat"], {
+const tools = spawnSync("dune", ["exec", "--root", ".", "--", "which", "refmt", "ocamlformat"], {
   encoding: "utf8",
 });
 if (tools.status !== 0 || tools.error) throw tools.error ?? new Error(tools.stderr);
