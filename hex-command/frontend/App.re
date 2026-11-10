@@ -59,6 +59,7 @@ module TurnBar = {
           : winner == Some(Domain.Side.Enemy)
               ? "Defeat" : state.turn == Domain.Side.Player ? "End turn" : "Enemy turn"
       }
+      finished={winner != None}
       canEndTurn=canAct
       canUndo={view.can_undo}
       campaign={state.campaign != None}
@@ -270,7 +271,10 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     ? <Shell failure={view.failure} />
     : <>
         {!view.awaiting_new_game
-           ? <main className="battle-layout">
+           ? <main
+               className={
+                 "battle-layout" ++ (state.winner == Some(Domain.Side.Enemy) ? " defeated" : "")
+               }>
                <TurnBar
                  view
                  actions
@@ -330,6 +334,11 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                       }
                       : React.null}
                  </div>
+                 <Panels.Defeat
+                   view
+                   actions
+                   onNewGame={state.campaign == None ? openMap : openCampaign}
+                 />
                </div>
              </main>
            : React.null}

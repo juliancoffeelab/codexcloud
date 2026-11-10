@@ -39,3 +39,9 @@ module GroundItems: {
   [@react.component]
   let make: (~artwork: Art.t, ~items: array(Domain.item)) => React.element;
 };
+
+module Defeat: {
+  [@react.component]
+  let make:
+    (~view: Session.model, ~actions: Session.actions, ~onNewGame: unit => unit) => React.element;
+};

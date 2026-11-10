@@ -564,18 +564,9 @@ module Unit = {
          <>
            <div className="unit-title"> <h2> {text(title)} </h2> </div>
            <p> {text(description)} </p>
-           {Native.state(game).winner == Some(Domain.Side.Enemy)
-              ? <>
-                  <button id="retry-scenario" className="primary" onClick={_ => actions.retry()}>
-                    {text("Retry scenario")}
-                  </button>
-                  <button id="play-again" onClick={_ => onNewBattle()}>
-                    {text("Choose another game")}
-                  </button>
-                </>
-              : <button id="play-again" className="primary" onClick={_ => onNewBattle()}>
-                  {text("Play again")}
-                </button>}
+           <button id="play-again" className="primary" onClick={_ => onNewBattle()}>
+             {text("Play again")}
+           </button>
          </>
        | Details(details) => <Details view actions details />
        | Combat(attacker, defender, reset) =>
@@ -899,7 +890,7 @@ module Campaign = {
                       </ul>
                     </>}
              </section>
-             {state.winner != None && !Story.dialogue_pending(state.campaign)
+             {state.winner == Some(Domain.Side.Player) && !Story.dialogue_pending(state.campaign)
                 ? <section
                     id="mission-result"
                     className="campaign-panel"
@@ -908,23 +899,17 @@ module Campaign = {
                     <h2> {text(layout.name)} </h2>
                     <div className="mission-debrief">
                       <h3>
-                        {text(
-                           state.winner == Some(Domain.Side.Enemy)
-                             ? "The company must try again"
-                             : campaign.completed ? "Campaign complete" : "The company regroups",
-                         )}
+                        {text(campaign.completed ? "Campaign complete" : "The company regroups")}
                       </h3>
                       <p>
                         {text(
-                           state.winner == Some(Domain.Side.Player)
-                             ? Option.value(
-                                 ~default=Option.value(~default="", campaign.outcome),
-                                 chapter.debrief,
-                               )
-                             : Option.value(~default="", campaign.outcome),
+                           Option.value(
+                             ~default=Option.value(~default="", campaign.outcome),
+                             chapter.debrief,
+                           ),
                          )}
                       </p>
-                      {state.winner == Some(Domain.Side.Player) && !campaign.completed
+                      {!campaign.completed
                          ? <>
                              <p>
                                {text(
@@ -1022,28 +1007,9 @@ module Campaign = {
                                 )}
                              </button>
                            </>
-                         : state.winner == Some(Domain.Side.Enemy)
-                             ? <>
-                                 <p>
-                                   {text(
-                                      "Retry this mission from its beginning, or open Saved games to return to an earlier turn or mission.",
-                                    )}
-                                 </p>
-                                 <button
-                                   className="primary"
-                                   onClick={_ => {
-                                     actions.retry();
-                                     onCollapse();
-                                   }}>
-                                   {text("Retry mission")}
-                                 </button>
-                                 <button onClick={_ => onNewCampaign()}>
-                                   {text("Choose another game")}
-                                 </button>
-                               </>
-                             : <button className="primary" onClick={_ => onNewCampaign()}>
-                                 {text("Choose another campaign")}
-                               </button>}
+                         : <button className="primary" onClick={_ => onNewCampaign()}>
+                             {text("Choose another campaign")}
+                           </button>}
                     </div>
                   </section>
                 : React.null}
@@ -1071,5 +1037,56 @@ module Campaign = {
          }}
       </Dialog_window>
     </>;
+  };
+};
+
+module Defeat = {
+  [@react.component]
+  let make = (~view: Session.model, ~actions: Session.actions, ~onNewGame) => {
+    let state = Native.state(view.game);
+    let resolving =
+      Option.fold(
+        ~none=false,
+        ~some=(frame: Combat_playback.frame) => !frame.complete,
+        view.combat_playback,
+      );
+    state.winner != Some(Domain.Side.Enemy)
+    || Story.dialogue_pending(state.campaign)
+    || resolving
+      ? React.null
+      : {
+        let campaign = state.campaign != None;
+        let reason =
+          Option.fold(
+            ~none="Your commander has fallen.",
+            ~some=
+              (campaign: Domain.campaign_state) =>
+                Option.value(~default="The company cannot continue.", campaign.outcome),
+            state.campaign,
+          );
+        <section id="battle-result" className="battle-result" ariaLabel="Battle result">
+          <p className="result-context">
+            {text(Catalog.map(view.catalog, state.map_id).name)}
+          </p>
+          <h2> {text("Defeat")} </h2>
+          <p className="result-reason"> {text(reason)} </p>
+          <div className="result-actions">
+            <button
+              id={campaign ? "retry-mission" : "retry-scenario"}
+              className="primary"
+              onClick={_ => actions.retry()}>
+              {text(campaign ? "Retry mission" : "Retry scenario")}
+            </button>
+            <button id="choose-another-game" onClick={_ => onNewGame()}>
+              {text("Choose another game")}
+            </button>
+          </div>
+          {campaign
+             ? <p className="result-hint">
+                 {text("You can also return to an earlier turn or mission from Saved games.")}
+               </p>
+             : React.null}
+        </section>;
+      };
   };
 };

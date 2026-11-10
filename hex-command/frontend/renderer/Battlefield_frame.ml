@@ -145,6 +145,7 @@ type scene_data = { units : unit_actor array; items : ground_item array; fog : s
 external item_identity : Domain.item -> string = "stringify" [@@mel.scope "JSON"]
 
 let scene_data frame =
+  let ongoing = (Native.state frame.view.game).winner = None in
   let fog = Set.create () in
   let fog_ids = Array.map Hex.key (Native.presentation frame.view.game).fog in
   Array.iter
@@ -193,8 +194,8 @@ let scene_data frame =
                 color = occupant.team_color;
                 health = occupant.health_width;
                 hp = occupant.unit.hp;
-                spent = occupant.unit.attacked;
-                retreating = occupant.unit.retreating = Some true;
+                spent = ongoing && occupant.unit.attacked;
+                retreating = ongoing && occupant.unit.retreating = Some true;
               })
       frame.tiles
   in

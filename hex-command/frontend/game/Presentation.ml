@@ -267,10 +267,7 @@ let unit_panel catalog view ~selected ~target ~revision =
   | Some _, Some _ -> Hidden
   | _, Some winner when winner = Side.Player ->
       Outcome ("The field is yours.", "Your army defeated the enemy commander.")
-  | _, Some _ ->
-      Outcome
-        ( "An army needs a leader.",
-          "Keep your commander protected and use villages to grow your army." )
+  | _, Some _ -> Hidden
   | _ -> (
       match Option.bind selected (Native.unit view) with
       | None -> Hidden
