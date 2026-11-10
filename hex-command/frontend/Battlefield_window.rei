@@ -8,8 +8,6 @@ let make:
   (
     ~host: React.ref(Js.Nullable.t(Dom.element))=?,
     ~phase: phase=?,
-    ~loaded: int=?,
-    ~total: int=?,
     ~navigation: React.element=?,
     ~children: React.element=?
   ) =>

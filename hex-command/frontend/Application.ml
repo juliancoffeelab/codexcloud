@@ -20,6 +20,7 @@ let mount root host current failed =
             Native.dispose_factory factory;
             Js.Promise.resolve (Ok (fun () -> ())))
           else
+            let () = Loading_progress.advance 2 in
             let audio = Phaser_sound.create () in
             let renderer = Phaser_boot.start audio in
             Js.Promise.catch
@@ -36,6 +37,7 @@ let mount root host current failed =
                      Js.Promise.resolve (Ok (fun () -> ())))
                    else
                      try
+                       let () = Loading_progress.advance 3 in
                        let disposed = ref false in
                        let _ = Session.prepare_audio session in
                        let tools_registered = ref false and unregister_tools = ref (fun () -> ()) in
