@@ -1,0 +1,247 @@
+/* One grid owns the header at every loading, battle and outcome state. */
+.battle-bar {
+  --header-height: 77px;
+  --turn-width: 160px;
+  --header-gap: 10px;
+  --briefing-slot: 0px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    calc(var(--turn-width) + var(--header-gap))
+    calc(44px + var(--header-gap))
+    var(--briefing-slot)
+    calc(44px + var(--header-gap));
+  transition: grid-template-columns 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  align-items: center;
+  column-gap: 0;
+  height: var(--header-height);
+  min-width: 0;
+  padding: 0;
+  margin: 0 0 14px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  font:
+    13px/1.2 system-ui,
+    sans-serif;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.battle-layout > .battle-bar {
+  flex: 0 0 var(--header-height);
+}
+.header-economy {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.header-economy .treasury,
+.header-economy .income,
+.header-economy .villages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.header-economy .treasury {
+  color: #f3d276;
+}
+.header-economy .income {
+  color: var(--gold);
+}
+.income-caption {
+  color: var(--muted);
+  font-size: 10px;
+}
+.header-economy .coin {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+}
+.hud-number {
+  display: inline-block;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 6ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.income .hud-number {
+  max-width: 7ch;
+  text-align: left;
+}
+.village-count {
+  display: flex;
+  min-width: 0;
+  overflow: hidden;
+  align-items: baseline;
+  gap: 2px;
+}
+.village-count .hud-number {
+  max-width: 5ch;
+}
+.village-divider {
+  text-align: center;
+  color: var(--muted);
+}
+.villages svg {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.battle-bar .turn-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: var(--turn-width);
+  justify-self: end;
+  height: 44px;
+  min-height: 44px;
+  min-width: 0;
+  padding: 4px 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  font:
+    600 13px/18px system-ui,
+    sans-serif;
+}
+#turn-label {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.battle-bar .round {
+  display: flex;
+  flex-shrink: 0;
+  align-items: baseline;
+  justify-content: center;
+  column-gap: 4px;
+  font:
+    400 11px/14px system-ui,
+    sans-serif;
+  color: inherit;
+  opacity: 0.8;
+}
+.round-number {
+  max-width: 4ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.turn-status {
+  color: var(--text);
+}
+.battle-bar .icon-button {
+  justify-self: end;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 10px;
+}
+@media (max-width: 760px) {
+  .header-economy {
+    gap: 4px;
+  }
+  .income-caption {
+    display: none;
+  }
+}
+@media (max-width: 540px) {
+  .battle-bar {
+    --header-height: 65px;
+    --turn-width: 100px;
+    --header-gap: 6px;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+  .battle-bar .turn-control {
+    font-size: 12px;
+  }
+}
+@media (max-width: 380px) {
+  .battle-bar {
+    --turn-width: 88px;
+    font-size: 11px;
+  }
+}
+@media (max-width: 360px) {
+  .battle-bar {
+    --turn-width: 56px;
+    --header-gap: 4px;
+    font-size: 11px;
+  }
+  .header-economy {
+    gap: 3px;
+    font-size: 10px;
+  }
+  .header-economy .treasury,
+  .header-economy .villages {
+    gap: 3px;
+  }
+  .battle-bar .turn-control {
+    flex-direction: column;
+    gap: 0;
+    font-size: 11px;
+  }
+}
+
+.battle-bar .turn-status {
+  border: 1px solid transparent;
+}
+
+.battle-bar .turn-control:disabled {
+  color: var(--muted);
+  background: #cfb57218;
+  border-color: #cfb57238;
+  opacity: 1;
+}
+
+/* Keep five tracks so the browser can animate a briefing slot opening. */
+.battle-bar:has(#mission-briefing-button:enabled) {
+  --briefing-slot: calc(44px + var(--header-gap));
+}
+#mission-briefing-button {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  transition:
+    opacity 180ms ease,
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s;
+}
+#mission-briefing-button:disabled {
+  opacity: 0;
+  transform: translateX(8px) scale(0.85);
+  visibility: hidden;
+  transition-delay: 0s, 0s, 280ms;
+}
+@starting-style {
+  .battle-bar:has(#mission-briefing-button:enabled) {
+    --briefing-slot: 0px;
+  }
+  #mission-briefing-button:enabled {
+    opacity: 0;
+    transform: translateX(8px) scale(0.85);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .battle-bar,
+  #mission-briefing-button {
+    transition: none;
+  }
+}
