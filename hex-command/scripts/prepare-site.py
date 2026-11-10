@@ -12,6 +12,7 @@ import sys
 import tarfile
 import tempfile
 import termios
+import threading
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +27,23 @@ def command(args, cwd=ROOT, env=None):
 
 def step(label):
     print(f"PREPARE: {label}", flush=True)
+
+
+def run_stage_action(label, action, interval=30):
+    started = time.monotonic()
+    finished = threading.Event()
+
+    def heartbeat():
+        while not finished.wait(interval):
+            step(f"{label} still running ({time.monotonic() - started:.0f}s)")
+
+    worker = threading.Thread(target=heartbeat, daemon=True)
+    worker.start()
+    try:
+        return action()
+    finally:
+        finished.set()
+        worker.join()
 
 
 def read_credential():
@@ -181,7 +199,7 @@ def prepare_locked(cache, credential, message, source_commit, preview, preview_p
             return
         step(label)
         started = time.monotonic()
-        action()
+        run_stage_action(label, action)
         digest = outputs_digest(root, outputs)
         if digest is None:
             raise RuntimeError(label + " produced incomplete output")
@@ -218,6 +236,13 @@ def prepare_locked(cache, credential, message, source_commit, preview, preview_p
     wrapper = str(checkout / "scripts/toolchain/with-toolchain.mjs")
     def build(args, cwd=checkout):
         return command(["node", wrapper, *args], cwd=cwd, env=build_environment)
+    # Explicit toolchain overrides must not reuse artifacts from another compiler.
+    toolchain = "\n".join([
+        build(["rustc", "-vV"]),
+        build(["dune", "--version"]),
+        command(["node", "--version"]),
+    ])
+    pipeline_key = hashlib.sha256((pipeline_key + toolchain).encode()).hexdigest()
     # Stage keys come from committed inputs, not mutable workspace files.
     stage("Build binding tool", sdk_key, sdk, ["target/debug/ocamljs_pack"],
           lambda: build(["cargo", "build", "--locked", "--manifest-path", str(sdk / "Cargo.toml"),
