@@ -97,3 +97,23 @@ exec ${quote(target)} "$@"
   }
 }
 export { installToolchainShell, toolchainCommand, toolchainEnvironment };
+
+// Emit only resolved changes, quoted for Bash; never dump the inherited environment.
+if (
+  process.argv[1] &&
+  fileURLToPath(import.meta.url) === process.argv[1] &&
+  process.argv[2] === "--shell"
+) {
+  const resolved = toolchainEnvironment();
+  for (const key of [
+    "PATH",
+    "CARGO_HOME",
+    "RUSTUP_HOME",
+    "XDG_CACHE_HOME",
+    "NODE_USE_ENV_PROXY",
+    "CARGO_BUILD_JOBS",
+  ]) {
+    if (resolved[key] !== undefined && resolved[key] !== process.env[key])
+      console.log(`export ${key}=${quote(resolved[key])}`);
+  }
+}

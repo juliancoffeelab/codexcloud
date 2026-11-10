@@ -31,7 +31,7 @@ name = b'ocamljs.schema'
 data = leb(len(name)) + name + '\n'.join(json.dumps(e) for e in schema.values()).encode()
 binary = work/'v39.wasm'
 binary.write_bytes(scaffold + b'\0' + leb(len(data)) + data)
-subprocess.run(['ocamljs_pack', 'generate', '--wasm', str(binary), '--out-dir', str(work/'v39')], check=True)
+subprocess.run(['node', str(r/'scripts/toolchain/packager.mjs'), 'generate', '--wasm', str(binary), '--out-dir', str(work/'v39')], check=True)
 
 def snake(s):
  return re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1_\2', s)).lower()
@@ -53,7 +53,7 @@ for n, entry in schema.items():
 
 subprocess.run(['python3', 'scripts/generate-historical-types.py'], check=True)
 subprocess.run(['python3', 'scripts/generate-migration-native-contract.py'], check=True)
-formatter = subprocess.check_output(['dune', 'exec', '--', 'which', 'ocamlformat'], text=True).strip()
+formatter = subprocess.check_output(['dune', 'exec', '--root', str(r), '--', 'which', 'ocamlformat'], text=True).strip()
 outputs = [base/'Native_v39.ml', base/'Native_v39.mli', base/'Historical_types.ml',
            base/'Historical_codec.ml', base/'Historical_codec.mli']
 for path in outputs + [r/'frontend/persistence/Migration_native_contract.ml']:

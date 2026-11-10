@@ -30,11 +30,15 @@ try {
   if (generated.error || generated.status !== 0)
     throw generated.error ?? new Error("Frozen migration data generation failed");
   checkMigrationBoundary(isolated);
-  const located = spawnSync("dune", ["exec", "--", "which", "melc", "ocamldep"], {
-    cwd: project,
-    env,
-    encoding: "utf8",
-  });
+  const located = spawnSync(
+    "dune",
+    ["exec", "--root", project, "--", "which", "melc", "ocamldep"],
+    {
+      cwd: project,
+      env,
+      encoding: "utf8",
+    },
+  );
   if (located.status !== 0) throw new Error(located.stderr || "Cannot locate migration compiler");
   const [compiler, dependencyCompiler] = located.stdout.trim().split("\n");
   const compilerRoot = resolve(dirname(compiler), "../lib/melange");

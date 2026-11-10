@@ -14,6 +14,10 @@ For battlefield rendering changes, preserve the
 [native artwork scale](.agents/skills/design-unit/SKILL.md#native-artwork) and
 [offline terrain contract](.agents/skills/design-terrain/SKILL.md#terrain-contract).
 
+Project commands discover supplied cloud tools automatically. For direct Cargo or
+Dune commands in Bash, run `source scripts/env.sh` from this project. Reuse existing
+toolchains and caches; persistent shell setup is optional, not a prerequisite.
+
 # Skills
 
 - [live-play](.agents/skills/live-play/SKILL.md): Playtest through the player UI only when the user explicitly authorizes browser gameplay.

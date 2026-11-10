@@ -31,6 +31,9 @@ Continue on the current branch and PR unless asked to change branches. New
 branches start from the freshly fetched upstream default branch (`main`), never
 a stale local copy.
 
+For Git fetches, alternate checkouts, or amended-branch pushes, use
+[git-workflow](.agents/skills/git-workflow/SKILL.md).
+
 ## Conflicts
 
 **Cornerstone rule: never resolve merge or rebase conflicts autonomously.**

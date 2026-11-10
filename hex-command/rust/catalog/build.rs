@@ -75,6 +75,6 @@ fn main() {
     let output = PathBuf::from(std::env::var_os("OUT_DIR").expect("build output"));
     fs::write(output.join("catalog_documents.rs"), generated).expect("catalog file table");
     if std::env::var_os("CARGO_FEATURE_WASM").is_some() {
-        println!("cargo:rerun-if-changed=data");
+        println!("cargo:rerun-if-changed={}", data.display());
     }
 }

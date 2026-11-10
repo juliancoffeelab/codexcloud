@@ -15,17 +15,21 @@ function checkImports(sources) {
     !existsSync(checker) ||
     inputs.some((file) => statSync(resolve(project, file)).mtimeMs > statSync(checker).mtimeMs)
   ) {
-    const build = spawnSync("dune", ["build", "scripts/migration_import_check.exe"], {
-      cwd: project,
-      env,
-      encoding: "utf8",
-    });
+    const build = spawnSync(
+      "dune",
+      ["build", "--root", project, "scripts/migration_import_check.exe"],
+      {
+        cwd: project,
+        env,
+        encoding: "utf8",
+      },
+    );
     if (build.error || build.status !== 0)
       throw build.error ?? new Error(build.stderr || "Cannot build the OCaml import checker");
   }
   const args = [...sources];
   if (sources.some((file) => /\.rei?$/.test(file))) {
-    const refmt = spawnSync("dune", ["exec", "--", "which", "refmt"], {
+    const refmt = spawnSync("dune", ["exec", "--root", project, "--", "which", "refmt"], {
       cwd: project,
       env,
       encoding: "utf8",

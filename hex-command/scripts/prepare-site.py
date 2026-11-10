@@ -171,22 +171,9 @@ def prepare(credential, message, source_commit=None, preview=None, preview_proje
                 destination.unlink(missing_ok=True)
                 shutil.copy2(incoming, destination)
         sdk_manifest.write_text(json.dumps({"source_commit": source_commit, "files": sorted(files)}))
-    wrapper = str(checkout / "scripts/toolchain/with-toolchain.mjs")
-    def build(args, cwd=checkout):
-        return command(["node", wrapper, *args], cwd=cwd, env=build_environment)
-    # These are build stages only: no formatting, test or content-check runner.
-    build(["cargo", "build", "--locked", "--manifest-path", str(sdk / "Cargo.toml"),
-           "--package", "ocamljs_pack", "--target-dir", str(sdk / "target")])
-    build([str(sdk / "target/debug/ocamljs_pack"), "build", "--features", "wasm",
-           "--name", "hex_command", "--out-dir", "pkg", "--profile", "wasm-release"], cwd=checkout / "rust")
-    command(["node", "scripts/optimize-wasm.mjs", "rust/pkg/backend.wasm"], cwd=checkout, env=build_environment)
-    for suffix in ("ml", "mli"):
-        shutil.copy2(checkout / f"rust/pkg/Bindings.{suffix}", checkout / f"frontend/engine/Domain.{suffix}")
-    build(["node", "scripts/generate-resource-visitors.mjs"])
-    command(["node", "scripts/fixture-json.mjs"], cwd=checkout, env=build_environment)
-    build(["dune", "build", "--root", str(checkout), "@melange"])
-    command(["python3", "scripts/build-pixel-art.py"], cwd=checkout)
-    command(["node", "node_modules/vite/bin/vite.js", "build"], cwd=checkout, env=build_environment)
+    # One build graph owns generation, checks, compilation, artwork and bundling.
+    command(["node", "scripts/toolchain/with-toolchain.mjs", "make", "build",
+             "PROFILE=wasm-release"], cwd=checkout, env=build_environment)
     # Generated source is part of the built Site snapshot, not a clean-tree gate.
     command(["git", "add", "-A"], cwd=checkout)
     command(["git", "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty",

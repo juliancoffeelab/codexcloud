@@ -40,7 +40,7 @@
     "verify:prepare": "make prepare",
     "migrations:check": "node scripts/check-migrations.mjs",
     "migrations:check-isolation": "node scripts/check-migrations-isolated.mjs",
-    "migrations:generate": "python3 scripts/generate-migration-ocaml.py",
+    "migrations:generate": "node scripts/toolchain/with-toolchain.mjs python3 scripts/generate-migration-ocaml.py",
     "map:render": "node scripts/render-map.mjs"
   },
   "devDependencies": {
