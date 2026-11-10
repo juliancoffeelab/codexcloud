@@ -564,9 +564,18 @@ module Unit = {
          <>
            <div className="unit-title"> <h2> {text(title)} </h2> </div>
            <p> {text(description)} </p>
-           <button id="play-again" className="primary" onClick={_ => onNewBattle()}>
-             {text("Play again")}
-           </button>
+           {Native.state(game).winner == Some(Domain.Side.Enemy)
+              ? <>
+                  <button id="retry-scenario" className="primary" onClick={_ => actions.retry()}>
+                    {text("Retry scenario")}
+                  </button>
+                  <button id="play-again" onClick={_ => onNewBattle()}>
+                    {text("Choose another game")}
+                  </button>
+                </>
+              : <button id="play-again" className="primary" onClick={_ => onNewBattle()}>
+                  {text("Play again")}
+                </button>}
          </>
        | Details(details) => <Details view actions details />
        | Combat(attacker, defender, reset) =>
@@ -1014,16 +1023,24 @@ module Campaign = {
                              </button>
                            </>
                          : state.winner == Some(Domain.Side.Enemy)
-                             ? {
-                               <button
-                                 className="primary"
-                                 onClick={_ => {
-                                   actions.retry();
-                                   onCollapse();
-                                 }}>
-                                 {text("Retry mission")}
-                               </button>;
-                             }
+                             ? <>
+                                 <p>
+                                   {text(
+                                      "Retry this mission from its beginning, or open Saved games to return to an earlier turn or mission.",
+                                    )}
+                                 </p>
+                                 <button
+                                   className="primary"
+                                   onClick={_ => {
+                                     actions.retry();
+                                     onCollapse();
+                                   }}>
+                                   {text("Retry mission")}
+                                 </button>
+                                 <button onClick={_ => onNewCampaign()}>
+                                   {text("Choose another game")}
+                                 </button>
+                               </>
                              : <button className="primary" onClick={_ => onNewCampaign()}>
                                  {text("Choose another campaign")}
                                </button>}
