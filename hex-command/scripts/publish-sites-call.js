@@ -27,17 +27,40 @@ function cachedReceipt(path) {
   }
 }
 
-/** Stable, owner-private identity per source Site and PR; independent of branches/checkouts. */
+/** Keep the first branch tag for a chat; numeric keys still address existing PR previews. */
+export function previewKey(preview) {
+  if (typeof preview === "string" && /^[0-9]+$/.test(preview)) preview = Number(preview);
+  if (typeof preview === "number") {
+    if (!Number.isSafeInteger(preview) || preview < 1)
+      throw new Error("Preview requires a branch tag or positive PR number");
+    return { key: `pr-${preview}`, title: `PR #${preview}` };
+  }
+  if (
+    typeof preview !== "string" ||
+    !/^[a-zA-Z0-9][a-zA-Z0-9._/-]{0,199}$/.test(preview) ||
+    preview.includes("..") ||
+    preview.split("/").some((part) => !part || part.endsWith(".") || part.endsWith(".lock"))
+  )
+    throw new Error("Preview requires a branch tag or positive PR number");
+  const digest = createHash("sha256").update(preview).digest("hex").slice(0, 12);
+  const label = preview
+    .replace(/[^a-zA-Z0-9-]/g, "-")
+    .toLowerCase()
+    .slice(0, 40);
+  return { key: `branch-${label}-${digest}`, title: preview };
+}
+
 async function previewTarget(tools, cwd, primary, preview) {
+  const { key: previewName, title } = previewKey(preview);
   const key = createHash("sha256").update(primary.project_id).digest("hex").slice(0, 8);
-  const slug = `hex-command-pr-${preview}-${key}`;
-  const description = `Hex Command preview for PR #${preview}; source Site ${primary.project_id}`;
+  const slug = `hex-command-${previewName}-${key}`;
+  const description = `Hex Command preview for ${title}; source Site ${primary.project_id}`;
   const directory = join(
     cwd,
     ".cache",
     "preview-sites",
     primary.project_id,
-    `pr-${preview}`,
+    previewName,
     ".openai",
   );
   const manifestPath = join(directory, "hosting.json");
@@ -72,7 +95,7 @@ async function previewTarget(tools, cwd, primary, preview) {
           await tools.mcp__codex_apps__sites_create_site({
             creation_intent: "user_requested",
             slug,
-            title: `Hex Command · PR #${preview}`,
+            title: `Hex Command · ${title}`,
             description,
           }),
         );
@@ -88,10 +111,10 @@ async function previewTarget(tools, cwd, primary, preview) {
   }
   if (manifest.project_id === primary.project_id)
     throw new Error("Preview must use a different Site from main");
-  return { project_id: manifest.project_id, slug };
+  return { project_id: manifest.project_id, slug, key: previewName };
 }
 
-function buildSource(cwd, sourceCommit, credential, message, preview, projectId) {
+function buildSource(cwd, sourceCommit, credential, message, preview, projectId, progress) {
   return new Promise((resolve, reject) => {
     const child = spawn(
       "python3",
@@ -108,8 +131,16 @@ function buildSource(cwd, sourceCommit, credential, message, preview, projectId)
       { cwd, stdio: ["pipe", "pipe", "pipe"] },
     );
     let output = "";
+    let lines = "";
     child.stdout.on("data", (data) => {
       output += data;
+      lines += data;
+      while (lines.includes("\n")) {
+        const end = lines.indexOf("\n");
+        const line = lines.slice(0, end).trim();
+        lines = lines.slice(end + 1);
+        if (line.startsWith("PREPARE: ")) progress(line.slice(9));
+      }
     });
     child.stderr.on("data", (data) => {
       output += data;
@@ -163,21 +194,19 @@ function ownerPrivate(site) {
 }
 
 /** Resolve the pinned commit to its exact saved release; build only on a cache miss. */
-export async function prepareSite(tools, options, progress = () => {}) {
+export async function prepareSite(tools, options, progress = options.progress ?? (() => {})) {
   const cwd = options.cwd;
   const git = (...args) => execFileSync("git", args, { cwd, encoding: "utf8" }).trim();
   const source_commit = options.source_commit ?? git("rev-parse", "HEAD");
   const primary = JSON.parse(git("show", `${source_commit}:./.openai/hosting.json`));
   const preview = options.preview;
-  if (preview !== undefined && (!Number.isSafeInteger(preview) || preview < 1))
-    throw new Error("Preview requires a positive PR number");
   const target =
     preview === undefined ? primary : await previewTarget(tools, cwd, primary, preview);
   const { project_id } = target;
   const cachePath = join(
     cwd,
     ".cache",
-    preview === undefined ? "site-release.json" : `site-release-pr-${preview}.json`,
+    preview === undefined ? "site-release.json" : `site-release-${target.key}.json`,
   );
   const stored = cachedReceipt(cachePath);
   const cached = stored?.project_id === project_id ? stored : undefined;
@@ -205,7 +234,7 @@ export async function prepareSite(tools, options, progress = () => {}) {
     else throw siteResult.reason;
     if (credentialResult.status === "rejected") throw credentialResult.reason;
     if (preview !== undefined && site.slug !== target.slug)
-      throw new Error("Cached preview identity does not match the requested PR");
+      throw new Error("Cached preview identity does not match the selected branch tag");
     const live_url = site.current_live_url ?? site.expected_url ?? cached?.live_url;
     if (exact) return { ...cached, owner_private: ownerPrivate(site), live_url, reused: true };
     const credential = await credentialRequest;
@@ -225,12 +254,14 @@ export async function prepareSite(tools, options, progress = () => {}) {
       options.message ??
         (preview === undefined
           ? "Prepare Hex Command release"
-          : `Prepare Hex Command PR #${preview} preview`),
+          : `Prepare Hex Command ${previewKey(preview).title} preview`),
       preview,
       project_id,
+      progress,
     );
     if (prepared.project_id !== project_id || prepared.source_commit !== source_commit)
       throw new Error("Preparation returned a different source or Site");
+    progress("Saving and publishing the prepared build.");
     let version;
     let deployment;
     if (credential.publish_on_push_accepted) {
