@@ -1033,8 +1033,14 @@ let next_mission t ids =
 
 let retry t () =
   require_session t;
-  adopt t (Engine.dispatch t.battle Domain.Command.Retry_mission);
-  replace ~new_run:false t t.battle t.latest.interaction_game
+  let current = state t in
+  match current.campaign with
+  | None ->
+      let armies = Option.map (fun armies -> (armies.(0), armies.(1))) current.armies in
+      reset ~setup:t.latest.setup ?armies t current.map_id
+  | Some _ ->
+      adopt t (Engine.dispatch t.battle Domain.Command.Retry_mission);
+      replace ~new_run:false t t.battle t.latest.interaction_game
 
 let undo t () =
   require_session t;

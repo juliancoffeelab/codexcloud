@@ -5,6 +5,8 @@ let make:
     ~actions: Session.actions,
     ~renderer: Phaser_boot.t,
     ~previews: Terrain_preview.t,
+    ~progress: option(Battlefield_view.progress),
+    ~onProgress: Battlefield_view.progress => unit,
     ~onRendererFailed: string => unit,
     ~prepareReload: string => Js.Promise.t(unit),
     ~showCommanderArrow: bool=?

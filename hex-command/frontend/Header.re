@@ -32,6 +32,7 @@ let make =
       ~stats=None,
       ~turnLabel="End turn",
       ~canEndTurn=false,
+      ~finished=false,
       ~canUndo=false,
       ~campaign=false,
       ~briefing=false,
@@ -44,6 +45,22 @@ let make =
   let number = Js.Float.toString;
   let value = project => Option.fold(~none="—", ~some=stats => number(project(stats)), stats);
   let invoke = callback => Option.iter(callback => callback(), callback);
+  let turnInfo =
+    <>
+      <span id="turn-label"> {text(turnLabel)} </span>
+      <span
+        id="round"
+        className="round"
+        title={Utf8.to_js(
+          Option.fold(
+            ~none="Round loading",
+            ~some=stats => "Round " ++ number(stats.round),
+            stats,
+          ),
+        )}>
+        {text("Turn " ++ value(stats => stats.round))}
+      </span>
+    </>;
   <header
     className={"battle-bar" ++ (campaign ? " campaign-controls" : "")} ariaLabel="Battle controls">
     <div className="header-economy">
@@ -66,21 +83,12 @@ let make =
         </span>
       </span>
     </div>
-    <button id="end-turn" className="primary" disabled={!canEndTurn} onClick={_ => onEndTurn()}>
-      <span id="turn-label"> {text(turnLabel)} </span>
-      <span
-        id="round"
-        className="round"
-        title={Utf8.to_js(
-          Option.fold(
-            ~none="Round loading",
-            ~some=stats => "Round " ++ number(stats.round),
-            stats,
-          ),
-        )}>
-        {text("Turn " ++ value(stats => stats.round))}
-      </span>
-    </button>
+    {finished
+       ? <div className="turn-status" role="status"> turnInfo </div>
+       : <button
+           id="end-turn" className="primary" disabled={!canEndTurn} onClick={_ => onEndTurn()}>
+           turnInfo
+         </button>}
     <button
       id="undo-move"
       className="icon-button"

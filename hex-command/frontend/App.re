@@ -3,7 +3,14 @@ open Ui;
 module TurnBar = {
   [@react.component]
   let make =
-      (~view: Session.model, ~actions: Session.actions, ~onSettings, ~briefing, ~onBriefing) => {
+      (
+        ~view: Session.model,
+        ~actions: Session.actions,
+        ~ready,
+        ~onSettings,
+        ~briefing,
+        ~onBriefing,
+      ) => {
     let state = Native.state(view.game);
     let treasury = view.treasury;
     let income = Native.income(view.game, treasury);
@@ -18,9 +25,10 @@ module TurnBar = {
         0,
         state.tiles,
       );
-    let winner = state.winner;
+    let winner = ready ? state.winner : None;
     let canAct =
-      state.turn == Domain.Side.Player
+      ready
+      && state.turn == Domain.Side.Player
       && winner == None
       && !view.awaiting_new_game
       && !Story.dialogue_pending(state.campaign)
@@ -54,11 +62,14 @@ module TurnBar = {
         })
       }
       turnLabel={
-        winner == Some(Domain.Side.Player)
-          ? "Victory"
-          : winner == Some(Domain.Side.Enemy)
-              ? "Defeat" : state.turn == Domain.Side.Player ? "End turn" : "Enemy turn"
+        !ready
+          ? "Loading…"
+          : winner == Some(Domain.Side.Player)
+              ? "Victory"
+              : winner == Some(Domain.Side.Enemy)
+                  ? "Defeat" : state.turn == Domain.Side.Player ? "End turn" : "Enemy turn"
       }
+      finished={winner != None}
       canEndTurn=canAct
       canUndo={view.can_undo}
       campaign={state.campaign != None}
@@ -82,6 +93,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     React.useCallback1(callback => Session.subscribe(session, _ => callback()), [|session|]);
   let getSnapshot = React.useCallback1(() => Session.view(session), [|session|]);
   let view = React.useSyncExternalStore(~subscribe, ~getSnapshot);
+  let (battlefieldProgress, setBattlefieldProgress) = React.useState(() => None);
   let previews = React.useMemo0(() => Terrain_preview.create());
   React.useEffect1(() => {Some(() => Terrain_preview.close(previews))}, [|view.artwork|]);
   let actions = Session.commands(session);
@@ -124,6 +136,13 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     None;
   });
   let state = Native.state(view.game);
+  let identity = string_of_int(view.session_version) ++ ":" ++ state.map_id;
+  let progress =
+    Option.bind(battlefieldProgress, value =>
+      value.Battlefield_view.identity == identity ? Some(value) : None
+    );
+  let ready =
+    Option.fold(~none=false, ~some=value => value.Battlefield_view.phase == "ready", progress);
   React.useEffect1(
     () => {
       if (!view.awaiting_new_game) {
@@ -133,7 +152,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     },
     [|view.game|],
   );
-  let inspectionOpen = Hud_details.is_open(view.hud);
+  let inspectionOpen = Hud_details.is_open(view.hud) && (ready || state.winner == None);
   let detailsContext: Hud_details.context = {
     catalog: view.catalog,
     artwork: view.artwork,
@@ -270,22 +289,29 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     ? <Shell failure={view.failure} />
     : <>
         {!view.awaiting_new_game
-           ? <main className="battle-layout">
+           ? <main
+               className={
+                 "battle-layout"
+                 ++ (ready && state.winner == Some(Domain.Side.Enemy) ? " defeated" : "")
+               }>
                <TurnBar
                  view
                  actions
+                 ready
                  onSettings={() => openSettings(Dialogs.Settings.Hub)}
                  briefing
                  onBriefing=toggleBriefing
                />
                <p id="status" className="status" role="status" ariaLive="polite">
                  {text(
-                    Option.fold(
-                      ~none=false,
-                      ~some=(frame: Combat_playback.frame) => !frame.complete,
-                      view.combat_playback,
-                    )
-                      ? "Resolving combat…" : view.status,
+                    !ready
+                      ? "Loading battlefield…"
+                      : Option.fold(
+                          ~none=false,
+                          ~some=(frame: Combat_playback.frame) => !frame.complete,
+                          view.combat_playback,
+                        )
+                          ? "Resolving combat…" : view.status,
                   )}
                </p>
                <Audio_status retryHud={() => Session.prepare_audio(session)} renderer />
@@ -293,6 +319,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                  <Panels.Campaign
                    view
                    actions
+                   showResult=ready
                    expanded=briefing
                    onCollapse={() => setBriefing(_ => false)}
                    onNewCampaign=openCampaign
@@ -303,6 +330,8 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                      actions
                      renderer
                      previews
+                     progress
+                     onProgress={value => setBattlefieldProgress(_ => Some(value))}
                      onRendererFailed={message => Session.renderer_failed(session, message)}
                      prepareReload={source => Session.prepare_reload(session, source)}
                      showCommanderArrow
@@ -330,6 +359,13 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                       }
                       : React.null}
                  </div>
+                 {ready
+                    ? <Panels.Defeat
+                        view
+                        actions
+                        onNewGame={state.campaign == None ? openMap : openCampaign}
+                      />
+                    : React.null}
                </div>
              </main>
            : React.null}
@@ -357,7 +393,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
           onManage={() => openSettings(Dialogs.Settings.Saves)}
           openKey=repairKey
         />
-        {!view.awaiting_new_game
+        {!view.awaiting_new_game && (ready || state.winner == None)
            ? <Dialogs.Dialogue view actions narrate={game => Session.narrate(session, game)} />
            : React.null}
         <New_game

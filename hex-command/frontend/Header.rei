@@ -13,6 +13,7 @@ let make:
     ~stats: option(stats)=?,
     ~turnLabel: string=?,
     ~canEndTurn: bool=?,
+    ~finished: bool=?,
     ~canUndo: bool=?,
     ~campaign: bool=?,
     ~briefing: bool=?,
