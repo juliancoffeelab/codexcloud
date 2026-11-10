@@ -12,9 +12,13 @@ address existing PR previews. Invalid or missing tags fail without falling back
 to main. The destination is independent of the current committed source.
 
 First use creates an owner-private Site and persists its opaque identity locally.
-The deterministic slug includes the first-branch tag and source Site identity,
-allowing rediscovery from another checkout. Creation races/timeouts reconcile
-through discovery. Later deployments with that tag reuse the same Site and URL.
+The deterministic slug derives from the retained tag and source Site identity,
+allowing rediscovery from another checkout. Existing readable slugs stay stable;
+when the complete slug would exceed 63 characters, the operation uses
+`hex-<12-character-preview-hash>-<8-character-source-site-hash>`. Keep the full
+original tag in `--preview`; the operation owns hashing, and the title and
+description retain the branch name. Creation races/timeouts reconcile through
+discovery. Later deployments with that tag reuse the same Site and URL.
 Plain `deploy` uses the committed `.openai/hosting.json` only for an explicitly
 requested live/main deployment.
 
