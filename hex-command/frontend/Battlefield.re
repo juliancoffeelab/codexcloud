@@ -33,6 +33,7 @@ let make =
   let fail = message =>
     if (!failedOnce.current) {
       failedOnce.current = true;
+      Boot_process.fail(message);
       onRendererFailed(message);
       setFailure(_ => Some(message));
       Option.iter(Phaser_boot.dispose_battlefield, runtime.current);

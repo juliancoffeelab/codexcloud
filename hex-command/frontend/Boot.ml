@@ -6,6 +6,7 @@ let detail = Foreign_error.describe
 external set_busy : Dom.element -> string -> unit = "ariaBusy" [@@mel.set]
 
 let report reason =
+  Boot_process.fail reason;
   field "startup" (fun node -> set_busy node "false");
   field "startup-loading" (fun node -> hidden node true);
   field "startup-failure" (fun node -> hidden node false);

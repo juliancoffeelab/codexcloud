@@ -101,6 +101,8 @@ let prepare t =
           let* response =
             fetch url [%mel.obj { signal = any_signal [| signal t.abort; deadline 30000 |] }]
           in
+          Boot_process.response ~url ~status:(status response) ~source:"hud-fetch"
+            ~get_header:(fun name -> header (headers response) name);
           if not (ok response) then
             failwith ("HTTP " ^ string_of_int (status response) ^ " " ^ status_text response);
           let* bytes = array_buffer response in

@@ -57,6 +57,9 @@ test("An error before the HTML shell is parsed replaces its bar with diagnostics
     document.dispatchEvent(new Event("DOMContentLoaded"));
     assert.equal(document.getElementById("startup").getAttribute("aria-busy"), "false");
     assert.equal(document.getElementById("startup-loading").hidden, true);
+    assert.equal(page.window.BOOT_PROCESS.status, "failed");
+    assert.match(page.window.BOOT_PROCESS.error, /Engine failed/);
+    assert.equal(page.window.BOOT_PROCESS.events.at(-1).status, "failed");
     assert.equal(document.getElementById("startup-failure").hidden, false);
     assert.equal(document.getElementById("startup-error").open, true);
     assert.match(

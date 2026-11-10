@@ -86,6 +86,7 @@ let download ?browser_saves turns checkpoint setup (state : Domain.state) =
         ("setup", Setup.to_json setup);
         ("checkpoint", Js.Json.parseExn checkpoint);
         ("browserSaves", Option.value ~default:Js.Json.null browser_saves);
+        ("bootProcess", Boot_process.snapshot ());
         ( "enemyTurns",
           Js.Json.array
             (Array.of_list

@@ -4,11 +4,66 @@
     <meta charset="utf-8" />
     <script>
       (() => {
+        const atMs = performance.now();
+        const label = "Loading game engine…";
+        window.BOOT_PROCESS = {
+          version: 1,
+          startedAt: new Date().toISOString(),
+          timeOrigin: performance.timeOrigin,
+          startedAtMs: atMs,
+          elapsedMs: 0,
+          status: "loading",
+          step: 1,
+          label,
+          value: 0,
+          detail: "",
+          error: null,
+          droppedEvents: 0,
+          resourceEvents: [],
+          droppedResourceEvents: 0,
+          resourceTimingBufferFull: false,
+          browserTiming: null,
+          responseHeaders: [],
+          droppedResponseHeaders: 0,
+          stages: [{ step: 1, label, startedAtMs: atMs, durationMs: 0, finishedAtMs: null }],
+          events: [{ atMs, step: 1, label, value: 0, detail: "", status: "loading" }],
+        };
+        // Preserve early request timings while keeping browser-owned storage bounded.
+        performance.setResourceTimingBufferSize?.(512);
+        performance.addEventListener?.(
+          "resourcetimingbufferfull",
+          () => {
+            window.BOOT_PROCESS.resourceTimingBufferFull = true;
+          },
+          { once: true },
+        );
         let pending;
         function showFailure(error) {
           const detail = String(
             error?.stack || error?.message || error || "The game script could not be loaded.",
           );
+          const process = window.BOOT_PROCESS;
+          if (process.status === "loading") {
+            const atMs = performance.now();
+            const stage = process.stages.at(-1);
+            stage.durationMs = atMs - stage.startedAtMs;
+            stage.finishedAtMs = atMs;
+            process.elapsedMs = atMs - process.startedAtMs;
+            process.status = "failed";
+            process.error = detail;
+            process.events.push({
+              atMs,
+              step: process.step,
+              label: process.label,
+              value: process.value,
+              detail,
+              status: "failed",
+            });
+            if (process.events.length > 512) {
+              process.events.splice(1, 1);
+              process.droppedEvents++;
+            }
+          }
           if (!document.getElementById("startup")) {
             pending = detail;
             return;

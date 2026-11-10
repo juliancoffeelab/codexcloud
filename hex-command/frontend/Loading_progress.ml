@@ -16,6 +16,8 @@ let publish next =
   if next <> !state then (
     state := next;
     Loading_motion.advance ~step:next.step ~value:next.value;
+    Boot_process.progress ~step:next.step ~label:(label next.step) ~value:next.value
+      ~detail:next.detail;
     List.iter (fun (_, notify) -> notify next) !listeners)
 
 let subscribe notify =

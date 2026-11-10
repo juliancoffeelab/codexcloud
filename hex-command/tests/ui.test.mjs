@@ -15,6 +15,8 @@ const App = { ...RawApp, make: (props) => RawApp.make({ ...props, renderer }) };
 import * as Motion from "@frontend/Motion";
 import * as Shell from "@frontend/Shell";
 import * as LoadingProgress from "@frontend/Loading_progress";
+import * as BootProcess from "@frontend/Boot_process";
+import * as BrowserDownload from "@frontend/Browser_download";
 import * as BattlefieldWindow from "@frontend/Battlefield_window";
 import * as RawApplication from "@frontend/Application";
 import { requireResult } from "./result-fixture.mjs";
@@ -736,4 +738,37 @@ test("One determinate loading bar retains progress when the shell becomes the ba
   assert.match(element(".loading-action").textContent, /Battlefield ready/);
   await act(async () => vi.advanceTimersByTime(250));
   assert.equal(host.querySelector("progress"), null);
+});
+
+test("The debug-report action includes retained startup diagnostics in its downloaded JSON", async () => {
+  const previous = window.BOOT_PROCESS;
+  delete window.BOOT_PROCESS;
+  try {
+    BootProcess.snapshot();
+    BootProcess.progress(4, "Loading resources", 3.5, "5 / 10 ready");
+    BootProcess.response("/audio.wav", 200, "phaser-xhr", (name) =>
+      name === "cache-control" ? "max-age=0" : null,
+    );
+    BootProcess.progress(5, "Drawing battlefield", 5, "");
+    const expected = BootProcess.snapshot();
+    const downloaded = new Promise((resolve) => {
+      vi.spyOn(BrowserDownload, "json").mockImplementation((_revoke, _filename, text) => {
+        resolve(JSON.parse(text));
+      });
+    });
+    session = await Session.create_with_audio(async () => {}, audio, factory);
+    Session.commands(session).download_debug_report();
+    const report = await downloaded;
+    const { browserTiming: _expectedTiming, ...expectedBoot } = expected;
+    const { browserTiming, ...exportedBoot } = report.bootProcess;
+    assert.deepEqual(exportedBoot, expectedBoot);
+    assert(browserTiming);
+    assert.equal(browserTiming.startupCutoffAtMs, expected.startedAtMs + expected.elapsedMs);
+    assert.equal(report.format, "hex-command-debug");
+    assert.equal(report.bootProcess.responseHeaders[0].headers["cache-control"], "max-age=0");
+    assert(report.checkpoint);
+    assert(report.browserSaves);
+  } finally {
+    window.BOOT_PROCESS = previous;
+  }
 });

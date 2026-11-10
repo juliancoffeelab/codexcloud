@@ -309,7 +309,7 @@ module Settings = {
             <h3 className="group-label"> {text("Debug tools")} </h3>
             <p className="help">
               {text(
-                 "Download the battle, last five enemy turns, and saved progress. Includes enemies hidden by fog. Enemy-turn recordings clear on reload or mission change.",
+                 "Download the battle, startup timings, last five enemy turns, and saved progress. Includes enemies hidden by fog. Enemy-turn recordings clear on reload or mission change.",
                )}
             </p>
             <button className="debug-action" onClick={_ => actions.download_debug_report()}>
