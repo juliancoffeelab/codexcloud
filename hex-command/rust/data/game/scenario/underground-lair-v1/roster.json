@@ -1,0 +1,92 @@
+{
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "fox-spearguard-l3",
+          "tile": {
+            "col": 15,
+            "row": 19
+          },
+          "role": "leader"
+        },
+        {
+          "type": "fox-spearguard-l2",
+          "tile": {
+            "col": 16,
+            "row": 19
+          }
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 16,
+            "row": 20
+          }
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 17,
+            "row": 20
+          }
+        }
+      ],
+      "relations": {
+        "enemy": "hostile"
+      }
+    },
+    {
+      "id": "enemy",
+      "phase": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "necromancer",
+          "role": "leader",
+          "tile": {
+            "col": 16,
+            "row": 6
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 17,
+            "row": 7
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 8,
+            "row": 14
+          }
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 24,
+            "row": 14
+          }
+        }
+      ],
+      "relations": {
+        "player": "hostile"
+      }
+    }
+  ]
+}
