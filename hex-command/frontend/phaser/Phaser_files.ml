@@ -37,6 +37,11 @@ type array_buffer
 
 external response : Phaser.xhr -> array_buffer = "response" [@@mel.get]
 
+external response_header : Phaser.xhr -> string -> string Js.Nullable.t = "getResponseHeader"
+[@@mel.send]
+
+external response_status : Phaser.xhr -> int = "status" [@@mel.get]
+
 external decode : Phaser.audio_context -> array_buffer -> Phaser.audio_buffer Js.Promise.t
   = "decodeAudioData"
 [@@mel.send]
@@ -128,7 +133,10 @@ let image_failure file =
   Option.bind (Js.Undefined.toOption (optional_image_owner file)) (fun owner -> owner.failure)
 
 let admit (file : Phaser.file) =
-  if not (owner_image file).abandoned then image_lifecycle##onProcessComplete##call file
+  if not (owner_image file).abandoned then (
+    Boot_process.resource ~key:file##key ~url:file##src ~phase:"image-admission-start";
+    image_lifecycle##onProcessComplete##call file;
+    Boot_process.resource ~key:file##key ~url:file##src ~phase:"image-admitted")
 
 type image_definition =
   < initialize : (Phaser.file -> image_init -> unit[@mel.this])
@@ -180,12 +188,14 @@ let image_constructor =
                            (fun (loader : Phaser.loader) -> loader##nextFile file false)
                            (Js.Nullable.toOption file##loader))
                        30000);
+                Boot_process.resource ~key:file##key ~url:init.url ~phase:"image-request-start";
                 native_load##call file));
         onProcessComplete =
           (fun[@mel.this] file ->
             let owner = owner_image file in
             Option.iter clear_timeout owner.deadline;
             owner.complete <- true;
+            Boot_process.resource ~key:file##key ~url:file##src ~phase:"image-loaded";
             Option.iter detach_image (loaded_image file);
             match owner.defer with Some defer -> defer file | None -> admit file);
         destroy =
@@ -252,7 +262,11 @@ let audio_constructor =
                 deadline = None;
                 context = init.context;
                 report = init.report;
-              });
+              };
+            let native_load = load_function file in
+            set_load file (fun[@u] () ->
+                Boot_process.resource ~key:file##key ~url:init.url ~phase:"audio-request-start";
+                native_load##call file));
         onProcess =
           (fun[@mel.this] file ->
             let owner = owner_audio file in
@@ -276,12 +290,16 @@ let audio_constructor =
               | Some xhr -> xhr
               | None -> failwith ("Audio response missing: " ^ file##key)
             in
+            Boot_process.response ~url:file##src ~status:(response_status xhr) ~source:"phaser-xhr"
+              ~get_header:(fun name -> response_header xhr name);
+            Boot_process.resource ~key:file##key ~url:file##src ~phase:"audio-decode-start";
             then_decode
               (decode owner.context (response xhr))
               (fun[@u] buffer ->
                 if (not owner.abandoned) && not owner.expired then (
                   Option.iter clear_timeout owner.deadline;
                   set_audio file buffer;
+                  Boot_process.resource ~key:file##key ~url:file##src ~phase:"audio-decoded";
                   file##onProcessComplete ()))
               (fun[@u] cause ->
                 if (not owner.abandoned) && not owner.expired then (

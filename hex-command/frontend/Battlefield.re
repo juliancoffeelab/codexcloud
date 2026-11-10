@@ -29,9 +29,11 @@ let make =
   let (reloadError, setReloadError) = React.useState(() => None);
   let (copied, setCopied) = React.useState(() => false);
   let failedOnce = React.useRef(false);
+  let loadingIdentity = React.useRef(None);
   let fail = message =>
     if (!failedOnce.current) {
       failedOnce.current = true;
+      Boot_process.fail(message);
       onRendererFailed(message);
       setFailure(_ => Some(message));
       Option.iter(Phaser_boot.dispose_battlefield, runtime.current);
@@ -99,6 +101,7 @@ let make =
     Phaser_boot.present(active, facts, reducedLatest.current);
   };
   React.useEffect0(() => {
+    Loading_progress.begin_battlefield();
     let disposed = ref(false);
     let options: Battlefield_view.mount_options = {
       parent: Option.get(Js.Nullable.toOption(host.current)),
@@ -113,6 +116,32 @@ let make =
       previews,
       progress: value =>
         if (! disposed^) {
+          let expected =
+            string_of_int(latest.current.session_version)
+            ++ ":"
+            ++ Native.state(latest.current.game).map_id;
+          if (value.Battlefield_view.identity == expected) {
+            if (loadingIdentity.current != Some(expected)) {
+              loadingIdentity.current = Some(expected);
+              Loading_progress.begin_battlefield();
+            };
+            switch (value.phase) {
+            | "ready" => Loading_progress.finish()
+            | "preparing" => Loading_progress.advance(5)
+            | _ when value.total > 0 =>
+              let detail =
+                string_of_int(value.loaded)
+                ++ " / "
+                ++ string_of_int(value.total)
+                ++ " resources ready";
+              Loading_progress.advance(
+                ~fraction=float_of_int(value.loaded) /. float_of_int(value.total),
+                ~detail,
+                4,
+              );
+            | _ => ()
+            };
+          };
           onProgress(value);
         },
       failed: message =>
@@ -174,8 +203,6 @@ let make =
   let ready =
     failure != None
     || Option.fold(~none=false, ~some=value => value.Battlefield_view.phase == "ready", progress);
-  let loaded = Option.fold(~none=0, ~some=value => value.Battlefield_view.loaded, progress);
-  let total = Option.fold(~none=0, ~some=value => value.Battlefield_view.total, progress);
   let phase = Option.fold(~none="loading", ~some=value => value.Battlefield_view.phase, progress);
   <>
     <Battlefield_window
@@ -185,8 +212,6 @@ let make =
           ? Battlefield_window.Ready
           : phase == "preparing" ? Battlefield_window.Preparing : Battlefield_window.Loading
       }
-      loaded
-      total
       navigation={
         showCommanderArrow && ready && failure == None
           ? option(hint, angle =>

@@ -33,6 +33,7 @@ let close t =
 
 let fail t message =
   if not t.closed then (
+    Boot_process.fail message;
     close t;
     t.show (Failed message))
 

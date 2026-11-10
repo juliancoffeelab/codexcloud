@@ -5,6 +5,7 @@ type gain
 type destination
 type parameter
 type response
+type headers
 type array_buffer
 type controller
 type signal
@@ -23,6 +24,8 @@ external fetch : string -> < signal : signal > Js.t -> response Js.Promise.t = "
 external ok : response -> bool = "ok" [@@mel.get]
 external status : response -> int = "status" [@@mel.get]
 external status_text : response -> string = "statusText" [@@mel.get]
+external headers : response -> headers = "headers" [@@mel.get]
+external header : headers -> string -> string Js.Nullable.t = "get" [@@mel.send]
 external array_buffer : response -> array_buffer Js.Promise.t = "arrayBuffer" [@@mel.send]
 external create_source : context -> source = "createBufferSource" [@@mel.send]
 external create_gain : context -> gain = "createGain" [@@mel.send]

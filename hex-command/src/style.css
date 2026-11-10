@@ -1,3 +1,4 @@
+@import "./header.css";
 @import "./battlefield.css";
 @import "./save-ui.css";
 @import "./new-game.css";
@@ -34,11 +35,6 @@ main {
   flex-direction: column;
 }
 /* Header geometry is shared by startup placeholders and every game state. */
-.battle-layout > .battle-bar {
-  flex: 0 0 77px;
-  height: 77px;
-  margin-top: 0;
-}
 .battle-content {
   flex: 1;
   min-height: 0;
@@ -51,25 +47,8 @@ main {
   overscroll-behavior: contain;
   scroll-padding-block: 10px;
 }
-#startup {
-  max-width: 32rem;
-  margin: 15vh auto;
-  padding: 24px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  line-height: 1.5;
-}
-#startup h1,
-#startup p {
-  margin-bottom: 12px;
-}
 #startup a {
   color: var(--gold);
-}
-#startup pre {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
 }
 h1,
 h2,
@@ -123,43 +102,6 @@ button:disabled {
 }
 button[hidden] {
   display: none;
-}
-.battle-bar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
-  padding: var(--page-padding) 0 14px;
-  margin-top: calc(-1 * var(--page-padding));
-  margin-bottom: 14px;
-}
-.battle-bar h1 {
-  font-size: 26px;
-  font-weight: normal;
-  white-space: nowrap;
-  margin-right: auto;
-  letter-spacing: -0.5px;
-}
-.round,
-.treasury {
-  font:
-    14px system-ui,
-    sans-serif;
-  white-space: nowrap;
-}
-.round {
-  color: var(--muted);
-}
-.treasury {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  color: #f3d276;
-  font-size: 17px;
 }
 .coin {
   display: inline-block;
@@ -518,45 +460,14 @@ summary {
     max-width: 460px;
     margin: auto;
   }
-  .battle-bar {
-    gap: 12px;
-  }
-  .battle-bar h1 {
-    font-size: 23px;
-  }
 }
 @media (max-width: 540px) {
-  .battle-layout > .battle-bar {
-    flex-basis: 65px;
-    height: 65px;
-  }
   body {
     --page-padding: 10px;
-  }
-  .battle-bar {
-    gap: 7px;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-  }
-  .battle-bar h1 {
-    font-size: 18px;
-    letter-spacing: -0.6px;
-  }
-  .round {
-    font-size: 14px;
-  }
-  .treasury {
-    gap: 4px;
-    font-size: 15px;
   }
   .coin {
     width: 14px;
     height: 14px;
-  }
-  .battle-bar .primary {
-    padding: 8px;
-    font-size: 14px;
-    white-space: nowrap;
   }
   .icon-button {
     width: 40px;
@@ -585,114 +496,6 @@ summary {
     gap: 10px;
   }
 }
-@media (max-width: 350px) {
-  .battle-bar {
-    gap: 4px;
-  }
-  .battle-bar h1 {
-    font-size: 16px;
-  }
-  .treasury {
-    font-size: 14px;
-  }
-  .battle-bar .primary {
-    padding: 8px 6px;
-  }
-  .battle-bar .icon-button {
-    width: 36px;
-  }
-}
-
-.header-economy {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-right: auto;
-  font:
-    14px system-ui,
-    sans-serif;
-  white-space: nowrap;
-}
-.income {
-  display: flex;
-  gap: 3px;
-  align-items: baseline;
-  color: var(--muted);
-}
-.income b {
-  color: var(--gold);
-}
-.villages {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: var(--muted);
-}
-.villages b {
-  color: var(--text);
-}
-.villages svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: var(--gold);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-@media (max-width: 540px) {
-  .header-economy {
-    gap: 8px;
-  }
-  .villages {
-    gap: 3px;
-  }
-  .villages svg {
-    width: 16px;
-    height: 16px;
-  }
-}
-@media (max-width: 350px) {
-  .header-economy {
-    gap: 5px;
-  }
-  .income {
-    gap: 1px;
-  }
-  .villages {
-    gap: 2px;
-  }
-}
-
-.header-economy {
-  gap: 10px;
-}
-.header-economy .villages {
-  margin-left: 6px;
-}
-@media (max-width: 540px) {
-  .header-economy {
-    gap: 5px;
-  }
-  .header-economy .villages {
-    margin-left: 4px;
-  }
-}
-#end-turn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  white-space: nowrap;
-}
-#end-turn .round {
-  font:
-    12px system-ui,
-    sans-serif;
-  color: inherit;
-  border-left: 1px solid #1c211840;
-  padding-left: 10px;
-  opacity: 0.8;
-}
 .unit-stats {
   flex-wrap: wrap;
   gap: 6px 12px;
@@ -714,13 +517,6 @@ summary {
   stroke-linejoin: round;
 }
 @media (max-width: 540px) {
-  #end-turn {
-    gap: 6px;
-  }
-  #end-turn .round {
-    padding-left: 6px;
-    font-size: 11px;
-  }
   .unit-stats {
     gap: 5px 9px;
   }
@@ -839,41 +635,6 @@ select {
 }
 
 /* Fit all battle controls while retaining full-size touch targets. */
-.battle-bar .icon-button {
-  width: 44px;
-  min-height: 44px;
-}
-@media (max-width: 400px) {
-  .battle-bar {
-    gap: 4px;
-  }
-  .header-economy {
-    gap: 3px;
-    font-size: 12px;
-  }
-  .header-economy .treasury {
-    gap: 3px;
-    font-size: 13px;
-  }
-  .header-economy .villages {
-    margin-left: 0;
-    gap: 2px;
-  }
-  .income > span {
-    display: none;
-  }
-  .battle-bar .primary {
-    padding: 8px 6px;
-    font-size: 12px;
-  }
-  #end-turn {
-    gap: 4px;
-  }
-  #end-turn .round {
-    padding-left: 4px;
-    font-size: 10px;
-  }
-}
 
 .arsenal,
 .resistances {
@@ -1450,28 +1211,6 @@ select {
   color: var(--gold);
   border-color: var(--gold);
 }
-@media (max-width: 540px) {
-  .battle-bar.campaign-controls .header-economy {
-    flex: 1 1 0;
-    min-width: 0;
-    flex-wrap: wrap;
-    row-gap: 2px;
-  }
-  .battle-bar.campaign-controls .villages {
-    margin-left: 0;
-  }
-  .battle-bar.campaign-controls .income > span {
-    display: none;
-  }
-  .battle-bar.campaign-controls #end-turn {
-    flex-direction: column;
-    gap: 1px;
-  }
-  .battle-bar.campaign-controls #end-turn .round {
-    border: 0;
-    padding: 0;
-  }
-}
 .recall-choice.selected {
   border-color: var(--gold);
   background: rgba(204, 177, 108, 0.06);
@@ -1503,24 +1242,6 @@ select {
 }
 .story-dialog h2 {
   margin: 0 0 12px;
-}
-.turn-status {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  min-width: 64px;
-  min-height: 44px;
-  padding: 6px;
-  font:
-    600 13px system-ui,
-    sans-serif;
-  color: var(--text);
-}
-.turn-status .round {
-  font-size: 11px;
-  font-weight: 400;
 }
 .defeated .battle-content {
   display: flex;

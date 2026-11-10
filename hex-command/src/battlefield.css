@@ -50,6 +50,15 @@
   touch-action: none;
   cursor: pointer;
 }
+.phaser-battlefield.battlefield-window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  pointer-events: none;
+}
 .battlefield-clip {
   position: absolute;
   inset: 0;
@@ -66,28 +75,249 @@
   z-index: 2;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: clamp(48px, 25vh, 180px);
+  align-items: center;
+  padding: 24px 0 40px;
+  background-color: #19231c;
+  background-image:
+    radial-gradient(ellipse at center, #142019ed 0%, #142019df 34%, #14201988 100%),
+    url("./assets/loading-terrain.svg?inline");
+  background-size: cover;
+  background-position: center;
   pointer-events: none;
 }
+.map-loading[hidden] {
+  display: none;
+}
 .loading-card {
-  display: grid;
-  grid-template-rows: 21px 10px 21px;
-  gap: 12px;
-  width: min(320px, 80%);
+  position: relative;
+  width: min(480px, calc(100% - 32px));
   color: var(--text);
+  text-align: center;
   font:
-    14px/1.5 system-ui,
+    13px/1.5 system-ui,
     sans-serif;
   font-variant-numeric: tabular-nums;
 }
-.loading-card progress {
-  width: 100%;
-  height: 10px;
-  accent-color: var(--accent, #6fdec0);
+.loading-hexes {
+  position: relative;
+  width: 176px;
+  height: 152px;
+  margin: 0 auto 32px;
 }
-.loading-card span {
-  color: var(--muted);
+.loading-hex {
+  position: absolute;
+  width: 56px;
+  height: 48px;
+  background: #75826766;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  transition:
+    background-color 240ms ease,
+    opacity 240ms ease;
+}
+.loading-hex::before {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
+  clip-path: inherit;
+  background: #26382a;
+  transition: background-color 240ms ease;
+}
+.loading-hex:nth-child(1) {
+  left: 15px;
+  top: 26px;
+}
+.loading-hex:nth-child(2) {
+  left: 60px;
+  top: 0;
+}
+.loading-hex:nth-child(3) {
+  left: 105px;
+  top: 26px;
+}
+.loading-hex:nth-child(4) {
+  left: 60px;
+  top: 52px;
+}
+.loading-hex:nth-child(5) {
+  left: 105px;
+  top: 78px;
+}
+.loading-hex:nth-child(6) {
+  left: 60px;
+  top: 104px;
+}
+.loading-hex:nth-child(7) {
+  left: 15px;
+  top: 78px;
+}
+.loading-hex.is-filled {
+  background: #bea66b;
+}
+.loading-hex.is-filled::before {
+  background: #3c4d33;
+}
+.loading-hex.is-current {
+  background: #e3cc8b;
+}
+.loading-hex.is-current::before {
+  background: #596c42;
+}
+.is-complete .loading-hex {
+  background: #b9dfc5;
+}
+.is-complete .loading-hex::before {
+  background: #46634a;
+}
+.loading-action,
+.loading-step,
+.loading-detail {
+  position: relative;
+  isolation: isolate;
+  clip-path: polygon(
+    12px 0,
+    calc(100% - 12px) 0,
+    100% 12px,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    12px 100%,
+    0 calc(100% - 12px),
+    0 12px
+  );
+  background: linear-gradient(135deg, #e1c47788, #718d6877 55%, #d6c07a88);
+}
+.loading-action::before,
+.loading-step::before,
+.loading-detail::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  clip-path: inherit;
+  background: linear-gradient(125deg, #253027, #15211b);
+}
+.loading-action {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 40px;
+  place-items: center;
+  padding: 12px 16px;
+  color: #f2e9ce;
+  font-size: 16px;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.loading-caption {
+  grid-area: 1 / 1;
+  font-weight: 400;
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+.loading-caption.is-leaving {
+  opacity: 0;
+}
+@starting-style {
+  .loading-caption.is-entering {
+    opacity: 0;
+  }
+}
+.loading-track {
+  height: 16px;
+  margin-top: 12px;
+  overflow: hidden;
+  clip-path: polygon(7px 0, calc(100% - 7px) 0, 100% 50%, calc(100% - 7px) 100%, 7px 100%, 0 50%);
+  background: #111c16c9;
+  box-shadow: inset 0 1px 2px #000a;
+}
+.loading-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 50%, calc(100% - 7px) 100%, 0 100%);
+  background: linear-gradient(90deg, #ab9253, #e0c47d 70%, #badbc2);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: loading-warmup 8s linear forwards;
+}
+.loading-meta {
+  display: grid;
+  grid-template-columns: minmax(80px, 0.8fr) minmax(0, 1.4fr);
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 11px;
+  line-height: 14px;
+}
+.loading-step,
+.loading-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 40px;
+  padding: 6px 14px;
+  text-align: center;
+}
+.loading-step {
+  color: #e2c681;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.loading-detail {
+  color: #bfceba;
+}
+.loading-accessible-progress {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.map-loading.is-complete {
+  animation: loading-depart 240ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes loading-warmup {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(0.23);
+  }
+}
+@keyframes loading-depart {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-fill,
+  .loading-caption,
+  .map-loading.is-complete {
+    animation: none;
+  }
+}
+@media (max-height: 540px) {
+  .map-loading {
+    padding: 12px 0;
+  }
+  .loading-hexes {
+    height: 100px;
+    margin-bottom: 10px;
+    transform: scale(0.64);
+    transform-origin: center top;
+  }
+  .loading-action {
+    grid-template-rows: 36px;
+    font-size: 16px;
+  }
+  .loading-track {
+    margin-top: 12px;
+  }
 }
 .phaser-battlefield.battlefield-window canvas {
   display: block;
@@ -152,4 +382,15 @@
 .trace-buttons button {
   min-height: 44px;
   font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-hex,
+  .loading-hex::before,
+  .loading-caption {
+    transition: none;
+  }
+  .loading-caption.is-leaving {
+    opacity: 0;
+  }
 }

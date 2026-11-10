@@ -13,7 +13,10 @@ An explicit deploy/publish/update request enters this workflow immediately.
 Use one preview Site throughout the chat. At the first deployment, retain the
 first branch name in conversation context as the preview tag; pass it after later branch or
 PR changes. If this chat already selected a numeric preview key, retain it instead.
-The preview URL follows the chat's latest deployment.
+The preview URL follows the chat's latest deployment. Pass the original tag to
+the operation; it owns deterministic hashing and URL-length limits. Long branch
+names use a compact hash in the address, while the full tag remains the preview
+identity. Reuse the retained tag and published URL on later deployments.
 
 Invoke `node scripts/site-operation.mjs deploy --preview <retained-tag>` through
 the exact [operation transport](operations.md#code-mode-invocation).

@@ -54,7 +54,13 @@ export function previewKey(preview) {
 async function previewTarget(tools, cwd, primary, preview) {
   const { key: previewName, title } = previewKey(preview);
   const key = createHash("sha256").update(primary.project_id).digest("hex").slice(0, 8);
-  const slug = `hex-command-${previewName}-${key}`;
+  const readableSlug = `hex-command-${previewName}-${key}`;
+  // Keep existing addresses; long branch tags must fit a DNS label. Both the
+  // complete preview identity and source Site still contribute to the address.
+  const slug =
+    readableSlug.length <= 63
+      ? readableSlug
+      : `hex-${createHash("sha256").update(previewName).digest("hex").slice(0, 12)}-${key}`;
   const description = `Hex Command preview for ${title}; source Site ${primary.project_id}`;
   const directory = join(
     cwd,

@@ -42,23 +42,26 @@ let make =
       ~onBriefing=None,
     ) => {
   let text = value => React.string(Utf8.to_js(value));
-  let number = Js.Float.toString;
+  let number = Header_number.compact;
   let value = project => Option.fold(~none="—", ~some=stats => number(project(stats)), stats);
+  let full = project =>
+    Option.map(stats => Utf8.to_js(Header_number.full(project(stats))), stats);
   let invoke = callback => Option.iter(callback => callback(), callback);
   let turnInfo =
     <>
-      <span id="turn-label"> {text(turnLabel)} </span>
+      <span id="turn-label" title={Utf8.to_js(turnLabel)}> {text(turnLabel)} </span>
       <span
         id="round"
         className="round"
         title={Utf8.to_js(
           Option.fold(
             ~none="Round loading",
-            ~some=stats => "Round " ++ number(stats.round),
+            ~some=stats => "Round " ++ Header_number.full(stats.round),
             stats,
           ),
         )}>
-        {text("Turn " ++ value(stats => stats.round))}
+        <span className="round-caption"> {text("Turn")} </span>
+        <b className="round-number"> {text(value(stats => stats.round))} </b>
       </span>
     </>;
   <header
@@ -66,27 +69,39 @@ let make =
     <div className="header-economy">
       <span className="treasury" ariaLabel="Gold">
         <i className="coin" ariaHidden=true />
-        <b id="gold"> {text(value(stats => stats.gold))} </b>
+        <b id="gold" className="hud-number" title=?{full(stats => stats.gold)}>
+          {text(value(stats => stats.gold))}
+        </b>
       </span>
       <span className="income" title="Coins earned each turn">
-        <b id="income">
-          {text(Option.fold(~none="—", ~some=stats => "+" ++ number(stats.income), stats))}
+        <b id="income" className="hud-number" title=?{full(stats => stats.income)}>
+          {text(
+             Option.fold(~none="—", ~some=stats => Header_number.signed(stats.income), stats),
+           )}
         </b>
-        <span> {text("/turn")} </span>
+        <span className="income-caption"> {text("/turn")} </span>
       </span>
       <span className="villages" title="Owned villages">
         <Icon name="village" />
-        <span>
-          <b id="villages"> {text(value(stats => stats.owned_villages))} </b>
-          {text("/")}
-          <span id="village-total"> {text(value(stats => stats.total_villages))} </span>
+        <span className="village-count">
+          <b id="villages" className="hud-number" title=?{full(stats => stats.owned_villages)}>
+            {text(value(stats => stats.owned_villages))}
+          </b>
+          <span className="village-divider"> {text("/")} </span>
+          <span
+            id="village-total" className="hud-number" title=?{full(stats => stats.total_villages)}>
+            {text(value(stats => stats.total_villages))}
+          </span>
         </span>
       </span>
     </div>
     {finished
-       ? <div className="turn-status" role="status"> turnInfo </div>
+       ? <div className="turn-status turn-control" role="status"> turnInfo </div>
        : <button
-           id="end-turn" className="primary" disabled={!canEndTurn} onClick={_ => onEndTurn()}>
+           id="end-turn"
+           className="primary turn-control"
+           disabled={!canEndTurn}
+           onClick={_ => onEndTurn()}>
            turnInfo
          </button>}
     <button
@@ -99,20 +114,18 @@ let make =
       onClick={Button_press.click(onUndo)}>
       <Icon name="undo" />
     </button>
-    {campaign
-       ? <button
-           id="mission-briefing-button"
-           className="icon-button"
-           ariaLabel="Mission briefing"
-           title="Mission briefing"
-           ariaExpanded=briefing
-           ariaControls="mission-overview"
-           disabled={onBriefing == None}
-           onPointerDown={Button_press.pointer_down(() => invoke(onBriefing))}
-           onClick={Button_press.click(() => invoke(onBriefing))}>
-           <Icon name="search" />
-         </button>
-       : React.null}
+    <button
+      id="mission-briefing-button"
+      className="icon-button"
+      ariaLabel="Mission briefing"
+      title="Mission briefing"
+      ariaExpanded=briefing
+      ariaControls="mission-overview"
+      disabled={!campaign || onBriefing == None}
+      onPointerDown={Button_press.pointer_down(() => invoke(onBriefing))}
+      onClick={Button_press.click(() => invoke(onBriefing))}>
+      <Icon name="search" />
+    </button>
     <button
       id="settings-button"
       className="icon-button"

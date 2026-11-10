@@ -14,6 +14,10 @@ import * as Sound from "@frontend/Phaser_sound";
 const App = { ...RawApp, make: (props) => RawApp.make({ ...props, renderer }) };
 import * as Motion from "@frontend/Motion";
 import * as Shell from "@frontend/Shell";
+import * as LoadingProgress from "@frontend/Loading_progress";
+import * as BootProcess from "@frontend/Boot_process";
+import * as BrowserDownload from "@frontend/Browser_download";
+import * as BattlefieldWindow from "@frontend/Battlefield_window";
 import * as RawApplication from "@frontend/Application";
 import { requireResult } from "./result-fixture.mjs";
 const Application = {
@@ -708,4 +712,63 @@ test("Sound-only dialogue waits for phase persistence and advances when that sam
   assert.equal(advance.mock.calls.length, 0);
   await act(async () => render(false));
   assert.deepEqual(advance.mock.calls, [[false]]);
+});
+
+test("One determinate loading bar retains progress when the shell becomes the battlefield", async () => {
+  LoadingProgress.begin_battlefield();
+  await act(async () => root.render(React.createElement(Shell.make, { failure: undefined })));
+  assert.equal(host.querySelectorAll("progress").length, 1);
+  assert.equal(Number(element("progress").getAttribute("value")), 2);
+  await act(async () => LoadingProgress.advance(0.5, "6 / 12 resources ready", 4));
+  const value = element("progress").getAttribute("value");
+  assert.equal(element("progress").max, 5);
+  assert.match(element(".loading-card").textContent, /Step 4 \/ 5.*6 \/ 12/);
+  await act(async () => root.render(React.createElement(BattlefieldWindow.make, {})));
+  assert.equal(host.querySelectorAll("progress").length, 1);
+  assert.equal(element("progress").getAttribute("value"), value);
+  await act(async () => LoadingProgress.advance(undefined, undefined, 5));
+  assert.match(element(".loading-card").textContent, /Drawing battlefield/);
+  assert.equal(Number(element("progress").getAttribute("value")), 4);
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+  await act(async () => {
+    LoadingProgress.finish();
+    root.render(React.createElement(BattlefieldWindow.make, { phase: 2 }));
+  });
+  assert.equal(Number(element("progress").getAttribute("value")), 5);
+  assert.match(element(".loading-action").textContent, /Battlefield ready/);
+  await act(async () => vi.advanceTimersByTime(250));
+  assert.equal(host.querySelector("progress"), null);
+});
+
+test("The debug-report action includes retained startup diagnostics in its downloaded JSON", async () => {
+  const previous = window.BOOT_PROCESS;
+  delete window.BOOT_PROCESS;
+  try {
+    BootProcess.snapshot();
+    BootProcess.progress(4, "Loading resources", 3.5, "5 / 10 ready");
+    BootProcess.response("/audio.wav", 200, "phaser-xhr", (name) =>
+      name === "cache-control" ? "max-age=0" : null,
+    );
+    BootProcess.progress(5, "Drawing battlefield", 5, "");
+    const expected = BootProcess.snapshot();
+    const downloaded = new Promise((resolve) => {
+      vi.spyOn(BrowserDownload, "json").mockImplementation((_revoke, _filename, text) => {
+        resolve(JSON.parse(text));
+      });
+    });
+    session = await Session.create_with_audio(async () => {}, audio, factory);
+    Session.commands(session).download_debug_report();
+    const report = await downloaded;
+    const { browserTiming: _expectedTiming, ...expectedBoot } = expected;
+    const { browserTiming, ...exportedBoot } = report.bootProcess;
+    assert.deepEqual(exportedBoot, expectedBoot);
+    assert(browserTiming);
+    assert.equal(browserTiming.startupCutoffAtMs, expected.startedAtMs + expected.elapsedMs);
+    assert.equal(report.format, "hex-command-debug");
+    assert.equal(report.bootProcess.responseHeaders[0].headers["cache-control"], "max-age=0");
+    assert(report.checkpoint);
+    assert(report.browserSaves);
+  } finally {
+    window.BOOT_PROCESS = previous;
+  }
 });

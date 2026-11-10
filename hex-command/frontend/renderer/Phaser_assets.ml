@@ -402,6 +402,7 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
     method private completed key =
       if Map.has files key && not disposed then (
         let completed_file = Option.get (Map.get files key) in
+        Boot_process.resource ~key ~url:completed_file##src ~phase:"resource-ready";
         let _ = Map.delete files key in
         microtask (fun () -> Phaser_files.settle scene##load completed_file);
         let resource = Map.get plan key in

@@ -4,15 +4,73 @@
     <meta charset="utf-8" />
     <script>
       (() => {
+        const atMs = performance.now();
+        const label = "Loading game engine…";
+        window.BOOT_PROCESS = {
+          version: 1,
+          startedAt: new Date().toISOString(),
+          timeOrigin: performance.timeOrigin,
+          startedAtMs: atMs,
+          elapsedMs: 0,
+          status: "loading",
+          step: 1,
+          label,
+          value: 0,
+          detail: "",
+          error: null,
+          droppedEvents: 0,
+          resourceEvents: [],
+          droppedResourceEvents: 0,
+          resourceTimingBufferFull: false,
+          browserTiming: null,
+          responseHeaders: [],
+          droppedResponseHeaders: 0,
+          stages: [{ step: 1, label, startedAtMs: atMs, durationMs: 0, finishedAtMs: null }],
+          events: [{ atMs, step: 1, label, value: 0, detail: "", status: "loading" }],
+        };
+        // Preserve early request timings while keeping browser-owned storage bounded.
+        performance.setResourceTimingBufferSize?.(512);
+        performance.addEventListener?.(
+          "resourcetimingbufferfull",
+          () => {
+            window.BOOT_PROCESS.resourceTimingBufferFull = true;
+          },
+          { once: true },
+        );
         let pending;
         function showFailure(error) {
           const detail = String(
             error?.stack || error?.message || error || "The game script could not be loaded.",
           );
+          const process = window.BOOT_PROCESS;
+          if (process.status === "loading") {
+            const atMs = performance.now();
+            const stage = process.stages.at(-1);
+            stage.durationMs = atMs - stage.startedAtMs;
+            stage.finishedAtMs = atMs;
+            process.elapsedMs = atMs - process.startedAtMs;
+            process.status = "failed";
+            process.error = detail;
+            process.events.push({
+              atMs,
+              step: process.step,
+              label: process.label,
+              value: process.value,
+              detail,
+              status: "failed",
+            });
+            if (process.events.length > 512) {
+              process.events.splice(1, 1);
+              process.droppedEvents++;
+            }
+          }
           if (!document.getElementById("startup")) {
             pending = detail;
             return;
           }
+          document.getElementById("startup").setAttribute("aria-busy", "false");
+          document.getElementById("startup-loading").hidden = true;
+          document.getElementById("startup-failure").hidden = false;
           document.getElementById("startup-message").textContent =
             "The game could not start. Reloading keeps your saved battle.";
           const panel = document.getElementById("startup-error");
@@ -54,6 +112,7 @@
       })();
     </script>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="/src/style.css" />
     <title>Hex Command</title>
     <meta
       name="description"
@@ -66,18 +125,134 @@
     />
   </head>
   <body>
-    <section id="startup" role="status" aria-live="polite">
-      <h1>Hex Command</h1>
-      <p id="startup-message">Loading the game…</p>
-      <p><a id="startup-reload" href="./?reload=1">Reload game</a></p>
-      <details id="startup-error" hidden>
-        <summary>Error details</summary>
-        <pre id="startup-detail"></pre>
-      </details>
-      <noscript>This game needs JavaScript enabled.</noscript>
-    </section>
+    <!-- Pre-baked Shell / Header / Battlefield_window: usable before the app loads. -->
+    <main id="startup" aria-busy="true" class="battle-layout loading-shell">
+      <header aria-label="Battle controls" class="battle-bar">
+        <div class="header-economy">
+          <span aria-label="Gold" class="treasury">
+            <i aria-hidden="true" class="coin"></i>
+            <b id="gold" class="hud-number">—</b>
+          </span>
+          <span title="Coins earned each turn" class="income">
+            <b id="income" class="hud-number">—</b>
+            <span class="income-caption">/turn</span>
+          </span>
+          <span title="Owned villages" class="villages">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m3 11 9-8 9 8M5 10v11h14V10M10 21v-7h4v7"></path>
+            </svg>
+            <span class="village-count">
+              <b id="villages" class="hud-number">—</b>
+              <span class="village-divider">/</span>
+              <span id="village-total" class="hud-number">—</span>
+            </span>
+          </span>
+        </div>
+        <button id="end-turn" disabled="" class="primary turn-control">
+          <span id="turn-label" title="End turn">End turn</span>
+          <span id="round" title="Round loading" class="round">
+            <span class="round-caption">Turn</span>
+            <b class="round-number">—</b>
+          </span>
+        </button>
+        <button
+          aria-label="Undo move"
+          id="undo-move"
+          title="Undo move"
+          disabled=""
+          class="icon-button"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M9 4 4 9l5 5M4 9h9a7 7 0 0 1 7 7v4"></path>
+          </svg>
+        </button>
+        <button
+          aria-controls="mission-overview"
+          aria-expanded="false"
+          aria-label="Mission briefing"
+          id="mission-briefing-button"
+          title="Mission briefing"
+          disabled=""
+          class="icon-button"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24" class="ui-icon">
+            <circle cx="10" cy="10" r="6"></circle>
+            <path d="m15 15 6 6"></path>
+          </svg>
+        </button>
+        <button aria-label="Menu" id="settings-button" title="Menu" disabled="" class="icon-button">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path
+              d="m9 3 1-1h4l1 3 3 1 3-1 2 4-2 2v3l2 2-2 4-3-1-3 1-1 3h-4l-1-3-3-1-3 1-2-4 2-2v-3L1 9l2-4 3 1 3-1z"
+            ></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </header>
+      <div class="battle-content">
+        <div class="workspace map-only">
+          <section aria-label="Battlefield" class="map-section">
+            <div
+              aria-busy="true"
+              id="map"
+              data-phaser-battlefield=""
+              class="map-scroll phaser-battlefield battlefield-window"
+            >
+              <div class="battlefield-clip"></div>
+              <div id="startup-loading" role="status" class="map-loading">
+                <div class="loading-card">
+                  <div aria-hidden="true" class="loading-hexes">
+                    <span class="loading-hex is-current"></span>
+                    <span class="loading-hex"></span>
+                    <span class="loading-hex"></span>
+                    <span class="loading-hex"></span>
+                    <span class="loading-hex"></span>
+                    <span class="loading-hex"></span>
+                    <span class="loading-hex"></span>
+                  </div>
+                  <div aria-live="polite" class="loading-action">
+                    <strong class="loading-caption">Loading game engine…</strong>
+                  </div>
+                  <div aria-hidden="true" class="loading-track">
+                    <span class="loading-fill" id="startup-fill"></span>
+                  </div>
+                  <progress
+                    aria-label="Battlefield preparation"
+                    aria-valuetext="Step 1 of 5: Loading game engine…"
+                    max="5"
+                    class="loading-accessible-progress"
+                    value="0"
+                  ></progress>
+                  <div class="loading-meta">
+                    <span class="loading-step">Step 1 / 5</span>
+                    <span class="loading-detail"></span>
+                  </div>
+                </div>
+              </div>
+              <div id="startup-failure" class="startup-failure" role="alert" hidden>
+                <p id="startup-message">
+                  The game could not start. Reloading keeps your saved battle.
+                </p>
+                <p><a id="startup-reload" href="./?reload=1">Reload game</a></p>
+                <details id="startup-error" hidden>
+                  <summary>Error details</summary>
+                  <pre id="startup-detail"></pre>
+                </details>
+              </div>
+              <noscript>
+                <style>
+                  #startup-loading {
+                    display: none;
+                  }
+                </style>
+                <div class="startup-failure" role="alert">This game needs JavaScript enabled.</div>
+              </noscript>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
     <div id="app"></div>
-    <link rel="stylesheet" href="/src/style.css" />
     <script type="module" src="/_build/default/frontend/output/frontend/Boot.js"></script>
   </body>
 </html>

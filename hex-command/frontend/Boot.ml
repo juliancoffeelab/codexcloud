@@ -3,7 +3,13 @@ open Browser_dom
 let field id action = Js.Nullable.toOption (byId id) |> Option.iter action
 let detail = Foreign_error.describe
 
+external set_busy : Dom.element -> string -> unit = "ariaBusy" [@@mel.set]
+
 let report reason =
+  Boot_process.fail reason;
+  field "startup" (fun node -> set_busy node "false");
+  field "startup-loading" (fun node -> hidden node true);
+  field "startup-failure" (fun node -> hidden node false);
   field "startup-message" (fun node ->
       set_text node "The game could not start. Reloading keeps your saved battle.");
   field "startup-error" (fun node ->

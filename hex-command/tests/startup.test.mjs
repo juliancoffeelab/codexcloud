@@ -266,3 +266,33 @@ test("A render failure while loading releases late resources without publishing 
   Startup.close(owner);
   assert.equal(releases, 1);
 });
+
+test("Loading progress survives the shell handoff and never rewinds within a battle", async () => {
+  const progress = await import("@frontend/Loading_progress");
+  const advance = (step, fraction = 0) => progress.advance(fraction, undefined, step);
+  assert.equal(progress.current().value, 0);
+  advance(2);
+  const shellUpdates = [];
+  const stopShell = progress.subscribe((value) => shellUpdates.push(value));
+  advance(3);
+  stopShell();
+  const handoff = progress.current();
+  assert.equal(handoff.step, 3);
+  const battlefieldUpdates = [];
+  const stopBattlefield = progress.subscribe((value) => battlefieldUpdates.push(value));
+  advance(4, 0.75);
+  const loaded = progress.current().value;
+  advance(4, 0.25); // A larger resource plan must not move the bar backwards.
+  advance(3); // A late startup completion must not replace the current label.
+  assert.equal(progress.current().value, loaded);
+  assert.equal(progress.current().step, 4);
+  advance(5);
+  progress.finish();
+  assert.equal(progress.current().value, 5);
+  assert.equal(shellUpdates.length, 1);
+  assert.equal(battlefieldUpdates.at(-1).value, 5);
+  stopBattlefield();
+  progress.begin_battlefield();
+  assert.equal(progress.current().step, 3); // A new battlefield starts a new run.
+  assert.equal(battlefieldUpdates.at(-1).value, 5);
+});
