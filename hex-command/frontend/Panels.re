@@ -745,7 +745,14 @@ module Terrain = {
 module Campaign = {
   [@react.component]
   let make =
-      (~view: Session.model, ~actions: Session.actions, ~expanded, ~onCollapse, ~onNewCampaign) => {
+      (
+        ~view: Session.model,
+        ~actions: Session.actions,
+        ~showResult,
+        ~expanded,
+        ~onCollapse,
+        ~onNewCampaign,
+      ) => {
     let state = Native.state(view.game);
     let conversations = React.useRef(Js.Nullable.null);
     let (recall, setRecall) = React.useState(() => []);
@@ -890,7 +897,9 @@ module Campaign = {
                       </ul>
                     </>}
              </section>
-             {state.winner == Some(Domain.Side.Player) && !Story.dialogue_pending(state.campaign)
+             {showResult
+              && state.winner == Some(Domain.Side.Player)
+              && !Story.dialogue_pending(state.campaign)
                 ? <section
                     id="mission-result"
                     className="campaign-panel"

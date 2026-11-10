@@ -28,6 +28,7 @@ module Campaign: {
     (
       ~view: Session.model,
       ~actions: Session.actions,
+      ~showResult: bool,
       ~expanded: bool,
       ~onCollapse: unit => unit,
       ~onNewCampaign: unit => unit

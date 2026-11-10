@@ -7,6 +7,8 @@ let make =
       ~actions: Session.actions,
       ~renderer: Phaser_boot.t,
       ~previews: Terrain_preview.t,
+      ~progress: option(Battlefield_view.progress),
+      ~onProgress,
       ~onRendererFailed,
       ~prepareReload,
       ~showCommanderArrow=false,
@@ -18,7 +20,6 @@ let make =
   let commands = React.useRef(actions);
   commands.current = actions;
   let (description, setDescription) = React.useState(() => "Battlefield loading");
-  let (progress, setProgress) = React.useState(() => None);
   let (failure, setFailure) = React.useState(() => None);
   let (reducedMotion, setReducedMotion) = React.useState(Motion.reduced_motion);
   let reducedLatest = React.useRef(reducedMotion);
@@ -112,7 +113,7 @@ let make =
       previews,
       progress: value =>
         if (! disposed^) {
-          setProgress(_ => Some(value));
+          onProgress(value);
         },
       failed: message =>
         if (! disposed^) {
@@ -170,17 +171,12 @@ let make =
     },
     (view, reducedMotion),
   );
-  let identity = string_of_int(view.session_version) ++ ":" ++ Native.state(view.game).map_id;
-  let current =
-    Option.bind(progress, value =>
-      value.Battlefield_view.identity == identity ? Some(value) : None
-    );
   let ready =
     failure != None
-    || Option.fold(~none=false, ~some=value => value.Battlefield_view.phase == "ready", current);
-  let loaded = Option.fold(~none=0, ~some=value => value.Battlefield_view.loaded, current);
-  let total = Option.fold(~none=0, ~some=value => value.Battlefield_view.total, current);
-  let phase = Option.fold(~none="loading", ~some=value => value.Battlefield_view.phase, current);
+    || Option.fold(~none=false, ~some=value => value.Battlefield_view.phase == "ready", progress);
+  let loaded = Option.fold(~none=0, ~some=value => value.Battlefield_view.loaded, progress);
+  let total = Option.fold(~none=0, ~some=value => value.Battlefield_view.total, progress);
+  let phase = Option.fold(~none="loading", ~some=value => value.Battlefield_view.phase, progress);
   <>
     <Battlefield_window
       host

@@ -43,16 +43,22 @@ vi.mock("@frontend/Phaser_owner", () => ({
   mount_battlefield: (_owner, options) => {
     const canvas = document.createElement("canvas");
     options.parent.appendChild(canvas);
-    options.progress({
-      phase: "ready",
-      label: "Ready",
-      image: { ready: 1, total: 1 },
-      audio: { ready: 0, total: 0 },
-      error: undefined,
-    });
     return { options, canvas };
   },
   present_battlefield: (runtime, view, reduced) => {
+    const identity = `${view.session_version}:${Native.state(view.game).mapId}`;
+    if (runtime.identity !== identity) {
+      runtime.identity = identity;
+      runtime.options.progress({
+        identity,
+        phase: "ready",
+        loaded: 1,
+        total: 1,
+        audio_loaded: 0,
+        audio_total: 0,
+        error: undefined,
+      });
+    }
     if (reduced) view.combat_playback?.skip();
     if (view.action) queueMicrotask(() => Action.complete(Action.claim(view.action)));
   },
@@ -298,7 +304,7 @@ test("Startup and live controls share their structure, and inspection panels ope
   });
   assert.deepEqual(structure(), loading);
   assert.deepEqual(frameStructure(), loadingFrame);
-  assert.equal(element("#end-turn").disabled, false);
+  assert.equal(element("#end-turn").disabled, element("#map").getAttribute("aria-busy") === "true");
   assert.equal(element("#settings-button").disabled, false);
   assert(element(".workspace").classList.contains("map-only"));
   assert.equal(host.querySelector("aside"), null);
