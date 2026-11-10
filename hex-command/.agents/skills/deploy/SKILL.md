@@ -10,21 +10,18 @@ and commit/push required changes first. Follow the
 [repository delivery policy](../../../../AGENTS.md).
 
 An explicit deploy/publish/update request enters this workflow immediately.
-Default to the current PR's independent preview and recommend that destination
-when discussing deployment. Invoke
-`node scripts/site-operation.mjs deploy --preview <PR-number>` through the exact
-[operation transport](operations.md#code-mode-invocation). Use the PR number
-already in context; if unknown, make one targeted lookup for the current branch's
-PR. If no associated PR can be identified, report the missing PR number rather
-than choosing another destination.
+Use one preview Site throughout the chat. At the first deployment, retain the
+first branch name in conversation context as the preview tag; pass it after later branch or
+PR changes. If this chat already selected a numeric preview key, retain it instead.
+The preview URL follows the chat's latest deployment.
 
+Invoke `node scripts/site-operation.mjs deploy --preview <retained-tag>` through
+the exact [operation transport](operations.md#code-mode-invocation).
 Only an explicit request for live/main deployment selects plain `deploy` without
-`--preview`. A generic deploy, publish or playtest request selects the PR preview.
-The number selects that PR's stable Site, not a source branch; the source is
-current committed `HEAD`. Preview and main Sites have separate configuration and
-release caches, so each PR leaves other PRs and the main Site alone.
+`--preview`. The tag selects the destination; current committed `HEAD` selects
+the source. Main and preview Sites keep separate release receipts and audiences.
 
-The operation owns source synchronization, necessary builds, packaging,
+The operation owns source synchronization, cached build stages, packaging,
 credentials, exact-release selection, audience and deployment. It pins the source
 commit and saved version, reuses an exact release when possible and leaves
 staged, unstaged and untracked implementation changes alone. A clean tree,
@@ -32,7 +29,7 @@ automatic implementation commit or implementation-repository push is not a
 prerequisite. Never substitute an older successful release.
 
 This invocation and its operation-owned tool traffic are the entire attempt.
-Apart from resolving a missing PR number, no agent-side discovery, file inspection,
+Apart from selecting the retained preview tag, no agent-side discovery, file inspection,
 checks, Git operations, manual builds, separate hosting calls or delegated
 preparation precede or accompany it. Add no
 test, lint, format, content-check, clean-tree, branch-policy, HTML-reference,
@@ -52,7 +49,7 @@ A failure ends the attempt, not the deployment task.
 Inspect and fix only the observed blocker, commit/push required source changes,
 and rerun the operation. The retry pins the repaired commit; use its build as
 verification instead of adding a general audit, tests or formatting cycle.
-The operation already owns exact-release reuse, transient retries, deleted-cache
+The operation already owns exact-release and build-stage reuse, transient retries, deleted-cache
 recovery and serialization; do not duplicate these agent-side. No new permission
 is needed for focused repairs or retries. Keep the user informed as the diagnosis
 changes. Continue until deployment succeeds, the user stops the work, or a

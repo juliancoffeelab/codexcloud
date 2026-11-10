@@ -5,7 +5,7 @@ import { spawn } from "node:child_process";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { createHash } from "node:crypto";
-import publishSite, { prepareSite } from "./publish-sites-call.js";
+import publishSite, { prepareSite, previewKey } from "./publish-sites-call.js";
 
 export async function runSiteOperation(tools, options, operations = { prepareSite, publishSite }) {
   if (!["prepare", "deploy"].includes(options.mode)) throw new Error("Expected prepare or deploy");
@@ -46,27 +46,23 @@ async function main() {
   const [mode, ...flags] = process.argv.slice(2);
   if (mode === "--help") {
     process.stdout.write(
-      "Usage: node scripts/site-operation.mjs prepare|deploy [--preview PR]\nJSON-lines tool transport on stdin/stdout; see .agents/skills/deploy/operations.md.\n",
+      "Usage: node scripts/site-operation.mjs prepare|deploy [--preview FIRST_BRANCH]\nJSON-lines tool transport on stdin/stdout; see .agents/skills/deploy/operations.md.\n",
     );
     return;
   }
   if (!["prepare", "deploy"].includes(mode)) throw new Error("Expected prepare or deploy");
   let preview;
   if (flags.length) {
-    if (
-      flags.length !== 2 ||
-      flags[0] !== "--preview" ||
-      !/^[1-9][0-9]*$/.test(flags[1]) ||
-      !Number.isSafeInteger(Number(flags[1]))
-    )
-      throw new Error("Expected --preview followed by a positive PR number");
-    preview = Number(flags[1]);
+    if (flags.length !== 2 || flags[0] !== "--preview")
+      throw new Error("Expected --preview followed by the first branch tag");
+    preview = /^[0-9]+$/.test(flags[1]) ? Number(flags[1]) : flags[1];
+    previewKey(preview);
   }
   // Serialize the complete save/deploy sequence, not just the build: another
   // invocation must not advance the Site branch between our push and save.
   if (process.env.HEX_COMMAND_SITE_LOCKED !== "1") {
     const key = createHash("sha256")
-      .update(`${process.cwd()}:${preview ?? "main"}`)
+      .update(`${process.cwd()}:${preview === undefined ? "main" : previewKey(preview).key}`)
       .digest("hex");
     const child = spawn(
       "flock",
@@ -125,7 +121,12 @@ async function main() {
     },
   );
   try {
-    const result = await runSiteOperation(tools, { mode, cwd: process.cwd(), preview });
+    const result = await runSiteOperation(tools, {
+      mode,
+      cwd: process.cwd(),
+      preview,
+      progress: (message) => send({ type: "progress", message }),
+    });
     send({ type: "result", result });
   } catch (error) {
     send({ type: "error", error: error.message });

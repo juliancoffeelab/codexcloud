@@ -6,20 +6,17 @@ resolves the exact `HEAD` release, reusing its saved version or preparing it whe
 necessary, then deploys that version and returns the result.
 
 The module API is `runSiteOperation(tools, {mode, cwd, message?, preview?})`.
-`preview` is a positive PR number (CLI `--preview 59`). Bare `--preview`, booleans,
-zero and invalid numbers fail without falling back to main. The selected number
-chooses a destination; the release still uses the current committed HEAD.
+`preview` is the retained first-branch tag (`--preview fix/first-branch`). Keep it
+for the chat, including after moving to another branch or PR. Numeric keys still
+address existing PR previews. Invalid or missing tags fail without falling back
+to main. The destination is independent of the current committed source.
 
-Each PR has its own Site, release cache and build checkout. First use provisions
-an owner-private Site and immediately persists its opaque ID in an ignored local
-hosting manifest. A stable slug scoped to the main Site and PR allows another
-checkout to rediscover the same identity. Creation races/timeouts are reconciled
-through discovery rather than blindly creating another Site. Known identities
-are checked against the requested PR before any source push.
-
-Default to a numbered PR preview; plain `deploy` uses the committed
-`.openai/hosting.json` only for an explicitly requested live/main deployment.
-A numbered preview operation leaves the main Site and other PR previews alone.
+First use creates an owner-private Site and persists its opaque identity locally.
+The deterministic slug includes the first-branch tag and source Site identity,
+allowing rediscovery from another checkout. Creation races/timeouts reconcile
+through discovery. Later deployments with that tag reuse the same Site and URL.
+Plain `deploy` uses the committed `.openai/hosting.json` only for an explicitly
+requested live/main deployment.
 
 `tools` supplies the enabled execution and native Sites functions by name. Internally,
 `prepareSite(tools, {cwd, message?})` returns a receipt with `project_id`,
@@ -36,16 +33,19 @@ retry workflow. A repaired source commit begins a new pinned attempt.
 The transport forwards operation-owned tool calls unchanged. It never chooses
 source, versions, audience, builds or retries on the agent’s behalf.
 
-The command serializes concurrent runs, pins the implementation commit once,
-and owns local subprocesses and native Sites calls. An exact cached release
-needs only the current audience lookup and deployment call; no credential,
-source synchronization, build, packaging or save is repeated. A cache miss
-fetches audience and credentials concurrently, installs locked dependencies only
-when needed, builds and packages once. Owner-private deployments use the native
-combined save-and-deploy operation when available, avoiding a separate save/deploy
-round trip. Cache failures do not block publication. A deleted saved version is rebuilt, never replaced
-with an older release. Transient native failures retry the same operation once.
-No tests, formatting, quality gates or post-deployment browser checks run here.
+The command serializes each tag's save/deploy sequence. A separate build lock
+protects one shared, pinned-source build checkout across all destinations. Site
+Git histories remain separate. Committed input fingerprints and output digests
+reuse the binding tool, WASM, frontend and artwork independently; missing or
+changed outputs rebuild their stage. A new revision gets a bundle containing its
+source commit. An exact saved release skips source preparation entirely.
+
+The operation relays safe stage progress and elapsed build times. Forward those
+messages through the transport below; they distinguish compilation from hosting
+publication. Source credentials remain in memory. Owner-private Sites use the
+combined save-and-deploy operation when available. Transient native failures retry
+the same operation once; deleted versions rebuild the requested release. Tests,
+formatting and quality gates are outside this operation.
 
 ## Code-mode invocation
 
@@ -56,9 +56,11 @@ is distinct from deciding or polling deployment status, which the operation owns
 ```js
 const mode = "deploy";
 const cwd = "/workspace/codexcloud/hex-command";
-const preview = 59; // replace with the current PR number; undefined only for explicit live/main deployment
+const preview = "fix/first-branch"; // retain the first branch tag for this chat; undefined only for explicit live/main deployment
+const previewArg =
+  preview === undefined ? "" : " --preview '" + String(preview).replaceAll("'", "'\\''") + "'";
 let cell = await tools.exec_command({
-  cmd: `node scripts/site-operation.mjs ${mode}${preview === undefined ? "" : ` --preview ${preview}`}`,
+  cmd: `node scripts/site-operation.mjs ${mode}${previewArg}`,
   workdir: cwd,
   tty: true,
   yield_time_ms: 1000,
@@ -75,6 +77,10 @@ while (true) {
     buffer = buffer.slice(end + 1);
     if (!line) continue;
     const message = JSON.parse(line);
+    if (message.type === "progress") {
+      notify(message.message);
+      continue;
+    }
     if (message.type === "result") {
       store("site-operation-result", message.result);
       text(message.result);
