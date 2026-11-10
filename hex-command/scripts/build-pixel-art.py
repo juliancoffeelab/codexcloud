@@ -14,7 +14,7 @@ ART = ROOT / "pixel" / "art"
 FRAME_NAMES = {"bonearcher": "bone_archer", "grove": "sacred_grove"}
 # Finite native canvas policy, not an artwork-controlled size override. New
 # families stay 64x64 unless this reviewed contract explicitly admits them.
-PADDED_TERRAIN_FAMILIES = frozenset({'castle-wall', 'castle-bell'})
+PADDED_TERRAIN_FAMILIES = frozenset({'castle-wall', 'castle-bell', 'cave-passage'})
 CASTLE_CANVAS = {'width': 80, 'height': 96, 'anchorX': 40, 'anchorY': 48}
 
 
@@ -25,7 +25,7 @@ def terrain_canvas(path):
             set(geometry) != {*CASTLE_CANVAS, 'z'} or
             any(type(v) is not int for v in geometry.values()) or
             any(geometry[key] != value for key, value in CASTLE_CANVAS.items())):
-        raise ValueError(f'{path}: only approved castle terrain may use the '
+        raise ValueError(f'{path}: only approved connected structures may use the '
                          '80×96 canvas anchored at (40,48); all other artwork is 64×64')
     return geometry
 
@@ -77,6 +77,18 @@ def require_terrain_variants(kind, stems, road_caps):
     elif kind == 'village':
         expected = {'0'} | {str(mask) for mask in range(1, 64)
                             if mask.bit_count() <= 3}
+    elif kind == 'cave-passage':
+        registered = json.loads((ART / 'terrain/cave-passage/variants.json').read_text())
+        directions = ['e', 'se', 'sw', 'w', 'nw', 'ne']
+        expected = {str(mask) for mask in range(64)}
+        if len(registered) != 64 or {v['id'] for v in registered} != expected:
+            raise ValueError('Cave walls require all 64 explicit connection variants')
+        for variant in registered:
+            edges = variant.get('connections', [])
+            if (set(variant) != {'id', 'connections'} or len(edges) != len(set(edges))
+                    or any(edge not in directions for edge in edges)
+                    or str(sum(1 << directions.index(edge) for edge in edges)) != variant['id']):
+                raise ValueError('Invalid cave-passage connection definition')
     elif kind in ('castle-wall', 'castle-bell'):
         catalog = json.loads((ART / 'terrain/castle-library.json').read_text())
         if catalog.get('version') != 3:
@@ -489,7 +501,7 @@ def pixel_sprites():
         kind = palette.parent.name
         matrices = sorted(palette.parent.glob("*.txt"))
         require_terrain_variants(kind, [path.stem for path in matrices], road_caps)
-        connected = kind in ('signpost', 'road', 'village', 'bridge', 'ford', 'landing', 'ferry', 'castle-wall', 'castle-bell')
+        connected = kind in ('signpost', 'road', 'village', 'bridge', 'ford', 'landing', 'ferry', 'castle-wall', 'castle-bell', 'cave-passage')
         if not connected and [p.stem for p in matrices] != ['tile']:
             raise ValueError(f'{kind}: unconnected terrain requires only tile.txt')
         key = f"terrain_{FRAME_NAMES.get(kind, kind)}"

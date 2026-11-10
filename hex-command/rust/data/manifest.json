@@ -139,7 +139,8 @@
     "game/scenario/arena-islands-3/scenario.json",
     "game/scenario/arena-islands-4/scenario.json",
     "game/scenario/combat-villages/scenario.json",
-    "game/scenario/combat-sluice/scenario.json"
+    "game/scenario/combat-sluice/scenario.json",
+    "game/scenario/underground-lair-v1/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",

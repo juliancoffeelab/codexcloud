@@ -646,6 +646,7 @@ module Graphics = struct
 end
 
 module Textures = struct
+  external linear : int = "LINEAR" [@@mel.module "phaser"] [@@mel.scope "Textures", "FilterMode"]
   external nearest : int = "NEAREST" [@@mel.module "phaser"] [@@mel.scope "Textures", "FilterMode"]
 end
 

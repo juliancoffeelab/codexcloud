@@ -27,7 +27,8 @@ module Settings = {
   type testMap =
     | Developer
     | BellNight
-    | MirrorNight;
+    | MirrorNight
+    | UndergroundLair;
   [@mel.set] external dataWindow: (ReactDOM.domProps, string) => unit = "data-window";
   [@react.component]
   let make =
@@ -151,6 +152,7 @@ module Settings = {
               {
                 switch (id) {
                 | Developer => actions.reset("developer")
+                | UndergroundLair => actions.reset("underground-lair")
                 | BellNight => actions.start_campaign("bell-night")
                 | MirrorNight => actions.start_campaign("mirror-night")
                 };
@@ -320,6 +322,7 @@ module Settings = {
             {eachList(
                [
                  (Developer, "Developer map"),
+                 (UndergroundLair, "Underground Lair"),
                  (BellNight, "Bell Night"),
                  (MirrorNight, "Mirror Night"),
                ],

@@ -318,6 +318,9 @@ pub fn scenario(
     let documents: ScenarioDocuments = parse(bundle, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
+    map.lighting
+        .validate(&map.tiles)
+        .map_err(|message| ContentError::new(&map_path, message))?;
     for tile in &map.tiles {
         if let Some(light) = &tile.light {
             light
@@ -392,6 +395,9 @@ pub fn stage(
         e.when.index_holds();
         e.validate(&map.tiles, &roster.factions, items, &map_path)?;
     }
+    map.lighting
+        .validate(&map.tiles)
+        .map_err(|message| ContentError::new(&map_path, message))?;
     for tile in &map.tiles {
         if let Some(light) = &tile.light {
             light

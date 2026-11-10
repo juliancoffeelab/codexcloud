@@ -1,3 +1,6 @@
+val daylight_only : Domain.battlefield_lighting -> bool
+val ambient : float -> float -> Domain.battlefield_lighting -> float
+
 val key : Domain.battlefield_lighting -> string
 (** Pure light transforms, shared by offline terrain, its rendering worker and SVG overlays. Rust
     supplies already-resolved light/fog conditions. *)

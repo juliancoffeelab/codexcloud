@@ -193,6 +193,9 @@ precision highp float;
 uniform sampler2D uMainSampler;
 uniform sampler2D uFactors;
 uniform sampler2D uOffsets;
+uniform sampler2D uUndergroundMask;
+uniform vec4 uUndergroundBounds;
+uniform float uUnderground;
 uniform vec2 uMapSize;
 uniform vec2 uFieldOrigin;
 uniform vec2 uFieldSize;
@@ -224,29 +227,29 @@ void main() {
   else if (mode.y == 2.0) source = ink;
   source.rgb *= uBrightness;
   if (source.a <= 0.0) { gl_FragColor = source; return; }
-  if (uNight < .5) {
-    if (uDay > .5) {
-      // Sample native world pixels so panning, zooming and page boundaries do
-      // not move the cloud shade relative to the landscape.
-      vec2 p = floor(worldPoint * uNativeScale) / uNativeScale;
-      float wave = .5 + .25*sin(p.x*.010+p.y*.006+.9*sin(p.y*.009))
-                       + .25*sin(p.x*.004-p.y*.011+1.7);
-      float shade = smoothstep(.10,.85,wave)*.52;
-      vec3 factor = vec3(1.04,1.,.94)-vec3(.42,.24,.05)*shade;
-      vec3 offset = vec3(.018*(1.-shade),.012,.006+.012*shade);
-      vec3 rgb = source.rgb / source.a;
-      float lum = dot(rgb,vec3(.2126,.7152,.0722));
-      rgb = mix(rgb,vec3(lum),.14)*factor+offset;
-      source.rgb = clamp(rgb,0.,1.)*source.a;
-    }
-    gl_FragColor = source; return;
-  }
-  if (uGround > .5) {
+  if (uNight < .5 && uDay < .5) { gl_FragColor=source; return; }
+  if (uGround > .5 && (uNight > .5 || uUnderground > .5)) {
     vec3 rgb = source.rgb / source.a;
     rgb = vec3(dot(rgb,uRowR),dot(rgb,uRowG),dot(rgb,uRowB)) + uOffset;
-    gl_FragColor = vec4(clamp(rgb,0.0,1.0)*source.a,source.a);
-    return;
+    gl_FragColor = vec4(clamp(rgb,0.0,1.0)*source.a,source.a); return;
   }
+  vec3 original=source.rgb/source.a;
+  vec3 dayRGB=original;
+  float darkness=uNight;
+  if(uUnderground>.5){
+    vec2 zone=(worldPoint-uUndergroundBounds.xy)/uUndergroundBounds.zw;
+    darkness=max(darkness,texture2D(uUndergroundMask,zone).r);
+  }
+  if(uDay>.5 && darkness<1.){
+    vec2 p=floor(worldPoint*uNativeScale)/uNativeScale;
+    float wave=.5+.25*sin(p.x*.010+p.y*.006+.9*sin(p.y*.009))+.25*sin(p.x*.004-p.y*.011+1.7);
+    float shade=smoothstep(.10,.85,wave)*.52;
+    vec3 factor=vec3(1.04,1.,.94)-vec3(.42,.24,.05)*shade;
+    vec3 offset=vec3(.018*(1.-shade),.012,.006+.012*shade);
+    float lum=dot(original,vec3(.2126,.7152,.0722));
+    dayRGB=mix(original,vec3(lum),.14)*factor+offset;
+  }
+  if(darkness<=0.){gl_FragColor=vec4(clamp(dayRGB,0.,1.)*source.a,source.a);return;}
   vec2 cell = clamp(floor((worldPoint-uFieldOrigin)*uNativeScale),vec2(0.0),vec2(uFieldSize.x*.25-1.0,uFieldSize.y-1.0));
   float values[7];for(int i=0;i<7;i++)values[i]=0.;
   if(uDirect>.5){
@@ -279,6 +282,7 @@ void main() {
   vec3 rgb = source.rgb / source.a;
   float lum = dot(rgb, vec3(.2126, .7152, .0722));
   rgb = rgb * factor.rgb * 2.0 + lum * vec3(.28, .41, .63) * .2 * factor.a + offset;
+  rgb=mix(dayRGB,rgb,darkness);
   gl_FragColor = vec4(clamp(rgb, 0.0, 1.0) * source.a, source.a);
 }|glsl}
 
@@ -287,26 +291,25 @@ let actor_lighting_vertex =
       uniform mat4 uProjectionMatrix;
       attribute vec2 inPosition;attribute vec2 inTexCoord;
       attribute float inTexId;attribute float inTintEffect;attribute vec4 inTint;
-      attribute vec4 inFactor;attribute vec3 inOffset;
+      attribute vec4 inFactor;attribute vec3 inLuminance;attribute vec3 inOffset;
       varying vec2 outTexCoord;varying float outTexId;varying float outTintEffect;
-      varying vec4 outTint;varying vec4 factor;varying vec3 offset;
+      varying vec4 outTint;varying vec4 factor;varying vec3 offset;varying vec3 luminance;
       void main(){gl_Position=uProjectionMatrix*vec4(inPosition,1.,1.);
       outTexCoord=inTexCoord;outTexId=inTexId;outTintEffect=inTintEffect;outTint=inTint;
-      factor=inFactor;offset=inOffset;}|glsl}
+      factor=inFactor;luminance=inLuminance;offset=inOffset;}|glsl}
 
 let actor_lighting_fragment =
   {glsl|precision highp float;
       uniform sampler2D uMainSampler[%count%];
       varying vec2 outTexCoord;varying float outTexId;varying float outTintEffect;
-      varying vec4 outTint;varying vec4 factor;varying vec3 offset;
+      varying vec4 outTint;varying vec4 factor;varying vec3 offset;varying vec3 luminance;
       void main(){vec4 texture;%forloop%
       vec4 ink=vec4(outTint.bgr*outTint.a,outTint.a);vec4 source=texture*ink;
       if(outTintEffect==1.)source.rgb=mix(texture.rgb,ink.rgb,texture.a);
       else if(outTintEffect==2.)source=ink;
       if(source.a>0.){vec3 rgb=source.rgb/source.a;
       float lum=dot(rgb,vec3(.2126,.7152,.0722));
-      if(factor.a<-.5)rgb=mix(rgb,vec3(lum),.14);
-      rgb=rgb*factor.rgb+lum*vec3(.28,.41,.63)*.2*max(factor.a,0.)+offset;
+      rgb=rgb*factor.rgb+lum*luminance+offset;
       source.rgb=clamp(rgb,0.,1.)*source.a;}gl_FragColor=source;}|glsl}
 
 let light_field_vertex =

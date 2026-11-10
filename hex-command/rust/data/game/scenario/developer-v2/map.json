@@ -5394,37 +5394,32 @@
     {
       "col": 22,
       "row": 23,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 23,
       "row": 23,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 24,
       "row": 23,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 25,
       "row": 23,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 26,
       "row": 23,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 27,
@@ -5625,51 +5620,52 @@
     {
       "col": 23,
       "row": 24,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["e", "se", "w"]
     },
     {
       "col": 24,
       "row": 24,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["e", "se", "sw", "w"]
     },
     {
       "col": 25,
       "row": 24,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "connections": ["e", "se", "sw", "w"],
+      "floor": "cave-stone"
     },
     {
       "col": 26,
       "row": 24,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["se", "sw", "w"]
     },
     {
       "col": 27,
       "row": 24,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 28,
       "row": 24,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 29,
       "row": 24,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 30,
@@ -5842,58 +5838,62 @@
     {
       "col": 22,
       "row": 25,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 23,
       "row": 25,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["e", "se", "sw", "nw", "ne"]
     },
     {
       "col": 24,
       "row": 25,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["e", "se", "sw", "w", "nw", "ne"]
     },
     {
       "col": 25,
       "row": 25,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 26,
       "row": 25,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["e", "sw", "w", "nw"]
     },
     {
       "col": 27,
       "row": 25,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["e", "se", "w"]
     },
     {
       "col": 28,
       "row": 25,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "connections": ["sw", "w"],
+      "floor": "cave-stone"
     },
     {
       "col": 29,
       "row": 25,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 30,
@@ -6066,58 +6066,66 @@
     {
       "col": 22,
       "row": 26,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 23,
       "row": 26,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "connections": ["e", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 24,
       "row": 26,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["e", "w", "nw", "ne"]
     },
     {
       "col": 25,
       "row": 26,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["e", "w", "nw", "ne"],
+      "light": {
+        "radius": 75,
+        "power": 0.7,
+        "color": [255, 201, 143],
+        "fixture": false
+      }
     },
     {
       "col": 26,
       "row": 26,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["w", "nw", "ne"]
     },
     {
       "col": 27,
       "row": 26,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 28,
       "row": 26,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["se", "nw", "ne"]
     },
     {
       "col": 29,
       "row": 26,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 30,
@@ -6290,58 +6298,52 @@
     {
       "col": 22,
       "row": 27,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 23,
       "row": 27,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 24,
       "row": 27,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 25,
       "row": 27,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 26,
       "row": 27,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 27,
       "row": 27,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 28,
       "row": 27,
-      "terrain": "plains",
+      "terrain": "cave-passage",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "cave-stone",
+      "connections": ["nw"]
     },
     {
       "col": 29,
       "row": 27,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 30,
@@ -6556,16 +6558,14 @@
     {
       "col": 28,
       "row": 28,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 29,
       "row": 28,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
+      "terrain": "cave-wall",
+      "floor": "mountain-rock"
     },
     {
       "col": 30,
@@ -7255,5 +7255,162 @@
     }
   ],
   "name": "Developer map",
-  "description": "Developer map, with room for all units of all sides"
+  "description": "Developer map, with room for all units of all sides",
+  "lighting": {
+    "time": "day",
+    "underground": [
+      {
+        "col": 22,
+        "row": 23
+      },
+      {
+        "col": 23,
+        "row": 23
+      },
+      {
+        "col": 24,
+        "row": 23
+      },
+      {
+        "col": 25,
+        "row": 23
+      },
+      {
+        "col": 26,
+        "row": 23
+      },
+      {
+        "col": 23,
+        "row": 24
+      },
+      {
+        "col": 24,
+        "row": 24
+      },
+      {
+        "col": 25,
+        "row": 24
+      },
+      {
+        "col": 26,
+        "row": 24
+      },
+      {
+        "col": 27,
+        "row": 24
+      },
+      {
+        "col": 28,
+        "row": 24
+      },
+      {
+        "col": 29,
+        "row": 24
+      },
+      {
+        "col": 22,
+        "row": 25
+      },
+      {
+        "col": 23,
+        "row": 25
+      },
+      {
+        "col": 24,
+        "row": 25
+      },
+      {
+        "col": 25,
+        "row": 25
+      },
+      {
+        "col": 26,
+        "row": 25
+      },
+      {
+        "col": 27,
+        "row": 25
+      },
+      {
+        "col": 28,
+        "row": 25
+      },
+      {
+        "col": 29,
+        "row": 25
+      },
+      {
+        "col": 22,
+        "row": 26
+      },
+      {
+        "col": 23,
+        "row": 26
+      },
+      {
+        "col": 24,
+        "row": 26
+      },
+      {
+        "col": 25,
+        "row": 26
+      },
+      {
+        "col": 26,
+        "row": 26
+      },
+      {
+        "col": 27,
+        "row": 26
+      },
+      {
+        "col": 28,
+        "row": 26
+      },
+      {
+        "col": 29,
+        "row": 26
+      },
+      {
+        "col": 22,
+        "row": 27
+      },
+      {
+        "col": 23,
+        "row": 27
+      },
+      {
+        "col": 24,
+        "row": 27
+      },
+      {
+        "col": 25,
+        "row": 27
+      },
+      {
+        "col": 26,
+        "row": 27
+      },
+      {
+        "col": 27,
+        "row": 27
+      },
+      {
+        "col": 28,
+        "row": 27
+      },
+      {
+        "col": 29,
+        "row": 27
+      },
+      {
+        "col": 28,
+        "row": 28
+      },
+      {
+        "col": 29,
+        "row": 28
+      }
+    ]
+  }
 }

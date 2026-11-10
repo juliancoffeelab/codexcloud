@@ -1,5 +1,12 @@
 let number = Js.Float.toString
 
+let daylight_only (lighting : Domain.battlefield_lighting) =
+  lighting.time = Domain.Time_of_day.Day && Array.length lighting.underground = 0
+
+let ambient x y (lighting : Domain.battlefield_lighting) =
+  if lighting.time = Domain.Time_of_day.Night then 1.
+  else Underground.sample (Underground.get lighting.underground) x y
+
 let key (lighting : Domain.battlefield_lighting) =
   let optional encode = Option.fold ~none:Js.Json.null ~some:encode in
   Js.Json.stringify
@@ -9,6 +16,7 @@ let key (lighting : Domain.battlefield_lighting) =
            (match lighting.time with
            | Domain.Time_of_day.Day -> "day"
            | Domain.Time_of_day.Night -> "night");
+         Js.Json.string (Underground.key lighting.underground);
          Js.Json.array
            (Array.map
               (fun (light : Domain.battlefield_light) ->
@@ -96,7 +104,7 @@ let daylight x y =
     0.006 +. (0.012 *. shade);
   |]
 
-let matrix x y (lighting : Domain.battlefield_lighting) =
+let base_matrix x y (lighting : Domain.battlefield_lighting) =
   if lighting.time = Domain.Time_of_day.Day then
     let values = daylight x y in
     let luminance = [| 0.2126; 0.7152; 0.0722 |] in
@@ -125,6 +133,15 @@ let matrix x y (lighting : Domain.battlefield_lighting) =
           *. night.(channel) *. (1. -. mix)
           +. if source = channel then warm.(channel) *. mix else 0.)
 
+let matrix x y (lighting : Domain.battlefield_lighting) =
+  let darkness = ambient x y lighting in
+  if darkness = 0. then base_matrix x y { lighting with time = Domain.Time_of_day.Day }
+  else if darkness = 1. then base_matrix x y { lighting with time = Domain.Time_of_day.Night }
+  else
+    let day = base_matrix x y { lighting with time = Domain.Time_of_day.Day }
+    and night = base_matrix x y { lighting with time = Domain.Time_of_day.Night } in
+    Array.mapi (fun i value -> (value *. (1. -. darkness)) +. (night.(i) *. darkness)) day
+
 type pixels
 
 external get : pixels -> int -> float = "" [@@mel.get_index]
@@ -146,7 +163,7 @@ type source = {
 external source_at : source array -> int -> source = "" [@@mel.get_index]
 
 let shade data width start finish pixel_scale (lighting : Domain.battlefield_lighting) =
-  if lighting.time = Domain.Time_of_day.Day then
+  if daylight_only lighting then
     for y = start to finish - 1 do
       for x = 0 to width - 1 do
         let index = ((y * width) + x) * 4 in
@@ -162,6 +179,8 @@ let shade data width start finish pixel_scale (lighting : Domain.battlefield_lig
       done
     done
   else
+    let mask = Underground.get lighting.underground in
+    let regional = lighting.time = Domain.Time_of_day.Day in
     let colored = colored lighting in
     let sources =
       Array.map
@@ -190,61 +209,77 @@ let shade data width start finish pixel_scale (lighting : Domain.battlefield_lig
         if get data (index + 3) <> 0. then (
           let r = get data index and g = get data (index + 1) and b = get data (index + 2) in
           let lum = (0.2126 *. r) +. (0.7152 *. g) +. (0.0722 *. b) in
-          if count = 0 then (
-            set data index ((((r *. 0.8) +. (lum *. 0.2)) *. 0.28) +. 4.);
-            set data (index + 1) ((((g *. 0.8) +. (lum *. 0.2)) *. 0.41) +. 8.);
-            set data (index + 2) ((((b *. 0.8) +. (lum *. 0.2)) *. 0.63) +. 17.))
-          else
-            let px = float_of_int x /. pixel_scale in
-            let total = ref 0.
-            and wr = ref 0.
-            and wg = ref 0.
-            and wb = ref 0.
-            and ro = ref 0.
-            and go = ref 0.
-            and bo = ref 0. in
-            for index = 0 to count - 1 do
-              let source = source_at sources index in
-              let distance = hypot (px -. source.x) ((py -. source.y) *. 1.12) /. source.radius in
-              if distance < 1. then (
-                let amount = source.power *. ((1. -. (distance *. distance)) ** 2.) in
-                total := !total +. amount;
-                if colored then (
-                  wr := !wr +. (amount *. source.r);
-                  wg := !wg +. (amount *. source.g);
-                  wb := !wb +. (amount *. source.b);
-                  ro := !ro +. (amount *. source.ro);
-                  go := !go +. (amount *. source.go);
-                  bo := !bo +. (amount *. source.bo)))
-            done;
-            let mix = min 1. !total *. 0.88 in
-            let dark = 1. -. mix in
-            let use_palette = colored && !total <> 0. in
-            let wr = if use_palette then !wr /. !total else 1.02 in
-            let wg = if use_palette then !wg /. !total else 0.78 in
-            let wb = if use_palette then !wb /. !total else 0.49 in
-            let ro = if use_palette then !ro /. !total else 22. in
-            let go = if use_palette then !go /. !total else 14. in
-            let bo = if use_palette then !bo /. !total else 7. in
-            set data index
-              ((((r *. 0.8) +. (lum *. 0.2)) *. 0.28 *. dark)
-              +. (4. *. dark)
-              +. (((r *. wr) +. ro) *. mix));
-            set data (index + 1)
-              ((((g *. 0.8) +. (lum *. 0.2)) *. 0.41 *. dark)
-              +. (8. *. dark)
-              +. (((g *. wg) +. go) *. mix));
-            set data (index + 2)
-              ((((b *. 0.8) +. (lum *. 0.2)) *. 0.63 *. dark)
-              +. (17. *. dark)
-              +. (((b *. wb) +. bo) *. mix)))
+          let night_pixel () =
+            if count = 0 then (
+              set data index ((((r *. 0.8) +. (lum *. 0.2)) *. 0.28) +. 4.);
+              set data (index + 1) ((((g *. 0.8) +. (lum *. 0.2)) *. 0.41) +. 8.);
+              set data (index + 2) ((((b *. 0.8) +. (lum *. 0.2)) *. 0.63) +. 17.))
+            else
+              let px = float_of_int x /. pixel_scale in
+              let total = ref 0.
+              and wr = ref 0.
+              and wg = ref 0.
+              and wb = ref 0.
+              and ro = ref 0.
+              and go = ref 0.
+              and bo = ref 0. in
+              for index = 0 to count - 1 do
+                let source = source_at sources index in
+                let distance = hypot (px -. source.x) ((py -. source.y) *. 1.12) /. source.radius in
+                if distance < 1. then (
+                  let amount = source.power *. ((1. -. (distance *. distance)) ** 2.) in
+                  total := !total +. amount;
+                  if colored then (
+                    wr := !wr +. (amount *. source.r);
+                    wg := !wg +. (amount *. source.g);
+                    wb := !wb +. (amount *. source.b);
+                    ro := !ro +. (amount *. source.ro);
+                    go := !go +. (amount *. source.go);
+                    bo := !bo +. (amount *. source.bo)))
+              done;
+              let mix = min 1. !total *. 0.88 in
+              let dark = 1. -. mix in
+              let use_palette = colored && !total <> 0. in
+              let wr = if use_palette then !wr /. !total else 1.02 in
+              let wg = if use_palette then !wg /. !total else 0.78 in
+              let wb = if use_palette then !wb /. !total else 0.49 in
+              let ro = if use_palette then !ro /. !total else 22. in
+              let go = if use_palette then !go /. !total else 14. in
+              let bo = if use_palette then !bo /. !total else 7. in
+              set data index
+                ((((r *. 0.8) +. (lum *. 0.2)) *. 0.28 *. dark)
+                +. (4. *. dark)
+                +. (((r *. wr) +. ro) *. mix));
+              set data (index + 1)
+                ((((g *. 0.8) +. (lum *. 0.2)) *. 0.41 *. dark)
+                +. (8. *. dark)
+                +. (((g *. wg) +. go) *. mix));
+              set data (index + 2)
+                ((((b *. 0.8) +. (lum *. 0.2)) *. 0.63 *. dark)
+                +. (17. *. dark)
+                +. (((b *. wb) +. bo) *. mix))
+          in
+          let px = float_of_int x /. pixel_scale in
+          let darkness = if regional then Underground.sample mask px py else 1. in
+          if darkness > 0. then night_pixel ();
+          if darkness < 1. then
+            let values = daylight px py in
+            let original = [| r; g; b |] in
+            for channel = 0 to 2 do
+              let day =
+                (((original.(channel) *. 0.86) +. (lum *. 0.14)) *. values.(channel))
+                +. (values.(channel + 3) *. 255.)
+              in
+              set data (index + channel)
+                ((day *. (1. -. darkness)) +. (get data (index + channel) *. darkness))
+            done)
       done
     done
 
 open Browser_canvas
 
 let paint context (lighting : Domain.battlefield_lighting) =
-  if lighting.time <> Domain.Time_of_day.Day then (
+  if not (daylight_only lighting) then (
     save context;
     Array.iter
       (fun (light : Domain.battlefield_light) ->
@@ -316,6 +351,7 @@ let changed_lights before after =
     key
       {
         Domain.time = Domain.Time_of_day.Day;
+        underground = [||];
         lights = [| { light with fixture = Some (Option.value ~default:true light.fixture) } |];
       }
   in

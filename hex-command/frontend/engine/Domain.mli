@@ -402,7 +402,7 @@ type t =
 end
 type battlefield_light = { color : ((int) array) option; fixture : (bool) option; col : int32; row : int32; dx : (float) option; dy : (float) option; radius : float; power : float; when_ : (condition_rule) option }
 
-type battlefield_lighting = { time : Time_of_day.t; lights : (battlefield_light) array }
+type battlefield_lighting = { time : Time_of_day.t; underground : (hex) array; lights : (battlefield_light) array }
 
 type battlefield_presentation = { lighting : battlefield_lighting; fog : (hex) array } [@@ocaml.doc "Resolved current presentation; sent with views, never persisted as a cache."]
 
@@ -549,7 +549,7 @@ type mission = { item_ids : (string) array; scripted_events : (script_event) arr
 
 type campaign = { human : bool; tagline : string; description : string; short_description : string; race : Race.t; id : string; name : string; leader : string; characters : (character) array; missions : (mission) array; ending : (Speech.t) array } [@@ocaml.doc "An ordered set of authored chapters and their final dialogue."]
 
-type map_lighting = { time : Time_of_day.t } [@@ocaml.doc "Map-wide ambience; terrain emitters belong to their tiles."]
+type map_lighting = { time : Time_of_day.t; underground : (hex) array } [@@ocaml.doc "Outdoor ambience and explicit underground cells; emitters belong to their tiles."]
 
 type map_definition = { id : string; revision : float; name : string; description : string; human : bool; cols : int32; rows : int32; terrain : (tile) array; units : (starting_unit) array; lighting : map_lighting; presentation : battlefield_presentation } [@@ocaml.doc "Displayable current authored map."]
 
@@ -558,6 +558,7 @@ type t =
 | Bridge
 | Burned_village
 | Cave
+| Cave_wall
 | Church
 | Ferry
 | Ford
@@ -592,6 +593,8 @@ type race_definition = { id : Race.t; name : string; terrain_modifiers : (Terrai
 
 module Terrain : sig
 type t =
+| Cave_passage
+| Cave_wall
 | Monastery
 | Church
 | Graveyard

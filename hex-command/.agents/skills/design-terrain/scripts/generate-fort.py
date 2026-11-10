@@ -232,7 +232,7 @@ def generate(output, materials, paving_colors, catalog):
             registry.append(variant)
         kind_palette = {**palette, **json.loads((REPO / 'pixel/art/terrain/props/bell/structure/palette.json').read_text())} if kind == 'castle-bell' else palette
         (folder / 'palette.json').write_text(json.dumps(kind_palette, indent=2) + '\n')
-        (folder / 'canvas.json').write_text(json.dumps(dict(width=WIDTH, height=HEIGHT, anchorX=40, anchorY=48, z=2 if kind == 'castle-bell' else 1), indent=2) + '\n')
+        (folder / 'canvas.json').write_text(json.dumps(dict(width=WIDTH, height=HEIGHT, anchorX=40, anchorY=48, z=3 if kind == 'castle-bell' else 2), indent=2) + '\n')
         (folder / 'variants.json').write_text(json.dumps(registry, indent=2) + '\n')
 
 

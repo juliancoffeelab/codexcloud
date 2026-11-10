@@ -292,9 +292,7 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
       Phaser.DynamicTexture.dirty texture true
 
     method update (next : Domain.battlefield_lighting) =
-      let next_signature =
-        if next.time = Domain.Time_of_day.Day then "day" else Lighting.key next
-      in
+      let next_signature = if Lighting.daylight_only next then "day" else Lighting.key next in
       if
         next_signature <> signature
         || Set.size dirty > 0
@@ -305,7 +303,8 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
         let global =
           not
             (Option.fold ~none:false
-               ~some:(fun (old : Domain.battlefield_lighting) -> old.time = next.time)
+               ~some:(fun (old : Domain.battlefield_lighting) ->
+                 old.time = next.time && old.underground = next.underground)
                before)
         in
         let changed = Set.create () in
@@ -341,7 +340,7 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
               (Lighting.changed_lights previous.lights next.lights));
         lighting <- Some next;
         Phaser_spatial.clear light_index;
-        if next.time <> Domain.Time_of_day.Day then
+        if not (Lighting.daylight_only next) then
           Array.iteri
             (fun index (light : Domain.battlefield_light) ->
               let x, y = Lighting.position light in
@@ -362,7 +361,7 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
                   self#shade record next))
           pages;
         Set.clear dirty;
-        if next.time = Domain.Time_of_day.Day then pipeline#release;
+        if Lighting.daylight_only next then pipeline#release;
         resources#publish)
 
     method private target record x y =
@@ -393,7 +392,7 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
       record.display <- None;
       let x, y = position source in
       let target = self#target record x y in
-      if lighting.time = Domain.Time_of_day.Day then (
+      if Lighting.daylight_only lighting then (
         (* Daylight is stationary in world coordinates. Shade the padded page
            once at native resolution; display the cached result with Phaser's
            ordinary image pipeline at every camera position and pixel density. *)

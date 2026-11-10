@@ -1,6 +1,6 @@
 ---
 name: design-terrain
-description: Use when authoring, revising or integrating terrain artwork, connected variants, or shared tile geometry.
+description: Use when authoring, revising or integrating terrain artwork, connected geometry, or underground ambience and exploration.
 ---
 
 # Design terrain
@@ -13,14 +13,16 @@ Artwork generators accept no map input. Maps use the shared terrain selector;
 an unsupported selection fails instead of generating another tile.
 
 1. Establish the reusable terrain family, floor, connection meanings and
-   intended lighting. Compare approved terrain with troops at native scale.
+   intended lighting. Compare approved terrain with troops at native scale. For
+   ambience-only work, establish covered cells, lights and exploration state.
 2. Read the reference for the work being done:
    - [Surfaces](references/surfaces.md) for ground, foreground, foliage or source formats.
    - [Connections](references/connections.md) for directional tiles and crossings.
    - [Castles](references/castles.md) for shared paving, walls, openings and towers.
+   - [Caves](references/caves.md) for passages, solid rock, underground ambience and exploration.
    - [Composition](references/composition.md) for layouts, density or shorelines.
    - [Integration](references/integration.md) when adding an ID or installing artwork.
-3. Author candidate matrices offline. Use
+3. For artwork changes, author candidate matrices offline. Use
    [pinkbox-generation](../pinkbox-generation/SKILL.md) for ordinary ground hexes
    or transparent props, and [artwork-enhancement](../artwork-enhancement/SKILL.md)
    for revisions. Review generated or edited candidates with

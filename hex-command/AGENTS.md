@@ -34,7 +34,7 @@ For battlefield rendering changes, preserve the
   or integrating unit artwork, promotion branches or shared sprite scale, or
   previewing and comparing faction lineups.
 - [design-terrain](.agents/skills/design-terrain/SKILL.md): Use when authoring,
-  revising or integrating terrain artwork, connected variants or shared tile geometry.
+  revising or integrating terrain artwork, connected variants shared tile geometry, or underground ambience and exploration.
 - [pinkbox-generation](.agents/skills/pinkbox-generation/SKILL.md): Use when
   generating or regenerating native pixel artwork from reference matrices,
   including units, terrain and foreground props.

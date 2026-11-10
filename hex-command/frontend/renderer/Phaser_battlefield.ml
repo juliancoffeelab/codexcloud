@@ -1283,7 +1283,9 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
             and alpha =
               ref
                 (if
-                   (Native.presentation self#frame.view.game).lighting.time = Domain.Time_of_day.Day
+                   Lighting.ambient tile.terrain.x tile.terrain.y
+                     (Native.presentation self#frame.view.game).lighting
+                   < 0.5
                  then 0.14
                  else 0.3)
             in

@@ -1,0 +1,513 @@
+[
+  {
+    "id": "0",
+    "connections": []
+  },
+  {
+    "id": "1",
+    "connections": [
+      "e"
+    ]
+  },
+  {
+    "id": "2",
+    "connections": [
+      "se"
+    ]
+  },
+  {
+    "id": "3",
+    "connections": [
+      "e",
+      "se"
+    ]
+  },
+  {
+    "id": "4",
+    "connections": [
+      "sw"
+    ]
+  },
+  {
+    "id": "5",
+    "connections": [
+      "e",
+      "sw"
+    ]
+  },
+  {
+    "id": "6",
+    "connections": [
+      "se",
+      "sw"
+    ]
+  },
+  {
+    "id": "7",
+    "connections": [
+      "e",
+      "se",
+      "sw"
+    ]
+  },
+  {
+    "id": "8",
+    "connections": [
+      "w"
+    ]
+  },
+  {
+    "id": "9",
+    "connections": [
+      "e",
+      "w"
+    ]
+  },
+  {
+    "id": "10",
+    "connections": [
+      "se",
+      "w"
+    ]
+  },
+  {
+    "id": "11",
+    "connections": [
+      "e",
+      "se",
+      "w"
+    ]
+  },
+  {
+    "id": "12",
+    "connections": [
+      "sw",
+      "w"
+    ]
+  },
+  {
+    "id": "13",
+    "connections": [
+      "e",
+      "sw",
+      "w"
+    ]
+  },
+  {
+    "id": "14",
+    "connections": [
+      "se",
+      "sw",
+      "w"
+    ]
+  },
+  {
+    "id": "15",
+    "connections": [
+      "e",
+      "se",
+      "sw",
+      "w"
+    ]
+  },
+  {
+    "id": "16",
+    "connections": [
+      "nw"
+    ]
+  },
+  {
+    "id": "17",
+    "connections": [
+      "e",
+      "nw"
+    ]
+  },
+  {
+    "id": "18",
+    "connections": [
+      "se",
+      "nw"
+    ]
+  },
+  {
+    "id": "19",
+    "connections": [
+      "e",
+      "se",
+      "nw"
+    ]
+  },
+  {
+    "id": "20",
+    "connections": [
+      "sw",
+      "nw"
+    ]
+  },
+  {
+    "id": "21",
+    "connections": [
+      "e",
+      "sw",
+      "nw"
+    ]
+  },
+  {
+    "id": "22",
+    "connections": [
+      "se",
+      "sw",
+      "nw"
+    ]
+  },
+  {
+    "id": "23",
+    "connections": [
+      "e",
+      "se",
+      "sw",
+      "nw"
+    ]
+  },
+  {
+    "id": "24",
+    "connections": [
+      "w",
+      "nw"
+    ]
+  },
+  {
+    "id": "25",
+    "connections": [
+      "e",
+      "w",
+      "nw"
+    ]
+  },
+  {
+    "id": "26",
+    "connections": [
+      "se",
+      "w",
+      "nw"
+    ]
+  },
+  {
+    "id": "27",
+    "connections": [
+      "e",
+      "se",
+      "w",
+      "nw"
+    ]
+  },
+  {
+    "id": "28",
+    "connections": [
+      "sw",
+      "w",
+      "nw"
+    ]
+  },
+  {
+    "id": "29",
+    "connections": [
+      "e",
+      "sw",
+      "w",
+      "nw"
+    ]
+  },
+  {
+    "id": "30",
+    "connections": [
+      "se",
+      "sw",
+      "w",
+      "nw"
+    ]
+  },
+  {
+    "id": "31",
+    "connections": [
+      "e",
+      "se",
+      "sw",
+      "w",
+      "nw"
+    ]
+  },
+  {
+    "id": "32",
+    "connections": [
+      "ne"
+    ]
+  },
+  {
+    "id": "33",
+    "connections": [
+      "e",
+      "ne"
+    ]
+  },
+  {
+    "id": "34",
+    "connections": [
+      "se",
+      "ne"
+    ]
+  },
+  {
+    "id": "35",
+    "connections": [
+      "e",
+      "se",
+      "ne"
+    ]
+  },
+  {
+    "id": "36",
+    "connections": [
+      "sw",
+      "ne"
+    ]
+  },
+  {
+    "id": "37",
+    "connections": [
+      "e",
+      "sw",
+      "ne"
+    ]
+  },
+  {
+    "id": "38",
+    "connections": [
+      "se",
+      "sw",
+      "ne"
+    ]
+  },
+  {
+    "id": "39",
+    "connections": [
+      "e",
+      "se",
+      "sw",
+      "ne"
+    ]
+  },
+  {
+    "id": "40",
+    "connections": [
+      "w",
+      "ne"
+    ]
+  },
+  {
+    "id": "41",
+    "connections": [
+      "e",
+      "w",
+      "ne"
+    ]
+  },
+  {
+    "id": "42",
+    "connections": [
+      "se",
+      "w",
+      "ne"
+    ]
+  },
+  {
+    "id": "43",
+    "connections": [
+      "e",
+      "se",
+      "w",
+      "ne"
+    ]
+  },
+  {
+    "id": "44",
+    "connections": [
+      "sw",
+      "w",
+      "ne"
+    ]
+  },
+  {
+    "id": "45",
+    "connections": [
+      "e",
+      "sw",
+      "w",
+      "ne"
+    ]
+  },
+  {
+    "id": "46",
+    "connections": [
+      "se",
+      "sw",
+      "w",
+      "ne"
+    ]
+  },
+  {
+    "id": "47",
+    "connections": [
+      "e",
+      "se",
+      "sw",
+      "w",
+      "ne"
+    ]
+  },
+  {
+    "id": "48",
+    "connections": [
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "49",
+    "connections": [
+      "e",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "50",
+    "connections": [
+      "se",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "51",
+    "connections": [
+      "e",
+      "se",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "52",
+    "connections": [
+      "sw",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "53",
+    "connections": [
+      "e",
+      "sw",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "54",
+    "connections": [
+      "se",
+      "sw",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "55",
+    "connections": [
+      "e",
+      "se",
+      "sw",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "56",
+    "connections": [
+      "w",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "57",
+    "connections": [
+      "e",
+      "w",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "58",
+    "connections": [
+      "se",
+      "w",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "59",
+    "connections": [
+      "e",
+      "se",
+      "w",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "60",
+    "connections": [
+      "sw",
+      "w",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "61",
+    "connections": [
+      "e",
+      "sw",
+      "w",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "62",
+    "connections": [
+      "se",
+      "sw",
+      "w",
+      "nw",
+      "ne"
+    ]
+  },
+  {
+    "id": "63",
+    "connections": [
+      "e",
+      "se",
+      "sw",
+      "w",
+      "nw",
+      "ne"
+    ]
+  }
+]
