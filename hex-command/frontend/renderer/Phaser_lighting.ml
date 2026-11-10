@@ -32,13 +32,16 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
     | Some renderer -> renderer
     | None -> failwith "Lighting requires the battlefield WebGL renderer"
   in
-  let count = max 1 (min 32 ((Webgl.parameter renderer##gl 0x8dfd - 20) / 3)) in
+  let count = max 1 (min 32 ((Webgl.parameter renderer##gl 0x8dfd - 24) / 3)) in
   let field = new Phaser_light_field.light_field scene resources in
   object (self)
     val mutable pipeline : Phaser_pipeline.t option = None
     val mutable signature = ""
     val mutable factors : Phaser.texture option = None
     val mutable offsets : Phaser.texture option = None
+    val mutable zone_signature = ""
+    val mutable zone_texture : Phaser.texture option = None
+    val mutable zone_mask : Underground.mask option = None
     val mutable map_width = 1.
     val mutable map_height = 1.
     val mutable night = false
@@ -94,7 +97,8 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
         self#native##flush ();
         factors <- None;
         offsets <- None;
-        if not night then field#release
+        self#configure_zones next;
+        if Lighting.daylight_only next then field#release
         else
           let built =
             Performance_trace.measure "Phaser lighting field" (fun () ->
@@ -103,6 +107,46 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
           factors <- built.factors;
           offsets <- built.offsets;
           normalization <- built.normalization)
+
+    method private release_zones =
+      Option.iter
+        (fun (_ : Phaser.texture) ->
+          let _ = scene##textures##remove "battlefield-underground" in
+          ())
+        zone_texture;
+      zone_texture <- None;
+      zone_mask <- None;
+      zone_signature <- "";
+      resources#remove "underground-mask"
+
+    method private configure_zones (next : Domain.battlefield_lighting) =
+      let key = Underground.key next.underground in
+      if key <> zone_signature then (
+        self#native##flush ();
+        self#release_zones;
+        zone_signature <- key;
+        zone_mask <- Underground.get next.underground;
+        Option.iter
+          (fun (mask : Underground.mask) ->
+            let _ =
+              resources#check "underground ambience mask" (float_of_int mask.width)
+                (float_of_int mask.height)
+            in
+            let bytes =
+              Array.init
+                (mask.width * mask.height * 4)
+                (fun i -> if i mod 4 = 3 then 255 else int_of_float mask.data.(i / 4))
+            in
+            let texture =
+              Phaser.SceneMethods.white_texture scene##textures "battlefield-underground"
+                (Phaser.SceneMethods.bytes bytes) mask.width mask.height
+            in
+            let _ = texture##setFilter Phaser.Textures.linear in
+            zone_texture <- Some texture;
+            resources#set "underground-mask" "underground ambience"
+              (float_of_int (Array.length mask.data * 8))
+              (float_of_int (mask.width * mask.height * 4)))
+          zone_mask)
 
     method private bind (native : Phaser.pipeline) object_ =
       let data = Pipeline_data.get object_ in
@@ -188,7 +232,7 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
       let _ = native##set1f "uBrightness" (Option.value ~default:1. data.brightness) in
       let _ = native##set1f "uGround" (if Option.is_some point then 1. else 0.) in
       (match point with
-      | Some point when night ->
+      | Some point when not (Lighting.daylight_only lighting) ->
           let matrix = Lighting.matrix point##x point##y lighting in
           let _ = native##set3f "uRowR" matrix.(0) matrix.(1) matrix.(2) in
           let _ = native##set3f "uRowG" matrix.(5) matrix.(6) matrix.(7) in
@@ -196,6 +240,25 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
           let _ = native##set3f "uOffset" matrix.(4) matrix.(9) matrix.(14) in
           ()
       | _ -> ());
+      let _ =
+        native##set1f "uUnderground"
+          (if (not data.unlit) && (not night) && Option.is_some zone_mask then 1. else 0.)
+      in
+      (match zone_mask with
+      | None ->
+          let _ = native##set4f "uUndergroundBounds" 0. 0. 1. 1. in
+          ()
+      | Some mask ->
+          let _ =
+            native##set4f "uUndergroundBounds" mask.x mask.y
+              (float_of_int mask.width *. mask.step)
+              (float_of_int mask.height *. mask.step)
+          in
+          ());
+      let _ = native##set1i "uUndergroundMask" 3 in
+      Phaser_pipeline.bind_texture native
+        (Option.bind zone_texture Phaser_pipeline.source_texture)
+        3;
       let _ = native##set1i "uFactors" 1 in
       let _ = native##set1i "uOffsets" 2 in
       Phaser_pipeline.bind_texture native (Option.bind factors Phaser_pipeline.source_texture) 1;
@@ -206,6 +269,7 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
       signature <- "";
       binding <- None;
       field#release;
+      self#release_zones;
       factors <- None;
       offsets <- None
   end

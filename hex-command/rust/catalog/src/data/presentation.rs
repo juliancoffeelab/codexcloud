@@ -240,7 +240,8 @@ pub fn render(input: &impl PresentationContext, memory: &[String]) -> Battlefiel
     });
     BattlefieldPresentation {
         lighting: BattlefieldLighting {
-            time: lighting.time.clone(),
+            time: lighting.time,
+            underground: lighting.underground.clone(),
             lights,
         },
         fog,
@@ -294,6 +295,7 @@ pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<Strin
     };
     let lighting = BattlefieldLighting {
         time: input.lighting.time,
+        underground: input.lighting.underground.clone(),
         lights: input
             .tiles
             .iter()

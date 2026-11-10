@@ -1634,6 +1634,7 @@ let trace_context t =
                 (match presentation.lighting.time with
                 | Domain.Time_of_day.Day -> "day"
                 | Night -> "night") );
+            ("underground", Js.Json.array (Array.map hex presentation.lighting.underground));
             ("lights", Js.Json.array (Array.map light presentation.lighting.lights));
           ] );
       ("fog", Js.Json.array (Array.map hex presentation.fog));

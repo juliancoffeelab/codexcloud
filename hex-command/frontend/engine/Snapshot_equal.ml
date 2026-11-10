@@ -31,6 +31,7 @@ let rec battlefield_light (left : battlefield_light) (right : battlefield_light)
 
 and battlefield_lighting (left : battlefield_lighting) (right : battlefield_lighting) =
   time_of_day left.time right.time
+  && sequence Hex.equal left.underground right.underground
   && sequence (fun left right -> battlefield_light left right) left.lights right.lights
 
 and category (left : Category.t) (right : Category.t) =

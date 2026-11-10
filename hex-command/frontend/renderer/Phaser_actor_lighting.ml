@@ -14,8 +14,8 @@ module Pipeline_data = Phaser_pipeline.Data (struct
   type t = data
 end)
 
-let identity = [| 1.; 1.; 1.; 0.; 0.; 0.; 0. |]
-let daylight = { Domain.time = Domain.Time_of_day.Day; lights = [||] }
+let identity = [| 1.; 1.; 1.; 0.; 0.; 0.; 0.; 0.; 0.; 0. |]
+let daylight = { Domain.time = Domain.Time_of_day.Day; underground = [||]; lights = [||] }
 
 let bucket_key x y =
   string_of_int (int_of_float (floor (x /. 128.)))
@@ -46,6 +46,12 @@ class actor_lighting (game : Phaser.game) =
               normalized = false;
             };
             {
+              Phaser.Pipeline.name = "inLuminance";
+              size = 3;
+              kind = Phaser.Pipeline.float_type;
+              normalized = false;
+            };
+            {
               Phaser.Pipeline.name = "inOffset";
               size = 3;
               kind = Phaser.Pipeline.float_type;
@@ -72,8 +78,8 @@ class actor_lighting (game : Phaser.game) =
       | None -> failwith "Actor pipeline is not initialized"
 
     method configure (next : Domain.battlefield_lighting) =
-      if next.time = Domain.Time_of_day.Day then (
-        if lighting.time <> Domain.Time_of_day.Day then (
+      if Lighting.daylight_only next then (
+        if not (Lighting.daylight_only lighting) then (
           epoch <- epoch + 1;
           Map.clear samples;
           Set.clear pending;
@@ -102,6 +108,7 @@ class actor_lighting (game : Phaser.game) =
           Map.each samples (fun[@u] sample anchor ->
               if
                 previous.time <> next.time
+                || previous.underground <> next.underground
                 || Array.exists
                      (fun (bounds : Phaser_spatial.bounds) ->
                        sample.x >= bounds.left && sample.x <= bounds.right && sample.y >= bounds.top
@@ -167,9 +174,20 @@ class actor_lighting (game : Phaser.game) =
       match point with
       | None -> identity
       | Some _ when data.unlit -> identity
-      | Some point when lighting.time = Domain.Time_of_day.Day ->
+      | Some point when Lighting.daylight_only lighting ->
           let values = Lighting.daylight point##x point##y in
-          [| values.(0); values.(1); values.(2); -1.; values.(3); values.(4); values.(5) |]
+          [|
+            values.(0) *. 0.86;
+            values.(1) *. 0.86;
+            values.(2) *. 0.86;
+            0.;
+            values.(0) *. 0.14;
+            values.(1) *. 0.14;
+            values.(2) *. 0.14;
+            values.(3);
+            values.(4);
+            values.(5);
+          |]
       | Some point -> (
           (match Weak_map.get anchors object_ with
           | Some previous when previous == point -> ()
@@ -203,13 +221,18 @@ class actor_lighting (game : Phaser.game) =
                 Lighting.matrix point##x point##y
                   { lighting with lights = Array.map (Array.get lighting.lights) local }
               in
-              let night_mix = matrix.(1) /. (0.2 *. 0.7152 *. 0.28) in
+              let lr = matrix.(1) /. 0.7152
+              and lg = matrix.(5) /. 0.2126
+              and lb = matrix.(10) /. 0.2126 in
               let values =
                 [|
-                  matrix.(0) -. (0.2 *. 0.2126 *. 0.28 *. night_mix);
-                  matrix.(6) -. (0.2 *. 0.7152 *. 0.41 *. night_mix);
-                  matrix.(12) -. (0.2 *. 0.0722 *. 0.63 *. night_mix);
-                  night_mix;
+                  matrix.(0) -. (lr *. 0.2126);
+                  matrix.(6) -. (lg *. 0.7152);
+                  matrix.(12) -. (lb *. 0.0722);
+                  0.;
+                  lr;
+                  lg;
+                  lb;
                   matrix.(4);
                   matrix.(9);
                   matrix.(14);

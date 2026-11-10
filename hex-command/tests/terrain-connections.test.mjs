@@ -35,13 +35,17 @@ test("Every native-accepted terrain connection and floor has a corresponding nat
         !original.state.units.some((unit) => cellKey(unit.tile) === tile.id),
     ),
   );
-  for (const terrain of ["road", "village", "bridge", "ford"]) {
+  for (const terrain of ["road", "village", "bridge", "ford", "cave-passage"]) {
     requireFrames(
-      { ...candidate, terrain, connections: terrain === "village" ? [] : ["e", "w"] },
+      {
+        ...candidate,
+        terrain,
+        connections: ["village", "cave-passage"].includes(terrain) ? [] : ["e", "w"],
+      },
       original.state.mapId,
     );
     let accepted = 0;
-    for (let mask = 1; mask < 64; mask++) {
+    for (let mask = 0; mask < 64; mask++) {
       const saved = structuredClone(original);
       const tile = required(saved.state.tiles.find((tile2) => tile2.id === candidate.id));
       Object.assign(tile, { terrain, connections: directions(mask) });

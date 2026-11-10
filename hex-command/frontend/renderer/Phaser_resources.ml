@@ -79,7 +79,7 @@ class resources (game : Phaser.game) =
     val mutable peak_gpu = 0.
 
     initializer
-      if limits.attributes < 7 || limits.varyings < 6 || limits.textures < 3 then
+      if limits.attributes < 8 || limits.varyings < 7 || limits.textures < 4 then
         failwith
           (Printf.sprintf
              "Unsupported battlefield WebGL limits: attributes=%d, varyings=%d, textures=%d"

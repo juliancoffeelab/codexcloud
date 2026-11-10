@@ -197,9 +197,9 @@ type time_of_day =
 end
 type time_of_day = Ocamljs_types_time_of_day.time_of_day
 module Ocamljs_types_battlefield_lighting = struct
-type battlefield_lighting = { time : time_of_day; lights : (battlefield_light) array }
+type battlefield_lighting = { time : time_of_day; underground : (hex) array; lights : (battlefield_light) array }
 end
-type battlefield_lighting = Ocamljs_types_battlefield_lighting.battlefield_lighting = { time : time_of_day; lights : (battlefield_light) array }
+type battlefield_lighting = Ocamljs_types_battlefield_lighting.battlefield_lighting = { time : time_of_day; underground : (hex) array; lights : (battlefield_light) array }
 module Ocamljs_types_battlefield_presentation = struct
 type battlefield_presentation = { lighting : battlefield_lighting; fog : (hex) array }
 end
@@ -807,9 +807,9 @@ type campaign_orders = { recruitment : recruitment_orders; tactics : tactical_or
 end
 type campaign_orders = Ocamljs_types_campaign_orders.campaign_orders = { recruitment : recruitment_orders; tactics : tactical_orders }
 module Ocamljs_types_map_lighting = struct
-type map_lighting = { time : time_of_day }
+type map_lighting = { time : time_of_day; underground : (hex) array }
 end
-type map_lighting = Ocamljs_types_map_lighting.map_lighting = { time : time_of_day }
+type map_lighting = Ocamljs_types_map_lighting.map_lighting = { time : time_of_day; underground : (hex) array }
 module Ocamljs_types_map_definition = struct
 type map_definition = { id : string; revision : float; name : string; description : string; human : bool; cols : int32; rows : int32; terrain : (tile) array; units : (starting_unit) array; lighting : map_lighting; presentation : battlefield_presentation }
 end
@@ -831,6 +831,7 @@ type terrain_role =
 | Bridge
 | Burned_village
 | Cave
+| Cave_wall
 | Church
 | Ferry
 | Ford
@@ -862,6 +863,8 @@ end
 type race_definition = Ocamljs_types_race_definition.race_definition = { id : race; name : string; terrain_modifiers : (terrain_role, terrain_modifier) Hashtbl.t; damage_modifiers : damage_modifiers }
 module Ocamljs_types_terrain = struct
 type terrain =
+| Cave_passage
+| Cave_wall
 | Monastery
 | Church
 | Graveyard
@@ -1248,7 +1251,7 @@ let read_time_of_day : reader -> time_of_day = fun r -> ignore r; let value : ti
 | 1 -> (Ocamljs_types_time_of_day.Night)
 | _ -> invalid_arg "invalid variant tag") in value
 
-let read_battlefield_lighting : reader -> battlefield_lighting = fun r -> ignore r; let value : battlefield_lighting = ((let span_field_0 = read_time_of_day r in let span_field_1 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_battlefield_light r)) in (let f0 = span_field_0 in let f1 = span_field_1 in  { time = f0; lights = f1 })) : battlefield_lighting) in value
+let read_battlefield_lighting : reader -> battlefield_lighting = fun r -> ignore r; let value : battlefield_lighting = ((let span_field_0 = read_time_of_day r in let span_field_1 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_hex r)) in let span_field_2 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_battlefield_light r)) in (let f0 = span_field_0 in let f1 = span_field_1 in let f2 = span_field_2 in  { time = f0; underground = f1; lights = f2 })) : battlefield_lighting) in value
 
 let read_battlefield_presentation : reader -> battlefield_presentation = fun r -> ignore r; let value : battlefield_presentation = ((let span_field_0 = read_battlefield_lighting r in let span_field_1 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_hex r)) in (let f0 = span_field_0 in let f1 = span_field_1 in  { lighting = f0; fog = f1 })) : battlefield_presentation) in value
 
@@ -1565,7 +1568,7 @@ let read_race : reader -> race = fun r -> ignore r; let value : race = (match in
 
 let read_campaign : reader -> campaign = fun r -> ignore r; let value : campaign = ((let span_start = r_span r 13. in let span_data = r_data r in let span_field_0 = (r_get_u8 span_data (span_start +. 0.) true <> 0.) in let span_field_1 = r_pool_string r (r_get_u32 span_data (span_start +. 1.) true) in let span_field_2 = r_pool_string r (r_get_u32 span_data (span_start +. 5.) true) in let span_field_3 = r_pool_string r (r_get_u32 span_data (span_start +. 9.) true) in let span_field_4 = read_race r in let span_start = r_span r 12. in let span_data = r_data r in let span_field_5 = r_pool_string r (r_get_u32 span_data (span_start +. 0.) true) in let span_field_6 = r_pool_string r (r_get_u32 span_data (span_start +. 4.) true) in let span_field_7 = r_pool_string r (r_get_u32 span_data (span_start +. 8.) true) in let span_field_8 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_character r)) in let span_field_9 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_mission r)) in let span_field_10 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_speech r)) in (let f0 = span_field_0 in let f1 = span_field_1 in let f2 = span_field_2 in let f3 = span_field_3 in let f4 = span_field_4 in let f5 = span_field_5 in let f6 = span_field_6 in let f7 = span_field_7 in let f8 = span_field_8 in let f9 = span_field_9 in let f10 = span_field_10 in  { human = f0; tagline = f1; description = f2; short_description = f3; race = f4; id = f5; name = f6; leader = f7; characters = f8; missions = f9; ending = f10 })) : campaign) in value
 
-let read_map_lighting : reader -> map_lighting = fun r -> ignore r; let value : map_lighting = ((let span_field_0 = read_time_of_day r in (let f0 = span_field_0 in  { time = f0 })) : map_lighting) in value
+let read_map_lighting : reader -> map_lighting = fun r -> ignore r; let value : map_lighting = ((let span_field_0 = read_time_of_day r in let span_field_1 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_hex r)) in (let f0 = span_field_0 in let f1 = span_field_1 in  { time = f0; underground = f1 })) : map_lighting) in value
 
 let read_map_definition : reader -> map_definition = fun r -> ignore r; let value : map_definition = ((let span_start = r_span r 25. in let span_data = r_data r in let span_field_0 = r_pool_string r (r_get_u32 span_data (span_start +. 0.) true) in let span_field_1 = r_get_u32 span_data (span_start +. 4.) true in let span_field_2 = r_pool_string r (r_get_u32 span_data (span_start +. 8.) true) in let span_field_3 = r_pool_string r (r_get_u32 span_data (span_start +. 12.) true) in let span_field_4 = (r_get_u8 span_data (span_start +. 16.) true <> 0.) in let span_field_5 = Int32.of_float (r_get_i32 span_data (span_start +. 17.) true) in let span_field_6 = Int32.of_float (r_get_i32 span_data (span_start +. 21.) true) in let span_field_7 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_tile r)) in let span_field_8 = (let length = int_of_float (r_length r) in Array.init length (fun _ -> read_starting_unit r)) in let span_field_9 = read_map_lighting r in let span_field_10 = read_battlefield_presentation r in (let f0 = span_field_0 in let f1 = span_field_1 in let f2 = span_field_2 in let f3 = span_field_3 in let f4 = span_field_4 in let f5 = span_field_5 in let f6 = span_field_6 in let f7 = span_field_7 in let f8 = span_field_8 in let f9 = span_field_9 in let f10 = span_field_10 in  { id = f0; revision = f1; name = f2; description = f3; human = f4; cols = f5; rows = f6; terrain = f7; units = f8; lighting = f9; presentation = f10 })) : map_definition) in value
 
@@ -1579,61 +1582,64 @@ let read_terrain_role : reader -> terrain_role = fun r -> ignore r; let value : 
 | 0 -> (Ocamljs_types_terrain_role.Bridge)
 | 1 -> (Ocamljs_types_terrain_role.Burned_village)
 | 2 -> (Ocamljs_types_terrain_role.Cave)
-| 3 -> (Ocamljs_types_terrain_role.Church)
-| 4 -> (Ocamljs_types_terrain_role.Ferry)
-| 5 -> (Ocamljs_types_terrain_role.Ford)
-| 6 -> (Ocamljs_types_terrain_role.Forest)
-| 7 -> (Ocamljs_types_terrain_role.Fort)
-| 8 -> (Ocamljs_types_terrain_role.Fortification)
-| 9 -> (Ocamljs_types_terrain_role.Graveyard)
-| 10 -> (Ocamljs_types_terrain_role.Grove)
-| 11 -> (Ocamljs_types_terrain_role.Hill)
-| 12 -> (Ocamljs_types_terrain_role.House)
-| 13 -> (Ocamljs_types_terrain_role.Keep)
-| 14 -> (Ocamljs_types_terrain_role.Landing)
-| 15 -> (Ocamljs_types_terrain_role.Marsh)
-| 16 -> (Ocamljs_types_terrain_role.Monastery)
-| 17 -> (Ocamljs_types_terrain_role.Mountain)
-| 18 -> (Ocamljs_types_terrain_role.Plains)
-| 19 -> (Ocamljs_types_terrain_role.Ritual_spent)
-| 20 -> (Ocamljs_types_terrain_role.Ritual_star)
-| 21 -> (Ocamljs_types_terrain_role.Road)
-| 22 -> (Ocamljs_types_terrain_role.Ruins)
-| 23 -> (Ocamljs_types_terrain_role.Signpost)
-| 24 -> (Ocamljs_types_terrain_role.Village)
-| 25 -> (Ocamljs_types_terrain_role.Water)
+| 3 -> (Ocamljs_types_terrain_role.Cave_wall)
+| 4 -> (Ocamljs_types_terrain_role.Church)
+| 5 -> (Ocamljs_types_terrain_role.Ferry)
+| 6 -> (Ocamljs_types_terrain_role.Ford)
+| 7 -> (Ocamljs_types_terrain_role.Forest)
+| 8 -> (Ocamljs_types_terrain_role.Fort)
+| 9 -> (Ocamljs_types_terrain_role.Fortification)
+| 10 -> (Ocamljs_types_terrain_role.Graveyard)
+| 11 -> (Ocamljs_types_terrain_role.Grove)
+| 12 -> (Ocamljs_types_terrain_role.Hill)
+| 13 -> (Ocamljs_types_terrain_role.House)
+| 14 -> (Ocamljs_types_terrain_role.Keep)
+| 15 -> (Ocamljs_types_terrain_role.Landing)
+| 16 -> (Ocamljs_types_terrain_role.Marsh)
+| 17 -> (Ocamljs_types_terrain_role.Monastery)
+| 18 -> (Ocamljs_types_terrain_role.Mountain)
+| 19 -> (Ocamljs_types_terrain_role.Plains)
+| 20 -> (Ocamljs_types_terrain_role.Ritual_spent)
+| 21 -> (Ocamljs_types_terrain_role.Ritual_star)
+| 22 -> (Ocamljs_types_terrain_role.Road)
+| 23 -> (Ocamljs_types_terrain_role.Ruins)
+| 24 -> (Ocamljs_types_terrain_role.Signpost)
+| 25 -> (Ocamljs_types_terrain_role.Village)
+| 26 -> (Ocamljs_types_terrain_role.Water)
 | _ -> invalid_arg "invalid variant tag") in value
 
 let read_race_definition : reader -> race_definition = fun r -> ignore r; let value : race_definition = ((let span_field_0 = read_race r in let span_field_1 = r_string r in let span_field_2 = (let length = int_of_float (r_length r) in let table = Hashtbl.create length in for _ = 1 to length do let key = read_terrain_role r in let value = read_terrain_modifier r in Hashtbl.add table key value done; table) in let span_field_3 = read_damage_modifiers r in (let f0 = span_field_0 in let f1 = span_field_1 in let f2 = span_field_2 in let f3 = span_field_3 in  { id = f0; name = f1; terrain_modifiers = f2; damage_modifiers = f3 })) : race_definition) in value
 
 let read_terrain : reader -> terrain = fun r -> ignore r; let value : terrain = (match int_of_float (r_u32 r) with
-| 0 -> (Ocamljs_types_terrain.Monastery)
-| 1 -> (Ocamljs_types_terrain.Church)
-| 2 -> (Ocamljs_types_terrain.Graveyard)
-| 3 -> (Ocamljs_types_terrain.Ritual_star)
-| 4 -> (Ocamljs_types_terrain.Ritual_spent)
-| 5 -> (Ocamljs_types_terrain.Castle_bell)
-| 6 -> (Ocamljs_types_terrain.Castle_wall)
-| 7 -> (Ocamljs_types_terrain.Plains)
-| 8 -> (Ocamljs_types_terrain.Road)
-| 9 -> (Ocamljs_types_terrain.Forest)
-| 10 -> (Ocamljs_types_terrain.Hill)
-| 11 -> (Ocamljs_types_terrain.Water)
-| 12 -> (Ocamljs_types_terrain.Village)
-| 13 -> (Ocamljs_types_terrain.Keep)
-| 14 -> (Ocamljs_types_terrain.Grove)
-| 15 -> (Ocamljs_types_terrain.Fort)
-| 16 -> (Ocamljs_types_terrain.Ruins)
-| 17 -> (Ocamljs_types_terrain.Marsh)
-| 18 -> (Ocamljs_types_terrain.Bridge)
-| 19 -> (Ocamljs_types_terrain.Ford)
-| 20 -> (Ocamljs_types_terrain.Landing)
-| 21 -> (Ocamljs_types_terrain.Ferry)
-| 22 -> (Ocamljs_types_terrain.House)
-| 23 -> (Ocamljs_types_terrain.Mountain)
-| 24 -> (Ocamljs_types_terrain.Cave)
-| 25 -> (Ocamljs_types_terrain.Burned_village)
-| 26 -> (Ocamljs_types_terrain.Signpost)
+| 0 -> (Ocamljs_types_terrain.Cave_passage)
+| 1 -> (Ocamljs_types_terrain.Cave_wall)
+| 2 -> (Ocamljs_types_terrain.Monastery)
+| 3 -> (Ocamljs_types_terrain.Church)
+| 4 -> (Ocamljs_types_terrain.Graveyard)
+| 5 -> (Ocamljs_types_terrain.Ritual_star)
+| 6 -> (Ocamljs_types_terrain.Ritual_spent)
+| 7 -> (Ocamljs_types_terrain.Castle_bell)
+| 8 -> (Ocamljs_types_terrain.Castle_wall)
+| 9 -> (Ocamljs_types_terrain.Plains)
+| 10 -> (Ocamljs_types_terrain.Road)
+| 11 -> (Ocamljs_types_terrain.Forest)
+| 12 -> (Ocamljs_types_terrain.Hill)
+| 13 -> (Ocamljs_types_terrain.Water)
+| 14 -> (Ocamljs_types_terrain.Village)
+| 15 -> (Ocamljs_types_terrain.Keep)
+| 16 -> (Ocamljs_types_terrain.Grove)
+| 17 -> (Ocamljs_types_terrain.Fort)
+| 18 -> (Ocamljs_types_terrain.Ruins)
+| 19 -> (Ocamljs_types_terrain.Marsh)
+| 20 -> (Ocamljs_types_terrain.Bridge)
+| 21 -> (Ocamljs_types_terrain.Ford)
+| 22 -> (Ocamljs_types_terrain.Landing)
+| 23 -> (Ocamljs_types_terrain.Ferry)
+| 24 -> (Ocamljs_types_terrain.House)
+| 25 -> (Ocamljs_types_terrain.Mountain)
+| 26 -> (Ocamljs_types_terrain.Cave)
+| 27 -> (Ocamljs_types_terrain.Burned_village)
+| 28 -> (Ocamljs_types_terrain.Signpost)
 | _ -> invalid_arg "invalid variant tag") in value
 
 let read_terrain_definition : reader -> terrain_definition = fun r -> ignore r; let value : terrain_definition = ((let span_field_0 = read_terrain_role r in let span_field_1 = read_terrain r in let span_start = r_span r 11. in let span_data = r_data r in let span_field_2 = r_pool_string r (r_get_u32 span_data (span_start +. 0.) true) in let span_field_3 = int_of_float (r_get_u16 span_data (span_start +. 4.) true) in let span_field_4 = (r_get_u8 span_data (span_start +. 6.) true <> 0.) in let span_field_5 = r_pool_string r (r_get_u32 span_data (span_start +. 7.) true) in let span_field_6 = read_environmental_modifiers r in (let f0 = span_field_0 in let f1 = span_field_1 in let f2 = span_field_2 in let f3 = span_field_3 in let f4 = span_field_4 in let f5 = span_field_5 in let f6 = span_field_6 in  { role = f0; id = f1; name = f2; cost = f3; passable = f4; description = f5; damage_modifiers = f6 })) : terrain_definition) in value
@@ -1925,7 +1931,7 @@ let write_time_of_day : writer -> time_of_day -> unit = fun w value -> ignore w;
 | Ocamljs_types_time_of_day.Day -> w_u32 w 0.; ()
 | Ocamljs_types_time_of_day.Night -> w_u32 w 1.; ())
 
-let write_map_lighting : writer -> map_lighting -> unit = fun w value -> ignore w; (let ( { time = f0 } : map_lighting) = value in write_time_of_day w (f0))
+let write_map_lighting : writer -> map_lighting -> unit = fun w value -> ignore w; (let ( { time = f0; underground = f1 } : map_lighting) = value in write_time_of_day w (f0); (w_length w (float_of_int (Array.length f1)); Array.iter (fun value -> write_hex w (value)) f1))
 
 let write_spawn_unit : writer -> spawn_unit -> unit = fun w value -> ignore w; (let ( { faction = f0; id = f1; type_ = f2; side = f3; character = f4; role = f5 } : spawn_unit) = value in (match f0 with None -> w_u8 w 0. | Some value -> w_u8 w 1.; w_string w (value)); w_string w (f1); w_string w (f2); write_side w (f3); (match f4 with None -> w_u8 w 0. | Some value -> w_u8 w 1.; w_string w (value)); (match f5 with None -> w_u8 w 0. | Some value -> w_u8 w 1.; write_role w (value)))
 
@@ -2503,6 +2509,8 @@ type nonrec t = Ocamljs_types_target_kind.target_kind =
 end
 module Terrain = struct
 type nonrec t = Ocamljs_types_terrain.terrain =
+| Cave_passage
+| Cave_wall
 | Monastery
 | Church
 | Graveyard
@@ -2536,6 +2544,7 @@ type nonrec t = Ocamljs_types_terrain_role.terrain_role =
 | Bridge
 | Burned_village
 | Cave
+| Cave_wall
 | Church
 | Ferry
 | Ford

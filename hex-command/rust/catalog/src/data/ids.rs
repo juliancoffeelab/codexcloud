@@ -250,6 +250,7 @@ pub enum TerrainRole {
     Bridge,
     BurnedVillage,
     Cave,
+    CaveWall,
     Church,
     Ferry,
     Ford,
@@ -288,6 +289,7 @@ impl TerrainRole {
             Self::Bridge
             | Self::BurnedVillage
             | Self::Cave
+            | Self::CaveWall
             | Self::Church
             | Self::Ferry
             | Self::Ford
@@ -310,9 +312,13 @@ impl TerrainRole {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn blocks_shots(self) -> bool {
         match self {
-            Self::Cave | Self::Forest | Self::Grove | Self::Hill | Self::Keep | Self::Mountain => {
-                true
-            }
+            Self::Cave
+            | Self::CaveWall
+            | Self::Forest
+            | Self::Grove
+            | Self::Hill
+            | Self::Keep
+            | Self::Mountain => true,
             Self::Bridge
             | Self::BurnedVillage
             | Self::Church
@@ -342,6 +348,7 @@ impl TerrainRole {
             Self::Bridge
             | Self::BurnedVillage
             | Self::Cave
+            | Self::CaveWall
             | Self::Church
             | Self::Ferry
             | Self::Ford
@@ -373,6 +380,7 @@ impl TerrainRole {
             Self::Bridge
             | Self::BurnedVillage
             | Self::Cave
+            | Self::CaveWall
             | Self::Church
             | Self::Ferry
             | Self::Ford
@@ -407,6 +415,10 @@ impl TerrainRole {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub enum Terrain {
+    #[serde(rename = "cave-passage")]
+    CavePassage,
+    #[serde(rename = "cave-wall")]
+    CaveWall,
     Monastery,
     Church,
     Graveyard,
@@ -470,6 +482,8 @@ impl Terrain {
             Self::House => "house",
             Self::Mountain => "mountain",
             Self::Cave => "cave",
+            Self::CavePassage => "cave-passage",
+            Self::CaveWall => "cave-wall",
             Self::BurnedVillage => "burned-village",
             Self::Signpost => "signpost",
         }

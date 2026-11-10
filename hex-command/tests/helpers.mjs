@@ -127,7 +127,7 @@ export function setTerrain(tile, terrain) {
   for (const field of ["connections", "deadEnds", "walls"]) delete tile[field];
   tile.terrain = terrain;
   if (["road", "bridge", "ford", "signpost"].includes(terrain)) tile.connections = ["e", "w"];
-  else if (terrain === "village") tile.connections = [];
+  else if (["village", "cave-passage"].includes(terrain)) tile.connections = [];
   else if (["landing", "ferry"].includes(terrain)) tile.connections = ["w"];
   else if (["castle-wall", "castle-bell"].includes(terrain))
     tile.walls = ["e", "se", "sw", "w", "nw", "ne"];

@@ -61,7 +61,7 @@ pub struct TileLight {
     pub when: Option<ConditionRule>,
 }
 
-/// Map-wide ambience; terrain emitters belong to their tiles.
+/// Outdoor ambience and explicit underground cells; emitters belong to their tiles.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -71,6 +71,25 @@ pub struct TileLight {
 )]
 pub struct MapLighting {
     pub time: TimeOfDay,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub underground: Vec<Hex>,
+}
+impl MapLighting {
+    pub fn validate(&self, tiles: &[Tile]) -> Result<(), String> {
+        let positions: std::collections::HashSet<_> = tiles.iter().map(Tile::hex).collect();
+        let mut seen = std::collections::HashSet::new();
+        for cell in &self.underground {
+            if !positions.contains(cell) {
+                return Err(format!(
+                    "underground lighting cell is outside the map: {cell}"
+                ));
+            }
+            if !seen.insert(cell) {
+                return Err(format!("duplicate underground lighting cell: {cell}"));
+            }
+        }
+        Ok(())
+    }
 }
 impl TileLight {
     pub fn at(&self, col: i32, row: i32) -> BattlefieldLight {
@@ -115,12 +134,19 @@ impl TileLight {
 pub struct BattlefieldLighting {
     pub time: TimeOfDay,
     #[serde(default)]
+    pub underground: Vec<Hex>,
+    #[serde(default)]
     pub lights: Vec<BattlefieldLight>,
 }
 
 impl BattlefieldLighting {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn validate(&self, tiles: &[Tile], events: &[Event]) -> Result<(), String> {
+        MapLighting {
+            time: self.time,
+            underground: self.underground.clone(),
+        }
+        .validate(tiles)?;
         for light in &self.lights {
             if !tiles
                 .iter()

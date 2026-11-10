@@ -112,7 +112,7 @@ let connection_name terrain connections dead_ends walls =
   | "castle-wall" | "castle-bell" -> terrain ^ "_" ^ string_of_int walls
   | "road" when dead_ends <> 0 ->
       "road_" ^ string_of_int connections ^ "-end-" ^ string_of_int dead_ends
-  | "signpost" | "road" | "village" | "bridge" | "ford" | "landing" | "ferry" ->
+  | "signpost" | "road" | "village" | "bridge" | "ford" | "landing" | "ferry" | "cave-passage" ->
       terrain ^ "_" ^ string_of_int connections
   | _ -> terrain
 

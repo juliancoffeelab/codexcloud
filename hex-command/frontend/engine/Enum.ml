@@ -77,6 +77,8 @@ let side_of_string = function
 
 let string_of_terrain (value : Terrain.t) =
   match value with
+  | Terrain.Cave_passage -> "cave-passage"
+  | Terrain.Cave_wall -> "cave-wall"
   | Terrain.Monastery -> "monastery"
   | Terrain.Church -> "church"
   | Terrain.Graveyard -> "graveyard"

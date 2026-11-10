@@ -37,7 +37,7 @@ class light_field (scene : Phaser.scene) (resources : Phaser_resources.resources
     | Some renderer -> renderer
     | None -> failwith "Lighting requires the battlefield WebGL renderer"
   in
-  let batch_size = max 1 (min 32 ((Webgl.parameter renderer##gl 0x8dfd - 20) / 3)) in
+  let batch_size = max 1 (min 32 ((Webgl.parameter renderer##gl 0x8dfd - 24) / 3)) in
   object (self)
     val mutable pipeline : Phaser_pipeline.t option = None
     val mutable targets : Phaser.render_texture array array = [||]

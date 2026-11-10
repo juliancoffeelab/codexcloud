@@ -152,6 +152,7 @@ impl PresentationContext for LiveContext<'_, '_> {
     fn lighting(&self) -> &MapLighting {
         static DEFAULT: MapLighting = MapLighting {
             time: TimeOfDay::Day,
+            underground: Vec::new(),
         };
         self.rules
             .map_definitions

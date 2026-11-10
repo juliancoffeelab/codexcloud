@@ -169,6 +169,14 @@
     "role": "cave"
   },
   {
+    "id": "cave-passage",
+    "name": "Cave passage",
+    "cost": 1,
+    "passable": true,
+    "description": "Walkable cave floor. Normal movement; no protection.",
+    "role": "plains"
+  },
+  {
     "id": "burned-village",
     "name": "Burned village",
     "cost": 1,
@@ -250,5 +258,13 @@
     "passable": true,
     "description": "The ritual has burned out. It cannot feed the bell again.",
     "role": "ritual-spent"
+  },
+  {
+    "id": "cave-wall",
+    "name": "Cave wall",
+    "cost": 1,
+    "passable": false,
+    "description": "Solid underground rock. Impassable.",
+    "role": "cave-wall"
   }
 ]

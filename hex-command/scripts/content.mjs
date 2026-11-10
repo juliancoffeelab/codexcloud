@@ -288,6 +288,7 @@ var CONNECTED_TERRAINS = [
   "ferry",
   "castle-wall",
   "castle-bell",
+  "cave-passage",
 ];
 var directionMask = (directions) =>
   directions.reduce((mask, direction) => mask | (1 << TERRAIN_DIRECTIONS.indexOf(direction)), 0);
@@ -317,7 +318,7 @@ function validTerrainConnections(tile) {
   if (!tile.connections.every((direction) => TERRAIN_DIRECTIONS.includes(direction))) return false;
   const mask = directionMask(tile.connections);
   if (
-    (!mask && tile.terrain !== "village") ||
+    (!mask && tile.terrain !== "village" && tile.terrain !== "cave-passage") ||
     new Set(tile.connections).size !== tile.connections.length
   )
     return false;
@@ -335,6 +336,7 @@ function validTerrainConnections(tile) {
   }
   switch (tile.terrain) {
     case "road":
+    case "cave-passage":
       return true;
     case "signpost":
       return mask === 9;

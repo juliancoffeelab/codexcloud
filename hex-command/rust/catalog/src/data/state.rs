@@ -112,13 +112,14 @@ impl Tile {
                     | "ferry"
                     | "castle-wall"
                     | "castle-bell"
+                    | "cave-passage"
             ) && self.dead_ends.is_none();
         };
         let mask = exits.iter().fold(0u8, |mask, exit| mask | exit.bit());
         if (mask == 0
             && !matches!(
                 self.terrain.as_str(),
-                "village" | "castle-wall" | "castle-bell"
+                "village" | "castle-wall" | "castle-bell" | "cave-passage"
             ))
             || mask.count_ones() as usize != exits.len()
         {
@@ -136,7 +137,7 @@ impl Tile {
             }
         }
         match self.terrain.as_str() {
-            "road" => true,
+            "road" | "cave-passage" => true,
             "signpost" => mask == 9,
             "village" => mask.count_ones() <= 3,
             "bridge" | "ford" => matches!(mask, 9 | 18 | 36),

@@ -231,7 +231,9 @@ and walk_role visitor (value : Domain.Role.t) =
   | Domain.Role.Captive -> visitor.string "captive"
 
 and walk_map_lighting visitor (value : Domain.map_lighting) =
-  visitor.field "time" (fun visitor -> walk_time_of_day visitor value.time)
+  visitor.field "time" (fun visitor -> walk_time_of_day visitor value.time);
+  visitor.field "underground" (fun visitor ->
+      Array.iter (fun value -> walk_hex visitor value) value.underground)
 
 and walk_time_of_day visitor (value : Domain.Time_of_day.t) =
   match value with
@@ -244,6 +246,8 @@ and walk_battlefield_presentation visitor (value : Domain.battlefield_presentati
 
 and walk_battlefield_lighting visitor (value : Domain.battlefield_lighting) =
   visitor.field "time" (fun visitor -> walk_time_of_day visitor value.time);
+  visitor.field "underground" (fun visitor ->
+      Array.iter (fun value -> walk_hex visitor value) value.underground);
   visitor.field "lights" (fun visitor ->
       Array.iter (fun value -> walk_battlefield_light visitor value) value.lights)
 
