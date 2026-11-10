@@ -12,6 +12,7 @@ import sys
 import tarfile
 import tempfile
 import termios
+import threading
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +27,23 @@ def command(args, cwd=ROOT, env=None):
 
 def step(label):
     print(f"PREPARE: {label}", flush=True)
+
+
+def run_stage_action(label, action, interval=30):
+    started = time.monotonic()
+    finished = threading.Event()
+
+    def heartbeat():
+        while not finished.wait(interval):
+            step(f"{label} still running ({time.monotonic() - started:.0f}s)")
+
+    worker = threading.Thread(target=heartbeat, daemon=True)
+    worker.start()
+    try:
+        return action()
+    finally:
+        finished.set()
+        worker.join()
 
 
 def read_credential():
@@ -44,6 +62,51 @@ def write_json(path, value):
     temporary = path.with_name(path.name + ".tmp")
     temporary.write_text(json.dumps(value))
     temporary.replace(path)
+
+
+def compile_frontend(checkout, wrapper, environment, diagnostics):
+    diagnostics.mkdir(parents=True, exist_ok=True)
+    report = {
+        "source_commit": environment.get("HEX_COMMAND_SOURCE_COMMIT"),
+        "checkout": str(checkout),
+        "existing_build": (checkout / "_build").exists(),
+        "cache_environment": {key: environment[key] for key in
+                              ("XDG_CACHE_HOME", "DUNE_CACHE", "DUNE_CACHE_ROOT", "DUNE_JOBS")
+                              if key in environment},
+        "commands": [],
+    }
+    step(f"Frontend diagnostics: {diagnostics}")
+    commands = [
+        ("Generate resource visitors", "resource-visitors.log",
+         ["node", wrapper, "node", "scripts/generate-resource-visitors.mjs"]),
+        ("Generate fixture JSON", "fixture-json.log", ["node", "scripts/fixture-json.mjs"]),
+        ("Compile Dune/Melange", "dune-output.log",
+         ["node", wrapper, "dune", "build", "--root", str(checkout), "@melange",
+          "--display=verbose", "--debug-package-logs",
+          f"--trace-file={diagnostics / 'dune-trace.csexp'}"]),
+    ]
+    for label, filename, args in commands:
+        step(label)
+        log = diagnostics / filename
+        entry = {"label": label, "args": args, "log": filename, "status": "running"}
+        report["commands"].append(entry)
+        write_json(diagnostics / "timings.json", report)
+        started = time.monotonic()
+        try:
+            with log.open("w") as output:
+                result = subprocess.run(args, cwd=checkout, env=environment,
+                                        stdout=output, stderr=subprocess.STDOUT, text=True)
+            entry["returncode"] = result.returncode
+            if result.returncode:
+                raise RuntimeError(f"{label} failed; log: {log}\n{log.read_text()}")
+            entry["status"] = "succeeded"
+        except Exception:
+            entry["status"] = "failed"
+            raise
+        finally:
+            entry["seconds"] = round(time.monotonic() - started, 3)
+            write_json(diagnostics / "timings.json", report)
+            step(f"{label} {entry['status']} in {entry['seconds']:.1f}s; log: {log}")
 
 
 def sync_files(source, destination, names, previous):
@@ -181,7 +244,7 @@ def prepare_locked(cache, credential, message, source_commit, preview, preview_p
             return
         step(label)
         started = time.monotonic()
-        action()
+        run_stage_action(label, action)
         digest = outputs_digest(root, outputs)
         if digest is None:
             raise RuntimeError(label + " produced incomplete output")
@@ -218,6 +281,13 @@ def prepare_locked(cache, credential, message, source_commit, preview, preview_p
     wrapper = str(checkout / "scripts/toolchain/with-toolchain.mjs")
     def build(args, cwd=checkout):
         return command(["node", wrapper, *args], cwd=cwd, env=build_environment)
+    # Explicit toolchain overrides must not reuse artifacts from another compiler.
+    toolchain = "\n".join([
+        build(["rustc", "-vV"]),
+        build(["dune", "--version"]),
+        command(["node", "--version"]),
+    ])
+    pipeline_key = hashlib.sha256((pipeline_key + toolchain).encode()).hexdigest()
     # Stage keys come from committed inputs, not mutable workspace files.
     stage("Build binding tool", sdk_key, sdk, ["target/debug/ocamljs_pack"],
           lambda: build(["cargo", "build", "--locked", "--manifest-path", str(sdk / "Cargo.toml"),
@@ -237,9 +307,10 @@ def prepare_locked(cache, credential, message, source_commit, preview, preview_p
                               "dune.lock", ".dune-version", "package.json", "package-lock.json",
                               "scripts", extra=wasm_key)
     def frontend():
-        build(["node", "scripts/generate-resource-visitors.mjs"])
-        command(["node", "scripts/fixture-json.mjs"], cwd=checkout, env=build_environment)
-        build(["dune", "build", "--root", str(checkout), "@melange"])
+        directory = cache / "diagnostics"
+        directory.mkdir(exist_ok=True)
+        diagnostics = Path(tempfile.mkdtemp(prefix=f"{source_commit[:12]}-", dir=directory))
+        compile_frontend(checkout, wrapper, build_environment, diagnostics)
     stage("Compile frontend", frontend_key, checkout,
           ["_build/default/frontend/output", "_build/default/frontend/output/frontend/Boot.js",
            "frontend/engine/Domain_resource_walk.ml", "frontend/Fixture_json.ml"], frontend)

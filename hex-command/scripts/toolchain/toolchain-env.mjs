@@ -13,11 +13,15 @@ function toolchainEnvironment(original = process.env, workspace = "/workspace") 
   }
   if (!env.XDG_CACHE_HOME && existsSync(join(workspace, ".cache/dune")))
     env.XDG_CACHE_HOME = join(workspace, ".cache");
-  if (existsSync(join(workspace, ".local/bin/dune")))
+  if (!env.npm_config_cache && !env.NPM_CONFIG_CACHE && existsSync(join(workspace, ".cache/npm")))
+    env.npm_config_cache = join(workspace, ".cache/npm");
+  if (existsSync(join(workspace, ".local/bin/dune"))) {
+    env.DUNE_JOBS ??= "4";
     env.PATH = [
       join(workspace, ".local/bin"),
       ...(env.PATH ?? "").split(delimiter).filter((path) => path !== join(workspace, ".local/bin")),
     ].join(delimiter);
+  }
   const paths = (env.PATH ?? "").split(delimiter).filter(Boolean);
   if (env.CARGO_HOME) {
     const bin = join(env.CARGO_HOME, "bin");

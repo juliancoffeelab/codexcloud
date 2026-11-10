@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, mkdirSync, renameSync, unlinkSync } from "
 import { execFileSync, spawn } from "node:child_process";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
+import { toolchainEnvironment } from "./toolchain/toolchain-env.mjs";
 
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -128,7 +129,7 @@ function buildSource(cwd, sourceCommit, credential, message, preview, projectId,
           ? []
           : ["--preview", String(preview), "--preview-project-id", projectId]),
       ],
-      { cwd, stdio: ["pipe", "pipe", "pipe"] },
+      { cwd, env: toolchainEnvironment(), stdio: ["pipe", "pipe", "pipe"] },
     );
     let output = "";
     let lines = "";
