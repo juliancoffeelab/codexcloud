@@ -20,9 +20,7 @@ if (args.some((name) => !groups.includes(name))) {
 } else {
   try {
     const selected = new Set(args.length ? args : groups);
-    const needsPreparation = ["wasm", "ui", "types", "rust", "tests", "build", "art"].some((name) =>
-      selected.has(name),
-    );
+    const needsPreparation = ["rust", "tests", "build", "art"].some((name) => selected.has(name));
     process.exitCode = await verifyTasks(() => {
       const tasks = [];
       if (selected.has("tests")) tasks.push(...allTestTasks());
@@ -43,7 +41,13 @@ if (args.some((name) => !groups.includes(name))) {
         tasks.splice(
           selected.has("tests") ? 1 : 0,
           0,
-          nodeTask("frontend-checks", "scripts/frontend-check.mjs", compilerGroups, 1, "dune"),
+          nodeTask(
+            "frontend-checks",
+            "scripts/frontend-check.mjs",
+            [...compilerGroups, ...(needsPreparation ? ["--prepared"] : [])],
+            1,
+            "dune",
+          ),
         );
       if (selected.has("art")) console.log("PASS: art (prepared source and asset digests)");
       if (selected.has("build")) console.log("PASS: build (prepared source and bundle digests)");

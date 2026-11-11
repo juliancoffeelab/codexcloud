@@ -20,7 +20,11 @@ for (const path of [
   ...readdirSync("tests/ocaml").map((file) => `tests/ocaml/${file}`),
 ]
   .filter(
-    (file2) => /\.(re|rei|ml|mli)$/.test(file2) && !/(?:^|\/)(Domain|Fixture_json)\./.test(file2),
+    (file2) =>
+      /\.(re|rei|ml|mli)$/.test(file2) &&
+      !/(?:^|\/)(Domain|Fixture_json)\./.test(file2) &&
+      // Generated visitors compile as emitted; explicit formatting still includes them.
+      (write || !/(?:^|\/)Domain_resource_walk\.ml$/.test(file2)),
   )
   .sort()) {
   const file = path;
