@@ -35,8 +35,9 @@ fn main() {
     if root.join("battle/build.rs").exists() {
         files.push(PathBuf::from("battle/build.rs"));
     }
-    println!("cargo:rerun-if-changed=battle/src");
-    println!("cargo:rerun-if-changed=battle/build.rs");
+    // Watch the crate directory so adding an optional build.rs is detected
+    // without permanently invalidating Cargo on an absent file.
+    println!("cargo:rerun-if-changed=battle");
     sources(&root, &root.join("catalog/src"), &mut files);
     files.push(PathBuf::from("catalog/Cargo.toml"));
     files.push(PathBuf::from("catalog/build.rs"));
