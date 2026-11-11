@@ -10,16 +10,7 @@ type t = {
 external console_error : exn -> unit = "error" [@@mel.scope "console"]
 
 let reason = Foreign_error.describe
-
-let exception_reason error =
-  match Js.Exn.asJsExn error with
-  | Some error ->
-      Utf8.of_js (Option.value ~default:"The game could not start." (Js.Exn.message error))
-  | None -> (
-      match error with
-      | Failure message | Invalid_argument message -> message
-      | _ -> "The game could not start.")
-
+let exception_reason = Foreign_error.exception_
 let cleanup action = try action () with error -> console_error error
 
 let close t =
