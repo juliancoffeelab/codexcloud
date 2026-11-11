@@ -332,7 +332,7 @@ let make =
       | failure =>
         startGuard.current = false;
         setStarting(_ => false);
-        setError(_ => Fault.describe(failure));
+        setError(_ => Foreign_error.exception_(failure));
       };
     };
   let requestStart = () => {
