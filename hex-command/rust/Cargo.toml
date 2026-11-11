@@ -65,3 +65,31 @@ inherits = "release"
 opt-level = "z"
 lto = "fat"
 codegen-units = 1
+
+# Routine browser checks prioritize incremental compilation over download size.
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 0
+debug = 0
+lto = false
+codegen-units = 16
+incremental = true
+panic = "abort"
+
+# Dependencies change rarely; keep their runtime cost low without optimizing edits.
+[profile.wasm-dev.package."*"]
+opt-level = 1
+
+# Optimize only project test code. Keep dependency and compiler profiles exactly
+# as supplied, with assertions and overflow checks enabled.
+[profile.test.package.hex-command-simulation]
+opt-level = 1
+debug = 1
+
+[profile.test.package.hex-command-battle]
+opt-level = 1
+debug = 1
+
+[profile.test.package.hex-command-catalog]
+opt-level = 1
+debug = 1

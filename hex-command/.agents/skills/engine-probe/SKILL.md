@@ -28,7 +28,7 @@ Complete UI coverage belongs to [live-play](../live-play/SKILL.md).
 
 ## 2. Exercise the journey
 
-Follow [testing](../testing/SKILL.md). Use the actual Rust engine and authored
+Follow [verification](../verification/SKILL.md). Use the actual Rust engine and authored
 content, with the existing [WASM setup](../../../tests/setup-wasm.mjs) and
 [factory helpers](../../../tests/native-fixture.mjs) where useful. Controller
 integration can use [its public operations](../../../frontend/game/Session.mli).

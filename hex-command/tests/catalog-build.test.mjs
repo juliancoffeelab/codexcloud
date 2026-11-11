@@ -1,3 +1,4 @@
+import "./native-runtime.mjs";
 import assert from "node:assert/strict";
 import { test } from "vitest";
 import * as Domain from "@frontend/Domain";

@@ -2,8 +2,10 @@
 (implicit_transitive_deps false)
 (name hex_command)
 (using melange 1.0)
+(formatting (enabled_for ocaml dune))
 (package
  (name hex_command)
+ (allow_empty)
  (depends
   (ocaml (= 5.3.0))
   (melange (= 7.0.1-53))

@@ -4,7 +4,7 @@ import * as Enum from "@frontend/Enum";
 import * as Equal from "@frontend/Snapshot_equal";
 import * as Json from "@frontend/Fixture_json";
 import * as Utf8 from "@frontend/Utf8";
-import schema from "../rust/pkg/schema.json" with { type: "json" };
+import schema from "@wasm/schema.json" with { type: "json" };
 
 const snake = (name) => name.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();
 test("Frontend enum conversions follow Rust spellings and reject unknown closed values", () => {

@@ -1,3 +1,4 @@
+import "./storage-fixture.mjs";
 import { cellKey } from "./hex-fixture.mjs";
 import { assertResultError } from "./result-fixture.mjs";
 import assert from "node:assert/strict";
@@ -7,7 +8,7 @@ import { fromJSON, toJSON, toArray, mapBindings } from "./json-fixture.mjs";
 import { assertionNative } from "./native-adapter.mjs";
 import { required, TestStorage } from "./helpers.mjs";
 
-const wasm = await readFile(new URL("../rust/pkg/backend.wasm", import.meta.url));
+const wasm = await readFile(process.env.HEX_COMMAND_WASM_PATH);
 const start = () => fromJSON("Start", { kind: "scenario", map: "mirror" });
 
 afterEach(() => {

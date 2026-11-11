@@ -1,0 +1,8 @@
+(rule
+ (target backend.wasm)
+ (deps
+  (:input ../../../rust/pkg/release/input.wasm)
+  (:runtime ../../../bindings/bindings.runtime.mjs)
+  (:packager ../../../rust/pkg/ocamljs_pack))
+ (action
+  (run %{packager} package --wasm %{input} --runtime %{runtime} --out-dir .)))

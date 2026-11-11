@@ -194,7 +194,7 @@ impl Options {
         matches!(self.backend, Backend::JsOfOcaml) && self.async_runtime == AsyncRuntime::Lwt
     }
 }
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct Schema {
     pub entries: BTreeMap<String, Entry>,
     pub fingerprint: String,
@@ -544,7 +544,42 @@ impl Schema {
         Ok(())
     }
 }
-pub fn generate(schema: &Schema, wasm: &[u8], out: &Path, options: &Options) -> Result<(), Error> {
+#[derive(Serialize, Deserialize)]
+struct BindingInput {
+    schema: Schema,
+    imports: Vec<String>,
+}
+
+fn import_names(wasm: &[u8]) -> Result<Vec<String>, Error> {
+    let mut names = std::collections::BTreeSet::new();
+    for payload in wasmparser::Parser::new(0).parse_all(wasm) {
+        if let wasmparser::Payload::ImportSection(section) = payload? {
+            for import in section {
+                let import = import?;
+                // Reference lowering removes only this private slot-management module.
+                // All runtime capability imports retain their names.
+                if import.module != "ocamljs_ref" {
+                    names.insert(import.name.to_owned());
+                }
+            }
+        }
+    }
+    Ok(names.into_iter().collect())
+}
+
+/// Canonical code-generation input, independent of function bodies and layout.
+pub fn binding_input(wasm: &[u8]) -> Result<Vec<u8>, Error> {
+    let schema = read(wasm)?;
+    Ok(serde_json::to_vec(&BindingInput {
+        schema,
+        imports: import_names(wasm)?,
+    })?)
+}
+
+/// Generate compiler-native bindings without parsing or optimizing implementation code.
+pub fn generate_bindings(input: &[u8], out: &Path, options: &Options) -> Result<String, Error> {
+    let BindingInput { schema, imports } = serde_json::from_slice(input)?;
+    let schema = &schema;
     schema.validate()?;
     if options.async_runtime == AsyncRuntime::Lwt && !matches!(options.backend, Backend::JsOfOcaml)
     {
@@ -558,8 +593,6 @@ pub fn generate(schema: &Schema, wasm: &[u8], out: &Path, options: &Options) -> 
     {
         return Err("binding name must be an identifier".into());
     }
-    let sidecar = packaging::sidecar(wasm)?;
-    let wasm = packaging::package(schema, wasm, options.debug)?;
     std::fs::create_dir_all(out)?;
     let effective = projection::resolve(schema)?;
     let (implementation, interface, js_codecs) = ml::generate(&effective, options)?;
@@ -631,25 +664,16 @@ pub fn generate(schema: &Schema, wasm: &[u8], out: &Path, options: &Options) -> 
         capabilities.insert("direct_promise");
     }
 
-    for payload in wasmparser::Parser::new(0).parse_all(&wasm) {
-        if let wasmparser::Payload::ImportSection(section) = payload? {
-            for import in section {
-                let import = import?;
-                if import.name.starts_with("callback_") {
-                    capabilities.insert("callbacks");
-                }
-                if import.name.starts_with("host_promise_") {
-                    capabilities.insert("host_promises");
-                }
-                if import.name.starts_with("host_string_") {
-                    capabilities.insert("host_text");
-                }
-                if import.name.starts_with("host_bytes_") {
-                    capabilities.insert("host_bytes");
-                }
-                if import.name.starts_with("fetch_") {
-                    capabilities.insert("fetch");
-                }
+    for name in &imports {
+        for (prefix, capability) in [
+            ("callback_", "callbacks"),
+            ("host_promise_", "host_promises"),
+            ("host_string_", "host_text"),
+            ("host_bytes_", "host_bytes"),
+            ("fetch_", "fetch"),
+        ] {
+            if name.starts_with(prefix) {
+                capabilities.insert(capability);
             }
         }
     }
@@ -946,10 +970,32 @@ pub fn generate(schema: &Schema, wasm: &[u8], out: &Path, options: &Options) -> 
             ),
         ],
     );
-    let wasm = packaging::prune_runtime(&wasm, &runtime, options.debug)?;
-    std::fs::write(out.join("bindings.runtime.mjs"), runtime)?;
-    std::fs::write(out.join("backend.wasm"), &wasm)?;
-    std::fs::write(out.join("schema.json"), sidecar)?;
+    std::fs::write(out.join("bindings.runtime.mjs"), &runtime)?;
+    Ok(runtime)
+}
+
+pub fn package_runtime(wasm: &[u8], runtime: &str, debug: bool) -> Result<Vec<u8>, Error> {
+    let schema = read(wasm)?;
+    let packaged = packaging::package(&schema, wasm, debug)?;
+    packaging::prune_runtime(&packaged, runtime, debug)
+}
+
+pub fn schema_sidecar(wasm: &[u8]) -> Result<Vec<u8>, Error> {
+    read(wasm)?;
+    packaging::sidecar(wasm)
+}
+
+pub fn generate(schema: &Schema, wasm: &[u8], out: &Path, options: &Options) -> Result<(), Error> {
+    // Validate caller-supplied metadata against the artifact before emitting code.
+    let packaged = packaging::package(schema, wasm, options.debug)?;
+    let input = serde_json::to_vec(&BindingInput {
+        schema: schema.clone(),
+        imports: import_names(&packaged)?,
+    })?;
+    let runtime = generate_bindings(&input, out, options)?;
+    let output = packaging::prune_runtime(&packaged, &runtime, options.debug)?;
+    std::fs::write(out.join("backend.wasm"), output)?;
+    std::fs::write(out.join("schema.json"), packaging::sidecar(wasm)?)?;
     Ok(())
 }
 pub fn snake(name: &str) -> String {

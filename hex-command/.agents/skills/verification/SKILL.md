@@ -1,11 +1,9 @@
 ---
-name: testing
-description: Use for Hex Command bug fixes, test changes and implementation validation.
+name: verification
+description: Use for implementation validation, targeted checks and tests, final verification, and deciding whether to add tests.
 ---
 
-# Hex Command testing
-
-Run `npm run format` before validating changes.
+# Hex Command verification
 
 Tests must be small, fast, and lightweight.
 
@@ -25,16 +23,22 @@ Tests must be small, fast, and lightweight.
 - Do not duplicate existing coverage merely because new content uses it.
   Remove redundant cases when found.
 
-- Target 20 seconds for all test suites together, including Rust, Python
-  and Vitest. Use the shared `npm test` runner; exceeding the target warns
-  without terminating the run or failing successful tests. Use
-  controlled promises or an injected clock instead of real delays.
 - Keep browser automation out of the default test suite. Playwright is available
   for explicitly requested browser spot checks; keep scratch probes in ignored
   `tmp/`. Do not add mandatory browser installs, extra services, large migration
   suites, or Git-history fixtures. Use focused checks for meaningful rules,
   state transitions, publication, and cancellation behavior.
 
-AI, harness and analyzer changes also require the simulation validation described
-in [combat-simulation](../combat-simulation/SKILL.md). Validation for an explicit
-deploy request is owned by the deploy operation; follow [deploy](../deploy/SKILL.md).
+## Verification
+
+Run targeted checks while working. When the work is ready to present, run
+`make full-verify` to catch unexpected regressions. Fix failures and repeat.
+
+- `cargo check --locked --manifest-path rust/Cargo.toml --workspace`: Rust compilation.
+- `cargo test --locked --manifest-path rust/Cargo.toml --workspace --features wasm [filter]`: Rust tests.
+- `dune build --root=. --cache=enabled @frontend/check`: OCaml/Reason typechecking without JavaScript emission.
+- `node node_modules/vitest/vitest.mjs run [test-file]`: tests against prepared frontend output.
+- `python3 -m unittest discover -s scripts -p 'test*.py'`: Python tests; select the affected directory/file.
+- `make format` / `make format-check`: apply / check formatting.
+
+Before frontend tests, compile changed OCaml with `dune build --root=. --cache=enabled @melange @artwork`. For changed Rust exports, first run `node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh dev` to prepare WASM/bindings.

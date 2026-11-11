@@ -69,7 +69,7 @@ providers use a probability clamped to [0,1].
 To compare a profile without changing normal recruiters:
 
 ```sh
-npm run ai:simulate -- --mode arena --policies predictor --with aggressive-predictor,-,queued --vs predictor --seeds 50 --unit-usage
+node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim -- --mode arena --policies predictor --with aggressive-predictor,-,queued --vs predictor --seeds 50 --unit-usage
 ```
 
 Tune in an ignored catalog copy with `--data-dir`. Change one field at a time;

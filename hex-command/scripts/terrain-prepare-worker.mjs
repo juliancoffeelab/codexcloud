@@ -11,6 +11,8 @@ try {
     `data:text/javascript;base64,${Buffer.from(source).toString("base64")}`
   );
   await initialize(await readFile(wasmPath));
+  const spritePath = resolve(root, "_build/default/artwork/sprites.json");
+  const sprites = JSON.parse(await readFile(spritePath, "utf8"));
   const plans = Terrain_assets.plans();
   const cache = terrainCache(resolve(root, ".cache/terrain"));
   let cached = 0;
@@ -31,10 +33,9 @@ try {
     for (const tile of plan.tiles) {
       const frame = tile.frame;
       if (!frame) throw new Error(`${asset.map_id}/${tile.id}: missing terrain artwork`);
-      const path = resolve(root, "public", frame.url.replace(/^(?:\.\/|\/)+/, ""));
-      watched.add(path);
+      watched.add(spritePath);
       if (!sources.has(frame.url)) {
-        const bytes = await readFile(path);
+        const bytes = Buffer.from(sprites[frame.url.split("/").at(-1)], "base64");
         sources.set(frame.url, { bytes, hash: digest(bytes) });
       }
       framesUsed.set(frame.url, frame);

@@ -146,18 +146,33 @@ let terrain_roles () =
       cached_roles := Some roles;
       roles
 
+let sprite_bundle = ref None
+let sprite_sources = Hashtbl.create 32
+let used_images = Hashtbl.create 32
+
 let frame_path root (frame : Art.frame) =
   if
     String.starts_with ~prefix:"/assets/" frame.url
     || String.starts_with ~prefix:"assets/" frame.url
-  then
-    Node.resolve (Node.resolve root "public")
-      (if frame.url.[0] = '/' then String.sub frame.url 1 (String.length frame.url - 1)
-       else frame.url)
+  then (
+    match Hashtbl.find_opt sprite_sources frame.url with
+    | Some source -> source
+    | None ->
+        let sprites =
+          match !sprite_bundle with
+          | Some sprites -> sprites
+          | None ->
+              let sprites = Node.read (Node.resolve root "_build/default/artwork/sprites.json") in
+              sprite_bundle := Some sprites;
+              sprites
+        in
+        let source = "data:image/png;base64," ^ J.text sprites (Filename.basename frame.url) in
+        Hashtbl.replace sprite_sources frame.url source;
+        source)
   else Node.absolute frame.url
 
 let help =
-  "Usage: npm run map:render -- [--watch] --map map.json [--overlay overlay.json] --output \
+  "Usage: node scripts/render-map.mjs [--watch] --map map.json [--overlay overlay.json] --output \
    preview.png\n\
    Options: --grid [--grid-color COLOR] --artwork candidate-frames.json\n\
   \         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n\
@@ -359,6 +374,9 @@ let drawing_order flags source =
 let run root =
   let root = Utf8.of_js root in
   Hashtbl.clear used_files;
+  Hashtbl.clear used_images;
+  Hashtbl.clear sprite_sources;
+  sprite_bundle := None;
   let flags = options () in
   if Hashtbl.mem flags "--help" then (
     Js.log help;
@@ -416,8 +434,14 @@ let run root =
       if Js.Dict.get images frame.url <> None then return ()
       else
         let path = frame_path root frame in
-        Hashtbl.replace used_files path ();
-        let info = Node.stat (Utf8.to_js path) in
+        Hashtbl.replace used_images path ();
+        let dependency =
+          if String.starts_with ~prefix:"data:image/png;base64," path then
+            Node.resolve root "_build/default/artwork/sprites.json"
+          else path
+        in
+        Hashtbl.replace used_files dependency ();
+        let info = Node.stat (Utf8.to_js dependency) in
         let stamp =
           {
             modified = info##mtimeMs;
@@ -682,7 +706,7 @@ let run root =
     Node.mkdir (Utf8.to_js (Node.dirname output)) [%mel.obj { recursive = true }];
     Node.write (Utf8.to_js output) (C.png canvas "image/png");
     Hashtbl.filter_map_inplace
-      (fun path image -> if Hashtbl.mem used_files path then Some image else None)
+      (fun path image -> if Hashtbl.mem used_images path then Some image else None)
       decoded_images;
     return ()
 

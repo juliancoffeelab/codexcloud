@@ -3,7 +3,7 @@ import { hex, cellKey } from "./hex-fixture.mjs";
 // and deconstructs native values; tests never manufacture compiler variants.
 import * as Json from "@frontend/Fixture_json";
 import * as Utf8 from "@frontend/Utf8";
-import schema from "../rust/pkg/schema.json" with { type: "json" };
+import schema from "@wasm/schema.json" with { type: "json" };
 const snake = (s) =>
   s
     .replace(/([A-Z]+)([A-Z][a-z])/g, "$1_$2")

@@ -79,5 +79,5 @@ piece can still compose badly.
 
 Show clean matrix renders; retain diagnostic views under ignored `tmp/`. When
 integration is requested, update canonical matrices/palettes and run
-`npm run art:build` and `npm run art:check`. These invoke the artwork-builder
+`dune build --root=. --cache=enabled @artwork` and `python3 -m unittest discover -s scripts -p 'test_pixel_*.py'`. These invoke the artwork-builder
 script; the builder is not a skill. Stay within the requested integration scope.

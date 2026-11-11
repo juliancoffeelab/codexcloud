@@ -1,3 +1,4 @@
+import "./native-runtime.mjs";
 import { cellKey } from "./hex-fixture.mjs";
 import * as Native from "@frontend/Native";
 import { fromJSON as from, toJSON as to, command, toArray, mapBindings } from "./json-fixture.mjs";

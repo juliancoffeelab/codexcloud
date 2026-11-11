@@ -1,7 +1,47 @@
 (library
  (name hex_renderer)
  (modes melange)
- (libraries melange.js melange.dom hex_platform phaser_bindings hex_engine hex_audio hex_game)
- (private_modules Phaser_hex_outline Battlefield_frame Phaser_light_field Phaser_owner Phaser_resource_plan Phaser_playback Phaser_terrain Phaser_fog Phaser_visibility Phaser_resources Phaser_battlefield Phaser_spatial Phaser_runtime Phaser_camera Phaser_shaders Phaser_picking Phaser_assets Phaser_input_dom Phaser_lighting Phaser_atmosphere Phaser_actor_lighting)
- (flags (:standard -open Hex_platform -open Phaser_bindings -open Hex_engine -open Hex_audio -open Hex_game))
- (preprocess (pps melange.ppx)))
+ (libraries
+  melange.js
+  melange.dom
+  hex_platform
+  phaser_bindings
+  hex_engine
+  hex_audio
+  hex_game)
+ (private_modules
+  Phaser_hex_outline
+  Battlefield_frame
+  Phaser_light_field
+  Phaser_owner
+  Phaser_resource_plan
+  Phaser_playback
+  Phaser_terrain
+  Phaser_fog
+  Phaser_visibility
+  Phaser_resources
+  Phaser_battlefield
+  Phaser_spatial
+  Phaser_runtime
+  Phaser_camera
+  Phaser_shaders
+  Phaser_picking
+  Phaser_assets
+  Phaser_input_dom
+  Phaser_lighting
+  Phaser_atmosphere
+  Phaser_actor_lighting)
+ (flags
+  (:standard
+   -open
+   Hex_platform
+   -open
+   Phaser_bindings
+   -open
+   Hex_engine
+   -open
+   Hex_audio
+   -open
+   Hex_game))
+ (preprocess
+  (pps melange.ppx)))

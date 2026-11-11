@@ -3,7 +3,7 @@
 Run the bundled renderer from the project root:
 
 ```sh
-npm run map:render -- \
+node scripts/render-map.mjs \
   --watch \
   --map tmp/draft/map.json \
   --overlay tmp/draft/overlay.json \
@@ -14,7 +14,7 @@ Watch mode keeps Wasm, decoded artwork and unchanged terrain layers in memory.
 Saving the map, overlay, candidate manifest or used image automatically updates
 the PNG. Input errors leave the last successful PNG available; the next edit
 retries. Source or built-Wasm changes rebuild/restart the client. Stop with Ctrl+C.
-Omit `--watch` for one PNG; unchanged OCaml builds reuse the cached CLI bundle.
+Omit `--watch` for one PNG; Dune reuses unchanged OCaml compilation.
 
 Add `--grid` for a red hex-grid overlay above the terrain and units. The grid
 uses the same hex geometry as the map. Use `--grid-color "#ff4040"` to choose
@@ -37,9 +37,8 @@ depth and are controls, not correctness requirements for a design with explicit 
 outputs in ignored `tmp/`. The renderer reads source data as a devtool, never
 registers content in the playable catalog, and does not execute encounters.
 The OCaml/Melange client reuses the game's terrain selector, painter, fog and
-lighting. Its launcher recompiles/rebundles only when client inputs change; it
-does not rebuild Rust. Use `npm run wasm:build` after Rust changes and `npm run art:build` if artwork
-frames need rebuilding. Conditions are resolved by the same Rust evaluator used
+lighting. The launcher asks Cargo and Dune to update their inputs, then bundles
+the renderer; map-only watch updates reuse the running renderer. Conditions are resolved by the same Rust evaluator used
 by live battles.
 
 The map input has `mapId`, positive `cols` and `rows`, and a complete `tiles` grid.

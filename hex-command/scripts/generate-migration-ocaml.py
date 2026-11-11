@@ -16,7 +16,7 @@ def read_leb(data,i):
   c=data[i];i+=1;n|=(c&127)<<shift
   if c<128:return n,i
   shift+=7
-wasm=(r/'rust/pkg/backend.wasm').read_bytes();scaffold=bytearray(wasm[:8]);i=8
+wasm=(r/'_build/default/wasm/dev/backend.wasm').read_bytes();scaffold=bytearray(wasm[:8]);i=8
 while i<len(wasm):
  start=i;kind=wasm[i];length,j=read_leb(wasm,i+1);end=j+length
  drop=False
@@ -31,7 +31,7 @@ name = b'ocamljs.schema'
 data = leb(len(name)) + name + '\n'.join(json.dumps(e) for e in schema.values()).encode()
 binary = work/'v39.wasm'
 binary.write_bytes(scaffold + b'\0' + leb(len(data)) + data)
-subprocess.run(['ocamljs_pack', 'generate', '--wasm', str(binary), '--out-dir', str(work/'v39')], check=True)
+subprocess.run([str(r/'rust/pkg/ocamljs_pack'), 'generate', '--wasm', str(binary), '--out-dir', str(work/'v39')], check=True)
 
 def snake(s):
  return re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1_\2', s)).lower()
@@ -53,7 +53,7 @@ for n, entry in schema.items():
 
 subprocess.run(['python3', 'scripts/generate-historical-types.py'], check=True)
 subprocess.run(['python3', 'scripts/generate-migration-native-contract.py'], check=True)
-formatter = subprocess.check_output(['dune', 'exec', '--', 'which', 'ocamlformat'], text=True).strip()
+formatter = 'ocamlformat'
 outputs = [base/'Native_v39.ml', base/'Native_v39.mli', base/'Historical_types.ml',
            base/'Historical_codec.ml', base/'Historical_codec.mli']
 for path in outputs + [r/'frontend/persistence/Migration_native_contract.ml']:

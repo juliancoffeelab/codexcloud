@@ -1,21 +1,16 @@
 // Compile native collection clients against the actual prepared interfaces.
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync, existsSync } from "node:fs";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync, existsSync } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import { toolchainEnvironment } from "./toolchain/toolchain-env.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const env = toolchainEnvironment();
-const located = spawnSync("dune", ["exec", "--", "which", "melc"], {
-  cwd: root,
-  env,
-  encoding: "utf8",
-});
-if (located.error || located.status !== 0)
-  throw located.error ?? new Error(located.stderr || "Cannot locate the prepared Melange compiler");
-const compiler = located.stdout.trim();
-const compilerRoot = resolve(dirname(compiler), "../lib/melange");
+const compiler = "melc";
+const location = spawnSync(compiler, ["-where"], { env, encoding: "utf8" });
+if (location.error || location.status !== 0) throw location.error ?? new Error(location.stderr);
+const compilerRoot = dirname(location.stdout.trim().split(":")[0]);
 const includes = [
   join(compilerRoot, "melange"),
   join(compilerRoot, "js/melange"),
@@ -34,6 +29,7 @@ const includes = [
     return existsSync(publicInterface) ? publicInterface : join(objects, "melange");
   }),
 ];
+mkdirSync(join(root, "tmp"), { recursive: true });
 const out = mkdtempSync(join(root, "tmp/native-clients-"));
 try {
   const compile = (name, source) => {

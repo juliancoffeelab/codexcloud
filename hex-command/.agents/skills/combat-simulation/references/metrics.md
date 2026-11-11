@@ -23,8 +23,8 @@ a composition or unit-strength conclusion.
 ## Battlefield presence and support effects
 
 ```sh
-npm run ai:simulate -- --unit-usage
-npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytics --unit-usage
+node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim -- --unit-usage
+python3 .agents/skills/combat-simulation/scripts/report-combat.py artifacts/saved/report.json --out artifacts/saved/analytics --unit-usage
 ```
 
 Use `--battlefield-presence`, `--support-effects`, `--battlefield-value` or

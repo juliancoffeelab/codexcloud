@@ -1,3 +1,4 @@
+import "./storage-fixture.mjs";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import * as Presentation from "./presentation-adapter.mjs";

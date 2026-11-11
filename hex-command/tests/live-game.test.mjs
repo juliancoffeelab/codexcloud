@@ -1,3 +1,4 @@
+import "./storage-fixture.mjs";
 import { createHeadlessSession } from "./headless-session.mjs";
 import * as Setup from "@frontend/Setup";
 import { cellKey } from "./hex-fixture.mjs";

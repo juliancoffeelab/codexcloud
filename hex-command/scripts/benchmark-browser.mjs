@@ -1,3 +1,4 @@
+import { benchmarkWasmDirectory } from "./benchmark-paths.mjs";
 import { frontendModuleAliases } from "./frontend-paths.mjs";
 import Benchmark, { maxTime } from "./benchmark-options.mjs";
 import { readFile, readdir, mkdir, writeFile, access } from "node:fs/promises";
@@ -46,14 +47,12 @@ for (const [index, v] of variants.entries()) {
   const frontend = (await exists(resolve(v.root, "output/frontend/Native.js")))
     ? resolve(v.root, "output/frontend")
     : resolve(v.root, "_build/default/frontend/output/frontend");
-  v.pkg = (await exists(resolve(v.root, "pkg")))
-    ? resolve(v.root, "pkg")
-    : resolve(v.root, "rust/pkg");
+  v.pkg = benchmarkWasmDirectory(v.root);
   const art = (await exists(resolve(v.root, "src/presentation/pixel-art.mjs")))
     ? resolve(v.root, "src/presentation/pixel-art.mjs")
     : (await exists(resolve(v.root, "src/presentation/pixel-art.ts")))
       ? resolve(v.root, "src/presentation/pixel-art.ts")
-      : resolve(project, "src/presentation/pixel-art.mjs");
+      : resolve(v.root, "_build/default/artwork/pixel-art.mjs");
   const history = (await exists(resolve(v.root, "packages/save-migrations/src/legacy/data")))
     ? resolve(v.root, "packages/save-migrations/src/legacy/data")
     : resolve(project, "packages/save-migrations/src/legacy/data");

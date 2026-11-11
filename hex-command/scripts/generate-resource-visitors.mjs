@@ -1,7 +1,12 @@
 // Preserve upstream's content traversal on typed Rust-owned OCaml metadata.
 // This emits static field visits: no Obj.magic, JSON conversion or runtime reflection.
-import { readFileSync, writeFileSync } from "node:fs";
-const schema = JSON.parse(readFileSync("rust/pkg/schema.json", "utf8"));
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
+const args = process.argv.slice(2);
+const schemaPath = args[args.indexOf("--schema") + 1];
+const outputPath = args[args.indexOf("--out") + 1];
+if (!args.includes("--schema") || !args.includes("--out") || !schemaPath || !outputPath)
+  throw new Error("Use --schema PATH --out PATH");
+const schema = JSON.parse(readFileSync(schemaPath, "utf8"));
 const snake = (s) =>
   s
     .replace(/([A-Z]+)([A-Z][a-z])/g, "$1_$2")
@@ -116,4 +121,5 @@ for (const e of needed.values()) {
     else out += `| ${pattern} -> ${operation}\n`;
   }
 }
-writeFileSync("frontend/engine/Domain_resource_walk.ml", out);
+if (!existsSync(outputPath) || readFileSync(outputPath, "utf8") !== out)
+  writeFileSync(outputPath, out);

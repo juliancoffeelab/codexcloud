@@ -1,3 +1,4 @@
+import "./storage-fixture.mjs";
 import { test, afterEach, vi } from "vitest";
 import { required, storageWithValue } from "./helpers.mjs";
 import assert from "node:assert/strict";
