@@ -45,3 +45,9 @@ faction roles. For coefficient tuning, read [recruitment](recruitment.md).
 5. Deliver according to [reporting](references/reporting.md): select its
    maintenance or requested-analysis branch. Requested analysis completes with
    the comparison, coverage and limitations, not merely a successful run.
+
+The harness defaults to Balanced against Balanced in arenas and Balanced against
+Classic in campaigns, with 10 arena seeds and 20 campaign seeds. Map, faction,
+campaign-route and diplomacy coverage remains unchanged. Select broader tactic
+coverage explicitly with `--policies classic,rush,balanced,rotated,situational,predictor`
+and, when needed, `--campaign-players balanced,rotated,situational,predictor`.

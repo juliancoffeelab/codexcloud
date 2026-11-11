@@ -7,7 +7,7 @@ defaults. Determine actual coverage from the resulting report metadata.
 - Keep experimental catalogs in ignored tmp/ or artifacts/ and pass --data-dir.
   An experiment does not promote content or authorize deployment.
 - Choose arena or campaign scope and configurations relevant to the change.
-  Defaults are 50 arena seeds and 100 campaign seeds; `--seeds` overrides both.
+  Defaults are 10 arena seeds and 20 campaign seeds; `--seeds` overrides both.
   Aim for about one minute including incremental compilation and analysis.
   Inspect `--schedule-only`: seeds multiply across maps, armies, tactics, seats
   and campaign routes, so the full matrix has no one-minute guarantee. For
@@ -101,3 +101,9 @@ event effects. Capture is optional, separate from ordinary journals and outside
 measured decision intervals. Timing output records the frozen fixture digest and
 both source and tested-engine fingerprints. Changes in those fingerprints are
 not evidence of an identical historical replay or a performance improvement.
+
+The harness defaults to Balanced against Balanced in arenas and Balanced against
+Classic in campaigns, with 10 arena seeds and 20 campaign seeds. Map, faction,
+campaign-route and diplomacy coverage remains unchanged. Select broader tactic
+coverage explicitly with `--policies classic,rush,balanced,rotated,situational,predictor`
+and, when needed, `--campaign-players balanced,rotated,situational,predictor`.

@@ -7,8 +7,8 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-pub(super) const DEFAULT_ARENA_SEEDS: u32 = 50;
-pub(super) const DEFAULT_CAMPAIGN_SEEDS: u32 = 100;
+pub(super) const DEFAULT_ARENA_SEEDS: u32 = 10;
+pub(super) const DEFAULT_CAMPAIGN_SEEDS: u32 = 20;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize, clap::ValueEnum)]
 #[serde(rename_all = "lowercase")]
