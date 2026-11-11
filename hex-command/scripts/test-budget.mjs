@@ -1,6 +1,15 @@
-import { spawn } from "node:child_process";
-import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { spawn, execFileSync } from "node:child_process";
+import { createHash, randomUUID } from "node:crypto";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  renameSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { availableParallelism } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -147,17 +156,16 @@ function pythonTasks() {
     args: ["-m", "unittest", "discover", "-s", directory, "-p", pattern],
   }));
 }
-function rustTasks() {
-  prepared();
+function rustTasks(offline = false) {
   return [
     {
       // Cargo supplies the toolchain library path required by proc-macro tests.
-      // Preparation above still guarantees these executables are already built.
+      // Cargo owns native freshness; these tasks do not need frontend artifacts.
       name: "rust",
       command: "cargo",
       args: [
         "test",
-        "--offline",
+        ...(offline ? ["--offline"] : []),
         "--locked",
         "--manifest-path",
         "rust/Cargo.toml",
@@ -181,7 +189,7 @@ function rustTasks() {
       command: "cargo",
       args: [
         "test",
-        "--offline",
+        ...(offline ? ["--offline"] : []),
         "--locked",
         "--manifest-path",
         "rust/Cargo.toml",
@@ -211,7 +219,7 @@ function allTestTasks(args = []) {
   return [
     frontendTask(args),
     nodeTask("migration-contract", "scripts/check-migration-contract.mjs"),
-    ...rustTasks(),
+    ...rustTasks(true),
     ...pythonTasks(),
   ];
 }
@@ -295,13 +303,83 @@ async function runTasks(tasks) {
   );
   return result;
 }
+// Artwork preparation depends on authored pixels and unit models, not the frontend bundle.
+function pathsFingerprint(paths) {
+  const hash = createHash("sha256");
+  function visit(path) {
+    hash.update(path).update("\0");
+    if (!existsSync(join(root, path))) hash.update("missing\0");
+    else if (statSync(join(root, path)).isDirectory()) {
+      hash.update("directory\0");
+      for (const name of readdirSync(join(root, path)).sort()) visit(`${path}/${name}`);
+    } else
+      hash
+        .update("file\0")
+        .update(readFileSync(join(root, path)))
+        .update("\0");
+  }
+  paths.forEach(visit);
+  return hash.digest("hex");
+}
+const artPreparedPath = join(root, "tmp/verification-art.json");
+function artInputs() {
+  return (
+    pathsFingerprint([
+      "pixel/art",
+      "rust/data/game/units",
+      "scripts/build-pixel-art.py",
+      "scripts/test-budget.mjs",
+    ]) +
+    execFileSync(
+      "python3",
+      ["-c", "import sys,zlib; print(sys.version); print(zlib.ZLIB_RUNTIME_VERSION)"],
+      { encoding: "utf8" },
+    )
+  );
+}
+function artOutputs() {
+  return pathsFingerprint(["public/assets/sprites", "src/presentation/pixel-art.mjs"]);
+}
+function recordArtPreparation(inputs = artInputs()) {
+  const temporary = `${artPreparedPath}.${randomUUID()}.tmp`;
+  try {
+    mkdirSync(dirname(artPreparedPath), { recursive: true });
+    writeFileSync(temporary, JSON.stringify({ inputs, outputs: artOutputs() }) + "\n", {
+      flag: "wx",
+    });
+    renameSync(temporary, artPreparedPath);
+  } catch (error) {
+    console.warn(`Artwork manifest unavailable: ${error.message}`);
+  } finally {
+    try {
+      rmSync(temporary, { force: true });
+    } catch {
+      /* Best-effort cache cleanup. */
+    }
+  }
+}
+async function prepareArt() {
+  const inputs = artInputs();
+  try {
+    const cached = JSON.parse(readFileSync(artPreparedPath, "utf8"));
+    if (cached.inputs === inputs && cached.outputs === artOutputs()) return;
+  } catch {
+    /* Missing or invalid manifests are rebuilt. */
+  }
+  const result = await runTasks([{ name: "Prepare artwork", command: "make", args: ["assets"] }]);
+  if (result !== 0) throw new Error("Artwork preparation failed");
+  if (artInputs() !== inputs)
+    throw new Error("Artwork sources changed during preparation; rerun verification.");
+  recordArtPreparation(inputs);
+}
 async function verifyTasks(makeTasks, needsPreparation = true) {
   const timer = setTimeout(
     () => console.warn("WARN: verification exceeded the advisory 20-second budget; continuing."),
     Math.max(0, advisoryMs - (performance.now() - commandStarted)),
   );
   try {
-    if (needsPreparation) {
+    if (needsPreparation === "art") await prepareArt();
+    else if (needsPreparation) {
       try {
         prepared();
       } catch {
@@ -356,6 +434,7 @@ function recordPreparation() {
     }) + "\n",
   );
   rmSync(startedPath);
+  recordArtPreparation();
   console.log("Prepared current artifacts. Run make test or make verify.");
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
@@ -364,8 +443,9 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     if (args.length === 1 && args[0] === "--begin-preparation") beginPreparation();
     else if (args.length === 1 && args[0] === "--record-preparation") recordPreparation();
     else
-      process.exitCode = await verifyTasks(() =>
-        args[0] === "--rust-only" ? rustTasks() : allTestTasks(args),
+      process.exitCode = await verifyTasks(
+        () => (args[0] === "--rust-only" ? rustTasks() : allTestTasks(args)),
+        args[0] !== "--rust-only",
       );
   } catch (error) {
     console.error(error instanceof Error ? error.message : error);
