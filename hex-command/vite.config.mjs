@@ -8,6 +8,7 @@ const projectRoot = fileURLToPath(new URL(".", import.meta.url));
 const frontendOutput = "_build/default/frontend/output";
 export default defineConfig({
   plugins: [terrainPrebuild()],
+  optimizeDeps: { entries: ["index.html"] },
   base: "./",
   define: {
     "import.meta.env.VITE_BUILD_COMMIT": JSON.stringify(
@@ -19,7 +20,7 @@ export default defineConfig({
     watch: {
       ignored: (path) => {
         const local = relative(projectRoot, path).replaceAll("\\", "/");
-        if (/^(?:rust\/target|tmp|dist)(?:\/|$)/.test(local)) return true;
+        if (/^(?:\.cache|rust\/target|tmp|dist)(?:\/|$)/.test(local)) return true;
         // Watch emitted frontend code, not Dune's downloaded compiler/package trees.
         return (
           local.startsWith("_build/") &&
