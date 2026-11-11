@@ -1,8 +1,10 @@
 import { execFileSync } from "node:child_process";
+import { createHash, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync, mkdirSync, renameSync } from "node:fs";
 const path = process.argv[2];
 if (!path || process.argv.length !== 3) throw new Error("Usage: optimize-wasm.mjs module.wasm");
 let source = readFileSync(path);
@@ -33,6 +35,31 @@ function section(kind, bytes) {
   return Buffer.concat([Buffer.from([kind]), encoded(bytes.length), bytes]);
 }
 const optimizer = createRequire(import.meta.url).resolve("binaryen/bin/wasm-opt");
+const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
+const cachePath = fileURLToPath(new URL("../tmp/wasm-layout.json", import.meta.url));
+const key = digest(
+  JSON.stringify([
+    digest(source),
+    digest(readFileSync(import.meta.filename)),
+    digest(readFileSync(optimizer)),
+    process.version,
+    process.platform,
+    process.arch,
+  ]),
+);
+try {
+  const entry = JSON.parse(readFileSync(cachePath, "utf8"));
+  if (entry.key === key && typeof entry.bytes === "string") {
+    const cached = Buffer.from(entry.bytes, "base64");
+    if (digest(cached) === entry.checksum && WebAssembly.validate(cached)) {
+      writeFileSync(path, cached);
+      console.log(`WASM release layout: ${cached.length} bytes (cached)`);
+      process.exit(0);
+    }
+  }
+} catch {
+  /* Missing, corrupt or unavailable cache entries are ordinary misses. */
+}
 function transform(bytes, passes) {
   const directory = mkdtempSync(join(tmpdir(), "hex-wasm-"));
   try {
@@ -98,4 +125,22 @@ sections.push(section(0, Buffer.concat([string(Buffer.from("name")), functionNam
 const optimized = transform(Buffer.concat(sections), ["--reorder-functions-by-name"]);
 if (!WebAssembly.validate(optimized)) throw new Error("Invalid optimized WASM module");
 writeFileSync(path, optimized);
+const temporary = `${cachePath}.${randomUUID()}.tmp`;
+try {
+  mkdirSync(dirname(cachePath), { recursive: true });
+  writeFileSync(
+    temporary,
+    JSON.stringify({ key, checksum: digest(optimized), bytes: optimized.toString("base64") }),
+    { flag: "wx" },
+  );
+  renameSync(temporary, cachePath);
+} catch (error) {
+  console.warn(`WASM layout cache unavailable: ${error.message}`);
+} finally {
+  try {
+    rmSync(temporary, { force: true });
+  } catch {
+    /* Cache cleanup is best effort. */
+  }
+}
 console.log(`WASM release layout: ${optimized.length} bytes`);
