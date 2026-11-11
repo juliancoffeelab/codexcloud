@@ -35,7 +35,6 @@ function sourceFingerprint() {
     "dune-workspace",
     "scripts/build-pixel-art.py",
     "scripts/optimize-wasm.mjs",
-    "src/presentation/pixel-art.mjs",
     "Makefile",
     "scripts/fixture-json.mjs",
     "scripts/generate-json-codecs.mjs",
@@ -48,7 +47,6 @@ function sourceFingerprint() {
     "package.json",
     "package-lock.json",
     "index.html",
-    "src/style.css",
     "vite.config.mjs",
   ];
   function walk(directory) {
@@ -68,7 +66,7 @@ function sourceFingerprint() {
     "frontend",
     "tests/ocaml",
     "pixel/art",
-    "src/save",
+    "src",
     "packages/save-migrations",
     "dune.lock",
     "public",
