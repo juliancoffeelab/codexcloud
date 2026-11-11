@@ -43,6 +43,8 @@ function sourceFingerprint() {
     "scripts/migration_import_check.ml",
     "scripts/dune",
     "scripts/terrain-prebuild.mjs",
+    "scripts/terrain-prepare-worker.mjs",
+    "scripts/terrain-cache.mjs",
     "scripts/frontend-paths.mjs",
     "package.json",
     "package-lock.json",

@@ -1,8 +1,10 @@
 import { createHash } from "node:crypto";
 import { resolve } from "node:path";
 import { Worker } from "node:worker_threads";
+import { readFile } from "node:fs/promises";
 import { build } from "esbuild";
 import { frontendAliases, frontendModulePath } from "./frontend-paths.mjs";
+import { digest } from "./terrain-cache.mjs";
 const virtualId = "virtual:terrain-prebuilt";
 function terrainPrebuild() {
   let root,
@@ -43,11 +45,40 @@ function terrainPrebuild() {
       });
       for (const path of Object.keys(compiled.metafile.inputs))
         if (path !== "<stdin>") this.addWatchFile(resolve(root, path));
+      // Hash the painter's executable dependency graph separately from the full
+      // catalog bundle: changing one map or sprite must not invalidate all maps.
+      const painter = await build({
+        entryPoints: [frontendModulePath("Terrain_painter")],
+        bundle: true,
+        write: false,
+        metafile: true,
+        platform: "node",
+        format: "esm",
+        target: "es2022",
+        alias: frontendAliases,
+      });
+      const rendererInputs = [
+        // Include the exported paint/dimensions forwarding code too, without
+        // hashing catalog or unrelated artwork into every map's fingerprint.
+        frontendModulePath("Terrain_plan"),
+        "scripts/terrain-prepare-worker.mjs",
+        "scripts/terrain-cache.mjs",
+        "package-lock.json",
+      ];
+      for (const path of [...Object.keys(painter.metafile.inputs), ...rendererInputs])
+        this.addWatchFile(resolve(root, path));
+      const rendererKey = digest(
+        Buffer.concat([
+          Buffer.from(`${process.platform}:${process.arch}:${process.versions.node}:`),
+          painter.outputFiles[0].contents,
+          ...(await Promise.all(rendererInputs.map((path) => readFile(resolve(root, path))))),
+        ]),
+      );
       const wasmPath = resolve(root, "rust/pkg/backend.wasm");
       this.addWatchFile(wasmPath);
       const prepared = await new Promise((resolvePrepared, reject) => {
         const worker = new Worker(resolve(root, "scripts/terrain-prepare-worker.mjs"), {
-          workerData: { root, source: compiled.outputFiles[0].contents, wasmPath },
+          workerData: { root, source: compiled.outputFiles[0].contents, wasmPath, rendererKey },
         });
         worker.once("error", reject);
         worker.once("message", (message) => {
@@ -84,7 +115,9 @@ function terrainPrebuild() {
           `${JSON.stringify(asset.key)}:{...${JSON.stringify(asset.sprite)},pages:[${pages.join(",")}]}`,
         );
       }
-      console.log(`Prebuilt game terrain for ${entries.length} authored maps`);
+      console.log(
+        `Prebuilt game terrain for ${entries.length} authored maps (${prepared.cached} cached)`,
+      );
       return `export default {${entries.join(",\n")}};`;
     },
   };
