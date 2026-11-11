@@ -1,7 +1,6 @@
 // Preserve upstream's content traversal on typed Rust-owned OCaml metadata.
 // This emits static field visits: no Obj.magic, JSON conversion or runtime reflection.
 import { readFileSync, writeFileSync } from "node:fs";
-import { spawnSync } from "node:child_process";
 const schema = JSON.parse(readFileSync("rust/pkg/schema.json", "utf8"));
 const snake = (s) =>
   s
@@ -117,10 +116,4 @@ for (const e of needed.values()) {
     else out += `| ${pattern} -> ${operation}\n`;
   }
 }
-const formatted = spawnSync(
-  "dune",
-  ["exec", "--", "ocamlformat", "--name", "frontend/engine/Domain_resource_walk.ml", "-"],
-  { input: out, encoding: "utf8" },
-);
-if (formatted.status !== 0 || formatted.error) throw formatted.error ?? new Error(formatted.stderr);
-writeFileSync("frontend/engine/Domain_resource_walk.ml", formatted.stdout);
+writeFileSync("frontend/engine/Domain_resource_walk.ml", out);
