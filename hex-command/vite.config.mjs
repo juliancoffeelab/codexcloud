@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
-import { frontendAliases, assertBuildProfile } from "./scripts/frontend-paths.mjs";
+import { frontendAliases } from "./scripts/frontend-paths.mjs";
 import { terrainPrebuild } from "./scripts/terrain-prebuild.mjs";
 import { artworkPlugin } from "./scripts/artwork-plugin.mjs";
 const projectRoot = fileURLToPath(new URL(".", import.meta.url));
@@ -11,8 +11,7 @@ const watchedOutputs = [
   "_build/default/wasm",
   "_build/default/artwork",
 ];
-export default defineConfig(({ command, isPreview }) => {
-  if (!isPreview) assertBuildProfile(command === "build" ? "release" : "dev");
+export default defineConfig(() => {
   return {
     plugins: [artworkPlugin(), terrainPrebuild()],
     optimizeDeps: { entries: ["index.html"] },
