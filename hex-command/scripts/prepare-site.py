@@ -98,13 +98,27 @@ def prepare_locked(cache, message, source_commit, preview, preview_project_id):
     step("Build pinned production source")
     build_environment = os.environ.copy()
     wrapper = str(checkout / "scripts/toolchain/with-toolchain.mjs")
-    # Build logs stream directly so progress and failures are visible immediately.
-    subprocess.run(["node", wrapper, "bash", "scripts/build-wasm.sh", "release"],
-                   cwd=checkout, env=build_environment, check=True)
-    subprocess.run(["node", wrapper, "dune", "build", "--root=.", "@melange", "@wasm-release", "@artwork"],
-                   cwd=checkout, env=build_environment, check=True)
-    subprocess.run(["node", "node_modules/vite/bin/vite.js", "build"], cwd=checkout,
-                   env={**build_environment, "HEX_COMMAND_PROFILE": "release", "HEX_COMMAND_SOURCE_COMMIT": source_commit}, check=True)
+    log_path = cache / "production-build.log"
+    stages = [
+        ("Production WASM and bindings",
+         ["node", wrapper, "bash", "scripts/build-wasm.sh", "release"], build_environment),
+        ("Production frontend and artwork",
+         ["node", wrapper, "dune", "build", "--root=.", "@melange", "@wasm-release", "@artwork"], build_environment),
+        ("Production Vite bundle", ["node", "node_modules/vite/bin/vite.js", "build"],
+         {**build_environment, "HEX_COMMAND_PROFILE": "release", "HEX_COMMAND_SOURCE_COMMIT": source_commit}),
+    ]
+    # Save only build output, before credentials are requested. A timeout must
+    # leave diagnostics on disk rather than only in the transport's memory.
+    with log_path.open("w") as build_log:
+        step(f"Production build log: {log_path}")
+        for label, args, environment in stages:
+            stage_started = time.monotonic()
+            step(label)
+            build_log.write(f"\n{label}\n")
+            build_log.flush()
+            subprocess.run(args, cwd=checkout, env=environment, check=True,
+                           stdout=build_log, stderr=subprocess.STDOUT)
+            step(f"{label} finished in {time.monotonic() - stage_started:.3f}s")
     step(f"Production build finished in {time.monotonic() - started:.3f}s")
 
     built = checkout
