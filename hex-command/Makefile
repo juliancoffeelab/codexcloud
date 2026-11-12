@@ -7,7 +7,7 @@ DUNE_ENV := env -u MAKEFLAGS -u MFLAGS -u MAKEOVERRIDES -u MAKELEVEL
 .PHONY: help format format-check dev full-verify
 
 help:
-	@printf '%s\n' 'make dev' 'make format | format-check' 'make full-verify'
+	@printf '%s\n' 'Required in every new shell: source /workspace/.setup/env.sh' 'Project commands require the tool paths and cache variables loaded by env.sh.' 'make dev' 'make format | format-check' 'make full-verify'
 
 format:
 	cargo fmt --all --manifest-path rust/Cargo.toml
