@@ -9,6 +9,8 @@
   (pps melange.ppx)))
 
 (rule
+ ; The prepared image retains generated source copies; Dune owns their contents.
+ (mode promote)
  (targets Domain.ml Domain.mli)
  (deps
   (:implementation ../../bindings/Bindings.ml)
@@ -19,6 +21,7 @@
    (copy %{interface} Domain.mli))))
 
 (rule
+ (mode promote)
  (target Domain_resource_walk.ml)
  (deps
   (:schema ../../api/schema.json)
