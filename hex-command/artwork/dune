@@ -1,0 +1,12 @@
+(rule
+ (targets pixel-art.mjs sprites.json)
+ (deps
+  (source_tree ../pixel/art)
+  (source_tree ../rust/data/game/units)
+  ../scripts/build-pixel-art.py)
+ (action
+  (run python3 %{dep:../scripts/build-pixel-art.py} --out-dir .)))
+
+(alias
+ (name artwork)
+ (deps pixel-art.mjs sprites.json))

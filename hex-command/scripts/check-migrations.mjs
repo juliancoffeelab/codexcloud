@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, existsSync, realpathSync, statSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync, realpathSync } from "node:fs";
 import { relative, resolve, isAbsolute } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
@@ -9,30 +9,10 @@ const project = fileURLToPath(new URL("../", import.meta.url));
 
 function checkImports(sources) {
   const checker = resolve(project, "_build/default/scripts/migration_import_check.exe");
-  const inputs = ["scripts/migration_import_check.ml", "scripts/dune", "dune-project"];
   const env = toolchainEnvironment();
-  if (
-    !existsSync(checker) ||
-    inputs.some((file) => statSync(resolve(project, file)).mtimeMs > statSync(checker).mtimeMs)
-  ) {
-    const build = spawnSync("dune", ["build", "scripts/migration_import_check.exe"], {
-      cwd: project,
-      env,
-      encoding: "utf8",
-    });
-    if (build.error || build.status !== 0)
-      throw build.error ?? new Error(build.stderr || "Cannot build the OCaml import checker");
-  }
   const args = [...sources];
   if (sources.some((file) => /\.rei?$/.test(file))) {
-    const refmt = spawnSync("dune", ["exec", "--", "which", "refmt"], {
-      cwd: project,
-      env,
-      encoding: "utf8",
-    });
-    if (refmt.error || refmt.status !== 0)
-      throw refmt.error ?? new Error(refmt.stderr || "Cannot locate the Reason parser");
-    args.unshift("--refmt", refmt.stdout.trim());
+    args.unshift("--refmt", "refmt");
   }
   const checked = spawnSync(checker, args, { cwd: project, env, encoding: "utf8" });
   if (checked.error) throw checked.error;

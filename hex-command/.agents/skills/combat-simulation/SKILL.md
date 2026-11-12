@@ -30,9 +30,13 @@ faction roles. For coefficient tuning, read [recruitment](recruitment.md).
    [metrics](references/metrics.md) before interpreting unit composition, damage,
    support or casualty value; use [replays](references/replays.md) for interventions.
 3. Run the selected scope. After changing the harness, analyzer or AI behavior,
-   run fresh simulations of the affected workload; use the full panel when the
-   affected scope is unclear. Use [rust-toolchain](../rust-toolchain/SKILL.md)
-   for build problems. For maintenance and bug fixes, use a matching baseline to
+   run a fresh, focused simulation of the affected behavior. Start with 10 arena
+   seeds or 20 campaign seeds and a relevant subset of maps, factions and tactics;
+   target about one minute including incremental compilation and analysis. Inspect
+   the schedule first. If it exceeds the budget, narrow the workload and state
+   the coverage; preserve normal game rules and round caps. Full panels and
+   larger samples serve explicit broad analysis or unresolved evidence, not every
+   edit. For maintenance and bug fixes, use a matching baseline to
    check for unintended outcome changes. Investigate differences and distinguish
    expected effects of the fix from regressions; disclose missing comparisons.
 4. Read the printed findings. If output is truncated, consult the run’s
@@ -41,3 +45,9 @@ faction roles. For coefficient tuning, read [recruitment](recruitment.md).
 5. Deliver according to [reporting](references/reporting.md): select its
    maintenance or requested-analysis branch. Requested analysis completes with
    the comparison, coverage and limitations, not merely a successful run.
+
+The harness defaults to Balanced against Balanced in arenas and Balanced against
+Classic in campaigns, with 10 arena seeds and 20 campaign seeds. Map, faction,
+campaign-route and diplomacy coverage remains unchanged. Select broader tactic
+coverage explicitly with `--policies classic,rush,balanced,rotated,situational,predictor`
+and, when needed, `--campaign-players balanced,rotated,situational,predictor`.

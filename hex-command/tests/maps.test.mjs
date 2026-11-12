@@ -1,10 +1,11 @@
+import "./storage-fixture.mjs";
 import { cellKey } from "./hex-fixture.mjs";
 import * as Store from "./storage-adapter.mjs";
 import { historicalTiles } from "./legacy-save.mjs";
 import { test, beforeEach, afterEach, vi } from "vitest";
 import { required, TestStorage } from "./helpers.mjs";
 import assert from "node:assert/strict";
-import { pixelSprites } from "../src/presentation/pixel-art.mjs";
+import { pixelSprites } from "@assets/pixel-art";
 const { Game, TYPES, developerFixture } = await import("./game-fixture.mjs");
 const { Native, Catalog, catalog, restoreBattle } = await import("./native-fixture.mjs");
 test("Catalog retains the latest scenario revisions and non-human metadata", () => {

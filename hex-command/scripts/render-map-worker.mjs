@@ -5,7 +5,7 @@ import { pathToFileURL } from "node:url";
 const { root, output } = workerData;
 try {
   const client = await import(pathToFileURL(output).href);
-  await client.initialize(await readFile(`${root}/rust/pkg/backend.wasm`));
+  await client.initialize(await readFile(`${root}/_build/default/wasm/dev/backend.wasm`));
   parentPort.on("message", async () => {
     const started = performance.now();
     try {

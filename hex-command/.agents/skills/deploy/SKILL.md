@@ -24,7 +24,7 @@ Only an explicit request for live/main deployment selects plain `deploy` without
 `--preview`. The tag selects the destination; current committed `HEAD` selects
 the source. Main and preview Sites keep separate release receipts and audiences.
 
-The operation owns source synchronization, cached build stages, packaging,
+The operation owns source synchronization, native incremental builds, packaging,
 credentials, exact-release selection, audience and deployment. It pins the source
 commit and saved version, reuses an exact release when possible and leaves
 staged, unstaged and untracked implementation changes alone. A clean tree,
@@ -52,8 +52,8 @@ A failure ends the attempt, not the deployment task.
 Inspect and fix only the observed blocker, commit/push required source changes,
 and rerun the operation. The retry pins the repaired commit; use its build as
 verification instead of adding a general audit, tests or formatting cycle.
-The operation already owns exact-release and build-stage reuse, transient retries, deleted-cache
-recovery and serialization; do not duplicate these agent-side. No new permission
+The operation already owns exact-release reuse, native incremental builds, transient retries,
+deleted-cache recovery and serialization; do not duplicate these agent-side. No new permission
 is needed for focused repairs or retries. Keep the user informed as the diagnosis
 changes. Continue until deployment succeeds, the user stops the work, or a
 concrete external prerequisite requires user action. Report that blocker and the

@@ -3,5 +3,7 @@
  (modes melange)
  (libraries melange.js melange.dom hex_platform phaser_bindings hex_engine)
  (private_modules Hud_audio)
- (flags (:standard -open Hex_platform -open Phaser_bindings -open Hex_engine))
- (preprocess (pps melange.ppx)))
+ (flags
+  (:standard -open Hex_platform -open Phaser_bindings -open Hex_engine))
+ (preprocess
+  (pps melange.ppx)))

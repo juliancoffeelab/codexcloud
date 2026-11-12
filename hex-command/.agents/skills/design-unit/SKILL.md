@@ -82,7 +82,7 @@ invent tiers or actor categories to register it. Additional `factions` select
 visual palettes; `passive` is white. Player/enemy frames remain required, and all
 variants retain the same silhouette. Palette names are colors, not scenario roles.
 
-Run `npm run art:build` and `npm run art:check`, then inspect the delivered line
+Run `dune build --root=. @artwork` and `python3 -m unittest discover -s scripts -p 'test_pixel_*.py'`, then inspect the delivered line
 at battlefield scale. Completion requires the requested registrations, valid
 sources and matching clean previews. Artwork integration alone does not authorize
 gameplay stats, recruitment changes or publication.

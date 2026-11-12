@@ -1,3 +1,13 @@
 (executable
  (name migration_import_check)
  (libraries compiler-libs.common unix))
+
+(rule
+ (target reason-format.inc)
+ (deps
+  (source_tree ../frontend)
+  reason-format-rules.py)
+ (action
+  (with-stdout-to
+   %{target}
+   (run python3 %{dep:reason-format-rules.py} %{deps}))))

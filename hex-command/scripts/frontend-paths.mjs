@@ -1,6 +1,8 @@
 import { readdirSync, existsSync } from "node:fs";
 import { resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+export const wasmMode = process.env.HEX_COMMAND_PROFILE ?? "dev";
+if (!["dev", "release"].includes(wasmMode)) throw new Error("Choose dev or release WASM");
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 function sourceModules(root) {
   const modules = new Map();
@@ -17,6 +19,9 @@ function sourceModules(root) {
     }
   };
   walk(resolve(root, "frontend"));
+  modules.set("Domain", "engine/Domain.js");
+  modules.set("Domain_resource_walk", "engine/Domain_resource_walk.js");
+  modules.set("Fixture_json", "Fixture_json.js");
   return modules;
 }
 export function frontendModulePath(name, root = projectRoot) {
@@ -55,9 +60,12 @@ const frontendAliases = {
         "melange",
         new URL("../_build/default/frontend/output/node_modules/melange", import.meta.url).href,
       ],
-      ["@wasm", new URL("../rust/pkg", import.meta.url).href],
+      ["@wasm", new URL(`../_build/default/wasm/${wasmMode}`, import.meta.url).href],
       ["@presentation", new URL("../src/presentation", import.meta.url).href],
-      ["@assets/pixel-art", new URL("../src/presentation/pixel-art.mjs", import.meta.url).href],
+      [
+        "@assets/pixel-art",
+        new URL("../_build/default/artwork/pixel-art.mjs", import.meta.url).href,
+      ],
       [
         "@migrations",
         new URL("../_build/default/frontend/output/packages/save-migrations/ocaml", import.meta.url)
@@ -67,3 +75,14 @@ const frontendAliases = {
   ),
 };
 export { frontendAliases };
+
+export function wasmPath(name, root = projectRoot) {
+  return resolve(root, "_build/default/wasm", wasmMode, name);
+}
+export function assertBuildProfile(expected = wasmMode) {
+  for (const name of ["backend.wasm", "bindings.runtime.mjs", "schema.json"])
+    if (!existsSync(resolve(projectRoot, "_build/default/wasm", expected, name)))
+      throw new Error(
+        `Missing ${expected} WASM package; run node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh ${expected}, then dune build --root=. @melange @artwork`,
+      );
+}

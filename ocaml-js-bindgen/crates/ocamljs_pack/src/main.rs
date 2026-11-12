@@ -128,8 +128,64 @@ fn run() -> Result<(), Error> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
     if args.is_empty() || args.iter().any(|a| a == "--help") {
         println!(
-            "ocamljs_pack build --manifest-path Cargo.toml [--package NAME] [--backend melange|js_of_ocaml|rescript|all] [--async-runtime promise|lwt] [--out-dir pkg] [--name NAME] [--dev | --profile PROFILE] [--paranoid] [--features FEATURES] [--rescript-compiler PATH]\nocamljs_pack generate --wasm input.wasm [--schema schema.json] --out-dir pkg [--backend BACKEND] [--async-runtime promise|lwt] [--dev] [--paranoid]"
+            "ocamljs_pack build --manifest-path Cargo.toml [--package NAME] [--backend melange|js_of_ocaml|rescript|all] [--async-runtime promise|lwt] [--out-dir pkg] [--name NAME] [--dev | --profile PROFILE] [--paranoid] [--features FEATURES] [--rescript-compiler PATH]\nocamljs_pack interface --wasm input.wasm --out-dir api\nocamljs_pack bindings --interface api/interface.json --name NAME --out-dir bindings\nocamljs_pack package --wasm input.wasm --runtime bindings/bindings.runtime.mjs --out-dir pkg\nocamljs_pack generate --wasm input.wasm [--schema schema.json] --out-dir pkg [--backend BACKEND] [--async-runtime promise|lwt] [--dev] [--paranoid]"
         );
+        return Ok(());
+    }
+    if matches!(args[0].as_str(), "interface" | "bindings" | "package") {
+        let allowed: &[&str] = match args[0].as_str() {
+            "interface" => &["--wasm", "--out-dir"],
+            "bindings" => &["--interface", "--name", "--out-dir"],
+            "package" => &["--wasm", "--runtime", "--out-dir"],
+            _ => unreachable!(),
+        };
+        let mut flags = args[1..].chunks_exact(2);
+        for pair in &mut flags {
+            if !allowed.contains(&pair[0].as_str()) || pair[1].starts_with("--") {
+                return Err(format!("invalid {} option: {}", args[0], pair[0]).into());
+            }
+        }
+        if !flags.remainder().is_empty() {
+            return Err("every option requires a value".into());
+        }
+        let out = PathBuf::from(option(&args, "--out-dir").ok_or("--out-dir is required")?);
+        std::fs::create_dir_all(&out)?;
+        match args[0].as_str() {
+            "interface" => {
+                let wasm = std::fs::read(option(&args, "--wasm").ok_or("--wasm is required")?)?;
+                std::fs::write(
+                    out.join("interface.json"),
+                    ocamljsify::binding_input(&wasm)?,
+                )?;
+                std::fs::write(out.join("schema.json"), ocamljsify::schema_sidecar(&wasm)?)?;
+            }
+            "bindings" => {
+                let input =
+                    std::fs::read(option(&args, "--interface").ok_or("--interface is required")?)?;
+                ocamljsify::generate_bindings(
+                    &input,
+                    &out,
+                    &Options {
+                        name: option(&args, "--name").unwrap_or("bindings".into()),
+                        backend: Backend::Melange,
+                        async_runtime: AsyncRuntime::Promise,
+                        debug: false,
+                        paranoid: false,
+                    },
+                )?;
+            }
+            "package" => {
+                let wasm = std::fs::read(option(&args, "--wasm").ok_or("--wasm is required")?)?;
+                let runtime = std::fs::read_to_string(
+                    option(&args, "--runtime").ok_or("--runtime is required")?,
+                )?;
+                std::fs::write(
+                    out.join("backend.wasm"),
+                    ocamljsify::package_runtime(&wasm, &runtime, false)?,
+                )?;
+            }
+            _ => unreachable!(),
+        }
         return Ok(());
     }
     for arg in args.iter().filter(|arg| arg.starts_with("--")) {

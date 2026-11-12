@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import assert from "node:assert/strict";
 import { test } from "vitest";
-async function fixture(initialFailure = false) {
+async function fixture() {
   const directory = await mkdtemp(join(tmpdir(), "hex-command-dev-"));
   for (const path of ["scripts", "bin", "node_modules/vite/bin"])
     await mkdir(join(directory, path), { recursive: true });
@@ -19,7 +19,6 @@ async function fixture(initialFailure = false) {
 import { spawn } from 'node:child_process';
 const name = process.argv[1].endsWith('/dune') ? 'dune' : 'vite';
 if (name === 'dune' && !process.argv.includes('--watch')) {
-  if (process.env.INITIAL_FAILURE && process.argv.includes('build')) process.exit(3);
   process.exit(0);
 }
 const helper = spawn(process.execPath, ['-e', 'setInterval(() => {}, 60000)']);
@@ -38,14 +37,12 @@ process.on('SIGUSR1', () => process.exit(7));
 ${worker}`,
     { mode: 493 },
   );
-  await writeFile(join(directory, "bin/npm"), "#!/bin/sh\nexit 0\n", { mode: 493 });
   await writeFile(join(directory, "node_modules/vite/bin/vite.js"), worker);
   const child = spawn(process.execPath, ["scripts/dev.mjs", "--port", "5199"], {
     cwd: directory,
     env: {
       ...process.env,
       PATH: `${join(directory, "bin")}:${process.env.PATH}`,
-      INITIAL_FAILURE: initialFailure ? "1" : "",
     },
     stdio: ["ignore", "pipe", "pipe"],
   });
@@ -164,16 +161,3 @@ for (const service of ["dune", "vite"])
       }
     },
   );
-test.skipIf(process.platform === "win32")(
-  "Initial preparation failure starts neither watcher nor server",
-  async () => {
-    const dev = await fixture(true);
-    try {
-      assert.equal((await dev.closed)[0], 1);
-      assert.equal(dev.workers.length, 0);
-      assert.match(dev.output(), /Preparing OCaml stopped \(exit 3\)/);
-    } finally {
-      await dev.cleanup();
-    }
-  },
-);

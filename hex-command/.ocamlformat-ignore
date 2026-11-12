@@ -1,4 +1,4 @@
-frontend/Domain.ml
-frontend/Domain.mli
 frontend/Fixture_json.ml
-frontend/Fixture_json.mli
+frontend/engine/Domain.ml
+frontend/engine/Domain.mli
+frontend/engine/Domain_resource_walk.ml

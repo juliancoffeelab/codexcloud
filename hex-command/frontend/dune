@@ -1,10 +1,50 @@
 (melange.emit
  (target output)
  (module_systems esm)
- (libraries melange.js melange.dom reason-react hex_platform hex_engine hex_audio hex_persistence hex_game hex_renderer hex_devtools)
- (compile_flags (:standard -open Hex_platform -open Hex_engine -open Hex_audio -open Hex_persistence -open Hex_game -open Hex_renderer))
- (preprocess (pps melange.ppx reason-react-ppx)))
-
+ (libraries
+  melange.js
+  melange.dom
+  reason-react
+  hex_platform
+  hex_engine
+  hex_audio
+  hex_persistence
+  hex_game
+  hex_renderer
+  hex_devtools)
+ (compile_flags
+  (:standard
+   -open
+   Hex_platform
+   -open
+   Hex_engine
+   -open
+   Hex_audio
+   -open
+   Hex_persistence
+   -open
+   Hex_game
+   -open
+   Hex_renderer))
+ (preprocess
+  (pps melange.ppx reason-react-ppx)))
 
 (copy_files ../tests/ocaml/*.ml)
+
 (copy_files ../tests/ocaml/*.mli)
+
+(rule
+ ; The prepared image retains a legacy generated source copy; Dune regenerates it.
+ (mode promote)
+ (target Fixture_json.ml)
+ (deps
+  (:schema ../api/schema.json)
+  ../scripts/generate-json-codecs.mjs)
+ (action
+  (run
+   node
+   %{dep:../scripts/generate-json-codecs.mjs}
+   --schema
+   %{schema}
+   --out
+   %{target})))

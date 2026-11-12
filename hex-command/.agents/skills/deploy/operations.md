@@ -39,10 +39,15 @@ source, versions, audience, builds or retries on the agent’s behalf.
 
 The command serializes each tag's save/deploy sequence. A separate build lock
 protects one shared, pinned-source build checkout across all destinations. Site
-Git histories remain separate. Committed input fingerprints and output digests
-reuse the binding tool, WASM, frontend and artwork independently; missing or
-changed outputs rebuild their stage. A new revision gets a bundle containing its
-source commit. An exact saved release skips source preparation entirely.
+Git histories remain separate. Cargo and Dune own artifact freshness in that
+stable workspace; Vite owns packaging and terrain preparation. Deployment restores the exact committed pin and keeps mutable outputs separate
+from the editable checkout. A new revision gets a bundle containing its source commit,
+which is supplied only to Vite. An exact saved release skips preparation.
+
+Source write credentials are requested after compilation. An authorization
+failure refreshes credentials once and retries source synchronization against
+the same completed build; it never starts another compilation or selects an older
+release. Credentials travel through stdin and remain in memory.
 
 The operation relays safe stage progress and elapsed build times. Forward those
 messages through the transport below; they distinguish compilation from hosting

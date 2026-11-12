@@ -1,3 +1,4 @@
+import { wasmPath } from "./frontend-paths.mjs";
 // The frozen Rust wire metadata and OCaml signature are independent of the live engine.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -6,7 +7,7 @@ import { resolve } from "node:path";
 import { checkMigrationBoundary } from "./check-migrations.mjs";
 checkMigrationBoundary(resolve("packages/save-migrations"));
 const frozen = JSON.parse(readFileSync("packages/save-migrations/ocaml/native-v39.json", "utf8"));
-const live = JSON.parse(readFileSync("rust/pkg/schema.json", "utf8"));
+const live = JSON.parse(readFileSync(wasmPath("schema.json"), "utf8"));
 for (const [name, definition] of Object.entries(frozen)) {
   assert.deepStrictEqual(
     live[name],

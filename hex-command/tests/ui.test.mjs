@@ -1,3 +1,4 @@
+import "./storage-fixture.mjs";
 import { cellKey } from "./hex-fixture.mjs";
 // @vitest-environment jsdom
 import assert from "node:assert/strict";

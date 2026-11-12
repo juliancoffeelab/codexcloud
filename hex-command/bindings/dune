@@ -1,0 +1,15 @@
+(rule
+ (targets Bindings.ml Bindings.mli bindings.runtime.mjs)
+ (deps
+  (:input ../api/interface.json)
+  (:packager ../rust/pkg/ocamljs_pack))
+ (action
+  (run
+   %{packager}
+   bindings
+   --interface
+   %{input}
+   --name
+   hex_command
+   --out-dir
+   .)))

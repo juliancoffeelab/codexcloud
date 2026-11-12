@@ -3,5 +3,34 @@
  (modes melange)
  (libraries melange.js melange.dom hex_platform)
  (private_modules Snapshot_equal)
- (flags (:standard -open Hex_platform))
- (preprocess (pps melange.ppx)))
+ (flags
+  (:standard -open Hex_platform))
+ (preprocess
+  (pps melange.ppx)))
+
+(rule
+ ; The prepared image retains generated source copies; Dune owns their contents.
+ (mode promote)
+ (targets Domain.ml Domain.mli)
+ (deps
+  (:implementation ../../bindings/Bindings.ml)
+  (:interface ../../bindings/Bindings.mli))
+ (action
+  (progn
+   (copy %{implementation} Domain.ml)
+   (copy %{interface} Domain.mli))))
+
+(rule
+ (mode promote)
+ (target Domain_resource_walk.ml)
+ (deps
+  (:schema ../../api/schema.json)
+  ../../scripts/generate-resource-visitors.mjs)
+ (action
+  (run
+   node
+   %{dep:../../scripts/generate-resource-visitors.mjs}
+   --schema
+   %{schema}
+   --out
+   %{target})))

@@ -1,0 +1,22 @@
+(rule
+ (targets bindings.runtime.mjs schema.json)
+ (deps
+  (:runtime ../../bindings/bindings.runtime.mjs)
+  (:schema ../../api/schema.json))
+ (action
+  (progn
+   (copy %{runtime} bindings.runtime.mjs)
+   (copy %{schema} schema.json))))
+
+(rule
+ (target backend.wasm)
+ (deps
+  (:input ../../rust/pkg/dev/input.wasm)
+  (:runtime ../../bindings/bindings.runtime.mjs)
+  (:packager ../../rust/pkg/ocamljs_pack))
+ (action
+  (run %{packager} package --wasm %{input} --runtime %{runtime} --out-dir .)))
+
+(alias
+ (name wasm-dev)
+ (deps backend.wasm bindings.runtime.mjs schema.json))

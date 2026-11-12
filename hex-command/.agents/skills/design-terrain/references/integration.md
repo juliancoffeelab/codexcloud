@@ -16,7 +16,7 @@ before reusing a role; visual similarity does not establish compatible behavior.
 A new role needs exhaustive native behavior. Verify movement, ownership, healing
 and recruitment for the requested role or gameplay change, and update inspection
 descriptions when that behavior changes. Regenerate typed frontend bindings
-with `npm run wasm:build` after Rust API/type changes.
+with `node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh dev` after Rust API/type changes.
 
 ## Artwork and selection
 
@@ -38,13 +38,12 @@ campaigns or other maps only within the requested scope.
 
 ## Validate the installed result
 
-Rebuild and check artwork with `npm run art:build` and `npm run art:check`.
+Rebuild and check artwork with `dune build --root=. @artwork` and `python3 -m unittest discover -s scripts -p 'test_pixel_*.py'`.
 Inspect standalone frames and assembled neighbors through the shared renderer,
 including every supported orientation, floor selection and density affected by
 the change. Confirm that native-accepted selections all have finished images.
 
 Run the applicable content, frontend and native checks following
-[testing](../../testing/SKILL.md); use [rust-toolchain](../../rust-toolchain/SKILL.md)
-for Rust/WASM builds. An installation is ready when its sources pass the artwork
+[verification](../../verification/SKILL.md). An installation is ready when its sources pass the artwork
 checks, native selection and validation agree, and assembled views show the
 requested result at native scale. Include gameplay validation for changed rules.

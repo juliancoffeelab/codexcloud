@@ -1,5 +1,6 @@
 """Build standalone native sprites from pixel/art; never modify source artwork."""
 
+import base64
 import argparse
 import hashlib
 import json
@@ -596,27 +597,17 @@ def pixel_sprites():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true", help="Verify generated assets without writing files")
+    parser.add_argument("--out-dir", type=Path, required=True, help="Emit the Dune/Vite artwork bundle")
     args = parser.parse_args()
     outputs, metadata = pixel_sprites()
-    products = {ROOT / "public/assets/sprites" / name: data for name, data in outputs.items()}
-    products[ROOT / "src/presentation/pixel-art.mjs"] = metadata.encode()
-    directory = ROOT / 'public/assets/sprites'
-    expected = {directory / name for name in outputs}
-    obsolete = set(directory.glob('*.png')) - expected
-    if args.check and obsolete:
-        raise ValueError('Obsolete generated sprites; regenerate with npm run art:build')
-    if not args.check:
-        directory.mkdir(parents=True, exist_ok=True)
-        for path in obsolete:
-            path.unlink()
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+    products = {
+        args.out_dir / "pixel-art.mjs": metadata.encode(),
+        args.out_dir / "sprites.json": json.dumps({name: base64.b64encode(data).decode() for name, data in sorted(outputs.items())}, separators=(",", ":")).encode(),
+    }
     for path, data in products.items():
-        if args.check:
-            if not path.exists() or path.read_bytes() != data:
-                raise ValueError(f"{path}: regenerate with npm run art:build")
-        elif not path.exists() or path.read_bytes() != data:
+        if not path.exists() or path.read_bytes() != data:
             path.write_bytes(data)
-    print(f"{'Verified' if args.check else 'Built'} standalone pixel sprites and metadata; sources are read-only")
 
 
 if __name__ == "__main__":

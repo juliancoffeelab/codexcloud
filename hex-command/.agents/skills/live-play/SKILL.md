@@ -83,7 +83,7 @@ attempt. Continue through normal controls if the restriction has a legitimate
 player-facing resolution. Otherwise report the blocker at that point.
 
 Keep scratch probes and evidence in ignored `tmp/`, following
-[testing](../testing/SKILL.md). Source changes and synthetic storage/fault fixtures
+[verification](../verification/SKILL.md). Source changes and synthetic storage/fault fixtures
 need their own authorized scope; a modified run is separate diagnostic evidence.
 
 **Complete when:** the obstruction has an evidenced explanation or a clearly

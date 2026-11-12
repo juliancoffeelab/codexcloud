@@ -1,0 +1,24 @@
+(rule
+ (targets bindings.runtime.mjs schema.json)
+ (deps
+  (:runtime ../../bindings/bindings.runtime.mjs)
+  (:schema ../../api/schema.json))
+ (action
+  (progn
+   (copy %{runtime} bindings.runtime.mjs)
+   (copy %{schema} schema.json))))
+
+(rule
+ (target backend.wasm)
+ (deps
+  (:input raw/backend.wasm)
+  ../../scripts/optimize-wasm.mjs
+  ../../node_modules/binaryen/package.json
+  ../../node_modules/binaryen/bin/package.json
+  ../../node_modules/binaryen/bin/wasm-opt)
+ (action
+  (run node %{dep:../../scripts/optimize-wasm.mjs} %{input} %{target})))
+
+(alias
+ (name wasm-release)
+ (deps backend.wasm bindings.runtime.mjs schema.json))

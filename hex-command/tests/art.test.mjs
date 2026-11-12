@@ -9,7 +9,7 @@ import {
   pixelFloorColors,
   pixelTerrainLayouts,
   pixelTerrainGeometry,
-} from "../src/presentation/pixel-art.mjs";
+} from "@assets/pixel-art";
 import { TYPES, TERRAIN } from "./game-fixture.mjs";
 import { required } from "./helpers.mjs";
 test("Artwork and terrain names never resolve inherited object properties", () => {

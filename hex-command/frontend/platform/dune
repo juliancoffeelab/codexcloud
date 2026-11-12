@@ -2,4 +2,5 @@
  (name hex_platform)
  (modes melange)
  (libraries melange.js melange.dom)
- (preprocess (pps melange.ppx)))
+ (preprocess
+  (pps melange.ppx)))

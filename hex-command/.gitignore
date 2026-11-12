@@ -102,6 +102,9 @@ Thumbs.db
 /ocamljs/target/
 
 /frontend/Fixture_json.ml
+/frontend/engine/Domain.ml
+/frontend/engine/Domain.mli
+/frontend/engine/Domain_resource_walk.ml
 
 # Generated benchmark reports and evidence archives stay local.
 /docs/*.json

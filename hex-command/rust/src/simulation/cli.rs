@@ -43,13 +43,13 @@ struct SimulationArgs {
     /// Add a custom tactic; - selects the workload default for that block.
     #[arg(group = "batch", long, value_name = "RECRUITER,CAMPAIGNER,PLANNER", value_parser = WithSelection::parse, allow_hyphen_values = true)]
     with: Option<WithSelection>,
-    /// Seed count override for both workloads (defaults: arena 50, campaign 100).
+    /// Seed count override for both workloads (defaults: arena 10, campaign 20).
     #[arg(group = "batch", long, value_parser = clap::value_parser!(u32).range(1..=10000))]
     seeds: Option<u32>,
     /// First seed.
     #[arg(group = "batch", long, default_value_t = 1, value_parser = clap::value_parser!(u32).range(0..=2147483647))]
     seed: u32,
-    /// Arena tactics; also filters default campaign players.
+    /// Arena tactics (default: balanced); also filters default campaign players.
     #[arg(group = "batch", long, value_enum, value_delimiter = ',', action = clap::ArgAction::Set)]
     policies: Option<Vec<Policy>>,
     /// Recruitment roster identifiers, separated by commas.
@@ -229,7 +229,11 @@ impl SimulationArgs {
         options.armies = selection(self.armies, "--armies", &options.armies)?;
         options.landscapes = selection(self.landscapes, "--landscapes", &options.landscapes)?;
         options.campaigns = selection(self.campaigns, "--campaigns", &options.campaigns)?;
-        options.policies = selection(self.policies, "--policies", &Policy::ALL)?;
+        options.policies = selection(
+            self.policies.or_else(|| Some(vec![Policy::Balanced])),
+            "--policies",
+            &Policy::ALL,
+        )?;
         let mut participant_ids: Vec<_> =
             Policy::ALL.iter().map(|p| p.as_str().to_owned()).collect();
         if self.with.is_some() {
@@ -1012,16 +1016,16 @@ mod tests {
             .unwrap()
             .resolve(&rules)
             .unwrap();
-        assert_eq!(options.schedule.seeds, 50);
-        assert_eq!(options.schedule.campaign_seeds, 100);
-        for (mode, arena_seeds) in [("arena", 50), ("campaign", 100), ("full", 50)] {
+        assert_eq!(options.schedule.seeds, 10);
+        assert_eq!(options.schedule.campaign_seeds, 20);
+        for (mode, arena_seeds) in [("arena", 10), ("campaign", 20), ("full", 10)] {
             let args = ["sim", "--mode", mode];
             let defaults = SimulationArgs::try_parse_from(args)
                 .unwrap()
                 .resolve(&rules)
                 .unwrap();
             assert_eq!(defaults.schedule.seeds, arena_seeds);
-            assert_eq!(defaults.schedule.campaign_seeds, 100);
+            assert_eq!(defaults.schedule.campaign_seeds, 20);
             let override_seeds =
                 SimulationArgs::try_parse_from(args.into_iter().chain(["--seeds", "7"]))
                     .unwrap()
@@ -1031,6 +1035,7 @@ mod tests {
             assert_eq!(override_seeds.schedule.campaign_seeds, 7);
         }
 
+        assert_eq!(options.schedule.policies, vec![Policy::Balanced]);
         assert_eq!(options.schedule.opponent, Some(Policy::Balanced));
         assert_eq!(
             options.schedule.campaign_enemies,

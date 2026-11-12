@@ -121,7 +121,7 @@ async function previewTarget(tools, cwd, primary, preview) {
   return { project_id: manifest.project_id, slug, key: previewName };
 }
 
-function buildSource(cwd, sourceCommit, credential, message, preview, projectId, progress) {
+function buildSource(cwd, sourceCommit, requestCredential, message, preview, projectId, progress) {
   return new Promise((resolve, reject) => {
     const child = spawn(
       "python3",
@@ -147,6 +147,15 @@ function buildSource(cwd, sourceCommit, credential, message, preview, projectId,
         const line = lines.slice(0, end).trim();
         lines = lines.slice(end + 1);
         if (line.startsWith("PREPARE: ")) progress(line.slice(9));
+        if (line === "SITE_CREDENTIAL_REQUIRED") {
+          requestCredential().then(
+            (credential) => child.stdin.write(JSON.stringify(credential) + "\n"),
+            (error) => {
+              child.kill("SIGTERM");
+              reject(error);
+            },
+          );
+        }
       }
     });
     child.stderr.on("data", (data) => {
@@ -155,6 +164,7 @@ function buildSource(cwd, sourceCommit, credential, message, preview, projectId,
     child.on("error", reject);
     child.stdin.on("error", reject);
     child.on("close", (code) => {
+      child.stdin.destroy();
       if (code !== 0) return reject(new Error(output || `Preparation exited with ${code}`));
       const line = output.split(/\r?\n/).findLast((line) => line.startsWith("SITE_PACKAGE: "));
       if (!line) return reject(new Error("Preparation returned no package"));
@@ -164,7 +174,6 @@ function buildSource(cwd, sourceCommit, credential, message, preview, projectId,
         reject(error);
       }
     });
-    child.stdin.end(JSON.stringify(credential) + "\n");
   });
 }
 function decode(result) {
@@ -226,38 +235,37 @@ export async function prepareSite(tools, options, progress = options.progress ??
   let site;
   try {
     // Audience is current even when the already-saved build is reused.
-    const siteRequest = native(tools, "mcp__codex_apps__sites_get_site", { project_id });
-    const credentialRequest = exact
-      ? undefined
-      : native(tools, "mcp__codex_apps__sites_create_source_repository_write_credential", {
-          project_id,
-          publish_on_push: null,
-        });
-    const [siteResult, credentialResult] = await Promise.allSettled([
-      siteRequest,
-      credentialRequest,
-    ]);
-    if (siteResult.status === "fulfilled") site = siteResult.value;
-    else throw siteResult.reason;
-    if (credentialResult.status === "rejected") throw credentialResult.reason;
+    site = await native(tools, "mcp__codex_apps__sites_get_site", { project_id });
     if (preview !== undefined && site.slug !== target.slug)
       throw new Error("Cached preview identity does not match the selected branch tag");
     const live_url = site.current_live_url ?? site.expected_url ?? cached?.live_url;
     if (exact) return { ...cached, owner_private: ownerPrivate(site), live_url, reused: true };
-    const credential = await credentialRequest;
-    if (
-      options.mode !== "deploy" &&
-      (credential.publish_on_push_accepted ||
-        Date.parse(credential.publish_on_push_expires_at) > Date.now())
-    )
-      throw new Error(
-        "An unpublished release cannot push during an active automatic publication window",
+    let credential;
+    const requestCredential = async () => {
+      progress("Compilation complete; acquiring source write credentials.");
+      credential = await native(
+        tools,
+        "mcp__codex_apps__sites_create_source_repository_write_credential",
+        {
+          project_id,
+          publish_on_push: null,
+        },
       );
+      if (
+        options.mode !== "deploy" &&
+        (credential.publish_on_push_accepted ||
+          Date.parse(credential.publish_on_push_expires_at) > Date.now())
+      )
+        throw new Error(
+          "An unpublished release cannot push during an active automatic publication window",
+        );
+      return credential;
+    };
     progress("Building and synchronizing the requested source.");
     const prepared = await buildSource(
       cwd,
       source_commit,
-      credential,
+      requestCredential,
       options.message ??
         (preview === undefined
           ? "Prepare Hex Command release"

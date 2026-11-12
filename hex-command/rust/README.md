@@ -66,15 +66,9 @@ transitions execute in Rust. Undo restores a native checkpoint. Enemy decisions
 are prepared during pacing windows and applied only while the session and
 revision still match.
 
-```sh
-npm run wasm:build          # Development Wasm and matching OCaml bindings
-npm run wasm:build:release  # Size-optimized wasm-release profile
-npm run check:wasm         # Verify the schema, bindings and Wasm imports
-```
-
 Development and verification commands prepare matching generated artifacts;
-production builds also run the pinned Binaryen optimization. See
-[rust-toolchain](../.agents/skills/rust-toolchain/SKILL.md) for tool discovery.
+production builds also run the pinned Binaryen optimization. See [verification](../.agents/skills/verification/SKILL.md) for checks and
+`scripts/build-wasm.sh` for WASM preparation.
 
 Browser persistence has one versioned envelope defined by `src/save/schema.ts`,
 with browser I/O and lifecycle owned by `frontend/Save.ml` and `Session.ml`. The generated
@@ -84,12 +78,6 @@ restore. Rust validates current battle invariants and never migrates browser sav
 See [save migrations](../.agents/skills/save-migrations/SKILL.md).
 
 ## Tests and simulations
-
-`npm test` includes native rules, commands, catalog validation, saves, scheduling
-and recording tests together with Python and frontend tests under one
-shared 20-second advisory budget, including preparation. Runs warn and continue
-when they exceed that target. `npm run check:rust` is available for a focused native run.
-Its WASM feature also compares embedded content with the authored disk catalog.
 
 Use the [simulation guide](../.agents/skills/combat-simulation/SKILL.md) for
 commands, comparisons and interpreting evidence, and the

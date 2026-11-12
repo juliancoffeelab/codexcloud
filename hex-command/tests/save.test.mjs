@@ -1,3 +1,4 @@
+import "./storage-fixture.mjs";
 import {
   inspect_storage as inspectStorageV1ToV2,
   repair_storage as repairStorageV1ToV2,

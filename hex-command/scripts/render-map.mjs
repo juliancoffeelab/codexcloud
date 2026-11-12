@@ -1,18 +1,16 @@
-// OCaml owns rendering; Node owns the incremental build, file watches and runtime lifetime.
+// OCaml owns rendering; Dune owns the incremental build; Node owns file watches and runtime lifetime.
 import { build } from "esbuild";
 import { spawn } from "node:child_process";
-import { createHash } from "node:crypto";
-import { readFileSync, readdirSync, existsSync, watchFile, unwatchFile } from "node:fs";
-import { mkdir, readFile, writeFile, rename } from "node:fs/promises";
+import { readdirSync, watchFile, unwatchFile } from "node:fs";
+import { mkdir, writeFile, rename } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Worker } from "node:worker_threads";
-import { frontendAliases } from "./frontend-paths.mjs";
-import { toolchainEnvironment, toolchainCommand } from "./toolchain/toolchain-env.mjs";
+import { frontendAliases, frontendModulePath } from "./frontend-paths.mjs";
+import { toolchainEnvironment } from "./toolchain/toolchain-env.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const watching = process.argv.includes("--watch") && !process.argv.includes("--help");
 const args = process.argv.slice(2).filter((arg) => arg !== "--watch");
-const cache = resolve(root, "tmp/map-draft/build.json");
 const output = resolve(root, "tmp/map-draft/runner.mjs");
 const inputPaths = ["--map", "--overlay", "--artwork"].flatMap((flag) => {
   const index = args.indexOf(flag);
@@ -33,10 +31,13 @@ function sourceFiles() {
     "scripts/render-map-worker.mjs",
     "scripts/frontend-paths.mjs",
     "scripts/generate-json-codecs.mjs",
-    "src/presentation/pixel-art.mjs",
-    "rust/pkg/backend.wasm",
-    "rust/pkg/schema.json",
-    "rust/pkg/bindings.runtime.mjs",
+    "scripts/generate-resource-visitors.mjs",
+    frontendModulePath("Domain"),
+    frontendModulePath("Domain_resource_walk"),
+    "_build/default/artwork/pixel-art.mjs",
+    "_build/default/wasm/dev/backend.wasm",
+    "_build/default/wasm/dev/schema.json",
+    "_build/default/wasm/dev/bindings.runtime.mjs",
   ];
   const walk = (dir) => {
     for (const entry of readdirSync(resolve(root, dir), { withFileTypes: true })) {
@@ -52,42 +53,26 @@ function sourceFiles() {
   for (const dir of ["frontend", "packages/save-migrations/ocaml"]) walk(dir);
   return [...new Set(files)].map((file) => resolve(root, file)).sort();
 }
-function fingerprint(files) {
-  const hash = createHash("sha256");
-  for (const file of files) {
-    hash.update(file).update("\0");
-    try {
-      hash.update(readFileSync(file));
-    } catch (error) {
-      if (error.code !== "ENOENT") throw error;
-      hash.update("<missing>");
-    }
-    hash.update("\0");
-  }
-  return hash.digest("hex");
-}
 async function prepare() {
-  const signature = fingerprint(sourceFiles());
-  let previous;
-  try {
-    previous = JSON.parse(await readFile(cache, "utf8"));
-  } catch {}
-  if (previous?.signature === signature && existsSync(output)) return;
-  await new Promise((ok, fail) => {
-    const child = spawn(
-      toolchainCommand("dune"),
-      ["build", "frontend/output/frontend/devtools/Map_draft.js", "--display", "quiet"],
-      { cwd: root, env: toolchainEnvironment(), stdio: "inherit" },
-    );
-    child.once("error", fail);
-    child.once("exit", (code) =>
-      code === 0 ? ok() : fail(new Error(`OCaml compilation exited ${code}`)),
-    );
-  });
+  for (const [command, args] of [
+    ["bash", ["scripts/build-wasm.sh", "dev"]],
+    ["dune", ["build", "--root=.", "@melange", "@wasm-dev", "@artwork"]],
+  ])
+    await new Promise((ok, fail) => {
+      const child = spawn(command, args, {
+        cwd: root,
+        env: toolchainEnvironment(),
+        stdio: "inherit",
+      });
+      child.once("error", fail);
+      child.once("exit", (code) =>
+        code === 0 ? ok() : fail(new Error(`OCaml compilation exited ${code}`)),
+      );
+    });
   await mkdir(resolve(root, "tmp/map-draft"), { recursive: true });
   const compiled = await build({
     stdin: {
-      contents: `export { main, dependencies } from './_build/default/frontend/output/frontend/devtools/Map_draft.js'; export { initialize } from './rust/pkg/bindings.runtime.mjs';`,
+      contents: `export { main, dependencies } from './_build/default/frontend/output/frontend/devtools/Map_draft.js'; export { initialize } from './_build/default/wasm/dev/bindings.runtime.mjs';`,
       resolveDir: root,
     },
     alias: frontendAliases,
@@ -103,9 +88,6 @@ async function prepare() {
   const temporary = `${output}.${process.pid}.tmp`;
   await writeFile(temporary, compiled.outputFiles[0].contents);
   await rename(temporary, output);
-  const manifest = `${cache}.${process.pid}.tmp`;
-  await writeFile(manifest, JSON.stringify({ signature }));
-  await rename(manifest, cache);
   console.log("Prepared OCaml map renderer.");
 }
 

@@ -1,3 +1,4 @@
+import "./storage-fixture.mjs";
 import { createHeadlessSession } from "./headless-session.mjs";
 import { cellKey } from "./hex-fixture.mjs";
 import { afterEach, beforeEach, test, vi } from "vitest";

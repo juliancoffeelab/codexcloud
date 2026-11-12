@@ -5,10 +5,15 @@
   (glob_files ../src/legacy/data/*.json)
   ../src/formats/readers.json)
  (action
-  (run python3 %{dep:../../../scripts/generate-migration-data.py} .. %{target})))
+  (run
+   python3
+   %{dep:../../../scripts/generate-migration-data.py}
+   ..
+   %{target})))
 
 (library
  (name save_migrations)
  (wrapped false)
  (modes melange)
- (preprocess (pps melange.ppx)))
+ (preprocess
+  (pps melange.ppx)))

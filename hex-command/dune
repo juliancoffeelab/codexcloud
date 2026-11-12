@@ -1,1 +1,3 @@
-(dirs :standard \ node_modules tmp dist)
+(dirs :standard \ tmp dist)
+
+(data_only_dirs node_modules)

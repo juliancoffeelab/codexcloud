@@ -1,0 +1,7 @@
+(rule
+ (targets interface.json schema.json)
+ (deps
+  (:input ../rust/pkg/api-input.wasm)
+  (:packager ../rust/pkg/ocamljs_pack))
+ (action
+  (run %{packager} interface --wasm %{input} --out-dir .)))

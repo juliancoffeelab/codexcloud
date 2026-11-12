@@ -1,14 +1,15 @@
 // Compile external JSON fixtures/devtool inputs into genuine OCaml values.
 // The live application consumes the native binding API directly.
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 const options = Object.fromEntries(
   Array.from({ length: Math.floor((process.argv.length - 2) / 2) }, (_, i) => [
     process.argv[2 + i * 2],
     process.argv[3 + i * 2],
   ]),
 );
+if (!options["--schema"] || !options["--out"]) throw new Error("Use --schema PATH --out PATH");
 const typeModule = options["--module"] ?? "Domain";
-const schema = JSON.parse(readFileSync(options["--schema"] ?? "rust/pkg/schema.json", "utf8"));
+const schema = JSON.parse(readFileSync(options["--schema"], "utf8"));
 const snake = (s) =>
   s
     .replace(/([A-Z]+)([A-Z][a-z])/g, "$1_$2")
@@ -346,4 +347,6 @@ for (const [key, module] of mapKeys)
       ? `let bindings_${key}_map value = Array.of_seq (Hashtbl.to_seq value)\n`
       : `let bindings_${key}_map value = Array.of_list (${module}.bindings value)\n`;
 if (options["--utf8"]) output = output.replaceAll("Utf8.", options["--utf8"] + ".");
-writeFileSync(options["--out"] ?? "frontend/Fixture_json.ml", output);
+const outputPath = options["--out"];
+if (!existsSync(outputPath) || readFileSync(outputPath, "utf8") !== output)
+  writeFileSync(outputPath, output);

@@ -1,18 +1,26 @@
 # Running simulations
 
 Read when selecting a schedule, limits, custom tactics or another data catalog.
-Work from the game root. Use npm run ai:simulate -- --help for current flags and
+Work from the game root. Use `node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim -- --help` for current flags and
 defaults. Determine actual coverage from the resulting report metadata.
 
 - Keep experimental catalogs in ignored tmp/ or artifacts/ and pass --data-dir.
   An experiment does not promote content or authorize deployment.
-- Choose arena, campaign or full scope from the request. If scope is unspecified,
-  run the full default panel. Preserve the authored campaign diplomacy modes.
+- Choose arena or campaign scope and configurations relevant to the change.
+  Defaults are 10 arena seeds and 20 campaign seeds; `--seeds` overrides both.
+  Aim for about one minute including incremental compilation and analysis.
+  Inspect `--schedule-only`: seeds multiply across maps, armies, tactics, seats
+  and campaign routes, so the full matrix has no one-minute guarantee. For
+  routine validation, narrow those dimensions before increasing the sample.
+  Use full scope for requested broad analysis or evidence that needs it.
+  Preserve the selected campaigns' authored diplomacy modes and normal caps.
+  Preserve supplied Rust flags and build settings; changing them can rebuild
+  dependencies before any simulation runs.
 - Faction balance uses matching tactics under equal budgets and normal earned
   progression. A typical scoped run is:
 
 ```sh
-npm run ai:simulate -- --mode arena --policies balanced,situational,predictor --self-play --seeds 50 --unit-usage
+node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim -- --mode arena --policies balanced --armies human,woodland --landscapes open --self-play --seeds 10 --unit-usage
 ```
 
 - --with R,C,P adds a custom recruiter, campaigner and planner combination; a dash
@@ -24,7 +32,7 @@ npm run ai:simulate -- --mode arena --policies balanced,situational,predictor --
   analysis of an existing run, use:
 
 ```sh
-npm run ai:analyze -- artifacts/saved/report.json --out artifacts/saved/analytics
+python3 .agents/skills/combat-simulation/scripts/report-combat.py artifacts/saved/report.json --out artifacts/saved/analytics
 ```
 
 Use the [metrics reference](metrics.md) to choose required telemetry and the
@@ -93,3 +101,9 @@ event effects. Capture is optional, separate from ordinary journals and outside
 measured decision intervals. Timing output records the frozen fixture digest and
 both source and tested-engine fingerprints. Changes in those fingerprints are
 not evidence of an identical historical replay or a performance improvement.
+
+The harness defaults to Balanced against Balanced in arenas and Balanced against
+Classic in campaigns, with 10 arena seeds and 20 campaign seeds. Map, faction,
+campaign-route and diplomacy coverage remains unchanged. Select broader tactic
+coverage explicitly with `--policies classic,rush,balanced,rotated,situational,predictor`
+and, when needed, `--campaign-players balanced,rotated,situational,predictor`.

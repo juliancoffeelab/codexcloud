@@ -63,5 +63,21 @@ incremental = true
 [profile.wasm-release]
 inherits = "release"
 opt-level = "z"
-lto = "fat"
-codegen-units = 1
+# Explicit size-optimized builds can set CARGO_PROFILE_WASM_RELEASE_LTO=fat
+# and CARGO_PROFILE_WASM_RELEASE_CODEGEN_UNITS=1.
+lto = false
+codegen-units = 16
+
+# Routine browser checks prioritize incremental compilation over download size.
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 0
+debug = 0
+lto = false
+codegen-units = 16
+incremental = true
+panic = "abort"
+
+# Dependencies change rarely; keep their runtime cost low without optimizing edits.
+[profile.wasm-dev.package."*"]
+opt-level = 1

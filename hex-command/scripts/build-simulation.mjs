@@ -41,7 +41,8 @@ const flags =
   env.CARGO_ENCODED_RUSTFLAGS?.split("") ?? (env.RUSTFLAGS ?? "").split(/\s+/).filter(Boolean);
 if (flags.some((flag) => /profile-(generate|use)/.test(flag)))
   throw new Error("Profile flags are managed by the native simulation build");
-if (!flags.some((flag) => flag.includes("target-cpu"))) flags.push("-C", "target-cpu=native");
+if (env.RUSTFLAGS === undefined && env.CARGO_ENCODED_RUSTFLAGS === undefined)
+  flags.push("-C", "target-cpu=native");
 const nativeEnv = {
   ...env,
   CARGO_TARGET_DIR: target,
@@ -64,7 +65,6 @@ mkdirSync(join(target, "release"), { recursive: true });
 if (!pgo) {
   run("cargo", [...cargo, "--profile", "simulation"], {
     ...nativeEnv,
-    HEX_SIM_PROFILE_KEY: "",
     CARGO_ENCODED_RUSTFLAGS: flags.join(""),
   });
   copyFileSync(

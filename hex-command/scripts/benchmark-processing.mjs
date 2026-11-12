@@ -1,3 +1,4 @@
+import { benchmarkWasmDirectory } from "./benchmark-paths.mjs";
 import { frontendModuleAliases } from "./frontend-paths.mjs";
 import Benchmark, { maxTime } from "./benchmark-options.mjs";
 import { readFile, writeFile, mkdir, mkdtemp, rm } from "node:fs/promises";
@@ -31,7 +32,7 @@ const browserMode = args.includes("--browser"),
 const artifacts = option("--artifacts");
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const variants = [
-  { name: "port", root: port, wasm: resolve(port, "rust/pkg/backend.wasm") },
+  { name: "port", root: port, wasm: resolve(benchmarkWasmDirectory(port), "backend.wasm") },
   { name: "upstream", root: upstream, wasm: resolve(upstream, "rust/pkg/hex_command_bg.wasm") },
 ];
 const routes = new Map();
@@ -56,8 +57,8 @@ try {
       alias: {
         "@frontend": frontend,
         ...frontendModuleAliases(v.root),
-        "@pkg": resolve(v.root, "rust/pkg"),
-        "@wasm": resolve(v.root, "rust/pkg"),
+        "@pkg": dirname(v.wasm),
+        "@wasm": dirname(v.wasm),
         "@upstream": resolve(v.root, "src"),
         melange: resolve(frontend, "../node_modules/melange"),
       },

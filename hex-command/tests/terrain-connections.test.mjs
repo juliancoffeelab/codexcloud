@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { test } from "vitest";
 import * as Plan from "./plan-adapter.mjs";
 import * as Art from "@frontend/Art";
-import { pixelFloorColors } from "../src/presentation/pixel-art.mjs";
+import { pixelFloorColors } from "@assets/pixel-art";
 import roadDeadEnds from "../pixel/art/terrain/road/dead-ends.json";
 import { Native, Catalog, factory, catalog, createBattle } from "./native-fixture.mjs";
 import { required } from "./helpers.mjs";

@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { Worker } from "node:worker_threads";
 import { readFile } from "node:fs/promises";
 import { build } from "esbuild";
-import { frontendAliases, frontendModulePath } from "./frontend-paths.mjs";
+import { frontendAliases, frontendModulePath, wasmPath } from "./frontend-paths.mjs";
 import { digest } from "./terrain-cache.mjs";
 const virtualId = "virtual:terrain-prebuilt";
 function terrainPrebuild() {
@@ -32,7 +32,7 @@ function terrainPrebuild() {
       if (id !== "\0" + virtualId) return;
       const compiled = await build({
         stdin: {
-          contents: `export {initialize} from ${JSON.stringify(resolve(root, "rust/pkg/bindings.runtime.mjs"))}; export * as Terrain_plan from ${JSON.stringify(frontendModulePath("Terrain_plan"))}; export * as Terrain_assets from ${JSON.stringify(frontendModulePath("Terrain_assets"))};`,
+          contents: `export {initialize} from ${JSON.stringify(wasmPath("bindings.runtime.mjs", root))}; export * as Terrain_plan from ${JSON.stringify(frontendModulePath("Terrain_plan"))}; export * as Terrain_assets from ${JSON.stringify(frontendModulePath("Terrain_assets"))};`,
           resolveDir: root,
         },
         bundle: true,
@@ -74,11 +74,16 @@ function terrainPrebuild() {
           ...(await Promise.all(rendererInputs.map((path) => readFile(resolve(root, path))))),
         ]),
       );
-      const wasmPath = resolve(root, "rust/pkg/backend.wasm");
-      this.addWatchFile(wasmPath);
+      const binaryPath = wasmPath("backend.wasm", root);
+      this.addWatchFile(binaryPath);
       const prepared = await new Promise((resolvePrepared, reject) => {
         const worker = new Worker(resolve(root, "scripts/terrain-prepare-worker.mjs"), {
-          workerData: { root, source: compiled.outputFiles[0].contents, wasmPath, rendererKey },
+          workerData: {
+            root,
+            source: compiled.outputFiles[0].contents,
+            wasmPath: binaryPath,
+            rendererKey,
+          },
         });
         worker.once("error", reject);
         worker.once("message", (message) => {
