@@ -35,8 +35,8 @@ Before any build or check, you **must** run `source /workspace/.setup/env.sh` in
 every new shell. These commands and `make dev` require the tool paths and cache
 variables it supplies and will not work correctly without them.
 
-Run targeted checks while working. When the work is ready to present, run
-`make full-verify` to catch unexpected regressions. Fix failures and repeat.
+Run targeted checks while working. When and only when you return the work to the
+user, run `make full-verify` to catch unexpected regressions. Fix failures and repeat.
 
 - `cargo check --locked --manifest-path rust/Cargo.toml --workspace`: Rust compilation.
 - `cargo test --locked --manifest-path rust/Cargo.toml --workspace --features wasm [filter]`: Rust tests.
