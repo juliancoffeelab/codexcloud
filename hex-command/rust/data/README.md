@@ -1,7 +1,7 @@
 # Authored content
 
 Edit game rules, units, scenarios and campaigns as authored content. Validate
-changes with `npm run content:check`; use combat simulations to assess balance.
+changes with `node scripts/content.mjs --check`; use combat simulations to assess balance.
 Keep authored content and generated output separate.
 
 A lineup is a faction. Enabled factions should have their complete progression
