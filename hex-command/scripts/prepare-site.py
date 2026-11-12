@@ -97,6 +97,14 @@ def prepare_locked(cache, message, source_commit, preview, preview_project_id):
     started = time.monotonic()
     step("Build pinned production source")
     build_environment = os.environ.copy()
+    # Build pinned sources against the supplied checkout's Cargo outputs.
+    # Cargo tracks source/profile changes; dependencies need no second cache.
+    build_environment["CARGO_TARGET_DIR"] = str(Path(
+        build_environment.get("CARGO_TARGET_DIR", ROOT / "rust/target")
+    ).resolve())
+    build_environment["OCAMLJS_PACK_TARGET_DIR"] = str(Path(
+        build_environment.get("OCAMLJS_PACK_TARGET_DIR", ROOT.parent / "ocaml-js-bindgen/target")
+    ).resolve())
     wrapper = str(checkout / "scripts/toolchain/with-toolchain.mjs")
     log_path = cache / "production-build.log"
     stages = [

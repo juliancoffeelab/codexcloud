@@ -5,7 +5,7 @@ cd "$(dirname "$0")/.."
 profile=${1:-dev}
 case "$profile" in dev|release) ;; *) echo 'Expected dev or release' >&2; exit 2 ;; esac
 rust_target=${CARGO_TARGET_DIR:-"$PWD/rust/target"}
-sdk_target=${CARGO_TARGET_DIR:-"$PWD/../ocaml-js-bindgen/target"}
+sdk_target=${OCAMLJS_PACK_TARGET_DIR:-${CARGO_TARGET_DIR:-"$PWD/../ocaml-js-bindgen/target"}}
 cargo build --quiet --locked --manifest-path ../ocaml-js-bindgen/Cargo.toml --package ocamljs_pack --release --target-dir "$sdk_target"
 mkdir -p "rust/pkg/$profile"
 install -C -m 755 "$sdk_target/release/ocamljs_pack" rust/pkg/ocamljs_pack
