@@ -42,3 +42,5 @@ Run targeted checks while working. When the work is ready to present, run
 - `make format` / `make format-check`: apply / check formatting.
 
 Before frontend tests, compile changed OCaml with `dune build --root=. @melange @artwork`. For changed Rust exports, first run `node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh dev` to prepare WASM/bindings.
+
+If a forwarded Dune build reports an internal error such as `Build via RPC failed, but the RPC server did not send an error message.`, save the watcher output and `_build/trace.csexp` before running `dune shutdown --root=.`. Rerun the failed command outside the watcher, fix any reported source error, then restart `make dev`. If the internal error recurs, investigate the saved diagnostics. Traces can contain environment secrets; sanitize them before sharing.
