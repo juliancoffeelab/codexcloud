@@ -34,6 +34,8 @@
 (copy_files ../tests/ocaml/*.mli)
 
 (rule
+ ; The prepared image retains a legacy generated source copy; Dune regenerates it.
+ (mode promote)
  (target Fixture_json.ml)
  (deps
   (:schema ../api/schema.json)
