@@ -31,8 +31,6 @@ Tests must be small, fast, and lightweight.
 
 ## Verification
 
-Run commands from `hex-command/` after `source /workspace/.setup/env.sh` in each new shell.
-
 Run targeted checks while working. When the work is ready to present, run
 `make full-verify` to catch unexpected regressions. Fix failures and repeat.
 
