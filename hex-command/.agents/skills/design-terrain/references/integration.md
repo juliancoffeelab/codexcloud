@@ -38,7 +38,7 @@ campaigns or other maps only within the requested scope.
 
 ## Validate the installed result
 
-Rebuild and check artwork with `dune build --root=. --cache=enabled @artwork` and `python3 -m unittest discover -s scripts -p 'test_pixel_*.py'`.
+Rebuild and check artwork with `dune build --root=. @artwork` and `python3 -m unittest discover -s scripts -p 'test_pixel_*.py'`.
 Inspect standalone frames and assembled neighbors through the shared renderer,
 including every supported orientation, floor selection and density affected by
 the change. Confirm that native-accepted selections all have finished images.

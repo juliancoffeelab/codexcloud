@@ -36,9 +36,9 @@ Run targeted checks while working. When the work is ready to present, run
 
 - `cargo check --locked --manifest-path rust/Cargo.toml --workspace`: Rust compilation.
 - `cargo test --locked --manifest-path rust/Cargo.toml --workspace --features wasm [filter]`: Rust tests.
-- `dune build --root=. --cache=enabled @frontend/check`: OCaml/Reason typechecking without JavaScript emission.
+- `dune build --root=. @frontend/check`: OCaml/Reason typechecking without JavaScript emission.
 - `node node_modules/vitest/vitest.mjs run [test-file]`: tests against prepared frontend output.
 - `python3 -m unittest discover -s scripts -p 'test*.py'`: Python tests; select the affected directory/file.
 - `make format` / `make format-check`: apply / check formatting.
 
-Before frontend tests, compile changed OCaml with `dune build --root=. --cache=enabled @melange @artwork`. For changed Rust exports, first run `node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh dev` to prepare WASM/bindings.
+Before frontend tests, compile changed OCaml with `dune build --root=. @melange @artwork`. For changed Rust exports, first run `node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh dev` to prepare WASM/bindings.

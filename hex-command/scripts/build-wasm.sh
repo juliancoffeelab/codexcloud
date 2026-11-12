@@ -12,4 +12,4 @@ install -C -m 755 "$sdk_target/release/ocamljs_pack" rust/pkg/ocamljs_pack
 cargo build --locked --manifest-path rust/Cargo.toml --lib --target wasm32-unknown-unknown --features wasm --profile "wasm-$profile" --target-dir "$rust_target"
 install -C -m 644 "$rust_target/wasm32-unknown-unknown/wasm-$profile/hex_command_core.wasm" "rust/pkg/$profile/input.wasm"
 install -C -m 644 "rust/pkg/$profile/input.wasm" rust/pkg/api-input.wasm
-dune build --root=. --cache=enabled "@wasm-$profile"
+dune build --root=. "@wasm-$profile"

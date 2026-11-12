@@ -97,12 +97,11 @@ def prepare_locked(cache, message, source_commit, preview, preview_project_id):
     started = time.monotonic()
     step("Build pinned production source")
     build_environment = os.environ.copy()
-    build_environment["DUNE_CACHE"] = "enabled"
     wrapper = str(checkout / "scripts/toolchain/with-toolchain.mjs")
     # Build logs stream directly so progress and failures are visible immediately.
     subprocess.run(["node", wrapper, "bash", "scripts/build-wasm.sh", "release"],
                    cwd=checkout, env=build_environment, check=True)
-    subprocess.run(["node", wrapper, "dune", "build", "--root=.", "--cache=enabled", "@melange", "@wasm-release", "@artwork"],
+    subprocess.run(["node", wrapper, "dune", "build", "--root=.", "@melange", "@wasm-release", "@artwork"],
                    cwd=checkout, env=build_environment, check=True)
     subprocess.run(["node", "node_modules/vite/bin/vite.js", "build"], cwd=checkout,
                    env={**build_environment, "HEX_COMMAND_PROFILE": "release", "HEX_COMMAND_SOURCE_COMMIT": source_commit}, check=True)

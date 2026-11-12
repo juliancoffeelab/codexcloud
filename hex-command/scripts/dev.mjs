@@ -58,7 +58,6 @@ try {
         "@melange",
         "@wasm-dev",
         "--root=.",
-        "--cache=enabled",
         "@artwork",
         "--watch",
         "--display",

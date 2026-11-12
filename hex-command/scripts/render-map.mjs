@@ -56,7 +56,7 @@ function sourceFiles() {
 async function prepare() {
   for (const [command, args] of [
     ["bash", ["scripts/build-wasm.sh", "dev"]],
-    ["dune", ["build", "--root=.", "--cache=enabled", "@melange", "@wasm-dev", "@artwork"]],
+    ["dune", ["build", "--root=.", "@melange", "@wasm-dev", "@artwork"]],
   ])
     await new Promise((ok, fail) => {
       const child = spawn(command, args, {

@@ -87,14 +87,14 @@ Run from `hex-command/`. The boundary checker requires its compiled native helpe
 and Dune's tool environment:
 
 ```sh
-node scripts/toolchain/with-toolchain.mjs dune build --root=. --cache=enabled scripts/migration_import_check.exe
-node scripts/toolchain/with-toolchain.mjs dune exec --root=. --cache=enabled -- node scripts/check-migrations.mjs
+node scripts/toolchain/with-toolchain.mjs dune build --root=. scripts/migration_import_check.exe
+node scripts/toolchain/with-toolchain.mjs dune exec --root=. -- node scripts/check-migrations.mjs
 ```
 
 For an explicitly selected clean-room check, after building that helper:
 
 ```sh
-node scripts/toolchain/with-toolchain.mjs dune exec --root=. --cache=enabled -- node scripts/check-migrations-isolated.mjs
+node scripts/toolchain/with-toolchain.mjs dune exec --root=. -- node scripts/check-migrations-isolated.mjs
 ```
 
 Only when changing frozen schemas or their generated contracts, prepare the
@@ -102,7 +102,7 @@ existing WASM scaffolding and run the generator with Dune-managed formatters:
 
 ```sh
 node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh dev
-node scripts/toolchain/with-toolchain.mjs dune exec --root=. --cache=enabled -- python3 scripts/generate-migration-ocaml.py
+node scripts/toolchain/with-toolchain.mjs dune exec --root=. -- python3 scripts/generate-migration-ocaml.py
 ```
 
 The generator calls `generate-historical-types.py`,

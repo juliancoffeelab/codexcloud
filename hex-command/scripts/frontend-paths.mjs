@@ -83,6 +83,6 @@ export function assertBuildProfile(expected = wasmMode) {
   for (const name of ["backend.wasm", "bindings.runtime.mjs", "schema.json"])
     if (!existsSync(resolve(projectRoot, "_build/default/wasm", expected, name)))
       throw new Error(
-        `Missing ${expected} WASM package; run node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh ${expected}, then dune build --root=. --cache=enabled @melange @artwork`,
+        `Missing ${expected} WASM package; run node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh ${expected}, then dune build --root=. @melange @artwork`,
       );
 }

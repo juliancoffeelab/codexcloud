@@ -12,7 +12,7 @@ export function benchmarkWasmDirectory(
     const directory = resolve(base, profile);
     if (!existsSync(resolve(directory, "backend.wasm")))
       throw new Error(
-        `Missing ${profile} WASM in ${root}; run node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh ${profile}, then dune build --root=. --cache=enabled @melange @artwork`,
+        `Missing ${profile} WASM in ${root}; run node scripts/toolchain/with-toolchain.mjs bash scripts/build-wasm.sh ${profile}, then dune build --root=. @melange @artwork`,
       );
     return directory;
   }
