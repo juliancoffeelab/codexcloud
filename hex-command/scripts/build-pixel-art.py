@@ -126,14 +126,14 @@ def unit_directory(id):
 
 def gameplay_models(lineups):
     models = {}
-    for lineup in lineups.values():
+    for race, lineup in lineups.items():
         for unit in entries(lineup):
             if "gameplayId" not in unit:
                 continue
             id = unit["gameplayId"]
             if id in models:
                 raise ValueError(f"Duplicate gameplay artwork assignment: {id}")
-            definition = json.loads((ROOT / "rust/data/game/units" / f"{id}.json").read_text())
+            definition = json.loads((ROOT / "rust/data/game/units" / race / f"{id}.json").read_text())
             if definition["level"] != unit["level"]:
                 raise ValueError(f"{id}: artwork tier must match its gameplay tier")
             models[id] = unit["id"]

@@ -1844,10 +1844,10 @@ mod tests {
     #[test]
     fn invalid_references_and_duplicates_report_source_document() {
         let mut bundle = test_bundle();
-        let units = bundle.get_mut("game/units/warden.json").unwrap();
+        let units = bundle.get_mut("game/units/humans/warden.json").unwrap();
         *units = units.replacen("\"warden\"", "\"adept\"", 1);
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
-        assert_eq!(error.path, "game/units/adept.json");
+        assert_eq!(error.path, "game/units/humans/adept.json");
         assert!(error.message.contains("duplicate"));
         let mut bundle = test_bundle();
         let roster = bundle.get_mut("simulation/rosters.json").unwrap();
@@ -1858,7 +1858,7 @@ mod tests {
     #[test]
     fn missing_required_stats_and_documents_are_errors() {
         let mut bundle = test_bundle();
-        let units = bundle.get_mut("game/units/warden.json").unwrap();
+        let units = bundle.get_mut("game/units/humans/warden.json").unwrap();
         let mut document: serde_json::Value = serde_json::from_str(units).unwrap();
         document.as_object_mut().unwrap().remove("hp");
         *units = serde_json::to_string(&document).unwrap();
@@ -1878,10 +1878,10 @@ mod tests {
     #[test]
     fn roles_are_required_and_race_errors_identify_the_individual_document() {
         let mut bundle = test_bundle();
-        let unit = bundle.get_mut("game/units/scout.json").unwrap();
+        let unit = bundle.get_mut("game/units/humans/scout.json").unwrap();
         *unit = unit.replace("\"role\": \"flank\",", "");
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
-        assert_eq!(error.path, "game/units/scout.json");
+        assert_eq!(error.path, "game/units/humans/scout.json");
         assert!(error.message.contains("role"));
         let mut bundle = test_bundle();
         let race = bundle.get_mut("game/races/human.json").unwrap();
@@ -1916,7 +1916,7 @@ mod tests {
         let bundle = test_bundle();
         let rules = Rules::from_json_bundle(&bundle).unwrap();
         let adept = &rules.units[rules.types["adept"]];
-        let authored: UnitSpecification = parse(&bundle, "game/units/adept.json").unwrap();
+        let authored: UnitSpecification = parse(&bundle, "game/units/humans/adept.json").unwrap();
         assert_eq!(adept.ability, authored.ability);
         assert_eq!(adept.description, authored.description);
         let campaign = &rules.campaigns["lantern-road"];
@@ -1927,7 +1927,7 @@ mod tests {
         assert_eq!(rules.content_fingerprint.len(), 64);
         let mut reformatted = bundle.clone();
         reformatted
-            .get_mut("game/units/warden.json")
+            .get_mut("game/units/humans/warden.json")
             .unwrap()
             .push('\n');
         let changed = Rules::from_json_bundle(&reformatted).unwrap();
@@ -1954,13 +1954,13 @@ mod tests {
             std::fs::write(target, source).unwrap();
         }
         let original = Rules::load_from(&root.0).unwrap();
-        let path = root.0.join("game/units/adept.json");
+        let path = root.0.join("game/units/humans/adept.json");
         let edited =
             std::fs::read_to_string(&path)
                 .unwrap()
                 .replacen("Stone spark", "Revised spark", 1);
         std::fs::write(path, edited).unwrap();
-        let commander = root.0.join("game/units/commander.json");
+        let commander = root.0.join("game/units/humans/commander.json");
         let original_hp = original.units[original.types["commander"]].hp;
         let revised_hp = original_hp + 3;
         let mut edited: serde_json::Value =
@@ -2093,7 +2093,7 @@ mod tests {
     #[test]
     fn attack_counts_default_to_one_and_reject_invalid_values() {
         let mut bundle = test_bundle();
-        let path = "game/units/swordsman.json";
+        let path = "game/units/humans/swordsman.json";
         let mut unit: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
         unit["attacks"][0].as_object_mut().unwrap().remove("count");
         bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());

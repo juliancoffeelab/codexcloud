@@ -25,7 +25,7 @@
     "impact": 0
   },
   "ability": "Mire sorcery",
-  "description": "A drowned sorcerer whose curse has outlived its mind.",
+  "description": "A slow undead caster with a ranged impact attack.",
   "level": 2,
   "family": "zombie-decay-caster",
   "advancesTo": [],
