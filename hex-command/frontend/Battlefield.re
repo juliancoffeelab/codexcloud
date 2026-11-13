@@ -216,7 +216,7 @@ let make =
         showCommanderArrow && ready && failure == None
           ? option(hint, angle =>
               <button
-                className="commander-return"
+                className="commander-return press-control"
                 ariaLabel="Return to commander"
                 title="Return to commander"
                 onPointerDown={Button_press.pointer_down(() =>

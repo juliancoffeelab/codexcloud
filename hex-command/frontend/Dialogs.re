@@ -505,7 +505,7 @@ module Dialogue = {
                 </div>
                 <nav className="story-navigation" ariaLabel="Conversation">
                   <button
-                    className="story-back"
+                    className="story-back press-control"
                     disabled={index == 0 || view.settling}
                     onPointerDown={Button_press.pointer_down(actions.previous_dialogue)}
                     onClick={Button_press.click(actions.previous_dialogue)}
@@ -521,7 +521,7 @@ module Dialogue = {
                      )}
                   </span>
                   <button
-                    className="story-next"
+                    className="story-next press-control"
                     disabled={view.settling}
                     ref={ReactDOM.Ref.domRef(nextButton)}
                     onPointerDown={Button_press.pointer_down(() => actions.dialogue(false))}

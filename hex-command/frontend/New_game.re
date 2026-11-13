@@ -123,7 +123,7 @@ let recruiterHelp = value =>
   };
 module RaceStrip = {
   [@react.component]
-  let make = (~label, ~value, ~onChange, ~side, ~artwork) => {
+  let make = (~label, ~value, ~onChange, ~side, ~artwork, ~session) => {
     let strip = React.useRef(Js.Nullable.null);
     React.useLayoutEffect1(
       () => {
@@ -154,7 +154,12 @@ module RaceStrip = {
           node => focus(descendants(node, "button")[next]),
           Js.Nullable.toOption(strip.current),
         );
-        onChange(List.nth(factions, next).id);
+        let faction = List.nth(factions, next).id;
+        onChange(faction);
+        if (next != index) {
+          let _ = Session.menu_cue(~cue=Phaser_sound.faction_hud_cue(faction), session);
+          ();
+        };
       };
     };
     <section className="ng-races">
@@ -164,17 +169,29 @@ module RaceStrip = {
         role="radiogroup"
         ariaLabel={Utf8.to_js(label)}
         ref={ReactDOM.Ref.domRef(strip)}>
-        {eachList(List.mapi((index, army) => (index, army), factions), ((index, army)) =>
-           <button
-             key={army.id}
-             role="radio"
-             ariaChecked={string_of_bool(army.id == value)}
-             tabIndex={army.id == value ? 0 : (-1)}
-             onKeyDown={event => navigate(event, index)}
-             onClick={_ => onChange(army.id)}>
-             <Sprite artwork name={army.leader} width=64. height=64. side />
-             <span> {text(army.name)} </span>
-           </button>
+        {eachList(
+           List.mapi((index, army) => (index, army), factions),
+           ((index, army)) => {
+             let props =
+               ReactDOM.domProps(
+                 ~role="radio",
+                 ~ariaChecked=string_of_bool(army.id == value),
+                 ~tabIndex=army.id == value ? 0 : (-1),
+                 ~onKeyDown=event => navigate(event, index),
+                 ~onClick=_ => onChange(army.id),
+                 (),
+               );
+             dataKey(props, army.id);
+             dataFaction(props, army.id);
+             ReactDOM.createElement(
+               "button",
+               ~props,
+               [|
+                 <Sprite artwork name={army.leader} width=64. height=64. side />,
+                 <span> {text(army.name)} </span>,
+               |],
+             );
+           },
          )}
       </div>
     </section>;
@@ -479,6 +496,7 @@ let make =
                          </div>
                        : <>
                            <RaceStrip
+                             session
                              label="Your race"
                              value=player
                              onChange={value => setPlayer(_ => value)}
@@ -486,6 +504,7 @@ let make =
                              artwork={view.artwork}
                            />
                            <RaceStrip
+                             session
                              label="Opponent’s race"
                              value=opponent
                              onChange={value => setOpponent(_ => value)}

@@ -54,7 +54,7 @@ let make =
       <header className={onBack == None ? "" : "with-back"}>
         {option(onBack, back =>
            <button
-             className="window-icon"
+             className={releaseControls ? "window-icon" : "window-icon press-control"}
              onPointerDown=?{releaseControls ? None : Some(Button_press.pointer_down(back))}
              onClick={releaseControls ? _ => back() : Button_press.click(back)}
              ariaLabel="Back to Menu">
@@ -65,7 +65,7 @@ let make =
         <h2 tabIndex=(-1)> {text(title)} </h2>
         {canDismiss
            ? <button
-               className="window-icon"
+               className={releaseControls ? "window-icon" : "window-icon press-control"}
                onPointerDown=?{releaseControls ? None : Some(Button_press.pointer_down(dismiss))}
                onClick={releaseControls ? _ => dismiss() : Button_press.click(dismiss)}
                ariaLabel={Utf8.to_js("Close " ++ String.lowercase_ascii(title))}>
