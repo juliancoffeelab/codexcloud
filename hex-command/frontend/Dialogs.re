@@ -35,6 +35,8 @@ module Settings = {
       (
         ~session,
         ~view: Session.model,
+        ~voiceEnabled,
+        ~onVoiceChange,
         ~actions: Session.actions,
         ~dialog: React.ref(Js.Nullable.t(Dom.element)),
         ~onNewBattle,
@@ -249,6 +251,15 @@ module Settings = {
             {text("New game")}
           </button>
           <SoundControl enabled={view.sound} setSound={actions.set_sound} />
+          <label className="setting-row sound-row" htmlFor="dialogue-voices">
+            <span className="label"> {text("Dialogue voices")} </span>
+            <input
+              id="dialogue-voices"
+              type_="checkbox"
+              checked=voiceEnabled
+              onChange={event => onVoiceChange(bindChecked(event))}
+            />
+          </label>
           <details className="advanced">
             <summary className="setting-row">
               <span className="label"> {text("Advanced")} </span>
@@ -378,9 +389,24 @@ module Settings = {
   };
 };
 
+module VoicedText = {
+  [@react.component]
+  let make = (~voice, ~scope, ~lines: array(Domain.dialogue), ~index) => {
+    let (visible, setVisible) = React.useState(() => "");
+    React.useEffect0(() =>
+      Some(Voiceover.speak(voice, scope, lines, index, value => setVisible(_ => value)))
+    );
+    <p className="story-text voice-text">
+      <span className="voice-reserve" ariaHidden=true> {text(lines[index].text)} </span>
+      <span className="voice-visible" ariaHidden=true> {React.string(visible)} </span>
+      <span className="voice-accessible"> {text(lines[index].text)} </span>
+    </p>;
+  };
+};
+
 module Dialogue = {
   [@react.component]
-  let make = (~view: Session.model, ~actions: Session.actions, ~narrate) => {
+  let make = (~view: Session.model, ~actions: Session.actions, ~narrate, ~voice, ~scope) => {
     let state = Native.state(view.game);
     let dialog = React.useRef(Js.Nullable.null);
     let nextButton = React.useRef(Js.Nullable.null);
@@ -500,7 +526,13 @@ module Dialogue = {
                   </div>
                   <div>
                     <h2 id="dialogue-speaker"> {text(line.speaker)} </h2>
-                    <p className="story-text"> {text(line.text)} </p>
+                    <VoicedText
+                      key={scope ++ ":" ++ string_of_int(index) ++ ":" ++ line.text}
+                      voice
+                      scope
+                      lines={campaign.dialogue}
+                      index
+                    />
                   </div>
                 </div>
                 <nav className="story-navigation" ariaLabel="Conversation">

@@ -587,7 +587,8 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Here! Please\u2014before it rings again!"
+              "text": "Here! Please\u2014before it rings again!",
+              "character": "northern-captives"
             }
           ]
         },
@@ -620,7 +621,8 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Our hands are free. Where do we go?"
+              "text": "Our hands are free. Where do we go?",
+              "character": "northern-captives"
             },
             {
               "portrait": "swordsman",
@@ -683,7 +685,8 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Here! Please\u2014before it rings again!"
+              "text": "Here! Please\u2014before it rings again!",
+              "character": "eastern-captives"
             }
           ]
         },
@@ -716,7 +719,8 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Our hands are free. Where do we go?"
+              "text": "Our hands are free. Where do we go?",
+              "character": "eastern-captives"
             },
             {
               "portrait": "swordsman",
@@ -779,7 +783,8 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Here! Please\u2014before it rings again!"
+              "text": "Here! Please\u2014before it rings again!",
+              "character": "southern-captives"
             }
           ]
         },
@@ -812,7 +817,8 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Our hands are free. Where do we go?"
+              "text": "Our hands are free. Where do we go?",
+              "character": "southern-captives"
             },
             {
               "portrait": "swordsman",

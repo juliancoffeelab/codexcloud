@@ -8,6 +8,8 @@ module Settings: {
     (
       ~session: Session.t,
       ~view: Session.model,
+      ~voiceEnabled: bool,
+      ~onVoiceChange: bool => unit,
       ~actions: Session.actions,
       ~dialog: React.ref(Js.Nullable.t(Dom.element)),
       ~onNewBattle: unit => unit,
@@ -27,6 +29,12 @@ module Settings: {
 module Dialogue: {
   [@react.component]
   let make:
-    (~view: Session.model, ~actions: Session.actions, ~narrate: Native.view => unit) =>
+    (
+      ~view: Session.model,
+      ~actions: Session.actions,
+      ~narrate: Native.view => unit,
+      ~voice: Voiceover.t,
+      ~scope: string
+    ) =>
     React.element;
 };

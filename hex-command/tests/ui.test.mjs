@@ -715,6 +715,116 @@ test("Sound-only dialogue waits for phase persistence and advances when that sam
   assert.deepEqual(advance.mock.calls, [[false]]);
 });
 
+test("Live dialogue reveals text without delaying Next or Back and cancels its voice on dismissal", async () => {
+  const checkpoint = structuredClone(
+    Native.save(createBattle({ kind: "campaign", id: "lantern-road" })),
+  );
+  checkpoint.state.campaign.dialogue = [
+    { portrait: "swordsman", character: "ivo", speaker: "Ivo", text: "Wait here." },
+    { portrait: "swordsman", character: "nera", speaker: "Nera", text: "The ferry is ready." },
+  ];
+  checkpoint.state.campaign.dialogueIndex = 0;
+  await Save.write(Save.create(), checkpoint, false);
+  session = await Session.create_with_audio(async () => {}, audio, factory);
+  const { VoicePlayer } = await import("../src/presentation/voice/player.mjs");
+  const { Dialogue } = await import("@frontend/Dialogs");
+  const worker = { postMessage: vi.fn(), terminate: vi.fn() };
+  const voice = new VoicePlayer(() => {}, { workerFactory: () => worker });
+  vi.spyOn(document, "hidden", "get").mockReturnValue(false);
+  vi.spyOn(performance, "now").mockReturnValue(0);
+  const frames = new Map();
+  let sequence = 0;
+  vi.stubGlobal("requestAnimationFrame", (fn) => {
+    frames.set(++sequence, fn);
+    return sequence;
+  });
+  vi.stubGlobal("cancelAnimationFrame", (id) => frames.delete(id));
+  const render = () =>
+    root.render(
+      React.createElement(Dialogue.make, {
+        view: Session.view(session),
+        actions: Session.commands(session),
+        narrate: () => {},
+        voice,
+        scope: "live-dialogue",
+      }),
+    );
+  try {
+    await act(async () => render());
+    assert.equal(element(".voice-visible").textContent, "W");
+    assert.equal(element(".voice-accessible").textContent, "Wait here.");
+    assert.equal(element(".story-next").disabled, false);
+    assert.equal(worker.postMessage.mock.calls.length, 1, "voice preparation starts on mount");
+    await click(".story-next");
+    await act(async () => render());
+    assert.equal(element(".voice-visible").textContent, "T");
+    assert.equal(frames.size, 1, "previous reveal was cancelled");
+    await click(".story-back");
+    await act(async () => render());
+    assert.equal(element(".voice-visible").textContent, "W");
+    await act(async () => {
+      Session.commands(session).dialogue(true);
+      render();
+    });
+    assert.equal(host.querySelector(".voice-visible"), null);
+    assert.equal(frames.size, 0);
+    assert.equal(voice.active, null);
+  } finally {
+    voice.close();
+  }
+});
+
+test("Campaign opening reuses the loading screen until two actual dialogue tracks are ready", async () => {
+  const checkpoint = structuredClone(
+    Native.save(createBattle({ kind: "campaign", id: "lantern-road" })),
+  );
+  await Save.write(Save.create(), checkpoint, false);
+  session = await Session.create_with_audio(async () => {}, audio, factory);
+  vi.spyOn(document, "hidden", "get").mockReturnValue(false);
+  const jobs = [];
+  vi.stubGlobal(
+    "Worker",
+    class {
+      postMessage(job) {
+        jobs.push({ worker: this, job });
+      }
+      terminate() {}
+    },
+  );
+  await act(async () =>
+    root.render(React.createElement(App.make, { session, onMount: () => () => {} })),
+  );
+  const canvas = element("#map canvas");
+  await act(async () => new Promise((resolve) => setTimeout(resolve, 0)));
+  assert.match(element(".loading-action").textContent, /Trying to pick words/);
+  assert.match(element(".loading-detail").textContent, /0 \/ 2 voices ready/);
+  assert.equal(host.querySelector(".story-dialog"), null);
+  assert.equal(element("#end-turn").disabled, true);
+  const complete = async () =>
+    act(async () => {
+      const { worker, job } = jobs.shift();
+      worker.onmessage({ data: { ...job, samples: new Float32Array(8), ms: 1 } });
+    });
+  await complete();
+  assert.match(element(".loading-detail").textContent, /1 \/ 2 voices ready/);
+  assert.equal(host.querySelector(".story-dialog"), null);
+  await complete();
+  assert.equal(
+    element("#map canvas"),
+    canvas,
+    "the renderer is retained through voice preparation",
+  );
+  assert.equal(element(".voice-visible").textContent.length, 1);
+  assert(element(".map-loading").classList.contains("is-complete"));
+  await click(".story-next");
+  assert.equal(element(".story-count").textContent.trim().startsWith("2 /"), true);
+  assert.equal(
+    host.querySelector(".map-loading:not(.is-complete)"),
+    null,
+    "later dialogue does not re-lock",
+  );
+});
+
 test("One determinate loading bar retains progress when the shell becomes the battlefield", async () => {
   LoadingProgress.begin_battlefield();
   await act(async () => root.render(React.createElement(Shell.make, { failure: undefined })));

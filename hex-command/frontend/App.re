@@ -117,6 +117,13 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     React.useCallback1(callback => Session.subscribe(session, _ => callback()), [|session|]);
   let getSnapshot = React.useCallback1(() => Session.view(session), [|session|]);
   let view = React.useSyncExternalStore(~subscribe, ~getSnapshot);
+  let voice = React.useMemo1(() => Voiceover.create(), [|session|]);
+  let (voiceEnabled, setVoiceEnabled) = React.useState(() => Voiceover.enabled(voice));
+  let changeVoice = enabled => {
+    Voiceover.set_enabled(voice, enabled);
+    setVoiceEnabled(_ => enabled);
+  };
+  React.useEffect1(() => Some(() => Voiceover.close(voice)), [|voice|]);
   let (battlefieldProgress, setBattlefieldProgress) = React.useState(() => None);
   let previews = React.useMemo0(() => Terrain_preview.create());
   React.useEffect1(() => {Some(() => Terrain_preview.close(previews))}, [|view.artwork|]);
@@ -233,16 +240,80 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
   });
   let state = Native.state(view.game);
   let identity = string_of_int(view.session_version) ++ ":" ++ state.map_id;
+  let (voiceOpening, setVoiceOpening) = React.useState(() => None);
+  let conversation = Native.campaign(view.game);
+  let spokenLines =
+    Option.fold(
+      ~none=0,
+      ~some=
+        (campaign: Domain.campaign_state) =>
+          Array.fold_left(
+            (count, line: Domain.dialogue) => count + (line.text == "" ? 0 : 1),
+            0,
+            Array.sub(
+              campaign.dialogue,
+              min(Array.length(campaign.dialogue), int_of_float(campaign.dialogue_index)),
+              max(0, Array.length(campaign.dialogue) - int_of_float(campaign.dialogue_index)),
+            ),
+          ),
+      conversation,
+    );
+  let currentOpening =
+    Option.bind(voiceOpening, (value: Voiceover.readiness) =>
+      value.scope == identity && value.total > 0 ? Some(value) : None
+    );
+  let voiceBlocked =
+    voiceEnabled
+    && !view.awaiting_new_game
+    && spokenLines > 0
+    && !
+         Option.fold(
+           ~none=false,
+           ~some=(value: Voiceover.readiness) => value.ready,
+           currentOpening,
+         );
+  let voicePreparation: option(Battlefield_window.preparation) =
+    voiceBlocked
+      ? Some({
+          completed:
+            Option.fold(
+              ~none=0,
+              ~some=(value: Voiceover.readiness) => value.completed,
+              currentOpening,
+            ),
+          total: min(2, spokenLines),
+          error:
+            Option.bind(currentOpening, value =>
+              Js.Nullable.toOption(value.Voiceover.error) |> Option.map(Utf8.of_js)
+            ),
+        })
+      : None;
+  React.useLayoutEffect1(
+    () =>
+      Option.bind(conversation, (campaign: Domain.campaign_state) =>
+        !view.awaiting_new_game && Story.dialogue_pending(Some(campaign))
+          ? Some(
+              Voiceover.watch_opening(
+                voice, identity, campaign.dialogue, int_of_float(campaign.dialogue_index), value =>
+                setVoiceOpening(_ => Some(value))
+              ),
+            )
+          : None
+      ),
+    [|view.game|],
+  );
   let progress =
     Option.bind(battlefieldProgress, value =>
       value.Battlefield_view.identity == identity ? Some(value) : None
     );
   let ready =
-    Option.fold(~none=false, ~some=value => value.Battlefield_view.phase == "ready", progress);
+    !voiceBlocked
+    && Option.fold(~none=false, ~some=value => value.Battlefield_view.phase == "ready", progress);
   React.useEffect1(
     () => {
       if (!view.awaiting_new_game) {
         Session.scene_audio(session);
+        Voiceover.prepare(voice, identity, view.catalog, view.game);
       };
       None;
     },
@@ -430,6 +501,9 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                      onRendererFailed={message => Session.renderer_failed(session, message)}
                      prepareReload={source => Session.prepare_reload(session, source)}
                      showCommanderArrow
+                     voicePreparation
+                     onRetryVoice={() => Voiceover.retry(voice)}
+                     onSkipVoice={() => changeVoice(false)}
                    />
                    {inspectionOpen
                       ? {
@@ -465,6 +539,8 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
              </main>
            : React.null}
         <Dialogs.Settings
+          voiceEnabled
+          onVoiceChange=changeVoice
           enemyDetailsError
           onEnemyDetailsChange=changeEnemyDetails
           showCommanderArrow
@@ -488,8 +564,14 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
           onManage={() => openSettings(Dialogs.Settings.Saves)}
           openKey=repairKey
         />
-        {!view.awaiting_new_game && (ready || state.winner == None)
-           ? <Dialogs.Dialogue view actions narrate={game => Session.narrate(session, game)} />
+        {!view.awaiting_new_game && !voiceBlocked && (ready || state.winner == None)
+           ? <Dialogs.Dialogue
+               view
+               actions
+               voice
+               scope=identity
+               narrate={game => Session.narrate(session, game)}
+             />
            : React.null}
         <New_game
           session
