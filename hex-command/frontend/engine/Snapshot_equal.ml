@@ -4,7 +4,7 @@ module Condition_side = Domain.Condition_side
 module Damage_type = Domain.Damage_type
 module Relation = Domain.Relation
 module Role = Domain.Role
-module Side = Domain.Side
+module Side = Domain.Turn_phase
 module Time_of_day = Domain.Time_of_day
 
 (* No physical-identity shortcut: a snapshot containing NaN is unequal to itself. *)
@@ -144,6 +144,7 @@ and condition_side (left : Condition_side.t) (right : Condition_side.t) =
   | Condition_side.Enemy -> ( match right with Condition_side.Enemy -> true | _ -> false)
   | Condition_side.Neutral -> ( match right with Condition_side.Neutral -> true | _ -> false)
   | Condition_side.Any -> ( match right with Condition_side.Any -> true | _ -> false)
+  | Condition_side.Observer -> ( match right with Condition_side.Observer -> true | _ -> false)
 
 and damage_type (left : Damage_type.t) (right : Damage_type.t) =
   match left with
@@ -157,6 +158,7 @@ and item (left : item) (right : item) =
   && String.equal left.description right.description
   && sequence (fun left right -> weapon left right) left.attacks right.attacks
   && option (fun left right -> item_healing left right) left.healing right.healing
+  && option (fun left right -> left = right) left.perception right.perception
 
 and item_armor (left : item_armor) (right : item_armor) =
   left.blade = right.blade && left.pierce = right.pierce && left.impact = right.impact
@@ -164,14 +166,27 @@ and item_armor (left : item_armor) (right : item_armor) =
 and item_healing (left : item_healing) (right : item_healing) =
   left.amount = right.amount && left.radius = right.radius
 
+and perception_effect (left : perception_effect) (right : perception_effect) =
+  String.equal left.id right.id
+  && sequence ( = ) left.penetrates right.penetrates
+  && sequence ( = ) left.concealment right.concealment
+  && option ( = ) left.light right.light
+  && option
+       (fun (left : turn_stamp) (right : turn_stamp) ->
+         left.round = right.round && side left.phase right.phase)
+       left.expires_at right.expires_at
+
 and public_unit (left : public_unit) (right : public_unit) =
-  option (fun left right -> String.equal left right) left.faction right.faction
+  String.equal left.faction right.faction
+  && sequence String.equal left.revealed_to right.revealed_to
+  && sequence perception_effect left.perception_effects right.perception_effects
   && sequence (fun left right -> item left right) left.items right.items
   && option (fun left right -> String.equal left right) left.ai_group right.ai_group
   && String.equal left.id right.id
   && String.equal left.type_ right.type_
   && side left.side right.side && Hex.equal left.tile right.tile && left.hp = right.hp
-  && left.moved = right.moved && left.attacked = right.attacked
+  && left.moved = right.moved
+  && left.attack_spent = right.attack_spent
   && option (fun left right -> left = right) left.experience right.experience
   && option (fun left right -> String.equal left right) left.character right.character
   && option (fun left right -> role left right) left.role right.role
@@ -193,7 +208,7 @@ and role (left : Role.t) (right : Role.t) =
 and side (left : Side.t) (right : Side.t) =
   match left with
   | Side.Player -> ( match right with Side.Player -> true | _ -> false)
-  | Side.Enemy -> ( match right with Side.Enemy -> true | _ -> false)
+  | Side.Ai -> ( match right with Side.Ai -> true | _ -> false)
 
 and time_of_day (left : Time_of_day.t) (right : Time_of_day.t) =
   match left with

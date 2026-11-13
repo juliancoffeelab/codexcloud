@@ -4,7 +4,7 @@ module Hex_direction = Domain.Hex_direction
 module Planner_kind = Domain.Planner_kind
 module Race = Domain.Race
 module Recruiter_kind = Domain.Recruiter_kind
-module Side = Domain.Side
+module Side = Domain.Turn_phase
 module Terrain = Domain.Terrain
 open Domain
 
@@ -67,12 +67,11 @@ let recruiter_kind_of_string = function
   | "aggressive-predictor" -> Some (Recruiter_kind.Aggressive_predictor : Recruiter_kind.t)
   | _ -> None
 
-let string_of_side (value : Side.t) =
-  match value with Side.Player -> "player" | Side.Enemy -> "enemy"
+let string_of_side (value : Side.t) = match value with Side.Player -> "player" | Side.Ai -> "ai"
 
 let side_of_string = function
   | "player" -> Some (Side.Player : Side.t)
-  | "enemy" -> Some (Side.Enemy : Side.t)
+  | "ai" -> Some (Side.Ai : Side.t)
   | _ -> None
 
 let string_of_terrain (value : Terrain.t) =

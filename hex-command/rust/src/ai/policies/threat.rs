@@ -8,14 +8,19 @@ use crate::logic::geometry::TileSet;
 // armor/weapons. Use the actual actor, and invalidate retained results whenever
 // any roster member's equipment changes (including the attacking enemies).
 type RiskKey = (u32, bool, usize, Option<u32>);
-type ArenaEnemies = HashMap<Option<u32>, Vec<(Unit, Vec<TileSet>)>>;
+struct PotentialThreat {
+    unit: Unit,
+    origins: TileSet,
+    coverage: Vec<TileSet>,
+}
+type ArenaEnemies = HashMap<Option<u32>, Vec<PotentialThreat>>;
 type ArenaUnit = (
     u32,
     usize,
     usize,
-    Side,
+    TurnPhase,
     Option<Role>,
-    Option<NameKey>,
+    NameKey,
     InventoryId,
 );
 /// A nonlethal attack changes HP/action flags, but arena movement forecasts and
@@ -25,7 +30,7 @@ type ArenaUnit = (
 pub(in crate::ai) struct ArenaThreatWorkspace {
     terrain: Vec<usize>,
     roster: Vec<ArenaUnit>,
-    side: Option<Side>,
+    side: Option<TurnPhase>,
     arena: ArenaEnemies,
     risks: HashMap<RiskKey, i32>,
 }
@@ -33,10 +38,10 @@ pub(in crate::ai) struct Threats<'game, 'catalog> {
     orders: Option<&'game crate::ai::orders::TacticalOrders>,
     source: &'game BattleView<'game, 'catalog>,
     phases: PhaseForecasts<'game, 'catalog>,
-    side: Side,
-    normal: Option<(PhaseSnapshot<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
+    side: TurnPhase,
+    normal: Option<(PhaseSnapshot<'catalog>, Vec<PotentialThreat>)>,
     cache: HashMap<RiskKey, i32>,
-    forecasts: HashMap<(u32, Option<u32>), (PhaseSnapshot<'catalog>, Vec<(Unit, Vec<TileSet>)>)>,
+    forecasts: HashMap<(u32, Option<u32>), (PhaseSnapshot<'catalog>, Vec<PotentialThreat>)>,
     arena: ArenaEnemies,
     workspace: Option<&'game mut ArenaThreatWorkspace>,
 }
@@ -59,12 +64,16 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 let mut blocked = TileSet::new(board.terrain().len());
                 blocked.insert(enemy.tile);
                 let reach = board.threat_reach_blocked(enemy, blocked);
-                (enemy.clone(), Self::coverage_engine(&board, enemy, &reach))
+                PotentialThreat {
+                    unit: *enemy,
+                    coverage: Self::coverage_engine(&board, enemy, &reach),
+                    origins: reach,
+                }
             })
             .collect();
         Self::pressure(&board, target, &enemies, None, true)
     }
-    pub fn new(phases: PhaseForecasts<'game, 'catalog>, side: Side) -> Self {
+    pub fn new(phases: PhaseForecasts<'game, 'catalog>, side: TurnPhase) -> Self {
         Self {
             orders: None,
             source: phases.view(),
@@ -79,7 +88,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     }
     pub(in crate::ai) fn protected(
         phases: PhaseForecasts<'game, 'catalog>,
-        side: Side,
+        side: TurnPhase,
         orders: &'game crate::ai::orders::TacticalOrders,
     ) -> Self {
         let mut threats = Self::new(phases, side);
@@ -95,12 +104,12 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     }
     pub fn with_workspace(
         phases: PhaseForecasts<'game, 'catalog>,
-        side: Side,
+        side: TurnPhase,
         workspace: &'game mut ArenaThreatWorkspace,
     ) -> Self {
         let g = phases.view();
         let mut threats = Self::new(phases, side);
-        if !g.is_campaign() {
+        if !g.is_campaign() && !g.perception_sensitive() {
             let same = workspace.side == Some(side)
                 && workspace.terrain == *g.terrain()
                 && workspace.roster.len() == g.units().len()
@@ -132,9 +141,9 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     }
     fn arena_enemies(
         source: &BattleView<'_, '_>,
-        side: Side,
+        side: TurnPhase,
         actor: Option<u32>,
-    ) -> Vec<(Unit, Vec<TileSet>)> {
+    ) -> Vec<PotentialThreat> {
         let mut occupied = if actor.is_some() {
             TileSet::new(source.terrain().len())
         } else {
@@ -156,14 +165,18 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             .map(|enemy| {
                 let mut enemy = enemy.clone();
                 enemy.moved = false;
-                enemy.attacked = false;
+                enemy.attack_spent = false;
                 let mut blockers = occupied.clone();
                 if actor.is_some() {
                     blockers.insert(enemy.tile);
                 }
                 let positions = source.threat_reach_blocked(&enemy, blockers);
                 let covered = Self::coverage_engine(source, &enemy, &positions);
-                (enemy, covered)
+                PotentialThreat {
+                    unit: enemy,
+                    coverage: covered,
+                    origins: positions,
+                }
             })
             .collect()
     }
@@ -172,9 +185,9 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     // be excluded without cloning or replacing the forecast roster.
     fn independent_enemies(
         board: &BattleView<'_, 'catalog>,
-        side: Side,
+        side: TurnPhase,
         excluded: Option<u32>,
-    ) -> Vec<(Unit, Vec<TileSet>)> {
+    ) -> Vec<PotentialThreat> {
         let mut occupied = TileSet::new(board.terrain().len());
         for ally in board
             .units()
@@ -191,10 +204,11 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 let mut blockers = occupied.clone();
                 blockers.insert(enemy.tile);
                 let positions = board.threat_reach_blocked(enemy, blockers);
-                (
-                    enemy.clone(),
-                    Self::coverage_engine(board, enemy, &positions),
-                )
+                PotentialThreat {
+                    unit: *enemy,
+                    coverage: Self::coverage_engine(board, enemy, &positions),
+                    origins: positions,
+                }
             })
             .collect()
     }
@@ -235,20 +249,24 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
     fn pressure(
         board: &BattleView<'_, '_>,
         target: &Unit,
-        enemies: &[(Unit, Vec<TileSet>)],
+        enemies: &[PotentialThreat],
         eliminated: Option<u32>,
         sum: bool,
     ) -> i32 {
         let mut first = 0;
         let mut second = 0;
         let mut total = 0;
-        for (enemy, positions) in enemies {
+        for threat in enemies {
+            let enemy = &threat.unit;
+            let positions = &threat.coverage;
             if Some(enemy.id) == eliminated {
                 continue;
             }
             let mut best = 0;
             for weapon in 0..board.weapons(enemy).count() {
-                if positions[weapon].contains(target.tile) {
+                if positions[weapon].contains(target.tile)
+                    && board.can_threaten_from(enemy, target, weapon, &threat.origins)
+                {
                     best = best.max(if sum {
                         board
                             .damage_distribution(enemy, target, weapon, target.tile)
@@ -303,7 +321,11 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                     .map(|u| {
                         let positions =
                             shadow.threat_reach_blocked(u, shadow.occupied_tiles().clone());
-                        (u.clone(), Self::coverage_engine(&shadow, u, &positions))
+                        PotentialThreat {
+                            unit: *u,
+                            coverage: Self::coverage_engine(&shadow, u, &positions),
+                            origins: positions,
+                        }
                     })
                     .collect();
                 (shadow, enemies)
@@ -378,7 +400,7 @@ mod tests {
                         .find(|u| u.id == format!("u{enemy}"))
                         .unwrap();
                     target.hp -= 1;
-                    target.attacked = true;
+                    target.attack_spent = true;
                 } else {
                     state.units.retain(|u| u.id != format!("u{enemy}"));
                 }
@@ -401,7 +423,7 @@ mod tests {
     #[test]
     fn arena_shortcut_matches_full_turn_forecasts_with_eliminations() {
         let rules = Catalog::load().unwrap();
-        for side in [Side::Player, Side::Enemy] {
+        for side in [TurnPhase::Player, TurnPhase::Ai] {
             let mut game = Game::new(&rules, "mirror");
             game.begin_turn(side);
             let enemy = game.units().iter().find(|u| u.side != side).unwrap().id;
@@ -434,7 +456,11 @@ mod tests {
                             .map(|u| {
                                 let positions =
                                     shadow.threat_reach_blocked(u, shadow.occupied_tiles().clone());
-                                (u.clone(), Threats::coverage(&shadow, u, &positions))
+                                PotentialThreat {
+                                    unit: *u,
+                                    coverage: Threats::coverage(&shadow, u, &positions),
+                                    origins: positions,
+                                }
                             })
                             .collect()
                     };

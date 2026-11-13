@@ -26,6 +26,7 @@ impl<'a> From<&'a State> for NativeFrame<'a> {
 impl ocamljs_bindgen::EncodeAs<StateFrame> for NativeFrame<'_> {
     fn encode_as(self, out: &mut ocamljs_bindgen::Encoder) {
         let State {
+            vision_groups,
             factions,
             ground_items,
             armies,
@@ -47,6 +48,7 @@ impl ocamljs_bindgen::EncodeAs<StateFrame> for NativeFrame<'_> {
             tiles: _,
         } = self.0;
         out.nested(|out| {
+            ocamljs_bindgen::EncodeRef::encode_ref(vision_groups, out);
             ocamljs_bindgen::EncodeRef::encode_ref(factions, out);
             ocamljs_bindgen::EncodeRef::encode_ref(ground_items, out);
             ocamljs_bindgen::EncodeRef::encode_ref(armies, out);
@@ -621,7 +623,7 @@ impl NativeEngineFactory {
                             message: "Developer armies are authored".into(),
                         });
                     }
-                    for side in [Side::Player, Side::Enemy] {
+                    for side in [TurnPhase::Player, TurnPhase::Ai] {
                         let roster = self
                             .rules
                             .rosters
@@ -658,7 +660,7 @@ impl NativeEngineFactory {
                     }
                     state.armies = Some(armies);
                 }
-                state.turn = first.unwrap_or(Side::Player);
+                state.turn = first.unwrap_or(TurnPhase::Player);
                 Ok(Game::from_state(&self.rules, state))
             }
             Start::Campaign { id } => {

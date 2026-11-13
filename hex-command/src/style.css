@@ -1560,3 +1560,12 @@ button:active:not(:disabled) {
   display: block;
   margin-top: 4px;
 }
+
+.concealment-status {
+  color: #abbfa7;
+  font-size: 13px;
+  font-style: italic;
+}
+.concealment-status.revealed {
+  color: #d5b274;
+}

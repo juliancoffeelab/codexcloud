@@ -41,8 +41,8 @@ fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defende
         let mut game = Game::new(&rules, "mirror");
         game.units.clear();
         game.roster_changed();
-        let a = add(&mut game, "scout", Side::Player, Hex::new(2, 3));
-        let b = add(&mut game, "soldier", Side::Enemy, Hex::new(3, 3));
+        let a = add(&mut game, "scout", TurnPhase::Player, Hex::new(2, 3));
+        let b = add(&mut game, "soldier", TurnPhase::Ai, Hex::new(3, 3));
         let index = game.index(b).unwrap();
         game.units[index].hp = 90;
         let actor = game.unit(a).unwrap().clone();
@@ -72,7 +72,7 @@ fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defende
         hit(&mut game, a, b, &attack_id);
         assert_eq!(game.unit(a).unwrap().hp, 100 - 4 - 3 * i32::from(strikes));
         assert_eq!(game.unit(b).unwrap().hp, 92 - 4 * i32::from(strikes));
-        game.begin_turn(Side::Player);
+        game.begin_turn(TurnPhase::Player);
         let index = game.index(b).unwrap();
         game.units[index].hp = 1;
         let before = game.unit(a).unwrap().hp;
@@ -91,11 +91,11 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "soldier", Side::Player, Hex::new(2, 3));
-    let b = add(&mut game, "soldier", Side::Enemy, Hex::new(3, 3));
-    add(&mut game, "archer", Side::Enemy, Hex::new(4, 3));
-    let aura = add(&mut game, "scout", Side::Enemy, Hex::new(3, 4));
-    add(&mut game, "scout", Side::Player, Hex::new(2, 4));
+    let a = add(&mut game, "soldier", TurnPhase::Player, Hex::new(2, 3));
+    let b = add(&mut game, "soldier", TurnPhase::Ai, Hex::new(3, 3));
+    add(&mut game, "archer", TurnPhase::Ai, Hex::new(4, 3));
+    let aura = add(&mut game, "scout", TurnPhase::Ai, Hex::new(3, 4));
+    add(&mut game, "scout", TurnPhase::Player, Hex::new(2, 4));
     let preview = |game: &Game<'_>| {
         game.preview(
             game.unit(a).unwrap(),
@@ -153,9 +153,9 @@ fn ranged_retaliation_never_gets_thorn_bonus() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "archer", Side::Player, Hex::new(2, 3));
-    let b = add(&mut game, "archer", Side::Enemy, Hex::new(3, 3));
-    add(&mut game, "archer", Side::Enemy, Hex::new(4, 3));
+    let a = add(&mut game, "archer", TurnPhase::Player, Hex::new(2, 3));
+    let b = add(&mut game, "archer", TurnPhase::Ai, Hex::new(3, 3));
+    add(&mut game, "archer", TurnPhase::Ai, Hex::new(4, 3));
     assert_eq!(
         game.preview(
             game.unit(a).unwrap(),
@@ -177,8 +177,8 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "soldier", Side::Player, Hex::new(2, 3));
-    let b = add(&mut game, "soldier", Side::Enemy, Hex::new(3, 3));
+    let a = add(&mut game, "soldier", TurnPhase::Player, Hex::new(2, 3));
+    let b = add(&mut game, "soldier", TurnPhase::Ai, Hex::new(3, 3));
     let ai = game.index(a).unwrap();
     game.units[ai].hp = 5;
     let inspected = game.inspect(0);
@@ -200,7 +200,7 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
         "surviving defender drains on retaliation"
     );
     let mut restored = Game::try_from_state(&rules, game.state()).unwrap();
-    restored.begin_turn(Side::Player);
+    restored.begin_turn(TurnPhase::Player);
     let bi = restored.index(b).unwrap();
     restored.units[bi].hp = 3;
     hit(&mut restored, a, b, "sword");
@@ -210,8 +210,8 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
         "overkill heals only half of 3 HP, rounded down"
     );
     assert!(restored.unit(b).is_none());
-    restored.begin_turn(Side::Player);
-    let c = add(&mut restored, "soldier", Side::Enemy, Hex::new(3, 3));
+    restored.begin_turn(TurnPhase::Player);
+    let c = add(&mut restored, "soldier", TurnPhase::Ai, Hex::new(3, 3));
     let ai = restored.index(a).unwrap();
     restored.units[ai].hp = 99;
     hit(&mut restored, a, c, "sword");
@@ -220,7 +220,7 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
         94,
         "healing caps separately before each retaliation"
     );
-    restored.begin_turn(Side::Player);
+    restored.begin_turn(TurnPhase::Player);
     let ai = restored.index(a).unwrap();
     restored.units[ai].hp = 1;
     hit(&mut restored, a, c, "sword");
@@ -233,8 +233,8 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
 #[test]
 fn zero_damage_attacks_consume_actions_without_xp_and_keep_retaliation() {
     let mut game = flat();
-    let attacker = add(&mut game, "bonearcher", Side::Player, Hex::new(2, 3));
-    let target = add(&mut game, "soldier", Side::Enemy, Hex::new(3, 3));
+    let attacker = add(&mut game, "bonearcher", TurnPhase::Player, Hex::new(2, 3));
+    let target = add(&mut game, "soldier", TurnPhase::Ai, Hex::new(3, 3));
     game.set_terrain(game.site(&Hex::new(3, 3)), game.rules.terrains["hill"]);
     let hp = game.unit(target).unwrap().hp;
     let attacker_hp = game.unit(attacker).unwrap().hp;
@@ -242,7 +242,7 @@ fn zero_damage_attacks_consume_actions_without_xp_and_keep_retaliation() {
     assert!(game.unit(attacker).unwrap().hp < attacker_hp);
     assert_eq!(game.unit(target).unwrap().hp, hp);
     let unit = game.unit(attacker).unwrap();
-    assert!(unit.moved && unit.attacked);
+    assert!(unit.moved && unit.attack_spent);
     assert_eq!(unit.experience, Some(0));
     assert_eq!(
         game.execute(Command::Attack {
@@ -259,8 +259,8 @@ fn zero_damage_attacks_consume_actions_without_xp_and_keep_retaliation() {
 fn kills_suppress_retaliation_and_leader_death_finishes_battle() {
     for leader in [false, true] {
         let mut game = flat();
-        let attacker = add(&mut game, "soldier", Side::Player, Hex::new(2, 3));
-        let target = add(&mut game, "swordsman", Side::Enemy, Hex::new(3, 3));
+        let attacker = add(&mut game, "soldier", TurnPhase::Player, Hex::new(2, 3));
+        let target = add(&mut game, "swordsman", TurnPhase::Ai, Hex::new(3, 3));
         let index = game.index(target).unwrap();
         game.units[index].hp = 1;
         game.units[index].role = leader.then_some(Role::Leader);
@@ -268,7 +268,7 @@ fn kills_suppress_retaliation_and_leader_death_finishes_battle() {
         hit(&mut game, attacker, target, "sword");
         assert!(game.unit(target).is_none());
         assert_eq!(game.unit(attacker).unwrap().hp, hp);
-        assert_eq!(game.winner, leader.then_some(Side::Player));
+        assert_eq!(game.winner, leader.then_some(BattleResult::PlayerVictory));
         if leader {
             assert_eq!(
                 game.execute(Command::EndTurn).unwrap_err(),
@@ -281,8 +281,8 @@ fn kills_suppress_retaliation_and_leader_death_finishes_battle() {
 #[test]
 fn ranged_categories_and_intervening_cover_determine_legal_replies() {
     let mut game = flat();
-    let bow = add(&mut game, "archer", Side::Player, Hex::new(2, 3));
-    let target = add(&mut game, "archer", Side::Enemy, Hex::new(4, 3));
+    let bow = add(&mut game, "archer", TurnPhase::Player, Hex::new(2, 3));
+    let target = add(&mut game, "archer", TurnPhase::Ai, Hex::new(4, 3));
     let archer = game.unit(bow).unwrap().clone();
     let defender = game.unit(target).unwrap().clone();
     let attack = weapon(&game, bow, "bow");
@@ -309,8 +309,8 @@ fn ranged_categories_and_intervening_cover_determine_legal_replies() {
 fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
     for terrain in ["plains", "forest", "hill", "ford", "marsh"] {
         let mut game = flat();
-        let a = add(&mut game, "soldier", Side::Player, Hex::new(2, 3));
-        let b = add(&mut game, "soldier", Side::Enemy, Hex::new(3, 3));
+        let a = add(&mut game, "soldier", TurnPhase::Player, Hex::new(2, 3));
+        let b = add(&mut game, "soldier", TurnPhase::Ai, Hex::new(3, 3));
         game.set_terrain(game.site(&Hex::new(2, 3)), game.rules.terrains[terrain]);
         let actor = game.unit(a).unwrap();
         let defender = game.unit(b).unwrap();
@@ -334,8 +334,8 @@ fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
         assert_eq!(reply, expected);
     }
     let mut game = flat();
-    let a = add(&mut game, "bonearcher", Side::Player, Hex::new(2, 3));
-    let b = add(&mut game, "soldier", Side::Enemy, Hex::new(3, 3));
+    let a = add(&mut game, "bonearcher", TurnPhase::Player, Hex::new(2, 3));
+    let b = add(&mut game, "soldier", TurnPhase::Ai, Hex::new(3, 3));
     game.set_terrain(game.site(&Hex::new(3, 3)), game.rules.terrains["hill"]);
     assert_eq!(
         game.damage(
@@ -371,11 +371,11 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "soldier", Side::Player, Hex::new(2, 3));
-    let b = add(&mut game, "soldier", Side::Enemy, Hex::new(3, 3));
-    game.recordings = Some(Records::default());
+    let a = add(&mut game, "soldier", TurnPhase::Player, Hex::new(2, 3));
+    let b = add(&mut game, "soldier", TurnPhase::Ai, Hex::new(3, 3));
+    game.recordings = Some(Records::default().into());
     let bi = game.index(b).unwrap();
-    game.units[bi].attacked = true;
+    game.units[bi].attack_spent = true;
     let actor = game.unit(a).unwrap();
     let target = game.unit(b).unwrap();
     assert_eq!(game.preview(actor, target, 0, actor.tile), (3, 5, Some(1)));
@@ -383,7 +383,7 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
     hit(&mut game, a, b, "sword");
     assert_eq!(game.unit(a).unwrap().hp, 95);
     assert_eq!(game.unit(b).unwrap().hp, 97);
-    assert!(game.unit(a).unwrap().attacked && game.unit(a).unwrap().moved);
+    assert!(game.unit(a).unwrap().attack_spent && game.unit(a).unwrap().moved);
     assert_eq!(game.unit(a).unwrap().experience, Some(1));
     let recorded = &game.recordings.as_ref().unwrap().combats[0];
     assert_eq!(
@@ -400,15 +400,15 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
             })
             .is_err()
     );
-    restored.begin_turn(Side::Player);
+    restored.begin_turn(TurnPhase::Player);
     let bi = restored.index(b).unwrap();
     restored.units[bi].hp = 2;
     hit(&mut restored, a, b, "sword");
     assert_eq!(restored.unit(a).unwrap().hp, 90);
     assert!(restored.unit(b).is_none());
     assert_eq!(restored.unit(a).unwrap().experience, Some(7));
-    restored.begin_turn(Side::Player);
-    let c = add(&mut restored, "soldier", Side::Enemy, Hex::new(3, 3));
+    restored.begin_turn(TurnPhase::Player);
+    let c = add(&mut restored, "soldier", TurnPhase::Ai, Hex::new(3, 3));
     let ai = restored.index(a).unwrap();
     restored.units[ai].hp = 1;
     hit(&mut restored, a, c, "sword");
@@ -426,12 +426,12 @@ fn reflected_damage_records_separate_own_aura_and_effective_damage() {
     let mut game = Game::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
-    let a = add(&mut game, "soldier", Side::Player, Hex::new(2, 3));
-    let b = add(&mut game, "soldier", Side::Enemy, Hex::new(3, 3));
-    let aura = add(&mut game, "scout", Side::Enemy, Hex::new(4, 3));
+    let a = add(&mut game, "soldier", TurnPhase::Player, Hex::new(2, 3));
+    let b = add(&mut game, "soldier", TurnPhase::Ai, Hex::new(3, 3));
+    let aura = add(&mut game, "scout", TurnPhase::Ai, Hex::new(4, 3));
     let index = game.index(a).unwrap();
     game.units[index].hp = 10;
-    game.recordings = Some(Records::default());
+    game.recordings = Some(Records::default().into());
     hit(&mut game, a, b, "sword");
     let thorns = game.recordings.as_ref().unwrap().combats[0]
         .thorns
@@ -467,13 +467,13 @@ fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
         let mut game = Game::new(&rules, "mirror");
         game.units.clear();
         game.roster_changed();
-        let a = add(&mut game, "scout", Side::Player, Hex::new(2, 3));
-        let b = add(&mut game, "soldier", Side::Enemy, Hex::new(3, 3));
+        let a = add(&mut game, "scout", TurnPhase::Player, Hex::new(2, 3));
+        let b = add(&mut game, "soldier", TurnPhase::Ai, Hex::new(3, 3));
         let ai = game.index(a).unwrap();
         let bi = game.index(b).unwrap();
         game.units[ai].hp = 50;
         game.units[bi].hp = hp;
-        game.recordings = Some(Records::default());
+        game.recordings = Some(Records::default().into());
         hit(&mut game, a, b, "knife");
         let record = &game.recordings.as_ref().unwrap().combats[0];
         let mitigation = record.mitigation.as_ref().unwrap();
@@ -546,9 +546,9 @@ fn seeded_strikes_restore_exactly_and_previews_never_consume_randomness() {
         game.units.clear();
         game.roster_changed();
         game.combat_rng = seed;
-        let a = add(&mut game, "archer", Side::Player, Hex::new(2, 3));
-        let b = add(&mut game, "archer", Side::Enemy, Hex::new(3, 3));
-        game.recordings = Some(Records::default());
+        let a = add(&mut game, "archer", TurnPhase::Player, Hex::new(2, 3));
+        let b = add(&mut game, "archer", TurnPhase::Ai, Hex::new(3, 3));
+        game.recordings = Some(Records::default().into());
         let before = serde_json::to_value(game.state()).unwrap();
         let first = serde_json::to_value(game.inspect(0)).unwrap();
         assert_eq!(first, serde_json::to_value(game.inspect(0)).unwrap());

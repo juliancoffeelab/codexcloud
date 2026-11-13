@@ -98,7 +98,7 @@ mod tests {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
         fixtures::units(&mut game, |units| units.retain(|u| u.is_leader()));
-        for side in [Side::Player, Side::Enemy] {
+        for side in [TurnPhase::Player, TurnPhase::Ai] {
             game.begin_turn(side);
             fixtures::edit(&mut game, |state| state.gold[side.faction_id()] = 100);
             let leader = game.units().iter().find(|u| u.side == side).unwrap().id;
@@ -106,6 +106,7 @@ mod tests {
             let orders = CampaignBlock::Mission.campaign_orders(
                 &mission,
                 CampaignInput {
+                    seed: 0,
                     goals: None,
                     diplomacy: Diplomacy::Diplomatic,
                 },
@@ -166,37 +167,35 @@ mod tests {
             scripts.failed.push("refuge-peace".into());
         });
         // Let campaign runtime reveal the escalation objective before planning.
-        game.begin_turn(Side::Player);
+        game.begin_turn(TurnPhase::Player);
         let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
         let required = mission
-            .objectives(Side::Player)
+            .objectives(TurnPhase::Player)
             .into_iter()
             .find(|g| g.id == "required:refuge-war")
             .unwrap();
         assert!(!required.tiles.contains(&Hex::new(6, 4).to_owned()));
-        assert!(
-            required
-                .tiles
-                .iter()
-                .all(|t| game.at(game.site(t)).is_some_and(|u| u.side == Side::Enemy))
-        );
+        assert!(required.tiles.iter().all(|t| {
+            game.at(game.site(t))
+                .is_some_and(|u| u.side == TurnPhase::Ai)
+        }));
         let actor = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Player)
+            .find(|u| u.side == TurnPhase::Player)
             .unwrap()
             .clone();
         let target = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Enemy && u.is_leader())
+            .find(|u| u.side == TurnPhase::Ai && u.is_leader())
             .unwrap()
             .clone();
         assert!(!crate::ai::campaigner::mission::terminal_attack(
             &mission, &actor, &target
         ));
         fixtures::units(&mut game, |units| {
-            units.retain(|u| u.side == Side::Player || u.id == target.id)
+            units.retain(|u| u.side == TurnPhase::Player || u.id == target.id)
         });
         let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
         assert!(crate::ai::campaigner::mission::terminal_attack(

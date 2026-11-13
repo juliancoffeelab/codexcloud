@@ -232,7 +232,7 @@
           {
             "hasUnits": {
               "side": "player",
-              "character": "oren"
+              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
             }
           },
           {
@@ -246,14 +246,26 @@
         {
           "say": [
             {
-              "portrait": "adept",
-              "text": "The monastery is on the hill to the north. Get me there, and I can use its wards to clear this fog.",
-              "character": "oren"
+              "with": "oren",
+              "dialogue": [
+                {
+                  "portrait": "adept",
+                  "text": "The monastery is on the hill to the north. Get me there, and I can use its wards to clear this fog.",
+                  "character": "oren"
+                }
+              ],
+              "alternative": [
+                {
+                  "speaker": "Storm mage",
+                  "portrait": "mage",
+                  "text": "The monastery is on the hill to the north. Its wards can help us clear this fog. Get one of us there."
+                }
+              ]
             }
           ]
         },
         {
-          "log": "Oren can clear the fog from the northern hill monastery."
+          "log": "A mage identifies the northern hill monastery as a way to clear the fog."
         },
         {
           "setFlag": "monastery-lead"
@@ -324,12 +336,24 @@
             {
               "speaker": "The company",
               "portrait": "adept",
-              "text": "The stones answer the mage\u2019s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
+              "text": "The stones answer the mage’s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
             },
             {
-              "portrait": "adept",
-              "text": "Keep them back. I need three turns here to break the veil.",
-              "character": "oren"
+              "with": "oren",
+              "dialogue": [
+                {
+                  "portrait": "adept",
+                  "text": "Keep them back. I need three turns here to break the veil.",
+                  "character": "oren"
+                }
+              ],
+              "alternative": [
+                {
+                  "speaker": "Storm mage",
+                  "portrait": "mage",
+                  "text": "Keep them back. I need three turns here to break the veil."
+                }
+              ]
             }
           ]
         },
@@ -371,10 +395,16 @@
           ]
         },
         {
-          "log": "The hill ritual clears the valley\u2019s fog."
+          "log": "The hill ritual clears the valley’s fog."
         },
         {
           "setFlag": "fog-cleared"
+        },
+        {
+          "removeConcealment": {
+            "area": "map",
+            "kind": "fog"
+          }
         }
       ],
       "objective": {
@@ -447,7 +477,7 @@
             },
             {
               "portrait": "swordsman",
-              "text": "You\u2019ll have no more of them.",
+              "text": "You’ll have no more of them.",
               "character": "nera"
             }
           ]
@@ -475,7 +505,7 @@
             },
             {
               "portrait": "adept",
-              "text": "The bell is gathering strength. Get the prisoners off those marks\u2014cutting their bonds won\u2019t be enough.",
+              "text": "The bell is gathering strength. Get the prisoners off those marks—cutting their bonds won’t be enough.",
               "character": "oren"
             }
           ]
@@ -893,7 +923,7 @@
           "say": [
             {
               "portrait": "lich",
-              "text": "Bring them back. Alive or dead\u2014their blood will serve the ritual just the same.",
+              "text": "Bring them back. Alive or dead—their blood will serve the ritual just the same.",
               "character": "bellwarden"
             }
           ]
@@ -971,7 +1001,7 @@
           "say": [
             {
               "portrait": "scout",
-              "text": "The dead from the pass\u2014they\u2019ve followed us!",
+              "text": "The dead from the pass—they’ve followed us!",
               "character": "ivo"
             },
             {
@@ -1406,7 +1436,7 @@
             },
             {
               "portrait": "swordsman",
-              "text": "Good timing. Join the company\u2014we need to silence that bell.",
+              "text": "Good timing. Join the company—we need to silence that bell.",
               "character": "nera"
             }
           ]
@@ -1445,13 +1475,13 @@
               "dialogue": [
                 {
                   "character": "oren",
-                  "text": "The connection broke. I\u2019ll have to start again."
+                  "text": "The connection broke. I’ll have to start again."
                 }
               ],
               "alternative": [
                 {
                   "character": "nera",
-                  "text": "We\u2019ll have to try again."
+                  "text": "We’ll have to try again."
                 }
               ]
             }

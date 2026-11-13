@@ -86,7 +86,7 @@ def discover_aliases(start):
 aliases={}
 for key,i in entries.items():
  aliases[key]=discover_aliases(i)
- if key=='Save39':
+ if key in ['Save39', 'Save40', 'Save41', 'Save42', 'Save43', 'Save44']:
   for j,tag,_ in union_tags(i):
    for a,k in discover_aliases(j).items():aliases[key][tag.lower() if a=='t' else tag.lower()+'_'+a]=k
  if key=='Fragments':

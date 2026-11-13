@@ -1,5 +1,5 @@
 //! Shared state predicates for events, lighting and terrain visibility.
-use super::{Event, Side, Tile, TileRef};
+use super::{Event, Tile, TileRef, TurnPhase};
 use serde::{Deserialize, Serialize};
 
 /// Unit allegiance selectors are distinct from the two turn/ownership phases.
@@ -16,12 +16,14 @@ pub enum ConditionSide {
     Enemy,
     Neutral,
     Any,
+    /// The exact viewing faction, never all factions acting in its phase.
+    Observer,
 }
-impl From<Side> for ConditionSide {
-    fn from(side: Side) -> Self {
+impl From<TurnPhase> for ConditionSide {
+    fn from(side: TurnPhase) -> Self {
         match side {
-            Side::Player => Self::Player,
-            Side::Enemy => Self::Enemy,
+            TurnPhase::Player => Self::Player,
+            TurnPhase::Ai => Self::Enemy,
         }
     }
 }

@@ -1,0 +1,22 @@
+{
+  "id": "ghost-village-raid",
+  "name": "Ghost Village Raid",
+  "tagline": "Lanterns against darkness.",
+  "description": "Mayor Hiss leads the restless spirits into a contest for Pine Hamlet, Moss Hamlet and Fern Hamlet. Control all three villages at once, or defeat the opposing leader. You lose if your leader falls or the opposing army controls all three villages. Both armies can recruit from their keeps. Darkness hides your troops from distant patrols, but lantern light exposes them.",
+  "shortDescription": "Capture villages with concealed ghosts.",
+  "race": "spirit",
+  "leader": "ghost",
+  "characters": [
+    {
+      "id": "night-mayor",
+      "name": "Mayor Boo"
+    },
+    {
+      "id": "captain-boots",
+      "name": "Captain Boots"
+    }
+  ],
+  "human": false,
+  "ending": [],
+  "stages": ["stages/darkness-hidden-arena/stage.json"]
+}

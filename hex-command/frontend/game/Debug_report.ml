@@ -64,13 +64,13 @@ let command value =
   | Command.Retry_mission -> kind "retryMission" []
   | Command.Previous_dialogue -> kind "previousDialogue" []
   | Command.Skip_dialogue -> kind "skipDialogue" []
-  | Command.Set_unit_intent { unit; retreating; rebuilding; attacked; record_retreat } ->
+  | Command.Set_unit_intent { unit; retreating; rebuilding; attack_spent; record_retreat } ->
       kind "setUnitIntent"
         [
           ("unit", number unit);
           ("retreating", optional boolean retreating);
           ("rebuilding", optional boolean rebuilding);
-          ("attacked", boolean attacked);
+          ("attack_spent", boolean attack_spent);
           ("record_retreat", boolean record_retreat);
         ]
 

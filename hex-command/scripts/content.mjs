@@ -409,6 +409,7 @@ for (const path of [
   ...manifest.units,
   ...manifest.items,
   manifest.terrain,
+  manifest.concealmentKinds,
   ...(manifest.recruitment ? [manifest.recruitment] : []),
   ...manifest.races,
   ...Object.values(manifest.simulation),

@@ -2,7 +2,7 @@
 use super::{error::SimulationError, types::*};
 use crate::{
     ai::{Blocks, CampaignBlock, Diplomacy, Planner, Policy, Recruiter},
-    data::{Rules, Side},
+    data::{Rules, TurnPhase},
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -386,7 +386,7 @@ pub fn schedule(options: &ScheduleOptions) -> Result<Vec<MatchConfig>, Simulatio
                             vec![(a, b), (b, a)]
                         };
                         for (left, right) in seats {
-                            for first in [Side::Player, Side::Enemy] {
+                            for first in [TurnPhase::Player, TurnPhase::Ai] {
                                 configs.push(MatchConfig::Arena(ArenaConfig {
                                     objective: Default::default(),
                                     seed,
@@ -665,7 +665,7 @@ mod tests {
                 .all(|config| matches!(config, MatchConfig::Arena(c) if c.player == c.enemy))
         );
         for policy in &self_play_options.policies {
-            for first in [Side::Player, Side::Enemy] {
+            for first in [TurnPhase::Player, TurnPhase::Ai] {
                 assert_eq!(self_play.iter().filter(|c|matches!(c, MatchConfig::Arena(c) if c.player == *policy && c.first == first)).count(), 4);
             }
         }
@@ -674,7 +674,7 @@ mod tests {
         assert_eq!(
             arena
                 .iter()
-                .filter(|config| config.first == Side::Player)
+                .filter(|config| config.first == TurnPhase::Player)
                 .count(),
             4
         );

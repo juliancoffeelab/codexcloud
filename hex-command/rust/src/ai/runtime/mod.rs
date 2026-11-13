@@ -69,7 +69,11 @@ pub(crate) fn choose_game_command(
         let mut tactic = tactic::Tactic::new(blocks.recruiter, blocks.campaign, blocks.planner);
         let plan = tactic.run_turn(game, workspace)?;
         workspace.state.report = plan.planning;
-        workspace.state.commands = plan.commands.into();
+        workspace.state.commands = plan
+            .commands
+            .into_iter()
+            .map(|proposal| proposal.into_command())
+            .collect();
         workspace.state.turn_plan_ready = true;
     }
     let command = workspace
@@ -140,12 +144,7 @@ pub(crate) fn play_blocks(
             let _profile = crate::ai::profiling::Decision::start(policy, game.turn());
             tactic.run_turn(game, &mut workspace)?
         };
-        for command in plan.commands {
-            if game.active_faction().is_some() && command == Command::EndTurn {
-                continue;
-            }
-            game.execute_runtime(command)?;
-        }
+        execute_proposals(game, &mut workspace, plan.commands)?;
         if workspace.finished() || game.winner().is_some() {
             break;
         }
@@ -157,4 +156,33 @@ fn automatic_factions(game: &Game<'_>) -> Vec<(String, Option<Policy>)> {
         .into_iter()
         .map(|(id, policy)| (id, policy.map(Into::into)))
         .collect()
+}
+
+/// Shared execution boundary for native simulation and ordinary native play.
+/// Browser play admits one proposal through the same live engine and refreshes
+/// its continuation before handing out the next command.
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn execute_proposals(
+    game: &mut Game<'_>,
+    workspace: &mut PlanningWorkspace,
+    proposals: Vec<hex_command_battle::ActionProposal>,
+) -> Result<(), CommandError> {
+    for proposal in proposals {
+        if game.winner().is_some() {
+            break;
+        }
+        let command = proposal.into_command();
+        if game.active_faction().is_some() && command == Command::EndTurn {
+            continue;
+        }
+        let outcome = game.execute_proposal(command.into())?;
+        let changed = workspace.refresh_control(game);
+        match outcome {
+            hex_command_battle::ProposalOutcome::Finished
+            | hex_command_battle::ProposalOutcome::Replan => break,
+            hex_command_battle::ProposalOutcome::Applied if changed => break,
+            hex_command_battle::ProposalOutcome::Applied => {}
+        }
+    }
+    Ok(())
 }

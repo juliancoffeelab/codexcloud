@@ -26,18 +26,18 @@ test("Companion deaths persist but retry restores incoming companions", async ()
 for (const mission of [0, 2]) {
   test("Legacy victory cannot resurrect Lark \u2014 " + JSON.stringify([mission]), async () => {
     const game = Game.startCampaign("green-accord", mission);
-    game.winner = "player";
+    game.winner = "playerVictory";
     game.campaign.outcome = "Mission complete. The company can rest and regroup.";
     game.campaign.completed = mission === 2;
     game.round = 9;
     game.gold.player = 31;
     await saveBattle(game);
-    assert.equal((await loadBattle()).game.winner, "player");
+    assert.equal((await loadBattle()).game.winner, "playerVictory");
     game.units = game.units.filter((unit) => unit.character !== "lark");
     await saveBattle(game);
     const restored = (await loadBattle()).game;
     assert.equal(restored.mapId, game.mapId);
-    assert.equal(restored.winner, "enemy");
+    assert.equal(restored.winner, "playerDefeat");
     assert.equal(restored.campaign?.completed, false);
     assert.equal(
       restored.campaign?.outcome,

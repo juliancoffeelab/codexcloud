@@ -14,8 +14,8 @@ struct CombatIdentity {
     id: u32,
     kind: usize,
     hp: i32,
-    side: Side,
-    faction: Option<NameKey>,
+    side: TurnPhase,
+    faction: NameKey,
     inventory: InventoryId,
 }
 impl CombatIdentity {
@@ -1142,7 +1142,7 @@ mod tests {
         fixtures::units(&mut game, |units| {
             units
                 .iter_mut()
-                .find(|unit| unit.side == Side::Enemy)
+                .find(|unit| unit.side == TurnPhase::Ai)
                 .unwrap()
                 .role = Some(Role::Leader);
         });
@@ -1266,9 +1266,9 @@ mod tests {
             units.clear();
         });
         let tile = game.site(&Hex::new(4, 4));
-        let target = fixtures::add(&mut game, target, Side::Player, tile);
+        let target = fixtures::add(&mut game, target, TurnPhase::Player, tile);
         let tile = game.site(&Hex::new(5, 4));
-        let enemy = fixtures::add(&mut game, enemy, Side::Enemy, tile);
+        let enemy = fixtures::add(&mut game, enemy, TurnPhase::Ai, tile);
         (game, target, enemy)
     }
 
@@ -1290,7 +1290,7 @@ mod tests {
         rules.units[target].environment[rules.terrains["forest"]][0][0] = -3;
         let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
         let tile = game.site(&Hex::new(4, 5));
-        fixtures::add(&mut game, target, Side::Player, tile);
+        fixtures::add(&mut game, target, TurnPhase::Player, tile);
         let view = BattleView::new(&game);
         let enemy = game.unit(enemy_id).unwrap();
         let mut target = game.unit(target_id).unwrap().clone();
@@ -1391,7 +1391,7 @@ mod tests {
         fixtures::units(&mut game, |units| {
             units
                 .iter_mut()
-                .find(|unit| unit.side == Side::Enemy)
+                .find(|unit| unit.side == TurnPhase::Ai)
                 .unwrap()
                 .role = Some(Role::Leader);
         });
@@ -1428,7 +1428,7 @@ mod tests {
             Hex::new(6, 5),
         ] {
             let tile = game.site(&site);
-            fixtures::add(&mut game, observed, Side::Enemy, tile);
+            fixtures::add(&mut game, observed, TurnPhase::Ai, tile);
         }
         let observed_with_prior = assess(&game);
         game.configure_arena(Some([vec![], vec![]]), None);
@@ -1453,13 +1453,13 @@ mod tests {
             fixtures::units(&mut game, |units| {
                 units
                     .iter_mut()
-                    .find(|unit| unit.side == Side::Enemy)
+                    .find(|unit| unit.side == TurnPhase::Ai)
                     .unwrap()
                     .role = Some(Role::Leader);
             });
             if aura {
                 let tile = game.site(&Hex::new(3, 4));
-                fixtures::add(&mut game, target, Side::Player, tile);
+                fixtures::add(&mut game, target, TurnPhase::Player, tile);
             }
             game.configure_arena(Some([vec![], vec![melee]]), None);
             let view = BattleView::new(&game);
@@ -1666,9 +1666,9 @@ mod tests {
         });
         let ally_tile = game.site(&Hex::new(3, 4));
         let ally_kind = game.unit(target).unwrap().kind;
-        fixtures::add(&mut game, ally_kind, Side::Player, ally_tile);
+        fixtures::add(&mut game, ally_kind, TurnPhase::Player, ally_tile);
         let other_tile = game.site(&Hex::new(8, 5));
-        let other = fixtures::add(&mut game, other, Side::Enemy, other_tile);
+        let other = fixtures::add(&mut game, other, TurnPhase::Ai, other_tile);
         let mut samples = Vec::new();
         for (first, second) in [
             (Hex::new(5, 4), Hex::new(8, 5)),
@@ -1715,7 +1715,7 @@ mod tests {
                 assert_eq!(game.unit(enemy_id).unwrap().tile, end);
                 if healing > 0 {
                     let tile = game.site(&Hex::new(6, 4));
-                    let ally = fixtures::add(&mut game, target, Side::Player, tile);
+                    let ally = fixtures::add(&mut game, target, TurnPhase::Player, tile);
                     fixtures::units(&mut game, |units| {
                         units.iter_mut().find(|u| u.id == ally).unwrap().hp = 50;
                     });

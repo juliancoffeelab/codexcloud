@@ -9,7 +9,7 @@ function developerFixture(types = []) {
   try {
     const checkpoint = structuredClone(Native.save(battle));
     const leaders = new Set(
-      ["player", "enemy"].map(
+      ["player", "ai"].map(
         (side) =>
           checkpoint.state.units.find(
             (unit) => unit.side === side && TYPES[unit.type]?.family === "commander",
@@ -45,7 +45,7 @@ class Game {
     fixture.restoreData(structuredClone(Native.state(Native.view(fixture.#battle))));
     for (let chapter = 0; chapter < mission; chapter++) {
       fixture.gold.player = 0;
-      fixture.winner = "player";
+      fixture.winner = "playerVictory";
       fixture.nextCampaignMission([]);
     }
     return fixture;
@@ -100,11 +100,14 @@ class Game {
       id: `u${this.nextId++}`,
       type,
       side,
+      faction: side === "player" ? "player" : "enemy",
+      revealedTo: [],
+      perceptionEffects: [],
       tile: hex(this.tile(tile) ?? tile),
       hp: Catalog.unit(catalog, type).hp,
       experience: 0,
       moved: false,
-      attacked: false,
+      attackSpent: false,
     };
     this.units.push(unit);
     return unit;

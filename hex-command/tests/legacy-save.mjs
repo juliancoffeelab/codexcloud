@@ -91,7 +91,47 @@ function historicalTiles(input) {
     }
     return v;
   };
-  const converted = convert(input);
+  // Explicit test-only writer for pre-perception histories. Do not stamp an
+  // old version onto the current phase, outcome or action representation.
+  const historicalInput = structuredClone(input);
+  const current = historicalInput.state ?? historicalInput;
+  if (current.visionGroups || current.units?.some((unit) => Object.hasOwn(unit, "attackSpent"))) {
+    const phase = (value) => (value === "ai" ? "enemy" : value);
+    current.turn = phase(current.turn);
+    current.winner =
+      current.winner === "playerVictory"
+        ? "player"
+        : current.winner === "playerDefeat"
+          ? "enemy"
+          : current.winner;
+    delete current.visionGroups;
+    for (const faction of current.factions ?? []) {
+      faction.phase = phase(faction.phase);
+      delete faction.visionGroup;
+    }
+    for (const unit of current.units ?? []) {
+      unit.side = phase(unit.side);
+      unit.attacked = unit.attackSpent;
+      delete unit.attackSpent;
+      delete unit.revealedTo;
+      delete unit.perceptionEffects;
+    }
+    for (const tile of current.tiles ?? []) {
+      const fog = tile.perception?.concealment.find((rule) => rule.kind === "fog");
+      if (fog)
+        tile.fog = {
+          condition: { kind: "proximity", side: "observer", radius: fog.revealWithin },
+          remember: tile.perception.remember,
+        };
+      delete tile.perception;
+      if (tile.light) delete tile.light.emission;
+    }
+    for (const mark of current.campaign?.scripts?.marks ?? []) {
+      delete mark.sight;
+      if (mark.light) delete mark.light.emission;
+    }
+  }
+  const converted = convert(historicalInput);
   const old = converted.state ?? converted;
   // These callers construct pre-v16 fixtures. Recreate their declared castle shape.
   for (const tile of old.tiles ?? [])

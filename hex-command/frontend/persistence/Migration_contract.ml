@@ -5,17 +5,17 @@
 [@@@warning "+8+9"]
 [@@@warnerror "+8+9"]
 
-module Native_checked : module type of Native_v39 = Domain
+module Native_checked : module type of Native_v44 = Domain
 module Native_bridge = Migration_native_contract.Make (Domain)
 module H = Historical_types
 module V = Current_save
 module A = Save_format
 
-let side_from : H.save35_setup_first -> Domain.Side.t = function
+let side_from : H.V44.current_first -> Domain.Turn_phase.t = function
   | `Player -> Player
-  | `Enemy -> Enemy
+  | `Ai -> Ai
 
-let side_to : Domain.Side.t -> H.save35_setup_first = function Player -> `Player | Enemy -> `Enemy
+let side_to : Domain.Turn_phase.t -> H.V44.current_first = function Player -> `Player | Ai -> `Ai
 
 let policy_from : V.policy -> A.policy = function
   | `Classic -> `Classic
@@ -91,11 +91,16 @@ let enemy_to ({ A.policy; diplomacy; blocks } : A.enemy) : V.current_enemy =
     blocks = Option.map blocks_to blocks;
   }
 
-let setup_from ({ V.wire = _; first; enemy } : V.current_setup) : A.setup =
-  { first = side_from first; enemy = enemy_from enemy }
+let setup_from ({ V.wire = _; first; enemy; player } : V.current_setup) : A.setup =
+  { first = side_from first; enemy = enemy_from enemy; player = Option.map policy_from player }
 
-let setup_to ({ A.first; enemy } : A.setup) : V.current_setup =
-  { wire = H.empty_wire; first = side_to first; enemy = enemy_to enemy }
+let setup_to ({ A.first; enemy; player } : A.setup) : V.current_setup =
+  {
+    wire = H.empty_wire;
+    first = side_to first;
+    enemy = enemy_to enemy;
+    player = Option.map policy_to player;
+  }
 
 let current_entry_from
     ({

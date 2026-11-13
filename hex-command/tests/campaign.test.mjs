@@ -52,10 +52,19 @@ test("Legacy refuge retains company and ownership", async () => {
   legacy.units = [];
   legacy.nextId = 1;
   for (const unit of oldRefugeRoster.units)
-    Object.assign(legacy.addUnit(unit.type, unit.side, `${unit.col},${unit.row}`), {
-      ...(unit.name ? { character: characterIds.campaigns["ashen-oath"].aliases[unit.name] } : {}),
-      ...(unit.role ? { role: unit.role } : {}),
-    });
+    Object.assign(
+      legacy.addUnit(
+        unit.type,
+        unit.side === "enemy" ? "ai" : unit.side,
+        `${unit.col},${unit.row}`,
+      ),
+      {
+        ...(unit.name
+          ? { character: characterIds.campaigns["ashen-oath"].aliases[unit.name] }
+          : {}),
+        ...(unit.role ? { role: unit.role } : {}),
+      },
+    );
   legacy.campaign = structuredClone(current.campaign);
   delete legacy.campaign.refuge;
   legacy.campaign.dialogue = required(

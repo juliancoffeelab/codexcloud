@@ -41,6 +41,7 @@ pub struct Rules {
     /// SHA-256 of relative document paths and their exact JSON bytes.
     pub content_fingerprint: String,
     pub recruitment: RecruitmentProfiles,
+    pub concealment_visuals: ConcealmentMask,
     pub items: HashMap<String, Item>,
     /// Ordered simulation recruitment rosters, independent of campaign rosters.
     pub rosters: Vec<ArmyRoster>,
@@ -97,3 +98,6 @@ impl Rules {
             .find(|c| c.missions.iter().any(|m| m.map.id == map))
     }
 }
+
+mod perception;
+pub use perception::*;

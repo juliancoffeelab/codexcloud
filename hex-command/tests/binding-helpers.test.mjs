@@ -54,7 +54,10 @@ test("Snapshot comparisons preserve NaN, signed zero, nested content and sequenc
       tile: { col: 0, row: 0 },
       hp: 1,
       moved: false,
-      attacked: false,
+      attackSpent: false,
+      faction: "player",
+      revealedTo: [],
+      perceptionEffects: [],
       character: name,
       items,
     });

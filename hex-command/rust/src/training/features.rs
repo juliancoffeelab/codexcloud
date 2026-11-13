@@ -22,6 +22,7 @@ pub const LEGACY_FEATURE_NAMES: [&str; LEGACY_FEATURES] = [
     "hp",
     "leader",
     "moved",
+    // Stable trained feature label; its value comes from Unit::attack_spent.
     "attacked",
     "cost",
     "movement",
@@ -231,7 +232,7 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
                 }
             }
         }
-        if !unit.attacked {
+        if !unit.attack_spent {
             for target in game.units().iter().filter(|t| game.hostile(unit, t)) {
                 for weapon in game.attack_options(unit, target, unit.tile) {
                     if !orders.attack_allowed(game, unit, target, weapon, unit.tile) {
@@ -317,7 +318,7 @@ fn encode(
     x[9] = u.hp as f32 / 30.;
     x[10] = u.is_leader() as u8 as f32;
     x[11] = u.moved as u8 as f32;
-    x[12] = u.attacked as u8 as f32;
+    x[12] = u.attack_spent as u8 as f32;
     x[13] = r.cost as f32 / 30.;
     x[14] = r.r#move as f32 / 10.;
     x[15] = orders.protects(id) as u8 as f32;
@@ -524,7 +525,7 @@ pub(super) fn unit_features(g: &BattleView<'_, '_>, u: &Unit) -> [f32; 34] {
     }
     x[30] = u.hp as f32 / r.hp.max(1) as f32;
     x[31] = u.moved as u8 as f32;
-    x[32] = u.attacked as u8 as f32;
+    x[32] = u.attack_spent as u8 as f32;
     x[33] = u.is_leader() as u8 as f32;
     x
 }

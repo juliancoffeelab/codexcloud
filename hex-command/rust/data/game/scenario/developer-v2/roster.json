@@ -1,4 +1,22 @@
 {
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
   "factions": [
     {
       "id": "player",
@@ -788,15 +806,23 @@
             "col": 5,
             "row": 3
           }
+        },
+        {
+          "type": "giant-snake",
+          "tile": {
+            "col": 8,
+            "row": 0
+          }
         }
       ],
       "relations": {
         "enemy": "hostile"
-      }
+      },
+      "visionGroup": "player"
     },
     {
       "id": "enemy",
-      "phase": "enemy",
+      "phase": "ai",
       "controller": {
         "kind": "ai"
       },
@@ -1582,11 +1608,19 @@
             "col": 17,
             "row": 1
           }
+        },
+        {
+          "type": "giant-snake",
+          "tile": {
+            "col": 12,
+            "row": 0
+          }
         }
       ],
       "relations": {
         "player": "hostile"
-      }
+      },
+      "visionGroup": "enemy"
     }
   ]
 }

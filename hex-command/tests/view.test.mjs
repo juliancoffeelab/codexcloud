@@ -36,7 +36,7 @@ test("Publications expose detached state and inspection without engine commands"
 });
 test("Queries preserve publication identities", () => {
   const game = board();
-  const enemy = game.add("soldier", "enemy", "2,3");
+  const enemy = game.add("soldier", "ai", "2,3");
   const soldier = required(Native.unit(game.view, "u2"));
   assert.equal(Native.at(game.view, cellKey(soldier.tile)), soldier);
   assert(

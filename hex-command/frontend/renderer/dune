@@ -10,6 +10,7 @@
   hex_audio
   hex_game)
  (private_modules
+  Phaser_unit_outline
   Phaser_hex_outline
   Battlefield_frame
   Phaser_light_field

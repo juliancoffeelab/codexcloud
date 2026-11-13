@@ -234,7 +234,7 @@ test("Pending enemy replay preserves the player checkpoint through both versions
   assert.equal(restored.game.turn, "player");
   assert.equal(JSON.parse(await readSave()).pendingEnemy, true);
   restored.game.dispose();
-  old.state.turn = "enemy";
+  old.state.turn = "ai";
   assert.throws(() => migrateSave(old));
 });
 test("Version-four migration discards AI actions without executing the enemy turn", async () => {
@@ -267,12 +267,11 @@ test("Version-four migration discards AI actions without executing the enemy tur
   const converted = await readSave();
   assert.deepEqual(JSON.parse(converted), migrated.save);
   assert.equal(migrateSave(JSON.parse(converted)).migrated, false);
-  for (let steps = 0; loaded.game.turn === "enemy" && !loaded.game.winner; steps++) {
+  for (let steps = 0; loaded.game.turn === "ai" && !loaded.game.winner; steps++) {
     assert(steps < 100);
     loaded.game.enemyStep();
     await saveBattle(loaded.game);
-    if (loaded.game.turn === "enemy" && !loaded.game.winner)
-      assert.equal(await readSave(), converted);
+    if (loaded.game.turn === "ai" && !loaded.game.winner) assert.equal(await readSave(), converted);
   }
   const latest = JSON.parse(await readSave());
   assert.equal(latest.version, SAVE_VERSION);
@@ -310,7 +309,7 @@ for (const [id, chapter, type, tile, numericMarks] of [
     game.advanceDialogue(true);
     game.mapRevision = 1;
     game.round = 8;
-    game.addUnit(type, "enemy", tile).hp = 1;
+    game.addUnit(type, "ai", tile).hp = 1;
     game.campaign.marks.push(...numericMarks);
     const { campaignDeploymentFormat: _tag, ...old } = oldSnapshot(game.captureState());
     old.pendingEnemy = true;
@@ -338,7 +337,7 @@ for (const [id, chapter, type, tile, numericMarks] of [
       game.units,
       "Previously deployed waves cannot respawn",
     );
-    while (loaded.game.turn === "enemy" && !loaded.game.winner) loaded.game.enemyStep();
+    while (loaded.game.turn === "ai" && !loaded.game.winner) loaded.game.enemyStep();
     await saveBattle(loaded.game);
     const again = await loadBattle(createTestFactory());
     assert.deepEqual(again.game.captureState(), loaded.game.captureState());
@@ -378,10 +377,10 @@ test("Legacy pre-rescue hold clocks reset, while earned victories stay completed
   old.state.winner = "player";
   old.state.campaign.outcome = "Mission complete. The company can rest and regroup.";
   const finished = migrateSave(old).save;
-  assert.equal(finished.checkpoint.state.winner, "player");
+  assert.equal(finished.checkpoint.state.winner, "playerVictory");
   assert(finished.checkpoint.state.campaign.flags.rescue?.at(-1)?.state);
   const earned = LiveGame.restore(createTestFactory(), finished.checkpoint, finished.setup);
-  assert.equal(earned.winner, "player");
+  assert.equal(earned.winner, "playerVictory");
   earned.dispose();
 });
 for (const dead of [false, true]) {

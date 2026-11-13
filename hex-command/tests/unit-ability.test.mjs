@@ -9,7 +9,10 @@ const unit = {
   tile: { col: 0, row: 0 },
   hp: 1,
   moved: false,
-  attacked: false,
+  attackSpent: false,
+  faction: "player",
+  revealedTo: [],
+  perceptionEffects: [],
 };
 test("Leader ability explains the loss condition", () => {
   assert.deepEqual(Presentation.ability(catalog, { ...unit, role: "leader" }), {

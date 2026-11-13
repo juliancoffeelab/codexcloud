@@ -20,7 +20,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     );
     let wreck = game.site(&tile);
     game.owners[wreck] = Some("player".into());
-    game.units.retain(|u| u.side == Side::Player);
+    game.units.retain(|u| u.side == TurnPhase::Player);
     game.roster_changed();
     let actor = game
         .units
@@ -58,22 +58,23 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     for (round, current) in [(9, 1), (10, 2), (11, 3)] {
         assert_eq!(evaluate(&mut game, round), current);
     }
-    assert_eq!(game.winner, Some(Side::Player));
+    assert_eq!(game.winner, Some(BattleResult::PlayerVictory));
 }
 #[test]
 fn mission_cache_keeps_authored_content_while_story_resolves_from_state() {
     let mut game =
         Game::start_campaign(rules(), "ashen-oath", 1, vec![], 0, vec![], vec![], vec![]);
-    let original = game.mission.clone().unwrap();
+    let original = game.story.mission.clone().unwrap();
     let before = game.resolved_story().unwrap().briefing;
-    game.campaign
+    game.story
+        .campaign
         .as_mut()
         .unwrap()
         .set_flag("peace-lost", true, 1);
     game.refresh_mission();
     assert!(std::rc::Rc::ptr_eq(
         &original,
-        game.mission.as_ref().unwrap()
+        game.story.mission.as_ref().unwrap()
     ));
     assert_ne!(before, game.resolved_story().unwrap().briefing);
     let restored = Game::from_state(rules(), game.state());
@@ -106,8 +107,8 @@ fn authored_progression_ladders_are_acyclic_and_preserve_race_and_increase_level
 #[test]
 fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
     let mut game = flat();
-    let id = add(&mut game, "swordsman", Side::Player, Hex::new(3, 3));
-    let target = add(&mut game, "archer", Side::Enemy, Hex::new(4, 3));
+    let id = add(&mut game, "swordsman", TurnPhase::Player, Hex::new(3, 3));
+    let target = add(&mut game, "archer", TurnPhase::Ai, Hex::new(4, 3));
     let index = game.index(id).unwrap();
     game.units[index].hp -= 4;
     let target_index = game.index(target).unwrap();
@@ -119,7 +120,7 @@ fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
     let index = game.index(id).unwrap();
     game.units[index].experience = needed;
     game.units[index].moved = false;
-    game.units[index].attacked = false;
+    game.units[index].attack_spent = false;
     let before = game.state();
     game.execute(Command::Advance {
         unit: UnitId(id),
@@ -130,7 +131,7 @@ fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
     assert_eq!(promoted.id, id);
     assert_eq!(promoted.hp, game.rules.units[promoted.kind].hp - 4);
     assert_eq!(promoted.experience, Some(0));
-    assert!(promoted.moved && promoted.attacked);
+    assert!(promoted.moved && promoted.attack_spent);
     assert_eq!(before.units[0].r#type, "swordsman");
     assert_eq!(
         game.execute(Command::Advance {
@@ -148,13 +149,13 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     let leader = game
         .units
         .iter()
-        .find(|u| u.side == Side::Player && u.role == Some(Role::Leader))
+        .find(|u| u.side == TurnPhase::Player && u.role == Some(Role::Leader))
         .unwrap()
         .id;
     let troop = game
         .units
         .iter()
-        .find(|u| u.side == Side::Player && game.rules.units[u.kind].id == "reefguard")
+        .find(|u| u.side == TurnPhase::Player && game.rules.units[u.kind].id == "reefguard")
         .unwrap()
         .id;
     for (id, kind) in [(leader, "tideseer"), (troop, "tridentguard")] {
@@ -172,7 +173,7 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
         .position(|u| game.name(u.character) == Some("edda"))
         .unwrap();
     game.units[pilot].experience = Some(7);
-    game.winner = Some(Side::Player);
+    game.winner = Some(BattleResult::PlayerVictory);
     game.execute(Command::RecallMission {
         units: vec![UnitId(troop)],
     })

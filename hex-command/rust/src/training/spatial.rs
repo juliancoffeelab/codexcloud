@@ -85,10 +85,10 @@ pub(super) fn observe_with_duties(
         .map(|&(r, q)| (r - min_r) as usize * width + (q - min_q) as usize)
         .collect();
     let mut values = vec![0.; CHANNELS * cells];
-    let other = if g.turn() == Side::Player {
-        Side::Enemy
+    let other = if g.turn() == TurnPhase::Player {
+        TurnPhase::Ai
     } else {
-        Side::Player
+        TurnPhase::Player
     };
     for (tile, &site) in sites.iter().enumerate() {
         values[site] = 1.;

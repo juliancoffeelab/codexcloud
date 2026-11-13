@@ -26,7 +26,10 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
     board
         .weapons(enemy)
         .enumerate()
-        .filter(|(weapon, _)| coverage[*weapon].contains(actor.tile))
+        .filter(|(weapon, _)| {
+            coverage[*weapon].contains(actor.tile)
+                && board.can_threaten_from(enemy, actor, *weapon, &reach)
+        })
         .map(|(weapon, _)| board.damage(enemy, actor, weapon))
         .max()
         .unwrap_or(0)
@@ -85,7 +88,8 @@ impl Workspace {
             self.fields.clear();
             return;
         }
-        let same = self.assignments == assignments
+        let same = !game.perception_sensitive()
+            && self.assignments == assignments
             && self.signature.len() == game.units().len()
             && self.terrain == *game.terrain()
             && self.owners == *game.owners()
@@ -96,7 +100,7 @@ impl Workspace {
                     unit.tile,
                     unit.hp,
                     unit.moved,
-                    unit.attacked,
+                    unit.attack_spent,
                 )
             });
         if same {
@@ -106,7 +110,7 @@ impl Workspace {
         self.signature = game
             .units()
             .iter()
-            .map(|u| (u.id, u.kind, u.tile, u.hp, u.moved, u.attacked))
+            .map(|u| (u.id, u.kind, u.tile, u.hp, u.moved, u.attack_spent))
             .collect();
         self.terrain.clone_from(&game.terrain());
         self.owners.clone_from(&game.owners());
@@ -309,7 +313,7 @@ mod tests {
         let actor = state
             .units
             .iter_mut()
-            .find(|u| u.side == Side::Player)
+            .find(|u| u.side == TurnPhase::Player)
             .unwrap();
         let actor_id = actor.id.strip_prefix('u').unwrap().parse::<u32>().unwrap();
         actor.tile = Hex::new(1, 3).into();
@@ -328,7 +332,8 @@ mod tests {
         state.next_id += 1;
         enemy.r#type = "swordsman".into();
         enemy.hp = rules.units[rules.types["swordsman"]].hp;
-        enemy.side = Side::Enemy;
+        enemy.side = TurnPhase::Ai;
+        enemy.faction = "enemy".into();
         enemy.tile = Hex::new(5, 3).into();
         state.units.extend([guard, enemy]);
         for tile in &mut state.tiles {
@@ -366,12 +371,12 @@ mod tests {
         let distant = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Enemy && u.is_leader())
+            .find(|u| u.side == TurnPhase::Ai && u.is_leader())
             .unwrap();
         assert_eq!(escort.attack(guard_id, distant, distant.hp, 1.0), 0.0);
         assert!(Threats::unshielded(game.phase_forecasts(), game.unit(actor).unwrap()) > 0);
         assert_eq!(
-            Threats::new(game.phase_forecasts(), Side::Player).at(
+            Threats::new(game.phase_forecasts(), TurnPhase::Player).at(
                 game.unit(actor).unwrap(),
                 actor_tile,
                 None

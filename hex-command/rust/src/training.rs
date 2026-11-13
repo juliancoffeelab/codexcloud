@@ -23,7 +23,7 @@ pub struct Dataset {
     pub labels: Vec<i64>,
     pub missing: usize,
     pub limit: usize,
-    pub side: Option<Side>,
+    pub side: Option<TurnPhase>,
     pub spatial: bool,
     pub boards: Vec<spatial::Board>,
     pub indices: Vec<[i64; 3]>,
@@ -446,7 +446,7 @@ mod tests {
             enemy: crate::ai::Policy::Balanced,
             player_blocks: None,
             enemy_blocks: None,
-            first: Side::Player,
+            first: TurnPhase::Player,
             max_rounds: 30,
             recruit_limit: None,
         };

@@ -258,16 +258,17 @@ test("Reloading an enemy-phase checkpoint rebuilds planning once from the saved 
     Native.save(game),
     false,
     Setup.of_json({
-      first: "enemy",
+      player: null,
+      first: "ai",
       enemy: { policy: options.policy, diplomacy: options.diplomacy },
     }),
   );
   const phase = structuredClone(Native.state(Native.view(game)));
-  assert.equal(phase.turn, "enemy");
+  assert.equal(phase.turn, "ai");
   const checkpoint = Native.save(game);
   Native.dispose(game);
   game = restoreBattle(checkpoint);
-  for (let steps = 0; Native.state(Native.view(game)).turn === "enemy"; steps++) {
+  for (let steps = 0; Native.state(Native.view(game)).turn === "ai"; steps++) {
     assert(steps < 100);
     Native.enemy_step(game, options);
   }

@@ -49,7 +49,8 @@ pub enum Command {
         unit: UnitId,
         retreating: Option<bool>,
         rebuilding: Option<bool>,
-        attacked: bool,
+        #[serde(rename = "attackSpent")]
+        attack_spent: bool,
         #[serde(default)]
         record_retreat: bool,
     },

@@ -201,6 +201,7 @@ module RaceStrip = {
 let make =
     (
       ~session: Session.t,
+      ~showHiddenMaps,
       ~view: Session.model,
       ~actions: Session.actions,
       ~request: option((int, Setup.mode)),
@@ -215,6 +216,8 @@ let make =
   let (mode, setMode) = React.useState(() => Setup.Campaign);
   let (mapId, setMap) = React.useState(() => "mirror");
   let (campaignId, setCampaign) = React.useState(() => "lantern-road");
+  let (playerAi, setPlayerAi) = React.useState(() => None);
+  let (scenarioArmies, setScenarioArmies) = React.useState(() => false);
   let (player, setPlayer) = React.useState(() => "human");
   let (opponent, setOpponent) = React.useState(() => "skeletons");
   let (campaignPlanner, setCampaignPlanner) = React.useState(() => Domain.Planner_kind.Queued);
@@ -227,14 +230,21 @@ let make =
   let recruiter = mode == Setup.Campaign ? campaignRecruiter : scenarioRecruiter;
   let setPlanner = mode == Setup.Campaign ? setCampaignPlanner : setScenarioPlanner;
   let setRecruiter = mode == Setup.Campaign ? setCampaignRecruiter : setScenarioRecruiter;
-  let (first, setFirst) = React.useState(() => Setup.First(Domain.Side.Player));
+  let (first, setFirst) = React.useState(() => Setup.First(Domain.Turn_phase.Player));
   let (error, setError) = React.useState(() => "");
   let (starting, setStarting) = React.useState(() => false);
   let startGuard = React.useRef(false);
   let difficulty = Setup.difficulty(planner, recruiter);
   let maps =
-    List.filter((map: Domain.map_definition) => map.human, Catalog.scenario_maps(view.catalog));
-  let campaigns = List.filter((c: Domain.campaign) => c.human, Catalog.campaigns(view.catalog));
+    List.filter(
+      (map: Domain.map_definition) => map.human || showHiddenMaps,
+      Catalog.scenario_maps(view.catalog),
+    );
+  let campaigns =
+    List.filter(
+      (c: Domain.campaign) => c.human || showHiddenMaps,
+      Catalog.campaigns(view.catalog),
+    );
   let campaign = Catalog.campaign(view.catalog, campaignId);
   let selectedMap =
     mode == Setup.Campaign
@@ -271,6 +281,7 @@ let make =
       Option.iter(
         ((_, tab)) => {
           setOpened(_ => true);
+          setPlayerAi(_ => None);
           setBrowsing(_ => true);
           setMode(_ => tab);
           setError(_ => "");
@@ -312,7 +323,7 @@ let make =
       close(confirmation);
       let opening =
         switch (first) {
-        | Setup.Random => random() < 0.5 ? Domain.Side.Player : Domain.Side.Enemy
+        | Setup.Random => random() < 0.5 ? Domain.Turn_phase.Player : Domain.Turn_phase.Ai
         | Setup.First(side) => side
         };
       let setup =
@@ -322,12 +333,17 @@ let make =
             | Setup.Custom => Setup.campaign(~overrides=(planner, recruiter), Setup.Veteran)
             }
           : Setup.skirmish(~first=opening, ~planner, ~recruiter);
+      let setup = Setup.with_player_ai(setup, playerAi);
       try(
         {
           if (mode == Setup.Campaign) {
             actions.start_campaign(~setup, campaignId);
           } else {
-            actions.reset(~setup, ~armies=(player, opponent), mapId);
+            actions.reset(
+              ~setup,
+              ~armies=?scenarioArmies ? None : Some((player, opponent)),
+              mapId,
+            );
           };
           let _ =
             Session.saved(session)
@@ -471,6 +487,7 @@ let make =
                              onPointerEnter={_ => Terrain_preload.map(view.catalog, map.id)}
                              onClick={_ => {
                                setMap(_ => map.id);
+                               setScenarioArmies(_ => !map.human);
                                setBrowsing(_ => false);
                                setError(_ => "");
                                Terrain_preload.map(view.catalog, map.id);
@@ -494,24 +511,28 @@ let make =
                            />
                            <p> {text(campaign.short_description)} </p>
                          </div>
-                       : <>
-                           <RaceStrip
-                             session
-                             label="Your race"
-                             value=player
-                             onChange={value => setPlayer(_ => value)}
-                             side="player"
-                             artwork={view.artwork}
-                           />
-                           <RaceStrip
-                             session
-                             label="Opponent’s race"
-                             value=opponent
-                             onChange={value => setOpponent(_ => value)}
-                             side="enemy"
-                             artwork={view.artwork}
-                           />
-                         </>}
+                       : !scenarioArmies
+                           ? <>
+                               <RaceStrip
+                                 session
+                                 label="Your race"
+                                 value=player
+                                 onChange={value => setPlayer(_ => value)}
+                                 side="player"
+                                 artwork={view.artwork}
+                               />
+                               <RaceStrip
+                                 session
+                                 label="Opponent’s race"
+                                 value=opponent
+                                 onChange={value => setOpponent(_ => value)}
+                                 side="enemy"
+                                 artwork={view.artwork}
+                               />
+                             </>
+                           : <p className="help">
+                               {text("Using this scenario’s authored armies.")}
+                             </p>}
                     <section className="ng-difficulty">
                       <div className="ng-label"> {text("Difficulty")} </div>
                       <div
@@ -540,6 +561,42 @@ let make =
                         <span className="label"> {text("Advanced")} </span>
                         chevron
                       </summary>
+                      <div className="ng-advanced-group">
+                        <span className="label"> {text("Player control")} </span>
+                        <div
+                          className="ng-segments ng-player-control"
+                          role="group"
+                          ariaLabel="Player control">
+                          <button
+                            ariaPressed={string_of_bool(playerAi == None)}
+                            onClick={_ => setPlayerAi(_ => None)}>
+                            {text("You")}
+                          </button>
+                          {eachList(Setup.difficulties, preset =>
+                             <button
+                               key={preset.Setup.id}
+                               ariaPressed={string_of_bool(playerAi == Some(preset.policy))}
+                               onClick={_ => setPlayerAi(_ => Some(preset.policy))}>
+                               {text("AI · " ++ preset.name)}
+                             </button>
+                           )}
+                        </div>
+                        <p className="help">
+                          {text(
+                             "AI control is saved with this battle. Story dialogue still waits for you.",
+                           )}
+                        </p>
+                      </div>
+                      {mode == Setup.Skirmish
+                         ? <label className="setting-row sound-row">
+                             <span className="label"> {text("Use scenario armies")} </span>
+                             <input
+                               type_="checkbox"
+                               checked=scenarioArmies
+                               onChange={e => setScenarioArmies(_ => bindChecked(e))}
+                             />
+                           </label>
+                         : React.null}
                       {mode == Setup.Skirmish
                          ? <div className="ng-advanced-group">
                              <span className="label"> {text("First turn")} </span>
@@ -547,8 +604,8 @@ let make =
                                {eachList(
                                   [
                                     (Setup.Random, "Random"),
-                                    (Setup.First(Domain.Side.Player), "You"),
-                                    (Setup.First(Domain.Side.Enemy), "Opponent"),
+                                    (Setup.First(Domain.Turn_phase.Player), "You"),
+                                    (Setup.First(Domain.Turn_phase.Ai), "Opponent"),
                                   ],
                                   ((value, label)) =>
                                   <button

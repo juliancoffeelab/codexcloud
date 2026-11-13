@@ -1,4 +1,4 @@
-module Side = Domain.Side
+module Side = Domain.Turn_phase
 open Domain
 
 let dictionary : unit -> 'a Js.Dict.t = [%mel.raw "() => Object.create(null)"]

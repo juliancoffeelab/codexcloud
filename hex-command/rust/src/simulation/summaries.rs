@@ -4,14 +4,14 @@ use super::{
     records::{DetailRecord, sha256},
     types::*,
 };
-use crate::data::{ActionRecord, Progress, PublicUnit, Side, State};
+use crate::data::{ActionRecord, BattleResult, Progress, PublicUnit, State, TurnPhase};
 use serde::Serialize;
 use serde_json::Value;
 use std::collections::BTreeMap;
 
 #[derive(Serialize)]
 struct CombatUsage<'a> {
-    side: Side,
+    side: TurnPhase,
     #[serde(rename = "type")]
     kind: &'a str,
     attacks: u32,
@@ -21,7 +21,7 @@ struct CombatUsage<'a> {
 
 #[derive(Serialize)]
 struct UnitEvent<'a> {
-    side: Side,
+    side: TurnPhase,
     #[serde(rename = "type")]
     kind: &'a str,
 }
@@ -172,7 +172,7 @@ pub(crate) fn arrow_header(summary: &DetailedSummary<'_>) -> Result<String, Simu
     struct ArenaHeader<'a> {
         kind: &'static str,
         config: &'a ArenaConfig,
-        winner: Option<Side>,
+        winner: Option<BattleResult>,
         reason: &'a str,
         rounds: usize,
         phases: &'a [()],
@@ -186,7 +186,7 @@ pub(crate) fn arrow_header(summary: &DetailedSummary<'_>) -> Result<String, Simu
     struct MissionHeader<'a> {
         escalated: bool,
         id: &'a str,
-        winner: Option<Side>,
+        winner: Option<BattleResult>,
         round: u32,
         goals: &'a [Progress],
         phases: &'a [()],
@@ -242,7 +242,7 @@ pub(crate) fn arrow_header(summary: &DetailedSummary<'_>) -> Result<String, Simu
 struct ArenaCompact<'a> {
     kind: &'static str,
     config: &'a ArenaConfig,
-    winner: Option<Side>,
+    winner: Option<BattleResult>,
     reason: &'a str,
     rounds: usize,
     objectives: &'a Sides<ArenaScore>,
@@ -254,7 +254,7 @@ struct ArenaCompact<'a> {
 #[derive(Serialize)]
 struct MissionCompact<'a> {
     id: &'a str,
-    winner: Option<Side>,
+    winner: Option<BattleResult>,
     round: u32,
     goals: &'a [Progress],
     #[serde(flatten)]
@@ -334,17 +334,17 @@ mod tests {
             };
             let unit = |id, kind, side| {
                 serde_json::from_value::<PublicUnit>(json!({
-                "id":id,"type":kind,"side":side,"tile":Hex::new(0, 0),"hp":20,"moved":true,"attacked":true
+                "id":id,"type":kind,"side":side,"tile":Hex::new(0, 0),"hp":20,"moved":true,"attackSpent":true,"faction":if side=="player" { "player" } else { "enemy" },"revealedTo":[],"perceptionEffects":[]
             }))
             .unwrap()
             };
             let phase = &mut arena.phases[0];
             phase.before = vec![
                 std::sync::Arc::new(unit("u1", "novice", "player")),
-                std::sync::Arc::new(unit("u2", "guard", "enemy")),
+                std::sync::Arc::new(unit("u2", "guard", "ai")),
             ];
             phase.units = vec![std::sync::Arc::new(unit("u1", "veteran", "player"))];
-            phase.records.losses = vec![unit("u2", "guard", "enemy")];
+            phase.records.losses = vec![unit("u2", "guard", "ai")];
             phase.records.combats = vec![
             serde_json::from_value(json!({
                 "unit":"u1","target":"u2","weapon":"hit","from":Hex::new(0, 0),"targetTile":Hex::new(0, 1),
@@ -358,7 +358,7 @@ mod tests {
                 summary["combatUsage"],
                 json!([
                     {"side":"player","type":"veteran","attacks":1,"retaliations":0,"damage":8},
-                    {"side":"enemy","type":"guard","attacks":0,"retaliations":reply_count,"damage":reflected_or_weapon}
+                    {"side":"ai","type":"guard","attacks":0,"retaliations":reply_count,"damage":reflected_or_weapon}
                 ])
             );
         }
@@ -366,6 +366,7 @@ mod tests {
 
     fn fixture() -> MatchResult {
         let state = State {
+            vision_groups: vec![],
             factions: vec![],
             ground_items: vec![],
             condition_memory: vec![],
@@ -375,7 +376,7 @@ mod tests {
             cols: 1,
             rows: 1,
             round: 1,
-            turn: Side::Player,
+            turn: TurnPhase::Player,
             gold: Gold::two(1, 2),
             winner: None,
             next_id: 1,
@@ -399,7 +400,7 @@ mod tests {
                 enemy: Policy::Classic,
                 player_blocks: None,
                 enemy_blocks: None,
-                first: Side::Player,
+                first: TurnPhase::Player,
                 max_rounds: 1,
                 recruit_limit: Some(0),
             },
@@ -409,7 +410,7 @@ mod tests {
             phases: vec![Phase {
                 leader_audit: vec![],
                 planning: None,
-                side: Side::Player,
+                side: TurnPhase::Player,
                 round: 1,
                 records: Records {
                     actions: vec![

@@ -8,7 +8,10 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct PresentationInput {
     #[serde(default)]
+    pub observer: Option<String>,
+    #[serde(default)]
     pub factions: Vec<Faction>,
+    pub vision_groups: Vec<VisionGroupState>,
     pub tiles: Vec<Tile>,
     pub units: Vec<StartingUnit>,
     #[serde(default)]
@@ -26,7 +29,7 @@ pub struct PresentationInput {
 #[derive(Clone, Copy)]
 pub struct ConditionUnit<'a> {
     pub faction: Option<&'a str>,
-    pub side: Side,
+    pub side: TurnPhase,
     pub kind: &'a str,
     pub character: Option<&'a str>,
     pub ai_group: Option<&'a str>,
@@ -35,6 +38,20 @@ pub struct ConditionUnit<'a> {
 /// Conditions query current facts without materializing a serializable battlefield.
 pub trait ConditionContext {
     fn factions(&self) -> &[Faction];
+    fn observer_faction(&self) -> &str {
+        "player"
+    }
+    fn matches_side(&self, unit: ConditionUnit<'_>, side: ConditionSide) -> bool {
+        if side == ConditionSide::Observer {
+            unit.faction.unwrap_or(unit.side.faction_id()) == self.observer_faction()
+        } else {
+            faction_matches_side(self.factions(), unit.faction, unit.side, side)
+        }
+    }
+    fn visible_unit(&self, unit: ConditionUnit<'_>) -> bool {
+        unit.position
+            .is_some_and(|position| self.visible_at(position))
+    }
     fn owns(&self, id: &TileRef, side: &str) -> bool;
     fn position(&self, id: &TileRef) -> Option<(i32, i32)>;
     fn visible_at(&self, position: (i32, i32)) -> bool;
@@ -45,6 +62,9 @@ pub trait ConditionContext {
     fn round(&self) -> u32;
 }
 impl ConditionContext for PresentationInput {
+    fn observer_faction(&self) -> &str {
+        self.observer.as_deref().unwrap_or("player")
+    }
     fn factions(&self) -> &[Faction] {
         &self.factions
     }
@@ -60,18 +80,38 @@ impl ConditionContext for PresentationInput {
             .map(|t| (t.col, t.row))
     }
     fn visible_at(&self, position: (i32, i32)) -> bool {
-        self.tiles
+        let Some(tile) = self.tiles.iter().find(|t| (t.col, t.row) == position) else {
+            return false;
+        };
+        let Some(faction) = self
+            .factions
             .iter()
-            .find(|tile| (tile.col, tile.row) == position)
-            .is_some_and(|tile| {
-                tile.fog.as_ref().is_none_or(|rule| {
-                    (rule.remember
-                        && self
-                            .memory
-                            .iter()
-                            .any(|key| key.strip_prefix("fog:") == Some(tile.id.as_str())))
-                        || matches_fog(&rule.condition, self, Some(&TileRef::Hex(tile.hex())))
-                })
+            .find(|f| f.id == self.observer_faction())
+        else {
+            return false;
+        };
+        let Some(group) = self
+            .vision_groups
+            .iter()
+            .find(|g| g.id == faction.vision_group)
+        else {
+            return false;
+        };
+        (tile.perception.remember && group.explored.contains(&tile.hex()))
+            || self.units.iter().any(|u| {
+                let source_faction = u.faction.as_deref().unwrap_or(u.side.faction_id());
+                self.factions
+                    .iter()
+                    .any(|f| f.id == source_faction && f.vision_group == group.id)
+                    && detects(
+                        ResolvedSightProfile {
+                            range: group.sight.range.resolve(None),
+                            penetrates: ConcealmentMask::of(&group.sight.penetrates),
+                        },
+                        hex_distance((u.tile.col, u.tile.row), position),
+                        tile.perception.concealment.iter(),
+                    )
+                    .detected()
             })
     }
     #[inline(always)]
@@ -134,7 +174,7 @@ fn evaluate(
 ) -> bool {
     let unit_matches =
         |unit: ConditionUnit<'_>, side, kind: &Option<String>, character: &Option<String>| {
-            faction_matches_side(input.factions(), unit.faction, unit.side, side)
+            input.matches_side(unit, side)
                 && kind.as_deref().is_none_or(|kind| unit.kind == kind)
                 && character
                     .as_deref()
@@ -167,12 +207,10 @@ fn evaluate(
         Condition::VisibleUnits { side, unit_types } => {
             allow_visibility
                 && input.any_unit(|unit| {
-                    faction_matches_side(input.factions(), unit.faction, unit.side, *side)
+                    input.matches_side(unit, *side)
                         && (unit_types.is_empty()
                             || unit_types.iter().any(|kind| kind == unit.kind))
-                        && unit
-                            .position
-                            .is_some_and(|position| input.visible_at(position))
+                        && input.visible_unit(unit)
                 })
         }
         Condition::HasUnits {
@@ -214,9 +252,8 @@ fn evaluate(
 pub trait PresentationContext: ConditionContext {
     fn lighting(&self) -> &MapLighting;
     fn visit_lights(&self, visitor: impl FnMut(&Hex, i32, i32, &TileLight));
-    fn visit_fog(&self, visitor: impl FnMut(&Hex, &ConditionRule));
-    fn fog_index(&self, id: &Hex) -> usize;
-    fn fog_remembered(&self, id: &Hex) -> bool;
+    fn visit_tiles(&self, visitor: impl FnMut(&Hex));
+    fn fog_hidden(&self, id: &Hex) -> bool;
 }
 /// Render current facts without cloning or updating durable condition memory.
 pub fn render(input: &impl PresentationContext, memory: &[String]) -> BattlefieldPresentation {
@@ -232,9 +269,8 @@ pub fn render(input: &impl PresentationContext, memory: &[String]) -> Battlefiel
         }
     });
     let mut fog = Vec::new();
-    input.visit_fog(|id, rule| {
-        let remembered = rule.remember && input.fog_remembered(id);
-        if !remembered && !matches(&rule.condition, input, Some(&TileRef::Hex(*id))) {
+    input.visit_tiles(|id| {
+        if input.fog_hidden(id) {
             fog.push(*id);
         }
     });
@@ -245,14 +281,12 @@ pub fn render(input: &impl PresentationContext, memory: &[String]) -> Battlefiel
             lights,
         },
         fog,
+        visible_units: Vec::new(),
+        unit_appearances: Vec::new(),
     }
 }
 /// Discover new facts without copying existing memory or constructing visual output.
-pub fn discover(
-    input: &impl PresentationContext,
-    memory: &[String],
-    known: &mut [u64],
-) -> Vec<String> {
+pub fn discover(input: &impl PresentationContext, memory: &[String]) -> Vec<String> {
     let mut added = Vec::new();
     input.visit_lights(|id, _, _, light| {
         if let Some(rule) = light.when.as_ref().filter(|r| r.remember) {
@@ -260,17 +294,6 @@ pub fn discover(
                 && matches(&rule.condition, input, Some(&TileRef::Hex(*id)))
             {
                 added.push(format!("light:{id}"));
-            }
-        }
-    });
-    input.visit_fog(|id, rule| {
-        if rule.remember {
-            let i = input.fog_index(id);
-            let bit = 1u64 << (i % 64);
-            if known[i / 64] & bit == 0 && matches(&rule.condition, input, Some(&TileRef::Hex(*id)))
-            {
-                added.push(format!("fog:{id}"));
-                known[i / 64] |= bit;
             }
         }
     });
@@ -318,14 +341,18 @@ pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<Strin
     let fog = input
         .tiles
         .iter()
-        .filter(|tile| {
-            tile.fog.as_ref().is_some_and(|rule| {
-                !rule_met(rule, format!("fog:{}", tile.id), &TileRef::Hex(tile.hex()))
-            })
-        })
+        .filter(|tile| !input.visible_at((tile.col, tile.row)))
         .map(Tile::hex)
         .collect();
-    (BattlefieldPresentation { lighting, fog }, memory)
+    (
+        BattlefieldPresentation {
+            lighting,
+            fog,
+            visible_units: Vec::new(),
+            unit_appearances: Vec::new(),
+        },
+        memory,
+    )
 }
 
 fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {

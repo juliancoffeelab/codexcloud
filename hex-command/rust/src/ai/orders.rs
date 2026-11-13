@@ -1,6 +1,5 @@
 //! Explicit, turn-local contracts between the three fixed AI blocks.
 use crate::{ai::context::BattleView, data::*};
-use hex_command_battle::RuntimeCommand as Command;
 use serde::{Deserialize, Serialize};
 
 /// Generic heuristic hints supplement typed duties without exposing mission kinds.
@@ -468,7 +467,7 @@ pub struct RecruitmentShortfall {
     pub reason: PlanningReason,
 }
 pub struct TurnPlan {
-    pub commands: Vec<Command>,
+    pub commands: Vec<hex_command_battle::ActionProposal>,
     pub recruitment: RecruitmentReport,
     pub planning: PlanningReport,
 }

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "fog",
+    "unitAppearance": "none"
+  },
+  {
+    "id": "darkness",
+    "unitAppearance": "concealment"
+  },
+  {
+    "id": "forest-camouflage",
+    "unitAppearance": "concealment"
+  }
+]

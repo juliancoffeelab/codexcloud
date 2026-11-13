@@ -23,15 +23,15 @@ fn late_rescue_arrivals_start_immediately_then_require_three_defended_rounds() {
     for arrival in [6, 8] {
         let mut game = chapter("borrowed-tide", 1);
         advance_to(&mut game, arrival);
-        assert!(game.campaign.as_ref().unwrap().chosen("tide-arrived"));
-        assert!(!game.campaign.as_ref().unwrap().chosen("rescue"));
+        assert!(game.story.campaign.as_ref().unwrap().chosen("tide-arrived"));
+        assert!(!game.story.campaign.as_ref().unwrap().chosen("rescue"));
         reach_wreck(&mut game);
-        assert!(game.campaign.as_ref().unwrap().chosen("rescue"));
-        assert!(!game.campaign.as_ref().unwrap().chosen("await-tide"));
+        assert!(game.story.campaign.as_ref().unwrap().chosen("rescue"));
+        assert!(!game.story.campaign.as_ref().unwrap().chosen("await-tide"));
         advance_to(&mut game, arrival + 2);
         assert_eq!(game.winner, None);
         advance_to(&mut game, arrival + 3);
-        assert_eq!(game.winner, Some(Side::Player));
+        assert_eq!(game.winner, Some(BattleResult::PlayerVictory));
     }
 }
 
@@ -47,7 +47,8 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
         game.end_turn();
         if !before_tide {
             assert_eq!(
-                game.scripts
+                game.story
+                    .scripts
                     .as_ref()
                     .unwrap()
                     .holds
@@ -65,12 +66,13 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
             .unwrap()
             .id;
         game.move_unit(edda, game.site(&Hex::new(5, 3)));
-        let raider = add(&mut game, "swordsman", Side::Enemy, Hex::new(6, 4));
+        let raider = add(&mut game, "swordsman", TurnPhase::Ai, Hex::new(6, 4));
         game.end_turn();
         game.move_unit(raider, game.site(&Hex::new(5, 4)));
         game.end_turn();
         assert_eq!(
-            game.scripts
+            game.story
+                .scripts
                 .as_ref()
                 .unwrap()
                 .holds
@@ -88,12 +90,12 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
         );
         if before_tide {
             advance_to(&mut game, 6);
-            assert!(!game.campaign.as_ref().unwrap().chosen("rescue"));
+            assert!(!game.story.campaign.as_ref().unwrap().chosen("rescue"));
             let index = game.index(raider).unwrap();
             game.units[index].tile = game.site(&Hex::new(6, 4));
             game.roster_changed();
             game.move_unit(edda, game.site(&Hex::new(5, 4)));
-            assert!(game.campaign.as_ref().unwrap().chosen("rescue"));
+            assert!(game.story.campaign.as_ref().unwrap().chosen("rescue"));
         }
     }
 }
@@ -120,14 +122,14 @@ fn any_death_escalates_mediation() {
     let index = game
         .units
         .iter()
-        .position(|u| u.side == Side::Enemy && game.rules.units[u.kind].id == "soldier")
+        .position(|u| u.side == TurnPhase::Ai && game.rules.units[u.kind].id == "soldier")
         .unwrap();
     let target = game.units[index].id;
     game.units[index].tile = game.site(&Hex::new(6, 4));
     game.units[index].hp = 1;
     game.roster_changed();
     hit(&mut game, defender, target, "shieldbash");
-    assert!(game.campaign.as_ref().unwrap().chosen("peace-lost"));
+    assert!(game.story.campaign.as_ref().unwrap().chosen("peace-lost"));
 }
 
 #[test]
@@ -139,7 +141,7 @@ fn story_companions_are_not_eligible_for_explicit_recall() {
         .find(|u| game.name(u.character) == Some("dain"))
         .unwrap()
         .id;
-    game.winner = Some(Side::Player);
+    game.winner = Some(BattleResult::PlayerVictory);
     assert_eq!(
         game.execute(Command::RecallMission {
             units: vec![UnitId(dain)]
@@ -147,7 +149,7 @@ fn story_companions_are_not_eligible_for_explicit_recall() {
         .unwrap_err(),
         CommandError::NoNextMission
     );
-    let ordinary = add(&mut game, "warden", Side::Player, Hex::new(1, 1));
+    let ordinary = add(&mut game, "warden", TurnPhase::Player, Hex::new(1, 1));
     game.execute(Command::RecallMission {
         units: vec![UnitId(ordinary)],
     })

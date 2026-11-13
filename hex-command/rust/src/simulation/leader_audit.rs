@@ -48,7 +48,7 @@ pub struct Exposure {
 #[serde(rename_all = "camelCase")]
 pub struct LeaderAudit {
     pub leader: String,
-    pub side: Side,
+    pub side: TurnPhase,
     pub before: LeaderState,
     pub after: Option<LeaderState>,
     pub army_before: ArmyStrength,
@@ -67,7 +67,7 @@ pub(crate) struct Pending {
 }
 fn strength(game: &Game<'_>, leader: &Unit, opponent: bool) -> ArmyStrength {
     let mut total = ArmyStrength::default();
-    for unit in game.units().iter().filter(|u| {
+    for unit in game.authoritative_units().iter().filter(|u| {
         !u.is_leader()
             && game.available_combatant(u)
             && if opponent {
@@ -94,17 +94,19 @@ fn state(game: &Game<'_>, unit: &Unit) -> LeaderState {
     }
 }
 pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
-    game.units()
+    game.authoritative_units()
         .iter()
         .filter(|u| u.is_leader())
         .map(|leader| {
             let own_phase = leader.side == game.turn();
             let alternatives = if own_phase {
+                let mut scoped = game.fork();
+                scoped.set_active_faction(Some(game.unit_faction(leader).to_owned()));
                 let mut tiles = vec![leader.tile];
-                tiles.extend(game.reachable(leader).iter().map(|&(tile, _)| tile));
+                tiles.extend(scoped.reachable(leader).iter().map(|&(tile, _)| tile));
                 tiles.sort_unstable();
                 tiles.dedup();
-                audit_leader_exposure(game.phase_forecasts(), leader, tiles)
+                audit_leader_exposure(scoped.phase_forecasts(), leader, tiles)
             } else {
                 vec![]
             };
@@ -147,7 +149,7 @@ pub(crate) fn finish(game: &Game<'_>, pending: Vec<Pending>) -> Vec<LeaderAudit>
     pending
         .into_iter()
         .map(|mut p| {
-            let after = game.unit(p.leader.id);
+            let after = game.authoritative_unit(p.leader.id);
             p.audit.after = after.map(|leader| state(game, leader));
             p.audit.army_after = strength(game, &p.leader, false);
             p.audit.opponent_after = strength(game, &p.leader, true);

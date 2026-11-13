@@ -13,7 +13,9 @@ pub struct PlanningWorkspace {
 
 pub(super) struct TurnState {
     scope: Option<hex_command_battle::BattleScope>,
-    pub(super) control_roster: Option<Vec<(u32, Side, Option<NameKey>, Option<Role>)>>,
+    planning_revision: Option<u64>,
+    observed_roster: Vec<(u32, NameKey)>,
+    pub(super) control_roster: Option<Vec<(u32, TurnPhase, Option<NameKey>, Option<Role>)>>,
     #[cfg(any(feature = "wasm", test))]
     pub(super) controller_index: usize,
     #[cfg(any(feature = "wasm", test))]
@@ -46,6 +48,7 @@ pub(super) struct TurnState {
 
 #[derive(Clone, Copy)]
 pub(crate) struct TurnConfig<'a> {
+    pub seed: u32,
     pub goals: Option<&'a [Objective]>,
     pub diplomacy: Diplomacy,
 }
@@ -101,6 +104,8 @@ impl PlanningWorkspace {
             state: TurnState {
                 scope: None,
                 control_roster: None,
+                planning_revision: None,
+                observed_roster: vec![],
                 #[cfg(any(feature = "wasm", test))]
                 controller_index: 0,
                 #[cfg(any(feature = "wasm", test))]
@@ -137,6 +142,7 @@ impl PlanningWorkspace {
     }
     pub(crate) fn config(&self) -> TurnConfig<'_> {
         TurnConfig {
+            seed: self.state.seed,
             goals: self.state.goals.as_deref(),
             diplomacy: self.state.diplomacy,
         }
@@ -204,8 +210,22 @@ impl PlanningWorkspace {
             self.state.scope = Some(game.scope());
         }
     }
-    pub(super) fn refresh_control(&mut self, game: &crate::logic::Game<'_>) {
+    pub(super) fn refresh_control(&mut self, game: &crate::logic::Game<'_>) -> bool {
         self.refresh_scope(game);
+        let revision = game.planning_revision();
+        let observed: Vec<_> = game
+            .units()
+            .iter()
+            .filter(|unit| game.unit_faction(unit) != game.observer_faction())
+            .map(|unit| (unit.id, unit.faction))
+            .collect();
+        let observation_changed = self
+            .state
+            .planning_revision
+            .is_some_and(|old| old != revision)
+            || (self.state.planning_revision.is_some() && self.state.observed_roster != observed);
+        self.state.planning_revision = Some(revision);
+        self.state.observed_roster = observed;
         let roster = game.control_roster();
         let changed = self.state.control_roster.as_ref().is_some_and(|before| {
             before.iter().any(|old| {
@@ -218,9 +238,10 @@ impl PlanningWorkspace {
             })
         });
         self.state.control_roster = Some(roster);
-        if changed {
+        if changed || observation_changed {
             self.reset_planning();
         }
+        changed || observation_changed
     }
     fn reset_planning(&mut self) {
         let state = &mut self.state;

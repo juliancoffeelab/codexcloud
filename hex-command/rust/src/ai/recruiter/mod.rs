@@ -307,13 +307,16 @@ fn recruit_for_leader(
             continue;
         }
         let recruit = Unit {
+            field_available: true,
+            perception: PerceptionId(0),
+            vision_group: leader.vision_group,
             id: 0,
             kind,
             side,
             tile: leader.tile,
             hp: r.hp,
             moved: true,
-            attacked: true,
+            attack_spent: true,
             experience: None,
             role: None,
             retreating: None,
@@ -608,17 +611,17 @@ mod tests {
         let leader = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Player)
+            .find(|u| u.side == TurnPhase::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, a, false)[0];
-        fixtures::add(&mut game, a, Side::Player, tile);
+        fixtures::add(&mut game, a, TurnPhase::Player, tile);
         // Both roles are under target, even though their deficits differ.
         let outcomes: std::collections::BTreeSet<_> =
             (0..64).map(|seed| draw(&game, seed)).collect();
         assert_eq!(outcomes.len(), 2);
         let tile = game.placement_tiles(&leader, a, false)[0];
-        fixtures::add(&mut game, a, Side::Player, tile);
+        fixtures::add(&mut game, a, TurnPhase::Player, tile);
         // Infantry is now over target, so every draw must be a flanker.
         for seed in 0..16 {
             assert_eq!(draw(&game, seed), b);
@@ -665,7 +668,7 @@ mod tests {
                 let leader = game
                     .units()
                     .iter()
-                    .find(|u| u.side == Side::Player && u.is_leader())
+                    .find(|u| u.side == TurnPhase::Player && u.is_leader())
                     .unwrap()
                     .clone();
                 let deployment = game.placement_tiles(&leader, expected, false);
@@ -697,12 +700,22 @@ mod tests {
         let leader = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Player)
+            .find(|u| u.side == TurnPhase::Player)
             .unwrap()
             .clone();
         let sites = game.placement_tiles(&leader, rules.types["swordsman"], false);
-        fixtures::add(&mut game, rules.types["swordsman"], Side::Player, sites[0]);
-        fixtures::add(&mut game, rules.types["archer"], Side::Player, sites[1]);
+        fixtures::add(
+            &mut game,
+            rules.types["swordsman"],
+            TurnPhase::Player,
+            sites[0],
+        );
+        fixtures::add(
+            &mut game,
+            rules.types["archer"],
+            TurnPhase::Player,
+            sites[1],
+        );
         fixtures::edit(&mut game, |state| state.round = 3);
         fixtures::edit(&mut game, |state| {
             state.gold["player"] = rules.units[rules.types["rider"]].cost
@@ -712,6 +725,7 @@ mod tests {
         let orders = crate::ai::CampaignBlock::Arena.campaign_orders(
             &mission,
             CampaignInput {
+                seed: 0,
                 goals: None,
                 diplomacy: crate::ai::Diplomacy::Unrestricted,
             },

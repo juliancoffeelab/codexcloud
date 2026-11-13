@@ -165,7 +165,11 @@ test.each([
       if (phase === "AI") await actions.end_turn().catch(() => {});
       else if (phase === "opening save")
         actions.reset(
-          Setup.of_json({ first: "enemy", enemy: { policy: "classic", diplomacy: "diplomatic" } }),
+          Setup.of_json({
+            player: null,
+            first: "ai",
+            enemy: { policy: "classic", diplomacy: "diplomatic" },
+          }),
           undefined,
           "mirror",
         );

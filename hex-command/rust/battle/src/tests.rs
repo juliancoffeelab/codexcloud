@@ -53,13 +53,14 @@ fn tide_starts_rescue_before_counting_defended_turns() {
     let actor = game
         .units
         .iter()
-        .position(|u| u.side == Side::Player && u.is_leader())
+        .position(|u| u.side == TurnPhase::Player && u.is_leader())
         .unwrap();
     game.units[actor].tile = wreck;
     game.roster_changed();
     game.evaluate_campaign(false, Some(wreck));
-    assert!(game.campaign.as_ref().unwrap().chosen("await-tide"));
+    assert!(game.story.campaign.as_ref().unwrap().chosen("await-tide"));
     let goal = game
+        .story
         .mission
         .as_ref()
         .unwrap()
@@ -72,14 +73,14 @@ fn tide_starts_rescue_before_counting_defended_turns() {
         game.end_turn();
         game.end_turn();
     }
-    assert!(game.campaign.as_ref().unwrap().chosen("rescue"));
+    assert!(game.story.campaign.as_ref().unwrap().chosen("rescue"));
     assert_eq!(game.scripted_objective_status(&goal).progress.current, 0);
     for _ in 0..3 {
         game.end_turn();
         game.end_turn();
     }
     assert_eq!(game.scripted_objective_status(&goal).progress.current, 3);
-    assert_eq!(game.winner, Some(Side::Player));
+    assert_eq!(game.winner, Some(BattleResult::PlayerVictory));
 }
 #[test]
 fn routing_cache_tracks_terrain_changes() {
@@ -95,7 +96,7 @@ fn routing_cache_tracks_terrain_changes() {
 #[test]
 fn invalid_commands_are_atomic_and_records_remain_owned() {
     let mut game = Game::new(rules(), "mirror");
-    game.recordings = Some(Records::default());
+    game.recordings = Some(Records::default().into());
     let before = serde_json::to_value(game.state()).unwrap();
     let err = game
         .execute(Command::Move {
@@ -106,6 +107,7 @@ fn invalid_commands_are_atomic_and_records_remain_owned() {
     assert_eq!(err, CommandError::UnknownUnit(UnitId(u32::MAX)));
     assert_eq!(serde_json::to_value(game.state()).unwrap(), before);
     game.action(ActionRecord::Move {
+        requested: None,
         path: vec![],
         unit: "u1".into(),
         tile: Hex::new(4, 4).into(),
@@ -228,7 +230,12 @@ fn flat() -> Game<'static> {
     game.owners.fill(None);
     game
 }
-fn add(game: &mut Game<'_>, kind: &str, side: Side, tile: impl std::borrow::Borrow<Hex>) -> u32 {
+fn add(
+    game: &mut Game<'_>,
+    kind: &str,
+    side: TurnPhase,
+    tile: impl std::borrow::Borrow<Hex>,
+) -> u32 {
     game.add(game.kind(kind), side, game.site(tile.borrow()))
 }
 fn weapon(game: &Game<'_>, id: u32, weapon: &str) -> usize {
@@ -249,3 +256,6 @@ fn hit(game: &mut Game<'_>, attacker: u32, target: u32, name: &str) {
 fn chapter(id: &str, mission: usize) -> Game<'static> {
     Game::start_campaign(rules(), id, mission, vec![], 0, vec![], vec![], vec![])
 }
+
+#[path = "tests/visibility.rs"]
+mod visibility;

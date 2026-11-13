@@ -96,6 +96,22 @@
     "bell-night": {
       "diplomacy": ["unrestricted"],
       "routes": {}
+    },
+    "snake-village-raid": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "snake-hunt": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "ghost-village-raid": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "ghost-hunt": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
     }
   },
   "escalationFlags": {

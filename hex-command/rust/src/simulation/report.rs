@@ -1,7 +1,10 @@
 //! Compact reports and statistics derived from complete, owned match results.
 pub use super::summaries::{DetailedSummary, borrowed_summary, compact_summary};
 use super::{error::SimulationError, schedule::ScheduleOptions, types::MatchResult};
-use crate::ai::Random;
+use crate::{
+    ai::Random,
+    data::{BattleResult, TurnPhase},
+};
 use serde::Serialize;
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet};
@@ -9,6 +12,22 @@ use std::collections::{BTreeMap, BTreeSet};
 /// Add composition events and state hashes while retaining every recorded phase.
 pub fn detailed_summary(result: &MatchResult) -> Result<Value, SimulationError> {
     Ok(serde_json::to_value(borrowed_summary(result, true)?)?)
+}
+// Report seats remain player/enemy; turn phases and battle outcomes are
+// distinct engine types. Interpret each explicitly rather than compare wires.
+fn winning_seat(winner: &Value) -> Option<&'static str> {
+    serde_json::from_value::<Option<BattleResult>>(winner.clone())
+        .expect("current report result")
+        .map(|result| match result {
+            BattleResult::PlayerVictory => "player",
+            BattleResult::PlayerDefeat => "enemy",
+        })
+}
+fn phase_seat(phase: &Value) -> &'static str {
+    match serde_json::from_value::<TurnPhase>(phase.clone()).expect("current report phase") {
+        TurnPhase::Player => "player",
+        TurnPhase::Ai => "enemy",
+    }
 }
 fn tactic_label(config: &Value, side: &str) -> String {
     if let Some(blocks) = config
@@ -92,7 +111,7 @@ fn arena_rows(
                 continue;
             };
             let win = |observation: &ArenaObservation| {
-                observation.game["winner"].as_str().is_some_and(|winner| {
+                winning_seat(&observation.game["winner"]).is_some_and(|winner| {
                     if policy == opponent {
                         winner == "player"
                     } else {
@@ -296,7 +315,7 @@ pub fn build_report(
         }
         let missions: Vec<_> = ids.iter().map(|id| {
                 let attempts: Vec<_> = chapters.iter().filter(|chapter| chapter["id"] == *id).collect();
-                json!({"id":id,"attempted":attempts.len(),"won":attempts.iter().filter(|chapter|chapter["winner"]=="player").count(),"defeated":attempts.iter().filter(|chapter|chapter["winner"]=="enemy").count(),"unresolved":attempts.iter().filter(|chapter|chapter["winner"].is_null()).count()})
+                json!({"id":id,"attempted":attempts.len(),"won":attempts.iter().filter(|chapter|winning_seat(&chapter["winner"])==Some("player")).count(),"defeated":attempts.iter().filter(|chapter|winning_seat(&chapter["winner"])==Some("enemy")).count(),"unresolved":attempts.iter().filter(|chapter|chapter["winner"].is_null()).count()})
             }).collect();
         let last_winner = |game: &&Value| {
             game["missions"]
@@ -304,7 +323,7 @@ pub fn build_report(
                 .and_then(|missions| missions.last())
                 .map(|mission| mission["winner"].clone())
         };
-        campaign_strata.push(json!({"campaign":campaign,"player":player,"enemy":enemy,"diplomacy":alignment,"objective":objective,"games":games.len(),"completed":games.iter().filter(|game|game["completed"]==true).count(),"defeated":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner=="enemy")).count(),"unresolved":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner.is_null())).count(),"escalated":games.iter().filter(|game|game["missions"].as_array().is_some_and(|missions|missions.iter().any(|mission|mission["escalated"]==true))).count(),"missions":missions}));
+        campaign_strata.push(json!({"campaign":campaign,"player":player,"enemy":enemy,"diplomacy":alignment,"objective":objective,"games":games.len(),"completed":games.iter().filter(|game|game["completed"]==true).count(),"defeated":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winning_seat(&winner)==Some("enemy"))).count(),"unresolved":games.iter().filter(|game|last_winner(game).is_some_and(|winner|winner.is_null())).count(),"escalated":games.iter().filter(|game|game["missions"].as_array().is_some_and(|missions|missions.iter().any(|mission|mission["escalated"]==true))).count(),"missions":missions}));
     }
     let army_compositions: Vec<_> = labels
         .iter()
@@ -331,7 +350,7 @@ pub fn build_report(
                             .as_array()
                             .into_iter()
                             .flatten()
-                            .filter(|unit| unit["side"] == side)
+                            .filter(|unit| phase_seat(&unit["side"]) == side)
                         {
                             let unit_type = unit["type"].as_str().unwrap_or("").to_owned();
                             let value = totals
@@ -347,7 +366,7 @@ pub fn build_report(
         .collect();
     let seat_diagnostics: Vec<_> = labels.iter().map(|policy| {
         let games: Vec<_> = arena.iter().copied().filter(|game|game.player==*policy && game.enemy==*policy).collect();
-        json!({"policy":policy,"games":games.len(),"playerWins":games.iter().filter(|game|game.game["winner"]=="player").count(),"enemyWins":games.iter().filter(|game|game.game["winner"]=="enemy").count(),"firstWins":games.iter().filter(|game|game.game["winner"]==game.game["config"]["first"]).count(),"secondWins":games.iter().filter(|game|!game.game["winner"].is_null() && game.game["winner"]!=game.game["config"]["first"]).count(),"unresolved":games.iter().filter(|game|game.game["winner"].is_null()).count()})
+        json!({"policy":policy,"games":games.len(),"playerWins":games.iter().filter(|game|winning_seat(&game.game["winner"])==Some("player")).count(),"enemyWins":games.iter().filter(|game|winning_seat(&game.game["winner"])==Some("enemy")).count(),"firstWins":games.iter().filter(|game|winning_seat(&game.game["winner"])==Some(phase_seat(&game.game["config"]["first"]))).count(),"secondWins":games.iter().filter(|game|!game.game["winner"].is_null() && winning_seat(&game.game["winner"])!=Some(phase_seat(&game.game["config"]["first"]))).count(),"unresolved":games.iter().filter(|game|game.game["winner"].is_null()).count()})
     }).collect();
     let mut report = json!({"schema":3,"status":"complete","mode":options.mode,"fingerprint":fingerprint,"sourceCommit":source_commit,"engine":"rust","elapsedSeconds":elapsed,"seeds":{"first":options.first_seed,"count":options.seeds,"campaignCount":options.campaign_seeds},"schedule":options,"rows":rows,"strata":strata,"campaignStrata":campaign_strata,"armyCompositions":army_compositions,"seatDiagnostics":seat_diagnostics,"outcomes":outcomes,"detailFormat":"jsonl-byte-ranges-v1"});
     report["recruitmentLimits"] = serde_json::to_value(
@@ -506,7 +525,7 @@ mod tests {
             self_play: false,
             opponent: None,
         };
-        let outcomes = [Some("player"),Some("enemy"),None,Some("player")].iter().enumerate().map(|(index,winner)|json!({"kind":"arena","config":{"seed":1+index/2,"armies":{"player":"human","enemy":"human"},"landscape":"open","player":"classic","enemy":"classic","first":if index%2==0{"player"}else{"enemy"}},"winner":winner,"rounds":2,"recruits":[],"casualties":[],"promotions":[]})).collect();
+        let outcomes = [Some("playerVictory"),Some("playerDefeat"),None,Some("playerVictory")].iter().enumerate().map(|(index,winner)|json!({"kind":"arena","config":{"seed":1+index/2,"armies":{"player":"human","enemy":"human"},"landscape":"open","player":"classic","enemy":"classic","first":if index%2==0{"player"}else{"ai"}},"winner":winner,"rounds":2,"recruits":[],"casualties":[],"promotions":[]})).collect();
         let report = build_report(&options, "fp", "commit", 0.1, outcomes, None).unwrap();
         let row = &report["rows"][0];
         assert_eq!(row["games"], 4);

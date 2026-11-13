@@ -48,7 +48,9 @@ def ctor(x):
  if not n:n='Empty'
  if n[0].isdigit():n='N_'+n
  return n[0].upper()+n[1:]
-names={};paths={};q=collections.deque()
+# Preserve names of frozen declarations when later versions add shorter paths
+# to an already shared shape. Naming changes must not rewrite historical code.
+names={part[int(i)]: n for i,n in doc.get('typeNames', {}).items()};paths=dict(names);q=collections.deque()
 for key,i in entries.items():q.append((i,snake(key)))
 while q:
  i,path=q.popleft();c=part[i]

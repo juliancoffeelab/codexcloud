@@ -8,7 +8,7 @@ fn recruitment_requires_gold_legal_destination_and_owned_keep() {
     let leader = game
         .units
         .iter()
-        .find(|unit| unit.side == Side::Player && unit.is_leader())
+        .find(|unit| unit.side == TurnPhase::Player && unit.is_leader())
         .unwrap()
         .id;
     let recruit = game.kind(kind);
@@ -36,11 +36,11 @@ fn recruitment_requires_gold_legal_destination_and_owned_keep() {
     game.execute(command.clone()).unwrap();
     assert_eq!(game.gold["player"], 0);
     assert_eq!(game.unit(id).unwrap().kind, recruit);
-    assert!(game.unit(id).unwrap().moved && game.unit(id).unwrap().attacked);
+    assert!(game.unit(id).unwrap().moved && game.unit(id).unwrap().attack_spent);
     assert!(game.execute(command).is_err());
     game.end_turn();
     game.end_turn();
-    assert!(!game.unit(id).unwrap().moved && !game.unit(id).unwrap().attacked);
+    assert!(!game.unit(id).unwrap().moved && !game.unit(id).unwrap().attack_spent);
     let keep = game.unit(leader).unwrap().tile;
     game.gold["player"] = price;
     game.owners[keep] = Some("enemy".into());
@@ -55,7 +55,7 @@ fn village_capture_changes_income_and_heals_only_the_owners_occupant() {
     let mut game = flat();
     let village = game.site(&Hex::new(3, 3));
     game.set_terrain(village, game.rules.terrains["village"]);
-    let id = add(&mut game, "scout", Side::Player, Hex::new(2, 3));
+    let id = add(&mut game, "scout", TurnPhase::Player, Hex::new(2, 3));
     game.move_unit(id, village);
     assert_eq!(game.owners[village], Some("player".into()));
     let index = game.index(id).unwrap();
@@ -84,15 +84,15 @@ fn village_capture_changes_income_and_heals_only_the_owners_occupant() {
 #[test]
 fn strongest_adjacent_friendly_healer_wins_without_stacking_or_overhealing() {
     let mut game = flat();
-    let ally = add(&mut game, "reefguard", Side::Player, Hex::new(3, 3));
-    add(&mut game, "wavemender", Side::Player, Hex::new(2, 3));
-    add(&mut game, "tidesage", Side::Player, Hex::new(4, 3));
-    let enemy = add(&mut game, "reefguard", Side::Enemy, Hex::new(4, 4));
+    let ally = add(&mut game, "reefguard", TurnPhase::Player, Hex::new(3, 3));
+    add(&mut game, "wavemender", TurnPhase::Player, Hex::new(2, 3));
+    add(&mut game, "tidesage", TurnPhase::Player, Hex::new(4, 3));
+    let enemy = add(&mut game, "reefguard", TurnPhase::Ai, Hex::new(4, 4));
     for id in [ally, enemy] {
         let index = game.index(id).unwrap();
         game.units[index].hp = 1;
     }
-    game.turn = Side::Enemy;
+    game.turn = TurnPhase::Ai;
     game.end_turn();
     let strongest = game.rules.units[game.kind("tidesage")].healing;
     assert_eq!(game.unit(ally).unwrap().hp, 1 + strongest);
@@ -109,10 +109,10 @@ fn strongest_adjacent_friendly_healer_wins_without_stacking_or_overhealing() {
 #[test]
 fn healing_records_credit_tied_strongest_sources_after_terrain_and_hp_caps() {
     let mut game = flat();
-    let ally = add(&mut game, "reefguard", Side::Player, Hex::new(3, 3));
-    let first = add(&mut game, "tidesage", Side::Player, Hex::new(2, 3));
-    let second = add(&mut game, "tidesage", Side::Player, Hex::new(4, 3));
-    add(&mut game, "wavemender", Side::Player, Hex::new(3, 4));
+    let ally = add(&mut game, "reefguard", TurnPhase::Player, Hex::new(3, 3));
+    let first = add(&mut game, "tidesage", TurnPhase::Player, Hex::new(2, 3));
+    let second = add(&mut game, "tidesage", TurnPhase::Player, Hex::new(4, 3));
+    add(&mut game, "wavemender", TurnPhase::Player, Hex::new(3, 4));
     let tile = game.site(&Hex::new(3, 3));
     game.terrain[tile] = game
         .rules
@@ -123,8 +123,8 @@ fn healing_records_credit_tied_strongest_sources_after_terrain_and_hp_caps() {
     game.owners[tile] = Some("player".into());
     let index = game.index(ally).unwrap();
     game.units[index].hp = game.rules.units[game.units[index].kind].hp - 5;
-    game.recordings = Some(Records::default());
-    game.begin_turn(Side::Player);
+    game.recordings = Some(Records::default().into());
+    game.begin_turn(TurnPhase::Player);
     let events = &game.recordings.as_ref().unwrap().healing;
     assert_eq!(events.len(), 1);
     assert_eq!(events[0].amount, 1);
@@ -133,7 +133,7 @@ fn healing_records_credit_tied_strongest_sources_after_terrain_and_hp_caps() {
         events[0].providers,
         vec![format!("u{first}"), format!("u{second}")]
     );
-    game.recordings = Some(Records::default());
-    game.begin_turn(Side::Player);
+    game.recordings = Some(Records::default().into());
+    game.begin_turn(TurnPhase::Player);
     assert!(game.recordings.as_ref().unwrap().healing.is_empty());
 }

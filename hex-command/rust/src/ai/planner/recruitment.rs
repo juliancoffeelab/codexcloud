@@ -15,7 +15,7 @@ pub(super) fn plan(
     let opportunity = opportunity?;
     if !unit.is_leader()
         || unit.moved
-        || unit.attacked
+        || unit.attack_spent
         || !game.can_act(unit.id)
         || opportunity.remaining_budget == Some(0)
     {

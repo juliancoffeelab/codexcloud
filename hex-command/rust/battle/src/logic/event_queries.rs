@@ -3,7 +3,6 @@ use super::{
     Game, battle::Board, conditions::LiveContext, event_state::EventProgress,
     events::DeathOccurrence,
 };
-use crate::data::presentation::ConditionContext;
 use crate::data::*;
 pub(super) struct EventFacts<'a, 'catalog> {
     rules: &'catalog Rules,
@@ -13,7 +12,7 @@ pub(super) struct EventFacts<'a, 'catalog> {
     factions: &'a [Faction],
     owners: &'a [Option<String>],
     round: u32,
-    turn: Side,
+    turn: TurnPhase,
     flags: Option<&'a FlagHistory>,
     traversal: Option<&'a (u32, Vec<usize>)>,
     event_departure: Option<&'a Unit>,
@@ -32,17 +31,17 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
             owners: &game.owners,
             round: game.round,
             turn: game.turn,
-            flags: game.campaign.as_deref().map(|s| &s.flags),
+            flags: game.story.campaign.as_deref().map(|s| &s.flags),
             traversal: game.traversal.as_ref(),
-            event_departure: game.event_departure.as_ref(),
-            event_opening: game.event_opening,
+            event_departure: game.story.event_departure.as_ref(),
+            event_opening: game.story.event_opening,
             visibility: game.condition_context(),
         }
     }
     pub(super) fn round(&self) -> u32 {
         self.round
     }
-    pub(super) fn turn(&self) -> Side {
+    pub(super) fn turn(&self) -> TurnPhase {
         self.turn
     }
     pub(super) fn owned_by(&self, tile: &TileRef, faction: &str) -> bool {
@@ -167,7 +166,7 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
             When::Turn(turn) => {
                 tick && self.round == turn.number()
                     && match turn {
-                        TurnSelection::Number(_) => self.turn == Side::Player,
+                        TurnSelection::Number(_) => self.turn == TurnPhase::Player,
                         TurnSelection::Faction { faction, .. } => {
                             self.faction(faction).is_some_and(|f| f.phase == self.turn)
                         }
@@ -188,10 +187,10 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
                         .flat_map(|state| &state.pending)
                         .any(|g| g.units.iter().any(|u| self.pending_unit_matches(v, g, u)))
             }
-            When::VisibleUnits(v) => self.units.iter().any(|u| {
-                self.script_unit_matches(v, u)
-                    && self.visibility.visible_at(self.board.positions[u.tile])
-            }),
+            When::VisibleUnits(v) => self
+                .units
+                .iter()
+                .any(|u| self.script_unit_matches(v, u) && self.visibility.unit_visible(u)),
             When::Owner(v) => self.owners[self.site(&v.tile)].as_deref() == Some(&v.faction),
             When::Own(v) if v.turns.is_none() => {
                 self.owners[self.site(&v.tile)].as_deref() == Some(&v.faction)
@@ -236,14 +235,12 @@ pub(super) fn unit_matches(
             .retreating
             .is_none_or(|value| unit.retreating.unwrap_or(false) == value)
         && select.role.is_none_or(|r| unit.role == Some(r))
-        && select.faction.as_ref().is_none_or(|id| {
-            names
-                .resolve(unit.faction)
-                .unwrap_or(unit.side.faction_id())
-                == id
-        })
+        && select
+            .faction
+            .as_ref()
+            .is_none_or(|id| names.get(unit.faction) == id)
         && select.side.is_none_or(|side| {
-            faction_matches_side(factions, names.resolve(unit.faction), unit.side, side)
+            faction_matches_side(factions, Some(names.get(unit.faction)), unit.side, side)
         })
         && select
             .unit_type

@@ -959,5 +959,5 @@ let v38 (value : V38.t) : V39.t =
             setup;
           }
   in
-  let _ = Migration_envelope.current_save (Historical_codec.V39.to_json result) in
+  let _ = Historical_codec.V39.of_json (Historical_codec.V39.to_json result) in
   result

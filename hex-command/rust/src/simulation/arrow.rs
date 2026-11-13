@@ -1,7 +1,7 @@
 //! Direct Arrow IPC records: lossless snapshot dictionaries and ordered phase references.
 //! One independently readable IPC stream occupies each checksummed journal range.
 use super::{error::SimulationError, summaries, types::*};
-use crate::data::{CampaignState, Gold, Objective, Progress, PublicUnit, Records, Side};
+use crate::data::{CampaignState, Gold, Objective, Progress, PublicUnit, Records, TurnPhase};
 use arrow_array::{
     Array, ArrayRef, BooleanArray, Int8Array, Int32Array, ListArray, RecordBatch, StringArray,
     StructArray, UInt32Array,
@@ -15,7 +15,7 @@ use serde::Serialize;
 use serde_json::{Map, Value};
 use std::{io::Cursor, sync::Arc};
 
-pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v4";
+pub(crate) const FORMAT: &str = "arrow-ipc-snapshot-dictionaries-v5";
 
 #[derive(Serialize)]
 struct PhaseHeader<'a> {
@@ -26,7 +26,7 @@ struct PhaseHeader<'a> {
     leader_audit: &'a [super::leader_audit::LeaderAudit],
     #[serde(skip_serializing_if = "Option::is_none")]
     planning: Option<&'a crate::ai::orders::TurnDiagnostics>,
-    side: Side,
+    side: TurnPhase,
     round: u32,
     #[serde(flatten)]
     records: &'a Records,
@@ -91,10 +91,10 @@ fn unit_column(
             values.iter().map(|u| u.r#type.as_str()),
         )),
         Arc::new(StringArray::from_iter_values(values.iter().map(|u| {
-            if u.side == Side::Player {
+            if u.side == TurnPhase::Player {
                 "player"
             } else {
-                "enemy"
+                "ai"
             }
         }))),
         Arc::new(StructArray::from(vec![
@@ -116,7 +116,7 @@ fn unit_column(
             values.iter().map(|u| Some(u.moved)),
         )),
         Arc::new(BooleanArray::from_iter(
-            values.iter().map(|u| Some(u.attacked)),
+            values.iter().map(|u| Some(u.attack_spent)),
         )),
         Arc::new(UInt32Array::from_iter(values.iter().map(|u| u.experience))),
         Arc::new(StringArray::from_iter(
@@ -128,13 +128,19 @@ fn unit_column(
         Arc::new(BooleanArray::from_iter(values.iter().map(|u| u.retreating))),
         Arc::new(BooleanArray::from_iter(values.iter().map(|u| u.rebuilding))),
         Arc::new(StringArray::from_iter(
-            values.iter().map(|u| u.faction.as_deref()),
+            values.iter().map(|u| Some(u.faction.as_str())),
         )),
         Arc::new(StringArray::from_iter(
             values.iter().map(|u| u.ai_group.as_deref()),
         )),
         Arc::new(StringArray::from_iter_values(values.iter().map(|u| {
             serde_json::to_string(&u.items).expect("serializable unit items")
+        }))),
+        Arc::new(StringArray::from_iter_values(values.iter().map(|u| {
+            serde_json::to_string(&u.revealed_to).expect("serializable unit reveals")
+        }))),
+        Arc::new(StringArray::from_iter_values(values.iter().map(|u| {
+            serde_json::to_string(&u.perception_effects).expect("serializable unit effects")
         }))),
     ];
     let names = [
@@ -144,7 +150,7 @@ fn unit_column(
         "tile",
         "hp",
         "moved",
-        "attacked",
+        "attackSpent",
         "experience",
         "character",
         "role",
@@ -153,6 +159,8 @@ fn unit_column(
         "faction",
         "aiGroup",
         "items_json",
+        "revealedTo_json",
+        "perceptionEffects_json",
     ];
     let fields = names
         .into_iter()
@@ -314,14 +322,14 @@ fn unit_dictionary(array: &dyn Array) -> Result<Vec<Value>, SimulationError> {
                     }
                     _ => return Err("Unexpected unit field type".into()),
                 };
-                if field.name() == "items_json" {
+                if let Some(key) = field.name().strip_suffix("_json") {
                     let items: Value =
                         serde_json::from_str(value.as_str().ok_or("Invalid unit items")?)?;
                     if !items.is_array() {
                         return Err("Invalid unit items".into());
                     }
-                    if items.as_array().is_some_and(|items| !items.is_empty()) {
-                        object.insert("items".into(), items);
+                    if key != "items" || items.as_array().is_some_and(|items| !items.is_empty()) {
+                        object.insert(key.into(), items);
                     }
                 } else {
                     object.insert(field.name().clone(), value);
@@ -401,7 +409,7 @@ pub(crate) fn decode(bytes: &[u8]) -> Result<Value, SimulationError> {
         .map(String::as_str)
     {
         Some("arrow-ipc-snapshot-dictionaries-v2" | "arrow-ipc-snapshot-dictionaries-v3") => false,
-        Some(FORMAT) => true,
+        Some("arrow-ipc-snapshot-dictionaries-v4" | FORMAT) => true,
         _ => return Err("Unknown Arrow gameplay format".into()),
     };
     let batch = reader.next().ok_or("Missing Arrow gameplay batch")??;
@@ -509,7 +517,7 @@ mod tests {
                         .resolve(true),
                 ),
                 enemy_blocks: None,
-                first: Side::Player,
+                first: TurnPhase::Player,
                 max_rounds: 1,
                 recruit_limit: Some(0),
             },
@@ -522,7 +530,7 @@ mod tests {
         unit.rebuilding = Some(true);
         unit.role = Some(Role::Courier);
         unit.character = Some("河😀".into());
-        unit.faction = Some("independent".into());
+        unit.faction = "independent".into();
         unit.ai_group = Some("guard".into());
         unit.items = serde_json::from_value(serde_json::json!([{
             "id":"keepsake", "name":"Keepsake", "description":"Carried equipment", "attacks":[]

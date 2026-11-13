@@ -9,6 +9,7 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(hex_catalog_freeze_derive::BorrowFields))]
 #[cfg_attr(feature = "wasm", borrow_from(crate::data::State))]
 pub struct StateFrame {
+    pub vision_groups: Vec<VisionGroupState>,
     pub factions: Vec<Faction>,
     pub ground_items: Vec<GroundItem>,
     /// Selected skirmish factions; campaigns use their authored recruitment.
@@ -22,9 +23,9 @@ pub struct StateFrame {
     pub cols: i32,
     pub rows: i32,
     pub round: u32,
-    pub turn: Side,
+    pub turn: TurnPhase,
     pub gold: Gold,
-    pub winner: Option<Side>,
+    pub winner: Option<BattleResult>,
     pub next_id: u32,
     /// Complete persisted combat PRNG state.
     pub combat_rng: u32,
@@ -44,6 +45,7 @@ impl StateFrame {
     /// from the browser publication when the core save contract evolves.
     pub fn split(state: State) -> (Self, Vec<Tile>) {
         let State {
+            vision_groups,
             factions,
             ground_items,
             armies,
@@ -66,6 +68,7 @@ impl StateFrame {
         } = state;
         (
             Self {
+                vision_groups,
                 factions,
                 ground_items,
                 armies,
@@ -136,7 +139,7 @@ pub struct CombatAnimation {
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[serde(rename_all = "camelCase")]
 pub struct CombatStrike {
-    pub side: crate::data::Side,
+    pub side: crate::data::TurnPhase,
     pub weapon: String,
     /// Stable presentation identity; weapon remains the display label.
     pub weapon_id: String,

@@ -1,4 +1,4 @@
-(* The historical V39 declaration describes candidate saves using the full Rust
+(* The historical V44 declaration describes candidate saves using the full Rust
    AI capability type. Valid browser saves are narrower: only the three browser
    presets, mission campaign logic, and no recruitmentLimit field. Keep that
    historical contract frozen; this is the validated current output contract. *)
@@ -6,38 +6,39 @@ type policy = [ `Classic | `Situational | `Predictor ]
 
 type current_blocks = {
   wire : Historical_types.wire;
-  planner : Historical_types.V39.current_planner;
-  recruiter : Historical_types.V39.current_recruiter;
+  planner : Historical_types.V44.current_planner;
+  recruiter : Historical_types.V44.current_recruiter;
   campaign : [ `Mission ];
 }
 
 type current_enemy = {
   wire : Historical_types.wire;
   policy : policy;
-  diplomacy : Historical_types.V39.current_diplomacy;
+  diplomacy : Historical_types.V44.current_diplomacy;
   blocks : current_blocks option;
 }
 
 type current_setup = {
   wire : Historical_types.wire;
-  first : Historical_types.V39.current_first;
+  first : Historical_types.V44.current_first;
   enemy : current_enemy;
+  player : policy option;
 }
 
-type current_entry = Historical_types.V39.current_entry
-type turn_entry = Historical_types.V39.turn_entry
-type current_changes = Historical_types.V39.current_changes
-type current_undo = Historical_types.V39.current_undo
-type current_progress = Historical_types.V39.current_progress
-type turn_progress = Historical_types.V39.turn_progress
-type current_checkpoint = Historical_types.V39.current_checkpoint
+type current_entry = Historical_types.V44.current_entry
+type turn_entry = Historical_types.V44.turn_entry
+type current_changes = Historical_types.V44.current_changes
+type current_undo = Historical_types.V44.current_undo
+type current_progress = Historical_types.V44.current_progress
+type turn_progress = Historical_types.V44.turn_progress
+type current_checkpoint = Historical_types.V44.current_checkpoint
 
 type current = {
   wire : Historical_types.wire;
   pending_enemy : bool;
   undo : current_undo array;
   progress : current_progress;
-  version : Historical_types.V39.current_version;
+  version : Historical_types.V44.current_version;
   checkpoint : current_checkpoint;
   setup : current_setup;
 }
@@ -47,7 +48,7 @@ type turn = {
   pending_enemy : [ `False ];
   undo : [ `Undefined ] option;
   progress : turn_progress;
-  version : Historical_types.V39.current_version;
+  version : Historical_types.V44.current_version;
   checkpoint : current_checkpoint;
   setup : current_setup;
 }
@@ -58,7 +59,7 @@ type t = [ `Current of current | `Turn of turn ]
 [@@@warnerror "+8+9"]
 
 module H = Historical_types
-module V = Historical_types.V39
+module V = Historical_types.V44
 
 let invalid () = invalid_arg "Invalid saved browser preferences"
 
@@ -94,11 +95,23 @@ let widen_enemy ({ wire; policy; diplomacy; blocks } : current_enemy) : V.curren
     recruitment_limit = None;
   }
 
-let narrow_setup ({ H.wire; first; enemy } : V.current_setup) : current_setup =
-  { wire; first; enemy = narrow_enemy enemy }
+let narrow_player : V.current_player -> policy option = function
+  | `Null -> None
+  | `Classic -> Some `Classic
+  | `Situational -> Some `Situational
+  | `Predictor -> Some `Predictor
 
-let widen_setup ({ wire; first; enemy } : current_setup) : V.current_setup =
-  { wire; first; enemy = widen_enemy enemy }
+let widen_player : policy option -> V.current_player = function
+  | None -> `Null
+  | Some `Classic -> `Classic
+  | Some `Situational -> `Situational
+  | Some `Predictor -> `Predictor
+
+let narrow_setup ({ H.wire; first; enemy; player } : V.current_setup) : current_setup =
+  { wire; first; enemy = narrow_enemy enemy; player = narrow_player player }
+
+let widen_setup ({ wire; first; enemy; player } : current_setup) : V.current_setup =
+  { wire; first; enemy = widen_enemy enemy; player = widen_player player }
 
 let narrow : V.t -> t = function
   | `Current { H.wire; pending_enemy; undo; progress; version; checkpoint; setup } ->
@@ -114,4 +127,4 @@ let widen : t -> V.t = function
   | `Turn { wire; pending_enemy; undo; progress; version; checkpoint; setup } ->
       `Turn { wire; pending_enemy; undo; progress; version; checkpoint; setup = widen_setup setup }
 
-let to_json value = Historical_codec.V39.to_json (widen value)
+let to_json value = Historical_codec.V44.to_json (widen value)

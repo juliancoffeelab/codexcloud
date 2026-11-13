@@ -126,13 +126,13 @@ fn intent_command(
     unit: &Unit,
     retreating: Option<bool>,
     rebuilding: Option<bool>,
-    attacked: bool,
+    attack_spent: bool,
 ) -> Command {
     Command::SetUnitIntent {
         unit: UnitId(unit.id),
         retreating,
         rebuilding,
-        attacked,
+        attack_spent,
         record_retreat: false,
     }
 }
@@ -248,23 +248,27 @@ mod courier_tests {
             // Keep allies stationary for this turn: the courier must take a detour.
             for ally in units.iter_mut().filter(|u| u.id != 5) {
                 ally.moved = true;
-                ally.attacked = true;
+                ally.attack_spent = true;
             }
 
             // Block the other direct approach as well.
+            let template = *units.iter().find(|u| u.side == TurnPhase::Player).unwrap();
             units.push(Unit {
+                field_available: true,
+                perception: PerceptionId(0),
+                vision_group: template.vision_group,
                 id: 100,
                 kind: rules.types["reefguard"],
                 tile: blocker_tile,
-                side: Side::Player,
+                side: TurnPhase::Player,
                 hp: rules.units[rules.types["reefguard"]].hp,
                 moved: true,
-                attacked: true,
+                attack_spent: true,
                 experience: Some(0),
                 role: None,
                 retreating: None,
                 rebuilding: None,
-                faction: None,
+                faction: template.faction,
                 ai_group: None,
                 character: None,
                 inventory: InventoryId::default(),
@@ -323,7 +327,7 @@ mod courier_tests {
                 vec![],
             );
             fixtures::edit(&mut game, |state| {
-                state.units.retain(|u| u.side == Side::Player);
+                state.units.retain(|u| u.side == TurnPhase::Player);
                 for (id, tile) in [
                     (1, Hex::new(8, 5)),
                     (2, Hex::new(7, 3)),
@@ -362,7 +366,7 @@ mod courier_tests {
             }
             assert_eq!(
                 game.winner(),
-                Some(Side::Player),
+                Some(BattleResult::PlayerVictory),
                 "{policy:?}: {:?}",
                 game.public_units()
             );

@@ -5,7 +5,7 @@ type mode = Skirmish | Campaign
 
 type policy = Relaxed | Standard | Veteran
 type difficulty_choice = Preset of policy | Custom
-type first_turn = Random | First of Domain.Side.t
+type first_turn = Random | First of Domain.Turn_phase.t
 type t
 
 type difficulty = private {
@@ -17,11 +17,16 @@ type difficulty = private {
 }
 
 val default : t
-val first : t -> Domain.Side.t
+val first : t -> Domain.Turn_phase.t
+val player_ai : t -> policy option
+val with_player_ai : t -> policy option -> t
 val campaign : ?overrides:Domain.Planner_kind.t * Domain.Recruiter_kind.t -> policy -> t
 
 val skirmish :
-  first:Domain.Side.t -> planner:Domain.Planner_kind.t -> recruiter:Domain.Recruiter_kind.t -> t
+  first:Domain.Turn_phase.t ->
+  planner:Domain.Planner_kind.t ->
+  recruiter:Domain.Recruiter_kind.t ->
+  t
 
 val ai_options : t -> Domain.ai_options
 val planners : Domain.Planner_kind.t list

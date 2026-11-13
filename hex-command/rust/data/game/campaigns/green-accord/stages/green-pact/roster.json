@@ -1,4 +1,22 @@
 {
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
   "factions": [
     {
       "id": "player",
@@ -63,11 +81,12 @@
       ],
       "relations": {
         "enemy": "hostile"
-      }
+      },
+      "visionGroup": "player"
     },
     {
       "id": "enemy",
-      "phase": "enemy",
+      "phase": "ai",
       "controller": {
         "kind": "ai"
       },
@@ -135,7 +154,8 @@
       ],
       "relations": {
         "player": "hostile"
-      }
+      },
+      "visionGroup": "enemy"
     }
   ]
 }

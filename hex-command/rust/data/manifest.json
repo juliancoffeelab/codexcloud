@@ -117,7 +117,8 @@
     "game/units/zombie-walker.json",
     "game/units/zombie-decay-caster.json",
     "game/units/skeletal-hound.json",
-    "game/units/dragon.json"
+    "game/units/dragon.json",
+    "game/units/giant-snake.json"
   ],
   "scenarios": [
     "game/scenario/mirror-v1/scenario.json",
@@ -148,7 +149,11 @@
     "game/campaigns/ashen-oath/campaign.json",
     "game/campaigns/borrowed-tide/campaign.json",
     "game/campaigns/mirror-night/campaign.json",
-    "game/campaigns/bell-night/campaign.json"
+    "game/campaigns/bell-night/campaign.json",
+    "game/campaigns/snake-village-raid/campaign.json",
+    "game/campaigns/snake-hunt/campaign.json",
+    "game/campaigns/ghost-village-raid/campaign.json",
+    "game/campaigns/ghost-hunt/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",
@@ -161,5 +166,6 @@
     "game/items/church-mail.json",
     "game/items/healing-bottle.json",
     "game/items/quarry-hammer.json"
-  ]
+  ],
+  "concealmentKinds": "game/concealment-kinds.json"
 }

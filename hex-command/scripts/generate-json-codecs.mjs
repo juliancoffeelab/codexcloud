@@ -31,6 +31,8 @@ function renamed(name, attrs, parent, variant = false) {
   if (rename) return rename;
   const rule = attr(parent, "rename_all");
   if (rule === "lowercase") return name.toLowerCase();
+  if (rule === "kebab-case") return snake(name).replaceAll("_", "-");
+  if (rule === "snake_case") return snake(name);
   if (rule === "camelCase")
     return variant
       ? name[0].toLowerCase() + name.slice(1)

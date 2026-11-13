@@ -18,16 +18,16 @@ impl super::Planner for Full {
     }
 }
 
-pub(super) fn prepare(
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn prepare<'a, 'catalog>(
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut super::search::Session,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
 ) {
     super::search::prepare(phases, session, turn);
 }
-pub(super) fn choose(
-    game: &crate::ai::context::BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn choose<'a, 'catalog>(
+    game: &'a crate::ai::context::BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut super::search::Session,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
 ) -> Result<(), crate::data::CommandError> {

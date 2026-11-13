@@ -137,6 +137,13 @@ pub fn validate_state_geometry_with_campaign(
             )
         })
         .collect();
+    validate_perception(
+        &state.vision_groups,
+        &state.factions,
+        &state.tiles,
+        &state.units,
+    )
+    .map_err(StateError)?;
     let mut tiles = HashSet::new();
     let mut positions = HashSet::new();
     for tile in &state.tiles {
@@ -161,12 +168,7 @@ pub fn validate_state_geometry_with_campaign(
             return Err(fail("unknown terrain"));
         }
     }
-    let mut allowed_memory: HashSet<String> = authored
-        .tiles
-        .iter()
-        .filter(|tile| tile.fog.as_ref().is_some_and(|rule| rule.remember))
-        .map(|tile| format!("fog:{}", tile.id))
-        .collect();
+    let mut allowed_memory: HashSet<String> = HashSet::new();
     for tile in &authored.tiles {
         if tile
             .light
@@ -185,7 +187,8 @@ pub fn validate_state_geometry_with_campaign(
             }
             for unit in &state.units {
                 if let Some(id) = &unit.ai_group {
-                    if unit.side != Side::Enemy || !mission.enemy_groups.iter().any(|g| g.id == *id)
+                    if unit.side != TurnPhase::Ai
+                        || !mission.enemy_groups.iter().any(|g| g.id == *id)
                     {
                         return Err(fail("invalid enemy group"));
                     }
@@ -332,7 +335,7 @@ pub fn validate_state_geometry_with_campaign(
                 "evacuated unit equipment",
             )
             .map_err(|error| StateError(error.to_string()))?;
-            validate_faction_reference(&state.factions, unit.faction.as_deref(), unit.side)
+            validate_faction_reference(&state.factions, Some(unit.faction.as_str()), unit.side)
                 .map_err(StateError)?;
         }
         if campaign.dialogue_index > campaign.dialogue.len() {
@@ -402,7 +405,7 @@ pub fn validate_state_geometry_with_campaign(
                             .iter()
                             .any(|arrival| veteran.character.as_ref() == Some(&arrival.character)))
                         && !mission.map.units.iter().any(|unit| {
-                            unit.side == Side::Player
+                            unit.side == TurnPhase::Player
                                 && (if veteran.role == Some(Role::Leader) {
                                     unit.role == Some(Role::Leader)
                                 } else {

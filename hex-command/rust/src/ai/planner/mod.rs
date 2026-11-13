@@ -85,7 +85,7 @@ fn prepare_priorities_and_recovery(
             &unit,
             None,
             unit.rebuilding,
-            unit.attacked,
+            unit.attack_spent,
         ))?;
     }
     Ok(())

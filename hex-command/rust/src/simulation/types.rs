@@ -34,7 +34,7 @@ pub struct ArenaConfig {
     pub player_blocks: Option<Blocks>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub enemy_blocks: Option<Blocks>,
-    pub first: Side,
+    pub first: TurnPhase,
     pub max_rounds: u32,
     /// Explicit override for both sides; None uses each policy's default.
     pub recruit_limit: Option<usize>,
@@ -122,7 +122,7 @@ pub struct Phase {
     pub leader_audit: Vec<super::leader_audit::LeaderAudit>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub planning: Option<crate::ai::orders::TurnDiagnostics>,
-    pub side: Side,
+    pub side: TurnPhase,
     pub round: u32,
     #[serde(flatten)]
     pub records: Records,
@@ -149,7 +149,7 @@ pub struct ArenaScore {
 /// Complete arena trace including initial and final battle snapshots.
 pub struct ArenaResult {
     pub config: ArenaConfig,
-    pub winner: Option<Side>,
+    pub winner: Option<BattleResult>,
     pub reason: String,
     pub rounds: usize,
     pub phases: Vec<Phase>,
@@ -163,7 +163,7 @@ pub struct MissionResult {
     #[serde(default)]
     pub escalated: bool,
     pub id: String,
-    pub winner: Option<Side>,
+    pub winner: Option<BattleResult>,
     pub round: u32,
     pub goals: Vec<Progress>,
     pub phases: Vec<Phase>,

@@ -15,6 +15,7 @@ include!(concat!(env!("OUT_DIR"), "/catalog_documents.rs"));
 struct Manifest {
     schema_version: u32,
     terrain: String,
+    concealment_kinds: String,
     races: Vec<String>,
     units: Vec<String>,
     items: Vec<String>,
@@ -40,6 +41,8 @@ impl EnvironmentalModifiers {
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct UnitSpecification {
+    #[serde(default)]
+    perception: UnitPerception,
     id: String,
     name: String,
     hp: i32,
@@ -93,12 +96,14 @@ struct StageFile {
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialUnit {
     #[serde(default)]
+    perception_effects: Vec<PerceptionEffect>,
+    #[serde(default)]
     items: Vec<Item>,
     faction: Option<String>,
     ai_group: Option<String>,
     id: Option<String>,
     r#type: String,
-    side: Option<Side>,
+    side: Option<TurnPhase>,
     tile: Hex,
     hp: Option<i32>,
     character: Option<String>,
@@ -107,12 +112,13 @@ struct InitialUnit {
 fn initial_round() -> u32 {
     1
 }
-fn initial_turn() -> Side {
-    Side::Player
+fn initial_turn() -> TurnPhase {
+    TurnPhase::Player
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialState {
+    vision_groups: Vec<VisionGroupState>,
     #[serde(default)]
     factions: Vec<Faction>,
     map_id: String,
@@ -163,7 +169,11 @@ impl InitialState {
                 .ok_or_else(|| ContentError::new(path, "initial unit is outside its board"))?
                 .hex();
             units.push(PublicUnit {
-                faction: unit.faction,
+                revealed_to: vec![],
+                perception_effects: unit.perception_effects,
+                faction: unit
+                    .faction
+                    .ok_or_else(|| ContentError::new(path, "unit requires an explicit faction"))?,
                 items: unit.items,
                 ai_group: unit.ai_group,
                 id,
@@ -174,7 +184,7 @@ impl InitialState {
                 tile,
                 hp,
                 moved: false,
-                attacked: false,
+                attack_spent: false,
                 experience: Some(0),
                 character: unit.character,
                 role: unit.role,
@@ -182,11 +192,14 @@ impl InitialState {
                 rebuilding: None,
             });
         }
+        validate_perception(&self.vision_groups, &self.factions, &self.tiles, &units)
+            .map_err(|message| ContentError::new(path, message))?;
         validate_factions(&self.factions, &units)
             .map_err(|message| ContentError::new(path, message))?;
         validate_economy(&self.factions, &self.gold, &self.tiles, types)
             .map_err(|message| ContentError::new(path, message))?;
         Ok(State {
+            vision_groups: self.vision_groups,
             factions: self.factions,
             ground_items: vec![],
             condition_memory: vec![],
@@ -284,6 +297,31 @@ impl Rules {
             return Err(ContentError::new(
                 "manifest.json",
                 "unsupported schemaVersion",
+            ));
+        }
+        let definitions: Vec<ConcealmentKindDefinition> =
+            parse(bundle, &manifest.concealment_kinds)?;
+        let mut seen = ConcealmentMask::default();
+        let mut concealment_visuals = ConcealmentMask::default();
+        for definition in definitions {
+            if seen.contains(definition.id) {
+                return Err(ContentError::new(
+                    &manifest.concealment_kinds,
+                    "duplicate concealment kind",
+                ));
+            }
+            seen.insert(definition.id);
+            if matches!(definition.unit_appearance, ConcealmentVisual::Concealment) {
+                concealment_visuals.insert(definition.id);
+            }
+        }
+        if ConcealmentKind::ALL
+            .into_iter()
+            .any(|kind| !seen.contains(kind))
+        {
+            return Err(ContentError::new(
+                &manifest.concealment_kinds,
+                "missing concealment kind",
             ));
         }
         let terrain: Vec<TerrainDefinition> = parse(bundle, &manifest.terrain)?;
@@ -435,7 +473,10 @@ impl Rules {
                 }
                 environment.push(modifiers);
             }
+            validate_unit_perception(&spec.perception.concealment, &spec.perception.penetrates)
+                .map_err(|e| ContentError::new(&path, e))?;
             units.push(UnitRule {
+                perception: spec.perception,
                 id: spec.id,
                 name: spec.name,
                 ability: spec.ability,
@@ -666,7 +707,7 @@ impl Rules {
             for rule in map
                 .terrain
                 .iter()
-                .filter_map(|tile| tile.fog.as_deref())
+                .filter_map(|_tile| None::<&ConditionRule>)
                 .chain(
                     map.terrain
                         .iter()
@@ -685,6 +726,7 @@ impl Rules {
         Ok(Self {
             content_fingerprint: content_fingerprint(bundle),
             recruitment,
+            concealment_visuals,
             items,
             terrain_types: terrain.iter().map(|t| t.id).collect(),
             terrain_roles: terrain.iter().map(|t| t.role).collect(),
@@ -918,9 +960,6 @@ fn validate_character_references(
         }
     }
     for tile in &state.tiles {
-        if let Some(rule) = &tile.fog {
-            condition(&rule.condition)?;
-        }
         if let Some(rule) = tile.light.as_ref().and_then(|l| l.when.as_ref()) {
             condition(&rule.condition)?;
         }
@@ -1109,6 +1148,7 @@ fn validate_mission(
         check.validate(
             &state.tiles,
             &state.factions,
+            &state.vision_groups,
             &std::collections::HashMap::new(),
             path,
         )?;
@@ -1240,8 +1280,8 @@ fn validate_mission(
                 .map_err(|message| ContentError::new(path, message))?;
         }
     }
-    let group_ref = |id: &str, side: Side| -> Result<(), ContentError> {
-        if side != Side::Enemy || !mission.enemy_groups.iter().any(|group| group.id == id) {
+    let group_ref = |id: &str, side: TurnPhase| -> Result<(), ContentError> {
+        if side != TurnPhase::Ai || !mission.enemy_groups.iter().any(|group| group.id == id) {
             return Err(ContentError::new(
                 path,
                 format!("unknown enemy group: {id}"),
@@ -1325,7 +1365,7 @@ fn validate_mission(
                 .map
                 .units
                 .iter()
-                .any(|unit| unit.side == Side::Player && unit.character.as_ref() == Some(name))
+                .any(|unit| unit.side == TurnPhase::Player && unit.character.as_ref() == Some(name))
             {
                 return Err(ContentError::new(
                     path,
@@ -1561,7 +1601,7 @@ fn validate_simulation(
             }
             match variant.forces {
                 ArenaForces::Scenario => {
-                    for side in [Side::Player, Side::Enemy] {
+                    for side in [TurnPhase::Player, TurnPhase::Ai] {
                         if !map
                             .units
                             .iter()
@@ -1581,7 +1621,7 @@ fn validate_simulation(
                             "selected forces require a positive budget",
                         ));
                     }
-                    for side in [Side::Player, Side::Enemy] {
+                    for side in [TurnPhase::Player, TurnPhase::Ai] {
                         if map
                             .tiles
                             .iter()
@@ -1969,7 +2009,7 @@ mod tests {
         assert_eq!(state.units[0].id, "u1");
         assert_eq!(state.units[0].experience, Some(0));
         assert!(!state.units[0].moved);
-        assert!(!state.units[0].attacked);
+        assert!(!state.units[0].attack_spent);
         let map = bundle
             .get_mut("game/scenario/mirror-v1/roster.json")
             .unwrap();

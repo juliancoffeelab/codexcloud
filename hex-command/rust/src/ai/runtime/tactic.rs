@@ -155,7 +155,7 @@ mod tests {
                 .filter(|unit| unit.id >= self.first_new_id)
                 .collect();
             assert_eq!(recruits.len(), 2);
-            assert!(recruits.iter().all(|unit| unit.moved && unit.attacked));
+            assert!(recruits.iter().all(|unit| unit.moved && unit.attack_spent));
             assert!(view.gold_for_phase(view.turn()) < self.initial_gold);
             self.calls.set(self.calls.get() + 1);
             Ok(PlanningReport::default())
@@ -205,7 +205,7 @@ mod tests {
             assert_eq!(game.gold_for_phase(game.turn()), 1000);
             let mut replay = game.fork();
             for command in plan.commands {
-                replay.execute_runtime(command).unwrap();
+                replay.execute_proposal(command).unwrap();
             }
             assert_eq!(replay.units().len(), game.units().len() + 2);
         }

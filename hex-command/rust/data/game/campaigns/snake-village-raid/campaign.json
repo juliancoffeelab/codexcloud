@@ -1,0 +1,22 @@
+{
+  "id": "snake-village-raid",
+  "name": "Snake Village Raid",
+  "tagline": "Patrols against forest camouflage.",
+  "description": "Mayor Hiss leads the snakes into a contest for Pine Hamlet, Moss Hamlet and Fern Hamlet. Control all three villages at once, or defeat the opposing leader. You lose if your leader falls or the opposing army controls all three villages. Both armies can recruit from their keeps. Forest hides your snakes from distant patrols. Crossing open ground exposes them.",
+  "shortDescription": "Capture villages with concealed snakes.",
+  "race": "beast",
+  "leader": "giant-snake",
+  "characters": [
+    {
+      "id": "night-mayor",
+      "name": "Mayor Hiss"
+    },
+    {
+      "id": "captain-boots",
+      "name": "Captain Boots"
+    }
+  ],
+  "human": false,
+  "ending": [],
+  "stages": ["stages/forest-hidden-arena/stage.json"]
+}

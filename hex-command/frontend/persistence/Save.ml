@@ -474,7 +474,7 @@ let write_json ?(setup = Setup.default) ?source owner raw ~pending_enemy =
       if
         text state "turn" = "player"
         || field state "winner" <> Js.Json.null
-        || (n state "round" = 1. && Setup.first setup = Domain.Side.Enemy)
+        || (n state "round" = 1. && Setup.first setup = Domain.Turn_phase.Ai)
       then (
         let generation = owner.generation in
         let undo =

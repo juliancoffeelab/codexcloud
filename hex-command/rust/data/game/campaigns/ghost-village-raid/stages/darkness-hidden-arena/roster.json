@@ -1,0 +1,223 @@
+{
+  "visionGroups": [
+    {
+      "id": "hidden",
+      "sight": {
+        "range": 6,
+        "penetrates": ["darkness"]
+      },
+      "explored": []
+    },
+    {
+      "id": "watch",
+      "sight": {
+        "range": 6,
+        "penetrates": []
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "visionGroup": "hidden",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "relations": {
+        "enemy": "hostile"
+      },
+      "gold": 18,
+      "recruits": [
+        {
+          "unit": "ghost"
+        }
+      ],
+      "units": [
+        {
+          "type": "ghost",
+          "tile": {
+            "col": 1,
+            "row": 4
+          },
+          "role": "leader",
+          "perceptionEffects": [
+            {
+              "id": "crypt-shroud",
+              "penetrates": ["darkness"],
+              "concealment": [
+                {
+                  "kind": "darkness",
+                  "revealWithin": 1,
+                  "requires": {
+                    "illumination": "unlit"
+                  }
+                }
+              ]
+            }
+          ],
+          "character": "night-mayor"
+        },
+        {
+          "type": "ghost",
+          "tile": {
+            "col": 2,
+            "row": 2
+          },
+          "perceptionEffects": [
+            {
+              "id": "crypt-shroud",
+              "penetrates": ["darkness"],
+              "concealment": [
+                {
+                  "kind": "darkness",
+                  "revealWithin": 1,
+                  "requires": {
+                    "illumination": "unlit"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ghost",
+          "tile": {
+            "col": 2,
+            "row": 6
+          },
+          "perceptionEffects": [
+            {
+              "id": "crypt-shroud",
+              "penetrates": ["darkness"],
+              "concealment": [
+                {
+                  "kind": "darkness",
+                  "revealWithin": 1,
+                  "requires": {
+                    "illumination": "unlit"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "ghost",
+          "tile": {
+            "col": 3,
+            "row": 4
+          },
+          "perceptionEffects": [
+            {
+              "id": "crypt-shroud",
+              "penetrates": ["darkness"],
+              "concealment": [
+                {
+                  "kind": "darkness",
+                  "revealWithin": 1,
+                  "requires": {
+                    "illumination": "unlit"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "visionGroup": "watch",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile"
+      },
+      "gold": 18,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "scout"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "tile": {
+            "col": 11,
+            "row": 4
+          },
+          "role": "leader",
+          "perceptionEffects": [
+            {
+              "id": "search-lantern",
+              "light": {
+                "radius": 2
+              }
+            }
+          ],
+          "character": "captain-boots"
+        },
+        {
+          "type": "archer",
+          "tile": {
+            "col": 10,
+            "row": 2
+          },
+          "perceptionEffects": [
+            {
+              "id": "search-lantern",
+              "light": {
+                "radius": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "swordsman",
+          "tile": {
+            "col": 10,
+            "row": 6
+          },
+          "perceptionEffects": [
+            {
+              "id": "search-lantern",
+              "light": {
+                "radius": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "scout",
+          "tile": {
+            "col": 9,
+            "row": 4
+          },
+          "perceptionEffects": [
+            {
+              "id": "search-lantern",
+              "light": {
+                "radius": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

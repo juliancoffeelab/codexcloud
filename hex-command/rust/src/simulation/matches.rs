@@ -16,20 +16,21 @@ use std::sync::Arc;
 /// Keys contain every unit field; ownership keys retain the entire ordered map.
 #[derive(Default)]
 struct RecordingCache {
-    units: FxHashMap<Unit, Arc<PublicUnit>>,
+    units: FxHashMap<(Unit, UnitPerceptionFacts), Arc<PublicUnit>>,
     ownership: FxHashMap<Vec<Option<String>>, Arc<OwnershipSnapshot>>,
     tiles: Option<Arc<Vec<Hex>>>,
 }
 impl RecordingCache {
     fn units(&mut self, game: &Game<'_>) -> Result<Vec<Arc<PublicUnit>>, SimulationError> {
-        game.units()
+        game.authoritative_units()
             .iter()
             .map(|unit| {
-                if let Some(encoded) = self.units.get(unit) {
+                let key = (*unit, game.authoritative_perception(unit).clone());
+                if let Some(encoded) = self.units.get(&key) {
                     return Ok(encoded.clone());
                 }
                 let encoded = Arc::new(game.public_unit(unit));
-                self.units.insert(unit.clone(), encoded.clone());
+                self.units.insert(key, encoded.clone());
                 Ok(encoded)
             })
             .collect()
@@ -90,10 +91,10 @@ pub(crate) fn create_arena<'catalog>(
     state.units.clear();
     state.next_id = 1;
     let mut starting_cost = [0; 2];
-    for side in [Side::Player, Side::Enemy] {
+    for side in [TurnPhase::Player, TurnPhase::Ai] {
         let roster = roster(
             rules,
-            if side == Side::Player {
+            if side == TurnPhase::Player {
                 &config.armies.player
             } else {
                 &config.armies.enemy
@@ -112,7 +113,9 @@ pub(crate) fn create_arena<'catalog>(
         let rule = &rules.units[rules.types[leader]];
         starting_cost[side.index()] += rule.cost;
         state.units.push(PublicUnit {
-            faction: None,
+            faction: side.faction_id().into(),
+            revealed_to: vec![],
+            perception_effects: vec![],
             items: vec![],
             ai_group: None,
             id: format!("u{}", state.next_id),
@@ -121,7 +124,7 @@ pub(crate) fn create_arena<'catalog>(
             tile: start.clone(),
             hp: rule.hp,
             moved: false,
-            attacked: false,
+            attack_spent: false,
             experience: Some(0),
             character: None,
             role: Some(Role::Leader),
@@ -137,8 +140,8 @@ pub(crate) fn create_arena<'catalog>(
         return Err("Arena starting troops exceed the shared budget".into());
     }
     state.gold = Gold::two(
-        budget - starting_cost[Side::Player.index()],
-        budget - starting_cost[Side::Enemy.index()],
+        budget - starting_cost[TurnPhase::Player.index()],
+        budget - starting_cost[TurnPhase::Ai.index()],
     );
     state.round = 1;
     state.turn = config.first;
@@ -252,12 +255,7 @@ fn phase(
                 selected_tactic.run_turn(game, &mut workspace)?
             };
             recruitment.get_or_insert(plan.recruitment);
-            for command in plan.commands {
-                if scoped && command == hex_command_battle::RuntimeCommand::EndTurn {
-                    continue;
-                }
-                game.execute_runtime(command)?;
-            }
+            crate::ai::runtime::execute_proposals(game, &mut workspace, plan.commands)?;
             if workspace.finished() || game.winner().is_some() {
                 break plan.planning;
             }
@@ -269,9 +267,14 @@ fn phase(
     }
     game.dismiss_all_dialogue();
     let records = game.take_recordings().unwrap_or_default();
-    let count = |side| game.units().iter().filter(|u| u.side == side).count();
+    let count = |side| {
+        game.authoritative_units()
+            .iter()
+            .filter(|u| u.side == side)
+            .count()
+    };
     let health = |side| {
-        game.units()
+        game.authoritative_units()
             .iter()
             .filter(|u| u.side == side)
             .map(|u| u.hp)
@@ -284,12 +287,12 @@ fn phase(
         round,
         records,
         living: Sides {
-            player: count(Side::Player),
-            enemy: count(Side::Enemy),
+            player: count(TurnPhase::Player),
+            enemy: count(TurnPhase::Ai),
         },
         health: Sides {
-            player: health(Side::Player),
-            enemy: health(Side::Enemy),
+            player: health(TurnPhase::Player),
+            enemy: health(TurnPhase::Ai),
         },
         gold: game.gold().clone(),
         before,
@@ -393,7 +396,7 @@ pub(super) fn run_arena_capturing(
         let record = phase(
             &mut game,
             &mut recording,
-            if side == Side::Player {
+            if side == TurnPhase::Player {
                 config.player
             } else {
                 config.enemy
@@ -417,7 +420,7 @@ pub(super) fn run_arena_capturing(
             reason = "leader";
             break;
         }
-        for owner in [Side::Player, Side::Enemy]
+        for owner in [TurnPhase::Player, TurnPhase::Ai]
             .into_iter()
             .filter(|_| !deathmatch)
         {
@@ -440,7 +443,7 @@ pub(super) fn run_arena_capturing(
             game.end_turn();
         }
     }
-    let score = |side: Side| ArenaScore {
+    let score = |side: TurnPhase| ArenaScore {
         controlled: territory
             .iter()
             .filter(|tile| game.owns(game.site(tile), side))
@@ -456,8 +459,8 @@ pub(super) fn run_arena_capturing(
         initial,
         r#final: game.state(),
         objectives: Sides {
-            player: score(Side::Player),
-            enemy: score(Side::Enemy),
+            player: score(TurnPhase::Player),
+            enemy: score(TurnPhase::Ai),
         },
         config,
     })
@@ -515,7 +518,7 @@ pub(super) fn run_campaign_capturing(
             if game.winner().is_some() {
                 break;
             }
-            let policy = if game.turn() == Side::Player {
+            let policy = if game.turn() == TurnPhase::Player {
                 config.player
             } else {
                 config.enemy
@@ -558,7 +561,7 @@ pub(super) fn run_campaign_capturing(
             initial,
             r#final: game.state(),
         });
-        if game.winner() != Some(Side::Player)
+        if game.winner() != Some(BattleResult::PlayerVictory)
             || game
                 .campaign_state()
                 .as_ref()
@@ -727,7 +730,7 @@ mod tests {
             enemy: Policy::Balanced,
             player_blocks: None,
             enemy_blocks: None,
-            first: Side::Player,
+            first: TurnPhase::Player,
             max_rounds: 30,
             recruit_limit: Some(1),
         };
@@ -809,7 +812,7 @@ mod tests {
                             enemy: Policy::Balanced,
                             player_blocks: None,
                             enemy_blocks: None,
-                            first: Side::Enemy,
+                            first: TurnPhase::Ai,
                             max_rounds: 30,
                             recruit_limit: Some(1),
                         };
@@ -822,8 +825,8 @@ mod tests {
                             game.gold()[side.faction_id()]
                                 + troops.iter().map(|u| rules.units[u.kind].cost).sum::<i32>()
                         };
-                        let budget = total(Side::Player);
-                        assert_eq!(budget, total(Side::Enemy));
+                        let budget = total(TurnPhase::Player);
+                        assert_eq!(budget, total(TurnPhase::Ai));
                         let scenario = rules
                             .arena
                             .scenarios
@@ -837,9 +840,13 @@ mod tests {
                         };
                         assert_eq!(budget, expected);
                         assert!(game.gold().values().all(|&gold| gold >= 0));
-                        assert_eq!(game.turn(), Side::Enemy);
+                        assert_eq!(game.turn(), TurnPhase::Ai);
                         for unit in game.units() {
-                            let sign = if unit.side == Side::Player { -1 } else { 1 };
+                            let sign = if unit.side == TurnPhase::Player {
+                                -1
+                            } else {
+                                1
+                            };
                             assert_eq!(game.board().positions[unit.tile], (sign * 3 + 4, 4));
                         }
                     }

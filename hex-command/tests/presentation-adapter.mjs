@@ -44,7 +44,7 @@ const details = (v) => ({
   definition: to("UnitRule", v.definition),
   promotions: toArray(v.promotions).map((x) => to("UnitRule", x)),
 });
-const forecast = (v) => host({ ...v, side: to("Side", v.side) });
+const forecast = (v) => host({ ...v, side: to("TurnPhase", v.side) });
 export const unit_panel = (...args) => {
   const v = P.unit_panel(...args);
   if (v === 0) return v;
@@ -98,7 +98,7 @@ export const changes = (a, b) => {
     ...v,
     tile_effects: toArray(v.tile_effects),
     captured_tiles: toArray(v.captured_tiles),
-    new_winner: optional("Side", v.new_winner),
+    new_winner: optional("BattleResult", v.new_winner),
     moved_unit: optional("PublicUnit", v.moved_unit),
     attacker: optional("PublicUnit", v.attacker),
   };

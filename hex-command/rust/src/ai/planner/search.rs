@@ -33,9 +33,9 @@ impl ScoreBound for f64 {
         if self == 0.0 { self } else { self.next_down() }
     }
 }
-pub(super) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn best_plan<'a, 'catalog, const BOUNDED: bool, const FOCUSED: bool>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     orders: &crate::ai::orders::TacticalOrders,
     escort: &crate::ai::policies::escort::travel::Workspace,
     seed: u32,
@@ -180,7 +180,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
             .iter()
             .filter(|u| self.belongs_to_phase(u, side) && self.can_act(u.id))
             .collect();
-        if allies.iter().all(|u| u.attacked) {
+        if allies.iter().all(|u| u.attack_spent) {
             return None;
         }
         let foes: Vec<_> = self
@@ -195,7 +195,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
             .iter()
             .filter(|u| role(self, u.kind) == TacticalRole::Frontline && !u.is_leader())
             .collect();
-        let movable_screens = screens.iter().any(|u| !u.moved && !u.attacked);
+        let movable_screens = screens.iter().any(|u| !u.moved && !u.attack_spent);
         let board = &self.board();
         // These distances and possible targets depend only on this planning
         // snapshot, not on the unit or candidate move currently being scored.
@@ -247,7 +247,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
         let mut roster: Vec<_> = allies
             .iter()
             .enumerate()
-            .filter(|(_, u)| !u.attacked && (!focused || Some(u.id) == focus))
+            .filter(|(_, u)| !u.attack_spent && (!focused || Some(u.id) == focus))
             .map(|(index, &unit)| {
                 let before_risk = crate::ai::policies::threat::cap_exposure(
                     unit,
@@ -933,7 +933,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                             self.board().positions[tile],
                             target.map(|target| target.id),
                         );
-                    let withdrawing = unit.side == Side::Enemy
+                    let withdrawing = unit.side == TurnPhase::Ai
                         && target.is_none()
                         && unit.hp < self.rules().units[unit.kind].hp
                         && range_to_foe(tile) > range_to_foe(unit.tile)
@@ -1039,6 +1039,7 @@ mod tests {
                         game.phase_forecasts(),
                     );
                     let input = crate::ai::campaigner::mission::CampaignInput {
+                        seed: 0,
                         goals: None,
                         diplomacy: crate::ai::Diplomacy::Unrestricted,
                     };
@@ -1145,10 +1146,10 @@ impl Session {
     pub(super) fn escort(&self) -> &crate::ai::policies::escort::travel::Workspace {
         &self.escort
     }
-    pub(super) fn focused(
+    pub(super) fn focused<'a, 'catalog>(
         &mut self,
-        game: &BattleView<'_, '_>,
-        phases: hex_command_battle::PhaseForecasts<'_, '_>,
+        game: &'a BattleView<'a, 'catalog>,
+        phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
         turn: &crate::ai::runtime::PlannerTurn<'_>,
         id: u32,
     ) -> Option<Plan> {
@@ -1204,9 +1205,9 @@ pub(super) fn initialize(
     }
 }
 
-pub(super) fn choose(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn choose<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut Session,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
 ) -> Result<(), CommandError> {
@@ -1246,7 +1247,7 @@ pub(super) fn publish_plan(
             actor,
             actor.retreating,
             *intent,
-            actor.attacked,
+            actor.attack_spent,
         ));
     }
     if let Some(plan) = plan {
@@ -1266,7 +1267,7 @@ pub(super) fn publish_plan(
                         actor,
                         retreating,
                         rebuilding,
-                        actor.attacked,
+                        actor.attack_spent,
                     ));
                 }
             }

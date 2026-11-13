@@ -13,7 +13,7 @@ function fixture(attackerType = "soldier", defenderType = "soldier", targetTile 
     }
   });
   const attacker = game.add(attackerType, "player", "2,3");
-  const defender = game.add(defenderType, "enemy", targetTile);
+  const defender = game.add(defenderType, "ai", targetTile);
   return { game, attacker, defender };
 }
 function choice(game, attacker, defender, weapon) {
@@ -48,7 +48,7 @@ test("Zero damage attacks remain available and consume actions", () => {
   assert(health >= preview.attackerHealth.minimum && health <= preview.attackerHealth.maximum);
   assert(
     required(Native.unit(game.view, attacker.id)).moved &&
-      required(Native.unit(game.view, attacker.id)).attacked,
+      required(Native.unit(game.view, attacker.id)).attackSpent,
   );
   assert.throws(() =>
     Native.dispatch(game.battle, {

@@ -1,0 +1,2127 @@
+{
+  "mapId": "darkness-hunters-arena",
+  "mapRevision": 1,
+  "cols": 13,
+  "rows": 9,
+  "name": "Ghost hunt",
+  "description": "Lantern patrols and ghosts compete for three villages in a dark valley.",
+  "lighting": {
+    "time": "night"
+  },
+  "tiles": [
+    {
+      "col": 0,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 9,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 10,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 11,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 12,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 9,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 10,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 11,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 12,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "village",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      },
+      "id": "pine-hamlet",
+      "connections": []
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 9,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 10,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 11,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 12,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 9,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 10,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 11,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 12,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "terrain": "keep",
+      "owner": "enemy",
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      },
+      "id": "burrow"
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "terrain": "village",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      },
+      "id": "moss-hamlet",
+      "connections": []
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 9,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 10,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 11,
+      "row": 4,
+      "terrain": "keep",
+      "owner": "player",
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      },
+      "id": "watch-post"
+    },
+    {
+      "col": 12,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 9,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 10,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 11,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 12,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 6,
+      "terrain": "village",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      },
+      "id": "fern-hamlet",
+      "connections": []
+    },
+    {
+      "col": 9,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 10,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 11,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 12,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 9,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 10,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 11,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 12,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 9,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 10,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 11,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "col": 12,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": false,
+        "concealment": [
+          {
+            "kind": "darkness",
+            "revealWithin": 1,
+            "requires": {
+              "illumination": "unlit"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

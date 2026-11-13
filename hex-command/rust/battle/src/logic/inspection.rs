@@ -3,42 +3,15 @@ use super::battle::Game;
 use crate::{data::*, model::*};
 
 impl Game<'_> {
-    fn damage_detail(&self, attack: &WeaponRules, defender: &Unit, tile: usize) -> DamageDetail {
-        let rule = &self.rules.units[defender.kind];
-        let modifier = rule.damage_modifiers.get(attack.damage_type)
-            + self.equipment_modifier(defender, attack.damage_type);
-        let environment = rule.environment[self.runtime.terrain[tile]][attack.category.index()]
-            [attack.damage_type.index()];
-        let distribution = super::damage::distribution(attack, modifier + environment);
-        DamageDetail {
-            roll_min: attack.damage - attack.spread,
-            roll_max: attack.damage + attack.spread,
-            minimum: distribution.min,
-            maximum: distribution.max,
-            expected: distribution.mean,
-            probabilities: distribution.probabilities.clone(),
-            count: attack.count,
-            total: distribution.mean.round() as i32,
-            base: attack.damage,
-            damage_type: attack.damage_type,
-            modifier,
-            modified: attack.damage + modifier,
-            protection: (-environment).max(0),
-            exposure: environment.max(0),
-            terrain: self.rules.terrain_names[self.runtime.terrain[tile]].clone(),
-            damage: (attack.damage + modifier + environment).max(0),
-        }
-    }
-
     fn campaign_objectives(&self) -> Option<CampaignObjectives> {
-        let state = self.runtime.campaign.as_ref()?;
-        let mission = self.runtime.mission.as_ref()?;
+        let state = self.story.campaign.as_ref()?;
+        let mission = self.story.mission.as_ref()?;
         let leader_alive = self
             .units
             .iter()
-            .any(|u| u.side == Side::Player && u.role == Some(Role::Leader))
+            .any(|u| u.side == TurnPhase::Player && u.role == Some(Role::Leader))
             || state.evacuated.iter().any(|record| {
-                record.unit.side == Side::Player && record.unit.role == Some(Role::Leader)
+                record.unit.side == TurnPhase::Player && record.unit.role == Some(Role::Leader)
             });
         let survival = |label: String, alive: bool| ObjectiveStatus {
             active_tiles: vec![],
@@ -46,22 +19,21 @@ impl Game<'_> {
             available: true,
             progress: Progress {
                 label,
-                current: u32::from(self.runtime.winner.is_some() && alive),
+                current: u32::from(self.position.runtime.winner.is_some() && alive),
                 total: 1,
-                done: self.runtime.winner.is_some() && alive,
+                done: self.position.runtime.winner.is_some() && alive,
                 tiles: vec![],
             },
             failed: !alive,
         };
         let mut protected = vec![survival("Keep your leader alive.".into(), leader_alive)];
         for name in &mission.required_companions {
-            let alive =
-                self.units.iter().any(|u| {
-                    u.side == Side::Player && self.name(u.character) == Some(name.as_str())
-                }) || state
-                    .evacuated
-                    .iter()
-                    .any(|record| record.unit.character.as_ref() == Some(name));
+            let alive = self.units.iter().any(|u| {
+                u.side == TurnPhase::Player && self.name(u.character) == Some(name.as_str())
+            }) || state
+                .evacuated
+                .iter()
+                .any(|record| record.unit.character.as_ref() == Some(name));
             protected.push(survival(
                 format!("Keep {} alive.", self.character_name(name).unwrap_or(name)),
                 alive,
@@ -108,9 +80,9 @@ impl Game<'_> {
                 .map(|(index, id)| {
                     (
                         id.to_string(),
-                        self.runtime.board.adjacent[index]
+                        self.position.runtime.board.adjacent[index]
                             .iter()
-                            .map(|&next| self.runtime.board.ids[next].clone())
+                            .map(|&next| self.position.runtime.board.ids[next].clone())
                             .collect(),
                     )
                 })
@@ -124,7 +96,7 @@ impl Game<'_> {
             .iter()
             .map(|unit| {
                 let mut attacks = Vec::new();
-                for target in &self.runtime.units {
+                for target in &self.position.runtime.units {
                     for weapon in self.attack_options(unit, target, unit.tile) {
                         let attack = self.weapon(unit, weapon).clone();
                         let (damage, retaliation, response) =
@@ -170,11 +142,11 @@ impl Game<'_> {
                     faction: self.unit_faction_view(unit),
                     unit: format!("u{}", unit.id),
                     reachable: self
-                        .reachable(unit)
+                        .observed_reachable(unit)
                         .iter()
                         .copied()
                         .map(|(tile, cost)| ReachableTile {
-                            tile: TileId(self.runtime.board.ids[tile].clone()),
+                            tile: TileId(self.position.runtime.board.ids[tile].clone()),
                             cost,
                         })
                         .collect(),
@@ -192,7 +164,7 @@ impl Game<'_> {
                                 self.rules.units[kind].id.clone(),
                                 self.placement_tiles(unit, kind, true)
                                     .into_iter()
-                                    .map(|tile| self.runtime.board.ids[tile].clone())
+                                    .map(|tile| self.position.runtime.board.ids[tile].clone())
                                     .collect(),
                             )
                         })
@@ -203,6 +175,7 @@ impl Game<'_> {
         BattleInspection {
             story: self.resolved_story(),
             speakers: self
+                .story
                 .campaign
                 .as_ref()
                 .map(|state| {
@@ -260,6 +233,35 @@ impl Game<'_> {
                     .map(|id| (id.clone(), self.faction_income(id)))
                     .collect(),
             )),
+        }
+    }
+}
+
+impl super::BattlePosition<'_> {
+    fn damage_detail(&self, attack: &WeaponRules, defender: &Unit, tile: usize) -> DamageDetail {
+        let rule = &self.rules.units[defender.kind];
+        let modifier = rule.damage_modifiers.get(attack.damage_type)
+            + self.equipment_modifier(defender, attack.damage_type);
+        let environment = rule.environment[self.runtime.terrain[tile]][attack.category.index()]
+            [attack.damage_type.index()];
+        let distribution = super::damage::distribution(attack, modifier + environment);
+        DamageDetail {
+            roll_min: attack.damage - attack.spread,
+            roll_max: attack.damage + attack.spread,
+            minimum: distribution.min,
+            maximum: distribution.max,
+            expected: distribution.mean,
+            probabilities: distribution.probabilities.clone(),
+            count: attack.count,
+            total: distribution.mean.round() as i32,
+            base: attack.damage,
+            damage_type: attack.damage_type,
+            modifier,
+            modified: attack.damage + modifier,
+            protection: (-environment).max(0),
+            exposure: environment.max(0),
+            terrain: self.rules.terrain_names[self.runtime.terrain[tile]].clone(),
+            damage: (attack.damage + modifier + environment).max(0),
         }
     }
 }

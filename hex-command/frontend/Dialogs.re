@@ -3,6 +3,9 @@ let audioCreditsUrl: string = [%mel.raw
   "(import.meta.env?.BASE_URL ?? '/') + 'assets/audio/palette/CREDITS.txt'"
 ];
 
+[@mel.get] external selectTarget: React.Event.Form.t => {. "value": string } = "currentTarget";
+[@mel.get] external selectValue: {. "value": string } => string = "value";
+
 let buildCommit: string = [%mel.raw "import.meta.env?.VITE_BUILD_COMMIT ?? 'development'"];
 
 module SoundControl = {
@@ -34,6 +37,10 @@ module Settings = {
   let make =
       (
         ~session,
+        ~showHiddenMaps,
+        ~onHiddenMapsChange,
+        ~onFollowAiChange,
+        ~playtestPreferenceError,
         ~view: Session.model,
         ~voiceEnabled,
         ~onVoiceChange,
@@ -221,7 +228,7 @@ module Settings = {
               || view.settling
               || view.awaiting_new_game
               || view.load_problem != None
-              || state.turn != Domain.Side.Player
+              || state.turn != Domain.Turn_phase.Player
               && state.winner == None
             }
             onClick={_ => saveGame()}>
@@ -260,6 +267,42 @@ module Settings = {
               onChange={event => onVoiceChange(bindChecked(event))}
             />
           </label>
+          <label className="setting-row sound-row">
+            <span className="label"> {text("Follow AI camera")} </span>
+            <input
+              type_="checkbox"
+              checked={view.follow_ai}
+              onChange={e => onFollowAiChange(bindChecked(e))}
+            />
+          </label>
+          <label className="setting-row">
+            <span className="label"> {text("Player control")} </span>
+            <select
+              ariaLabel="Player control"
+              disabled={state.turn != Domain.Turn_phase.Player}
+              value={Option.fold(~none="human", ~some=p => Setup.preset(p).id, view.player_ai)}
+              onChange={event => {
+                let selected = selectValue(selectTarget(event));
+                let policy =
+                  List.find_opt(
+                    (preset: Setup.difficulty) => preset.id == selected,
+                    Setup.difficulties,
+                  );
+                Session.set_player_ai(
+                  session,
+                  Option.map((preset: Setup.difficulty) => preset.policy, policy),
+                );
+              }}>
+              <option value="human"> {text("You")} </option>
+              {eachList(Setup.difficulties, preset =>
+                 <option key={preset.Setup.id} value={preset.id}>
+                   {text("AI · " ++ preset.name)}
+                 </option>
+               )}
+            </select>
+          </label>
+          {playtestPreferenceError != ""
+             ? <p role="alert"> {text(playtestPreferenceError)} </p> : React.null}
           <details className="advanced">
             <summary className="setting-row">
               <span className="label"> {text("Advanced")} </span>
@@ -267,6 +310,14 @@ module Settings = {
                 <path d="m3 6 5 5 5-5" />
               </svg>
             </summary>
+            <label className="setting-row sound-row">
+              <span className="label"> {text("Show hidden maps")} </span>
+              <input
+                type_="checkbox"
+                checked=showHiddenMaps
+                onChange={e => onHiddenMapsChange(bindChecked(e))}
+              />
+            </label>
             <label className="setting-row sound-row">
               <span className="label"> {text("Commander return arrow")} </span>
               <input
@@ -320,7 +371,7 @@ module Settings = {
             <h3 className="group-label"> {text("Debug tools")} </h3>
             <p className="help">
               {text(
-                 "Download the battle, startup timings, last five enemy turns, and saved progress. Includes enemies hidden by fog. Enemy-turn recordings clear on reload or mission change.",
+                 "Download the battle, startup timings, last five AI turns, and saved progress. AI-turn recordings clear on reload or mission change.",
                )}
             </p>
             <button className="debug-action" onClick={_ => actions.download_debug_report()}>

@@ -85,7 +85,11 @@ impl TileOrderContext {
             direction = (position.0 - home.0, position.1 - home.1);
         }
         if direction == (0.0, 0.0) {
-            direction.0 = if u.side == Side::Player { 1.0 } else { -1.0 };
+            direction.0 = if u.side == TurnPhase::Player {
+                1.0
+            } else {
+                -1.0
+            };
         }
         TileOrder {
             home,
@@ -95,7 +99,7 @@ impl TileOrderContext {
     }
 }
 impl TileOrder {
-    pub(crate) fn context(g: &BattleView, side: Side, villages: bool) -> TileOrderContext {
+    pub(crate) fn context(g: &BattleView, side: TurnPhase, villages: bool) -> TileOrderContext {
         fn center(g: &BattleView, tiles: impl Iterator<Item = usize>) -> (f64, f64) {
             let (sum, count) = tiles.fold(((0.0, 0.0), 0usize), |(s, n), t| {
                 let (c, r) = g.board().positions[t];
@@ -345,7 +349,7 @@ pub(in crate::ai) fn ordinary<'a>(
             && game.rules().units[o.kind].healing == 0
     })
 }
-pub fn proximity(game: &BattleView<'_, '_>, side: Side, tile: usize) -> u16 {
+pub fn proximity(game: &BattleView<'_, '_>, side: TurnPhase, tile: usize) -> u16 {
     game.units()
         .iter()
         .filter(|o| game.hostile_to_phase(o, side))
@@ -402,8 +406,8 @@ mod target_tests {
                 .find(|unit| unit.side == side && unit.is_leader())
                 .unwrap()
         };
-        let left = leader(Side::Player);
-        let right = leader(Side::Enemy);
+        let left = leader(TurnPhase::Player);
+        let right = leader(TurnPhase::Ai);
         let (lc, lr) = view.board().positions[left.tile];
         let (rc, rr) = view.board().positions[right.tile];
         assert_eq!(lr, rr);

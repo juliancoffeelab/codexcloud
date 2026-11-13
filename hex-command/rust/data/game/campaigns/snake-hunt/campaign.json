@@ -1,0 +1,22 @@
+{
+  "id": "snake-hunt",
+  "name": "Snake Hunt",
+  "tagline": "Patrols against forest camouflage.",
+  "description": "Captain Boots leads the patrols into a contest for Pine Hamlet, Moss Hamlet and Fern Hamlet. Control all three villages at once, or defeat the opposing leader. You lose if your leader falls or the opposing army controls all three villages. Both armies can recruit from their keeps. Keep patrols close enough to spot snakes hiding in forest.",
+  "shortDescription": "Lead human patrols against concealed snakes.",
+  "race": "human",
+  "leader": "commander",
+  "characters": [
+    {
+      "id": "night-mayor",
+      "name": "Mayor Hiss"
+    },
+    {
+      "id": "captain-boots",
+      "name": "Captain Boots"
+    }
+  ],
+  "human": false,
+  "ending": [],
+  "stages": ["stages/forest-hunters-arena/stage.json"]
+}

@@ -17,6 +17,8 @@ pub enum ActionRecord {
         item: String,
     },
     Move {
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        requested: Option<Hex>,
         unit: String,
         tile: Hex,
         #[serde(default, skip_serializing_if = "Vec::is_empty")]

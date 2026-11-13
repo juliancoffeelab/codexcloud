@@ -22,7 +22,7 @@ struct Field {
 type GoalUnit = (
     u32,
     usize,
-    Side,
+    TurnPhase,
     Option<usize>,
     Option<Role>,
     Option<bool>,
@@ -44,7 +44,7 @@ pub(in crate::ai) struct Workspace {
     owners: Vec<Option<String>>,
     terrain: Vec<usize>,
     gold: i32,
-    side: Option<Side>,
+    side: Option<TurnPhase>,
     positions: Vec<(u32, usize, Option<bool>)>,
     clearing: FxHashMap<u32, FxHashSet<usize>>,
     lanes: FxHashSet<usize>,
@@ -481,7 +481,7 @@ pub(super) fn plan(
             role(game, u.kind) == TacticalRole::Frontline
                 && !u.is_leader()
                 && !u.moved
-                && !u.attacked
+                && !u.attack_spent
         })
     {
         for value in &mut support {
@@ -858,7 +858,7 @@ pub(super) fn plan(
         if score <= 0.1 || best.as_ref().is_some_and(|p| p.score >= score) {
             continue;
         }
-        let withdrawing = unit.side == Side::Enemy
+        let withdrawing = unit.side == TurnPhase::Ai
             && c.target.is_none()
             && unit.hp < game.rules().units[unit.kind].hp
             && proximity_grid[c.tile] > proximity_grid[unit.tile]
@@ -916,7 +916,7 @@ pub(super) fn plan(
                 target: None,
                 weapon: None,
                 advance: None,
-                withdrawing: unit.side == Side::Enemy
+                withdrawing: unit.side == TurnPhase::Ai
                     && unit.hp < game.rules().units[unit.kind].hp
                     && proximity_grid[tile] > proximity_grid[unit.tile]
                     && (incoming < before || healing || unit.retreating == Some(true)),
@@ -992,6 +992,7 @@ mod tests {
                     authored_orders = crate::ai::CampaignBlock::Mission.campaign_orders(
                         &mission,
                         crate::ai::campaigner::mission::CampaignInput {
+                            seed: 0,
                             goals: None,
                             diplomacy: crate::ai::Diplomacy::Unrestricted,
                         },

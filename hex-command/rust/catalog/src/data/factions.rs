@@ -1,6 +1,6 @@
 //! Faction allegiance is independent of the two input/turn phases and AI policy.
 use super::FactionPolicy;
-use super::{ConditionRule, ConditionSide, Side};
+use super::{ConditionRule, ConditionSide, TurnPhase};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -46,7 +46,7 @@ pub struct FactionTransfer {
     pub when: ConditionRule,
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
@@ -66,9 +66,10 @@ pub struct FactionRecruit {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Faction {
+    pub vision_group: String,
     pub id: String,
     /// Phase in which this controller acts; this is not its diplomatic relation.
-    pub phase: Side,
+    pub phase: TurnPhase,
     pub controller: Controller,
     pub palette: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -82,12 +83,12 @@ pub struct Faction {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub transfer: Option<FactionTransfer>,
 }
-impl Side {
+impl TurnPhase {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn faction_id(self) -> &'static str {
         match self {
             Self::Player => "player",
-            Self::Enemy => "enemy",
+            Self::Ai => "enemy",
         }
     }
 }
@@ -156,9 +157,9 @@ pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> R
         {
             return Err("invalid or duplicate faction identifier".into());
         }
-        if faction.id == "player" && faction.phase != Side::Player
-            || faction.id == "enemy" && faction.phase != Side::Enemy
-            || matches!(faction.controller, Controller::Human) && faction.phase != Side::Player
+        if faction.id == "player" && faction.phase != TurnPhase::Player
+            || faction.id == "enemy" && faction.phase != TurnPhase::Ai
+            || matches!(faction.controller, Controller::Human) && faction.phase != TurnPhase::Player
         {
             return Err("invalid faction controller phase".into());
         }
@@ -182,7 +183,7 @@ pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> R
         }
     }
     for unit in units {
-        validate_faction_reference(factions, unit.faction.as_deref(), unit.side)?;
+        validate_faction_reference(factions, Some(&unit.faction), unit.side)?;
     }
     Ok(())
 }
@@ -206,19 +207,17 @@ pub struct UnitFaction {
 pub fn validate_faction_reference(
     factions: &[Faction],
     id: Option<&str>,
-    phase: Side,
+    phase: TurnPhase,
 ) -> Result<(), String> {
-    let Some(id) = id else {
-        return Ok(());
-    };
+    let id = id.ok_or_else(|| "unit requires an explicit faction".to_owned())?;
     let faction = factions.iter().find(|f| f.id == id);
-    if faction.is_none() && !matches!(id, "player" | "enemy") {
+    if faction.is_none() {
         return Err("unknown unit faction".into());
     }
     let expected = faction.map(|f| f.phase).unwrap_or(if id == "player" {
-        Side::Player
+        TurnPhase::Player
     } else {
-        Side::Enemy
+        TurnPhase::Ai
     });
     if phase != expected {
         return Err("unit phase differs from its faction".into());
@@ -253,7 +252,7 @@ pub fn faction_relation(factions: &[Faction], first: &str, second: &str) -> Rela
 pub fn faction_matches_side(
     factions: &[Faction],
     id: Option<&str>,
-    phase: Side,
+    phase: TurnPhase,
     side: ConditionSide,
 ) -> bool {
     let id = id.unwrap_or(phase.faction_id());
@@ -261,10 +260,13 @@ pub fn faction_matches_side(
         ConditionSide::Enemy => faction_relation(factions, "player", id) == Relation::Hostile,
         ConditionSide::Neutral => faction_relation(factions, "player", id) == Relation::Neutral,
         ConditionSide::Any => true,
+        ConditionSide::Observer => id == "player",
         ConditionSide::Player => factions
             .iter()
             .find(|f| f.id == id)
-            .map_or(phase == Side::Player, |f| f.controller == Controller::Human),
+            .map_or(phase == TurnPhase::Player, |f| {
+                f.controller == Controller::Human
+            }),
     }
 }
 

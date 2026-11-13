@@ -82,7 +82,7 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
         state.tiles = (0..size)
             .map(|tile| Tile {
                 location: None,
-                fog: None,
+                perception: TilePerception::default(),
                 light: None,
                 id: format!("{},{}", tile % 9, tile / 9),
                 col: (tile % 9) as i32,
@@ -98,9 +98,9 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
         let mut game = Game::from_state(rules(), state);
         for (index, kind) in ["swordsman", "reefguard", "scout"].into_iter().enumerate() {
             let tile = game.board.ids[index * 3].clone();
-            add(&mut game, kind, Side::Player, &tile);
+            add(&mut game, kind, TurnPhase::Player, &tile);
         }
-        let blocker = game.add(game.kind("wolf"), Side::Enemy, 11);
+        let blocker = game.add(game.kind("wolf"), TurnPhase::Ai, 11);
         for terrain in ["forest", "water", "plains"] {
             for tile in (0..size).step_by(5) {
                 game.set_terrain(tile, rules().terrains[terrain]);
@@ -149,8 +149,8 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
 #[test]
 fn moves_obey_turns_actions_occupancy_and_passability() {
     let mut game = flat();
-    let actor = add(&mut game, "swordsman", Side::Player, Hex::new(2, 3));
-    add(&mut game, "scout", Side::Enemy, Hex::new(3, 3));
+    let actor = add(&mut game, "swordsman", TurnPhase::Player, Hex::new(2, 3));
+    add(&mut game, "scout", TurnPhase::Ai, Hex::new(3, 3));
     let water = game.site(&Hex::new(2, 2));
     game.set_terrain(water, game.rules.terrains["water"]);
     assert!(
@@ -190,7 +190,7 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
         let tile = game.site_at(col, 0);
         game.set_terrain(tile, game.rules.terrains[terrain]);
     }
-    let id = add(&mut game, kind, Side::Player, Hex::new(0, 0));
+    let id = add(&mut game, kind, TurnPhase::Player, Hex::new(0, 0));
     let allowance = game.rules.units[game.kind(kind)].r#move;
     let goal = game.site_at(allowance as i32, 0);
     assert!(
@@ -208,11 +208,11 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
     let index = game.index(id).unwrap();
     game.units[index].tile = start;
     game.units[index].moved = false;
-    game.units[index].attacked = true;
+    game.units[index].attack_spent = true;
     game.roster_changed();
     assert!(game.reachable(game.unit(id).unwrap()).is_empty());
-    game.units[index].attacked = false;
-    add(&mut game, "wolf", Side::Enemy, Hex::new(1, 0));
+    game.units[index].attack_spent = false;
+    add(&mut game, "wolf", TurnPhase::Ai, Hex::new(1, 0));
     assert!(game.reachable(game.unit(id).unwrap()).is_empty());
 }
 
@@ -344,7 +344,7 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
 #[test]
 fn developer_showcase_has_each_unit_for_both_sides_and_every_terrain() {
     let game = Game::new(rules(), "developer");
-    for side in [Side::Player, Side::Enemy] {
+    for side in [TurnPhase::Player, TurnPhase::Ai] {
         let mut kinds: Vec<_> = game
             .units
             .iter()

@@ -127,7 +127,9 @@ impl EventProgress {
                 };
                 let (turns, last_round) = if !standing {
                     (0, facts.round())
-                } else if tick && facts.turn() == Side::Player && facts.round() > counter.last_round
+                } else if tick
+                    && facts.turn() == TurnPhase::Player
+                    && facts.round() > counter.last_round
                 {
                     ((counter.turns + 1).min(hold.turns), facts.round())
                 } else {

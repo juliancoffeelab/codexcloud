@@ -59,8 +59,8 @@ pub struct Tile {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub floor: Option<String>,
     /// Immutable condition shared by snapshots; Arc keeps native catalogs thread-safe.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub fog: Option<std::sync::Arc<ConditionRule>>,
+    #[serde(default)]
+    pub perception: TilePerception,
     /// Terrain light anchored to this tile, using the same contextual rules as fog.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub light: Option<std::sync::Arc<TileLight>>,
@@ -208,6 +208,7 @@ impl std::ops::IndexMut<&str> for Gold {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct State {
+    pub vision_groups: Vec<VisionGroupState>,
     pub factions: Vec<Faction>,
     pub ground_items: Vec<GroundItem>,
     /// Selected skirmish factions; campaigns use their authored recruitment.
@@ -221,9 +222,9 @@ pub struct State {
     pub cols: i32,
     pub rows: i32,
     pub round: u32,
-    pub turn: Side,
+    pub turn: TurnPhase,
     pub gold: Gold,
-    pub winner: Option<Side>,
+    pub winner: Option<BattleResult>,
     pub next_id: u32,
     /// Complete persisted combat PRNG state.
     pub combat_rng: u32,

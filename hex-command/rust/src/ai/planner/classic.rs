@@ -53,7 +53,7 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         // Classic owns this budget estimate and its movement penalties; no recruit previews.
         let mut recruitment = HashMap::default();
         if let Some(opportunity) = opportunity.filter(|r| r.remaining_budget != Some(0)) {
-            if u.is_leader() && !u.moved && !u.attacked {
+            if u.is_leader() && !u.moved && !u.attack_spent {
                 let destinations = orders.authored_destinations(
                     g,
                     u,
@@ -299,14 +299,18 @@ impl ClassicEvaluation<'_, '_, '_> {
                 return ClassicOrder::Leader;
             }
             let r = &self.rules().units[u.kind];
+            // Classic intentionally retains its legacy ID/family-based ordering.
+            // This planner policy must not define shared unit or perception mechanics.
             match r.id.as_str() {
                 "scout" | "wolf" => ClassicOrder::Scout,
                 "archer" | "thorncaller" | "bonearcher" | "adept" => ClassicOrder::Ranged,
                 "soldier" | "skeleton" | "warden" | "boar" => ClassicOrder::Frontline,
                 _ => match r.family {
-                    Family::Captives | Family::Scout | Family::Wolf | Family::Ghost => {
-                        ClassicOrder::Scout
-                    }
+                    Family::Captives
+                    | Family::Scout
+                    | Family::Wolf
+                    | Family::Ghost
+                    | Family::GiantSnake => ClassicOrder::Scout,
                     Family::Archer | Family::Thorncaller | Family::Bonearcher | Family::Adept => {
                         ClassicOrder::Ranged
                     }
@@ -368,11 +372,11 @@ impl std::ops::DerefMut for ClassicProjection<'_, '_> {
 }
 impl ClassicProjection<'_, '_> {
     fn clear_projection_retreat(&mut self, id: u32) {
-        let (rebuilding, attacked) = {
+        let (rebuilding, attack_spent) = {
             let actor = self.unit(id).unwrap();
-            (actor.rebuilding, actor.attacked)
+            (actor.rebuilding, actor.attack_spent)
         };
-        self.project_intent(id, None, rebuilding, attacked);
+        self.project_intent(id, None, rebuilding, attack_spent);
     }
     fn mark_projection_attacked(&mut self, id: u32) {
         let (retreating, rebuilding) = {
@@ -530,7 +534,7 @@ impl ClassicProjection<'_, '_> {
         let Some(mut u) = self.unit(id).cloned() else {
             return;
         };
-        if !self.belongs_to_phase(&u, self.turn()) || u.attacked {
+        if !self.belongs_to_phase(&u, self.turn()) || u.attack_spent {
             return;
         }
         if let Some(promotion) = rules.orders.promotion(self, &u) {
@@ -538,11 +542,11 @@ impl ClassicProjection<'_, '_> {
             return;
         }
         let (rebuild, intent) = rules.orders.rebuild_plan(self, id, required);
-        let (retreating, attacked) = {
+        let (retreating, attack_spent) = {
             let actor = self.unit(id).unwrap();
-            (actor.retreating, actor.attacked)
+            (actor.retreating, actor.attack_spent)
         };
-        self.project_intent(id, retreating, intent, attacked);
+        self.project_intent(id, retreating, intent, attack_spent);
         u = self.unit(id).unwrap().clone();
         let retreat = self.retreat(id, &mut rules, recorder);
         if retreat == Retreat::Retreated {
@@ -677,10 +681,10 @@ impl ClassicProjection<'_, '_> {
             }
         }
     }
-    pub(in crate::ai) fn classic_choose(
+    pub(in crate::ai) fn classic_choose<'a, 'catalog>(
         &mut self,
-        source: &BattleView<'_, '_>,
-        phases: hex_command_battle::PhaseForecasts<'_, '_>,
+        source: &'a BattleView<'a, 'catalog>,
+        phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
         id: u32,
         objectives: &[Objective],
         orders: &crate::ai::orders::TacticalOrders,
@@ -821,9 +825,9 @@ pub(super) fn prepare(
     session.escort.prepare(phases, turn.report);
 }
 
-pub(super) fn choose(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn choose<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut Session,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
     source: &ActionForecastSource<'_, '_>,
@@ -849,10 +853,15 @@ pub(super) fn choose(
             .collect();
         session.objectives.extend(orders.rebuild_objectives(game));
         session.revision = turn.coordination.revision();
-        if turn.goals.is_none() && (!orders.campaign || game.turn() == Side::Enemy) {
-            session
-                .objectives
-                .retain(|g| g.id.starts_with("rebuild:") || g.id.starts_with("group:"));
+        if turn.goals.is_none() && (!orders.campaign || game.turn() == TurnPhase::Ai) {
+            session.objectives.retain(|g| {
+                // Explicit actor/family travel is a Campaigner order on every
+                // phase, including patrols. Anonymous arena targets retain
+                // Classic's own movement policy.
+                crate::ai::policies::objectives::actor_route(g)
+                    || g.id.starts_with("rebuild:")
+                    || g.id.starts_with("group:")
+            });
         }
         session.ids = ClassicEvaluation(game)
             .classic_order(&session.objectives)
@@ -872,7 +881,7 @@ pub(super) fn choose(
                     unit,
                     unit.retreating,
                     intent,
-                    unit.attacked,
+                    unit.attack_spent,
                 ));
             }
         }
@@ -1073,20 +1082,20 @@ impl Recorder {
             intents: game
                 .units()
                 .iter()
-                .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
+                .map(|u| (u.id, (u.retreating, u.rebuilding, u.attack_spent)))
                 .collect(),
         }
     }
     fn flush_intents(&mut self, game: &BattleView<'_, '_>) {
         for u in game.units() {
-            let intent = (u.retreating, u.rebuilding, u.attacked);
+            let intent = (u.retreating, u.rebuilding, u.attack_spent);
             let record_retreat = self.retreat_logs.remove(&u.id);
             if record_retreat || self.intents.get(&u.id).is_some_and(|old| *old != intent) {
                 self.commands.push_back(Command::SetUnitIntent {
                     unit: UnitId(u.id),
                     retreating: u.retreating,
                     rebuilding: u.rebuilding,
-                    attacked: u.attacked,
+                    attack_spent: u.attack_spent,
                     record_retreat,
                 });
             }
@@ -1106,7 +1115,7 @@ impl Recorder {
         self.intents = game
             .units()
             .iter()
-            .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
+            .map(|u| (u.id, (u.retreating, u.rebuilding, u.attack_spent)))
             .collect();
     }
     fn move_unit(

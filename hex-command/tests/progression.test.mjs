@@ -20,14 +20,14 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   const game = new Game();
   game.units = [];
   const attacker = game.addUnit("swordsman", "player", "3,3");
-  const defender = game.addUnit("archer", "enemy", "4,3");
+  const defender = game.addUnit("archer", "ai", "4,3");
   attacker.hp = Catalog.unit(catalog, "swordsman").hp - 4;
   defender.hp = 3;
   game.attack(attacker.id, defender.id, "sword");
   assert.equal(attacker.experience, 6);
   assert.deepEqual(game.promotionOptions(attacker.id), []);
   attacker.experience = 10;
-  attacker.moved = attacker.attacked = false;
+  attacker.moved = attacker.attackSpent = false;
   const before = createGameView(game);
   const beforePromotion = game.captureState();
   assert.deepEqual(
@@ -45,7 +45,7 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   );
   assert.equal(attacker.id, beforePromotion.units[0].id);
   assert.equal(attacker.experience, 0);
-  assert(attacker.moved && attacker.attacked);
+  assert(attacker.moved && attacker.attackSpent);
   assert.equal(
     Native.unit(before, attacker.id)?.type,
     "swordsman",
@@ -68,7 +68,7 @@ test("Progressed campaign units persist and invalid XP is rejected", async () =>
   campaign.advanceUnit(leader.id, "tideseer");
   const pilot = required(campaign.units.find((unit) => unit.character === "edda"));
   pilot.experience = 7;
-  campaign.winner = "player";
+  campaign.winner = "playerVictory";
   const next = campaign.nextCampaignMission([recruit.id]);
   await saveBattle(next);
   assert.equal((await loadBattle()).game.campaign?.id, "borrowed-tide");
@@ -100,12 +100,12 @@ for (const [chapter, oldName, officerName] of [
     async () => {
       const oldCoast = Game.startCampaign("borrowed-tide", chapter);
       const officer = required(
-        oldCoast.units.find((unit) => unit.side === "enemy" && unit.role === "leader"),
+        oldCoast.units.find((unit) => unit.side === "ai" && unit.role === "leader"),
       );
       officer.name = oldName;
       officer.hp = 5;
       officer.experience = 7;
-      officer.moved = officer.attacked = true;
+      officer.moved = officer.attackSpent = true;
       oldCoast.campaign.dialogue = [
         required(
           required(history[Catalog.campaign(catalog, "borrowed-tide").missions[chapter].map.id])

@@ -553,7 +553,8 @@ let run root =
       Array_ext.filter_map
         (fun (tile : Domain.tile) ->
           match Hashtbl.find_opt placements tile.id with
-          | Some (unit, raw) when unit.side <> Domain.Side.Enemy || not (Hashtbl.mem fog tile.id) ->
+          | Some (unit, raw) when unit.side <> Domain.Turn_phase.Ai || not (Hashtbl.mem fog tile.id)
+            ->
               Some (unit, raw)
           | _ -> None)
         input.tiles
@@ -569,7 +570,7 @@ let run root =
         let color =
           if palette = "passive" then "#efecdc"
           else if palette = "green" then "#83b765"
-          else if unit.side = Domain.Side.Player then "#6fdec0"
+          else if unit.side = Domain.Turn_phase.Player then "#6fdec0"
           else "#ff9590"
         in
         let frame =

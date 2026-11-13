@@ -364,6 +364,8 @@ pub enum UnitReference {
 )]
 #[serde(deny_unknown_fields)]
 pub struct MarkSpec {
+    #[serde(default)]
+    pub sight: Option<SightEmission>,
     #[serde(rename = "type")]
     pub kind: String,
     pub tile: TileRef,
@@ -477,6 +479,12 @@ pub struct RecruitmentUnlock {
 )]
 #[serde(rename_all = "camelCase")]
 pub enum EventAction {
+    AddConcealment(ConcealmentChange),
+    RemoveConcealment(ConcealmentRemoval),
+    GrantPerception(PerceptionGrant),
+    RemovePerception(PerceptionRemoval),
+    RevealTerrain(TerrainReveal),
+    SetVisionGroup(VisionGroupAssignment),
     Spawn(ScriptSpawn),
     Give(GiveItem),
     PlaceItem(PlaceItem),
@@ -589,6 +597,8 @@ pub struct ScriptEvent {
 )]
 #[serde(deny_unknown_fields)]
 pub struct MapMark {
+    #[serde(default)]
+    pub sight: Option<SightEmission>,
     #[serde(default, rename = "lightRemembered")]
     pub light_remembered: bool,
     pub id: u32,
@@ -836,11 +846,37 @@ impl ScriptEvent {
         &self,
         tiles: &[Tile],
         factions: &[Faction],
+        groups: &[VisionGroupState],
         items: &std::collections::HashMap<String, Item>,
         path: &str,
     ) -> Result<(), ContentError> {
         use super::catalog::{identifier, unique};
         identifier(&self.id, path)?;
+        let group = |id: &str| {
+            if groups.iter().any(|g| g.id == id) {
+                Ok(())
+            } else {
+                Err(ContentError::new(
+                    path,
+                    format!("unknown vision group {id}"),
+                ))
+            }
+        };
+        for action in self.actions_recursive() {
+            match action {
+                EventAction::RevealTerrain(v) => group(&v.group)?,
+                EventAction::SetVisionGroup(v) => group(&v.group)?,
+                EventAction::CreateMark(v) => {
+                    if let Some(sight) = &v.sight {
+                        group(&sight.group)?;
+                        validate_unit_perception(&[], &sight.profile.penetrates)
+                            .map_err(|e| ContentError::new(path, e))?;
+                    }
+                }
+                _ => {}
+            }
+        }
+
         let fail = |s: String| ContentError::new(path, s);
         let tile = |id: &TileRef| -> Result<(), ContentError> {
             if tiles.iter().any(|t| t.matches_reference(id)) {
@@ -1053,6 +1089,39 @@ impl ScriptEvent {
                             &v.actions, tile, faction, item, path, bound_unit, true, death,
                         )?;
                     }
+                    EventAction::AddConcealment(v) => {
+                        v.rule.validate().map_err(|e| ContentError::new(path, e))?;
+                        if let PerceptionArea::Tiles(tiles) = &v.area {
+                            for t in tiles {
+                                reference(t)?;
+                            }
+                        }
+                    }
+                    EventAction::RemoveConcealment(v) => {
+                        if let PerceptionArea::Tiles(tiles) = &v.area {
+                            for t in tiles {
+                                reference(t)?;
+                            }
+                        }
+                    }
+                    EventAction::GrantPerception(v) => {
+                        v.effect
+                            .validate()
+                            .map_err(|e| ContentError::new(path, e))?;
+                    }
+                    EventAction::RemovePerception(v) => identifier(&v.effect, path)?,
+                    EventAction::RevealTerrain(v) => {
+                        identifier(&v.group, path)?;
+                        if let PerceptionArea::Tiles(tiles) = &v.area {
+                            for t in tiles {
+                                reference(t)?;
+                            }
+                        }
+                    }
+                    EventAction::SetVisionGroup(v) => {
+                        faction(&v.faction)?;
+                        identifier(&v.group, path)?;
+                    }
                     EventAction::SetTerrain(v) => reference(&v.tile)?,
                     EventAction::Gold(v) => faction(&v.faction)?,
                     EventAction::UnlockRecruits(v) | EventAction::Recruits(v) => {
@@ -1190,6 +1259,8 @@ impl ScriptEvent {
             for a in values {
                 match a {
                     EventAction::Give(v) => out.push(&v.units),
+                    EventAction::GrantPerception(v) => out.push(&v.units),
+                    EventAction::RemovePerception(v) => out.push(&v.units),
                     EventAction::ChangeAllegiance(v) => out.push(&v.units),
                     EventAction::DeleteUnit(UnitReference::Selection(v)) => out.push(v),
                     EventAction::ForEachUnit(v) => {

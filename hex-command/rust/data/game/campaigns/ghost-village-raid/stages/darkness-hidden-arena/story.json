@@ -1,0 +1,12 @@
+{
+  "subtitle": "A concealment test battle.",
+  "briefing": "Mayor Hiss leads the restless spirits into a contest for Pine Hamlet, Moss Hamlet and Fern Hamlet. Control all three villages at once, or defeat the opposing leader. You lose if your leader falls or the opposing army controls all three villages. Both armies can recruit from their keeps. Darkness hides your troops from distant patrols, but lantern light exposes them.",
+  "hints": [
+    "Darkness hides your troops from distant patrols, but lantern light exposes them.",
+    "Villages fund recruitment. Keep your leader on a keep to recruit onto adjacent empty ground.",
+    "A captured village must remain yours: losing it makes its objective incomplete again."
+  ],
+  "intro": [],
+  "victory": [],
+  "debrief": "The contest for the three villages is over."
+}

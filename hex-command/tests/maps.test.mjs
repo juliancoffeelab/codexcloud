@@ -24,8 +24,7 @@ test("Developer showcase contains both factions' playable units and expansion sp
   const game = new Game("developer");
   const actors = new Set(game.units.map((unit) => `${unit.side}:${unit.type}`));
   for (const type of Object.keys(TYPES))
-    for (const side of ["player", "enemy"])
-      assert(actors.has(`${side}:${type}`), `${side} ${type}`);
+    for (const side of ["player", "ai"]) assert(actors.has(`${side}:${type}`), `${side} ${type}`);
   const occupied = new Set(game.units.map((unit) => unit.tile));
   const freeGround = game.tiles.filter(
     (tile) => tile.terrain === "plains" && !occupied.has(tile.id),
@@ -42,7 +41,7 @@ test("Developer units use ordinary movement, combat and turns", async () => {
     initial.units.find((unit) => unit.type === "soldier" && unit.side === "player"),
   );
   const enemySoldier = required(
-    initial.units.find((unit) => unit.type === "soldier" && unit.side === "enemy"),
+    initial.units.find((unit) => unit.type === "soldier" && unit.side === "ai"),
   );
   Native.dispatch(developerBattle, {
     kind: "move",
@@ -65,9 +64,9 @@ test("Developer units use ordinary movement, combat and turns", async () => {
     Native.unit(Native.view(developerBattle), enemySoldier.id).hp <
       Catalog.unit(catalog, "soldier").hp,
   );
-  assert(Native.unit(Native.view(developerBattle), soldier.id).attacked);
+  assert(Native.unit(Native.view(developerBattle), soldier.id).attackSpent);
   Native.dispatch(developerBattle, { kind: "endTurn" });
-  assert.equal(Native.state(Native.view(developerBattle)).turn, "enemy");
+  assert.equal(Native.state(Native.view(developerBattle)).turn, "ai");
   assert.equal(Native.state(Native.view(developerBattle)).winner, null);
 });
 const { loadBattle, saveBattle, SAVE_KEY, SAVE_VERSION } = await import("./legacy-save.mjs");
@@ -151,7 +150,7 @@ const invalidCases = [
     "missing enemy commander",
     (save) => {
       save.state.units = save.state.units.filter(
-        (unit) => !(unit.side === "enemy" && required(TYPES[unit.type]).family === "commander"),
+        (unit) => !(unit.side === "ai" && required(TYPES[unit.type]).family === "commander"),
       );
     },
   ],

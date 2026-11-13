@@ -510,17 +510,23 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
           tile: { col: 2, row: 3 },
           hp: Catalog.unit(Native.catalog(factory), "soldier").hp,
           moved: false,
-          attacked: false,
+          attackSpent: false,
+          faction: "player",
+          revealedTo: [],
+          perceptionEffects: [],
         },
         {
           experience: 0,
           id: "u2",
           type: "soldier",
-          side: "enemy",
+          side: "ai",
           tile: { col: 3, row: 3 },
           hp: Catalog.unit(Native.catalog(factory), "soldier").hp,
           moved: false,
-          attacked: false,
+          attackSpent: false,
+          faction: "enemy",
+          revealedTo: [],
+          perceptionEffects: [],
         },
       ];
       checkpoint.state.nextId = 3;
@@ -670,6 +676,7 @@ test.each(["scenario", "campaign"])(
     await click(".new-game-dialog .ng-start-footer .primary");
     const saved = JSON.parse(await Save.flashText());
     assert.deepEqual(saved.setup, {
+      player: null,
       first: "player",
       enemy: {
         policy: "predictor",

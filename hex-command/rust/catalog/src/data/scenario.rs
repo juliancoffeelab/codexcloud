@@ -18,7 +18,7 @@ pub struct StartingUnit {
     pub faction: Option<String>,
     pub tile: Hex,
     pub r#type: String,
-    pub side: Side,
+    pub side: TurnPhase,
     #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
     pub ai_group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -35,7 +35,7 @@ pub struct StartingUnit {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct UnitFilter {
-    pub side: Side,
+    pub side: TurnPhase,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -347,7 +347,7 @@ pub struct SpawnUnit {
     pub faction: Option<String>,
     pub id: String,
     pub r#type: String,
-    pub side: Side,
+    pub side: TurnPhase,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub character: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -595,14 +595,14 @@ impl Mission {
         self.map
             .units
             .iter()
-            .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
+            .filter(|u| u.side == TurnPhase::Player && u.role != Some(Role::Leader))
             .filter_map(|u| u.character.as_deref())
             .chain(
                 self.events
                     .iter()
                     .filter_map(|e| e.spawn.as_ref())
                     .flat_map(|group| &group.units)
-                    .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
+                    .filter(|u| u.side == TurnPhase::Player && u.role != Some(Role::Leader))
                     .filter_map(|u| u.character.as_deref()),
             )
             .chain(self.arrivals.iter().map(|a| a.character.as_str()))

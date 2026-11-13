@@ -10,11 +10,11 @@ use serde::{Deserialize, Serialize};
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
-pub enum Side {
+pub enum TurnPhase {
     Player,
-    Enemy,
+    Ai,
 }
-impl Side {
+impl TurnPhase {
     /// Return the stable dense-array index for this enum value.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn index(self) -> usize {
@@ -24,11 +24,23 @@ impl Side {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn other(self) -> Self {
         if self == Self::Player {
-            Self::Enemy
+            Self::Ai
         } else {
             Self::Player
         }
     }
+}
+/// Mission result is independent of which controller's phase delivered it.
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[cfg_attr(
+    any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
+    derive(hex_catalog_freeze_derive::Freeze)
+)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum BattleResult {
+    PlayerVictory,
+    PlayerDefeat,
 }
 /// Weapon category used to select compatible retaliation attacks.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -110,6 +122,8 @@ pub struct Weapon {
 )]
 pub struct Item {
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub perception: Option<UnitPerception>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub armor: Option<ItemArmor>,
     pub id: String,
     pub name: String,
@@ -180,7 +194,10 @@ impl Item {
         super::catalog::identifier(&self.id, path)?;
         if self.name.is_empty()
             || self.description.is_empty()
-            || (self.attacks.is_empty() && self.healing.is_none() && self.armor.is_none())
+            || (self.attacks.is_empty()
+                && self.healing.is_none()
+                && self.armor.is_none()
+                && self.perception.is_none())
         {
             return Err(ContentError::new(
                 path,
@@ -204,6 +221,10 @@ impl Item {
             .is_some_and(|h| h.amount <= 0 || h.amount > 100 || h.radius > 10)
         {
             return Err(ContentError::new(path, "invalid item healing aura"));
+        }
+        if let Some(p) = &self.perception {
+            validate_unit_perception(&p.concealment, &p.penetrates)
+                .map_err(|e| ContentError::new(path, e))?;
         }
         super::catalog::unique(self.attacks.iter().map(|a| a.id.as_str()), path)?;
         for attack in &self.attacks {
@@ -279,7 +300,6 @@ impl UnitRole {
         matches!(self, Self::Ranger | Self::Healer)
     }
 }
-/// Resolved unit statistics, advancement choices and dense terrain-dependent tables.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -288,6 +308,8 @@ impl UnitRole {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct UnitRule {
+    #[serde(default)]
+    pub perception: UnitPerception,
     pub ability: String,
     pub description: String,
     pub id: String,
@@ -327,19 +349,20 @@ pub struct UnitRule {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct PublicUnit {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub faction: Option<String>,
+    pub revealed_to: Vec<String>,
+    pub perception_effects: Vec<PerceptionEffect>,
+    pub faction: String,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<Item>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ai_group: Option<String>,
     pub id: String,
     pub r#type: String,
-    pub side: Side,
+    pub side: TurnPhase,
     pub tile: Hex,
     pub hp: i32,
     pub moved: bool,
-    pub attacked: bool,
+    pub attack_spent: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub experience: Option<u32>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -354,18 +377,22 @@ pub struct PublicUnit {
 /// Compact live facts. Names and inventories are numeric references into battle tables.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Unit {
+    pub field_available: bool,
+    pub perception: PerceptionId,
     pub id: u32,
     pub kind: usize,
-    pub side: Side,
+    pub side: TurnPhase,
     pub tile: usize,
     pub hp: i32,
     pub moved: bool,
-    pub attacked: bool,
+    pub attack_spent: bool,
     pub experience: Option<u32>,
     pub role: Option<Role>,
     pub retreating: Option<bool>,
     pub rebuilding: Option<bool>,
-    pub faction: Option<NameKey>,
+    pub faction: NameKey,
+    /// Derived from faction membership, never serialized independently.
+    pub vision_group: VisionGroupKey,
     pub ai_group: Option<NameKey>,
     pub character: Option<NameKey>,
     pub inventory: InventoryId,

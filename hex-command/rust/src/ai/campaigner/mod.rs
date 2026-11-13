@@ -6,6 +6,7 @@ pub(crate) trait Campaigner {
 
 mod arena;
 pub(in crate::ai) mod mission;
+mod patrol;
 
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -26,10 +27,10 @@ impl Campaigner for CampaignerKind {
 
 /// Authored campaign goals for host diagnostics and route evaluation.
 #[cfg(not(target_arch = "wasm32"))]
-pub(crate) fn authored_goals(
-    authored: hex_command_battle::CampaignView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
-    side: crate::data::Side,
+pub(crate) fn authored_goals<'a, 'catalog>(
+    authored: hex_command_battle::CampaignView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
+    side: crate::data::TurnPhase,
 ) -> Vec<crate::data::Objective> {
     mission::MissionPolicy::new(authored, phases).objectives(side)
 }

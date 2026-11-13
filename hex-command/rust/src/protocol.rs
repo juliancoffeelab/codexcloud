@@ -17,7 +17,7 @@ pub enum Start {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         armies: Option<[String; 2]>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        first: Option<crate::data::Side>,
+        first: Option<crate::data::TurnPhase>,
     },
     /// Begin a campaign without incoming veterans or carried gold.
     Campaign { id: String },

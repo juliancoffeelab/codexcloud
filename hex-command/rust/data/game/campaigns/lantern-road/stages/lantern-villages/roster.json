@@ -1,4 +1,38 @@
 {
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": []
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "prisoners",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "swamp-dead",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
   "factions": [
     {
       "id": "player",
@@ -38,11 +72,12 @@
       ],
       "relations": {
         "enemy": "hostile"
-      }
+      },
+      "visionGroup": "player"
     },
     {
       "id": "enemy",
-      "phase": "enemy",
+      "phase": "ai",
       "controller": {
         "kind": "ai"
       },
@@ -81,11 +116,12 @@
       ],
       "relations": {
         "player": "hostile"
-      }
+      },
+      "visionGroup": "enemy"
     },
     {
       "id": "prisoners",
-      "phase": "enemy",
+      "phase": "ai",
       "controller": {
         "kind": "passive"
       },
@@ -107,11 +143,12 @@
             "row": 6
           }
         }
-      ]
+      ],
+      "visionGroup": "prisoners"
     },
     {
       "id": "swamp-dead",
-      "phase": "enemy",
+      "phase": "ai",
       "controller": {
         "kind": "ai"
       },
@@ -144,7 +181,8 @@
             "row": 12
           }
         }
-      ]
+      ],
+      "visionGroup": "swamp-dead"
     }
   ]
 }

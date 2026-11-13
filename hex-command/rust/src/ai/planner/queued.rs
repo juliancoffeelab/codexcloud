@@ -48,7 +48,7 @@ impl PriorityEvaluation<'_, '_, '_> {
             .iter()
             .enumerate()
             .filter(|(_, u)| {
-                self.belongs_to_phase(u, self.turn()) && !u.attacked && self.can_act(u.id)
+                self.belongs_to_phase(u, self.turn()) && !u.attack_spent && self.can_act(u.id)
             })
             .map(|(index, unit)| {
                 let rule = &self.rules().units[unit.kind];
@@ -167,7 +167,7 @@ impl PriorityEvaluation<'_, '_, '_> {
                     score -= 8.0;
                 }
                 if cache.orders().campaign
-                    && unit.side == Side::Player
+                    && unit.side == TurnPhase::Player
                     && cache.orders().important(self, unit)
                     && !personal
                 {
@@ -192,9 +192,9 @@ impl Session {
     }
 }
 
-pub(in crate::ai) fn next_plan(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(in crate::ai) fn next_plan<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut Session,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
     intents: &mut Vec<(u32, Option<bool>)>,
@@ -227,9 +227,9 @@ pub(in crate::ai) fn next_plan(
     session.queue = Some(queue);
     result
 }
-fn next_plan_inner(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+fn next_plan_inner<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     policy: QueueMode,
     session: &mut Session,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
@@ -274,10 +274,9 @@ fn next_plan_inner(
         } else {
             return finish_intents(&session.candidates, intents);
         };
-        let Some(unit) = game
-            .unit(id.0)
-            .filter(|u| game.belongs_to_phase(u, game.turn()) && !u.attacked && game.can_act(u.id))
-        else {
+        let Some(unit) = game.unit(id.0).filter(|u| {
+            game.belongs_to_phase(u, game.turn()) && !u.attack_spent && game.can_act(u.id)
+        }) else {
             continue;
         };
         if queue.attempts.iter().filter(|tried| **tried == id).count() >= 3 {
@@ -393,9 +392,9 @@ pub(super) fn prepare(
 ) {
     super::search::prepare(phases, &mut session.search, turn);
 }
-pub(super) fn choose(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn choose<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut Session,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
 ) -> Result<(), CommandError> {

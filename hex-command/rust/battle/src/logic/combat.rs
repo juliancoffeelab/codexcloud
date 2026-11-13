@@ -1,6 +1,6 @@
 //! Weapon legality, probabilistic forecasts and seeded combat resolution.
 
-use super::battle::Game;
+use super::battle::BattlePosition;
 use super::exchange::{self, ExchangeForecast, Strikes};
 use crate::data::*;
 use std::rc::Rc;
@@ -107,7 +107,7 @@ impl CombatMatchup<'_> {
     }
 }
 
-impl<'catalog> Game<'catalog> {
+impl<'catalog> BattlePosition<'catalog> {
     #[inline]
     pub(crate) fn combat_matchup(&self, unit: &Unit, target: &Unit) -> CombatMatchup<'_> {
         let inputs = |unit: &Unit| {
@@ -174,16 +174,7 @@ impl<'catalog> Game<'catalog> {
         if !self.can_attack_at(unit, from, target, target.tile, weapon) {
             return false;
         }
-        if unit.side == Side::Player
-            && self.runtime.fog[target.tile].is_some()
-            && self
-                .presentation()
-                .fog
-                .contains(&self.runtime.board.ids[target.tile])
-        {
-            return false;
-        }
-        true
+        self.unit_visible_to(self.unit_faction(unit), target, Some((unit.id, from)))
     }
     #[inline]
     fn can_attack_at(
@@ -440,22 +431,7 @@ impl<'catalog> Game<'catalog> {
             response,
         )
     }
-    pub(crate) fn mediation_at_risk(&self, target: &Unit) -> bool {
-        self.runtime.mission.as_ref().is_some_and(|m| {
-            m.scripted_events.iter().any(|e| {
-                e.objective
-                    .as_ref()
-                    .and_then(|o| o.preserve_lives.as_ref())
-                    .is_some_and(|s| {
-                        self.runtime
-                            .scripts
-                            .as_deref()
-                            .is_some_and(|state| state.active.contains(&e.id))
-                            && self.script_unit_matches(s, target)
-                    })
-            })
-        })
-    }
+
     pub(crate) fn attack(&mut self, id: u32, target_id: u32, weapon: usize) {
         let a = self.index(id).unwrap();
         let b = self.index(target_id).unwrap();
@@ -463,7 +439,7 @@ impl<'catalog> Game<'catalog> {
         let target = self.runtime.units[b].clone();
         assert!(
             attacker.side == self.runtime.turn
-                && !attacker.attacked
+                && !attacker.attack_spent
                 && self.runtime.winner.is_none()
                 && self.can_attack(&attacker, attacker.tile, &target, weapon)
         );
@@ -511,6 +487,7 @@ impl<'catalog> Game<'catalog> {
                 };
                 actor.hp = hp[side];
                 defender.hp = hp[1 - side];
+                self.reveal_weapon_user(actor.id, self.unit_vision_group(&defender));
                 let rolled = self.roll_strike(&actor, &defender, selected, defender.tile);
                 let (raw, damage) = (rolled.raw, rolled.damage);
                 #[cfg(target_arch = "wasm32")]
@@ -594,7 +571,7 @@ impl<'catalog> Game<'catalog> {
         #[cfg(not(target_arch = "wasm32"))]
         let retaliation = response_rolls.iter().sum::<i32>() + thorns;
         #[cfg(not(target_arch = "wasm32"))]
-        let mediated = self.mediation_at_risk(&target);
+        let mediated = false;
         #[cfg(not(target_arch = "wasm32"))]
         let mitigation_record = self
             .runtime
@@ -656,7 +633,7 @@ impl<'catalog> Game<'catalog> {
         });
         self.runtime.combat_present = true;
         self.runtime.units[a].moved = true;
-        self.runtime.units[a].attacked = true;
+        self.runtime.units[a].attack_spent = true;
         self.runtime.units[a].hp = hp[0];
         self.runtime.units[b].hp = hp[1];
         for (own, opponent, dealt) in [(a, b, damage), (b, a, retaliation)] {
@@ -686,7 +663,7 @@ impl<'catalog> Game<'catalog> {
         };
         self.record(format!(
             "{} {} used {} for {damage} damage{message}.",
-            if attacker.side == Side::Player {
+            if attacker.side == TurnPhase::Player {
                 "Your"
             } else {
                 "Enemy"
@@ -700,31 +677,7 @@ impl<'catalog> Game<'catalog> {
             .filter(|unit| unit.hp <= 0)
             .cloned()
             .collect();
-        if self
-            .mission
-            .as_ref()
-            .is_some_and(|m| !m.scripted_events.is_empty())
-        {
-            let initiated_by = self.unit_faction(&attacker).to_owned();
-            self.runtime.event_deaths.extend(
-                defeated
-                    .iter()
-                    .map(|unit| super::events::DeathOccurrence {
-                        unit: unit.clone(),
-                        initiated_by: initiated_by.clone(),
-                        killed_by: Some(
-                            self.unit_faction(if unit.id == target.id {
-                                &attacker
-                            } else {
-                                &target
-                            })
-                            .to_owned(),
-                        ),
-                        defending: unit.id == target.id,
-                    })
-                    .collect::<Vec<_>>(),
-            );
-        }
+        self.runtime.mechanical_deaths = defeated.clone();
         for unit in &defeated {
             for item in self.runtime.inventories.item_ids(unit.inventory) {
                 self.runtime.ground_items.push(GroundItemState {
@@ -732,51 +685,9 @@ impl<'catalog> Game<'catalog> {
                     item: *item,
                 });
             }
-            let scripted = self
-                .mission
-                .as_ref()
-                .is_some_and(|m| !m.scripted_events.is_empty());
-            let definition = self.runtime.campaign_definition.as_ref();
-            if let Some(campaign) = &mut self.runtime.campaign {
-                if unit.side == Side::Player {
-                    if let Some(name) = self.runtime.names.resolve(unit.character) {
-                        if definition
-                            .unwrap()
-                            .missions
-                            .iter()
-                            .any(|chapter| chapter.companion_ids().any(|incoming| incoming == name))
-                        {
-                            if scripted {
-                                // Current-stage deaths are authored flags; the incoming survivor
-                                // checkpoint must remain unchanged for Retry.
-                            } else {
-                                let mark = format!("fallen:{name}");
-                                if !campaign.marked(&mark) {
-                                    campaign.marks.push(mark);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if unit.is_leader() && self.runtime.campaign.is_none() {
-                let relation = self.faction_relation("player", self.unit_faction(unit));
-                let remaining = self.runtime.units.iter().any(|other| {
-                    other.hp > 0
-                        && other.is_leader()
-                        && self.faction_relation("player", self.unit_faction(other)) == relation
-                });
-                if !remaining {
-                    self.runtime.winner = match relation {
-                        Relation::Hostile => Some(Side::Player),
-                        Relation::Allied => Some(Side::Enemy),
-                        Relation::Neutral => None,
-                    };
-                }
-            }
             self.record(format!(
                 "{} {} fell.",
-                if unit.side == Side::Player {
+                if unit.side == TurnPhase::Player {
                     "Your"
                 } else {
                     "Enemy"
@@ -786,8 +697,6 @@ impl<'catalog> Game<'catalog> {
         }
         self.runtime.units.retain(|unit| unit.hp > 0);
         self.roster_changed();
-        self.refresh_mission();
-        self.evaluate_campaign(false, None);
         #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Attack {
             unit: format!("u{id}"),
@@ -834,5 +743,24 @@ impl<'catalog> Game<'catalog> {
                 mitigation: mitigation_record,
             });
         }
+    }
+}
+
+impl super::Game<'_> {
+    pub(crate) fn mediation_at_risk(&self, target: &Unit) -> bool {
+        self.story.mission.as_ref().is_some_and(|m| {
+            m.scripted_events.iter().any(|e| {
+                e.objective
+                    .as_ref()
+                    .and_then(|o| o.preserve_lives.as_ref())
+                    .is_some_and(|s| {
+                        self.story
+                            .scripts
+                            .as_deref()
+                            .is_some_and(|state| state.active.contains(&e.id))
+                            && self.script_unit_matches(s, target)
+                    })
+            })
+        })
     }
 }

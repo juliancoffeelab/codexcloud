@@ -8,6 +8,8 @@ type view = {
   recruitment : bool;
   session_version : int;
   sound : bool;
+  follow_ai : bool;
+  ai_focus : string array;
   action : Action_presentation.token option;
   combat_playback : Combat_playback.frame option;
 }
