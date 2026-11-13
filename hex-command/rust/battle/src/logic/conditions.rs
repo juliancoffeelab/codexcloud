@@ -92,8 +92,7 @@ impl ConditionContext for LiveContext<'_, '_> {
                 .map(|(_, tile)| tile)
                 .unwrap_or(unit.tile);
             predicate(ConditionUnit {
-                faction: Some(self.game.names.get(unit.faction)),
-                side: unit.side,
+                faction: self.game.names.get(unit.faction),
                 kind: &self.game.rules.units[unit.kind].id,
                 character: self.game.names.resolve(unit.character),
                 ai_group: self.game.names.resolve(unit.ai_group),
@@ -145,8 +144,11 @@ impl ConditionContext for LiveContext<'_, '_> {
                             });
                         !spawned
                             && predicate(ConditionUnit {
-                                faction: unit.faction.as_deref().or(group.faction.as_deref()),
-                                side: unit.side,
+                                faction: unit
+                                    .faction
+                                    .as_deref()
+                                    .or(group.faction.as_deref())
+                                    .expect("validated spawn faction"),
                                 kind: &unit.r#type,
                                 character: unit.character.as_deref(),
                                 ai_group: group.ai_group.as_deref(),

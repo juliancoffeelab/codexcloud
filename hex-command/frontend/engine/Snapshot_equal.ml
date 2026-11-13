@@ -184,8 +184,7 @@ and public_unit (left : public_unit) (right : public_unit) =
   && option (fun left right -> String.equal left right) left.ai_group right.ai_group
   && String.equal left.id right.id
   && String.equal left.type_ right.type_
-  && side left.side right.side && Hex.equal left.tile right.tile && left.hp = right.hp
-  && left.moved = right.moved
+  && Hex.equal left.tile right.tile && left.hp = right.hp && left.moved = right.moved
   && left.attack_spent = right.attack_spent
   && option (fun left right -> left = right) left.experience right.experience
   && option (fun left right -> String.equal left right) left.character right.character
@@ -220,6 +219,7 @@ and unit_faction (left : unit_faction) (right : unit_faction) =
   && String.equal left.palette right.palette
   && relation left.relation right.relation
   && left.controllable = right.controllable
+  && side left.phase right.phase
 
 and weapon (left : weapon) (right : weapon) =
   String.equal left.id right.id && String.equal left.name right.name && left.damage = right.damage

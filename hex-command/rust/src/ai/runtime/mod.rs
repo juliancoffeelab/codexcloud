@@ -18,6 +18,7 @@ pub(crate) fn choose_game_command(
     workspace: &mut PlanningWorkspace,
 ) -> Result<Command, CommandError> {
     workspace.refresh_scope(game);
+    workspace.state.proposal_faction = game.active_faction().map(str::to_owned);
     if !game.factions().is_empty() && game.active_faction().is_none() {
         let controllers = workspace
             .state
@@ -48,6 +49,7 @@ pub(crate) fn choose_game_command(
                 workspace.state.controller_index += 1;
                 workspace.state.controller_workspace = None;
             } else {
+                workspace.state.proposal_faction = Some(faction.clone());
                 return Ok(command);
             }
         }

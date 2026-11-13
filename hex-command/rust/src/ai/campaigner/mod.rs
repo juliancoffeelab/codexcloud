@@ -30,7 +30,6 @@ impl Campaigner for CampaignerKind {
 pub(crate) fn authored_goals<'a, 'catalog>(
     authored: hex_command_battle::CampaignView<'a, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
-    side: crate::data::TurnPhase,
 ) -> Vec<crate::data::Objective> {
-    mission::MissionPolicy::new(authored, phases).objectives(side)
+    mission::MissionPolicy::new(authored, phases).objectives()
 }

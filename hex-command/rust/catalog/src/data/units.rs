@@ -20,7 +20,7 @@ impl TurnPhase {
     pub fn index(self) -> usize {
         if self == Self::Player { 0 } else { 1 }
     }
-    /// Return the opposing allegiance.
+    /// Return the next turn phase.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn other(self) -> Self {
         if self == Self::Player {
@@ -358,7 +358,6 @@ pub struct PublicUnit {
     pub ai_group: Option<String>,
     pub id: String,
     pub r#type: String,
-    pub side: TurnPhase,
     pub tile: Hex,
     pub hp: i32,
     pub moved: bool,
@@ -381,7 +380,8 @@ pub struct Unit {
     pub perception: PerceptionId,
     pub id: u32,
     pub kind: usize,
-    pub side: TurnPhase,
+    /// Derived from the owning faction; never serialized independently.
+    pub phase: TurnPhase,
     pub tile: usize,
     pub hp: i32,
     pub moved: bool,

@@ -20,7 +20,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     );
     let wreck = game.site(&tile);
     game.owners[wreck] = Some("player".into());
-    game.units.retain(|u| u.side == TurnPhase::Player);
+    game.units.retain(|u| u.phase == TurnPhase::Player);
     game.roster_changed();
     let actor = game
         .units
@@ -107,8 +107,8 @@ fn authored_progression_ladders_are_acyclic_and_preserve_race_and_increase_level
 #[test]
 fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
     let mut game = flat();
-    let id = add(&mut game, "swordsman", TurnPhase::Player, Hex::new(3, 3));
-    let target = add(&mut game, "archer", TurnPhase::Ai, Hex::new(4, 3));
+    let id = add(&mut game, "swordsman", "player", Hex::new(3, 3));
+    let target = add(&mut game, "archer", "enemy", Hex::new(4, 3));
     let index = game.index(id).unwrap();
     game.units[index].hp -= 4;
     let target_index = game.index(target).unwrap();
@@ -149,13 +149,13 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     let leader = game
         .units
         .iter()
-        .find(|u| u.side == TurnPhase::Player && u.role == Some(Role::Leader))
+        .find(|u| u.phase == TurnPhase::Player && u.role == Some(Role::Leader))
         .unwrap()
         .id;
     let troop = game
         .units
         .iter()
-        .find(|u| u.side == TurnPhase::Player && game.rules.units[u.kind].id == "reefguard")
+        .find(|u| u.phase == TurnPhase::Player && game.rules.units[u.kind].id == "reefguard")
         .unwrap()
         .id;
     for (id, kind) in [(leader, "tideseer"), (troop, "tridentguard")] {

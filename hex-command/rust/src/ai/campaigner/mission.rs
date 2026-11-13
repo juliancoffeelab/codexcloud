@@ -48,7 +48,7 @@ impl<'a, 'catalog> MissionPolicy<'a, 'catalog> {
         }
     }
     fn player_unit(&self, unit: &Unit) -> bool {
-        self.faction_relation("player", self.unit_faction(unit)) == Relation::Allied
+        self.faction_relation("player", self.unit_faction(&unit)) == Relation::Allied
     }
     fn script_unit_matches(&self, selector: &UnitMatch, unit: &Unit) -> bool {
         self.authored.script_unit_matches(selector, unit)
@@ -107,15 +107,17 @@ impl CampaignBlock {
         let mut inactive: Vec<_> = game
             .units()
             .iter()
-            .filter(|unit| game.belongs_to_phase(unit, game.turn()) && !game.may_act(unit))
+            .filter(|unit| {
+                game.belongs_to_faction(unit, game.observer_faction()) && !game.may_act(unit)
+            })
             .map(|unit| UnitId(unit.id))
             .collect();
-        if game.turn() == TurnPhase::Ai && !game.groups.is_empty() {
+        if !game.groups.is_empty() {
             let ordinary = std::mem::take(&mut authored_targets);
             for unit in game
                 .units()
                 .iter()
-                .filter(|unit| game.belongs_to_phase(unit, game.turn()))
+                .filter(|unit| game.belongs_to_faction(unit, game.observer_faction()))
             {
                 let group = game
                     .name(unit.ai_group)
@@ -208,9 +210,9 @@ impl CampaignBlock {
             targets: authored_targets.iter().cloned().map(Target::from).collect(),
             restrained,
             campaign,
-            protect_withdrawal: game.protects_withdrawal(game.turn(), restrained),
+            protect_withdrawal: game.protects_withdrawal(restrained),
             withdrawal_tiles: game
-                .withdrawal_lanes(game.turn(), restrained)
+                .withdrawal_lanes(restrained)
                 .into_iter()
                 .map(|tile| TileId(game.board().ids[tile].clone()))
                 .collect(),
@@ -220,7 +222,7 @@ impl CampaignBlock {
         for unit in game
             .units()
             .iter()
-            .filter(|unit| game.belongs_to_phase(unit, game.turn()))
+            .filter(|unit| game.belongs_to_faction(unit, game.observer_faction()))
         {
             let mut sites = vec![];
             for objective in &game.objectives {
@@ -256,11 +258,9 @@ impl CampaignBlock {
                 tactics.transition_sensitive.push((UnitId(unit.id), sites));
             }
         }
-        for unit in game
-            .units()
-            .iter()
-            .filter(|unit| game.belongs_to_phase(unit, game.turn()) && unit.is_leader())
-        {
+        for unit in game.units().iter().filter(|unit| {
+            game.belongs_to_faction(unit, game.observer_faction()) && unit.is_leader()
+        }) {
             let escaping = tactics.targets.iter().any(|target| {
                 authored_targets.iter().any(|authored| {
                     authored.id == target.id && authored.kind == ObjectiveKind::Escape
@@ -313,7 +313,7 @@ impl CampaignBlock {
         for unit in game
             .units()
             .iter()
-            .filter(|u| game.belongs_to_phase(u, game.turn()))
+            .filter(|u| game.belongs_to_faction(u, game.observer_faction()))
         {
             let leader = unit.is_leader();
             let needs_protection = campaign
@@ -324,7 +324,7 @@ impl CampaignBlock {
                     || unit.hp * 2 <= game.rules().units[unit.kind].hp
                     || crate::ai::policies::threat::Threats::protected(
                         game.phases,
-                        game.turn(),
+                        game.unit_faction(unit),
                         &tactics,
                     )
                     .at(unit, unit.tile, None)
@@ -338,13 +338,14 @@ impl CampaignBlock {
         if let Some(unit) = game
             .units()
             .iter()
-            .find(|u| game.belongs_to_phase(u, game.turn()))
+            .find(|u| game.belongs_to_faction(u, game.observer_faction()))
         {
             tactics.terminal_targets = game
                 .units()
                 .iter()
                 .filter(|enemy| {
-                    game.hostile_to_phase(enemy, game.turn()) && terminal_attack(game, unit, enemy)
+                    game.hostile_to_faction(enemy, game.observer_faction())
+                        && terminal_attack(game, unit, enemy)
                 })
                 .map(|enemy| UnitId(enemy.id))
                 .collect();
@@ -353,7 +354,9 @@ impl CampaignBlock {
             tactics.mediated = game
                 .units()
                 .iter()
-                .filter(|u| game.hostile_to_phase(u, game.turn()) && game.mediation_at_risk(u))
+                .filter(|u| {
+                    game.hostile_to_faction(u, game.observer_faction()) && game.mediation_at_risk(u)
+                })
                 .map(|u| UnitId(u.id))
                 .collect();
         }
@@ -365,7 +368,7 @@ impl CampaignBlock {
                 .units()
                 .iter()
                 .filter(|u| {
-                    game.belongs_to_phase(u, game.turn())
+                    game.belongs_to_faction(u, game.observer_faction())
                         && crate::ai::policies::objectives::can_pursue(
                             &game.battle,
                             u,
@@ -440,7 +443,7 @@ impl CampaignBlock {
                         .units()
                         .iter()
                         .filter(|unit| {
-                            game.belongs_to_phase(unit, game.turn())
+                            game.belongs_to_faction(unit, game.observer_faction())
                                 && !unit.is_leader()
                                 && !unit.role.is_some_and(Role::is_escort)
                                 && game.rules().units[unit.kind].role == role
@@ -505,7 +508,7 @@ impl CampaignBlock {
     }
 }
 impl MissionPolicy<'_, '_> {
-    pub(crate) fn scripted_policy_objectives(&self, side: TurnPhase) -> Vec<Objective> {
+    pub(crate) fn scripted_policy_objectives(&self) -> Vec<Objective> {
         let mut goals = vec![];
         for objective in &self.objectives {
             let kind = match objective.intent {
@@ -557,7 +560,8 @@ impl MissionPolicy<'_, '_> {
                     self.units()
                         .iter()
                         .filter(|u| {
-                            self.belongs_to_phase(u, side) && self.script_unit_matches(s, u)
+                            self.belongs_to_faction(u, self.observer_faction())
+                                && self.script_unit_matches(s, u)
                         })
                         .min_by_key(|u| {
                             tiles
@@ -596,7 +600,7 @@ impl MissionPolicy<'_, '_> {
     }
 
     pub(in crate::ai) fn policy_objectives(&self, goals: Option<&[Objective]>) -> Vec<Objective> {
-        let mut goals = goals.map_or_else(|| self.objectives(self.turn()), |g| g.to_vec());
+        let mut goals = goals.map_or_else(|| self.objectives(), |g| g.to_vec());
         // A valid strategic requirement may currently have no known location
         // (for example an unseen opposing leader). It is not a movement target.
         goals.retain(|goal| !goal.tiles.is_empty());
@@ -608,7 +612,7 @@ impl MissionPolicy<'_, '_> {
         let leaders: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| self.belongs_to_phase(u, self.turn()) && u.is_leader())
+            .filter(|u| self.belongs_to_faction(u, self.observer_faction()) && u.is_leader())
             .map(|u| u.id)
             .collect();
         for id in leaders {
@@ -633,14 +637,15 @@ impl MissionPolicy<'_, '_> {
         }
         rebuilding
     }
-    pub(in crate::ai) fn required_recruit(&self, side: TurnPhase) -> Option<Family> {
+    pub(in crate::ai) fn required_recruit(&self) -> Option<Family> {
         self.objectives
             .iter()
             .filter(|objective| !objective.satisfied && objective.intent == CampaignIntent::Hold)
             .find_map(|objective| {
                 let selector = objective.selector.expect("hold selector");
                 if self.units().iter().any(|unit| {
-                    self.belongs_to_phase(unit, side) && self.script_unit_matches(selector, unit)
+                    self.belongs_to_faction(unit, self.observer_faction())
+                        && self.script_unit_matches(selector, unit)
                 }) {
                     return None;
                 }
@@ -664,10 +669,12 @@ impl MissionPolicy<'_, '_> {
                 }))
     }
 
-    pub fn objectives(&self, side: TurnPhase) -> Vec<Objective> {
-        let mut goals = self.scripted_policy_objectives(side);
+    pub fn objectives(&self) -> Vec<Objective> {
+        let mut goals = self.scripted_policy_objectives();
         for tile in 0..self.terrain().len() {
-            if self.role_is(tile, TerrainRole::Village) && self.captures(tile, side) {
+            if self.role_is(tile, TerrainRole::Village)
+                && self.captures(tile, self.observer_faction())
+            {
                 goals.push(objective(
                     &format!("village:{}", self.board().ids[tile]),
                     ObjectiveKind::Capture,
@@ -682,7 +689,9 @@ impl MissionPolicy<'_, '_> {
                 ObjectiveKind::Defeat,
                 self.units()
                     .iter()
-                    .filter(|u| self.hostile_to_phase(u, side) && u.is_leader())
+                    .filter(|u| {
+                        self.hostile_to_faction(u, self.observer_faction()) && u.is_leader()
+                    })
                     .map(|u| self.board().ids[u.tile].clone())
                     .collect(),
                 12.0,
@@ -747,22 +756,20 @@ impl MissionPolicy<'_, '_> {
             .collect()
     }
 
-    pub fn protects_withdrawal(&self, side: TurnPhase, diplomatic: bool) -> bool {
-        diplomatic && self.faction_for_phase(side) == "player" && self.authored.in_campaign()
+    pub fn protects_withdrawal(&self, diplomatic: bool) -> bool {
+        diplomatic && self.observer_faction() == "player" && self.authored.in_campaign()
     }
-    pub fn withdrawal_lanes(&self, side: TurnPhase, restrained: bool) -> HashSet<usize> {
+    pub fn withdrawal_lanes(&self, restrained: bool) -> HashSet<usize> {
         let mut lanes = HashSet::default();
-        if !self.protects_withdrawal(side, restrained) {
+        if !self.protects_withdrawal(restrained) {
             return lanes;
         }
-        for u in self
-            .units()
-            .iter()
-            .filter(|u| self.hostile_to_phase(u, side) && u.retreating == Some(true))
-        {
+        for u in self.units().iter().filter(|u| {
+            self.hostile_to_faction(u, self.observer_faction()) && u.retreating == Some(true)
+        }) {
             let mut homes: Vec<_> = (0..self.terrain().len())
                 .filter(|&t| {
-                    self.owns(t, u.side)
+                    self.owns(t, self.unit_faction(&u))
                         && (self.is_keep(t) || self.role_is(t, TerrainRole::Village))
                 })
                 .collect();
@@ -792,14 +799,14 @@ impl MissionPolicy<'_, '_> {
             return (vec![], u.rebuilding);
         }
         let keeps: Vec<_> = (0..self.terrain().len())
-            .filter(|&t| self.is_keep(t) && self.owns(t, u.side))
+            .filter(|&t| self.is_keep(t) && self.owns(t, self.unit_faction(&u)))
             .collect();
         let options = self.recruitment_options_for(u);
         if keeps.is_empty() || options.is_empty() {
             return (vec![], None);
         }
         let count = crate::ai::policies::objectives::ordinary(&self.battle, &u).count();
-        let rebuilding = if self.required_recruit(u.side).is_some() {
+        let rebuilding = if self.required_recruit().is_some() {
             true
         } else if count >= 5 {
             false
@@ -810,7 +817,7 @@ impl MissionPolicy<'_, '_> {
         };
         let targets = if !rebuilding {
             vec![]
-        } else if self.income(u.side) > 0
+        } else if self.income(self.unit_faction(&u)) > 0
             || options
                 .iter()
                 .any(|&k| self.recruit_cost(u, k) <= self.gold_for_unit(u))
@@ -826,7 +833,8 @@ impl MissionPolicy<'_, '_> {
             // Only a nearly wiped-out army sends its leader to recover income.
             (0..self.terrain().len())
                 .filter(|&tile| {
-                    self.role_is(tile, TerrainRole::Village) && self.captures(tile, u.side)
+                    self.role_is(tile, TerrainRole::Village)
+                        && self.captures(tile, self.unit_faction(&u))
                 })
                 .collect()
         } else {
@@ -1027,7 +1035,7 @@ mod assignment_tests {
                 .iter()
                 .find(|u| actor_matches(&target.actor, u.id))
                 .unwrap();
-            assert_eq!(policy.unit_faction(actor), faction);
+            assert_eq!(policy.unit_faction(&actor), faction);
             assert!(orders.tactics.objectives.iter().any(|o| match o.objective {
                 TacticalObjective::GoTo { actor: id, .. } => id.0 == actor.id,
                 TacticalObjective::Occupy { .. }

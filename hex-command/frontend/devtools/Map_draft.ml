@@ -549,12 +549,21 @@ let run root =
       (fun i (unit : Domain.starting_unit) ->
         Hashtbl.replace placements (Hex.key unit.tile) (unit, units.(i)))
       input.units;
+    let faction (unit : Domain.starting_unit) =
+      match Array.find_opt (fun (f : Domain.faction) -> f.id = unit.faction) input.factions with
+      | Some f -> f
+      | None -> invalid_arg "Draft unit requires a declared faction"
+    in
+    let hostile unit =
+      let f = faction unit in
+      let relation = Domain.String_map.find_opt "player" f.relations in
+      relation = Some Domain.Relation.Hostile
+    in
     let visible =
       Array_ext.filter_map
         (fun (tile : Domain.tile) ->
           match Hashtbl.find_opt placements tile.id with
-          | Some (unit, raw) when unit.side <> Domain.Turn_phase.Ai || not (Hashtbl.mem fog tile.id)
-            ->
+          | Some (unit, raw) when (not (hostile unit)) || not (Hashtbl.mem fog tile.id) ->
               Some (unit, raw)
           | _ -> None)
         input.tiles
@@ -562,15 +571,15 @@ let run root =
     let rec paint_unit i =
       if i = Array.length visible then return ()
       else
-        let unit, raw = visible.(i) in
+        let unit, _raw = visible.(i) in
         let p =
           Geometry.center ~col:(Int32.to_int unit.tile.col) ~row:(Int32.to_int unit.tile.row)
         in
-        let palette = J.text_default raw "faction" (Enum.string_of_side unit.side) in
+        let palette = (faction unit).palette in
         let color =
           if palette = "passive" then "#efecdc"
           else if palette = "green" then "#83b765"
-          else if unit.side = Domain.Turn_phase.Player then "#6fdec0"
+          else if palette = "player" then "#6fdec0"
           else "#ff9590"
         in
         let frame =

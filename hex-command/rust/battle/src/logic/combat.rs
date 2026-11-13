@@ -438,7 +438,7 @@ impl<'catalog> BattlePosition<'catalog> {
         let attacker = self.runtime.units[a].clone();
         let target = self.runtime.units[b].clone();
         assert!(
-            attacker.side == self.runtime.turn
+            attacker.phase == self.runtime.turn
                 && !attacker.attack_spent
                 && self.runtime.winner.is_none()
                 && self.can_attack(&attacker, attacker.tile, &target, weapon)
@@ -510,7 +510,6 @@ impl<'catalog> BattlePosition<'catalog> {
                     let attack = self.weapon(&actor, selected);
                     let rule = &self.rules.units[defender.kind];
                     playback.push(crate::model::CombatStrike {
-                        side: actor.side,
                         weapon: self.source_weapon(&attack).name.clone(),
                         weapon_id: self.source_weapon(&attack).id.clone(),
                         unit_id: format!("u{}", actor.id),
@@ -663,7 +662,7 @@ impl<'catalog> BattlePosition<'catalog> {
         };
         self.record(format!(
             "{} {} used {} for {damage} damage{message}.",
-            if attacker.side == TurnPhase::Player {
+            if self.unit_faction(&attacker) == "player" {
                 "Your"
             } else {
                 "Enemy"
@@ -687,7 +686,7 @@ impl<'catalog> BattlePosition<'catalog> {
             }
             self.record(format!(
                 "{} {} fell.",
-                if unit.side == TurnPhase::Player {
+                if self.unit_faction(unit) == "player" {
                     "Your"
                 } else {
                     "Enemy"

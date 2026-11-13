@@ -15,7 +15,7 @@ pub(super) fn assign(
     if game
         .units()
         .iter()
-        .any(|unit| game.hostile_to_phase(unit, game.turn()))
+        .any(|unit| game.hostile_to_faction(unit, game.observer_faction()))
     {
         return;
     }
@@ -50,7 +50,7 @@ pub(super) fn assign(
                     game.units()
                         .iter()
                         .filter(|unit| {
-                            game.belongs_to_phase(unit, game.turn())
+                            game.belongs_to_faction(unit, game.observer_faction())
                                 && selector.accepts(game, unit.kind)
                         })
                         .map(|unit| unit.id),
@@ -60,11 +60,11 @@ pub(super) fn assign(
     }
     let villages: Vec<_> = (0..game.terrain().len())
         .filter(|&tile| {
-            game.role_is(tile, TerrainRole::Village) && game.captures(tile, game.turn())
+            game.role_is(tile, TerrainRole::Village) && game.captures(tile, game.observer_faction())
         })
         .collect();
     for unit in game.units().iter().filter(|unit| {
-        game.belongs_to_phase(unit, game.turn())
+        game.belongs_to_faction(unit, game.observer_faction())
             && game.can_act(unit.id)
             && !unit.moved
             && game.available_combatant(unit)
@@ -165,7 +165,7 @@ mod tests {
         assign(&visible, 17, &mut untouched, |_| None);
         assert!(untouched.objectives.is_empty());
         let mut state = visible.state();
-        state.units.retain(|unit| unit.side == TurnPhase::Player);
+        state.units.retain(|unit| unit.faction == "player");
         for tile in &mut state.tiles {
             if tile.terrain == "village" {
                 tile.owner = Some("player".into());

@@ -83,15 +83,6 @@ pub struct Faction {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub transfer: Option<FactionTransfer>,
 }
-impl TurnPhase {
-    #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn faction_id(self) -> &'static str {
-        match self {
-            Self::Player => "player",
-            Self::Ai => "enemy",
-        }
-    }
-}
 
 pub fn validate_economy(
     factions: &[Faction],
@@ -155,10 +146,7 @@ pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> R
         {
             return Err("invalid or duplicate faction identifier".into());
         }
-        if faction.id == "player" && faction.phase != TurnPhase::Player
-            || faction.id == "enemy" && faction.phase != TurnPhase::Ai
-            || matches!(faction.controller, Controller::Human) && faction.phase != TurnPhase::Player
-        {
+        if matches!(faction.controller, Controller::Human) && faction.phase != TurnPhase::Player {
             return Err("invalid faction controller phase".into());
         }
         for (other, relation) in &faction.relations {
@@ -181,7 +169,7 @@ pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> R
         }
     }
     for unit in units {
-        validate_faction_reference(factions, Some(&unit.faction), unit.side)?;
+        validate_faction_reference(factions, &unit.faction)?;
     }
     Ok(())
 }
@@ -198,29 +186,17 @@ pub struct UnitFaction {
     pub palette: String,
     pub relation: Relation,
     pub controllable: bool,
+    pub phase: TurnPhase,
 }
 
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
 
-pub fn validate_faction_reference(
-    factions: &[Faction],
-    id: Option<&str>,
-    phase: TurnPhase,
-) -> Result<(), String> {
-    let id = id.ok_or_else(|| "unit requires an explicit faction".to_owned())?;
-    let faction = factions.iter().find(|f| f.id == id);
-    if faction.is_none() {
-        return Err("unknown unit faction".into());
-    }
-    let expected = faction.map(|f| f.phase).unwrap_or(if id == "player" {
-        TurnPhase::Player
+pub fn validate_faction_reference(factions: &[Faction], id: &str) -> Result<(), String> {
+    if factions.iter().any(|faction| faction.id == id) {
+        Ok(())
     } else {
-        TurnPhase::Ai
-    });
-    if phase != expected {
-        return Err("unit phase differs from its faction".into());
+        Err("unknown unit faction".to_owned())
     }
-    Ok(())
 }
 
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
@@ -247,13 +223,7 @@ pub fn faction_relation(factions: &[Faction], first: &str, second: &str) -> Rela
 /// Match an explicit unit selector, not the phase in which it happens to act.
 /// Keep this exhaustive: new allegiance selectors must define their semantics.
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
-pub fn faction_matches_side(
-    factions: &[Faction],
-    id: Option<&str>,
-    phase: TurnPhase,
-    side: ConditionSide,
-) -> bool {
-    let id = id.unwrap_or(phase.faction_id());
+pub fn faction_matches_side(factions: &[Faction], id: &str, side: ConditionSide) -> bool {
     match side {
         ConditionSide::Enemy => faction_relation(factions, "player", id) == Relation::Hostile,
         ConditionSide::Neutral => faction_relation(factions, "player", id) == Relation::Neutral,
@@ -262,9 +232,7 @@ pub fn faction_matches_side(
         ConditionSide::Player => factions
             .iter()
             .find(|f| f.id == id)
-            .map_or(phase == TurnPhase::Player, |f| {
-                f.controller == Controller::Human
-            }),
+            .is_some_and(|f| f.controller == Controller::Human),
     }
 }
 

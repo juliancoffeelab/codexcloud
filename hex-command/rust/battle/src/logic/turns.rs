@@ -3,9 +3,6 @@
 use super::battle::BattlePosition;
 use crate::data::*;
 impl<'catalog> BattlePosition<'catalog> {
-    pub(crate) fn income(&self, side: TurnPhase) -> i32 {
-        self.faction_income(self.faction_for_phase(side))
-    }
     pub(crate) fn faction_income(&self, faction: &str) -> i32 {
         self.runtime
             .owners
@@ -17,15 +14,13 @@ impl<'catalog> BattlePosition<'catalog> {
     }
     pub(crate) fn begin_turn(&mut self, side: TurnPhase) {
         self.runtime.turn = side;
+        self.runtime.active_faction = None;
         self.runtime.last_combat = None;
         self.runtime.combat_present = true;
         let factions: Vec<_> = self
             .gold
             .keys()
-            .filter(|id| {
-                self.faction(id)
-                    .map_or(id.as_str() == side.faction_id(), |f| f.phase == side)
-            })
+            .filter(|id| self.faction(id).is_some_and(|f| f.phase == side))
             .cloned()
             .collect();
         for faction in factions {
@@ -35,7 +30,7 @@ impl<'catalog> BattlePosition<'catalog> {
         for index in 0..self.runtime.units.len() {
             let unit = self.runtime.units[index];
             let facts = &mut self.runtime.unit_perception[unit.perception.0];
-            if unit.side == side {
+            if unit.phase == side {
                 facts.revealed_to.clear();
             }
             facts.effects.retain(|e| {
@@ -47,7 +42,7 @@ impl<'catalog> BattlePosition<'catalog> {
         }
         let names = &self.runtime.names;
         for unit in &mut self.runtime.units {
-            if unit.side != side {
+            if unit.phase != side {
                 continue;
             }
             unit.moved = false;
@@ -58,7 +53,7 @@ impl<'catalog> BattlePosition<'catalog> {
             }
         }
         for index in 0..self.runtime.units.len() {
-            if self.runtime.units[index].side != side {
+            if self.runtime.units[index].phase != side {
                 continue;
             }
             let healing = self

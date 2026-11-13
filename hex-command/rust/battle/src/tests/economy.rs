@@ -8,7 +8,7 @@ fn recruitment_requires_gold_legal_destination_and_owned_keep() {
     let leader = game
         .units
         .iter()
-        .find(|unit| unit.side == TurnPhase::Player && unit.is_leader())
+        .find(|unit| unit.phase == TurnPhase::Player && unit.is_leader())
         .unwrap()
         .id;
     let recruit = game.kind(kind);
@@ -55,7 +55,7 @@ fn village_capture_changes_income_and_heals_only_the_owners_occupant() {
     let mut game = flat();
     let village = game.site(&Hex::new(3, 3));
     game.set_terrain(village, game.rules.terrains["village"]);
-    let id = add(&mut game, "scout", TurnPhase::Player, Hex::new(2, 3));
+    let id = add(&mut game, "scout", "player", Hex::new(2, 3));
     game.move_unit(id, village);
     assert_eq!(game.owners[village], Some("player".into()));
     let index = game.index(id).unwrap();
@@ -84,10 +84,10 @@ fn village_capture_changes_income_and_heals_only_the_owners_occupant() {
 #[test]
 fn strongest_adjacent_friendly_healer_wins_without_stacking_or_overhealing() {
     let mut game = flat();
-    let ally = add(&mut game, "reefguard", TurnPhase::Player, Hex::new(3, 3));
-    add(&mut game, "wavemender", TurnPhase::Player, Hex::new(2, 3));
-    add(&mut game, "tidesage", TurnPhase::Player, Hex::new(4, 3));
-    let enemy = add(&mut game, "reefguard", TurnPhase::Ai, Hex::new(4, 4));
+    let ally = add(&mut game, "reefguard", "player", Hex::new(3, 3));
+    add(&mut game, "wavemender", "player", Hex::new(2, 3));
+    add(&mut game, "tidesage", "player", Hex::new(4, 3));
+    let enemy = add(&mut game, "reefguard", "enemy", Hex::new(4, 4));
     for id in [ally, enemy] {
         let index = game.index(id).unwrap();
         game.units[index].hp = 1;
@@ -109,10 +109,10 @@ fn strongest_adjacent_friendly_healer_wins_without_stacking_or_overhealing() {
 #[test]
 fn healing_records_credit_tied_strongest_sources_after_terrain_and_hp_caps() {
     let mut game = flat();
-    let ally = add(&mut game, "reefguard", TurnPhase::Player, Hex::new(3, 3));
-    let first = add(&mut game, "tidesage", TurnPhase::Player, Hex::new(2, 3));
-    let second = add(&mut game, "tidesage", TurnPhase::Player, Hex::new(4, 3));
-    add(&mut game, "wavemender", TurnPhase::Player, Hex::new(3, 4));
+    let ally = add(&mut game, "reefguard", "player", Hex::new(3, 3));
+    let first = add(&mut game, "tidesage", "player", Hex::new(2, 3));
+    let second = add(&mut game, "tidesage", "player", Hex::new(4, 3));
+    add(&mut game, "wavemender", "player", Hex::new(3, 4));
     let tile = game.site(&Hex::new(3, 3));
     game.terrain[tile] = game
         .rules

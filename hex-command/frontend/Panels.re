@@ -65,7 +65,7 @@ module UnitCard = {
         artwork={view.artwork}
         name={unit.type_}
         side={Option.fold(
-          ~none=side(unit.side),
+          ~none="passive",
           ~some=(faction: Domain.unit_faction) => faction.palette,
           faction,
         )}
@@ -328,8 +328,8 @@ module Details = {
 module Forecast = {
   [@react.component]
   let make = (~forecast: Presentation.forecast) => {
-    let props = ReactDOM.domProps(~className="attack-health " ++ side(forecast.side), ());
-    dataForecast(props, side(forecast.side));
+    let props = ReactDOM.domProps(~className="attack-health " ++ forecast.palette, ());
+    dataForecast(props, forecast.palette);
     ReactDOM.createElement(
       "span",
       ~props,
@@ -474,7 +474,7 @@ module CombatResult = {
       ) => {
     let (expanded, setExpanded) = React.useState(() => None);
     let units = combat.units;
-    let player = units[0].side == Domain.Turn_phase.Player ? 0 : 1;
+    let player = units[0].faction == "player" ? 0 : 1;
     let opponent = 1 - player;
     let finalHealth =
       Array.map(Int32.to_float, combat.strikes[Array.length(combat.strikes) - 1].Domain.health);
@@ -794,7 +794,7 @@ module Campaign = {
            let survivors =
              filterList(
                (unit: Domain.public_unit) => {
-                 unit.side == Domain.Turn_phase.Player
+                 unit.faction == "player"
                  && unit.role != Some(Domain.Role.Leader)
                  && unit.role != Some(Domain.Role.Courier)
                  && !

@@ -187,9 +187,7 @@ pub fn validate_state_geometry_with_campaign(
             }
             for unit in &state.units {
                 if let Some(id) = &unit.ai_group {
-                    if unit.side != TurnPhase::Ai
-                        || !mission.enemy_groups.iter().any(|g| g.id == *id)
-                    {
+                    if !mission.enemy_groups.iter().any(|g| g.id == *id) {
                         return Err(fail("invalid enemy group"));
                     }
                 }
@@ -309,7 +307,7 @@ pub fn validate_state_geometry_with_campaign(
                     .tiles
                     .iter()
                     .any(|t| t.hex() == unit.tile && t.matches_reference(&effect.tile))
-                || unit.side != effect.units.side
+                || unit.faction != effect.units.faction
                 || effect
                     .units
                     .role
@@ -335,8 +333,7 @@ pub fn validate_state_geometry_with_campaign(
                 "evacuated unit equipment",
             )
             .map_err(|error| StateError(error.to_string()))?;
-            validate_faction_reference(&state.factions, Some(unit.faction.as_str()), unit.side)
-                .map_err(StateError)?;
+            validate_faction_reference(&state.factions, &unit.faction).map_err(StateError)?;
         }
         if campaign.dialogue_index > campaign.dialogue.len() {
             return Err(fail("invalid dialogue index"));
@@ -405,7 +402,7 @@ pub fn validate_state_geometry_with_campaign(
                             .iter()
                             .any(|arrival| veteran.character.as_ref() == Some(&arrival.character)))
                         && !mission.map.units.iter().any(|unit| {
-                            unit.side == TurnPhase::Player
+                            unit.faction == "player"
                                 && (if veteran.role == Some(Role::Leader) {
                                     unit.role == Some(Role::Leader)
                                 } else {

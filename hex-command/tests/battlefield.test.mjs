@@ -12,7 +12,7 @@ const tiles = (view, selected, inspected) =>
   Presentation.battlefield(catalog, view, selected, inspected);
 test("Selection and attack targets have accessible labels and health", () => {
   const game = board();
-  const enemy = game.add("archer", "ai", "2,3");
+  const enemy = game.add("archer", "enemy", "2,3");
   const display = tiles(game.view, "u2");
   assert.equal(display.length, game.state.tiles.length);
   const soldier = required(display.find((entry) => entry.tile.id === "1,3"));

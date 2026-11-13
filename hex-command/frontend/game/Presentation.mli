@@ -40,7 +40,7 @@ val unit_panel :
     render revision. *)
 
 type forecast = {
-  side : Domain.Turn_phase.t;
+  palette : string;
   remaining_hp : float;
   current_hp : float;
   maximum_hp : float;

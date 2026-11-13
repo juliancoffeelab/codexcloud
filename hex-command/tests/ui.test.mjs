@@ -314,7 +314,7 @@ test("Startup and live controls share their structure, and inspection panels ope
   assert(element(".workspace").classList.contains("map-only"));
   assert.equal(host.querySelector("aside"), null);
   const unit = required(
-    Native.state(Session.view(mounted).game).units.find((unit2) => unit2.side === "player"),
+    Native.state(Session.view(mounted).game).units.find((unit2) => unit2.faction === "player"),
   );
   await act(async () => Session.commands(mounted).choose(cellKey(unit.tile)));
   assert.equal(element("aside").getAttribute("aria-label"), "Unit and terrain details");
@@ -401,7 +401,7 @@ test("An accepted native command with failed inspection replaces battle controls
   const unit = required(
     opening.units.find(
       (unit2) =>
-        unit2.side === "player" &&
+        unit2.faction === "player" &&
         Object.keys(Native.reachable(game, unit2.id)).some(
           (id) => id !== cellKey(unit2.tile) && !Native.at(game, id),
         ),

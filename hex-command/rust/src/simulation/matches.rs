@@ -91,36 +91,34 @@ pub(crate) fn create_arena<'catalog>(
     state.units.clear();
     state.next_id = 1;
     let mut starting_cost = [0; 2];
-    for side in [TurnPhase::Player, TurnPhase::Ai] {
-        let roster = roster(
-            rules,
-            if side == TurnPhase::Player {
-                &config.armies.player
-            } else {
-                &config.armies.enemy
-            },
-        )?;
+    for (seat, (faction, army)) in [
+        ("player", &config.armies.player),
+        ("enemy", &config.armies.enemy),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let roster = roster(rules, army)?;
         let leader = roster.leader.as_str();
         let start = state
             .tiles
             .iter()
             .find(|tile| {
                 rules.terrain_roles[rules.terrains[&tile.terrain]] == TerrainRole::Keep
-                    && tile.owner.as_deref() == Some(side.faction_id())
+                    && tile.owner.as_deref() == Some(faction)
             })
             .ok_or("Arena requires an owned keep for each side")?
             .hex();
         let rule = &rules.units[rules.types[leader]];
-        starting_cost[side.index()] += rule.cost;
+        starting_cost[seat] += rule.cost;
         state.units.push(PublicUnit {
-            faction: side.faction_id().into(),
+            faction: faction.into(),
             revealed_to: vec![],
             perception_effects: vec![],
             items: vec![],
             ai_group: None,
             id: format!("u{}", state.next_id),
             r#type: leader.into(),
-            side,
             tile: start.clone(),
             hp: rule.hp,
             moved: false,
@@ -270,20 +268,20 @@ fn phase(
     let count = |side| {
         game.authoritative_units()
             .iter()
-            .filter(|u| u.side == side)
+            .filter(|u| u.phase == side)
             .count()
     };
     let health = |side| {
         game.authoritative_units()
             .iter()
-            .filter(|u| u.side == side)
+            .filter(|u| u.phase == side)
             .map(|u| u.hp)
             .sum()
     };
     let phase = Phase {
         leader_audit: super::leader_audit::finish(game, leader_audit),
         planning: diagnostics,
-        side,
+        phase: side,
         round,
         records,
         living: Sides {
@@ -342,11 +340,13 @@ pub(super) fn run_arena_capturing(
     let mut recording = RecordingCache::default();
     let mut reason = "cap";
     let mut rounds = 0;
+    let seats = [("player", TurnPhase::Player), ("enemy", TurnPhase::Ai)];
     for index in 0..config.max_rounds * 2 {
         if game.winner().is_some() {
             break;
         }
-        let side = game.turn();
+        let (faction, side) = seats[(index as usize + config.first.index()) % seats.len()];
+        debug_assert_eq!(side, game.turn());
         let mut goals = if deathmatch {
             vec![]
         } else {
@@ -358,7 +358,7 @@ pub(super) fn run_arena_capturing(
             )]
         };
         for tile in 0..game.terrain().len() {
-            if game.role_is(tile, TerrainRole::Village) && game.captures(tile, side) {
+            if game.role_is(tile, TerrainRole::Village) && game.captures(tile, faction) {
                 goals.push(objective(
                     &format!("village:{}", game.board().ids[tile]),
                     ObjectiveKind::Capture,
@@ -372,7 +372,7 @@ pub(super) fn run_arena_capturing(
             ObjectiveKind::Defeat,
             game.units()
                 .iter()
-                .filter(|u| u.side != side && u.is_leader())
+                .filter(|u| game.hostile_to_faction(u, faction) && u.is_leader())
                 .map(|u| game.board().ids[u.tile].clone())
                 .collect(),
             12.0,
@@ -396,7 +396,7 @@ pub(super) fn run_arena_capturing(
         let record = phase(
             &mut game,
             &mut recording,
-            if side == TurnPhase::Player {
+            if faction == "player" {
                 config.player
             } else {
                 config.enemy
@@ -420,20 +420,21 @@ pub(super) fn run_arena_capturing(
             reason = "leader";
             break;
         }
-        for owner in [TurnPhase::Player, TurnPhase::Ai]
-            .into_iter()
-            .filter(|_| !deathmatch)
-        {
+        for (seat, &(owner, phase)) in seats.iter().enumerate().filter(|_| !deathmatch) {
             if !territory
                 .iter()
-                .all(|tile| game.owners()[game.site(tile)].as_deref() == Some(owner.faction_id()))
+                .all(|tile| game.owns(game.site(tile), owner))
             {
-                held[owner.index()] = 0;
-            } else if owner != side {
-                held[owner.index()] += 1;
+                held[seat] = 0;
+            } else if phase != side {
+                held[seat] += 1;
             }
-            if held[owner.index()] >= hold_turns {
-                game.declare_outcome(owner);
+            if held[seat] >= hold_turns {
+                game.declare_outcome(if owner == "player" {
+                    BattleResult::PlayerVictory
+                } else {
+                    BattleResult::PlayerDefeat
+                });
                 reason = "territory";
                 break;
             }
@@ -443,13 +444,13 @@ pub(super) fn run_arena_capturing(
             game.end_turn();
         }
     }
-    let score = |side: TurnPhase| ArenaScore {
+    let score = |faction: &str, seat: usize| ArenaScore {
         controlled: territory
             .iter()
-            .filter(|tile| game.owns(game.site(tile), side))
+            .filter(|tile| game.owns(game.site(tile), faction))
             .count(),
-        held: held[side.index()],
-        optional_visits: visits[side.index()].len(),
+        held: held[seat],
+        optional_visits: visits[seat].len(),
     };
     Ok(ArenaResult {
         winner: game.winner(),
@@ -459,8 +460,8 @@ pub(super) fn run_arena_capturing(
         initial,
         r#final: game.state(),
         objectives: Sides {
-            player: score(TurnPhase::Player),
-            enemy: score(TurnPhase::Ai),
+            player: score("player", 0),
+            enemy: score("enemy", 1),
         },
         config,
     })
@@ -612,7 +613,7 @@ mod tests {
             (Policy::Balanced, Some(0)),
         ] {
             let mut game = base.fork();
-            let faction = game.turn().faction_id();
+            let faction = "player";
             crate::tests::edit(&mut game, |state| {
                 state.units.retain(|unit| unit.role == Some(Role::Leader));
                 state.gold[faction] = 1000;
@@ -819,10 +820,10 @@ mod tests {
                         let game = create_arena(&rules, &config).unwrap();
                         let total = |side| {
                             let troops: Vec<_> =
-                                game.units().iter().filter(|u| u.side == side).collect();
+                                game.units().iter().filter(|u| u.phase == side).collect();
                             assert_eq!(troops.len(), 1);
                             assert!(troops[0].is_leader());
-                            game.gold()[side.faction_id()]
+                            game.gold_for_unit(troops[0])
                                 + troops.iter().map(|u| rules.units[u.kind].cost).sum::<i32>()
                         };
                         let budget = total(TurnPhase::Player);
@@ -842,7 +843,7 @@ mod tests {
                         assert!(game.gold().values().all(|&gold| gold >= 0));
                         assert_eq!(game.turn(), TurnPhase::Ai);
                         for unit in game.units() {
-                            let sign = if unit.side == TurnPhase::Player {
+                            let sign = if unit.phase == TurnPhase::Player {
                                 -1
                             } else {
                                 1

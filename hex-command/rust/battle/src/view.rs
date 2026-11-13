@@ -192,16 +192,16 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         self.engine().allied(first, second)
     }
     #[inline]
-    pub fn hostile_to_phase(&self, unit: &Unit, side: TurnPhase) -> bool {
-        self.engine().hostile_to_phase(unit, side)
-    }
-    #[inline]
-    pub fn belongs_to_phase(&self, unit: &Unit, side: TurnPhase) -> bool {
-        self.engine().belongs_to_phase(unit, side)
+    pub fn hostile_to_faction(&self, unit: &Unit, faction: &str) -> bool {
+        self.engine().hostile_to_faction(unit, faction)
     }
     #[inline]
     pub fn control_roster(&self) -> Vec<(u32, TurnPhase, Option<NameKey>, Option<Role>)> {
         self.engine().control_roster()
+    }
+    #[inline]
+    pub fn belongs_to_faction(&self, unit: &Unit, faction: &str) -> bool {
+        self.engine().belongs_to_faction(unit, faction)
     }
     #[inline]
     fn observer_key(&self) -> NameKey {
@@ -209,7 +209,13 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             self.engine()
                 .runtime
                 .names
-                .find(self.engine().faction_for_phase(self.turn()))
+                .find(
+                    self.engine()
+                        .runtime
+                        .active_faction
+                        .as_deref()
+                        .unwrap_or("player"),
+                )
                 .expect("interned faction")
         })
     }
@@ -253,20 +259,20 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         self.engine().runtime.round
     }
     #[inline]
-    pub fn gold_for_phase(&self, side: TurnPhase) -> i32 {
-        self.engine().gold_for_phase(side)
+    pub fn gold_for_faction(&self, faction: &str) -> i32 {
+        self.engine().gold_for_faction(faction)
     }
     #[inline]
     pub fn gold_for_unit(&self, unit: &Unit) -> i32 {
         self.engine().gold_for_unit(unit)
     }
     #[inline]
-    pub fn owns(&self, tile: usize, side: TurnPhase) -> bool {
-        self.engine().owns(tile, side)
+    pub fn owns(&self, tile: usize, faction: &str) -> bool {
+        self.engine().owns(tile, faction)
     }
     #[inline]
-    pub fn captures(&self, tile: usize, side: TurnPhase) -> bool {
-        self.engine().captures(tile, side)
+    pub fn captures(&self, tile: usize, faction: &str) -> bool {
+        self.engine().captures(tile, faction)
     }
     #[inline]
     pub fn recruitment_pool_for(&self, unit: &Unit) -> impl ExactSizeIterator<Item = usize> + '_ {
@@ -549,8 +555,8 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         self.engine().promotion_options(unit)
     }
     #[inline]
-    pub fn recruitment_options(&self, side: TurnPhase) -> Vec<usize> {
-        self.engine().recruitment_options(side)
+    pub fn recruitment_options_for_faction(&self, faction: &str) -> Vec<usize> {
+        self.engine().recruitment_options_for_faction(faction)
     }
     #[inline]
     pub fn placement_tiles(&self, leader: &Unit, kind: usize, price: bool) -> PlacementTiles {
@@ -616,8 +622,8 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             .occupied_routes_with_penalty(unit, goals, friendly_penalty)
     }
     #[inline]
-    pub fn income(&self, side: TurnPhase) -> i32 {
-        self.engine().income(side)
+    pub fn income(&self, faction: &str) -> i32 {
+        self.engine().faction_income(faction)
     }
 }
 
@@ -713,8 +719,15 @@ impl<'catalog> BattleSession<'catalog> {
     }
     #[inline]
     pub fn view(&self) -> &BattleView<'catalog, 'catalog> {
-        self.known
-            .get_or_init(|| self.known_view(self.live.position.faction_for_phase(self.live.turn)))
+        self.known.get_or_init(|| {
+            self.known_view(
+                self.live
+                    .position
+                    .active_faction
+                    .as_deref()
+                    .unwrap_or("player"),
+            )
+        })
     }
     #[inline]
     pub fn campaign_view(&self) -> CampaignView<'_, 'catalog> {
@@ -836,6 +849,17 @@ impl<'catalog> BattleSession<'catalog> {
         self.inactive = Rc::new(inactive.iter().map(|id| id.0).collect());
     }
     pub fn set_active_faction(&mut self, faction: Option<String>) {
+        if let Some(id) = &faction {
+            let declared = self
+                .live
+                .position
+                .faction(id)
+                .expect("declared acting faction");
+            assert_eq!(
+                declared.phase, self.live.turn,
+                "acting faction must be scheduled in this phase"
+            );
+        }
         self.live_mut().runtime.active_faction = faction;
     }
     pub fn set_combat_rng(&mut self, seed: u32) {
@@ -1280,10 +1304,6 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
         self.engine().faction_relation(first, second)
     }
     #[inline]
-    pub fn faction_for_phase(&self, side: TurnPhase) -> &str {
-        self.engine().faction_for_phase(side)
-    }
-    #[inline]
     pub fn faction_identity(&self, id: &str) -> NameKey {
         self.engine().runtime.names.find(id).expect("known faction")
     }
@@ -1372,7 +1392,7 @@ impl<'a, 'catalog> BattleView<'a, 'catalog> {
             .damage_distribution(attacker, target, weapon, tile)
     }
     #[inline]
-    pub fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<TurnPhase>]>) -> TileSet {
+    pub fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<u32>]>) -> TileSet {
         self.engine().threat_reach(unit, occupancy)
     }
 }
@@ -1456,12 +1476,8 @@ impl<'catalog> BattleSession<'catalog> {
             self.live_mut().runtime.recordings = Some(Records::default().into());
         }
     }
-    pub fn declare_outcome(&mut self, side: TurnPhase) {
-        self.live_mut().runtime.winner = Some(if side == TurnPhase::Player {
-            BattleResult::PlayerVictory
-        } else {
-            BattleResult::PlayerDefeat
-        });
+    pub fn declare_outcome(&mut self, outcome: BattleResult) {
+        self.live_mut().runtime.winner = Some(outcome);
     }
     pub fn refresh_mission(&mut self) {
         self.live_mut().refresh_mission();
@@ -1522,7 +1538,14 @@ impl BattleSession<'_> {
         self.presentation_for("player")
     }
     pub fn presentation_for(&self, faction: &str) -> BattlefieldPresentation {
-        if faction == self.live.position.faction_for_phase(self.live.turn) {
+        if faction
+            == self
+                .live
+                .position
+                .active_faction
+                .as_deref()
+                .unwrap_or("player")
+        {
             self.live.presentation_for(faction, self.view())
         } else {
             self.live

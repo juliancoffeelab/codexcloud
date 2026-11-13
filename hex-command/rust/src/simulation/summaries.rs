@@ -25,11 +25,19 @@ struct UnitEvent<'a> {
     #[serde(rename = "type")]
     kind: &'a str,
 }
+// Summary-only phase label for existing two-seat reports. Native unit records
+// remain faction-only; the declared owner supplies this derived label.
+#[derive(Serialize)]
+struct Casualty<'a> {
+    #[serde(flatten)]
+    unit: &'a PublicUnit,
+    side: TurnPhase,
+}
 #[derive(Serialize)]
 struct Events<'a> {
     #[serde(rename = "combatUsage", skip_serializing_if = "Vec::is_empty")]
     combat_usage: Vec<CombatUsage<'a>>,
-    casualties: Vec<&'a PublicUnit>,
+    casualties: Vec<Casualty<'a>>,
     recruits: Vec<UnitEvent<'a>>,
     promotions: Vec<UnitEvent<'a>>,
     #[serde(rename = "stateHash", skip_serializing_if = "Option::is_none")]
@@ -49,7 +57,19 @@ fn events<'a>(
     };
     let mut usage = BTreeMap::new();
     for phase in phases {
-        result.casualties.extend(&phase.records.losses);
+        result
+            .casualties
+            .extend(phase.records.losses.iter().map(|unit| {
+                Casualty {
+                    unit,
+                    side: final_state
+                        .factions
+                        .iter()
+                        .find(|f| f.id == unit.faction)
+                        .expect("recorded faction")
+                        .phase,
+                }
+            }));
         for combat in &phase.records.combats {
             for (id, damage, retaliation) in [
                 (&combat.unit, combat.damage, false),
@@ -69,9 +89,23 @@ fn events<'a>(
                     .find(|u| &u.id == id)
                     .ok_or("Combat usage references an unknown unit")?;
                 let row = usage
-                    .entry((unit.side.index(), unit.r#type.as_str()))
+                    .entry((
+                        final_state
+                            .factions
+                            .iter()
+                            .find(|f| f.id == unit.faction)
+                            .expect("recorded faction")
+                            .phase
+                            .index(),
+                        unit.r#type.as_str(),
+                    ))
                     .or_insert_with(|| CombatUsage {
-                        side: unit.side,
+                        side: final_state
+                            .factions
+                            .iter()
+                            .find(|f| f.id == unit.faction)
+                            .expect("recorded faction")
+                            .phase,
                         kind: &unit.r#type,
                         attacks: 0,
                         retaliations: 0,
@@ -88,11 +122,11 @@ fn events<'a>(
         for action in &phase.records.actions {
             match action {
                 ActionRecord::Recruit { unit_type, .. } => result.recruits.push(UnitEvent {
-                    side: phase.side,
+                    side: phase.phase,
                     kind: unit_type,
                 }),
                 ActionRecord::Advance { unit_type, .. } => result.promotions.push(UnitEvent {
-                    side: phase.side,
+                    side: phase.phase,
                     kind: unit_type,
                 }),
                 _ => {}
@@ -367,7 +401,10 @@ mod tests {
     fn fixture() -> MatchResult {
         let state = State {
             vision_groups: vec![],
-            factions: vec![],
+            factions: serde_json::from_value(json!([
+                {"id":"player","phase":"player","visionGroup":"player","controller":{"kind":"human"},"palette":"player"},
+                {"id":"enemy","phase":"ai","visionGroup":"enemy","controller":{"kind":"ai"},"palette":"enemy"}
+            ])).unwrap(),
             ground_items: vec![],
             condition_memory: vec![],
             armies: None,
@@ -410,7 +447,7 @@ mod tests {
             phases: vec![Phase {
                 leader_audit: vec![],
                 planning: None,
-                side: TurnPhase::Player,
+                phase: TurnPhase::Player,
                 round: 1,
                 records: Records {
                     actions: vec![

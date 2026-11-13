@@ -9,10 +9,10 @@ function developerFixture(types = []) {
   try {
     const checkpoint = structuredClone(Native.save(battle));
     const leaders = new Set(
-      ["player", "ai"].map(
+      ["player", "enemy"].map(
         (side) =>
           checkpoint.state.units.find(
-            (unit) => unit.side === side && TYPES[unit.type]?.family === "commander",
+            (unit) => unit.faction === side && TYPES[unit.type]?.family === "commander",
           ).id,
       ),
     );
@@ -95,11 +95,10 @@ class Game {
   at(id) {
     return this.units.find((unit) => cellKey(unit.tile) === cellKey(id));
   }
-  addUnit(type, side, tile, faction = side === "player" ? "player" : "enemy") {
+  addUnit(type, faction, tile) {
     const unit = {
       id: `u${this.nextId++}`,
       type,
-      side,
       faction,
       revealedTo: [],
       perceptionEffects: [],
@@ -160,8 +159,8 @@ class Game {
   recruitTiles(id, type) {
     return Native.recruit_tiles(this.publishedView(), id, type).map((tile) => this.tile(tile.id));
   }
-  recruitmentOptions(side) {
-    return Native.recruitment_options(this.publishedView(), side);
+  recruitmentOptions(faction) {
+    return Native.recruitment_options(this.publishedView(), faction);
   }
   promotionOptions(id) {
     return Native.promotion_options(this.publishedView(), id);
@@ -198,8 +197,8 @@ class Game {
       )
     );
   }
-  income(side) {
-    return Native.income(this.publishedView(), side);
+  income(faction) {
+    return Native.income(this.publishedView(), faction);
   }
   move(id, tile) {
     this.apply({ kind: "move", unit: Native.unit_id(id), tile });

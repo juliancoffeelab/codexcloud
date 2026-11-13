@@ -103,7 +103,6 @@ struct InitialUnit {
     ai_group: Option<String>,
     id: Option<String>,
     r#type: String,
-    side: Option<TurnPhase>,
     tile: Hex,
     hp: Option<i32>,
     character: Option<String>,
@@ -178,9 +177,6 @@ impl InitialState {
                 ai_group: unit.ai_group,
                 id,
                 r#type: unit.r#type,
-                side: unit
-                    .side
-                    .ok_or_else(|| ContentError::new(path, "initial unit requires a phase"))?,
                 tile,
                 hp,
                 moved: false,
@@ -1280,8 +1276,8 @@ fn validate_mission(
                 .map_err(|message| ContentError::new(path, message))?;
         }
     }
-    let group_ref = |id: &str, side: TurnPhase| -> Result<(), ContentError> {
-        if side != TurnPhase::Ai || !mission.enemy_groups.iter().any(|group| group.id == id) {
+    let group_ref = |id: &str| -> Result<(), ContentError> {
+        if !mission.enemy_groups.iter().any(|group| group.id == id) {
             return Err(ContentError::new(
                 path,
                 format!("unknown enemy group: {id}"),
@@ -1291,15 +1287,15 @@ fn validate_mission(
     };
     for unit in &state.units {
         if let Some(id) = &unit.ai_group {
-            group_ref(id, unit.side)?;
+            group_ref(id)?;
         }
     }
     let starting = |placements: &[StartingUnit]| -> Result<(), ContentError> {
         for unit in placements {
-            validate_faction_reference(&state.factions, unit.faction.as_deref(), unit.side)
+            validate_faction_reference(&state.factions, &unit.faction)
                 .map_err(|message| ContentError::new(path, message))?;
             if let Some(id) = &unit.ai_group {
-                group_ref(id, unit.side)?;
+                group_ref(id)?;
             }
             reference(&unit.r#type, types, path)?;
             validate_equipment(&unit.items, &units[types[&unit.r#type]].attacks, path)?;
@@ -1365,7 +1361,7 @@ fn validate_mission(
                 .map
                 .units
                 .iter()
-                .any(|unit| unit.side == TurnPhase::Player && unit.character.as_ref() == Some(name))
+                .any(|unit| unit.faction == "player" && unit.character.as_ref() == Some(name))
             {
                 return Err(ContentError::new(
                     path,
@@ -1419,15 +1415,17 @@ fn validate_mission(
             for unit in &group.units {
                 validate_faction_reference(
                     &state.factions,
-                    unit.faction.as_deref().or(group.faction.as_deref()),
-                    unit.side,
+                    unit.faction
+                        .as_deref()
+                        .or(group.faction.as_deref())
+                        .ok_or_else(|| {
+                            ContentError::new(path, "spawn requires an explicit faction")
+                        })?,
                 )
                 .map_err(|message| ContentError::new(path, message))?;
             }
             if let Some(id) = &group.ai_group {
-                for unit in &group.units {
-                    group_ref(id, unit.side)?;
-                }
+                group_ref(id)?;
             }
             if group.area.is_empty() || group.units.is_empty() {
                 return Err(ContentError::new(
@@ -1602,11 +1600,12 @@ fn validate_simulation(
             match variant.forces {
                 ArenaForces::Scenario => {
                     for side in [TurnPhase::Player, TurnPhase::Ai] {
-                        if !map
-                            .units
-                            .iter()
-                            .any(|u| u.side == side && u.role == Some(Role::Leader))
-                        {
+                        if !map.units.iter().any(|u| {
+                            map.factions
+                                .iter()
+                                .any(|f| f.id == u.faction && f.phase == side)
+                                && u.role == Some(Role::Leader)
+                        }) {
                             return Err(ContentError::new(
                                 path,
                                 "scenario forces require leaders in both phases",
@@ -1621,14 +1620,14 @@ fn validate_simulation(
                             "selected forces require a positive budget",
                         ));
                     }
-                    for side in [TurnPhase::Player, TurnPhase::Ai] {
+                    for faction in ["player", "enemy"] {
                         if map
                             .tiles
                             .iter()
                             .filter(|tile| {
                                 terrain.iter().any(|t| {
                                     t.id.as_str() == tile.terrain && t.role == TerrainRole::Keep
-                                }) && tile.owner.as_deref() == Some(side.faction_id())
+                                }) && tile.owner.as_deref() == Some(faction)
                             })
                             .count()
                             != 1

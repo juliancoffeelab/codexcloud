@@ -84,17 +84,24 @@ def decode_detail(data, name):
     return result
 
 
-def analysis_view(value):
+def analysis_view(value, factions=None):
     """Present current phases/results as the analyzer's stable two-seat labels.
 
     This is an analysis-only copy. Lossless decoding, exports, checksums and
     replay inputs retain their original engine representation unchanged.
     """
     if isinstance(value, list):
-        return [analysis_view(item) for item in value]
+        return [analysis_view(item, factions) for item in value]
     if not isinstance(value, dict):
         return value
-    result = {key: analysis_view(item) for key, item in value.items()}
+    declared = value.get('factions') or value.get('initial', {}).get('factions')
+    if declared:
+        factions = {f['id']: f for f in declared}
+    result = {key: analysis_view(item, factions) for key, item in value.items()}
+    # Unit ownership is faction-only. These legacy two-phase report labels are
+    # derived in the analysis copy, never written back into replay checkpoints.
+    if 'faction' in value and 'hp' in value and 'tile' in value and 'side' not in value:
+        result['side'] = factions[value['faction']]['phase']
     for key in ("side", "turn", "first"):
         if result.get(key) == "ai":
             result[key] = "enemy"

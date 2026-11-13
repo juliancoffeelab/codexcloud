@@ -85,7 +85,7 @@ impl TileOrderContext {
             direction = (position.0 - home.0, position.1 - home.1);
         }
         if direction == (0.0, 0.0) {
-            direction.0 = if u.side == TurnPhase::Player {
+            direction.0 = if g.unit_faction(u) == "player" {
                 1.0
             } else {
                 -1.0
@@ -99,7 +99,7 @@ impl TileOrderContext {
     }
 }
 impl TileOrder {
-    pub(crate) fn context(g: &BattleView, side: TurnPhase, villages: bool) -> TileOrderContext {
+    pub(crate) fn context(g: &BattleView, faction: &str, villages: bool) -> TileOrderContext {
         fn center(g: &BattleView, tiles: impl Iterator<Item = usize>) -> (f64, f64) {
             let (sum, count) = tiles.fold(((0.0, 0.0), 0usize), |(s, n), t| {
                 let (c, r) = g.board().positions[t];
@@ -108,7 +108,7 @@ impl TileOrder {
             (sum.0 / count as f64, sum.1 / count as f64)
         }
         let mut home_keeps = (0..g.terrain().len())
-            .filter(|&t| g.is_keep(t) && g.owns(t, side))
+            .filter(|&t| g.is_keep(t) && g.owns(t, faction))
             .peekable();
         let home = if home_keeps.peek().is_some() {
             Some(center(g, home_keeps))
@@ -116,12 +116,12 @@ impl TileOrder {
             None
         };
         let mut opposing = (0..g.terrain().len())
-            .filter(|&t| g.is_keep(t) && g.owners()[t].is_some() && g.captures(t, side))
+            .filter(|&t| g.is_keep(t) && g.owners()[t].is_some() && g.captures(t, faction))
             .peekable();
         let mut enemies = g
             .units()
             .iter()
-            .filter(|o| g.hostile_to_phase(o, side))
+            .filter(|o| g.hostile_to_faction(o, faction))
             .map(|o| o.tile)
             .peekable();
         let target = if opposing.peek().is_some() {
@@ -138,7 +138,7 @@ impl TileOrder {
         }
     }
     pub(crate) fn new(g: &BattleView, u: &Unit, villages: bool) -> Self {
-        Self::context(g, u.side, villages).for_unit(g, u)
+        Self::context(g, g.unit_faction(u), villages).for_unit(g, u)
     }
     pub(crate) fn compare(&self, g: &BattleView, first: usize, second: usize) -> Ordering {
         let axial = |t: usize| {
@@ -233,7 +233,7 @@ pub(in crate::ai) fn actor_lanes(
             .units()
             .iter()
             .filter(|u| {
-                game.belongs_to_phase(u, game.turn())
+                game.belongs_to_faction(u, game.observer_faction())
                     && if goal.actor.is_some() {
                         actor_matches(&goal.actor, u.id)
                     } else {
@@ -349,10 +349,10 @@ pub(in crate::ai) fn ordinary<'a>(
             && game.rules().units[o.kind].healing == 0
     })
 }
-pub fn proximity(game: &BattleView<'_, '_>, side: TurnPhase, tile: usize) -> u16 {
+pub fn proximity(game: &BattleView<'_, '_>, faction: &str, tile: usize) -> u16 {
     game.units()
         .iter()
-        .filter(|o| game.hostile_to_phase(o, side))
+        .filter(|o| game.hostile_to_faction(o, faction))
         .map(|o| game.board().distance(tile, o.tile))
         .min()
         .unwrap_or(20)
@@ -367,8 +367,8 @@ pub fn leader_may_advance(
     if tile == u.tile || required || !game.units().iter().any(|o| game.hostile(u, o)) {
         return true;
     }
-    let before = crate::ai::policies::objectives::proximity(game, u.side, u.tile);
-    let after = crate::ai::policies::objectives::proximity(game, u.side, tile);
+    let before = crate::ai::policies::objectives::proximity(game, game.unit_faction(u), u.tile);
+    let after = crate::ai::policies::objectives::proximity(game, game.unit_faction(u), tile);
     if u.rebuilding == Some(true) && recruiting && before > 2 {
         return false;
     }
@@ -382,7 +382,12 @@ pub fn leader_may_advance(
     let (count, at_front) = escorts.fold((0, false), |(count, front), unit| {
         (
             count + 1,
-            front || crate::ai::policies::objectives::proximity(game, u.side, unit.tile) <= after,
+            front
+                || crate::ai::policies::objectives::proximity(
+                    game,
+                    game.unit_faction(u),
+                    unit.tile,
+                ) <= after,
         )
     });
     count >= 2 && at_front
@@ -403,7 +408,7 @@ mod target_tests {
         let leader = |side| {
             view.units()
                 .iter()
-                .find(|unit| unit.side == side && unit.is_leader())
+                .find(|unit| unit.phase == side && unit.is_leader())
                 .unwrap()
         };
         let left = leader(TurnPhase::Player);

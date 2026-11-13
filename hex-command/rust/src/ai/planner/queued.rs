@@ -41,14 +41,16 @@ impl PriorityEvaluation<'_, '_, '_> {
         let foes: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| self.hostile_to_phase(u, self.turn()))
+            .filter(|u| self.hostile_to_faction(u, self.observer_faction()))
             .collect();
         let mut ranked: Vec<_> = self
             .units()
             .iter()
             .enumerate()
             .filter(|(_, u)| {
-                self.belongs_to_phase(u, self.turn()) && !u.attack_spent && self.can_act(u.id)
+                self.belongs_to_faction(u, self.observer_faction())
+                    && !u.attack_spent
+                    && self.can_act(u.id)
             })
             .map(|(index, unit)| {
                 let rule = &self.rules().units[unit.kind];
@@ -143,11 +145,9 @@ impl PriorityEvaluation<'_, '_, '_> {
                     score += 4.0;
                 }
                 if role(self, unit.kind) == TacticalRole::Healer {
-                    for ally in self
-                        .units()
-                        .iter()
-                        .filter(|u| self.belongs_to_phase(u, self.turn()) && u.id != unit.id)
-                    {
+                    for ally in self.units().iter().filter(|u| {
+                        self.belongs_to_faction(u, self.observer_faction()) && u.id != unit.id
+                    }) {
                         if self.board().distance(unit.tile, ally.tile) as usize > movement + 1 {
                             continue;
                         }
@@ -167,7 +167,7 @@ impl PriorityEvaluation<'_, '_, '_> {
                     score -= 8.0;
                 }
                 if cache.orders().campaign
-                    && unit.side == TurnPhase::Player
+                    && self.unit_faction(unit) == "player"
                     && cache.orders().important(self, unit)
                     && !personal
                 {
@@ -275,7 +275,9 @@ fn next_plan_inner<'a, 'catalog>(
             return finish_intents(&session.candidates, intents);
         };
         let Some(unit) = game.unit(id.0).filter(|u| {
-            game.belongs_to_phase(u, game.turn()) && !u.attack_spent && game.can_act(u.id)
+            game.belongs_to_faction(u, game.observer_faction())
+                && !u.attack_spent
+                && game.can_act(u.id)
         }) else {
             continue;
         };
@@ -286,7 +288,7 @@ fn next_plan_inner<'a, 'catalog>(
             && !game
                 .units()
                 .iter()
-                .filter(|u| game.hostile_to_phase(u, game.turn()))
+                .filter(|u| game.hostile_to_faction(u, game.observer_faction()))
                 .any(|target| {
                     game.weapons(unit)
                         .enumerate()
@@ -313,7 +315,11 @@ fn next_plan_inner<'a, 'catalog>(
         if plan.is_none()
             && turn.orders.tactics.important(game, unit)
             && (policy == QueueMode::CampaignBlock
-                || crate::ai::policies::objectives::proximity(game, unit.side, unit.tile) <= 6)
+                || crate::ai::policies::objectives::proximity(
+                    game,
+                    game.unit_faction(unit),
+                    unit.tile,
+                ) <= 6)
         {
             plan = session.search.focused(game, phases, turn, id.0);
         }

@@ -154,20 +154,18 @@ impl RosterDocument {
                             .ok_or_else(|| ContentError::new(path, format!("unknown item {id}")))
                     })
                     .collect::<Result<_, _>>()?;
-                if unit.side.is_some() || unit.faction.is_some() {
+                if unit.faction.is_some() {
                     return Err(ContentError::new(
                         path,
-                        "roster units inherit side and faction from their army",
+                        "roster units inherit faction from their army",
                     ));
                 }
-                unit.side = Some(faction.phase);
                 unit.faction = Some(faction.id.clone());
                 placements.push(StartingUnit {
                     items: unit.items.clone(),
-                    faction: unit.faction.clone(),
+                    faction: faction.id.clone(),
                     tile: unit.tile.clone(),
                     r#type: unit.r#type.clone(),
-                    side: faction.phase,
                     ai_group: unit.ai_group.clone(),
                     character: unit.character.clone(),
                     role: unit.role,
@@ -494,10 +492,9 @@ pub fn map_metadata(
                 Ok(StartingUnit {
                     items: unit.items.clone(),
                     ai_group: unit.ai_group.clone(),
-                    faction: Some(unit.faction.clone()),
+                    faction: unit.faction.clone(),
                     tile: tile.hex(),
                     r#type: unit.r#type.clone(),
-                    side: unit.side,
                     character: unit.character.clone(),
                     role: unit.role,
                 })

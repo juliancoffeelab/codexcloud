@@ -43,7 +43,7 @@ test("Live controller uses native movement/undo and preserves previous UI querie
     commands = Session.commands(session);
   const opening = capture(session),
     previous = Session.view(session).game;
-  const actor = required(opening.units.find((unit) => unit.side === "player"));
+  const actor = required(opening.units.find((unit) => unit.faction === "player"));
   const moves = Native.reachable(previous, actor.id),
     tile = required(Object.keys(moves)[0]);
   commands.choose(cellKey(actor.tile));
@@ -130,7 +130,7 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   );
   Native.dispose(opening);
   const previous = Native.view(game),
-    actor = required(Native.state(previous).units.find((unit) => unit.side === "player"));
+    actor = required(Native.state(previous).units.find((unit) => unit.faction === "player"));
   const target = required(Native.targets(previous, actor.id)[0]),
     forecast = required(Native.best_attack(previous, actor.id, target.id));
   Native.dispatch(game, {

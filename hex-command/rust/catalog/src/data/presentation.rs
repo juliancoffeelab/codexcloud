@@ -28,8 +28,7 @@ pub struct PresentationInput {
 /// Borrowed unit facts used by condition evaluation, independent of storage layout.
 #[derive(Clone, Copy)]
 pub struct ConditionUnit<'a> {
-    pub faction: Option<&'a str>,
-    pub side: TurnPhase,
+    pub faction: &'a str,
     pub kind: &'a str,
     pub character: Option<&'a str>,
     pub ai_group: Option<&'a str>,
@@ -43,9 +42,9 @@ pub trait ConditionContext {
     }
     fn matches_side(&self, unit: ConditionUnit<'_>, side: ConditionSide) -> bool {
         if side == ConditionSide::Observer {
-            unit.faction.unwrap_or(unit.side.faction_id()) == self.observer_faction()
+            unit.faction == self.observer_faction()
         } else {
-            faction_matches_side(self.factions(), unit.faction, unit.side, side)
+            faction_matches_side(self.factions(), unit.faction, side)
         }
     }
     fn visible_unit(&self, unit: ConditionUnit<'_>) -> bool {
@@ -99,7 +98,7 @@ impl ConditionContext for PresentationInput {
         };
         (tile.perception.remember && group.explored.contains(&tile.hex()))
             || self.units.iter().any(|u| {
-                let source_faction = u.faction.as_deref().unwrap_or(u.side.faction_id());
+                let source_faction = u.faction.as_str();
                 self.factions
                     .iter()
                     .any(|f| f.id == source_faction && f.vision_group == group.id)
@@ -118,8 +117,7 @@ impl ConditionContext for PresentationInput {
     fn any_unit(&self, mut predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool {
         self.units.iter().any(|u| {
             predicate(ConditionUnit {
-                faction: u.faction.as_deref(),
-                side: u.side,
+                faction: u.faction.as_str(),
                 kind: &u.r#type,
                 character: u.character.as_deref(),
                 ai_group: u.ai_group.as_deref(),
@@ -131,8 +129,7 @@ impl ConditionContext for PresentationInput {
     fn any_pending(&self, mut predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool {
         self.pending.iter().any(|u| {
             predicate(ConditionUnit {
-                faction: u.faction.as_deref(),
-                side: u.side,
+                faction: u.faction.as_deref().expect("explicit pending faction"),
                 kind: &u.r#type,
                 character: u.character.as_deref(),
                 ai_group: None,

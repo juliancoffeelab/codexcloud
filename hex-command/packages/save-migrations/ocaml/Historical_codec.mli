@@ -3005,6 +3005,59 @@ val read_save45_member1 : Js.Json.t -> save45_member1
 val encode_save45_member1 : save45_member1 -> Js.Json.t
 val read_save45 : Js.Json.t -> save45
 val encode_save45 : save45 -> Js.Json.t
+val read_save46 : Js.Json.t -> save46
+val encode_save46 : save46 -> Js.Json.t
+val read_save46_member0 : Js.Json.t -> save46_member0
+val encode_save46_member0 : save46_member0 -> Js.Json.t
+val read_literal_46 : Js.Json.t -> literal_46
+val encode_literal_46 : literal_46 -> Js.Json.t
+val read_save46_member0_checkpoint : Js.Json.t -> save46_member0_checkpoint
+val encode_save46_member0_checkpoint : save46_member0_checkpoint -> Js.Json.t
+val read_save46_member0_checkpoint_state : Js.Json.t -> save46_member0_checkpoint_state
+val encode_save46_member0_checkpoint_state : save46_member0_checkpoint_state -> Js.Json.t
+val read_save46_member0_checkpoint_state_units : Js.Json.t -> save46_member0_checkpoint_state_units
+
+val encode_save46_member0_checkpoint_state_units :
+  save46_member0_checkpoint_state_units -> Js.Json.t
+
+val read_save46_member0_checkpoint_state_units_item :
+  Js.Json.t -> save46_member0_checkpoint_state_units_item
+
+val encode_save46_member0_checkpoint_state_units_item :
+  save46_member0_checkpoint_state_units_item -> Js.Json.t
+
+val read_save46_member0_checkpoint_state_campaign :
+  Js.Json.t -> save46_member0_checkpoint_state_campaign
+
+val encode_save46_member0_checkpoint_state_campaign :
+  save46_member0_checkpoint_state_campaign -> Js.Json.t
+
+val read_save46_member0_checkpoint_state_campaign_member1 :
+  Js.Json.t -> save46_member0_checkpoint_state_campaign_member1
+
+val encode_save46_member0_checkpoint_state_campaign_member1 :
+  save46_member0_checkpoint_state_campaign_member1 -> Js.Json.t
+
+val read_save46_member0_checkpoint_state_campaign_member1_evacuated :
+  Js.Json.t -> save46_member0_checkpoint_state_campaign_member1_evacuated
+
+val encode_save46_member0_checkpoint_state_campaign_member1_evacuated :
+  save46_member0_checkpoint_state_campaign_member1_evacuated -> Js.Json.t
+
+val read_save46_member0_checkpoint_state_campaign_member1_evacuated_member1 :
+  Js.Json.t -> save46_member0_checkpoint_state_campaign_member1_evacuated_member1
+
+val encode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1 :
+  save46_member0_checkpoint_state_campaign_member1_evacuated_member1 -> Js.Json.t
+
+val read_save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item :
+  Js.Json.t -> save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item
+
+val encode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item :
+  save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item -> Js.Json.t
+
+val read_save46_member1 : Js.Json.t -> save46_member1
+val encode_save46_member1 : save46_member1 -> Js.Json.t
 
 module V2 : sig
   val of_json : Js.Json.t -> Historical_types.V2.t
@@ -3259,6 +3312,11 @@ end
 module V45 : sig
   val of_json : Js.Json.t -> Historical_types.V45.t
   val to_json : Historical_types.V45.t -> Js.Json.t
+end
+
+module V46 : sig
+  val of_json : Js.Json.t -> Historical_types.V46.t
+  val to_json : Historical_types.V46.t -> Js.Json.t
 end
 
 module Fragment : sig

@@ -154,7 +154,7 @@ function historicalTiles(input) {
       delete faction.visionGroup;
     }
     for (const unit of current.units ?? []) {
-      unit.side = phase(unit.side);
+      unit.side = phase(unit.side ?? current.factions.find((f) => f.id === unit.faction).phase);
       unit.attacked = unit.attackSpent;
       delete unit.attackSpent;
       delete unit.revealedTo;

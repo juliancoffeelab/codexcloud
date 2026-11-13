@@ -309,7 +309,7 @@ for (const [id, chapter, type, tile, numericMarks] of [
     game.advanceDialogue(true);
     game.mapRevision = 1;
     game.round = 8;
-    game.addUnit(type, "ai", tile, "masters-host").hp = 1;
+    game.addUnit(type, "masters-host", tile).hp = 1;
     game.campaign.marks.push(...numericMarks);
     const { campaignDeploymentFormat: _tag, ...old } = oldSnapshot(game.captureState());
     old.pendingEnemy = true;

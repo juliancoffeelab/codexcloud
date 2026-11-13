@@ -116,8 +116,8 @@ test("Developer map supports normal actions and persistence", async () => {
     observed = observe(session),
     commands = Session.commands(session);
   const opening = snapshot(session),
-    player = required(opening.units.find((unit) => unit.side === "player")),
-    enemy = required(opening.units.find((unit) => unit.side === "ai"));
+    player = required(opening.units.find((unit) => unit.faction === "player")),
+    enemy = required(opening.units.find((unit) => unit.faction === "enemy"));
   commands.choose(cellKey(player.tile));
   const details = panel(observed.view);
   assert(details !== 0 && details.TAG === 1);
@@ -149,8 +149,8 @@ test("Inspection switches tiles and closes when the inspected unit or terrain is
     observed = observe(session),
     commands = Session.commands(session);
   const opening = snapshot(session);
-  const player = required(opening.units.find((unit) => unit.side === "player"));
-  const enemy = required(opening.units.find((unit) => unit.side === "ai"));
+  const player = required(opening.units.find((unit) => unit.faction === "player"));
+  const enemy = required(opening.units.find((unit) => unit.faction === "enemy"));
   const empty = required(
     opening.tiles.find((tile) => !opening.units.some((unit) => cellKey(unit.tile) === tile.id)),
   );
@@ -195,7 +195,7 @@ test("Click-away dismissal preserves movement, attack targeting and undo", async
     observed = observe(session),
     commands = Session.commands(session);
   const opening = snapshot(session),
-    player = required(opening.units.find((unit) => unit.side === "player"));
+    player = required(opening.units.find((unit) => unit.faction === "player"));
   const destination = required(Object.keys(Native.reachable(observed.view.game, player.id))[0]);
   commands.choose(cellKey(player.tile));
   commands.choose(destination);
@@ -289,7 +289,7 @@ test("Stray dialogue cannot overwrite a paused turn checkpoint", async () => {
 test("Completed vigil publishes and persists its outcome", async () => {
   const fixture = Game.startCampaign("green-accord", 1);
   fixture.advanceDialogue(true);
-  fixture.units = fixture.units.filter((unit) => unit.side === "player");
+  fixture.units = fixture.units.filter((unit) => unit.faction === "player");
   const goal = { tile: { col: 6, row: 4 } };
   const lark = required(fixture.units.find((unit) => unit.character === "lark")),
     occupant = fixture.at(cellKey(goal.tile));
@@ -321,9 +321,9 @@ test("Finished enemy-turn battles persist outcome dialogue", async () => {
     (unit) => unit.role === "leader" || unit.character === "lark",
   );
   const leader = required(
-      fixture.units.find((unit) => unit.side === "player" && unit.role === "leader"),
+      fixture.units.find((unit) => unit.faction === "player" && unit.role === "leader"),
     ),
-    enemy = fixture.addUnit("soldier", "ai", "4,4", "charter-guards");
+    enemy = fixture.addUnit("soldier", "charter-guards", "4,4");
   leader.tile = { col: 3, row: 4 };
   leader.hp = 1;
   enemy.tile = { col: 4, row: 4 };
@@ -417,7 +417,7 @@ test("Publications are detached and availability follows the revision", async ()
 });
 test("Browser commands are player-only and previews cannot mutate rules", async () => {
   const fixture = new Game(),
-    enemy = fixture.addUnit("soldier", "ai", "2,3");
+    enemy = fixture.addUnit("soldier", "enemy", "2,3");
   await saveBattle(fixture);
   const paused = pauseTurn(),
     session = await createController(paused.pause),
@@ -670,7 +670,7 @@ test("Immediate render acknowledgement observes effects once and stale acknowled
 });
 test("Optional browser tools share player commands and return detached JSON", async () => {
   const fixture = new Game(),
-    enemy = fixture.addUnit("soldier", "ai", "2,3");
+    enemy = fixture.addUnit("soldier", "enemy", "2,3");
   fixture.unit("u3").items = [
     {
       id: "unicode-token",
@@ -1212,7 +1212,7 @@ test("An active enemy phase retains player flash save regardless of first-side p
 test("Dropping carried equipment preserves the unit turn and atomically persists the ground pile", async () => {
   const game = new Game();
   const actor = required(
-    game.units.find((unit) => unit.side === "player" && unit.role !== "leader"),
+    game.units.find((unit) => unit.faction === "player" && unit.role !== "leader"),
   );
   actor.items = [
     {

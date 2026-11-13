@@ -479,7 +479,12 @@ impl<'catalog> Game<'catalog> {
                     perception,
                     id: unit.id.strip_prefix('u').unwrap().parse().unwrap(),
                     kind: rules.types[&unit.r#type],
-                    side: unit.side,
+                    phase: state
+                        .factions
+                        .iter()
+                        .find(|f| f.id == unit.faction)
+                        .expect("validated unit faction")
+                        .phase,
                     tile: board.indices[&unit.tile],
                     hp: unit.hp,
                     moved: unit.moved,
@@ -938,7 +943,6 @@ impl<'catalog> BattlePosition<'catalog> {
             ai_group: self.name(unit.ai_group).map(str::to_owned),
             id: format!("u{}", unit.id),
             r#type: self.rules.units[unit.kind].id.clone(),
-            side: unit.side,
             tile: self.runtime.board.ids[unit.tile].clone(),
             hp: unit.hp,
             moved: unit.moved,
@@ -1036,7 +1040,7 @@ impl<'catalog> BattlePosition<'catalog> {
             vision_group,
             id,
             kind,
-            side,
+            phase: side,
             tile,
             hp: self.rules.units[kind].hp,
             moved: false,
@@ -1092,11 +1096,7 @@ impl<'catalog> BattlePosition<'catalog> {
         }
     }
     pub(crate) fn promotion_options(&self, unit: &Unit) -> Vec<usize> {
-        if self.runtime.winner.is_some()
-            || unit.side != self.runtime.turn
-            || unit.moved
-            || unit.attack_spent
-        {
+        if self.runtime.winner.is_some() || !self.may_act(unit) || unit.moved || unit.attack_spent {
             return vec![];
         }
         let rule = &self.rules.units[unit.kind];
@@ -1143,9 +1143,6 @@ impl<'catalog> BattlePosition<'catalog> {
             unit: format!("u{id}"),
             unit_type: self.rules.units[kind].id.clone(),
         });
-    }
-    pub(crate) fn recruitment_options(&self, side: TurnPhase) -> Vec<usize> {
-        self.recruitment_options_for_faction(self.faction_for_phase(side))
     }
     pub(crate) fn recruitment_options_for_faction(&self, id: &str) -> Vec<usize> {
         self.recruitment_pool_for_faction(id).collect()
@@ -1249,7 +1246,7 @@ impl<'catalog> BattlePosition<'catalog> {
         unit.attack_spent = true;
         self.record(format!(
             "{} recruited a {}. It acts next turn.",
-            if leader.side == TurnPhase::Player {
+            if self.unit_faction(&leader) == "player" {
                 "You"
             } else {
                 "Enemy"

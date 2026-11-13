@@ -92,7 +92,8 @@ impl RecruitRequirement {
                 game.units()
                     .iter()
                     .filter(|u| {
-                        game.belongs_to_phase(u, game.turn()) && selector.accepts(game, u.kind)
+                        game.belongs_to_faction(u, game.observer_faction())
+                            && selector.accepts(game, u.kind)
                     })
                     .count(),
             ),
@@ -321,7 +322,7 @@ impl TacticalOrders {
             .filter(|goal| {
                 goal.id.starts_with("rebuild:")
                     && game.units().iter().any(|unit| {
-                        game.belongs_to_phase(unit, game.turn())
+                        game.belongs_to_faction(unit, game.observer_faction())
                             && crate::ai::policies::objectives::actor_matches(&goal.actor, unit.id)
                     })
             })

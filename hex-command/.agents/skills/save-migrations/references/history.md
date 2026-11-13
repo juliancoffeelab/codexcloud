@@ -468,3 +468,12 @@ recruitment overrides, evacuated units and exact ownership conditions. Vision
 groups, palettes, phases and relation selectors retain their previous meanings.
 Undo states receive the same conversion and are re-diffed. The native wire layout
 is unchanged and reuses the frozen v44 checkpoint graph.
+
+### Version 46
+
+Unit snapshots retain faction membership without a redundant `side` turn phase.
+The isolated 45→46 conversion validates each old unit phase against its declared
+faction, removes the redundant field from live and evacuated units, and applies
+the same conversion to reconstructed undo states before re-diffing them. Other
+resolved facts and browser settings are preserved. The native checkpoint graph
+is frozen separately as v46; prior schemas and conversions remain unchanged.

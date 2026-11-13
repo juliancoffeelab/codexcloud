@@ -55,9 +55,8 @@ test("Legacy refuge retains company and ownership", async () => {
     Object.assign(
       legacy.addUnit(
         unit.type,
-        unit.side === "enemy" ? "ai" : unit.side,
-        `${unit.col},${unit.row}`,
         unit.side === "enemy" ? "charter-patrol" : "player",
+        `${unit.col},${unit.row}`,
       ),
       {
         ...(unit.name

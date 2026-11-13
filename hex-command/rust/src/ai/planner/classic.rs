@@ -49,7 +49,8 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         opportunity: Option<crate::ai::policies::recruitment::EstimateInput<'_>>,
     ) -> Self {
         let important = orders.important(g, u);
-        let threats = important.then(|| Threats::protected(phases, u.side, orders));
+        let threats =
+            important.then(|| Threats::protected(phases, phases.view().unit_faction(&u), orders));
         // Classic owns this budget estimate and its movement penalties; no recruit previews.
         let mut recruitment = HashMap::default();
         if let Some(opportunity) = opportunity.filter(|r| r.remaining_budget != Some(0)) {
@@ -59,10 +60,9 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
                     u,
                     g.reachable(u).iter().map(|&(tile, _)| tile).collect(),
                 );
-                for tile in destinations
-                    .into_iter()
-                    .filter(|&tile| tile != u.tile && g.is_keep(tile) && g.owns(tile, u.side))
-                {
+                for tile in destinations.into_iter().filter(|&tile| {
+                    tile != u.tile && g.is_keep(tile) && g.owns(tile, g.unit_faction(&u))
+                }) {
                     if let Some(value) =
                         crate::ai::policies::recruitment::estimate_capacity(g, u, tile, opportunity)
                     {
@@ -249,7 +249,9 @@ impl ClassicEvaluation<'_, '_, '_> {
 
     fn movement_goals(&self, u: &Unit, orders: &crate::ai::orders::TacticalOrders) -> Vec<usize> {
         let villages: Vec<_> = (0..self.terrain().len())
-            .filter(|&t| self.role_is(t, TerrainRole::Village) && self.captures(t, u.side))
+            .filter(|&t| {
+                self.role_is(t, TerrainRole::Village) && self.captures(t, self.unit_faction(&u))
+            })
             .collect();
         let goals = if self.rules().units[u.kind].family == Family::Scout && !villages.is_empty() {
             villages
@@ -270,7 +272,7 @@ impl ClassicEvaluation<'_, '_, '_> {
                 .movement_tiles
                 .iter()
                 .map(|tile| self.site(&tile.0))
-                .filter(|&tile| self.captures(tile, u.side))
+                .filter(|&tile| self.captures(tile, self.unit_faction(&u)))
                 .collect();
             if !contested.is_empty() {
                 return contested;
@@ -290,7 +292,7 @@ impl ClassicEvaluation<'_, '_, '_> {
         let mut ids: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| self.belongs_to_phase(&u, self.turn()) && self.can_act(u.id))
+            .filter(|u| self.belongs_to_faction(&u, self.observer_faction()) && self.can_act(u.id))
             .map(|u| u.id)
             .collect();
         let clearing = self.classic_lanes(objectives);
@@ -457,7 +459,7 @@ impl ClassicProjection<'_, '_> {
         let villages: Vec<_> = (0..self.terrain().len())
             .filter(|&t| {
                 self.role_is(t, TerrainRole::Village)
-                    && self.owns(t, u.side)
+                    && self.owns(t, self.unit_faction(&u))
                     && self.at(t).is_none_or(|o| o.id == id)
                     && ClassicEvaluation(self).enemy_danger(&u, t) == 0
             })
@@ -534,7 +536,7 @@ impl ClassicProjection<'_, '_> {
         let Some(mut u) = self.unit(id).cloned() else {
             return;
         };
-        if !self.belongs_to_phase(&u, self.turn()) || u.attack_spent {
+        if !self.belongs_to_faction(&u, self.observer_faction()) || u.attack_spent {
             return;
         }
         if let Some(promotion) = rules.orders.promotion(self, &u) {
@@ -580,7 +582,7 @@ impl ClassicProjection<'_, '_> {
             .then(|| self.routes(u.kind, &goals))
         };
         let recruiting = self
-            .recruitment_options(u.side)
+            .recruitment_options_for_faction(self.unit_faction(&u))
             .iter()
             .any(|&k| !self.placement_tiles(&u, k, true).is_empty());
         let campaign = rules.orders.campaign;
@@ -637,7 +639,9 @@ impl ClassicProjection<'_, '_> {
                     }
                 }
             }
-            let capture = if self.role_is(t, TerrainRole::Village) && self.captures(t, u.side) {
+            let capture = if self.role_is(t, TerrainRole::Village)
+                && self.captures(t, self.unit_faction(&u))
+            {
                 if self.rules().units[u.kind].family == Family::Scout {
                     8.0
                 } else {
@@ -646,7 +650,9 @@ impl ClassicProjection<'_, '_> {
             } else {
                 0.0
             };
-            let heal = if u.hp <= 4 && self.role_is(t, TerrainRole::Village) && self.owns(t, u.side)
+            let heal = if u.hp <= 4
+                && self.role_is(t, TerrainRole::Village)
+                && self.owns(t, self.unit_faction(&u))
             {
                 9.0
             } else {
@@ -722,7 +728,9 @@ impl ClassicProjection<'_, '_> {
                 crate::ai::policies::objectives::can_pursue(self, &u, g)
                     && (g.kind != ObjectiveKind::Capture
                         || g.hold == Some(true)
-                        || g.tiles.iter().any(|t| self.captures(self.site(t), u.side)))
+                        || g.tiles
+                            .iter()
+                            .any(|t| self.captures(self.site(t), self.unit_faction(&u))))
             })
             .collect();
         if eligible
@@ -872,7 +880,9 @@ pub(super) fn choose<'a, 'catalog>(
             .order_by_key(|id| session.escort.bound(*id) == 0.0);
         session.remaining = Some(session.ids.len());
         for unit in game.units().iter().filter(|u| {
-            game.belongs_to_phase(u, game.turn()) && game.can_act(u.id) && u.is_leader()
+            game.belongs_to_faction(u, game.observer_faction())
+                && game.can_act(u.id)
+                && u.is_leader()
         }) {
             let required = orders.moving_actor(unit.id);
             let (_, intent) = orders.rebuild_plan(game, unit.id, required);
@@ -935,7 +945,7 @@ impl ClassicEvaluation<'_, '_, '_> {
                 .units()
                 .iter()
                 .filter(|u| {
-                    self.belongs_to_phase(u, self.turn())
+                    self.belongs_to_faction(u, self.observer_faction())
                         && (goal.actor.is_some()
                             || goal.family.is_some()
                             || !u.is_leader() && !u.role.is_some_and(Role::is_escort))

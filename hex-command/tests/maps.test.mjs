@@ -22,9 +22,10 @@ test("Catalog retains the latest scenario revisions and non-human metadata", () 
 });
 test("Developer showcase contains both factions' playable units and expansion space", async () => {
   const game = new Game("developer");
-  const actors = new Set(game.units.map((unit) => `${unit.side}:${unit.type}`));
+  const actors = new Set(game.units.map((unit) => `${unit.faction}:${unit.type}`));
   for (const type of Object.keys(TYPES))
-    for (const side of ["player", "ai"]) assert(actors.has(`${side}:${type}`), `${side} ${type}`);
+    for (const side of ["player", "enemy"])
+      assert(actors.has(`${side}:${type}`), `${side} ${type}`);
   const occupied = new Set(game.units.map((unit) => unit.tile));
   const freeGround = game.tiles.filter(
     (tile) => tile.terrain === "plains" && !occupied.has(tile.id),
@@ -38,10 +39,10 @@ test("Developer units use ordinary movement, combat and turns", async () => {
   const developerBattle = restoreBattle(developerFixture(["soldier"]).checkpoint());
   const initial = Native.state(Native.view(developerBattle));
   const soldier = required(
-    initial.units.find((unit) => unit.type === "soldier" && unit.side === "player"),
+    initial.units.find((unit) => unit.type === "soldier" && unit.faction === "player"),
   );
   const enemySoldier = required(
-    initial.units.find((unit) => unit.type === "soldier" && unit.side === "ai"),
+    initial.units.find((unit) => unit.type === "soldier" && unit.faction === "enemy"),
   );
   Native.dispatch(developerBattle, {
     kind: "move",
@@ -84,7 +85,7 @@ for (const [type, destination] of [["scout", "5,1"]]) {
     async () => {
       const game = developerFixture([type]);
       const unit = required(
-        game.units.find((unit2) => unit2.side === "player" && unit2.type === type),
+        game.units.find((unit2) => unit2.faction === "player" && unit2.type === type),
       );
       game.move(unit.id, destination);
       assert.equal(required(game.tile(destination)).owner, "player");
@@ -108,7 +109,12 @@ function validDeveloperSave() {
   const validSave = {
     version: SAVE_VERSION,
     pendingEnemy: false,
-    state: { ...showcase.snapshot(), nextId: showcase.nextId, log: showcase.log },
+    state: {
+      ...showcase.snapshot(),
+      factions: showcase.factions,
+      nextId: showcase.nextId,
+      log: showcase.log,
+    },
   };
   return validSave;
 }
@@ -150,7 +156,7 @@ const invalidCases = [
     "missing enemy commander",
     (save) => {
       save.state.units = save.state.units.filter(
-        (unit) => !(unit.side === "ai" && required(TYPES[unit.type]).family === "commander"),
+        (unit) => !(unit.faction === "enemy" && required(TYPES[unit.type]).family === "commander"),
       );
     },
   ],

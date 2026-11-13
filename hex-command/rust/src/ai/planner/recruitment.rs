@@ -30,7 +30,7 @@ pub(super) fn plan(
         unit,
         game.reachable(unit).iter().map(|&(tile, _)| tile).collect(),
     );
-    let mut threats = Threats::protected(phases, unit.side, orders);
+    let mut threats = Threats::protected(phases, phases.view().unit_faction(&unit), orders);
     let before = cap_exposure(unit, threats.at(unit, unit.tile, None), true);
     let danger = if orders.protects(unit.id) {
         40.0 / unit.hp.max(1) as f64

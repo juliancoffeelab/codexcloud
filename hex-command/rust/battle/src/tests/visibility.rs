@@ -53,7 +53,6 @@ fn corridor(radius: u16, remember: bool) -> State {
         .map(|(i, (faction, col))| PublicUnit {
             id: format!("u{}", i + 1),
             faction: faction.into(),
-            side: TurnPhase::Ai,
             tile: Hex::new(col, 0),
             role: None,
             r#type: "archer".into(),

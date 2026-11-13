@@ -83,9 +83,6 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
         group: &PendingEventSpawn,
         u: &SpawnMember,
     ) -> bool {
-        let faction = self
-            .faction(&group.faction)
-            .expect("validated pending faction");
         s.retreating.is_none_or(|v| !v)
             && s.character
                 .as_ref()
@@ -101,7 +98,7 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
                 if side == ConditionSide::Observer {
                     group.faction == self.observer
                 } else {
-                    faction_matches_side(self.factions, Some(&group.faction), faction.phase, side)
+                    faction_matches_side(self.factions, &group.faction, side)
                 }
             })
     }
@@ -285,7 +282,7 @@ pub(super) fn unit_matches_for_faction(
             if side == ConditionSide::Observer {
                 names.get(unit.faction) == observer
             } else {
-                faction_matches_side(factions, Some(names.get(unit.faction)), unit.side, side)
+                faction_matches_side(factions, names.get(unit.faction), side)
             }
         })
         && select

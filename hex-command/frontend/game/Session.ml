@@ -1044,9 +1044,7 @@ let end_turn ?(restored = false) t () =
 
 let initial_focus game =
   let s = Native.state game in
-  match
-    Array.find_opt (fun (unit : Domain.public_unit) -> unit.side = Domain.Turn_phase.Player) s.units
-  with
+  match Array.find_opt (fun (unit : Domain.public_unit) -> unit.faction = "player") s.units with
   | Some unit -> Hex.key unit.tile
   | None -> if Array.length s.tiles = 0 then "" else s.tiles.(0).id
 
@@ -1718,7 +1716,7 @@ let trace_context t =
       ("cols", num (Int32.to_float state.cols));
       ("rows", num (Int32.to_float state.rows));
       ("round", num state.round);
-      ("turn", str (Enum.string_of_side state.turn));
+      ("turn", str (Enum.string_of_phase state.turn));
       ("snapshot", field serialized "state");
       ( "lighting",
         obj

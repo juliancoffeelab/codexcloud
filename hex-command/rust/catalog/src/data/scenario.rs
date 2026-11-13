@@ -14,11 +14,9 @@ use std::collections::BTreeMap;
 pub struct StartingUnit {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<Item>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub faction: Option<String>,
+    pub faction: String,
     pub tile: Hex,
     pub r#type: String,
-    pub side: TurnPhase,
     #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
     pub ai_group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -35,7 +33,7 @@ pub struct StartingUnit {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct UnitFilter {
-    pub side: TurnPhase,
+    pub faction: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -44,7 +42,7 @@ pub struct UnitFilter {
 impl UnitFilter {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn accepts(&self, unit: &Unit, names: &Names) -> bool {
-        unit.side == self.side
+        names.get(unit.faction) == self.faction
             && self
                 .role
                 .as_ref()
@@ -347,7 +345,6 @@ pub struct SpawnUnit {
     pub faction: Option<String>,
     pub id: String,
     pub r#type: String,
-    pub side: TurnPhase,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub character: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -595,14 +592,18 @@ impl Mission {
         self.map
             .units
             .iter()
-            .filter(|u| u.side == TurnPhase::Player && u.role != Some(Role::Leader))
+            .filter(|u| u.faction == "player" && u.role != Some(Role::Leader))
             .filter_map(|u| u.character.as_deref())
             .chain(
                 self.events
                     .iter()
                     .filter_map(|e| e.spawn.as_ref())
-                    .flat_map(|group| &group.units)
-                    .filter(|u| u.side == TurnPhase::Player && u.role != Some(Role::Leader))
+                    .flat_map(|group| {
+                        group.units.iter().filter(move |u| {
+                            u.faction.as_deref().or(group.faction.as_deref()) == Some("player")
+                        })
+                    })
+                    .filter(|u| u.role != Some(Role::Leader))
                     .filter_map(|u| u.character.as_deref()),
             )
             .chain(self.arrivals.iter().map(|a| a.character.as_str()))

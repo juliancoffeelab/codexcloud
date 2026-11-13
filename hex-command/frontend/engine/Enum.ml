@@ -4,7 +4,7 @@ module Hex_direction = Domain.Hex_direction
 module Planner_kind = Domain.Planner_kind
 module Race = Domain.Race
 module Recruiter_kind = Domain.Recruiter_kind
-module Side = Domain.Turn_phase
+module Phase = Domain.Turn_phase
 module Terrain = Domain.Terrain
 open Domain
 
@@ -67,11 +67,12 @@ let recruiter_kind_of_string = function
   | "aggressive-predictor" -> Some (Recruiter_kind.Aggressive_predictor : Recruiter_kind.t)
   | _ -> None
 
-let string_of_side (value : Side.t) = match value with Side.Player -> "player" | Side.Ai -> "ai"
+let string_of_phase (value : Phase.t) =
+  match value with Phase.Player -> "player" | Phase.Ai -> "ai"
 
-let side_of_string = function
-  | "player" -> Some (Side.Player : Side.t)
-  | "ai" -> Some (Side.Ai : Side.t)
+let phase_of_string = function
+  | "player" -> Some (Phase.Player : Phase.t)
+  | "ai" -> Some (Phase.Ai : Phase.t)
   | _ -> None
 
 let string_of_terrain (value : Terrain.t) =
@@ -105,3 +106,8 @@ let string_of_terrain (value : Terrain.t) =
   | Terrain.Cave -> "cave"
   | Terrain.Burned_village -> "burned-village"
   | Terrain.Signpost -> "signpost"
+
+let unit_phase factions (unit : Domain.public_unit) =
+  match Array.find_opt (fun (faction : Domain.faction) -> faction.id = unit.faction) factions with
+  | Some faction -> faction.phase
+  | None -> invalid_arg "Unit requires a declared faction"

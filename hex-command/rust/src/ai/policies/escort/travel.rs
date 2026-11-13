@@ -313,7 +313,7 @@ mod tests {
         let actor = state
             .units
             .iter_mut()
-            .find(|u| u.side == TurnPhase::Player)
+            .find(|u| u.faction == "player")
             .unwrap();
         let actor_id = actor.id.strip_prefix('u').unwrap().parse::<u32>().unwrap();
         actor.tile = Hex::new(1, 3).into();
@@ -332,7 +332,6 @@ mod tests {
         state.next_id += 1;
         enemy.r#type = "swordsman".into();
         enemy.hp = rules.units[rules.types["swordsman"]].hp;
-        enemy.side = TurnPhase::Ai;
         enemy.faction = "enemy".into();
         enemy.tile = Hex::new(5, 3).into();
         state.units.extend([guard, enemy]);
@@ -371,12 +370,12 @@ mod tests {
         let distant = game
             .units()
             .iter()
-            .find(|u| u.side == TurnPhase::Ai && u.is_leader())
+            .find(|u| u.phase == TurnPhase::Ai && u.is_leader())
             .unwrap();
         assert_eq!(escort.attack(guard_id, distant, distant.hp, 1.0), 0.0);
         assert!(Threats::unshielded(game.phase_forecasts(), game.unit(actor).unwrap()) > 0);
         assert_eq!(
-            Threats::new(game.phase_forecasts(), TurnPhase::Player).at(
+            Threats::new(game.phase_forecasts(), "player").at(
                 game.unit(actor).unwrap(),
                 actor_tile,
                 None

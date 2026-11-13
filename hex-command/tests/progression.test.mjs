@@ -20,7 +20,7 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   const game = new Game();
   game.units = [];
   const attacker = game.addUnit("swordsman", "player", "3,3");
-  const defender = game.addUnit("archer", "ai", "4,3");
+  const defender = game.addUnit("archer", "enemy", "4,3");
   attacker.hp = Catalog.unit(catalog, "swordsman").hp - 4;
   defender.hp = 3;
   game.attack(attacker.id, defender.id, "sword");
@@ -57,10 +57,10 @@ test("Progressed campaign units persist and invalid XP is rejected", async () =>
   const campaign = Game.startCampaign("borrowed-tide");
   campaign.advanceDialogue(true);
   const leader = required(
-    campaign.units.find((unit) => unit.role === "leader" && unit.side === "player"),
+    campaign.units.find((unit) => unit.role === "leader" && unit.faction === "player"),
   );
   const recruit = required(
-    campaign.units.find((unit) => unit.type === "reefguard" && unit.side === "player"),
+    campaign.units.find((unit) => unit.type === "reefguard" && unit.faction === "player"),
   );
   recruit.experience = Catalog.unit(catalog, recruit.type).experienceNeeded;
   campaign.advanceUnit(recruit.id, "tridentguard");
@@ -100,7 +100,7 @@ for (const [chapter, oldName, officerName] of [
     async () => {
       const oldCoast = Game.startCampaign("borrowed-tide", chapter);
       const officer = required(
-        oldCoast.units.find((unit) => unit.side === "ai" && unit.role === "leader"),
+        oldCoast.units.find((unit) => unit.faction !== "player" && unit.role === "leader"),
       );
       officer.name = oldName;
       officer.hp = 5;

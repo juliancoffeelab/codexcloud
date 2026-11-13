@@ -13,7 +13,7 @@ function fixture(attackerType = "soldier", defenderType = "soldier", targetTile 
     }
   });
   const attacker = game.add(attackerType, "player", "2,3");
-  const defender = game.add(defenderType, "ai", targetTile);
+  const defender = game.add(defenderType, "enemy", targetTile);
   return { game, attacker, defender };
 }
 function choice(game, attacker, defender, weapon) {

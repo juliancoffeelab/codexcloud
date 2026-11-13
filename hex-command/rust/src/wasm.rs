@@ -457,7 +457,17 @@ impl NativeEngineFactory {
         let mut game = RuntimeLoan::new(&battle.runtime, &self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
-        game.execute(command)?;
+        if planned {
+            let faction = battle
+                .workspace
+                .as_ref()
+                .and_then(PlanningWorkspace::proposal_faction)
+                .map(str::to_owned);
+            game.set_active_faction(faction);
+        }
+        let applied = game.execute(command);
+        game.set_active_faction(None);
+        applied?;
         let terrain = if terrain_replaced(&battle.terrain, &game) {
             battle.terrain = PublishedTerrain::new(&game);
             TerrainDelta::Replace
@@ -623,16 +633,16 @@ impl NativeEngineFactory {
                             message: "Developer armies are authored".into(),
                         });
                     }
-                    for side in [TurnPhase::Player, TurnPhase::Ai] {
+                    for (seat, faction) in ["player", "enemy"].into_iter().enumerate() {
                         let roster = self
                             .rules
                             .rosters
                             .iter()
-                            .find(|r| r.id == armies[side.index()])
+                            .find(|r| r.id == armies[seat])
                             .ok_or_else(|| EngineError::InvalidRequest {
                                 message: "Unknown faction".into(),
                             })?;
-                        for unit in state.units.iter_mut().filter(|u| u.side == side) {
+                        for unit in state.units.iter_mut().filter(|u| u.faction == faction) {
                             let original = &self.rules.units[self.rules.types[&unit.r#type]];
                             let kind = if unit.role == Some(Role::Leader) {
                                 roster.leader.as_str()

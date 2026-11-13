@@ -88,7 +88,7 @@ fn collect_data(
         let (result, data) = scoped(
             Some(Dataset {
                 limit: max_samples,
-                side,
+                phase: side,
                 spatial,
                 ..Default::default()
             }),

@@ -157,11 +157,12 @@ impl Game<'_> {
                             .find(|u| self.name(u.character) == Some(id.as_str()))
                     });
                     if let Some(id) = &line.character {
-                        let party = self.campaign_definition().missions.iter().any(|m| {
-                            m.map.units.iter().any(|u| {
-                                u.side == TurnPhase::Player && u.character.as_ref() == Some(id)
-                            }) || m.arrivals.iter().any(|a| &a.character == id)
-                        });
+                        let party =
+                            self.campaign_definition().missions.iter().any(|m| {
+                                m.map.units.iter().any(|u| {
+                                    u.faction == "player" && u.character.as_ref() == Some(id)
+                                }) || m.arrivals.iter().any(|a| &a.character == id)
+                            });
                         if party && present.is_none() {
                             continue;
                         }
@@ -390,7 +391,7 @@ impl Game<'_> {
                         }
                         let index = self.index(id).unwrap();
                         let unit = &mut self.position.runtime.units[index];
-                        unit.side = phase;
+                        unit.phase = phase;
                         unit.faction = faction;
                         unit.vision_group = vision_group;
                         unit.ai_group = None;
@@ -576,7 +577,7 @@ impl Game<'_> {
             && (!self
                 .units
                 .iter()
-                .any(|u| u.side == TurnPhase::Player && u.is_leader())
+                .any(|u| self.unit_faction(u) == "player" && u.is_leader())
                 || self
                     .story
                     .mission
@@ -586,7 +587,7 @@ impl Game<'_> {
                     .iter()
                     .any(|id| {
                         !self.units.iter().any(|u| {
-                            u.side == TurnPhase::Player
+                            self.unit_faction(u) == "player"
                                 && self.name(u.character) == Some(id.as_str())
                         })
                     }))

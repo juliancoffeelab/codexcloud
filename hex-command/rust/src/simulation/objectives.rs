@@ -22,13 +22,9 @@ pub(super) fn player_goals(game: &Game<'_>, route: &str) -> Option<Vec<Objective
         return None;
     }
     Some(
-        crate::ai::campaigner::authored_goals(
-            game.campaign_view(),
-            game.phase_forecasts(),
-            TurnPhase::Player,
-        )
-        .into_iter()
-        .filter(|goal| !goal.id.starts_with("optional:"))
-        .collect(),
+        crate::ai::campaigner::authored_goals(game.campaign_view(), game.phase_forecasts())
+            .into_iter()
+            .filter(|goal| !goal.id.starts_with("optional:"))
+            .collect(),
     )
 }

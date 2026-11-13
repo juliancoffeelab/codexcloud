@@ -128,15 +128,11 @@ impl<'catalog> BattlePosition<'catalog> {
 
     /// Threat forecasts need membership, not movement discovery order. Advance
     /// all origins at each movement cost together on maps fitting one mask.
-    pub(crate) fn threat_reach(
-        &self,
-        unit: &Unit,
-        occupancy: Option<&[Option<TurnPhase>]>,
-    ) -> TileSet {
+    pub(crate) fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<u32>]>) -> TileSet {
         let occupied = if let Some(occupancy) = occupancy {
             let mut occupied = TileSet::new(self.runtime.terrain.len());
-            for (tile, side) in occupancy.iter().enumerate() {
-                if side.is_some() {
+            for (tile, occupant) in occupancy.iter().enumerate() {
+                if occupant.is_some() {
                     occupied.insert(tile);
                 }
             }
@@ -232,14 +228,14 @@ impl<'catalog> BattlePosition<'catalog> {
     pub(crate) fn reachable_with_occupancy(
         &self,
         unit: &Unit,
-        occupancy: &[Option<TurnPhase>],
+        occupancy: &[Option<u32>],
     ) -> Rc<Vec<(usize, u16)>> {
         if unit.moved || unit.attack_spent || self.runtime.winner.is_some() {
             return EMPTY_REACH.with(Clone::clone);
         }
         let mut occupied = TileSet::new(self.runtime.terrain.len());
-        for (tile, side) in occupancy.iter().enumerate() {
-            if side.is_some() {
+        for (tile, occupant) in occupancy.iter().enumerate() {
+            if occupant.is_some() {
                 occupied.insert(tile);
             }
         }
@@ -594,7 +590,7 @@ impl<'catalog> BattlePosition<'catalog> {
             };
             self.record(format!(
                 "{} {unit_name} {capture}.",
-                if actor.side == TurnPhase::Player {
+                if self.unit_faction(&actor) == "player" {
                     "Your"
                 } else {
                     "Enemy"
@@ -634,14 +630,14 @@ mod occupancy_tests {
         let (actor, destination) = game
             .units
             .iter()
-            .filter(|u| u.side == game.turn)
+            .filter(|u| u.phase == game.turn)
             .find_map(|u| game.reachable(u).first().map(|&(tile, _)| (u.id, tile)))
             .unwrap();
         game.move_unit(actor, destination);
         let free = (0..game.terrain.len())
             .find(|&tile| game.at(tile).is_none())
             .unwrap();
-        game.add(game.units[0].kind, game.turn, free);
+        game.add(game.units[0].kind, "player", free);
         game.units.remove(0);
         game.roster_changed();
         for board in [&game, &forecast] {

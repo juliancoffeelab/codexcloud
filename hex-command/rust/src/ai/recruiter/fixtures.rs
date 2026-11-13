@@ -33,11 +33,12 @@ pub(in crate::ai) fn units(game: &mut Game<'_>, change: impl FnOnce(&mut Vec<Uni
     });
 }
 
-pub(in crate::ai) fn add(game: &mut Game<'_>, kind: usize, side: TurnPhase, tile: usize) -> u32 {
+pub(in crate::ai) fn add(game: &mut Game<'_>, kind: usize, faction_id: &str, tile: usize) -> u32 {
     let id = game.state().next_id;
     let hp = game.catalogue().units[kind].hp;
-    let faction = game.faction_identity(side.faction_id());
-    let vision_group = game.vision_group_identity(side.faction_id());
+    let phase = game.faction(faction_id).expect("fixture faction").phase;
+    let faction = game.faction_identity(faction_id);
+    let vision_group = game.vision_group_identity(faction_id);
     units(game, |units| {
         units.push(Unit {
             field_available: true,
@@ -45,7 +46,7 @@ pub(in crate::ai) fn add(game: &mut Game<'_>, kind: usize, side: TurnPhase, tile
             vision_group,
             id,
             kind,
-            side,
+            phase,
             tile,
             hp,
             moved: false,

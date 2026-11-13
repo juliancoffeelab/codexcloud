@@ -125,7 +125,7 @@ fn any_death_escalates_mediation() {
     let index = game
         .units
         .iter()
-        .position(|u| u.side == TurnPhase::Ai && game.rules.units[u.kind].id == "soldier")
+        .position(|u| u.phase == TurnPhase::Ai && game.rules.units[u.kind].id == "soldier")
         .unwrap();
     let target = game.units[index].id;
     game.units[index].tile = game.site(&Hex::new(6, 4));
@@ -152,7 +152,7 @@ fn story_companions_are_not_eligible_for_explicit_recall() {
         .unwrap_err(),
         CommandError::NoNextMission
     );
-    let ordinary = add(&mut game, "warden", TurnPhase::Player, Hex::new(1, 1));
+    let ordinary = add(&mut game, "warden", "player", Hex::new(1, 1));
     game.execute(Command::RecallMission {
         units: vec![UnitId(ordinary)],
     })

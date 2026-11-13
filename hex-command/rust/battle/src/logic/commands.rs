@@ -36,7 +36,7 @@ mod browser_controls_tests {
         let leader = game
             .units
             .iter()
-            .find(|u| u.role == Some(Role::Leader) && u.side == TurnPhase::Player)
+            .find(|u| u.role == Some(Role::Leader) && u.phase == TurnPhase::Player)
             .unwrap();
         let kind = rules.types["archer"];
         let site = game.board.adjacent[leader.tile]
@@ -44,7 +44,7 @@ mod browser_controls_tests {
             .copied()
             .find(|&t| game.at(t).is_none())
             .unwrap();
-        let id = game.add(kind, TurnPhase::Player, site);
+        let id = game.add(kind, "player", site);
         let before = serde_json::to_value(game.state()).unwrap();
         assert!(
             game.execute(Command::RecallMission {
@@ -332,7 +332,7 @@ impl super::BattlePosition<'_> {
                 record_retreat,
             } => {
                 let index = self.index(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
-                if self.runtime.units[index].side != self.runtime.turn {
+                if !self.may_act(&self.runtime.units[index]) {
                     return Err(CommandError::WrongTurn);
                 }
                 if self.runtime.units[index].attack_spent && !attack_spent {

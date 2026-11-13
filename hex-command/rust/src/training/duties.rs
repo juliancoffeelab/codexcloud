@@ -147,7 +147,7 @@ impl Duties {
                         .iter()
                         .filter(|u| {
                             u.id != actor.0
-                                && g.belongs_to_phase(u, g.turn())
+                                && g.belongs_to_faction(u, g.observer_faction())
                                 && !u.is_leader()
                                 && selector.accepts(g, u.kind)
                         })
@@ -191,7 +191,9 @@ impl Duties {
                     .units()
                     .iter()
                     .filter(|u| {
-                        u.id != actor && g.belongs_to_phase(u, g.turn()) && corridor[u.tile]
+                        u.id != actor
+                            && g.belongs_to_faction(u, g.observer_faction())
+                            && corridor[u.tile]
                     })
                     .collect();
                 (
@@ -232,14 +234,18 @@ impl Duties {
         result.globals[9] = g
             .units()
             .iter()
-            .filter(|u| g.belongs_to_phase(u, g.turn()) && orders.protects(u.id))
+            .filter(|u| g.belongs_to_faction(u, g.observer_faction()) && orders.protects(u.id))
             .count() as f32
             / 10.;
         result.globals[10] = orders.pending_arrivals as u8 as f32;
         result.globals[11] = orders.restrained as u8 as f32;
         result.globals[12] = orders.protect_withdrawal as u8 as f32;
         if orders.protect_withdrawal {
-            for enemy in g.units().iter().filter(|u| g.hostile_to_phase(u, g.turn())) {
+            for enemy in g
+                .units()
+                .iter()
+                .filter(|u| g.hostile_to_faction(u, g.observer_faction()))
+            {
                 result.globals[13] += (enemy.retreating == Some(true)) as u8 as f32 / 10.;
                 result.globals[14] +=
                     orders.mediated.contains(&UnitId(enemy.id)) as u8 as f32 / 10.;
@@ -414,12 +420,16 @@ impl Duties {
         for u in g
             .units()
             .iter()
-            .filter(|u| g.belongs_to_phase(u, g.turn()) && orders.protects(u.id))
+            .filter(|u| g.belongs_to_faction(u, g.observer_faction()) && orders.protects(u.id))
         {
             mark(8, u.tile, 1.);
         }
         if orders.protect_withdrawal {
-            for enemy in g.units().iter().filter(|u| g.hostile_to_phase(u, g.turn())) {
+            for enemy in g
+                .units()
+                .iter()
+                .filter(|u| g.hostile_to_faction(u, g.observer_faction()))
+            {
                 if enemy.retreating == Some(true) {
                     mark(9, enemy.tile, 1.);
                 }
@@ -449,7 +459,7 @@ mod tests {
         let actor = original
             .units()
             .iter()
-            .find(|u| u.side == original.turn())
+            .find(|u| u.phase == original.turn())
             .unwrap();
         let enemy = original
             .units()
@@ -468,7 +478,7 @@ mod tests {
         let target = state
             .units
             .iter_mut()
-            .find(|u| u.side != state.turn)
+            .find(|u| u.faction != "player")
             .unwrap();
         target.tile = original.board().ids[adjacent];
         target.retreating = Some(true);
@@ -534,7 +544,7 @@ mod tests {
         let target = state
             .units
             .iter_mut()
-            .find(|u| u.side != state.turn)
+            .find(|u| u.faction != "player")
             .unwrap();
         target.retreating = Some(false);
         // Keep the nonlethal case independent of current weapon balance.
@@ -550,7 +560,7 @@ mod tests {
         state
             .units
             .iter_mut()
-            .find(|u| u.side != state.turn)
+            .find(|u| u.faction != "player")
             .unwrap()
             .hp = 1;
         let lethal = observe(&state, &orders);
@@ -565,7 +575,7 @@ mod tests {
         let units: Vec<_> = game
             .units()
             .iter()
-            .filter(|u| game.belongs_to_phase(u, game.turn()))
+            .filter(|u| game.belongs_to_faction(u, game.observer_faction()))
             .collect();
         let actor = units[0];
         let guard = units[1];

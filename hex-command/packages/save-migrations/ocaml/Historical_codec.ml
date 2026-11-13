@@ -9927,6 +9927,295 @@ and decode_save45 value : save45 =
   else if Migration_reader.matches value 2926 then `Turn (decode_save45_member1 value)
   else invalid "Invalid frozen union"
 
+and decode_save46 value : save46 =
+  if Migration_reader.matches value 2929 then `Current (decode_save46_member0 value)
+  else if Migration_reader.matches value 2940 then `Turn (decode_save46_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save46_member0 value : save46_member0 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_json_boolean (field value "pendingEnemy");
+    undo = decode_save34_undo_member1 (field value "undo");
+    progress = decode_save39_member0_progress (field value "progress");
+    version = decode_literal_46 (field value "version");
+    checkpoint = decode_save46_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
+and decode_literal_46 value : literal_46 = `V46
+
+and decode_save46_member0_checkpoint value : save46_member0_checkpoint =
+  {
+    wire = wire_of_json [ "seed"; "state" ] value;
+    seed = decode_json_number (field value "seed");
+    state = decode_save46_member0_checkpoint_state (field value "state");
+  }
+
+and decode_save46_member0_checkpoint_state value : save46_member0_checkpoint_state =
+  {
+    wire =
+      wire_of_json
+        [
+          "visionGroups";
+          "factions";
+          "groundItems";
+          "armies";
+          "conditionMemory";
+          "mapId";
+          "mapRevision";
+          "cols";
+          "rows";
+          "round";
+          "turn";
+          "gold";
+          "winner";
+          "nextId";
+          "combatRng";
+          "log";
+          "tiles";
+          "units";
+          "campaign";
+          "lastCombat";
+        ]
+        value;
+    vision_groups =
+      decode_save41_member0_checkpoint_state_vision_groups (field value "visionGroups");
+    factions = decode_save41_member0_checkpoint_state_factions (field value "factions");
+    ground_items = decode_save44_member0_checkpoint_state_ground_items (field value "groundItems");
+    armies =
+      (match get value "armies" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_fragments_native_state38_armies_member1 x));
+    condition_memory =
+      (match get value "conditionMemory" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_fragments_native_state38_log x));
+    map_id = decode_json_string (field value "mapId");
+    map_revision = decode_json_number (field value "mapRevision");
+    cols = decode_json_number (field value "cols");
+    rows = decode_json_number (field value "rows");
+    round = decode_json_number (field value "round");
+    turn = decode_save41_member0_setup_first (field value "turn");
+    gold = decode_fragments_native_state38_gold (field value "gold");
+    winner = decode_save41_member0_checkpoint_state_winner (field value "winner");
+    next_id = decode_json_number (field value "nextId");
+    combat_rng = decode_json_number (field value "combatRng");
+    log = decode_fragments_native_state38_log (field value "log");
+    tiles = decode_save44_member0_checkpoint_state_tiles (field value "tiles");
+    units = decode_save46_member0_checkpoint_state_units (field value "units");
+    campaign =
+      (match get value "campaign" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_save46_member0_checkpoint_state_campaign_member1 x));
+    last_combat =
+      (match get value "lastCombat" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_fragments_native_state38_last_combat x));
+  }
+
+and decode_save46_member0_checkpoint_state_units value : save46_member0_checkpoint_state_units =
+  Array.map decode_save46_member0_checkpoint_state_units_item (array value)
+
+and decode_save46_member0_checkpoint_state_units_item value :
+    save46_member0_checkpoint_state_units_item =
+  {
+    wire =
+      wire_of_json
+        [
+          "revealedTo";
+          "perceptionEffects";
+          "faction";
+          "items";
+          "aiGroup";
+          "id";
+          "type";
+          "tile";
+          "hp";
+          "moved";
+          "attackSpent";
+          "experience";
+          "character";
+          "role";
+          "retreating";
+          "rebuilding";
+        ]
+        value;
+    revealed_to = decode_fragments_native_state38_log (field value "revealedTo");
+    perception_effects =
+      decode_save44_member0_checkpoint_state_units_item_perception_effects
+        (field value "perceptionEffects");
+    faction = decode_json_string (field value "faction");
+    items =
+      (match get value "items" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_save44_member0_checkpoint_state_units_item_items_member1 x));
+    ai_group =
+      (match get value "aiGroup" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_string x));
+    id = decode_json_string (field value "id");
+    type_ = decode_json_string (field value "type");
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    hp = decode_json_number (field value "hp");
+    moved = decode_json_boolean (field value "moved");
+    attack_spent = decode_json_boolean (field value "attackSpent");
+    experience =
+      (match get value "experience" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_number x));
+    character =
+      (match get value "character" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_string x));
+    role =
+      (match get value "role" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_fragments_native_state38_units_item_role x));
+    retreating =
+      (match get value "retreating" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_boolean x));
+    rebuilding =
+      (match get value "rebuilding" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_boolean x));
+  }
+
+and decode_save46_member0_checkpoint_state_campaign value : save46_member0_checkpoint_state_campaign
+    =
+  if Migration_reader.matches value 2443 then `Undefined
+  else if Migration_reader.matches value 2936 then
+    `Object2 (decode_save46_member0_checkpoint_state_campaign_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save46_member0_checkpoint_state_campaign_member1 value :
+    save46_member0_checkpoint_state_campaign_member1 =
+  {
+    wire =
+      wire_of_json
+        [
+          "scripts";
+          "evacuated";
+          "id";
+          "mission";
+          "recall";
+          "veterans";
+          "storyVeterans";
+          "fallenCompanions";
+          "carryGold";
+          "marks";
+          "dialogue";
+          "dialogueIndex";
+          "outcome";
+          "completed";
+          "refuge";
+          "vigil";
+          "holds";
+          "flags";
+        ]
+        value;
+    scripts =
+      (match get value "scripts" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1 x));
+    evacuated =
+      (match get value "evacuated" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1 x));
+    id = decode_json_string (field value "id");
+    mission = decode_json_number (field value "mission");
+    recall = decode_fragments_native_state38_log (field value "recall");
+    veterans =
+      (match get value "veterans" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_save44_member0_checkpoint_state_campaign_member1_veterans_member1 x));
+    story_veterans =
+      (match get value "storyVeterans" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_save44_member0_checkpoint_state_campaign_member1_veterans_member1 x));
+    fallen_companions =
+      (match get value "fallenCompanions" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_fragments_native_state38_log x));
+    carry_gold = decode_json_number (field value "carryGold");
+    marks = decode_fragments_native_state38_log (field value "marks");
+    dialogue =
+      decode_save41_member0_checkpoint_state_campaign_member1_dialogue (field value "dialogue");
+    dialogue_index = decode_json_number (field value "dialogueIndex");
+    outcome = decode_fragments_tiles11_item_owner (field value "outcome");
+    completed = decode_json_boolean (field value "completed");
+    refuge =
+      (match get value "refuge" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_fragments_native_state38_campaign_member1_refuge_member1 x));
+    vigil =
+      (match get value "vigil" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_fragments_native_state38_campaign_member1_vigil_member1 x));
+    holds =
+      (match get value "holds" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_fragments_native_state38_campaign_member1_holds_member1 x));
+    flags = decode_fragments_native_state38_campaign_member1_flags (field value "flags");
+  }
+
+and decode_save46_member0_checkpoint_state_campaign_member1_evacuated value :
+    save46_member0_checkpoint_state_campaign_member1_evacuated =
+  if Migration_reader.matches value 2443 then `Undefined
+  else if Migration_reader.matches value 2938 then
+    `Array (decode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1 value :
+    save46_member0_checkpoint_state_campaign_member1_evacuated_member1 =
+  Array.map decode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item
+    (array value)
+
+and decode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item value :
+    save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item =
+  {
+    wire = wire_of_json [ "event"; "unit" ] value;
+    event = decode_json_string (field value "event");
+    unit_ = decode_save46_member0_checkpoint_state_units_item (field value "unit");
+  }
+
+and decode_save46_member1 value : save46_member1 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_literal_false (field value "pendingEnemy");
+    undo =
+      (match get value "undo" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_undefined x));
+    progress = decode_save39_member1_progress (field value "progress");
+    version = decode_literal_46 (field value "version");
+    checkpoint = decode_save46_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
 let rec encode_save2 (value : save2) : Js.Json.t =
   wire_to_json
     ~known:[ "version"; "checkpoint"; "pendingEnemy"; "planner"; "setup"; "progress"; "undo" ]
@@ -19759,6 +20048,299 @@ and encode_save45_member1 (value : save45_member1) : Js.Json.t =
 and encode_save45 (value : save45) : Js.Json.t =
   match value with `Current x -> encode_save45_member0 x | `Turn x -> encode_save45_member1 x
 
+and encode_save46 (value : save46) : Js.Json.t =
+  match value with `Current x -> encode_save46_member0 x | `Turn x -> encode_save46_member1 x
+
+and encode_save46_member0 (value : save46_member0) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    [
+      ("pendingEnemy", encode_json_boolean value.pending_enemy);
+      ("undo", encode_save34_undo_member1 value.undo);
+      ("progress", encode_save39_member0_progress value.progress);
+      ("version", encode_literal_46 value.version);
+      ("checkpoint", encode_save46_member0_checkpoint value.checkpoint);
+      ("setup", encode_save42_member0_setup value.setup);
+    ]
+
+and encode_literal_46 (value : literal_46) : Js.Json.t = Js.Json.parseExn "46"
+
+and encode_save46_member0_checkpoint (value : save46_member0_checkpoint) : Js.Json.t =
+  wire_to_json ~known:[ "seed"; "state" ] value.wire
+    [
+      ("seed", encode_json_number value.seed);
+      ("state", encode_save46_member0_checkpoint_state value.state);
+    ]
+
+and encode_save46_member0_checkpoint_state (value : save46_member0_checkpoint_state) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "visionGroups";
+        "factions";
+        "groundItems";
+        "armies";
+        "conditionMemory";
+        "mapId";
+        "mapRevision";
+        "cols";
+        "rows";
+        "round";
+        "turn";
+        "gold";
+        "winner";
+        "nextId";
+        "combatRng";
+        "log";
+        "tiles";
+        "units";
+        "campaign";
+        "lastCombat";
+      ]
+    value.wire
+    ([
+       ("visionGroups", encode_save41_member0_checkpoint_state_vision_groups value.vision_groups);
+       ("factions", encode_save41_member0_checkpoint_state_factions value.factions);
+       ("groundItems", encode_save44_member0_checkpoint_state_ground_items value.ground_items);
+       ("mapId", encode_json_string value.map_id);
+       ("mapRevision", encode_json_number value.map_revision);
+       ("cols", encode_json_number value.cols);
+       ("rows", encode_json_number value.rows);
+       ("round", encode_json_number value.round);
+       ("turn", encode_save41_member0_setup_first value.turn);
+       ("gold", encode_fragments_native_state38_gold value.gold);
+       ("winner", encode_save41_member0_checkpoint_state_winner value.winner);
+       ("nextId", encode_json_number value.next_id);
+       ("combatRng", encode_json_number value.combat_rng);
+       ("log", encode_fragments_native_state38_log value.log);
+       ("tiles", encode_save44_member0_checkpoint_state_tiles value.tiles);
+       ("units", encode_save46_member0_checkpoint_state_units value.units);
+     ]
+    @ (match value.armies with
+      | None ->
+          if List.mem "armies" value.wire.undefined_fields then [ ("armies", undefined) ] else []
+      | Some x -> [ ("armies", encode_fragments_native_state38_armies_member1 x) ])
+    @ (match value.condition_memory with
+      | None ->
+          if List.mem "conditionMemory" value.wire.undefined_fields then
+            [ ("conditionMemory", undefined) ]
+          else []
+      | Some x -> [ ("conditionMemory", encode_fragments_native_state38_log x) ])
+    @ (match value.campaign with
+      | None ->
+          if List.mem "campaign" value.wire.undefined_fields then [ ("campaign", undefined) ]
+          else []
+      | Some x -> [ ("campaign", encode_save46_member0_checkpoint_state_campaign_member1 x) ])
+    @
+    match value.last_combat with
+    | None ->
+        if List.mem "lastCombat" value.wire.undefined_fields then [ ("lastCombat", undefined) ]
+        else []
+    | Some x -> [ ("lastCombat", encode_fragments_native_state38_last_combat x) ])
+
+and encode_save46_member0_checkpoint_state_units (value : save46_member0_checkpoint_state_units) :
+    Js.Json.t =
+  Js.Json.array (Array.map encode_save46_member0_checkpoint_state_units_item value)
+
+and encode_save46_member0_checkpoint_state_units_item
+    (value : save46_member0_checkpoint_state_units_item) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "revealedTo";
+        "perceptionEffects";
+        "faction";
+        "items";
+        "aiGroup";
+        "id";
+        "type";
+        "tile";
+        "hp";
+        "moved";
+        "attackSpent";
+        "experience";
+        "character";
+        "role";
+        "retreating";
+        "rebuilding";
+      ]
+    value.wire
+    ([
+       ("revealedTo", encode_fragments_native_state38_log value.revealed_to);
+       ( "perceptionEffects",
+         encode_save44_member0_checkpoint_state_units_item_perception_effects
+           value.perception_effects );
+       ("faction", encode_json_string value.faction);
+       ("id", encode_json_string value.id);
+       ("type", encode_json_string value.type_);
+       ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+       ("hp", encode_json_number value.hp);
+       ("moved", encode_json_boolean value.moved);
+       ("attackSpent", encode_json_boolean value.attack_spent);
+     ]
+    @ (match value.items with
+      | None ->
+          if List.mem "items" value.wire.undefined_fields then [ ("items", undefined) ] else []
+      | Some x -> [ ("items", encode_save44_member0_checkpoint_state_units_item_items_member1 x) ])
+    @ (match value.ai_group with
+      | None ->
+          if List.mem "aiGroup" value.wire.undefined_fields then [ ("aiGroup", undefined) ] else []
+      | Some x -> [ ("aiGroup", encode_json_string x) ])
+    @ (match value.experience with
+      | None ->
+          if List.mem "experience" value.wire.undefined_fields then [ ("experience", undefined) ]
+          else []
+      | Some x -> [ ("experience", encode_json_number x) ])
+    @ (match value.character with
+      | None ->
+          if List.mem "character" value.wire.undefined_fields then [ ("character", undefined) ]
+          else []
+      | Some x -> [ ("character", encode_json_string x) ])
+    @ (match value.role with
+      | None -> if List.mem "role" value.wire.undefined_fields then [ ("role", undefined) ] else []
+      | Some x -> [ ("role", encode_fragments_native_state38_units_item_role x) ])
+    @ (match value.retreating with
+      | None ->
+          if List.mem "retreating" value.wire.undefined_fields then [ ("retreating", undefined) ]
+          else []
+      | Some x -> [ ("retreating", encode_json_boolean x) ])
+    @
+    match value.rebuilding with
+    | None ->
+        if List.mem "rebuilding" value.wire.undefined_fields then [ ("rebuilding", undefined) ]
+        else []
+    | Some x -> [ ("rebuilding", encode_json_boolean x) ])
+
+and encode_save46_member0_checkpoint_state_campaign
+    (value : save46_member0_checkpoint_state_campaign) : Js.Json.t =
+  match value with
+  | `Undefined -> undefined
+  | `Object2 x -> encode_save46_member0_checkpoint_state_campaign_member1 x
+
+and encode_save46_member0_checkpoint_state_campaign_member1
+    (value : save46_member0_checkpoint_state_campaign_member1) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "scripts";
+        "evacuated";
+        "id";
+        "mission";
+        "recall";
+        "veterans";
+        "storyVeterans";
+        "fallenCompanions";
+        "carryGold";
+        "marks";
+        "dialogue";
+        "dialogueIndex";
+        "outcome";
+        "completed";
+        "refuge";
+        "vigil";
+        "holds";
+        "flags";
+      ]
+    value.wire
+    ([
+       ("id", encode_json_string value.id);
+       ("mission", encode_json_number value.mission);
+       ("recall", encode_fragments_native_state38_log value.recall);
+       ("carryGold", encode_json_number value.carry_gold);
+       ("marks", encode_fragments_native_state38_log value.marks);
+       ("dialogue", encode_save41_member0_checkpoint_state_campaign_member1_dialogue value.dialogue);
+       ("dialogueIndex", encode_json_number value.dialogue_index);
+       ("outcome", encode_fragments_tiles11_item_owner value.outcome);
+       ("completed", encode_json_boolean value.completed);
+       ("flags", encode_fragments_native_state38_campaign_member1_flags value.flags);
+     ]
+    @ (match value.scripts with
+      | None ->
+          if List.mem "scripts" value.wire.undefined_fields then [ ("scripts", undefined) ] else []
+      | Some x ->
+          [ ("scripts", encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1 x) ])
+    @ (match value.evacuated with
+      | None ->
+          if List.mem "evacuated" value.wire.undefined_fields then [ ("evacuated", undefined) ]
+          else []
+      | Some x ->
+          [
+            ( "evacuated",
+              encode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1 x );
+          ])
+    @ (match value.veterans with
+      | None ->
+          if List.mem "veterans" value.wire.undefined_fields then [ ("veterans", undefined) ]
+          else []
+      | Some x ->
+          [
+            ("veterans", encode_save44_member0_checkpoint_state_campaign_member1_veterans_member1 x);
+          ])
+    @ (match value.story_veterans with
+      | None ->
+          if List.mem "storyVeterans" value.wire.undefined_fields then
+            [ ("storyVeterans", undefined) ]
+          else []
+      | Some x ->
+          [
+            ( "storyVeterans",
+              encode_save44_member0_checkpoint_state_campaign_member1_veterans_member1 x );
+          ])
+    @ (match value.fallen_companions with
+      | None ->
+          if List.mem "fallenCompanions" value.wire.undefined_fields then
+            [ ("fallenCompanions", undefined) ]
+          else []
+      | Some x -> [ ("fallenCompanions", encode_fragments_native_state38_log x) ])
+    @ (match value.refuge with
+      | None ->
+          if List.mem "refuge" value.wire.undefined_fields then [ ("refuge", undefined) ] else []
+      | Some x -> [ ("refuge", encode_fragments_native_state38_campaign_member1_refuge_member1 x) ])
+    @ (match value.vigil with
+      | None ->
+          if List.mem "vigil" value.wire.undefined_fields then [ ("vigil", undefined) ] else []
+      | Some x -> [ ("vigil", encode_fragments_native_state38_campaign_member1_vigil_member1 x) ])
+    @
+    match value.holds with
+    | None -> if List.mem "holds" value.wire.undefined_fields then [ ("holds", undefined) ] else []
+    | Some x -> [ ("holds", encode_fragments_native_state38_campaign_member1_holds_member1 x) ])
+
+and encode_save46_member0_checkpoint_state_campaign_member1_evacuated
+    (value : save46_member0_checkpoint_state_campaign_member1_evacuated) : Js.Json.t =
+  match value with
+  | `Undefined -> undefined
+  | `Array x -> encode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1 x
+
+and encode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1
+    (value : save46_member0_checkpoint_state_campaign_member1_evacuated_member1) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item value)
+
+and encode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item
+    (value : save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item) : Js.Json.t =
+  wire_to_json ~known:[ "event"; "unit" ] value.wire
+    [
+      ("event", encode_json_string value.event);
+      ("unit", encode_save46_member0_checkpoint_state_units_item value.unit_);
+    ]
+
+and encode_save46_member1 (value : save46_member1) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    ([
+       ("pendingEnemy", encode_literal_false value.pending_enemy);
+       ("progress", encode_save39_member1_progress value.progress);
+       ("version", encode_literal_46 value.version);
+       ("checkpoint", encode_save46_member0_checkpoint value.checkpoint);
+       ("setup", encode_save42_member0_setup value.setup);
+     ]
+    @
+    match value.undo with
+    | None -> if List.mem "undo" value.wire.undefined_fields then [ ("undo", undefined) ] else []
+    | Some x -> [ ("undo", encode_json_undefined x) ])
+
 let read_save2 value : save2 =
   require (Migration_reader.matches value 0) "Invalid frozen save2";
   decode_save2 value
@@ -24026,6 +24608,77 @@ let read_save45 value : save45 =
   require (Migration_reader.matches value 2927) "Invalid frozen save45";
   decode_save45 value
 
+let read_save46 value : save46 =
+  require (Migration_reader.matches value 2928) "Invalid frozen save46";
+  decode_save46 value
+
+let read_save46_member0 value : save46_member0 =
+  require (Migration_reader.matches value 2929) "Invalid frozen save46_member0";
+  decode_save46_member0 value
+
+let read_literal_46 value : literal_46 =
+  require (Migration_reader.matches value 2930) "Invalid frozen literal_46";
+  decode_literal_46 value
+
+let read_save46_member0_checkpoint value : save46_member0_checkpoint =
+  require (Migration_reader.matches value 2931) "Invalid frozen save46_member0_checkpoint";
+  decode_save46_member0_checkpoint value
+
+let read_save46_member0_checkpoint_state value : save46_member0_checkpoint_state =
+  require (Migration_reader.matches value 2932) "Invalid frozen save46_member0_checkpoint_state";
+  decode_save46_member0_checkpoint_state value
+
+let read_save46_member0_checkpoint_state_units value : save46_member0_checkpoint_state_units =
+  require
+    (Migration_reader.matches value 2933)
+    "Invalid frozen save46_member0_checkpoint_state_units";
+  decode_save46_member0_checkpoint_state_units value
+
+let read_save46_member0_checkpoint_state_units_item value :
+    save46_member0_checkpoint_state_units_item =
+  require
+    (Migration_reader.matches value 2934)
+    "Invalid frozen save46_member0_checkpoint_state_units_item";
+  decode_save46_member0_checkpoint_state_units_item value
+
+let read_save46_member0_checkpoint_state_campaign value : save46_member0_checkpoint_state_campaign =
+  require
+    (Migration_reader.matches value 2935)
+    "Invalid frozen save46_member0_checkpoint_state_campaign";
+  decode_save46_member0_checkpoint_state_campaign value
+
+let read_save46_member0_checkpoint_state_campaign_member1 value :
+    save46_member0_checkpoint_state_campaign_member1 =
+  require
+    (Migration_reader.matches value 2936)
+    "Invalid frozen save46_member0_checkpoint_state_campaign_member1";
+  decode_save46_member0_checkpoint_state_campaign_member1 value
+
+let read_save46_member0_checkpoint_state_campaign_member1_evacuated value :
+    save46_member0_checkpoint_state_campaign_member1_evacuated =
+  require
+    (Migration_reader.matches value 2937)
+    "Invalid frozen save46_member0_checkpoint_state_campaign_member1_evacuated";
+  decode_save46_member0_checkpoint_state_campaign_member1_evacuated value
+
+let read_save46_member0_checkpoint_state_campaign_member1_evacuated_member1 value :
+    save46_member0_checkpoint_state_campaign_member1_evacuated_member1 =
+  require
+    (Migration_reader.matches value 2938)
+    "Invalid frozen save46_member0_checkpoint_state_campaign_member1_evacuated_member1";
+  decode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1 value
+
+let read_save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item value :
+    save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item =
+  require
+    (Migration_reader.matches value 2939)
+    "Invalid frozen save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item";
+  decode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1_item value
+
+let read_save46_member1 value : save46_member1 =
+  require (Migration_reader.matches value 2940) "Invalid frozen save46_member1";
+  decode_save46_member1 value
+
 module V2 = struct
   let of_json value : Historical_types.V2.t =
     let _ = Migration_reader.read value "Save2" in
@@ -24432,6 +25085,14 @@ module V45 = struct
     decode_save45 value
 
   let to_json (value : Historical_types.V45.t) = encode_save45 value
+end
+
+module V46 = struct
+  let of_json value : Historical_types.V46.t =
+    let _ = Migration_reader.read value "Save46" in
+    decode_save46 value
+
+  let to_json (value : Historical_types.V46.t) = encode_save46 value
 end
 
 module Fragment = struct

@@ -48,7 +48,8 @@ pub struct Exposure {
 #[serde(rename_all = "camelCase")]
 pub struct LeaderAudit {
     pub leader: String,
-    pub side: TurnPhase,
+    #[serde(rename = "side")]
+    pub phase: TurnPhase,
     pub before: LeaderState,
     pub after: Option<LeaderState>,
     pub army_before: ArmyStrength,
@@ -98,7 +99,7 @@ pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
         .iter()
         .filter(|u| u.is_leader())
         .map(|leader| {
-            let own_phase = leader.side == game.turn();
+            let own_phase = leader.phase == game.turn();
             let alternatives = if own_phase {
                 let mut scoped = game.fork();
                 scoped.set_active_faction(Some(game.unit_faction(leader).to_owned()));
@@ -124,7 +125,7 @@ pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
                 alternatives,
                 audit: LeaderAudit {
                     leader: format!("u{}", leader.id),
-                    side: leader.side,
+                    phase: leader.phase,
                     before: state(game, leader),
                     after: None,
                     army_before: strength(game, leader, false),
@@ -200,13 +201,21 @@ mod tests {
         let leader = original
             .units()
             .iter()
-            .find(|u| u.side == original.turn() && u.is_leader())
+            .find(|u| u.phase == original.turn() && u.is_leader())
             .unwrap()
             .clone();
         let enemy = original
             .units()
             .iter()
-            .find(|u| u.side != leader.side)
+            .find(|u| {
+                u.faction
+                    != original
+                        .units()
+                        .iter()
+                        .find(|x| x.id == leader.id)
+                        .unwrap()
+                        .faction
+            })
             .unwrap()
             .clone();
         drop(original);
@@ -252,7 +261,7 @@ mod tests {
         let target = game.board().ids[chosen].clone();
         crate::tests::edit(&mut game, |state| state.units[0].tile = target);
         let audit = finish(&game, pending);
-        let own = audit.iter().find(|a| a.side == leader.side).unwrap();
+        let own = audit.iter().find(|a| a.phase == leader.phase).unwrap();
         let exposure = own.exposure.as_ref().unwrap();
         assert!(exposure.chosen_tile_reachable);
         assert!(exposure.safe_tiles > 0);
@@ -268,7 +277,7 @@ mod tests {
         let leader = game
             .units()
             .iter()
-            .find(|u| u.side == game.turn() && u.is_leader())
+            .find(|u| u.phase == game.turn() && u.is_leader())
             .unwrap()
             .clone();
         let pending = begin(&game);
@@ -278,16 +287,17 @@ mod tests {
             serde_json::to_value(game.state()).unwrap(),
             serde_json::to_value(unchanged).unwrap()
         );
-        let own = audit.iter().find(|a| a.side == game.turn()).unwrap();
+        let own = audit.iter().find(|a| a.phase == game.turn()).unwrap();
         let exposure = own.exposure.as_ref().unwrap();
         assert!(exposure.reachable_tiles >= 1);
         assert!(exposure.min_damage <= exposure.before_damage);
         assert!(exposure.chosen_tile_reachable);
         let pending = begin(&game);
+        let faction = game.unit_faction(&leader).to_owned();
         crate::tests::edit(&mut game, |state| {
             state
                 .units
-                .retain(|u| u.id != format!("u{}", leader.id) && u.side != leader.side)
+                .retain(|u| u.id != format!("u{}", leader.id) && u.faction != faction)
         });
         let audit = finish(&game, pending);
         let dead = audit

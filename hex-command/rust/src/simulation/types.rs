@@ -122,7 +122,8 @@ pub struct Phase {
     pub leader_audit: Vec<super::leader_audit::LeaderAudit>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub planning: Option<crate::ai::orders::TurnDiagnostics>,
-    pub side: TurnPhase,
+    #[serde(rename = "side")]
+    pub phase: TurnPhase,
     pub round: u32,
     #[serde(flatten)]
     pub records: Records,

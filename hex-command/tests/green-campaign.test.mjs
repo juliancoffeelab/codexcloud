@@ -7,7 +7,7 @@ import { saveBattle as saveCurrentBattle } from "./persistence-adapter.mjs";
 import { required, TestStorage } from "./helpers.mjs";
 const storage = new TestStorage();
 const companion = (game) =>
-  required(game.units.find((unit) => unit.side === "player" && unit.character === "lark"));
+  required(game.units.find((unit) => unit.faction === "player" && unit.character === "lark"));
 test("Companion deaths persist but retry restores incoming companions", async () => {
   const game = Game.startCampaign("green-accord", 1);
   game.units = game.units.filter((unit) => unit.character !== "dain");

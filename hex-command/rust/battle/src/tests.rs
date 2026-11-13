@@ -53,7 +53,7 @@ fn tide_starts_rescue_before_counting_defended_turns() {
     let actor = game
         .units
         .iter()
-        .position(|u| u.side == TurnPhase::Player && u.is_leader())
+        .position(|u| u.phase == TurnPhase::Player && u.is_leader())
         .unwrap();
     game.units[actor].tile = wreck;
     game.roster_changed();
@@ -230,14 +230,10 @@ fn flat() -> Game<'static> {
     game.owners.fill(None);
     game
 }
-fn add(
-    game: &mut Game<'_>,
-    kind: &str,
-    side: TurnPhase,
-    tile: impl std::borrow::Borrow<Hex>,
-) -> u32 {
-    game.add(game.kind(kind), side, game.site(tile.borrow()))
+fn add(game: &mut Game<'_>, kind: &str, faction: &str, tile: impl std::borrow::Borrow<Hex>) -> u32 {
+    game.add(game.kind(kind), faction, game.site(tile.borrow()))
 }
+
 fn weapon(game: &Game<'_>, id: u32, weapon: &str) -> usize {
     game.rules.units[game.unit(id).unwrap().kind]
         .attacks

@@ -13,7 +13,7 @@ pub(super) fn choices(
     let mut units: Vec<_> = game
         .units()
         .iter()
-        .filter(|u| game.belongs_to_phase(u, game.turn()))
+        .filter(|u| game.belongs_to_faction(u, game.observer_faction()))
         .collect();
     units.order_by_key(|u| u.id);
     units
@@ -104,11 +104,11 @@ mod tests {
         let leader = game
             .units()
             .iter()
-            .find(|u| u.side == TurnPhase::Player)
+            .find(|u| u.phase == TurnPhase::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, base, false)[0];
-        let id = fixtures::add(&mut game, base, TurnPhase::Player, tile);
+        let id = fixtures::add(&mut game, base, "player", tile);
         let i = game.index(id).unwrap();
         fixtures::units(&mut game, |units| {
             units[i].experience = Some(1);
@@ -153,11 +153,11 @@ mod tests {
         let leader = game
             .units()
             .iter()
-            .find(|u| u.is_leader() && u.side == TurnPhase::Player)
+            .find(|u| u.is_leader() && u.phase == TurnPhase::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, base, false)[0];
-        let second = fixtures::add(&mut game, base, TurnPhase::Player, tile);
+        let second = fixtures::add(&mut game, base, "player", tile);
         let index = game.index(second).unwrap();
         fixtures::units(&mut game, |units| {
             units[index].experience = Some(1);
@@ -207,7 +207,7 @@ mod tests {
             .0
             .units()
             .iter()
-            .find(|u| u.side == TurnPhase::Ai)
+            .find(|u| u.phase == TurnPhase::Ai)
             .unwrap()
             .kind;
         for (blade, pierce, expected) in [(-10, 0, b), (0, -10, a)] {
@@ -243,7 +243,7 @@ mod tests {
             .0
             .units()
             .iter()
-            .find(|u| u.side == TurnPhase::Ai)
+            .find(|u| u.phase == TurnPhase::Ai)
             .unwrap()
             .kind;
         rules.units[observed].damage_modifiers = DamageModifiers {
@@ -309,7 +309,7 @@ mod tests {
                 .0
                 .units()
                 .iter()
-                .find(|u| u.side == TurnPhase::Ai)
+                .find(|u| u.phase == TurnPhase::Ai)
                 .unwrap()
                 .kind;
             // A committed multi-strike melee enemy makes aura support useful.
@@ -327,7 +327,7 @@ mod tests {
             if !thorns {
                 assert_eq!(choose(&BattleView::new(&game), &unit, false), Some(a));
             }
-            let ally = fixtures::add(&mut game, base, TurnPhase::Player, tiles[0]);
+            let ally = fixtures::add(&mut game, base, "player", tiles[0]);
             let i = game.index(ally).unwrap();
             fixtures::units(&mut game, |units| {
                 units[i].hp = 1;
@@ -335,7 +335,7 @@ mod tests {
             let enemy = game
                 .units()
                 .iter()
-                .find(|u| u.side == TurnPhase::Ai)
+                .find(|u| u.phase == TurnPhase::Ai)
                 .unwrap()
                 .id;
             let i = game.index(enemy).unwrap();

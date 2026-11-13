@@ -44,7 +44,7 @@ const details = (v) => ({
   definition: to("UnitRule", v.definition),
   promotions: toArray(v.promotions).map((x) => to("UnitRule", x)),
 });
-const forecast = (v) => host({ ...v, side: to("TurnPhase", v.side) });
+const forecast = (v) => host(v);
 export const unit_panel = (...args) => {
   const v = P.unit_panel(...args);
   if (v === 0) return v;

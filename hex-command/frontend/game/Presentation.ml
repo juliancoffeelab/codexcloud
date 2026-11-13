@@ -3,7 +3,7 @@ module Damage_type = Domain.Damage_type
 module Goal = Domain.Goal
 module Relation = Domain.Relation
 module Role = Domain.Role
-module Side = Domain.Turn_phase
+module Phase = Domain.Turn_phase
 module Terrain_role = Domain.Terrain_role
 open Domain
 
@@ -37,7 +37,7 @@ type panel =
   | Combat of public_unit * public_unit * string
 
 type forecast = {
-  side : Side.t;
+  palette : string;
   remaining_hp : float;
   current_hp : float;
   maximum_hp : float;
@@ -272,7 +272,7 @@ let unit_panel catalog view ~selected ~target ~revision =
       match Option.bind selected (Native.unit view) with
       | None -> Hidden
       | Some unit -> (
-          let can_act = state.turn = Side.Player && Native.controllable view unit.id in
+          let can_act = state.turn = Phase.Player && Native.controllable view unit.id in
           match Option.bind target (Native.unit view) with
           | Some defender
             when can_act
@@ -337,7 +337,7 @@ let death_notice probability =
        else number (Float.floor ((probability *. 100.) +. 0.5)))
     ^ "% chance to die)"
 
-let forecast catalog (unit : public_unit) label impact death (health : hp_forecast) =
+let forecast catalog view (unit : public_unit) label impact death (health : hp_forecast) =
   let maximum_hp = Int32.to_float (Catalog.unit catalog unit.type_).hp in
   let remaining_hp = Float.floor ((health.expected *. 10.) +. 0.5) /. 10. in
   let minimum_loss = Int32.to_float unit.hp -. Int32.to_float health.maximum
@@ -355,7 +355,10 @@ let forecast catalog (unit : public_unit) label impact death (health : hp_foreca
     else "Change −" ^ number maximum_loss ^ "–+" ^ number (-.minimum_loss) ^ " HP"
   in
   {
-    side = unit.side;
+    palette =
+      Option.fold ~none:"passive"
+        ~some:(fun (f : unit_faction) -> f.palette)
+        (Native.faction view unit.id);
     remaining_hp;
     current_hp = Int32.to_float unit.hp;
     maximum_hp;
@@ -446,10 +449,10 @@ let attacks catalog view (attacker : public_unit) (defender : public_unit) =
               }
           in
           let player =
-            forecast catalog attacker "You" "Take" preview.death_chance preview.attacker_health
+            forecast catalog view attacker "You" "Take" preview.death_chance preview.attacker_health
           in
           let enemy =
-            forecast catalog defender "Ai" "Deal" preview.kill_chance preview.defender_health
+            forecast catalog view defender "Ai" "Deal" preview.kill_chance preview.defender_health
           in
           let name = weapon_label weapon preview.damage_detail in
           let response_name =
@@ -631,7 +634,7 @@ let terrain_panel catalog view ~selected ~inspected =
       let recruitment =
         Option.map
           (fun (commander, stationed) ->
-            let player_turn = state.turn = Side.Player && state.winner = None in
+            let player_turn = state.turn = Phase.Player && state.winner = None in
             let faction =
               Option.fold
                 ~none:(Option.value ~default:"player" tile.owner)
@@ -734,7 +737,7 @@ let battlefield ?cache catalog view ~selected ~inspected =
   let state = Native.state view in
   let selected_unit = Option.bind selected (Native.unit view) in
   let can_act =
-    state.turn = Side.Player && state.winner = None
+    state.turn = Phase.Player && state.winner = None
     && Option.fold ~none:false
          ~some:(fun (unit : public_unit) -> Native.controllable view unit.id)
          selected_unit
@@ -937,7 +940,8 @@ let changes (before : state) (after : state) =
     match
       Array.find_opt
         (fun (unit : public_unit) ->
-          unit.side = before.turn && unit.attack_spent
+          Enum.unit_phase before.factions unit = before.turn
+          && unit.attack_spent
           && Option.fold ~none:false
                ~some:(fun (old : public_unit) -> old.type_ = unit.type_ && not old.attack_spent)
                (Js.Dict.get previous unit.id))
@@ -946,7 +950,8 @@ let changes (before : state) (after : state) =
     | Some unit -> Some unit
     | None ->
         Array.find_opt
-          (fun (unit : public_unit) -> unit.side = before.turn && Js.Dict.get alive unit.id = None)
+          (fun (unit : public_unit) ->
+            Enum.unit_phase before.factions unit = before.turn && Js.Dict.get alive unit.id = None)
           before.units
   in
   {
@@ -976,10 +981,10 @@ let exchange_entries catalog (combat : combat_animation) =
   let previous = ref [| units.(0).hp; units.(1).hp |] in
   Array.mapi
     (fun index (hit : combat_strike) ->
-      let actor = if units.(0).side = hit.side then 0 else 1 in
+      let actor = if units.(0).id = hit.unit_id then 0 else 1 in
       let before = !previous in
       previous := hit.health;
-      let yours = hit.side = Side.Player in
+      let yours = units.(actor).faction = "player" in
       let equation =
         number (Int32.to_float hit.raw)
         ^ (if Int32.to_float hit.modifier < 0. then

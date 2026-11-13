@@ -297,8 +297,8 @@ impl<'catalog> BattlePosition<'catalog> {
 // Explicit mutation facades preserve Rust's ordinary two-phase receiver borrows
 // for live orchestration. The physical implementation remains single-owned.
 impl Game<'_> {
-    pub(crate) fn add(&mut self, kind: usize, phase: TurnPhase, tile: usize) -> u32 {
-        let faction = self.position.intern_name(phase.faction_id());
+    pub(crate) fn add(&mut self, kind: usize, faction: &str, tile: usize) -> u32 {
+        let faction = self.position.intern_name(faction);
         self.position.add(kind, faction, tile)
     }
     pub(crate) fn set_terrain(&mut self, tile: usize, terrain: usize) {

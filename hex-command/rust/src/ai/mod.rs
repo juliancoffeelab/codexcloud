@@ -28,7 +28,7 @@ pub(crate) fn audit_leader_exposure(
     leader: &Unit,
     tiles: impl IntoIterator<Item = usize>,
 ) -> Vec<(usize, i32)> {
-    let mut forecast = policies::threat::Threats::new(phases, leader.side);
+    let mut forecast = policies::threat::Threats::new(phases, phases.view().unit_faction(&leader));
     tiles
         .into_iter()
         .map(|tile| (tile, forecast.at(leader, tile, None)))
@@ -252,7 +252,7 @@ mod courier_tests {
             }
 
             // Block the other direct approach as well.
-            let template = *units.iter().find(|u| u.side == TurnPhase::Player).unwrap();
+            let template = *units.iter().find(|u| u.phase == TurnPhase::Player).unwrap();
             units.push(Unit {
                 field_available: true,
                 perception: PerceptionId(0),
@@ -260,7 +260,7 @@ mod courier_tests {
                 id: 100,
                 kind: rules.types["reefguard"],
                 tile: blocker_tile,
-                side: TurnPhase::Player,
+                phase: TurnPhase::Player,
                 hp: rules.units[rules.types["reefguard"]].hp,
                 moved: true,
                 attack_spent: true,
@@ -327,7 +327,7 @@ mod courier_tests {
                 vec![],
             );
             fixtures::edit(&mut game, |state| {
-                state.units.retain(|u| u.side == TurnPhase::Player);
+                state.units.retain(|u| u.faction == "player");
                 for (id, tile) in [
                     (1, Hex::new(8, 5)),
                     (2, Hex::new(7, 3)),

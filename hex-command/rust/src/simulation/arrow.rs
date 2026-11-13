@@ -26,7 +26,8 @@ struct PhaseHeader<'a> {
     leader_audit: &'a [super::leader_audit::LeaderAudit],
     #[serde(skip_serializing_if = "Option::is_none")]
     planning: Option<&'a crate::ai::orders::TurnDiagnostics>,
-    side: TurnPhase,
+    #[serde(rename = "side")]
+    phase: TurnPhase,
     round: u32,
     #[serde(flatten)]
     records: &'a Records,
@@ -90,13 +91,6 @@ fn unit_column(
         Arc::new(StringArray::from_iter_values(
             values.iter().map(|u| u.r#type.as_str()),
         )),
-        Arc::new(StringArray::from_iter_values(values.iter().map(|u| {
-            if u.side == TurnPhase::Player {
-                "player"
-            } else {
-                "ai"
-            }
-        }))),
         Arc::new(StructArray::from(vec![
             (
                 Arc::new(Field::new("col", DataType::Int32, false)),
@@ -146,7 +140,6 @@ fn unit_column(
     let names = [
         "id",
         "type",
-        "side",
         "tile",
         "hp",
         "moved",
@@ -166,7 +159,7 @@ fn unit_column(
         .into_iter()
         .zip(&columns)
         .enumerate()
-        .map(|(i, (name, column))| Field::new(name, column.data_type().clone(), i >= 7))
+        .map(|(i, (name, column))| Field::new(name, column.data_type().clone(), i >= 6))
         .collect::<Vec<_>>();
     dictionary_column(
         Arc::new(StructArray::try_new(fields.into(), columns, None)?),
@@ -217,7 +210,7 @@ pub(crate) fn encode(
             phase_json.append_value(serde_json::to_string(&PhaseHeader {
                 leader_audit: &phase.leader_audit,
                 planning: phase.planning.as_ref(),
-                side: phase.side,
+                phase: phase.phase,
                 round: phase.round,
                 records: &phase.records,
                 living: &phase.living,

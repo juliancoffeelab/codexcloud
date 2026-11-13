@@ -139,7 +139,6 @@ pub struct CombatAnimation {
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[serde(rename_all = "camelCase")]
 pub struct CombatStrike {
-    pub side: crate::data::TurnPhase,
     pub weapon: String,
     /// Stable presentation identity; weapon remains the display label.
     pub weapon_id: String,

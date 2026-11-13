@@ -9,9 +9,9 @@ impl Game<'_> {
         let leader_alive = self
             .units
             .iter()
-            .any(|u| u.side == TurnPhase::Player && u.role == Some(Role::Leader))
+            .any(|u| self.unit_faction(u) == "player" && u.role == Some(Role::Leader))
             || state.evacuated.iter().any(|record| {
-                record.unit.side == TurnPhase::Player && record.unit.role == Some(Role::Leader)
+                record.unit.faction == "player" && record.unit.role == Some(Role::Leader)
             });
         let survival = |label: String, alive: bool| ObjectiveStatus {
             active_tiles: vec![],
@@ -29,7 +29,7 @@ impl Game<'_> {
         let mut protected = vec![survival("Keep your leader alive.".into(), leader_alive)];
         for name in &mission.required_companions {
             let alive = self.units.iter().any(|u| {
-                u.side == TurnPhase::Player && self.name(u.character) == Some(name.as_str())
+                self.unit_faction(u) == "player" && self.name(u.character) == Some(name.as_str())
             }) || state
                 .evacuated
                 .iter()

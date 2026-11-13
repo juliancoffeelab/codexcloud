@@ -136,7 +136,6 @@ impl Serialize for Canonical<'_, PublicUnit> {
         if let Some(value) = &u.role {
             map.serialize_entry("role", value)?;
         }
-        map.serialize_entry("side", &u.side)?;
         map.serialize_entry("tile", &u.tile)?;
         map.serialize_entry("type", &u.r#type)?;
         map.end()

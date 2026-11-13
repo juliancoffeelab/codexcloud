@@ -27,15 +27,14 @@ function board(start = { kind: "scenario", map: "mirror" }) {
       Native.replace(battle, checkpoint);
       return fixture.view;
     },
-    add(type, side, tile) {
+    add(type, faction, tile) {
       let unit;
       fixture.edit((state) => {
         unit = {
           experience: 0,
           id: `u${state.nextId++}`,
           type,
-          side,
-          faction: side === "player" ? "player" : "enemy",
+          faction,
           revealedTo: [],
           perceptionEffects: [],
           tile: hex(tile),

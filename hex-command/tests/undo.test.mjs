@@ -31,7 +31,7 @@ async function create(saved = checkpoint()) {
 }
 const state = (session) => Native.state(Session.view(session).interaction_game);
 const player = (session, type) =>
-  required(state(session).units.find((unit) => unit.side === "player" && unit.type === type));
+  required(state(session).units.find((unit) => unit.faction === "player" && unit.type === type));
 function move(session, type, destination) {
   const unit = player(session, type);
   const actions = Session.commands(session);
@@ -44,8 +44,9 @@ for (const owner of [null, "enemy", "player"])
     const saved = checkpoint();
     required(saved.state.tiles.find((tile) => tile.id === "3,1")).owner = owner;
     saved.state.log = Array.from({ length: 8 }, (_, index) => `Earlier event ${index}`);
-    required(saved.state.units.find((unit) => unit.side === "player" && unit.type === "scout")).hp =
-      5;
+    required(
+      saved.state.units.find((unit) => unit.faction === "player" && unit.type === "scout"),
+    ).hp = 5;
     const session = await create(saved);
     const before = structuredClone(state(session));
     const scout = move(session, "scout", "3,1");
@@ -132,7 +133,7 @@ test("A victorious attack clears move history", async () => {
   const saved = checkpoint();
   const commander = required(
     saved.state.units.find(
-      (unit) => unit.side === "ai" && Catalog.unit(catalog, unit.type).family === "commander",
+      (unit) => unit.faction === "enemy" && Catalog.unit(catalog, unit.type).family === "commander",
     ),
   );
   commander.tile = { col: 4, row: 1 };
@@ -152,7 +153,9 @@ test("Enemy inspection cannot create player move history", async () => {
   saved.state.turn = "ai";
   const session = await create(saved);
   const before = structuredClone(state(session));
-  const scout = required(before.units.find((unit) => unit.side === "ai" && unit.type === "scout"));
+  const scout = required(
+    before.units.find((unit) => unit.faction === "enemy" && unit.type === "scout"),
+  );
   Session.commands(session).choose(cellKey(scout.tile));
   Session.commands(session).choose("7,1");
   assert.equal(Session.view(session).can_undo, false);

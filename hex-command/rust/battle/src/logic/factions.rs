@@ -3,49 +3,28 @@ use super::BattlePosition;
 use crate::data::*;
 impl BattlePosition<'_> {
     #[inline]
-    pub(crate) fn faction_for_phase(&self, phase: TurnPhase) -> &str {
-        if let Some(id) = self
-            .runtime
-            .active_faction
-            .as_deref()
-            .filter(|_| self.scoped_phase() == Some(phase))
-        {
-            return id;
-        }
-        self.faction(phase.faction_id())
-            .or_else(|| {
-                self.factions
-                    .iter()
-                    .find(|f| f.phase == phase && f.controller != Controller::Passive)
-            })
-            .or_else(|| self.faction("player"))
-            .expect("a battle has a primary player faction")
-            .id
-            .as_str()
-    }
-    #[inline]
-    pub(crate) fn gold_for_phase(&self, side: TurnPhase) -> i32 {
-        self.runtime.gold[self.faction_for_phase(side)]
+    pub(crate) fn gold_for_faction(&self, faction: &str) -> i32 {
+        self.runtime.gold[faction]
     }
     #[inline]
     pub(crate) fn gold_for_unit(&self, unit: &Unit) -> i32 {
         self.runtime.gold[self.unit_faction(unit)]
     }
     #[inline]
-    pub(crate) fn owns(&self, tile: usize, side: TurnPhase) -> bool {
-        self.runtime.owners[tile].as_deref() == Some(self.faction_for_phase(side))
+    pub(crate) fn owns(&self, tile: usize, faction: &str) -> bool {
+        self.runtime.owners[tile].as_deref() == Some(faction)
     }
     #[inline]
-    pub(crate) fn captures(&self, tile: usize, side: TurnPhase) -> bool {
-        self.runtime.owners[tile].as_deref().is_none_or(|owner| {
-            self.faction_relation(self.faction_for_phase(side), owner) == Relation::Hostile
-        })
+    pub(crate) fn captures(&self, tile: usize, faction: &str) -> bool {
+        self.runtime.owners[tile]
+            .as_deref()
+            .is_none_or(|owner| self.faction_relation(faction, owner) == Relation::Hostile)
     }
     pub(crate) fn control_roster(&self) -> Vec<(u32, TurnPhase, Option<NameKey>, Option<Role>)> {
         self.runtime
             .units
             .iter()
-            .map(|unit| (unit.id, unit.side, Some(unit.faction), unit.role))
+            .map(|unit| (unit.id, unit.phase, Some(unit.faction), unit.role))
             .collect()
     }
     #[inline]
@@ -54,16 +33,13 @@ impl BattlePosition<'_> {
     }
     pub(crate) fn unit_faction_view(&self, unit: &Unit) -> UnitFaction {
         let id = self.unit_faction(unit);
-        let faction = self.faction(id);
+        let faction = self.faction(id).expect("validated unit faction");
         UnitFaction {
             id: id.to_owned(),
-            palette: faction
-                .map(|f| f.palette.clone())
-                .unwrap_or_else(|| unit.side.faction_id().to_owned()),
+            palette: faction.palette.clone(),
             relation: self.faction_relation("player", id),
-            controllable: faction.map_or(unit.side == TurnPhase::Player, |f| {
-                f.controller == Controller::Human
-            }),
+            controllable: faction.controller == Controller::Human,
+            phase: faction.phase,
         }
     }
     #[inline]
@@ -90,38 +66,24 @@ impl BattlePosition<'_> {
         self.unit_relation(first, second) == Relation::Allied
     }
     #[inline]
-    fn scoped_phase(&self) -> Option<TurnPhase> {
-        self.runtime.active_faction.as_deref().map(|id| {
-            self.faction(id)
-                .map(|f| f.phase)
-                .unwrap_or(if id == "player" {
-                    TurnPhase::Player
-                } else {
-                    TurnPhase::Ai
-                })
-        })
-    }
-    #[inline]
-    pub(crate) fn hostile_to_phase(&self, unit: &Unit, phase: TurnPhase) -> bool {
-        let faction = self
-            .active_faction
-            .as_deref()
-            .filter(|_| self.scoped_phase() == Some(phase))
-            .unwrap_or(phase.faction_id());
+    pub(crate) fn hostile_to_faction(&self, unit: &Unit, faction: &str) -> bool {
         self.faction_relation(faction, self.unit_faction(unit)) == Relation::Hostile
     }
     #[inline]
+    pub(crate) fn belongs_to_faction(&self, unit: &Unit, faction: &str) -> bool {
+        self.unit_faction(unit) == faction
+    }
+    #[inline]
     pub(crate) fn belongs_to_phase(&self, unit: &Unit, phase: TurnPhase) -> bool {
-        unit.side == phase
-            && (self.scoped_phase() != Some(phase)
-                || self
-                    .active_faction
-                    .as_deref()
-                    .is_none_or(|faction| self.unit_faction(unit) == faction))
+        unit.phase == phase
     }
     #[inline]
     pub(crate) fn may_act(&self, unit: &Unit) -> bool {
         self.belongs_to_phase(unit, self.runtime.turn)
+            && self
+                .active_faction
+                .as_deref()
+                .is_none_or(|id| self.unit_faction(unit) == id)
             && !self
                 .faction(self.unit_faction(unit))
                 .is_some_and(|f| matches!(f.controller, Controller::Passive))
@@ -130,14 +92,6 @@ impl BattlePosition<'_> {
 
     pub(crate) fn automatic_factions(&self) -> Vec<(String, Option<crate::data::FactionPolicy>)> {
         let mut controllers = Vec::new();
-        // The implicit legacy army remains an independent controller when authored
-        // factions coexist with old, unassigned units or ordinary recruitment.
-        if self.units.iter().any(|u| {
-            u.side == self.runtime.turn && self.unit_faction(u) == self.runtime.turn.faction_id()
-        }) && self.faction(self.runtime.turn.faction_id()).is_none()
-        {
-            controllers.push((self.runtime.turn.faction_id().to_owned(), None));
-        }
         for faction in self
             .runtime
             .factions
@@ -175,13 +129,10 @@ impl super::Game<'_> {
                     Some(&TileRef::Hex(self.runtime.board.ids[unit.tile])),
                 )
                 .then(|| {
-                    let phase = self.faction(&rule.to).map(|f| f.phase).unwrap_or_else(|| {
-                        if rule.to == "player" {
-                            TurnPhase::Player
-                        } else {
-                            TurnPhase::Ai
-                        }
-                    });
+                    let phase = self
+                        .faction(&rule.to)
+                        .expect("validated transfer faction")
+                        .phase;
                     (unit.id, rule.to.clone(), phase)
                 })
             })
@@ -203,7 +154,7 @@ impl super::Game<'_> {
             let unit = &mut self.runtime.units[index];
             unit.faction = key;
             unit.vision_group = vision_group;
-            unit.side = phase;
+            unit.phase = phase;
             unit.ai_group = None;
             unit.retreating = None;
             unit.rebuilding = None;
