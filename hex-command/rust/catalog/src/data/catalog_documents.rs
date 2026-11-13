@@ -503,7 +503,7 @@ pub fn map_metadata(
     };
     let presentation =
         crate::data::presentation::resolve(&crate::data::presentation::PresentationInput {
-            observer: None,
+            observer: "player".into(),
             vision_groups: state.vision_groups.clone(),
             factions: state.factions.clone(),
             pending: vec![],

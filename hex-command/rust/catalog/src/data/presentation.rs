@@ -7,8 +7,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PresentationInput {
-    #[serde(default)]
-    pub observer: Option<String>,
+    pub observer: String,
     #[serde(default)]
     pub factions: Vec<Faction>,
     pub vision_groups: Vec<VisionGroupState>,
@@ -37,23 +36,26 @@ pub struct ConditionUnit<'a> {
 /// Conditions query current facts without materializing a serializable battlefield.
 pub trait ConditionContext {
     fn factions(&self) -> &[Faction];
-    fn observer_faction(&self) -> &str {
-        "player"
-    }
-    fn matches_side(&self, unit: ConditionUnit<'_>, side: ConditionSide) -> bool {
+    fn observer_faction(&self) -> Option<&str>;
+    fn matches_side(
+        &self,
+        unit: ConditionUnit<'_>,
+        side: ConditionSide,
+        observer: Option<&str>,
+    ) -> bool {
         if side == ConditionSide::Observer {
-            unit.faction == self.observer_faction()
+            unit.faction == observer.expect("validated observer selector")
         } else {
             faction_matches_side(self.factions(), unit.faction, side)
         }
     }
-    fn visible_unit(&self, unit: ConditionUnit<'_>) -> bool {
+    fn visible_unit(&self, unit: ConditionUnit<'_>, observer: &str) -> bool {
         unit.position
-            .is_some_and(|position| self.visible_at(position))
+            .is_some_and(|position| self.visible_at(position, observer))
     }
     fn owns(&self, id: &TileRef, side: &str) -> bool;
     fn position(&self, id: &TileRef) -> Option<(i32, i32)>;
-    fn visible_at(&self, position: (i32, i32)) -> bool;
+    fn visible_at(&self, position: (i32, i32), observer: &str) -> bool;
     fn any_unit(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
     fn any_pending(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
     fn flag(&self, id: &str) -> bool;
@@ -61,8 +63,8 @@ pub trait ConditionContext {
     fn round(&self) -> u32;
 }
 impl ConditionContext for PresentationInput {
-    fn observer_faction(&self) -> &str {
-        self.observer.as_deref().unwrap_or("player")
+    fn observer_faction(&self) -> Option<&str> {
+        Some(&self.observer)
     }
     fn factions(&self) -> &[Faction] {
         &self.factions
@@ -78,15 +80,11 @@ impl ConditionContext for PresentationInput {
             .find(|t| t.matches_reference(id))
             .map(|t| (t.col, t.row))
     }
-    fn visible_at(&self, position: (i32, i32)) -> bool {
+    fn visible_at(&self, position: (i32, i32), observer: &str) -> bool {
         let Some(tile) = self.tiles.iter().find(|t| (t.col, t.row) == position) else {
             return false;
         };
-        let Some(faction) = self
-            .factions
-            .iter()
-            .find(|f| f.id == self.observer_faction())
-        else {
+        let Some(faction) = self.factions.iter().find(|f| f.id == observer) else {
             return false;
         };
         let Some(group) = self
@@ -153,7 +151,23 @@ pub fn matches(
     input: &impl ConditionContext,
     target: Option<&TileRef>,
 ) -> bool {
-    evaluate(condition, input, target, true)
+    matches_for(condition, input, target, input.observer_faction())
+}
+/// A world rule's observer is authored independently of the querying viewpoint.
+pub fn rule_matches(
+    rule: &ConditionRule,
+    input: &impl ConditionContext,
+    target: Option<&TileRef>,
+) -> bool {
+    matches_for(&rule.condition, input, target, rule.observer.as_deref())
+}
+pub fn matches_for(
+    condition: &Condition,
+    input: &impl ConditionContext,
+    target: Option<&TileRef>,
+    observer: Option<&str>,
+) -> bool {
+    evaluate(condition, input, target, true, observer)
 }
 /// Visibility predicates cannot recursively query their own fog rules.
 pub fn matches_fog(
@@ -161,17 +175,18 @@ pub fn matches_fog(
     input: &impl ConditionContext,
     target: Option<&TileRef>,
 ) -> bool {
-    evaluate(condition, input, target, false)
+    evaluate(condition, input, target, false, input.observer_faction())
 }
 fn evaluate(
     condition: &Condition,
     input: &impl ConditionContext,
     target: Option<&TileRef>,
     allow_visibility: bool,
+    observer: Option<&str>,
 ) -> bool {
     let unit_matches =
         |unit: ConditionUnit<'_>, side, kind: &Option<String>, character: &Option<String>| {
-            input.matches_side(unit, side)
+            input.matches_side(unit, side, observer)
                 && kind.as_deref().is_none_or(|kind| unit.kind == kind)
                 && character
                     .as_deref()
@@ -204,10 +219,11 @@ fn evaluate(
         Condition::VisibleUnits { side, unit_types } => {
             allow_visibility
                 && input.any_unit(|unit| {
-                    input.matches_side(unit, *side)
+                    input.matches_side(unit, *side, observer)
                         && (unit_types.is_empty()
                             || unit_types.iter().any(|kind| kind == unit.kind))
-                        && input.visible_unit(unit)
+                        && input
+                            .visible_unit(unit, observer.expect("validated visibility observer"))
                 })
         }
         Condition::HasUnits {
@@ -238,10 +254,10 @@ fn evaluate(
         Condition::Round { round } => input.round() >= *round,
         Condition::All { conditions } => conditions
             .iter()
-            .all(|c| evaluate(c, input, target, allow_visibility)),
+            .all(|c| evaluate(c, input, target, allow_visibility, observer)),
         Condition::Any { conditions } => conditions
             .iter()
-            .any(|c| evaluate(c, input, target, allow_visibility)),
+            .any(|c| evaluate(c, input, target, allow_visibility, observer)),
     }
 }
 
@@ -259,7 +275,7 @@ pub fn render(input: &impl PresentationContext, memory: &[String]) -> Battlefiel
     input.visit_lights(|id, col, row, light| {
         let active = light.when.as_ref().is_none_or(|rule| {
             (rule.remember && memory.iter().any(|m| m == &format!("light:{id}")))
-                || matches(&rule.condition, input, Some(&TileRef::Hex(*id)))
+                || rule_matches(rule, input, Some(&TileRef::Hex(*id)))
         });
         if active {
             lights.push(light.at(col, row));
@@ -288,7 +304,7 @@ pub fn discover(input: &impl PresentationContext, memory: &[String]) -> Vec<Stri
     input.visit_lights(|id, _, _, light| {
         if let Some(rule) = light.when.as_ref().filter(|r| r.remember) {
             if !memory.iter().any(|m| m == &format!("light:{id}"))
-                && matches(&rule.condition, input, Some(&TileRef::Hex(*id)))
+                && rule_matches(rule, input, Some(&TileRef::Hex(*id)))
             {
                 added.push(format!("light:{id}"));
             }
@@ -302,7 +318,7 @@ pub fn discover(input: &impl PresentationContext, memory: &[String]) -> Vec<Stri
 pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<String>) {
     let mut memory = input.memory.clone();
     let mut rule_met = |rule: &ConditionRule, key: String, target: &TileRef| {
-        let satisfied = matches(&rule.condition, input, Some(target));
+        let satisfied = rule_matches(rule, input, Some(target));
         if rule.remember {
             if memory.contains(&key) {
                 return true;
@@ -338,7 +354,7 @@ pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<Strin
     let fog = input
         .tiles
         .iter()
-        .filter(|tile| !input.visible_at((tile.col, tile.row)))
+        .filter(|tile| !input.visible_at((tile.col, tile.row), &input.observer))
         .map(Tile::hex)
         .collect();
     (

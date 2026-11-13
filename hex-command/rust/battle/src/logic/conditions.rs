@@ -8,14 +8,18 @@ use crate::data::{
 
 pub(crate) struct LiveContext<'a, 'catalog> {
     game: &'a Game<'catalog>,
-    observer: &'a str,
+    observer: Option<&'a str>,
     position: Option<(u32, usize)>,
 }
 impl<'a, 'catalog> LiveContext<'a, 'catalog> {
-    fn new(game: &'a Game<'catalog>, position: Option<(u32, usize)>) -> Self {
+    pub(crate) fn new(
+        game: &'a Game<'catalog>,
+        observer: Option<&'a str>,
+        position: Option<(u32, usize)>,
+    ) -> Self {
         Self {
             game,
-            observer: "player",
+            observer,
             position,
         }
     }
@@ -26,29 +30,26 @@ impl<'a, 'catalog> LiveContext<'a, 'catalog> {
     ) -> Self {
         Self {
             game,
-            observer,
+            observer: Some(observer),
             position,
         }
     }
-    pub(crate) fn current_sight(&self, tile: usize) -> bool {
-        self.game
-            .perception(self.position)
-            .sees_terrain(self.game.vision_group(self.observer), tile)
-    }
     pub(crate) fn unit_visible(&self, unit: &Unit) -> bool {
-        self.game
-            .perception(self.position)
-            .sees_unit(self.game.vision_group(self.observer), unit)
+        self.game.perception(self.position).sees_unit(
+            self.game
+                .vision_group(self.observer.expect("explicit presentation observer")),
+            unit,
+        )
     }
 }
 impl ConditionContext for LiveContext<'_, '_> {
     fn factions(&self) -> &[Faction] {
         &self.game.factions
     }
-    fn observer_faction(&self) -> &str {
+    fn observer_faction(&self) -> Option<&str> {
         self.observer
     }
-    fn visible_unit(&self, unit: ConditionUnit<'_>) -> bool {
+    fn visible_unit(&self, unit: ConditionUnit<'_>, observer: &str) -> bool {
         self.game.units.iter().any(|u| {
             self.game.rules.units[u.kind].id == unit.kind
                 && self.game.board.positions[self
@@ -56,7 +57,7 @@ impl ConditionContext for LiveContext<'_, '_> {
                     .filter(|(id, _)| *id == u.id)
                     .map_or(u.tile, |(_, tile)| tile)]
                     == unit.position.unwrap_or((-1, -1))
-                && self.unit_visible(u)
+                && self.game.unit_visible_to(observer, u, self.position)
         })
     }
     fn owns(&self, id: &TileRef, side: &str) -> bool {
@@ -71,7 +72,7 @@ impl ConditionContext for LiveContext<'_, '_> {
             .resolve(id)
             .map(|i| self.game.board.positions[i])
     }
-    fn visible_at(&self, position: (i32, i32)) -> bool {
+    fn visible_at(&self, position: (i32, i32), observer: &str) -> bool {
         self.game
             .board
             .indices
@@ -79,7 +80,7 @@ impl ConditionContext for LiveContext<'_, '_> {
             .is_some_and(|&tile| {
                 self.game
                     .perception(self.position)
-                    .terrain_knowledge(self.game.vision_group(self.observer), tile)
+                    .terrain_knowledge(self.game.vision_group(observer), tile)
                     != TerrainKnowledge::Unexplored
             })
     }
@@ -179,7 +180,10 @@ impl ConditionContext for LiveContext<'_, '_> {
 }
 impl PresentationContext for LiveContext<'_, '_> {
     fn fog_hidden(&self, id: &Hex) -> bool {
-        !self.visible_at((id.col, id.row))
+        !self.visible_at(
+            (id.col, id.row),
+            self.observer.expect("explicit presentation observer"),
+        )
     }
     fn lighting(&self) -> &MapLighting {
         static DEFAULT: MapLighting = MapLighting {
@@ -210,10 +214,14 @@ impl PresentationContext for LiveContext<'_, '_> {
 }
 impl<'catalog> Game<'catalog> {
     pub(crate) fn condition_context(&self) -> LiveContext<'_, 'catalog> {
-        LiveContext::new(self, None)
+        LiveContext::new(self, None, None)
     }
-    pub(crate) fn event_condition_met(&self, condition: &Condition) -> bool {
-        if matches(condition, &self.condition_context(), None) {
+    pub(crate) fn event_condition_met(
+        &self,
+        condition: &Condition,
+        observer: Option<&str>,
+    ) -> bool {
+        if matches(condition, &LiveContext::new(self, observer, None), None) {
             return true;
         }
         if let Some((actor, path)) = &self.position.runtime.traversal {
@@ -221,7 +229,7 @@ impl<'catalog> Game<'catalog> {
                 return path.iter().any(|&tile| {
                     matches(
                         condition,
-                        &LiveContext::new(self, Some((*actor, tile))),
+                        &LiveContext::new(self, observer, Some((*actor, tile))),
                         None,
                     )
                 });
@@ -236,7 +244,7 @@ impl<'catalog> Game<'catalog> {
                     .condition_memory
                     .iter()
                     .any(|m| m.strip_prefix("group:") == Some(group.id.as_str())))
-                || matches(&rule.condition, &self.condition_context(), None)
+                || presentation::rule_matches(rule, &self.condition_context(), None)
         })
     }
     pub(crate) fn presentation_for(
@@ -317,27 +325,26 @@ impl<'catalog> Game<'catalog> {
         }
         let mut memory = std::mem::take(&mut self.position.runtime.condition_memory);
 
-        let mut visit = |position| {
-            let input = LiveContext::new(self, position);
-            let added = presentation::discover(&input, &memory);
-            if !added.is_empty() {
-                std::rc::Rc::make_mut(&mut memory).extend(added);
-            }
-            if let Some(mission) = &self.story.mission {
-                for group in &mission.enemy_groups {
-                    if group
-                        .when
-                        .as_ref()
-                        .is_some_and(|r| r.remember && matches(&r.condition, &input, None))
-                        && !memory
+        let mut visit =
+            |position| {
+                let input = LiveContext::new(self, None, position);
+                let added = presentation::discover(&input, &memory);
+                if !added.is_empty() {
+                    std::rc::Rc::make_mut(&mut memory).extend(added);
+                }
+                if let Some(mission) = &self.story.mission {
+                    for group in &mission.enemy_groups {
+                        if group.when.as_ref().is_some_and(|r| {
+                            r.remember && presentation::rule_matches(r, &input, None)
+                        }) && !memory
                             .iter()
                             .any(|m| m.strip_prefix("group:") == Some(group.id.as_str()))
-                    {
-                        std::rc::Rc::make_mut(&mut memory).push(format!("group:{}", group.id));
+                        {
+                            std::rc::Rc::make_mut(&mut memory).push(format!("group:{}", group.id));
+                        }
                     }
                 }
-            }
-        };
+            };
         visit(None);
         if let Some((actor, path)) = &self.position.runtime.traversal {
             if self.position.runtime.units.iter().any(|u| u.id == *actor) {

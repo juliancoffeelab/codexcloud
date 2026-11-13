@@ -90,6 +90,25 @@ pub fn validate_state_geometry_with_campaign(
     }
 
     validate_factions(&state.factions, &state.units).map_err(StateError)?;
+    for faction in &state.factions {
+        if let Some(transfer) = &faction.transfer {
+            transfer
+                .when
+                .validate_references(&rules.types, &state.factions)
+                .map_err(StateError)?;
+        }
+    }
+    for rule in state
+        .tiles
+        .iter()
+        .filter_map(|t| t.light.as_ref())
+        .filter_map(|l| l.when.as_ref())
+    {
+        rule.validate_references(&rules.types, &state.factions)
+            .map_err(StateError)?;
+        rule.condition.validate_presentation().map_err(StateError)?;
+    }
+
     validate_economy(&state.factions, &state.gold, &state.tiles, &rules.types)
         .map_err(StateError)?;
     for required in &authored.factions {

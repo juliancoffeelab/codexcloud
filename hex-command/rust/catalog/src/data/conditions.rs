@@ -96,11 +96,53 @@ pub enum Condition {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct ConditionRule {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub observer: Option<String>,
     pub condition: Condition,
     #[serde(default)]
     pub remember: bool,
 }
+impl ConditionRule {
+    pub fn validate_references(
+        &self,
+        types: &std::collections::HashMap<String, usize>,
+        factions: &[super::Faction],
+    ) -> Result<(), String> {
+        self.condition
+            .validate_observer(self.observer.as_deref(), factions)?;
+        self.condition.validate_references(types, factions)
+    }
+}
 impl Condition {
+    pub fn needs_observer(&self) -> bool {
+        match self {
+            Self::VisibleUnits { .. } => true,
+            Self::Proximity { side, .. }
+            | Self::HasUnits { side, .. }
+            | Self::NoUnits { side, .. } => *side == ConditionSide::Observer,
+            Self::All { conditions } | Self::Any { conditions } => {
+                conditions.iter().any(Self::needs_observer)
+            }
+            Self::Owner { .. }
+            | Self::Choice { .. }
+            | Self::Flag { .. }
+            | Self::Event { .. }
+            | Self::Round { .. } => false,
+        }
+    }
+    pub fn validate_observer(
+        &self,
+        observer: Option<&str>,
+        factions: &[super::Faction],
+    ) -> Result<(), String> {
+        if let Some(id) = observer {
+            super::validate_faction_reference(factions, id)?;
+        }
+        if self.needs_observer() && observer.is_none() {
+            return Err("observer-dependent condition requires an observer faction".into());
+        }
+        Ok(())
+    }
     /// Bind contextual tile predicates for tooling that needs explicit destinations.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn contextualized(&self, target: &TileRef) -> Self {

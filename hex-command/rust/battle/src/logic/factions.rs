@@ -123,8 +123,8 @@ impl super::Game<'_> {
             .iter()
             .filter_map(|unit| {
                 let rule = self.faction(self.unit_faction(unit))?.transfer.as_ref()?;
-                crate::logic::conditions::matches(
-                    &rule.when.condition,
+                crate::data::presentation::rule_matches(
+                    &rule.when,
                     &input,
                     Some(&TileRef::Hex(self.runtime.board.ids[unit.tile])),
                 )
@@ -180,9 +180,11 @@ impl super::Game<'_> {
         group.is_none_or(|group| {
             self.group_active(group)
                 && match &group.order {
-                    Some(GroupOrder::Hold { when, .. }) => when
-                        .as_ref()
-                        .is_some_and(|condition| !self.event_condition_met(condition)),
+                    Some(GroupOrder::Hold { when, observer, .. }) => {
+                        when.as_ref().is_some_and(|condition| {
+                            !self.event_condition_met(condition, observer.as_deref())
+                        })
+                    }
                     None => true,
                 }
         })

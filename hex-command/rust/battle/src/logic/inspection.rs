@@ -4,15 +4,9 @@ use crate::{data::*, model::*};
 
 impl Game<'_> {
     fn campaign_objectives(&self) -> Option<CampaignObjectives> {
-        let state = self.story.campaign.as_ref()?;
+        self.story.campaign.as_ref()?;
         let mission = self.story.mission.as_ref()?;
-        let leader_alive = self
-            .units
-            .iter()
-            .any(|u| self.unit_faction(u) == "player" && u.role == Some(Role::Leader))
-            || state.evacuated.iter().any(|record| {
-                record.unit.faction == "player" && record.unit.role == Some(Role::Leader)
-            });
+        let leader_alive = self.campaign_leader_survives("player");
         let survival = |label: String, alive: bool| ObjectiveStatus {
             active_tiles: vec![],
             visible: true,
@@ -28,12 +22,7 @@ impl Game<'_> {
         };
         let mut protected = vec![survival("Keep your leader alive.".into(), leader_alive)];
         for name in &mission.required_companions {
-            let alive = self.units.iter().any(|u| {
-                self.unit_faction(u) == "player" && self.name(u.character) == Some(name.as_str())
-            }) || state
-                .evacuated
-                .iter()
-                .any(|record| record.unit.character.as_ref() == Some(name));
+            let alive = self.campaign_companion_survives("player", name);
             protected.push(survival(
                 format!("Keep {} alive.", self.character_name(name).unwrap_or(name)),
                 alive,

@@ -3058,6 +3058,114 @@ val encode_save46_member0_checkpoint_state_campaign_member1_evacuated_member1_it
 
 val read_save46_member1 : Js.Json.t -> save46_member1
 val encode_save46_member1 : save46_member1 -> Js.Json.t
+val read_save47 : Js.Json.t -> save47
+val encode_save47 : save47 -> Js.Json.t
+val read_save47_member0 : Js.Json.t -> save47_member0
+val encode_save47_member0 : save47_member0 -> Js.Json.t
+val read_literal_47 : Js.Json.t -> literal_47
+val encode_literal_47 : literal_47 -> Js.Json.t
+val read_save47_member0_checkpoint : Js.Json.t -> save47_member0_checkpoint
+val encode_save47_member0_checkpoint : save47_member0_checkpoint -> Js.Json.t
+val read_save47_member0_checkpoint_state : Js.Json.t -> save47_member0_checkpoint_state
+val encode_save47_member0_checkpoint_state : save47_member0_checkpoint_state -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_factions :
+  Js.Json.t -> save47_member0_checkpoint_state_factions
+
+val encode_save47_member0_checkpoint_state_factions :
+  save47_member0_checkpoint_state_factions -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_factions_item :
+  Js.Json.t -> save47_member0_checkpoint_state_factions_item
+
+val encode_save47_member0_checkpoint_state_factions_item :
+  save47_member0_checkpoint_state_factions_item -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_factions_item_transfer :
+  Js.Json.t -> save47_member0_checkpoint_state_factions_item_transfer
+
+val encode_save47_member0_checkpoint_state_factions_item_transfer :
+  save47_member0_checkpoint_state_factions_item_transfer -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_factions_item_transfer_member1 :
+  Js.Json.t -> save47_member0_checkpoint_state_factions_item_transfer_member1
+
+val encode_save47_member0_checkpoint_state_factions_item_transfer_member1 :
+  save47_member0_checkpoint_state_factions_item_transfer_member1 -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_factions_item_transfer_member1_when_ :
+  Js.Json.t -> save47_member0_checkpoint_state_factions_item_transfer_member1_when_
+
+val encode_save47_member0_checkpoint_state_factions_item_transfer_member1_when_ :
+  save47_member0_checkpoint_state_factions_item_transfer_member1_when_ -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_tiles : Js.Json.t -> save47_member0_checkpoint_state_tiles
+
+val encode_save47_member0_checkpoint_state_tiles :
+  save47_member0_checkpoint_state_tiles -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_tiles_item :
+  Js.Json.t -> save47_member0_checkpoint_state_tiles_item
+
+val encode_save47_member0_checkpoint_state_tiles_item :
+  save47_member0_checkpoint_state_tiles_item -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_tiles_item_light :
+  Js.Json.t -> save47_member0_checkpoint_state_tiles_item_light
+
+val encode_save47_member0_checkpoint_state_tiles_item_light :
+  save47_member0_checkpoint_state_tiles_item_light -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_tiles_item_light_member1 :
+  Js.Json.t -> save47_member0_checkpoint_state_tiles_item_light_member1
+
+val encode_save47_member0_checkpoint_state_tiles_item_light_member1 :
+  save47_member0_checkpoint_state_tiles_item_light_member1 -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_tiles_item_light_member1_when_ :
+  Js.Json.t -> save47_member0_checkpoint_state_tiles_item_light_member1_when_
+
+val encode_save47_member0_checkpoint_state_tiles_item_light_member1_when_ :
+  save47_member0_checkpoint_state_tiles_item_light_member1_when_ -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_campaign :
+  Js.Json.t -> save47_member0_checkpoint_state_campaign
+
+val encode_save47_member0_checkpoint_state_campaign :
+  save47_member0_checkpoint_state_campaign -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_campaign_member1 :
+  Js.Json.t -> save47_member0_checkpoint_state_campaign_member1
+
+val encode_save47_member0_checkpoint_state_campaign_member1 :
+  save47_member0_checkpoint_state_campaign_member1 -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_campaign_member1_scripts :
+  Js.Json.t -> save47_member0_checkpoint_state_campaign_member1_scripts
+
+val encode_save47_member0_checkpoint_state_campaign_member1_scripts :
+  save47_member0_checkpoint_state_campaign_member1_scripts -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_campaign_member1_scripts_member1 :
+  Js.Json.t -> save47_member0_checkpoint_state_campaign_member1_scripts_member1
+
+val encode_save47_member0_checkpoint_state_campaign_member1_scripts_member1 :
+  save47_member0_checkpoint_state_campaign_member1_scripts_member1 -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_campaign_member1_scripts_member1_marks :
+  Js.Json.t -> save47_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+
+val encode_save47_member0_checkpoint_state_campaign_member1_scripts_member1_marks :
+  save47_member0_checkpoint_state_campaign_member1_scripts_member1_marks -> Js.Json.t
+
+val read_save47_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item :
+  Js.Json.t -> save47_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+
+val encode_save47_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item :
+  save47_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item -> Js.Json.t
+
+val read_save47_member1 : Js.Json.t -> save47_member1
+val encode_save47_member1 : save47_member1 -> Js.Json.t
 
 module V2 : sig
   val of_json : Js.Json.t -> Historical_types.V2.t
@@ -3317,6 +3425,11 @@ end
 module V46 : sig
   val of_json : Js.Json.t -> Historical_types.V46.t
   val to_json : Historical_types.V46.t -> Js.Json.t
+end
+
+module V47 : sig
+  val of_json : Js.Json.t -> Historical_types.V47.t
+  val to_json : Historical_types.V47.t -> Js.Json.t
 end
 
 module Fragment : sig

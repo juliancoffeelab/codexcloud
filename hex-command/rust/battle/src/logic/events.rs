@@ -14,6 +14,7 @@ pub(crate) struct DeathOccurrence {
 
 #[derive(Clone, Default)]
 struct Bindings {
+    observer: Option<String>,
     unit: Option<Unit>,
     mark: Option<MapMark>,
     death: Option<DeathOccurrence>,
@@ -46,13 +47,19 @@ impl Game<'_> {
     }
 
     #[inline]
-    pub(crate) fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
-        super::event_queries::unit_matches(
+    pub(crate) fn script_unit_matches(
+        &self,
+        select: &UnitMatch,
+        unit: &Unit,
+        observer: Option<&str>,
+    ) -> bool {
+        super::event_queries::unit_matches_for_faction(
             self.position.rules,
             &self.position.runtime.factions,
             &self.position.runtime.names,
             select,
             unit,
+            observer,
         )
     }
     pub(crate) fn objective_unit_matches(
@@ -67,23 +74,27 @@ impl Game<'_> {
             &self.names,
             select,
             unit,
-            faction,
+            Some(faction),
         )
     }
-    pub(crate) fn script_condition(&self, when: &When) -> bool {
+    pub(crate) fn script_condition(&self, when: &When, observer: Option<&str>) -> bool {
         let state = self.story.scripts.as_deref();
         assert!(
             state.is_some() || self.story.campaign.is_none(),
             "event evaluation requires explicit current progress"
         );
-        EventFacts::new(self).when_matches(when, state, None, false, None)
+        EventFacts::for_context(self, observer).when_matches(when, state, None, false, None)
     }
     pub(crate) fn resolve_text(&self, text: &ConditionalText) -> Option<String> {
         match text {
             ConditionalText::Text(text) => Some(text.clone()),
             ConditionalText::Variants(v) => v
                 .iter()
-                .find(|v| v.when.as_ref().is_none_or(|w| self.script_condition(w)))
+                .find(|v| {
+                    v.when
+                        .as_ref()
+                        .is_none_or(|w| self.script_condition(w, Some("player")))
+                })
                 .map(|v| v.text.clone()),
         }
     }
@@ -100,7 +111,7 @@ impl Game<'_> {
                     ConditionalHint::Variant(v) => v
                         .when
                         .as_ref()
-                        .is_none_or(|w| self.script_condition(w))
+                        .is_none_or(|w| self.script_condition(w, Some("player")))
                         .then(|| v.text.clone()),
                 })
                 .collect(),
@@ -322,7 +333,7 @@ impl Game<'_> {
                         .units
                         .iter()
                         .filter(|u| {
-                            self.script_unit_matches(&spec.units, u)
+                            self.script_unit_matches(&spec.units, u, bindings.observer.as_deref())
                                 && tile
                                     .as_ref()
                                     .is_none_or(|t| &self.position.runtime.board.ids[u.tile] == t)
@@ -376,7 +387,9 @@ impl Game<'_> {
                     let ids: Vec<_> = self
                         .units
                         .iter()
-                        .filter(|u| self.script_unit_matches(&spec.units, u))
+                        .filter(|u| {
+                            self.script_unit_matches(&spec.units, u, bindings.observer.as_deref())
+                        })
                         .map(|u| u.id)
                         .collect();
                     let faction = self.intern_name(&spec.faction);
@@ -408,7 +421,9 @@ impl Game<'_> {
                         UnitReference::Selection(s) => self
                             .units
                             .iter()
-                            .filter(|u| self.script_unit_matches(s, u))
+                            .filter(|u| {
+                                self.script_unit_matches(s, u, bindings.observer.as_deref())
+                            })
                             .map(|u| u.id)
                             .collect(),
                     };
@@ -440,10 +455,13 @@ impl Game<'_> {
                         .units
                         .iter()
                         .filter(|u| {
-                            self.script_unit_matches(&spec.select.units, u)
-                                && tile
-                                    .as_ref()
-                                    .is_none_or(|t| &self.position.runtime.board.ids[u.tile] == t)
+                            self.script_unit_matches(
+                                &spec.select.units,
+                                u,
+                                bindings.observer.as_deref(),
+                            ) && tile
+                                .as_ref()
+                                .is_none_or(|t| &self.position.runtime.board.ids[u.tile] == t)
                         })
                         .cloned()
                         .collect();
@@ -474,7 +492,9 @@ impl Game<'_> {
                     let selected: Vec<_> = self
                         .units
                         .iter()
-                        .filter(|u| self.script_unit_matches(&spec.units, u))
+                        .filter(|u| {
+                            self.script_unit_matches(&spec.units, u, bindings.observer.as_deref())
+                        })
                         .map(|u| u.id)
                         .collect();
                     for id in selected {
@@ -485,7 +505,9 @@ impl Game<'_> {
                     let selected: Vec<_> = self
                         .units
                         .iter()
-                        .filter(|u| self.script_unit_matches(&spec.units, u))
+                        .filter(|u| {
+                            self.script_unit_matches(&spec.units, u, bindings.observer.as_deref())
+                        })
                         .map(|u| u.id)
                         .collect();
                     for id in selected {
@@ -574,10 +596,7 @@ impl Game<'_> {
     }
     fn finish_scripted_campaign(&mut self, victory: bool, message: &str) {
         if victory
-            && (!self
-                .units
-                .iter()
-                .any(|u| self.unit_faction(u) == "player" && u.is_leader())
+            && (!self.campaign_leader_survives("player")
                 || self
                     .story
                     .mission
@@ -585,12 +604,7 @@ impl Game<'_> {
                     .unwrap()
                     .required_companions
                     .iter()
-                    .any(|id| {
-                        !self.units.iter().any(|u| {
-                            self.unit_faction(u) == "player"
-                                && self.name(u.character) == Some(id.as_str())
-                        })
-                    }))
+                    .any(|id| !self.campaign_companion_survives("player", id)))
         {
             return;
         }
@@ -683,6 +697,7 @@ impl Game<'_> {
                         &event.actions,
                         &mut state,
                         &Bindings {
+                            observer: event.condition_observer().map(str::to_owned),
                             death,
                             ..Default::default()
                         },
@@ -724,8 +739,8 @@ impl Game<'_> {
                         .and_then(|light| light.when.as_ref())
                         .is_some_and(|rule| {
                             rule.remember
-                                && crate::data::presentation::matches(
-                                    &rule.condition,
+                                && crate::data::presentation::rule_matches(
+                                    rule,
                                     &self.condition_context(),
                                     Some(&TileRef::Hex(mark.tile)),
                                 )
@@ -860,7 +875,7 @@ impl Game<'_> {
                         self.runtime
                             .units
                             .iter()
-                            .filter(|unit| self.script_unit_matches(v, unit))
+                            .filter(|unit| self.objective_unit_matches(&objective.faction, v, unit))
                             .map(|unit| self.position.runtime.board.ids[unit.tile].clone())
                             .collect(),
                     ),
@@ -996,7 +1011,7 @@ impl Game<'_> {
                 self.runtime
                     .units
                     .iter()
-                    .filter(|u| self.script_unit_matches(v, u))
+                    .filter(|u| self.objective_unit_matches(&objective.faction, v, u))
                     .map(|u| self.position.runtime.board.ids[u.tile].clone())
                     .collect(),
                 1,
@@ -1037,7 +1052,9 @@ impl Game<'_> {
                     self.runtime
                         .units
                         .iter()
-                        .filter(|unit| self.script_unit_matches(select, unit))
+                        .filter(|unit| {
+                            self.objective_unit_matches(&objective.faction, select, unit)
+                        })
                         .filter(|unit| {
                             marker.visible_in_fog
                                 || self.unit_visible_to(&objective.faction, unit, None)
@@ -1062,7 +1079,10 @@ impl Game<'_> {
                                 &objective.faction,
                                 None,
                             )
-                            .visible_at(self.position.runtime.board.positions[self.site(tile)])
+                            .visible_at(
+                                self.position.runtime.board.positions[self.site(tile)],
+                                &objective.faction,
+                            )
                     })
                     .collect()
             });
@@ -1204,6 +1224,9 @@ pub(super) fn validate_event_state(
         }
         if let Some(light) = &mark.light {
             light.validate(&battle.tiles, &[])?;
+            if let Some(rule) = &light.when {
+                rule.validate_references(&rules.types, &battle.factions)?;
+            }
         }
     }
     for pending in &state.pending {

@@ -580,6 +580,8 @@ pub struct EventObjective {
 )]
 #[serde(deny_unknown_fields)]
 pub struct ScriptEvent {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub observer: Option<String>,
     pub id: String,
     pub when: When,
     #[serde(default = "yes")]
@@ -692,6 +694,27 @@ pub struct EventClock<'a> {
     pub when: Option<&'a When>,
 }
 impl When {
+    pub fn needs_observer(&self) -> bool {
+        let unit = |v: &UnitMatch| v.side == Some(ConditionSide::Observer);
+        match self {
+            Self::VisibleUnits(_) => true,
+            Self::All(v) | Self::Any(v) => v.iter().any(Self::needs_observer),
+            Self::Not(v) => v.needs_observer(),
+            Self::Stand(v) | Self::Left(v) => unit(&v.units),
+            Self::Proximity(v) => unit(&v.units) || v.target.as_ref().is_some_and(unit),
+            Self::Killed(v) => unit(&v.units),
+            Self::HasUnits(v) | Self::NoUnits(v) => unit(v),
+            Self::Held(v) => unit(&v.units) || v.when.as_ref().is_some_and(|w| w.needs_observer()),
+            Self::Own(v) => v.when.as_ref().is_some_and(|w| w.needs_observer()),
+            Self::Always(_)
+            | Self::Turn(_)
+            | Self::TurnAtLeast(_)
+            | Self::ChapterStarted(_)
+            | Self::Flag(_)
+            | Self::ObjectiveSatisfied(_)
+            | Self::Owner(_) => false,
+        }
+    }
     pub fn state_only(&self) -> bool {
         match self {
             Self::All(v) | Self::Any(v) => v.iter().all(Self::state_only),
@@ -838,6 +861,11 @@ impl EventState {
 }
 
 impl ScriptEvent {
+    pub fn condition_observer(&self) -> Option<&str> {
+        self.observer
+            .as_deref()
+            .or_else(|| self.objective.as_ref().map(|o| o.faction.as_str()))
+    }
     pub fn objective_id(&self) -> &str {
         self.objective
             .as_ref()
@@ -1137,6 +1165,21 @@ impl ScriptEvent {
                 }
             }
             Ok(())
+        }
+        let observer = self.condition_observer();
+        if let Some(id) = observer {
+            faction(id)?;
+        }
+        if observer.is_none()
+            && (self.when.needs_observer()
+                || self
+                    .selectors()
+                    .iter()
+                    .any(|s| s.side == Some(ConditionSide::Observer)))
+        {
+            return Err(fail(
+                "observer-dependent event requires an observer faction".into(),
+            ));
         }
         when(&self.when, &tile, &faction, path)?;
         actions(

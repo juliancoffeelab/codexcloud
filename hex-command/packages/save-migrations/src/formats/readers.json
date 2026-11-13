@@ -51,7 +51,8 @@
     "Save43": 2407,
     "Save44": 2864,
     "Save45": 2927,
-    "Save46": 2928
+    "Save46": 2928,
+    "Save47": 2942
   },
   "shapes": [
     {
@@ -36143,6 +36144,518 @@
     {
       "kind": "literal",
       "value": 46
+    },
+    {
+      "kind": "union",
+      "members": [2943, 2964]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 2866,
+          "optional": false
+        },
+        "undo": {
+          "type": 2867,
+          "optional": false
+        },
+        "progress": {
+          "type": 2879,
+          "optional": false
+        },
+        "version": {
+          "type": 2944,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 2945,
+          "optional": false
+        },
+        "setup": {
+          "type": 2883,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": 47
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "seed": {
+          "type": 2446,
+          "optional": false
+        },
+        "state": {
+          "type": 2946,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "visionGroups": {
+          "type": 2465,
+          "optional": false
+        },
+        "factions": {
+          "type": 2947,
+          "optional": false
+        },
+        "groundItems": {
+          "type": 2652,
+          "optional": false
+        },
+        "armies": {
+          "type": 2656,
+          "optional": true
+        },
+        "conditionMemory": {
+          "type": 2659,
+          "optional": true
+        },
+        "mapId": {
+          "type": 2660,
+          "optional": false
+        },
+        "mapRevision": {
+          "type": 2661,
+          "optional": false
+        },
+        "cols": {
+          "type": 2662,
+          "optional": false
+        },
+        "rows": {
+          "type": 2663,
+          "optional": false
+        },
+        "round": {
+          "type": 2664,
+          "optional": false
+        },
+        "turn": {
+          "type": 2469,
+          "optional": false
+        },
+        "gold": {
+          "type": 2665,
+          "optional": false
+        },
+        "winner": {
+          "type": 2671,
+          "optional": false
+        },
+        "nextId": {
+          "type": 2672,
+          "optional": false
+        },
+        "combatRng": {
+          "type": 2673,
+          "optional": false
+        },
+        "log": {
+          "type": 2675,
+          "optional": false
+        },
+        "tiles": {
+          "type": 2952,
+          "optional": false
+        },
+        "units": {
+          "type": 2933,
+          "optional": false
+        },
+        "campaign": {
+          "type": 2957,
+          "optional": true
+        },
+        "lastCombat": {
+          "type": 2863,
+          "optional": true
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 2948
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "visionGroup": {
+          "type": 2467,
+          "optional": false
+        },
+        "id": {
+          "type": 2468,
+          "optional": false
+        },
+        "phase": {
+          "type": 2469,
+          "optional": false
+        },
+        "controller": {
+          "type": 2472,
+          "optional": false
+        },
+        "palette": {
+          "type": 2487,
+          "optional": false
+        },
+        "name": {
+          "type": 2489,
+          "optional": true
+        },
+        "recruits": {
+          "type": 2495,
+          "optional": true
+        },
+        "relations": {
+          "type": 2501,
+          "optional": true
+        },
+        "transfer": {
+          "type": 2949,
+          "optional": true
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [2443, 2950]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "to": {
+          "type": 2503,
+          "optional": false
+        },
+        "when": {
+          "type": 2951,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "condition": {
+          "type": 2505,
+          "optional": false
+        },
+        "remember": {
+          "type": 2573,
+          "optional": false
+        },
+        "observer": {
+          "type": 2749,
+          "optional": true
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 2953
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 2677,
+          "optional": false
+        },
+        "location": {
+          "type": 2679,
+          "optional": true
+        },
+        "col": {
+          "type": 2680,
+          "optional": false
+        },
+        "row": {
+          "type": 2681,
+          "optional": false
+        },
+        "terrain": {
+          "type": 2682,
+          "optional": false
+        },
+        "owner": {
+          "type": 2684,
+          "optional": false
+        },
+        "connections": {
+          "type": 2693,
+          "optional": true
+        },
+        "deadEnds": {
+          "type": 2695,
+          "optional": true
+        },
+        "walls": {
+          "type": 2697,
+          "optional": true
+        },
+        "floor": {
+          "type": 2699,
+          "optional": true
+        },
+        "perception": {
+          "type": 2700,
+          "optional": false
+        },
+        "light": {
+          "type": 2954,
+          "optional": true
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [2443, 2955]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "emission": {
+          "type": 2707,
+          "optional": false
+        },
+        "color": {
+          "type": 2712,
+          "optional": true
+        },
+        "fixture": {
+          "type": 2714,
+          "optional": true
+        },
+        "dx": {
+          "type": 2716,
+          "optional": true
+        },
+        "dy": {
+          "type": 2718,
+          "optional": true
+        },
+        "radius": {
+          "type": 2719,
+          "optional": false
+        },
+        "power": {
+          "type": 2720,
+          "optional": false
+        },
+        "when": {
+          "type": 2956,
+          "optional": true
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [2443, 2951]
+    },
+    {
+      "kind": "union",
+      "members": [2443, 2958]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "scripts": {
+          "type": 2959,
+          "optional": true
+        },
+        "evacuated": {
+          "type": 2937,
+          "optional": true
+        },
+        "id": {
+          "type": 2805,
+          "optional": false
+        },
+        "mission": {
+          "type": 2806,
+          "optional": false
+        },
+        "recall": {
+          "type": 2808,
+          "optional": false
+        },
+        "veterans": {
+          "type": 2818,
+          "optional": true
+        },
+        "storyVeterans": {
+          "type": 2820,
+          "optional": true
+        },
+        "fallenCompanions": {
+          "type": 2823,
+          "optional": true
+        },
+        "carryGold": {
+          "type": 2824,
+          "optional": false
+        },
+        "marks": {
+          "type": 2826,
+          "optional": false
+        },
+        "dialogue": {
+          "type": 2835,
+          "optional": false
+        },
+        "dialogueIndex": {
+          "type": 2836,
+          "optional": false
+        },
+        "outcome": {
+          "type": 2838,
+          "optional": false
+        },
+        "completed": {
+          "type": 2839,
+          "optional": false
+        },
+        "refuge": {
+          "type": 2844,
+          "optional": true
+        },
+        "vigil": {
+          "type": 2848,
+          "optional": true
+        },
+        "holds": {
+          "type": 2850,
+          "optional": true
+        },
+        "flags": {
+          "type": 2856,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [2443, 2960]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "failed": {
+          "type": 2763,
+          "optional": false
+        },
+        "completed": {
+          "type": 2765,
+          "optional": false
+        },
+        "revealed": {
+          "type": 2767,
+          "optional": false
+        },
+        "recruitment": {
+          "type": 2769,
+          "optional": false
+        },
+        "active": {
+          "type": 2771,
+          "optional": false
+        },
+        "holds": {
+          "type": 2777,
+          "optional": false
+        },
+        "marks": {
+          "type": 2961,
+          "optional": false
+        },
+        "pending": {
+          "type": 2798,
+          "optional": false
+        },
+        "nextMark": {
+          "type": 2799,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 2962
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "sight": {
+          "type": 2779,
+          "optional": false
+        },
+        "lightRemembered": {
+          "type": 2780,
+          "optional": false
+        },
+        "id": {
+          "type": 2781,
+          "optional": false
+        },
+        "type": {
+          "type": 2782,
+          "optional": false
+        },
+        "tile": {
+          "type": 2461,
+          "optional": false
+        },
+        "light": {
+          "type": 2963,
+          "optional": true
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [2443, 2955]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 2918,
+          "optional": false
+        },
+        "undo": {
+          "type": 2889,
+          "optional": true
+        },
+        "progress": {
+          "type": 2919,
+          "optional": false
+        },
+        "version": {
+          "type": 2965,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 2945,
+          "optional": false
+        },
+        "setup": {
+          "type": 2883,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": 47
     }
   ],
   "typeNames": {

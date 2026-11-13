@@ -2,6 +2,27 @@
 use crate::sort::SharedSort;
 use crate::{data::*, logic::battle::Game};
 impl<'catalog> Game<'catalog> {
+    pub(crate) fn campaign_companion_survives(&self, company: &str, character: &str) -> bool {
+        let eligible = |faction: &str| self.faction_relation(company, faction) == Relation::Allied;
+        self.units.iter().any(|unit| {
+            self.name(unit.character) == Some(character) && eligible(self.unit_faction(unit))
+        }) || self.story.campaign.as_ref().is_some_and(|state| {
+            state.evacuated.iter().any(|record| {
+                record.unit.character.as_deref() == Some(character)
+                    && eligible(&record.unit.faction)
+            })
+        })
+    }
+    pub(crate) fn campaign_leader_survives(&self, company: &str) -> bool {
+        self.units
+            .iter()
+            .any(|unit| unit.is_leader() && self.unit_faction(unit) == company)
+            || self.story.campaign.as_ref().is_some_and(|state| {
+                state.evacuated.iter().any(|record| {
+                    record.unit.role == Some(Role::Leader) && record.unit.faction == company
+                })
+            })
+    }
     pub(crate) fn evaluate_campaign(&mut self, at_turn_start: bool, _entered: Option<usize>) {
         if self.story.campaign.is_none() || self.position.runtime.winner.is_some() {
             return;
@@ -18,18 +39,8 @@ impl<'catalog> Game<'catalog> {
             .unwrap()
             .required_companions
             .iter()
-            .find(|id| {
-                !self.units.iter().any(|u| {
-                    self.name(u.character) == Some(id.as_str())
-                        && self.faction_relation("player", self.unit_faction(u)) == Relation::Allied
-                })
-            });
-        if missing.is_some()
-            || !self
-                .units
-                .iter()
-                .any(|u| u.is_leader() && self.unit_faction(u) == "player")
-        {
+            .any(|id| !self.campaign_companion_survives("player", id));
+        if missing || !self.campaign_leader_survives("player") {
             self.position.runtime.winner = Some(BattleResult::PlayerDefeat);
             let message = "The company cannot continue without its protected companions.";
             self.story.campaign.as_mut().unwrap().outcome = Some(message.into());

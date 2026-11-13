@@ -477,3 +477,12 @@ faction, removes the redundant field from live and evacuated units, and applies
 the same conversion to reconstructed undo states before re-diffing them. Other
 resolved facts and browser settings are preserved. The native checkpoint graph
 is frozen separately as v46; prior schemas and conversions remain unchanged.
+
+### Version 47
+
+World condition rules carry an explicit optional observer faction. The isolated
+46→47 conversion writes the historical `player` observer only for rules that
+query visibility or use an observer selector, including nested predicates.
+Observer-free rules remain unscoped. Faction transfers, tile lights, event marks,
+and reconstructed undo states receive the same conversion. Prior schemas remain
+frozen, and native restoration does not supply an observer fallback.

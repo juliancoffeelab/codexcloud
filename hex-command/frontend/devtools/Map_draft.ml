@@ -282,6 +282,7 @@ let normalize map overlay =
   let input =
     J.obj
       [
+        ("observer", J.default overlay "observer" (J.str "player"));
         ("tiles", Js.Json.array tiles);
         ("units", Js.Json.array units);
         ("lighting", J.default map "lighting" (J.obj [ ("time", J.str "day") ]));

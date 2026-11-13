@@ -117,8 +117,8 @@ impl Game<'_> {
                             .condition_memory
                             .iter()
                             .any(|m| m == &format!("light:{}", self.board.ids[tile])))
-                        || presentation::matches(
-                            &r.condition,
+                        || presentation::rule_matches(
+                            r,
                             &context,
                             Some(&TileRef::Hex(self.board.ids[tile])),
                         )
@@ -140,11 +140,7 @@ impl Game<'_> {
             if let Some(light) = mark.light.as_ref() {
                 if mark.light_remembered
                     || light.when.as_ref().is_none_or(|r| {
-                        presentation::matches(
-                            &r.condition,
-                            &context,
-                            Some(&TileRef::Hex(mark.tile)),
-                        )
+                        presentation::rule_matches(r, &context, Some(&TileRef::Hex(mark.tile)))
                     })
                 {
                     let (col, row) = self.board.positions[tile];

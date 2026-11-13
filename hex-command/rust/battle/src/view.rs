@@ -1093,9 +1093,10 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
                         area,
                         attack_radius,
                         when,
-                    }) if when
-                        .as_ref()
-                        .is_none_or(|condition| game.event_condition_met(condition)) =>
+                        observer,
+                    }) if when.as_ref().is_none_or(|condition| {
+                        game.event_condition_met(condition, observer.as_deref())
+                    }) =>
                     {
                         Some((
                             area.iter()
@@ -1417,8 +1418,8 @@ impl BattleSession<'_> {
     pub fn campaign_state(&self) -> Option<&CampaignState> {
         self.live.story.campaign.as_deref()
     }
-    pub fn event_condition_met(&self, condition: &Condition) -> bool {
-        self.live.event_condition_met(condition)
+    pub fn event_condition_met(&self, condition: &Condition, observer: Option<&str>) -> bool {
+        self.live.event_condition_met(condition, observer)
     }
 }
 impl<'catalog> BattleSession<'catalog> {

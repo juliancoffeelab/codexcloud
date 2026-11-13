@@ -6,7 +6,7 @@ use super::{
 use crate::data::*;
 pub(super) struct EventFacts<'a, 'catalog> {
     game: &'a Game<'catalog>,
-    observer: &'a str,
+    observer: Option<&'a str>,
     rules: &'catalog Rules,
     board: &'a Board,
     units: &'a [Unit],
@@ -24,9 +24,12 @@ pub(super) struct EventFacts<'a, 'catalog> {
 impl<'a, 'catalog> EventFacts<'a, 'catalog> {
     #[inline]
     pub(super) fn new(game: &'a Game<'catalog>) -> Self {
-        Self::for_faction(game, "player")
+        Self::for_context(game, None)
     }
     pub(super) fn for_faction(game: &'a Game<'catalog>, observer: &'a str) -> Self {
+        Self::for_context(game, Some(observer))
+    }
+    pub(super) fn for_context(game: &'a Game<'catalog>, observer: Option<&'a str>) -> Self {
         Self {
             game,
             observer,
@@ -42,14 +45,11 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
             traversal: game.traversal.as_ref(),
             event_departure: game.story.event_departure.as_ref(),
             event_opening: game.story.event_opening,
-            visibility: LiveContext::for_faction(game, observer, None),
+            visibility: LiveContext::new(game, observer, None),
         }
     }
     pub(super) fn for_event(game: &'a Game<'catalog>, event: &'a ScriptEvent) -> Self {
-        Self::for_faction(
-            game,
-            event.objective.as_ref().map_or("player", |o| &o.faction),
-        )
+        Self::for_context(game, event.condition_observer())
     }
     pub(super) fn round(&self) -> u32 {
         self.round
@@ -96,7 +96,7 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
                 .is_none_or(|id| group.ai_group.as_ref() == Some(id))
             && s.side.is_none_or(|side| {
                 if side == ConditionSide::Observer {
-                    group.faction == self.observer
+                    group.faction == self.observer.expect("validated observer selector")
                 } else {
                     faction_matches_side(self.factions, &group.faction, side)
                 }
@@ -248,23 +248,13 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
     }
 }
 
-#[inline]
-pub(super) fn unit_matches(
-    rules: &Rules,
-    factions: &[Faction],
-    names: &Names,
-    select: &UnitMatch,
-    unit: &Unit,
-) -> bool {
-    unit_matches_for_faction(rules, factions, names, select, unit, "player")
-}
 pub(super) fn unit_matches_for_faction(
     rules: &Rules,
     factions: &[Faction],
     names: &Names,
     select: &UnitMatch,
     unit: &Unit,
-    observer: &str,
+    observer: Option<&str>,
 ) -> bool {
     select
         .character
@@ -280,7 +270,7 @@ pub(super) fn unit_matches_for_faction(
             .is_none_or(|id| names.get(unit.faction) == id)
         && select.side.is_none_or(|side| {
             if side == ConditionSide::Observer {
-                names.get(unit.faction) == observer
+                names.get(unit.faction) == observer.expect("validated observer selector")
             } else {
                 faction_matches_side(factions, names.get(unit.faction), side)
             }

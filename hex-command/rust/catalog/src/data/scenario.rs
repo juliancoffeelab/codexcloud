@@ -326,11 +326,25 @@ impl Goal {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub enum Trigger {
-    Visit { tile: TileRef },
-    Condition { condition: Condition },
-    Round { round: u32 },
-    Held { tile: TileRef, turns: u32 },
-    Control { tile: TileRef, round: Option<u32> },
+    Visit {
+        tile: TileRef,
+    },
+    Condition {
+        condition: Condition,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        observer: Option<String>,
+    },
+    Round {
+        round: u32,
+    },
+    Held {
+        tile: TileRef,
+        turns: u32,
+    },
+    Control {
+        tile: TileRef,
+        round: Option<u32>,
+    },
 }
 /// A stable member identity prevents repeated or skipped spawns after restoration.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -501,6 +515,8 @@ pub struct Layout {
 pub enum GroupOrder {
     Hold {
         #[serde(default, skip_serializing_if = "Option::is_none")]
+        observer: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
         when: Option<Condition>,
         area: Vec<TileRef>,
         #[serde(rename = "attackRadius")]
@@ -531,6 +547,8 @@ pub struct EnemyGroup {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct LossCondition {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub observer: Option<String>,
     pub label: String,
     pub condition: Condition,
     pub message: String,

@@ -192,6 +192,14 @@ impl InitialState {
             .map_err(|message| ContentError::new(path, message))?;
         validate_factions(&self.factions, &units)
             .map_err(|message| ContentError::new(path, message))?;
+        for faction in &self.factions {
+            if let Some(transfer) = &faction.transfer {
+                transfer
+                    .when
+                    .validate_references(types, &self.factions)
+                    .map_err(|message| ContentError::new(path, message))?;
+            }
+        }
         validate_economy(&self.factions, &self.gold, &self.tiles, types)
             .map_err(|message| ContentError::new(path, message))?;
         Ok(State {
@@ -714,8 +722,7 @@ impl Rules {
                 rule.condition
                     .validate_characters(characters)
                     .map_err(|e| ContentError::new(&map.id, e))?;
-                rule.condition
-                    .validate_references(&types, &state.factions)
+                rule.validate_references(&types, &state.factions)
                     .map_err(|message| ContentError::new(&map.id, message))?;
             }
         }
@@ -887,6 +894,7 @@ fn validate_speech(
     path: &str,
 ) -> Result<(), ContentError> {
     ScriptEvent {
+        observer: None,
         id: "speech-validation".into(),
         when: When::ChapterStarted(true),
         remembers: true,
@@ -918,6 +926,7 @@ fn validate_character_references(
     placements(&mission.map.units)?;
     for w in mission.story_conditions() {
         let e = ScriptEvent {
+            observer: Some("player".into()),
             id: "story-condition".into(),
             when: w.clone(),
             remembers: true,
@@ -968,7 +977,7 @@ fn validate_character_references(
     validate_speech(&mission.intro, characters, path)?;
     validate_speech(&mission.victory, characters, path)?;
     for event in &mut mission.events {
-        if let Trigger::Condition { condition: c } = &event.trigger {
+        if let Trigger::Condition { condition: c, .. } = &event.trigger {
             condition(c)?;
         }
         if let Some(effect) = &event.evacuate {
@@ -1134,6 +1143,7 @@ fn validate_mission(
             ));
         }
         let check = ScriptEvent {
+            observer: Some("player".into()),
             id: "story-condition".into(),
             when: condition.clone(),
             remembers: true,
@@ -1189,8 +1199,7 @@ fn validate_mission(
                             .validate(&state.tiles, &mission.events)
                             .map_err(|e| ContentError::new(path, e))?;
                         if let Some(rule) = &light.when {
-                            rule.condition
-                                .validate_references(types, &state.factions)
+                            rule.validate_references(types, &state.factions)
                                 .map_err(|e| ContentError::new(path, e))?;
                         }
                     }
@@ -1219,6 +1228,9 @@ fn validate_mission(
         }
     }
     for loss in &mission.lose_conditions {
+        loss.condition
+            .validate_observer(loss.observer.as_deref(), &state.factions)
+            .map_err(|e| ContentError::new(path, e))?;
         if loss.label.trim().is_empty() || loss.message.trim().is_empty() {
             return Err(ContentError::new(path, "empty defeat condition text"));
         }
@@ -1248,7 +1260,20 @@ fn validate_mission(
         identifier(&group.id, path)?;
         if let Some(order) = &group.order {
             match order {
-                GroupOrder::Hold { area, when, .. } => {
+                GroupOrder::Hold {
+                    area,
+                    when,
+                    observer,
+                    ..
+                } => {
+                    if let Some(condition) = when {
+                        condition
+                            .validate_observer(observer.as_deref(), &state.factions)
+                            .map_err(|e| ContentError::new(path, e))?;
+                    } else if let Some(id) = observer {
+                        validate_faction_reference(&state.factions, id)
+                            .map_err(|e| ContentError::new(path, e))?;
+                    }
                     if let Some(condition) = when {
                         condition
                             .validate(&state.tiles, &mission.events, false)
@@ -1271,8 +1296,7 @@ fn validate_mission(
             rule.condition
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|message| ContentError::new(path, message))?;
-            rule.condition
-                .validate_references(types, &state.factions)
+            rule.validate_references(types, &state.factions)
                 .map_err(|message| ContentError::new(path, message))?;
         }
     }
@@ -1443,13 +1467,20 @@ fn validate_mission(
                 reference(&unit.r#type, types, path)?;
             }
         }
-        if let Trigger::Condition { condition } = &event.trigger {
+        if let Trigger::Condition {
+            condition,
+            observer,
+        } = &event.trigger
+        {
+            condition
+                .validate_observer(observer.as_deref(), &state.factions)
+                .map_err(|e| ContentError::new(path, e))?;
             condition
                 .validate_references(types, &state.factions)
                 .map_err(|message| ContentError::new(path, message))?;
         }
         match &event.trigger {
-            Trigger::Condition { condition } => condition
+            Trigger::Condition { condition, .. } => condition
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|message| ContentError::new(path, message))?,
             Trigger::Visit { tile }
@@ -2135,7 +2166,10 @@ fn apply_objective_route(
                         format!("objective route references unknown event {id}"),
                     )
                 })?;
-            let Trigger::Condition { condition: current } = &mut event.trigger else {
+            let Trigger::Condition {
+                condition: current, ..
+            } = &mut event.trigger
+            else {
                 return Err(ContentError::new(
                     path,
                     "eventConditions requires a condition-triggered event",

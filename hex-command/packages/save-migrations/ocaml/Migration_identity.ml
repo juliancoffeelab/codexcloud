@@ -3,7 +3,7 @@
 open Migration_json
 module T = Historical_types
 
-type entry = Flash_entry of T.V46.current_entry | Turn_entry of T.V46.turn_entry
+type entry = Flash_entry of T.V47.current_entry | Turn_entry of T.V47.turn_entry
 type origin = Index | Payload | Migrated_payload
 
 type claim = {
@@ -24,7 +24,7 @@ let entry_to_json = function
   | Flash_entry value -> Historical_codec.encode_save37_progress_entry_member0 value
   | Turn_entry value -> Historical_codec.encode_history4_entries_item value
 
-let entry_of_save : T.V46.t -> entry = function
+let entry_of_save : T.V47.t -> entry = function
   | `Current value -> Flash_entry value.progress.entry
   | `Turn value -> Turn_entry value.progress.entry
 

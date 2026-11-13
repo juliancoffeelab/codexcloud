@@ -252,10 +252,7 @@ pub fn validate_faction_conditions(
         }
         if let Some(transfer) = &faction.transfer {
             transfer.when.condition.validate(tiles, events, true)?;
-            transfer
-                .when
-                .condition
-                .validate_references(types, factions)?;
+            transfer.when.validate_references(types, factions)?;
         }
     }
     Ok(())

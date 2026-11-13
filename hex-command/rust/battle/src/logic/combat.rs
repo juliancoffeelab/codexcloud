@@ -757,7 +757,11 @@ impl super::Game<'_> {
                             .scripts
                             .as_deref()
                             .is_some_and(|state| state.active.contains(&e.id))
-                            && self.script_unit_matches(s, target)
+                            && self.objective_unit_matches(
+                                &e.objective.as_ref().unwrap().faction,
+                                s,
+                                target,
+                            )
                     })
             })
         })

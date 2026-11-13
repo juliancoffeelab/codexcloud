@@ -120,6 +120,9 @@ impl TileLight {
             );
         }
         if let Some(rule) = &self.when {
+            if rule.condition.needs_observer() && rule.observer.is_none() {
+                return Err("observer-dependent light rule requires an observer faction".into());
+            }
             rule.condition.validate_presentation()?;
             rule.condition.validate(tiles, events, true)?;
         }

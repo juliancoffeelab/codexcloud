@@ -17,7 +17,7 @@ pub(super) fn player_goals(game: &Game<'_>, route: &str) -> Option<Vec<Objective
     if !plan
         .ignore_optional_when
         .as_ref()
-        .is_some_and(|condition| game.event_condition_met(condition))
+        .is_some_and(|condition| game.event_condition_met(condition, Some("player")))
     {
         return None;
     }

@@ -1,6 +1,6 @@
 (* Current application wire types. These are maintained independently of the frozen
    migrations. JSON appears only at the persistence boundary and in opaque undo values. *)
-type version = [ `V46 ]
+type version = [ `V47 ]
 type history_version = [ `V4 ]
 
 (* Browser preferences deliberately describe saved UI choices, not every engine
@@ -79,9 +79,9 @@ type 'checkpoint save = Current of 'checkpoint current_save | Turn of 'checkpoin
 type t = Domain.saved_game save
 type history = { version : history_version; entries : turn_entry array }
 
-let version_tag : version = `V46
+let version_tag : version = `V47
 let history_version_tag : history_version = `V4
-let version = match version_tag with `V46 -> 46
+let version = match version_tag with `V47 -> 47
 let history_version = match history_version_tag with `V4 -> 4
 let invalid () = invalid_arg "Invalid current save envelope"
 let object_ value = match Js.Json.decodeObject value with Some x -> x | None -> invalid ()
