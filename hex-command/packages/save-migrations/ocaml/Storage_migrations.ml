@@ -102,6 +102,57 @@ let entry_round = Identity.entry_round
 let entry_to_json = Identity.entry_to_json
 let is_turn = Identity.is_turn
 
+(* IndexedDB v2 -> v3 retires these authored campaigns without a replacement.
+   Use the frozen converted checkpoint, never the live campaign catalog or an
+   untrusted history label, to decide which records are owned by a retired run. *)
+let retired_save (save : T.V47.t) =
+  let state =
+    match save with
+    | `Current value -> value.checkpoint.state
+    | `Turn value -> value.checkpoint.state
+  in
+  let campaigns = [ "green-accord"; "ashen-oath"; "borrowed-tide" ] in
+  let maps =
+    [
+      "green-border";
+      "green-vigil";
+      "green-pact";
+      "ashen-quarry";
+      "ashen-refuge";
+      "ashen-dawn";
+      "tide-nets";
+      "tide-wreck";
+      "tide-sluice";
+    ]
+  in
+  List.mem state.map_id maps
+  || Option.fold ~none:false
+       ~some:(fun (c : T.V47.current_campaign) -> List.mem c.id campaigns)
+       state.campaign
+
+let indexed_db_v2_to_v3 source =
+  let source = source_of_json source in
+  let deleted =
+    List.filter_map
+      (fun (key, raw) ->
+        if key <> save_key && not (starts "hex-command-progress:" key) then None
+        else
+          Option.bind raw (fun raw ->
+              (* Malformed data retains its ordinary repair path. It is never guessed
+         to belong to one of the removed campaigns. *)
+              try
+                let save = imported raw in
+                let entry = entry_of_save save in
+                let valid_key =
+                  if key = save_key then not (is_turn entry)
+                  else is_turn entry && key = payload_key (entry_id entry)
+                in
+                if valid_key && retired_save save then Some (s key) else None
+              with _ -> None))
+      source
+  in
+  obj [ ("deleted", a deleted) ]
+
 let migrate_source (source : local_source) : imported_storage =
   let current =
     Option.map
@@ -153,7 +204,18 @@ let migrate_source (source : local_source) : imported_storage =
         save)
       rows
   in
-  { current; turns; choose_new_game = raw source new_game_key = Some "true" }
+  (* Compose localStorage v1 -> IndexedDB v2 with the v2 -> v3 retirement. *)
+  let removed_current =
+    Option.fold ~none:false ~some:(fun value -> retired_save (`Current value)) current
+  in
+  let current =
+    Option.bind current (fun value -> if retired_save (`Current value) then None else Some value)
+  in
+  let turns =
+    Array.of_list
+      (List.filter (fun value -> not (retired_save (`Turn value))) (Array.to_list turns))
+  in
+  { current; turns; choose_new_game = removed_current || raw source new_game_key = Some "true" }
 
 let migrate source =
   let value = migrate_source (source_of_json source) in

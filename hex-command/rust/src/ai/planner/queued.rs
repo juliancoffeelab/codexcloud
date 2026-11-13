@@ -352,16 +352,8 @@ mod tests {
     #[test]
     fn campaign_rejects_arena_campaigner() {
         let rules = Rules::load().unwrap();
-        let campaign = Game::start_campaign(
-            &rules,
-            "borrowed-tide",
-            0,
-            vec![],
-            0,
-            vec![],
-            vec![],
-            vec![],
-        );
+        let campaign =
+            Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![]);
         let mut blocks = Policy::Balanced.blocks();
         blocks.campaign = crate::ai::CampaignBlock::Arena;
         let mut workspace = PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Unrestricted)

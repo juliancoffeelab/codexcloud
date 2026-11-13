@@ -486,3 +486,12 @@ query visibility or use an observer selector, including nested predicates.
 Observer-free rules remain unscoped. Faction transfers, tile lights, event marks,
 and reconstructed undo states receive the same conversion. Prior schemas remain
 frozen, and native restoration does not supply an observer fallback.
+
+## IndexedDB v2 → v3: removed campaigns
+
+Retire Green Accord, Ashen Oath and Borrowed Tide saves and saved turns. Frozen
+numbered-save conversions establish ownership before the storage migration
+deletes their payloads and history rows atomically. Retiring the current save
+opens the campaign chooser; no replacement battle is saved or restored. Other
+campaigns and malformed records retain their existing load/repair behavior.
+LocalStorage import composes the same retirement before committing IndexedDB v3.

@@ -129,7 +129,7 @@ test("Legacy developer saves gain neutral sites without resetting units", async 
   assert(required(legacy.snapshot().sites).every((site) => site.owner === null));
 });
 test("Campaign saves still require site ownership", async () => {
-  const campaign = Game.startCampaign("green-accord");
+  const campaign = Game.startCampaign("mirror-night");
   const missingCampaignSites = {
     version: SAVE_VERSION,
     pendingEnemy: false,
@@ -163,13 +163,13 @@ const invalidCases = [
   [
     "campaign attached to developer map",
     (save) => {
-      save.state.campaign = Game.startCampaign("green-accord").campaign;
+      save.state.campaign = Game.startCampaign("mirror-night").campaign;
     },
   ],
   [
     "campaign map without campaign state",
     (save) => {
-      save.state.mapId = "green-border";
+      save.state.mapId = "mirror-night";
     },
   ],
   [

@@ -96,28 +96,6 @@
         "objective": "authored",
         "diplomacy": "unrestricted"
       }
-    ],
-    "borrowed-tide": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "green-accord": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "ashen-oath": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      },
-      {
-        "objective": "authored",
-        "diplomacy": "diplomatic"
-      }
     ]
   },
   "opponents": ["classic", "predictor"],

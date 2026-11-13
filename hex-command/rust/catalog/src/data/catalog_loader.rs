@@ -2052,7 +2052,7 @@ mod tests {
     #[test]
     fn component_references_report_missing_files_and_reject_traversal() {
         let mut bundle = test_bundle();
-        let path = "game/campaigns/borrowed-tide/stages/tide-wreck/story.json";
+        let path = "game/campaigns/mirror-night/stages/mirror-night/story.json";
         bundle.remove(path);
         assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
         let mut bundle = test_bundle();

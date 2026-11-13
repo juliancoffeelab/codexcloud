@@ -537,7 +537,7 @@ mod tests {
                 seed: 17,
                 objective: "authored".into(),
                 diplomacy: Diplomacy::Diplomatic,
-                campaign: "green-accord".into(),
+                campaign: "mirror-night".into(),
                 player: Policy::Balanced,
                 enemy: Policy::Classic,
                 player_blocks: None,
@@ -545,7 +545,7 @@ mod tests {
                 max_rounds: 1,
                 recruit_limit: Some(0),
             },
-            &rules.campaigns["green-accord"],
+            &rules.campaigns["mirror-night"],
         )
         .unwrap();
         campaign.missions.push(campaign.missions[0].clone());

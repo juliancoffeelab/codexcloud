@@ -1009,16 +1009,7 @@ mod tests {
         let rules = Rules::load().unwrap();
         for mut game in [
             Game::new(&rules, "mirror"),
-            Game::start_campaign(
-                &rules,
-                "borrowed-tide",
-                0,
-                vec![],
-                0,
-                vec![],
-                vec![],
-                vec![],
-            ),
+            Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![]),
         ] {
             let workspace = || {
                 crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted)

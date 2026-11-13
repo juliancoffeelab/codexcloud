@@ -5,10 +5,7 @@ from pathlib import Path
 from .workloads import FACTIONS
 
 MAPS = ("open", "river-valley", "villages", "sluice")
-AUTHORED = {
-    "villages": ("lantern-road", "lantern-villages"),
-    "sluice": ("borrowed-tide", "tide-sluice"),
-}
+AUTHORED = {"villages", "sluice"}
 
 
 def prepare_catalog(source, destination):

@@ -1,13 +1,11 @@
 import { cellKey } from "./hex-fixture.mjs";
 import { test, vi } from "vitest";
 import assert from "node:assert/strict";
-import { board, campaign, catalog, Native, Presentation, Story } from "./presentation-fixture.mjs";
+import { board, campaign, catalog, Native, Presentation } from "./presentation-fixture.mjs";
 import { required } from "./helpers.mjs";
 import * as Motion from "@frontend/Motion";
-import * as RawPresentation from "@frontend/Presentation";
-import * as RawNative from "@frontend/Native";
 import * as Domain from "@frontend/Domain";
-import { toArray, listToArray } from "./json-fixture.mjs";
+
 const tiles = (view, selected, inspected) =>
   Presentation.battlefield(catalog, view, selected, inspected);
 test("Selection and attack targets have accessible labels and health", () => {
@@ -50,7 +48,7 @@ test("Moving preserves tile identities and leaves the old publication unchanged"
   );
   assert.equal(cellKey(required(Native.unit(oldView, "u2")).tile), "1,3");
 });
-for (const id of ["lantern-road", "green-accord", "ashen-oath"]) {
+for (const id of ["lantern-road"]) {
   test(`Campaign objectives and named companions have accessible descriptions: ${id}`, () => {
     const game = campaign(id);
     const display = tiles(game.view);
@@ -70,56 +68,6 @@ for (const id of ["lantern-road", "green-accord", "ashen-oath"]) {
       );
     }
   });
-}
-test("Objective markers distinguish achievements from current ownership", () => {
-  const game = campaign("ashen-oath", 2);
-  const sealed = "7,2",
-    active = "7,6";
-  game.edit((state) => state.campaign.scripts.completed.push("northern-seal-closed"));
-  const display = tiles(game.view);
-  assert(
-    !required(display.find((entry) => entry.tile.id === sealed)).classes.includes("objective"),
-  );
-  assert(required(display.find((entry) => entry.tile.id === active)).classes.includes("objective"));
-  const escort = campaign("green-accord", 2);
-  escort.edit(
-    (state) => (required(state.tiles.find((tile) => tile.id === "7,4")).owner = "player"),
-  );
-  assert(
-    !required(tiles(escort.view).find((entry) => entry.tile.id === "7,4")).classes.includes(
-      "objective",
-    ),
-  );
-  escort.edit(
-    (state) => (required(state.tiles.find((tile) => tile.id === "7,4")).owner = "rootbinders-host"),
-  );
-  assert(
-    required(tiles(escort.view).find((entry) => entry.tile.id === "7,4")).classes.includes(
-      "objective",
-    ),
-  );
-  escort.edit((state) => (state.winner = "playerVictory"));
-  assert(!tiles(escort.view).some((entry) => entry.classes.includes("objective")));
-});
-function feedbackNode(attribute, tileId, occupied = false) {
-  const classes = /* @__PURE__ */ new Set();
-  let layouts = 0;
-  return {
-    classes,
-    get layouts() {
-      return layouts;
-    },
-    classList: {
-      add: (name) => classes.add(name),
-      remove: (name) => classes.delete(name),
-    },
-    getAttribute: (name) => (name === attribute ? tileId : null),
-    getBoundingClientRect: () => {
-      layouts++;
-      return {};
-    },
-    querySelector: (selector) => (occupied && selector === ".unit-art" ? {} : null),
-  };
 }
 test("Motion forwards a typed presentation event to the native battlefield without mutating DOM leaves", () => {
   const events = [];

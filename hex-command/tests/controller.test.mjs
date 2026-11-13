@@ -222,7 +222,7 @@ test("Dialogue navigation persists its cursor without advancing gameplay", async
   const session = await createController(),
     observed = observe(session),
     commands = Session.commands(session);
-  commands.start_campaign(undefined, "green-accord");
+  commands.start_campaign(undefined, "lantern-road");
   const opening = observed.view,
     campaign = required(Native.state(opening.game).campaign);
   assert(campaign.dialogue.length > 1);
@@ -286,44 +286,16 @@ test("Stray dialogue cannot overwrite a paused turn checkpoint", async () => {
   await pending;
   observed.unsubscribe();
 });
-test("Completed vigil publishes and persists its outcome", async () => {
-  const fixture = Game.startCampaign("green-accord", 1);
-  fixture.advanceDialogue(true);
-  fixture.units = fixture.units.filter((unit) => unit.faction === "player");
-  const goal = { tile: { col: 6, row: 4 } };
-  const lark = required(fixture.units.find((unit) => unit.character === "lark")),
-    occupant = fixture.at(cellKey(goal.tile));
-  if (occupant && occupant.id !== lark.id) occupant.tile = { col: 5, row: 4 };
-  lark.tile = goal.tile;
-  required(fixture.tile(cellKey(goal.tile))).owner = "player";
-  fixture.round = 3;
-  required(fixture.campaign).vigil = { heldTurns: 2, lastCountedRound: 3 };
-  await saveLegacyBattle(fixture);
-  assert.equal((await loadBattle()).game.mapId, fixture.mapId);
-  const session = await createController(),
-    observed = observe(session);
-  await Session.commands(session).end_turn();
-  assert.equal(state(session).winner, "playerVictory");
-  assert.equal(observed.view.status, state(session).campaign?.outcome);
-  assert(Story.dialogue_pending(state(session).campaign));
-  Session.commands(session).dialogue(false);
-  assert.equal(
-    required((await loadBattle()).game.campaign).dialogueIndex,
-    required(state(session).campaign).dialogueIndex,
-  );
-  Session.close(session);
-  observed.unsubscribe();
-});
 test("Finished enemy-turn battles persist outcome dialogue", async () => {
-  const fixture = Game.startCampaign("green-accord");
+  const fixture = Game.startCampaign("lantern-road", 1);
   fixture.advanceDialogue(true);
   fixture.units = fixture.units.filter(
-    (unit) => unit.role === "leader" || unit.character === "lark",
+    (unit) => unit.role === "leader" || unit.character === "ivo",
   );
   const leader = required(
       fixture.units.find((unit) => unit.faction === "player" && unit.role === "leader"),
     ),
-    enemy = fixture.addUnit("soldier", "charter-guards", "4,4");
+    enemy = fixture.addUnit("soldier", "toll-skeletons", "4,4");
   leader.tile = { col: 3, row: 4 };
   leader.hp = 1;
   enemy.tile = { col: 4, row: 4 };
@@ -1167,14 +1139,10 @@ test("An enemy task reports an ordinary planning failure once and retains the fl
 });
 
 test("EndTurn that resolves the campaign persists the accepted result without starting AI", async () => {
-  const fixture = Game.startCampaign("green-accord");
+  const fixture = Game.startCampaign("lantern-road", 1);
   fixture.advanceDialogue(true);
-  const capture = required(
-    mission(fixture).scriptedEvents.find((event) => event.objective?.intent.capture),
-  ).objective.intent.capture;
-  for (const tile of capture)
-    required(fixture.tile(tile.hex ?? tile.location ?? tile)).owner = "player";
-  fixture.campaign.flags["lost-tools"] = [{ state: true, stage: 0, turn: 1 }];
+  for (const flag of ["foothold-established", "village-safe", "eastern-departure"])
+    fixture.campaign.flags[flag] = [{ state: true, stage: 0, turn: 1 }];
   await Save.write(Save.create(), fixture.checkpoint(), false);
   const clock = vi.fn(() => Promise.resolve());
   const session = await createController(clock);

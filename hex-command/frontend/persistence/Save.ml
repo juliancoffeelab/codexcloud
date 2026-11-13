@@ -177,10 +177,67 @@ let restore_text ~restore ~validate raw kind =
   let game = restore envelope.checkpoint in
   (game, save, undo, migrated)
 
+let database_source tx =
+  let state = Storage.Raw.object_store tx "state" and turns = Storage.Raw.object_store tx "turns" in
+  let current = Storage.Raw.request (Storage.Raw.get state "current")
+  and rows = Storage.Raw.request (Storage.Raw.get_all (Storage.Raw.object_store tx "entries"))
+  and keys = Storage.Raw.request (Storage.Raw.keys turns)
+  and values = Storage.Raw.request (Storage.Raw.get_all turns) in
+  let* current = current in
+  let* rows = rows in
+  let* keys = keys in
+  let* values = values in
+  let source =
+    obj
+      [
+        ("hex-command-battle", if missing current then Js.Json.null else current);
+        ( "hex-command-progress-index",
+          Js.Json.string
+            (Js.Json.stringify
+               (obj
+                  [
+                    ("version", num (float_of_int Save_format.history_version));
+                    ("entries", Js.Json.array rows);
+                  ])) );
+      ]
+  in
+  Array.iteri (fun i key -> set source ("hex-command-progress:" ^ key) values.(i)) keys;
+  return source
+
+let delete_database_records tx plan =
+  let state = Storage.Raw.object_store tx "state"
+  and rows = Storage.Raw.object_store tx "entries"
+  and turns = Storage.Raw.object_store tx "turns" in
+  Array.iter
+    (fun value ->
+      (* Storage keys are host strings; preserve their exact UTF-16 spelling. *)
+      let key = host_string value in
+      if key = "hex-command-battle" then (
+        Storage.Raw.delete state "current";
+        Storage.Raw.put state (bool true) "choose-new-game")
+      else if key = "hex-command-progress-index" then Storage.Raw.clear rows
+      else if String.starts_with ~prefix:"hex-command-progress:" key then (
+        let id = String.sub key 21 (String.length key - 21) in
+        Storage.Raw.delete turns id;
+        Storage.Raw.delete rows id))
+    (array (field plan "deleted"))
+
 let initialize ~restore ~validate ~dispose ~stage () =
   lock "hex-command-storage-import" (fun () ->
       let* initialized = Storage.initialized () in
       if initialized then (
+        let* () =
+          Storage.Raw.transaction [| "state"; "entries"; "turns" |] "readwrite" (fun tx ->
+              let state = Storage.Raw.object_store tx "state" in
+              let* version = Storage.Raw.request (Storage.Raw.get state "initialized") in
+              if number version = 3. then return ()
+              else
+                let* source = database_source tx in
+                let plan = Storage_migrations.indexed_db_v2_to_v3 source in
+                delete_database_records tx plan;
+                Storage.Raw.put state (num 3.) "initialized";
+                return ())
+        in
         discard_source ();
         return ())
       else
@@ -605,51 +662,6 @@ let delete_progress owner id =
           | Some _ ->
               Storage.delete_turn tx id;
               return ()))
-
-let database_source tx =
-  let state = Storage.Raw.object_store tx "state" and turns = Storage.Raw.object_store tx "turns" in
-  let current = Storage.Raw.request (Storage.Raw.get state "current")
-  and rows = Storage.Raw.request (Storage.Raw.get_all (Storage.Raw.object_store tx "entries"))
-  and keys = Storage.Raw.request (Storage.Raw.keys turns)
-  and values = Storage.Raw.request (Storage.Raw.get_all turns) in
-  let* current = current in
-  let* rows = rows in
-  let* keys = keys in
-  let* values = values in
-  let source =
-    obj
-      [
-        ("hex-command-battle", if missing current then Js.Json.null else current);
-        ( "hex-command-progress-index",
-          Js.Json.string
-            (Js.Json.stringify
-               (obj
-                  [
-                    ("version", num (float_of_int Save_format.history_version));
-                    ("entries", Js.Json.array rows);
-                  ])) );
-      ]
-  in
-  Array.iteri (fun i key -> set source ("hex-command-progress:" ^ key) values.(i)) keys;
-  return source
-
-let delete_database_records tx plan =
-  let state = Storage.Raw.object_store tx "state"
-  and rows = Storage.Raw.object_store tx "entries"
-  and turns = Storage.Raw.object_store tx "turns" in
-  Array.iter
-    (fun value ->
-      (* Storage keys are host strings; preserve their exact UTF-16 spelling. *)
-      let key = host_string value in
-      if key = "hex-command-battle" then (
-        Storage.Raw.delete state "current";
-        Storage.Raw.put state (bool true) "choose-new-game")
-      else if key = "hex-command-progress-index" then Storage.Raw.clear rows
-      else if String.starts_with ~prefix:"hex-command-progress:" key then (
-        let id = String.sub key 21 (String.length key - 21) in
-        Storage.Raw.delete turns id;
-        Storage.Raw.delete rows id))
-    (array (field plan "deleted"))
 
 let delete_run owner run =
   queue owner (fun () ->

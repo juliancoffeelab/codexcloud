@@ -175,7 +175,7 @@ mod tests {
         let rules = Catalog::load().unwrap();
         let mut states = vec![
             Game::new(&rules, "mirror").state(),
-            Game::start_campaign(&rules, "green-accord", 0, vec![], 0, vec![], vec![], vec![])
+            Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![])
                 .state(),
         ];
         for s in &mut states {

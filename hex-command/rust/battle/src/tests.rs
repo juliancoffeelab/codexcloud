@@ -16,7 +16,7 @@ fn rules() -> &'static Rules {
 fn cloned_forecasts_do_not_mutate_source_or_record_commands() {
     let mut game = Game::start_campaign(
         rules(),
-        "borrowed-tide",
+        "mirror-night",
         0,
         vec![],
         0,
@@ -35,52 +35,6 @@ fn cloned_forecasts_do_not_mutate_source_or_record_commands() {
     assert_eq!(fork.round, 2);
     game.set_terrain(0, game.rules.terrains["plains"]);
     assert_ne!(game.terrain, fork.terrain);
-}
-#[test]
-fn tide_starts_rescue_before_counting_defended_turns() {
-    let mut game = Game::start_campaign(
-        rules(),
-        "borrowed-tide",
-        1,
-        vec![],
-        0,
-        vec![],
-        vec![],
-        vec![],
-    );
-    let wreck = game.site(&Hex::new(5, 4));
-    game.owners[wreck] = Some("player".into());
-    let actor = game
-        .units
-        .iter()
-        .position(|u| u.phase == TurnPhase::Player && u.is_leader())
-        .unwrap();
-    game.units[actor].tile = wreck;
-    game.roster_changed();
-    game.evaluate_campaign(false, Some(wreck));
-    assert!(game.story.campaign.as_ref().unwrap().chosen("await-tide"));
-    let goal = game
-        .story
-        .mission
-        .as_ref()
-        .unwrap()
-        .scripted_events
-        .iter()
-        .find(|e| e.id == "goal-1")
-        .unwrap()
-        .clone();
-    while game.round < 6 {
-        game.end_turn();
-        game.end_turn();
-    }
-    assert!(game.story.campaign.as_ref().unwrap().chosen("rescue"));
-    assert_eq!(game.scripted_objective_status(&goal).progress.current, 0);
-    for _ in 0..3 {
-        game.end_turn();
-        game.end_turn();
-    }
-    assert_eq!(game.scripted_objective_status(&goal).progress.current, 3);
-    assert_eq!(game.winner, Some(BattleResult::PlayerVictory));
 }
 #[test]
 fn routing_cache_tracks_terrain_changes() {

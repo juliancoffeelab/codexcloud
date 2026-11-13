@@ -136,7 +136,7 @@ module Raw = struct
   let initialized_tx tx =
     let* value = request (get (object_store tx "state") "initialized") in
     if missing value then return false
-    else if number value = 2. then return true
+    else if number value = 2. || number value = 3. then return true
     else Save_error.reject_internal "Unsupported save storage version."
 
   let initialized () = transaction [| "state" |] "readonly" initialized_tx
@@ -184,7 +184,7 @@ module Raw = struct
                 (Js.Json.string (Js.Json.stringify save))
                 (text entry "id"))
             (array (field data "turns"));
-          put state (num 2.) "initialized");
+          put state (num 3.) "initialized");
         return ())
 end
 

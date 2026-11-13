@@ -145,9 +145,6 @@
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",
-    "game/campaigns/green-accord/campaign.json",
-    "game/campaigns/ashen-oath/campaign.json",
-    "game/campaigns/borrowed-tide/campaign.json",
     "game/campaigns/mirror-night/campaign.json",
     "game/campaigns/bell-night/campaign.json",
     "game/campaigns/snake-village-raid/campaign.json",
