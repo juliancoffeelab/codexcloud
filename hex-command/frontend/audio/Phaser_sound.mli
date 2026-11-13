@@ -44,8 +44,9 @@ val sound_ready : t -> Phaser.game -> unit
 val prepare : t -> string array -> unit
 val prepare_hud : t -> unit Js.Promise.t
 
-type hud_cue = Action | Choice | Disclosure
+type hud_cue = Action | Choice | Disclosure | Human | Woodland | Skeletons | Merfolk
 
+val faction_hud_cue : string -> hud_cue
 val play_hud : ?cue:hud_cue -> t -> bool Js.Promise.t
 val unlock : t -> trusted:bool -> bool Js.Promise.t
 val cancel : t -> unit

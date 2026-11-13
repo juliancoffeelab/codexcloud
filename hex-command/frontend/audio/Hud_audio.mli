@@ -2,7 +2,7 @@ type readiness = Audio_state.readiness = { ready : bool; error : string option }
 
 val readiness : readiness Observable.reader
 
-type cue = Action | Choice | Disclosure
+type cue = Action | Choice | Disclosure | Human | Woodland | Skeletons | Merfolk
 type t
 
 val create : (unit -> bool) -> t

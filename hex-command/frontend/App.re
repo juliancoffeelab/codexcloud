@@ -2,8 +2,14 @@ open Ui;
 
 [@mel.send] external controlMatches: (Dom.element, string) => bool = "matches";
 
+[@mel.send]
+external controlAttribute: (Dom.element, string) => Js.Nullable.t(string) = "getAttribute";
+
 let controlCue = control =>
-  if (controlMatches(control, "summary, button[aria-expanded]")) {
+  if (controlMatches(control, "button[role='radio'][data-faction]")) {
+    Js.Nullable.toOption(controlAttribute(control, "data-faction"))
+    |> Option.fold(~none=Phaser_sound.Choice, ~some=Phaser_sound.faction_hud_cue);
+  } else if (controlMatches(control, "summary, button[aria-expanded]")) {
     Phaser_sound.Disclosure;
   } else if (controlMatches(
                control,

@@ -354,7 +354,21 @@ let prepare_hud t =
   in
   Hud_audio.prepare hud
 
-type hud_cue = Hud_audio.cue = Action | Choice | Disclosure
+type hud_cue = Hud_audio.cue =
+  | Action
+  | Choice
+  | Disclosure
+  | Human
+  | Woodland
+  | Skeletons
+  | Merfolk
+
+let faction_hud_cue = function
+  | "human" -> Human
+  | "woodland" -> Woodland
+  | "skeletons" -> Skeletons
+  | "coastal" -> Merfolk
+  | _ -> Choice
 
 let play_hud ?cue t =
   match t.hud with Some hud -> Hud_audio.play ?cue hud | None -> Js.Promise.resolve false

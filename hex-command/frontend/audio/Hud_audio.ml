@@ -1,11 +1,15 @@
 (* HUD cues are prepared independently of the battlefield renderer. *)
-type cue = Action | Choice | Disclosure
+type cue = Action | Choice | Disclosure | Human | Woodland | Skeletons | Merfolk
 
 let clips =
   [|
     (Action, "select-1.wav?v=3a6cff557cea", 0.29 *. 0.25);
     (Choice, "palette/village-contact.mp3", 1.);
     (Disclosure, "palette/light-cloth-rustle.mp3", 0.39);
+    (Human, "palette/chainmail-rattle.mp3", 0.39);
+    (Woodland, "palette/enchanted-forest-rustle.mp3", 0.39);
+    (Skeletons, "palette/bone-crunch.mp3", 0.39);
+    (Merfolk, "palette/underwater-belt-rustle.mp3", 0.39);
   |]
 
 type readiness = Audio_state.readiness = { ready : bool; error : string option }
