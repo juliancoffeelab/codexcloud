@@ -4934,7 +4934,7 @@
       "row": 12,
       "terrain": "castle-bell",
       "floor": "castle-paving",
-      "owner": "enemy",
+      "owner": "bell-host",
       "walls": ["e", "se", "sw", "w", "nw", "ne"],
       "light": {
         "radius": 110,
@@ -8640,7 +8640,7 @@
       "row": 21,
       "terrain": "keep",
       "floor": "green-plain",
-      "owner": "enemy",
+      "owner": "bell-host",
       "light": {
         "radius": 110,
         "power": 0.8

@@ -80,12 +80,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "rootbinders-host": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "rootbinders-host",
       "phase": "ai",
       "controller": {
         "kind": "ai"

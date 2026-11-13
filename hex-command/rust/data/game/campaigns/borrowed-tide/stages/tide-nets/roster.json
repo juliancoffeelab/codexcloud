@@ -82,12 +82,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "factors-guards": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "factors-guards",
       "phase": "ai",
       "controller": {
         "kind": "ai"

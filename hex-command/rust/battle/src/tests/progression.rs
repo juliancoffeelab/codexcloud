@@ -247,37 +247,40 @@ fn objective_progress_and_disclosure_use_the_assigned_faction() {
     let tile = Hex::new(2, 1);
     let events: Vec<ScriptEvent> = serde_json::from_value(serde_json::json!([
         {"id":"enemy-control", "when":{"always":false}, "objective":{
-            "faction":"enemy", "label":"Control", "visibleWhen":{"always":true},
+            "faction":"toll-skeletons", "label":"Control", "visibleWhen":{"always":true},
             "intent":{"capture":[{"hex":tile}]}}, "actions":[]},
         {"id":"hidden-enemy-duty", "when":{"always":false}, "objective":{
-            "faction":"enemy", "label":"Secret", "visibleWhen":{"stand":{"tile":{"hex":tile},"side":"observer","role":"leader"}},
+            "faction":"toll-skeletons", "label":"Secret", "visibleWhen":{"stand":{"tile":{"hex":tile},"side":"observer","role":"leader"}},
             "intent":{"goTo":{"tile":{"hex":tile},"side":"observer","role":"leader"}}}, "actions":[]}
     ])).unwrap();
     rules.campaigns.get_mut("lantern-road").unwrap().missions[1].scripted_events = events.clone();
     let mut game =
         Game::start_campaign(&rules, "lantern-road", 1, vec![], 0, vec![], vec![], vec![]);
     let site = game.site(&tile);
-    game.owners[site] = Some("enemy".into());
+    game.owners[site] = Some("toll-skeletons".into());
     assert_eq!(
         game.scripted_objective_status(&events[0]).progress.current,
         1
     );
     assert!(game.planning_objectives("player").is_empty());
-    assert_eq!(game.planning_objectives("enemy").len(), 1);
+    assert_eq!(game.planning_objectives("toll-skeletons").len(), 1);
     assert!(game.requirements_disclosed("player"));
-    assert!(!game.requirements_disclosed("enemy"));
+    assert!(!game.requirements_disclosed("toll-skeletons"));
     let revision = game.story.planning_revision;
     let leader = game
         .units
         .iter()
-        .position(|u| game.unit_faction(u) == "enemy" && u.is_leader())
+        .position(|u| game.unit_faction(u) == "toll-skeletons" && u.is_leader())
         .unwrap();
     game.units[leader].tile = site;
     game.roster_changed();
     game.evaluate_campaign(false, None);
     assert!(game.story.planning_revision > revision);
-    assert_eq!(game.planning_objectives("enemy").len(), 2);
+    assert_eq!(game.planning_objectives("toll-skeletons").len(), 2);
     let restored = Game::try_from_state(&rules, game.state()).unwrap();
-    assert_eq!(restored.planning_objectives("enemy")[0].progress_current, 1);
+    assert_eq!(
+        restored.planning_objectives("toll-skeletons")[0].progress_current,
+        1
+    );
     assert!(restored.planning_objectives("player").is_empty());
 }

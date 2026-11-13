@@ -99,12 +99,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "sluice-guards": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "sluice-guards",
       "phase": "ai",
       "controller": {
         "kind": "ai"

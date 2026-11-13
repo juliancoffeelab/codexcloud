@@ -19,7 +19,7 @@
   ],
   "factions": [
     {
-      "id": "enemy",
+      "id": "crypt-hunters",
       "phase": "ai",
       "visionGroup": "hidden",
       "controller": {
@@ -137,7 +137,7 @@
       },
       "palette": "player",
       "relations": {
-        "enemy": "hostile"
+        "crypt-hunters": "hostile"
       },
       "gold": 18,
       "recruits": [

@@ -89,13 +89,13 @@
       "when": {
         "turn": {
           "number": 6,
-          "faction": "enemy"
+          "faction": "quarry-guards"
         }
       },
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "quarry-guards",
             "tile": {
               "hex": {
                 "col": 11,
@@ -112,7 +112,7 @@
         },
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "quarry-guards",
             "tile": {
               "hex": {
                 "col": 10,

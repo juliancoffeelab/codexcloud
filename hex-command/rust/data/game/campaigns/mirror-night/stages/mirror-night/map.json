@@ -769,7 +769,7 @@
       "col": 10,
       "row": 3,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "night-host",
       "floor": "green-plain",
       "light": {
         "radius": 110,

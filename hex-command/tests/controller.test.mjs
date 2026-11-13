@@ -323,7 +323,7 @@ test("Finished enemy-turn battles persist outcome dialogue", async () => {
   const leader = required(
       fixture.units.find((unit) => unit.side === "player" && unit.role === "leader"),
     ),
-    enemy = fixture.addUnit("soldier", "ai", "4,4");
+    enemy = fixture.addUnit("soldier", "ai", "4,4", "charter-guards");
   leader.tile = { col: 3, row: 4 };
   leader.hp = 1;
   enemy.tile = { col: 4, row: 4 };

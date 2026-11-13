@@ -139,7 +139,7 @@ let convert input =
   require
     (safe_integer version && version >= 1. && version <= float_of_int Migration_envelope.version)
     "Unsupported save version";
-  let converted =
+  let historical () =
     match int_of_float version with
     | 1 ->
         if get input "engine" = Some (s "rust-wasm") then
@@ -192,16 +192,20 @@ let convert input =
           (Migration_caves.v42 (Migration_player_control.v41 (Historical_codec.V41.of_json input)))
     | 42 -> Migration_concealment.v43 (Migration_caves.v42 (Historical_codec.V42.of_json input))
     | 43 -> Migration_concealment.v43 (Historical_codec.V43.of_json input)
-    | 44 -> Historical_codec.V44.of_json (Migration_envelope.current_save input)
+    | 44 -> Historical_codec.V44.of_json input
     | _ -> invalid "Unsupported save version"
   in
-  (converted, version <> 44.)
+  let converted =
+    if version = 45. then Historical_codec.V45.of_json (Migration_envelope.current_save input)
+    else Migration_faction_names.v44 (historical ())
+  in
+  (converted, version <> 45.)
 
 (* Relational rules (identity, flash/turn and replay invariants) complement the
    static wire model and apply to every consumer, including storage import. *)
 let validated input =
   let value, changed = convert input in
-  let json = Migration_envelope.current_save (Historical_codec.V44.to_json value) in
+  let json = Migration_envelope.current_save (Historical_codec.V45.to_json value) in
   (Current_save.narrow value, json, changed)
 
 let migrate_typed input =

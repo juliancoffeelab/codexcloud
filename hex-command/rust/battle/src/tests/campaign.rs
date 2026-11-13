@@ -66,7 +66,10 @@ fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
             .unwrap()
             .id;
         game.move_unit(edda, game.site(&Hex::new(5, 3)));
-        let raider = add(&mut game, "swordsman", TurnPhase::Ai, Hex::new(6, 4));
+        let faction = game.position.intern_name("wreck-guards");
+        let kind = game.kind("swordsman");
+        let tile = game.site(&Hex::new(6, 4));
+        let raider = game.position.add(kind, faction, tile);
         game.end_turn();
         game.move_unit(raider, game.site(&Hex::new(5, 4)));
         game.end_turn();

@@ -27,7 +27,7 @@
       },
       "palette": "player",
       "relations": {
-        "enemy": "hostile"
+        "forest-defenders": "hostile"
       },
       "gold": 28,
       "recruits": [
@@ -62,7 +62,7 @@
       ]
     },
     {
-      "id": "enemy",
+      "id": "forest-defenders",
       "phase": "ai",
       "visionGroup": "watch",
       "controller": {

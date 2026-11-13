@@ -227,7 +227,7 @@
       "col": 9,
       "row": 2,
       "terrain": "village",
-      "owner": "enemy",
+      "owner": "charter-patrol",
       "floor": "green-plain",
       "connections": []
     },
@@ -383,7 +383,7 @@
       "col": 9,
       "row": 4,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "charter-patrol",
       "floor": "green-plain"
     },
     {

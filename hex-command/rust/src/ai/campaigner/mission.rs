@@ -955,7 +955,7 @@ mod assignment_tests {
     #[test]
     fn assignments_follow_exact_factions_and_survive_group_defaults() {
         let mut rules = Rules::load().unwrap();
-        let mut events: Vec<ScriptEvent> = ["player", "enemy", "swamp-dead"]
+        let mut events: Vec<ScriptEvent> = ["player", "toll-skeletons", "swamp-dead"]
             .into_iter()
             .map(|faction| {
                 serde_json::from_value(serde_json::json!({
@@ -970,7 +970,7 @@ mod assignment_tests {
             .collect();
         events.extend(serde_json::from_value::<Vec<ScriptEvent>>(serde_json::json!([
             {"id":"later-assignment", "when":{"always":false}, "objective":{
-                "faction":"enemy", "label":"Later duty", "visibleWhen":{"flag":"ready"},
+                "faction":"toll-skeletons", "label":"Later duty", "visibleWhen":{"flag":"ready"},
                 "intent":{"goTo":{"tile":{"hex":{"col":18,"row":0}},"side":"observer","role":"leader"}}}, "actions":[]},
             {"id":"activate-assignment", "when":{"turn":2}, "actions":[{"setFlag":"ready"}]}
         ])).unwrap());
@@ -998,13 +998,13 @@ mod assignment_tests {
         assert_eq!(published.goals[0].progress.label, "player");
         assert!(game.campaign_view().requirements_disclosed());
         game.end_turn();
-        for faction in ["enemy", "swamp-dead"] {
+        for faction in ["toll-skeletons", "swamp-dead"] {
             game.set_active_faction(Some(faction.into()));
             let authored = game.campaign_view();
             let objectives = authored.planning_objectives();
             assert_eq!(objectives.len(), 1);
             assert_eq!(objectives[0].id, format!("assigned-{faction}"));
-            if faction == "enemy" {
+            if faction == "toll-skeletons" {
                 assert!(!authored.requirements_disclosed());
             }
             let policy = MissionPolicy::new(authored, game.phase_forecasts());
@@ -1046,7 +1046,7 @@ mod assignment_tests {
         game.end_turn();
         assert!(game.campaign_view().requirements_disclosed());
         game.end_turn();
-        game.set_active_faction(Some("enemy".into()));
+        game.set_active_faction(Some("toll-skeletons".into()));
         assert!(
             game.campaign_view()
                 .planning_objectives()

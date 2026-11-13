@@ -458,3 +458,13 @@ condition on darkness rules and moves personal terrain eligibility into
 `requires.terrains`. Undo states pass through the same typed conversion and are
 re-diffed. Other battlefield facts and browser preferences are retained. Unit
 appearance is derived and is not part of the save.
+
+### Version 45
+
+Campaign opponents use named faction IDs. The frozen 44→45 conversion renames
+the former `enemy` faction according to its saved map, including unit membership,
+treasuries, diplomacy, settlement ownership, transfer targets, pending spawns,
+recruitment overrides, evacuated units and exact ownership conditions. Vision
+groups, palettes, phases and relation selectors retain their previous meanings.
+Undo states receive the same conversion and are re-diffed. The native wire layout
+is unchanged and reuses the frozen v44 checkpoint graph.

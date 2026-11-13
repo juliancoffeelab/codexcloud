@@ -174,7 +174,7 @@
           {
             "turn": {
               "number": 5,
-              "faction": "enemy"
+              "faction": "masters-host"
             }
           },
           {
@@ -187,7 +187,7 @@
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "masters-host",
             "tile": {
               "location": "northern-seal"
             },
@@ -211,7 +211,7 @@
           {
             "turn": {
               "number": 5,
-              "faction": "enemy"
+              "faction": "masters-host"
             }
           },
           {
@@ -224,7 +224,7 @@
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "masters-host",
             "tile": {
               "location": "southern-seal"
             },
@@ -246,13 +246,13 @@
       "when": {
         "turn": {
           "number": 4,
-          "faction": "enemy"
+          "faction": "masters-host"
         }
       },
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "masters-host",
             "tile": {
               "hex": {
                 "col": 9,

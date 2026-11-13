@@ -95,12 +95,12 @@ class Game {
   at(id) {
     return this.units.find((unit) => cellKey(unit.tile) === cellKey(id));
   }
-  addUnit(type, side, tile) {
+  addUnit(type, side, tile, faction = side === "player" ? "player" : "enemy") {
     const unit = {
       id: `u${this.nextId++}`,
       type,
       side,
-      faction: side === "player" ? "player" : "enemy",
+      faction,
       revealedTo: [],
       perceptionEffects: [],
       tile: hex(this.tile(tile) ?? tile),

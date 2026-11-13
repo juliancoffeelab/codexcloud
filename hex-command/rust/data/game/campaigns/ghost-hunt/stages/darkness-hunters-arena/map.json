@@ -969,7 +969,7 @@
       "col": 1,
       "row": 4,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "crypt-hunters",
       "perception": {
         "remember": false,
         "concealment": [

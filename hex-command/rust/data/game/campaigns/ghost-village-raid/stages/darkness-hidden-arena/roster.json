@@ -27,7 +27,7 @@
       },
       "palette": "player",
       "relations": {
-        "enemy": "hostile"
+        "crypt-defenders": "hostile"
       },
       "gold": 18,
       "recruits": [
@@ -129,7 +129,7 @@
       ]
     },
     {
-      "id": "enemy",
+      "id": "crypt-defenders",
       "phase": "ai",
       "visionGroup": "watch",
       "controller": {

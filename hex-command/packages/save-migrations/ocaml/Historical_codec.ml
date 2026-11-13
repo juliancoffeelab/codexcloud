@@ -9892,6 +9892,41 @@ and decode_save44_member1 value : save44_member1 =
     setup = decode_save42_member0_setup (field value "setup");
   }
 
+and decode_literal_45 value : literal_45 = `V45
+
+and decode_save45_member0 value : save45_member0 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_json_boolean (field value "pendingEnemy");
+    undo = decode_save34_undo_member1 (field value "undo");
+    progress = decode_save39_member0_progress (field value "progress");
+    version = decode_literal_45 (field value "version");
+    checkpoint = decode_save44_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
+and decode_save45_member1 value : save45_member1 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_literal_false (field value "pendingEnemy");
+    undo =
+      (match get value "undo" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_undefined x));
+    progress = decode_save39_member1_progress (field value "progress");
+    version = decode_literal_45 (field value "version");
+    checkpoint = decode_save44_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
+and decode_save45 value : save45 =
+  if Migration_reader.matches value 2924 then `Current (decode_save45_member0 value)
+  else if Migration_reader.matches value 2926 then `Turn (decode_save45_member1 value)
+  else invalid "Invalid frozen union"
+
 let rec encode_save2 (value : save2) : Js.Json.t =
   wire_to_json
     ~known:[ "version"; "checkpoint"; "pendingEnemy"; "planner"; "setup"; "progress"; "undo" ]
@@ -19690,6 +19725,40 @@ and encode_save44_member1 (value : save44_member1) : Js.Json.t =
     | None -> if List.mem "undo" value.wire.undefined_fields then [ ("undo", undefined) ] else []
     | Some x -> [ ("undo", encode_json_undefined x) ])
 
+and encode_literal_45 (value : literal_45) : Js.Json.t = Js.Json.parseExn "45"
+
+and encode_save45_member0 (value : save45_member0) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    [
+      ("pendingEnemy", encode_json_boolean value.pending_enemy);
+      ("undo", encode_save34_undo_member1 value.undo);
+      ("progress", encode_save39_member0_progress value.progress);
+      ("version", encode_literal_45 value.version);
+      ("checkpoint", encode_save44_member0_checkpoint value.checkpoint);
+      ("setup", encode_save42_member0_setup value.setup);
+    ]
+
+and encode_save45_member1 (value : save45_member1) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    ([
+       ("pendingEnemy", encode_literal_false value.pending_enemy);
+       ("progress", encode_save39_member1_progress value.progress);
+       ("version", encode_literal_45 value.version);
+       ("checkpoint", encode_save44_member0_checkpoint value.checkpoint);
+       ("setup", encode_save42_member0_setup value.setup);
+     ]
+    @
+    match value.undo with
+    | None -> if List.mem "undo" value.wire.undefined_fields then [ ("undo", undefined) ] else []
+    | Some x -> [ ("undo", encode_json_undefined x) ])
+
+and encode_save45 (value : save45) : Js.Json.t =
+  match value with `Current x -> encode_save45_member0 x | `Turn x -> encode_save45_member1 x
+
 let read_save2 value : save2 =
   require (Migration_reader.matches value 0) "Invalid frozen save2";
   decode_save2 value
@@ -23941,6 +24010,22 @@ let read_save44_member1 value : save44_member1 =
   require (Migration_reader.matches value 2917) "Invalid frozen save44_member1";
   decode_save44_member1 value
 
+let read_literal_45 value : literal_45 =
+  require (Migration_reader.matches value 2923) "Invalid frozen literal_45";
+  decode_literal_45 value
+
+let read_save45_member0 value : save45_member0 =
+  require (Migration_reader.matches value 2924) "Invalid frozen save45_member0";
+  decode_save45_member0 value
+
+let read_save45_member1 value : save45_member1 =
+  require (Migration_reader.matches value 2926) "Invalid frozen save45_member1";
+  decode_save45_member1 value
+
+let read_save45 value : save45 =
+  require (Migration_reader.matches value 2927) "Invalid frozen save45";
+  decode_save45 value
+
 module V2 = struct
   let of_json value : Historical_types.V2.t =
     let _ = Migration_reader.read value "Save2" in
@@ -24339,6 +24424,14 @@ module V44 = struct
     decode_save44 value
 
   let to_json (value : Historical_types.V44.t) = encode_save44 value
+end
+
+module V45 = struct
+  let of_json value : Historical_types.V45.t =
+    let _ = Migration_reader.read value "Save45" in
+    decode_save45 value
+
+  let to_json (value : Historical_types.V45.t) = encode_save45 value
 end
 
 module Fragment = struct

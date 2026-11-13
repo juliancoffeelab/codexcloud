@@ -99,10 +99,8 @@ pub fn validate_economy(
     tiles: &[super::Tile],
     types: &std::collections::HashMap<String, usize>,
 ) -> Result<(), String> {
-    let known = |id: &str| matches!(id, "player" | "enemy") || factions.iter().any(|f| f.id == id);
+    let known = |id: &str| factions.iter().any(|f| f.id == id);
     if gold.iter().any(|(id, amount)| !known(id) || *amount < 0)
-        || !gold.contains_key("player")
-        || !gold.contains_key("enemy")
         || factions.iter().any(|f| !gold.contains_key(&f.id))
     {
         return Err("invalid or missing faction treasury".into());
@@ -126,7 +124,7 @@ pub fn validate_economy(
 }
 
 pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> Result<(), String> {
-    let known = |id: &str| matches!(id, "player" | "enemy") || factions.iter().any(|f| f.id == id);
+    let known = |id: &str| factions.iter().any(|f| f.id == id);
     let mut ids = std::collections::HashSet::new();
     for faction in factions {
         if let Some(pool) = &faction.recruits {

@@ -225,13 +225,13 @@
       "when": {
         "turn": {
           "number": 4,
-          "faction": "enemy"
+          "faction": "wreck-guards"
         }
       },
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "wreck-guards",
             "tile": {
               "hex": {
                 "col": 10,
@@ -248,7 +248,7 @@
         },
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "wreck-guards",
             "tile": {
               "hex": {
                 "col": 11,

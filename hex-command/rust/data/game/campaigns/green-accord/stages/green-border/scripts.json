@@ -9,7 +9,7 @@
               "tile": {
                 "location": "northern-fort"
               },
-              "faction": "enemy"
+              "faction": "charter-guards"
             }
           },
           {
@@ -17,13 +17,13 @@
               "tile": {
                 "location": "southern-fort"
               },
-              "faction": "enemy"
+              "faction": "charter-guards"
             }
           }
         ]
       },
       "objective": {
-        "faction": "enemy",
+        "faction": "charter-guards",
         "label": "Hold both logging camps",
         "visibleWhen": {
           "always": true
@@ -35,7 +35,7 @@
                 "tile": {
                   "location": "northern-fort"
                 },
-                "faction": "enemy"
+                "faction": "charter-guards"
               }
             },
             {
@@ -43,7 +43,7 @@
                 "tile": {
                   "location": "southern-fort"
                 },
-                "faction": "enemy"
+                "faction": "charter-guards"
               }
             }
           ]

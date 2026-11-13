@@ -2997,6 +2997,14 @@ val read_literal_44 : Js.Json.t -> literal_44
 val encode_literal_44 : literal_44 -> Js.Json.t
 val read_save44_member1 : Js.Json.t -> save44_member1
 val encode_save44_member1 : save44_member1 -> Js.Json.t
+val read_literal_45 : Js.Json.t -> literal_45
+val encode_literal_45 : literal_45 -> Js.Json.t
+val read_save45_member0 : Js.Json.t -> save45_member0
+val encode_save45_member0 : save45_member0 -> Js.Json.t
+val read_save45_member1 : Js.Json.t -> save45_member1
+val encode_save45_member1 : save45_member1 -> Js.Json.t
+val read_save45 : Js.Json.t -> save45
+val encode_save45 : save45 -> Js.Json.t
 
 module V2 : sig
   val of_json : Js.Json.t -> Historical_types.V2.t
@@ -3246,6 +3254,11 @@ end
 module V44 : sig
   val of_json : Js.Json.t -> Historical_types.V44.t
   val to_json : Historical_types.V44.t -> Js.Json.t
+end
+
+module V45 : sig
+  val of_json : Js.Json.t -> Historical_types.V45.t
+  val to_json : Historical_types.V45.t -> Js.Json.t
 end
 
 module Fragment : sig

@@ -77,12 +77,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "quarry-guards": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "quarry-guards",
       "phase": "ai",
       "controller": {
         "kind": "ai"

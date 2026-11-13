@@ -631,7 +631,7 @@
       "col": 13,
       "row": 5,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "rootbinders-host",
       "floor": "green-plain"
     },
     {
@@ -836,7 +836,7 @@
       "col": 12,
       "row": 7,
       "terrain": "village",
-      "owner": "enemy",
+      "owner": "rootbinders-host",
       "floor": "green-plain",
       "connections": []
     },

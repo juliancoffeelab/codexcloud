@@ -184,13 +184,13 @@
       "when": {
         "turn": {
           "number": 3,
-          "faction": "enemy"
+          "faction": "charter-guards"
         }
       },
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "charter-guards",
             "tile": {
               "hex": {
                 "col": 11,
@@ -207,7 +207,7 @@
         },
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "charter-guards",
             "tile": {
               "hex": {
                 "col": 11,
@@ -232,13 +232,13 @@
       "when": {
         "turn": {
           "number": 5,
-          "faction": "enemy"
+          "faction": "charter-guards"
         }
       },
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "charter-guards",
             "tile": {
               "hex": {
                 "col": 10,
@@ -255,7 +255,7 @@
         },
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "charter-guards",
             "tile": {
               "hex": {
                 "col": 10,

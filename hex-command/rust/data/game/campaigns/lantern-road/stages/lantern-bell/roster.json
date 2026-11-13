@@ -71,12 +71,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "bell-host": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "bell-host",
       "phase": "ai",
       "controller": {
         "kind": "ai"
@@ -163,7 +163,7 @@
       "palette": "passive",
       "relations": {
         "player": "neutral",
-        "enemy": "allied"
+        "bell-host": "allied"
       },
       "gold": 0,
       "recruits": [],

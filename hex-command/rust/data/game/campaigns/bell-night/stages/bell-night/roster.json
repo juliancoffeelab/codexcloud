@@ -70,12 +70,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "bell-host": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "bell-host",
       "phase": "ai",
       "controller": {
         "kind": "ai"

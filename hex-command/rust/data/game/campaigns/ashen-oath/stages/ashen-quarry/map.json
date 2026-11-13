@@ -540,7 +540,7 @@
       "col": 10,
       "row": 5,
       "terrain": "village",
-      "owner": "enemy",
+      "owner": "quarry-guards",
       "floor": "green-plain",
       "connections": []
     },
@@ -548,7 +548,7 @@
       "col": 11,
       "row": 5,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "quarry-guards",
       "floor": "green-plain",
       "id": "enemy-keep"
     },

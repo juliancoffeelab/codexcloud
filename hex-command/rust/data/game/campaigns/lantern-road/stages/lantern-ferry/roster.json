@@ -70,12 +70,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "road-skeletons": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "road-skeletons",
       "phase": "ai",
       "controller": {
         "kind": "ai"

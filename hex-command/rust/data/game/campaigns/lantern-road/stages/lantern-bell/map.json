@@ -4491,7 +4491,7 @@
       "row": 11,
       "terrain": "village",
       "floor": "mountain-rock",
-      "owner": "enemy",
+      "owner": "bell-host",
       "connections": [],
       "light": {
         "dy": 6,
@@ -4521,7 +4521,7 @@
       "row": 11,
       "terrain": "castle-wall",
       "floor": "castle-paving",
-      "owner": "enemy",
+      "owner": "bell-host",
       "walls": ["w", "nw", "ne"],
       "perception": {
         "remember": true,
@@ -4539,7 +4539,7 @@
       "row": 11,
       "terrain": "castle-wall",
       "floor": "castle-paving",
-      "owner": "enemy",
+      "owner": "bell-host",
       "walls": ["e", "nw", "ne"],
       "perception": {
         "remember": true,
@@ -4926,7 +4926,7 @@
       "row": 12,
       "terrain": "castle-wall",
       "floor": "castle-paving",
-      "owner": "enemy",
+      "owner": "bell-host",
       "walls": ["sw", "nw"],
       "perception": {
         "remember": true,
@@ -4944,7 +4944,7 @@
       "row": 12,
       "terrain": "castle-bell",
       "floor": "castle-paving",
-      "owner": "enemy",
+      "owner": "bell-host",
       "walls": ["e", "se", "sw", "w", "nw", "ne"],
       "id": "bell-keep",
       "perception": {
@@ -4963,7 +4963,7 @@
       "row": 12,
       "terrain": "castle-wall",
       "floor": "castle-paving",
-      "owner": "enemy",
+      "owner": "bell-host",
       "walls": ["se", "ne"],
       "perception": {
         "remember": true,
@@ -5333,7 +5333,7 @@
       "row": 13,
       "terrain": "castle-wall",
       "floor": "castle-paving",
-      "owner": "enemy",
+      "owner": "bell-host",
       "walls": ["se", "sw", "w"],
       "perception": {
         "remember": true,
@@ -5351,7 +5351,7 @@
       "row": 13,
       "terrain": "castle-wall",
       "floor": "castle-paving",
-      "owner": "enemy",
+      "owner": "bell-host",
       "walls": ["e", "sw"],
       "perception": {
         "remember": true,
@@ -6135,7 +6135,7 @@
       "row": 15,
       "terrain": "village",
       "floor": "mountain-rock",
-      "owner": "enemy",
+      "owner": "bell-host",
       "connections": [],
       "light": {
         "dy": 6,

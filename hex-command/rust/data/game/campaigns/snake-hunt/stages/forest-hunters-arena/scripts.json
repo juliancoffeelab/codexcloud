@@ -182,7 +182,7 @@
               "tile": {
                 "location": "pine-hamlet"
               },
-              "faction": "enemy"
+              "faction": "forest-hunters"
             }
           },
           {
@@ -190,7 +190,7 @@
               "tile": {
                 "location": "moss-hamlet"
               },
-              "faction": "enemy"
+              "faction": "forest-hunters"
             }
           },
           {
@@ -198,7 +198,7 @@
               "tile": {
                 "location": "fern-hamlet"
               },
-              "faction": "enemy"
+              "faction": "forest-hunters"
             }
           }
         ]

@@ -57,6 +57,7 @@ test("Legacy refuge retains company and ownership", async () => {
         unit.type,
         unit.side === "enemy" ? "ai" : unit.side,
         `${unit.col},${unit.row}`,
+        unit.side === "enemy" ? "charter-patrol" : "player",
       ),
       {
         ...(unit.name

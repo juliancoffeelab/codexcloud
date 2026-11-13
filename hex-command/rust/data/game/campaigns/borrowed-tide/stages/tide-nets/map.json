@@ -525,7 +525,7 @@
       "col": 10,
       "row": 5,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "factors-guards",
       "floor": "green-plain"
     },
     {

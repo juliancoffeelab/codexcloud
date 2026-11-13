@@ -287,7 +287,7 @@
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "bell-host",
             "area": [
               {
                 "hex": {
@@ -954,7 +954,7 @@
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "bell-host",
             "area": [
               {
                 "hex": {
@@ -1105,7 +1105,7 @@
               },
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "location": "northern-ritual-mark"
@@ -1125,7 +1125,7 @@
             "actions": [
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "binding": "mark"
@@ -1196,7 +1196,7 @@
               },
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "location": "eastern-ritual-mark"
@@ -1216,7 +1216,7 @@
             "actions": [
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "binding": "mark"
@@ -1282,7 +1282,7 @@
               },
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "location": "southern-ritual-mark"
@@ -1302,7 +1302,7 @@
             "actions": [
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "binding": "mark"

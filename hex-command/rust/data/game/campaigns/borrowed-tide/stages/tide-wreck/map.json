@@ -256,7 +256,7 @@
       "col": 10,
       "row": 2,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "wreck-guards",
       "floor": "green-plain"
     },
     {

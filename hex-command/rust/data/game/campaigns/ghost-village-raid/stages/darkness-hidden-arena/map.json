@@ -1152,7 +1152,7 @@
       "col": 11,
       "row": 4,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "crypt-defenders",
       "perception": {
         "remember": false,
         "concealment": [

@@ -70,12 +70,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "masters-host": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "masters-host",
       "phase": "ai",
       "controller": {
         "kind": "ai"

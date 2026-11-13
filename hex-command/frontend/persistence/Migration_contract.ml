@@ -11,11 +11,11 @@ module H = Historical_types
 module V = Current_save
 module A = Save_format
 
-let side_from : H.V44.current_first -> Domain.Turn_phase.t = function
+let side_from : H.V45.current_first -> Domain.Turn_phase.t = function
   | `Player -> Player
   | `Ai -> Ai
 
-let side_to : Domain.Turn_phase.t -> H.V44.current_first = function Player -> `Player | Ai -> `Ai
+let side_to : Domain.Turn_phase.t -> H.V45.current_first = function Player -> `Player | Ai -> `Ai
 
 let policy_from : V.policy -> A.policy = function
   | `Classic -> `Classic

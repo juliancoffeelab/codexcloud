@@ -75,12 +75,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "night-host": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "night-host",
       "phase": "ai",
       "controller": {
         "kind": "ai"

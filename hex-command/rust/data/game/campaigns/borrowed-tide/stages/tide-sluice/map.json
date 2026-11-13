@@ -175,7 +175,7 @@
       "col": 11,
       "row": 1,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "sluice-guards",
       "floor": "green-plain"
     },
     {

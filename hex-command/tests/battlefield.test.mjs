@@ -90,7 +90,9 @@ test("Objective markers distinguish achievements from current ownership", () => 
       "objective",
     ),
   );
-  escort.edit((state) => (required(state.tiles.find((tile) => tile.id === "7,4")).owner = "enemy"));
+  escort.edit(
+    (state) => (required(state.tiles.find((tile) => tile.id === "7,4")).owner = "rootbinders-host"),
+  );
   assert(
     required(tiles(escort.view).find((entry) => entry.tile.id === "7,4")).classes.includes(
       "objective",

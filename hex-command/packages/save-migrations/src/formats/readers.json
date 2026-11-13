@@ -49,7 +49,8 @@
     "Save41": 2347,
     "Save42": 2406,
     "Save43": 2407,
-    "Save44": 2864
+    "Save44": 2864,
+    "Save45": 2927
   },
   "shapes": [
     {
@@ -35728,6 +35729,76 @@
     {
       "kind": "union",
       "members": [2889, 2870]
+    },
+    {
+      "kind": "literal",
+      "value": 45
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 2866,
+          "optional": false
+        },
+        "undo": {
+          "type": 2867,
+          "optional": false
+        },
+        "progress": {
+          "type": 2879,
+          "optional": false
+        },
+        "version": {
+          "type": 2923,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 2445,
+          "optional": false
+        },
+        "setup": {
+          "type": 2883,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": 45
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 2918,
+          "optional": false
+        },
+        "undo": {
+          "type": 2889,
+          "optional": true
+        },
+        "progress": {
+          "type": 2919,
+          "optional": false
+        },
+        "version": {
+          "type": 2925,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 2445,
+          "optional": false
+        },
+        "setup": {
+          "type": 2883,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [2924, 2926]
     }
   ],
   "typeNames": {

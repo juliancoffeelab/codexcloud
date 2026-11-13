@@ -70,12 +70,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "charter-patrol": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "charter-patrol",
       "phase": "ai",
       "controller": {
         "kind": "ai"

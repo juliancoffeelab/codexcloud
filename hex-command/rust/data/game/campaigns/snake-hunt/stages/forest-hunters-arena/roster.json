@@ -19,7 +19,7 @@
   ],
   "factions": [
     {
-      "id": "enemy",
+      "id": "forest-hunters",
       "phase": "ai",
       "visionGroup": "hidden",
       "controller": {
@@ -70,7 +70,7 @@
       },
       "palette": "player",
       "relations": {
-        "enemy": "hostile"
+        "forest-hunters": "hostile"
       },
       "gold": 18,
       "recruits": [

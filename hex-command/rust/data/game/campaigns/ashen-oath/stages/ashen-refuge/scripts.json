@@ -105,13 +105,13 @@
       "when": {
         "turn": {
           "number": 3,
-          "faction": "enemy"
+          "faction": "charter-patrol"
         }
       },
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "charter-patrol",
             "tile": {
               "hex": {
                 "col": 9,
@@ -128,7 +128,7 @@
         },
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "charter-patrol",
             "tile": {
               "hex": {
                 "col": 9,
@@ -153,13 +153,13 @@
       "when": {
         "turn": {
           "number": 5,
-          "faction": "enemy"
+          "faction": "charter-patrol"
         }
       },
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "charter-patrol",
             "tile": {
               "hex": {
                 "col": 9,

@@ -251,7 +251,7 @@ def body(n,i,d):
  assert len(cases)==len(hi)-(0 if d else len(absent)),('unmatched historical variant',n,i,len(cases),len(hi))
  return 'match value with\n'+'\n'.join(cases)
 
-checkpoint=shapes[entries['Save44']]['members'][0]
+checkpoint=shapes[entries['Save45']]['members'][0]
 checkpoint=shapes[checkpoint]['properties']['checkpoint']['type']
 for d in [True,False]:named('SavedGame',checkpoint,d)
 functions=[];cursor=0

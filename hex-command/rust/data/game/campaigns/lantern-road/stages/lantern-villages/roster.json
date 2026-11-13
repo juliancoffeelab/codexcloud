@@ -71,12 +71,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "toll-skeletons": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "toll-skeletons",
       "phase": "ai",
       "controller": {
         "kind": "ai"
@@ -128,7 +128,7 @@
       "palette": "passive",
       "relations": {
         "player": "neutral",
-        "enemy": "allied",
+        "toll-skeletons": "allied",
         "swamp-dead": "neutral"
       },
       "gold": 0,
@@ -155,7 +155,7 @@
       "palette": "green",
       "relations": {
         "player": "hostile",
-        "enemy": "neutral"
+        "toll-skeletons": "neutral"
       },
       "name": "Marsh dead",
       "recruits": [

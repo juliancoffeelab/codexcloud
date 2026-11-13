@@ -106,7 +106,7 @@
       "col": 3,
       "row": 1,
       "terrain": "grove",
-      "owner": "enemy",
+      "owner": "charter-guards",
       "floor": "green-plain"
     },
     {
@@ -354,7 +354,7 @@
       "col": 5,
       "row": 4,
       "terrain": "grove",
-      "owner": "enemy",
+      "owner": "charter-guards",
       "floor": "green-plain"
     },
     {
@@ -383,7 +383,7 @@
       "col": 9,
       "row": 4,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "charter-guards",
       "floor": "green-plain"
     },
     {
@@ -574,7 +574,7 @@
       "col": 3,
       "row": 7,
       "terrain": "grove",
-      "owner": "enemy",
+      "owner": "charter-guards",
       "floor": "green-plain"
     },
     {

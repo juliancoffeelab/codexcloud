@@ -96,12 +96,12 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "wreck-guards": "hostile"
       },
       "visionGroup": "player"
     },
     {
-      "id": "enemy",
+      "id": "wreck-guards",
       "phase": "ai",
       "controller": {
         "kind": "ai"

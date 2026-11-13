@@ -1937,7 +1937,7 @@
       "col": 17,
       "row": 5,
       "terrain": "village",
-      "owner": "enemy",
+      "owner": "toll-skeletons",
       "floor": "green-plain",
       "connections": [],
       "perception": {
@@ -2561,7 +2561,7 @@
       "col": 15,
       "row": 7,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "toll-skeletons",
       "floor": "green-plain",
       "id": "tollkeeper-keep",
       "perception": {

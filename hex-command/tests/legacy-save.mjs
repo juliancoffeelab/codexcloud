@@ -47,6 +47,49 @@ import { campaigns as CAMPAIGNS } from "@migrations/Migration_api.js";
 import tileHistory from "../packages/save-migrations/src/legacy/data/tiles-v26.json";
 import historical from "../packages/save-migrations/src/legacy/data/characters-v25.json";
 import locationHistory from "../packages/save-migrations/src/legacy/data/locations-v37.json";
+// Test-only down-conversion: old fixture formats predate named campaign opponents.
+const namedOpponents = new Set([
+  "masters-host",
+  "quarry-guards",
+  "charter-patrol",
+  "bell-host",
+  "factors-guards",
+  "sluice-guards",
+  "wreck-guards",
+  "crypt-hunters",
+  "crypt-defenders",
+  "charter-guards",
+  "rootbinders-host",
+  "road-skeletons",
+  "toll-skeletons",
+  "night-host",
+  "forest-hunters",
+  "forest-defenders",
+]);
+function historicalFactions(value, parent) {
+  if (Array.isArray(value)) {
+    for (const entry of value) historicalFactions(entry, parent);
+  } else if (value && typeof value === "object") {
+    for (const key of Object.keys(value)) {
+      if (
+        (key === "id" && parent === "factions") ||
+        ["faction", "owner", "to"].includes(key) ||
+        (key === "side" && value.kind === "owner")
+      ) {
+        if (namedOpponents.has(value[key])) value[key] = "enemy";
+      }
+      if (["gold", "relations", "recruitment"].includes(key)) {
+        for (const id of Object.keys(value[key] ?? {})) {
+          if (namedOpponents.has(id)) {
+            value[key].enemy = value[key][id];
+            delete value[key][id];
+          }
+        }
+      }
+      historicalFactions(value[key], key);
+    }
+  }
+}
 function historicalTiles(input) {
   const reverse = new Map(
     Object.values(tileHistory).flatMap((board) =>
@@ -95,6 +138,7 @@ function historicalTiles(input) {
   // old version onto the current phase, outcome or action representation.
   const historicalInput = structuredClone(input);
   const current = historicalInput.state ?? historicalInput;
+  historicalFactions(current);
   if (current.visionGroups || current.units?.some((unit) => Object.hasOwn(unit, "attackSpent"))) {
     const phase = (value) => (value === "ai" ? "enemy" : value);
     current.turn = phase(current.turn);
