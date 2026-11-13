@@ -5,6 +5,8 @@ use super::{
 };
 use crate::data::*;
 pub(super) struct EventFacts<'a, 'catalog> {
+    game: &'a Game<'catalog>,
+    observer: &'a str,
     rules: &'catalog Rules,
     board: &'a Board,
     units: &'a [Unit],
@@ -22,7 +24,12 @@ pub(super) struct EventFacts<'a, 'catalog> {
 impl<'a, 'catalog> EventFacts<'a, 'catalog> {
     #[inline]
     pub(super) fn new(game: &'a Game<'catalog>) -> Self {
+        Self::for_faction(game, "player")
+    }
+    pub(super) fn for_faction(game: &'a Game<'catalog>, observer: &'a str) -> Self {
         Self {
+            game,
+            observer,
             rules: game.rules,
             board: &game.board,
             units: &game.units,
@@ -35,8 +42,14 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
             traversal: game.traversal.as_ref(),
             event_departure: game.story.event_departure.as_ref(),
             event_opening: game.story.event_opening,
-            visibility: game.condition_context(),
+            visibility: LiveContext::for_faction(game, observer, None),
         }
+    }
+    pub(super) fn for_event(game: &'a Game<'catalog>, event: &'a ScriptEvent) -> Self {
+        Self::for_faction(
+            game,
+            event.objective.as_ref().map_or("player", |o| &o.faction),
+        )
     }
     pub(super) fn round(&self) -> u32 {
         self.round
@@ -55,7 +68,14 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
     }
     #[inline]
     fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
-        unit_matches(self.rules, self.factions, self.names, select, unit)
+        unit_matches_for_faction(
+            self.rules,
+            self.factions,
+            self.names,
+            select,
+            unit,
+            self.observer,
+        )
     }
     fn pending_unit_matches(
         &self,
@@ -78,7 +98,11 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
                 .as_ref()
                 .is_none_or(|id| group.ai_group.as_ref() == Some(id))
             && s.side.is_none_or(|side| {
-                faction_matches_side(self.factions, Some(&group.faction), faction.phase, side)
+                if side == ConditionSide::Observer {
+                    group.faction == self.observer
+                } else {
+                    faction_matches_side(self.factions, Some(&group.faction), faction.phase, side)
+                }
             })
     }
     fn script_positions<'u>(&'u self, unit: &'u Unit, through: bool) -> &'u [usize] {
@@ -111,7 +135,15 @@ impl<'a, 'catalog> EventFacts<'a, 'catalog> {
             .unwrap();
         objective.satisfied_when.as_ref().map_or_else(
             || state.completed.iter().any(|value| value == id),
-            |when| self.when_matches(when, Some(state), None, false, None),
+            |when| {
+                EventFacts::for_faction(self.game, &objective.faction).when_matches(
+                    when,
+                    Some(state),
+                    None,
+                    false,
+                    None,
+                )
+            },
         )
     }
     pub(super) fn when_matches(
@@ -227,6 +259,16 @@ pub(super) fn unit_matches(
     select: &UnitMatch,
     unit: &Unit,
 ) -> bool {
+    unit_matches_for_faction(rules, factions, names, select, unit, "player")
+}
+pub(super) fn unit_matches_for_faction(
+    rules: &Rules,
+    factions: &[Faction],
+    names: &Names,
+    select: &UnitMatch,
+    unit: &Unit,
+    observer: &str,
+) -> bool {
     select
         .character
         .as_ref()
@@ -240,7 +282,11 @@ pub(super) fn unit_matches(
             .as_ref()
             .is_none_or(|id| names.get(unit.faction) == id)
         && select.side.is_none_or(|side| {
-            faction_matches_side(factions, Some(names.get(unit.faction)), unit.side, side)
+            if side == ConditionSide::Observer {
+                names.get(unit.faction) == observer
+            } else {
+                faction_matches_side(factions, Some(names.get(unit.faction)), unit.side, side)
+            }
         })
         && select
             .unit_type

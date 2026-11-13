@@ -5,7 +5,7 @@ use super::*;
 fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let mut rules = Rules::load().unwrap();
     let tile = Hex::new(5, 4);
-    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":{"hex":tile},"character":"edda","turns":3,"when":{"own":{"tile":{"hex":tile},"faction":"player"}}}},"objective":{"label":"Defend","visibleWhen":{"always":true},"intent":{"hold":{"tile":{"hex":tile},"character":"edda","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
+    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":{"hex":tile},"character":"edda","turns":3,"when":{"own":{"tile":{"hex":tile},"faction":"player"}}}},"objective":{"faction":"player","label":"Defend","visibleWhen":{"always":true},"intent":{"hold":{"tile":{"hex":tile},"character":"edda","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
     rules.campaigns.get_mut("borrowed-tide").unwrap().missions[1].scripted_events =
         vec![event.clone()];
     let mut game = Game::start_campaign(
@@ -33,7 +33,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
         g.evaluate_campaign(true, None);
         let current = g.scripted_objective_status(&event).progress.current;
         if current < 3 {
-            let objectives = g.planning_objectives();
+            let objectives = g.planning_objectives("player");
             let objective = objectives.iter().find(|o| o.id == "hold").unwrap();
             assert_eq!(objective.progress_current, current);
             assert_eq!(objective.progress_total, 3);
@@ -239,4 +239,45 @@ fn planning_deadline_reports_only_unconditional_defeat_clocks() {
         vec![],
     );
     assert_eq!(game.planning_deadline_round(), Some(20));
+}
+
+#[test]
+fn objective_progress_and_disclosure_use_the_assigned_faction() {
+    let mut rules = Rules::load().unwrap();
+    let tile = Hex::new(2, 1);
+    let events: Vec<ScriptEvent> = serde_json::from_value(serde_json::json!([
+        {"id":"enemy-control", "when":{"always":false}, "objective":{
+            "faction":"enemy", "label":"Control", "visibleWhen":{"always":true},
+            "intent":{"capture":[{"hex":tile}]}}, "actions":[]},
+        {"id":"hidden-enemy-duty", "when":{"always":false}, "objective":{
+            "faction":"enemy", "label":"Secret", "visibleWhen":{"stand":{"tile":{"hex":tile},"side":"observer","role":"leader"}},
+            "intent":{"goTo":{"tile":{"hex":tile},"side":"observer","role":"leader"}}}, "actions":[]}
+    ])).unwrap();
+    rules.campaigns.get_mut("lantern-road").unwrap().missions[1].scripted_events = events.clone();
+    let mut game =
+        Game::start_campaign(&rules, "lantern-road", 1, vec![], 0, vec![], vec![], vec![]);
+    let site = game.site(&tile);
+    game.owners[site] = Some("enemy".into());
+    assert_eq!(
+        game.scripted_objective_status(&events[0]).progress.current,
+        1
+    );
+    assert!(game.planning_objectives("player").is_empty());
+    assert_eq!(game.planning_objectives("enemy").len(), 1);
+    assert!(game.requirements_disclosed("player"));
+    assert!(!game.requirements_disclosed("enemy"));
+    let revision = game.story.planning_revision;
+    let leader = game
+        .units
+        .iter()
+        .position(|u| game.unit_faction(u) == "enemy" && u.is_leader())
+        .unwrap();
+    game.units[leader].tile = site;
+    game.roster_changed();
+    game.evaluate_campaign(false, None);
+    assert!(game.story.planning_revision > revision);
+    assert_eq!(game.planning_objectives("enemy").len(), 2);
+    let restored = Game::try_from_state(&rules, game.state()).unwrap();
+    assert_eq!(restored.planning_objectives("enemy")[0].progress_current, 1);
+    assert!(restored.planning_objectives("player").is_empty());
 }

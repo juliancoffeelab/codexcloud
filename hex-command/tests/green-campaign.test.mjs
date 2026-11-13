@@ -3,6 +3,7 @@ import { test, beforeEach, afterEach, vi } from "vitest";
 import assert from "node:assert/strict";
 import { Game } from "./game-fixture.mjs";
 import { loadBattle, saveBattle } from "./legacy-save.mjs";
+import { saveBattle as saveCurrentBattle } from "./persistence-adapter.mjs";
 import { required, TestStorage } from "./helpers.mjs";
 const storage = new TestStorage();
 const companion = (game) =>
@@ -20,7 +21,7 @@ test("Companion deaths persist but retry restores incoming companions", async ()
   assert.deepEqual(restored.units, game.units);
   assert(restored.campaign?.flags["dain-dead"]?.at(-1)?.state);
   assert(restored.retryCampaignMission().units.some((unit) => unit.character === "dain"));
-  await saveBattle(restored);
+  await saveCurrentBattle(restored);
   assert.deepEqual((await loadBattle()).game.snapshot(), restored.snapshot());
 });
 for (const mission of [0, 2]) {
@@ -52,7 +53,8 @@ for (const mission of [0, 2]) {
     );
     assert.throws(() => restored.nextCampaignMission([]), /NoNextMission/);
     assert.equal(companion(restored.retryCampaignMission()).character, "lark");
-    await saveBattle(restored);
+    // Restored state may contain current objectives absent from the frozen v1 catalog.
+    await saveCurrentBattle(restored);
     assert.deepEqual((await loadBattle()).game.snapshot(), restored.snapshot());
   });
 }

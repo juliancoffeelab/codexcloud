@@ -551,6 +551,8 @@ pub struct PlayerMarker {
 )]
 #[serde(deny_unknown_fields)]
 pub struct EventObjective {
+    /// Exact faction assigned this objective, independent of controller or diplomacy.
+    pub faction: String,
     #[serde(default)]
     pub id: Option<String>,
     #[serde(default, rename = "preserveLives")]
@@ -1148,6 +1150,7 @@ impl ScriptEvent {
             self.when.requires_death(),
         )?;
         if let Some(o) = &self.objective {
+            faction(&o.faction)?;
             if let Some(id) = &o.id {
                 identifier(id, path)?;
             }

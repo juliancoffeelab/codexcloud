@@ -47,11 +47,6 @@ impl<'a, 'catalog> MissionPolicy<'a, 'catalog> {
             requirements_disclosed,
         }
     }
-    /// Scheduling phase is not allegiance: an autonomous ally shares the
-    /// player's campaign duties even when it acts during the AI phase.
-    fn player_team(&self, phase: TurnPhase) -> bool {
-        self.faction_relation("player", self.faction_for_phase(phase)) == Relation::Allied
-    }
     fn player_unit(&self, unit: &Unit) -> bool {
         self.faction_relation("player", self.unit_faction(unit)) == Relation::Allied
     }
@@ -130,12 +125,27 @@ impl CampaignBlock {
                         inactive.push(UnitId(unit.id));
                         continue;
                     }
+                    // Explicit faction assignments survive group combat defaults.
+                    // A hold remains a movement/attack constraint while it applies.
+                    let assigned: Vec<_> = ordinary
+                        .iter()
+                        .filter(|target| {
+                            (target.id.starts_with("required:")
+                                || target.id.starts_with("optional:"))
+                                && (target.actor.is_none() || actor_matches(&target.actor, unit.id))
+                        })
+                        .cloned()
+                        .collect();
                     if let Some((area, attack_radius)) = &group.hold {
                         scoped.push(ScopedOrder {
                             actor: UnitId(unit.id),
                             area: area.iter().cloned().map(TileId).collect(),
                             attack_radius: *attack_radius,
                         });
+                        if !assigned.is_empty() {
+                            authored_targets.extend(assigned);
+                            continue;
+                        }
                         let mut target = objective(
                             &format!("group:{}:{}", group.id, unit.id),
                             ObjectiveKind::Visit,
@@ -144,6 +154,10 @@ impl CampaignBlock {
                         );
                         target.actor = Some(format!("u{}", unit.id));
                         authored_targets.push(target);
+                        continue;
+                    }
+                    if !assigned.is_empty() {
+                        authored_targets.extend(assigned);
                         continue;
                     }
                     let tiles = game
@@ -257,29 +271,28 @@ impl CampaignBlock {
         }
         let mut recruitment = RecruitmentOrders::default();
         recruitment.rotate_pool = campaign || game.has_pools();
-        if game.player_team(game.turn()) {
-            for objective in &game.objectives {
-                if objective.intent != CampaignIntent::Hold || objective.satisfied {
-                    continue;
-                }
-                let selector = objective.selector.expect("hold selector");
-                let kinds: Vec<_> = selector
-                    .unit_type
-                    .iter()
-                    .chain(selector.unit_types.iter())
-                    .cloned()
-                    .map(UnitTypeId)
-                    .collect();
-                if !kinds.is_empty() {
-                    recruitment
-                        .requirements
-                        .push(RecruitRequirement::EnsureUnits {
-                            selector: UnitSelector::AnyOf(kinds),
-                            count: 1,
-                        });
-                }
+        for objective in &game.objectives {
+            if objective.intent != CampaignIntent::Hold || objective.satisfied {
+                continue;
             }
-        } else if game.authored.in_campaign() {
+            let selector = objective.selector.expect("hold selector");
+            let kinds: Vec<_> = selector
+                .unit_type
+                .iter()
+                .chain(selector.unit_types.iter())
+                .cloned()
+                .map(UnitTypeId)
+                .collect();
+            if !kinds.is_empty() {
+                recruitment
+                    .requirements
+                    .push(RecruitRequirement::EnsureUnits {
+                        selector: UnitSelector::AnyOf(kinds),
+                        count: 1,
+                    });
+            }
+        }
+        if game.authored.in_campaign() && game.observer_faction() != "player" {
             tactics.leader_post = game
                 .authored
                 .enemy_leader_post()
@@ -304,7 +317,7 @@ impl CampaignBlock {
         {
             let leader = unit.is_leader();
             let needs_protection = campaign
-                && game.player_team(game.turn())
+                && game.observer_faction() == "player"
                 && unit.character.is_some()
                 && game.essential(unit)
                 && (!leader
@@ -378,16 +391,13 @@ impl CampaignBlock {
                 continue;
             };
             let actor_id = UnitId(actor.id);
-            if campaign
-                && game.player_team(game.turn())
-                && actor.character.is_some()
-                && !tactics.protects(actor.id)
-            {
+            let assigned = target.id.starts_with("required:") || target.id.starts_with("optional:");
+            if campaign && assigned && actor.character.is_some() && !tactics.protects(actor.id) {
                 tactics
                     .constraints
                     .push(TacticalConstraint::Survive { actor: actor_id });
             }
-            let priority = if game.player_team(game.turn()) {
+            let priority = if target.id.starts_with("required:") {
                 ObjectivePriority::Critical
             } else {
                 ObjectivePriority::Normal
@@ -417,7 +427,7 @@ impl CampaignBlock {
                 },
             });
             recruitment.reserved.push(TileId(destination.clone()));
-            let travelling = game.player_team(game.turn())
+            let travelling = assigned
                 && actor.is_leader()
                 && !occupy
                 && !authored_targets.iter().any(|goal| {
@@ -448,7 +458,7 @@ impl CampaignBlock {
                         });
                     }
                 }
-            } else if game.player_team(game.turn())
+            } else if assigned
                 && crate::ai::policies::threat::Threats::unshielded(game.phases, actor) > 0
             {
                 tactics.objectives.push(ObjectiveOrder {
@@ -527,7 +537,7 @@ impl MissionPolicy<'_, '_> {
                 .iter()
                 .filter(|t| {
                     objective.intent != CampaignIntent::Capture
-                        || self.owners()[self.site(t)].as_deref() != Some("player")
+                        || self.owners()[self.site(t)].as_deref() != Some(self.observer_faction())
                 })
                 .cloned()
                 .collect::<Vec<_>>();
@@ -537,6 +547,8 @@ impl MissionPolicy<'_, '_> {
             let actor = selector
                 .filter(|s| {
                     s.character.is_some()
+                        || s.ai_group.is_some()
+                        || s.faction.is_some()
                         || s.role.is_some()
                         || s.unit_type.is_some()
                         || !s.unit_types.is_empty()
@@ -557,6 +569,8 @@ impl MissionPolicy<'_, '_> {
                 });
             if selector.is_some_and(|s| {
                 s.character.is_some()
+                    || s.ai_group.is_some()
+                    || s.faction.is_some()
                     || s.role.is_some()
                     || s.unit_type.is_some()
                     || !s.unit_types.is_empty()
@@ -620,19 +634,14 @@ impl MissionPolicy<'_, '_> {
         rebuilding
     }
     pub(in crate::ai) fn required_recruit(&self, side: TurnPhase) -> Option<Family> {
-        if !self.player_team(side) {
-            return None;
-        }
         self.objectives
             .iter()
             .filter(|objective| !objective.satisfied && objective.intent == CampaignIntent::Hold)
             .find_map(|objective| {
                 let selector = objective.selector.expect("hold selector");
-                if self
-                    .units()
-                    .iter()
-                    .any(|unit| unit.side == side && self.script_unit_matches(selector, unit))
-                {
+                if self.units().iter().any(|unit| {
+                    self.belongs_to_phase(unit, side) && self.script_unit_matches(selector, unit)
+                }) {
                     return None;
                 }
                 selector
@@ -656,11 +665,7 @@ impl MissionPolicy<'_, '_> {
     }
 
     pub fn objectives(&self, side: TurnPhase) -> Vec<Objective> {
-        let mut goals = if self.player_team(side) {
-            self.scripted_policy_objectives(side)
-        } else {
-            vec![]
-        };
+        let mut goals = self.scripted_policy_objectives(side);
         for tile in 0..self.terrain().len() {
             if self.role_is(tile, TerrainRole::Village) && self.captures(tile, side) {
                 goals.push(objective(
@@ -687,7 +692,10 @@ impl MissionPolicy<'_, '_> {
         goals
     }
     pub fn finishes_objective(&self, unit: &Unit, tile: usize, goals: &[Objective]) -> bool {
-        if !self.authored.in_campaign() || !self.player_unit(unit) {
+        if !self.authored.in_campaign()
+            || self.observer_faction() != "player"
+            || !self.player_unit(unit)
+        {
             return false;
         }
         let arrival = goals.iter().any(|goal| {
@@ -740,7 +748,7 @@ impl MissionPolicy<'_, '_> {
     }
 
     pub fn protects_withdrawal(&self, side: TurnPhase, diplomatic: bool) -> bool {
-        diplomatic && self.player_team(side) && self.authored.in_campaign()
+        diplomatic && self.faction_for_phase(side) == "player" && self.authored.in_campaign()
     }
     pub fn withdrawal_lanes(&self, side: TurnPhase, restrained: bool) -> HashSet<usize> {
         let mut lanes = HashSet::default();
@@ -843,7 +851,7 @@ pub(in crate::ai) fn policy_goals(
     };
     let escort_finish =
         provided.is_none()
-            && game.player_team(game.turn())
+            && game.observer_faction() == "player"
             && game.requirements_disclosed
             && game.objectives.iter().any(|objective| {
                 !objective.optional && !objective.satisfied && is_arrival(objective)
@@ -872,7 +880,7 @@ pub(in crate::ai) fn terminal_attack(
     if !game.authored.in_campaign() {
         return true;
     }
-    if !game.player_unit(unit) {
+    if game.observer_faction() != "player" || !game.player_unit(unit) {
         return false;
     }
     game.requirements_disclosed
@@ -937,4 +945,114 @@ fn actor_route(goal: &Objective) -> bool {
         }
     }
     required_arrival(goal)
+}
+
+#[cfg(test)]
+mod assignment_tests {
+    use super::*;
+    use crate::logic::Game;
+
+    #[test]
+    fn assignments_follow_exact_factions_and_survive_group_defaults() {
+        let mut rules = Rules::load().unwrap();
+        let mut events: Vec<ScriptEvent> = ["player", "enemy", "swamp-dead"]
+            .into_iter()
+            .map(|faction| {
+                serde_json::from_value(serde_json::json!({
+                    "id": format!("assigned-{faction}"), "when": {"always": false},
+                    "objective": {"faction": faction, "label": faction,
+                        "visibleWhen": {"visibleUnits": {"side": "observer", "role": "leader"}},
+                        "intent": {"goTo": {"tile": {"hex": {"col": 18, "row": 0}},
+                            "side": "observer", "role": "leader"}}}, "actions": []
+                }))
+                .unwrap()
+            })
+            .collect();
+        events.extend(serde_json::from_value::<Vec<ScriptEvent>>(serde_json::json!([
+            {"id":"later-assignment", "when":{"always":false}, "objective":{
+                "faction":"enemy", "label":"Later duty", "visibleWhen":{"flag":"ready"},
+                "intent":{"goTo":{"tile":{"hex":{"col":18,"row":0}},"side":"observer","role":"leader"}}}, "actions":[]},
+            {"id":"activate-assignment", "when":{"turn":2}, "actions":[{"setFlag":"ready"}]}
+        ])).unwrap());
+        rules.campaigns.get_mut("lantern-road").unwrap().missions[1].scripted_events = events;
+        let original =
+            Game::start_campaign(&rules, "lantern-road", 1, vec![], 0, vec![], vec![], vec![]);
+        let mut state = original.state();
+        state
+            .factions
+            .iter_mut()
+            .find(|f| f.id == "player")
+            .unwrap()
+            .relations
+            .insert("swamp-dead".into(), Relation::Allied);
+        state
+            .factions
+            .iter_mut()
+            .find(|f| f.id == "swamp-dead")
+            .unwrap()
+            .relations
+            .insert("player".into(), Relation::Allied);
+        let mut game = Game::try_from_state(&rules, state).unwrap();
+        let published = game.inspect(0).objectives.unwrap();
+        assert_eq!(published.goals.len(), 1);
+        assert_eq!(published.goals[0].progress.label, "player");
+        assert!(game.campaign_view().requirements_disclosed());
+        game.end_turn();
+        for faction in ["enemy", "swamp-dead"] {
+            game.set_active_faction(Some(faction.into()));
+            let authored = game.campaign_view();
+            let objectives = authored.planning_objectives();
+            assert_eq!(objectives.len(), 1);
+            assert_eq!(objectives[0].id, format!("assigned-{faction}"));
+            if faction == "enemy" {
+                assert!(!authored.requirements_disclosed());
+            }
+            let policy = MissionPolicy::new(authored, game.phase_forecasts());
+            let orders = CampaignBlock::Mission.campaign_orders(
+                &policy,
+                CampaignInput {
+                    seed: 1,
+                    goals: None,
+                    diplomacy: Diplomacy::Unrestricted,
+                },
+            );
+            let target = orders
+                .tactics
+                .targets
+                .iter()
+                .find(|t| t.id == format!("required:assigned-{faction}"))
+                .unwrap();
+            let actor = policy
+                .units()
+                .iter()
+                .find(|u| actor_matches(&target.actor, u.id))
+                .unwrap();
+            assert_eq!(policy.unit_faction(actor), faction);
+            assert!(orders.tactics.objectives.iter().any(|o| match o.objective {
+                TacticalObjective::GoTo { actor: id, .. } => id.0 == actor.id,
+                TacticalObjective::Occupy { .. }
+                | TacticalObjective::Escort { .. }
+                | TacticalObjective::ClearPassage { .. } => false,
+            }));
+            assert!(
+                !orders
+                    .tactics
+                    .targets
+                    .iter()
+                    .any(|t| t.id.contains("assigned-player"))
+            );
+        }
+        game.set_active_faction(None);
+        game.end_turn();
+        assert!(game.campaign_view().requirements_disclosed());
+        game.end_turn();
+        game.set_active_faction(Some("enemy".into()));
+        assert!(
+            game.campaign_view()
+                .planning_objectives()
+                .iter()
+                .any(|o| o.id == "later-assignment")
+        );
+        assert_eq!(game.inspect(0).objectives.unwrap().goals.len(), 1);
+    }
 }

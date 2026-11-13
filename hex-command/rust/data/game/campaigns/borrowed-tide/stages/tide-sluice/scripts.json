@@ -87,6 +87,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Recover the southern ferry's supplies",
         "intent": {
           "goTo": {
@@ -138,6 +139,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Control both sluice gates",
         "intent": {
           "capture": [
@@ -229,6 +231,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Bring Edda to the release beacon",
         "intent": {
           "escort": {

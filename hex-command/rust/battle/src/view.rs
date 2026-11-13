@@ -989,7 +989,7 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
     }
     #[inline]
     pub fn planning_objectives(self) -> Vec<CampaignObjective<'a>> {
-        let mut objectives = self.game.planning_objectives();
+        let mut objectives = self.game.planning_objectives(self.view.observer_faction());
         {
             for objective in &mut objectives {
                 if objective.intent == CampaignIntent::Defeat {
@@ -1003,7 +1003,8 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
     }
     #[inline]
     pub fn requirements_disclosed(&self) -> bool {
-        self.game.requirements_disclosed()
+        self.game
+            .requirements_disclosed(self.view.observer_faction())
     }
     #[inline]
     pub fn deadline_round(&self) -> Option<u32> {
@@ -1091,7 +1092,8 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
     }
     #[inline]
     pub fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
-        self.game.script_unit_matches(select, unit)
+        self.game
+            .objective_unit_matches(self.view.observer_faction(), select, unit)
     }
 }
 

@@ -175,6 +175,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Recover provisions from the old crossing post",
         "intent": {
           "goTo": {
@@ -226,6 +227,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Secure the fort beside the bridge",
         "intent": {
           "capture": [
@@ -303,6 +305,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Bring Lark to the northern village",
         "intent": {
           "escort": {

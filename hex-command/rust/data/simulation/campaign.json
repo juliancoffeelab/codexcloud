@@ -27,6 +27,7 @@
                     "flag": "road-cleared"
                   },
                   "objective": {
+                    "faction": "player",
                     "label": "Defeat all enemies before leaving",
                     "optional": false,
                     "visibleWhen": {

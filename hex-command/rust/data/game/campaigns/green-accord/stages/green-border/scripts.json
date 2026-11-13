@@ -1,6 +1,67 @@
 {
   "events": [
     {
+      "id": "guard-logging-camps",
+      "when": {
+        "all": [
+          {
+            "owner": {
+              "tile": {
+                "location": "northern-fort"
+              },
+              "faction": "enemy"
+            }
+          },
+          {
+            "owner": {
+              "tile": {
+                "location": "southern-fort"
+              },
+              "faction": "enemy"
+            }
+          }
+        ]
+      },
+      "objective": {
+        "faction": "enemy",
+        "label": "Hold both logging camps",
+        "visibleWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "owner": {
+                "tile": {
+                  "location": "northern-fort"
+                },
+                "faction": "enemy"
+              }
+            },
+            {
+              "owner": {
+                "tile": {
+                  "location": "southern-fort"
+                },
+                "faction": "enemy"
+              }
+            }
+          ]
+        },
+        "intent": {
+          "capture": [
+            {
+              "location": "northern-fort"
+            },
+            {
+              "location": "southern-fort"
+            }
+          ]
+        }
+      },
+      "actions": []
+    },
+    {
       "id": "lark-lost",
       "when": {
         "killed": {
@@ -122,6 +183,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Recover the workers\u2019 pay ledger",
         "intent": {
           "goTo": {
@@ -154,6 +216,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Capture both logging camps",
         "intent": {
           "capture": [

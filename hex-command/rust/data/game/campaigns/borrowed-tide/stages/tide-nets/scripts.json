@@ -74,6 +74,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Recover provisions from the southern fishing hamlet",
         "intent": {
           "goTo": {
@@ -125,6 +126,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Open both sounding outworks",
         "intent": {
           "capture": [
@@ -216,6 +218,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Bring pilot Edda to the fishing village",
         "intent": {
           "escort": {

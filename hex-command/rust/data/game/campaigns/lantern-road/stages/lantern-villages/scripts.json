@@ -197,6 +197,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Find a safe foothold",
         "intent": {
           "approach": {
@@ -236,6 +237,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Investigate the area",
         "optional": false,
         "intent": {
@@ -553,6 +555,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Reach and free the captives",
         "visibleWhen": {
           "flag": "village-contact"
@@ -1322,6 +1325,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Bring the captives safely to the hidden village",
         "optional": false,
         "intent": {
@@ -1409,6 +1413,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Lead Nera through the northern pass by the end of turn 30",
         "optional": false,
         "intent": {
@@ -1525,6 +1530,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Defeat all enemies before leaving",
         "optional": true,
         "intent": {

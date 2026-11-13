@@ -61,6 +61,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Recover the forgotten workers\u2019 ledger",
         "intent": {
           "goTo": {
@@ -148,6 +149,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Bring Orin to the northern quarry gate",
         "intent": {
           "escape": {

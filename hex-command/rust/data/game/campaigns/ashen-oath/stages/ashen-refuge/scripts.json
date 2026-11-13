@@ -77,6 +77,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Bring medicine to the villagers",
         "intent": {
           "goTo": {
@@ -233,6 +234,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Defeat the remaining patrol",
         "intent": {
           "defeat": {
@@ -320,6 +322,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Defend the refuge until the villagers intervene",
         "intent": {
           "own": {

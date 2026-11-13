@@ -43,7 +43,11 @@ impl Game<'_> {
             mission
                 .scripted_events
                 .iter()
-                .filter(|e| e.objective.as_ref().is_some_and(|o| o.optional == optional))
+                .filter(|e| {
+                    e.objective
+                        .as_ref()
+                        .is_some_and(|o| o.faction == "player" && o.optional == optional)
+                })
                 .map(|e| self.scripted_objective_status(e))
                 .collect()
         };

@@ -102,13 +102,14 @@ impl Deref for EventProgress {
     }
 }
 impl EventProgress {
-    pub(super) fn update_holds(state: &mut Shared<Self>, facts: &EventFacts<'_, '_>, tick: bool) {
+    pub(super) fn update_holds(state: &mut Shared<Self>, game: &super::Game<'_>, tick: bool) {
         let plan = state.plan();
         let active = state.scan_indices();
         for &event in active.iter() {
             if !state.active_mask[event] {
                 continue;
             }
+            let facts = EventFacts::for_event(game, &plan.scripted_events[event]);
             for hold in plan.clocks(event) {
                 let standing = hold
                     .units

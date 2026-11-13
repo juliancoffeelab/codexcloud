@@ -144,6 +144,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Recover the stolen names from the old archive",
         "intent": {
           "goTo": {
@@ -287,6 +288,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Break the binding stone",
         "intent": {
           "goTo": {
@@ -324,6 +326,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Break the binding stone",
         "intent": {
           "goTo": {
@@ -377,6 +380,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Defeat the Master",
         "intent": {
           "defeat": {

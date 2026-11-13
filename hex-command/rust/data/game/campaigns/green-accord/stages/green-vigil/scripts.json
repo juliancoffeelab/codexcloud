@@ -156,6 +156,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Recover the northern guard-post supplies",
         "intent": {
           "goTo": {
@@ -300,6 +301,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Protect Lark in the central grove through three enemy turns",
         "intent": {
           "hold": {

@@ -408,6 +408,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Hold the monastery with a mage for three turns",
         "optional": true,
         "intent": {
@@ -669,6 +670,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Free the northern captives",
         "optional": true,
         "intent": {
@@ -767,6 +769,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Free the eastern captives",
         "optional": true,
         "intent": {
@@ -865,6 +868,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Free the southern captives",
         "optional": true,
         "intent": {
@@ -1342,6 +1346,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Silence the bell",
         "optional": false,
         "intent": {

@@ -45,6 +45,7 @@
         }
       },
       "objective": {
+        "faction": "player",
         "label": "Defeat the opposing commander",
         "intent": {
           "defeat": {
