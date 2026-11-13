@@ -1,10 +1,7 @@
 {
   "subtitle": "A lighting and fog test battle.",
   "briefing": "Explore the mirrored battlefield at night. Fog clears permanently within two hexes of your troops. Player-held villages light up; losing a village extinguishes its lamp. Every death leaves a persistent red light. Defeat the opposing commander while keeping yours alive. Use Settings \u2192 Debug tools to start a performance trace.",
-  "hints": [
-    "Capture and lose villages to exercise lighting changes.",
-    "Recruit more troops and fight to accumulate death lights."
-  ],
+  "hints": [],
   "intro": [],
   "victory": [],
   "debrief": "The opposing commander has fallen. You can download the trace from Settings \u2192 Debug tools or start Mirror Night again."

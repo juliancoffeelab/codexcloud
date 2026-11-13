@@ -495,30 +495,72 @@
     {
       "id": "toll-warning",
       "when": {
-        "turn": 4
+        "any": [
+          {
+            "proximity": {
+              "tile": {
+                "location": "northern-ritual-mark"
+              },
+              "faction": "player",
+              "radius": 3
+            }
+          },
+          {
+            "proximity": {
+              "tile": {
+                "location": "eastern-ritual-mark"
+              },
+              "faction": "player",
+              "radius": 3
+            }
+          },
+          {
+            "proximity": {
+              "tile": {
+                "location": "southern-ritual-mark"
+              },
+              "faction": "player",
+              "radius": 3
+            }
+          },
+          {
+            "visibleUnits": {
+              "faction": "bell-host",
+              "character": "bellwarden"
+            }
+          }
+        ]
       },
       "actions": [
         {
           "say": [
             {
-              "speaker": "The company",
-              "portrait": "captives",
-              "text": "A low note builds beneath the mist. The marked stones begin to glow."
-            },
-            {
-              "portrait": "adept",
-              "text": "The bell is gathering strength. Get the prisoners off those marks—cutting their bonds won’t be enough.",
-              "character": "oren"
+              "with": "oren",
+              "dialogue": [
+                {
+                  "character": "oren",
+                  "portrait": "adept",
+                  "text": "It's a raising rite. The bell is bound to the marked stones. Anyone left on them when it tolls will be killed and raised for its master. Get the prisoners clear\u2014cutting their bonds won't be enough."
+                }
+              ],
+              "alternative": [
+                {
+                  "character": "nera",
+                  "portrait": "swordsman",
+                  "text": "Those marks are part of whatever that bell is doing. Get the prisoners clear of them. I'm not leaving anyone there to find out what happens when it rings."
+                }
+              ]
             }
           ]
         },
         {
-          "log": "The next toll is close."
+          "log": "The company recognizes the danger of the ritual marks."
         },
         {
           "setFlag": "toll-warning"
         }
-      ]
+      ],
+      "observer": "player"
     },
     {
       "id": "church-sighted",
@@ -1005,14 +1047,14 @@
         {
           "say": [
             {
-              "portrait": "scout",
-              "text": "The dead from the pass—they’ve followed us!",
-              "character": "ivo"
+              "character": "tollkeeper",
+              "portrait": "necromancer",
+              "text": "Did you think the mist would hide you from me? My toll is still unpaid. I'll have it in bones."
             },
             {
+              "character": "nera",
               "portrait": "swordsman",
-              "text": "Hold them at the tree line. The rest of you, keep moving.",
-              "character": "nera"
+              "text": "Behind us. Keep the company together\u2014we're not turning back."
             }
           ]
         },

@@ -29,34 +29,140 @@
         "kind": "hold",
         "area": [
           {
-            "location": "tollkeeper-keep"
+            "hex": {
+              "col": 14,
+              "row": 7
+            }
           }
         ],
-        "attackRadius": 1,
+        "attackRadius": 0,
         "when": {
-          "kind": "hasUnits",
-          "side": "neutral",
-          "character": "villagers"
+          "kind": "flag",
+          "flag": "tollkeeper-waiting"
         }
       }
     },
     {
       "id": "swamp-commander",
-      "order": {
-        "kind": "hold",
-        "area": [
-          {
-            "hex": {
-              "col": 12,
-              "row": 12
-            }
-          }
-        ],
-        "attackRadius": 2
+      "when": {
+        "condition": {
+          "kind": "flag",
+          "flag": "swamp-sighting"
+        },
+        "remember": true
+      }
+    },
+    {
+      "id": "prisoner-column",
+      "when": {
+        "condition": {
+          "kind": "round",
+          "round": 10
+        },
+        "remember": true
       }
     }
   ],
   "events": [
+    {
+      "id": "tollkeeper-waiting",
+      "priority": 100,
+      "when": {
+        "chapterStarted": true
+      },
+      "actions": [
+        {
+          "setFlag": "tollkeeper-waiting"
+        }
+      ]
+    },
+    {
+      "id": "tollkeeper-alerted",
+      "priority": 40,
+      "observer": "player",
+      "when": {
+        "any": [
+          {
+            "visibleUnits": {
+              "faction": "toll-skeletons",
+              "character": "tollkeeper"
+            }
+          },
+          {
+            "visibleUnits": {
+              "faction": "toll-skeletons",
+              "aiGroup": "captive-guard"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": {
+            "id": "tollkeeper-waiting",
+            "state": false
+          }
+        },
+        {
+          "setFlag": "tollkeeper-alerted"
+        }
+      ]
+    },
+    {
+      "id": "prisoner-march",
+      "priority": -10,
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 10
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "exit"
+              },
+              "faction": "prisoners",
+              "character": "villagers",
+              "through": true
+            }
+          }
+        ]
+      },
+      "objective": {
+        "faction": "prisoners",
+        "label": "Reach the northern pass",
+        "visibleWhen": {
+          "turnAtLeast": 10
+        },
+        "availableWhen": {
+          "turnAtLeast": 10
+        },
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "exit"
+            },
+            "faction": "prisoners",
+            "character": "villagers"
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "failObjective": "prisoners-freed"
+        },
+        {
+          "failObjective": "village-safe"
+        },
+        {
+          "failObjective": "eastern-departure"
+        },
+        {
+          "defeat": "The captives were marched through the northern pass before the company could rescue them."
+        }
+      ]
+    },
     {
       "id": "deadline-0",
       "when": {
@@ -174,7 +280,7 @@
             },
             {
               "portrait": "warden",
-              "text": "They emptied the roadside villages. There are prisoners at the old pass fort, waiting to be marched east. We haven\u2019t the strength to fetch them.",
+              "text": "A hooded figure commands the dead from the old pass fort. They call him the Tollkeeper. He had the roadside villages emptied. They've already marched one column east; the prisoners still at the fort will be next. Soon. We haven't the strength to fetch them.",
               "character": "sella"
             },
             {
@@ -355,29 +461,21 @@
     },
     {
       "id": "prisoners-found",
+      "priority": 30,
       "when": {
         "all": [
           {
-            "all": [
-              {
-                "proximity": {
-                  "tile": {
-                    "location": "captive-camp"
-                  },
-                  "radius": 2,
-                  "side": "player"
-                }
-              },
-              {
-                "hasUnits": {
-                  "side": "any",
-                  "character": "villagers"
-                }
-              }
-            ]
+            "flag": "village-contact"
           },
           {
-            "flag": "village-contact"
+            "proximity": {
+              "target": {
+                "faction": "prisoners",
+                "character": "villagers"
+              },
+              "faction": "player",
+              "radius": 2
+            }
           }
         ]
       },
@@ -398,30 +496,27 @@
     },
     {
       "id": "prisoners-found-guarded",
+      "priority": 20,
       "when": {
         "all": [
-          {
-            "all": [
-              {
-                "hasUnits": {
-                  "side": "any",
-                  "character": "villagers"
-                }
-              },
-              {
-                "hasUnits": {
-                  "side": "enemy",
-                  "aiGroup": "captive-guard"
-                }
-              }
-            ]
-          },
           {
             "flag": "prisoners-found"
           },
           {
             "not": {
               "flag": "prisoners-found-unguarded"
+            }
+          },
+          {
+            "proximity": {
+              "target": {
+                "faction": "prisoners",
+                "character": "villagers"
+              },
+              "faction": "toll-skeletons",
+              "aiGroup": "captive-guard",
+              "radius": 2,
+              "through": false
             }
           }
         ]
@@ -453,6 +548,7 @@
     },
     {
       "id": "prisoners-found-unguarded",
+      "priority": 20,
       "when": {
         "all": [
           {
@@ -482,7 +578,7 @@
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "They said another column was coming for us. Please\u2014don\u2019t let them take us."
+              "text": "Please\u2014don\u2019t let them take us through the pass."
             },
             {
               "portrait": "swordsman",
@@ -498,6 +594,7 @@
     },
     {
       "id": "prisoners-freed",
+      "priority": 10,
       "when": {
         "all": [
           {
@@ -506,7 +603,8 @@
           {
             "proximity": {
               "target": {
-                "character": "villagers"
+                "character": "villagers",
+                "faction": "prisoners"
               },
               "side": "player",
               "radius": 1
@@ -518,7 +616,8 @@
         {
           "changeAllegiance": {
             "units": {
-              "character": "villagers"
+              "character": "villagers",
+              "faction": "prisoners"
             },
             "faction": "player"
           }
@@ -588,14 +687,14 @@
               "dialogue": [
                 {
                   "portrait": "adept",
-                  "text": "A bell, and living prisoners. That sounds like a binding ritual. We have no time to spare. Get these people to shelter, then we must reach that bell before it\u2019s too late. We must leave this road by the end of turn 30.",
+                  "text": "A bell, and living prisoners. It sounds like a binding ritual. Get these people to shelter, then we must reach that bell before it claims the others.",
                   "character": "oren"
                 }
               ],
               "alternative": [
                 {
                   "portrait": "swordsman",
-                  "text": "They\u2019re taking the others somewhere for a reason. We get you to shelter, then follow that column. No delays\u2014we have to reach them while they\u2019re still alive. We must leave this road by the end of turn 30.",
+                  "text": "I don't like this. Taking people alive, driving them towards that bell... Get these people to shelter. Then we follow. Whatever's waiting down that road, I won't leave the others to it.",
                   "character": "nera"
                 }
               ]
@@ -658,15 +757,6 @@
                   "col": 16,
                   "row": 6
                 }
-              },
-              "side": "player",
-              "through": true
-            }
-          },
-          {
-            "stand": {
-              "tile": {
-                "location": "tollkeeper-keep"
               },
               "side": "player",
               "through": true
@@ -1207,7 +1297,7 @@
           "say": [
             {
               "portrait": "scout",
-              "text": "The reeds are full of them.",
+              "text": "I heard something moving in the reeds.",
               "character": "ivo"
             },
             {
@@ -1312,7 +1402,7 @@
             },
             {
               "portrait": "swordsman",
-              "text": "We can move on now, or finish the dead here so they can\u2019t follow us. But every fight costs us time.",
+              "text": "The villagers are safe. We can make for the pass now.",
               "character": "nera"
             }
           ]
@@ -1349,17 +1439,10 @@
     {
       "id": "tollkeeper-fallen",
       "when": {
-        "all": [
-          {
-            "noUnits": {
-              "side": "enemy",
-              "character": "tollkeeper"
-            }
-          },
-          {
-            "flag": "village-contact"
-          }
-        ]
+        "noUnits": {
+          "faction": "toll-skeletons",
+          "character": "tollkeeper"
+        }
       },
       "actions": [
         {
@@ -1371,9 +1454,26 @@
         {
           "say": [
             {
-              "portrait": "swordsman",
-              "text": "No more soldiers from this keep. Gather what we can carry; the prisoners ahead still need us.",
-              "character": "nera"
+              "with": "oren",
+              "dialogue": [
+                {
+                  "character": "oren",
+                  "portrait": "adept",
+                  "text": "They won\u2019t last long without their master."
+                },
+                {
+                  "character": "nera",
+                  "portrait": "swordsman",
+                  "text": "Neither will we if we stay here. Keep moving."
+                }
+              ],
+              "alternative": [
+                {
+                  "character": "nera",
+                  "portrait": "swordsman",
+                  "text": "Their master is down. Keep moving\u2014we\u2019re running out of time."
+                }
+              ]
             }
           ]
         },
@@ -1383,7 +1483,25 @@
         {
           "setFlag": "tollkeeper-defeated"
         }
-      ]
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the Tollkeeper before leaving",
+        "optional": true,
+        "intent": {
+          "defeat": {
+            "faction": "toll-skeletons",
+            "character": "tollkeeper"
+          }
+        },
+        "visibleWhen": {
+          "flag": "village-contact"
+        },
+        "availableWhen": {
+          "flag": "village-contact"
+        },
+        "playerMarker": null
+      }
     },
     {
       "id": "eastern-departure",
@@ -1528,24 +1646,7 @@
         {
           "setFlag": "road-cleared"
         }
-      ],
-      "objective": {
-        "faction": "player",
-        "label": "Defeat all enemies before leaving",
-        "optional": true,
-        "intent": {
-          "defeat": {
-            "side": "enemy"
-          }
-        },
-        "visibleWhen": {
-          "flag": "village-safe"
-        },
-        "availableWhen": {
-          "flag": "village-safe"
-        },
-        "playerMarker": null
-      }
+      ]
     },
     {
       "id": "first-bell-toll",
