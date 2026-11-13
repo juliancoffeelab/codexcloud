@@ -35,6 +35,7 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
     val waiters : (string, waiter array) Map.t = Map.create ()
     val mutable detach = fun () -> ()
     val mutable disposed = false
+    val mutable suspended = false
 
     initializer
       let admit = fun[@u] () -> self#admit in
@@ -56,6 +57,15 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
           ())
 
     method files = files
+
+    (* Background tabs cannot be expected to finish downloads or decode before
+       their deadlines. Requeue unfinished work without reporting a failure. *)
+    method suspend =
+      if (not disposed) && not suspended then (
+        suspended <- true;
+        Map.each files (fun[@u] file key -> self#cancel key file))
+
+    method resume = if not disposed then suspended <- false
 
     method private cached resource =
       match resource.kind with
@@ -309,7 +319,7 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
       !result
 
     method private pump =
-      if not disposed then (
+      if (not disposed) && not suspended then (
         let priority = self#priority + 1 in
         (if priority > 0 then
            let needed =
