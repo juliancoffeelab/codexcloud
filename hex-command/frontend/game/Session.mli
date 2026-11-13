@@ -116,7 +116,7 @@ val repair_inventory : t -> Js.Json.t Js.Promise.t
 val repair_saved_data : t -> Js.Json.t -> unit Js.Promise.t
 val retry_saved_progress : t -> Js.Json.t option option -> bool Js.Promise.t
 val prepare_audio : t -> unit Js.Promise.t
-val menu_cue : t -> bool Js.Promise.t
+val menu_cue : ?cue:Phaser_sound.hud_cue -> t -> bool Js.Promise.t
 val renderer_failed : t -> string -> unit
 val prepare_reload : t -> string -> unit Js.Promise.t
 val trace_context : t -> Js.Json.t

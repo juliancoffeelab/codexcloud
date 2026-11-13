@@ -1,4 +1,13 @@
-(* The HUD's one short menu cue is the explicitly separate pre-renderer owner. *)
+(* HUD cues are prepared independently of the battlefield renderer. *)
+type cue = Action | Choice | Disclosure
+
+let clips =
+  [|
+    (Action, "select-1.wav?v=3a6cff557cea", 0.29 *. 0.25);
+    (Choice, "palette/village-contact.mp3", 1.);
+    (Disclosure, "palette/light-cloth-rustle.mp3", 0.39);
+  |]
+
 type readiness = Audio_state.readiness = { ready : bool; error : string option }
 
 let readiness_owner = Observable.create { ready = false; error = None }
@@ -13,7 +22,7 @@ let ( let* ) promise next = Js.Promise.then_ next promise
 type t = {
   enabled : unit -> bool;
   mutable context : context option;
-  mutable buffer : buffer option;
+  mutable buffers : (cue * buffer) list;
   mutable source : source option;
   mutable loading : unit Js.Promise.t option;
   mutable disposed : bool;
@@ -51,7 +60,7 @@ let create enabled =
     {
       enabled;
       context = None;
-      buffer = None;
+      buffers = [];
       source = None;
       loading = None;
       disposed = false;
@@ -68,7 +77,7 @@ let create enabled =
             if not t.disposed then
               Observable.set readiness_owner
                 {
-                  ready = Option.is_some t.buffer;
+                  ready = List.length t.buffers = Array.length clips;
                   error = Some ("Cannot unlock HUD audio\n" ^ Foreign_error.describe cause);
                 };
             Js.Promise.resolve false)
@@ -87,7 +96,6 @@ let prepare t =
   | Some loading -> loading
   | None ->
       Observable.set readiness_owner { ready = false; error = None };
-      let url = base_url ^ "assets/audio/select-1.wav?v=3a6cff557cea" in
       let attempt =
         try
           let owner =
@@ -98,17 +106,23 @@ let prepare t =
                 t.context <- Some owner;
                 owner
           in
-          let* response =
-            fetch url [%mel.obj { signal = any_signal [| signal t.abort; deadline 30000 |] }]
+          let load (cue, file, _) =
+            let url = base_url ^ "assets/audio/" ^ file in
+            let* response =
+              fetch url [%mel.obj { signal = any_signal [| signal t.abort; deadline 30000 |] }]
+            in
+            Boot_process.response ~url ~status:(status response) ~source:"hud-fetch"
+              ~get_header:(fun name -> header (headers response) name);
+            if not (ok response) then
+              failwith
+                ("HTTP " ^ string_of_int (status response) ^ " " ^ status_text response ^ " " ^ url);
+            let* bytes = array_buffer response in
+            let* prepared = decode owner bytes in
+            Js.Promise.resolve (cue, prepared)
           in
-          Boot_process.response ~url ~status:(status response) ~source:"hud-fetch"
-            ~get_header:(fun name -> header (headers response) name);
-          if not (ok response) then
-            failwith ("HTTP " ^ string_of_int (status response) ^ " " ^ status_text response);
-          let* bytes = array_buffer response in
-          let* prepared = decode owner bytes in
+          let* prepared = Js.Promise.all (Array.map load clips) in
           if not t.disposed then (
-            t.buffer <- Some prepared;
+            t.buffers <- Array.to_list prepared;
             Observable.set readiness_owner { ready = true; error = None });
           Js.Promise.resolve ()
         with cause -> Js.Promise.reject cause
@@ -120,8 +134,7 @@ let prepare t =
               Observable.set readiness_owner
                 {
                   ready = false;
-                  error =
-                    Some ("Cannot prepare HUD cue " ^ url ^ "\n" ^ Foreign_error.describe cause);
+                  error = Some ("Cannot prepare HUD cues\n" ^ Foreign_error.describe cause);
                 };
             Js.Promise.resolve ())
           attempt
@@ -138,8 +151,8 @@ let prepare t =
       in
       attempt
 
-let play t =
-  match (t.context, t.buffer) with
+let play ?(cue = Action) t =
+  match (t.context, List.assoc_opt cue t.buffers) with
   | Some _, Some _ when t.enabled () && not t.disposed -> (
       stop t;
       let current = t.request in
@@ -157,11 +170,12 @@ let play t =
           (unlock t)
       in
       let* allowed = allowed in
-      match (allowed, t.context, t.buffer) with
+      match (allowed, t.context, List.assoc_opt cue t.buffers) with
       | true, Some context, Some buffer when (not t.disposed) && current = t.request && t.enabled ()
         ->
           let voice = create_source context and gain = create_gain context in
-          gain_value (gain_parameter gain) (0.29 *. 0.25);
+          let _, _, volume = Option.get (Array.find_opt (fun (kind, _, _) -> kind = cue) clips) in
+          gain_value (gain_parameter gain) volume;
           source_buffer voice buffer;
           (* Match the selection cue's subtle +/-0.35 semitone variation. *)
           gain_value (detune_parameter voice) ((Js.Math.random () -. 0.5) *. 70.);
@@ -183,7 +197,7 @@ let dispose t =
     t.disposed <- true;
     abort t.abort;
     stop t;
-    t.buffer <- None;
+    t.buffers <- [];
     t.detach ();
     Option.iter
       (fun context ->

@@ -1108,7 +1108,7 @@ let gesture t trusted =
 
 let commands t = Option.get t.actions
 let prepare_audio t = Phaser_sound.prepare_hud t.audio
-let menu_cue t = Phaser_sound.play_hud t.audio
+let menu_cue ?cue t = Phaser_sound.play_hud ?cue t.audio
 
 let from_loaded ?(clock = pause) ~audio factory (loaded : Native.battle Save.loaded) =
   let catalog = Native.catalog factory in

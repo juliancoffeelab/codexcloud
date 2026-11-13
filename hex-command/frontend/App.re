@@ -1,5 +1,19 @@
 open Ui;
 
+[@mel.send] external controlMatches: (Dom.element, string) => bool = "matches";
+
+let controlCue = control =>
+  if (controlMatches(control, "summary, button[aria-expanded]")) {
+    Phaser_sound.Disclosure;
+  } else if (controlMatches(
+               control,
+               "select, input[type='checkbox'], input[type='radio'], input[type='range'], button[aria-pressed], button[role='radio'], button[role='checkbox'], button[role='switch']",
+             )) {
+    Phaser_sound.Choice;
+  } else {
+    Phaser_sound.Action;
+  };
+
 [@mel.get] external activationDetail: Dom.event => int = "detail";
 [@mel.get] external primaryPointer: Dom.event => bool = "isPrimary";
 [@mel.get] external pointerButton: Dom.event => int = "button";
@@ -112,7 +126,9 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
             && nodeType(node) == 1
             && Js.Nullable.toOption(closest(node, selector)) != None
             && Js.Nullable.toOption(closest(node, ":disabled, [aria-disabled='true']")) == None) {
-          let _ = Session.menu_cue(session);
+          let control = Js.Nullable.toOption(closest(node, selector)) |> Option.get;
+          let cue = controlCue(control);
+          let _ = Session.menu_cue(~cue, session);
           ();
         };
       };
