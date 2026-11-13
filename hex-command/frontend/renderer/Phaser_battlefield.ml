@@ -4,6 +4,8 @@ module Map = Host_collections.Map
 module Set = Host_collections.Set
 module Frame = Battlefield_frame
 
+external backgrounded : Dom.document -> bool = "hidden" [@@mel.get]
+
 type transition_kind = Move | Hit | Spawn
 
 type transition = {
@@ -315,6 +317,25 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                  self#report_loading))
              ~audio_readiness:(fun ready error ->
                Phaser_sound.report_readiness audio ready (Option.map Phaser_files.describe error)));
+      let suspend _ = if ready && not failed then self#assets#suspend in
+      let resume _ =
+        if ready && (not failed) && not (backgrounded Browser_dom.document) then (
+          self#assets#resume;
+          self#retry_resources None)
+      in
+      let visibility event =
+        if backgrounded Browser_dom.document then suspend event else resume event
+      in
+      let window_events = [ ("pagehide", suspend); ("pageshow", resume); ("online", resume) ] in
+      Browser_dom.addDocumentListener Browser_dom.document "visibilitychange" visibility;
+      List.iter (fun (event, handler) -> Browser_dom.listen_error event handler) window_events;
+      let detach () =
+        Browser_dom.removeDocumentListener Browser_dom.document "visibilitychange" visibility;
+        List.iter (fun (event, handler) -> Browser_dom.remove_error event handler) window_events
+      in
+      let _ = native##events##once "shutdown" (fun[@u] () -> detach ()) in
+      Phaser_runtime.on_dispose self#runtime detach;
+      if backgrounded Browser_dom.document then self#assets#suspend;
       Phaser_sound.sound_ready audio native##game;
       Option.iter
         (fun mouse -> Phaser.SceneMethods.prevent_wheel mouse false)
