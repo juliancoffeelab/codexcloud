@@ -12,6 +12,9 @@ let make =
       ~onRendererFailed,
       ~prepareReload,
       ~showCommanderArrow=false,
+      ~voicePreparation=None,
+      ~onRetryVoice=() => (),
+      ~onSkipVoice=() => (),
     ) => {
   let host = React.useRef(Js.Nullable.null);
   let runtime = React.useRef(None);
@@ -207,6 +210,9 @@ let make =
   <>
     <Battlefield_window
       host
+      preparation={ready && failure == None ? voicePreparation : None}
+      onRetryPreparation=onRetryVoice
+      onSkipPreparation=onSkipVoice
       phase={
         ready
           ? Battlefield_window.Ready

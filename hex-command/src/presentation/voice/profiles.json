@@ -1,0 +1,249 @@
+{
+  "profiles": {
+    "ivo": {
+      "pitch": 1.35,
+      "gain": 0.65
+    },
+    "nera": {
+      "pitch": 1.65,
+      "gain": 0.65
+    },
+    "oren": {
+      "pitch": 1.9,
+      "gain": 0.65
+    },
+    "sella": {
+      "pitch": 1.52,
+      "gain": 0.62,
+      "lowpass": 2800
+    },
+    "ferryman": {
+      "pitch": 1.02,
+      "gain": 0.65,
+      "lowpass": 2600
+    },
+    "route-scout": {
+      "pitch": 1.48,
+      "gain": 0.63
+    },
+    "western-scout": {
+      "pitch": 1.18,
+      "gain": 0.65,
+      "lowpass": 3200
+    },
+    "northern-scout": {
+      "pitch": 1.72,
+      "gain": 0.62,
+      "highpass": 130
+    },
+    "villager": {
+      "pitch": 1.42,
+      "gain": 0.6,
+      "lowpass": 3000
+    },
+    "apprentice": {
+      "pitch": 1.96,
+      "gain": 0.55,
+      "lowpass": 3500
+    },
+    "guard": {
+      "pitch": 1.1,
+      "gain": 0.65,
+      "ring": 217,
+      "wet": 0.42,
+      "highpass": 180,
+      "lowpass": 3100
+    },
+    "tollkeeper": {
+      "pitch": 0.96,
+      "gain": 0.65,
+      "ring": 163,
+      "wet": 0.3,
+      "highpass": 120,
+      "lowpass": 2600
+    },
+    "bellwarden": {
+      "pitch": 0.79,
+      "gain": 0.65,
+      "ring": 109,
+      "wet": 0.24,
+      "highpass": 90,
+      "lowpass": 2100
+    },
+    "northern-captives": {
+      "pitch": 1.8,
+      "gain": 0.58
+    },
+    "eastern-captives": {
+      "pitch": 1.24,
+      "gain": 0.59,
+      "lowpass": 2600
+    },
+    "southern-captives": {
+      "pitch": 1.58,
+      "gain": 0.58,
+      "lowpass": 3200
+    },
+    "reinforcements": {
+      "pitch": 1.12,
+      "gain": 0.68,
+      "lowpass": 3200
+    },
+    "narrator": {
+      "pitch": 1.28,
+      "gain": 0.43,
+      "lowpass": 2300
+    },
+    "letter": {
+      "pitch": 1.02,
+      "gain": 0.43,
+      "lowpass": 2100
+    },
+    "orin": {
+      "pitch": 0.92,
+      "gain": 0.64,
+      "ring": 137,
+      "wet": 0.2,
+      "lowpass": 2700
+    },
+    "hollow-voice": {
+      "pitch": 1.04,
+      "gain": 0.61,
+      "ring": 223,
+      "wet": 0.34,
+      "highpass": 170,
+      "lowpass": 2900
+    },
+    "dain": {
+      "pitch": 1.22,
+      "gain": 0.65,
+      "lowpass": 3100
+    },
+    "village-elder": {
+      "pitch": 0.99,
+      "gain": 0.59,
+      "lowpass": 2300
+    },
+    "master": {
+      "pitch": 0.73,
+      "gain": 0.65,
+      "ring": 103,
+      "wet": 0.37,
+      "lowpass": 2200
+    },
+    "lark": {
+      "pitch": 1.78,
+      "gain": 0.59,
+      "lowpass": 3300
+    },
+    "alder": {
+      "pitch": 1.02,
+      "gain": 0.64,
+      "lowpass": 2500
+    },
+    "overseer": {
+      "pitch": 1.1,
+      "gain": 0.67,
+      "highpass": 120,
+      "lowpass": 3200
+    },
+    "tamsin": {
+      "pitch": 1.84,
+      "gain": 0.6,
+      "lowpass": 3500
+    },
+    "mira": {
+      "pitch": 1.51,
+      "gain": 0.61,
+      "lowpass": 3000,
+      "tremolo": 5.7,
+      "depth": 0.1
+    },
+    "edda": {
+      "pitch": 1.73,
+      "gain": 0.62,
+      "highpass": 100,
+      "lowpass": 3500,
+      "tremolo": 7.1,
+      "depth": 0.08
+    },
+    "harl": {
+      "pitch": 1.34,
+      "gain": 0.63,
+      "highpass": 180,
+      "lowpass": 2800
+    },
+    "fisher": {
+      "pitch": 0.96,
+      "gain": 0.6,
+      "lowpass": 2500
+    },
+    "tomas": {
+      "pitch": 1.43,
+      "gain": 0.63,
+      "lowpass": 3200
+    },
+    "cale": {
+      "pitch": 1,
+      "gain": 0.66,
+      "lowpass": 2600
+    },
+    "clerk": {
+      "pitch": 1.63,
+      "gain": 0.58,
+      "highpass": 180,
+      "lowpass": 3200
+    },
+    "vale": {
+      "pitch": 1.25,
+      "gain": 0.68,
+      "lowpass": 3200
+    },
+    "boatkeeper": {
+      "pitch": 1.12,
+      "gain": 0.6,
+      "lowpass": 2400
+    }
+  },
+  "overrides": {
+    "3ab7dd2e": "route-scout",
+    "413e8552": "western-scout",
+    "2f63d864": "northern-scout",
+    "5e708fc7": "ferryman",
+    "c09325d5": "ferryman",
+    "99c900b3": "ferryman",
+    "f001c67c": "ferryman",
+    "fd5705ba": "ferryman",
+    "744bf0d7": "letter",
+    "c9c520b6": "apprentice",
+    "15c2045b": "villager",
+    "395b94ef": "guard",
+    "303b011a": "villager",
+    "78c32e8e": "guard",
+    "c4391b56": "villager",
+    "ed9d2972": "villager",
+    "3478635a": "villager",
+    "1db158b5": "villager",
+    "25f78ed0": "villager",
+    "c329927": "narrator",
+    "b6d3f480": "villager",
+    "c680533f": "narrator",
+    "7ec61bf3": "narrator",
+    "495757b2": "narrator",
+    "cd383eae": "narrator",
+    "ed2e85b1": "reinforcements",
+    "faec1ec4": "narrator",
+    "675ca4e0": "narrator",
+    "496edde0": "hollow-voice",
+    "35ea685": "hollow-voice",
+    "ed264722": "village-elder",
+    "dc15b35c": "village-elder",
+    "f42f7e27": "village-elder",
+    "3d4b73e8": "village-elder",
+    "e3319658": "village-elder",
+    "9c0f3e69": "hollow-voice",
+    "9f1b5af1": "fisher",
+    "7814394b": "clerk",
+    "c404374f": "boatkeeper"
+  }
+}

@@ -1,7 +1,17 @@
 HEX COMMAND — AUDIO CREDITS
 
-Thank you to the creators who shared their recordings and effects under CC0.
-These voluntary credits recognize their work.
+Thank you to the creators who shared their recordings and effects.
+
+Josh Simmons (2014)
+  Animalese dialogue voice bank (animalese.wav)
+  https://github.com/Acedio/animalese.js
+  Audio: Creative Commons Attribution 4.0 International (CC BY 4.0)
+  https://creativecommons.org/licenses/by/4.0/
+  Modified: pitch, filtering, metallic modulation, tremolo, gain, fades and arrangement.
+  Generation code adapted from animalese.js, MIT license.
+  Full code license: ../voice-LICENSE.txt
+
+The sound effects below are CC0.
 
 AntumDeluge
   Fire crackling

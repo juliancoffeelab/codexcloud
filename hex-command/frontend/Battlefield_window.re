@@ -2,6 +2,11 @@ type phase =
   | Loading
   | Preparing
   | Ready;
+type preparation = {
+  completed: int,
+  total: int,
+  error: option(string),
+};
 [@mel.set] external markPhaser: (ReactDOM.domProps, string) => unit = "data-phaser-battlefield";
 
 /* The startup shell and live renderer share this lightweight frame. It owns
@@ -11,11 +16,28 @@ let make =
     (
       ~host: option(React.ref(Js.Nullable.t(Dom.element)))=?,
       ~phase=Loading,
+      ~preparation=None,
+      ~onRetryPreparation=() => (),
+      ~onSkipPreparation=() => (),
       ~navigation=React.null,
       ~children=React.null,
     ) => {
   let text = value => React.string(Utf8.to_js(value));
-  let ready = phase == Ready;
+  let ready = phase == Ready && preparation == None;
+  let voiceScreen = React.useRef(false);
+  if (preparation != None) {
+    voiceScreen.current = true;
+  } else if (!ready) {
+    voiceScreen.current = false;
+  };
+  let fraction =
+    Option.fold(
+      ~none=0.,
+      ~some=
+        (value: preparation) =>
+          float_of_int(value.completed) /. float_of_int(max(1, value.total)),
+      preparation,
+    );
   let fill = React.useRef(Js.Nullable.null);
   let (visible, setVisible) = React.useState(() => !ready);
   let (loading, setLoading) = React.useState(Loading_progress.current);
@@ -40,11 +62,16 @@ let make =
       },
     [|ready|],
   );
-  React.useLayoutEffect2(
-    () => {Option.map(Loading_motion.animate, Js.Nullable.toOption(fill.current))},
-    (loading, visible),
+  React.useLayoutEffect3(
+    () =>
+      preparation == None
+        ? Option.map(Loading_motion.animate, Js.Nullable.toOption(fill.current)) : None,
+    (loading, visible, preparation),
   );
-  let caption = ready ? "Battlefield ready" : Loading_progress.label(loading.step);
+  let caption =
+    preparation != None
+      ? "Trying to pick words…"
+      : ready ? "Battlefield ready" : Loading_progress.label(loading.step);
   let lastCaption = React.useRef(caption);
   let previousCaption = React.useRef(None);
   if (lastCaption.current != caption) {
@@ -73,7 +100,13 @@ let make =
          </div>,
          !visible && ready
            ? React.null
-           : <div className={"map-loading" ++ (ready ? " is-complete" : "")} role="status">
+           : <div
+               className={
+                 "map-loading"
+                 ++ (ready ? " is-complete" : "")
+                 ++ (voiceScreen.current ? " is-voice-preparing" : "")
+               }
+               role="status">
                <div className="loading-card">
                  <div className="loading-hexes" ariaHidden=true>
                    {React.array(
@@ -103,29 +136,82 @@ let make =
                    </strong>
                  </div>
                  <div className="loading-track" ariaHidden=true>
-                   <span className="loading-fill" ref={ReactDOM.Ref.domRef(fill)} />
+                   <span
+                     className="loading-fill"
+                     ref={ReactDOM.Ref.domRef(fill)}
+                     style=?{
+                       preparation == None
+                         ? None
+                         : Some(
+                             ReactDOM.Style.make(
+                               ~transform="scaleX(" ++ string_of_float(fraction) ++ ")",
+                               ~animation="none",
+                               (),
+                             ),
+                           )
+                     }
+                   />
                  </div>
                  <progress
                    className="loading-accessible-progress"
-                   ariaLabel="Battlefield preparation"
+                   ariaLabel={
+                     preparation == None ? "Battlefield preparation" : "Dialogue voice preparation"
+                   }
                    ariaValuetext={Utf8.to_js(
-                     ready
-                       ? "Battlefield ready"
-                       : "Step "
-                         ++ string_of_int(loading.step)
-                         ++ " of 5: "
-                         ++ Loading_progress.label(loading.step)
-                         ++ (loading.detail == "" ? "" : " " ++ loading.detail),
+                     preparation != None
+                       ? "Trying to pick words…"
+                       : ready
+                           ? "Battlefield ready"
+                           : "Step "
+                             ++ string_of_int(loading.step)
+                             ++ " of 5: "
+                             ++ Loading_progress.label(loading.step)
+                             ++ (loading.detail == "" ? "" : " " ++ loading.detail),
                    )}
-                   max="5"
-                   value={string_of_float(loading.value)}
+                   max={preparation == None ? "5" : "1"}
+                   value={string_of_float(preparation == None ? loading.value : fraction)}
                  />
                  <div className="loading-meta">
                    <span className="loading-step">
-                     {text("Step " ++ string_of_int(loading.step) ++ " / 5")}
+                     {text(
+                        preparation == None
+                          ? "Step " ++ string_of_int(loading.step) ++ " / 5" : "Finding a voice",
+                      )}
                    </span>
-                   <span className="loading-detail"> {text(loading.detail)} </span>
+                   <span className="loading-detail">
+                     {text(
+                        Option.fold(
+                          ~none=loading.detail,
+                          ~some=
+                            (value: preparation) =>
+                              string_of_int(value.completed)
+                              ++ " / "
+                              ++ string_of_int(value.total)
+                              ++ " voices ready",
+                          preparation,
+                        ),
+                      )}
+                   </span>
                  </div>
+                 {Option.fold(
+                    ~none=React.null,
+                    ~some=
+                      reason =>
+                        <div className="startup-failure" role="alert">
+                          <p> {text("The opening voices could not be prepared.")} </p>
+                          <button className="quiet" onClick={_ => onRetryPreparation()}>
+                            {text("Retry voices")}
+                          </button>
+                          <button className="quiet" onClick={_ => onSkipPreparation()}>
+                            {text("Continue without voices")}
+                          </button>
+                          <details>
+                            <summary> {text("Error details")} </summary>
+                            <pre> {text(reason)} </pre>
+                          </details>
+                        </div>,
+                    Option.bind(preparation, value => value.error),
+                  )}
                </div>
              </div>,
          children,

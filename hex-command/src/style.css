@@ -1232,6 +1232,23 @@ select {
   font-size: 1.08rem;
   line-height: 1.65;
 }
+.voice-text {
+  display: grid;
+}
+.voice-reserve,
+.voice-visible {
+  grid-area: 1 / 1;
+}
+.voice-reserve {
+  visibility: hidden;
+}
+.voice-accessible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
 .story-heading,
 .story-count {
   color: var(--muted);

@@ -278,6 +278,20 @@
 .map-loading.is-complete {
   animation: loading-depart 240ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
+.map-loading.is-voice-preparing {
+  pointer-events: auto;
+}
+.map-loading.is-voice-preparing:not(.is-complete) {
+  animation: loading-arrive 240ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes loading-arrive {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 @keyframes loading-warmup {
   from {
     transform: scaleX(0);
@@ -297,7 +311,8 @@
 @media (prefers-reduced-motion: reduce) {
   .loading-fill,
   .loading-caption,
-  .map-loading.is-complete {
+  .map-loading.is-complete,
+  .map-loading.is-voice-preparing {
     animation: none;
   }
 }
