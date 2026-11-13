@@ -106,7 +106,7 @@ let make =
          </button>}
     <button
       id="undo-move"
-      className="icon-button"
+      className="icon-button press-control"
       ariaLabel="Undo move"
       title="Undo move"
       disabled={!canUndo}
@@ -116,7 +116,7 @@ let make =
     </button>
     <button
       id="mission-briefing-button"
-      className="icon-button"
+      className="icon-button press-control"
       ariaLabel="Mission briefing"
       title="Mission briefing"
       ariaExpanded=briefing
@@ -128,7 +128,7 @@ let make =
     </button>
     <button
       id="settings-button"
-      className="icon-button"
+      className="icon-button press-control"
       ariaLabel="Menu"
       title="Menu"
       disabled={onSettings == None}

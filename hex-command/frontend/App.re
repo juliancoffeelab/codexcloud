@@ -1,5 +1,9 @@
 open Ui;
 
+[@mel.get] external activationDetail: Dom.event => int = "detail";
+[@mel.get] external primaryPointer: Dom.event => bool = "isPrimary";
+[@mel.get] external pointerButton: Dom.event => int = "button";
+
 module TurnBar = {
   [@react.component]
   let make =
@@ -97,6 +101,76 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
   let previews = React.useMemo0(() => Terrain_preview.create());
   React.useEffect1(() => {Some(() => Terrain_preview.close(previews))}, [|view.artwork|]);
   let actions = Session.commands(session);
+  React.useEffect1(
+    () => {
+      /* Capture before a control's action can remove or replace its DOM node.
+         Native click also covers keyboard activation; change covers selects
+         and toggles without doubling their click/label activation. */
+      let cue = (selector, event) => {
+        let node = target(event);
+        if (trusted(event)
+            && nodeType(node) == 1
+            && Js.Nullable.toOption(closest(node, selector)) != None
+            && Js.Nullable.toOption(closest(node, ":disabled, [aria-disabled='true']")) == None) {
+          let _ = Session.menu_cue(session);
+          ();
+        };
+      };
+      let click = event => {
+        let node = target(event);
+        if (nodeType(node) == 1
+            && (
+              activationDetail(event) == 0
+              || Js.Nullable.toOption(closest(node, ".press-control")) == None
+            )) {
+          cue(
+            "button, a[href], summary, input[type='button'], input[type='submit'], input[type='reset']",
+            event,
+          );
+        };
+      };
+      let press = event =>
+        if (primaryPointer(event) && pointerButton(event) == 0) {
+          cue("button.press-control", event);
+        };
+      let change =
+        cue(
+          "select, input[type='checkbox'], input[type='radio'], input[type='range'], input[type='file']",
+        );
+      Browser_audio.listen(
+        "pointerdown",
+        press,
+        {
+          "capture": true,
+          "passive": true,
+        },
+      );
+      Browser_audio.listen(
+        "click",
+        click,
+        {
+          "capture": true,
+          "passive": true,
+        },
+      );
+      Browser_audio.listen(
+        "change",
+        change,
+        {
+          "capture": true,
+          "passive": true,
+        },
+      );
+      Some(
+        () => {
+          Browser_audio.unlisten("pointerdown", press, true);
+          Browser_audio.unlisten("click", click, true);
+          Browser_audio.unlisten("change", change, true);
+        },
+      );
+    },
+    [|session|],
+  );
   let (showCommanderArrow, setShowCommanderArrow) = React.useState(() => false);
   let (commanderArrowError, setCommanderArrowError) = React.useState(() => "");
   let changeCommanderArrow = enabled => {
@@ -208,7 +282,6 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     setSettingsScreen(_ => screen);
     setSettingsKey(value => value + 1);
     show(settings);
-    let _ = Session.menu_cue(session);
     ();
   };
   let openRepair = () => {

@@ -163,6 +163,8 @@ let play t =
           let voice = create_source context and gain = create_gain context in
           gain_value (gain_parameter gain) (0.29 *. 0.25);
           source_buffer voice buffer;
+          (* Match the selection cue's subtle +/-0.35 semitone variation. *)
+          gain_value (detune_parameter voice) ((Js.Math.random () -. 0.5) *. 70.);
           connect_source voice gain;
           connect_gain gain (destination context);
           ended voice (fun[@u] () ->
