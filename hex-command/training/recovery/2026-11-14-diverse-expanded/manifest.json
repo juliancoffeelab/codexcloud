@@ -3,15 +3,15 @@
   "run": "/workspace/native-planner-replay/hex-command/tmp/rl-v2/expanded",
   "workload_sha256": "2e64b8791cf5696fc35c6c7373faf60baa0de779657e6debae8d954aa1d32d64",
   "latest": {
-    "label": "update-00009587",
+    "label": "update-00010982",
     "files": {
       "planner.json": {
-        "bytes": 1018692,
-        "sha256": "fe40176bfaa67f8c56837a01eec4edfbdf19e709171b5de224bb021ecfb2eb4a"
+        "bytes": 1018767,
+        "sha256": "6bbc036965052b86d0d60bf01593323ec8f0bd6e5c133b81bfb988d07a63fc4c"
       },
       "resume.pt": {
         "bytes": 750338,
-        "sha256": "e166f2f3f0795ea7227060ab33793e8e197daa16a599028b02aaa2242207f96c"
+        "sha256": "987e4b77469ac6b085bb08b80313f01e11d185b8bbbf1d40c9c2e87915b9661e"
       }
     }
   },
@@ -28,7 +28,7 @@
       }
     }
   },
-  "backup_utc": "2026-11-14T06:59:23Z",
+  "backup_utc": "2026-11-14T07:29:28Z",
   "files": {
     "catalog-intern.patch": {
       "bytes": 3784,
@@ -36,31 +36,31 @@
     },
     "latest.pt": {
       "bytes": 750338,
-      "sha256": "e166f2f3f0795ea7227060ab33793e8e197daa16a599028b02aaa2242207f96c"
+      "sha256": "987e4b77469ac6b085bb08b80313f01e11d185b8bbbf1d40c9c2e87915b9661e"
     },
     "catalog.tar.gz": {
       "bytes": 132361,
       "sha256": "2b102d049f696f8b831bd8f073e60891684c389403d38cabdc4c0f87ea9c56e1"
     },
     "rl-metrics.jsonl.gz": {
-      "bytes": 2911848,
-      "sha256": "523fec563b063e01eda17f7571e890f851f68573284552b3b4cff1be6a3aeb49"
+      "bytes": 3328996,
+      "sha256": "ae2c875130342c78de147a6c5d8750d96358c10eb98ce2b502801e14fabfc2e1"
     },
     "workload.json": {
       "bytes": 8346575,
       "sha256": "ad9698118953ca9f0dc48afd5a30097cf950be7fcb7e374445d895eb5e5aeacd"
     },
     "latest-planner.json": {
-      "bytes": 1018692,
-      "sha256": "fe40176bfaa67f8c56837a01eec4edfbdf19e709171b5de224bb021ecfb2eb4a"
+      "bytes": 1018767,
+      "sha256": "6bbc036965052b86d0d60bf01593323ec8f0bd6e5c133b81bfb988d07a63fc4c"
     },
     "best-planner.json": {
       "bytes": 1018399,
       "sha256": "c6e3a1c2c2600f42dc93a70e410dec9f610cba41c6eac1ed92e37eab61b9659b"
     },
     "rl-curves.png": {
-      "bytes": 246552,
-      "sha256": "149e9ced469731f2778fa5a657f0c16c1c7f0ecc622431bf2219ed3e4742766a"
+      "bytes": 230430,
+      "sha256": "3ad98be220db20498d04183673a335da9a229907806b43bd8ceb565798a94f95"
     },
     "best.pt": {
       "bytes": 750274,
