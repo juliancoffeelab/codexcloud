@@ -3,15 +3,15 @@
   "run": "/workspace/native-planner-replay/hex-command/tmp/rl-v2/run",
   "workload_sha256": "e83bb46206435b4da604386e9c47115525edc4ba816c6920f5a85130b8d0241f",
   "latest": {
-    "label": "update-00000992",
+    "label": "last",
     "files": {
       "planner.json": {
-        "bytes": 1018659,
-        "sha256": "f8081be986ec9e57dfa585e18b7f4e7fd5feac377b9f316d534c7313e4dfd40c"
+        "bytes": 1018635,
+        "sha256": "7b161d0550142c3bfa281b6c96f4c80625c7be686cd6aa6dfea1700a0d138154"
       },
       "resume.pt": {
         "bytes": 746690,
-        "sha256": "ef258543b84a1ffefa2195cce1540319035c4d54dc403b0049515e9e52716b44"
+        "sha256": "19267047a3d122d5958383d072ebcd4c84ce056881243378155670470ea668e6"
       }
     }
   },
@@ -28,27 +28,27 @@
       }
     }
   },
-  "backup_utc": "2026-11-14T01:55:59Z",
+  "backup_utc": "2026-11-14T02:26:02Z",
   "files": {
     "latest.pt": {
       "bytes": 746690,
-      "sha256": "ef258543b84a1ffefa2195cce1540319035c4d54dc403b0049515e9e52716b44"
+      "sha256": "19267047a3d122d5958383d072ebcd4c84ce056881243378155670470ea668e6"
     },
     "catalog.tar.gz": {
       "bytes": 110525,
       "sha256": "7f3953ed61a8d60ab439d39b1d2e08563ad7d5555df4876c671965f00ece429f"
     },
     "rl-metrics.jsonl.gz": {
-      "bytes": 358231,
-      "sha256": "aa6903300848da3a969842efc21070c66633b3b62d56c8c1dcb14f6a739a379a"
+      "bytes": 754055,
+      "sha256": "96042305df6faaabfdcd744c7dd60d1d259c9cd1d9a7ad550c0513a1b0dcbd3e"
     },
     "workload.json": {
       "bytes": 6806314,
       "sha256": "2b33c85d4db297c0e37ff004af5c7206b00def1b7281176de83839656a8af20e"
     },
     "latest-planner.json": {
-      "bytes": 1018659,
-      "sha256": "f8081be986ec9e57dfa585e18b7f4e7fd5feac377b9f316d534c7313e4dfd40c"
+      "bytes": 1018635,
+      "sha256": "7b161d0550142c3bfa281b6c96f4c80625c7be686cd6aa6dfea1700a0d138154"
     },
     "best-planner.json": {
       "bytes": 1018574,
