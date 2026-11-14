@@ -74,19 +74,21 @@ scores. Preserve old model files and write new versions separately.
 Each trainer's `--help` is the authority for its options. Run these from the game
 root and place mutable runs under ignored `tmp/rl/`.
 
-| Module under `hex_command_rl` | Purpose                                                          |
-| ----------------------------- | ---------------------------------------------------------------- |
-| `train`                       | Dense linear/MLP imitation over disk-backed teacher decisions    |
-| `trees`                       | Time-bounded LightGBM candidate ranker; install the trees extra  |
-| `spatial_train`               | CNN imitation and compatible policy fine-tuning                  |
-| `evaluate`, `compare`         | Native evaluation of saved policies                              |
-| `benchmark`                   | Frozen-position planner timing, including existing orchestration |
-| `mixed_workload`              | Isolated authored catalog and disjoint hierarchical seed panels  |
-| `mixed_imitation`             | Weighted imitation over losslessly compressed shards             |
-| `mixed_ppo`                   | Independent native slots and decision-budgeted multi-task PPO    |
-| `mixed_evaluate`, `handoff`   | Greedy validation and robust checkpoint selection                |
-| `overnight`                   | Restartable imitation → PPO → held-out evaluation supervisor     |
-| `remote_backup`               | Local recovery export with explicit optional Git publication     |
+| Module under `hex_command_rl`     | Purpose                                                          |
+| --------------------------------- | ---------------------------------------------------------------- |
+| `train`                           | Dense linear/MLP imitation over disk-backed teacher decisions    |
+| `trees`                           | Time-bounded LightGBM candidate ranker; install the trees extra  |
+| `spatial_train`                   | CNN imitation and compatible policy fine-tuning                  |
+| `evaluate`, `compare`             | Native evaluation of saved policies                              |
+| `benchmark`                       | Frozen-position planner timing, including existing orchestration |
+| `mixed_workload`                  | Isolated authored catalog and disjoint hierarchical seed panels  |
+| `environments`                    | Offline authoring of fixed training-only tactical fixtures       |
+| `diverse_workload`, `diverse_run` | Held-out validation and supervised PPO-only continuation         |
+| `mixed_imitation`                 | Weighted imitation over losslessly compressed shards             |
+| `mixed_ppo`                       | Independent native slots and decision-budgeted multi-task PPO    |
+| `mixed_evaluate`, `handoff`       | Greedy validation and robust checkpoint selection                |
+| `overnight`                       | Restartable imitation → PPO → held-out evaluation supervisor     |
+| `remote_backup`                   | Local recovery export with explicit optional Git publication     |
 
 For example, prepare a mixed workload and launch its supervisor:
 
@@ -116,9 +118,9 @@ set; authored rosters, diplomacy and objective routes remain part of the case.
 
 Imitation learns a teacher's candidate selection. PPO uses fresh stochastic
 rollouts, a critic, GAE, clipping, entropy regularization and a frozen-reference
-KL anchor. Campaign completion/wins give +1, defeat gives -1, campaign caps give
--1 and arena caps give 0. The native step API itself returns 0 for truncation;
-the campaign PPO trainers apply the campaign-failure rule.
+KL anchor. The native step API returns 0 for truncation. The mixed PPO trainer
+applies the family-specific terminal penalties documented below; historical
+experiments retain their original reward parameters in their manifests.
 
 The mixed handoff and final RL selection evaluate larger validation panels.
 Candidates within 2.5 percentage points of the best minimum arena/campaign ×
