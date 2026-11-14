@@ -115,6 +115,11 @@ def main():
     p.add_argument("--seconds", type=float, default=21600)
     p.add_argument("--warm-start", type=Path)
     p.add_argument("--resume", type=Path)
+    p.add_argument(
+        "--seed-start",
+        type=int,
+        help="fresh rollout seeds for a warm start (at least 7000001)",
+    )
     p.add_argument("--envs", type=int, default=4)
     p.add_argument("--critic-warmup-episodes", type=int, default=24)
     p.add_argument("--horizon", type=int, default=64)
@@ -144,6 +149,11 @@ def main():
     rng = np.random.default_rng(271)
     policy = SpatialPlanner().eval()
     old = load_resume(a.resume) if a.resume else None
+    if a.seed_start is not None and (old or not 7000001 <= a.seed_start <= 4000000000):
+        p.error(
+            "seed-start is only for warm starts and must avoid held-out seed ranges"
+        )
+    seed_start = old.get("seed_start", 7000001) if old else a.seed_start or 7000001
     if old and a.temperature is not None and a.temperature != old["temperature"]:
         p.error("resume temperature must match the saved policy")
     a.temperature = (
@@ -173,6 +183,8 @@ def main():
         rng.bit_generator.state = old["numpy_rng"]
         random.setstate(old["python_rng"])
     sampler = Sampler(spec["train"], rng, old["sampler"] if old else None)
+    if not old:
+        sampler.next_seed = seed_start
     update = old["update"] if old else 0
     episodes = old["episodes"] if old else 0
     decisions = old["decisions"] if old else 0
@@ -221,6 +233,7 @@ def main():
             workload_sha256=spec["workload_sha256"],
             temperature=a.temperature,
             campaign_cap=a.campaign_cap,
+            seed_start=seed_start,
             action_counts=dict(action_counts),
         )
         save_bundle(run, state, policy, label)
@@ -229,6 +242,7 @@ def main():
         run / "parameters.json",
         dict(
             seconds=a.seconds,
+            seed_start=seed_start,
             temperature=a.temperature,
             envs=a.envs,
             horizon=a.horizon,
