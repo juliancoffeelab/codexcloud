@@ -1,0 +1,139 @@
+{
+  "requiredCompanions": ["charge", "guard"],
+  "events": [
+    {
+      "id": "secure",
+      "when": {
+        "held": {
+          "tile": {
+            "hex": {
+              "col": 10,
+              "row": 6
+            }
+          },
+          "side": "player",
+          "turns": 3
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Hold the crossing for three turns",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "hold": {
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 6
+              }
+            },
+            "side": "player",
+            "turns": 3
+          }
+        },
+        "playerMarker": null,
+        "satisfiedWhen": {
+          "flag": "secured"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "secured"
+        }
+      ]
+    },
+    {
+      "id": "finish",
+      "when": {
+        "all": [
+          {
+            "flag": "secured"
+          },
+          {
+            "noUnits": {
+              "faction": "enemy",
+              "role": "leader"
+            }
+          }
+        ]
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the opposing leader after securing the crossing",
+        "visibleWhen": {
+          "flag": "secured"
+        },
+        "intent": {
+          "defeat": {
+            "faction": "enemy",
+            "role": "leader"
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ]
+    },
+    {
+      "id": "supplies",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 8,
+              "row": 8
+            }
+          },
+          "faction": "player",
+          "through": true
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Collect optional supplies",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 8,
+                "row": 8
+              }
+            },
+            "faction": "player",
+            "through": true
+          }
+        },
+        "playerMarker": null,
+        "optional": true
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "deadline",
+      "priority": -100,
+      "when": {
+        "turn": 34
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ]
+    }
+  ]
+}

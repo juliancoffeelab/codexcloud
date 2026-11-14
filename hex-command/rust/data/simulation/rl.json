@@ -423,6 +423,112 @@
           "enemy": "woodland"
         }
       ]
+    },
+    {
+      "id": "rl-broadfield",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-floodplain",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
     }
   ],
   "campaigns": {
@@ -481,6 +587,30 @@
       }
     ],
     "rl-relay": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-company-human": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-company-skeletons": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-company-woodland": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-company-coastal": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted"

@@ -467,6 +467,44 @@
         }
       ],
       "holdTurns": 4
+    },
+    {
+      "id": "rl-broadfield",
+      "variants": [
+        {
+          "map": "rl-broadfield",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 9,
+          "row": 5
+        }
+      ],
+      "holdTurns": 5
+    },
+    {
+      "id": "rl-floodplain",
+      "variants": [
+        {
+          "map": "rl-floodplain",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 10,
+          "row": 6
+        }
+      ],
+      "holdTurns": 3
     }
   ],
   "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],

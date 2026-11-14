@@ -9,7 +9,7 @@ from pathlib import Path
 import random
 
 DATA = Path("rust/data")
-BIOMES = (
+CORE_BIOMES = (
     ("meadow", 9, 7, ("plains", "plains", "forest", "hill")),
     ("woodland", 11, 9, ("forest", "forest", "plains", "hill")),
     ("ridge", 13, 7, ("hill", "hill", "forest", "mountain")),
@@ -18,6 +18,10 @@ BIOMES = (
     ("islands", 15, 11, ("water", "water", "plains", "forest")),
     ("cavern", 11, 7, ("cave", "cave", "cave-wall", "cave-passage")),
     ("ruins", 15, 9, ("ruins", "plains", "forest", "hill")),
+)
+BIOMES = CORE_BIOMES + (
+    ("broadfield", 19, 11, ("plains", "forest", "hill", "plains")),
+    ("floodplain", 21, 13, ("marsh", "water", "forest", "plains")),
 )
 
 
@@ -42,7 +46,11 @@ def board(identifier, biome, seed):
                 kind = "water"
             # Two guaranteed land routes keep every faction's army mobile.
             if row in (mid, mid - 2):
-                kind = "ford" if name in ("river", "islands", "wetland") else "road"
+                kind = (
+                    "ford"
+                    if name in ("river", "islands", "wetland", "floodplain")
+                    else "road"
+                )
             if col in (0, 1, 2, cols - 3, cols - 2, cols - 1):
                 kind = "plains" if name != "cavern" else "cave"
             if row == mid and col in (1, cols - 2):
@@ -270,7 +278,7 @@ def stage(identifier, biome, task, player, enemy, seed):
                 remember=True,
                 concealment=[dict(kind="fog", revealWithin=2, requires={})],
             )
-    if task != "survive":
+    if task not in ("survive", "protect", "reinforcements"):
         events.append(
             dict(
                 id="deadline",
@@ -280,6 +288,187 @@ def stage(identifier, biome, task, player, enemy, seed):
             )
         )
     return b, r, dict(requiredCompanions=required, events=events)
+
+
+def compound_stage(identifier, biome, player, enemy, seed, chapter, mirrored):
+    """Two linked tasks per chapter, optional supplies, and persistent survivors."""
+    b = board(identifier, biome, seed)
+    cols, rows = b["cols"], b["rows"]
+    mid = rows // 2
+    r = roster(player, enemy, cols, rows, gold=18, escort="captive")
+    r["factions"][0]["gold"] = 36
+    center = dict(hex=hex_(cols // 2, mid))
+    exit_ = dict(
+        tile=dict(hex=hex_(cols - 4, mid - 2)), character="charge", through=True
+    )
+    required = ["charge"]
+    if chapter == 0:
+        gate = objective(
+            "route-open",
+            dict(own=dict(tile=center, faction="player")),
+            dict(capture=[center]),
+            "Secure the crossing",
+            [dict(setFlag="route-open")],
+        )
+        gate["objective"]["satisfiedWhen"] = dict(flag="route-open")
+        arrival = objective(
+            "arrival",
+            dict(all=[dict(flag="route-open"), dict(stand=exit_)]),
+            dict(escort=exit_),
+            "Escort the company beyond the crossing",
+        )
+        arrival["objective"]["visibleWhen"] = dict(flag="route-open")
+        pool = next(
+            v["pool"]
+            for v in json.loads((DATA / "simulation/rosters.json").read_text())
+            if v["id"] == enemy
+        )
+        reinforcement = dict(
+            id="reserve",
+            when=dict(all=[dict(flag="route-open"), dict(turnAtLeast=9)]),
+            actions=[
+                dict(
+                    spawn=dict(
+                        faction="enemy",
+                        area=[
+                            dict(hex=hex_(cols - 3, mid - 2)),
+                            dict(hex=hex_(cols - 3, mid + 2)),
+                        ],
+                        units=[dict(type=pool[0]), dict(type=pool[2])],
+                    )
+                )
+            ],
+        )
+        events = [gate, arrival, reinforcement]
+    else:
+        r["factions"][0]["units"][2]["character"] = "guard"
+        required.append("guard")
+        selection = dict(tile=center, side="player", turns=3)
+        hold = objective(
+            "secure",
+            dict(held=selection),
+            dict(hold=selection),
+            "Hold the crossing for three turns",
+            [dict(setFlag="secured")],
+        )
+        hold["objective"]["satisfiedWhen"] = dict(flag="secured")
+        boss = dict(faction="enemy", role="leader")
+        battle = objective(
+            "finish",
+            dict(all=[dict(flag="secured"), dict(noUnits=boss)]),
+            dict(defeat=boss),
+            "Defeat the opposing leader after securing the crossing",
+        )
+        battle["objective"]["visibleWhen"] = dict(flag="secured")
+        events = [hold, battle]
+    site = dict(
+        tile=dict(hex=hex_(cols // 2 - 2, mid - 2)), faction="player", through=True
+    )
+    supplies = objective(
+        "supplies",
+        dict(stand=site),
+        dict(goTo=site),
+        "Collect optional supplies",
+        [dict(gold=dict(faction="player", amount=12))],
+    )
+    supplies["objective"]["optional"] = True
+    events.append(supplies)
+    # Include open-ended campaigns as well as authored deadlines, so the
+    # campaign-cap penalty is actually encountered during training.
+    if chapter == 0 or not mirrored:
+        events.append(
+            dict(
+                id="deadline",
+                priority=-100,
+                when=dict(turn=38 if chapter == 0 else 34),
+                actions=[dict(defeat="The deadline expired.")],
+            )
+        )
+    scripts = dict(requiredCompanions=required, events=events)
+
+    # Reflect offset hex coordinates, preserving adjacency. Staggered rows need
+    # a one-column shift; the spare bounding column contains no extra tiles.
+    def transform(value):
+        if isinstance(value, list):
+            return [transform(v) for v in value]
+        if not isinstance(value, dict):
+            return value
+        result = {k: transform(v) for k, v in value.items()}
+        if "col" in value and "row" in value:
+            if mirrored:
+                result["col"] = cols - value["col"] - value["row"] % 2
+            if chapter:
+                result["row"] = rows - 1 - value["row"]
+        return result
+
+    b, r, scripts = map(transform, (b, r, scripts))
+    if mirrored:
+        b["cols"] += 1
+    return b, r, scripts
+
+
+def publish_stage(folder, name, b, r, scripts):
+    base = folder / "stages" / name
+    write(base / "map.json", b)
+    write(base / "roster.json", r)
+    write(base / "scripts.json", scripts)
+    write(
+        base / "story.json",
+        dict(
+            subtitle="RL tactical fixture",
+            briefing="Complete the marked tactical task and preserve required characters.",
+            hints=[],
+            intro=[],
+            victory=[],
+        ),
+    )
+    write(
+        base / "stage.json",
+        dict(
+            id=name,
+            map="map.json",
+            roster="roster.json",
+            story="story.json",
+            scripts="scripts.json",
+        ),
+    )
+    return f"stages/{name}/stage.json"
+
+
+def publish_campaign(
+    identifier, player, stages, characters, manifest, campaign, training
+):
+    folder = DATA / "game/campaigns" / identifier
+    leader = next(
+        v["leader"]
+        for v in json.loads((DATA / "simulation/rosters.json").read_text())
+        if v["id"] == player
+    )
+    write(
+        folder / "campaign.json",
+        dict(
+            id=identifier,
+            name=identifier,
+            tagline="RL tactical fixtures",
+            description="Training only.",
+            shortDescription="Training only.",
+            race="human"
+            if player == "woodland"
+            else "merfolk"
+            if player == "coastal"
+            else player,
+            leader=leader,
+            human=False,
+            characters=[dict(id=c, name=c) for c in characters],
+            ending=[],
+            stages=stages,
+        ),
+    )
+    path = str((folder / "campaign.json").relative_to(DATA))
+    if path not in manifest["campaigns"]:
+        manifest["campaigns"].append(path)
+    campaign["campaigns"][identifier] = dict(diplomacy=["unrestricted"], routes={})
+    training[identifier] = [dict(objective="authored", diplomacy="unrestricted")]
 
 
 def main():
@@ -317,7 +506,10 @@ def main():
                 variants=[
                     dict(
                         map=identifier,
-                        forces=dict(kind="selected", budget=36 + i % 3 * 3),
+                        forces=dict(
+                            kind="selected",
+                            budget=54 if biome[1] >= 19 else 36 + i % 3 * 3,
+                        ),
                     )
                 ],
                 territory=[hex_(b["cols"] // 2, b["rows"] // 2)],
@@ -349,72 +541,49 @@ def main():
         stages = []
         for j, kind in enumerate(("capture", "escort") if task == "relay" else (task,)):
             name = f"{identifier}-{j + 1}"
-            base = folder / "stages" / name
             b, r, scripts = stage(
                 name,
-                BIOMES[(i + j) % len(BIOMES)],
+                CORE_BIOMES[(i + j) % len(CORE_BIOMES)],
                 kind,
                 player,
                 enemy,
                 2718 + i * 11 + j,
             )
-            write(base / "map.json", b)
-            write(base / "roster.json", r)
-            write(base / "scripts.json", scripts)
-            write(
-                base / "story.json",
-                dict(
-                    subtitle="RL tactical fixture",
-                    briefing="Complete the marked tactical task and preserve required characters.",
-                    hints=[],
-                    intro=[],
-                    victory=[],
-                ),
-            )
-            write(
-                base / "stage.json",
-                dict(
-                    id=name,
-                    map="map.json",
-                    roster="roster.json",
-                    story="story.json",
-                    scripts="scripts.json",
-                ),
-            )
-            stages.append(f"stages/{name}/stage.json")
-        chars = [
-            dict(id=c, name=c) for c in ("player-leader", "enemy-leader", "charge")
-        ]
-        leader = next(
-            v["leader"]
-            for v in json.loads((DATA / "simulation/rosters.json").read_text())
-            if v["id"] == player
+            stages.append(publish_stage(folder, name, b, r, scripts))
+        publish_campaign(
+            identifier,
+            player,
+            stages,
+            ("player-leader", "enemy-leader", "charge"),
+            manifest,
+            campaign,
+            campaigns,
         )
-        write(
-            folder / "campaign.json",
-            dict(
-                id=identifier,
-                name=identifier,
-                tagline="RL tactical fixtures",
-                description="Training only.",
-                shortDescription="Training only.",
-                race="human"
-                if player == "woodland"
-                else "merfolk"
-                if player == "coastal"
-                else player,
-                leader=leader,
-                human=False,
-                characters=chars,
-                ending=[],
-                stages=stages,
-            ),
+    for i, player in enumerate(races):
+        identifier = "rl-company-" + player
+        folder = DATA / "game/campaigns" / identifier
+        stages = []
+        for j in range(2):
+            name = f"{identifier}-{j + 1}"
+            values = compound_stage(
+                name,
+                BIOMES[8 + (i + j) % 2],
+                player,
+                races[(i + j + 1) % 4],
+                5003 + i * 31 + j,
+                j,
+                i % 2 == 1,
+            )
+            stages.append(publish_stage(folder, name, *values))
+        publish_campaign(
+            identifier,
+            player,
+            stages,
+            ("player-leader", "enemy-leader", "charge", "guard"),
+            manifest,
+            campaign,
+            campaigns,
         )
-        path = str((folder / "campaign.json").relative_to(DATA))
-        if path not in manifest["campaigns"]:
-            manifest["campaigns"].append(path)
-        campaign["campaigns"][identifier] = dict(diplomacy=["unrestricted"], routes={})
-        campaigns[identifier] = [dict(objective="authored", diplomacy="unrestricted")]
     write(DATA / "manifest.json", manifest)
     write(DATA / "simulation/arena.json", arena)
     write(DATA / "simulation/campaign.json", campaign)

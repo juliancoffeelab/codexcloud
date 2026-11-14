@@ -133,10 +133,15 @@ The `rl-` maps and campaigns are fixed, engine-owned JSON with `human: false`.
 They are absent from default simulation schedules. The offline authoring utility
 `python -m hex_command_rl.environments` reproduces them; no runtime terrain
 generator or frontend loader is involved. Arena layouts cover meadow, woodland,
-ridge, wetlands, river crossings, islands, caverns and ruins, from 9×7 to 15×11.
+ridge, wetlands, river crossings, islands, caverns and ruins, from 9×7 to 21×13.
 All twelve ordered race pairings are available in training. Campaign fixtures
 exercise escort/courier movement, protected fighters, deadlines, holding,
 simultaneous ownership, survival, reinforcements, fog and stage progression.
+Four longer company campaigns chain opening a crossing, escorting, holding and
+fighting across two chapters, with optional supplies and persistent survivors.
+Mirrored hex layouts also teach movement in the other direction (their bounding
+box has one extra staggered column). Some campaigns omit authored deadlines so
+the harness-cap penalty can actually occur alongside scripted deadline defeats.
 
 Prepare a new workload with:
 
@@ -152,6 +157,12 @@ training. Training uses only the new fixtures, evenly splitting arena/campaign
 decision budgets, tasks and Classic/Predictor opponents. Existing arena maps and
 Lantern Road routes are held out; separate validation and test seeds prevent
 checkpoint selection on final test outcomes. The starting policy stays eligible.
+The full panel uses twelve campaign seeds per route; the small periodic panel
+is only a progress indicator. A PPO-only supervisor can manage restarts and
+evaluation with `diverse_run --root tmp/rl/new-run --warm-start <resume.pt>
+--seconds 32400`. For a new warm-start phase, `--seed-start 9000001` supplies a
+fresh rollout range; exact resumes restore their own seed cursor. Worker errors
+include their configuration and action indices for replay through `BatchEnv`.
 
 Wins/completions receive +1. Campaign escort losses receive −2; losses of required
 companions receive −1.5; other defeats, including leader-only losses, receive −1.
