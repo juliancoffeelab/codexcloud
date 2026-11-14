@@ -514,18 +514,17 @@ def main():
         folder = DATA / "game/scenario" / identifier
         b = board(identifier, biome, 1729 + i)
         write(folder / "map.json", b)
-        write(
-            folder / "roster.json", roster("human", "skeletons", b["cols"], b["rows"])
-        )
+        arena_roster = roster("human", "skeletons", b["cols"], b["rows"])
+        for faction in arena_roster["factions"]:
+            for unit in faction["units"]:
+                unit.pop("character", None)
+        write(folder / "roster.json", arena_roster)
         write(
             folder / "scenario.json",
             dict(
                 human=False,
                 map="map.json",
                 roster="roster.json",
-                characters=[
-                    dict(id=s + "-leader", name=s) for s in ("player", "enemy")
-                ],
             ),
         )
         path = str((folder / "scenario.json").relative_to(DATA))

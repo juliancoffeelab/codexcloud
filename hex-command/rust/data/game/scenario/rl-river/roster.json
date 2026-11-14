@@ -60,8 +60,7 @@
             "col": 1,
             "row": 4
           },
-          "role": "leader",
-          "character": "player-leader"
+          "role": "leader"
         },
         {
           "type": "swordsman",
@@ -125,8 +124,7 @@
             "col": 11,
             "row": 4
           },
-          "role": "leader",
-          "character": "enemy-leader"
+          "role": "leader"
         },
         {
           "type": "skeleton",

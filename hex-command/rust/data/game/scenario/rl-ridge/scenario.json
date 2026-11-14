@@ -1,15 +1,5 @@
 {
   "human": false,
   "map": "map.json",
-  "roster": "roster.json",
-  "characters": [
-    {
-      "id": "player-leader",
-      "name": "player"
-    },
-    {
-      "id": "enemy-leader",
-      "name": "enemy"
-    }
-  ]
+  "roster": "roster.json"
 }
