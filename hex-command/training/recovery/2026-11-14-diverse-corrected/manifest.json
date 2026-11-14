@@ -1,0 +1,70 @@
+{
+  "phase": "rl",
+  "run": "/workspace/native-planner-replay/hex-command/tmp/rl-v2/corrected",
+  "workload_sha256": "e83bb46206435b4da604386e9c47115525edc4ba816c6920f5a85130b8d0241f",
+  "latest": {
+    "label": "initial",
+    "files": {
+      "planner.json": {
+        "bytes": 1018574,
+        "sha256": "4c9d0f33184c59efff9c337b12257d9e86819ef9c5d8f160e78a7aeed827e040"
+      },
+      "resume.pt": {
+        "bytes": 351680,
+        "sha256": "fc1a9c8ea3536d2c4bd1f6a68ef00f5a8a12894b8c7fa61d1131e4103928cf35"
+      }
+    }
+  },
+  "best": {
+    "label": "initial",
+    "files": {
+      "planner.json": {
+        "bytes": 1018574,
+        "sha256": "4c9d0f33184c59efff9c337b12257d9e86819ef9c5d8f160e78a7aeed827e040"
+      },
+      "resume.pt": {
+        "bytes": 351680,
+        "sha256": "fc1a9c8ea3536d2c4bd1f6a68ef00f5a8a12894b8c7fa61d1131e4103928cf35"
+      }
+    }
+  },
+  "backup_utc": "2026-11-14T02:29:36Z",
+  "files": {
+    "latest.pt": {
+      "bytes": 351680,
+      "sha256": "fc1a9c8ea3536d2c4bd1f6a68ef00f5a8a12894b8c7fa61d1131e4103928cf35"
+    },
+    "catalog.tar.gz": {
+      "bytes": 110525,
+      "sha256": "ccb12ffbec8e1c5c943d85c33f03e78a35bc94da1c1a35371b7ddf51d5661573"
+    },
+    "rl-metrics.jsonl.gz": {
+      "bytes": 11249,
+      "sha256": "9a70be2f4ef4d5431644589e8de6969c9403a59d6f42b3dedad206d93a7b9022"
+    },
+    "workload.json": {
+      "bytes": 6806320,
+      "sha256": "5832d7b148c05c6631f070717e98336337b294b5443ac170a672affc02f1d4a8"
+    },
+    "latest-planner.json": {
+      "bytes": 1018574,
+      "sha256": "4c9d0f33184c59efff9c337b12257d9e86819ef9c5d8f160e78a7aeed827e040"
+    },
+    "best-planner.json": {
+      "bytes": 1018574,
+      "sha256": "4c9d0f33184c59efff9c337b12257d9e86819ef9c5d8f160e78a7aeed827e040"
+    },
+    "rl-curves.png": {
+      "bytes": 168458,
+      "sha256": "c80dfae691d7b3bdc725503801fee82bb7c1625571390e2c31c339778b99e8d9"
+    },
+    "best.pt": {
+      "bytes": 351680,
+      "sha256": "fc1a9c8ea3536d2c4bd1f6a68ef00f5a8a12894b8c7fa61d1131e4103928cf35"
+    },
+    "rl-parameters.json": {
+      "bytes": 539,
+      "sha256": "3c4d7b2052d87783b33f29c7d2b67ef3a4ff7b71104791401479fa5f005856f7"
+    }
+  }
+}
