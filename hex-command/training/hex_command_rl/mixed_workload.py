@@ -22,7 +22,7 @@ def definition():
 
 
 def group(c):
-    rec = c["playerBlocks"]["recruiter"]
+    rec = c.get("playerBlocks", {}).get("recruiter", c["player"])
     return (
         ("campaign", c["campaign"], c["objective"], c["diplomacy"], c["enemy"], rec)
         if "campaign" in c
@@ -40,11 +40,22 @@ def mass(c):
     )
 
 
-def configs(split):
+def weights(cases):
+    """Equal family/task budgets, then split each task's actual variant groups."""
+    keys = set(group(c) for c in cases)
+    families = {k[0] for k in keys}
+    tasks = {f: {k[1] for k in keys if k[0] == f} for f in families}
+    return {
+        k: 1 / len(families) / len(tasks[k[0]]) / sum(v[:2] == k[:2] for v in keys)
+        for k in keys
+    }
+
+
+def configs(split, spec=None):
     result = []
     arena_start = {"train": 1000001, "validation": 3000001, "test": 5000001}[split]
     campaign_start = {"train": 2000001, "validation": 4000001, "test": 6000001}[split]
-    spec = definition()
+    spec = definition() if spec is None else spec
     max_pairs = max(len(a["pairs"]) for a in spec["arenas"])
     for arena in spec["arenas"]:
         name = arena["id"]
@@ -56,7 +67,7 @@ def configs(split):
                 for recruiter in spec["recruiters"]:
                     for seed in range(arena_start, arena_start + n):
                         for player, foe in pairs:
-                            for first in ["player", "enemy"]:
+                            for first in ["player", "ai"]:
                                 result.append(
                                     dict(
                                         seed=seed,

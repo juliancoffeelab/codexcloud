@@ -74,19 +74,19 @@ scores. Preserve old model files and write new versions separately.
 Each trainer's `--help` is the authority for its options. Run these from the game
 root and place mutable runs under ignored `tmp/rl/`.
 
-| Module under `hex_command_rl` | Purpose |
-| --- | --- |
-| `train` | Dense linear/MLP imitation over disk-backed teacher decisions |
-| `trees` | Time-bounded LightGBM candidate ranker; install the trees extra |
-| `spatial_train` | CNN imitation and compatible policy fine-tuning |
-| `evaluate`, `compare` | Native evaluation of saved policies |
-| `benchmark` | Frozen-position planner timing, including existing orchestration |
-| `mixed_workload` | Isolated authored catalog and disjoint hierarchical seed panels |
-| `mixed_imitation` | Weighted imitation over losslessly compressed shards |
-| `mixed_ppo` | Independent native slots and decision-budgeted multi-task PPO |
-| `mixed_evaluate`, `handoff` | Greedy validation and robust checkpoint selection |
-| `overnight` | Restartable imitation → PPO → held-out evaluation supervisor |
-| `remote_backup` | Local recovery export with explicit optional Git publication |
+| Module under `hex_command_rl` | Purpose                                                          |
+| ----------------------------- | ---------------------------------------------------------------- |
+| `train`                       | Dense linear/MLP imitation over disk-backed teacher decisions    |
+| `trees`                       | Time-bounded LightGBM candidate ranker; install the trees extra  |
+| `spatial_train`               | CNN imitation and compatible policy fine-tuning                  |
+| `evaluate`, `compare`         | Native evaluation of saved policies                              |
+| `benchmark`                   | Frozen-position planner timing, including existing orchestration |
+| `mixed_workload`              | Isolated authored catalog and disjoint hierarchical seed panels  |
+| `mixed_imitation`             | Weighted imitation over losslessly compressed shards             |
+| `mixed_ppo`                   | Independent native slots and decision-budgeted multi-task PPO    |
+| `mixed_evaluate`, `handoff`   | Greedy validation and robust checkpoint selection                |
+| `overnight`                   | Restartable imitation → PPO → held-out evaluation supervisor     |
+| `remote_backup`               | Local recovery export with explicit optional Git publication     |
 
 For example, prepare a mixed workload and launch its supervisor:
 
@@ -126,6 +126,45 @@ opponent score compete on overall score and caps. Positive minimum scores take
 precedence over a zero stratum. The starting policy remains eligible. Final test
 seeds never select checkpoints. Other trainer entry points document their own
 selection metric; teacher agreement alone does not establish game strength.
+
+## Diverse tactical continuation
+
+The `rl-` maps and campaigns are fixed, engine-owned JSON with `human: false`.
+They are absent from default simulation schedules. The offline authoring utility
+`python -m hex_command_rl.environments` reproduces them; no runtime terrain
+generator or frontend loader is involved. Arena layouts cover meadow, woodland,
+ridge, wetlands, river crossings, islands, caverns and ruins, from 9×7 to 15×11.
+All twelve ordered race pairings are available in training. Campaign fixtures
+exercise escort/courier movement, protected fighters, deadlines, holding,
+simultaneous ownership, survival, reinforcements, fog and stage progression.
+
+Prepare a new workload with:
+
+```sh
+.venv/bin/python -m hex_command_rl.diverse_workload --root tmp/rl/new-run
+.venv/bin/python -m hex_command_rl.mixed_ppo --root tmp/rl/new-run \
+  --warm-start training/checkpoints/campaign-cnn-ppo-v1/resume.pt \
+  --seconds 600 --campaign-cap -2
+```
+
+Run `mixed_evaluate --root tmp/rl/new-run --phase rl` in a second process during
+training. Training uses only the new fixtures, evenly splitting arena/campaign
+decision budgets, tasks and Classic/Predictor opponents. Existing arena maps and
+Lantern Road routes are held out; separate validation and test seeds prevent
+checkpoint selection on final test outcomes. The starting policy stays eligible.
+
+Wins/completions receive +1. Campaign escort losses receive −2; losses of required
+companions receive −1.5; other defeats, including leader-only losses, receive −1.
+Campaign caps receive −2 by default; arena defeats and caps receive −1. These are
+terminal outcomes, not per-casualty penalties, and do not accumulate. Terminal
+summaries report required-character losses and reached stages without adding
+privileged observations to live decisions. Optional losses do not automatically
+become campaign-failure penalties. A configurable −1.5 campaign-cap experiment
+requires a fresh warm start; exact recovery rejects changed reward settings.
+
+Visibility uses the current engine's permitted knowledge. This continuation adds
+neither neural fog-memory features nor exceptions granting hidden information;
+the limitations tracked in issue #141 remain separate.
 
 ## Recovery and publication
 

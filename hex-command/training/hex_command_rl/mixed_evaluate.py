@@ -10,7 +10,7 @@ import multiprocessing
 import os
 from pathlib import Path
 import time
-from .mixed_workload import group, mass
+from .mixed_workload import group, weights
 from .recovery import atomic_json, resolve_pointer, read_jsonl
 
 
@@ -26,13 +26,14 @@ def job(task):
 
 
 def summarize(rows):
+    masses = weights([r["config"] for r in rows])
     groups = defaultdict(list)
     for r in rows:
         groups[group(r["config"])].append(r)
     detailed = []
     score = caps = weight = 0.0
     for k, rs in groups.items():
-        w = mass(rs[0]["config"])
+        w = masses[k]
         n = len(rs)
         wins = sum(r["result"]["success"] for r in rs)
         cap = sum(r["result"]["truncated"] for r in rs)
@@ -46,8 +47,8 @@ def summarize(rows):
             for mission in row["result"].get("missions", []):
                 d = stages[mission["id"]]
                 d["entered"] += 1
-                d["wins"] += mission["winner"] == "player"
-                d["defeats"] += mission["winner"] == "enemy"
+                d["wins"] += mission["winner"] in ("player", "playerVictory")
+                d["defeats"] += mission["winner"] in ("enemy", "playerDefeat")
                 d["caps"] += mission["winner"] is None
                 d["rounds"].append(mission["round"])
         detailed.append(
