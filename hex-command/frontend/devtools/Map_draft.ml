@@ -287,6 +287,7 @@ let normalize map overlay =
         ("units", Js.Json.array units);
         ("lighting", J.default map "lighting" (J.obj [ ("time", J.str "day") ]));
         ("factions", J.default map "factions" (Js.Json.array [||]));
+        ("visionGroups", J.default map "visionGroups" (Js.Json.array [||]));
         ("pending", Js.Json.array [||]);
         ("marks", J.default overlay "marks" (Js.Json.array [||]));
         ("choices", J.default overlay "choices" (Js.Json.array [||]));
